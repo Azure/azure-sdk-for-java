@@ -159,6 +159,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
+    @Ignore("The updated az cli with --msi option will be published on sept/12/2017, disabling this test for now")
     public void testManageStorageFromMSIEnabledVirtualMachine() {
         Assert.assertTrue(ManageStorageFromMSIEnabledVirtualMachine.runSample(azure));
     }
