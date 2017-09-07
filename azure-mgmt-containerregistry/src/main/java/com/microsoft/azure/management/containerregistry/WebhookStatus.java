@@ -11,22 +11,22 @@ package com.microsoft.azure.management.containerregistry;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for SkuTier.
+ * Defines values for WebhookStatus.
  */
-public final class SkuTier {
-    /** Static value Basic for SkuTier. */
-    public static final SkuTier BASIC = new SkuTier("Basic");
+public final class WebhookStatus {
+    /** Static value enabled for WebhookStatus. */
+    public static final WebhookStatus ENABLED = new WebhookStatus("enabled");
 
-    /** Static value Managed for SkuTier. */
-    public static final SkuTier MANAGED = new SkuTier("Managed");
+    /** Static value disabled for WebhookStatus. */
+    public static final WebhookStatus DISABLED = new WebhookStatus("disabled");
 
     private String value;
 
     /**
-     * Creates a custom value for SkuTier.
+     * Creates a custom value for WebhookStatus.
      * @param value the custom value
      */
-    public SkuTier(String value) {
+    public WebhookStatus(String value) {
         this.value = value;
     }
 
@@ -43,13 +43,13 @@ public final class SkuTier {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof SkuTier)) {
+        if (!(obj instanceof WebhookStatus)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        SkuTier rhs = (SkuTier) obj;
+        WebhookStatus rhs = (WebhookStatus) obj;
         if (value == null) {
             return rhs.value == null;
         } else {

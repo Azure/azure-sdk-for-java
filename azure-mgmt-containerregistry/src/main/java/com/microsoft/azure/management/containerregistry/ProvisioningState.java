@@ -8,46 +8,64 @@
 
 package com.microsoft.azure.management.containerregistry;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
  * Defines values for ProvisioningState.
  */
-public enum ProvisioningState {
-    /** Enum value Creating. */
-    CREATING("Creating"),
+public final class ProvisioningState {
+    /** Static value Creating for ProvisioningState. */
+    public static final ProvisioningState CREATING = new ProvisioningState("Creating");
 
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded");
+    /** Static value Updating for ProvisioningState. */
+    public static final ProvisioningState UPDATING = new ProvisioningState("Updating");
 
-    /** The actual serialized value for a ProvisioningState instance. */
+    /** Static value Deleting for ProvisioningState. */
+    public static final ProvisioningState DELETING = new ProvisioningState("Deleting");
+
+    /** Static value Succeeded for ProvisioningState. */
+    public static final ProvisioningState SUCCEEDED = new ProvisioningState("Succeeded");
+
+    /** Static value Failed for ProvisioningState. */
+    public static final ProvisioningState FAILED = new ProvisioningState("Failed");
+
+    /** Static value Canceled for ProvisioningState. */
+    public static final ProvisioningState CANCELED = new ProvisioningState("Canceled");
+
     private String value;
 
-    ProvisioningState(String value) {
-        this.value = value;
-    }
-
     /**
-     * Parses a serialized value to a ProvisioningState instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ProvisioningState object, or null if unable to parse.
+     * Creates a custom value for ProvisioningState.
+     * @param value the custom value
      */
-    @JsonCreator
-    public static ProvisioningState fromString(String value) {
-        ProvisioningState[] items = ProvisioningState.values();
-        for (ProvisioningState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
+    public ProvisioningState(String value) {
+        this.value = value;
     }
 
     @JsonValue
     @Override
     public String toString() {
-        return this.value;
+        return value;
+    }
+
+    @Override
+    public int hashCode() {
+        return value.hashCode();
+    }
+
+    @Override
+    public boolean equals(Object obj) {
+        if (!(obj instanceof ProvisioningState)) {
+            return false;
+        }
+        if (obj == this) {
+            return true;
+        }
+        ProvisioningState rhs = (ProvisioningState) obj;
+        if (value == null) {
+            return rhs.value == null;
+        } else {
+            return value.equals(rhs.value);
+        }
     }
 }

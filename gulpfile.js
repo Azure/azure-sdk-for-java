@@ -328,7 +328,7 @@ var mappings = {
     },
     'containerregistry': {
         'dir': 'azure-mgmt-containerregistry',
-        'source': 'arm-containerregistry/2017-03-01/swagger/containerregistry.json',
+        'source': 'arm-containerregistry/2017-06-01-preview/swagger/containerregistry.json',
         'package': 'com.microsoft.azure.management.containerregistry',
         'args': '-FT 1',
     },

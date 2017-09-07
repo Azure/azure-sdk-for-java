@@ -11,22 +11,22 @@ package com.microsoft.azure.management.containerregistry;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for SkuTier.
+ * Defines values for RegistryUsageUnit.
  */
-public final class SkuTier {
-    /** Static value Basic for SkuTier. */
-    public static final SkuTier BASIC = new SkuTier("Basic");
+public final class RegistryUsageUnit {
+    /** Static value Count for RegistryUsageUnit. */
+    public static final RegistryUsageUnit COUNT = new RegistryUsageUnit("Count");
 
-    /** Static value Managed for SkuTier. */
-    public static final SkuTier MANAGED = new SkuTier("Managed");
+    /** Static value Bytes for RegistryUsageUnit. */
+    public static final RegistryUsageUnit BYTES = new RegistryUsageUnit("Bytes");
 
     private String value;
 
     /**
-     * Creates a custom value for SkuTier.
+     * Creates a custom value for RegistryUsageUnit.
      * @param value the custom value
      */
-    public SkuTier(String value) {
+    public RegistryUsageUnit(String value) {
         this.value = value;
     }
 
@@ -43,13 +43,13 @@ public final class SkuTier {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof SkuTier)) {
+        if (!(obj instanceof RegistryUsageUnit)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        SkuTier rhs = (SkuTier) obj;
+        RegistryUsageUnit rhs = (RegistryUsageUnit) obj;
         if (value == null) {
             return rhs.value == null;
         } else {

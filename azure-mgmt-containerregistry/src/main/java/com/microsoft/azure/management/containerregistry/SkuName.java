@@ -11,22 +11,28 @@ package com.microsoft.azure.management.containerregistry;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for SkuTier.
+ * Defines values for SkuName.
  */
-public final class SkuTier {
-    /** Static value Basic for SkuTier. */
-    public static final SkuTier BASIC = new SkuTier("Basic");
+public final class SkuName {
+    /** Static value Basic for SkuName. */
+    public static final SkuName BASIC = new SkuName("Basic");
 
-    /** Static value Managed for SkuTier. */
-    public static final SkuTier MANAGED = new SkuTier("Managed");
+    /** Static value Managed_Basic for SkuName. */
+    public static final SkuName MANAGED_BASIC = new SkuName("Managed_Basic");
+
+    /** Static value Managed_Standard for SkuName. */
+    public static final SkuName MANAGED_STANDARD = new SkuName("Managed_Standard");
+
+    /** Static value Managed_Premium for SkuName. */
+    public static final SkuName MANAGED_PREMIUM = new SkuName("Managed_Premium");
 
     private String value;
 
     /**
-     * Creates a custom value for SkuTier.
+     * Creates a custom value for SkuName.
      * @param value the custom value
      */
-    public SkuTier(String value) {
+    public SkuName(String value) {
         this.value = value;
     }
 
@@ -43,13 +49,13 @@ public final class SkuTier {
 
     @Override
     public boolean equals(Object obj) {
-        if (!(obj instanceof SkuTier)) {
+        if (!(obj instanceof SkuName)) {
             return false;
         }
         if (obj == this) {
             return true;
         }
-        SkuTier rhs = (SkuTier) obj;
+        SkuName rhs = (SkuName) obj;
         if (value == null) {
             return rhs.value == null;
         } else {

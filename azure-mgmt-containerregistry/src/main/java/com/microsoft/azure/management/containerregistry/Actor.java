@@ -11,22 +11,23 @@ package com.microsoft.azure.management.containerregistry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The parameters used to regenerate the login credential.
+ * The agent that initiated the event. For most situations, this could be from
+ * the authorization context of the request.
  */
-public class RegenerateCredentialParameters {
+public class Actor {
     /**
-     * Specifies name of the password which should be regenerated -- password
-     * or password2. Possible values include: 'password', 'password2'.
+     * The subject or username associated with the request context that
+     * generated the event.
      */
-    @JsonProperty(value = "name", required = true)
-    private PasswordName name;
+    @JsonProperty(value = "name")
+    private String name;
 
     /**
      * Get the name value.
      *
      * @return the name value
      */
-    public PasswordName name() {
+    public String name() {
         return this.name;
     }
 
@@ -34,9 +35,9 @@ public class RegenerateCredentialParameters {
      * Set the name value.
      *
      * @param name the name value to set
-     * @return the RegenerateCredentialParameters object itself.
+     * @return the Actor object itself.
      */
-    public RegenerateCredentialParameters withName(PasswordName name) {
+    public Actor withName(String name) {
         this.name = name;
         return this;
     }
