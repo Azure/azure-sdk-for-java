@@ -63,7 +63,7 @@ public interface ContainerGroup extends
     Collection<String> imageRegistryServers();
 
     /**
-     * @return - `always` Always restart
+     * @return `always` Always restart
 
      */
     ContainerRestartPolicy restartPolicy();
@@ -74,7 +74,7 @@ public interface ContainerGroup extends
     String ipAddress();
 
     /**
-     * @return - true if IP address is public
+     * @return true if IP address is public
      */
     boolean isIPAddressPublic();
 
