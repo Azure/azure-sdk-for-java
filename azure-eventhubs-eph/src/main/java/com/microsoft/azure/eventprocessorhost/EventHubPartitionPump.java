@@ -10,7 +10,6 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
 
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubClient;
@@ -19,6 +18,8 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.ReceiverDisconnectedException;
 import com.microsoft.azure.eventhubs.EventHubException;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 class EventHubPartitionPump extends PartitionPump
 {
@@ -27,6 +28,8 @@ class EventHubPartitionPump extends PartitionPump
 	private EventHubClient eventHubClient = null;
 	private PartitionReceiver partitionReceiver = null;
     private InternalReceiveHandler internalReceiveHandler = null;
+
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(EventHubPartitionPump.class);
 
 	EventHubPartitionPump(EventProcessorHost host, Pump pump, Lease lease)
 	{
@@ -53,13 +56,15 @@ class EventHubPartitionPump extends PartitionPump
 	        	{
 	        		// TODO Assuming this is due to a receiver with a higher epoch.
 	        		// Is there a way to be sure without checking the exception text?
-	        		this.host.logWithHostAndPartition(Level.WARNING, this.partitionContext, "Receiver disconnected on create, bad epoch?", e);
+                    TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                            "Receiver disconnected on create, bad epoch?"), e);
 	        		// If it's a bad epoch, then retrying isn't going to help.
 	        		break;
 	        	}
 	        	else
 	        	{
-					this.host.logWithHostAndPartition(Level.WARNING, this.partitionContext, "Failure creating client or receiver, retrying", e);
+					TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                            "Failure creating client or receiver, retrying"), e);
 					retryCount++;
 	        	}
 			}
@@ -93,7 +98,7 @@ class EventHubPartitionPump extends PartitionPump
     private void openClients() throws EventHubException, IOException, InterruptedException, ExecutionException
     {
     	// Create new client
-    	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Opening EH client");
+        TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext, "Opening EH client"));
 		this.internalOperationFuture = EventHubClient.createFromConnectionString(this.host.getEventHubConnectionString());
 		this.eventHubClient = (EventHubClient) this.internalOperationFuture.get();
 		this.internalOperationFuture = null;
@@ -103,7 +108,8 @@ class EventHubPartitionPump extends PartitionPump
         options.setReceiverRuntimeMetricEnabled(this.host.getEventProcessorOptions().getReceiverRuntimeMetricEnabled());
     	Object startAt = this.partitionContext.getInitialOffset();
     	long epoch = this.lease.getEpoch();
-    	this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Opening EH receiver with epoch " + epoch + " at location " + startAt);
+        TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                "Opening EH receiver with epoch " + epoch + " at location " + startAt));
     	if (startAt instanceof String)
     	{
     		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
@@ -117,7 +123,7 @@ class EventHubPartitionPump extends PartitionPump
     	else
     	{
     		String errMsg = "Starting offset is not String or Instant, is " + ((startAt != null) ? startAt.getClass().toString() : "null");
-    		this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, errMsg);
+            TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext, errMsg));
     		throw new RuntimeException(errMsg);
     	}
 		this.lease.setEpoch(epoch);
@@ -127,14 +133,16 @@ class EventHubPartitionPump extends PartitionPump
 		}
 		else
 		{
-			this.host.logWithHostAndPartition(Level.SEVERE, this.partitionContext, "createEpochReceiver failed with null");
+            TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                    "createEpochReceiver failed with null"));
 			throw new RuntimeException("createEpochReceiver failed with null");
 		}
 		this.partitionReceiver.setPrefetchCount(this.host.getEventProcessorOptions().getPrefetchCount());
 		this.partitionReceiver.setReceiveTimeout(this.host.getEventProcessorOptions().getReceiveTimeOut());
 		this.internalOperationFuture = null;
-		
-        this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "EH client and receiver creation finished");
+
+        TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                "EH client and receiver creation finished"));
     }
     
     private void cleanUpClients() // swallows all exceptions
@@ -145,7 +153,8 @@ class EventHubPartitionPump extends PartitionPump
 			// Fortunately this is idempotent -- setting the handler to null when it's already been
 			// nulled by code elsewhere is harmless!
 			// Setting to null also waits for the in-progress calls to complete
-			this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Setting receive handler to null");
+            TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                    "Setting receive handler to null"));
 			try
 			{
 				this.partitionReceiver.setReceiveHandler(null).get();
@@ -161,12 +170,12 @@ class EventHubPartitionPump extends PartitionPump
 				final Throwable throwable = exception.getCause();
 				if (throwable != null)
 				{
-					this.host.logWithHostAndPartition(Level.FINE, this.partitionContext,
-							"Got exception from onEvents when ReceiveHandler is set to null.", throwable);
+					TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+							"Got exception from onEvents when ReceiveHandler is set to null."), throwable);
 				}
 			}
 
-			this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Closing EH receiver");
+            TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext, "Closing EH receiver"));
         	final PartitionReceiver partitionReceiverTemp = this.partitionReceiver;
 			this.partitionReceiver = null;
 
@@ -176,17 +185,19 @@ class EventHubPartitionPump extends PartitionPump
 			}
 			catch (EventHubException exception)
 			{
-				this.host.logWithHostAndPartition(Level.FINE, this.partitionContext,"Closing EH receiver failed.", exception);
+                TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                        "Closing EH receiver failed."), exception);
 			}
         }
         else
         {
-            this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "partitionReceiver is null in cleanup");
+            TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                    "partitionReceiver is null in cleanup"));
         }
 
         if (this.eventHubClient != null)
 		{
-			this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "Closing EH client");
+            TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext, "Closing EH client"));
 			final EventHubClient eventHubClientTemp = this.eventHubClient;
 			this.eventHubClient = null;
 
@@ -196,12 +207,13 @@ class EventHubPartitionPump extends PartitionPump
 			}
 			catch (EventHubException exception)
 			{
-				this.host.logWithHostAndPartition(Level.FINE, this.partitionContext, "Closing EH client failed.", exception);
+				TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext, "Closing EH client failed."), exception);
 			}
 		}
         else
         {
-            this.host.logWithHostAndPartition(Level.FINER, this.partitionContext, "eventHubClient is null in cleanup");
+            TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext,
+                    "eventHubClient is null in cleanup"));
         }
     }
 
@@ -267,15 +279,18 @@ class EventHubPartitionPump extends PartitionPump
 			}
 			if (error instanceof ReceiverDisconnectedException)
 			{
-				EventHubPartitionPump.this.host.logWithHostAndPartition(Level.WARNING, EventHubPartitionPump.this.partitionContext,
-						"EventHub client disconnected, probably another host took the partition");
+				TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(EventHubPartitionPump.this.host.getHostName(),
+                        EventHubPartitionPump.this.partitionContext,
+						"EventHub client disconnected, probably another host took the partition"));
 			}
 			else
 			{
-				EventHubPartitionPump.this.host.logWithHostAndPartition(Level.SEVERE, EventHubPartitionPump.this.partitionContext, "EventHub client error: " + error.toString());
+                TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(EventHubPartitionPump.this.host.getHostName(),
+                        EventHubPartitionPump.this.partitionContext, "EventHub client error: " + error.toString()));
 				if (error instanceof Exception)
 				{
-					EventHubPartitionPump.this.host.logWithHostAndPartition(Level.SEVERE, EventHubPartitionPump.this.partitionContext, "EventHub client error continued", (Exception)error);
+					TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(EventHubPartitionPump.this.host.getHostName(),
+                            EventHubPartitionPump.this.partitionContext, "EventHub client error continued"), (Exception)error);
 				}
 			}
 

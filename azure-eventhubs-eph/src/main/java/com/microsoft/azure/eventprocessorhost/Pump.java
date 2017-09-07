@@ -5,12 +5,14 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.util.ArrayList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
-import java.util.logging.Level;
 
 
 class Pump
@@ -18,6 +20,8 @@ class Pump
     protected final EventProcessorHost host; // protected for testability
 
     private ConcurrentHashMap<String, PartitionPump> pumpStates;
+
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(Pump.class);
     
     public Pump(EventProcessorHost host)
     {
@@ -45,7 +49,7 @@ class Pump
     		else
     		{
     			// Pump is working, just replace the lease.
-    			this.host.logWithHostAndPartition(Level.FINER, partitionId, "updating lease for pump");
+    			TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "updating lease for pump"));
     			capturedPump.setLease(lease);
     		}
     	}
@@ -70,7 +74,7 @@ class Pump
 					if (newPartitionPump.getPumpStatus() == PartitionPumpStatus.PP_RUNNING)
 					{
 						Pump.this.pumpStates.put(partitionId, newPartitionPump); // do the put after start, if the start fails then put doesn't happen
-						Pump.this.host.logWithHostAndPartition(Level.FINE, partitionId, "created new pump");
+						TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(Pump.this.host.getHostName(), partitionId, "created new pump"));
 					}
 					return null;
 				}
@@ -83,17 +87,19 @@ class Pump
     	PartitionPump capturedPump = this.pumpStates.get(partitionId);
     	if (capturedPump != null)
     	{
-			this.host.logWithHostAndPartition(Level.FINE, partitionId, "closing pump for reason " + reason.toString());
+            TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                    "closing pump for reason " + reason.toString()));
 			retval = this.host.getExecutorService().submit(() -> capturedPump.shutdown(reason));
-    		
-    		this.host.logWithHostAndPartition(Level.FINE, partitionId, "removing pump");
+
+    		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "removing pump"));
     		this.pumpStates.remove(partitionId);
     	}
     	else
     	{
     		// PartitionManager main loop tries to remove pump for every partition that the host does not own, just to be sure.
     		// Not finding a pump for a partition is normal and expected most of the time.
-    		this.host.logWithHostAndPartition(Level.FINER, partitionId, "no pump found to remove for partition " + partitionId);
+    		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                    "no pump found to remove for partition " + partitionId));
     	}
     	return retval;
     }
@@ -109,7 +115,8 @@ class Pump
 			}
 			catch (InterruptedException | ExecutionException e)
 			{
-				this.host.logWithHostAndPartition(Level.WARNING, partitionId, "error while shutting down failed partition pump", e);
+				TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+                        "error while shutting down failed partition pump"), e);
 			}
     	}
     }
