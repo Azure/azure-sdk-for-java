@@ -11,6 +11,7 @@ import com.microsoft.azure.management.network.BgpSettings;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.VirtualNetworkGateway;
+import com.microsoft.azure.management.network.VirtualNetworkGatewayConnections;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayIPConfiguration;
 import com.microsoft.azure.management.network.VirtualNetworkGatewaySku;
 import com.microsoft.azure.management.network.VirtualNetworkGatewaySkuName;
@@ -47,8 +48,8 @@ class VirtualNetworkGatewayImpl
         VirtualNetworkGateway.Update {
     private static final String DEFAULT = "GatewaySubnet";
     private Map<String, VirtualNetworkGatewayIPConfiguration> ipConfigs;
-
     private Map<String, String> creatablePipsByIPConfig;
+    private VirtualNetworkGatewayConnections connections;
 
     VirtualNetworkGatewayImpl(String name,
                               final VirtualNetworkGatewayInner innerModel,
@@ -104,11 +105,6 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public Update withoutPublicIPAddress() {
-        return this;
-    }
-
-    @Override
     public VirtualNetworkGatewayImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatable) {
         final String name = ensureDefaultIPConfig().name();
         this.creatablePipsByIPConfig.put(name, creatable.key());
@@ -132,6 +128,14 @@ class VirtualNetworkGatewayImpl
     @Override
     public void reset() {
 
+    }
+
+    @Override
+    public VirtualNetworkGatewayConnections connections() {
+        if (connections == null) {
+            connections = new VirtualNetworkGatewayConnectionsImpl(this);
+        }
+        return connections;
     }
 
     @Override

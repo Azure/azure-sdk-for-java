@@ -42,11 +42,10 @@ class LocalNetworkGatewaysImpl
 
     @Override
     public PagedList<LocalNetworkGateway> list() {
-        final LocalNetworkGatewaysImpl self = this;
         return new GroupPagedList<LocalNetworkGateway>(this.manager().resourceManager().resourceGroups().list()) {
             @Override
             public List<LocalNetworkGateway> listNextGroup(String resourceGroupName) {
-                return wrapList(self.inner().listByResourceGroup(resourceGroupName));
+                return wrapList(LocalNetworkGatewaysImpl.this.inner().listByResourceGroup(resourceGroupName));
             }
         };
     }

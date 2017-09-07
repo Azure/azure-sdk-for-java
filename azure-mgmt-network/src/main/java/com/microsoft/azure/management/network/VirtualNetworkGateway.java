@@ -41,6 +41,11 @@ public interface VirtualNetworkGateway extends
     @Method
     void reset();
 
+    /**
+     * @return the entry point to virtual network gateway connections management API for this virtual network gateway
+     */
+    VirtualNetworkGatewayConnections connections();
+
     // Getters
 
     /**
@@ -177,12 +182,6 @@ public interface VirtualNetworkGateway extends
      */
     interface UpdateStages {
         /**
-         * The stage of virtual network gateway update allowing to specify public IP address for IP configuration.
-         */
-        interface WithPublicIPAddress extends HasPublicIPAddress.UpdateStages.WithPublicIPAddressNoDnsLabel<Update> {
-        }
-
-        /**
          * The stage of virtual network gateway definition allowing to specify SKU.
          */
         interface WithSku {
@@ -191,6 +190,34 @@ public interface VirtualNetworkGateway extends
 
         interface WithBgpSettings {
 
+        }
+
+        /**
+         * The stage of an application gateway update allowing to modify probes.
+         */
+        interface WithConnection {
+            /**
+             * Begins the definition of a new connection.
+             * @param name a unique name for the connection
+             * @return the first stage of virtual network gateway connection definition
+             */
+            VirtualNetworkGatewayConnection.DefinitionStages.Blank defineConnection(String name);
+
+            /**
+             * Begins the update of an existing probe.
+             * @param name the name of an existing probe
+             * @return the first stage of a probe update
+             */
+            ApplicationGatewayProbe.Update updateProbe(String name);
+
+            /**
+             * Removes a probe from the application gateway.
+             * <p>
+             * Any references to this probe from backend HTTP configurations will be automatically removed.
+             * @param name the name of an existing probe
+             * @return the next stage of the update
+             */
+            Update withoutProbe(String name);
         }
     }
 
@@ -203,7 +230,6 @@ public interface VirtualNetworkGateway extends
     interface Update extends
             Appliable<VirtualNetworkGateway>,
             Resource.UpdateWithTags<Update>,
-            UpdateStages.WithPublicIPAddress,
             UpdateStages.WithSku,
             UpdateStages.WithBgpSettings {
     }
