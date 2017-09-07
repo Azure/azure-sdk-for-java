@@ -19,6 +19,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
+import com.microsoft.azure.management.network.ConnectivityCheck;
 import com.microsoft.azure.management.network.Direction;
 import com.microsoft.azure.management.network.FlowLogSettings;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
@@ -27,6 +28,7 @@ import com.microsoft.azure.management.network.NextHop;
 import com.microsoft.azure.management.network.NextHopType;
 import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PcProtocol;
+import com.microsoft.azure.management.network.PcStatus;
 import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.network.SecurityGroupView;
 import com.microsoft.azure.management.network.Topology;
@@ -618,8 +620,15 @@ public class AzureTests extends TestBase {
         Assert.assertEquals("127.0.0.1;127.0.0.5", packetCapture.filters().get(0).localIPAddress());
 //        Assert.assertEquals("Running", packetCapture.getStatus().packetCaptureStatus().toString());
         packetCapture.stop();
-        Assert.assertEquals("Stopped", packetCapture.getStatus().packetCaptureStatus().toString());
+        Assert.assertEquals(PcStatus.STOPPED, packetCapture.getStatus().packetCaptureStatus());
         nw.packetCaptures().deleteByName(packetCapture.name());
+
+        ConnectivityCheck connectivityCheck = nw.checkConnectivity()
+                .toDestinationResourceId(virtualMachines[1].id())
+                .toDestinationPort(80)
+                .fromSourceVirtualMachine(virtualMachines[0].id())
+                .execute();
+        Assert.assertEquals("Reachable", connectivityCheck.connectionStatus().toString());
 
         azure.virtualMachines().deleteById(virtualMachines[1].id());
         topology.refresh();
