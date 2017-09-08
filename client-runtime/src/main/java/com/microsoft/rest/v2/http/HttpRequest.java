@@ -6,6 +6,9 @@
 
 package com.microsoft.rest.v2.http;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
+
 /**
  * This class contains all of the details necessary for sending a HTTP request through a HttpClient.
  */
@@ -14,7 +17,7 @@ public class HttpRequest {
     private final String httpMethod;
     private final String url;
     private final HttpHeaders headers = new HttpHeaders();
-    private String body;
+    private InputStream body;
     private String mimeType;
 
     /**
@@ -80,16 +83,28 @@ public class HttpRequest {
      * @return This HttpRequest so that multiple operations can be chained together.
      */
     public HttpRequest withBody(String body, String mimeType) {
+        final byte[] bodyBytes = body.getBytes();
+        return withBody(new ByteArrayInputStream(bodyBytes), bodyBytes.length, mimeType);
+    }
+
+    /**
+     * Set the body of this HTTP request.
+     * @param body The body of this HTTP request.
+     * @param bodyByteLength The number of bytes that will be read from the body InputStream.
+     * @param mimeType The MIME type of the body's contents.
+     * @return This HttpRequest so that multiple operations can be chained together.
+     */
+    public HttpRequest withBody(InputStream body, int bodyByteLength, String mimeType) {
         this.body = body;
         this.mimeType = mimeType;
-        return this;
+        return withHeader("Content-Length", String.valueOf(bodyByteLength));
     }
 
     /**
      * Get the body for this HttpRequest.
      * @return The body for this HttpRequest.
      */
-    public String body() {
+    public InputStream body() {
         return body;
     }
 

@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.google.common.io.ByteStreams;
 import okhttp3.Call;
 import okhttp3.MediaType;
 import okhttp3.Request;
@@ -14,6 +15,7 @@ import okhttp3.Response;
 import rx.Single;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 /**
  * A HttpClient that is implemented using OkHttp.
@@ -37,25 +39,26 @@ public class OkHttpAdapter extends HttpClient {
     @Override
     public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
         RequestBody requestBody = null;
-        final String requestBodyString = request.body();
-        if (requestBodyString != null && !requestBodyString.isEmpty()) {
-            final MediaType mediaType = MediaType.parse(request.mimeType());
-            requestBody = RequestBody.create(mediaType, requestBodyString);
-        }
-
-        final Request.Builder requestBuilder = new Request.Builder()
-                .method(request.httpMethod(), requestBody)
-                .url(request.url());
-
-        for (HttpHeader header : request.headers()) {
-            requestBuilder.addHeader(header.name(), header.value());
-        }
-
-        final Request okhttpRequest = requestBuilder.build();
-        final Call call = client.newCall(okhttpRequest);
 
         Single<? extends HttpResponse> result;
-        try {
+
+        try (InputStream body = request.body()) {
+            if (body != null) {
+                final MediaType mediaType = MediaType.parse(request.mimeType());
+                requestBody = RequestBody.create(mediaType, ByteStreams.toByteArray(body));
+            }
+
+            final Request.Builder requestBuilder = new Request.Builder()
+                    .method(request.httpMethod(), requestBody)
+                    .url(request.url());
+
+            for (HttpHeader header : request.headers()) {
+                requestBuilder.addHeader(header.name(), header.value());
+            }
+
+            final Request okhttpRequest = requestBuilder.build();
+            final Call call = client.newCall(okhttpRequest);
+
             final Response response = call.execute();
             result = Single.just(new OkHttpResponse(response));
         }
