@@ -14,7 +14,7 @@ public class HttpRequest {
     private final String httpMethod;
     private final String url;
     private final HttpHeaders headers = new HttpHeaders();
-    private String body;
+    private HttpRequestBody body;
     private String mimeType;
 
     /**
@@ -80,16 +80,37 @@ public class HttpRequest {
      * @return This HttpRequest so that multiple operations can be chained together.
      */
     public HttpRequest withBody(String body, String mimeType) {
+        final byte[] bodyBytes = body.getBytes();
+        return withBody(bodyBytes, mimeType);
+    }
+
+    /**
+     * Set the body of this HTTP request.
+     * @param body The body of this HTTP request.
+     * @param mimeType The MIME type of the body's contents.
+     * @return This HttpRequest so that multiple operations can be chained together.
+     */
+    public HttpRequest withBody(byte[] body, String mimeType) {
+        return withBody(new ByteArrayHttpRequestBody(body), mimeType);
+    }
+
+    /**
+     * Set the body of this HTTP request.
+     * @param body The body of this HTTP request.
+     * @param mimeType The MIME type of the body's contents.
+     * @return This HttpRequest so that multiple operations can be chained together.
+     */
+    public HttpRequest withBody(HttpRequestBody body, String mimeType) {
         this.body = body;
         this.mimeType = mimeType;
-        return this;
+        return withHeader("Content-Length", String.valueOf(body.contentLength()));
     }
 
     /**
      * Get the body for this HttpRequest.
      * @return The body for this HttpRequest.
      */
-    public String body() {
+    public HttpRequestBody body() {
         return body;
     }
 

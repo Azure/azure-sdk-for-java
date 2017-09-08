@@ -6,9 +6,13 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.google.common.io.CharStreams;
 import com.microsoft.rest.v2.HttpBinJSON;
 import rx.Single;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -42,7 +46,7 @@ public class MockHttpClient extends HttpClient {
                 }
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.data = request.body();
+                    json.data = bodyToString(request);
                     response = new MockHttpResponse(json);
                 }
                 else if (requestPathLower.equals("/get")) {
@@ -53,17 +57,17 @@ public class MockHttpClient extends HttpClient {
                 }
                 else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.data = request.body();
+                    json.data = bodyToString(request);
                     response = new MockHttpResponse(json);
                 }
                 else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.data = request.body();
+                    json.data = bodyToString(request);
                     response = new MockHttpResponse(json);
                 }
                 else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.data = request.body();
+                    json.data = bodyToString(request);
                     response = new MockHttpResponse(json);
                 }
             }
@@ -72,6 +76,12 @@ public class MockHttpClient extends HttpClient {
         }
 
         return Single.just(response);
+    }
+
+    private static String bodyToString(HttpRequest request) throws IOException {
+        try (final InputStream bodyStream = request.body().createInputStream()) {
+            return CharStreams.toString(new InputStreamReader(bodyStream));
+        }
     }
 
     private static Map<String, String> toMap(HttpHeaders headers) {
