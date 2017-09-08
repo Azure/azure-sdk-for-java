@@ -12,6 +12,7 @@ import com.microsoft.rest.protocol.Environment;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.RxNettyAdapter;
 import com.microsoft.rest.v2.policy.*;
 import okhttp3.OkHttpClient;
 
@@ -153,7 +154,6 @@ public final class RestClient {
         private LogLevel logLevel = LogLevel.NONE;
 
         private Builder(final RestClient restClient) {
-            this();
             this.httpClient = restClient.httpClient;
             this.baseUrl = restClient.baseURL;
             this.responseBuilderFactory = restClient.responseBuilderFactory;
@@ -167,7 +167,7 @@ public final class RestClient {
          * Creates an instance of the builder.
          */
         public Builder() {
-
+            this.httpClient = new RxNettyAdapter();
         }
 
         /**
@@ -178,6 +178,11 @@ public final class RestClient {
          */
         public Builder withBaseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
+            return this;
+        }
+
+        public Builder withHttpClient(HttpClient client) {
+            this.httpClient = client;
             return this;
         }
 

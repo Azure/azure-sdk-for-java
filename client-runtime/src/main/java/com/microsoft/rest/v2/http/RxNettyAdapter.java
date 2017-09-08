@@ -75,9 +75,16 @@ public class RxNettyAdapter extends HttpClient {
                 rxnHeaders.put("Content-Type", Collections.<Object>singleton(mimeType));
             }
 
-            boolean isSecure = "https".equalsIgnoreCase(uri.getScheme());
+            final boolean isSecure = "https".equalsIgnoreCase(uri.getScheme());
+            final int port;
+            if (uri.getPort() != -1) {
+                port = uri.getPort();
+            } else {
+                port = isSecure ? 443 : 80;
+            }
+
             io.reactivex.netty.protocol.http.client.HttpClient<ByteBuf, ByteBuf> rxnClient =
-                    io.reactivex.netty.protocol.http.client.HttpClient.newClient(uri.getHost(), isSecure ? 443 : 80);
+                    io.reactivex.netty.protocol.http.client.HttpClient.newClient(uri.getHost(), port);
 
             if (isSecure) {
                 rxnClient = rxnClient.secure(getSSLEngine(uri.getHost()));
