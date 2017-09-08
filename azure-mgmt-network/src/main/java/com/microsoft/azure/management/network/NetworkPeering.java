@@ -105,7 +105,10 @@ public interface NetworkPeering extends
     /**
      * @return true if virtual machines on this network's address spaces are accessible from the remote network
      */
-    boolean isAccessFromRemoteNetworkAllowed();
+    /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
+     * for this to apply to only one of the peered networks. When that bevavior is fixed this should be revisited accordingly.
+     */
+    // boolean isAccessFromRemoteNetworkAllowed();
 
     /**
      * @return true if the peered networks are in the same subscription, otherwise false
@@ -229,7 +232,10 @@ public interface NetworkPeering extends
              * Disallows access to this network's address space from the remote network.
              * @return the next stage of the definition
              */
-            WithCreate withoutAccessFromRemoteNetwork();
+            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
+             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
+             */
+            // WithCreate withoutAccessFromRemoteNetwork();
 
             /**
              * Disallows access to the remote network's address space from this network.
@@ -238,7 +244,10 @@ public interface NetworkPeering extends
              * the corresponding access setting on the remote network's matching peering explicitly.
              * @return the next stage of the definition
              */
-            WithCreate withoutAccessToRemoteNetwork();
+            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
+             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
+             */
+            // WithCreate withoutAccessToRemoteNetwork();
 
             /**
              * Disallows access to either peered network from the other.
@@ -412,13 +421,19 @@ public interface NetworkPeering extends
              * Disallows access to this network's address space from the remote network.
              * @return the next stage of the update
              */
-            Update withoutAccessFromRemoteNetwork();
+            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
+             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
+             */
+            // Update withoutAccessFromRemoteNetwork();
 
             /**
              * Allows access to this network's address space from the remote network.
              * @return the next stage of the update
              */
-            Update withAccessFromRemoteNetwork();
+            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
+             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
+             */
+            // Update withAccessFromRemoteNetwork();
 
             /**
              * Disallows access to the remote network's address space from this network.
@@ -427,7 +442,10 @@ public interface NetworkPeering extends
              * the corresponding access setting on the remote network's matching peering explicitly.
              * @return the next stage of the update
              */
-            Update withoutAccessToRemoteNetwork();
+            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
+             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
+             */
+            // Update withoutAccessToRemoteNetwork();
 
             /**
              * Enables access to the remote network's address space from this network.
@@ -436,7 +454,10 @@ public interface NetworkPeering extends
              * the corresponding access setting on the remote network's matching peering explicitly.
              * @return the next stage of the update
              */
-            Update withAccessToRemoteNetwork();
+            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
+             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
+             */
+            // Update withAccessToRemoteNetwork();
 
             /**
              * Enables access to either peered virtual network from the other.

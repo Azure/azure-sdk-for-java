@@ -342,7 +342,7 @@ public final class Utils {
                 .append("\n\t\tRemote network ID: ").append(peering.remoteNetworkId())
                 .append("\n\t\tPeering state: ").append(peering.state())
                 .append("\n\t\tIs traffic forwarded from remote network allowed? ").append(peering.isTrafficForwardingFromRemoteNetworkAllowed())
-                .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessFromRemoteNetworkAllowed())
+                //TODO .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessFromRemoteNetworkAllowed())
                 .append("\n\t\tGateway use: ").append(peering.gatewayUse());
         }
         System.out.println(info.toString());
