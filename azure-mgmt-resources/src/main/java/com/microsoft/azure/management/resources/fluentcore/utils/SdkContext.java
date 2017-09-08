@@ -51,7 +51,7 @@ public class SdkContext {
      * @param prefix the prefix to be used if possible
      * @param maxLen the maximum length for the random generated name
      * @param count the number of names to generate
-     * @return
+     * @return random names
      */
     public static String[] randomResourceNames(String prefix, int maxLen, int count) {
         String[] names = new String[count];
