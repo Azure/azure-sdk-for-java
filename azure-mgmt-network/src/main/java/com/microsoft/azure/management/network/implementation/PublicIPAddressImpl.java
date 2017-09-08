@@ -14,7 +14,6 @@ import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIPAddress;
-import com.microsoft.azure.management.network.PublicIPAddressSku;
 import com.microsoft.azure.management.network.PublicIPSkuType;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;

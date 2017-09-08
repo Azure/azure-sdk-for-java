@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @LangDefinition
 @Beta(Beta.SinceVersion.V1_3_0)
-public class LoadBalancerSkuType {
+public final class LoadBalancerSkuType {
     // This needs to be at the beginning for the initialization to happen correctly
     private static final Map<String, LoadBalancerSkuType> VALUES_BY_NAME = new HashMap<>();
 

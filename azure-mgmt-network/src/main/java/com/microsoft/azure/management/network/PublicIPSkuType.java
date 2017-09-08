@@ -18,7 +18,7 @@ import java.util.Map;
  */
 @LangDefinition
 @Beta(Beta.SinceVersion.V1_3_0)
-public class PublicIPSkuType {
+public final class PublicIPSkuType {
     // This needs to be at the beginning for the initialization to happen correctly
     private static final Map<String, PublicIPSkuType> VALUES_BY_NAME = new HashMap<>();
 

@@ -54,7 +54,6 @@ import com.microsoft.azure.management.graphrbac.BuiltInRole;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
-import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
