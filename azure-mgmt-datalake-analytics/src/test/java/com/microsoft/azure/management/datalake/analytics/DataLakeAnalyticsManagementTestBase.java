@@ -47,10 +47,6 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) throws IOException {
-        rgName = generateRandomResourceName("adlarg",15);
-        adlsName = generateRandomResourceName("adls",15);
-        jobAndCatalogAdlaName = generateRandomResourceName("secondadla",15);
-
         environmentLocation = Region.US_EAST2;
 
         dataLakeAnalyticsAccountManagementClient = new DataLakeAnalyticsAccountManagementClientImpl(restClient)
@@ -107,6 +103,10 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
             dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(restClient);
             dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(restClient);
         }
+
+        rgName = generateRandomResourceName("adlarg",15);
+        adlsName = generateRandomResourceName("adls",15);
+        jobAndCatalogAdlaName = generateRandomResourceName("secondadla",15);
 
         resourceManagementClient = ResourceManager
                 .authenticate(restClient)
