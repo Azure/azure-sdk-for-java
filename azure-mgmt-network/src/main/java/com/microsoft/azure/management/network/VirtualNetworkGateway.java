@@ -101,6 +101,8 @@ public interface VirtualNetworkGateway extends
             DefinitionStages.WithGroup,
             DefinitionStages.WithGatewayType,
             DefinitionStages.WithVPNType,
+            DefinitionStages.WithSku,
+            DefinitionStages.WithNetwork,
             DefinitionStages.WithCreate,
             DefinitionStages.WithBgpSettingsAndCreate {
     }
@@ -134,15 +136,66 @@ public interface VirtualNetworkGateway extends
          * The stage of virtual network gateway definition allowing to specify virtual network gateway type.
          */
         interface WithVPNType {
-            WithBgpSettingsAndCreate withRouteBased();
-            DefinitionStages.WithCreate withPolicyBased();
+            /**
+             * Use Route-based VPN type.
+             * @return the next stage of the definition
+             */
+            WithSku withRouteBased();
+
+            /**
+             * Use Policy-based VPN type. Note: this is available only for Basic SKU.
+             * @return the next stage of the definition
+             */
+            DefinitionStages.WithNetwork withPolicyBased();
+        }
+
+        /**
+         * The stage of the virtual network gateway definition allowing to specify the virtual network.
+         */
+        interface WithNetwork {
+            /**
+             * Create a new virtual network to associate with the virtual network gateway,
+             * based on the provided definition.
+             *
+             * @param creatable a creatable definition for a new virtual network
+             * @return the next stage of the definition
+             */
+            DefinitionStages.WithCreate withNewNetwork(Creatable<Network> creatable);
+
+            /**
+             * Creates a new virtual network to associate with the virtual network gateway.
+             * the virtual network will be created in the same resource group and region as of parent
+             * virtual network gateway, it will be created with the specified address space and a subnet for virtual network gateway.
+             *
+             * @param name the name of the new virtual network
+             * @param addressSpace the address space for rhe virtual network
+             * @return the next stage of the definition
+             */
+            DefinitionStages.WithCreate withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr);
+
+            /**
+             * Creates a new virtual network to associate with the virtual network gateway.
+             * the virtual network will be created in the same resource group and region as of parent virtual network gateway,
+             * it will be created with the specified address space and a default subnet for virtual network gateway.
+             *
+             * @param addressSpaceCidr the address space for the virtual network
+             * @return the next stage of the definition
+             */
+            DefinitionStages.WithCreate withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr);
+
+            /**
+             * Associate an existing virtual network with the virtual network gateway .
+             * @param network an existing virtual network
+             * @return the next stage of the definition
+             */
+            DefinitionStages.WithCreate withExistingNetwork(Network network);
         }
 
         /**
          * The stage of virtual network gateway definition allowing to specify SKU.
          */
         interface WithSku {
-            DefinitionStages.WithCreate withSku(VirtualNetworkGatewaySkuName skuName);
+            DefinitionStages.WithNetwork withSku(VirtualNetworkGatewaySkuName skuName);
         }
 
         /**
@@ -171,7 +224,6 @@ public interface VirtualNetworkGateway extends
         interface WithCreate extends
                 Creatable<VirtualNetworkGateway>,
                 Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithSku,
                 DefinitionStages.WithPublicIPAddress,
                 DefinitionStages.WithActiveActive {
         }

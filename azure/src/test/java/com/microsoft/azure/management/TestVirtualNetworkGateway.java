@@ -20,24 +20,36 @@ import org.junit.Assert;
 public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
     private static String TEST_ID = "";
     private static Region REGION = Region.US_NORTH_CENTRAL;
-    private String groupName;
-    private String gatewayName;
+    private static String GROUP_NAME;
+    private static String GATEWAY_NAME1;
+    private static String GATEWAY_NAME2;
 
-    private void initializeResourceNames() {
+    static final String ID_TEMPLATE = "/subscriptions/${subId}/resourceGroups/${rgName}/providers/Microsoft.Network/virtualNetworkGateways/${resourceName}";
+
+    static String createResourceId(String subscriptionId, String gatewayName) {
+        return ID_TEMPLATE
+                .replace("${subId}", subscriptionId)
+                .replace("${rgName}", GROUP_NAME)
+                .replace("${resourceName}", gatewayName);
+    }
+
+    private static void initializeResourceNames() {
         TEST_ID = SdkContext.randomResourceName("", 8);
-        groupName = "rg" + TEST_ID;
-        gatewayName = "vngw" + TEST_ID;
+        GROUP_NAME = "rg" + TEST_ID;
+        GATEWAY_NAME1 = "vngw" + TEST_ID;
+        GATEWAY_NAME2 = "vngw2" + TEST_ID;
     }
 
     @Override
     public VirtualNetworkGateway createResource(VirtualNetworkGateways virtualNetworkGateways) throws Exception {
         initializeResourceNames();
-        VirtualNetworkGateway vngw = virtualNetworkGateways.define(gatewayName)
+        VirtualNetworkGateway vngw = virtualNetworkGateways.define(GATEWAY_NAME1)
                 .withRegion(REGION)
-                .withNewResourceGroup(groupName)
+                .withNewResourceGroup(GROUP_NAME)
                 .withVPN()
                 .withRouteBased()
                 .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
                 .withTag("tag1", "value1")
 //                .withActiveActive(true)
                 .create();
@@ -72,19 +84,9 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
      * Test Site-To-Site Virtual Network Gateway Connection.
      */
     public static class SiteToSite extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
-        private final NetworkManager networkManager;
-        private String groupName;
-        private String gatewayName;
-
-        private void initializeResourceNames() {
-            TEST_ID = SdkContext.randomResourceName("", 8);
-            groupName = "rg" + TEST_ID;
-            gatewayName = "vngw" + TEST_ID;
-        }
 
         public SiteToSite(NetworkManager networkManager) {
             initializeResourceNames();
-            this.networkManager = networkManager;
         }
 
         @Override
@@ -97,12 +99,13 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
 
             // Create virtual network gateway
             initializeResourceNames();
-            VirtualNetworkGateway vngw = gateways.define(gatewayName)
+            VirtualNetworkGateway vngw = gateways.define(GATEWAY_NAME1)
                     .withRegion(REGION)
                     .withNewResourceGroup()
                     .withVPN()
                     .withRouteBased()
                     .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                    .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
                     .create();
 //            VirtualNetworkGateway vngw = gateways.getByResourceGroup("vngw115313group", "vngw115313");
             LocalNetworkGateway lngw = gateways.manager().localNetworkGateways().define("lngw" + TEST_ID)
@@ -130,21 +133,9 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
      * Test VNet-to-VNet Virtual Network Gateway Connection.
      */
     public static class VNetToVNet extends TestTemplate<VirtualNetworkGateway, VirtualNetworkGateways> {
-        private final NetworkManager networkManager;
-        private String groupName;
-        private String gatewayName;
-        private String gatewayName2;
-
-        private void initializeResourceNames() {
-            TEST_ID = SdkContext.randomResourceName("", 8);
-            groupName = "rg" + TEST_ID;
-            gatewayName = "vngw" + TEST_ID;
-            gatewayName2 = "vngw2" + TEST_ID;
-        }
 
         public VNetToVNet(NetworkManager networkManager) {
             initializeResourceNames();
-            this.networkManager = networkManager;
         }
 
         @Override
@@ -153,37 +144,52 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
         }
 
         @Override
-        public VirtualNetworkGateway createResource(VirtualNetworkGateways gateways) throws Exception {
+        public VirtualNetworkGateway createResource(final VirtualNetworkGateways gateways) throws Exception {
 
             // Create virtual network gateway
             initializeResourceNames();
-            VirtualNetworkGateway vngw = gateways.define(gatewayName)
-                    .withRegion(REGION)
-                    .withNewResourceGroup()
-                    .withVPN()
-                    .withRouteBased()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .create();
-            VirtualNetworkGateway vngw2 = gateways.define(gatewayName2)
-                    .withRegion(REGION)
-                    .withNewResourceGroup()
-                    .withVPN()
-                    .withRouteBased()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                    .create();
+            Thread creationThread1 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    VirtualNetworkGateway vngw = gateways.define(GATEWAY_NAME1)
+                            .withRegion(REGION)
+                            .withNewResourceGroup()
+                            .withVPN()
+                            .withRouteBased()
+                            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                            .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
+                            .create();
+                }
+            });
+            Thread creationThread2 = new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    VirtualNetworkGateway vngw2 = gateways.define(GATEWAY_NAME2)
+                            .withRegion(REGION)
+                            .withNewResourceGroup()
+                            .withVPN()
+                            .withRouteBased()
+                            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                            .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
+                            .create();
+                }
+            });
+            creationThread1.start();
+            creationThread2.start();
+            //...But bail out after 30 sec, as it is enough to test the results
+            SdkContext.sleep(60 * 1000);
+
+            // Get the resources as created so far
+            VirtualNetworkGateway vngw1 = gateways.manager().virtualNetworkGateways().getById(createResourceId(gateways.manager().subscriptionId(), GATEWAY_NAME1));
+            VirtualNetworkGateway vngw2 = gateways.manager().virtualNetworkGateways().getById(createResourceId(gateways.manager().subscriptionId(), GATEWAY_NAME2));
 //            VirtualNetworkGateway vngw = gateways.getByResourceGroup("vngw115313group", "vngw115313");
-            LocalNetworkGateway lngw = gateways.manager().localNetworkGateways().define("lngw" + TEST_ID)
-                    .withRegion(vngw.region())
-                    .withExistingResourceGroup(vngw.resourceGroupName())
-                    .withIPAddress("40.71.184.214")
-                    .create();
-            vngw.connections()
+            vngw1.connections()
                     .define("myNewConnection")
                     .withVNetToVNet()
                     .withSecondVirtualNetworkGateway(vngw2)
                     .withSharedKey("MySecretKey")
                     .create();
-            return vngw;
+            return vngw1;
         }
 
         @Override

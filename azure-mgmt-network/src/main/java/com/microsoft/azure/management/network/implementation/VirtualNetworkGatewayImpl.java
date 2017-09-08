@@ -19,6 +19,7 @@ import com.microsoft.azure.management.network.VirtualNetworkGatewaySkuTier;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayType;
 import com.microsoft.azure.management.network.VpnClientConfiguration;
 import com.microsoft.azure.management.network.VpnType;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -46,10 +47,12 @@ class VirtualNetworkGatewayImpl
         VirtualNetworkGateway,
         VirtualNetworkGateway.Definition,
         VirtualNetworkGateway.Update {
-    private static final String DEFAULT = "GatewaySubnet";
+    private static final String GATEWAY_SUBNET = "GatewaySubnet";
+
     private Map<String, VirtualNetworkGatewayIPConfiguration> ipConfigs;
-    private Map<String, String> creatablePipsByIPConfig;
     private VirtualNetworkGatewayConnections connections;
+    private Creatable<Network> creatableNetwork;
+    private Creatable<PublicIPAddress> creatablePublicIPAddress;
 
     VirtualNetworkGatewayImpl(String name,
                               final VirtualNetworkGatewayInner innerModel,
@@ -93,6 +96,40 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
+    public VirtualNetworkGateway.DefinitionStages.WithCreate withNewNetwork(Creatable<Network> creatable) {
+        this.creatableNetwork = creatable;
+        return this;
+    }
+
+    @Override
+    public VirtualNetworkGateway.DefinitionStages.WithCreate withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr) {
+        Network.DefinitionStages.WithGroup definitionWithGroup = this.manager().networks()
+                .define(name)
+                .withRegion(this.regionName());
+
+        Network.DefinitionStages.WithCreate definitionAfterGroup;
+        if (this.newGroup() != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.newGroup());
+        } else {
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
+        }
+        Creatable<Network> network = definitionAfterGroup.withAddressSpace(addressSpace).withSubnet(GATEWAY_SUBNET, subnetAddressSpaceCidr);
+        return withNewNetwork(network);
+    }
+
+    @Override
+    public VirtualNetworkGateway.DefinitionStages.WithCreate withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr) {
+        withNewNetwork(SdkContext.randomResourceName("vnet", 8), addressSpaceCidr, subnetAddressSpaceCidr);
+        return this;
+    }
+
+    @Override
+    public VirtualNetworkGateway.DefinitionStages.WithCreate withExistingNetwork(Network network) {
+        ensureDefaultIPConfig().withExistingSubnet(network, GATEWAY_SUBNET);
+        return this;
+    }
+
+    @Override
     public VirtualNetworkGatewayImpl withExistingPublicIPAddress(PublicIPAddress publicIPAddress) {
         ensureDefaultIPConfig().withExistingPublicIPAddress(publicIPAddress);
         return this;
@@ -106,15 +143,16 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public VirtualNetworkGatewayImpl withNewPublicIPAddress(Creatable<PublicIPAddress> creatable) {
-        final String name = ensureDefaultIPConfig().name();
-        this.creatablePipsByIPConfig.put(name, creatable.key());
-        this.addCreatableDependency(creatable);
+        this.creatablePip = creatable;
         return this;
     }
 
     @Override
     public VirtualNetworkGatewayImpl withNewPublicIPAddress() {
-        ensureDefaultIPConfig();
+        final String pipName = SdkContext.randomResourceName("pip", 9);
+        this.creatablePip = this.manager().publicIPAddresses().define(pipName)
+                .withRegion(this.regionName())
+                .withExistingResourceGroup(this.resourceGroupName());
         return this;
     }
 
@@ -183,12 +221,14 @@ class VirtualNetworkGatewayImpl
         return null;
     }
 
+    Creatable<ResourceGroup> newGroup() {
+        return this.creatableGroup;
+    }
+
     @Override
     protected void initializeChildrenFromInner() {
         initializeIPConfigsFromInner();
-        this.creatablePipsByIPConfig = new HashMap<>();
     }
-
 
     @Override
     public Observable<VirtualNetworkGateway> refreshAsync() {
@@ -239,12 +279,6 @@ class VirtualNetworkGatewayImpl
 
     @Override
     protected void beforeCreating() {
-        // Process created PIPs
-        for (Map.Entry<String, String> frontendPipPair : this.creatablePipsByIPConfig.entrySet()) {
-            Resource createdPip = this.createdResource(frontendPipPair.getValue());
-            ensureDefaultIPConfig().withExistingPublicIPAddress(createdPip.id());
-        }
-        this.creatablePipsByIPConfig.clear();
         // Reset and update IP configs
         ensureDefaultIPConfig();
         this.inner().withIpConfigurations(innersFromWrappers(this.ipConfigs.values()));
@@ -267,16 +301,16 @@ class VirtualNetworkGatewayImpl
         return ipConfig;
     }
 
-    private Creatable<Network> ensureDefaultNetworkDefinition() {
-        final String vnetName = SdkContext.randomResourceName("vnet", 10);
-        Creatable<Network> creatableNetwork = this.manager().networks().define(vnetName)
-                .withRegion(this.region())
-                .withExistingResourceGroup(this.resourceGroupName())
-                .withAddressSpace("10.0.0.0/24")
-                .withSubnet(DEFAULT, "10.0.0.0/25")
-                .withSubnet("apps", "10.0.0.128/25");
-        return creatableNetwork;
-    }
+//    private Creatable<Network> ensureDefaultNetworkDefinition() {
+//        final String vnetName = SdkContext.randomResourceName("vnet", 10);
+//        Creatable<Network> creatableNetwork = this.manager().networks().define(vnetName)
+//                .withRegion(this.region())
+//                .withExistingResourceGroup(this.resourceGroupName())
+//                .withAddressSpace("10.0.0.0/24")
+//                .withSubnet(GATEWAY_SUBNET, "10.0.0.0/25")
+//                .withSubnet("apps", "10.0.0.128/25");
+//        return creatableNetwork;
+//    }
 
     private Creatable<PublicIPAddress> creatablePip = null;
     private Creatable<PublicIPAddress> ensureDefaultPipDefinition() {
@@ -289,7 +323,7 @@ class VirtualNetworkGatewayImpl
         return this.creatablePip;
     }
 
-    public VirtualNetworkGatewayIPConfiguration defaultIPConfiguration() {
+    VirtualNetworkGatewayIPConfiguration defaultIPConfiguration() {
         // Default means the only one
         if (this.ipConfigs.size() == 1) {
             return this.ipConfigs.values().iterator().next();
@@ -301,37 +335,36 @@ class VirtualNetworkGatewayImpl
     @Override
     protected Observable<VirtualNetworkGatewayInner> createInner() {
         // Determine if a default public frontend PIP should be created
-        final VirtualNetworkGatewayIPConfigurationImpl defaultIPConfiguration = (VirtualNetworkGatewayIPConfigurationImpl) defaultIPConfiguration();
+        final VirtualNetworkGatewayIPConfigurationImpl defaultIPConfig = ensureDefaultIPConfig();
         final Observable<Resource> pipObservable;
-        if (defaultIPConfiguration != null && defaultIPConfiguration.publicIPAddressId() == null) {
-            // If public frontend requested but no PIP specified, then create a default PIP
+        if (defaultIPConfig != null && defaultIPConfig.publicIPAddressId() == null) {
+            // If public ip not specified, then create a default PIP
             pipObservable = Utils.<PublicIPAddress>rootResource(ensureDefaultPipDefinition()
                     .createAsync()).map(new Func1<PublicIPAddress, Resource>() {
                 @Override
                 public Resource call(PublicIPAddress publicIPAddress) {
-                    defaultIPConfiguration.withExistingPublicIPAddress(publicIPAddress);
+                    defaultIPConfig.withExistingPublicIPAddress(publicIPAddress);
                     return publicIPAddress;
                 }
             });
         } else {
-            // If no public frontend requested, skip creating the PIP
+            // If existing public ip address specified, skip creating the PIP
             pipObservable = Observable.empty();
         }
 
-        // Determine if default VNet should be created
-        final VirtualNetworkGatewayIPConfigurationImpl defaultIPConfig = ensureDefaultIPConfig();
         final Observable<Resource> networkObservable;
-        if (defaultIPConfig.subnetName() != null) {
-            // ...and no need to create a default VNet
+        // Determine if default VNet should be created
+         if (defaultIPConfig.subnetName() != null) {
+            // ...and no need to create VNet
             networkObservable = Observable.empty(); // ...and don't create another VNet
         } else {
-            // But if default IP config does not have a subnet specified, then create a default VNet
-            networkObservable = Utils.<Network>rootResource(ensureDefaultNetworkDefinition()
+            // But if default IP config does not have a subnet specified, then create a VNet
+            networkObservable = Utils.<Network>rootResource(creatableNetwork
                     .createAsync()).map(new Func1<Network, Resource>() {
                 @Override
                 public Resource call(Network network) {
                     //... and assign the created VNet to the default IP config
-                    defaultIPConfig.withExistingSubnet(network, DEFAULT);
+                    defaultIPConfig.withExistingSubnet(network, GATEWAY_SUBNET);
                     return network;
                 }
             });
