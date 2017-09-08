@@ -18,6 +18,7 @@ import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import org.junit.Test;
+import retrofit2.http.Path;
 import rx.Completable;
 import rx.Single;
 
@@ -140,12 +141,21 @@ public abstract class RestProxyTests {
         @GET("anything")
         HttpBinJSON getAnything();
 
+        @GET("anything/with+plus")
+        HttpBinJSON getAnythingWithPlus();
+
+        @GET("anything/{path}")
+        HttpBinJSON getAnythingWithPathParam(@PathParam("path") String pathParam);
+
+        @GET("anything/{path}")
+        HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value="path", encoded=true) String pathParam);
+
         @GET("anything")
         Single<HttpBinJSON> getAnythingAsync();
     }
 
     @Test
-    public void SyncGetRequestWithAnythingReturn() {
+    public void SyncGetRequestWithAnything() {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnything();
         assertNotNull(json);
@@ -153,7 +163,63 @@ public abstract class RestProxyTests {
     }
 
     @Test
-    public void AsyncGetRequestWithAnythingReturn() {
+    public void SyncGetRequestWithAnythingWithPlus() {
+        final HttpBinJSON json = createService(Service5.class)
+                .getAnythingWithPlus();
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything/with+plus", json.url);
+    }
+
+    @Test
+    public void SyncGetRequestWithAnythingWithPathParam() {
+        final HttpBinJSON json = createService(Service5.class)
+                .getAnythingWithPathParam("withpathparam");
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything/withpathparam", json.url);
+    }
+
+    @Test
+    public void SyncGetRequestWithAnythingWithPathParamWithSpace() {
+        final HttpBinJSON json = createService(Service5.class)
+                .getAnythingWithPathParam("with path param");
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything/with path param", json.url);
+    }
+
+    @Test
+    public void SyncGetRequestWithAnythingWithPathParamWithPlus() {
+        final HttpBinJSON json = createService(Service5.class)
+                .getAnythingWithPathParam("with+path+param");
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything/with+path+param", json.url);
+    }
+
+    @Test
+    public void SyncGetRequestWithAnythingWithEncodedPathParam() {
+        final HttpBinJSON json = createService(Service5.class)
+                .getAnythingWithEncodedPathParam("withpathparam");
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything/withpathparam", json.url);
+    }
+
+    @Test
+    public void SyncGetRequestWithAnythingWithEncodedPathParamWithPercent20() {
+        final HttpBinJSON json = createService(Service5.class)
+                .getAnythingWithEncodedPathParam("with%20path%20param");
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything/with path param", json.url);
+    }
+
+    @Test
+    public void SyncGetRequestWithAnythingWithEncodedPathParamWithPlus() {
+        final HttpBinJSON json = createService(Service5.class)
+                .getAnythingWithEncodedPathParam("with+path+param");
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything/with+path+param", json.url);
+    }
+
+    @Test
+    public void AsyncGetRequestWithAnything() {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingAsync()
                 .toBlocking().value();
@@ -167,11 +233,14 @@ public abstract class RestProxyTests {
         HttpBinJSON getAnything(@QueryParam("a") String a, @QueryParam("b") int b);
 
         @GET("anything")
+        HttpBinJSON getAnythingWithEncoded(@QueryParam(value="a", encoded=true) String a, @QueryParam("b") int b);
+
+        @GET("anything")
         Single<HttpBinJSON> getAnythingAsync(@QueryParam("a") String a, @QueryParam("b") int b);
     }
 
     @Test
-    public void SyncGetRequestWithQueryParametersAndAnythingReturn() {
+    public void SyncGetRequestWithQueryParametersAndAnything() {
         final HttpBinJSON json = createService(Service6.class)
                 .getAnything("A", 15);
         assertNotNull(json);
@@ -179,7 +248,23 @@ public abstract class RestProxyTests {
     }
 
     @Test
-    public void AsyncGetRequestWithQueryParametersAndAnythingReturn() {
+    public void SyncGetRequestWithQueryParametersAndAnythingWithPercent20() {
+        final HttpBinJSON json = createService(Service6.class)
+                .getAnything("A%20Z", 15);
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything?a=A%2520Z&b=15", json.url);
+    }
+
+    @Test
+    public void SyncGetRequestWithQueryParametersAndAnythingWithEncodedWithPercent20() {
+        final HttpBinJSON json = createService(Service6.class)
+                .getAnythingWithEncoded("x%20y", 15);
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything?a=x y&b=15", json.url);
+    }
+
+    @Test
+    public void AsyncGetRequestWithQueryParametersAndAnything() {
         final HttpBinJSON json = createService(Service6.class)
                 .getAnythingAsync("A", 15)
                 .toBlocking().value();
@@ -211,7 +296,7 @@ public abstract class RestProxyTests {
     }
 
     @Test
-    public void AsyncGetRequestWithHeaderParametersAndAnythingReturn() {
+    public void AsyncGetRequestWithHeaderParametersAndAnything() {
         final HttpBinJSON json = createService(Service7.class)
                 .getAnythingAsync("A", 15)
                 .toBlocking().value();
