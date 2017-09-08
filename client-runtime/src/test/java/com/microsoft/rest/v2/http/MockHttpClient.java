@@ -76,8 +76,8 @@ public class MockHttpClient extends HttpClient {
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
-        try (InputStream body = request.body()) {
-            return CharStreams.toString(new InputStreamReader(body));
+        try (final InputStream bodyStream = request.body().createInputStream()) {
+            return CharStreams.toString(new InputStreamReader(bodyStream));
         }
     }
 

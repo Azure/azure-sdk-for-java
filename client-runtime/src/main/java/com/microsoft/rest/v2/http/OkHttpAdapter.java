@@ -42,10 +42,13 @@ public class OkHttpAdapter extends HttpClient {
 
         Single<? extends HttpResponse> result;
 
-        try (InputStream body = request.body()) {
+        final HttpRequestBody body = request.body();
+        try {
             if (body != null) {
                 final MediaType mediaType = MediaType.parse(request.mimeType());
-                requestBody = RequestBody.create(mediaType, ByteStreams.toByteArray(body));
+                try (final InputStream bodyStream = body.createInputStream()) {
+                    requestBody = RequestBody.create(mediaType, ByteStreams.toByteArray(bodyStream));
+                }
             }
 
             final Request.Builder requestBuilder = new Request.Builder()

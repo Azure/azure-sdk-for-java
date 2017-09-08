@@ -76,9 +76,11 @@ public class RxNettyAdapter extends HttpClient {
 
             Observable<HttpClientResponse<ByteBuf>> obsResponse = rxnReq;
 
-            final InputStream body = request.body();
+            final HttpRequestBody body = request.body();
             if (body != null) {
-                obsResponse = rxnReq.writeBytesContent(toByteArrayObservable(body));
+                try (final InputStream bodyStream = body.createInputStream()) {
+                    obsResponse = rxnReq.writeBytesContent(toByteArrayObservable(bodyStream));
+                }
             }
 
             result = obsResponse
@@ -89,7 +91,7 @@ public class RxNettyAdapter extends HttpClient {
                         }
                     })
                     .toSingle();
-        } catch (URISyntaxException e) {
+        } catch (URISyntaxException | IOException e) {
             result = Single.error(e);
         }
 
