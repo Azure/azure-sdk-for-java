@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.interceptors;
 
+import com.google.common.io.CharStreams;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
@@ -17,6 +18,9 @@ import org.slf4j.LoggerFactory;
 import rx.Single;
 import rx.functions.Action1;
 
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -77,10 +81,16 @@ public class LoggingPolicy implements RequestPolicy {
         }
 
         if (logLevel.shouldLogBody()) {
-            String body = request.body();
-            if (body != null) {
-                log(logger, String.format("%s-byte body:\n%s", body.length(), body));
+            // TODO: maximum content-length?
+            // TODO: check MIME type?
+            InputStream is = request.body().createInputStream();
+            InputStreamReader reader = new InputStreamReader(is);
+            try {
+                String bodyString = CharStreams.toString(reader);
+                log(logger, String.format("%s-byte body:\n%s", request.body().contentLength(), bodyString));
                 log(logger, "--> END " + request.httpMethod());
+            } catch (IOException e) {
+                log(logger, "Exception occurred when reading body: " + e.getMessage());
             }
         }
 
