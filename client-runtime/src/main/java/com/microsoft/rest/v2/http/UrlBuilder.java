@@ -6,9 +6,6 @@
 
 package com.microsoft.rest.v2.http;
 
-import java.net.URI;
-import java.net.URISyntaxException;
-
 /**
  * A builder class that is used to create URLs.
  */
@@ -34,6 +31,9 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withHost(String host) {
+        if (host != null && host.endsWith("/")) {
+            host = host.substring(0, host.length() - 1);
+        }
         this.host = host;
         return this;
     }
@@ -60,7 +60,7 @@ public class UrlBuilder {
      */
     public UrlBuilder withQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         if (query == null) {
-            query = "";
+            query = "?";
         }
         else {
             query += "&";
@@ -74,13 +74,28 @@ public class UrlBuilder {
      * @return The string representation of the URL that is being built.
      */
     public String toString() {
-        URI uri;
-        try {
-            uri = new URI(scheme, null, host, -1, path, query, null);
+        final StringBuilder result = new StringBuilder();
+
+        if (scheme != null) {
+            result.append(scheme);
+
+            if (!scheme.endsWith("://")) {
+                result.append("://");
+            }
         }
-        catch (URISyntaxException e) {
-            uri = null;
+
+        if (host != null) {
+            result.append(host);
         }
-        return uri == null ? null : uri.toString();
+
+        if (path != null) {
+            result.append(path);
+        }
+
+        if (query != null) {
+            result.append(query);
+        }
+
+        return result.toString();
     }
 }

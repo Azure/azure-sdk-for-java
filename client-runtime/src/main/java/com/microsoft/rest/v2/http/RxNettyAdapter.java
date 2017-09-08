@@ -137,12 +137,13 @@ public class RxNettyAdapter extends HttpClient {
             byte[] buffer = new byte[size];
             try {
                 int count = state.read(buffer);
-                if (count == -1)
+                if (count == -1) {
                     observer.onCompleted();
-                else if (count < size)
+                } else if (count < size) {
                     observer.onNext(Arrays.copyOf(buffer, count));
-                else
+                } else {
                     observer.onNext(buffer);
+                }
             } catch (IOException e) {
                 observer.onError(e);
             }

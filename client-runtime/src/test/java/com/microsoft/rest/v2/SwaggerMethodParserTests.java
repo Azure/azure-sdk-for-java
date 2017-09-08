@@ -26,14 +26,4 @@ public class SwaggerMethodParserTests {
         assertEquals("https", methodParser.scheme(null));
         assertEquals("raw.host.com", methodParser.host(null));
     }
-
-    @Test
-    public void encodeWithBadEncoding() {
-        assertEquals(" ", SwaggerMethodParser.encode(" ", "myBadEncoding"));
-    }
-
-    @Test
-    public void encodeWithDefaultEncoding() {
-        assertEquals("+", SwaggerMethodParser.encode(" "));
-    }
 }

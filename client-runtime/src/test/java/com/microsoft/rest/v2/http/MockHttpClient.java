@@ -30,39 +30,42 @@ public class MockHttpClient extends HttpClient {
             final String requestHost = requestUrl.getHost();
             if (requestHost.equalsIgnoreCase("httpbin.org")) {
                 final String requestPath = requestUrl.getPath();
-                if (requestPath.equalsIgnoreCase("/anything")) {
+                final String requestPathLower = requestPath.toLowerCase();
+                if (requestPathLower.equals("/anything") || requestPathLower.startsWith("/anything/")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url();
+                    json.url = request.url()
+                            // This is just to mimic the behavior we've seen with httpbin.org.
+                            .replace("%20", " ");
                     json.headers = toMap(request.headers());
                     response = new MockHttpResponse(json);
                 }
-                else if (requestPath.startsWith("/bytes/")) {
+                else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
                     response = new MockHttpResponse(new byte[byteCount]);
                 }
-                else if (requestPath.equalsIgnoreCase("/delete")) {
+                else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
                     response = new MockHttpResponse(json);
                 }
-                else if (requestPath.equalsIgnoreCase("/get")) {
+                else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url();
                     json.headers = toMap(request.headers());
                     response = new MockHttpResponse(json);
                 }
-                else if (requestPath.equalsIgnoreCase("/patch")) {
+                else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
                     response = new MockHttpResponse(json);
                 }
-                else if (requestPath.equalsIgnoreCase("/post")) {
+                else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
                     response = new MockHttpResponse(json);
                 }
-                else if (requestPath.equalsIgnoreCase("/put")) {
+                else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
                     response = new MockHttpResponse(json);
