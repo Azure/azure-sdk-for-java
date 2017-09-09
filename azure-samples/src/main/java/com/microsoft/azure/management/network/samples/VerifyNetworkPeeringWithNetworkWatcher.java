@@ -66,8 +66,8 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
 
         final String[] vmNames = SdkContext.randomResourceNames("vm", 15, 2);
         final String[] vmIPAddresses = new String[] {
-        		/* within subnetA */ "10.0.0.8",
-        		/* within subnetB */ "10.1.0.8"
+                /* within subnetA */ "10.0.0.8",
+                /* within subnetB */ "10.1.0.8"
         };
 
         final String peeringABName = SdkContext.randomResourceName("peer", 15);
@@ -81,48 +81,48 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             // Define two virtual networks to peer and put the virtual machines in, at specific IP addresses
 
             Creatable<Network> networkADefinition = azure.networks().define(vnetAName)
-            		.withRegion(region)
-            		.withNewResourceGroup(resourceGroupName)
-            		.withAddressSpace("10.0.0.0/27")
-            		.withSubnet("subnetA", "10.0.0.0/27");
+                    .withRegion(region)
+                    .withNewResourceGroup(resourceGroupName)
+                    .withAddressSpace("10.0.0.0/27")
+                    .withSubnet("subnetA", "10.0.0.0/27");
 
             Creatable<Network> networkBDefinition = azure.networks().define(vnetBName)
-            		.withRegion(region)
-            		.withNewResourceGroup(resourceGroupName)
-            		.withAddressSpace("10.1.0.0/27")
-            		.withSubnet("subnetB", "10.1.0.0/27");
+                    .withRegion(region)
+                    .withNewResourceGroup(resourceGroupName)
+                    .withAddressSpace("10.1.0.0/27")
+                    .withSubnet("subnetB", "10.1.0.0/27");
 
             //=============================================================
             // Define a couple of Linux VMs and place them in each of the networks
 
             Creatable<VirtualMachine> vmADefinition = azure.virtualMachines().define(vmNames[0])
-            		.withRegion(region)
-            		.withExistingResourceGroup(resourceGroupName)
-            		.withNewPrimaryNetwork(networkADefinition)
-            		.withPrimaryPrivateIPAddressStatic("10.0.0.8")
-            		.withoutPrimaryPublicIPAddress()
-            		.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-            		.withRootUsername(rootname)
-            		.withRootPassword(password)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withNewPrimaryNetwork(networkADefinition)
+                    .withPrimaryPrivateIPAddressStatic("10.0.0.8")
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername(rootname)
+                    .withRootPassword(password)
 
-            		// Extension currently needed for network watcher support
+                    // Extension currently needed for network watcher support
                     .defineNewExtension("packetCapture")
-	                    .withPublisher("Microsoft.Azure.NetworkWatcher")
-	                    .withType("NetworkWatcherAgentLinux")
-	                    .withVersion("1.4")
+                        .withPublisher("Microsoft.Azure.NetworkWatcher")
+                        .withType("NetworkWatcherAgentLinux")
+                        .withVersion("1.4")
 	                    .attach();
 
             Creatable<VirtualMachine> vmBDefinition = azure.virtualMachines().define(vmNames[1])
-            		.withRegion(region)
-            		.withExistingResourceGroup(resourceGroupName)
-            		.withNewPrimaryNetwork(networkBDefinition)
-            		.withPrimaryPrivateIPAddressStatic("10.1.0.8")
-            		.withoutPrimaryPublicIPAddress()
-            		.withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-            		.withRootUsername(rootname)
-            		.withRootPassword(password)
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .withNewPrimaryNetwork(networkBDefinition)
+                    .withPrimaryPrivateIPAddressStatic("10.1.0.8")
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername(rootname)
+                    .withRootPassword(password)
 
-            		// Extension currently needed for network watcher support
+                    // Extension currently needed for network watcher support
                     .defineNewExtension("packetCapture")
 	                    .withPublisher("Microsoft.Azure.NetworkWatcher")
 	                    .withType("NetworkWatcherAgentLinux")
@@ -161,28 +161,28 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             //=============================================================
             // Check connectivity between the two VMs/networks using Network Watcher
             NetworkWatcher networkWatcher = azure.networkWatchers().define(networkWatcherName)
-            		.withRegion(region)
-            		.withExistingResourceGroup(resourceGroupName)
-            		.create();
+                    .withRegion(region)
+                    .withExistingResourceGroup(resourceGroupName)
+                    .create();
 
             // Verify bi-directional connectivity between the VMs on port 22 (SSH enabled by default on Linux VMs)
             Executable<ConnectivityCheck> connectivityAtoB = networkWatcher.checkConnectivity()
-            	.toDestinationAddress(vmIPAddresses[1])
-            	.toDestinationPort(22)
-            	.fromSourceVirtualMachine(vmA);
+                .toDestinationAddress(vmIPAddresses[1])
+                .toDestinationPort(22)
+                .fromSourceVirtualMachine(vmA);
             System.out.println("Connectivity from A to B: " + connectivityAtoB.execute().connectionStatus());
 
             Executable<ConnectivityCheck> connectivityBtoA = networkWatcher.checkConnectivity()
-            	.toDestinationAddress(vmIPAddresses[0])
-            	.toDestinationPort(22)
-            	.fromSourceVirtualMachine(vmB);
+                .toDestinationAddress(vmIPAddresses[0])
+                .toDestinationPort(22)
+                .fromSourceVirtualMachine(vmB);
             System.out.println("Connectivity from B to A: " + connectivityBtoA.execute().connectionStatus());
 
             // Change the peering to allow access between A and B
             System.out.println("Changing the peering to disable access between A and B...");
             peeringAB.update()
-            	.withoutAccessFromEitherNetwork()
-            	.apply();
+                .withoutAccessFromEitherNetwork()
+                .apply();
 
             Utils.print(networkA);
             Utils.print(networkB);
