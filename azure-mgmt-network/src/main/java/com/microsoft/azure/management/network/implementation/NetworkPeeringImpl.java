@@ -95,20 +95,20 @@ class NetworkPeeringImpl
         return Utils.toPrimitiveBoolean(this.inner().allowForwardedTraffic());
     }
 
-    @Override
+    // TODO See the comment on the interface @Override
     public boolean isAccessFromRemoteNetworkAllowed() {
         return Utils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess());
     }
 
     // Fluent setters
 
-    @Override
+    //TODO See comment in interface @Override
     public NetworkPeeringImpl withoutAccessFromRemoteNetwork() {
         this.inner().withAllowVirtualNetworkAccess(false);
         return this;
     }
 
-    @Override
+    //TODO See comment in interface @Override
     public NetworkPeeringImpl withAccessFromRemoteNetwork() {
         this.inner().withAllowVirtualNetworkAccess(true);
         return this;
@@ -174,13 +174,13 @@ class NetworkPeeringImpl
         return this.withTrafficForwardingFromRemoteNetwork().withTrafficForwardingToRemoteNetwork();
     }
 
-    @Override
+    //TODO See comment in interface @Override
     public NetworkPeeringImpl withoutAccessToRemoteNetwork() {
         this.remoteAccess = false;
         return this;
     }
 
-    @Override
+    //TODO See comment in interface @Override
     public NetworkPeeringImpl withAccessToRemoteNetwork() {
         this.remoteAccess = true;
         return this;
@@ -304,15 +304,16 @@ class NetworkPeeringImpl
                                         remotePeeringUpdate = remotePeeringUpdate.withoutTrafficForwardingFromRemoteNetwork();
                                     }
 
-                                    // Update network access on the remote peering if neede
+                                    // Update network access on the remote peering if needed
                                     if (localPeering.remoteAccess == null) {
                                         // No access change, so ignore
-                                    } else if (localPeering.remoteAccess.booleanValue() && !remotePeering.isAccessFromRemoteNetworkAllowed()) {
+                                        // TODO: Clean up the impl casts when Network REST API is fixed
+                                    } else if (localPeering.remoteAccess.booleanValue() && !((NetworkPeeringImpl) remotePeering).isAccessFromRemoteNetworkAllowed()) {
                                         isUpdateNeeded = true;
-                                        remotePeeringUpdate = remotePeeringUpdate.withAccessFromRemoteNetwork();
-                                    } else if (!localPeering.remoteAccess.booleanValue() && remotePeering.isAccessFromRemoteNetworkAllowed()) {
+                                        remotePeeringUpdate = ((NetworkPeeringImpl) remotePeeringUpdate).withAccessFromRemoteNetwork();
+                                    } else if (!localPeering.remoteAccess.booleanValue() && ((NetworkPeeringImpl) remotePeering).isAccessFromRemoteNetworkAllowed()) {
                                         isUpdateNeeded = true;
-                                        remotePeeringUpdate = remotePeeringUpdate.withoutAccessFromRemoteNetwork();
+                                        remotePeeringUpdate = ((NetworkPeeringImpl) remotePeeringUpdate).withoutAccessFromRemoteNetwork();
                                     }
 
                                     // Update gateway use permission on the remote peering if needed
@@ -373,7 +374,7 @@ class NetworkPeeringImpl
                                     }
 
                                     if (localPeering.remoteAccess != null && !localPeering.remoteAccess) {
-                                        remotePeeringDefinition.withoutAccessFromRemoteNetwork(); // Assumes by default access is on for new peerings
+                                        ((NetworkPeeringImpl) remotePeeringDefinition).withoutAccessFromRemoteNetwork(); // Assumes by default access is on for new peerings
                                     }
 
                                     if (localPeering.remoteForwarding != null && localPeering.remoteForwarding.booleanValue()) {
