@@ -30,6 +30,8 @@ import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.containerinstance.ContainerGroups;
+import com.microsoft.azure.management.containerinstance.implementation.ContainerInstanceManager;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.dns.DnsZones;
@@ -107,6 +109,7 @@ public final class Azure {
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
     private final ServiceBusManager serviceBusManager;
+    private final ContainerInstanceManager containerInstanceManager;
     private final ContainerRegistryManager containerRegistryManager;
     private final SearchServiceManager searchServiceManager;
     private final CosmosDBManager cosmosDBManager;
@@ -381,6 +384,7 @@ public final class Azure {
         this.appServiceManager = AppServiceManager.authenticate(restClient, tenantId, subscriptionId);
         this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
         this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId);
+        this.containerInstanceManager = ContainerInstanceManager.authenticate(restClient, subscriptionId);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId);
         this.cosmosDBManager = CosmosDBManager.authenticate(restClient, subscriptionId);
         this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId);
@@ -679,6 +683,14 @@ public final class Azure {
     @Beta(SinceVersion.V1_1_0)
     public ContainerServices containerServices() {
         return computeManager.containerServices();
+    }
+
+    /**
+     * @return entry point to managing Azure Container Instances.
+     */
+    @Beta(SinceVersion.V1_3_0)
+    public ContainerGroups containerGroups() {
+        return containerInstanceManager.containerGroups();
     }
 
     /**
