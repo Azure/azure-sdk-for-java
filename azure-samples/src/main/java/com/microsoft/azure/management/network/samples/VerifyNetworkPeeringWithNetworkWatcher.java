@@ -44,7 +44,7 @@ import java.util.Arrays;
  *   - each network's IP address spaces will be accessible from the other network
  *   - no traffic forwarding will be enabled between the networks
  *   - no gateway transit between one network and the other will be enabled
- * 
+ *
  * 4. Use Network Watcher to check connectivity between the virtual machines in different peering scenarios:
  *   - both virtual machines accessible to each other (bi-directional)
  *   - virtual machine A accessible to virtual machine B, but not the other way
@@ -110,7 +110,7 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
                         .withPublisher("Microsoft.Azure.NetworkWatcher")
                         .withType("NetworkWatcherAgentLinux")
                         .withVersion("1.4")
-	                    .attach();
+                        .attach();
 
             Creatable<VirtualMachine> vmBDefinition = azure.virtualMachines().define(vmNames[1])
                     .withRegion(region)
@@ -124,10 +124,10 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
 
                     // Extension currently needed for network watcher support
                     .defineNewExtension("packetCapture")
-	                    .withPublisher("Microsoft.Azure.NetworkWatcher")
-	                    .withType("NetworkWatcherAgentLinux")
-	                    .withVersion("1.4")
-	                    .attach();
+                        .withPublisher("Microsoft.Azure.NetworkWatcher")
+                        .withType("NetworkWatcherAgentLinux")
+                        .withVersion("1.4")
+                        .attach();
 
             // Create the VMs in parallel for better performance
             System.out.println("Creating virtual machines and virtual networks...");
@@ -140,7 +140,7 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
             // Peer the two networks using default settings
 
             Network networkA = vmA.getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();
-            Network networkB = vmB.getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork(); 
+            Network networkB = vmB.getPrimaryNetworkInterface().primaryIPConfiguration().getNetwork();
 
             Utils.print(networkA);
             Utils.print(networkB);
