@@ -9,15 +9,16 @@ package com.microsoft.rest;
 
 import com.microsoft.rest.credentials.BasicAuthenticationCredentials;
 import com.microsoft.rest.credentials.TokenCredentials;
-import com.microsoft.rest.interceptors.UserAgentInterceptor;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
-import okhttp3.Interceptor;
-import okhttp3.Response;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.junit.Assert;
 import org.junit.Test;
 import retrofit2.Converter;
+import rx.Single;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -41,27 +42,24 @@ public class RestClientTests {
 
     @Test
     public void newBuilderKeepsConfigs() {
-        Assert.fail();
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
             .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC)
-                // FIXME: interceptors
-//            .withInterceptor(new Interceptor() {
-//                @Override
-//                public Response intercept(Chain chain) throws IOException {
-//                    return chain.proceed(chain.request());
-//                }
-//            })
+            .addCustomPolicy(new RequestPolicy.Factory() {
+                @Override
+                public RequestPolicy create(final RequestPolicy next) {
+                    return new RequestPolicy() {
+                        @Override
+                        public Single<HttpResponse> sendAsync(HttpRequest request) {
+                            return next.sendAsync(request);
+                        }
+                    };
+                }
+            })
             .withUserAgent("user")
-//            .withNetworkInterceptor(new Interceptor() {
-//                @Override
-//                public Response intercept(Chain chain) throws IOException {
-//                    return chain.proceed(chain.request());
-//                }
-//            })
             .withConnectionTimeout(100, TimeUnit.MINUTES)
             .build();
         RestClient newClient = restClient.newBuilder().build();
@@ -71,39 +69,36 @@ public class RestClientTests {
         Assert.assertEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
         Assert.assertEquals(restClient.responseBuilderFactory(), newClient.responseBuilderFactory());
         Assert.assertEquals(restClient.credentials(), newClient.credentials());
-//        for (Interceptor interceptor :
-//            newClient.httpClient().interceptors()) {
-//            if (interceptor instanceof UserAgentInterceptor) {
-//                Assert.assertEquals("user", ((UserAgentInterceptor) interceptor).userAgent());
+//        for (RequestPolicy.Factory factory :
+//            newClient.customPolicyFactories()) {
+//            if (factory instanceof UserAgentPolicy) {
+//                Assert.assertEquals("user", ((UserAgentPolicy) factory).userAgent());
 //            }
 //        }
-//        Assert.assertEquals(restClient.httpClient().interceptors().size(), newClient.httpClient().interceptors().size());
-//        Assert.assertEquals(restClient.httpClient().networkInterceptors().size(), newClient.httpClient().networkInterceptors().size());
+        Assert.assertEquals(restClient.customPolicyFactories().size(), newClient.customPolicyFactories().size());
         Assert.assertEquals(TimeUnit.MINUTES.toMillis(100), newClient.connectionTimeoutMillis());
     }
 
     @Test
     public void newBuilderClonesProperties() {
-        Assert.fail();
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
             .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC.withPrettyJson(true))
-//            .withInterceptor(new Interceptor() {
-//                @Override
-//                public Response intercept(Chain chain) throws IOException {
-//                    return chain.proceed(chain.request());
-//                }
-//            })
+            .addCustomPolicy(new RequestPolicy.Factory() {
+                @Override
+                public RequestPolicy create(final RequestPolicy next) {
+                    return new RequestPolicy() {
+                        @Override
+                        public Single<HttpResponse> sendAsync(HttpRequest request) {
+                            return next.sendAsync(request);
+                        }
+                    };
+                }
+            })
             .withUserAgent("user")
-//            .withNetworkInterceptor(new Interceptor() {
-//                @Override
-//                public Response intercept(Chain chain) throws IOException {
-//                    return chain.proceed(chain.request());
-//                }
-//            })
             .withConnectionTimeout(100, TimeUnit.MINUTES)
             .build();
         RestClient newClient = restClient.newBuilder()
@@ -158,14 +153,14 @@ public class RestClientTests {
         Assert.assertNotEquals(restClient.credentials(), newClient.credentials());
 //        for (Interceptor interceptor :
 //            restClient.httpClient().interceptors()) {
-//            if (interceptor instanceof UserAgentInterceptor) {
-//                Assert.assertEquals("user", ((UserAgentInterceptor) interceptor).userAgent());
+//            if (interceptor instanceof UserAgentPolicy) {
+//                Assert.assertEquals("user", ((UserAgentPolicy) interceptor).userAgent());
 //            }
 //        }
 //        for (Interceptor interceptor :
 //            newClient.httpClient().interceptors()) {
-//            if (interceptor instanceof UserAgentInterceptor) {
-//                Assert.assertEquals("anotheruser", ((UserAgentInterceptor) interceptor).userAgent());
+//            if (interceptor instanceof UserAgentPolicy) {
+//                Assert.assertEquals("anotheruser", ((UserAgentPolicy) interceptor).userAgent());
 //            }
 //        }
         Assert.assertNotEquals(restClient.connectionTimeoutMillis(), newClient.connectionTimeoutMillis());

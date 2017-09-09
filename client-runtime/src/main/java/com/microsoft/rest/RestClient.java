@@ -64,6 +64,10 @@ public final class RestClient {
         return new RequestPolicyChain(allFactories);
     }
 
+    public List<RequestPolicy.Factory> customPolicyFactories() {
+        return customPolicyFactories;
+    }
+
     /**
      * @return the current serializer adapter.
      */
@@ -156,7 +160,10 @@ public final class RestClient {
         private Builder(final RestClient restClient) {
             this.httpClient = restClient.httpClient;
             this.baseUrl = restClient.baseURL;
+            this.userAgent = restClient.userAgent;
             this.responseBuilderFactory = restClient.responseBuilderFactory;
+            this.connectionTimeoutMillis = restClient.connectionTimeoutMillis;
+            this.readTimeoutMillis = restClient.readTimeoutMillis;
             this.serializerAdapter = restClient.serializerAdapter;
             this.credentials = restClient.credentials;
             this.customPolicyFactories = new ArrayList<>(restClient.customPolicyFactories);
@@ -306,10 +313,6 @@ public final class RestClient {
          * @return a {@link RestClient}.
          */
         public RestClient build() {
-            UserAgentInterceptor userAgentInterceptor = new UserAgentInterceptor();
-            if (userAgent != null) {
-                userAgentInterceptor.withUserAgent(userAgent);
-            }
             if (baseUrl == null) {
                 throw new IllegalArgumentException("Please set base URL.");
             }
