@@ -76,6 +76,10 @@ public class DataLakeAnalyticsJobOperationsTests extends DataLakeAnalyticsManage
         jobToSubmit.withProperties(jobProperties);
         jobToSubmit.withRelated(jobRelated);
 
+        // Wait for 5 seconds before submitting the job for successful client setup
+        // Without this, the test runs into permission errors non-deterministically
+        SdkContext.sleep(5 * 1000);
+
         JobInformation jobCreateResponse = dataLakeAnalyticsJobManagementClient.jobs().create(jobAndCatalogAdlaName, jobId, jobToSubmit);
         Assert.assertNotNull(jobCreateResponse);
 
