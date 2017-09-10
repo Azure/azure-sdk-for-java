@@ -382,6 +382,7 @@
     <module>./azure-mgmt-cognitiveservices</module>
     <module>./azure-mgmt-compute</module>
     <module>./azure-mgmt-consumption</module>
+    <module>./azure-mgmt-containerinstance</module>
     <module>./azure-mgmt-containerregistry</module>
     <module>./azure-mgmt-customerinsights</module>
     <module>./azure-mgmt-datalake-analytics</module>

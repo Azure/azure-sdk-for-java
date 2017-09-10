@@ -802,6 +802,12 @@ public class AzureTests extends TestBase {
     }
 
     @Test
+    public void testContainerInstance() throws Exception {
+        new TestContainerInstance()
+            .runTest(azure.containerGroups(), azure.resourceGroups());
+    }
+
+    @Test
     public void testContainerRegistry() throws Exception {
         new TestContainerRegistry()
                 .runTest(azure.containerRegistries(), azure.resourceGroups());

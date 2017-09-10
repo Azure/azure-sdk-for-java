@@ -138,6 +138,11 @@
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-containerinstance</artifactId>
+      <version>1.2.2-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-mgmt-containerregistry</artifactId>
       <version>1.2.2-SNAPSHOT</version>
     </dependency>
