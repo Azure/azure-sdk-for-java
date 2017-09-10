@@ -53,8 +53,7 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
             .withSubscriptionId(defaultSubscription);
 
 
-        // TODO: in the future this needs to be dynamic depending on the Azure environment
-        // the tests are running in.
+        // TODO: In the future this needs to be dynamic depending on the Azure environment the tests are running in
         String adlaSuffix = "azuredatalakeanalytics.net";
 
         addTextReplacementRule("https://(.*)." + adlaSuffix, playbackUri);
@@ -99,13 +98,12 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
                     .withAdlaCatalogDnsSuffix(adlaSuffix);
         }
         else {
-            // for mocked clients, we can just use the basic rest client, since the DNS is replaced.
+            // For mocked clients, we can just use the basic rest client, since the DNS is replaced
             dataLakeAnalyticsCatalogManagementClient = new DataLakeAnalyticsCatalogManagementClientImpl(restClient);
             dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(restClient);
         }
 
-        // "interceptorManager.initInterceptor()" resets the recording-variables data structure
-        // so we declare the variables here
+        // Variables are declared here because "interceptorManager.initInterceptor()" resets the recording-variables data structure
         rgName = generateRandomResourceName("adlarg",15);
         adlsName = generateRandomResourceName("adls",15);
         jobAndCatalogAdlaName = generateRandomResourceName("secondadla",15);
@@ -120,7 +118,7 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
         storageManagementClient = StorageManager
                 .authenticate(restClient, defaultSubscription);
 
-        // create the resource group, ADLS account and ADLA account for job and catalog use.
+        // Create the resource group, ADLS account and ADLA account for job and catalog use
         resourceManagementClient.resourceGroups()
                 .define(rgName)
                 .withRegion(environmentLocation)
@@ -163,11 +161,12 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
         JobInformation getJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobCreateResponse.jobId());
         Assert.assertNotNull(getJobResponse);
 
-        int maxWaitInSeconds = 5 * 60; // giving it 5 minutes for now.
+        // Giving it 5 minutes for now
+        int maxWaitInSeconds = 5 * 60;
         int curWaitInSeconds = 0;
 
         while (getJobResponse.state() != JobState.ENDED && curWaitInSeconds < maxWaitInSeconds) {
-            // wait 5 seconds before polling again
+            // Wait 5 seconds before polling again
             SdkContext.sleep(5 * 1000);
             curWaitInSeconds += 5;
             getJobResponse = dataLakeAnalyticsJobManagementClient.jobs().get(adlaAcct, jobCreateResponse.jobId());
