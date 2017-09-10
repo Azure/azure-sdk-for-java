@@ -104,6 +104,8 @@ public class DataLakeAnalyticsManagementTestBase extends TestBase {
             dataLakeAnalyticsJobManagementClient = new DataLakeAnalyticsJobManagementClientImpl(restClient);
         }
 
+        // "interceptorManager.initInterceptor()" resets the recording-variables data structure
+        // so we declare the variables here
         rgName = generateRandomResourceName("adlarg",15);
         adlsName = generateRandomResourceName("adls",15);
         jobAndCatalogAdlaName = generateRandomResourceName("secondadla",15);
