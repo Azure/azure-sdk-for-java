@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.IpsecPolicy;
 import com.microsoft.azure.management.network.LocalNetworkGateway;
 import com.microsoft.azure.management.network.TunnelConnectionHealth;
@@ -19,6 +20,11 @@ import rx.Observable;
 
 import java.util.List;
 
+
+/**
+ * Implementation for VirtualNetworkGatewayConnection and its create and update interfaces.
+ */
+@LangDefinition
 public class VirtualNetworkGatewayConnectionImpl
         extends GroupableResourceImpl<VirtualNetworkGatewayConnection, VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnectionImpl, NetworkManager>
         implements VirtualNetworkGatewayConnection,

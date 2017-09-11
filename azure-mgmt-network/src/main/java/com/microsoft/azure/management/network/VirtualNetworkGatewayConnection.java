@@ -229,6 +229,9 @@ public interface VirtualNetworkGatewayConnection extends
         }
     }
 
+    /**
+     * Grouping of virtual network gateway connection update stages.
+     */
     interface Update extends
             UpdateStages.WithBGPEnabled {
     }

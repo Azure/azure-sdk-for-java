@@ -28,7 +28,7 @@ public interface VirtualNetworkGatewayConnections extends
         SupportsListing<VirtualNetworkGatewayConnection>,
         SupportsGettingByName<VirtualNetworkGatewayConnection>,
         SupportsGettingById<VirtualNetworkGatewayConnection>,
-//        SupportsGettingByNameAsync<VirtualNetworkGatewayConnection>,
+        SupportsGettingByNameAsync<VirtualNetworkGatewayConnection>,
         SupportsDeletingByName,
         SupportsDeletingById,
         HasInner<VirtualNetworkGatewayConnectionsInner>,

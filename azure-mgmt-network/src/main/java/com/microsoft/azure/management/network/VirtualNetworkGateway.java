@@ -100,7 +100,6 @@ public interface VirtualNetworkGateway extends
             DefinitionStages.Blank,
             DefinitionStages.WithGroup,
             DefinitionStages.WithGatewayType,
-            DefinitionStages.WithVPNType,
             DefinitionStages.WithSku,
             DefinitionStages.WithNetwork,
             DefinitionStages.WithCreate,
@@ -121,32 +120,28 @@ public interface VirtualNetworkGateway extends
          * The stage of the virtual network gateway definition allowing to specify the resource group.
          */
         interface WithGroup
-                extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithGatewayType> {
+                extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithNetwork> {
         }
 
         /**
          * The stage of virtual network gateway definition allowing to specify virtual network gateway type.
          */
         interface WithGatewayType {
+            /**
+             * Use Express route gateway type.
+             * @return the next stage of the definition
+             */
             DefinitionStages.WithPublicIPAddress withExpressRoute();
-            DefinitionStages.WithVPNType withVPN();
-        }
-
-        /**
-         * The stage of virtual network gateway definition allowing to specify virtual network gateway type.
-         */
-        interface WithVPNType {
             /**
              * Use Route-based VPN type.
              * @return the next stage of the definition
              */
-            WithSku withRouteBased();
-
+            DefinitionStages.WithSku withRouteBasedVpn();
             /**
              * Use Policy-based VPN type. Note: this is available only for Basic SKU.
              * @return the next stage of the definition
              */
-            DefinitionStages.WithNetwork withPolicyBased();
+            DefinitionStages.WithCreate withPolicyBasedVpn();
         }
 
         /**
@@ -160,7 +155,7 @@ public interface VirtualNetworkGateway extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the definition
              */
-            DefinitionStages.WithCreate withNewNetwork(Creatable<Network> creatable);
+            DefinitionStages.WithGatewayType withNewNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the virtual network gateway.
@@ -171,7 +166,7 @@ public interface VirtualNetworkGateway extends
              * @param addressSpace the address space for rhe virtual network
              * @return the next stage of the definition
              */
-            DefinitionStages.WithCreate withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr);
+            DefinitionStages.WithGatewayType withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr);
 
             /**
              * Creates a new virtual network to associate with the virtual network gateway.
@@ -181,21 +176,21 @@ public interface VirtualNetworkGateway extends
              * @param addressSpaceCidr the address space for the virtual network
              * @return the next stage of the definition
              */
-            DefinitionStages.WithCreate withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr);
+            DefinitionStages.WithGatewayType withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr);
 
             /**
              * Associate an existing virtual network with the virtual network gateway .
              * @param network an existing virtual network
              * @return the next stage of the definition
              */
-            DefinitionStages.WithCreate withExistingNetwork(Network network);
+            DefinitionStages.WithGatewayType withExistingNetwork(Network network);
         }
 
         /**
          * The stage of virtual network gateway definition allowing to specify SKU.
          */
         interface WithSku {
-            DefinitionStages.WithNetwork withSku(VirtualNetworkGatewaySkuName skuName);
+            DefinitionStages.WithCreate withSku(VirtualNetworkGatewaySkuName skuName);
         }
 
         /**

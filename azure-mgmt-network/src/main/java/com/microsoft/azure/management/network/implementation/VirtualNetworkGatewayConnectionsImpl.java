@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.List;
 
@@ -50,7 +51,10 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     protected VirtualNetworkGatewayConnectionImpl wrapModel(VirtualNetworkGatewayConnectionInner inner) {
-        return wrapModel(inner);
+        if (inner == null) {
+            return null;
+        }
+        return new VirtualNetworkGatewayConnectionImpl(inner.name(), parent, inner);
     }
 
     @Override
@@ -86,7 +90,7 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public VirtualNetworkGatewayConnection getByName(String name) {
-        VirtualNetworkGatewayConnectionInner inner = this.parent().manager().inner().virtualNetworkGatewayConnections()
+        VirtualNetworkGatewayConnectionInner inner = this.manager().inner().virtualNetworkGatewayConnections()
                 .getByResourceGroup(this.parent().resourceGroupName(), name);
         return new VirtualNetworkGatewayConnectionImpl(name, parent, inner);
     }
@@ -109,5 +113,16 @@ class VirtualNetworkGatewayConnectionsImpl
     @Override
     protected Completable deleteInnerAsync(String resourceGroupName, String name) {
         return null;
+    }
+
+    @Override
+    public Observable<VirtualNetworkGatewayConnection> getByNameAsync(String name) {
+        return inner().getByResourceGroupAsync(parent.resourceGroupName(), name)
+                .map(new Func1<VirtualNetworkGatewayConnectionInner, VirtualNetworkGatewayConnection>() {
+                    @Override
+                    public VirtualNetworkGatewayConnection call(VirtualNetworkGatewayConnectionInner inner) {
+                        return wrapModel(inner);
+                    }
+                });
     }
 }

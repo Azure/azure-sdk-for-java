@@ -46,10 +46,9 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
         VirtualNetworkGateway vngw = virtualNetworkGateways.define(GATEWAY_NAME1)
                 .withRegion(REGION)
                 .withNewResourceGroup(GROUP_NAME)
-                .withVPN()
-                .withRouteBased()
-                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                 .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
+                .withRouteBasedVpn()
+                .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                 .withTag("tag1", "value1")
 //                .withActiveActive(true)
                 .create();
@@ -102,16 +101,16 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
             VirtualNetworkGateway vngw = gateways.define(GATEWAY_NAME1)
                     .withRegion(REGION)
                     .withNewResourceGroup()
-                    .withVPN()
-                    .withRouteBased()
-                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                     .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
+                    .withRouteBasedVpn()
+                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                     .create();
 //            VirtualNetworkGateway vngw = gateways.getByResourceGroup("vngw115313group", "vngw115313");
             LocalNetworkGateway lngw = gateways.manager().localNetworkGateways().define("lngw" + TEST_ID)
                     .withRegion(vngw.region())
                     .withExistingResourceGroup(vngw.resourceGroupName())
                     .withIPAddress("40.71.184.214")
+
                     .create();
             vngw.connections()
                     .define("myNewConnection")
@@ -154,10 +153,9 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
                     VirtualNetworkGateway vngw = gateways.define(GATEWAY_NAME1)
                             .withRegion(REGION)
                             .withNewResourceGroup()
-                            .withVPN()
-                            .withRouteBased()
-                            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                             .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
+                            .withRouteBasedVpn()
+                            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                             .create();
                 }
             });
@@ -167,10 +165,9 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
                     VirtualNetworkGateway vngw2 = gateways.define(GATEWAY_NAME2)
                             .withRegion(REGION)
                             .withNewResourceGroup()
-                            .withVPN()
-                            .withRouteBased()
-                            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                             .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
+                            .withRouteBasedVpn()
+                            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                             .create();
                 }
             });

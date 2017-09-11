@@ -28,7 +28,6 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 import rx.functions.Func1;
 
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -68,19 +67,15 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public VirtualNetworkGatewayImpl withVPN() {
+    public VirtualNetworkGatewayImpl withRouteBasedVpn() {
         inner().withGatewayType(VirtualNetworkGatewayType.VPN);
-        return this;
-    }
-
-    @Override
-    public VirtualNetworkGatewayImpl withRouteBased() {
         inner().withVpnType(VpnType.ROUTE_BASED);
         return this;
     }
 
     @Override
-    public VirtualNetworkGatewayImpl withPolicyBased() {
+    public VirtualNetworkGatewayImpl withPolicyBasedVpn() {
+        inner().withGatewayType(VirtualNetworkGatewayType.VPN);
         inner().withVpnType(VpnType.POLICY_BASED);
         return this;
     }
@@ -96,13 +91,13 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public VirtualNetworkGateway.DefinitionStages.WithCreate withNewNetwork(Creatable<Network> creatable) {
+    public VirtualNetworkGatewayImpl withNewNetwork(Creatable<Network> creatable) {
         this.creatableNetwork = creatable;
         return this;
     }
 
     @Override
-    public VirtualNetworkGateway.DefinitionStages.WithCreate withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr) {
+    public VirtualNetworkGatewayImpl withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr) {
         Network.DefinitionStages.WithGroup definitionWithGroup = this.manager().networks()
                 .define(name)
                 .withRegion(this.regionName());
@@ -118,13 +113,13 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public VirtualNetworkGateway.DefinitionStages.WithCreate withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr) {
+    public VirtualNetworkGatewayImpl withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr) {
         withNewNetwork(SdkContext.randomResourceName("vnet", 8), addressSpaceCidr, subnetAddressSpaceCidr);
         return this;
     }
 
     @Override
-    public VirtualNetworkGateway.DefinitionStages.WithCreate withExistingNetwork(Network network) {
+    public VirtualNetworkGatewayImpl withExistingNetwork(Network network) {
         ensureDefaultIPConfig().withExistingSubnet(network, GATEWAY_SUBNET);
         return this;
     }
