@@ -8,13 +8,13 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>autorest-clientruntime-for-java</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-client-authentication</artifactId>
   <packaging>jar</packaging>
-  <version>1.0.5-SNAPSHOT</version>
+  <version>1.1.1-SNAPSHOT</version>
 
   <name>Azure Java Client Authentication Library for AutoRest</name>
   <description>This package contains the authentication connectors to Active Directory for JDK.</description>
@@ -50,7 +50,7 @@
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>1.0.5-SNAPSHOT</version>
+      <version>1.1.1-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
