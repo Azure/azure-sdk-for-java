@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.NetworkPeeringGatewayUse;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkPeering;
 import com.microsoft.azure.management.network.NetworkPeering.DefinitionStages.WithCreate;
@@ -319,11 +320,11 @@ class NetworkPeeringImpl
                                     // Update gateway use permission on the remote peering if needed
                                     if (localPeering.allowGatewayUseOnRemoteNetwork == null) {
                                         // No change, so ignore
-                                    } else if (localPeering.allowGatewayUseOnRemoteNetwork.booleanValue() && remotePeering.gatewayUse() != GatewayUse.BY_REMOTE_NETWORK) {
+                                    } else if (localPeering.allowGatewayUseOnRemoteNetwork.booleanValue() && remotePeering.gatewayUse() != NetworkPeeringGatewayUse.BY_REMOTE_NETWORK) {
                                         // Allow gateway use on remote network
                                         isUpdateNeeded = true;
                                         remotePeeringUpdate.withGatewayUseByRemoteNetworkAllowed();
-                                    } else if (!localPeering.allowGatewayUseOnRemoteNetwork.booleanValue() && remotePeering.gatewayUse() == GatewayUse.BY_REMOTE_NETWORK) {
+                                    } else if (!localPeering.allowGatewayUseOnRemoteNetwork.booleanValue() && remotePeering.gatewayUse() == NetworkPeeringGatewayUse.BY_REMOTE_NETWORK) {
                                         // Disallow gateway use on remote network
                                         isUpdateNeeded = true;
                                         remotePeeringUpdate.withoutGatewayUseByRemoteNetwork();
@@ -332,10 +333,10 @@ class NetworkPeeringImpl
                                     // Update gateway use start on the remote peering if needed
                                     if (localPeering.startGatewayUseByRemoteNetwork == null) {
                                         // No change, so ignore
-                                    } else if (localPeering.startGatewayUseByRemoteNetwork.booleanValue() && remotePeering.gatewayUse() != GatewayUse.ON_REMOTE_NETWORK) {
+                                    } else if (localPeering.startGatewayUseByRemoteNetwork.booleanValue() && remotePeering.gatewayUse() != NetworkPeeringGatewayUse.ON_REMOTE_NETWORK) {
                                         remotePeeringUpdate.withGatewayUseOnRemoteNetworkStarted();
                                         isUpdateNeeded = true;
-                                    } else if (!localPeering.startGatewayUseByRemoteNetwork.booleanValue() && remotePeering.gatewayUse() == GatewayUse.ON_REMOTE_NETWORK) {
+                                    } else if (!localPeering.startGatewayUseByRemoteNetwork.booleanValue() && remotePeering.gatewayUse() == NetworkPeeringGatewayUse.ON_REMOTE_NETWORK) {
                                         remotePeeringUpdate.withoutGatewayUseOnRemoteNetwork();
                                         isUpdateNeeded = true;
                                     }
@@ -482,13 +483,13 @@ class NetworkPeeringImpl
     }
 
     @Override
-    public GatewayUse gatewayUse() {
+    public NetworkPeeringGatewayUse gatewayUse() {
         if (Utils.toPrimitiveBoolean(this.inner().allowGatewayTransit())) {
-            return GatewayUse.BY_REMOTE_NETWORK;
+            return NetworkPeeringGatewayUse.BY_REMOTE_NETWORK;
         } else if (Utils.toPrimitiveBoolean(this.inner().useRemoteGateways())) {
-            return GatewayUse.ON_REMOTE_NETWORK;
+            return NetworkPeeringGatewayUse.ON_REMOTE_NETWORK;
         } else {
-            return GatewayUse.NONE;
+            return NetworkPeeringGatewayUse.NONE;
         }
     }
 }

@@ -32,26 +32,6 @@ public interface NetworkPeering extends
     Updatable<NetworkPeering.Update> {
 
     /**
-     * Possible gateway use scenarios.
-     */
-    enum GatewayUse {
-        /**
-         * The remote network is allowed to use this network's gateway (but not necessarily using it currently).
-         */
-        BY_REMOTE_NETWORK,
-
-        /**
-         * This network is configured to use the remote network's gateway.
-         */
-        ON_REMOTE_NETWORK,
-
-        /**
-         * No gateway use is configured.
-         */
-        NONE
-    }
-
-    /**
      * @return the local virtual network's ID
      */
     String networkId();
@@ -95,7 +75,7 @@ public interface NetworkPeering extends
     /**
      * @return the type of gateway use enabled for this network
      */
-    GatewayUse gatewayUse();
+    NetworkPeeringGatewayUse gatewayUse();
 
     /**
      * @return true if traffic forwarding from the remote network is allowed into this network
