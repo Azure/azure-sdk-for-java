@@ -90,7 +90,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         //
         Assert.assertNotNull(osDisk.availabilityZones());
         Assert.assertFalse(osDisk.availabilityZones().isEmpty());
-        Assert.assertTrue(osDisk.availabilityZones().contains("1"));
+        Assert.assertTrue(osDisk.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
     }
 
     @Test
@@ -151,7 +151,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         Assert.assertTrue(publicIPAddress.sku().equals(PublicIPSkuType.BASIC));
         Assert.assertNotNull(publicIPAddress.availabilityZones());
         Assert.assertFalse(publicIPAddress.availabilityZones().isEmpty());
-        Assert.assertTrue(publicIPAddress.availabilityZones().contains("1"));
+        Assert.assertTrue(publicIPAddress.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
         // Check the zone assigned to the explicitly created data disk
         //
         Map<Integer, VirtualMachineDataDisk> dataDisks = virtualMachine.dataDisks();
@@ -163,7 +163,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         Assert.assertNotNull(dataDisk);
         Assert.assertNotNull(dataDisk.availabilityZones());
         Assert.assertFalse(dataDisk.availabilityZones().isEmpty());
-        Assert.assertTrue(dataDisk.availabilityZones().contains("1"));
+        Assert.assertTrue(dataDisk.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
         // Checks the zone assigned to the implicitly created managed OS disk.
         //
         String osDiskId = virtualMachine.osDiskId();    // Only VM based on managed disk can have zone assigned
@@ -175,7 +175,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         //
         Assert.assertNotNull(osDisk.availabilityZones());
         Assert.assertFalse(osDisk.availabilityZones().isEmpty());
-        Assert.assertTrue(osDisk.availabilityZones().contains("1"));
+        Assert.assertTrue(osDisk.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
     }
 
     @Test

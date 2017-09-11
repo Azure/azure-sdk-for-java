@@ -936,7 +936,7 @@ public class TestLoadBalancer {
             // Verify frontend zone
             Assert.assertNotNull(privateFrontend.availabilityZones());
             Assert.assertFalse(privateFrontend.availabilityZones().isEmpty());
-            Assert.assertTrue(privateFrontend.availabilityZones().contains("1"));
+            Assert.assertTrue(privateFrontend.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
 
             // Verify TCP probes
             Assert.assertEquals(0, lb.tcpProbes().size());
