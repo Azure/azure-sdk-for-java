@@ -7,10 +7,10 @@ package com.microsoft.azure.management.network.implementation;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 import java.util.TreeMap;
-import java.util.TreeSet;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
@@ -268,7 +268,7 @@ class LoadBalancerFrontendImpl
 
     @Override
     public Set<AvailabilityZoneId> availabilityZones() {
-        Set<AvailabilityZoneId> zones = new TreeSet<>();
+        Set<AvailabilityZoneId> zones = new HashSet<>();
         if (this.inner().zones() != null) {
             for (String zone : this.inner().zones()) {
                 zones.add(AvailabilityZoneId.fromString(zone));

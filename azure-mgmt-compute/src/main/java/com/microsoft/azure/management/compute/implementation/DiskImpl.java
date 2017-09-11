@@ -27,8 +27,8 @@ import rx.functions.Func1;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashSet;
 import java.util.Set;
-import java.util.TreeSet;
 
 /**
  * The implementation for {@link Disk} and its create and update interfaces.
@@ -86,7 +86,7 @@ class DiskImpl
 
     @Override
     public Set<AvailabilityZoneId> availabilityZones() {
-        Set<AvailabilityZoneId> zones = new TreeSet<>();
+        Set<AvailabilityZoneId> zones = new HashSet<>();
         if (this.inner().zones() != null) {
             for (String zone : this.inner().zones()) {
                 zones.add(AvailabilityZoneId.fromString(zone));

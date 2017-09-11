@@ -80,10 +80,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.TreeSet;
 import java.util.UUID;
 
 /**
@@ -1549,7 +1549,7 @@ class VirtualMachineImpl
 
     @Override
     public Set<AvailabilityZoneId> availabilityZones() {
-        Set<AvailabilityZoneId> zones = new TreeSet<>();
+        Set<AvailabilityZoneId> zones = new HashSet<>();
         if (this.inner().zones() != null) {
             for (String zone : this.inner().zones()) {
                 zones.add(AvailabilityZoneId.fromString(zone));
