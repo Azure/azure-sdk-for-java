@@ -12,7 +12,13 @@ import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.RxNettyAdapter;
-import com.microsoft.rest.v2.policy.*;
+import com.microsoft.rest.v2.policy.CredentialsPolicy;
+import com.microsoft.rest.v2.policy.LoggingPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicyChain;
+import com.microsoft.rest.v2.policy.RetryPolicy;
+import com.microsoft.rest.v2.policy.SendRequestPolicyFactory;
+import com.microsoft.rest.v2.policy.UserAgentPolicy;
 
 import java.util.ArrayList;
 import java.util.List;
