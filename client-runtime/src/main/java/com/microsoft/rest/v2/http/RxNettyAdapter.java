@@ -86,6 +86,16 @@ public class RxNettyAdapter extends HttpClient {
             io.reactivex.netty.protocol.http.client.HttpClient<ByteBuf, ByteBuf> rxnClient =
                     io.reactivex.netty.protocol.http.client.HttpClient.newClient(uri.getHost(), port);
 
+            for (int i = 0; i < handlerConfigs.length; i++) {
+                ChannelHandlerConfig config = handlerConfigs[i];
+                if (config.mayBlock()) {
+                    EventExecutorGroup executorGroup = new DefaultEventExecutorGroup(1);
+                    rxnClient = rxnClient.addChannelHandlerLast(executorGroup, "az-client-handler-" + i, config.factory());
+                } else {
+                    rxnClient = rxnClient.addChannelHandlerLast("az-client-handler-" + i, config.factory());
+                }
+            }
+
             if (isSecure) {
                 rxnClient = rxnClient.secure(getSSLEngine(uri.getHost()));
             }
