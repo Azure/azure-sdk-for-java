@@ -77,9 +77,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
             final String stgName = Utils.createRandomName("st44");
-            installCommand = installCommand.replace("{subscriptionID}", azure.subscriptionId())
-                            .replace("{port}", "50342")
-                            .replace("{stgName}", stgName)
+            installCommand = installCommand.replace("{stgName}", stgName)
                             .replace("{rgName}", rgName)
                             .replace("{location}", region.name());
 

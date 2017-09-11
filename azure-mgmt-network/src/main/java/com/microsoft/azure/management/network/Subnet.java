@@ -5,10 +5,13 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Collection;
 import java.util.Set;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.SubnetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
@@ -27,9 +30,26 @@ public interface Subnet extends
      * @return network interface IP configurations that are associated with this subnet
      * <p>
      * Note that this call may result in multiple calls to Azure to fetch all the referenced interfaces each time it is invoked.
+     * <p>
+     * @deprecated Use {@link Subnet#listNetworkInterfaceIPConfigurations()} instead.
      */
     @Method
+    @Deprecated
     Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations();
+
+    /**
+     * @return network interface IP configurations that are associated with this subnet
+     * <p>
+     * Note that this call may result in multiple calls to Azure to fetch all the referenced interfaces each time it is invoked.
+     */
+    @Method
+    Collection<NicIPConfiguration> listNetworkInterfaceIPConfigurations();
+
+    /**
+     * @return available private IP addresses within this network
+     */
+    @Beta(SinceVersion.V1_3_0)
+    Set<String> listAvailablePrivateIPAddresses();
 
     /**
      * @return number of network interface IP configurations associated with this subnet

@@ -24,10 +24,16 @@ public final class ResourceUtils {
      * @return the resource group name
      */
     public static String groupFromResourceId(String id) {
-        if (id == null) {
-            return null;
-        }
-        return ResourceId.fromString(id).resourceGroupName();
+        return (id != null) ? ResourceId.fromString(id).resourceGroupName() : null;
+    }
+
+    /**
+     * Extract the subscription ID from a resource ID string.
+     * @param id the resource ID string
+     * @return the subscription ID
+     */
+    public static String subscriptionFromResourceId(String id) {
+        return (id != null) ? ResourceId.fromString(id).subscriptionId() : null;
     }
 
     /**
@@ -36,10 +42,7 @@ public final class ResourceUtils {
      * @return the resource group name
      */
     public static String resourceProviderFromResourceId(String id) {
-        if (id == null) {
-            return null;
-        }
-        return ResourceId.fromString(id).providerNamespace();
+        return (id != null) ? ResourceId.fromString(id).providerNamespace() : null;
     }
 
     /**
@@ -48,10 +51,7 @@ public final class ResourceUtils {
      * @return the resource type
      */
     public static String resourceTypeFromResourceId(String id) {
-        if (id == null) {
-            return null;
-        }
-        return ResourceId.fromString(id).resourceType();
+        return (id != null) ? ResourceId.fromString(id).resourceType() : null;
     }
 
     /**
@@ -140,10 +140,7 @@ public final class ResourceUtils {
      * @return the name of the resource
      */
     public static String nameFromResourceId(String id) {
-        if (id == null) {
-            return null;
-        }
-        return ResourceId.fromString(id).name();
+        return (id != null) ? ResourceId.fromString(id).name() : null;
     }
 
     /**

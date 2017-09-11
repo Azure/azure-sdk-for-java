@@ -84,6 +84,7 @@ import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.NetworkPeering;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.NetworkWatcher;
@@ -91,6 +92,7 @@ import com.microsoft.azure.management.network.NextHop;
 import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PacketCaptureFilter;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.SecurityGroupNetworkInterface;
 import com.microsoft.azure.management.network.SecurityGroupView;
 import com.microsoft.azure.management.network.Subnet;
@@ -320,12 +322,29 @@ public final class Utils {
         for (Subnet subnet : resource.subnets().values()) {
             info.append("\n\tSubnet: ").append(subnet.name())
                 .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
+
+            // Output associated NSG
             NetworkSecurityGroup subnetNsg = subnet.getNetworkSecurityGroup();
             if (subnetNsg != null) {
-                info.append("\n\t\tNetwork security group: ").append(subnetNsg.id());
+                info.append("\n\t\tNetwork security group ID: ").append(subnetNsg.id());
+            }
+
+            // Output associated route table
+            RouteTable routeTable = subnet.getRouteTable();
+            if (routeTable != null) {
+                info.append("\n\tRoute table ID: ").append(routeTable.id());
             }
         }
 
+        // Output peerings
+        for (NetworkPeering peering : resource.peerings().list()) {
+            info.append("\n\tPeering: ").append(peering.name())
+                .append("\n\t\tRemote network ID: ").append(peering.remoteNetworkId())
+                .append("\n\t\tPeering state: ").append(peering.state())
+                .append("\n\t\tIs traffic forwarded from remote network allowed? ").append(peering.isTrafficForwardingFromRemoteNetworkAllowed())
+                //TODO .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessFromRemoteNetworkAllowed())
+                .append("\n\t\tGateway use: ").append(peering.gatewayUse());
+        }
         System.out.println(info.toString());
     }
 
@@ -1933,7 +1952,7 @@ public final class Utils {
                     .append("\n\t\t\tName :").append(readReplica.locationName());
         }
     }
-    
+
     /**
      * Print Active Directory User info.
      * @param user active directory user
