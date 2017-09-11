@@ -13,7 +13,7 @@ import java.util.LinkedList;
 /**
  * Helper class for creating a batch/collection of EventData objects to be used while Sending to EventHubs
  */
-public final class EventDataBatch implements Iterable<EventData> {
+public final class EventDataBatch {
 
     private final int maxMessageSize;
     private final String partitionKey;
@@ -60,7 +60,6 @@ public final class EventDataBatch implements Iterable<EventData> {
         return true;
     }
 
-    @Override
     public Iterator<EventData> iterator() {
 
         return this.events.iterator();
@@ -76,7 +75,7 @@ public final class EventDataBatch implements Iterable<EventData> {
         return this.partitionKey;
     }
 
-    private final int getSize(final EventData eventData, final boolean isFirst) {
+    private int getSize(final EventData eventData, final boolean isFirst) {
 
         final Message amqpMessage = this.partitionKey != null ? eventData.toAmqpMessage(this.partitionKey) : eventData.toAmqpMessage();
         int eventSize = amqpMessage.encode(this.eventBytes, 0, maxMessageSize); // actual encoded bytes size

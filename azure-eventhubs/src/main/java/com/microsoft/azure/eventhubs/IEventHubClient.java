@@ -16,7 +16,12 @@ public interface IEventHubClient {
     void sendSync(Iterable<EventData> eventDatas)
             throws EventHubException;
 
+    void sendSync(EventDataBatch eventDatas)
+        throws EventHubException;
+
     CompletableFuture<Void> send(Iterable<EventData> eventDatas);
+
+    CompletableFuture<Void> send(EventDataBatch eventDatas);
 
     void sendSync(EventData eventData, String partitionKey)
             throws EventHubException;
