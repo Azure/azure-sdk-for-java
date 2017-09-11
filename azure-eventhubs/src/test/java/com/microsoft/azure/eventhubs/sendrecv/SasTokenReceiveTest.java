@@ -31,19 +31,16 @@ public class SasTokenReceiveTest extends SasTokenTestBase {
     
     @Test()
     public void testReceiverStartOfStreamFilters() throws EventHubException {
-        
         receiveTest.testReceiverStartOfStreamFilters();
     }
     
     @After
     public void testCleanup() throws EventHubException {
-        
         receiveTest.testCleanup();
     }
     
     @AfterClass()
     public static void cleanup() throws EventHubException {
-        
         ReceiveTest.cleanup();
     }
 }
