@@ -116,21 +116,25 @@ public final class RestProxy implements InvocationHandler {
             final int responseStatusCode = response.statusCode();
             if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
                 final Class<? extends RestException> exceptionType = methodParser.exceptionType();
+                String responseContent = null;
                 try {
                     final Class<?> exceptionBodyType = methodParser.exceptionBodyType();
                     final Constructor<? extends RestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
 
-                    String responseContent = null;
                     try {
                         responseContent = response.bodyAsString();
                     } catch (IOException ignored) {
                     }
 
-                    final Object exceptionBody = responseContent == null ? null : serializer.deserialize(responseContent, exceptionBodyType);
+                    final Object exceptionBody = responseContent == null || responseContent.isEmpty() ? null : serializer.deserialize(responseContent, exceptionBodyType);
 
                     throw exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + responseContent, response, exceptionBody);
                 } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-                    throw new IOException("Status code " + responseStatusCode + ", but an instance of " + exceptionType.getCanonicalName() + " cannot be created.", e);
+                    String message = "Status code " + responseStatusCode + ", but an instance of " + exceptionType.getCanonicalName() + " cannot be created.";
+                    if (responseContent != null && responseContent.isEmpty()) {
+                        message += " Response content: \"" + responseContent + "\"";
+                    }
+                    throw new IOException(message, e);
                 }
             }
 
