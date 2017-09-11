@@ -13,6 +13,12 @@ import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
+import rx.Observable;
+import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.List;
+
 
 /**
  * Tests Virtual Network Gateway.
@@ -110,7 +116,7 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
                     .withRegion(vngw.region())
                     .withExistingResourceGroup(vngw.resourceGroupName())
                     .withIPAddress("40.71.184.214")
-
+                    .withAddressSpace("192.168.3.0/24")
                     .create();
             vngw.connections()
                     .define("myNewConnection")
@@ -147,38 +153,43 @@ public class TestVirtualNetworkGateway extends TestTemplate<VirtualNetworkGatewa
 
             // Create virtual network gateway
             initializeResourceNames();
-            Thread creationThread1 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    VirtualNetworkGateway vngw = gateways.define(GATEWAY_NAME1)
-                            .withRegion(REGION)
-                            .withNewResourceGroup()
-                            .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
-                            .withRouteBasedVpn()
-                            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                            .create();
-                }
-            });
-            Thread creationThread2 = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    VirtualNetworkGateway vngw2 = gateways.define(GATEWAY_NAME2)
-                            .withRegion(REGION)
-                            .withNewResourceGroup()
-                            .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
-                            .withRouteBasedVpn()
-                            .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
-                            .create();
-                }
-            });
-            creationThread1.start();
-            creationThread2.start();
-            //...But bail out after 30 sec, as it is enough to test the results
-            SdkContext.sleep(60 * 1000);
+            final List<VirtualNetworkGateway> gws = new ArrayList<>();
+            Observable<?> vngwObservable = gateways.define(GATEWAY_NAME1)
+                    .withRegion(REGION)
+                    .withNewResourceGroup(GROUP_NAME)
+                    .withNewNetwork("10.11.0.0/16", "10.11.255.0/27")
+                    .withRouteBasedVpn()
+                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                    .createAsync();
 
-            // Get the resources as created so far
-            VirtualNetworkGateway vngw1 = gateways.manager().virtualNetworkGateways().getById(createResourceId(gateways.manager().subscriptionId(), GATEWAY_NAME1));
-            VirtualNetworkGateway vngw2 = gateways.manager().virtualNetworkGateways().getById(createResourceId(gateways.manager().subscriptionId(), GATEWAY_NAME2));
+            Observable<?> vngw2Observable = gateways.define(GATEWAY_NAME2)
+                    .withRegion(REGION)
+                    .withNewResourceGroup(GROUP_NAME)
+                    .withNewNetwork("10.41.0.0/16", "10.41.255.0/27")
+                    .withRouteBasedVpn()
+                    .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                    .createAsync();
+
+            Observable.merge(vngwObservable, vngw2Observable).map(new Func1<Object, Void>() {
+                @Override
+                public Void call(Object object) {
+                    if (object instanceof VirtualNetworkGateway) {
+                        gws.add((VirtualNetworkGateway) object);
+                    }
+                    return null;
+                }
+            }).toCompletable().await();
+            VirtualNetworkGateway vngw1 = gws.get(0);
+            VirtualNetworkGateway vngw2 = gws.get(1);
+//            {
+//                @Override
+//                public VirtualNetworkGateway call(VirtualNetworkGatewayInner inner) {
+//                    VirtualNetworkGateway vngw1 = new VNGI
+//                    self.setInner(inner);
+//                    return self;
+//                }
+//            });
+//            observable.first();
 //            VirtualNetworkGateway vngw = gateways.getByResourceGroup("vngw115313group", "vngw115313");
             vngw1.connections()
                     .define("myNewConnection")

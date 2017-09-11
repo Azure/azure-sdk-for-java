@@ -16,6 +16,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
+import java.util.List;
+
 /**
  * Entry point for Local Network Gateway management API in Azure.
  */
@@ -29,9 +31,24 @@ public interface LocalNetworkGateway extends
     // Getters
 
     /**
+     * @return IP address of local network gateway
+     */
+    String ipAddress();
+
+    /**
      * @return local network gateway's BGP speaker settings
      */
     BgpSettings bgpSettings();
+
+    /**
+     * @return local network site address spaces
+     */
+    List<String> addressSpaces();
+
+    /**
+     * @return the provisioning state of the LocalNetworkGateway resource
+     */
+    String provisioningState();
 
     /**
      * The entirety of the local network gateway definition.
@@ -60,8 +77,23 @@ public interface LocalNetworkGateway extends
                 extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithIPAddress> {
         }
 
+        /**
+         * The stage of the local network gateway definition allowing to specify IP address of local network gateway.
+         */
         interface WithIPAddress {
-            WithCreate withIPAddress(String ipAddress);
+            WithAddressSpace withIPAddress(String ipAddress);
+        }
+
+        /**
+         * The stage of the local network gateway definition allowing to specify the address space.
+         */
+        interface WithAddressSpace {
+            /**
+             * Adds address space.
+             * Note: this method's effect is additive, i.e. each time it is used, a new address space is added to the network.
+             * @param cidr the CIDR representation of the local network site address space
+             */
+            WithCreate withAddressSpace(String cidr);
         }
 
         /**
@@ -78,7 +110,8 @@ public interface LocalNetworkGateway extends
          */
         interface WithCreate extends
                 Creatable<LocalNetworkGateway>,
-                Resource.DefinitionWithTags<WithCreate> {
+                Resource.DefinitionWithTags<WithCreate>,
+                DefinitionStages.WithAddressSpace {
         }
     }
 
@@ -86,6 +119,31 @@ public interface LocalNetworkGateway extends
      * Grouping of local network gateway update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the local network gateway update allowing to change IP address of local network gateway.
+         */
+        interface WithIPAddress {
+            Update withIPAddress(String ipAddress);
+        }
+
+        /**
+         * The stage of the local network gateway update allowing to specify the address spaces.
+         */
+        interface WithAddressSpace {
+            /**
+             * Adds address space.
+             * Note: this method's effect is additive, i.e. each time it is used, a new address space is added to the network.
+             * @param cidr the CIDR representation of the local network site address space.
+             */
+            Update withAddressSpace(String cidr);
+
+            /**
+             * Remove address space. Note: address space will be removed only in case of exact cidr string match.
+             * @param cidr the CIDR representation of the local network site address space.
+             */
+            Update withoutAddressSpace(String cidr);
+        }
+
         interface WithBgpSettings {
 
         }
@@ -100,6 +158,8 @@ public interface LocalNetworkGateway extends
     interface Update extends
             Appliable<LocalNetworkGateway>,
             Resource.UpdateWithTags<Update>,
+            UpdateStages.WithIPAddress,
+            UpdateStages.WithAddressSpace,
             UpdateStages.WithBgpSettings {
     }
 }

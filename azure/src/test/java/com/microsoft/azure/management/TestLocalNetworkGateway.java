@@ -33,20 +33,28 @@ public class TestLocalNetworkGateway  extends TestTemplate<LocalNetworkGateway, 
                 .withRegion(REGION)
                 .withNewResourceGroup(groupName)
                 .withIPAddress("40.71.184.214")
+                .withAddressSpace("192.168.3.0/24")
+                .withAddressSpace("192.168.4.0/27")
                 .create();
+        Assert.assertEquals("40.71.184.214", gateway.ipAddress());
+        Assert.assertEquals(2, gateway.addressSpaces().size());
+        Assert.assertTrue(gateway.addressSpaces().contains("192.168.4.0/27"));
         return gateway;
     }
 
     @Override
-    public LocalNetworkGateway updateResource(LocalNetworkGateway resource) throws Exception {
-        resource.update()
+    public LocalNetworkGateway updateResource(LocalNetworkGateway gateway) throws Exception {
+        gateway.update()
+                .withoutAddressSpace("192.168.3.0/24")
+                .withIPAddress("40.71.184.216")
                 .withTag("tag2", "value2")
                 .withoutTag("tag1")
                 .apply();
-        resource.refresh();
-        Assert.assertTrue(resource.tags().containsKey("tag2"));
-        Assert.assertTrue(!resource.tags().containsKey("tag1"));
-        return resource;
+        Assert.assertFalse(gateway.addressSpaces().contains("192.168.3.0/24"));
+        Assert.assertEquals("40.71.184.216", gateway.ipAddress());
+        Assert.assertTrue(gateway.tags().containsKey("tag2"));
+        Assert.assertTrue(!gateway.tags().containsKey("tag1"));
+        return gateway;
     }
 
     @Override
@@ -56,7 +64,14 @@ public class TestLocalNetworkGateway  extends TestTemplate<LocalNetworkGateway, 
                 .append("\n\tName: ").append(gateway.name())
                 .append("\n\tResource group: ").append(gateway.resourceGroupName())
                 .append("\n\tRegion: ").append(gateway.regionName())
-                .append("\n\tTags: ").append(gateway.tags());
+                .append("\n\tIP address: ").append(gateway.ipAddress());
+        if (!gateway.addressSpaces().isEmpty()) {
+            info.append("\n\tAddress spaces:");
+            for (String addressSpace : gateway.addressSpaces()) {
+                info.append("\n\t\t" + addressSpace);
+            }
+        }
+        info.append("\n\tTags: ").append(gateway.tags());
         System.out.println(info.toString());
     }
 }
