@@ -17,6 +17,7 @@ import com.microsoft.azure.management.network.LoadBalancerInboundNatPool;
 import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -334,7 +335,7 @@ public interface VirtualMachineScaleSet extends
      * @return the availability zones assigned to virtual machine scale set.
      */
     @Beta(Beta.SinceVersion.V1_3_0)
-    Set<String> availabilityZones();
+    Set<AvailabilityZoneId> availabilityZones();
 
     /**
      * The virtual machine scale set stages shared between managed and unmanaged based
@@ -1129,11 +1130,11 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the availability zone for the virtual machine scale set.
              *
-             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @param zoneId the zone identifier.
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_3_0)
-            WithManagedCreate withAvailabilityZone(String zoneId);
+            WithManagedCreate withAvailabilityZone(AvailabilityZoneId zoneId);
         }
 
         /**
@@ -1820,11 +1821,11 @@ public interface VirtualMachineScaleSet extends
             /**
              * Specifies the availability zone for the virtual machine scale set.
              *
-             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @param zoneId the zone identifier.
              * @return the next stage of the update
              */
             @Beta(Beta.SinceVersion.V1_3_0)
-            WithApply withAvailabilityZone(String zoneId);
+            WithApply withAvailabilityZone(AvailabilityZoneId zoneId);
         }
 
         /**

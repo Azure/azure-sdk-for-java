@@ -49,6 +49,7 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -1025,11 +1026,11 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public Set<String> availabilityZones() {
-        Set<String> zones = new TreeSet<>();
+    public Set<AvailabilityZoneId> availabilityZones() {
+        Set<AvailabilityZoneId> zones = new TreeSet<>();
         if (this.inner().zones() != null) {
             for (String zone : this.inner().zones()) {
-                zones.add(zone);
+                zones.add(AvailabilityZoneId.fromString(zone));
             }
         }
         return Collections.unmodifiableSet(zones);
@@ -1924,7 +1925,7 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
-    public VirtualMachineScaleSetImpl withAvailabilityZone(String zoneId) {
+    public VirtualMachineScaleSetImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
         // Note: Only for virtual machine scale set, new zone can be specified, hence
         // this option is available for both definition and update cases.
         //
@@ -1932,7 +1933,7 @@ public class VirtualMachineScaleSetImpl
         if (this.inner().zones() == null) {
             this.inner().withZones(new ArrayList<String>());
         }
-        this.inner().zones().add(zoneId);
+        this.inner().zones().add(zoneId.toString());
         return this;
     }
 

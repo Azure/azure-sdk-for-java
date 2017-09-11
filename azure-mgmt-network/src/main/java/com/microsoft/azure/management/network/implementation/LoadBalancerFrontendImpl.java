@@ -25,6 +25,7 @@ import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.Subnet;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -164,7 +165,7 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public LoadBalancerFrontendImpl withAvailabilityZone(String zoneId) {
+    public LoadBalancerFrontendImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
         // Note: Zone is not updatable as of now, so this is available only during definition time.
         // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
         // zone or remove one. Trying to remove the last one means attempt to change resource from
@@ -175,7 +176,7 @@ class LoadBalancerFrontendImpl
         if (this.inner().zones() == null) {
             this.inner().withZones(new ArrayList<String>());
         }
-        this.inner().zones().add(zoneId);
+        this.inner().zones().add(zoneId.toString());
         return this;
     }
 
@@ -266,11 +267,11 @@ class LoadBalancerFrontendImpl
     }
 
     @Override
-    public Set<String> availabilityZones() {
-        Set<String> zones = new TreeSet<>();
+    public Set<AvailabilityZoneId> availabilityZones() {
+        Set<AvailabilityZoneId> zones = new TreeSet<>();
         if (this.inner().zones() != null) {
             for (String zone : this.inner().zones()) {
-                zones.add(zone);
+                zones.add(AvailabilityZoneId.fromString(zone));
             }
         }
         return Collections.unmodifiableSet(zones);

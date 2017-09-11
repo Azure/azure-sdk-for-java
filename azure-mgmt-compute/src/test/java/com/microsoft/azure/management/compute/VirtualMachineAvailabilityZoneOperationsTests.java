@@ -17,6 +17,7 @@ import com.microsoft.azure.management.network.PublicIPSkuType;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
@@ -60,7 +61,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withRootUsername("Foo12")
                 .withRootPassword("abc!@#F0orL")
                 // Optionals
-                .withAvailabilityZone("1")
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                 .withOSDiskCaching(CachingTypes.READ_WRITE)
                 // Create VM
@@ -70,14 +71,14 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         //
         Assert.assertNotNull(virtualMachine.availabilityZones());
         Assert.assertFalse(virtualMachine.availabilityZones().isEmpty());
-        Assert.assertTrue(virtualMachine.availabilityZones().contains("1"));
+        Assert.assertTrue(virtualMachine.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
         // Checks the zone assigned to the implicitly created public IP address.
         // Implicitly created PIP will be BASIC
         //
         PublicIPAddress publicIPAddress = virtualMachine.getPrimaryPublicIPAddress();
         Assert.assertNotNull(publicIPAddress.availabilityZones());
         Assert.assertFalse(publicIPAddress.availabilityZones().isEmpty());
-        Assert.assertTrue(publicIPAddress.availabilityZones().contains("1"));
+        Assert.assertTrue(publicIPAddress.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
         // Checks the zone assigned to the implicitly created managed OS disk.
         //
         String osDiskId = virtualMachine.osDiskId();    // Only VM based on managed disk can have zone assigned
@@ -103,7 +104,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withNewResourceGroup(RG_NAME)
                 .withStaticIP()
                 // Optionals
-                .withAvailabilityZone("1")  // since the SKU is BASIC and VM is zoned, PIP must be zoned
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)  // since the SKU is BASIC and VM is zoned, PIP must be zoned
                 .withSku(PublicIPSkuType.BASIC)    // Basic sku is never zone resilient, so if you want it zoned, specify explicitly as above.
                 // Create PIP
                 .create();
@@ -117,7 +118,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withData()
                 .withSizeInGB(100)
                 // Optionals
-                .withAvailabilityZone("1")
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 // Create Disk
                 .create();
         // Create a zoned virtual machine
@@ -133,7 +134,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withRootUsername("Foo12")
                 .withRootPassword("abc!@#F0orL")
                 // Optionals
-                .withAvailabilityZone("1")
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 .withExistingDataDisk(dataDisk)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                 // Create VM
@@ -142,7 +143,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         //
         Assert.assertNotNull(virtualMachine.availabilityZones());
         Assert.assertFalse(virtualMachine.availabilityZones().isEmpty());
-        Assert.assertTrue(virtualMachine.availabilityZones().contains("1"));
+        Assert.assertTrue(virtualMachine.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
         // Checks the zone assigned to the explicitly created public IP address.
         //
         publicIPAddress = virtualMachine.getPrimaryPublicIPAddress();
@@ -204,7 +205,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withRootUsername("Foo12")
                 .withRootPassword("abc!@#F0orL")
                 // Optionals
-                .withAvailabilityZone("1")
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2)
                 // Create VM
                 .create();
@@ -212,7 +213,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
         //
         Assert.assertNotNull(virtualMachine.availabilityZones());
         Assert.assertFalse(virtualMachine.availabilityZones().isEmpty());
-        Assert.assertTrue(virtualMachine.availabilityZones().contains("1"));
+        Assert.assertTrue(virtualMachine.availabilityZones().contains(AvailabilityZoneId.ZONE_1));
         // Check the zone resilient PIP
         //
         publicIPAddress = virtualMachine.getPrimaryPublicIPAddress();
@@ -385,7 +386,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("abc!@#F0orL")
-                .withAvailabilityZone(generateRandomResourceName("1", 10))
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 // Optionals
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2);
 
@@ -402,7 +403,7 @@ public class VirtualMachineAvailabilityZoneOperationsTests extends ComputeManage
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("Foo12")
                 .withRootPassword("abc!@#F0orL")
-                .withAvailabilityZone(generateRandomResourceName("1", 10))
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                 // Optionals
                 .withSize(VirtualMachineSizeTypes.STANDARD_D3_V2);
 

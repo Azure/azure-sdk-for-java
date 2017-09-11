@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
@@ -35,7 +36,7 @@ public interface LoadBalancerPrivateFrontend extends
      * @return the availability zones assigned to private frontend.
      */
     @Beta(Beta.SinceVersion.V1_3_0)
-    Set<String> availabilityZones();
+    Set<AvailabilityZoneId> availabilityZones();
 
     /**
      * Grouping of private frontend definition stages.
@@ -71,11 +72,11 @@ public interface LoadBalancerPrivateFrontend extends
             /**
              * Specifies the availability zone for the private frontend.
              *
-             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @param zoneId the zone identifier.
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_3_0)
-            WithAttach<ParentT> withAvailabilityZone(String zoneId);
+            WithAttach<ParentT> withAvailabilityZone(AvailabilityZoneId zoneId);
         }
 
         /**
@@ -162,11 +163,11 @@ public interface LoadBalancerPrivateFrontend extends
             /**
              * Specifies the availability zone for the private frontend.
              *
-             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @param zoneId the zone identifier.
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_3_0)
-            WithAttach<ParentT> withAvailabilityZone(String zoneId);
+            WithAttach<ParentT> withAvailabilityZone(AvailabilityZoneId zoneId);
         }
 
         /** The final stage of an internal frontend definition.

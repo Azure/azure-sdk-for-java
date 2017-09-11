@@ -12,6 +12,7 @@ import com.microsoft.azure.management.graphrbac.RoleAssignment;
 import com.microsoft.azure.management.graphrbac.ServicePrincipal;
 import com.microsoft.azure.management.network.*;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccountKey;
@@ -632,8 +633,8 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
                 .withRootUsername("jvuser")
                 .withRootPassword("123OData!@#123")
-                .withAvailabilityZone("1")  // Zone redundant - zone 1 + zone 2
-                .withAvailabilityZone("2")
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_1)  // Zone redundant - zone 1 + zone 2
+                .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
                 .create();
 
         // Check zones

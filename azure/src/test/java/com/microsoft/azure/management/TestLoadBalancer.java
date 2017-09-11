@@ -13,6 +13,7 @@ import java.util.Set;
 
 import com.microsoft.azure.management.compute.AvailabilitySetSkuTypes;
 import com.microsoft.azure.management.network.LoadBalancerSkuType;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import org.junit.Assert;
 
@@ -914,7 +915,7 @@ public class TestLoadBalancer {
                     // Private zoned front-end
                     .definePrivateFrontend("frontend-1")
                         .withExistingSubnet(network, "subnet1")
-                        .withAvailabilityZone("1")
+                        .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
                         .attach()
                     .withSku(LoadBalancerSkuType.BASIC)
                     .create();

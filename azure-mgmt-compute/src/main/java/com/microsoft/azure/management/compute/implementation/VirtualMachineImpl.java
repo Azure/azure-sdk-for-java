@@ -56,6 +56,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -1547,11 +1548,11 @@ class VirtualMachineImpl
     }
 
     @Override
-    public Set<String> availabilityZones() {
-        Set<String> zones = new TreeSet<>();
+    public Set<AvailabilityZoneId> availabilityZones() {
+        Set<AvailabilityZoneId> zones = new TreeSet<>();
         if (this.inner().zones() != null) {
             for (String zone : this.inner().zones()) {
-                zones.add(zone);
+                zones.add(AvailabilityZoneId.fromString(zone));
             }
         }
         return Collections.unmodifiableSet(zones);
@@ -1696,7 +1697,7 @@ class VirtualMachineImpl
     }
 
     @Override
-    public VirtualMachineImpl withAvailabilityZone(String zoneId) {
+    public VirtualMachineImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
         if (isInCreateMode()) {
             // Note: Zone is not updatable as of now, so this is available only during definition time.
             // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
@@ -1709,7 +1710,7 @@ class VirtualMachineImpl
             if (this.inner().zones() == null) {
                 this.inner().withZones(new ArrayList<String>());
             }
-            this.inner().zones().add(zoneId);
+            this.inner().zones().add(zoneId.toString());
             // zone aware VM can be attached to only zone aware public IP.
             //
             if (this.implicitPipCreatable != null) {

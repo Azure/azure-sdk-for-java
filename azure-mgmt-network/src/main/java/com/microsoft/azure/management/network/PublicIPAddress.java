@@ -9,6 +9,7 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.PublicIPAddressInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -88,7 +89,7 @@ public interface PublicIPAddress extends
      * @return the availability zones assigned to the public IP address
      */
     @Beta(Beta.SinceVersion.V1_3_0)
-    Set<String> availabilityZones();
+    Set<AvailabilityZoneId> availabilityZones();
 
     /**
      * @return public IP address sku.
@@ -209,11 +210,11 @@ public interface PublicIPAddress extends
             /**
              * Specifies the availability zone for the IP address.
              *
-             * @param zoneId the zone identifier. The valid values are "1", "2", and "3"
+             * @param zoneId the zone identifier.
              * @return the next stage of the definition
              */
             @Beta(Beta.SinceVersion.V1_3_0)
-            WithCreate withAvailabilityZone(String zoneId);
+            WithCreate withAvailabilityZone(AvailabilityZoneId zoneId);
         }
 
         /**

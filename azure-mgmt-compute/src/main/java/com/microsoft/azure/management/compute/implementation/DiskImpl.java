@@ -16,6 +16,7 @@ import com.microsoft.azure.management.compute.DiskSku;
 import com.microsoft.azure.management.compute.DiskSkuTypes;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.Snapshot;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCallback;
@@ -84,11 +85,11 @@ class DiskImpl
     }
 
     @Override
-    public Set<String> availabilityZones() {
-        Set<String> zones = new TreeSet<>();
+    public Set<AvailabilityZoneId> availabilityZones() {
+        Set<AvailabilityZoneId> zones = new TreeSet<>();
         if (this.inner().zones() != null) {
             for (String zone : this.inner().zones()) {
-                zones.add(zone);
+                zones.add(AvailabilityZoneId.fromString(zone));
             }
         }
         return Collections.unmodifiableSet(zones);
@@ -313,7 +314,7 @@ class DiskImpl
     }
 
     @Override
-    public DiskImpl withAvailabilityZone(String zoneId) {
+    public DiskImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
         // Note: Zone is not updatable as of now, so this is available only during definition time.
         // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
         // zone or remove one. Trying to remove the last one means attempt to change resource from
@@ -321,7 +322,7 @@ class DiskImpl
         if (this.inner().zones() == null) {
             this.inner().withZones(new ArrayList<String>());
         }
-        this.inner().zones().add(zoneId);
+        this.inner().zones().add(zoneId.toString());
         return this;
     }
 
