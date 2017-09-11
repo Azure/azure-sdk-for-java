@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Collection;
 import java.util.Set;
 
 import com.microsoft.azure.management.apigeneration.Beta;
@@ -42,7 +43,7 @@ public interface Subnet extends
      * Note that this call may result in multiple calls to Azure to fetch all the referenced interfaces each time it is invoked.
      */
     @Method
-    Set<NicIPConfiguration> listNetworkInterfaceIPConfigurations();
+    Collection<NicIPConfiguration> listNetworkInterfaceIPConfigurations();
 
     /**
      * @return available private IP addresses within this network
