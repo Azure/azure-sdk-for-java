@@ -8,8 +8,11 @@ package com.microsoft.rest.v2;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
+import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
+import com.microsoft.rest.v2.annotations.ExpectedResponse;
 import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.HEAD;
 import com.microsoft.rest.v2.annotations.HeaderParam;
@@ -22,8 +25,10 @@ import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpResponse;
 
 import java.lang.annotation.Annotation;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -44,7 +49,10 @@ class SwaggerMethodParser {
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
+    private int[] expectedStatusCodes;
     private Type returnType;
+    private Class<? extends RestException> exceptionType;
+    private Class<?> exceptionBodyType;
 
     /**
      * Create a new SwaggerMethodParser object using the provided fully qualified method name.
@@ -98,6 +106,23 @@ class SwaggerMethodParser {
             }
         }
 
+        expectedStatusCodes = swaggerMethod.getAnnotation(ExpectedResponse.class).value();
+
+        if (swaggerMethod.isAnnotationPresent(UnexpectedResponseExceptionType.class)) {
+            exceptionType = swaggerMethod.getAnnotation(UnexpectedResponseExceptionType.class).value();
+        }
+        else {
+            exceptionType = RestException.class;
+        }
+
+        try {
+            final Method exceptionBodyMethod = exceptionType.getDeclaredMethod("body");
+            exceptionBodyType = exceptionBodyMethod.getReturnType();
+        } catch (NoSuchMethodException e) {
+            // Should always have a body() method. Register Object as a fallback plan.
+            exceptionBodyType = Object.class;
+        }
+
         final Annotation[][] allParametersAnnotations = swaggerMethod.getParameterAnnotations();
         for (int parameterIndex = 0; parameterIndex < allParametersAnnotations.length; ++parameterIndex) {
             final Annotation[] parameterAnnotations = swaggerMethod.getParameterAnnotations()[parameterIndex];
@@ -140,6 +165,16 @@ class SwaggerMethodParser {
      */
     public String httpMethod() {
         return httpMethod;
+    }
+
+    /**
+     * Get the HTTP response status codes that are expected when a request is sent out for this
+     * Swagger method.
+     * @return The expected HTTP response status codes for this Swagger method.
+     */
+    public int[] expectedStatusCodes()
+    {
+        return expectedStatusCodes;
     }
 
     /**
@@ -196,6 +231,48 @@ class SwaggerMethodParser {
         }
 
         return result;
+    }
+
+    /**
+     * Get whether or not the provided response status code is one of the expected status codes for
+     * this Swagger method.
+     * @param responseStatusCode The status code that was returned in the HTTP response.
+     * @return whether or not the provided response status code is one of the expected status codes
+     * for this Swagger method.
+     */
+    public boolean isExpectedResponseStatusCode(int responseStatusCode) {
+        boolean result = false;
+
+        if (expectedStatusCodes != null && expectedStatusCodes.length > 0) {
+            for (int expectedStatusCode : expectedStatusCodes) {
+                if (expectedStatusCode == responseStatusCode) {
+                    result = true;
+                    break;
+                }
+            }
+        }
+
+        return result;
+    }
+
+    /**
+     * Get the type of RestException that will be thrown if the HTTP response's status code is not
+     * one of the expected status codes.
+     * @return The type of RestException that will be thrown if the HTTP response's status code is
+     * not one of the expected status codes.
+     */
+    public Class<? extends RestException> exceptionType() {
+        return exceptionType;
+    }
+
+    /**
+     * Get the type of body Object that a thrown RestException will contain if the HTTP response's
+     * status code is not one of the expected status codes.
+     * @return The type of body Object that a thrown RestException will contain if the HTTP
+     * response's status code is not one of the expected status codes.
+     */
+    public Class<?> exceptionBodyType() {
+        return exceptionBodyType;
     }
 
     /**

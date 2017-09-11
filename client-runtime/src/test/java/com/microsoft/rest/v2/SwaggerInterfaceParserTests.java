@@ -1,5 +1,6 @@
 package com.microsoft.rest.v2;
 
+import com.microsoft.rest.v2.annotations.ExpectedResponse;
 import com.microsoft.rest.v2.annotations.Host;
 import org.junit.Test;
 
@@ -29,17 +30,22 @@ public class SwaggerInterfaceParserTests {
         assertEquals("https://management.azure.com", interfaceParser.host());
     }
 
+    interface TestInterface3 {
+        @ExpectedResponse({200})
+        void testMethod3();
+    }
+
     @Test
     public void methodParser() {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface1.class);
-        final Method testMethod1 = TestInterface1.class.getDeclaredMethods()[0];
-        assertEquals("testMethod1", testMethod1.getName());
+        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface3.class);
+        final Method testMethod3 = TestInterface3.class.getDeclaredMethods()[0];
+        assertEquals("testMethod3", testMethod3.getName());
 
-        final SwaggerMethodParser methodParser = interfaceParser.methodParser(testMethod1);
+        final SwaggerMethodParser methodParser = interfaceParser.methodParser(testMethod3);
         assertNotNull(methodParser);
-        assertEquals("com.microsoft.rest.v2.SwaggerInterfaceParserTests.TestInterface1.testMethod1", methodParser.fullyQualifiedMethodName());
+        assertEquals("com.microsoft.rest.v2.SwaggerInterfaceParserTests.TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
 
-        final SwaggerMethodParser methodDetails2 = interfaceParser.methodParser(testMethod1);
+        final SwaggerMethodParser methodDetails2 = interfaceParser.methodParser(testMethod3);
         assertSame(methodParser, methodDetails2);
     }
 }
