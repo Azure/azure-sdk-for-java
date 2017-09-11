@@ -69,12 +69,7 @@ public class RestClientTests {
         Assert.assertEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
         Assert.assertEquals(restClient.responseBuilderFactory(), newClient.responseBuilderFactory());
         Assert.assertEquals(restClient.credentials(), newClient.credentials());
-//        for (RequestPolicy.Factory factory :
-//            newClient.customPolicyFactories()) {
-//            if (factory instanceof UserAgentPolicy) {
-//                Assert.assertEquals("user", ((UserAgentPolicy) factory).userAgent());
-//            }
-//        }
+        Assert.assertEquals(restClient.userAgent(), newClient.userAgent());
         Assert.assertEquals(restClient.customPolicyFactories().size(), newClient.customPolicyFactories().size());
         Assert.assertEquals(TimeUnit.MINUTES.toMillis(100), newClient.connectionTimeoutMillis());
     }
@@ -151,18 +146,8 @@ public class RestClientTests {
         Assert.assertNotEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
         Assert.assertNotEquals(restClient.responseBuilderFactory(), newClient.responseBuilderFactory());
         Assert.assertNotEquals(restClient.credentials(), newClient.credentials());
-//        for (Interceptor interceptor :
-//            restClient.httpClient().interceptors()) {
-//            if (interceptor instanceof UserAgentPolicy) {
-//                Assert.assertEquals("user", ((UserAgentPolicy) interceptor).userAgent());
-//            }
-//        }
-//        for (Interceptor interceptor :
-//            newClient.httpClient().interceptors()) {
-//            if (interceptor instanceof UserAgentPolicy) {
-//                Assert.assertEquals("anotheruser", ((UserAgentPolicy) interceptor).userAgent());
-//            }
-//        }
+        Assert.assertEquals("user", restClient.userAgent());
+        Assert.assertEquals("anotheruser", newClient.userAgent());
         Assert.assertNotEquals(restClient.connectionTimeoutMillis(), newClient.connectionTimeoutMillis());
     }
 }

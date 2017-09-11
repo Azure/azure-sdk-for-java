@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure;
+package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;

@@ -12,12 +12,7 @@ import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.RxNettyAdapter;
-import com.microsoft.rest.v2.policy.CredentialsPolicy;
-import com.microsoft.rest.v2.policy.LoggingPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicyChain;
-import com.microsoft.rest.v2.policy.RetryPolicy;
-import com.microsoft.rest.v2.policy.SendRequestPolicyFactory;
+import com.microsoft.rest.v2.policy.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,7 +53,7 @@ public final class RestClient {
 
     private RequestPolicyChain createPolicyChain() {
         List<RequestPolicy.Factory> allFactories = new ArrayList<>();
-        // TODO: userAgent
+        allFactories.add(new UserAgentPolicy.Factory(userAgent));
         allFactories.add(new RetryPolicy.Factory());
         allFactories.add(new LoggingPolicy.Factory(logLevel));
         allFactories.add(new CredentialsPolicy.Factory(credentials));
@@ -136,6 +131,13 @@ public final class RestClient {
      */
     RestClient.Builder newBuilder() {
         return new Builder(this);
+    }
+
+    /**
+     * @return The user agent string to send in HTTP requests.
+     */
+    public String userAgent() {
+        return userAgent;
     }
 
     /**
