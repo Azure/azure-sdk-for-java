@@ -7,11 +7,13 @@
 package com.microsoft.azure.credentials;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureEnvironment.Endpoint;
 import com.microsoft.rest.credentials.TokenCredentials;
 
 import java.io.IOException;
 import java.net.Proxy;
 import java.net.URL;
+import java.util.Map;
 
 /**
  * AzureTokenCredentials represents a credentials object with access to Azure
@@ -46,14 +48,17 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
     public final String getTokenFromUri(String uri) throws IOException {
         URL url = new URL(uri);
         String host = url.getHost();
-        for (String endpoint : environment().endpoints().values()) {
-            if (host.contains(endpoint)) {
-                // Remove leading dots
-                host = endpoint.replaceAll("^\\.*", "");
-                break;
+        String resource = environment().activeDirectoryResourceId();
+        for (Map.Entry<String, String> endpoint : environment().endpoints().entrySet()) {
+            if (host.contains(endpoint.getValue())) {
+                if (endpoint.getKey().equals(Endpoint.KEYVAULT.identifier())) {
+                    resource = String.format("https://%s/", endpoint.getValue().replaceAll("^\\.*", ""));
+                    break;
+                } else if (endpoint.getKey().equals(Endpoint.GRAPH.identifier())) {
+                    resource = environment().graphEndpoint();
+                }
             }
         }
-        String resource = String.format("https://%s/", host);
         return getToken(resource);
     }
 
