@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.containerregistry.implementation.RegistriesInner;
-import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingById;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsGettingByResourceGroup;
@@ -41,36 +40,40 @@ public interface Registries extends
     SupportsListing<Registry> {
 
     /**
-     * Lists the login credentials for the specified container registry.
+     * Gets the login credentials for the specified container registry.
      * @param groupName the group name
      * @param registryName the registry name
-     * @return the list of credentials
+     * @return the login credentials
      */
-    RegistryListCredentials listCredentials(String groupName, String registryName);
+    @Beta(SinceVersion.V1_3_0)
+    RegistryCredentials getCredentials(String groupName, String registryName);
 
     /**
-     * Lists the login credentials for the specified container registry.
+     * Gets the login credentials for the specified container registry.
      * @param groupName the group name
      * @param registryName the registry name
-     * @return the list of credentials
+     * @return the login credentials
      */
-    Observable<RegistryListCredentials> listCredentialsAsync(String groupName, String registryName);
+    @Beta(SinceVersion.V1_3_0)
+    Observable<RegistryCredentials> getCredentialsAsync(String groupName, String registryName);
 
     /**
-     * Regenerates one of the login credentials for the specified container registry.
+     * Regenerates the value for one of the admin user access key for the specified container registry.
      * @param groupName the group name
      * @param registryName the registry name
-     * @param passwordName the password name to regenerate login credentials for
+     * @param accessKeyName the admin user access key name to regenerate the value for
      * @return the list of credentials
      */
-    RegistryListCredentials regenerateCredential(String groupName, String registryName, PasswordName passwordName);
+    @Beta(SinceVersion.V1_3_0)
+    RegistryCredentials regenerateCredential(String groupName, String registryName, AccessKeyName accessKeyName);
 
     /**
-     * Regenerates one of the login credentials for the specified container registry.
+     * Regenerates the value for one of the admin user access key for the specified container registry.
      * @param groupName the group name
      * @param registryName the registry name
-     * @param passwordName the password name to regenerate login credentials for
+     * @param accessKeyName the admin user access key name to regenerate the value for
      * @return the list of credentials
      */
-    Observable<RegistryListCredentials> regenerateCredentialAsync(String groupName, String registryName, PasswordName passwordName);
+    @Beta(SinceVersion.V1_3_0)
+    Observable<RegistryCredentials> regenerateCredentialAsync(String groupName, String registryName, AccessKeyName accessKeyName);
 }

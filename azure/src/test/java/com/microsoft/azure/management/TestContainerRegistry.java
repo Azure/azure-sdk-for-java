@@ -7,7 +7,7 @@ package com.microsoft.azure.management;
 
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.Registry;
-import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
+import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import org.junit.Assert;
 
@@ -17,8 +17,9 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
     public Registry createResource(Registries registries) throws Exception {
         final String newName = "registry" + this.testId;
         Registry registry = registries.define(newName)
-                .withRegion(Region.US_WEST)
+                .withRegion(Region.US_EAST)
                 .withNewResourceGroup()
+                .withClassicSku()
                 .withNewStorageAccount("crsa" + this.testId)
                 .withRegistryNameAsAdminUser()
                 .create();
@@ -26,10 +27,10 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
         Assert.assertTrue(registry.adminUserEnabled());
         Assert.assertEquals(registry.storageAccountName(), "crsa" + this.testId);
 
-        RegistryListCredentials registryCredentials = registry.listCredentials();
+        RegistryCredentials registryCredentials = registry.getCredentials();
         Assert.assertNotNull(registryCredentials);
         Assert.assertEquals(newName, registryCredentials.username());
-        Assert.assertEquals(2, registryCredentials.passwords().size());
+        Assert.assertEquals(2, registryCredentials.accessKeys().size());
         return registry;
     }
 

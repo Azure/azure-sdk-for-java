@@ -8,9 +8,11 @@ package com.microsoft.azure.management.containerregistry.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.containerregistry.AccessKeyName;
 import com.microsoft.azure.management.containerregistry.PasswordName;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.Registry;
+import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
@@ -116,23 +118,35 @@ public class RegistriesImpl
     }
 
     @Override
-    public RegistryListCredentials listCredentials(String resourceGroupName, String registryName) {
-        return this.listCredentialsAsync(resourceGroupName, registryName).toBlocking().last();
+    public RegistryCredentials getCredentials(String resourceGroupName, String registryName) {
+        return new RegistryCredentialsImpl(this.inner().listCredentials(resourceGroupName, registryName));
     }
 
     @Override
-    public Observable<RegistryListCredentials> listCredentialsAsync(String resourceGroupName, String registryName) {
-        return this.inner().listCredentialsAsync(resourceGroupName, registryName);
+    public Observable<RegistryCredentials> getCredentialsAsync(String resourceGroupName, String registryName) {
+        return this.inner().listCredentialsAsync(resourceGroupName, registryName)
+            .map(new Func1<RegistryListCredentialsResultInner, RegistryCredentials>() {
+                @Override
+                public RegistryCredentials call(RegistryListCredentialsResultInner registryListCredentialsResultInner) {
+                    return new RegistryCredentialsImpl(registryListCredentialsResultInner);
+                }
+            });
     }
 
     @Override
-    public RegistryListCredentials regenerateCredential(String resourceGroupName, String registryName, PasswordName passwordName) {
-        return this.regenerateCredentialAsync(resourceGroupName, registryName, passwordName).toBlocking().last();
+    public RegistryCredentials regenerateCredential(String resourceGroupName, String registryName, AccessKeyName accessKeyName) {
+        return new RegistryCredentialsImpl(this.inner().regenerateCredential(resourceGroupName, registryName, PasswordName.fromString(accessKeyName.toString())));
     }
 
     @Override
-    public Observable<RegistryListCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName passwordName) {
-        return this.inner().regenerateCredentialAsync(resourceGroupName, registryName, passwordName);
+    public Observable<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, AccessKeyName accessKeyName) {
+        return this.inner().regenerateCredentialAsync(resourceGroupName, registryName, PasswordName.fromString(accessKeyName.toString()))
+            .map(new Func1<RegistryListCredentialsResultInner, RegistryCredentials>() {
+                @Override
+                public RegistryCredentials call(RegistryListCredentialsResultInner registryListCredentialsResultInner) {
+                    return new RegistryCredentialsImpl(registryListCredentialsResultInner);
+                }
+            });
     }
 
 }

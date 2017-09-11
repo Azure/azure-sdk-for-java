@@ -10,7 +10,6 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.containerregistry.implementation.RegistryInner;
-import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -37,48 +36,59 @@ public interface Registry extends
     Sku sku();
 
     /**
-     * @return the URL that can be used to log into the container registry.
+     * @return the URL that can be used to log into the container registry
      */
     String loginServerUrl();
 
     /**
-     * @return the creation date of the container registry in ISO8601 format.
+     * @return the creation date of the container registry in ISO8601 format
      */
     DateTime creationDate();
 
     /**
-     * @return the value that indicates whether the admin user is enabled. This value is false by default.
+     * @return the value that indicates whether the admin user is enabled. This value is false by default
      */
     boolean adminUserEnabled();
 
     /**
-     * @return the name of the storage account for the container registry.
+     * @return the name of the storage account for the container registry; 'null' if container register SKU a managed tier
      */
     String storageAccountName();
 
     /**
-     * @return the login credentials for the specified container registry.
+     * @return the id of the storage account for the container registry; 'null' if container register SKU a managed tier
      */
-    RegistryListCredentials listCredentials();
+    @Beta(SinceVersion.V1_3_0)
+    String storageAccountId();
 
     /**
-     * @return the login credentials for the specified container registry.
+     * @return the login credentials for the specified container registry
      */
-    Observable<RegistryListCredentials> listCredentialsAsync();
+    @Beta(SinceVersion.V1_3_0)
+    RegistryCredentials getCredentials();
+
+    /**
+     * @return the login credentials for the specified container registry
+     */
+    @Beta(SinceVersion.V1_3_0)
+    Observable<RegistryCredentials> getCredentialsAsync();
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
-     * @param passwordName the password name
+     * @param accessKeyName the admin user access key name to regenerate the value for
      * @return the result of the regeneration
      */
-    RegistryListCredentials regenerateCredential(PasswordName passwordName);
+    @Beta(SinceVersion.V1_3_0)
+    RegistryCredentials regenerateCredential(AccessKeyName accessKeyName);
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
-     * @param passwordName the password name
+     *
+     * @param accessKeyName the admin user access key name to regenerate the value for
      * @return the result of the regeneration
      */
-    Observable<RegistryListCredentials> regenerateCredentialAsync(PasswordName passwordName);
+    @Beta(SinceVersion.V1_3_0)
+    Observable<RegistryCredentials> regenerateCredentialAsync(AccessKeyName accessKeyName);
 
     /**
      * Container interface for all the definitions related to a registry.
@@ -86,6 +96,7 @@ public interface Registry extends
     interface Definition extends
         DefinitionStages.Blank,
         DefinitionStages.WithGroup,
+        DefinitionStages.WithSku,
         DefinitionStages.WithStorageAccount,
         DefinitionStages.WithCreate {
     }
@@ -104,8 +115,101 @@ public interface Registry extends
         /**
          * The stage of the container service definition allowing to specify the resource group.
          */
+        @Beta(SinceVersion.V1_3_0)
         interface WithGroup extends
-                GroupableResource.DefinitionStages.WithGroup<WithStorageAccount> {
+                GroupableResource.DefinitionStages.WithGroup<WithSku> {
+        }
+
+        /**
+         * The stage of the registry definition allowing to specify the SKU type.
+         */
+        interface WithSku {
+            /**
+             * Creates a container registry with a 'Classic' SKU type.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_3_0)
+            WithStorageAccount withClassicSku();
+
+            /**
+             * Creates a "managed' registry with a 'Basic' SKU type.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_3_0)
+            WithCreate withBasicSku();
+
+            /**
+             * Creates a "managed' registry with a 'Standard' SKU type.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_3_0)
+            WithCreate withStandardSku();
+
+            /**
+             * Creates a "managed' registry with a 'Premium' SKU type.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_3_0)
+            WithCreate withPremiumSku();
+        }
+
+
+        /**
+         * The stage of the registry definition allowing to specify the storage account.
+         */
+        interface WithStorageAccount {
+            /**
+             * The parameters of a storage account for the container registry.
+             * <p>
+             * If specified, the storage account must be in the same physical location as the container registry.
+             *
+             * @param storageAccount the storage account
+             * @return the next stage
+             */
+            WithCreate withExistingStorageAccount(StorageAccount storageAccount);
+
+            /**
+             * The parameters of a storage account for the container registry.
+             * <p>
+             * If specified, the storage account must be in the same physical location as the container registry.
+             *
+             * @param storageAccountName the name of the storage account; must be in the same physical location as the container registry.
+             * @return the next stage
+             */
+            @Beta(SinceVersion.V1_3_0)
+            WithCreate withExistingStorageAccountName(String storageAccountName);
+
+            /**
+             * The parameters of a storage account for the container registry.
+             * <p>
+             * If specified, the storage account must be in the same physical location as the container registry.
+             *
+             * @param id the resource id of the storage account; must be in the same physical location as the container registry.
+             * @return the next stage
+             */
+            @Beta(SinceVersion.V1_3_0)
+            WithCreate withExistingStorageAccountId(String id);
+
+            /**
+             * The parameters for a storage account for the container registry.
+             * <p>
+             * A new storage account with default setting and specified name will be created.
+             *
+             * @param storageAccountName the name of the storage account
+             * @return the next stage
+             */
+            @Beta(SinceVersion.V1_3_0)
+            WithCreate withNewStorageAccount(String storageAccountName);
+
+            /**
+             * The parameters for a storage account for the container registry.
+             * <p>
+             * If specified, the storage account must be in the same physical location as the container registry.
+             *
+             * @param creatable the storage account to create
+             * @return the next stage
+             */
+            WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
         }
 
         /**
@@ -120,38 +224,8 @@ public interface Registry extends
         }
 
         /**
-         * The stage of the registry definition allowing to specify the storage account.
-         */
-        interface WithStorageAccount {
-            /**
-             * The parameters of a storage account for the container registry.
-             * If specified, the storage account must be in the same physical location as the container registry.
-             * @param storageAccount the storage account
-             * @return the next stage
-             */
-            WithCreate withExistingStorageAccount(StorageAccount storageAccount);
-
-            /**
-             * The parameters for a storage account for the container registry.
-             * If specified, the storage account must be in the same physical location as the container registry.
-             * @param storageAccountName the name of the storage account
-             * @return the next stage
-             */
-            WithCreate withNewStorageAccount(String storageAccountName);
-
-            /**
-             * The parameters for a storage account for the container registry.
-             * If specified, the storage account must be in the same physical location as the container registry.
-             * @param creatable the storage account to create
-             * @return the next stage
-             */
-            WithCreate withNewStorageAccount(Creatable<StorageAccount> creatable);
-        }
-
-        /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows
-         * for any other optional settings to be specified.
+         * The stage of the definition which contains all the minimum required inputs for the resource to be created,
+         *  but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends
                 Creatable<Registry>,
@@ -161,13 +235,13 @@ public interface Registry extends
     }
 
     /**
-     * The template for an update operation, containing all the settings that
-     * can be modified.
+     * The template for an update operation, containing all the settings that can be modified.
      */
     interface Update extends
             Resource.UpdateWithTags<Update>,
             Appliable<Registry>,
-            UpdateStages.WithAdminUserEnabled {
+            UpdateStages.WithAdminUserEnabled,
+            UpdateStages.WithSku {
     }
 
     /**
@@ -189,6 +263,32 @@ public interface Registry extends
              * @return the next stage of the definition
              */
             Update withoutRegistryNameAsAdminUser();
+        }
+
+        /**
+         * The stage of the registry definition allowing to specify the SKU type.
+         */
+        interface WithSku {
+            /**
+             * Updates the current container registry to a "managed' registry with a 'Basic' SKU type.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_3_0)
+            Update withBasicSku();
+
+            /**
+             * Updates the current container registry to a "managed' registry with a 'Standard' SKU type.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_3_0)
+            Update withStandardSku();
+
+            /**
+             * Updates the current container registry to a "managed' registry with a 'Premium' SKU type.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_3_0)
+            Update withPremiumSku();
         }
     }
 
