@@ -11,8 +11,8 @@ import com.google.common.net.UrlEscapers;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
+import com.microsoft.rest.v2.annotations.ExpectedResponses;
 import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
-import com.microsoft.rest.v2.annotations.ExpectedResponse;
 import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.HEAD;
 import com.microsoft.rest.v2.annotations.HeaderParam;
@@ -25,10 +25,8 @@ import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
-import com.microsoft.rest.v2.http.HttpResponse;
 
 import java.lang.annotation.Annotation;
-import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
@@ -106,7 +104,7 @@ class SwaggerMethodParser {
             }
         }
 
-        expectedStatusCodes = swaggerMethod.getAnnotation(ExpectedResponse.class).value();
+        expectedStatusCodes = swaggerMethod.getAnnotation(ExpectedResponses.class).value();
 
         if (swaggerMethod.isAnnotationPresent(UnexpectedResponseExceptionType.class)) {
             exceptionType = swaggerMethod.getAnnotation(UnexpectedResponseExceptionType.class).value();
@@ -172,8 +170,7 @@ class SwaggerMethodParser {
      * Swagger method.
      * @return The expected HTTP response status codes for this Swagger method.
      */
-    public int[] expectedStatusCodes()
-    {
+    public int[] expectedStatusCodes() {
         return expectedStatusCodes;
     }
 

@@ -1,6 +1,6 @@
 package com.microsoft.rest.v2;
 
-import com.microsoft.rest.v2.annotations.ExpectedResponse;
+import com.microsoft.rest.v2.annotations.ExpectedResponses;
 import com.microsoft.rest.v2.annotations.Host;
 import org.junit.Test;
 
@@ -31,7 +31,7 @@ public class SwaggerInterfaceParserTests {
     }
 
     interface TestInterface3 {
-        @ExpectedResponse({200})
+        @ExpectedResponses({200})
         void testMethod3();
     }
 

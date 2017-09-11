@@ -1,15 +1,11 @@
 package com.microsoft.rest.v2;
 
 import com.microsoft.rest.RestException;
-import com.microsoft.rest.v2.annotations.ExpectedResponse;
-import com.microsoft.rest.v2.annotations.Host;
+import com.microsoft.rest.v2.annotations.ExpectedResponses;
 import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
-import okhttp3.ResponseBody;
 import org.junit.Test;
-import retrofit2.Response;
 
 import java.lang.reflect.Method;
-import java.util.Iterator;
 
 import static org.junit.Assert.*;
 
@@ -28,7 +24,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface2 {
-        @ExpectedResponse({200})
+        @ExpectedResponses({200})
         void testMethod2();
     }
 
@@ -49,7 +45,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface3 {
-        @ExpectedResponse({200})
+        @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MyRestException.class)
         void testMethod3();
     }

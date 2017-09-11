@@ -61,8 +61,7 @@ public class HttpHeader {
      * Get the String representation of this HttpHeader.
      * @return The String representation of this HttpHeader.
      */
-    public String toString()
-    {
+    public String toString() {
         return name + ":" + value;
     }
 }

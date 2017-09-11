@@ -16,14 +16,14 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * A list of HTTP status codes that are expected for this API.
  *
  * Example:
- *   {@literal @}ExpectedResponse({200, 201})
+ *   {@literal @}ExpectedResponses({200, 201})
  *   {@literal @}POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.CustomerInsights/hubs/{hubName}/images/getEntityTypeImageUploadUrl")
  *   void getUploadUrlForEntityType(@Path("resourceGroupName") String resourceGroupName, @Path("hubName") String hubName, @Path("subscriptionId") String subscriptionId, @Body GetImageUploadUrlInputInner parameters);
  *
  */
 @Retention(RUNTIME)
 @Target(METHOD)
-public @interface ExpectedResponse {
+public @interface ExpectedResponses {
     /**
      * The status code that will trigger that an error of type errorType should be returned.
      * @return The status code that will trigger than an error of type errorType should be returned.
