@@ -5,12 +5,13 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
-import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 import java.util.TreeSet;
 
 import com.microsoft.azure.SubResource;
@@ -140,13 +141,13 @@ class SubnetImpl
 
     @Override
     public Set<NicIPConfiguration> getNetworkInterfaceIPConfigurations() {
-        return listNetworkInterfaceIPConfigurations();
+        return Collections.unmodifiableSet(new TreeSet<NicIPConfiguration>(listNetworkInterfaceIPConfigurations()));
     }
 
     @Override
-    public Set<NicIPConfiguration> listNetworkInterfaceIPConfigurations() {
-        Set<NicIPConfiguration> ipConfigs = new HashSet<>();
-        Map<String, NetworkInterface> nics = new HashMap<>();
+    public Collection<NicIPConfiguration> listNetworkInterfaceIPConfigurations() {
+        Collection<NicIPConfiguration> ipConfigs = new ArrayList<>();
+        Map<String, NetworkInterface> nics = new TreeMap<>();
         List<IPConfigurationInner> ipConfigRefs = this.inner().ipConfigurations();
         if (ipConfigRefs == null) {
             return ipConfigs;
@@ -180,7 +181,7 @@ class SubnetImpl
             ipConfigs.add(ipConfig);
         }
 
-        return Collections.unmodifiableSet(ipConfigs);
+        return Collections.unmodifiableCollection(ipConfigs);
     }
 
     @Override
