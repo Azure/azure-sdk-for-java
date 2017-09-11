@@ -8,8 +8,6 @@ package com.microsoft.azure.credentials;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.rest.credentials.TokenCredentials;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 import java.io.IOException;
 import java.net.Proxy;

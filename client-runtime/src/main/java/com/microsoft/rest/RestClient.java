@@ -7,14 +7,17 @@
 package com.microsoft.rest;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.interceptors.*;
 import com.microsoft.rest.protocol.Environment;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.RxNettyAdapter;
-import com.microsoft.rest.v2.policy.*;
-import okhttp3.OkHttpClient;
+import com.microsoft.rest.v2.policy.CredentialsPolicy;
+import com.microsoft.rest.v2.policy.LoggingPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicyChain;
+import com.microsoft.rest.v2.policy.RetryPolicy;
+import com.microsoft.rest.v2.policy.SendRequestPolicyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -64,6 +67,9 @@ public final class RestClient {
         return new RequestPolicyChain(allFactories);
     }
 
+    /**
+     * @return the user-defined request policy factories.
+     */
     public List<RequestPolicy.Factory> customPolicyFactories() {
         return customPolicyFactories;
     }
@@ -83,7 +89,7 @@ public final class RestClient {
     }
 
     /**
-     * @return the {@link OkHttpClient} instance
+     * @return the {@link HttpClient} instance
      */
     public HttpClient httpClient() {
         return httpClient;
@@ -99,10 +105,12 @@ public final class RestClient {
     /**
      * @return the base URL to make requests to.
      */
-    public String baseURL() { return baseURL; }
+    public String baseURL() {
+        return baseURL;
+    }
 
     /**
-     * @return
+     * @return the connection timeout for HTTP connections in milliseconds.
      */
     public long connectionTimeoutMillis() {
         return connectionTimeoutMillis;
@@ -134,8 +142,8 @@ public final class RestClient {
      * The builder class for building a REST client.
      */
     public static class Builder {
-        private final long DEFAULT_READ_TIMEOUT_MILLIS = 10000;
-        private final long DEFAULT_CONNECTION_TIMEOUT_MILLIS = 10000;
+        private final long defaultReadTimeoutMillis = 10000;
+        private final long defaultConnectionTimeoutMillis = 10000;
 
 
         private HttpClient httpClient;
@@ -148,8 +156,8 @@ public final class RestClient {
 
         /** The value for 'User-Agent' header. */
         private String userAgent;
-        private long readTimeoutMillis = DEFAULT_READ_TIMEOUT_MILLIS;
-        private long connectionTimeoutMillis = DEFAULT_CONNECTION_TIMEOUT_MILLIS;
+        private long readTimeoutMillis = defaultReadTimeoutMillis;
+        private long connectionTimeoutMillis = defaultConnectionTimeoutMillis;
         /** The adapter for serializations and deserializations. */
         private SerializerAdapter<?> serializerAdapter;
         /** The builder factory for response builders. */
@@ -188,6 +196,11 @@ public final class RestClient {
             return this;
         }
 
+        /**
+         * Sets the HTTP client on the builder.
+         * @param client the HTTP client to use.
+         * @return the builder.
+         */
         public Builder withHttpClient(HttpClient client) {
             this.httpClient = client;
             return this;
@@ -297,11 +310,17 @@ public final class RestClient {
          * @return the builder itself for chaining
          */
         public Builder withMaxIdleConnections(int maxIdleConnections) {
-            // FIXME
+            // FIXME -- maybe by deleting this method?
+            // Seems like a configuration on a concrete HTTP client
             throw new RuntimeException();
 //            httpClientBuilder.connectionPool(new ConnectionPool(maxIdleConnections, 5, TimeUnit.MINUTES));
         }
 
+        /**
+         * Adds a custom RequestPolicyFactory to the request pipeline.
+         * @param factory The Factory producing a custom user-defined RequestPolicy.
+         * @return The builder.
+         */
         public Builder addCustomPolicy(RequestPolicy.Factory factory) {
             customPolicyFactories.add(factory);
             return this;

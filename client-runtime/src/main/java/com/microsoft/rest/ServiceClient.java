@@ -9,11 +9,9 @@ package com.microsoft.rest;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
 
 /**
- * ServiceClient is the abstraction for accessing REST operations and their payload data types.
+ * The base class for generated service clients.
  */
 public abstract class ServiceClient {
     /**
@@ -46,12 +44,17 @@ public abstract class ServiceClient {
     /**
      * @return the {@link RestClient} instance.
      */
-    @Deprecated
     public RestClient restClient() {
         return restClient;
     }
 
-    public HttpClient httpClient() { return this.restClient.httpClient(); }
+    /**
+     * @return the {@link HttpClient} instance.
+     */
+    public HttpClient httpClient() {
+        return this.restClient.httpClient();
+    }
+
     /**
      * @return the adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
      */

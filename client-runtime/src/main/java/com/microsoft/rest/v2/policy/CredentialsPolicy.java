@@ -14,10 +14,17 @@ import rx.Single;
 /**
  * Adds credentials from ServiceClientCredentials to a request.
  */
-public class CredentialsPolicy implements RequestPolicy {
+public final class CredentialsPolicy implements RequestPolicy {
+    /**
+     * Factory which instantiates CredentialsPolicy.
+     */
     public static class Factory implements RequestPolicy.Factory {
         private final ServiceClientCredentials credentials;
 
+        /**
+         * Creates a Factory which produces CredentialsPolicy.
+         * @param credentials The credentials to use for authentication.
+         */
         public Factory(ServiceClientCredentials credentials) {
             this.credentials = credentials;
         }
@@ -31,11 +38,6 @@ public class CredentialsPolicy implements RequestPolicy {
     private final ServiceClientCredentials credentials;
     private final RequestPolicy next;
 
-    /**
-     * Creates CredentialsPolicy.
-     *
-     * @param credentials the credentials
-     */
     private CredentialsPolicy(ServiceClientCredentials credentials, RequestPolicy next) {
         this.credentials = credentials;
         this.next = next;

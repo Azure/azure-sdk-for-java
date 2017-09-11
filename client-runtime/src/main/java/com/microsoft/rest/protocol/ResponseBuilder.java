@@ -8,7 +8,6 @@ package com.microsoft.rest.protocol;
 
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 

@@ -11,18 +11,28 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Single;
 
 /**
- * User agent interceptor for putting a 'User-Agent' header in the request.
+ * Adds a 'User-Agent' header to a request.
  */
 public final class UserAgentPolicy implements RequestPolicy {
     private static final String DEFAULT_USER_AGENT_HEADER = "AutoRest-Java";
 
+    /**
+     * Creates {@link UserAgentPolicy}.
+     */
     public static class Factory implements RequestPolicy.Factory {
         private final String userAgent;
 
+        /**
+         * Creates a {@link UserAgentPolicy.Factory} with the given user agent string.
+         * @param userAgent The user agent string to add to request headers.
+         */
         public Factory(String userAgent) {
             this.userAgent = userAgent;
         }
 
+        /**
+         * Creates a {@link UserAgentPolicy.Factory} with a default user agent string.
+         */
         public Factory() {
             this.userAgent = DEFAULT_USER_AGENT_HEADER;
         }
@@ -36,11 +46,7 @@ public final class UserAgentPolicy implements RequestPolicy {
     private final RequestPolicy next;
     private final String userAgent;
 
-    /**
-     * Initialize an instance of {@link UserAgentPolicy} class with the default
-     * 'User-Agent' header.
-     */
-    public UserAgentPolicy(String userAgent, RequestPolicy next) {
+    private UserAgentPolicy(String userAgent, RequestPolicy next) {
         this.userAgent = userAgent;
         this.next = next;
     }

@@ -4,14 +4,13 @@
  * license information.
  */
 
-package com.microsoft.rest.interceptors;
+package com.microsoft.rest.v2.policy;
 
 import com.google.common.io.CharStreams;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -26,12 +25,19 @@ import java.util.concurrent.TimeUnit;
 /**
  * An OkHttp interceptor that handles logging of HTTP requests and responses.
  */
-public class LoggingPolicy implements RequestPolicy {
+public final class LoggingPolicy implements RequestPolicy {
     private final RequestPolicy next;
 
+    /**
+     * Factory for creating LoggingPolicy instances in a chain.
+     */
     public static class Factory implements RequestPolicy.Factory {
         private final LogLevel logLevel;
 
+        /**
+         * Creates a LoggingPolicy.Factory with the given log level.
+         * @param logLevel The log level.
+         */
         public Factory(LogLevel logLevel) {
             this.logLevel = logLevel;
         }

@@ -7,13 +7,11 @@
 package com.microsoft.rest.v2;
 
 import com.google.common.reflect.TypeToken;
-import com.microsoft.rest.RestClient;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.OkHttpAdapter;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import rx.Completable;
 import rx.Single;

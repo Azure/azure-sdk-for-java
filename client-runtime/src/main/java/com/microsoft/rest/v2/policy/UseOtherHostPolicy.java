@@ -14,9 +14,9 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Type representing RequestPolicy that can send request to a different host.
+ * Type representing RequestPolicy that retries a request at a different host depending on the response.
  */
-public class UseOtherHostPolicy implements RequestPolicy {
+public final class UseOtherHostPolicy implements RequestPolicy {
     /**
      * Factory to create UseOtherHostPolicy.
      */
@@ -41,6 +41,8 @@ public class UseOtherHostPolicy implements RequestPolicy {
             return Single.error(e);
         }
 
+        // FIXME: check a response header or similar in order to reissue the request with a new host?
+        // This is really just here to prove the concept right now
         String newURL = "https://httpbin.org/" + url.getPath() + url.getQuery();
 
         HttpRequest newRequest = new HttpRequest(request.callerMethod(), request.httpMethod(), newURL);
