@@ -6,6 +6,7 @@
 
 package com.microsoft.rest;
 
+import com.microsoft.rest.v2.http.HttpResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
@@ -16,7 +17,12 @@ public class RestException extends RuntimeException {
     /**
      * Information about the associated HTTP response.
      */
-    private Response<ResponseBody> response;
+    private Response<ResponseBody> responseOkHttp;
+
+    /**
+     * Information about the associated HTTP response.
+     */
+    private HttpResponse responseV2;
 
     /**
      * The HTTP response body.
@@ -31,7 +37,7 @@ public class RestException extends RuntimeException {
      */
     public RestException(String message, Response<ResponseBody> response) {
         super(message);
-        this.response = response;
+        this.responseOkHttp = response;
     }
 
     /**
@@ -43,7 +49,31 @@ public class RestException extends RuntimeException {
      */
     public RestException(String message, Response<ResponseBody> response, Object body) {
         super(message);
-        this.response = response;
+        this.responseOkHttp = response;
+        this.body = body;
+    }
+
+    /**
+     * Initializes a new instance of the RestException class.
+     *
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     */
+    public RestException(String message, HttpResponse response) {
+        super(message);
+        this.responseV2 = response;
+    }
+
+    /**
+     * Initializes a new instance of the RestException class.
+     *
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     * @param body the deserialized response body
+     */
+    public RestException(String message, HttpResponse response, Object body) {
+        super(message);
+        this.responseV2 = response;
         this.body = body;
     }
 
@@ -51,7 +81,14 @@ public class RestException extends RuntimeException {
      * @return information about the associated HTTP response
      */
     public Response<ResponseBody> response() {
-        return response;
+        return responseOkHttp;
+    }
+
+    /**
+     * @return information about the associated HTTP response
+     */
+    public HttpResponse responseV2() {
+        return responseV2;
     }
 
     /**

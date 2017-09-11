@@ -37,38 +37,38 @@ public class MockHttpClient extends HttpClient {
                             // This is just to mimic the behavior we've seen with httpbin.org.
                             .replace("%20", " ");
                     json.headers = toMap(request.headers());
-                    response = new MockHttpResponse(json);
+                    response = new MockHttpResponse(200, json);
                 }
                 else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
-                    response = new MockHttpResponse(new byte[byteCount]);
+                    response = new MockHttpResponse(200, new byte[byteCount]);
                 }
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(json);
+                    response = new MockHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url();
                     json.headers = toMap(request.headers());
-                    response = new MockHttpResponse(json);
+                    response = new MockHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(json);
+                    response = new MockHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(json);
+                    response = new MockHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(json);
+                    response = new MockHttpResponse(200, json);
                 }
             }
         }

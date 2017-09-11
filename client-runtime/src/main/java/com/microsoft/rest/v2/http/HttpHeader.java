@@ -54,6 +54,14 @@ public class HttpHeader {
      * @param value The value to add to the end of this Header.
      */
     public void addValue(String value) {
-        value += "," + value;
+        this.value += "," + value;
+    }
+
+    /**
+     * Get the String representation of this HttpHeader.
+     * @return The String representation of this HttpHeader.
+     */
+    public String toString() {
+        return name + ":" + value;
     }
 }

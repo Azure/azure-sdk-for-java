@@ -8,6 +8,7 @@ package com.microsoft.rest.v2;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.RestClient;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeader;
@@ -21,7 +22,9 @@ import rx.functions.Func1;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
@@ -43,7 +46,7 @@ public final class RestProxy implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, final Method method, Object[] args) throws Throwable {
+    public Object invoke(Object proxy, final Method method, Object[] args) throws IOException {
         final SwaggerMethodParser methodParser = interfaceParser.methodParser(method);
 
         final UrlBuilder urlBuilder = new UrlBuilder()
@@ -109,6 +112,32 @@ public final class RestProxy implements InvocationHandler {
         }
         else {
             final HttpResponse response = httpClient.sendRequest(request);
+
+            final int responseStatusCode = response.statusCode();
+            if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
+                final Class<? extends RestException> exceptionType = methodParser.exceptionType();
+                String responseContent = null;
+                try {
+                    final Class<?> exceptionBodyType = methodParser.exceptionBodyType();
+                    final Constructor<? extends RestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
+
+                    try {
+                        responseContent = response.bodyAsString();
+                    } catch (IOException ignored) {
+                    }
+
+                    final Object exceptionBody = responseContent == null || responseContent.isEmpty() ? null : serializer.deserialize(responseContent, exceptionBodyType);
+
+                    throw exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + responseContent, response, exceptionBody);
+                } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+                    String message = "Status code " + responseStatusCode + ", but an instance of " + exceptionType.getCanonicalName() + " cannot be created.";
+                    if (responseContent != null && responseContent.isEmpty()) {
+                        message += " Response content: \"" + responseContent + "\"";
+                    }
+                    throw new IOException(message, e);
+                }
+            }
+
             if (returnType.equals(Void.TYPE) || methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
                 result = null;
             } else if (returnTypeToken.isSubtypeOf(InputStream.class)) {
