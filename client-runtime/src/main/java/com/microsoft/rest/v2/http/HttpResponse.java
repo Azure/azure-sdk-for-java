@@ -17,7 +17,8 @@ import java.io.InputStream;
  */
 public abstract class HttpResponse {
     /**
-     * @return The HTTP response status code.
+     * Get this response object's HTTP status code.
+     * @return This response object's HTTP status code.
      */
     public abstract int statusCode();
 

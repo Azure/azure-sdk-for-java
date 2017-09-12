@@ -1,9 +1,11 @@
 package com.microsoft.rest.v2;
 
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
+import com.microsoft.rest.v2.annotations.ExpectedResponses;
 import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.HEAD;
 import com.microsoft.rest.v2.annotations.HeaderParam;
@@ -15,15 +17,16 @@ import com.microsoft.rest.v2.annotations.POST;
 import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
+import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import org.junit.Test;
-import retrofit2.http.Path;
 import rx.Completable;
 import rx.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.LinkedHashMap;
 
 import static org.junit.Assert.*;
 
@@ -38,9 +41,11 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service1 {
         @GET("bytes/100")
+        @ExpectedResponses({200})
         byte[] getByteArray();
 
         @GET("bytes/100")
+        @ExpectedResponses({200})
         Single<byte[]> getByteArrayAsync();
     }
 
@@ -64,9 +69,11 @@ public abstract class RestProxyTests {
     @Host("http://{hostName}.org")
     private interface Service2 {
         @GET("bytes/{numberOfBytes}")
+        @ExpectedResponses({200})
         byte[] getByteArray(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
 
         @GET("bytes/{numberOfBytes}")
+        @ExpectedResponses({200})
         Single<byte[]> getByteArrayAsync(@HostParam("hostName") String host, @PathParam("numberOfBytes") int numberOfBytes);
     }
 
@@ -90,9 +97,11 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service3 {
         @GET("bytes/2")
+        @ExpectedResponses({200})
         void getNothing();
 
         @GET("bytes/2")
+        @ExpectedResponses({200})
         Completable getNothingAsync();
     }
 
@@ -111,9 +120,11 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service4 {
         @GET("bytes/2")
+        @ExpectedResponses({200})
         InputStream getByteStream();
 
         @GET("bytes/2")
+        @ExpectedResponses({200})
         Single<InputStream> getByteStreamAsync();
     }
 
@@ -139,18 +150,23 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service5 {
         @GET("anything")
+        @ExpectedResponses({200})
         HttpBinJSON getAnything();
 
         @GET("anything/with+plus")
+        @ExpectedResponses({200})
         HttpBinJSON getAnythingWithPlus();
 
         @GET("anything/{path}")
+        @ExpectedResponses({200})
         HttpBinJSON getAnythingWithPathParam(@PathParam("path") String pathParam);
 
         @GET("anything/{path}")
+        @ExpectedResponses({200})
         HttpBinJSON getAnythingWithEncodedPathParam(@PathParam(value="path", encoded=true) String pathParam);
 
         @GET("anything")
+        @ExpectedResponses({200})
         Single<HttpBinJSON> getAnythingAsync();
     }
 
@@ -230,12 +246,15 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service6 {
         @GET("anything")
+        @ExpectedResponses({200})
         HttpBinJSON getAnything(@QueryParam("a") String a, @QueryParam("b") int b);
 
         @GET("anything")
+        @ExpectedResponses({200})
         HttpBinJSON getAnythingWithEncoded(@QueryParam(value="a", encoded=true) String a, @QueryParam("b") int b);
 
         @GET("anything")
+        @ExpectedResponses({200})
         Single<HttpBinJSON> getAnythingAsync(@QueryParam("a") String a, @QueryParam("b") int b);
     }
 
@@ -275,9 +294,11 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service7 {
         @GET("anything")
+        @ExpectedResponses({200})
         HttpBinJSON getAnything(@HeaderParam("a") String a, @HeaderParam("b") int b);
 
         @GET("anything")
+        @ExpectedResponses({200})
         Single<HttpBinJSON> getAnythingAsync(@HeaderParam("a") String a, @HeaderParam("b") int b);
     }
 
@@ -313,9 +334,11 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service8 {
         @POST("post")
+        @ExpectedResponses({200})
         HttpBinJSON post(@BodyParam String postBody);
 
         @POST("post")
+        @ExpectedResponses({200})
         Single<HttpBinJSON> postAsync(@BodyParam String postBody);
     }
 
@@ -339,10 +362,21 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service9 {
         @PUT("put")
+        @ExpectedResponses({200})
         HttpBinJSON put(@BodyParam int putBody);
 
         @PUT("put")
+        @ExpectedResponses({200})
         Single<HttpBinJSON> putAsync(@BodyParam int putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        HttpBinJSON putWithUnexpectedResponse(@BodyParam String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        HttpBinJSON putWithUnexpectedResponseAndExceptionType(@BodyParam String putBody);
     }
 
     @Test
@@ -362,18 +396,51 @@ public abstract class RestProxyTests {
         assertEquals("42", (String)json.data);
     }
 
+    @Test
+    public void SyncPutRequestWithUnexpectedResponse() {
+        try {
+            createService(Service9.class)
+                    .putWithUnexpectedResponse("I'm the body!");
+            fail("Expected RestException would be thrown.");
+        } catch (RestException e) {
+            assertNotNull(e.body());
+            assertTrue(e.body() instanceof LinkedHashMap);
+
+            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.body();
+            assertEquals("\"I'm the body!\"", expectedBody.get("data"));
+        }
+    }
+
+    @Test
+    public void SyncPutRequestWithUnexpectedResponseAndExceptionType() {
+        try {
+            createService(Service9.class)
+                    .putWithUnexpectedResponseAndExceptionType("I'm the body!");
+            fail("Expected RestException would be thrown.");
+        } catch (MyRestException e) {
+            assertNotNull(e.body());
+            assertEquals("\"I'm the body!\"", e.body().data);
+        } catch (Throwable e) {
+            fail("Throwable of wrong type thrown.");
+        }
+    }
+
     @Host("http://httpbin.org")
     private interface Service10 {
         @HEAD("get")
+        @ExpectedResponses({200})
         HttpBinJSON head();
 
         @HEAD("get")
+        @ExpectedResponses({200})
         void voidHead();
 
         @HEAD("get")
+        @ExpectedResponses({200})
         Single<HttpBinJSON> headAsync();
 
         @HEAD("get")
+        @ExpectedResponses({200})
         Completable completableHeadAsync();
     }
 
@@ -408,9 +475,11 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service11 {
         @DELETE("delete")
+        @ExpectedResponses({200})
         HttpBinJSON delete(@BodyParam boolean bodyBoolean);
 
         @DELETE("delete")
+        @ExpectedResponses({200})
         Single<HttpBinJSON> deleteAsync(@BodyParam boolean bodyBoolean);
     }
 
@@ -434,9 +503,11 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service12 {
         @PATCH("patch")
+        @ExpectedResponses({200})
         HttpBinJSON patch(@BodyParam String bodyString);
 
         @PATCH("patch")
+        @ExpectedResponses({200})
         Single<HttpBinJSON> patchAsync(@BodyParam String bodyString);
     }
 
@@ -460,10 +531,12 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service13 {
         @GET("anything")
+        @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         HttpBinJSON get();
 
         @GET("anything")
+        @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue", "MyOtherHeader:My,Header,Value" })
         Single<HttpBinJSON> getAsync();
     }
@@ -498,10 +571,12 @@ public abstract class RestProxyTests {
     @Host("https://httpbin.org")
     private interface Service14 {
         @GET("anything")
+        @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue" })
         HttpBinJSON get();
 
         @GET("anything")
+        @ExpectedResponses({200})
         @Headers({ "MyHeader:MyHeaderValue" })
         Single<HttpBinJSON> getAsync();
     }

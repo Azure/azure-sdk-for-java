@@ -40,34 +40,4 @@ class EncodedParameter {
     public String encodedValue() {
         return encodedValue;
     }
-
-    /**
-     * Get whether or not this value equals the provided rhs value.
-     * @param rhs The value to compare against this value.
-     * @return Whether or not this value equals the provided rhs value.
-     */
-    @Override
-    public boolean equals(Object rhs) {
-        return rhs instanceof EncodedParameter ? equals((EncodedParameter) rhs) : false;
-    }
-
-    /**
-     * Get whether or not this value equals the provided rhs value.
-     * @param rhs The value to compare against this value.
-     * @return Whether or not this value equals the provided rhs value.
-     */
-    public boolean equals(EncodedParameter rhs) {
-        return rhs != null
-                && name.equals(rhs.name)
-                && encodedValue.equals(rhs.encodedValue);
-    }
-
-    /**
-     * Get the unique hash code for this value.
-     * @return The unique hash code for this value.
-     */
-    @Override
-    public int hashCode() {
-        return name.hashCode() ^ encodedValue.hashCode();
-    }
 }
