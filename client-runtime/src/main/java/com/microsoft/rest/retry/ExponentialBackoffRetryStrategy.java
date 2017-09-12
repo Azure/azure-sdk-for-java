@@ -8,6 +8,11 @@ package com.microsoft.rest.retry;
 
 import okhttp3.Response;
 
+import static java.net.HttpURLConnection.HTTP_CLIENT_TIMEOUT;
+import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
+import static java.net.HttpURLConnection.HTTP_NOT_IMPLEMENTED;
+import static java.net.HttpURLConnection.HTTP_VERSION;
+
 /**
  * A retry strategy with backoff parameters for calculating the exponential delay between retries.
  */
@@ -98,8 +103,10 @@ public final class ExponentialBackoffRetryStrategy extends RetryStrategy {
     @Override
     public boolean shouldRetry(int retryCount, Response response) {
         int code = response.code();
-        //CHECKSTYLE IGNORE MagicNumber FOR NEXT 2 LINES
         return retryCount < this.retryCount
-                && (code == 408 || (code >= 500 && code != 501 && code != 505));
+                && (code == HTTP_CLIENT_TIMEOUT
+                    || (code >= HTTP_INTERNAL_ERROR
+                        && code != HTTP_NOT_IMPLEMENTED
+                        && code != HTTP_VERSION));
     }
 }
