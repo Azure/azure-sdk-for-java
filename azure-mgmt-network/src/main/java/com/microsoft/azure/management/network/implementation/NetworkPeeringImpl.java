@@ -285,7 +285,7 @@ class NetworkPeeringImpl
                             }
                         })
 
-                        // If no existing matching peering found, then create a matching peering on the remote network
+                        // Depending on the existence of a matching remote peering, create one or update existing
                         .flatMap(new Func1<NetworkPeering, Observable<Indexable>>() {
                             @Override
                             public Observable<Indexable> call(NetworkPeering remotePeering) {
@@ -407,12 +407,10 @@ class NetworkPeeringImpl
                 .flatMap(new Func1<Network, Observable<Network>>() {
                     @Override
                     public Observable<Network> call(Network t) {
-                        if (localPeering.remoteNetwork == null) {
-                            return Observable.just(null);
-                        } else if (!ResourceUtils.subscriptionFromResourceId(localPeering.remoteNetworkId()).equalsIgnoreCase(ResourceUtils.subscriptionFromResourceId(localPeering.id()))) {
-                            return Observable.just(null);
-                        } else {
+                        if (localPeering.remoteNetwork != null && localPeering.isSameSubscription()) {
                             return localPeering.remoteNetwork.refreshAsync();
+                        } else {
+                            return Observable.just(null);
                         }
                     }
                 })
