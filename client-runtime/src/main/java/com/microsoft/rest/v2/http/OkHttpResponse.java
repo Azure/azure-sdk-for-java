@@ -32,6 +32,11 @@ class OkHttpResponse extends HttpResponse {
     }
 
     @Override
+    public String headerValue(String headerName) {
+        return response.header(headerName);
+    }
+
+    @Override
     public Single<? extends InputStream> bodyAsInputStreamAsync() {
         return Single.just(response.body().byteStream());
     }

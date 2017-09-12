@@ -38,81 +38,15 @@ public final class RestProxy implements InvocationHandler {
     private final HttpClient httpClient;
     private final SerializerAdapter<?> serializer;
     private final SwaggerInterfaceParser interfaceParser;
+    private final ResponseHandler responseHandler;
 
-    private RestProxy(HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
-        this.httpClient = httpClient;
-        this.serializer = serializer;
-        this.interfaceParser = interfaceParser;
-    }
+    public static final ResponseHandler defaultResponseHandler = new ResponseHandler() {
+        @Override
+        public Object handleSyncResponse(HttpResponse response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer) throws IOException {
+            Object result;
 
-    @Override
-    public Object invoke(Object proxy, final Method method, Object[] args) throws IOException {
-        final SwaggerMethodParser methodParser = interfaceParser.methodParser(method);
-
-        final UrlBuilder urlBuilder = new UrlBuilder()
-                .withScheme(methodParser.scheme(args))
-                .withHost(methodParser.host(args))
-                .withPath(methodParser.path(args));
-
-        for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
-            urlBuilder.withQueryParameter(queryParameter.name(), queryParameter.encodedValue());
-        }
-
-        final String url = urlBuilder.toString();
-        final HttpRequest request = new HttpRequest(methodParser.fullyQualifiedMethodName(), methodParser.httpMethod(), url);
-
-        for (final HttpHeader header : methodParser.headers(args)) {
-            request.withHeader(header.name(), header.value());
-        }
-
-        final Object bodyContentObject = methodParser.body(args);
-        if (bodyContentObject != null) {
-            final String mimeType = "application/json";
-            final String bodyContentString = serializer.serialize(bodyContentObject);
-            request.withBody(bodyContentString, mimeType);
-        }
-
-        Object result;
-        final Type returnType = methodParser.returnType();
-        final TypeToken returnTypeToken = TypeToken.of(returnType);
-        if (returnTypeToken.isSubtypeOf(Completable.class)) {
-            final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
-            result = Completable.fromSingle(asyncResponse);
-        }
-        else if (returnTypeToken.isSubtypeOf(Single.class)) {
-            final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
-            result = asyncResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
-                @Override
-                public Single<?> call(HttpResponse response) {
-                    Single<?> asyncResult;
-                    final Type singleReturnType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
-                    final TypeToken singleReturnTypeToken = TypeToken.of(singleReturnType);
-                    if (methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
-                        asyncResult = Single.just(null);
-                    } else if (singleReturnTypeToken.isSubtypeOf(InputStream.class)) {
-                        asyncResult = response.bodyAsInputStreamAsync();
-                    } else if (singleReturnTypeToken.isSubtypeOf(byte[].class)) {
-                        asyncResult = response.bodyAsByteArrayAsync();
-                    } else {
-                        final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
-                        asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
-                            @Override
-                            public Single<Object> call(String responseBodyString) {
-                                try {
-                                    return Single.just(serializer.deserialize(responseBodyString, singleReturnType));
-                                } catch (IOException e) {
-                                    return Single.error(e);
-                                }
-                            }
-                        });
-                    }
-                    return asyncResult;
-                }
-            });
-        }
-        else {
-            final HttpResponse response = httpClient.sendRequest(request);
-
+            final Type returnType = methodParser.returnType();
+            final TypeToken returnTypeToken = TypeToken.of(returnType);
             final int responseStatusCode = response.statusCode();
             if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
                 final Class<? extends RestException> exceptionType = methodParser.exceptionType();
@@ -148,6 +82,101 @@ public final class RestProxy implements InvocationHandler {
                 final String responseBodyString = response.bodyAsString();
                 result = serializer.deserialize(responseBodyString, returnType);
             }
+
+            return result;
+        }
+
+        @Override
+        public Object handleAsyncResponse(Single<? extends HttpResponse> asyncResponse, final SwaggerMethodParser methodParser, final SerializerAdapter<?> serializer) {
+            Object result;
+
+            final Type returnType = methodParser.returnType();
+            final TypeToken returnTypeToken = TypeToken.of(returnType);
+            if (returnTypeToken.isSubtypeOf(Completable.class)) {
+                result = Completable.fromSingle(asyncResponse);
+            }
+            else if (returnTypeToken.isSubtypeOf(Single.class)) {
+                result = asyncResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
+                    @Override
+                    public Single<?> call(HttpResponse response) {
+                        Single<?> asyncResult;
+                        final Type singleReturnType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
+                        final TypeToken singleReturnTypeToken = TypeToken.of(singleReturnType);
+                        if (methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
+                            asyncResult = Single.just(null);
+                        } else if (singleReturnTypeToken.isSubtypeOf(InputStream.class)) {
+                            asyncResult = response.bodyAsInputStreamAsync();
+                        } else if (singleReturnTypeToken.isSubtypeOf(byte[].class)) {
+                            asyncResult = response.bodyAsByteArrayAsync();
+                        } else {
+                            final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
+                            asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
+                                @Override
+                                public Single<Object> call(String responseBodyString) {
+                                    try {
+                                        return Single.just(serializer.deserialize(responseBodyString, singleReturnType));
+                                    } catch (Throwable e) {
+                                        return Single.error(e);
+                                    }
+                                }
+                            });
+                        }
+                        return asyncResult;
+                    }
+                });
+            }
+            else {
+                result = null;
+            }
+
+            return result;
+        }
+    };
+
+    private RestProxy(HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser, ResponseHandler responseHandler) {
+        this.httpClient = httpClient;
+        this.serializer = serializer;
+        this.interfaceParser = interfaceParser;
+        this.responseHandler = responseHandler;
+    }
+
+    @Override
+    public Object invoke(Object proxy, final Method method, Object[] args) throws IOException {
+        final SwaggerMethodParser methodParser = interfaceParser.methodParser(method);
+
+        final UrlBuilder urlBuilder = new UrlBuilder()
+                .withScheme(methodParser.scheme(args))
+                .withHost(methodParser.host(args))
+                .withPath(methodParser.path(args));
+
+        for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
+            urlBuilder.withQueryParameter(queryParameter.name(), queryParameter.encodedValue());
+        }
+
+        final String url = urlBuilder.toString();
+        final HttpRequest request = new HttpRequest(methodParser.fullyQualifiedMethodName(), methodParser.httpMethod(), url);
+
+        for (final HttpHeader header : methodParser.headers(args)) {
+            request.withHeader(header.name(), header.value());
+        }
+
+        final Object bodyContentObject = methodParser.body(args);
+        if (bodyContentObject != null) {
+            final String mimeType = "application/json";
+            final String bodyContentString = serializer.serialize(bodyContentObject);
+            request.withBody(bodyContentString, mimeType);
+        }
+
+        Object result;
+        final Type returnType = methodParser.returnType();
+        final TypeToken returnTypeToken = TypeToken.of(returnType);
+        if (returnTypeToken.isSubtypeOf(Completable.class) || returnTypeToken.isSubtypeOf(Single.class)) {
+            final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
+            result = responseHandler.handleAsyncResponse(asyncResponse, methodParser, serializer);
+        }
+        else {
+            final HttpResponse response = httpClient.sendRequest(request);
+            result = responseHandler.handleSyncResponse(response, methodParser, serializer);
         }
 
         return result;
@@ -178,8 +207,43 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpClient httpClient, SerializerAdapter<?> serializer) {
+        return create(swaggerInterface, httpClient, serializer, defaultResponseHandler);
+    }
+
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
+     * @param httpClient The internal HTTP client that will be used to make REST calls.
+     * @param serializer The serializer that will be used to convert POJOs to and from request and
+     *                   response bodies.
+     * @param responseHandler The object that will be used to handle responses to HTTP requests.
+     * @param <A> The type of the Swagger interface.
+     * @return A proxy implementation of the provided Swagger interface.
+     */
+    @SuppressWarnings("unchecked")
+    public static <A> A create(Class<A> swaggerInterface, HttpClient httpClient, SerializerAdapter<?> serializer, ResponseHandler responseHandler) {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface);
-        final RestProxy restProxy = new RestProxy(httpClient, serializer, interfaceParser);
+        final RestProxy restProxy = new RestProxy(httpClient, serializer, interfaceParser, responseHandler);
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, restProxy);
+    }
+
+    /**
+     * The handler that determines how to deal with an incoming HTTP response from this RestProxy.
+     */
+    public interface ResponseHandler {
+        /**
+         * Convert the provided synchronous HttpResponse object into the appropriate return value.
+         * @param response The HttpResponse to handle.
+         * @return The return value.
+         */
+        Object handleSyncResponse(HttpResponse response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer) throws IOException, RestException;
+
+        /**
+         * Convert the provided asynchronous HttpResponse object into the appropriate asynchronous
+         * return value.
+         * @param response The asynchronous HttpResponse to handle.
+         * @return The asynchronous return value.
+         */
+        Object handleAsyncResponse(Single<? extends HttpResponse> response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer);
     }
 }

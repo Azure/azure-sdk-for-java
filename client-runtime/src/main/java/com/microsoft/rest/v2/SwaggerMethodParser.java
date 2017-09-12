@@ -36,7 +36,7 @@ import java.util.List;
  * This class parses details of a specific Swagger REST API call from a provided Swagger interface
  * method.
  */
-class SwaggerMethodParser {
+public class SwaggerMethodParser {
     private final String rawHost;
     private final String fullyQualifiedMethodName;
     private String httpMethod;
