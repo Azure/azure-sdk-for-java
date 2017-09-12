@@ -59,13 +59,11 @@ public final class RetryPolicy implements RequestPolicy {
 
     private boolean shouldRetry(HttpResponse response) {
         int code = response.statusCode();
-        // FIXME: delete old RetryHandler and introduce these named constants
-        //CHECKSTYLE IGNORE MagicNumber FOR NEXT 2 LINES
         return tryCount < maxRetries
                 && (code == HTTP_CLIENT_TIMEOUT
-                                    || (code >= HTTP_INTERNAL_ERROR
-                                       && code != HTTP_NOT_IMPLEMENTED
-                                        && code != HTTP_VERSION));
+                    || (code >= HTTP_INTERNAL_ERROR
+                        && code != HTTP_NOT_IMPLEMENTED
+                        && code != HTTP_VERSION));
     }
 
     @Override
