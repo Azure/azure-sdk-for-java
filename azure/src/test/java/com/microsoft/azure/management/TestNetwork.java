@@ -10,6 +10,7 @@ import java.util.Set;
 
 import org.junit.Assert;
 
+import com.microsoft.azure.management.network.NetworkPeeringGatewayUse;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkPeering;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
@@ -17,7 +18,6 @@ import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.VirtualNetworkPeeringState;
-import com.microsoft.azure.management.network.NetworkPeering.GatewayUse;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
@@ -174,7 +174,7 @@ public class TestNetwork {
             Assert.assertEquals(VirtualNetworkPeeringState.CONNECTED, localPeering.state());
             Assert.assertTrue(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
             // TODO Assert.assertFalse(localPeering.isAccessFromRemoteNetworkAllowed());
-            Assert.assertEquals(GatewayUse.BY_REMOTE_NETWORK, localPeering.gatewayUse());
+            Assert.assertEquals(NetworkPeeringGatewayUse.BY_REMOTE_NETWORK, localPeering.gatewayUse());
 
             // Verify remote peering
             Assert.assertNotNull(remoteNetwork.peerings());
@@ -185,7 +185,7 @@ public class TestNetwork {
             Assert.assertEquals(VirtualNetworkPeeringState.CONNECTED, remotePeering.state());
             Assert.assertTrue(remotePeering.isTrafficForwardingFromRemoteNetworkAllowed());
             // TODO Assert.assertFalse(remotePeering.isAccessFromRemoteNetworkAllowed());
-            Assert.assertEquals(GatewayUse.NONE, remotePeering.gatewayUse());
+            Assert.assertEquals(NetworkPeeringGatewayUse.NONE, remotePeering.gatewayUse());
 
             return localNetwork;
         }
@@ -214,14 +214,14 @@ public class TestNetwork {
             // Verify local peering changes
             Assert.assertFalse(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
             // TODO Assert.assertTrue(localPeering.isAccessFromRemoteNetworkAllowed());
-            Assert.assertEquals(GatewayUse.NONE, localPeering.gatewayUse());
+            Assert.assertEquals(NetworkPeeringGatewayUse.NONE, localPeering.gatewayUse());
 
             // Verify remote peering changes
             NetworkPeering remotePeering = localPeering.getRemotePeering();
             Assert.assertNotNull(remotePeering);
             Assert.assertFalse(remotePeering.isTrafficForwardingFromRemoteNetworkAllowed());
             // TODO Assert.assertTrue(remotePeering.isAccessFromRemoteNetworkAllowed());
-            Assert.assertEquals(GatewayUse.NONE, remotePeering.gatewayUse());
+            Assert.assertEquals(NetworkPeeringGatewayUse.NONE, remotePeering.gatewayUse());
 
             // Delete the peering
             resource.peerings().deleteById(remotePeering.id());
