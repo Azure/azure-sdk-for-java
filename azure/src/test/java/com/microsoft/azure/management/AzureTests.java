@@ -643,7 +643,7 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testVirtualNetworkGateways() throws Exception {
-        new TestVirtualNetworkGateway().runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+        new TestVirtualNetworkGateway.Basic(azure.virtualNetworkGateways().manager()).runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
     }
 
     /**

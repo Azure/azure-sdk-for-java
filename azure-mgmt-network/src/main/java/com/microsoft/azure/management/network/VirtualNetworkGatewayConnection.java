@@ -40,17 +40,17 @@ public interface VirtualNetworkGatewayConnection extends
     /**
      * @return the reference to virtual network gateway resource
      */
-    VirtualNetworkGateway virtualNetworkGateway1();
+    String virtualNetworkGateway1Id();
 
     /**
      * @return the reference to virtual network gateway resource.
      */
-    VirtualNetworkGateway virtualNetworkGateway2();
+    String virtualNetworkGateway2Id();
 
     /**
      * @return the reference to local network gateway resource
      */
-    LocalNetworkGateway localNetworkGateway2();
+    String localNetworkGateway2Id();
 
     /**
      * Get the gateway connection type. Possible values are:

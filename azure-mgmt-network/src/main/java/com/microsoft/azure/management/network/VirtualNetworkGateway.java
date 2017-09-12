@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -20,6 +21,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import rx.Completable;
+import rx.Observable;
 
 import java.util.List;
 
@@ -42,6 +45,25 @@ public interface VirtualNetworkGateway extends
     void reset();
 
     /**
+     * Resets the primary of the virtual network gateway asynchronously.
+     */
+    @Method
+    Completable resetAsync();
+
+    /**
+     * Get all the connections associated with this virtual network gateway.
+     */
+    @Method
+    PagedList<VirtualNetworkGatewayConnection> listConnections();
+
+
+    /**
+     * Get all the connections associated with this virtual network gateway asynchronously.
+     */
+    @Method
+    Observable<VirtualNetworkGatewayConnection> listConnectionsAsync();
+
+    /**
      * @return the entry point to virtual network gateway connections management API for this virtual network gateway
      */
     VirtualNetworkGatewayConnections connections();
@@ -61,7 +83,7 @@ public interface VirtualNetworkGateway extends
     /**
      * @return whether BGP is enabled for this virtual network gateway or not
      */
-    Boolean enableBgp();
+    Boolean isBgpEnabled();
 
     /**
      * @return activeActive flag
@@ -102,8 +124,8 @@ public interface VirtualNetworkGateway extends
             DefinitionStages.WithGatewayType,
             DefinitionStages.WithSku,
             DefinitionStages.WithNetwork,
-            DefinitionStages.WithCreate,
-            DefinitionStages.WithBgpSettingsAndCreate {
+            DefinitionStages.WithBgpSettings,
+            DefinitionStages.WithCreate {
     }
 
     /**
@@ -207,8 +229,12 @@ public interface VirtualNetworkGateway extends
          * The stage of definition allowing to specify virtual network gateway's BGP speaker settings.
          * Note: BGP is supported on Route-Based VPN gateways only.
          */
-        interface WithBgpSettingsAndCreate extends WithCreate {
+        interface WithBgpSettingsEnabled {
+            DefinitionStages.WithBgpSettings enableBgp();
+        }
 
+        interface WithBgpSettings {
+            DefinitionStages.WithCreate withBgpSettings(long asn, String bgpPeeringAddress);
         }
 
         /**
@@ -220,7 +246,8 @@ public interface VirtualNetworkGateway extends
                 Creatable<VirtualNetworkGateway>,
                 Resource.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithPublicIPAddress,
-                DefinitionStages.WithActiveActive {
+                DefinitionStages.WithActiveActive,
+                DefinitionStages.WithBgpSettingsEnabled {
         }
     }
 
@@ -229,42 +256,27 @@ public interface VirtualNetworkGateway extends
      */
     interface UpdateStages {
         /**
-         * The stage of virtual network gateway definition allowing to specify SKU.
+         * The stage of virtual network gateway update allowing to change SKU.
          */
         interface WithSku {
             Update withSku(VirtualNetworkGatewaySkuName skuName);
         }
 
-        interface WithBgpSettings {
+        /**
+         * The stage of update allowing to specify virtual network gateway's BGP speaker settings.
+         * Note: BGP is supported on Route-Based VPN gateways only.
+         */
+        interface WithBgpSettingsEnabled {
+            UpdateStages.WithBgpSettings enableBgp();
 
+            Update disableBgp();
         }
 
         /**
-         * The stage of an application gateway update allowing to modify probes.
+         * The stage of update allowing to specify BGP settings
          */
-        interface WithConnection {
-            /**
-             * Begins the definition of a new connection.
-             * @param name a unique name for the connection
-             * @return the first stage of virtual network gateway connection definition
-             */
-            VirtualNetworkGatewayConnection.DefinitionStages.Blank defineConnection(String name);
-
-            /**
-             * Begins the update of an existing probe.
-             * @param name the name of an existing probe
-             * @return the first stage of a probe update
-             */
-            ApplicationGatewayProbe.Update updateProbe(String name);
-
-            /**
-             * Removes a probe from the application gateway.
-             * <p>
-             * Any references to this probe from backend HTTP configurations will be automatically removed.
-             * @param name the name of an existing probe
-             * @return the next stage of the update
-             */
-            Update withoutProbe(String name);
+        interface WithBgpSettings {
+            Update withBgpSettings(long asn, String bgpPeeringAddress);
         }
     }
 
@@ -278,6 +290,6 @@ public interface VirtualNetworkGateway extends
             Appliable<VirtualNetworkGateway>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithSku,
-            UpdateStages.WithBgpSettings {
+            UpdateStages.WithBgpSettingsEnabled {
     }
 }

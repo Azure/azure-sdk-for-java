@@ -50,19 +50,27 @@ public class VirtualNetworkGatewayConnectionImpl
     }
 
     @Override
-    public VirtualNetworkGateway virtualNetworkGateway1() {
-        return null;
-        //        return inner().virtualNetworkGateway1();
+    public String virtualNetworkGateway1Id() {
+        if (inner().virtualNetworkGateway1() == null) {
+            return null;
+        }
+        return inner().virtualNetworkGateway1().id();
     }
 
     @Override
-    public VirtualNetworkGateway virtualNetworkGateway2() {
-        return null;
+    public String virtualNetworkGateway2Id() {
+        if (inner().virtualNetworkGateway2() == null) {
+            return null;
+        }
+        return inner().virtualNetworkGateway2().id();
     }
 
     @Override
-    public LocalNetworkGateway localNetworkGateway2() {
-        return null;
+    public String localNetworkGateway2Id() {
+        if (inner().localNetworkGateway2() == null) {
+            return null;
+        }
+        return inner().localNetworkGateway2().id();
     }
 
     @Override

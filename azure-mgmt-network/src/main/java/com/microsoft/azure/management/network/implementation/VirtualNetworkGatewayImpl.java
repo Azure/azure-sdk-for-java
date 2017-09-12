@@ -5,12 +5,14 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.BgpSettings;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.VirtualNetworkGateway;
+import com.microsoft.azure.management.network.VirtualNetworkGatewayConnection;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayConnections;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayIPConfiguration;
 import com.microsoft.azure.management.network.VirtualNetworkGatewaySku;
@@ -20,11 +22,14 @@ import com.microsoft.azure.management.network.VirtualNetworkGatewayType;
 import com.microsoft.azure.management.network.VpnClientConfiguration;
 import com.microsoft.azure.management.network.VpnType;
 import com.microsoft.azure.management.resources.ResourceGroup;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -45,13 +50,23 @@ class VirtualNetworkGatewayImpl
         implements
         VirtualNetworkGateway,
         VirtualNetworkGateway.Definition,
-        VirtualNetworkGateway.Update {
+        VirtualNetworkGateway.Update,
+        VirtualNetworkGateway.UpdateStages.WithBgpSettings {
     private static final String GATEWAY_SUBNET = "GatewaySubnet";
 
     private Map<String, VirtualNetworkGatewayIPConfiguration> ipConfigs;
     private VirtualNetworkGatewayConnections connections;
     private Creatable<Network> creatableNetwork;
     private Creatable<PublicIPAddress> creatablePublicIPAddress;
+
+    private final PagedListConverter<VirtualNetworkGatewayConnectionListEntityInner, VirtualNetworkGatewayConnection> connectionsConverter =
+            new PagedListConverter<VirtualNetworkGatewayConnectionListEntityInner, VirtualNetworkGatewayConnection>() {
+                @Override
+                public VirtualNetworkGatewayConnection typeConvert(VirtualNetworkGatewayConnectionListEntityInner inner) {
+                    return connections().getById(inner.id());
+                }
+            };
+
 
     VirtualNetworkGatewayImpl(String name,
                               final VirtualNetworkGatewayInner innerModel,
@@ -153,6 +168,27 @@ class VirtualNetworkGatewayImpl
 
 
     @Override
+    public VirtualNetworkGatewayImpl enableBgp() {
+        inner().withEnableBgp(true);
+        return this;
+    }
+
+    @Override
+    public VirtualNetworkGatewayImpl disableBgp() {
+        inner().withBgpSettings(null);
+        inner().withEnableBgp(false);
+        return this;
+    }
+
+    @Override
+    public VirtualNetworkGatewayImpl withBgpSettings(long asn, String bgpPeeringAddress) {
+        ensureBgpSettings();
+        inner().bgpSettings().withAsn(asn);
+        inner().bgpSettings().withBgpPeeringAddress(bgpPeeringAddress);
+        return this;
+    }
+
+    @Override
     public VirtualNetworkGatewayImpl withActiveActive(boolean activeActive) {
         this.inner().withActiveActive(activeActive);
         return this;
@@ -160,7 +196,39 @@ class VirtualNetworkGatewayImpl
 
     @Override
     public void reset() {
+        resetAsync().await();
+    }
 
+    @Override
+    public Completable resetAsync() {
+        return this.manager().inner().virtualNetworkGateways().resetAsync(resourceGroupName(), name()).map(new Func1<VirtualNetworkGatewayInner, Void>() {
+            @Override
+            public Void call(VirtualNetworkGatewayInner inner) {
+                VirtualNetworkGatewayImpl.this.setInner(inner);
+                return null;
+            }
+        }).toCompletable();
+    }
+
+    @Override
+    public PagedList<VirtualNetworkGatewayConnection> listConnections() {
+        return wrapConnectionsList(this.manager().inner().virtualNetworkGateways().listConnections(this.resourceGroupName(), this.name()));
+    }
+
+    private PagedList<VirtualNetworkGatewayConnection> wrapConnectionsList(PagedList<VirtualNetworkGatewayConnectionListEntityInner> connectionListEntityInners) {
+        return connectionsConverter.convert(connectionListEntityInners);
+    }
+
+    @Override
+    public Observable<VirtualNetworkGatewayConnection> listConnectionsAsync() {
+        return ReadableWrappersImpl.convertPageToInnerAsync(this.manager().inner().virtualNetworkGateways().listConnectionsAsync(this.resourceGroupName(), this.name()))
+                .map(new Func1<VirtualNetworkGatewayConnectionListEntityInner, VirtualNetworkGatewayConnection>() {
+                    @Override
+                    public VirtualNetworkGatewayConnection call(VirtualNetworkGatewayConnectionListEntityInner connectionInner) {
+                        // will re-query to get full information for the connection
+                        return connections().getById(connectionInner.id());
+                    }
+                });
     }
 
     @Override
@@ -182,7 +250,7 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public Boolean enableBgp() {
+    public Boolean isBgpEnabled() {
         return inner().enableBgp();
     }
 
@@ -284,6 +352,12 @@ class VirtualNetworkGatewayImpl
     @Override
     protected void afterCreating() {
         initializeChildrenFromInner();
+    }
+
+    private void ensureBgpSettings() {
+        if (inner().bgpSettings() == null) {
+            inner().withBgpSettings(new BgpSettings());
+        }
     }
 
     private VirtualNetworkGatewayIPConfigurationImpl ensureDefaultIPConfig() {
