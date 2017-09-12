@@ -11,6 +11,11 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Single;
 import rx.functions.Func1;
 
+import static java.net.HttpURLConnection.HTTP_CLIENT_TIMEOUT;
+import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
+import static java.net.HttpURLConnection.HTTP_NOT_IMPLEMENTED;
+import static java.net.HttpURLConnection.HTTP_VERSION;
+
 /**
  * An instance of this interceptor placed in the request pipeline handles retriable errors.
  */
@@ -57,7 +62,10 @@ public final class RetryPolicy implements RequestPolicy {
         // FIXME: delete old RetryHandler and introduce these named constants
         //CHECKSTYLE IGNORE MagicNumber FOR NEXT 2 LINES
         return tryCount < maxRetries
-                && (code == 408 || (code >= 500 && code != 501 && code != 505));
+                && (code == HTTP_CLIENT_TIMEOUT
+                                    || (code >= HTTP_INTERNAL_ERROR
+                                       && code != HTTP_NOT_IMPLEMENTED
+                                        && code != HTTP_VERSION));
     }
 
     @Override
