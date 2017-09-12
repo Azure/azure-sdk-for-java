@@ -79,7 +79,7 @@ public class FrontendIPConfigurationInner extends SubResource {
      * A list of availability zones denoting the IP allocated for the resource
      * needs to come from.
      */
-    @JsonProperty(value = "properties.zones")
+    @JsonProperty(value = "zones")
     private List<String> zones;
 
     /**

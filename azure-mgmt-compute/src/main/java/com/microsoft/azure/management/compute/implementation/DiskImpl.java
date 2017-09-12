@@ -16,6 +16,7 @@ import com.microsoft.azure.management.compute.DiskSku;
 import com.microsoft.azure.management.compute.DiskSkuTypes;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.Snapshot;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceCallback;
@@ -23,6 +24,11 @@ import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * The implementation for {@link Disk} and its create and update interfaces.
@@ -76,6 +82,17 @@ class DiskImpl
     @Override
     public CreationSource source() {
         return new CreationSource(this.inner().creationData());
+    }
+
+    @Override
+    public Set<AvailabilityZoneId> availabilityZones() {
+        Set<AvailabilityZoneId> zones = new HashSet<>();
+        if (this.inner().zones() != null) {
+            for (String zone : this.inner().zones()) {
+                zones.add(AvailabilityZoneId.fromString(zone));
+            }
+        }
+        return Collections.unmodifiableSet(zones);
     }
 
     @Override
@@ -293,6 +310,19 @@ class DiskImpl
     @Override
     public DiskImpl withSku(DiskSkuTypes sku) {
         this.inner().withSku((new DiskSku()).withName(sku.accountType()));
+        return this;
+    }
+
+    @Override
+    public DiskImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
+        // Note: Zone is not updatable as of now, so this is available only during definition time.
+        // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
+        // zone or remove one. Trying to remove the last one means attempt to change resource from
+        // zonal to regional, which is not supported.
+        if (this.inner().zones() == null) {
+            this.inner().withZones(new ArrayList<String>());
+        }
+        this.inner().zones().add(zoneId.toString());
         return this;
     }
 

@@ -6,9 +6,11 @@
 
 package com.microsoft.azure.management.compute;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.DiskInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -19,6 +21,8 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+
+import java.util.Set;
 
 /**
  * An immutable client-side representation of an Azure managed disk.
@@ -63,6 +67,12 @@ public interface Disk extends
      * @return the details of the source from which the disk is created
      */
     CreationSource source();
+
+    /**
+     * @return the availability zones assigned to the disk
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    Set<AvailabilityZoneId> availabilityZones();
 
     /**
      * Grants access to the disk.
@@ -390,6 +400,21 @@ public interface Disk extends
         }
 
         /**
+         * The stage of the managed disk definition allowing to specify availability zone.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone {
+            /**
+             * Specifies the availability zone for the managed disk.
+             *
+             * @param zoneId the zone identifier.
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithCreate withAvailabilityZone(AvailabilityZoneId zoneId);
+        }
+
+        /**
          * The stage of the managed disk definition allowing to create the disk or optionally specify size.
          */
         interface WithCreateAndSize extends WithCreate {
@@ -423,7 +448,8 @@ public interface Disk extends
         interface WithCreate extends
                 Creatable<Disk>,
                 Resource.DefinitionWithTags<Disk.DefinitionStages.WithCreate>,
-                WithSku {
+                WithSku,
+                WithAvailabilityZone {
         }
     }
 
