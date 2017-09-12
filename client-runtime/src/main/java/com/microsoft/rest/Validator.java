@@ -48,6 +48,7 @@ public final class Validator {
         }
         if (parameterToken.isPrimitive()
                 || parameterType.isEnum()
+                || parameterType == Class.class
                 || parameterToken.isSupertypeOf(LocalDate.class)
                 || parameterToken.isSupertypeOf(DateTime.class)
                 || parameterToken.isSupertypeOf(String.class)
