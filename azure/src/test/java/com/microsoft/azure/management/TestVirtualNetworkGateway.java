@@ -62,7 +62,6 @@ public class TestVirtualNetworkGateway {
                     .withRouteBasedVpn()
                     .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                     .withTag("tag1", "value1")
-//                .withActiveActive(true)
                     .create();
             return vngw;
         }
@@ -107,7 +106,6 @@ public class TestVirtualNetworkGateway {
                     .withRouteBasedVpn()
                     .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
                     .create();
-//            VirtualNetworkGateway vngw = gateways.getByResourceGroup("vngw115313group", "vngw115313");
             LocalNetworkGateway lngw = gateways.manager().localNetworkGateways().define("lngw" + TEST_ID)
                     .withRegion(vngw.region())
                     .withExistingResourceGroup(vngw.resourceGroupName())
@@ -180,24 +178,12 @@ public class TestVirtualNetworkGateway {
             }).toCompletable().await();
             VirtualNetworkGateway vngw1 = gws.get(0);
             VirtualNetworkGateway vngw2 = gws.get(1);
-//            {
-//                @Override
-//                public VirtualNetworkGateway call(VirtualNetworkGatewayInner inner) {
-//                    VirtualNetworkGateway vngw1 = new VNGI
-//                    self.setInner(inner);
-//                    return self;
-//                }
-//            });
-//            observable.first();
-//            VirtualNetworkGateway vngw = gateways.getByResourceGroup("vngw115313group", "vngw115313");
             vngw1.connections()
                     .define(CONNECTION_NAME)
                     .withVNetToVNet()
                     .withSecondVirtualNetworkGateway(vngw2)
                     .withSharedKey("MySecretKey")
                     .create();
-            List<VirtualNetworkGatewayConnection> connections = vngw1.listConnections();
-            Assert.assertEquals(1, connections.size());
             return vngw1;
         }
 
