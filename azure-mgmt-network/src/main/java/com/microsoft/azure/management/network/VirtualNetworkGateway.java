@@ -46,19 +46,20 @@ public interface VirtualNetworkGateway extends
 
     /**
      * Resets the primary of the virtual network gateway asynchronously.
+     * @return a representation of the deferred computation of this call
      */
     @Method
     Completable resetAsync();
 
     /**
-     * Get all the connections associated with this virtual network gateway.
+     * @return all the connections associated with this virtual network gateway
      */
     @Method
     PagedList<VirtualNetworkGatewayConnection> listConnections();
 
-
     /**
      * Get all the connections associated with this virtual network gateway asynchronously.
+     * @return all the connections associated with this virtual network gateway
      */
     @Method
     Observable<VirtualNetworkGatewayConnection> listConnectionsAsync();
@@ -233,7 +234,14 @@ public interface VirtualNetworkGateway extends
             DefinitionStages.WithBgpSettings enableBgp();
         }
 
+        /**
+         * The stage of definition allowing to specify BGP settings.
+         */
         interface WithBgpSettings {
+            /**
+             * @param asn the BGP speaker's ASN
+             * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
+             */
             DefinitionStages.WithCreate withBgpSettings(long asn, String bgpPeeringAddress);
         }
 
@@ -273,9 +281,14 @@ public interface VirtualNetworkGateway extends
         }
 
         /**
-         * The stage of update allowing to specify BGP settings
+         * The stage of update allowing to specify BGP settings.
          */
         interface WithBgpSettings {
+            /**
+             *
+             * @param asn the BGP speaker's ASN
+             * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
+             */
             Update withBgpSettings(long asn, String bgpPeeringAddress);
         }
     }
