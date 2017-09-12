@@ -444,7 +444,7 @@ class NetworkPeeringImpl
         final NetworkPeeringImpl self = this;
         if (self.remoteNetwork != null) {
             return Observable.just(self.remoteNetwork);
-        } else if (ResourceUtils.subscriptionFromResourceId(this.remoteNetworkId()).equalsIgnoreCase(ResourceUtils.subscriptionFromResourceId(this.id()))) {
+        } else if (this.isSameSubscription()) {
             // Fetch the remote network if within the same subscription
             return this.manager().networks().getByIdAsync(this.remoteNetworkId())
                 .doOnNext(new Action1<Network>() {
