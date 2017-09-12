@@ -59,7 +59,7 @@ public final class UserAgentPolicy implements RequestPolicy {
         } else {
             header = userAgent + " " + header;
         }
-        request.headers().overwrite("User-Agent", header);
+        request.headers().set("User-Agent", header);
 
         return next.sendAsync(request);
     }

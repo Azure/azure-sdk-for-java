@@ -62,13 +62,13 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     }
 
     /**
-     * Replace the value for the header named headerName,
+     * Set the value for the header named headerName,
      * discarding any value previously added for that header.
      * @param headerName The name of the header.
      * @param headerValue The value of the header.
      * @return This HttpHeaders instance.
      */
-    public HttpHeaders overwrite(String headerName, String headerValue) {
+    public HttpHeaders set(String headerName, String headerValue) {
         final String headerKey = headerName.toLowerCase();
         headers.put(headerKey, new HttpHeader(headerName, headerValue));
         return this;
