@@ -8,22 +8,13 @@ package com.microsoft.rest;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.MockHttpClient;
 import com.microsoft.rest.v2.http.MockHttpResponse;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyChain;
-import com.microsoft.rest.v2.policy.SendRequestPolicyFactory;
 import com.microsoft.rest.v2.policy.UserAgentPolicy;
 import org.junit.Assert;
 import org.junit.Test;
 
-import java.io.IOException;
-
-import okhttp3.Interceptor;
-import okhttp3.OkHttpClient;
-import okhttp3.Protocol;
-import okhttp3.Response;
-import retrofit2.http.HTTP;
 import rx.Single;
 
 public class UserAgentTests {
