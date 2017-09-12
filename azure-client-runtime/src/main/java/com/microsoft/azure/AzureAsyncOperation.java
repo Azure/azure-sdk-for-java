@@ -138,16 +138,17 @@ final class AzureAsyncOperation {
             try {
                 rawString = response.body().string();
                 asyncOperation = serializerAdapter.deserialize(rawString, AzureAsyncOperation.class);
-                asyncOperation.rawString = rawString;
             } catch (IOException exception) {
                 // Exception will be handled below
-            }
-            finally {
+            } finally {
                 response.body().close();
             }
         }
         if (asyncOperation == null || asyncOperation.status() == null) {
             throw new CloudException("polling response does not contain a valid body: " + rawString, response);
+        }
+        else {
+            asyncOperation.rawString = rawString;
         }
         return asyncOperation;
     }
