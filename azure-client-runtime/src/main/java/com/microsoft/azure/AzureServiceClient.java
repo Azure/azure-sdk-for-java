@@ -8,17 +8,9 @@ package com.microsoft.azure;
 
 import com.google.common.hash.Hashing;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.v2.policy.CredentialsPolicy;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.v2.http.HttpClient;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.policy.RequestPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicyChain;
-import com.microsoft.rest.v2.http.RxNettyAdapter;
-import rx.Single;
 
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -49,28 +41,6 @@ public abstract class AzureServiceClient extends ServiceClient {
      */
     protected AzureServiceClient(RestClient restClient) {
         super(restClient);
-
-        final ServiceClientCredentials credentials = restClient().credentials();
-        final RxNettyAdapter rxnClient = new RxNettyAdapter();
-        httpClient = new RequestPolicyChain(new CredentialsPolicy.Factory(credentials), new RequestPolicy.Factory() {
-            @Override
-            public RequestPolicy create(RequestPolicy next) {
-                return new RequestPolicy() {
-                    @Override
-                    public Single<HttpResponse> sendAsync(HttpRequest request) {
-                        return rxnClient.sendAsync(request);
-                    }
-                };
-            }
-        });
-    }
-
-    private final HttpClient httpClient;
-    /**
-     * @return the RestProxy HTTP client.
-     */
-    public HttpClient rpHttpClient() {
-        return httpClient;
     }
 
     /**

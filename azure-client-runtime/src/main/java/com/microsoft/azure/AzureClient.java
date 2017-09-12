@@ -690,7 +690,7 @@ public final class AzureClient extends AzureServiceClient {
         } catch (MalformedURLException e) {
             return Observable.error(e);
         }
-        AsyncService service = RestProxy.create(AsyncService.class, rpHttpClient(), serializerAdapter());
+        AsyncService service = RestProxy.create(AsyncService.class, httpClient(), serializerAdapter());
         if (loggingContext != null && !loggingContext.endsWith(" (poll)")) {
             loggingContext += " (poll)";
         }

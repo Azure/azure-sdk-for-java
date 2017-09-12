@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.microsoft.rest.v2.policy.RequestPolicy;
 import io.netty.buffer.ByteBuf;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
@@ -28,6 +29,7 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -35,14 +37,15 @@ import java.util.Set;
  * A HttpClient that is implemented using RxNetty.
  */
 public class RxNettyAdapter extends HttpClient {
-    private final ChannelHandlerConfig[] handlerConfigs;
+    private final List<ChannelHandlerConfig> handlerConfigs;
 
     /**
      * Creates RxNettyClient.
-     *
+     * @param policyFactories the sequence of RequestPolicies to apply when sending HTTP requests.
      * @param handlerConfigs the Netty ChannelHandler configurations.
      */
-    public RxNettyAdapter(ChannelHandlerConfig... handlerConfigs) {
+    public RxNettyAdapter(List<RequestPolicy.Factory> policyFactories, List<ChannelHandlerConfig> handlerConfigs) {
+        super(policyFactories);
         this.handlerConfigs = handlerConfigs;
     }
 
@@ -59,7 +62,7 @@ public class RxNettyAdapter extends HttpClient {
     }
 
     @Override
-    public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
+    public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
         Single<? extends HttpResponse> result;
 
         try {
@@ -86,8 +89,8 @@ public class RxNettyAdapter extends HttpClient {
             io.reactivex.netty.protocol.http.client.HttpClient<ByteBuf, ByteBuf> rxnClient =
                     io.reactivex.netty.protocol.http.client.HttpClient.newClient(uri.getHost(), port);
 
-            for (int i = 0; i < handlerConfigs.length; i++) {
-                ChannelHandlerConfig config = handlerConfigs[i];
+            for (int i = 0; i < handlerConfigs.size(); i++) {
+                ChannelHandlerConfig config = handlerConfigs.get(i);
                 if (config.mayBlock()) {
                     EventExecutorGroup executorGroup = new DefaultEventExecutorGroup(1);
                     rxnClient = rxnClient.addChannelHandlerLast(executorGroup, "az-client-handler-" + i, config.factory());

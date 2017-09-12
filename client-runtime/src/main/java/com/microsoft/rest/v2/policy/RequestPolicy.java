@@ -11,7 +11,9 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Single;
 
 /**
- * Type represents a RequestPolicy in the request-response pipeline.
+ * Uses the decorator pattern to add custom behavior when an HTTP request is made.
+ * e.g. add header, user agent, timeout, retry, etc.
+ *
  */
 public interface RequestPolicy {
     /**
@@ -20,10 +22,12 @@ public interface RequestPolicy {
      * @param request The HTTP request message to send.
      * @return The rx.Single instance representing the asynchronous operation.
      */
-    Single<HttpResponse> sendAsync(HttpRequest request);
+    Single<? extends HttpResponse> sendAsync(HttpRequest request);
 
     /**
-     * Factory to create a RequestPolicy.
+     * Factory to create a RequestPolicy. RequestPolicies are instantiated per-request
+     * so that they can contain instance state specific to that request/response exchange,
+     * for example, the number of retries attempted so far in a counter.
      */
     interface Factory {
         /**

@@ -49,7 +49,7 @@ public final class CredentialsPolicy implements RequestPolicy {
      * @return An rx.Single representing the pending response.
      */
     @Override
-    public Single<HttpResponse> sendAsync(HttpRequest request) {
+    public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
         String token = credentials.headerValue(request.url());
         request.headers().add("Authorization", token);
         return next.sendAsync(request);

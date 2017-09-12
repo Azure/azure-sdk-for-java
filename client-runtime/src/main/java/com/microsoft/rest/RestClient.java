@@ -10,17 +10,17 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.protocol.Environment;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
+import com.microsoft.rest.v2.http.ChannelHandlerConfig;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.RxNettyAdapter;
 import com.microsoft.rest.v2.policy.CredentialsPolicy;
 import com.microsoft.rest.v2.policy.LoggingPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicyChain;
 import com.microsoft.rest.v2.policy.RetryPolicy;
-import com.microsoft.rest.v2.policy.SendRequestPolicyFactory;
 import com.microsoft.rest.v2.policy.UserAgentPolicy;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.concurrent.TimeUnit;
 
@@ -40,10 +40,8 @@ public final class RestClient {
     private LogLevel logLevel;
 
     private final List<RequestPolicy.Factory> customPolicyFactories;
-    private final RequestPolicyChain fullPolicyChain;
 
     private RestClient(RestClient.Builder builder) {
-        this.httpClient = builder.httpClient;
         this.baseURL = builder.baseUrl;
         this.userAgent = builder.userAgent;
         this.readTimeoutMillis = builder.readTimeoutMillis;
@@ -52,20 +50,19 @@ public final class RestClient {
         this.responseBuilderFactory = builder.responseBuilderFactory;
         this.credentials = builder.credentials;
         this.logLevel = builder.logLevel;
-
         this.customPolicyFactories = builder.customPolicyFactories;
-        this.fullPolicyChain = createPolicyChain();
+
+        this.httpClient = new RxNettyAdapter(createPolicyFactories(), Collections.<ChannelHandlerConfig>emptyList());
     }
 
-    private RequestPolicyChain createPolicyChain() {
+    private List<RequestPolicy.Factory> createPolicyFactories() {
         List<RequestPolicy.Factory> allFactories = new ArrayList<>();
         allFactories.add(new UserAgentPolicy.Factory(userAgent));
         allFactories.add(new RetryPolicy.Factory());
         allFactories.add(new LoggingPolicy.Factory(logLevel));
         allFactories.add(new CredentialsPolicy.Factory(credentials));
         allFactories.addAll(customPolicyFactories);
-        allFactories.add(new SendRequestPolicyFactory(httpClient));
-        return new RequestPolicyChain(allFactories);
+        return allFactories;
     }
 
     /**
@@ -94,13 +91,6 @@ public final class RestClient {
      */
     public HttpClient httpClient() {
         return httpClient;
-    }
-
-    /**
-     * @return a {@link RequestPolicyChain} instance containing all request policies.
-     */
-    public RequestPolicyChain fullPolicyChain() {
-        return fullPolicyChain;
     }
 
     /**
@@ -153,8 +143,6 @@ public final class RestClient {
         private final long defaultReadTimeoutMillis = 10000;
         private final long defaultConnectionTimeoutMillis = 10000;
 
-
-        private HttpClient httpClient;
         /** The dynamic base URL with variables wrapped in "{" and "}". */
         private String baseUrl;
         /** The credentials to authenticate. */
@@ -174,7 +162,6 @@ public final class RestClient {
         private LogLevel logLevel = LogLevel.NONE;
 
         private Builder(final RestClient restClient) {
-            this.httpClient = restClient.httpClient;
             this.baseUrl = restClient.baseURL;
             this.userAgent = restClient.userAgent;
             this.responseBuilderFactory = restClient.responseBuilderFactory;
@@ -189,9 +176,7 @@ public final class RestClient {
         /**
          * Creates an instance of the builder.
          */
-        public Builder() {
-            this.httpClient = new RxNettyAdapter();
-        }
+        public Builder() { }
 
         /**
          * Sets the dynamic base URL.
@@ -201,16 +186,6 @@ public final class RestClient {
          */
         public Builder withBaseUrl(String baseUrl) {
             this.baseUrl = baseUrl;
-            return this;
-        }
-
-        /**
-         * Sets the HTTP client on the builder.
-         * @param client the HTTP client to use.
-         * @return the builder.
-         */
-        public Builder withHttpClient(HttpClient client) {
-            this.httpClient = client;
             return this;
         }
 

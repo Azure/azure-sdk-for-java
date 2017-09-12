@@ -52,7 +52,7 @@ public final class UserAgentPolicy implements RequestPolicy {
     }
 
     @Override
-    public Single<HttpResponse> sendAsync(HttpRequest request) {
+    public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
         String header = request.headers().value("User-Agent");
         if (header == null || DEFAULT_USER_AGENT_HEADER.equals(header)) {
             header = userAgent;

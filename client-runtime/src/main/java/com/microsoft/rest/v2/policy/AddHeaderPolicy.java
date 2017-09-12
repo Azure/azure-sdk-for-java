@@ -36,7 +36,7 @@ public final class AddHeaderPolicy implements RequestPolicy {
     }
 
     @Override
-    public Single<HttpResponse> sendAsync(HttpRequest request) {
+    public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
         request.headers().add("x-my-header", "42");
         return next.sendAsync(request);
     }

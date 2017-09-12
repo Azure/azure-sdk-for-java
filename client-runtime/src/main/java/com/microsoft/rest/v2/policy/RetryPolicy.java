@@ -54,17 +54,18 @@ public final class RetryPolicy implements RequestPolicy {
 
     private boolean shouldRetry(HttpResponse response) {
         int code = response.statusCode();
+        // FIXME: delete old RetryHandler and introduce these named constants
         //CHECKSTYLE IGNORE MagicNumber FOR NEXT 2 LINES
         return tryCount < maxRetries
                 && (code == 408 || (code >= 500 && code != 501 && code != 505));
     }
 
     @Override
-    public Single<HttpResponse> sendAsync(final HttpRequest request) {
-        Single<HttpResponse> asyncResponse = next.sendAsync(request);
-        return asyncResponse.flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
+    public Single<? extends HttpResponse> sendAsync(final HttpRequest request) {
+        Single<? extends HttpResponse> asyncResponse = next.sendAsync(request);
+        return asyncResponse.flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
             @Override
-            public Single<HttpResponse> call(HttpResponse httpResponse) {
+            public Single<? extends HttpResponse> call(HttpResponse httpResponse) {
                 if (shouldRetry(httpResponse)) {
                     tryCount++;
                     return sendAsync(request);

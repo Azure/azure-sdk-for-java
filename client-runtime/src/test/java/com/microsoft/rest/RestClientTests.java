@@ -53,7 +53,7 @@ public class RestClientTests {
                 public RequestPolicy create(final RequestPolicy next) {
                     return new RequestPolicy() {
                         @Override
-                        public Single<HttpResponse> sendAsync(HttpRequest request) {
+                        public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
                             return next.sendAsync(request);
                         }
                     };
@@ -87,7 +87,7 @@ public class RestClientTests {
                 public RequestPolicy create(final RequestPolicy next) {
                     return new RequestPolicy() {
                         @Override
-                        public Single<HttpResponse> sendAsync(HttpRequest request) {
+                        public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
                             return next.sendAsync(request);
                         }
                     };

@@ -6,38 +6,33 @@
 
 package com.microsoft.rest;
 
+import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpResponse;
 import com.microsoft.rest.v2.policy.RequestPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicyChain;
 import com.microsoft.rest.v2.policy.UserAgentPolicy;
 import org.junit.Assert;
 import org.junit.Test;
 
 import rx.Single;
 
+import java.util.Collections;
+
 public class UserAgentTests {
     @Test
     public void defaultUserAgentTests() throws Exception {
-        RequestPolicyChain chain = new RequestPolicyChain(
-                new UserAgentPolicy.Factory("AutoRest-Java"),
-                new RequestPolicy.Factory() {
-                    @Override
-                    public RequestPolicy create(final RequestPolicy next) {
-                        return new RequestPolicy() {
-                            @Override
-                            public Single<HttpResponse> sendAsync(HttpRequest request) {
-                                Assert.assertEquals(
-                                        request.headers().value("User-Agent"),
-                                        "AutoRest-Java");
-                                return Single.<HttpResponse>just(new MockHttpResponse(200));
-                            }
-                        };
-                    }
-                });
+        HttpClient client = new HttpClient(Collections.<RequestPolicy.Factory>singletonList(new UserAgentPolicy.Factory("AutoRest-Java"))) {
+            @Override
+            public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+                Assert.assertEquals(
+                        request.headers().value("User-Agent"),
+                        "AutoRest-Java");
+                return Single.<HttpResponse>just(new MockHttpResponse(200));
+            }
+        };
 
-        HttpResponse response = chain.sendRequest(new HttpRequest(
+        HttpResponse response = client.sendRequest(new HttpRequest(
                 "defaultUserAgentTests",
                 "GET", "http://localhost"));
 
@@ -46,24 +41,16 @@ public class UserAgentTests {
 
     @Test
     public void customUserAgentTests() throws Exception {
-        RequestPolicyChain chain = new RequestPolicyChain(
-                new UserAgentPolicy.Factory("Awesome"),
-                new RequestPolicy.Factory() {
-                    @Override
-                    public RequestPolicy create(final RequestPolicy next) {
-                        return new RequestPolicy() {
-                            @Override
-                            public Single<HttpResponse> sendAsync(HttpRequest request) {
-                                String header = request.headers().value("User-Agent");
-                                Assert.assertEquals("Awesome", header);
-                                return Single.<HttpResponse>just(new MockHttpResponse(200));
-                            }
-                        };
-                    }
-                }
-        );
+        HttpClient client = new HttpClient(Collections.<RequestPolicy.Factory>singletonList(new UserAgentPolicy.Factory("Awesome"))) {
+            @Override
+            public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+                String header = request.headers().value("User-Agent");
+                Assert.assertEquals("Awesome", header);
+                return Single.<HttpResponse>just(new MockHttpResponse(200));
+            }
+        };
 
-        HttpResponse response = chain.sendRequest(new HttpRequest("customUserAgentTests", "GET", "http://localhost"));
+        HttpResponse response = client.sendRequest(new HttpRequest("customUserAgentTests", "GET", "http://localhost"));
         Assert.assertEquals(200, response.statusCode());
     }
 }

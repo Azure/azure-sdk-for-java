@@ -69,7 +69,7 @@ public final class LoggingPolicy implements RequestPolicy {
     }
 
     @Override
-    public Single<HttpResponse> sendAsync(HttpRequest request) {
+    public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
         String context = request.callerMethod();
         if (context == null) {
             context = "";

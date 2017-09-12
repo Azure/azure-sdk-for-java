@@ -10,15 +10,17 @@ import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.policy.RequestIdPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicyChain;
+import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RetryPolicy;
-import com.microsoft.rest.v2.policy.SendRequestPolicyFactory;
 import org.junit.Assert;
 import org.junit.Test;
 import rx.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 public class RequestIdPolicyTests {
     private final HttpResponse mockResponse = new HttpResponse() {
@@ -52,40 +54,36 @@ public class RequestIdPolicyTests {
 
     @Test
     public void newRequestIdForEachCall() throws Exception {
-        RequestPolicyChain chain = new RequestPolicyChain(
-                new RequestIdPolicy.Factory(),
-                new SendRequestPolicyFactory(new HttpClient() {
-                    String firstRequestId = null;
-                    @Override
-                    public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
-                        if (firstRequestId != null) {
-                            String newRequestId = request.headers().value(REQUEST_ID_HEADER);
-                            Assert.assertNotNull(newRequestId);
-                            Assert.assertNotEquals(newRequestId, firstRequestId);
-                        }
+        HttpClient client = new HttpClient(Collections.<RequestPolicy.Factory>singletonList(new RequestIdPolicy.Factory())) {
+            String firstRequestId = null;
+            @Override
+            public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+                if (firstRequestId != null) {
+                    String newRequestId = request.headers().value(REQUEST_ID_HEADER);
+                    Assert.assertNotNull(newRequestId);
+                    Assert.assertNotEquals(newRequestId, firstRequestId);
+                }
 
-                        firstRequestId = request.headers().value(REQUEST_ID_HEADER);
-                        if (firstRequestId == null) {
-                            Assert.fail();
-                        }
+                firstRequestId = request.headers().value(REQUEST_ID_HEADER);
+                if (firstRequestId == null) {
+                    Assert.fail();
+                }
 
-                        return Single.just(mockResponse);
-                    }
-                }));
+                return Single.just(mockResponse);
+            }
+        };
 
-        chain.sendRequest(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/"));
-        chain.sendRequest(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/"));
+        client.sendRequest(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/"));
+        client.sendRequest(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/"));
     }
 
     @Test
     public void sameRequestIdForRetry() throws Exception {
-        RequestPolicyChain chain = new RequestPolicyChain(
-                new RequestIdPolicy.Factory(),
-                new RetryPolicy.Factory(1),
-                new SendRequestPolicyFactory(new HttpClient() {
+        List<RequestPolicy.Factory> policies = Arrays.asList(new RequestIdPolicy.Factory(), new RetryPolicy.Factory(1));
+        HttpClient client = new HttpClient(policies) {
                     String firstRequestId = null;
                     @Override
-                    public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
+                    public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                         if (firstRequestId != null) {
                             String newRequestId = request.headers().value(REQUEST_ID_HEADER);
                             Assert.assertNotNull(newRequestId);
@@ -99,8 +97,8 @@ public class RequestIdPolicyTests {
 
                         return Single.just(mockResponse);
                     }
-                }));
+                };
 
-        chain.sendRequest(new HttpRequest("sameRequestIdForRetry", "GET", "http://localhost/"));
+        client.sendRequest(new HttpRequest("sameRequestIdForRetry", "GET", "http://localhost/"));
     }
 }
