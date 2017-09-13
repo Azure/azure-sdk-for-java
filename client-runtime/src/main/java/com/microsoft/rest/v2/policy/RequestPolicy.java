@@ -22,7 +22,7 @@ public interface RequestPolicy {
      * @param request The HTTP request message to send.
      * @return The rx.Single instance representing the asynchronous operation.
      */
-    Single<? extends HttpResponse> sendAsync(HttpRequest request);
+    Single<HttpResponse> sendAsync(HttpRequest request);
 
     /**
      * Factory to create a RequestPolicy. RequestPolicies are instantiated per-request

@@ -62,7 +62,7 @@ public class RequestIdPolicyTests {
         HttpClient client = new HttpClient(Collections.<RequestPolicy.Factory>singletonList(new RequestIdPolicy.Factory())) {
             String firstRequestId = null;
             @Override
-            public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+            public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                 if (firstRequestId != null) {
                     String newRequestId = request.headers().value(REQUEST_ID_HEADER);
                     Assert.assertNotNull(newRequestId);
@@ -88,7 +88,7 @@ public class RequestIdPolicyTests {
         HttpClient client = new HttpClient(policies) {
                     String firstRequestId = null;
                     @Override
-                    public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+                    public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                         if (firstRequestId != null) {
                             String newRequestId = request.headers().value(REQUEST_ID_HEADER);
                             Assert.assertNotNull(newRequestId);

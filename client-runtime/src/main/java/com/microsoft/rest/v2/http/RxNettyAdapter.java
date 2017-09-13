@@ -62,8 +62,8 @@ public class RxNettyAdapter extends HttpClient {
     }
 
     @Override
-    public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
-        Single<? extends HttpResponse> result;
+    public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+        Single<HttpResponse> result;
 
         try {
             final URI uri = new URI(request.url());

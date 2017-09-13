@@ -26,7 +26,7 @@ public class RetryPolicyTests {
             private int count = 0;
 
             @Override
-            protected Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+            protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                 return Single.<HttpResponse>just(new MockHttpResponse(codes[count++]));
             }
         };
@@ -47,7 +47,7 @@ public class RetryPolicyTests {
         HttpClient client = new HttpClient(Collections.<RequestPolicy.Factory>singletonList(new RetryPolicy.Factory(maxRetries))) {
             int count = -1;
             @Override
-            public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+            public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                 Assert.assertTrue(count++ < maxRetries);
                 return Single.<HttpResponse>just(new MockHttpResponse(500));
             }

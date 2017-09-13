@@ -67,7 +67,7 @@ public final class RetryPolicy implements RequestPolicy {
     }
 
     @Override
-    public Single<? extends HttpResponse> sendAsync(final HttpRequest request) {
+    public Single<HttpResponse> sendAsync(final HttpRequest request) {
         Single<? extends HttpResponse> asyncResponse = next.sendAsync(request);
         return asyncResponse.flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
             @Override

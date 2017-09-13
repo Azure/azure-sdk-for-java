@@ -9,6 +9,7 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Observable;
 import rx.Single;
+import rx.functions.Func0;
 import rx.functions.Func1;
 
 import java.io.IOException;
@@ -47,12 +48,24 @@ public class AzureProxy {
                                     result = Single.just(response);
                                 }
                                 else {
-                                    final Value<String> location = new Value<>(response.headerValue("Location"));
+                                    final Value<String> pollUrl = new Value<>(getPollUrl(response));
+                                    final Value<Integer> retryAfterMilliseconds = new Value();
+
+                                    result = Observable
+                                                .defer(new Func0<Observable<HttpResponse>>() {
+                                                    @Override
+                                                    public Observable<HttpResponse> call() {
+                                                        final HttpRequest pollRequest = new HttpRequest(methodParser.fullyQualifiedMethodName(), "GET", pollUrl.get());
+                                                        return httpClient.sendRequestAsync(pollRequest).toObservable();
+                                                    }
+                                                })
+                                                .toSingle();
+
                                     result = Observable.just(true)
                                             .flatMap(new Func1<Boolean, Observable<? extends HttpResponse>>() {
                                                 @Override
                                                 public Observable<? extends HttpResponse> call(Boolean aBoolean) {
-                                                    final HttpRequest pollRequest = new HttpRequest(methodParser.fullyQualifiedMethodName(), "GET", location.get());
+                                                    final HttpRequest pollRequest = new HttpRequest(methodParser.fullyQualifiedMethodName(), "GET", pollUrl.get());
                                                     return httpClient.sendRequestAsync(pollRequest).toObservable();
                                                 }
                                             })
@@ -62,7 +75,7 @@ public class AzureProxy {
                                                 public Boolean call(HttpResponse response) {
                                                     final boolean result = response.statusCode() != 202;
                                                     if (!result) {
-                                                        location.set(response.headerValue("Location"));
+                                                        pollUrl.set(getPollUrl(response));
                                                     }
                                                     return result;
                                                 }
@@ -76,6 +89,17 @@ public class AzureProxy {
                 return RestProxy.defaultResponseHandler.handleAsyncResponse(asyncResponse, methodParser, serializer);
             }
         });
+    }
+
+    private static String getPollUrl(HttpResponse response) {
+        String pollUrl = null;
+
+        final String location = response.headerValue("Location");
+        if (location != null && !location.isEmpty()) {
+            pollUrl = location;
+        }
+
+        return pollUrl;
     }
 
     private static class Value<T> {

@@ -24,7 +24,7 @@ public class UserAgentTests {
     public void defaultUserAgentTests() throws Exception {
         HttpClient client = new HttpClient(Collections.<RequestPolicy.Factory>singletonList(new UserAgentPolicy.Factory("AutoRest-Java"))) {
             @Override
-            public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+            public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                 Assert.assertEquals(
                         request.headers().value("User-Agent"),
                         "AutoRest-Java");

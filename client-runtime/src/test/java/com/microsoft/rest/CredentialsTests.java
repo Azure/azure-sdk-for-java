@@ -29,7 +29,7 @@ public class CredentialsTests {
             public RequestPolicy create(final RequestPolicy next) {
                 return new RequestPolicy() {
                     @Override
-                    public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
+                    public Single<HttpResponse> sendAsync(HttpRequest request) {
                         String headerValue = request.headers().value("Authorization");
                         Assert.assertEquals("Basic dXNlcjpwYXNz", headerValue);
                         return next.sendAsync(request);
@@ -53,7 +53,7 @@ public class CredentialsTests {
             public RequestPolicy create(final RequestPolicy next) {
                 return new RequestPolicy() {
                     @Override
-                    public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
+                    public Single<HttpResponse> sendAsync(HttpRequest request) {
                         String headerValue = request.headers().value("Authorization");
                         Assert.assertEquals("Bearer this_is_a_token", headerValue);
                         return next.sendAsync(request);

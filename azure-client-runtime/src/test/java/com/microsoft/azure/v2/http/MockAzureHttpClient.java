@@ -28,7 +28,7 @@ import java.util.Map;
  */
 public class MockAzureHttpClient extends HttpClient {
     @Override
-    public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+    public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
         HttpResponse response = new MockAzureHttpResponse();
 
         try {

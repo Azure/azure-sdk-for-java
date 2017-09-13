@@ -35,7 +35,7 @@ public final class RequestIdPolicy implements RequestPolicy {
     }
 
     @Override
-    public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
+    public Single<HttpResponse> sendAsync(HttpRequest request) {
         String requestId = request.headers().value(REQUEST_ID_HEADER);
         if (requestId == null) {
             request.headers().add(REQUEST_ID_HEADER, UUID.randomUUID().toString());

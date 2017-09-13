@@ -37,10 +37,10 @@ public class OkHttpAdapter extends HttpClient {
      * @return The HTTP response received.
      */
     @Override
-    public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+    public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
         RequestBody requestBody = null;
 
-        Single<? extends HttpResponse> result;
+        Single<HttpResponse> result;
 
         final HttpRequestBody body = request.body();
         try {
@@ -63,7 +63,7 @@ public class OkHttpAdapter extends HttpClient {
             final Call call = client.newCall(okhttpRequest);
 
             final Response response = call.execute();
-            result = Single.just(new OkHttpResponse(response));
+            result = Single.<HttpResponse>just(new OkHttpResponse(response));
         }
         catch (IOException e) {
             result = Single.error(e);
