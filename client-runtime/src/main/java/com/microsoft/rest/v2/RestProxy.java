@@ -38,7 +38,11 @@ public final class RestProxy implements InvocationHandler {
     private final SwaggerInterfaceParser interfaceParser;
     private final ResponseHandler responseHandler;
 
-    public static final ResponseHandler defaultResponseHandler = new ResponseHandler() {
+    /**
+     * The default response handler that will be used to convert HttpResponse objects to the proxy
+     * method's return value.
+     */
+    public static final ResponseHandler DEFAULT_RESPONSE_HANDLER = new ResponseHandler() {
         @Override
         public Object handleSyncResponse(HttpResponse response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer) throws IOException {
             Object result;
@@ -191,7 +195,7 @@ public final class RestProxy implements InvocationHandler {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, HttpClient httpClient, SerializerAdapter<?> serializer) {
-        return create(swaggerInterface, httpClient, serializer, defaultResponseHandler);
+        return create(swaggerInterface, httpClient, serializer, DEFAULT_RESPONSE_HANDLER);
     }
 
     /**
@@ -218,6 +222,14 @@ public final class RestProxy implements InvocationHandler {
         /**
          * Convert the provided synchronous HttpResponse object into the appropriate return value.
          * @param response The HttpResponse to handle.
+         * @param methodParser The SwaggerMethodParser that was used to send the HttpRequest that
+         *                     created the HttpResponse passed to this method.
+         * @param serializer The serializer that can be used to convert a String to the Swagger
+         *                   method's return type.
+         * @throws IOException If the response's return status code is not recognized and the
+         * response body cannot be converted to the expected error type.
+         * @throws RestException If the response's return status code is not recognized and the
+         * response body can be converted to the expected error type.
          * @return The return value.
          */
         Object handleSyncResponse(HttpResponse response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer) throws IOException, RestException;
@@ -226,6 +238,10 @@ public final class RestProxy implements InvocationHandler {
          * Convert the provided asynchronous HttpResponse object into the appropriate asynchronous
          * return value.
          * @param response The asynchronous HttpResponse to handle.
+         * @param methodParser The SwaggerMethodParser that was used to send the HttpRequest that
+         *                     created the HttpResponse passed to this method.
+         * @param serializer The serializer that can be used to convert a String to the Swagger
+         *                   method's return type.
          * @return The asynchronous return value.
          */
         Object handleAsyncResponse(Single<HttpResponse> response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer);

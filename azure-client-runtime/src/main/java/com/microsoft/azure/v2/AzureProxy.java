@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure.v2;
 
 import com.microsoft.rest.RestException;
@@ -15,6 +21,10 @@ import rx.functions.Func1;
 import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * This class can be used to create an Azure specific proxy implementation for a provided Swagger
+ * generated interface.
+ */
 public class AzureProxy {
 
     /**
@@ -42,7 +52,7 @@ public class AzureProxy {
                     final HttpRequest pollRequest = new HttpRequest(methodParser.fullyQualifiedMethodName(), "GET", location);
                     response = httpClient.sendRequest(pollRequest);
                 }
-                return RestProxy.defaultResponseHandler.handleSyncResponse(response, methodParser, serializer);
+                return RestProxy.DEFAULT_RESPONSE_HANDLER.handleSyncResponse(response, methodParser, serializer);
             }
 
             @Override
@@ -89,7 +99,7 @@ public class AzureProxy {
                                 return result;
                             }
                         });
-                return RestProxy.defaultResponseHandler.handleAsyncResponse(asyncResponse, methodParser, serializer);
+                return RestProxy.DEFAULT_RESPONSE_HANDLER.handleAsyncResponse(asyncResponse, methodParser, serializer);
             }
         });
     }
@@ -122,7 +132,7 @@ public class AzureProxy {
     private static class Value<T> {
         private T value;
 
-        public Value(T value) {
+        Value(T value) {
             set(value);
         }
 
