@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.containerregistry;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Beta;
@@ -18,7 +19,10 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.storage.StorageAccount;
 import org.joda.time.DateTime;
+import rx.Completable;
 import rx.Observable;
+
+import java.util.Collection;
 
 /**
  * An immutable client-side representation of an Azure registry.
@@ -68,7 +72,7 @@ public interface Registry extends
     RegistryCredentials getCredentials();
 
     /**
-     * @return the login credentials for the specified container registry
+     * @return a representation of the future computation of this call
      */
     @Beta(SinceVersion.V1_3_0)
     Observable<RegistryCredentials> getCredentialsAsync();
@@ -85,10 +89,79 @@ public interface Registry extends
      * Regenerates one of the login credentials for the specified container registry.
      *
      * @param accessKeyName the admin user access key name to regenerate the value for
-     * @return the result of the regeneration
+     * @return a representation of the future computation of this call
      */
     @Beta(SinceVersion.V1_3_0)
     Observable<RegistryCredentials> regenerateCredentialAsync(AccessKeyName accessKeyName);
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @return the list of container registry's quota usages
+     */
+    @Beta(SinceVersion.V1_3_0)
+    Collection<RegistryUsage> listQuotaUsages();
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @return a representation of the future computation of this call
+     */
+    @Beta(SinceVersion.V1_3_0)
+    Observable<RegistryUsage> listQuotaUsagesAsync();
+
+    /**
+     * Gets the properties of the specified web hook.
+     *
+     * @param webhookName the name of the web hook
+     * @return the Webhook object if successful
+     */
+    @Beta(SinceVersion.V1_3_0)
+    Webhook getWebhook(String webhookName);
+
+    /**
+     * Gets the properties of the specified web hook.
+     *
+     * @param webhookName the name of the web hook
+     * @return a representation of the future computation of this call, returning the Webhook object
+     */
+    @Beta(SinceVersion.V1_3_0)
+    Observable<Webhook> getWebhookAsync(String webhookName);
+
+    /**
+     * Deletes a web hook from the container registry.
+     *
+     * @param webhookName the name of the web hook
+     */
+    @Beta(SinceVersion.V1_3_0)
+    void deleteWebhook(String webhookName);
+
+    /**
+     * Deletes a web hook from the container registry.
+     *
+     * @param webhookName the name of the web hook
+     * @return a representation of the future computation of this call
+     */
+    @Beta(SinceVersion.V1_3_0)
+    Completable deleteWebhookAsync(String webhookName);
+
+    /**
+     * Lists all the web hooks for the container registry.
+     *
+     * @return the list of all the web hooks for the specified container registry
+     */
+    @Beta(SinceVersion.V1_3_0)
+    PagedList<Webhook> listWebhooks();
+
+    /**
+     * Lists all the web hooks for the container registry.
+     *
+     * @return a representation of the future computation of this call, returning the list of all the web hooks for the specified container registry
+     */
+    @Beta(SinceVersion.V1_3_0)
+    Observable<Webhook> listWebhooksAsync();
+
+
 
     /**
      * Container interface for all the definitions related to a registry.

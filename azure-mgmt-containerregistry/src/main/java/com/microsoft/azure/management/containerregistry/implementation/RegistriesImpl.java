@@ -9,10 +9,12 @@ package com.microsoft.azure.management.containerregistry.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.containerregistry.AccessKeyName;
+import com.microsoft.azure.management.containerregistry.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.containerregistry.PasswordName;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.RegistryCredentials;
+import com.microsoft.azure.management.containerregistry.RegistryUsage;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
@@ -21,6 +23,9 @@ import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -149,4 +154,36 @@ public class RegistriesImpl
             });
     }
 
+    @Override
+    public Collection<RegistryUsage> listQuotaUsages(String resourceGroupName, String registryName) {
+        RegistryUsageListResultInner resultInner = this.inner().listUsages(resourceGroupName, registryName);
+
+        return Collections.unmodifiableList(resultInner != null && resultInner.value() != null ? resultInner.value() : new ArrayList<RegistryUsage>());
+    }
+
+    @Override
+    public Observable<RegistryUsage> listQuotaUsagesAsync(String resourceGroupName, String registryName) {
+        return this.inner().listUsagesAsync(resourceGroupName, registryName)
+            .flatMap(new Func1<RegistryUsageListResultInner, Observable<RegistryUsage>>() {
+                @Override
+                public Observable<RegistryUsage> call(RegistryUsageListResultInner registryUsageListResultInner) {
+                    return registryUsageListResultInner.value() != null ? Observable.from(registryUsageListResultInner.value()) : null;
+                }
+            });
+    }
+
+    @Override
+    public CheckNameAvailabilityResult checkNameAvailability(String name) {
+        return new CheckNameAvailabilityResultImpl(this.inner().checkNameAvailability(name));
+    }
+
+    @Override
+    public Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
+        return this.inner().checkNameAvailabilityAsync(name).map(new Func1<RegistryNameStatusInner, CheckNameAvailabilityResult>() {
+            @Override
+            public CheckNameAvailabilityResult call(RegistryNameStatusInner registryNameStatusInner) {
+                return new CheckNameAvailabilityResultImpl(registryNameStatusInner);
+            }
+        });
+    }
 }
