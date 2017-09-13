@@ -7,14 +7,14 @@
 package com.microsoft.rest.v2.http;
 
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.Unpooled;
+import io.netty.buffer.PooledByteBufAllocator;
+import io.netty.buffer.UnpooledByteBufAllocator;
+import io.netty.util.ReferenceCountUtil;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 import rx.Single;
 import rx.functions.Action2;
 import rx.functions.Func0;
 import rx.functions.Func1;
-
-import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.nio.charset.Charset;
 
@@ -38,10 +38,15 @@ class RxNettyResponse extends HttpResponse {
         return rxnRes.getHeader(headerName);
     }
 
-    private Single<ByteBuf> collectContent() {
+    private Single<ByteBuf> collectContent(boolean pooled) {
         // Reading entire response into memory-- not sure if this is OK
         int contentLength = (int) rxnRes.getContentLength();
-        final ByteBuf collector = Unpooled.buffer(contentLength);
+        final ByteBuf collector;
+        if (pooled) {
+            collector = PooledByteBufAllocator.DEFAULT.heapBuffer(contentLength);
+        } else {
+            collector = UnpooledByteBufAllocator.DEFAULT.heapBuffer(contentLength);
+        }
         Single<ByteBuf> collected = rxnRes.getContent()
                 .collect(
                         new Func0<ByteBuf>() {
@@ -54,6 +59,8 @@ class RxNettyResponse extends HttpResponse {
                             @Override
                             public void call(ByteBuf collector, ByteBuf chunk) {
                                 collector.writeBytes(chunk);
+                                // Ensure to release upstream ByteBuf, this can be a PooledDirectBuf
+                                ReferenceCountUtil.release(chunk);
                             }
                         })
                 .toSingle();
@@ -62,17 +69,17 @@ class RxNettyResponse extends HttpResponse {
 
     @Override
     public Single<? extends InputStream> bodyAsInputStreamAsync() {
-        return collectContent().map(new Func1<ByteBuf, InputStream>() {
+        return collectContent(true).map(new Func1<ByteBuf, InputStream>() {
             @Override
             public InputStream call(ByteBuf byteBuf) {
-                return new ByteArrayInputStream(byteBuf.array());
+                return new ClosableByteBufInputStream(byteBuf);
             }
         });
     }
 
     @Override
     public Single<byte[]> bodyAsByteArrayAsync() {
-        return collectContent().map(new Func1<ByteBuf, byte[]>() {
+        return collectContent(false).map(new Func1<ByteBuf, byte[]>() {
             @Override
             public byte[] call(ByteBuf byteBuf) {
                 return byteBuf.array();
@@ -82,11 +89,32 @@ class RxNettyResponse extends HttpResponse {
 
     @Override
     public Single<String> bodyAsStringAsync() {
-        return collectContent().map(new Func1<ByteBuf, String>() {
+        return collectContent(true).map(new Func1<ByteBuf, String>() {
             @Override
             public String call(ByteBuf byteBuf) {
-                return byteBuf.toString(Charset.defaultCharset());
+                try {
+                    return byteBuf.toString(Charset.defaultCharset());
+                } finally {
+                    byteBuf.release();
+                }
             }
         });
+    }
+
+    /**
+     * Extends the ByreBufInputStream so that underlying ByteBuf can be returned to pool.
+     */
+    private class ClosableByteBufInputStream extends io.netty.buffer.ByteBufInputStream {
+        private final ByteBuf buffer;
+
+        ClosableByteBufInputStream(ByteBuf buffer) {
+            super(buffer);
+            this.buffer = buffer;
+        }
+
+        @Override
+        public void close() {
+            ReferenceCountUtil.release(this.buffer);
+        }
     }
 }

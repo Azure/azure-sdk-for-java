@@ -24,10 +24,6 @@ public class MockHttpResponse extends HttpResponse {
     private byte[] byteArray;
     private String string;
 
-    public MockHttpResponse() {
-        this(200);
-    }
-
     public MockHttpResponse(int statusCode) {
         this.statusCode = statusCode;
 

@@ -8,6 +8,7 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
+import com.microsoft.rest.v2.RestProxy;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.GET;
@@ -232,7 +233,6 @@ public final class AzureClient extends AzureServiceClient {
         pollingState.withResourceType(resourceType);
         pollingState.withSerializerAdapter(restClient().serializerAdapter());
         return Observable.just(true)
-                .subscribeOn(Schedulers.io())
                 .flatMap(new Func1<Boolean, Observable<PollingState<T>>>() {
                     @Override
                     public Observable<PollingState<T>> call(Boolean aBoolean) {
@@ -245,8 +245,7 @@ public final class AzureClient extends AzureServiceClient {
                             @Override
                             public Observable<Long> call(Void aVoid) {
                                 return Observable.timer(pollingState.delayInMilliseconds(),
-                                        TimeUnit.MILLISECONDS,
-                                        Schedulers.io());
+                                        TimeUnit.MILLISECONDS, Schedulers.immediate());
                             }
                         });
                     }
@@ -400,9 +399,7 @@ public final class AzureClient extends AzureServiceClient {
         pollingState.withResourceType(resourceType);
         pollingState.withSerializerAdapter(restClient().serializerAdapter());
         if (pollingState.isStatusTerminal()) {
-            if (pollingState.isStatusSucceeded()
-                    && pollingState.resource() == null
-                    && pollingState.locationHeaderLink() != null) {
+            if (pollingState.resourcePending()) {
                 return updateStateFromLocationHeaderOnPostOrDeleteAsync(pollingState).toSingle();
             }
             return Single.just(pollingState);
@@ -418,9 +415,7 @@ public final class AzureClient extends AzureServiceClient {
                 .flatMap(new Func1<PollingState<T>, Observable<PollingState<T>>>() {
                     @Override
                     public Observable<PollingState<T>> call(PollingState<T> tPollingState) {
-                        if (pollingState.isStatusSucceeded()
-                                && pollingState.resource() == null
-                                && pollingState.locationHeaderLink() != null) {
+                        if (pollingState.resourcePending()) {
                             return updateStateFromLocationHeaderOnPostOrDeleteAsync(pollingState);
                         }
                         return Observable.just(pollingState);
@@ -455,8 +450,7 @@ public final class AzureClient extends AzureServiceClient {
                             @Override
                             public Observable<Long> call(Void aVoid) {
                                 return Observable.timer(pollingState.delayInMilliseconds(),
-                                        TimeUnit.MILLISECONDS,
-                                        Schedulers.io());
+                                        TimeUnit.MILLISECONDS, Schedulers.immediate());
                             }
                         });
                     }
@@ -560,7 +554,7 @@ public final class AzureClient extends AzureServiceClient {
                         int statusCode = response.code();
                         if (statusCode == 202) {
                             pollingState.withResponse(response);
-                            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+                            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS, statusCode);
                         } else if (statusCode == 200 || statusCode == 201) {
                             try {
                                 pollingState.updateFromResponseOnPutPatch(response);
@@ -588,7 +582,7 @@ public final class AzureClient extends AzureServiceClient {
                         int statusCode = response.code();
                         if (statusCode == 202) {
                             pollingState.withResponse(response);
-                            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+                            pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS, statusCode);
                         } else if (statusCode == 200 || statusCode == 201 || statusCode == 204) {
                             try {
                                 pollingState.updateFromResponseOnDeletePost(response);
@@ -696,7 +690,7 @@ public final class AzureClient extends AzureServiceClient {
         } catch (MalformedURLException e) {
             return Observable.error(e);
         }
-        AsyncService service = restClient().retrofit().create(AsyncService.class);
+        AsyncService service = RestProxy.create(AsyncService.class, httpClient(), serializerAdapter());
         if (loggingContext != null && !loggingContext.endsWith(" (poll)")) {
             loggingContext += " (poll)";
         }

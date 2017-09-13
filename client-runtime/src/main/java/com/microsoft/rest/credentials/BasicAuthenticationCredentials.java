@@ -6,13 +6,13 @@
 
 package com.microsoft.rest.credentials;
 
-import okhttp3.OkHttpClient;
+import com.google.common.io.BaseEncoding;
+import java.io.UnsupportedEncodingException;
 
 /**
  * Basic Auth credentials for use with a REST Service Client.
  */
 public class BasicAuthenticationCredentials implements ServiceClientCredentials {
-
     /**
      * Basic auth UserName.
      */
@@ -34,22 +34,17 @@ public class BasicAuthenticationCredentials implements ServiceClientCredentials 
         this.password = password;
     }
 
-    /**
-     * @return the user name of the credential
-     */
-    public String getUserName() {
-        return userName;
-    }
-
-    /**
-     * @return the password of the credential
-     */
-    protected String getPassword() {
-        return password;
-    }
-
     @Override
-    public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
-        clientBuilder.interceptors().add(new BasicAuthenticationCredentialsInterceptor(this));
+    public String headerValue(String uri) {
+        String credential = userName + ":" + password;
+        String encodedCredential;
+        try {
+            encodedCredential = BaseEncoding.base64().encode(credential.getBytes("UTF8"));
+        } catch (UnsupportedEncodingException e) {
+            // The encoding is hard-coded, so if it's unsupported, it needs to be fixed right here.
+            throw new RuntimeException(e);
+        }
+
+        return "Basic " + encodedCredential;
     }
 }

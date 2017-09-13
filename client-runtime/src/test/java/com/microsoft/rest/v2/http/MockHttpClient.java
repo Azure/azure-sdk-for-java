@@ -8,6 +8,7 @@ package com.microsoft.rest.v2.http;
 
 import com.google.common.io.CharStreams;
 import com.microsoft.rest.v2.HttpBinJSON;
+import com.microsoft.rest.v2.policy.RequestPolicy;
 import rx.Single;
 
 import java.io.IOException;
@@ -15,15 +16,22 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends HttpClient {
+    public MockHttpClient() {}
+
+    public MockHttpClient(List<RequestPolicy.Factory> policyFactories) {
+        super(policyFactories);
+    }
+
     @Override
-    public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
-        HttpResponse response = new MockHttpResponse();
+    public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+        HttpResponse response = null;
 
         try {
             final URI requestUrl = new URI(request.url());

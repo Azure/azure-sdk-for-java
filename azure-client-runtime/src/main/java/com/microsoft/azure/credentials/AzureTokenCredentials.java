@@ -7,12 +7,13 @@
 package com.microsoft.azure.credentials;
 
 import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.AzureEnvironment.Endpoint;
 import com.microsoft.rest.credentials.TokenCredentials;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.net.URL;
+import java.util.Map;
 
 /**
  * AzureTokenCredentials represents a credentials object with access to Azure
@@ -37,17 +38,27 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
         this.domain = domain;
     }
 
-    @Override
-    protected final String getToken(Request request) throws IOException {
-        String host = request.url().host();
-        for (String endpoint : environment().endpoints().values()) {
-            if (host.contains(endpoint)) {
-                // Remove leading dots
-                host = endpoint.replaceAll("^\\.*", "");
-                break;
+    /**
+     * Gets the token from the given endpoint.
+     *
+     * @param uri the url
+     * @return the token
+     * @throws IOException IOException
+     */
+    public final String getTokenFromUri(String uri) throws IOException {
+        URL url = new URL(uri);
+        String host = url.getHost();
+        String resource = environment().activeDirectoryResourceId();
+        for (Map.Entry<String, String> endpoint : environment().endpoints().entrySet()) {
+            if (host.contains(endpoint.getValue())) {
+                if (endpoint.getKey().equals(Endpoint.KEYVAULT.identifier())) {
+                    resource = String.format("https://%s/", endpoint.getValue().replaceAll("^\\.*", ""));
+                    break;
+                } else if (endpoint.getKey().equals(Endpoint.GRAPH.identifier())) {
+                    resource = environment().graphEndpoint();
+                }
             }
         }
-        String resource = String.format("https://%s/", host);
         return getToken(resource);
     }
 
@@ -109,10 +120,5 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
     public AzureTokenCredentials withProxy(Proxy proxy) {
         this.proxy = proxy;
         return this;
-    }
-
-    @Override
-    public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
-        clientBuilder.interceptors().add(new AzureTokenCredentialsInterceptor(this));
     }
 }

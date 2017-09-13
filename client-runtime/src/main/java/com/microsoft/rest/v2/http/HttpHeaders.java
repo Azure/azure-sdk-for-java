@@ -48,7 +48,7 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * Add the provided headerName and headerValue to the list of headers for this request.
      * @param headerName The name of the header.
      * @param headerValue The value of the header.
-     * @return This HttpRequest so that multiple operations can be chained together.
+     * @return This HttpHeaders so that multiple operations can be chained together.
      */
     public HttpHeaders add(String headerName, String headerValue) {
         final String headerKey = headerName.toLowerCase();
@@ -58,6 +58,19 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         else {
             headers.get(headerKey).addValue(headerValue);
         }
+        return this;
+    }
+
+    /**
+     * Set the value for the header named headerName,
+     * discarding any value previously added for that header.
+     * @param headerName The name of the header.
+     * @param headerValue The value of the header.
+     * @return This HttpHeaders instance.
+     */
+    public HttpHeaders set(String headerName, String headerValue) {
+        final String headerKey = headerName.toLowerCase();
+        headers.put(headerKey, new HttpHeader(headerName, headerValue));
         return this;
     }
 

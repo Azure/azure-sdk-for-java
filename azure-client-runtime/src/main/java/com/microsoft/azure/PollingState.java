@@ -37,6 +37,8 @@ public class PollingState<T> {
     private String initialHttpMethod;
     /** The polling status. */
     private String status;
+    /** The HTTP status code. */
+    private int statusCode = DEFAULT_STATUS_CODE;
     /** The link in 'Azure-AsyncOperation' header. */
     private String azureAsyncOperationHeaderLink;
     /** The link in 'Location' Header. */
@@ -56,6 +58,9 @@ public class PollingState<T> {
     /** The logging context header name. **/
     @JsonIgnore
     private static final String LOGGING_HEADER = "x-ms-logging-context";
+    /** The statusCode that is used when no statusCode has been set. */
+    @JsonIgnore
+    private static final int DEFAULT_STATUS_CODE = 0;
     /** The Retrofit response object. */
     @JsonIgnore
     private Response<ResponseBody> response;
@@ -108,21 +113,22 @@ public class PollingState<T> {
             pollingState.resource = serializerAdapter.deserialize(responseContent, resourceType);
             resource = serializerAdapter.deserialize(responseContent, PollingResource.class);
         }
+        final int statusCode = pollingState.response.code();
         if (resource != null && resource.properties != null
                 && resource.properties.provisioningState != null) {
-            pollingState.withStatus(resource.properties.provisioningState);
+            pollingState.withStatus(resource.properties.provisioningState, statusCode);
         } else {
-            switch (pollingState.response.code()) {
+            switch (statusCode) {
                 case 202:
-                    pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS);
+                    pollingState.withStatus(AzureAsyncOperation.IN_PROGRESS_STATUS, statusCode);
                     break;
                 case 204:
                 case 201:
                 case 200:
-                    pollingState.withStatus(AzureAsyncOperation.SUCCESS_STATUS);
+                    pollingState.withStatus(AzureAsyncOperation.SUCCESS_STATUS, statusCode);
                     break;
                 default:
-                    pollingState.withStatus(AzureAsyncOperation.FAILED_STATUS);
+                    pollingState.withStatus(AzureAsyncOperation.FAILED_STATUS, statusCode);
             }
         }
         return pollingState;
@@ -159,6 +165,7 @@ public class PollingState<T> {
         pollingState.resource = result;
         pollingState.initialHttpMethod = other.initialHttpMethod();
         pollingState.status = other.status();
+        pollingState.statusCode = other.statusCode();
         pollingState.azureAsyncOperationHeaderLink = other.azureAsyncOperationHeaderLink();
         pollingState.locationHeaderLink = other.locationHeaderLink();
         pollingState.putOrPatchResourceUri = other.putOrPatchResourceUri();
@@ -208,6 +215,15 @@ public class PollingState<T> {
     }
 
     /**
+     * Gets the polling HTTP status code.
+     *
+     * @return the polling HTTP status code.
+     */
+    public int statusCode() {
+        return statusCode;
+    }
+
+    /**
      * Gets the value captured from Azure-AsyncOperation header.
      *
      * @return the link in the header.
@@ -250,10 +266,11 @@ public class PollingState<T> {
         }
 
         PollingResource resource = serializerAdapter.deserialize(responseContent, PollingResource.class);
+        final int statusCode = response.code();
         if (resource != null && resource.properties != null && resource.properties.provisioningState != null) {
-            this.withStatus(resource.properties.provisioningState);
+            this.withStatus(resource.properties.provisioningState, statusCode);
         } else {
-            this.withStatus(AzureAsyncOperation.SUCCESS_STATUS);
+            this.withStatus(AzureAsyncOperation.SUCCESS_STATUS, statusCode);
         }
 
         CloudError error = new CloudError();
@@ -279,7 +296,7 @@ public class PollingState<T> {
             response.body().close();
         }
         this.withResource(serializerAdapter.<T>deserialize(responseContent, resourceType));
-        withStatus(AzureAsyncOperation.SUCCESS_STATUS);
+        withStatus(AzureAsyncOperation.SUCCESS_STATUS, response.code());
     }
 
     /**
@@ -335,6 +352,14 @@ public class PollingState<T> {
         return AzureAsyncOperation.SUCCESS_STATUS.equalsIgnoreCase(this.status());
     }
 
+    boolean resourcePending() {
+        return statusCode() != 204
+                && isStatusSucceeded()
+                && resource() == null
+                && resourceType() != Void.class
+                && locationHeaderLink() != null;
+    }
+
     /**
      * Gets the logging context.
      *
@@ -351,10 +376,22 @@ public class PollingState<T> {
      * @throws IllegalArgumentException thrown if status is null.
      */
     PollingState<T> withStatus(String status) throws IllegalArgumentException {
+        return withStatus(status, DEFAULT_STATUS_CODE);
+    }
+
+    /**
+     * Sets the polling status.
+     *
+     * @param status the polling status.
+     * @param statusCode the HTTP status code
+     * @throws IllegalArgumentException thrown if status is null.
+     */
+    PollingState<T> withStatus(String status, int statusCode) throws IllegalArgumentException {
         if (status == null) {
             throw new IllegalArgumentException("Status is null.");
         }
         this.status = status;
+        this.statusCode = statusCode;
         return this;
     }
 

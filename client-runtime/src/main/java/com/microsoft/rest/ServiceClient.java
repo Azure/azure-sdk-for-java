@@ -8,36 +8,24 @@ package com.microsoft.rest;
 
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
+import com.microsoft.rest.v2.http.HttpClient;
 
 /**
- * ServiceClient is the abstraction for accessing REST operations and their payload data types.
+ * The base class for generated service clients.
  */
 public abstract class ServiceClient {
     /**
-     * The RestClient instance storing all information needed for making REST calls.
+     * The RestClient instance storing configuration for service clients.
      */
     private RestClient restClient;
 
     /**
      * Initializes a new instance of the ServiceClient class.
      *
-     * @param baseUrl the service endpoint
+     * @param baseUrl the service base uri
      */
     protected ServiceClient(String baseUrl) {
-        this(baseUrl, new OkHttpClient.Builder(), new Retrofit.Builder());
-    }
-
-    /**
-     * Initializes a new instance of the ServiceClient class.
-     *
-     * @param baseUrl the service base uri
-     * @param clientBuilder the http client builder
-     * @param restBuilder the retrofit rest client builder
-     */
-    protected ServiceClient(String baseUrl, OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
-        this(new RestClient.Builder(clientBuilder, restBuilder)
+        this(new RestClient.Builder()
                 .withBaseUrl(baseUrl)
                 .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
                 .withSerializerAdapter(new JacksonAdapter())
@@ -61,16 +49,9 @@ public abstract class ServiceClient {
     }
 
     /**
-     * @return the Retrofit instance.
+     * @return the {@link HttpClient} instance.
      */
-    public Retrofit retrofit() {
-        return restClient.retrofit();
-    }
-
-    /**
-     * @return the HTTP client.
-     */
-    public OkHttpClient httpClient() {
+    public HttpClient httpClient() {
         return this.restClient.httpClient();
     }
 
