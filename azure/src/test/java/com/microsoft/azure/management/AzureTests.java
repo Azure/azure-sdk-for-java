@@ -325,6 +325,17 @@ public class AzureTests extends TestBase {
     }
 
     /**
+     * Tests the internal load balancer with availability zone.
+     * @throws Exception
+     */
+    @Test
+    @Ignore("Though valid scenario, NRP is failing")
+    public void testLoadBalancersInternalWithAvailabilityZone() throws Exception {
+        new TestLoadBalancer.InternalWithZone(azure.virtualMachines().manager())
+                .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    /**
      * Tests a complex internal application gateway
      * @throws Exception
      */

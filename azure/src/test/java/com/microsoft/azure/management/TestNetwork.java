@@ -5,11 +5,13 @@
  */
 package com.microsoft.azure.management;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Set;
 
 import org.junit.Assert;
 
+import com.microsoft.azure.management.network.NetworkPeeringGatewayUse;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkPeering;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
@@ -17,8 +19,9 @@ import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.VirtualNetworkPeeringState;
-import com.microsoft.azure.management.network.NetworkPeering.GatewayUse;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.CreatedResources;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 /**
@@ -140,20 +143,24 @@ public class TestNetwork {
             String networkName = SdkContext.randomResourceName("net", 15);
             String networkName2 = SdkContext.randomResourceName("net", 15);
 
-            Network remoteNetwork = networks.define(networkName2)
+            Creatable<Network> remoteNetworkDefinition = networks.define(networkName2)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withAddressSpace("10.1.0.0/27")
-                    .withSubnet("subnet3", "10.1.0.0/27")
-                    .create();
+                    .withSubnet("subnet3", "10.1.0.0/27");
 
-            Network localNetwork = networks.define(networkName)
+            Creatable<Network> localNetworkDefinition = networks.define(networkName)
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withAddressSpace("10.0.0.0/27")
                     .withSubnet("subnet1", "10.0.0.0/28")
-                    .withSubnet("subnet2", "10.0.0.16/28")
-                    .create();
+                    .withSubnet("subnet2", "10.0.0.16/28");
+
+            CreatedResources<Network> createdNetworks = networks.create(Arrays.asList(remoteNetworkDefinition, localNetworkDefinition));
+            Network localNetwork = createdNetworks.get(localNetworkDefinition.key());
+            Network remoteNetwork = createdNetworks.get(remoteNetworkDefinition.key());
+            Assert.assertNotNull(localNetwork);
+            Assert.assertNotNull(remoteNetwork);
 
             // Create peering
             NetworkPeering localPeering = localNetwork.peerings().define("peer0")
@@ -174,7 +181,7 @@ public class TestNetwork {
             Assert.assertEquals(VirtualNetworkPeeringState.CONNECTED, localPeering.state());
             Assert.assertTrue(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
             // TODO Assert.assertFalse(localPeering.isAccessFromRemoteNetworkAllowed());
-            Assert.assertEquals(GatewayUse.BY_REMOTE_NETWORK, localPeering.gatewayUse());
+            Assert.assertEquals(NetworkPeeringGatewayUse.BY_REMOTE_NETWORK, localPeering.gatewayUse());
 
             // Verify remote peering
             Assert.assertNotNull(remoteNetwork.peerings());
@@ -185,7 +192,7 @@ public class TestNetwork {
             Assert.assertEquals(VirtualNetworkPeeringState.CONNECTED, remotePeering.state());
             Assert.assertTrue(remotePeering.isTrafficForwardingFromRemoteNetworkAllowed());
             // TODO Assert.assertFalse(remotePeering.isAccessFromRemoteNetworkAllowed());
-            Assert.assertEquals(GatewayUse.NONE, remotePeering.gatewayUse());
+            Assert.assertEquals(NetworkPeeringGatewayUse.NONE, remotePeering.gatewayUse());
 
             return localNetwork;
         }
@@ -214,14 +221,14 @@ public class TestNetwork {
             // Verify local peering changes
             Assert.assertFalse(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
             // TODO Assert.assertTrue(localPeering.isAccessFromRemoteNetworkAllowed());
-            Assert.assertEquals(GatewayUse.NONE, localPeering.gatewayUse());
+            Assert.assertEquals(NetworkPeeringGatewayUse.NONE, localPeering.gatewayUse());
 
             // Verify remote peering changes
             NetworkPeering remotePeering = localPeering.getRemotePeering();
             Assert.assertNotNull(remotePeering);
             Assert.assertFalse(remotePeering.isTrafficForwardingFromRemoteNetworkAllowed());
             // TODO Assert.assertTrue(remotePeering.isAccessFromRemoteNetworkAllowed());
-            Assert.assertEquals(GatewayUse.NONE, remotePeering.gatewayUse());
+            Assert.assertEquals(NetworkPeeringGatewayUse.NONE, remotePeering.gatewayUse());
 
             // Delete the peering
             resource.peerings().deleteById(remotePeering.id());
