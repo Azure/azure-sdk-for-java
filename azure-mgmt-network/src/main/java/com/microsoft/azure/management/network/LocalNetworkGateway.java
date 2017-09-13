@@ -98,10 +98,13 @@ public interface LocalNetworkGateway extends
 
         /**
          * The stage of definition allowing to specify local network gateway's BGP speaker settings.
-         * Note: BGP is supported on Route-Based VPN gateways only.
          */
-        interface WithBgpSettingsAndCreate extends WithCreate {
-
+        interface WithBgpSettings {
+            /**
+             * @param asn the BGP speaker's ASN
+             * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
+             */
+            WithCreate withBgpSettings(long asn, String bgpPeeringAddress);
         }
 
         /**
@@ -111,7 +114,8 @@ public interface LocalNetworkGateway extends
         interface WithCreate extends
                 Creatable<LocalNetworkGateway>,
                 Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithAddressSpace {
+                DefinitionStages.WithAddressSpace,
+                DefinitionStages.WithBgpSettings {
         }
     }
 
@@ -144,8 +148,17 @@ public interface LocalNetworkGateway extends
             Update withoutAddressSpace(String cidr);
         }
 
+        /**
+         * The stage of update allowing to specify local network gateway's BGP speaker settings.
+         */
         interface WithBgpSettings {
+            /**
+             * @param asn the BGP speaker's ASN
+             * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
+             */
+            Update withBgpSettings(long asn, String bgpPeeringAddress);
 
+            Update disableBgp();
         }
     }
 

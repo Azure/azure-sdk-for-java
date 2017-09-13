@@ -93,6 +93,18 @@ class LocalNetworkGatewayImpl
     }
 
     @Override
+    public LocalNetworkGatewayImpl withBgpSettings(long asn, String bgpPeeringAddress) {
+        ensureBgpSettings().withAsn(asn).withBgpPeeringAddress(bgpPeeringAddress);
+        return this;
+    }
+
+    @Override
+    public LocalNetworkGatewayImpl disableBgp() {
+        inner().withBgpSettings(null);
+        return this;
+    }
+
+    @Override
     protected Observable<LocalNetworkGatewayInner> getInnerAsync() {
         return this.manager().inner().localNetworkGateways().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
@@ -101,5 +113,12 @@ class LocalNetworkGatewayImpl
     public Observable<LocalNetworkGateway> createResourceAsync() {
         return this.manager().inner().localNetworkGateways().createOrUpdateAsync(resourceGroupName(), name(), inner())
                 .map(innerToFluentMap(this));
+    }
+
+    private BgpSettings ensureBgpSettings() {
+        if (inner().bgpSettings() == null) {
+            inner().withBgpSettings(new BgpSettings());
+        }
+        return inner().bgpSettings();
     }
 }
