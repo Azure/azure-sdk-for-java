@@ -18,35 +18,29 @@ public class MockHttpResponse extends HttpResponse {
     private final static SerializerAdapter<?> serializer = new JacksonAdapter();
 
     private final int statusCode;
-
-    private final boolean hasBody;
     private byte[] byteArray;
     private String string;
 
     public MockHttpResponse() {
-        this(200);
+        statusCode = 200;
     }
 
     public MockHttpResponse(int statusCode) {
         this.statusCode = statusCode;
-        hasBody = false;
     }
 
-    public MockHttpResponse(int statusCode, byte[] byteArray) {
-        this.statusCode = statusCode;
-        hasBody = true;
+    public MockHttpResponse(byte[] byteArray) {
+        statusCode = 200;
         this.byteArray = byteArray;
     }
 
-    public MockHttpResponse(int statusCode, String string) {
-        this.statusCode = statusCode;
-        hasBody = true;
+    public MockHttpResponse(String string) {
+        statusCode = 200;
         this.string = string;
     }
 
-    public MockHttpResponse(int statusCode, Object serializable) {
-        this.statusCode = statusCode;
-        hasBody = true;
+    public MockHttpResponse(Object serializable) {
+        statusCode = 200;
         try {
             this.string = serializer.serialize(serializable);
         } catch (IOException e) {

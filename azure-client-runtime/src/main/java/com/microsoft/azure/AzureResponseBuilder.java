@@ -10,7 +10,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseBuilder;
-import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import okhttp3.ResponseBody;
@@ -75,20 +74,6 @@ public final class AzureResponseBuilder<T, E extends RestException> implements R
                         + " cannot be created.", e);
             }
         }
-    }
-
-    @Override
-    public <THeader> ServiceResponseWithHeaders<T, THeader> buildWithHeaders(Response<ResponseBody> response, Class<THeader> headerType) throws IOException {
-        return baseBuilder.buildWithHeaders(response, headerType);
-    }
-
-    @Override
-    public <THeader> ServiceResponseWithHeaders<T, THeader> buildEmptyWithHeaders(Response<Void> response, Class<THeader> headerType) throws IOException {
-        ServiceResponse<T> bodyResponse = buildEmpty(response);
-        ServiceResponseWithHeaders<T, THeader> baseResponse = baseBuilder.buildEmptyWithHeaders(response, headerType);
-        ServiceResponseWithHeaders<T, THeader> serviceResponse = new ServiceResponseWithHeaders<>(baseResponse.headers(), bodyResponse.headResponse());
-        serviceResponse.withBody(bodyResponse.body());
-        return serviceResponse;
     }
 
     /**

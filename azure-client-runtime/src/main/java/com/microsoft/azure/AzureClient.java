@@ -8,6 +8,7 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
+import com.microsoft.rest.v2.RestProxy;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 import retrofit2.http.GET;
@@ -689,7 +690,7 @@ public final class AzureClient extends AzureServiceClient {
         } catch (MalformedURLException e) {
             return Observable.error(e);
         }
-        AsyncService service = restClient().retrofit().create(AsyncService.class);
+        AsyncService service = RestProxy.create(AsyncService.class, httpClient(), serializerAdapter());
         if (loggingContext != null && !loggingContext.endsWith(" (poll)")) {
             loggingContext += " (poll)";
         }

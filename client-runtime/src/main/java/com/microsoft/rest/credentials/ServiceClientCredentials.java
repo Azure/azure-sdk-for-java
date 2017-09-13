@@ -6,17 +6,13 @@
 
 package com.microsoft.rest.credentials;
 
-import okhttp3.OkHttpClient;
-
 /**
- * ServiceClientCredentials is the abstraction for credentials used by
- * ServiceClients accessing REST services.
+ * Provides credentials to be put in the HTTP Authorization header.
  */
 public interface ServiceClientCredentials {
     /**
-     * Apply the credentials to the HTTP client builder.
-     *
-     * @param clientBuilder the builder for building up an {@link OkHttpClient}
+     * @param uri The URI to which the request is being made.
+     * @return The value containing currently valid credentials to put in the HTTP header.
      */
-    void applyCredentialsFilter(OkHttpClient.Builder clientBuilder);
+    String headerValue(String uri);
 }

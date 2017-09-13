@@ -8,6 +8,7 @@ package com.microsoft.rest.v2.http;
 
 import com.google.common.io.CharStreams;
 import com.microsoft.rest.v2.HttpBinJSON;
+import com.microsoft.rest.v2.policy.RequestPolicy;
 import rx.Single;
 
 import java.io.IOException;
@@ -15,14 +16,21 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends HttpClient {
+    public MockHttpClient() {}
+
+    public MockHttpClient(List<RequestPolicy.Factory> policyFactories) {
+        super(policyFactories);
+    }
+
     @Override
-    public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
+    public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
         HttpResponse response = new MockHttpResponse();
 
         try {
@@ -37,38 +45,38 @@ public class MockHttpClient extends HttpClient {
                             // This is just to mimic the behavior we've seen with httpbin.org.
                             .replace("%20", " ");
                     json.headers = toMap(request.headers());
-                    response = new MockHttpResponse(200, json);
+                    response = new MockHttpResponse(json);
                 }
                 else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
-                    response = new MockHttpResponse(200, new byte[byteCount]);
+                    response = new MockHttpResponse(new byte[byteCount]);
                 }
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(200, json);
+                    response = new MockHttpResponse(json);
                 }
                 else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url();
                     json.headers = toMap(request.headers());
-                    response = new MockHttpResponse(200, json);
+                    response = new MockHttpResponse(json);
                 }
                 else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(200, json);
+                    response = new MockHttpResponse(json);
                 }
                 else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(200, json);
+                    response = new MockHttpResponse(json);
                 }
                 else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(200, json);
+                    response = new MockHttpResponse(json);
                 }
             }
         }

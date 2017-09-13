@@ -7,14 +7,12 @@
 package com.microsoft.rest.v2;
 
 import com.google.common.reflect.TypeToken;
-import com.microsoft.rest.RestClient;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.OkHttpAdapter;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import rx.Completable;
 import rx.Single;
@@ -151,20 +149,6 @@ public final class RestProxy implements InvocationHandler {
         }
 
         return result;
-    }
-
-    /**
-     * Create a proxy implementation of the provided Swagger interface.
-     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
-     * @param restClient The internal HTTP client that will be used to make REST calls.
-     * @param <A> The type of the Swagger interface.
-     * @return A proxy implementation of the provided Swagger interface.
-     */
-    @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, RestClient restClient) {
-        final HttpClient httpClient = new OkHttpAdapter(restClient.httpClient());
-        final SerializerAdapter<?> serializer = restClient.serializerAdapter();
-        return create(swaggerInterface, httpClient, serializer);
     }
 
     /**

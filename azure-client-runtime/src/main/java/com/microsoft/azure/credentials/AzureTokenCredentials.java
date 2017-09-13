@@ -9,11 +9,10 @@ package com.microsoft.azure.credentials;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.AzureEnvironment.Endpoint;
 import com.microsoft.rest.credentials.TokenCredentials;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
 
 import java.io.IOException;
 import java.net.Proxy;
+import java.net.URL;
 import java.util.Map;
 
 /**
@@ -39,9 +38,16 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
         this.domain = domain;
     }
 
-    @Override
-    protected final String getToken(Request request) throws IOException {
-        String host = request.url().toString().toLowerCase();
+    /**
+     * Gets the token from the given endpoint.
+     *
+     * @param uri the url
+     * @return the token
+     * @throws IOException IOException
+     */
+    public final String getTokenFromUri(String uri) throws IOException {
+        URL url = new URL(uri);
+        String host = url.getHost();
         String resource = environment().activeDirectoryResourceId();
         for (Map.Entry<String, String> endpoint : environment().endpoints().entrySet()) {
             if (host.contains(endpoint.getValue())) {
@@ -114,10 +120,5 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
     public AzureTokenCredentials withProxy(Proxy proxy) {
         this.proxy = proxy;
         return this;
-    }
-
-    @Override
-    public void applyCredentialsFilter(OkHttpClient.Builder clientBuilder) {
-        clientBuilder.interceptors().add(new AzureTokenCredentialsInterceptor(this));
     }
 }

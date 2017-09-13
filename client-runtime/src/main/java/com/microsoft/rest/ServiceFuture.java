@@ -8,6 +8,7 @@ package com.microsoft.rest;
 
 import com.google.common.util.concurrent.AbstractFuture;
 import rx.Observable;
+import rx.Single;
 import rx.Subscription;
 import rx.functions.Action1;
 
@@ -85,17 +86,16 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
     }
 
     /**
-     * Creates a ServiceCall from an observable object and a callback.
+     * Creates a ServiceCall from a Single object and a callback.
      *
-     * @param observable the observable to create from
+     * @param single the single to create from
      * @param callback the callback to call when events happen
      * @param <T> the type of the response
      * @return the created ServiceCall
      */
-    public static <T> ServiceFuture<T> fromBody(final Observable<T> observable, final ServiceCallback<T> callback) {
+    public static <T> ServiceFuture<T> fromBody(final Single<T> single, final ServiceCallback<T> callback) {
         final ServiceFuture<T> serviceFuture = new ServiceFuture<>();
-        serviceFuture.subscription = observable
-                .last()
+        serviceFuture.subscription = single
                 .subscribe(new Action1<T>() {
                     @Override
                     public void call(T t) {

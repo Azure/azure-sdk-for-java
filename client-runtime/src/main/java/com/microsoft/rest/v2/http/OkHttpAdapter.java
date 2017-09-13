@@ -37,7 +37,7 @@ public class OkHttpAdapter extends HttpClient {
      * @return The HTTP response received.
      */
     @Override
-    public Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
+    public Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request) {
         RequestBody requestBody = null;
 
         Single<? extends HttpResponse> result;
