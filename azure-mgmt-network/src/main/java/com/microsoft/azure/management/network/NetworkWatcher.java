@@ -77,14 +77,14 @@ public interface NetworkWatcher extends
 
     /**
      * First step specifying the parameters to get next hop for the VM.
-     * @return a stage to specify target vm
+     * @return a stage to specify parameters for next hop
      */
     @Method
     NextHop.DefinitionStages.WithTargetResource nextHop();
 
     /**
      * Verify IP flow from the specified VM to a location given the currently configured NSG rules.
-     * @return a stage to specify target vm
+     * @return a stage to specify parameters for ip flow verification
      */
     @Method
     VerificationIPFlow.DefinitionStages.WithTargetResource verifyIPFlow();
@@ -92,7 +92,7 @@ public interface NetworkWatcher extends
     /**
      * Verifies the possibility of establishing a direct TCP connection from a virtual machine to a given endpoint
      * including another virtual machine or an arbitrary remote server.
-     * @return a stage to specify source virtual machine
+     * @return a stage to specify parameters for connectivity check
      */
     ConnectivityCheck.DefinitionStages.ToDestination checkConnectivity();
 
