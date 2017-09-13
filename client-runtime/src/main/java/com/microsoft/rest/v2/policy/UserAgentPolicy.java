@@ -27,7 +27,11 @@ public final class UserAgentPolicy implements RequestPolicy {
          * @param userAgent The user agent string to add to request headers.
          */
         public Factory(String userAgent) {
-            this.userAgent = userAgent;
+            if (userAgent != null) {
+                this.userAgent = userAgent;
+            } else {
+                this.userAgent = DEFAULT_USER_AGENT_HEADER;
+            }
         }
 
         /**

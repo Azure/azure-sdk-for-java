@@ -44,7 +44,7 @@ public class AzureProxy {
      */
     @SuppressWarnings("unchecked")
     public static <A> A create(Class<A> swaggerInterface, final HttpClient httpClient, SerializerAdapter<?> serializer) {
-        return RestProxy.create(swaggerInterface, httpClient, serializer, new RestProxy.ResponseHandler() {
+        return RestProxy.create(swaggerInterface, null /* FIXME: get URL from @AzureHost */, httpClient, serializer, new RestProxy.ResponseHandler() {
             @Override
             public Object handleSyncResponse(HttpResponse response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer) throws IOException, RestException {
                 while (response.statusCode() == 202) {
