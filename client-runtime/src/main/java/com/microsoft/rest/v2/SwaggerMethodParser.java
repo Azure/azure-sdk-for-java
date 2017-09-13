@@ -84,6 +84,16 @@ public class SwaggerMethodParser {
         else if (swaggerMethod.isAnnotationPresent(PATCH.class)) {
             setHttpMethodAndRelativePath("PATCH", swaggerMethod.getAnnotation(PATCH.class).value());
         }
+        else {
+            final ArrayList<Class<? extends Annotation>> requiredAnnotationOptions = new ArrayList<>();
+            requiredAnnotationOptions.add(GET.class);
+            requiredAnnotationOptions.add(PUT.class);
+            requiredAnnotationOptions.add(HEAD.class);
+            requiredAnnotationOptions.add(DELETE.class);
+            requiredAnnotationOptions.add(POST.class);
+            requiredAnnotationOptions.add(PATCH.class);
+            throw new MissingRequiredAnnotationException(requiredAnnotationOptions, swaggerMethod);
+        }
 
         returnType = swaggerMethod.getGenericReturnType();
 
@@ -104,13 +114,20 @@ public class SwaggerMethodParser {
             }
         }
 
-        expectedStatusCodes = swaggerMethod.getAnnotation(ExpectedResponses.class).value();
-
-        if (swaggerMethod.isAnnotationPresent(UnexpectedResponseExceptionType.class)) {
-            exceptionType = swaggerMethod.getAnnotation(UnexpectedResponseExceptionType.class).value();
+        final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
+        if (expectedResponses == null) {
+            throw new MissingRequiredAnnotationException(ExpectedResponses.class, swaggerMethod);
         }
         else {
+            expectedStatusCodes = expectedResponses.value();
+        }
+
+        final UnexpectedResponseExceptionType unexpectedResponseExceptionType = swaggerMethod.getAnnotation(UnexpectedResponseExceptionType.class);
+        if (unexpectedResponseExceptionType == null) {
             exceptionType = RestException.class;
+        }
+        else {
+            exceptionType = unexpectedResponseExceptionType.value();
         }
 
         try {

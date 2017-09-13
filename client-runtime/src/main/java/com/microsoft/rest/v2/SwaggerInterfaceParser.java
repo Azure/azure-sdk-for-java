@@ -18,9 +18,8 @@ import java.util.Map;
  */
 class SwaggerInterfaceParser {
     private final Class<?> swaggerInterface;
+    private final String host;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
-
-    private String host;
 
     /**
      * Create a new SwaggerInterfaceParser object with the provided fully qualified interface
@@ -29,6 +28,14 @@ class SwaggerInterfaceParser {
      */
     SwaggerInterfaceParser(Class<?> swaggerInterface) {
         this.swaggerInterface = swaggerInterface;
+
+        final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
+        if (hostAnnotation == null) {
+            throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
+        }
+        else {
+            host = hostAnnotation.value();
+        }
     }
 
     /**
@@ -47,18 +54,11 @@ class SwaggerInterfaceParser {
     }
 
     /**
-     * Parse the desired host that the provided Swagger interface will target with its REST API
-     * calls. This value is retrieved from the @Host annotation placed on the Swagger interface. If
-     * no @Host annotation exists on the Swagger interface, then null will be returned.
-     * @return The value of the @Host annotation, or null if no @Host annotation exists.
+     * Get the desired host that the provided Swagger interface will target with its REST API
+     * calls. This value is retrieved from the @Host annotation placed on the Swagger interface.
+     * @return The value of the @Host annotation.
      */
-    protected String host() {
-        if (host == null) {
-            final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
-            if (hostAnnotation != null) {
-                host = hostAnnotation.value();
-            }
-        }
+    String host() {
         return host;
     }
 }
