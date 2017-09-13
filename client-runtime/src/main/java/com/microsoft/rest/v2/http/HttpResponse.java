@@ -23,6 +23,14 @@ public abstract class HttpResponse {
     public abstract int statusCode();
 
     /**
+     * Get the header value for the provided header name, or null if the provided header name does
+     * not appear in this HttpResponse's headers.
+     * @param headerName The name of the header to lookup.
+     * @return The value of the header, or null if the header doesn't exist in this HttpResponse.
+     */
+    public abstract String headerValue(String headerName);
+
+    /**
      * Get this response object's body as an InputStream. If this response object doesn't have a
      * body, then null will be returned.
      * @return This response object's body as an InputStream. If this response object doesn't have a

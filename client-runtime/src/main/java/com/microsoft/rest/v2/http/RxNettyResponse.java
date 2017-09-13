@@ -33,6 +33,11 @@ class RxNettyResponse extends HttpResponse {
         return rxnRes.getStatus().code();
     }
 
+    @Override
+    public String headerValue(String headerName) {
+        return rxnRes.getHeader(headerName);
+    }
+
     private Single<ByteBuf> collectContent(boolean pooled) {
         // Reading entire response into memory-- not sure if this is OK
         int contentLength = (int) rxnRes.getContentLength();

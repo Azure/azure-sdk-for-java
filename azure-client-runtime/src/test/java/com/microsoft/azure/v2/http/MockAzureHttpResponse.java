@@ -4,17 +4,19 @@
  * license information.
  */
 
-package com.microsoft.rest.v2.http;
+package com.microsoft.azure.v2.http;
 
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Single;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
-public class MockHttpResponse extends HttpResponse {
+public class MockAzureHttpResponse extends HttpResponse {
     private final static SerializerAdapter<?> serializer = new JacksonAdapter();
 
     private final int statusCode;
@@ -24,25 +26,24 @@ public class MockHttpResponse extends HttpResponse {
     private byte[] byteArray;
     private String string;
 
-    public MockHttpResponse(int statusCode) {
+    public MockAzureHttpResponse(int statusCode) {
         this.statusCode = statusCode;
-
         headers = new HttpHeaders();
     }
 
-    public MockHttpResponse(int statusCode, byte[] byteArray) {
+    public MockAzureHttpResponse(int statusCode, byte[] byteArray) {
         this(statusCode);
 
         this.byteArray = byteArray;
     }
 
-    public MockHttpResponse(int statusCode, String string) {
+    public MockAzureHttpResponse(int statusCode, String string) {
         this(statusCode);
 
         this.string = string;
     }
 
-    public MockHttpResponse(int statusCode, Object serializable) {
+    public MockAzureHttpResponse(int statusCode, Object serializable) {
         this(statusCode);
 
         try {
@@ -60,6 +61,11 @@ public class MockHttpResponse extends HttpResponse {
     @Override
     public String headerValue(String headerName) {
         return headers.value(headerName);
+    }
+
+    public MockAzureHttpResponse withHeader(String headerName, String headerValue) {
+        headers.add(headerName, headerValue);
+        return this;
     }
 
     @Override

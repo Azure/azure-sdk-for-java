@@ -33,7 +33,7 @@ public final class UseOtherHostPolicy implements RequestPolicy {
     }
 
     @Override
-    public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
+    public Single<HttpResponse> sendAsync(HttpRequest request) {
         URL url;
         try {
            url = new URL(request.url());

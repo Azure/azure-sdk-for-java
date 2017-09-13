@@ -22,7 +22,7 @@ public abstract class HttpClient {
 
     private final RequestPolicy lastRequestPolicy = new RequestPolicy() {
         @Override
-        public Single<? extends HttpResponse> sendAsync(HttpRequest request) {
+        public Single<HttpResponse> sendAsync(HttpRequest request) {
             return sendRequestInternalAsync(request);
         }
     };
@@ -43,7 +43,7 @@ public abstract class HttpClient {
      * @param request The HTTP request to send.
      * @return A {@link Single} representing the HTTP response that will arrive asynchronously.
      */
-    public final Single<? extends HttpResponse> sendRequestAsync(HttpRequest request) {
+    public final Single<HttpResponse> sendRequestAsync(HttpRequest request) {
         // Builds a linked list starting from the end.
         RequestPolicy next = lastRequestPolicy;
         for (RequestPolicy.Factory factory : policyFactories) {
@@ -68,5 +68,5 @@ public abstract class HttpClient {
      * @param request The HTTP request to send.
      * @return A {@link Single} representing the HTTP response that will arrive asynchronously.
      */
-    protected abstract Single<? extends HttpResponse> sendRequestInternalAsync(HttpRequest request);
+    protected abstract Single<HttpResponse> sendRequestInternalAsync(HttpRequest request);
 }
