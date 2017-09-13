@@ -1,6 +1,7 @@
 package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
+import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.Host;
 import org.junit.Test;
 
@@ -18,10 +19,9 @@ public class SwaggerInterfaceParserTests {
     interface TestInterface2 {
     }
 
-    @Test
+    @Test(expected = MissingRequiredAnnotationException.class)
     public void hostWithNoHostAnnotation() {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface1.class);
-        assertEquals(null, interfaceParser.host());
+        new SwaggerInterfaceParser(TestInterface1.class);
     }
 
     @Test
@@ -30,7 +30,9 @@ public class SwaggerInterfaceParserTests {
         assertEquals("https://management.azure.com", interfaceParser.host());
     }
 
+    @Host("https://azure.com")
     interface TestInterface3 {
+        @GET("my/url/path")
         @ExpectedResponses({200})
         void testMethod3();
     }
