@@ -596,7 +596,7 @@ public abstract class RestProxyTests {
     // Helpers
     private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
-        return RestProxy.create(serviceClass, httpClient, serializer);
+        return RestProxy.create(serviceClass, null, httpClient, serializer);
     }
 
     private static final SerializerAdapter<?> serializer = new JacksonAdapter();

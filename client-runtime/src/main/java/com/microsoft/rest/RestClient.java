@@ -37,7 +37,7 @@ public final class RestClient {
     private final SerializerAdapter<?> serializerAdapter;
     private final ResponseBuilder.Factory responseBuilderFactory;
     private final ServiceClientCredentials credentials;
-    private LogLevel logLevel;
+    private final LogLevel logLevel;
 
     private final List<RequestPolicy.Factory> customPolicyFactories;
 
@@ -60,7 +60,9 @@ public final class RestClient {
         allFactories.add(new UserAgentPolicy.Factory(userAgent));
         allFactories.add(new RetryPolicy.Factory());
         allFactories.add(new LoggingPolicy.Factory(logLevel));
-        allFactories.add(new CredentialsPolicy.Factory(credentials));
+        if (credentials != null) {
+            allFactories.add(new CredentialsPolicy.Factory(credentials));
+        }
         allFactories.addAll(customPolicyFactories);
         return allFactories;
     }

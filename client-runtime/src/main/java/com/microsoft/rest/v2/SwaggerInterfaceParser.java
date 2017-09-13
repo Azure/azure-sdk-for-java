@@ -26,15 +26,17 @@ class SwaggerInterfaceParser {
      * name.
      * @param swaggerInterface The interface that will be parsed.
      */
-    SwaggerInterfaceParser(Class<?> swaggerInterface) {
+    SwaggerInterfaceParser(Class<?> swaggerInterface, String host) {
         this.swaggerInterface = swaggerInterface;
 
         final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
         if (hostAnnotation == null) {
             throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
         }
-        else {
-            host = hostAnnotation.value();
+        else if (host != null) {
+            this.host = host;
+        } else {
+            this.host = hostAnnotation.value();
         }
     }
 
