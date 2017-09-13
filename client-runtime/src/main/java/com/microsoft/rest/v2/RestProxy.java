@@ -15,6 +15,7 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 
@@ -127,6 +128,9 @@ public final class RestProxy implements InvocationHandler {
                     }
                 });
             }
+            else if (returnTypeToken.isSubtypeOf(Observable.class)) {
+                returnTypeToken.
+            }
             else {
                 result = null;
             }
@@ -172,7 +176,7 @@ public final class RestProxy implements InvocationHandler {
         Object result;
         final Type returnType = methodParser.returnType();
         final TypeToken returnTypeToken = TypeToken.of(returnType);
-        if (returnTypeToken.isSubtypeOf(Completable.class) || returnTypeToken.isSubtypeOf(Single.class)) {
+        if (returnTypeToken.isSubtypeOf(Completable.class) || returnTypeToken.isSubtypeOf(Single.class) || returnTypeToken.isSubtypeOf(Observable.class)) {
             final Single<HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
             result = responseHandler.handleAsyncResponse(asyncResponse, methodParser, serializer);
         }

@@ -10,7 +10,11 @@ import com.microsoft.rest.v2.annotations.Host;
 import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.PathParam;
 import org.junit.Test;
+import rx.Observable;
 import rx.Single;
+import rx.functions.Action1;
+
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.*;
 
@@ -54,6 +58,10 @@ public class AzureProxyTests {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Location&PollsRemaining={pollsRemaining}")
         @ExpectedResponses({200})
         Single<MockResource> createAsyncWithLocationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
+
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Location&PollsRemaining={pollsRemaining}")
+        @ExpectedResponses({200})
+        Observable<OperationStatus<MockResource>> beginCreateAsyncWithLocationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
     }
 
     @Test
@@ -122,6 +130,30 @@ public class AzureProxyTests {
                 .toBlocking().value();
         assertNotNull(resource);
         assertEquals("c", resource.name);
+    }
+
+    @Test
+    public void beginCreateAsyncWithLocationAndPolls() {
+        final AtomicInteger pollCounts = new AtomicInteger();
+        final Value<MockResource> resource = new Value<>();
+
+        createMockService(MockResourceService.class)
+                .beginCreateAsyncWithLocationAndPolls("1", "mine", "c", 2)
+                .subscribe(new Action1<OperationStatus<MockResource>>() {
+                    @Override
+                    public void call(OperationStatus<MockResource> mockResourceOperationStatus) {
+                        if (!mockResourceOperationStatus.isDone()) {
+                            pollCounts.incrementAndGet();
+                        }
+                        else {
+                            resource.set(mockResourceOperationStatus.result());
+                        }
+                    }
+                });
+
+        assertEquals(1, pollCounts.get());
+        assertNotNull(resource.get());
+        assertEquals("c", resource.get().name);
     }
 
     private <T> T createMockService(Class<T> serviceClass) {

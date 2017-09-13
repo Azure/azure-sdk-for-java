@@ -128,20 +128,4 @@ public class AzureProxy {
 
         return retryAfterSeconds;
     }
-
-    private static class Value<T> {
-        private T value;
-
-        Value(T value) {
-            set(value);
-        }
-
-        public T get() {
-            return value;
-        }
-
-        public void set(T value) {
-            this.value = value;
-        }
-    }
 }
