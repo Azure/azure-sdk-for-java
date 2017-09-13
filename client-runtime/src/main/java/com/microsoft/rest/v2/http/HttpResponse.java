@@ -31,6 +31,12 @@ public abstract class HttpResponse {
     public abstract String headerValue(String headerName);
 
     /**
+     * Get all the headers on this HTTP response.
+     * @return All headers on this HTTP response.
+     */
+    public abstract HttpHeaders headers();
+
+    /**
      * Get this response object's body as an InputStream. If this response object doesn't have a
      * body, then null will be returned.
      * @return This response object's body as an InputStream. If this response object doesn't have a

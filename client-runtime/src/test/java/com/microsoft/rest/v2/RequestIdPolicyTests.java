@@ -7,6 +7,7 @@
 package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.policy.RequestIdPolicy;
@@ -32,6 +33,11 @@ public class RequestIdPolicyTests {
         @Override
         public String headerValue(String headerName) {
             return null;
+        }
+
+        @Override
+        public HttpHeaders headers() {
+            return new HttpHeaders();
         }
 
         @Override
