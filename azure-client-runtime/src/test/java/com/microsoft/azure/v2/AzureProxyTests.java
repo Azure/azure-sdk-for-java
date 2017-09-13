@@ -1,6 +1,7 @@
 package com.microsoft.azure.v2;
 
 import com.microsoft.azure.v2.http.MockAzureHttpClient;
+import com.microsoft.azure.v2.http.MockAzureHttpResponse;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
@@ -11,11 +12,14 @@ import com.microsoft.rest.v2.annotations.PathParam;
 import org.junit.Test;
 import rx.Single;
 
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.*;
 
 public class AzureProxyTests {
 
+    @Test
+    public void constructor() {
+        new AzureProxy();
+    }
 
     @Host("https://mock.azure.com")
     private interface MockResourceService {
@@ -124,6 +128,131 @@ public class AzureProxyTests {
         final MockAzureHttpClient mockHttpClient = new MockAzureHttpClient();
         return AzureProxy.create(serviceClass, mockHttpClient, serializer);
     }
+
+    @Test
+    public void getPollUrlWithNoLocationHeaderAndNullCurrentPollUrl() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200);
+        assertNull(AzureProxy.getPollUrl(response, null));
+    }
+
+    @Test
+    public void getPollUrlWithNullLocationHeaderAndNullCurrentPollUrl() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Location", null);
+        assertNull(AzureProxy.getPollUrl(response, null));
+    }
+
+    @Test
+    public void getPollUrlWithEmptyLocationHeaderAndNullCurrentPollUrl() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Location", "");
+        assertNull(AzureProxy.getPollUrl(response, null));
+    }
+
+    @Test
+    public void getPollUrlWithNonEmptyLocationHeaderAndNullCurrentPollUrl() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Location", "spam");
+        assertEquals("spam", AzureProxy.getPollUrl(response, null));
+    }
+
+    @Test
+    public void getPollUrlWithNoLocationHeaderAndNonEmptyCurrentPollUrl() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200);
+        assertEquals("peanut butter", AzureProxy.getPollUrl(response, "peanut butter"));
+    }
+
+    @Test
+    public void getPollUrlWithNullLocationHeaderAndNonEmptyCurrentPollUrl() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Location", null);
+        assertEquals("peanut butter", AzureProxy.getPollUrl(response, "peanut butter"));
+    }
+
+    @Test
+    public void getPollUrlWithEmptyLocationHeaderAndNonEmptyCurrentPollUrl() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Location", "");
+        assertEquals("peanut butter", AzureProxy.getPollUrl(response, "peanut butter"));
+    }
+
+    @Test
+    public void getPollUrlWithNonEmptyLocationHeaderAndNonEmptyCurrentPollUrl() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Location", "spam");
+        assertEquals("spam", AzureProxy.getPollUrl(response, "peanut butter"));
+    }
+
+    @Test
+    public void getRetryAfterSecondsWithNoHeaderAndNullCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200);
+        assertNull(AzureProxy.getRetryAfterSeconds(response, null));
+    }
+
+    @Test
+    public void getRetryAfterSecondsWithNullHeaderAndNullCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Retry-After", null);
+        assertNull(AzureProxy.getRetryAfterSeconds(response, null));
+    }
+
+    @Test
+    public void getRetryAfterSecondsWithEmptyHeaderAndNullCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Retry-After", "");
+        assertNull(AzureProxy.getRetryAfterSeconds(response, null));
+    }
+
+    @Test
+    public void getRetryAfterSecondsWithNonIntegerHeaderAndNullCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Retry-After", "spam");
+        assertNull(AzureProxy.getRetryAfterSeconds(response, null));
+    }
+
+    @Test
+    public void getRetryAfterSecondsWithIntegerHeaderAndNullCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Retry-After", "123");
+        assertEquals(123, AzureProxy.getRetryAfterSeconds(response, null).longValue());
+    }
+
+
+
+    @Test
+    public void getRetryAfterSecondsWithNoHeaderAndCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200);
+        assertEquals(5, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
+    }
+
+    @Test
+    public void getRetryAfterSecondsWithNullHeaderAndCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Retry-After", null);
+        assertEquals(5, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
+    }
+
+    @Test
+    public void getRetryAfterSecondsWithEmptyHeaderAndCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Retry-After", "");
+        assertEquals(5, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
+    }
+
+    @Test
+    public void getRetryAfterSecondsWithNonIntegerHeaderAndCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Retry-After", "spam");
+        assertEquals(5, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
+    }
+
+    @Test
+    public void getRetryAfterSecondsWithIntegerHeaderAndCurrentRetryAfterSeconds() {
+        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
+                .withHeader("Retry-After", "123");
+        assertEquals(123, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
+    }
+
 
     private static final SerializerAdapter<?> serializer = new JacksonAdapter();
 }

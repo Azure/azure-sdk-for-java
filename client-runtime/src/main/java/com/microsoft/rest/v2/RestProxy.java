@@ -85,7 +85,7 @@ public final class RestProxy implements InvocationHandler {
         }
 
         @Override
-        public Object handleAsyncResponse(Single<? extends HttpResponse> asyncResponse, final SwaggerMethodParser methodParser, final SerializerAdapter<?> serializer) {
+        public Object handleAsyncResponse(Single<HttpResponse> asyncResponse, final SwaggerMethodParser methodParser, final SerializerAdapter<?> serializer) {
             Object result;
 
             final Type returnType = methodParser.returnType();
@@ -169,7 +169,7 @@ public final class RestProxy implements InvocationHandler {
         final Type returnType = methodParser.returnType();
         final TypeToken returnTypeToken = TypeToken.of(returnType);
         if (returnTypeToken.isSubtypeOf(Completable.class) || returnTypeToken.isSubtypeOf(Single.class)) {
-            final Single<? extends HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
+            final Single<HttpResponse> asyncResponse = httpClient.sendRequestAsync(request);
             result = responseHandler.handleAsyncResponse(asyncResponse, methodParser, serializer);
         }
         else {
@@ -228,6 +228,6 @@ public final class RestProxy implements InvocationHandler {
          * @param response The asynchronous HttpResponse to handle.
          * @return The asynchronous return value.
          */
-        Object handleAsyncResponse(Single<? extends HttpResponse> response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer);
+        Object handleAsyncResponse(Single<HttpResponse> response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer);
     }
 }

@@ -29,7 +29,7 @@ import java.util.Map;
 public class MockAzureHttpClient extends HttpClient {
     @Override
     public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
-        HttpResponse response = new MockAzureHttpResponse();
+        HttpResponse response = null;
 
         try {
             final URI requestUrl = new URI(request.url());

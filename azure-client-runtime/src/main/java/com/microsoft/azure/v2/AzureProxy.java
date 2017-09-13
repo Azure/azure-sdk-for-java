@@ -13,8 +13,16 @@ import rx.functions.Func0;
 import rx.functions.Func1;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 public class AzureProxy {
+
+    /**
+     * Empty constructor.
+     */
+    AzureProxy() {
+    }
+
     /**
      * Create a proxy implementation of the provided Swagger interface.
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
@@ -38,7 +46,7 @@ public class AzureProxy {
             }
 
             @Override
-            public Object handleAsyncResponse(Single<? extends HttpResponse> asyncResponse, final SwaggerMethodParser methodParser, SerializerAdapter<?> serializer) {
+            public Object handleAsyncResponse(Single<HttpResponse> asyncResponse, final SwaggerMethodParser methodParser, SerializerAdapter<?> serializer) {
                 asyncResponse = asyncResponse
                         .flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
                             @Override
@@ -48,34 +56,29 @@ public class AzureProxy {
                                     result = Single.just(response);
                                 }
                                 else {
-                                    final Value<String> pollUrl = new Value<>(getPollUrl(response));
-                                    final Value<Integer> retryAfterMilliseconds = new Value();
+                                    final Value<String> pollUrl = new Value<>(getPollUrl(response, null));
+                                    final Value<Long> retryAfterSeconds = new Value<>(getRetryAfterSeconds(response, null));
 
-                                    result = Observable
-                                                .defer(new Func0<Observable<HttpResponse>>() {
-                                                    @Override
-                                                    public Observable<HttpResponse> call() {
-                                                        final HttpRequest pollRequest = new HttpRequest(methodParser.fullyQualifiedMethodName(), "GET", pollUrl.get());
-                                                        return httpClient.sendRequestAsync(pollRequest).toObservable();
-                                                    }
-                                                })
-                                                .toSingle();
-
-                                    result = Observable.just(true)
-                                            .flatMap(new Func1<Boolean, Observable<? extends HttpResponse>>() {
+                                    result = Observable.defer(new Func0<Observable<HttpResponse>>() {
                                                 @Override
-                                                public Observable<? extends HttpResponse> call(Boolean aBoolean) {
+                                                public Observable<HttpResponse> call() {
                                                     final HttpRequest pollRequest = new HttpRequest(methodParser.fullyQualifiedMethodName(), "GET", pollUrl.get());
                                                     return httpClient.sendRequestAsync(pollRequest).toObservable();
                                                 }
                                             })
-                                            .repeat()
+                                            .repeatWhen(new Func1<Observable<? extends Void>, Observable<?>>() {
+                                                @Override
+                                                public Observable<?> call(Observable<? extends Void> observable) {
+                                                    return retryAfterSeconds.get() == null ? observable : observable.delay(retryAfterSeconds.get(), TimeUnit.SECONDS);
+                                                }
+                                            })
                                             .filter(new Func1<HttpResponse, Boolean>() {
                                                 @Override
                                                 public Boolean call(HttpResponse response) {
                                                     final boolean result = response.statusCode() != 202;
                                                     if (!result) {
-                                                        pollUrl.set(getPollUrl(response));
+                                                        pollUrl.set(getPollUrl(response, pollUrl.get()));
+                                                        retryAfterSeconds.set(getRetryAfterSeconds(response, retryAfterSeconds.get()));
                                                     }
                                                     return result;
                                                 }
@@ -91,8 +94,8 @@ public class AzureProxy {
         });
     }
 
-    private static String getPollUrl(HttpResponse response) {
-        String pollUrl = null;
+    static String getPollUrl(HttpResponse response, String currentPollUrl) {
+        String pollUrl = currentPollUrl;
 
         final String location = response.headerValue("Location");
         if (location != null && !location.isEmpty()) {
@@ -102,35 +105,33 @@ public class AzureProxy {
         return pollUrl;
     }
 
+    static Long getRetryAfterSeconds(HttpResponse response, Long currentRetryAfterSeconds) {
+        Long retryAfterSeconds = currentRetryAfterSeconds;
+
+        final String retryAfterSecondsString = response.headerValue("Retry-After");
+        if (retryAfterSecondsString != null && !retryAfterSecondsString.isEmpty()) {
+            try {
+                retryAfterSeconds = Long.valueOf(retryAfterSecondsString);
+            } catch (Exception ignored) {
+            }
+        }
+
+        return retryAfterSeconds;
+    }
+
     private static class Value<T> {
         private T value;
-        private boolean hasValue;
-
-        public Value() {
-            hasValue = false;
-        }
 
         public Value(T value) {
-            this.value = value;
-            hasValue = true;
-        }
-
-        public boolean hasValue() {
-            return hasValue;
+            set(value);
         }
 
         public T get() {
-            return hasValue ? value : null;
+            return value;
         }
 
         public void set(T value) {
             this.value = value;
-            hasValue = true;
-        }
-
-        public void reset() {
-            hasValue = false;
-            value = null;
         }
     }
 }

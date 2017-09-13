@@ -26,10 +26,6 @@ public class MockAzureHttpResponse extends HttpResponse {
     private byte[] byteArray;
     private String string;
 
-    public MockAzureHttpResponse() {
-        this(200);
-    }
-
     public MockAzureHttpResponse(int statusCode) {
         this.statusCode = statusCode;
         headers = new HttpHeaders();
