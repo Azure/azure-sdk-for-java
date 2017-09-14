@@ -65,17 +65,17 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
      * used by Retrofit to perform actually REST calls.
      */
     interface DataLakeStoreAccountsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts get" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts add" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}")
+        Observable<Response<ResponseBody>> add(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Body AddDataLakeStoreParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts add" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}")
-        Observable<Response<ResponseBody>> add(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Body AddDataLakeStoreParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/{dataLakeStoreAccountName}")
+        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("dataLakeStoreAccountName") String dataLakeStoreAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.DataLakeStoreAccounts listByAccount" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/DataLakeStoreAccounts/")
@@ -85,191 +85,6 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
         @GET
         Observable<Response<ResponseBody>> listByAccountNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-    }
-
-    /**
-     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DataLakeStoreAccountInfo object if successful.
-     */
-    public DataLakeStoreAccountInfo get(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
-        return getWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<DataLakeStoreAccountInfo> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
-    }
-
-    /**
-     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DataLakeStoreAccountInfo object
-     */
-    public Observable<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
-        return getWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName).map(new Func1<ServiceResponse<DataLakeStoreAccountInfo>, DataLakeStoreAccountInfo>() {
-            @Override
-            public DataLakeStoreAccountInfo call(ServiceResponse<DataLakeStoreAccountInfo> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DataLakeStoreAccountInfo object
-     */
-    public Observable<ServiceResponse<DataLakeStoreAccountInfo>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (dataLakeStoreAccountName == null) {
-            throw new IllegalArgumentException("Parameter dataLakeStoreAccountName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataLakeStoreAccountInfo>>>() {
-                @Override
-                public Observable<ServiceResponse<DataLakeStoreAccountInfo>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<DataLakeStoreAccountInfo> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<DataLakeStoreAccountInfo> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<DataLakeStoreAccountInfo, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<DataLakeStoreAccountInfo>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    public void delete(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
-        deleteWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName).toBlocking().single().body();
-    }
-
-    /**
-     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
-    }
-
-    /**
-     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (dataLakeStoreAccountName == null) {
-            throw new IllegalArgumentException("Parameter dataLakeStoreAccountName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.delete(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
     }
 
     /**
@@ -451,6 +266,191 @@ public class DataLakeStoreAccountsImpl implements DataLakeStoreAccounts {
     private ServiceResponse<Void> addDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void delete(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
+        deleteWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName).toBlocking().single().body();
+    }
+
+    /**
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
+    }
+
+    /**
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (dataLakeStoreAccountName == null) {
+            throw new IllegalArgumentException("Parameter dataLakeStoreAccountName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.delete(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
+                @Override
+                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DataLakeStoreAccountInfo object if successful.
+     */
+    public DataLakeStoreAccountInfo get(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
+        return getWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<DataLakeStoreAccountInfo> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName), serviceCallback);
+    }
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DataLakeStoreAccountInfo object
+     */
+    public Observable<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
+        return getWithServiceResponseAsync(resourceGroupName, accountName, dataLakeStoreAccountName).map(new Func1<ServiceResponse<DataLakeStoreAccountInfo>, DataLakeStoreAccountInfo>() {
+            @Override
+            public DataLakeStoreAccountInfo call(ServiceResponse<DataLakeStoreAccountInfo> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DataLakeStoreAccountInfo object
+     */
+    public Observable<ServiceResponse<DataLakeStoreAccountInfo>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (dataLakeStoreAccountName == null) {
+            throw new IllegalArgumentException("Parameter dataLakeStoreAccountName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(resourceGroupName, accountName, dataLakeStoreAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DataLakeStoreAccountInfo>>>() {
+                @Override
+                public Observable<ServiceResponse<DataLakeStoreAccountInfo>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<DataLakeStoreAccountInfo> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<DataLakeStoreAccountInfo> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<DataLakeStoreAccountInfo, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<DataLakeStoreAccountInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
