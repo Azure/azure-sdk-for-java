@@ -134,7 +134,7 @@ public class EntityManager {
     
     private static int getPortNumberFromHost(String host)
     {
-        if(host.endsWith("windows-int.net"))
+        if(host.endsWith("onebox.windows-int.net"))
         {
             return ONE_BOX_HTTPS_PORT;
         }

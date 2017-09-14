@@ -143,7 +143,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			public void run() {
 			    try
 			    {
-			        TRACE_LOGGER.debug("Staring '{}' core message receiver's internal loop to complete timed out update state requests.", CoreMessageReceiver.this.receivePath);
+			        TRACE_LOGGER.debug("Starting '{}' core message receiver's internal loop to complete timed out update state requests.", CoreMessageReceiver.this.receivePath);
 			        for(Map.Entry<String, UpdateStateWorkItem> entry : CoreMessageReceiver.this.pendingUpdateStateRequests.entrySet())
 	                {
 	                    Duration remainingTime = entry.getValue().getTimeoutTracker().remaining();
@@ -174,7 +174,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             public void run() {
                 try
                 {
-                    TRACE_LOGGER.debug("Staring '{}' core message receiver's internal loop to return messages to waiting clients.", CoreMessageReceiver.this.receivePath);
+                    TRACE_LOGGER.debug("Starting '{}' core message receiver's internal loop to return messages to waiting clients.", CoreMessageReceiver.this.receivePath);
                     while(!CoreMessageReceiver.this.prefetchedMessages.isEmpty())
                     {
                         ReceiveWorkItem currentReceive = CoreMessageReceiver.this.pendingReceives.poll();

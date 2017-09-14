@@ -163,7 +163,7 @@ public final class ClientFactory {
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromConnectionStringAsync(String amqpConnectionString, ReceiveMode receiveMode) {
         Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
-        return createMessageReceiverFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString));
+        return createMessageReceiverFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString), receiveMode);
     }
 
     /**
@@ -282,7 +282,7 @@ public final class ClientFactory {
      */
     public static CompletableFuture<IMessageSession> acceptSessionFromConnectionStringAsync(String amqpConnectionString, String sessionId, ReceiveMode receiveMode) {
         Utils.assertNonNull("amqpConnectionString", amqpConnectionString);
-        return acceptSessionFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString), sessionId);
+        return acceptSessionFromConnectionStringBuilderAsync(new ConnectionStringBuilder(amqpConnectionString), sessionId, receiveMode);
     }
 
     /**
