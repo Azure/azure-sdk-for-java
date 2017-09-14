@@ -7,7 +7,8 @@
 package com.microsoft.azure.v2;
 
 /**
- * A container for a generic type. Serves a similar purpose as pointers in C/C++.
+ * A container for a generic type. Serves a similar purpose as pointers in C/C++. It's a workaround
+ * for the fact that Java doesn't allow mutation of local variables in closure.
  * @param <T>
  */
 class Value<T> {
