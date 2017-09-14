@@ -11,7 +11,6 @@ import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import org.apache.commons.lang3.NotImplementedException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Single;
@@ -116,7 +115,7 @@ public final class LoggingPolicy implements RequestPolicy {
     }
 
     private static void logResponse(Logger logger, HttpResponse response, long tookMs) {
-        throw new NotImplementedException("logResponse");
+        logger.warn("[WARNING] Logging HTTP responses not implemented.");
 //        long contentLength = response.body.contentLength();
 //        String bodySize = contentLength != -1 ? contentLength + "-byte" : "unknown-length";
 //

@@ -2,6 +2,7 @@ package com.microsoft.rest.v2;
 
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
+import com.microsoft.rest.v2.annotations.PATCH;
 import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import org.junit.Test;
 
@@ -15,7 +16,7 @@ public class SwaggerMethodParserTests {
         void testMethod1();
     }
 
-    @Test(expected = NullPointerException.class)
+    @Test(expected = MissingRequiredAnnotationException.class)
     public void withNoAnnotations() {
         final Method testMethod1 = TestInterface1.class.getDeclaredMethods()[0];
         assertEquals("testMethod1", testMethod1.getName());
@@ -24,6 +25,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface2 {
+        @PATCH("my/rest/api/path")
         @ExpectedResponses({200})
         void testMethod2();
     }
@@ -35,7 +37,7 @@ public class SwaggerMethodParserTests {
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, "https://raw.host.com");
         assertEquals("com.microsoft.rest.v2.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.fullyQualifiedMethodName());
-        assertEquals(null, methodParser.httpMethod());
+        assertEquals("PATCH", methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
         assertEquals(RestException.class, methodParser.exceptionType());
         assertEquals(Object.class, methodParser.exceptionBodyType());
@@ -45,6 +47,7 @@ public class SwaggerMethodParserTests {
     }
 
     interface TestInterface3 {
+        @PATCH("my/rest/api/path")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(MyRestException.class)
         void testMethod3();
@@ -57,7 +60,7 @@ public class SwaggerMethodParserTests {
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, "https://raw.host.com");
         assertEquals("com.microsoft.rest.v2.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
-        assertEquals(null, methodParser.httpMethod());
+        assertEquals("PATCH", methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
         assertEquals(MyRestException.class, methodParser.exceptionType());
         assertEquals(HttpBinJSON.class, methodParser.exceptionBodyType());
