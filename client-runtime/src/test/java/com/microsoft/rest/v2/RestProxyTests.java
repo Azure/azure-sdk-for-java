@@ -22,6 +22,7 @@ import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import org.junit.Test;
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
 
 import java.io.IOException;
@@ -593,10 +594,34 @@ public abstract class RestProxyTests {
         assertEquals("MyHeaderValue", headers.value("MyHeader"));
     }
 
+    @Host("https://httpbin.org")
+    private interface Service15 {
+        @GET("anything")
+        @ExpectedResponses({200})
+        Observable<HttpBinJSON> get();
+    }
+
+    @Test
+    public void service15Get() {
+        final Service15 service = createService(Service15.class);
+        try {
+            service.get();
+            fail("Expected exception.");
+        }
+        catch (InvalidReturnTypeException e) {
+            assertContains(e.getMessage(), "rx.Observable<com.microsoft.rest.v2.HttpBinJSON>");
+            assertContains(e.getMessage(), "RestProxyTests$Service15.get()");
+        }
+    }
+
     // Helpers
     private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
         return RestProxy.create(serviceClass, null, httpClient, serializer);
+    }
+
+    private static void assertContains(String value, String expectedSubstring) {
+        assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
     private static final SerializerAdapter<?> serializer = new JacksonAdapter();
