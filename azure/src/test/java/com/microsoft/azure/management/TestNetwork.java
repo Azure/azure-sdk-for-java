@@ -180,7 +180,7 @@ public class TestNetwork {
             Assert.assertTrue(localPeering.name().equalsIgnoreCase("peer0"));
             Assert.assertEquals(VirtualNetworkPeeringState.CONNECTED, localPeering.state());
             Assert.assertTrue(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
-            // TODO Assert.assertFalse(localPeering.isAccessFromRemoteNetworkAllowed());
+            Assert.assertFalse(localPeering.checkAccessBetweenNetworks());
             Assert.assertEquals(NetworkPeeringGatewayUse.BY_REMOTE_NETWORK, localPeering.gatewayUse());
 
             // Verify remote peering
@@ -191,7 +191,7 @@ public class TestNetwork {
             Assert.assertTrue(remotePeering.remoteNetworkId().equalsIgnoreCase(localNetwork.id()));
             Assert.assertEquals(VirtualNetworkPeeringState.CONNECTED, remotePeering.state());
             Assert.assertTrue(remotePeering.isTrafficForwardingFromRemoteNetworkAllowed());
-            // TODO Assert.assertFalse(remotePeering.isAccessFromRemoteNetworkAllowed());
+            Assert.assertFalse(remotePeering.checkAccessBetweenNetworks());
             Assert.assertEquals(NetworkPeeringGatewayUse.NONE, remotePeering.gatewayUse());
 
             return localNetwork;
@@ -220,14 +220,14 @@ public class TestNetwork {
 
             // Verify local peering changes
             Assert.assertFalse(localPeering.isTrafficForwardingFromRemoteNetworkAllowed());
-            // TODO Assert.assertTrue(localPeering.isAccessFromRemoteNetworkAllowed());
+            Assert.assertTrue(localPeering.checkAccessBetweenNetworks());
             Assert.assertEquals(NetworkPeeringGatewayUse.NONE, localPeering.gatewayUse());
 
             // Verify remote peering changes
             NetworkPeering remotePeering = localPeering.getRemotePeering();
             Assert.assertNotNull(remotePeering);
             Assert.assertFalse(remotePeering.isTrafficForwardingFromRemoteNetworkAllowed());
-            // TODO Assert.assertTrue(remotePeering.isAccessFromRemoteNetworkAllowed());
+            Assert.assertTrue(remotePeering.checkAccessBetweenNetworks());
             Assert.assertEquals(NetworkPeeringGatewayUse.NONE, remotePeering.gatewayUse());
 
             // Delete the peering

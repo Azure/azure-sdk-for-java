@@ -37,6 +37,13 @@ public interface NetworkPeering extends
     String networkId();
 
     /**
+     * @return true if the peering enables IP addresses within the peered networks to be accessible from both networks, otherwise false
+     * <p>
+     * (Note this method makes a separate call to Azure.)
+     */
+    boolean checkAccessBetweenNetworks();
+
+    /**
      * @return the associated remote virtual network's ID
      */
     String remoteNetworkId();
@@ -81,14 +88,6 @@ public interface NetworkPeering extends
      * @return true if traffic forwarding from the remote network is allowed into this network
      */
     boolean isTrafficForwardingFromRemoteNetworkAllowed();
-
-    /**
-     * @return true if virtual machines on this network's address spaces are accessible from the remote network
-     */
-    /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
-     * for this to apply to only one of the peered networks. When that bevavior is fixed this should be revisited accordingly.
-     */
-    // boolean isAccessFromRemoteNetworkAllowed();
 
     /**
      * @return true if the peered networks are in the same subscription, otherwise false
@@ -208,27 +207,6 @@ public interface NetworkPeering extends
          * The stage of a network peering definition allowing to control access from and to the remote network.
          */
         interface WithAccess {
-            /**
-             * Disallows access to this network's address space from the remote network.
-             * @return the next stage of the definition
-             */
-            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
-             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
-             */
-            // WithCreate withoutAccessFromRemoteNetwork();
-
-            /**
-             * Disallows access to the remote network's address space from this network.
-             * <p>
-             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
-             * the corresponding access setting on the remote network's matching peering explicitly.
-             * @return the next stage of the definition
-             */
-            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
-             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
-             */
-            // WithCreate withoutAccessToRemoteNetwork();
-
             /**
              * Disallows access to either peered network from the other.
              * <p>
@@ -397,48 +375,6 @@ public interface NetworkPeering extends
          * The stage of a network peering update allowing to control access from and to the remote network.
          */
         interface WithAccess {
-            /**
-             * Disallows access to this network's address space from the remote network.
-             * @return the next stage of the update
-             */
-            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
-             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
-             */
-            // Update withoutAccessFromRemoteNetwork();
-
-            /**
-             * Allows access to this network's address space from the remote network.
-             * @return the next stage of the update
-             */
-            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
-             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
-             */
-            // Update withAccessFromRemoteNetwork();
-
-            /**
-             * Disallows access to the remote network's address space from this network.
-             * <p>
-             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
-             * the corresponding access setting on the remote network's matching peering explicitly.
-             * @return the next stage of the update
-             */
-            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
-             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
-             */
-            // Update withoutAccessToRemoteNetwork();
-
-            /**
-             * Enables access to the remote network's address space from this network.
-             * <p>
-             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
-             * the corresponding access setting on the remote network's matching peering explicitly.
-             * @return the next stage of the update
-             */
-            /* TODO: removed for now because the underlying API in Networking seems broken: false on one peering effectively applies to both, even though the intent appears to be
-             * for this to apply to only one of the peered networks. When that behavior is fixed this should be revisited accordingly.
-             */
-            // Update withAccessToRemoteNetwork();
-
             /**
              * Enables access to either peered virtual network from the other.
              * <p>

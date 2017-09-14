@@ -96,21 +96,18 @@ class NetworkPeeringImpl
         return Utils.toPrimitiveBoolean(this.inner().allowForwardedTraffic());
     }
 
-    // TODO See the comment on the interface @Override
-    public boolean isAccessFromRemoteNetworkAllowed() {
+    private boolean isAccessFromRemoteNetworkAllowed() {
         return Utils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess());
     }
 
     // Fluent setters
 
-    //TODO See comment in interface @Override
-    public NetworkPeeringImpl withoutAccessFromRemoteNetwork() {
+    private NetworkPeeringImpl withoutAccessFromRemoteNetwork() {
         this.inner().withAllowVirtualNetworkAccess(false);
         return this;
     }
 
-    //TODO See comment in interface @Override
-    public NetworkPeeringImpl withAccessFromRemoteNetwork() {
+    private NetworkPeeringImpl withAccessFromRemoteNetwork() {
         this.inner().withAllowVirtualNetworkAccess(true);
         return this;
     }
@@ -175,14 +172,12 @@ class NetworkPeeringImpl
         return this.withTrafficForwardingFromRemoteNetwork().withTrafficForwardingToRemoteNetwork();
     }
 
-    //TODO See comment in interface @Override
-    public NetworkPeeringImpl withoutAccessToRemoteNetwork() {
+    private NetworkPeeringImpl withoutAccessToRemoteNetwork() {
         this.remoteAccess = false;
         return this;
     }
 
-    //TODO See comment in interface @Override
-    public NetworkPeeringImpl withAccessToRemoteNetwork() {
+    private NetworkPeeringImpl withAccessToRemoteNetwork() {
         this.remoteAccess = true;
         return this;
     }
@@ -237,6 +232,23 @@ class NetworkPeeringImpl
     }
 
     // Actions
+
+    @Override
+    public boolean checkAccessBetweenNetworks() {
+        if (!Utils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess())) {
+            // If network access is disabled on this peering, then it's disabled for both networks, regardless of what the remote peering says
+            return false;
+        }
+
+        // Check the access setting on the remote peering
+        NetworkPeering remotePeering = this.getRemotePeering();
+        if (remotePeering == null) {
+            return false;
+        } else {
+            // Access is enabled on local peering, so up to the remote peering to determine whether it's enabled or disabled overall
+            return Utils.toPrimitiveBoolean(remotePeering.inner().allowVirtualNetworkAccess());
+        }
+    }
 
     @Override
     protected Observable<NetworkPeering> createChildResourceAsync() {
@@ -308,7 +320,6 @@ class NetworkPeeringImpl
                                     // Update network access on the remote peering if needed
                                     if (localPeering.remoteAccess == null) {
                                         // No access change, so ignore
-                                        // TODO: Clean up the impl casts when Network REST API is fixed
                                     } else if (localPeering.remoteAccess.booleanValue() && !((NetworkPeeringImpl) remotePeering).isAccessFromRemoteNetworkAllowed()) {
                                         isUpdateNeeded = true;
                                         remotePeeringUpdate = ((NetworkPeeringImpl) remotePeeringUpdate).withAccessFromRemoteNetwork();
