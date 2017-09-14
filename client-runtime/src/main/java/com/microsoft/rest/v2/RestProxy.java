@@ -31,7 +31,9 @@ import java.lang.reflect.Type;
 
 /**
  * This class can be used to create a proxy implementation for a provided Swagger generated
- * interface.
+ * interface. RestProxy can create proxy implementations for interfaces with methods that return
+ * deserialized Java objects as well as asynchronous Single objects that resolve to a deserialized
+ * Java object.
  */
 public final class RestProxy implements InvocationHandler {
     private final HttpClient httpClient;
@@ -45,10 +47,9 @@ public final class RestProxy implements InvocationHandler {
      */
     public static final ResponseHandler DEFAULT_RESPONSE_HANDLER = new ResponseHandler() {
         @Override
-        public Object handleSyncResponse(HttpResponse response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer) throws IOException {
+        public Object handleSyncResponse(HttpResponse response, SwaggerMethodParser methodParser, Type returnType, SerializerAdapter<?> serializer) throws IOException {
             Object result;
 
-            final Type returnType = methodParser.returnType();
             final TypeToken returnTypeToken = TypeToken.of(returnType);
             final int responseStatusCode = response.statusCode();
             if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
@@ -128,18 +129,15 @@ public final class RestProxy implements InvocationHandler {
                     }
                 });
             }
-            else if (returnTypeToken.isSubtypeOf(Observable.class)) {
-                returnTypeToken.
-            }
             else {
-                result = null;
+                throw new InvalidReturnTypeException("RestProxy does not support swagger interface methods (such as " + methodParser.fullyQualifiedMethodName() + "()) with a return type of " + returnType.toString());
             }
 
             return result;
         }
     };
 
-    private RestProxy(HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser, ResponseHandler responseHandler) {
+    RestProxy(HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser, ResponseHandler responseHandler) {
         this.httpClient = httpClient;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
@@ -182,7 +180,7 @@ public final class RestProxy implements InvocationHandler {
         }
         else {
             final HttpResponse response = httpClient.sendRequest(request);
-            result = responseHandler.handleSyncResponse(response, methodParser, serializer);
+            result = responseHandler.handleSyncResponse(response, methodParser, methodParser.returnType(), serializer);
         }
 
         return result;
@@ -228,6 +226,7 @@ public final class RestProxy implements InvocationHandler {
          * @param response The HttpResponse to handle.
          * @param methodParser The SwaggerMethodParser that was used to send the HttpRequest that
          *                     created the HttpResponse passed to this method.
+         * @param returnType The type of the return value.
          * @param serializer The serializer that can be used to convert a String to the Swagger
          *                   method's return type.
          * @throws IOException If the response's return status code is not recognized and the
@@ -236,7 +235,7 @@ public final class RestProxy implements InvocationHandler {
          * response body can be converted to the expected error type.
          * @return The return value.
          */
-        Object handleSyncResponse(HttpResponse response, SwaggerMethodParser methodParser, SerializerAdapter<?> serializer) throws IOException, RestException;
+        Object handleSyncResponse(HttpResponse response, SwaggerMethodParser methodParser, Type returnType, SerializerAdapter<?> serializer) throws IOException, RestException;
 
         /**
          * Convert the provided asynchronous HttpResponse object into the appropriate asynchronous

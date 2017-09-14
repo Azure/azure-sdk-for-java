@@ -64,7 +64,7 @@ public class SwaggerMethodParser {
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
 
-        fullyQualifiedMethodName = swaggerInterface.getCanonicalName() + "." + swaggerMethod.getName();
+        fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
 
         if (swaggerMethod.isAnnotationPresent(GET.class)) {
             setHttpMethodAndRelativePath("GET", swaggerMethod.getAnnotation(GET.class).value());
