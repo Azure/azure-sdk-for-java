@@ -29,6 +29,11 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     private volatile boolean isSenderCreateStarted;
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
+    /**
+     * It will be truncated to 256 characters
+     */
+    public static String userAgent = null;
+
     private final String eventHubName;
     private final Object senderCreateSync;
 

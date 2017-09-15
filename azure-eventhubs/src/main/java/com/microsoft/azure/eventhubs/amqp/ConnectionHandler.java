@@ -7,6 +7,7 @@ package com.microsoft.azure.eventhubs.amqp;
 import java.util.HashMap;
 import java.util.Map;
 
+import com.microsoft.azure.eventhubs.EventHubClient;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -54,6 +55,11 @@ public final class ConnectionHandler extends BaseHandler {
         connectionProperties.put(AmqpConstants.VERSION, ClientConstants.CURRENT_JAVACLIENT_VERSION);
         connectionProperties.put(AmqpConstants.PLATFORM, ClientConstants.PLATFORM_INFO);
         connectionProperties.put(AmqpConstants.FRAMEWORK, ClientConstants.FRAMEWORK_INFO);
+        if (EventHubClient.userAgent != null) {
+            connectionProperties.put(AmqpConstants.USER_AGENT, EventHubClient.userAgent.length() < AmqpConstants.MAX_USER_AGENT_LENGTH ?
+                    EventHubClient.userAgent :
+                    EventHubClient.userAgent.substring(0, AmqpConstants.MAX_USER_AGENT_LENGTH));
+        }
         connection.setProperties(connectionProperties);
 
         connection.open();
