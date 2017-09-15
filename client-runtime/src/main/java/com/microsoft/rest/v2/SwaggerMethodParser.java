@@ -8,6 +8,7 @@ package com.microsoft.rest.v2;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
+import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
@@ -25,6 +26,9 @@ import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import rx.Completable;
+import rx.Observable;
+import rx.Single;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
@@ -312,6 +316,15 @@ public class SwaggerMethodParser {
      */
     public Type returnType() {
         return returnType;
+    }
+
+    /**
+     * Get whether or not this parser's swagger method is asynchronous.
+     * @return Whether or not this parser's swagger method is asynchronous.
+     */
+    public boolean isAsync() {
+        final TypeToken returnTypeToken = TypeToken.of(returnType);
+        return returnTypeToken.isSubtypeOf(Completable.class) || returnTypeToken.isSubtypeOf(Single.class) || returnTypeToken.isSubtypeOf(Observable.class);
     }
 
     /**
