@@ -17,7 +17,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import java.util.Collection;
-import java.util.List;
 
 /**
  * Client-side representation of Virtual Network Gateway Connection object, associated with Virtual Network Gateway.

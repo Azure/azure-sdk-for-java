@@ -7,7 +7,6 @@ package com.microsoft.azure.management.network;
 
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
