@@ -71,19 +71,19 @@ class VirtualNetworkGatewayIPConfigurationImpl
     }
 
     @Override
-    public DefinitionStages.WithAttach<VirtualNetworkGateway.DefinitionStages.WithCreate> withExistingSubnet(String networkId, String subnetName) {
+    public VirtualNetworkGatewayIPConfigurationImpl withExistingSubnet(String networkId, String subnetName) {
         SubResource subnetRef = new SubResource().withId(networkId + "/subnets/" + subnetName);
         this.inner().withSubnet(subnetRef);
         return this;
     }
 
     @Override
-    public DefinitionStages.WithAttach<VirtualNetworkGateway.DefinitionStages.WithCreate> withExistingSubnet(Subnet subnet) {
+    public VirtualNetworkGatewayIPConfigurationImpl withExistingSubnet(Subnet subnet) {
         return this.withExistingSubnet(subnet.parent().id(), subnet.name());
     }
 
     @Override
-    public DefinitionStages.WithAttach<VirtualNetworkGateway.DefinitionStages.WithCreate> withExistingSubnet(Network network, String subnetName) {
+    public VirtualNetworkGatewayIPConfigurationImpl withExistingSubnet(Network network, String subnetName) {
         return this.withExistingSubnet(network.id(), subnetName);
     }
 
@@ -93,12 +93,12 @@ class VirtualNetworkGatewayIPConfigurationImpl
     }
 
     @Override
-    public DefinitionStages.WithAttach<VirtualNetworkGateway.DefinitionStages.WithCreate> withExistingPublicIPAddress(PublicIPAddress pip) {
+    public VirtualNetworkGatewayIPConfigurationImpl withExistingPublicIPAddress(PublicIPAddress pip) {
         return this.withExistingPublicIPAddress(pip.id());
     }
 
     @Override
-    public DefinitionStages.WithAttach<VirtualNetworkGateway.DefinitionStages.WithCreate> withExistingPublicIPAddress(String resourceId) {
+    public VirtualNetworkGatewayIPConfigurationImpl withExistingPublicIPAddress(String resourceId) {
         SubResource pipRef = new SubResource().withId(resourceId);
         this.inner().withPublicIPAddress(pipRef);
         return this;
