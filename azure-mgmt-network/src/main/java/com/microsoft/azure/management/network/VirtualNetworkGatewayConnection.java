@@ -104,7 +104,7 @@ public interface VirtualNetworkGatewayConnection extends
     /**
      * @return the enableBgp flag
      */
-    Boolean isBgpEnabled();
+    boolean isBgpEnabled();
 
     /**
      * @return if policy-based traffic selectors enabled
@@ -114,7 +114,7 @@ public interface VirtualNetworkGatewayConnection extends
     /**
      * @return the IPSec Policies to be considered by this connection
      */
-    List<IpsecPolicy> ipsecPolicies();
+    Collection<IpsecPolicy> ipsecPolicies();
 
     /**
      * @return the provisioning state of the VirtualNetworkGatewayConnection resource

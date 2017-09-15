@@ -116,8 +116,8 @@ public class VirtualNetworkGatewayConnectionImpl
     }
 
     @Override
-    public Boolean isBgpEnabled() {
-        return inner().enableBgp();
+    public boolean isBgpEnabled() {
+        return Utils.toPrimitiveBoolean(inner().enableBgp());
     }
 
     @Override
@@ -126,8 +126,8 @@ public class VirtualNetworkGatewayConnectionImpl
     }
 
     @Override
-    public List<IpsecPolicy> ipsecPolicies() {
-        return inner().ipsecPolicies();
+    public Collection<IpsecPolicy> ipsecPolicies() {
+        return Collections.unmodifiableCollection(inner().ipsecPolicies());
     }
 
     @Override
