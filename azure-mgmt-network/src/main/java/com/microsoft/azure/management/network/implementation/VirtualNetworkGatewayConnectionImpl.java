@@ -18,6 +18,8 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 
@@ -94,8 +96,8 @@ public class VirtualNetworkGatewayConnectionImpl
     }
 
     @Override
-    public List<TunnelConnectionHealth> tunnelConnectionStatus() {
-        return inner().tunnelConnectionStatus();
+    public Collection<TunnelConnectionHealth> tunnelConnectionStatus() {
+        return Collections.unmodifiableCollection(inner().tunnelConnectionStatus());
     }
 
     @Override
@@ -109,8 +111,8 @@ public class VirtualNetworkGatewayConnectionImpl
     }
 
     @Override
-    public SubResource peer() {
-        return inner().peer();
+    public String peerId() {
+        return inner().peer() == null ? null : inner().peer().id();
     }
 
     @Override
@@ -119,8 +121,8 @@ public class VirtualNetworkGatewayConnectionImpl
     }
 
     @Override
-    public Boolean usePolicyBasedTrafficSelectors() {
-        return inner().usePolicyBasedTrafficSelectors();
+    public boolean usePolicyBasedTrafficSelectors() {
+        return Utils.toPrimitiveBoolean(inner().usePolicyBasedTrafficSelectors());
     }
 
     @Override
@@ -172,13 +174,13 @@ public class VirtualNetworkGatewayConnectionImpl
     }
 
     @Override
-    public VirtualNetworkGatewayConnectionImpl enableBGP() {
+    public VirtualNetworkGatewayConnectionImpl withBgp() {
         inner().withEnableBgp(true);
         return this;
     }
 
     @Override
-    public VirtualNetworkGatewayConnectionImpl disableBGP() {
+    public VirtualNetworkGatewayConnectionImpl withoutBgp() {
         inner().withEnableBgp(false);
         return this;
     }

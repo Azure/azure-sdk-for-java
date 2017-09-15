@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -17,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
+import java.util.Collection;
 import java.util.List;
 
 /**
@@ -66,17 +66,6 @@ public interface VirtualNetworkGatewayConnection extends
     int routingWeight();
 
     /**
-     * Set the routingWeight value.
-     *
-     * @param routingWeight the routingWeight value to set
-     * @return the VirtualNetworkGatewayConnectionInner object itself.
-     */
-//    public VirtualNetworkGatewayConnectionInner withRoutingWeight(Integer routingWeight) {
-//        this.routingWeight = routingWeight;
-//        return this;
-//    }
-
-    /**
      * @return the IPSec shared key
      */
     String sharedKey();
@@ -95,7 +84,7 @@ public interface VirtualNetworkGatewayConnection extends
      *
      * @return collection of all tunnels' connection health status
      */
-    List<TunnelConnectionHealth> tunnelConnectionStatus();
+    Collection<TunnelConnectionHealth> tunnelConnectionStatus();
 
     /**
      * @return the egress bytes transferred in this connection
@@ -110,65 +99,22 @@ public interface VirtualNetworkGatewayConnection extends
     /**
      * @return the reference to peerings resource
      */
-    SubResource peer();
-    /**
-     //     * Set the peer value.
-     //     *
-     //     * @param peer the peer value to set
-     //     * @return the VirtualNetworkGatewayConnectionInner object itself.
-     //     */
-//    public VirtualNetworkGatewayConnectionInner withPeer(SubResource peer) {
-//        this.peer = peer;
-//        return this;
-//    }
+    String peerId();
 
     /**
      * @return the enableBgp flag
      */
     Boolean isBgpEnabled();
 
-//    /**
-//     * Set the enableBgp value.
-//     *
-//     * @param enableBgp the enableBgp value to set
-//     * @return the VirtualNetworkGatewayConnectionInner object itself.
-//     */
-//    public VirtualNetworkGatewayConnectionInner withEnableBgp(Boolean enableBgp) {
-//        this.enableBgp = enableBgp;
-//        return this;
-//    }
-
     /**
      * @return if policy-based traffic selectors enabled
      */
-    Boolean usePolicyBasedTrafficSelectors();
-
-//    /**
-//     * Set the usePolicyBasedTrafficSelectors value.
-//     *
-//     * @param usePolicyBasedTrafficSelectors the usePolicyBasedTrafficSelectors value to set
-//     * @return the VirtualNetworkGatewayConnectionInner object itself.
-//     */
-//    public VirtualNetworkGatewayConnectionInner withUsePolicyBasedTrafficSelectors(Boolean usePolicyBasedTrafficSelectors) {
-//        this.usePolicyBasedTrafficSelectors = usePolicyBasedTrafficSelectors;
-//        return this;
-//    }
+    boolean usePolicyBasedTrafficSelectors();
 
     /**
      * @return the IPSec Policies to be considered by this connection
      */
     List<IpsecPolicy> ipsecPolicies();
-//
-//    /**
-//     * Set the ipsecPolicies value.
-//     *
-//     * @param ipsecPolicies the ipsecPolicies value to set
-//     * @return the VirtualNetworkGatewayConnectionInner object itself.
-//     */
-//    public VirtualNetworkGatewayConnectionInner withIpsecPolicies(List<IpsecPolicy> ipsecPolicies) {
-//        this.ipsecPolicies = ipsecPolicies;
-//        return this;
-//    }
 
     /**
      * @return the provisioning state of the VirtualNetworkGatewayConnection resource
@@ -196,36 +142,36 @@ public interface VirtualNetworkGatewayConnection extends
         }
 
         interface WithConnectionType {
-            DefinitionStages.WithLocalNetworkGateway withSiteToSite();
+            WithLocalNetworkGateway withSiteToSite();
 
-            DefinitionStages.WithSecondVirtualNetworkGateway withVNetToVNet();
+            WithSecondVirtualNetworkGateway withVNetToVNet();
 
-            DefinitionStages.WithExpressRoute withExpressRoute();
+            WithExpressRoute withExpressRoute();
         }
 
         interface WithLocalNetworkGateway {
-            DefinitionStages.WithSharedKey withLocalNetworkGateway(LocalNetworkGateway localNetworkGateway);
+            WithSharedKey withLocalNetworkGateway(LocalNetworkGateway localNetworkGateway);
         }
 
         interface WithSecondVirtualNetworkGateway {
-            DefinitionStages.WithSharedKey withSecondVirtualNetworkGateway(VirtualNetworkGateway virtualNetworkGateway2);
+            WithSharedKey withSecondVirtualNetworkGateway(VirtualNetworkGateway virtualNetworkGateway2);
         }
 
         interface WithExpressRoute {
         }
 
         interface WithSharedKey {
-            DefinitionStages.WithCreate withSharedKey(String sharedKey);
+            WithCreate withSharedKey(String sharedKey);
         }
 
-        interface WithBGPEnabled {
-            DefinitionStages.WithCreate enableBGP();
+        interface WithBgp {
+            WithCreate withBgp();
         }
 
         interface WithCreate extends
                 Creatable<VirtualNetworkGatewayConnection>,
                 Resource.DefinitionWithTags<WithCreate>,
-                DefinitionStages.WithBGPEnabled {
+                WithBgp {
         }
     }
 
@@ -233,7 +179,7 @@ public interface VirtualNetworkGatewayConnection extends
      * Grouping of virtual network gateway connection update stages.
      */
     interface Update extends
-            UpdateStages.WithBGPEnabled {
+            UpdateStages.WithBgp {
     }
 
     /**
@@ -241,10 +187,10 @@ public interface VirtualNetworkGatewayConnection extends
      */
     interface UpdateStages {
 
-        interface WithBGPEnabled {
-            Update enableBGP();
+        interface WithBgp {
+            Update withBgp();
 
-            Update disableBGP();
+            Update withoutBgp();
         }
     }
 }

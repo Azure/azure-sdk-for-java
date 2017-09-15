@@ -14,7 +14,8 @@ import rx.Observable;
 
 import java.util.ArrayList;
 import java.util.Collections;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * Implementation for LocalNetworkGateway and its create and update interfaces.
@@ -48,15 +49,12 @@ class LocalNetworkGatewayImpl
     }
 
     @Override
-    public List<String> addressSpaces() {
-        List<String> addressSpaces = new ArrayList<String>();
-        if (this.inner().localNetworkAddressSpace() == null) {
-            return Collections.unmodifiableList(addressSpaces);
-        } else if (this.inner().localNetworkAddressSpace().addressPrefixes() == null) {
-            return Collections.unmodifiableList(addressSpaces);
-        } else {
-            return Collections.unmodifiableList(this.inner().localNetworkAddressSpace().addressPrefixes());
+    public Set<String> addressSpaces() {
+        Set<String> addressSpaces = new HashSet<>();
+        if (this.inner().localNetworkAddressSpace() != null && this.inner().localNetworkAddressSpace().addressPrefixes() != null) {
+            addressSpaces.addAll(this.inner().localNetworkAddressSpace().addressPrefixes());
         }
+        return Collections.unmodifiableSet(addressSpaces);
     }
 
     @Override
@@ -84,7 +82,7 @@ class LocalNetworkGatewayImpl
     }
 
     @Override
-    public Update withoutAddressSpace(String cidr) {
+    public LocalNetworkGatewayImpl withoutAddressSpace(String cidr) {
         if (this.inner().localNetworkAddressSpace() == null || this.inner().localNetworkAddressSpace().addressPrefixes() == null) {
             return this;
         }
@@ -93,7 +91,7 @@ class LocalNetworkGatewayImpl
     }
 
     @Override
-    public LocalNetworkGatewayImpl withBgpSettings(long asn, String bgpPeeringAddress) {
+    public LocalNetworkGatewayImpl withBgp(long asn, String bgpPeeringAddress) {
         ensureBgpSettings().withAsn(asn).withBgpPeeringAddress(bgpPeeringAddress);
         return this;
     }

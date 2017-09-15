@@ -94,6 +94,7 @@ public interface NetworkWatcher extends
      * including another virtual machine or an arbitrary remote server.
      * @return a stage to specify parameters for connectivity check
      */
+    @Method
     ConnectivityCheck.DefinitionStages.ToDestination checkConnectivity();
 
     /**

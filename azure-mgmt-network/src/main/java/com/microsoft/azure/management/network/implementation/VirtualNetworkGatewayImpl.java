@@ -50,8 +50,7 @@ class VirtualNetworkGatewayImpl
         implements
         VirtualNetworkGateway,
         VirtualNetworkGateway.Definition,
-        VirtualNetworkGateway.Update,
-        VirtualNetworkGateway.UpdateStages.WithBgpSettings {
+        VirtualNetworkGateway.Update {
     private static final String GATEWAY_SUBNET = "GatewaySubnet";
 
     private Map<String, VirtualNetworkGatewayIPConfiguration> ipConfigs;
@@ -166,13 +165,6 @@ class VirtualNetworkGatewayImpl
         return this;
     }
 
-
-    @Override
-    public VirtualNetworkGatewayImpl enableBgp() {
-        inner().withEnableBgp(true);
-        return this;
-    }
-
     @Override
     public VirtualNetworkGatewayImpl disableBgp() {
         inner().withBgpSettings(null);
@@ -181,10 +173,9 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public VirtualNetworkGatewayImpl withBgpSettings(long asn, String bgpPeeringAddress) {
-        ensureBgpSettings();
-        inner().bgpSettings().withAsn(asn);
-        inner().bgpSettings().withBgpPeeringAddress(bgpPeeringAddress);
+    public VirtualNetworkGatewayImpl withBgp(long asn, String bgpPeeringAddress) {
+        inner().withEnableBgp(true);
+        ensureBgpSettings().withAsn(asn).withBgpPeeringAddress(bgpPeeringAddress);
         return this;
     }
 
@@ -250,18 +241,18 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public Boolean isBgpEnabled() {
-        return inner().enableBgp();
+    public boolean isBgpEnabled() {
+        return Utils.toPrimitiveBoolean(inner().enableBgp());
     }
 
     @Override
-    public Boolean activeActive() {
-        return inner().activeActive();
+    public boolean activeActive() {
+        return Utils.toPrimitiveBoolean(inner().activeActive());
     }
 
     @Override
-    public SubResource gatewayDefaultSite() {
-        return inner().gatewayDefaultSite();
+    public String gatewayDefaultSiteResourceId() {
+        return inner().gatewayDefaultSite() == null ? null : inner().gatewayDefaultSite().id();
     }
 
     @Override
@@ -354,10 +345,11 @@ class VirtualNetworkGatewayImpl
         initializeChildrenFromInner();
     }
 
-    private void ensureBgpSettings() {
+    private BgpSettings ensureBgpSettings() {
         if (inner().bgpSettings() == null) {
             inner().withBgpSettings(new BgpSettings());
         }
+        return inner().bgpSettings();
     }
 
     private VirtualNetworkGatewayIPConfigurationImpl ensureDefaultIPConfig() {
@@ -369,17 +361,6 @@ class VirtualNetworkGatewayImpl
         }
         return ipConfig;
     }
-
-//    private Creatable<Network> ensureDefaultNetworkDefinition() {
-//        final String vnetName = SdkContext.randomResourceName("vnet", 10);
-//        Creatable<Network> creatableNetwork = this.manager().networks().define(vnetName)
-//                .withRegion(this.region())
-//                .withExistingResourceGroup(this.resourceGroupName())
-//                .withAddressSpace("10.0.0.0/24")
-//                .withSubnet(GATEWAY_SUBNET, "10.0.0.0/25")
-//                .withSubnet("apps", "10.0.0.128/25");
-//        return creatableNetwork;
-//    }
 
     private Creatable<PublicIPAddress> creatablePip = null;
     private Creatable<PublicIPAddress> ensureDefaultPipDefinition() {

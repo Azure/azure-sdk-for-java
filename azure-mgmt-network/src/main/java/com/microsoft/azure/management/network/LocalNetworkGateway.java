@@ -16,7 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
-import java.util.List;
+import java.util.Set;
 
 /**
  * Entry point for Local Network Gateway management API in Azure.
@@ -43,7 +43,7 @@ public interface LocalNetworkGateway extends
     /**
      * @return local network site address spaces
      */
-    List<String> addressSpaces();
+    Set<String> addressSpaces();
 
     /**
      * @return the provisioning state of the LocalNetworkGateway resource
@@ -99,12 +99,12 @@ public interface LocalNetworkGateway extends
         /**
          * The stage of definition allowing to specify local network gateway's BGP speaker settings.
          */
-        interface WithBgpSettings {
+        interface WithBgp {
             /**
              * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
              */
-            WithCreate withBgpSettings(long asn, String bgpPeeringAddress);
+            WithCreate withBgp(long asn, String bgpPeeringAddress);
         }
 
         /**
@@ -115,7 +115,7 @@ public interface LocalNetworkGateway extends
                 Creatable<LocalNetworkGateway>,
                 Resource.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithAddressSpace,
-                DefinitionStages.WithBgpSettings {
+                DefinitionStages.WithBgp {
         }
     }
 
@@ -151,12 +151,12 @@ public interface LocalNetworkGateway extends
         /**
          * The stage of update allowing to specify local network gateway's BGP speaker settings.
          */
-        interface WithBgpSettings {
+        interface WithBgp {
             /**
              * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
              */
-            Update withBgpSettings(long asn, String bgpPeeringAddress);
+            Update withBgp(long asn, String bgpPeeringAddress);
 
             Update disableBgp();
         }
@@ -173,6 +173,6 @@ public interface LocalNetworkGateway extends
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithIPAddress,
             UpdateStages.WithAddressSpace,
-            UpdateStages.WithBgpSettings {
+            UpdateStages.WithBgp {
     }
 }

@@ -84,17 +84,17 @@ public interface VirtualNetworkGateway extends
     /**
      * @return whether BGP is enabled for this virtual network gateway or not
      */
-    Boolean isBgpEnabled();
+    boolean isBgpEnabled();
 
     /**
      * @return activeActive flag
      */
-    Boolean activeActive();
+    boolean activeActive();
 
     /**
-     * @return the reference of the LocalNetworkGateway resource which represents local network site having default routes
+     * @return the resource id of the LocalNetworkGateway resource which represents local network site having default routes
      */
-    SubResource gatewayDefaultSite();
+    String gatewayDefaultSiteResourceId();
 
     /**
      * @return the SKU of this virtual network gateway
@@ -125,7 +125,7 @@ public interface VirtualNetworkGateway extends
             DefinitionStages.WithGatewayType,
             DefinitionStages.WithSku,
             DefinitionStages.WithNetwork,
-            DefinitionStages.WithBgpSettings,
+            DefinitionStages.WithBgp,
             DefinitionStages.WithCreate {
     }
 
@@ -154,17 +154,17 @@ public interface VirtualNetworkGateway extends
              * Use Express route gateway type.
              * @return the next stage of the definition
              */
-            DefinitionStages.WithPublicIPAddress withExpressRoute();
+            WithPublicIPAddress withExpressRoute();
             /**
              * Use Route-based VPN type.
              * @return the next stage of the definition
              */
-            DefinitionStages.WithSku withRouteBasedVpn();
+            WithSku withRouteBasedVpn();
             /**
              * Use Policy-based VPN type. Note: this is available only for Basic SKU.
              * @return the next stage of the definition
              */
-            DefinitionStages.WithCreate withPolicyBasedVpn();
+            WithCreate withPolicyBasedVpn();
         }
 
         /**
@@ -178,7 +178,7 @@ public interface VirtualNetworkGateway extends
              * @param creatable a creatable definition for a new virtual network
              * @return the next stage of the definition
              */
-            DefinitionStages.WithGatewayType withNewNetwork(Creatable<Network> creatable);
+            WithGatewayType withNewNetwork(Creatable<Network> creatable);
 
             /**
              * Creates a new virtual network to associate with the virtual network gateway.
@@ -189,7 +189,7 @@ public interface VirtualNetworkGateway extends
              * @param addressSpace the address space for rhe virtual network
              * @return the next stage of the definition
              */
-            DefinitionStages.WithGatewayType withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr);
+            WithGatewayType withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr);
 
             /**
              * Creates a new virtual network to associate with the virtual network gateway.
@@ -199,21 +199,21 @@ public interface VirtualNetworkGateway extends
              * @param addressSpaceCidr the address space for the virtual network
              * @return the next stage of the definition
              */
-            DefinitionStages.WithGatewayType withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr);
+            WithGatewayType withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr);
 
             /**
              * Associate an existing virtual network with the virtual network gateway .
              * @param network an existing virtual network
              * @return the next stage of the definition
              */
-            DefinitionStages.WithGatewayType withExistingNetwork(Network network);
+            WithGatewayType withExistingNetwork(Network network);
         }
 
         /**
          * The stage of virtual network gateway definition allowing to specify SKU.
          */
         interface WithSku {
-            DefinitionStages.WithCreate withSku(VirtualNetworkGatewaySkuName skuName);
+            WithCreate withSku(VirtualNetworkGatewaySkuName skuName);
         }
 
         /**
@@ -223,26 +223,19 @@ public interface VirtualNetworkGateway extends
         }
 
         interface WithActiveActive {
-            DefinitionStages.WithCreate withActiveActive(boolean activeActive);
+            WithCreate withActiveActive(boolean activeActive);
         }
 
         /**
          * The stage of definition allowing to specify virtual network gateway's BGP speaker settings.
          * Note: BGP is supported on Route-Based VPN gateways only.
          */
-        interface WithBgpSettingsEnabled {
-            DefinitionStages.WithBgpSettings enableBgp();
-        }
-
-        /**
-         * The stage of definition allowing to specify BGP settings.
-         */
-        interface WithBgpSettings {
+        interface WithBgp {
             /**
              * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
              */
-            DefinitionStages.WithCreate withBgpSettings(long asn, String bgpPeeringAddress);
+            WithCreate withBgp(long asn, String bgpPeeringAddress);
         }
 
         /**
@@ -255,7 +248,7 @@ public interface VirtualNetworkGateway extends
                 Resource.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithPublicIPAddress,
                 DefinitionStages.WithActiveActive,
-                DefinitionStages.WithBgpSettingsEnabled {
+                DefinitionStages.WithBgp {
         }
     }
 
@@ -274,22 +267,17 @@ public interface VirtualNetworkGateway extends
          * The stage of update allowing to specify virtual network gateway's BGP speaker settings.
          * Note: BGP is supported on Route-Based VPN gateways only.
          */
-        interface WithBgpSettingsEnabled {
-            UpdateStages.WithBgpSettings enableBgp();
-
-            Update disableBgp();
-        }
-
-        /**
-         * The stage of update allowing to specify BGP settings.
-         */
-        interface WithBgpSettings {
+        interface WithBgp {
             /**
-             *
              * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
              */
-            Update withBgpSettings(long asn, String bgpPeeringAddress);
+            Update withBgp(long asn, String bgpPeeringAddress);
+
+            /**
+             * Disable BGP for this virtual network gateway.
+             */
+            Update disableBgp();
         }
     }
 
@@ -303,6 +291,6 @@ public interface VirtualNetworkGateway extends
             Appliable<VirtualNetworkGateway>,
             Resource.UpdateWithTags<Update>,
             UpdateStages.WithSku,
-            UpdateStages.WithBgpSettingsEnabled {
+            UpdateStages.WithBgp {
     }
 }
