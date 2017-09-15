@@ -23,11 +23,6 @@ import static org.junit.Assert.*;
 
 public class AzureProxyTests {
 
-    @Test
-    public void constructor() {
-        new AzureProxy();
-    }
-
     @Host("https://mock.azure.com")
     private interface MockResourceService {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}")
