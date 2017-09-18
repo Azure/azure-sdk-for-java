@@ -33,19 +33,19 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      * The reference to virtual network gateway resource.
      */
     @JsonProperty(value = "properties.virtualNetworkGateway1", required = true)
-    private VirtualNetworkGatewayInner virtualNetworkGateway1;
+    private SubResource virtualNetworkGateway1;
 
     /**
      * The reference to virtual network gateway resource.
      */
     @JsonProperty(value = "properties.virtualNetworkGateway2")
-    private VirtualNetworkGatewayInner virtualNetworkGateway2;
+    private SubResource virtualNetworkGateway2;
 
     /**
      * The reference to local network gateway resource.
      */
     @JsonProperty(value = "properties.localNetworkGateway2")
-    private LocalNetworkGatewayInner localNetworkGateway2;
+    private SubResource localNetworkGateway2;
 
     /**
      * Gateway connection type. Possible values are:
@@ -163,7 +163,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      *
      * @return the virtualNetworkGateway1 value
      */
-    public VirtualNetworkGatewayInner virtualNetworkGateway1() {
+    public SubResource virtualNetworkGateway1() {
         return this.virtualNetworkGateway1;
     }
 
@@ -173,7 +173,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      * @param virtualNetworkGateway1 the virtualNetworkGateway1 value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
      */
-    public VirtualNetworkGatewayConnectionInner withVirtualNetworkGateway1(VirtualNetworkGatewayInner virtualNetworkGateway1) {
+    public VirtualNetworkGatewayConnectionInner withVirtualNetworkGateway1(SubResource virtualNetworkGateway1) {
         this.virtualNetworkGateway1 = virtualNetworkGateway1;
         return this;
     }
@@ -183,7 +183,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      *
      * @return the virtualNetworkGateway2 value
      */
-    public VirtualNetworkGatewayInner virtualNetworkGateway2() {
+    public SubResource virtualNetworkGateway2() {
         return this.virtualNetworkGateway2;
     }
 
@@ -193,7 +193,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      * @param virtualNetworkGateway2 the virtualNetworkGateway2 value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
      */
-    public VirtualNetworkGatewayConnectionInner withVirtualNetworkGateway2(VirtualNetworkGatewayInner virtualNetworkGateway2) {
+    public VirtualNetworkGatewayConnectionInner withVirtualNetworkGateway2(SubResource virtualNetworkGateway2) {
         this.virtualNetworkGateway2 = virtualNetworkGateway2;
         return this;
     }
@@ -203,7 +203,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      *
      * @return the localNetworkGateway2 value
      */
-    public LocalNetworkGatewayInner localNetworkGateway2() {
+    public SubResource localNetworkGateway2() {
         return this.localNetworkGateway2;
     }
 
@@ -213,7 +213,7 @@ public class VirtualNetworkGatewayConnectionInner extends Resource {
      * @param localNetworkGateway2 the localNetworkGateway2 value to set
      * @return the VirtualNetworkGatewayConnectionInner object itself.
      */
-    public VirtualNetworkGatewayConnectionInner withLocalNetworkGateway2(LocalNetworkGatewayInner localNetworkGateway2) {
+    public VirtualNetworkGatewayConnectionInner withLocalNetworkGateway2(SubResource localNetworkGateway2) {
         this.localNetworkGateway2 = localNetworkGateway2;
         return this;
     }
