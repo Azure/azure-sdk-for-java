@@ -11,7 +11,6 @@ import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
-import com.microsoft.azure.management.network.implementation.VirtualNetworkGatewayIPConfigurationInner;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkGatewayInner;
 import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -23,7 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import rx.Completable;
 import rx.Observable;
 
-import java.util.List;
+import java.util.Collection;
 
 /**
  * Entry point for Virtual Network Gateway management API in Azure.
@@ -113,7 +112,7 @@ public interface VirtualNetworkGateway extends
     /**
      * @return IP configurations for virtual network gateway
      */
-    List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations();
+    Collection<VirtualNetworkGatewayIPConfiguration> ipConfigurations();
 
     /**
      * The entirety of the virtual network gateway definition.

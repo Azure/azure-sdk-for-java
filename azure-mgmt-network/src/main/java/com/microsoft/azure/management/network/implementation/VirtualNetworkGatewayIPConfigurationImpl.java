@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.Subnet;
@@ -63,6 +64,11 @@ class VirtualNetworkGatewayIPConfigurationImpl
         } else {
             return null;
         }
+    }
+
+    @Override
+    public IPAllocationMethod privateIPAllocationMethod() {
+        return inner().privateIPAllocationMethod();
     }
 
     @Override

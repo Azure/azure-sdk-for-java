@@ -32,6 +32,8 @@ import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 import java.util.TreeMap;
@@ -55,7 +57,7 @@ class VirtualNetworkGatewayImpl
     private Map<String, VirtualNetworkGatewayIPConfiguration> ipConfigs;
     private VirtualNetworkGatewayConnections connections;
     private Creatable<Network> creatableNetwork;
-    private Creatable<PublicIPAddress> creatablePublicIPAddress;
+    private Creatable<PublicIPAddress> creatablePip;
 
     private final PagedListConverter<VirtualNetworkGatewayConnectionListEntityInner, VirtualNetworkGatewayConnection> connectionsConverter =
             new PagedListConverter<VirtualNetworkGatewayConnectionListEntityInner, VirtualNetworkGatewayConnection>() {
@@ -270,8 +272,8 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations() {
-        return null;
+    public Collection<VirtualNetworkGatewayIPConfiguration> ipConfigurations() {
+        return Collections.unmodifiableCollection(ipConfigs.values());
     }
 
     Creatable<ResourceGroup> newGroup() {
@@ -335,8 +337,6 @@ class VirtualNetworkGatewayImpl
         // Reset and update IP configs
         ensureDefaultIPConfig();
         this.inner().withIpConfigurations(innersFromWrappers(this.ipConfigs.values()));
-
-
     }
 
     @Override
@@ -361,7 +361,6 @@ class VirtualNetworkGatewayImpl
         return ipConfig;
     }
 
-    private Creatable<PublicIPAddress> creatablePip = null;
     private Creatable<PublicIPAddress> ensureDefaultPipDefinition() {
         if (this.creatablePip == null) {
             final String pipName = SdkContext.randomResourceName("pip", 9);

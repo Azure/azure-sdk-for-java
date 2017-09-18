@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkGatewayIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPublicIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -39,10 +40,16 @@ public interface VirtualNetworkGatewayIPConfiguration extends
     String subnetName();
 
     /**
+     * @return the private IP allocation method. Possible values are: 'Static' and
+     * 'Dynamic'.
+     */
+    IPAllocationMethod privateIPAllocationMethod();
+
+    /**
      * @return the subnet the virtual network gateway is in
-     * <p>
      * Note, this results in a separate call to Azure.
      */
+    @Method
     Subnet getSubnet();
 
     /**
