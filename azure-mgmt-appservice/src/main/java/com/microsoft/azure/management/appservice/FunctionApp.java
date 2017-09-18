@@ -28,6 +28,11 @@ public interface FunctionApp extends
     WebAppBase,
     Refreshable<FunctionApp>,
     Updatable<FunctionApp.Update> {
+    /**
+
+     * @return the entry point to deployment slot management API under the function app
+     */
+    FunctionDeploymentSlots deploymentSlots();
 
     /**
      * @return the storage account associated with the function app
