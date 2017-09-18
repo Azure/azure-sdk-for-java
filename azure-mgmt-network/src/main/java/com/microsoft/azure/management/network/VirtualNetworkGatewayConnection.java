@@ -178,7 +178,8 @@ public interface VirtualNetworkGatewayConnection extends
      * Grouping of virtual network gateway connection update stages.
      */
     interface Update extends
-            UpdateStages.WithBgp {
+            UpdateStages.WithBgp,
+            UpdateStages.WithSharedKey {
     }
 
     /**
@@ -190,6 +191,10 @@ public interface VirtualNetworkGatewayConnection extends
             Update withBgp();
 
             Update withoutBgp();
+        }
+
+        interface WithSharedKey {
+            Update withSharedKey(String sharedKey);
         }
     }
 }
