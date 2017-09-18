@@ -220,10 +220,6 @@ public interface VirtualNetworkGateway extends
         interface WithPublicIPAddress extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddressNoDnsLabel<VirtualNetworkGateway.DefinitionStages.WithCreate> {
         }
 
-        interface WithActiveActive {
-            WithCreate withActiveActive(boolean activeActive);
-        }
-
         /**
          * The stage of definition allowing to specify virtual network gateway's BGP speaker settings.
          * Note: BGP is supported on Route-Based VPN gateways only.
@@ -245,7 +241,6 @@ public interface VirtualNetworkGateway extends
                 Creatable<VirtualNetworkGateway>,
                 Resource.DefinitionWithTags<WithCreate>,
                 DefinitionStages.WithPublicIPAddress,
-                DefinitionStages.WithActiveActive,
                 DefinitionStages.WithBgp {
         }
     }

@@ -181,12 +181,6 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public VirtualNetworkGatewayImpl withActiveActive(boolean activeActive) {
-        this.inner().withActiveActive(activeActive);
-        return this;
-    }
-
-    @Override
     public void reset() {
         resetAsync().await();
     }
