@@ -41,6 +41,7 @@ public interface NetworkPeering extends
      * <p>
      * (Note this method makes a separate call to Azure.)
      */
+    @Method
     boolean checkAccessBetweenNetworks();
 
     /**
