@@ -30,7 +30,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     public static final String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
     /**
-     * It will be truncated to 256 characters
+     * It will be truncated to 128 characters
      */
     public static String userAgent = null;
 

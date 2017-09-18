@@ -55,7 +55,7 @@ public final class AmqpConstants {
     public static final Symbol PLATFORM = Symbol.valueOf("platform");
     public static final Symbol FRAMEWORK = Symbol.valueOf("framework");
     public static final Symbol USER_AGENT = Symbol.valueOf("user-agent");
-    public static final int MAX_USER_AGENT_LENGTH = 256;
+    public static final int MAX_USER_AGENT_LENGTH = 128;
 
     public static final int AMQP_BATCH_MESSAGE_FORMAT = 0x80013700; // 2147563264L;
 
