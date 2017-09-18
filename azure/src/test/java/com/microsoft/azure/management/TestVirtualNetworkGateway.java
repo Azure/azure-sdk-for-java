@@ -6,6 +6,7 @@
 package com.microsoft.azure.management;
 
 import com.microsoft.azure.management.network.LocalNetworkGateway;
+import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.VirtualNetworkGateway;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayConnection;
 import com.microsoft.azure.management.network.VirtualNetworkGatewaySkuName;
@@ -119,6 +120,18 @@ public class TestVirtualNetworkGateway {
                     .withSharedKey("MySecretKey")
                     .create();
 
+            Assert.assertEquals(1, vngw.ipConfigurations().size());
+            Subnet subnet = vngw.ipConfigurations().iterator().next().getSubnet();
+            Assert.assertEquals("10.0.0.0/27", subnet.addressPrefix());
+
+            Assert.assertEquals("40.71.184.214", lngw.ipAddress());
+            Assert.assertEquals(1, lngw.addressSpaces().size());
+            Assert.assertEquals("192.168.3.0/24", lngw.addressSpaces().iterator().next());
+
+            List<VirtualNetworkGatewayConnection> connections = vngw.listConnections();
+            Assert.assertEquals(1, connections.size());
+            Assert.assertEquals(vngw.id(), connections.get(0).virtualNetworkGateway1Id());
+            Assert.assertEquals(lngw.id(), connections.get(0).localNetworkGateway2Id());
             return vngw;
         }
 
@@ -184,6 +197,10 @@ public class TestVirtualNetworkGateway {
                     .withSecondVirtualNetworkGateway(vngw2)
                     .withSharedKey("MySecretKey")
                     .create();
+            List<VirtualNetworkGatewayConnection> connections = vngw1.listConnections();
+            Assert.assertEquals(1, connections.size());
+            Assert.assertEquals(vngw1.id(), connections.get(0).virtualNetworkGateway1Id());
+            Assert.assertEquals(vngw2.id(), connections.get(0).virtualNetworkGateway2Id());
             return vngw1;
         }
 

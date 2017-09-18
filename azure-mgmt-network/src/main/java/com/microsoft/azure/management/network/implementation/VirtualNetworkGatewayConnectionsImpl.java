@@ -11,6 +11,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.VirtualNetworkGateway;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayConnection;
 import com.microsoft.azure.management.network.VirtualNetworkGatewayConnections;
+import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
 import com.microsoft.rest.ServiceCallback;
@@ -79,7 +80,6 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public PagedList<VirtualNetworkGatewayConnection> list() {
-        // TODO
         return new GroupPagedList<VirtualNetworkGatewayConnection>(this.manager().resourceManager().resourceGroups().list()) {
             @Override
             public List<VirtualNetworkGatewayConnection> listNextGroup(String resourceGroupName) {
@@ -102,17 +102,23 @@ class VirtualNetworkGatewayConnectionsImpl
 
     @Override
     public Observable<VirtualNetworkGatewayConnection> listAsync() {
-        return null;
+        return this.manager().resourceManager().resourceGroups().listAsync()
+                .flatMap(new Func1<ResourceGroup, Observable<VirtualNetworkGatewayConnection>>() {
+                    @Override
+                    public Observable<VirtualNetworkGatewayConnection> call(ResourceGroup resourceGroup) {
+                        return wrapPageAsync(inner().listByResourceGroupAsync(resourceGroup.name()));
+                    }
+                });
     }
 
     @Override
     protected Observable<VirtualNetworkGatewayConnectionInner> getInnerAsync(String resourceGroupName, String name) {
-        return null;
+        return inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
     @Override
     protected Completable deleteInnerAsync(String resourceGroupName, String name) {
-        return null;
+        return inner().deleteAsync(resourceGroupName, name).toCompletable();
     }
 
     @Override
