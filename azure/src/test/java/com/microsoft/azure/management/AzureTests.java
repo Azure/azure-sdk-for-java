@@ -649,6 +649,44 @@ public class AzureTests extends TestBase {
     }
 
     /**
+     * Tests the virtual network gateway implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualNetworkGateways() throws Exception {
+        new TestVirtualNetworkGateway.Basic(azure.virtualNetworkGateways().manager()).runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the virtual network gateway and virtual network gateway connection implementations for Site-to-Site connection.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualNetworkGatewaySiteToSite() throws Exception {
+        new TestVirtualNetworkGateway.SiteToSite(azure.virtualNetworkGateways().manager())
+                .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the virtual network gateway and virtual network gateway connection implementations for VNet-to-VNet connection.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualNetworkGatewayVNetToVNet() throws Exception {
+        new TestVirtualNetworkGateway.VNetToVNet(azure.virtualNetworkGateways().manager())
+                .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the local network gateway implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testLocalNetworkGateways() throws Exception {
+        new TestLocalNetworkGateway().runTest(azure.localNetworkGateways(), azure.resourceGroups());
+    }
+
+    /**
      * Tests virtual machines.
      * @throws Exception
      */
