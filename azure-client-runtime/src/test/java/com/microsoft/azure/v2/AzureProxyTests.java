@@ -1,7 +1,6 @@
 package com.microsoft.azure.v2;
 
 import com.microsoft.azure.v2.http.MockAzureHttpClient;
-import com.microsoft.azure.v2.http.MockAzureHttpResponse;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.InvalidReturnTypeException;
@@ -45,6 +44,14 @@ public class AzureProxyTests {
         @ExpectedResponses({200})
         MockResource createWithLocationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsRemaining);
 
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Azure-AsyncOperation")
+        @ExpectedResponses({200})
+        MockResource createWithAzureAsyncOperation(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName);
+
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Azure-AsyncOperation&PollsRemaining={pollsRemaining}")
+        @ExpectedResponses({200})
+        MockResource createWithAzureAsyncOperationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsRemaining);
+
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}")
         @ExpectedResponses({200})
         Single<MockResource> createAsync(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName);
@@ -57,6 +64,14 @@ public class AzureProxyTests {
         @ExpectedResponses({200})
         Single<MockResource> createAsyncWithLocationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
 
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Azure-AsyncOperation")
+        @ExpectedResponses({200})
+        Single<MockResource> createAsyncWithAzureAsyncOperation(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName);
+
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Azure-AsyncOperation&PollsRemaining={pollsRemaining}")
+        @ExpectedResponses({200})
+        Single<MockResource> createAsyncWithAzureAsyncOperationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
+
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Location&PollsRemaining={pollsRemaining}")
         @ExpectedResponses({200})
         Observable<MockResource> beginCreateAsyncWithBadReturnType(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
@@ -64,6 +79,10 @@ public class AzureProxyTests {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Location&PollsRemaining={pollsRemaining}")
         @ExpectedResponses({200})
         Observable<OperationStatus<MockResource>> beginCreateAsyncWithLocationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
+
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Azure-AsyncOperation&PollsRemaining={pollsRemaining}")
+        @ExpectedResponses({200})
+        Observable<OperationStatus<MockResource>> beginCreateAsyncWithAzureAsyncOperationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
 
         @DELETE("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}")
         @ExpectedResponses({200})
@@ -171,6 +190,36 @@ public class AzureProxyTests {
     }
 
     @Test
+    public void createWithAzureAsyncOperation() {
+        final MockAzureHttpClient httpClient = new MockAzureHttpClient();
+
+        final MockResource resource = createMockService(MockResourceService.class, httpClient)
+                .createWithAzureAsyncOperation("1", "mine", "c");
+        assertNotNull(resource);
+        assertEquals("c", resource.name);
+
+        assertEquals(1, httpClient.getRequests());
+        assertEquals(1, httpClient.createRequests());
+        assertEquals(0, httpClient.deleteRequests());
+        assertEquals(1, httpClient.pollRequests());
+    }
+
+    @Test
+    public void createWithAzureAsyncOperationAndPolls() {
+        final MockAzureHttpClient httpClient = new MockAzureHttpClient();
+
+        final MockResource resource = createMockService(MockResourceService.class, httpClient)
+                .createWithAzureAsyncOperationAndPolls("1", "mine", "c", 2);
+        assertNotNull(resource);
+        assertEquals("c", resource.name);
+
+        assertEquals(1, httpClient.getRequests());
+        assertEquals(1, httpClient.createRequests());
+        assertEquals(0, httpClient.deleteRequests());
+        assertEquals(2, httpClient.pollRequests());
+    }
+
+    @Test
     public void createAsync() {
         final MockAzureHttpClient httpClient = new MockAzureHttpClient();
 
@@ -213,6 +262,38 @@ public class AzureProxyTests {
         assertEquals("c", resource.name);
 
         assertEquals(0, httpClient.getRequests());
+        assertEquals(1, httpClient.createRequests());
+        assertEquals(0, httpClient.deleteRequests());
+        assertEquals(3, httpClient.pollRequests());
+    }
+
+    @Test
+    public void createAsyncWithAzureAsyncOperation() {
+        final MockAzureHttpClient httpClient = new MockAzureHttpClient();
+
+        final MockResource resource = createMockService(MockResourceService.class, httpClient)
+                .createAsyncWithAzureAsyncOperation("1", "mine", "c")
+                .toBlocking().value();
+        assertNotNull(resource);
+        assertEquals("c", resource.name);
+
+        assertEquals(1, httpClient.getRequests());
+        assertEquals(1, httpClient.createRequests());
+        assertEquals(0, httpClient.deleteRequests());
+        assertEquals(1, httpClient.pollRequests());
+    }
+
+    @Test
+    public void createAsyncWithAzureAsyncOperationAndPolls() {
+        final MockAzureHttpClient httpClient = new MockAzureHttpClient();
+
+        final MockResource resource = createMockService(MockResourceService.class, httpClient)
+                .createAsyncWithAzureAsyncOperationAndPolls("1", "mine", "c", 3)
+                .toBlocking().value();
+        assertNotNull(resource);
+        assertEquals("c", resource.name);
+
+        assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
         assertEquals(0, httpClient.deleteRequests());
         assertEquals(3, httpClient.pollRequests());
@@ -264,6 +345,37 @@ public class AzureProxyTests {
         assertEquals("c", resource.get().name);
 
         assertEquals(0, httpClient.getRequests());
+        assertEquals(1, httpClient.createRequests());
+        assertEquals(0, httpClient.deleteRequests());
+        assertEquals(3, httpClient.pollRequests());
+    }
+
+    @Test
+    public void beginCreateAsyncWithAzureAsyncOperationAndPolls() {
+        final MockAzureHttpClient httpClient = new MockAzureHttpClient();
+
+        final AtomicInteger inProgressCount = new AtomicInteger();
+        final Value<MockResource> resource = new Value<>();
+
+        createMockService(MockResourceService.class, httpClient)
+                .beginCreateAsyncWithAzureAsyncOperationAndPolls("1", "mine", "c", 3)
+                .subscribe(new Action1<OperationStatus<MockResource>>() {
+                    @Override
+                    public void call(OperationStatus<MockResource> operationStatus) {
+                        if (!operationStatus.isDone()) {
+                            inProgressCount.incrementAndGet();
+                        }
+                        else {
+                            resource.set(operationStatus.result());
+                        }
+                    }
+                });
+
+        assertEquals(3, inProgressCount.get());
+        assertNotNull(resource.get());
+        assertEquals("c", resource.get().name);
+
+        assertEquals(1, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
         assertEquals(0, httpClient.deleteRequests());
         assertEquals(3, httpClient.pollRequests());
@@ -445,130 +557,6 @@ public class AzureProxyTests {
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
         return AzureProxy.create(serviceClass, httpClient, serializer);
-    }
-
-    @Test
-    public void getPollUrlWithNoLocationHeaderAndNullCurrentPollUrl() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200);
-        assertNull(AzureProxy.getPollUrl(response, null));
-    }
-
-    @Test
-    public void getPollUrlWithNullLocationHeaderAndNullCurrentPollUrl() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Location", null);
-        assertNull(AzureProxy.getPollUrl(response, null));
-    }
-
-    @Test
-    public void getPollUrlWithEmptyLocationHeaderAndNullCurrentPollUrl() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Location", "");
-        assertNull(AzureProxy.getPollUrl(response, null));
-    }
-
-    @Test
-    public void getPollUrlWithNonEmptyLocationHeaderAndNullCurrentPollUrl() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Location", "spam");
-        assertEquals("spam", AzureProxy.getPollUrl(response, null));
-    }
-
-    @Test
-    public void getPollUrlWithNoLocationHeaderAndNonEmptyCurrentPollUrl() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200);
-        assertEquals("peanut butter", AzureProxy.getPollUrl(response, "peanut butter"));
-    }
-
-    @Test
-    public void getPollUrlWithNullLocationHeaderAndNonEmptyCurrentPollUrl() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Location", null);
-        assertEquals("peanut butter", AzureProxy.getPollUrl(response, "peanut butter"));
-    }
-
-    @Test
-    public void getPollUrlWithEmptyLocationHeaderAndNonEmptyCurrentPollUrl() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Location", "");
-        assertEquals("peanut butter", AzureProxy.getPollUrl(response, "peanut butter"));
-    }
-
-    @Test
-    public void getPollUrlWithNonEmptyLocationHeaderAndNonEmptyCurrentPollUrl() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Location", "spam");
-        assertEquals("spam", AzureProxy.getPollUrl(response, "peanut butter"));
-    }
-
-    @Test
-    public void getRetryAfterSecondsWithNoHeaderAndNullCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200);
-        assertNull(AzureProxy.getRetryAfterSeconds(response, null));
-    }
-
-    @Test
-    public void getRetryAfterSecondsWithNullHeaderAndNullCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Retry-After", null);
-        assertNull(AzureProxy.getRetryAfterSeconds(response, null));
-    }
-
-    @Test
-    public void getRetryAfterSecondsWithEmptyHeaderAndNullCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Retry-After", "");
-        assertNull(AzureProxy.getRetryAfterSeconds(response, null));
-    }
-
-    @Test
-    public void getRetryAfterSecondsWithNonIntegerHeaderAndNullCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Retry-After", "spam");
-        assertNull(AzureProxy.getRetryAfterSeconds(response, null));
-    }
-
-    @Test
-    public void getRetryAfterSecondsWithIntegerHeaderAndNullCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Retry-After", "123");
-        assertEquals(123, AzureProxy.getRetryAfterSeconds(response, null).longValue());
-    }
-
-
-
-    @Test
-    public void getRetryAfterSecondsWithNoHeaderAndCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200);
-        assertEquals(5, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
-    }
-
-    @Test
-    public void getRetryAfterSecondsWithNullHeaderAndCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Retry-After", null);
-        assertEquals(5, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
-    }
-
-    @Test
-    public void getRetryAfterSecondsWithEmptyHeaderAndCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Retry-After", "");
-        assertEquals(5, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
-    }
-
-    @Test
-    public void getRetryAfterSecondsWithNonIntegerHeaderAndCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Retry-After", "spam");
-        assertEquals(5, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
-    }
-
-    @Test
-    public void getRetryAfterSecondsWithIntegerHeaderAndCurrentRetryAfterSeconds() {
-        final MockAzureHttpResponse response = new MockAzureHttpResponse(200)
-                .withHeader("Retry-After", "123");
-        assertEquals(123, AzureProxy.getRetryAfterSeconds(response, 5L).longValue());
     }
 
     private static void assertContains(String value, String expectedSubstring) {

@@ -6,18 +6,71 @@
 
 package com.microsoft.azure.v2;
 
-/**
- * The status of a long running operation. This generally is created from the result of polling for
- * whether a long running operation is done or not.
- * @param <T>
- */
-public final class OperationStatus<T> {
-    private final boolean isDone;
-    private final T result;
+import com.microsoft.rest.protocol.SerializerAdapter;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import rx.Single;
 
-    private OperationStatus(boolean isDone, T result) {
-        this.isDone = isDone;
-        this.result = result;
+import java.io.IOException;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * The current state of polling for the result of a long running operation.
+ */
+class OperationStatus<T> {
+    private PollStrategy pollStrategy;
+    private T result;
+
+    /**
+     * Create a new OperationStatus from the provided HTTP response.
+     * @param originalHttpRequest The HttpRequest that initiated the long running operation.
+     * @param originalHttpResponse The HttpResponse from the request that initiated the long running
+     *                             operation.
+     * @param serializer The serializer used to deserialize the response body.
+     */
+    OperationStatus(HttpRequest originalHttpRequest, HttpResponse originalHttpResponse, SerializerAdapter<?> serializer) {
+        final int httpStatusCode = originalHttpResponse.statusCode();
+
+        if (httpStatusCode != 200) {
+            final String fullyQualifiedMethodName = originalHttpRequest.callerMethod();
+            final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
+            final String originalHttpRequestUrl = originalHttpRequest.url();
+
+            if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
+                if (httpStatusCode == 201) {
+                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer);
+                } else if (httpStatusCode == 202) {
+                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer);
+                    if (pollStrategy == null) {
+                        pollStrategy = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse);
+                    }
+                }
+            } else /* if (originalRequestHttpMethod.equalsIgnoreCase("DELETE") || originalRequestHttpMethod.equalsIgnoreCase("POST") */ {
+                if (httpStatusCode == 202) {
+                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer);
+                    if (pollStrategy == null) {
+                        pollStrategy = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse);
+                    }
+                }
+            }
+        }
+    }
+
+    /**
+     * Update the properties of this OperationStatus from the provided response.
+     * @param httpResponse The HttpResponse from the most recent request.
+     */
+    void updateFrom(HttpResponse httpResponse) throws IOException {
+        pollStrategy.updateFrom(httpResponse);
+    }
+
+    /**
+     * Update the properties of this OperationStatus from the provided HTTP poll response.
+     * @param httpPollResponse The response of the most recent poll request.
+     * @return A Single that can be used to chain off of this operation.
+     */
+    Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
+        return pollStrategy.updateFromAsync(httpPollResponse);
     }
 
     /**
@@ -25,7 +78,46 @@ public final class OperationStatus<T> {
      * @return Whether or not the long running operation is done.
      */
     public boolean isDone() {
-        return isDone;
+        return pollStrategy == null || pollStrategy.isDone();
+    }
+
+    /**
+     * Create a HttpRequest that will get the next polling status update for the long running
+     * operation.
+     * @return A HttpRequest that will get the next polling status update for the long running
+     * operation.
+     */
+    HttpRequest createPollRequest() {
+        return pollStrategy.createPollRequest();
+    }
+
+    /**
+     * If this OperationStatus has a retryAfterSeconds value, delay (and block) the current thread for
+     * the number of seconds that are in the retryAfterSeconds value. If this OperationStatus doesn't
+     * have a retryAfterSeconds value, then just return.
+     */
+    void delay() throws InterruptedException {
+        final long delayInMilliseconds = pollStrategy.delayInMilliseconds();
+        if (delayInMilliseconds > 0) {
+            Thread.sleep(delayInMilliseconds);
+        }
+    }
+
+    /**
+     * If this OperationStatus has a retryAfterSeconds value, return an Single that is delayed by the
+     * number of seconds that are in the retryAfterSeconds value. If this OperationStatus doesn't have
+     * a retryAfterSeconds value, then return an Single with no delay.
+     * @return A Single with delay if this OperationStatus has a retryAfterSeconds value.
+     */
+    Single<Void> delayAsync() {
+        Single<Void> result = Single.just(null);
+
+        final long delayInMilliseconds = pollStrategy.delayInMilliseconds();
+        if (delayInMilliseconds > 0) {
+            result = result.delay(delayInMilliseconds, TimeUnit.MILLISECONDS);
+        }
+
+        return result;
     }
 
     /**
@@ -38,22 +130,10 @@ public final class OperationStatus<T> {
     }
 
     /**
-     * Get an OperationStatus that represents a long running operation that is still in progress.
-     * @param <T> The type of result that the long running operation will return.
-     * @return An OperationStatus that represents a long running operation that is still in
-     * progress.
+     * Set the result of this OperationStatus.
+     * @param result The result to assign to this OperationStatus.
      */
-    public static <T> OperationStatus<T> inProgress() {
-        return new OperationStatus<>(false, null);
-    }
-
-    /**
-     * Get an OperationStatus that represents a long running operation that has completed.
-     * @param result The result of the long running operation.
-     * @param <T> The type of result that the long running operation will return.
-     * @return An OperationStatus that represents a long running operation that has completed.
-     */
-    public static <T> OperationStatus<T> completed(T result) {
-        return new OperationStatus<>(true, result);
+    void setResult(T result) {
+        this.result = result;
     }
 }

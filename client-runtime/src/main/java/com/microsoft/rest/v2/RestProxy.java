@@ -63,6 +63,14 @@ public class RestProxy implements InvocationHandler {
     }
 
     /**
+     * Get the SerializerAdapter used by this RestProxy.
+     * @return The SerializerAdapter used by this RestProxy.
+     */
+    protected SerializerAdapter<?> serializer() {
+        return serializer;
+    }
+
+    /**
      * Send the provided request and block until the response is received.
      * @param request The HTTP request to send.
      * @return The HTTP response received.
@@ -90,11 +98,11 @@ public class RestProxy implements InvocationHandler {
         Object result;
         if (methodParser.isAsync()) {
             final Single<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
-            result = handleAsyncHttpResponse(asyncResponse, methodParser);
+            result = handleAsyncHttpResponse(request, asyncResponse, methodParser);
         }
         else {
             final HttpResponse response = sendHttpRequest(request);
-            result = handleSyncHttpResponse(response, methodParser);
+            result = handleSyncHttpResponse(request, response, methodParser);
         }
 
         return result;
@@ -134,12 +142,12 @@ public class RestProxy implements InvocationHandler {
         return request;
     }
 
-    protected Object handleSyncHttpResponse(HttpResponse httpResponse, SwaggerMethodParser methodParser) throws IOException, InterruptedException {
+    protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser) throws IOException, InterruptedException {
         final Type returnType = methodParser.returnType();
-        return handleSyncHttpResponse(httpResponse, methodParser, returnType);
+        return handleSyncHttpResponse(httpRequest, httpResponse, methodParser, returnType);
     }
 
-    protected Object handleSyncHttpResponse(HttpResponse httpResponse, SwaggerMethodParser methodParser, Type returnType) throws IOException {
+    protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type returnType) throws IOException {
         Object result;
 
         final TypeToken returnTypeToken = TypeToken.of(returnType);
@@ -182,7 +190,7 @@ public class RestProxy implements InvocationHandler {
         return result;
     }
 
-    protected Object handleAsyncHttpResponse(Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser) {
+    protected Object handleAsyncHttpResponse(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser) {
         Object result;
 
         final Type returnType = methodParser.returnType();
