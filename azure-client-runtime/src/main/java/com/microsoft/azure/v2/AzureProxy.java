@@ -30,7 +30,7 @@ import java.lang.reflect.Type;
  * This class can be used to create an Azure specific proxy implementation for a provided Swagger
  * generated interface.
  */
-final class AzureProxy extends RestProxy {
+public final class AzureProxy extends RestProxy {
     private static long defaultDelayInMilliseconds = 30 * 1000;
 
     /**
