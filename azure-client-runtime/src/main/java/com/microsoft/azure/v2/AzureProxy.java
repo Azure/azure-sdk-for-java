@@ -7,6 +7,8 @@
 package com.microsoft.azure.v2;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureEnvironment;
+import com.microsoft.azure.v2.annotations.AzureHost;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.InvalidReturnTypeException;
 import com.microsoft.rest.v2.RestProxy;
@@ -31,7 +33,7 @@ import java.util.concurrent.TimeUnit;
  * This class can be used to create an Azure specific proxy implementation for a provided Swagger
  * generated interface.
  */
-public class AzureProxy extends RestProxy {
+public final class AzureProxy extends RestProxy {
     /**
      * Create a new instance of RestProxy.
      * @param httpClient The HttpClient that will be used by this RestProxy to send HttpRequests.
@@ -39,13 +41,14 @@ public class AzureProxy extends RestProxy {
      * @param interfaceParser The parser that contains information about the swagger interface that
      *                        this RestProxy "implements".
      */
-    AzureProxy(HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
+    private AzureProxy(HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
         super(httpClient, serializer, interfaceParser);
     }
 
     /**
      * Create a proxy implementation of the provided Swagger interface.
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
+     * @param azureEnvironment The azure environment that the proxy implementation will target.
      * @param httpClient The internal HTTP client that will be used to make REST calls.
      * @param serializer The serializer that will be used to convert POJOs to and from request and
      *                   response bodies.
@@ -53,9 +56,15 @@ public class AzureProxy extends RestProxy {
      * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, final HttpClient httpClient, SerializerAdapter<?> serializer) {
-        /* FIXME: get URL from @AzureHost */
-        final String baseUrl = null;
+    public static <A> A create(Class<A> swaggerInterface, AzureEnvironment azureEnvironment, final HttpClient httpClient, SerializerAdapter<?> serializer) {
+        String baseUrl = null;
+
+        if (azureEnvironment != null) {
+            final AzureHost azureHost = swaggerInterface.getAnnotation(AzureHost.class);
+            if (azureHost != null) {
+                baseUrl = azureEnvironment.url(azureHost.endpoint());
+            }
+        }
 
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, baseUrl);
         final AzureProxy azureProxy = new AzureProxy(httpClient, serializer, interfaceParser);
