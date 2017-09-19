@@ -22,7 +22,8 @@ import com.microsoft.azure.management.samples.Utils;
 import com.microsoft.rest.LogLevel;
 
 import java.io.File;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Azure Network sample for enabling and updating network peering between two virtual networks
@@ -79,61 +80,49 @@ public final class VerifyNetworkPeeringWithNetworkWatcher {
 
             //=============================================================
             // Define two virtual networks to peer and put the virtual machines in, at specific IP addresses
+            List<Creatable<Network>> networkDefinitions = new ArrayList<>();
 
-            Creatable<Network> networkADefinition = azure.networks().define(vnetAName)
+            networkDefinitions.add(azure.networks().define(vnetAName)
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupName)
                     .withAddressSpace("10.0.0.0/27")
-                    .withSubnet("subnetA", "10.0.0.0/27");
+                    .withSubnet("subnetA", "10.0.0.0/27"));
 
-            Creatable<Network> networkBDefinition = azure.networks().define(vnetBName)
+            networkDefinitions.add(azure.networks().define(vnetBName)
                     .withRegion(region)
                     .withNewResourceGroup(resourceGroupName)
                     .withAddressSpace("10.1.0.0/27")
-                    .withSubnet("subnetB", "10.1.0.0/27");
+                    .withSubnet("subnetB", "10.1.0.0/27"));
 
             //=============================================================
             // Define a couple of Linux VMs and place them in each of the networks
 
-            Creatable<VirtualMachine> vmADefinition = azure.virtualMachines().define(vmNames[0])
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withNewPrimaryNetwork(networkADefinition)
-                    .withPrimaryPrivateIPAddressStatic("10.0.0.8")
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(rootname)
-                    .withRootPassword(password)
+            List<Creatable<VirtualMachine>> vmDefinitions = new ArrayList<>();
 
-                    // Extension currently needed for network watcher support
-                    .defineNewExtension("packetCapture")
-                        .withPublisher("Microsoft.Azure.NetworkWatcher")
-                        .withType("NetworkWatcherAgentLinux")
-                        .withVersion("1.4")
-                        .attach();
+            for (int i = 0; i < networkDefinitions.size(); i++) {
+                vmDefinitions.add(azure.virtualMachines().define(vmNames[i])
+                        .withRegion(region)
+                        .withExistingResourceGroup(resourceGroupName)
+                        .withNewPrimaryNetwork(networkDefinitions.get(i))
+                        .withPrimaryPrivateIPAddressStatic(vmIPAddresses[i])
+                        .withoutPrimaryPublicIPAddress()
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUsername(rootname)
+                        .withRootPassword(password)
 
-            Creatable<VirtualMachine> vmBDefinition = azure.virtualMachines().define(vmNames[1])
-                    .withRegion(region)
-                    .withExistingResourceGroup(resourceGroupName)
-                    .withNewPrimaryNetwork(networkBDefinition)
-                    .withPrimaryPrivateIPAddressStatic("10.1.0.8")
-                    .withoutPrimaryPublicIPAddress()
-                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
-                    .withRootUsername(rootname)
-                    .withRootPassword(password)
-
-                    // Extension currently needed for network watcher support
-                    .defineNewExtension("packetCapture")
-                        .withPublisher("Microsoft.Azure.NetworkWatcher")
-                        .withType("NetworkWatcherAgentLinux")
-                        .withVersion("1.4")
-                        .attach();
+                        // Extension currently needed for network watcher support
+                        .defineNewExtension("packetCapture")
+                            .withPublisher("Microsoft.Azure.NetworkWatcher")
+                            .withType("NetworkWatcherAgentLinux")
+                            .withVersion("1.4")
+                            .attach());
+            }
 
             // Create the VMs in parallel for better performance
             System.out.println("Creating virtual machines and virtual networks...");
-            CreatedResources<VirtualMachine> createdVMs = azure.virtualMachines().create(Arrays.asList(vmADefinition, vmBDefinition));
-            VirtualMachine vmA = createdVMs.get(vmADefinition.key());
-            VirtualMachine vmB = createdVMs.get(vmBDefinition.key());
+            CreatedResources<VirtualMachine> createdVMs = azure.virtualMachines().create(vmDefinitions);
+            VirtualMachine vmA = createdVMs.get(vmDefinitions.get(0).key());
+            VirtualMachine vmB = createdVMs.get(vmDefinitions.get(1).key());
             System.out.println("Created the virtual machines and networks.");
 
             //=============================================================
