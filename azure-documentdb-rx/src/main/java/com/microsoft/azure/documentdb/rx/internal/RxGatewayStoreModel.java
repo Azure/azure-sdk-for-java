@@ -230,7 +230,7 @@ class RxGatewayStoreModel implements RxStoreModel {
         return uri;
     }
 
-    private StoreResponse fromHttpResponse(HttpResponseStatus httpResponseStatus,
+    private StoreResponse toStoreResponse(HttpResponseStatus httpResponseStatus,
             HttpResponseHeaders httpResponseHeaders, InputStream contentInputStream) throws IOException {
 
         List<Entry<String, String>> headerEntries = httpResponseHeaders.entries();
@@ -317,12 +317,9 @@ class RxGatewayStoreModel implements RxStoreModel {
                             // If there is any error in the header response this throws exception
                             validateOrThrow(request, httpResponseStatus, httpResponseHeaders, contentInputStream);
 
-                            // transforms to Observable<DocumentServiceResponse>
-                            return fromHttpResponse(httpResponseStatus, httpResponseHeaders, contentInputStream);
-                        } catch (RuntimeException e) {
-                            throw e;
+                            // transforms to Observable<StoreResponse>
+                            return toStoreResponse(httpResponseStatus, httpResponseHeaders, contentInputStream);
                         } catch (Exception e) {
-                            // wrap the exception in runtime exception
                             throw Exceptions.propagate(e);
                         }
                     });

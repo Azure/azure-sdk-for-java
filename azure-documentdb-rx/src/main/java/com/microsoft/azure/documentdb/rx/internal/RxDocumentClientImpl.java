@@ -47,6 +47,7 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.documentdb.Attachment;
 import com.microsoft.azure.documentdb.BridgeInternal;
+import com.microsoft.azure.documentdb.ChangeFeedOptions;
 import com.microsoft.azure.documentdb.Conflict;
 import com.microsoft.azure.documentdb.ConnectionMode;
 import com.microsoft.azure.documentdb.ConnectionPolicy;
@@ -62,6 +63,7 @@ import com.microsoft.azure.documentdb.FeedResponsePage;
 import com.microsoft.azure.documentdb.MediaOptions;
 import com.microsoft.azure.documentdb.MediaResponse;
 import com.microsoft.azure.documentdb.Offer;
+import com.microsoft.azure.documentdb.PartitionKeyRange;
 import com.microsoft.azure.documentdb.Permission;
 import com.microsoft.azure.documentdb.RequestOptions;
 import com.microsoft.azure.documentdb.Resource;
@@ -629,7 +631,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient {
         
         // Apply the ambient session.
         if (!StringUtils.isEmpty(request.getResourceAddress())) {
-            String sessionToken = this.sessionContainer.resolveSessionToken(request);
+            String sessionToken = this.sessionContainer.resolveGlobalSessionToken(request);
 
             if (!StringUtils.isEmpty(sessionToken)) {
                 headers.put(HttpConstants.HttpHeaders.SESSION_TOKEN, sessionToken);
@@ -987,6 +989,17 @@ public class RxDocumentClientImpl implements AsyncDocumentClient {
         return this.rxWrapperClient.queryDocuments(collectionLink, querySpec, options, partitionKey);
     }
 
+    @Override
+    public Observable<FeedResponsePage<Document>> queryDocumentChangeFeed(final String collectionLink, final
+            ChangeFeedOptions changeFeedOptions) {
+        return this.rxWrapperClient.queryDocumentChangeFeed(collectionLink, changeFeedOptions);
+    }
+    
+    @Override
+    public Observable<FeedResponsePage<PartitionKeyRange>> readPartitionKeyRanges(final String collectionLink, final FeedOptions options) {
+        return this.rxWrapperClient.readPartitionKeyRanges(collectionLink, options);
+    }
+    
     private RxDocumentServiceRequest getStoredProcedureRequest(String collectionLink, StoredProcedure storedProcedure,
             RequestOptions options, OperationType operationType) {
         if (StringUtils.isEmpty(collectionLink)) {

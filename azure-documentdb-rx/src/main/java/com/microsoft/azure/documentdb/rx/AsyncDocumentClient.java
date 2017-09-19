@@ -27,6 +27,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 import com.microsoft.azure.documentdb.Attachment;
+import com.microsoft.azure.documentdb.ChangeFeedOptions;
 import com.microsoft.azure.documentdb.Conflict;
 import com.microsoft.azure.documentdb.ConnectionMode;
 import com.microsoft.azure.documentdb.ConnectionPolicy;
@@ -41,6 +42,7 @@ import com.microsoft.azure.documentdb.FeedResponsePage;
 import com.microsoft.azure.documentdb.MediaOptions;
 import com.microsoft.azure.documentdb.MediaResponse;
 import com.microsoft.azure.documentdb.Offer;
+import com.microsoft.azure.documentdb.PartitionKeyRange;
 import com.microsoft.azure.documentdb.Permission;
 import com.microsoft.azure.documentdb.RequestOptions;
 import com.microsoft.azure.documentdb.ResourceResponse;
@@ -544,6 +546,31 @@ public interface AsyncDocumentClient {
     Observable<FeedResponsePage<Document>> queryDocuments(String collectionLink, SqlQuerySpec querySpec, FeedOptions options,
             Object partitionKey);
 
+    /**
+     * Query for documents change feed in a document collection.
+     * After subscription the operation will be performed. 
+     * The {@link Observable} will contain one or several feed response pages of the obtained documents.
+     * In case of failure the {@link Observable} will error.
+     * 
+     * @param collectionLink            the link to the parent document collection.
+     * @param changeFeedOptions         the change feed options.
+     * @return an {@link Observable} containing one or several feed response pages of the obtained documents or an error.
+     */
+    Observable<FeedResponsePage<Document>> queryDocumentChangeFeed(String collectionLink, 
+            ChangeFeedOptions changeFeedOptions);
+    
+    /**
+     * Reads all partition key ranges in a document collection.
+     * After subscription the operation will be performed. 
+     * The {@link Observable} will contain one or several feed response pages of the obtained partition key ranges.
+     * In case of failure the {@link Observable} will error.
+     * 
+     * @param collectionLink the link to the parent document collection.
+     * @param options        the feed options.
+     * @return an {@link Observable} containing one or several feed response pages of the obtained partition key ranges or an error.
+     */
+    Observable<FeedResponsePage<PartitionKeyRange>> readPartitionKeyRanges(String collectionLink,  FeedOptions options);
+    
     /**
      * Creates a stored procedure.
      * 

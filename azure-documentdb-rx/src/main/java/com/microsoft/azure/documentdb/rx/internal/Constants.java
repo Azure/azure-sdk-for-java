@@ -25,7 +25,7 @@ package com.microsoft.azure.documentdb.rx.internal;
 public class Constants {
 
     public static class Versions {
-        public static final String SDK_VERSION = "0.9.0-SNAPSHOT";
+        public static final String SDK_VERSION = "0.9.0-rc2";
         public static final String SDK_NAME = "documentdb-rxjava-sdk";
     }
 }

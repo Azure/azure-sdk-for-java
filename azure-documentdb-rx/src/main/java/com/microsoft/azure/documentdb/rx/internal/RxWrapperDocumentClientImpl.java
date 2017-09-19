@@ -36,6 +36,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.documentdb.Attachment;
+import com.microsoft.azure.documentdb.ChangeFeedOptions;
 import com.microsoft.azure.documentdb.Conflict;
 import com.microsoft.azure.documentdb.ConnectionPolicy;
 import com.microsoft.azure.documentdb.Database;
@@ -49,6 +50,7 @@ import com.microsoft.azure.documentdb.FeedResponsePage;
 import com.microsoft.azure.documentdb.MediaOptions;
 import com.microsoft.azure.documentdb.MediaResponse;
 import com.microsoft.azure.documentdb.Offer;
+import com.microsoft.azure.documentdb.PartitionKeyRange;
 import com.microsoft.azure.documentdb.Permission;
 import com.microsoft.azure.documentdb.QueryIterable;
 import com.microsoft.azure.documentdb.RequestOptions;
@@ -175,6 +177,10 @@ public class RxWrapperDocumentClientImpl implements AsyncDocumentClient {
     }
 
     private <T extends Resource> Observable<FeedResponsePage<T>> createFeedResponsePageObservable(final ImplFunc<FeedResponse<T>> impl) {
+        return createFeedResponsePageObservable(impl, false);
+    }
+    
+    private <T extends Resource> Observable<FeedResponsePage<T>> createFeedResponsePageObservable(final ImplFunc<FeedResponse<T>> impl, boolean isChangeFeed) {
 
         OnSubscribe<FeedResponsePage<T>> obs = new OnSubscribe<FeedResponsePage<T>>() {
             @Override
@@ -202,20 +208,20 @@ public class RxWrapperDocumentClientImpl implements AsyncDocumentClient {
                             logger.trace("Actual pageSize [{}] must match header page Size [{}] But it doesn't", pageResults.size(), pageSize);
                         }
 
-                        if (pageResults.isEmpty() && feedResponse.getResponseContinuation() == null) {
+                        if (pageResults.isEmpty() && (feedResponse.getResponseContinuation() == null || isChangeFeed)) {
                             // finished
                             break;
                         }
 
                         FeedResponsePage<T> frp = 
-                                new FeedResponsePage<T>(pageResults, feedResponse.getResponseHeaders());
+                                new FeedResponsePage<T>(pageResults, feedResponse.getResponseHeaders(), isChangeFeed);
                         subscriber.onNext(frp);
                         numberOfPages++;
                     }
 
                     if (!subscriber.isUnsubscribed() && numberOfPages == 0) {
                         // if no results, return one single feed response page containing the response headers
-                        subscriber.onNext(new FeedResponsePage<>(new ArrayList<>(), feedResponse.getResponseHeaders()));
+                        subscriber.onNext(new FeedResponsePage<>(new ArrayList<>(), feedResponse.getResponseHeaders(), isChangeFeed));
                     }
                 } catch (Exception e) {
                     logger.debug("Query Failed due to [{}]", e.getMessage(), e);
@@ -491,6 +497,27 @@ public class RxWrapperDocumentClientImpl implements AsyncDocumentClient {
             @Override
             public FeedResponse<Document> invoke() throws Exception {
                 return client.queryDocuments(collectionLink, querySpec, options, partitionKey);
+            }
+        });
+    }
+
+    @Override
+    public Observable<FeedResponsePage<Document>> queryDocumentChangeFeed(final String collectionLink, final
+            ChangeFeedOptions changeFeedOptions) {
+        return this.createFeedResponsePageObservable(new ImplFunc<FeedResponse<Document>>() {
+            @Override
+            public FeedResponse<Document> invoke() throws Exception {
+                return client.queryDocumentChangeFeed(collectionLink, changeFeedOptions);
+            }
+        }, true);
+    }
+    
+    @Override
+    public Observable<FeedResponsePage<PartitionKeyRange>> readPartitionKeyRanges(final String collectionLink, final FeedOptions options) {
+        return this.createFeedResponsePageObservable(new ImplFunc<FeedResponse<PartitionKeyRange>>() {
+            @Override
+            public FeedResponse<PartitionKeyRange> invoke() throws Exception {
+                return client.readPartitionKeyRanges(collectionLink, options);
             }
         });
     }

@@ -15,14 +15,16 @@ public class FeedResponsePage<T extends Resource> {
     private final Map<String, String> header;
     private final HashMap<String, Long> usageHeaders;
     private final HashMap<String, Long> quotaHeaders;
+    private final boolean useEtagAsContinuation;
 
-    public FeedResponsePage(List<T> results, Map<String, String> header) {
+    public FeedResponsePage(List<T> results, Map<String, String> header, boolean useEtagAsContinuation) {
         this.results = results;
         this.header = header;
         this.usageHeaders = new HashMap<String, Long>();
         this.quotaHeaders = new HashMap<String, Long>();
+        this.useEtagAsContinuation = useEtagAsContinuation;
     }
-    
+
     public List<T> getResults() {
         return results;
     }
@@ -214,14 +216,17 @@ public class FeedResponsePage<T extends Resource> {
     public String getActivityId() {
         return getValueOrNull(header, HttpConstants.HttpHeaders.ACTIVITY_ID);
     }
-
+    
     /**
      * Gets the continuation token to be used for continuing the enumeration.
      *
      * @return the response continuation.
      */
     public String getResponseContinuation() {
-        return getValueOrNull(header, HttpConstants.HttpHeaders.CONTINUATION);
+        String headerName = useEtagAsContinuation
+                ? HttpConstants.HttpHeaders.E_TAG
+                : HttpConstants.HttpHeaders.CONTINUATION;
+        return getValueOrNull(header, headerName);
     }
 
     /**
