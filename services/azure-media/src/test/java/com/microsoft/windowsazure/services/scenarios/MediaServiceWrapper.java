@@ -77,7 +77,7 @@ class MediaServiceWrapper {
     private static final String accessPolicyPrefix = "scenarioTestPrefix";
 
     private final String MEDIA_PROCESSOR_STORAGE_DECRYPTION = "Storage Decryption";
-    private final String MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER = "Windows Azure Media Encoder";
+    private final String MEDIA_PROCESSOR_WINDOWS_AZURE_MEDIA_ENCODER = "Media Encoder Standard";
 
     public static enum EncoderType {
         WindowsAzureMediaEncoder, StorageDecryption

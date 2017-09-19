@@ -55,7 +55,7 @@ public class SASTokenFilter extends IdempotentClientFilter {
         } else if (currentQuery.length() > 0) {
             currentQuery += "&";
         }
-        currentQuery += sasToken;
+        currentQuery += "api-version=2016-05-31&" + sasToken;
 
         newUri.replaceQuery(currentQuery);
         cr.setURI(newUri.build());
