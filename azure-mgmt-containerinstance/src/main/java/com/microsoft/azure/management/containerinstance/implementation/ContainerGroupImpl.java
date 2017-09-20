@@ -24,6 +24,7 @@ import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.azure.storage.CloudStorageAccount;
 import com.microsoft.azure.storage.file.CloudFileClient;
 import com.microsoft.azure.storage.file.CloudFileShare;
+import org.apache.commons.lang3.tuple.Triple;
 import rx.Observable;
 import rx.exceptions.Exceptions;
 import rx.functions.Action2;
@@ -151,33 +152,9 @@ public class ContainerGroupImpl
                 CloudFileShare cloudFileShare = client.getShareReference(fileShareName);
                 cloudFileShare.createIfNotExists();
 
-                return new Triple<>(volumeName, fileShareName, storageAccountKey);
+                return Triple.of(volumeName, fileShareName, storageAccountKey);
             }
         });
-    }
-
-    class Triple<L, M, R> {
-        private L leftValue;
-        private M middleValue;
-        private R rightValue;
-
-        Triple(L left, M middle, R right) {
-            this.leftValue = left;
-            this.middleValue = middle;
-            this.rightValue = right;
-        }
-
-        public L getLeft() {
-            return this.leftValue;
-        }
-
-        public M getMiddle() {
-            return this.middleValue;
-        }
-
-        public R getRight() {
-            return this.rightValue;
-        }
     }
 
     @Override

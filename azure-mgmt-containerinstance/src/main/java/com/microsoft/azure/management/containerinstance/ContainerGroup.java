@@ -248,11 +248,11 @@ public interface ContainerGroup extends
              * Begins the definition of a volume that can be shared by the container instances in the container group.
              *
              * <p>
-             * The definition must be completed with a call to {@link VolumeDefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link VolumeDefinitionStages.WithVolumeAttach#attach()}
              * @param name the name of the volume
              * @return the next stage of the definition
              */
-            VolumeDefinitionStages.Blank<WithVolume> defineVolume(String name);
+            VolumeDefinitionStages.VolumeDefinitionBlank<WithVolume> defineVolume(String name);
         }
 
 
@@ -265,11 +265,11 @@ public interface ContainerGroup extends
              * Begins the definition of a volume that can be shared by the container instances in the container group.
              *
              * <p>
-             * The definition must be completed with a call to {@link VolumeDefinitionStages.WithAttach#attach()}
+             * The definition must be completed with a call to {@link VolumeDefinitionStages.WithVolumeAttach#attach()}
              * @param name the name of the volume
              * @return the next stage of the definition
              */
-            VolumeDefinitionStages.Blank<WithVolume> defineVolume(String name);
+            VolumeDefinitionStages.VolumeDefinitionBlank<WithVolume> defineVolume(String name);
 
         }
 
@@ -282,7 +282,7 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface Blank<ParentT> extends WithAzureFileShare<ParentT> {
+            interface VolumeDefinitionBlank<ParentT> extends WithAzureFileShare<ParentT> {
             }
 
             /**
@@ -333,7 +333,7 @@ public interface ContainerGroup extends
                  * @param storageAccountKey the storage account key
                  * @return the next stage of the definition
                  */
-                WithAttach<ParentT> withStorageAccountKey(String storageAccountKey);
+                WithVolumeAttach<ParentT> withStorageAccountKey(String storageAccountKey);
             }
 
             /** The final stage of the volume definition.
@@ -342,7 +342,7 @@ public interface ContainerGroup extends
              * can be attached to the parent virtual network definition.
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithAttach<ParentT> extends
+            interface WithVolumeAttach<ParentT> extends
                 Attachable.InDefinition<ParentT> {
             }
 
@@ -350,11 +350,11 @@ public interface ContainerGroup extends
              * Grouping of the container group's volume definition stages.
              */
             interface VolumeDefinition<ParentT> extends
-                Blank<ParentT>,
+                    VolumeDefinitionBlank<ParentT>,
                 WithAzureFileShare<ParentT>,
                 WithStorageAccountName<ParentT>,
                 WithStorageAccountKey<ParentT>,
-                WithAttach<ParentT> {
+                    WithVolumeAttach<ParentT> {
             }
         }
 
@@ -368,7 +368,7 @@ public interface ContainerGroup extends
              * @param name the name of the container instance
              * @return the next stage of the definition
              */
-            ContainerInstanceDefinitionStages.Blank<WithNextContainerInstance> defineContainerInstance(String name);
+            ContainerInstanceDefinitionStages.ContainerInstanceDefinitionBlank<WithNextContainerInstance> defineContainerInstance(String name);
 
             /**
              * Defines one container instance for the specified image with one CPU count and 1.5 GB memory, with TCP port 80 opened externally.
@@ -398,7 +398,7 @@ public interface ContainerGroup extends
              * @param name the name of the volume
              * @return the next stage of the definition
              */
-            ContainerInstanceDefinitionStages.Blank<WithNextContainerInstance> defineContainerInstance(String name);
+            ContainerInstanceDefinitionStages.ContainerInstanceDefinitionBlank<WithNextContainerInstance> defineContainerInstance(String name);
         }
 
         /**
@@ -410,7 +410,7 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface Blank<ParentT> extends WithImage<ParentT> {
+            interface ContainerInstanceDefinitionBlank<ParentT> extends WithImage<ParentT> {
             }
 
             /**
@@ -449,7 +449,7 @@ public interface ContainerGroup extends
                  *
                  * @return the next stage of the definition
                  */
-                WithAttach<ParentT> withoutPorts();
+                WithContainerInstanceAttach<ParentT> withoutPorts();
             }
 
             /**
@@ -457,9 +457,9 @@ public interface ContainerGroup extends
              *
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithPortsOrAttach<ParentT> extends
+            interface WithPortsOrContainerInstanceAttach<ParentT> extends
                 WithPorts<ParentT>,
-                WithAttach<ParentT> {
+                    WithContainerInstanceAttach<ParentT> {
             }
 
             /**
@@ -479,7 +479,7 @@ public interface ContainerGroup extends
                  * @param ports array of TCP ports to be exposed externally
                  * @return the next stage of the definition
                  */
-                WithPortsOrAttach<ParentT> withExternalTcpPorts(int... ports);
+                WithPortsOrContainerInstanceAttach<ParentT> withExternalTcpPorts(int... ports);
 
                 /**
                  * Specifies the container's TCP port available to external clients.
@@ -492,7 +492,7 @@ public interface ContainerGroup extends
                  * @param port TCP port to be exposed externally
                  * @return the next stage of the definition
                  */
-                WithPortsOrAttach<ParentT> withExternalTcpPort(int port);
+                WithPortsOrContainerInstanceAttach<ParentT> withExternalTcpPort(int port);
 
                 /**
                  * Specifies the container's UDP ports available to external clients.
@@ -505,7 +505,7 @@ public interface ContainerGroup extends
                  * @param ports array of UDP ports to be exposed externally
                  * @return the next stage of the definition
                  */
-                WithPortsOrAttach<ParentT> withExternalUdpPorts(int... ports);
+                WithPortsOrContainerInstanceAttach<ParentT> withExternalUdpPorts(int... ports);
 
                 /**
                  * Specifies the container's UDP port available to external clients.
@@ -518,7 +518,7 @@ public interface ContainerGroup extends
                  * @param port UDP port to be exposed externally
                  * @return the next stage of the definition
                  */
-                WithPortsOrAttach<ParentT> withExternalUdpPort(int port);
+                WithPortsOrContainerInstanceAttach<ParentT> withExternalUdpPort(int port);
 
                 /**
                  * Specifies the container's ports are available to internal clients only (other container instances within the container group).
@@ -529,7 +529,7 @@ public interface ContainerGroup extends
                  * @param ports array of TCP ports to be exposed internally
                  * @return the next stage of the definition
                  */
-                WithPortsOrAttach<ParentT> withInternalPorts(int... ports);
+                WithPortsOrContainerInstanceAttach<ParentT> withInternalPorts(int... ports);
 
                 /**
                  * Specifies the container's port is available to internal clients only (other container instances within the container group).
@@ -540,7 +540,7 @@ public interface ContainerGroup extends
                  * @param port TCP port to be exposed internally
                  * @return the next stage of the definition
                  */
-                WithPortsOrAttach<ParentT> withInternalPort(int port);
+                WithPortsOrContainerInstanceAttach<ParentT> withInternalPort(int port);
             }
 
             /**
@@ -558,7 +558,7 @@ public interface ContainerGroup extends
                  * @param cpuCoreCount the number of CPU cores
                  * @return the next stage of the definition
                  */
-                WithAttach<ParentT> withCpuCoreCount(double cpuCoreCount);
+                WithContainerInstanceAttach<ParentT> withCpuCoreCount(double cpuCoreCount);
             }
 
             /**
@@ -575,7 +575,7 @@ public interface ContainerGroup extends
                  * @param memorySize the memory size in GB
                  * @return the next stage of the definition
                  */
-                WithAttach<ParentT> withMemorySizeInGB(double memorySize);
+                WithContainerInstanceAttach<ParentT> withMemorySizeInGB(double memorySize);
             }
 
             /**
@@ -590,7 +590,7 @@ public interface ContainerGroup extends
                  * @param commandLines the starting command lines the container will execute after it gets initialized
                  * @return the next stage of the definition
                  */
-                WithAttach<ParentT> withStartingCommandLines(String... commandLines);
+                WithContainerInstanceAttach<ParentT> withStartingCommandLines(String... commandLines);
 
                 /**
                  * Specifies the starting command line.
@@ -598,7 +598,7 @@ public interface ContainerGroup extends
                  * @param commandLine the starting command line the container will execute after it gets initialized
                  * @return the next stage of the definition
                  */
-                WithAttach<ParentT> withStartingCommandLine(String commandLine);
+                WithContainerInstanceAttach<ParentT> withStartingCommandLine(String commandLine);
             }
 
             /**
@@ -613,7 +613,7 @@ public interface ContainerGroup extends
                  * @param environmentVariables the environment variables in a name and value pair to be set after the container gets initialized
                  * @return the next stage of the definition
                  */
-                WithAttach<ParentT> withEnvironmentVariables(Map<String, String> environmentVariables);
+                WithContainerInstanceAttach<ParentT> withEnvironmentVariables(Map<String, String> environmentVariables);
 
                 /**
                  * Specifies the environment variable.
@@ -622,7 +622,7 @@ public interface ContainerGroup extends
                  * @param envValue the environment variable value
                  * @return the next stage of the definition
                  */
-                WithAttach<ParentT> withEnvironmentVariable(String envName, String envValue);
+                WithContainerInstanceAttach<ParentT> withEnvironmentVariable(String envName, String envValue);
             }
 
             /**
@@ -643,7 +643,7 @@ public interface ContainerGroup extends
                  * @return the next stage of the definition
                  * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container group definition stage.
                  */
-                WithAttach<ParentT> withVolumeMountSetting(String volumeName, String mountPath);
+                WithContainerInstanceAttach<ParentT> withVolumeMountSetting(String volumeName, String mountPath);
 
                 /**
                  * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
@@ -656,7 +656,7 @@ public interface ContainerGroup extends
                  * @return the next stage of the definition
                  * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container group definition stage.
                  */
-                WithAttach<ParentT> withVolumeMountSetting(Map<String, String> volumeMountSetting);
+                WithContainerInstanceAttach<ParentT> withVolumeMountSetting(Map<String, String> volumeMountSetting);
 
                 /**
                  * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
@@ -670,7 +670,7 @@ public interface ContainerGroup extends
                  * @return the next stage of the definition
                  * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container group definition stage.
                  */
-                WithAttach<ParentT> withReadOnlyVolumeMountSetting(String volumeName, String mountPath);
+                WithContainerInstanceAttach<ParentT> withReadOnlyVolumeMountSetting(String volumeName, String mountPath);
 
                 /**
                  * Specifies the container group's volume to be mounted by the container instance at a specified mount path.
@@ -683,7 +683,7 @@ public interface ContainerGroup extends
                  * @return the next stage of the definition
                  * @throws IllegalArgumentException thrown if volumeName was not defined in the respective container group definition stage.
                  */
-                WithAttach<ParentT> withReadOnlyVolumeMountSetting(Map<String, String> volumeMountSetting);
+                WithContainerInstanceAttach<ParentT> withReadOnlyVolumeMountSetting(Map<String, String> volumeMountSetting);
             }
 
             /** The final stage of the container instance definition.
@@ -692,7 +692,7 @@ public interface ContainerGroup extends
              * can be attached to the parent virtual network definition.
              * @param <ParentT> the stage of the parent definition to return to after attaching this definition
              */
-            interface WithAttach<ParentT> extends
+            interface WithContainerInstanceAttach<ParentT> extends
                 WithCpuCoreCount<ParentT>,
                 WithMemorySize<ParentT>,
                 WithStartingCommandLine<ParentT>,
@@ -705,11 +705,11 @@ public interface ContainerGroup extends
              * Grouping of the container group's volume definition stages.
              */
             interface ContainerInstanceDefinition<ParentT> extends
-                Blank<ParentT>,
+                    ContainerInstanceDefinitionBlank<ParentT>,
                 WithImage<ParentT>,
                 WithOrWithoutPorts<ParentT>,
-                WithPortsOrAttach<ParentT>,
-                WithAttach<ParentT> {
+                    WithPortsOrContainerInstanceAttach<ParentT>,
+                    WithContainerInstanceAttach<ParentT> {
             }
         }
 
