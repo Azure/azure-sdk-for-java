@@ -12,6 +12,8 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.management.datalake.analytics.DataLakeAnalyticsJobManagementClient;
 import com.microsoft.azure.management.datalake.analytics.Jobs;
+import com.microsoft.azure.management.datalake.analytics.Pipelines;
+import com.microsoft.azure.management.datalake.analytics.Recurrences;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
@@ -135,6 +137,32 @@ public class DataLakeAnalyticsJobManagementClientImpl extends AzureServiceClient
     }
 
     /**
+     * The Pipelines object to access its operations.
+     */
+    private Pipelines pipelines;
+
+    /**
+     * Gets the Pipelines object to access its operations.
+     * @return the Pipelines object.
+     */
+    public Pipelines pipelines() {
+        return this.pipelines;
+    }
+
+    /**
+     * The Recurrences object to access its operations.
+     */
+    private Recurrences recurrences;
+
+    /**
+     * Gets the Recurrences object to access its operations.
+     * @return the Recurrences object.
+     */
+    public Recurrences recurrences() {
+        return this.recurrences;
+    }
+
+    /**
      * The Jobs object to access its operations.
      */
     private Jobs jobs;
@@ -183,6 +211,8 @@ public class DataLakeAnalyticsJobManagementClientImpl extends AzureServiceClient
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.pipelines = new PipelinesImpl(restClient().retrofit(), this);
+        this.recurrences = new RecurrencesImpl(restClient().retrofit(), this);
         this.jobs = new JobsImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
