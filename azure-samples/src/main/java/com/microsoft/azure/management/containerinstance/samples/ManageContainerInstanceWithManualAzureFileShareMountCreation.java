@@ -56,7 +56,7 @@ public class ManageContainerInstanceWithManualAzureFileShareMountCreation {
 
             CloudFileShare cloudFileShare = CloudStorageAccount.parse(String.format("DefaultEndpointsProtocol=https;AccountName=%s;AccountKey=%s;EndpointSuffix=core.windows.net",
                     saName,
-                    storageAccount.getKeys().get(0).value()))
+                    storageAccountKey.value()))
                 .createCloudFileClient()
                 .getShareReference(shareName);
             cloudFileShare.create();
