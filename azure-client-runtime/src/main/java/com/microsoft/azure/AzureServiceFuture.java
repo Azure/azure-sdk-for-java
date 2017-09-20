@@ -10,6 +10,7 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import rx.Observable;
+import rx.Single;
 import rx.Subscriber;
 import rx.functions.Func1;
 
@@ -35,42 +36,10 @@ public final class AzureServiceFuture<T> extends ServiceFuture<T> {
      * @param <E> the element type
      * @return the future based ServiceCall
      */
-    public static <E> ServiceFuture<List<E>> fromPageResponse(Observable<ServiceResponse<Page<E>>> first, final Func1<String, Observable<ServiceResponse<Page<E>>>> next, final ListOperationCallback<E> callback) {
+    public static <E> ServiceFuture<List<E>> fromPageResponse(Single<ServiceResponse<Page<E>>> first, final Func1<String, Single<ServiceResponse<Page<E>>>> next, final ListOperationCallback<E> callback) {
         final AzureServiceFuture<List<E>> serviceCall = new AzureServiceFuture<>();
         final PagingSubscriber<E> subscriber = new PagingSubscriber<>(serviceCall, next, callback);
-        serviceCall.setSubscription(first
-            .single()
-            .subscribe(subscriber));
-        return serviceCall;
-    }
-
-    /**
-     * Creates a ServiceCall from a paging operation that returns a header response.
-     *
-     * @param first the observable to the first page
-     * @param next the observable to poll subsequent pages
-     * @param callback the client-side callback
-     * @param <E> the element type
-     * @param <V> the header object type
-     * @return the future based ServiceCall
-     */
-    public static <E, V> ServiceFuture<List<E>> fromHeaderPageResponse(Observable<ServiceResponseWithHeaders<Page<E>, V>> first, final Func1<String, Observable<ServiceResponseWithHeaders<Page<E>, V>>> next, final ListOperationCallback<E> callback) {
-        final AzureServiceFuture<List<E>> serviceCall = new AzureServiceFuture<>();
-        final PagingSubscriber<E> subscriber = new PagingSubscriber<>(serviceCall, new Func1<String, Observable<ServiceResponse<Page<E>>>>() {
-            @Override
-            public Observable<ServiceResponse<Page<E>>> call(String s) {
-                return next.call(s)
-                        .map(new Func1<ServiceResponseWithHeaders<Page<E>, V>, ServiceResponse<Page<E>>>() {
-                            @Override
-                            public ServiceResponse<Page<E>> call(ServiceResponseWithHeaders<Page<E>, V> pageVServiceResponseWithHeaders) {
-                                return pageVServiceResponseWithHeaders;
-                            }
-                        });
-            }
-        }, callback);
-        serviceCall.setSubscription(first
-                .single()
-                .subscribe(subscriber));
+        serviceCall.setSubscription(first.subscribe(subscriber));
         return serviceCall;
     }
 
@@ -81,11 +50,11 @@ public final class AzureServiceFuture<T> extends ServiceFuture<T> {
      */
     private static final class PagingSubscriber<E> extends Subscriber<ServiceResponse<Page<E>>> {
         private AzureServiceFuture<List<E>> serviceCall;
-        private Func1<String, Observable<ServiceResponse<Page<E>>>> next;
+        private Func1<String, Single<ServiceResponse<Page<E>>>> next;
         private ListOperationCallback<E> callback;
         private ServiceResponse<Page<E>> lastResponse;
 
-        PagingSubscriber(final AzureServiceFuture<List<E>> serviceCall, final Func1<String, Observable<ServiceResponse<Page<E>>>> next, final ListOperationCallback<E> callback) {
+        PagingSubscriber(final AzureServiceFuture<List<E>> serviceCall, final Func1<String, Single<ServiceResponse<Page<E>>>> next, final ListOperationCallback<E> callback) {
             this.serviceCall = serviceCall;
             this.next = next;
             this.callback = callback;
@@ -117,7 +86,7 @@ public final class AzureServiceFuture<T> extends ServiceFuture<T> {
             if (behavior == ListOperationCallback.PagingBehavior.STOP || serviceResponse.body().nextPageLink() == null) {
                 serviceCall.set(lastResponse.body().items());
             } else {
-                serviceCall.setSubscription(next.call(serviceResponse.body().nextPageLink()).single().subscribe(this));
+                serviceCall.setSubscription(next.call(serviceResponse.body().nextPageLink()).subscribe(this));
             }
         }
     }
