@@ -16,7 +16,7 @@ import java.util.Map;
  * This class is responsible for creating individual Swagger interface method parsers from a Swagger
  * interface.
  */
-class SwaggerInterfaceParser {
+public class SwaggerInterfaceParser {
     private final Class<?> swaggerInterface;
     private final String host;
     private final Map<Method, SwaggerMethodParser> methodParsers = new HashMap<>();
@@ -25,8 +25,9 @@ class SwaggerInterfaceParser {
      * Create a new SwaggerInterfaceParser object with the provided fully qualified interface
      * name.
      * @param swaggerInterface The interface that will be parsed.
+     * @param host The host of URLs that this Swagger interface targets.
      */
-    SwaggerInterfaceParser(Class<?> swaggerInterface, String host) {
+    public SwaggerInterfaceParser(Class<?> swaggerInterface, String host) {
         this.swaggerInterface = swaggerInterface;
 
         final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
