@@ -157,30 +157,6 @@ public class ContainerGroupImpl
         });
     }
 
-//    class Triple<L, M, R> {
-//        private L leftValue;
-//        private M middleValue;
-//        private R rightValue;
-//
-//        Triple(L left, M middle, R right) {
-//            this.leftValue = left;
-//            this.middleValue = middle;
-//            this.rightValue = right;
-//        }
-//
-//        public L getLeft() {
-//            return this.leftValue;
-//        }
-//
-//        public M getMiddle() {
-//            return this.middleValue;
-//        }
-//
-//        public R getRight() {
-//            return this.rightValue;
-//        }
-//    }
-
     @Override
     protected void afterCreating() {
         initializeChildrenFromInner();
