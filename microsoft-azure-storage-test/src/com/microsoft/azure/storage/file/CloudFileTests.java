@@ -1412,7 +1412,7 @@ public class CloudFileTests {
                         file.delete();
                         assertFalse(file.exists());
                     }
-                    catch (StorageException e) {
+                    catch (Exception e) {
                         fail("Delete should succeed.");
                     }
                 }
@@ -1462,8 +1462,8 @@ public class CloudFileTests {
             FileRequestOptions options = new FileRequestOptions();
             OperationContext opContext = new OperationContext();
             try {
-                FileRequest.getFile(file.getUri(), options, opContext, null, 0L, 4L * Constants.MB, true);
-                FileRequest.getFile(file.getUri(), options, opContext, null, 0L, 4L * Constants.MB + 1, true);
+                FileRequest.getFile(file.getUri(), options, opContext, null, null, 0L, 4L * Constants.MB, true);
+                FileRequest.getFile(file.getUri(), options, opContext, null, null, 0L, 4L * Constants.MB + 1, true);
                 fail("The request for range ContentMD5 should have thrown an Exception for exceeding the limit.");
             }
             catch (IllegalArgumentException e)
@@ -1617,103 +1617,103 @@ public class CloudFileTests {
         source.delete();
     }
 
-//    @Test
-//    public void testUnsupportedFileApisWithinShareSnapshot() throws StorageException, URISyntaxException {
-//        CloudFileShare snapshot = this.share.createSnapshot();
-//        CloudFile file = snapshot.getRootDirectoryReference().getFileReference("file");
-//
-//        try {
-//            file.create(1024);
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            file.delete();
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            file.uploadMetadata();
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            file.abortCopy(null);
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            file.clearRange(0, 512);
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            file.startCopy(file);
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            file.upload(null, 512);
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        } catch (IOException e) {
-//            fail("Shouldn't get here");
-//        }
-//
-//        snapshot.delete();
-//    }
+    //@Test
+    public void testUnsupportedFileApisWithinShareSnapshot() throws StorageException, URISyntaxException {
+        CloudFileShare snapshot = this.share.createSnapshot();
+        CloudFile file = snapshot.getRootDirectoryReference().getFileReference("file");
 
-//    @Test
-//    public void testSupportedFileApisInShareSnapshot() throws StorageException, URISyntaxException, UnsupportedEncodingException {
-//        CloudFileDirectory dir = this.share.getRootDirectoryReference().getDirectoryReference("dir1");
-//        dir.deleteIfExists();
-//        dir.create();
-//        CloudFile file = dir.getFileReference("file");
-//        file.create(1024);
-//
-//        HashMap<String, String> meta = new HashMap<String, String>();
-//        meta.put("key1", "value1");
-//        file.setMetadata(meta);
-//        file.uploadMetadata();
-//
-//        CloudFileShare snapshot = this.share.createSnapshot();
-//        CloudFile snapshotFile = snapshot.getRootDirectoryReference()
-//                                         .getDirectoryReference("dir1").getFileReference("file");
-//
-//        HashMap<String, String> meta2 = new HashMap<String, String>();
-//        meta2.put("key2", "value2");
-//        file.setMetadata(meta2);
-//        file.uploadMetadata();
-//        snapshotFile.downloadAttributes();
-//        
-//        assertTrue(snapshotFile.getMetadata().size() == 1 && snapshotFile.getMetadata().get("key1").equals("value1"));
-//        assertNotNull(snapshotFile.getProperties().getEtag());
-//
-//        file.downloadAttributes();
-//        assertTrue(file.getMetadata().size() == 1 && file.getMetadata().get("key2").equals("value2"));
-//        assertNotNull(file.getProperties().getEtag());
-//        assertNotEquals(file.getProperties().getEtag(), snapshotFile.getProperties().getEtag());
-//
-//        final UriQueryBuilder uriBuilder = new UriQueryBuilder();
-//        uriBuilder.add("sharesnapshot", snapshot.snapshotID);
-//        CloudFile snapshotFile2 = new CloudFile(uriBuilder.addToURI(file.getUri()), this.share.getServiceClient().getCredentials());
-//        assertEquals(snapshot.snapshotID, snapshotFile2.getShare().snapshotID);
-//        assertTrue(snapshotFile2.exists());
-//        
-//        snapshot.delete();
-//    }
+        try {
+            file.create(1024);
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            file.delete();
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            file.uploadMetadata();
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            file.abortCopy(null);
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            file.clearRange(0, 512);
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            file.startCopy(file);
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            file.upload(null, 512);
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        } catch (IOException e) {
+            fail("Shouldn't get here");
+        }
+
+        snapshot.delete();
+    }
+
+    //@Test
+    public void testSupportedFileApisInShareSnapshot() throws StorageException, URISyntaxException, UnsupportedEncodingException {
+        CloudFileDirectory dir = this.share.getRootDirectoryReference().getDirectoryReference("dir1");
+        dir.deleteIfExists();
+        dir.create();
+        CloudFile file = dir.getFileReference("file");
+        file.create(1024);
+
+        HashMap<String, String> meta = new HashMap<String, String>();
+        meta.put("key1", "value1");
+        file.setMetadata(meta);
+        file.uploadMetadata();
+
+        CloudFileShare snapshot = this.share.createSnapshot();
+        CloudFile snapshotFile = snapshot.getRootDirectoryReference()
+                                         .getDirectoryReference("dir1").getFileReference("file");
+
+        HashMap<String, String> meta2 = new HashMap<String, String>();
+        meta2.put("key2", "value2");
+        file.setMetadata(meta2);
+        file.uploadMetadata();
+        snapshotFile.downloadAttributes();
+        
+        assertTrue(snapshotFile.getMetadata().size() == 1 && snapshotFile.getMetadata().get("key1").equals("value1"));
+        assertNotNull(snapshotFile.getProperties().getEtag());
+
+        file.downloadAttributes();
+        assertTrue(file.getMetadata().size() == 1 && file.getMetadata().get("key2").equals("value2"));
+        assertNotNull(file.getProperties().getEtag());
+        assertNotEquals(file.getProperties().getEtag(), snapshotFile.getProperties().getEtag());
+
+        final UriQueryBuilder uriBuilder = new UriQueryBuilder();
+        uriBuilder.add("sharesnapshot", snapshot.snapshotID);
+        CloudFile snapshotFile2 = new CloudFile(uriBuilder.addToURI(file.getUri()), this.share.getServiceClient().getCredentials());
+        assertEquals(snapshot.snapshotID, snapshotFile2.getShare().snapshotID);
+        assertTrue(snapshotFile2.exists());
+        
+        snapshot.delete();
+    }
 }

@@ -1,3 +1,6 @@
+2017.XX.XX Version 6.0.0
+ * Added support for taking a snapshot of a share.
+
 2017.08.28 Version 5.5.0
  * Fixed a bug when using a SAS token where the token was being omitted from calls to delete a directory in the file service.
  * For Standard Storage Accounts only, added the ability to set the tier of individual block blobs. The tier can currently only be set through uploadTier()

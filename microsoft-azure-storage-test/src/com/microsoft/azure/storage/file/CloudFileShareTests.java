@@ -494,195 +494,195 @@ public class CloudFileShareTests {
         assertTrue(this.share.deleteIfExists(null, null, ctx));
     }
 
-//    @Test
-//    public void testCreateShareSnapshot() throws StorageException, URISyntaxException, IOException {
-//        // create share with metadata
-//        this.share.create();
-//        assertTrue(this.share.exists());
-//        HashMap<String, String> shareMeta = new HashMap<String, String>();
-//        shareMeta.put("key1", "value1");
-//        this.share.setMetadata(shareMeta);
-//        this.share.uploadMetadata();
-//
-//        CloudFileDirectory dir1 = this.share.getRootDirectoryReference().getDirectoryReference("dir1");
-//        dir1.create();
-//        CloudFile file1 = dir1.getFileReference("file1");
-//        file1.create(1024);
-//        ByteArrayInputStream srcStream = FileTestHelper.getRandomDataStream(1024);
-//        file1.upload(srcStream, 1024);
-//
-//        // create directory with metadata
-//        HashMap<String, String> dirMeta = new HashMap<String, String>();
-//        dirMeta.put("key2", "value2");
-//        dir1.setMetadata(dirMeta);
-//        dir1.uploadMetadata();
-//
-//        // verify that exists() call on snapshot populates metadata
-//        CloudFileShare snapshot = this.share.createSnapshot();
-//        CloudFileClient client = FileTestHelper.createCloudFileClient();
-//        CloudFileShare snapshotRef = client.getShareReference(snapshot.name, snapshot.snapshotID);
-//        assertTrue(snapshotRef.exists());
-//        assertTrue(snapshotRef.getMetadata().size() == 1 && snapshotRef.getMetadata().get("key1").equals("value1"));
-//
-//        // verify that downloadAttributes() populates metadata
-//        CloudFileShare snapshotRef2 = client.getShareReference(snapshot.name, snapshot.snapshotID);
-//        snapshotRef2.downloadAttributes();
-//        snapshot.downloadAttributes();
-//        assertTrue(snapshotRef2.getMetadata().size() == 1 && snapshotRef2.getMetadata().get("key1").equals("value1"));
-//        assertTrue(snapshot.getMetadata().size() == 1 && snapshot.getMetadata().get("key1").equals("value1"));
-//
-//        // verify that exists() populates the metadata
-//        CloudFileDirectory snapshotDir1 = snapshot.getRootDirectoryReference().getDirectoryReference("dir1");
-//        snapshotDir1.exists();
-//        assertTrue(snapshotDir1.getMetadata().size() == 1 && snapshotDir1.getMetadata().get("key2").equals("value2"));
-//
-//        // verify that downloadAttributes() populates the metadata
-//        CloudFileDirectory snapshotDir2 = snapshot.getRootDirectoryReference().getDirectoryReference("dir1");
-//        snapshotDir2.downloadAttributes();
-//        assertTrue(snapshotDir2.getMetadata().size() == 1 && snapshotDir2.getMetadata().get("key2").equals("value2"));
-//
-//        // create snapshot with metadata
-//        HashMap<String, String> shareMeta2 = new HashMap<String, String>();
-//        shareMeta2.put("abc", "def");
-//        CloudFileShare snapshotRef3 = this.share.createSnapshot(shareMeta2, null, null, null);
-//        CloudFileShare snapshotRef4 = client.getShareReference(snapshotRef3.name, snapshotRef3.snapshotID);
-//        assertTrue(snapshotRef4.exists());
-//        assertTrue(snapshotRef4.getMetadata().size() == 1 && snapshotRef4.getMetadata().get("abc").equals("def"));
-//
-//        final UriQueryBuilder uriBuilder = new UriQueryBuilder();
-//        uriBuilder.add("sharesnapshot", snapshot.snapshotID);
-////        CloudFileShare snapshotRef5 = new CloudFileShare(uriBuilder.addToURI(this.share.getUri()),
-////                                                         this.share.getServiceClient().getCredentials(), null);
-////        assertEquals(snapshot.snapshotID, snapshotRef5.snapshotID);
-////        assertTrue(snapshotRef5.exists());
-//
-//        snapshot.delete();
-//    }
+    //@Test
+    public void testCreateShareSnapshot() throws StorageException, URISyntaxException, IOException {
+        // create share with metadata
+        this.share.create();
+        assertTrue(this.share.exists());
+        HashMap<String, String> shareMeta = new HashMap<String, String>();
+        shareMeta.put("key1", "value1");
+        this.share.setMetadata(shareMeta);
+        this.share.uploadMetadata();
+
+        CloudFileDirectory dir1 = this.share.getRootDirectoryReference().getDirectoryReference("dir1");
+        dir1.create();
+        CloudFile file1 = dir1.getFileReference("file1");
+        file1.create(1024);
+        ByteArrayInputStream srcStream = FileTestHelper.getRandomDataStream(1024);
+        file1.upload(srcStream, 1024);
+
+        // create directory with metadata
+        HashMap<String, String> dirMeta = new HashMap<String, String>();
+        dirMeta.put("key2", "value2");
+        dir1.setMetadata(dirMeta);
+        dir1.uploadMetadata();
+
+        // verify that exists() call on snapshot populates metadata
+        CloudFileShare snapshot = this.share.createSnapshot();
+        CloudFileClient client = FileTestHelper.createCloudFileClient();
+        CloudFileShare snapshotRef = client.getShareReference(snapshot.name, snapshot.snapshotID);
+        assertTrue(snapshotRef.exists());
+        assertTrue(snapshotRef.getMetadata().size() == 1 && snapshotRef.getMetadata().get("key1").equals("value1"));
+
+        // verify that downloadAttributes() populates metadata
+        CloudFileShare snapshotRef2 = client.getShareReference(snapshot.name, snapshot.snapshotID);
+        snapshotRef2.downloadAttributes();
+        snapshot.downloadAttributes();
+        assertTrue(snapshotRef2.getMetadata().size() == 1 && snapshotRef2.getMetadata().get("key1").equals("value1"));
+        assertTrue(snapshot.getMetadata().size() == 1 && snapshot.getMetadata().get("key1").equals("value1"));
+
+        // verify that exists() populates the metadata
+        CloudFileDirectory snapshotDir1 = snapshot.getRootDirectoryReference().getDirectoryReference("dir1");
+        snapshotDir1.exists();
+        assertTrue(snapshotDir1.getMetadata().size() == 1 && snapshotDir1.getMetadata().get("key2").equals("value2"));
+
+        // verify that downloadAttributes() populates the metadata
+        CloudFileDirectory snapshotDir2 = snapshot.getRootDirectoryReference().getDirectoryReference("dir1");
+        snapshotDir2.downloadAttributes();
+        assertTrue(snapshotDir2.getMetadata().size() == 1 && snapshotDir2.getMetadata().get("key2").equals("value2"));
+
+        // create snapshot with metadata
+        HashMap<String, String> shareMeta2 = new HashMap<String, String>();
+        shareMeta2.put("abc", "def");
+        CloudFileShare snapshotRef3 = this.share.createSnapshot(shareMeta2, null, null, null);
+        CloudFileShare snapshotRef4 = client.getShareReference(snapshotRef3.name, snapshotRef3.snapshotID);
+        assertTrue(snapshotRef4.exists());
+        assertTrue(snapshotRef4.getMetadata().size() == 1 && snapshotRef4.getMetadata().get("abc").equals("def"));
+
+        final UriQueryBuilder uriBuilder = new UriQueryBuilder();
+        uriBuilder.add("sharesnapshot", snapshot.snapshotID);
+//        CloudFileShare snapshotRef5 = new CloudFileShare(uriBuilder.addToURI(this.share.getUri()),
+//                                                         this.share.getServiceClient().getCredentials(), null);
+//        assertEquals(snapshot.snapshotID, snapshotRef5.snapshotID);
+//        assertTrue(snapshotRef5.exists());
+
+        snapshot.delete();
+    }
     
-//    @Test
-//    public void testDeleteShareSnapshotOptions() throws StorageException, URISyntaxException, IOException {
-//        // create share with metadata
-//        this.share.create();
-//        assertTrue(this.share.exists());
-//
-//        // verify that exists() call on snapshot populates metadata
-//        CloudFileShare snapshot = this.share.createSnapshot();
-//        CloudFileClient client = FileTestHelper.createCloudFileClient();
-//        CloudFileShare snapshotRef = client.getShareReference(snapshot.name, snapshot.snapshotID);
-//        assertTrue(snapshotRef.exists());
-//
-//        try {
-//            share.delete();
-//        }
-//        catch (final StorageException e) {
-//            assertEquals(StorageErrorCodeStrings.SHARE_HAS_SNAPSHOTS, e.getErrorCode());
-//        }
-//        
-//        share.delete(DeleteShareSnapshotsOption.INCLUDE_SNAPSHOTS, null, null, null);
-//        assertFalse(share.exists());
-//        assertFalse(snapshot.exists());
-//    }
+    //@Test
+    public void testDeleteShareSnapshotOptions() throws StorageException, URISyntaxException, IOException {
+        // create share with metadata
+        this.share.create();
+        assertTrue(this.share.exists());
 
-//    @Test
-//    public void testListFilesAndDirectoriesWithinShareSnapshot() throws StorageException, URISyntaxException {
-//        this.share.create();
-//
-//        CloudFileDirectory myDir = this.share.getRootDirectoryReference().getDirectoryReference("mydir");
-//        myDir.create();
-//        myDir.getFileReference("myfile").create(1024);
-//        myDir.getDirectoryReference("yourDir").create();
-//        assertTrue(this.share.exists());
-//
-//        CloudFileShare snapshot = this.share.createSnapshot();
-//        CloudFileClient client = FileTestHelper.createCloudFileClient();
-//        CloudFileShare snapshotRef = client.getShareReference(snapshot.name, snapshot.snapshotID);
-//
-//        Iterable<ListFileItem> listResult = snapshotRef.getRootDirectoryReference().listFilesAndDirectories();
-//        int count = 0;
-//        for (ListFileItem listFileItem : listResult) {
-//            count++;
-//            assertEquals("mydir", ((CloudFileDirectory) listFileItem).getName());
-//        }
-//
-//        assertEquals(1, count);
-//
-//        count = 0;
-//        listResult = snapshotRef.getRootDirectoryReference().getDirectoryReference("mydir").listFilesAndDirectories();
-//        for (ListFileItem listFileItem : listResult) {
-//            if (listFileItem instanceof CloudFileDirectory) {
-//                count++;
-//                assertEquals("yourDir", ((CloudFileDirectory) listFileItem).getName());
-//            }
-//            else {
-//                count++;
-//                assertEquals("myfile", ((CloudFile) listFileItem).getName());
-//            }
-//        }
-//
-//        assertEquals(2, count);
-//
-//        snapshot.delete();
-//    }
+        // verify that exists() call on snapshot populates metadata
+        CloudFileShare snapshot = this.share.createSnapshot();
+        CloudFileClient client = FileTestHelper.createCloudFileClient();
+        CloudFileShare snapshotRef = client.getShareReference(snapshot.name, snapshot.snapshotID);
+        assertTrue(snapshotRef.exists());
 
-//    @Test
-//    public void testUnsupportedApisShareSnapshot() throws StorageException, URISyntaxException {
-//        CloudFileClient client = FileTestHelper.createCloudFileClient();
-//        this.share.create();
-//        this.share.downloadPermissions();
-//        CloudFileShare snapshot = this.share.createSnapshot();
+        try {
+            share.delete();
+        }
+        catch (final StorageException e) {
+            assertEquals(StorageErrorCodeStrings.SHARE_HAS_SNAPSHOTS, e.getErrorCode());
+        }
+        
+        share.delete(DeleteShareSnapshotsOption.INCLUDE_SNAPSHOTS, null, null, null);
+        assertFalse(share.exists());
+        assertFalse(snapshot.exists());
+    }
+
+    //@Test
+    public void testListFilesAndDirectoriesWithinShareSnapshot() throws StorageException, URISyntaxException {
+        this.share.create();
+
+        CloudFileDirectory myDir = this.share.getRootDirectoryReference().getDirectoryReference("mydir");
+        myDir.create();
+        myDir.getFileReference("myfile").create(1024);
+        myDir.getDirectoryReference("yourDir").create();
+        assertTrue(this.share.exists());
+
+        CloudFileShare snapshot = this.share.createSnapshot();
+        CloudFileClient client = FileTestHelper.createCloudFileClient();
+        CloudFileShare snapshotRef = client.getShareReference(snapshot.name, snapshot.snapshotID);
+
+        Iterable<ListFileItem> listResult = snapshotRef.getRootDirectoryReference().listFilesAndDirectories();
+        int count = 0;
+        for (ListFileItem listFileItem : listResult) {
+            count++;
+            assertEquals("mydir", ((CloudFileDirectory) listFileItem).getName());
+        }
+
+        assertEquals(1, count);
+
+        count = 0;
+        listResult = snapshotRef.getRootDirectoryReference().getDirectoryReference("mydir").listFilesAndDirectories();
+        for (ListFileItem listFileItem : listResult) {
+            if (listFileItem instanceof CloudFileDirectory) {
+                count++;
+                assertEquals("yourDir", ((CloudFileDirectory) listFileItem).getName());
+            }
+            else {
+                count++;
+                assertEquals("myfile", ((CloudFile) listFileItem).getName());
+            }
+        }
+
+        assertEquals(2, count);
+
+        snapshot.delete();
+    }
+
+    //@Test
+    public void testUnsupportedApisShareSnapshot() throws StorageException, URISyntaxException {
+        CloudFileClient client = FileTestHelper.createCloudFileClient();
+        this.share.create();
+        this.share.downloadPermissions();
+        CloudFileShare snapshot = this.share.createSnapshot();
+        try {
+            snapshot.createSnapshot();
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
 //        try {
-//            snapshot.createSnapshot();
+//            new CloudFileShare(snapshot.getQualifiedUri(), client.getCredentials(), "2016-10-24T16:37:17.0000000Z");
 //            fail("Shouldn't get here");
 //        }
 //        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+//            assertEquals(SR.SNAPSHOT_QUERY_OPTION_ALREADY_DEFINED, e.getMessage());
 //        }
-////        try {
-////            new CloudFileShare(snapshot.getQualifiedUri(), client.getCredentials(), "2016-10-24T16:37:17.0000000Z");
-////            fail("Shouldn't get here");
-////        }
-////        catch (IllegalArgumentException e) {
-////            assertEquals(SR.SNAPSHOT_QUERY_OPTION_ALREADY_DEFINED, e.getMessage());
-////        }
-//        try {
-//            snapshot.downloadPermissions();
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            snapshot.getStats();
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            snapshot.uploadMetadata();
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            FileSharePermissions permissions = new FileSharePermissions();
-//            snapshot.uploadPermissions(permissions);
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//        try {
-//            snapshot.uploadProperties();
-//            fail("Shouldn't get here");
-//        }
-//        catch (IllegalArgumentException e) {
-//            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
-//        }
-//
-//        snapshot.delete();
-//    }
+        try {
+            snapshot.downloadPermissions();
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            snapshot.getStats();
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            snapshot.uploadMetadata();
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            FileSharePermissions permissions = new FileSharePermissions();
+            snapshot.uploadPermissions(permissions);
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+        try {
+            snapshot.uploadProperties();
+            fail("Shouldn't get here");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT, e.getMessage());
+        }
+
+        snapshot.delete();
+    }
 
     private static void assertPermissionsEqual(FileSharePermissions expected, FileSharePermissions actual) {
         HashMap<String, SharedAccessFilePolicy> expectedPolicies = expected.getSharedAccessPolicies();
