@@ -190,7 +190,7 @@ var mappings = {
         'dir': 'azure-mgmt-storage',
         'source': 'specification/storage/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.storage',
-        'args': '--payload-flattening-threshold=2 --tag=package-2017-06'
+        'args': '--payload-flattening-threshold=2 --tag=package-2016-01'
     },
     'resources': {
         'dir': 'azure-mgmt-resources',
@@ -436,9 +436,7 @@ var codegen = function(project, cb) {
         cmd = cmd + ' ' + mappings[project].args;
     }
     console.log('Command: ' + cmd);
-    const subproc = spawn(cmd, [], { shell: true });
-    subproc.stdout.pipe(process.stdout);
-    subproc.stderr.pipe(process.stderr);
+    spawn(cmd, [], { shell: true, stdio: "inherit" });
 };
 
 var deleteFolderRecursive = function(path) {
