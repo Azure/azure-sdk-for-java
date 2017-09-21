@@ -73,7 +73,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.search.SearchServices;
 import com.microsoft.azure.management.search.implementation.SearchServiceManager;
@@ -369,8 +368,6 @@ public final class Azure {
     }
 
     private Azure(RestClient restClient, String subscriptionId, String tenantId, Authenticated authenticated) {
-        ResourceManagementClientImpl resourceManagementClient = new ResourceManagementClientImpl(restClient);
-        resourceManagementClient.withSubscriptionId(subscriptionId);
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         this.storageManager = StorageManager.authenticate(restClient, subscriptionId);
         this.computeManager = ComputeManager.authenticate(restClient, subscriptionId);
