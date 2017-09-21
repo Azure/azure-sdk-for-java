@@ -83,6 +83,21 @@ public final class AzureProxy extends RestProxy {
             }
         }
 
+        return AzureProxy.create(swaggerInterface, baseUrl, httpClient, serializer);
+    }
+
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
+     * @param baseUrl The base URL (protocol and host) that the proxy implementation will target.
+     * @param httpClient The internal HTTP client that will be used to make REST calls.
+     * @param serializer The serializer that will be used to convert POJOs to and from request and
+     *                   response bodies.
+     * @param <A> The type of the Swagger interface.
+     * @return A proxy implementation of the provided Swagger interface.
+     */
+    @SuppressWarnings("unchecked")
+    public static <A> A create(Class<A> swaggerInterface, String baseUrl, final HttpClient httpClient, SerializerAdapter<?> serializer) {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, baseUrl);
         final AzureProxy azureProxy = new AzureProxy(httpClient, serializer, interfaceParser);
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, azureProxy);
