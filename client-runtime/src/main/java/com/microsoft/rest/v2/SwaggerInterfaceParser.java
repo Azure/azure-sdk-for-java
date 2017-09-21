@@ -30,14 +30,17 @@ public class SwaggerInterfaceParser {
     public SwaggerInterfaceParser(Class<?> swaggerInterface, String host) {
         this.swaggerInterface = swaggerInterface;
 
-        final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
-        if (hostAnnotation == null) {
-            throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
-        }
-        else if (host != null) {
+        if (host != null && !host.isEmpty()) {
             this.host = host;
-        } else {
-            this.host = hostAnnotation.value();
+        }
+        else {
+            final Host hostAnnotation = swaggerInterface.getAnnotation(Host.class);
+            if (hostAnnotation != null && !hostAnnotation.value().isEmpty()) {
+                this.host = hostAnnotation.value();
+            }
+            else {
+                throw new MissingRequiredAnnotationException(Host.class, swaggerInterface);
+            }
         }
     }
 

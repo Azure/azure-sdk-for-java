@@ -1,5 +1,6 @@
 package com.microsoft.azure.v2;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.v2.http.MockAzureHttpClient;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
@@ -600,7 +601,7 @@ public class AzureProxyTests {
     }
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
-        return AzureProxy.create(serviceClass, httpClient, serializer);
+        return AzureProxy.create(serviceClass, (AzureEnvironment) null, httpClient, serializer);
     }
 
     private static void assertContains(String value, String expectedSubstring) {

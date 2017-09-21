@@ -1,5 +1,6 @@
 package com.microsoft.azure.v2;
 
+import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.v2.http.MockAzureHttpClient;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.protocol.SerializerAdapter;
@@ -600,7 +601,7 @@ public abstract class AzureProxyToRestProxyTests {
 
     private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
-        return AzureProxy.create(serviceClass, httpClient, serializer);
+        return AzureProxy.create(serviceClass, (AzureEnvironment) null, httpClient, serializer);
     }
 
     private static final SerializerAdapter<?> serializer = new JacksonAdapter();
