@@ -21,108 +21,81 @@ var mappings = {
     },
     'servicefabric': {
         'dir': 'azure-mgmt-servicefabric',
-        'source': 'arm-servicefabric/2016-09-01/swagger/servicefabric.json',
+        'source': 'specification/servicefabric/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.servicefabric',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-09'
     },
     'notificationhubs': {
         'dir': 'azure-mgmt-notificationhubs',
-        'source': 'arm-notificationhubs/2017-04-01/swagger/notificationhubs.json',
+        'source': 'specification/notificationhubs/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.notificationhubs',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-04'
     },
     'analysisservices': {
         'dir': 'azure-mgmt-analysisservices',
-        'source': 'arm-analysisservices/2016-05-16/swagger/analysisservices.json',
+        'source': 'specification/analysisservices/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.analysisservices',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-05'
     },
     'automation': {
         'dir': 'azure-mgmt-automation',
-        'source': 'arm-automation/compositeAutomation.json',
-        'package': 'com.microsoft.azure.management.authorization',
-        'args': '--payload-flattening-threshold=1',
-        'modeler': 'CompositeSwagger'
+        'source': 'specification/automation/resource-manager/readme.md',
+        'package': 'com.microsoft.azure.management.automation',
+        'args': '--payload-flattening-threshold=1 --tag=package-2015-10'
     },
     'billing': {
         'dir': 'azure-mgmt-billing',
-        'source': 'arm-billing/2017-04-24-preview/swagger/billing.json',
+        'source': 'specification/billing/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.billing',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-04-preview'
     },
     'cognitiveservices': {
         'dir': 'azure-mgmt-cognitiveservices',
-        'source': 'arm-cognitiveservices/2017-04-18/swagger/cognitiveservices.json',
+        'source': 'specification/cognitiveservices/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.cognitiveservices',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-04'
     },
     'consumption': {
         'dir': 'azure-mgmt-consumption',
-        'source': 'arm-consumption/2017-04-24-preview/swagger/consumption.json',
+        'source': 'specification/consumption/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.consumption',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-04-preview'
     },
     'customerinsights': {
         'dir': 'azure-mgmt-customerinsights',
-        'source': 'arm-customer-insights/2017-04-26/swagger/customer-insights.json',
+        'source': 'specification/customer-insights/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.customerinsights',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-04'
     },
     'devtestlab': {
         'dir': 'azure-mgmt-devtestlab',
-        'source': 'arm-devtestlabs/2016-05-15/swagger/DTL.json',
+        'source': 'specification/devtestlabs/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.devtestlab',
-        'args': '--payload-flattening-threshold=1'
-    },
-    'insights': {
-        'dir': 'azure-mgmt-insights',
-        'source': 'arm-insights/compositeInsightsManagementClient.json',
-        'package': 'com.microsoft.azure.management.gallery',
-        'args': '--payload-flattening-threshold=1',
-        'modeler': 'CompositeSwagger'
-    },
-    'intune': {
-        'dir': 'azure-mgmt-intune',
-        'source': 'arm-intune/2015-01-14-preview/swagger/intune.json',
-        'package': 'com.microsoft.azure.management.intune',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-05'
     },
     'iothub': {
         'dir': 'azure-mgmt-devices',
-        'source': 'arm-iothub/2017-01-19/swagger/iothub.json',
-        'package': 'com.microsoft.azure.management.devices',
-        'args': '--payload-flattening-threshold=1'
+        'source': 'specification/iothub/resource-manager/readme.md',
+        'package': 'com.microsoft.azure.management.devices', // rename to iothub?
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-01'
     },
     'logic': {
         'dir': 'azure-mgmt-logic',
-        'source': 'arm-logic/2016-06-01/swagger/logic.json',
+        'source': 'specification/logic/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.logic',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-06'
     },
     'machinelearning': {
         'dir': 'azure-mgmt-machinelearning',
-        'source': 'arm-machinelearning/2017-01-01/swagger/webservices.json',
+        'source': 'specification/machinelearning/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.machinelearning',
-        'args': '--payload-flattening-threshold=1'
-    },
-    'media': {
-        'dir': 'azure-mgmt-media',
-        'source': 'arm-mediaservices/2015-10-01/swagger/media.json',
-        'package': 'com.microsoft.azure.management.media',
-        'args': '--payload-flattening-threshold=1'
-    },
-    'operationalinsights': {
-        'dir': 'azure-mgmt-operationalinsights',
-        'source': 'arm-operationalinsights/compositeOperationalInsights.json',
-        'package': 'com.microsoft.azure.management.operationalinsights',
-        'args': '--payload-flattening-threshold=1',
-        'modeler': 'CompositeSwagger'
+        'args': '--payload-flattening-threshold=1 --tag=package-webservices-2017-01'
     },
     'powerbi': {
         'dir': 'azure-mgmt-powerbi',
-        'source': 'arm-powerbiembedded/2016-01-29/swagger/powerbiembedded.json',
+        'source': 'specification/powerbiembedded/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.powerbi',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-01'
     },
     'recoveryservices': {
         'dir': 'azure-mgmt-recoveryservices',
@@ -175,9 +148,9 @@ var mappings = {
         'args': '--payload-flattening-threshold=1'
     },
     'authorization': {
-        'dir': 'azure-mgmt-graph-rbac',
+        'dir': 'azure-mgmt-authorization',
         'source': 'arm-authorization/2015-07-01/swagger/authorization.json',
-        'package': 'com.microsoft.azure.management.graphrbac',
+        'package': 'com.microsoft.azure.management.authorization',
         'args': '--payload-flattening-threshold=1'
     },
     'arm-keyvault': {
