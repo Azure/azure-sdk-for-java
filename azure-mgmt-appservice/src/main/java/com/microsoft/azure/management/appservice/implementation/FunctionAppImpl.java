@@ -16,6 +16,7 @@ import com.microsoft.azure.management.appservice.NameValuePair;
 import com.microsoft.azure.management.appservice.OperatingSystem;
 import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.SkuDescription;
+import com.microsoft.azure.management.appservice.FunctionDeploymentSlots;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -62,6 +63,7 @@ class FunctionAppImpl
     private StorageAccount currentStorageAccount;
     private final FunctionAppKeyService functionAppKeyService;
     private final FunctionKuduService functionKuduService;
+    private FunctionDeploymentSlots deploymentSlots;
 
     FunctionAppImpl(final String name, SiteInner innerObject, SiteConfigResourceInner configObject, AppServiceManager manager) {
         super(name, innerObject, configObject, manager);
@@ -72,6 +74,14 @@ class FunctionAppImpl
                 .withCredentials(new KuduCredentials(this))
                 .build()
                 .retrofit().create(FunctionKuduService.class);
+    }
+
+    @Override
+    public FunctionDeploymentSlots deploymentSlots() {
+        if (deploymentSlots == null) {
+            deploymentSlots = new FunctionDeploymentSlotsImpl(this);
+        }
+        return deploymentSlots;
     }
 
     @Override
