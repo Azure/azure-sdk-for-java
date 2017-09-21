@@ -26,6 +26,7 @@ import java.util.Map;
  * @param <T> The return type the caller expects from the REST response.
  * @param <E> the exception to throw in case of error.
  */
+@Deprecated
 public final class ServiceResponseBuilder<T, E extends RestException> implements ResponseBuilder<T, E> {
     /**
      * A mapping of HTTP status codes and their corresponding return types.

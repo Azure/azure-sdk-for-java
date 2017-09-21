@@ -35,7 +35,6 @@ public final class RestClient {
     private final long readTimeoutMillis;
     private final long connectionTimeoutMillis;
     private final SerializerAdapter<?> serializerAdapter;
-    private final ResponseBuilder.Factory responseBuilderFactory;
     private final ServiceClientCredentials credentials;
     private final LogLevel logLevel;
 
@@ -47,7 +46,6 @@ public final class RestClient {
         this.readTimeoutMillis = builder.readTimeoutMillis;
         this.connectionTimeoutMillis = builder.connectionTimeoutMillis;
         this.serializerAdapter = builder.serializerAdapter;
-        this.responseBuilderFactory = builder.responseBuilderFactory;
         this.credentials = builder.credentials;
         this.logLevel = builder.logLevel;
         this.customPolicyFactories = builder.customPolicyFactories;
@@ -79,13 +77,6 @@ public final class RestClient {
      */
     public SerializerAdapter<?> serializerAdapter() {
         return serializerAdapter;
-    }
-
-    /**
-     * @return the current respnose builder factory.
-     */
-    public ResponseBuilder.Factory responseBuilderFactory() {
-        return responseBuilderFactory;
     }
 
     /**
@@ -166,7 +157,6 @@ public final class RestClient {
         private Builder(final RestClient restClient) {
             this.baseUrl = restClient.baseURL;
             this.userAgent = restClient.userAgent;
-            this.responseBuilderFactory = restClient.responseBuilderFactory;
             this.connectionTimeoutMillis = restClient.connectionTimeoutMillis;
             this.readTimeoutMillis = restClient.readTimeoutMillis;
             this.serializerAdapter = restClient.serializerAdapter;
@@ -319,9 +309,6 @@ public final class RestClient {
         public RestClient build() {
             if (baseUrl == null) {
                 throw new IllegalArgumentException("Please set base URL.");
-            }
-            if (responseBuilderFactory == null) {
-                throw new IllegalArgumentException("Please set response builder factory.");
             }
             if (serializerAdapter == null) {
                 throw new IllegalArgumentException("Please set serializer adapter.");

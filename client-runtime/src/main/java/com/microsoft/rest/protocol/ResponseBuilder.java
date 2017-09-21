@@ -22,6 +22,7 @@ import java.lang.reflect.Type;
  * @param <T> the body type if the status code is considered successful
  * @param <E> the exception type if the status code is considered a failure
  */
+@Deprecated
 public interface ResponseBuilder<T, E extends RestException> {
     /**
      * Register a mapping from a response status code to a response destination type.

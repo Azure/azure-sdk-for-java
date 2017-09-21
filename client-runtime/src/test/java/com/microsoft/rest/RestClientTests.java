@@ -31,11 +31,9 @@ public class RestClientTests {
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl("https://management.azure.com/")
                 .withSerializerAdapter(new JacksonAdapter())
-                .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
                 .build();
         Assert.assertEquals("https://management.azure.com/", restClient.baseURL());
         Assert.assertEquals(LogLevel.NONE, restClient.logLevel());
-        Assert.assertTrue(restClient.responseBuilderFactory() instanceof ServiceResponseBuilder.Factory);
         Assert.assertTrue(restClient.serializerAdapter() instanceof JacksonAdapter);
         Assert.assertNull(restClient.credentials());
     }
@@ -67,7 +65,6 @@ public class RestClientTests {
         Assert.assertEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
-        Assert.assertEquals(restClient.responseBuilderFactory(), newClient.responseBuilderFactory());
         Assert.assertEquals(restClient.credentials(), newClient.credentials());
         Assert.assertEquals(restClient.userAgent(), newClient.userAgent());
         Assert.assertEquals(restClient.customPolicyFactories().size(), newClient.customPolicyFactories().size());
@@ -144,7 +141,6 @@ public class RestClientTests {
         Assert.assertNotEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertNotEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertNotEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
-        Assert.assertNotEquals(restClient.responseBuilderFactory(), newClient.responseBuilderFactory());
         Assert.assertNotEquals(restClient.credentials(), newClient.credentials());
         Assert.assertEquals("user", restClient.userAgent());
         Assert.assertEquals("anotheruser", newClient.userAgent());

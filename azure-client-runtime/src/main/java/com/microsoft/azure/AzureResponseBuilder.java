@@ -25,6 +25,7 @@ import java.lang.reflect.Type;
  * @param <T> the return type from caller.
  * @param <E> the exception to throw in case of error.
  */
+@Deprecated
 public final class AzureResponseBuilder<T, E extends RestException> implements ResponseBuilder<T, E> {
     /** The base response builder for handling most scenarios. */
     private ServiceResponseBuilder<T, E> baseBuilder;
