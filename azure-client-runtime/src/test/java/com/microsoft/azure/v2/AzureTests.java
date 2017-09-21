@@ -7,16 +7,9 @@
 package com.microsoft.azure.v2;
 
 import com.microsoft.azure.v2.annotations.AzureHost;
-import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceResponseBuilder;
-import com.microsoft.rest.serializer.JacksonAdapter;
-import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.HostParam;
 import com.microsoft.rest.v2.annotations.PathParam;
-import org.junit.Assert;
-import org.junit.Ignore;
-import org.junit.Test;
 
 public class AzureTests {
 

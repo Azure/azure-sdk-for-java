@@ -30,7 +30,6 @@ public abstract class AzureServiceClient extends ServiceClient {
                 .withBaseUrl(baseUrl)
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .build());
     }
 

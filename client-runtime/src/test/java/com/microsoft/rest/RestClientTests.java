@@ -43,7 +43,6 @@ public class RestClientTests {
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
-            .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC)
             .addCustomPolicy(new RequestPolicy.Factory() {
@@ -76,7 +75,6 @@ public class RestClientTests {
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
-            .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC.withPrettyJson(true))
             .addCustomPolicy(new RequestPolicy.Factory() {
@@ -127,12 +125,6 @@ public class RestClientTests {
 
                 @Override
                 public <U> U deserialize(String value, Type type) throws IOException {
-                    return null;
-                }
-            })
-            .withResponseBuilderFactory(new ResponseBuilder.Factory() {
-                @Override
-                public <T, E extends RestException> ResponseBuilder<T, E> newInstance(SerializerAdapter<?> serializerAdapter) {
                     return null;
                 }
             })

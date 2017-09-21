@@ -8,7 +8,6 @@ package com.microsoft.rest;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.protocol.Environment;
-import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.ChannelHandlerConfig;
 import com.microsoft.rest.v2.http.HttpClient;
@@ -149,8 +148,6 @@ public final class RestClient {
         private long connectionTimeoutMillis = defaultConnectionTimeoutMillis;
         /** The adapter for serializations and deserializations. */
         private SerializerAdapter<?> serializerAdapter;
-        /** The builder factory for response builders. */
-        private ResponseBuilder.Factory responseBuilderFactory;
         /** The logging level to use. */
         private LogLevel logLevel = LogLevel.NONE;
 
@@ -201,17 +198,6 @@ public final class RestClient {
          */
         public Builder withSerializerAdapter(SerializerAdapter<?> serializerAdapter) {
             this.serializerAdapter = serializerAdapter;
-            return this;
-        }
-
-        /**
-         * Sets the response builder factory.
-         *
-         * @param responseBuilderFactory the response builder factory
-         * @return the builder itself for chaining
-         */
-        public Builder withResponseBuilderFactory(ResponseBuilder.Factory responseBuilderFactory) {
-            this.responseBuilderFactory = responseBuilderFactory;
             return this;
         }
 
