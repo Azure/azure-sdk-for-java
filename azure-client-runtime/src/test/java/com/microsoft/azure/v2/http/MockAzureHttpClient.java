@@ -7,8 +7,11 @@
 package com.microsoft.azure.v2.http;
 
 import com.google.common.io.CharStreams;
+import com.microsoft.azure.v2.AzureAsyncOperationPollStrategy;
 import com.microsoft.azure.v2.HttpBinJSON;
+import com.microsoft.azure.v2.LocationPollStrategy;
 import com.microsoft.azure.v2.MockResource;
+import com.microsoft.azure.v2.OperationResource;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
@@ -27,6 +30,8 @@ import java.util.Map;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockAzureHttpClient extends HttpClient {
+    private int pollsRemaining;
+
     private int getRequests;
     private int createRequests;
     private int deleteRequests;
@@ -50,7 +55,7 @@ public class MockAzureHttpClient extends HttpClient {
 
     @Override
     public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
-        HttpResponse response = null;
+        MockAzureHttpResponse response = null;
 
         try {
             final URI requestUrl = new URI(request.url());
@@ -113,59 +118,75 @@ public class MockAzureHttpClient extends HttpClient {
 
                         final String pollType = requestQueryMap.get("PollType");
 
-                        final String pollsRemainingString = requestQueryMap.get("PollsRemaining");
-                        int pollsRemaining;
-                        try {
-                            pollsRemaining = Integer.valueOf(pollsRemainingString);
-                        }
-                        catch (Exception ignored) {
-                            pollsRemaining = 1;
-                        }
-
-                        String returnValueString = requestQueryMap.get("ReturnValue");
-                        if (returnValueString == null) {
-                            returnValueString = "false";
-                        }
-
-                        if (pollsRemaining <= 1) {
-                            if ("true".equalsIgnoreCase(returnValueString)) {
-                                final MockResource resource = new MockResource();
-                                resource.name = "c";
-                                response = new MockAzureHttpResponse(200, resource);
+                        if (pollType.equalsIgnoreCase(AzureAsyncOperationPollStrategy.HEADER_NAME)) {
+                            final OperationResource.Properties properties = new OperationResource.Properties();
+                            if (pollsRemaining <= 1) {
+                                properties.setProvisioningState(AzureAsyncOperationPollStrategy.SUCCEEDED);
                             }
                             else {
-                                response = new MockAzureHttpResponse(200);
+                                --pollsRemaining;
+                                properties.setProvisioningState(AzureAsyncOperationPollStrategy.IN_PROGRESS);
                             }
+                            final OperationResource operationResource = new OperationResource();
+                            operationResource.setProperties(properties);
+                            response = new MockAzureHttpResponse(200, operationResource);
                         }
-                        else {
-                            --pollsRemaining;
-                            final String locationUrl = "https://mock.azure.com/subscriptions/1/resourceGroups/mine/providers/mockprovider/mockoperations/1?ReturnValue=" + returnValueString + "&PollType=" + pollType + "&PollsRemaining=" + pollsRemaining;
-                            response = new MockAzureHttpResponse(202)
-                                    .withHeader("Location", locationUrl);
+                        else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {
+                            if (pollsRemaining <= 1) {
+                                final MockResource mockResource = new MockResource();
+                                mockResource.name = "c";
+                                response = new MockAzureHttpResponse(200, mockResource);
+                            }
+                            else {
+                                --pollsRemaining;
+                                response = new MockAzureHttpResponse(202)
+                                        .withHeader(LocationPollStrategy.HEADER_NAME, request.url());
+                            }
                         }
                     }
                 }
                 else if (request.httpMethod().equalsIgnoreCase("PUT")) {
                     ++createRequests;
 
-                    final Map<String,String> requestQueryMap = queryToMap(requestUrl.getQuery());
+                    final Map<String, String> requestQueryMap = queryToMap(requestUrl.getQuery());
 
                     final String pollType = requestQueryMap.get("PollType");
-                    String pollsRemaining = requestQueryMap.get("PollsRemaining");
+                    String pollsRemainingString = requestQueryMap.get("PollsRemaining");
 
-                    if (pollType == null || "0".equals(pollsRemaining)) {
+                    if (pollType == null || "0".equals(pollsRemainingString)) {
                         final MockResource resource = new MockResource();
                         resource.name = "c";
                         response = new MockAzureHttpResponse(200, resource);
-                    }
-                    else if (pollType.equals("Location")) {
-                        if (pollsRemaining == null) {
-                            pollsRemaining = "1";
+                    } else {
+
+                        if (pollsRemainingString == null) {
+                            pollsRemaining = 1;
+                        }
+                        else {
+                            pollsRemaining = Integer.valueOf(pollsRemainingString);
                         }
 
-                        final String locationUrl = "https://mock.azure.com/subscriptions/1/resourceGroups/mine/providers/mockprovider/mockoperations/1?ReturnValue=true&PollType=Location&PollsRemaining=" + pollsRemaining;
-                        response = new MockAzureHttpResponse(202)
-                                .withHeader("Location", locationUrl);
+                        final String initialResponseStatusCodeString = requestQueryMap.get("InitialResponseStatusCode");
+                        int initialResponseStatusCode;
+                        if (initialResponseStatusCodeString != null) {
+                            initialResponseStatusCode = Integer.valueOf(initialResponseStatusCodeString);
+                        }
+                        else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {
+                            initialResponseStatusCode = 202;
+                        }
+                        else {
+                            initialResponseStatusCode = 201;
+                        }
+
+                        response = new MockAzureHttpResponse(initialResponseStatusCode);
+
+                        final String pollUrl = "https://mock.azure.com/subscriptions/1/resourceGroups/mine/providers/mockprovider/mockoperations/1";
+                        if (pollType.contains(AzureAsyncOperationPollStrategy.HEADER_NAME)) {
+                            response.withHeader(AzureAsyncOperationPollStrategy.HEADER_NAME, pollUrl + "?PollType=" + AzureAsyncOperationPollStrategy.HEADER_NAME);
+                        }
+                        if (pollType.contains(LocationPollStrategy.HEADER_NAME)) {
+                            response.withHeader(LocationPollStrategy.HEADER_NAME, pollUrl + "?PollType=" + LocationPollStrategy.HEADER_NAME);
+                        }
                     }
                 }
                 else if (request.httpMethod().equalsIgnoreCase("DELETE")) {
@@ -174,19 +195,40 @@ public class MockAzureHttpClient extends HttpClient {
                     final Map<String,String> requestQueryMap = queryToMap(requestUrl.getQuery());
 
                     final String pollType = requestQueryMap.get("PollType");
-                    String pollsRemaining = requestQueryMap.get("PollsRemaining");
+                    String pollsRemainingString = requestQueryMap.get("PollsRemaining");
 
-                    if (pollType == null || "0".equals(pollsRemaining)) {
+                    if (pollType == null || "0".equals(pollsRemainingString)) {
                         response = new MockAzureHttpResponse(200);
                     }
-                    else if (pollType.equals("Location")) {
-                        if (pollsRemaining == null) {
-                            pollsRemaining = "1";
+                    else if (pollType.equals(LocationPollStrategy.HEADER_NAME)) {
+                        if (pollsRemainingString == null) {
+                            pollsRemaining = 1;
+                        }
+                        else {
+                            pollsRemaining = Integer.valueOf(pollsRemainingString);
                         }
 
-                        final String locationUrl = "https://mock.azure.com/subscriptions/1/resourceGroups/mine/providers/mockprovider/mockoperations/1?ReturnValue=false&PollType=Location&PollsRemaining=" + pollsRemaining;
-                        response = new MockAzureHttpResponse(202)
-                                .withHeader("Location", locationUrl);
+                        final String initialResponseStatusCodeString = requestQueryMap.get("InitialResponseStatusCode");
+                        int initialResponseStatusCode;
+                        if (initialResponseStatusCodeString != null) {
+                            initialResponseStatusCode = Integer.valueOf(initialResponseStatusCodeString);
+                        }
+                        else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {
+                            initialResponseStatusCode = 202;
+                        }
+                        else {
+                            initialResponseStatusCode = 201;
+                        }
+
+                        response = new MockAzureHttpResponse(initialResponseStatusCode);
+
+                        final String pollUrl = "https://mock.azure.com/subscriptions/1/resourceGroups/mine/providers/mockprovider/mockoperations/1";
+                        if (pollType.contains(AzureAsyncOperationPollStrategy.HEADER_NAME)) {
+                            response.withHeader(AzureAsyncOperationPollStrategy.HEADER_NAME, pollUrl + "?PollType=" + AzureAsyncOperationPollStrategy.HEADER_NAME);
+                        }
+                        if (pollType.contains(LocationPollStrategy.HEADER_NAME)) {
+                            response.withHeader(LocationPollStrategy.HEADER_NAME, pollUrl + "?PollType=" + LocationPollStrategy.HEADER_NAME);
+                        }
                     }
                 }
             }
@@ -194,7 +236,7 @@ public class MockAzureHttpClient extends HttpClient {
         catch (Exception ignored) {
         }
 
-        return Single.just(response);
+        return Single.<HttpResponse>just(response);
     }
 
     private static Map<String,String> queryToMap(String url) {
