@@ -195,22 +195,22 @@ var mappings = {
     'resources': {
         'dir': 'azure-mgmt-resources',
         'source': 'specification/resources/resource-manager/readme.md',
-        'package': 'com.microsoft.azure.management.resources --tag=package-resources-2017-05'
+        'package': 'com.microsoft.azure.management.resources --tag=package-resources-2016-09'
     },
     'subscriptions': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/subscriptions/2016-06-01/swagger/subscriptions.json',
-        'package': 'com.microsoft.azure.management.resources'
+        'source': 'specification/resources/resource-manager/readme.md',
+        'package': 'com.microsoft.azure.management.resources --tag=package-subscriptions-2016-06'
     },
     'features': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/features/2015-12-01/swagger/features.json',
-        'package': 'com.microsoft.azure.management.resources'
+        'source': 'specification/resources/resource-manager/readme.md',
+        'package': 'com.microsoft.azure.management.resources --tag=package-features-2015-12'
     },
     'policy': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/policy/2016-04-01/swagger/policy.json',
-        'package': 'com.microsoft.azure.management.resources'
+        'source': 'specification/resources/resource-manager/readme.md',
+        'package': 'com.microsoft.azure.management.resources --tag=package-policy-2016-04'
     },
     'network': {
         'dir': 'azure-mgmt-network',
