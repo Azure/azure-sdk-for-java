@@ -27,8 +27,8 @@ public class ServiceFutureUtil {
     public static <T> ServiceFuture<T> fromLRO(Observable<OperationStatus<T>> observable, ServiceCallback<T> callback) {
         Single<T> single = observable.last().toSingle().map(new Func1<OperationStatus<T>, T>() {
             @Override
-            public T call(OperationStatus<T> tOperationStatus) {
-                return tOperationStatus.result();
+            public T call(OperationStatus<T> operationStatus) {
+                return operationStatus.result();
             }
         });
 
