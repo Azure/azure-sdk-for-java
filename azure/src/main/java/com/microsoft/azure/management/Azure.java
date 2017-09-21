@@ -73,7 +73,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.search.SearchServices;
 import com.microsoft.azure.management.search.implementation.SearchServiceManager;
