@@ -111,7 +111,7 @@ public final class CloudFileShare {
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dn167011.aspx">Naming and Referencing Shares,
      *      Directories, Files, and Metadata</a>
      */
-    protected CloudFileShare(final String shareName, String snapshotID, final CloudFileClient client) throws URISyntaxException,
+    public CloudFileShare(final String shareName, String snapshotID, final CloudFileClient client) throws URISyntaxException,
             StorageException {
         Utility.assertNotNull("client", client);
         Utility.assertNotNull("shareName", shareName);
@@ -395,7 +395,7 @@ public final class CloudFileShare {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    protected void delete(DeleteShareSnapshotsOption deleteSnapshotsOption, AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
+    public void delete(DeleteShareSnapshotsOption deleteSnapshotsOption, AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
@@ -508,7 +508,7 @@ public final class CloudFileShare {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    protected boolean deleteIfExists(DeleteShareSnapshotsOption deleteSnapshotsOption, AccessCondition accessCondition, FileRequestOptions options,
+    public boolean deleteIfExists(DeleteShareSnapshotsOption deleteSnapshotsOption, AccessCondition accessCondition, FileRequestOptions options,
             OperationContext opContext) throws StorageException {
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -728,7 +728,7 @@ public final class CloudFileShare {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    protected final CloudFileShare createSnapshot() throws StorageException {
+    public final CloudFileShare createSnapshot() throws StorageException {
         return this
                 .createSnapshot(null /* metadata */, null /* accessCondition */, null /* options */, null /* opContext */);
     }
@@ -753,7 +753,7 @@ public final class CloudFileShare {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    protected final CloudFileShare createSnapshot(final AccessCondition accessCondition, FileRequestOptions options,
+    public final CloudFileShare createSnapshot(final AccessCondition accessCondition, FileRequestOptions options,
             OperationContext opContext) throws StorageException {
         return this.createSnapshot(null /* metadata */, accessCondition, options, opContext);
     }
@@ -780,7 +780,7 @@ public final class CloudFileShare {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    protected final CloudFileShare createSnapshot(final HashMap<String, String> metadata,
+    public final CloudFileShare createSnapshot(final HashMap<String, String> metadata,
             final AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
         assertNoSnapshot();
@@ -1502,7 +1502,7 @@ public final class CloudFileShare {
      * 
      * @return The snapshotID as a string for this share.
      */
-    protected final String getSnapshot() {
+    public final String getSnapshot() {
         return this.snapshotID;
     }
 
@@ -1513,7 +1513,7 @@ public final class CloudFileShare {
      *
      * @see DeleteSnapshotsOption
      */
-    protected final boolean isSnapshot() {
+    public final boolean isSnapshot() {
         return this.snapshotID != null;
     }
 
@@ -1591,7 +1591,7 @@ public final class CloudFileShare {
      *            A {@link FileShareProperties} object that represents the properties being assigned to the
      *            share.
      */
-    protected void setProperties(final FileShareProperties properties) {
+    public void setProperties(final FileShareProperties properties) {
         this.properties = properties;
     }
 
