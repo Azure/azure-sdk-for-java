@@ -31,6 +31,8 @@ import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithDi
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithUnmanagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachinesInParallel;
 import com.microsoft.azure.management.compute.samples.ConvertVirtualMachineToManagedDisks;
+import com.microsoft.azure.management.compute.samples.ManageZonalVirtualMachine;
+import com.microsoft.azure.management.compute.samples.ManageZoneRedundantVirtualMachineScaleSet;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -168,5 +170,15 @@ public class ComputeSampleTests extends SamplesTestBase {
     @Ignore("Mock service reporting that unexpected PUT request found, need investigation")
     public void testManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup() {
         Assert.assertTrue(ManageResourceFromMSIEnabledVirtualMachineBelongsToAADGroup.runSample(azure));
+    }
+
+    @Test
+    public void testManageZonalVirtualMachine() {
+        Assert.assertTrue(ManageZonalVirtualMachine.runSample(azure));
+    }
+
+    @Test
+    public void testManageZoneRedundantVirtualMachineScaleSet() {
+        Assert.assertTrue(ManageZoneRedundantVirtualMachineScaleSet.runSample(azure));
     }
 }

@@ -269,6 +269,9 @@ public final class Utils {
         msi.append("\n\t\t\tMSI Active Directory Service Principal Id:").append(resource.managedServiceIdentityPrincipalId());
         msi.append("\n\t\t\tMSI Active Directory Tenant Id:").append(resource.managedServiceIdentityTenantId());
 
+        StringBuilder zones = new StringBuilder().append("\n\tZones: ");
+        zones.append(resource.availabilityZones());
+
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
             .append("Name: ").append(resource.name())
             .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -281,6 +284,7 @@ public final class Utils {
             .append(networkProfile)
             .append(extensions)
             .append(msi)
+            .append(zones)
             .toString());
     }
 
@@ -429,6 +433,7 @@ public final class Utils {
             .append("\n\tReverse FQDN: ").append(resource.reverseFqdn())
             .append("\n\tIdle timeout (minutes): ").append(resource.idleTimeoutInMinutes())
             .append("\n\tIP allocation method: ").append(resource.ipAllocationMethod())
+            .append("\n\tZones: ").append(resource.availabilityZones())
             .toString());
     }
 
