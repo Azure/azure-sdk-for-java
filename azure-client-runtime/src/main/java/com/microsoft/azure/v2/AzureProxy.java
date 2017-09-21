@@ -45,9 +45,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     /**
-     * Get the millisecond delay that will occur by default between long running operation polls.
-     * @return The millisecond delay that will occur by default between long running operation
-     * polls.
+     * @return The millisecond delay that will occur by default between long running operation polls.
      */
     public static long defaultDelayInMilliseconds() {
         return AzureProxy.defaultDelayInMilliseconds;
@@ -72,7 +70,7 @@ public final class AzureProxy extends RestProxy {
      * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, final HttpClient httpClient, SerializerAdapter<?> serializer) {
+    public static <A> A create(Class<A> swaggerInterface, HttpClient httpClient, SerializerAdapter<?> serializer) {
         /* FIXME: get URL from @AzureHost */
         final String baseUrl = null;
 
@@ -174,13 +172,7 @@ public final class AzureProxy extends RestProxy {
                                                 public Boolean call(OperationStatus<Object> operationStatus) {
                                                     return operationStatus.isDone();
                                                 }
-                                            })
-                                            .concatWith(Observable.defer(new Func0<Observable<OperationStatus<Object>>>() {
-                                                @Override
-                                                public Observable<OperationStatus<Object>> call() {
-                                                    return Observable.just(operationStatus);
-                                                }
-                                            }));
+                                            });
                                 }
                                 return result;
                             }

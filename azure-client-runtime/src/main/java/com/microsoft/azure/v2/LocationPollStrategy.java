@@ -28,6 +28,8 @@ public final class LocationPollStrategy extends PollStrategy {
     public static final String HEADER_NAME = "Location";
 
     private LocationPollStrategy(String fullyQualifiedMethodName, String locationUrl) {
+        super(AzureProxy.defaultDelayInMilliseconds());
+
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.locationUrl = locationUrl;
     }

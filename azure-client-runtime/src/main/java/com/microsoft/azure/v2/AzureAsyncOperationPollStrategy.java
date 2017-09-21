@@ -23,7 +23,8 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     private final String operationResourceUrl;
     private final String originalResourceUrl;
     private final SerializerAdapter<?> serializer;
-    private Boolean pollingSucceeded;
+    private boolean pollingCompleted;
+    private boolean pollingSucceeded;
     private boolean gotResourceResponse;
 
     /**
@@ -48,10 +49,14 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * @param fullyQualifiedMethodName The fully qualified name of the method that initiated the
      *                                 long running operation.
      * @param operationResourceUrl The URL of the operation resource this pollStrategy will poll.
+     * @param originalResourceUrl The URL of the resource that the long running operation is
+     *                            operating on.
      * @param serializer The serializer that will deserialize the operation resource and the
      *                   final operation result.
      */
     private AzureAsyncOperationPollStrategy(String fullyQualifiedMethodName, String operationResourceUrl, String originalResourceUrl, SerializerAdapter<?> serializer) {
+        super(AzureProxy.defaultDelayInMilliseconds());
+
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.operationResourceUrl = operationResourceUrl;
         this.originalResourceUrl = originalResourceUrl;
@@ -61,7 +66,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     @Override
     public HttpRequest createPollRequest() {
         String pollUrl = null;
-        if (pollingSucceeded == null) {
+        if (!pollingCompleted) {
             pollUrl = operationResourceUrl;
         }
         else if (pollingSucceeded) {
@@ -72,31 +77,31 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
 
     @Override
     public void updateFrom(HttpResponse httpPollResponse) throws IOException {
-        updateDelayInMillisecondsFrom(httpPollResponse);
-
-        if (pollingSucceeded == null) {
-            final String bodyString = httpPollResponse.bodyAsString();
-            updateFromResponseBodyString(bodyString);
-        }
-        else if (pollingSucceeded) {
-            gotResourceResponse = true;
-        }
+        updateFromAsync(httpPollResponse).toBlocking().value();
     }
 
     @Override
     public Single<HttpResponse> updateFromAsync(final HttpResponse httpPollResponse) {
+        updateDelayInMillisecondsFrom(httpPollResponse);
+
         Single<HttpResponse> result;
-
-        if (pollingSucceeded == null) {
-            updateDelayInMillisecondsFrom(httpPollResponse);
-
+        if (!pollingCompleted) {
             result = httpPollResponse.bodyAsStringAsync()
                     .flatMap(new Func1<String, Single<HttpResponse>>() {
                         @Override
                         public Single<HttpResponse> call(String bodyString) {
-                            Single<HttpResponse> result = Single.just(httpPollResponse);
+                            Single<HttpResponse> result;
                             try {
-                                updateFromResponseBodyString(bodyString);
+                                final OperationResource operationResource = serializer.deserialize(bodyString, OperationResource.class);
+                                if (operationResource != null) {
+                                    final String provisioningState = provisioningState(operationResource);
+                                    pollingCompleted = !IN_PROGRESS.equalsIgnoreCase(provisioningState);
+                                    if (pollingCompleted) {
+                                        pollingSucceeded = SUCCEEDED.equalsIgnoreCase(provisioningState);
+                                        clearDelayInMilliseconds();
+                                    }
+                                }
+                                result = Single.just(httpPollResponse);
                             } catch (IOException e) {
                                 result = Single.error(e);
                             }
@@ -115,17 +120,6 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         return result;
     }
 
-    private void updateFromResponseBodyString(String httpResponseBodyString) throws IOException {
-        final OperationResource operationResource = serializer.deserialize(httpResponseBodyString, OperationResource.class);
-        if (operationResource != null) {
-            final String provisioningState = provisioningState(operationResource);
-            if (!IN_PROGRESS.equalsIgnoreCase(provisioningState)) {
-                pollingSucceeded = SUCCEEDED.equalsIgnoreCase(provisioningState);
-                clearDelayInMilliseconds();
-            }
-        }
-    }
-
     private static String provisioningState(OperationResource operationResource) {
         String provisioningState = null;
 
@@ -139,7 +133,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
 
     @Override
     public boolean isDone() {
-        return pollingSucceeded != null && (!pollingSucceeded || gotResourceResponse);
+        return pollingCompleted && (!pollingSucceeded || gotResourceResponse);
     }
 
     /**

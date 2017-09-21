@@ -10,6 +10,10 @@ import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.Host;
 import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.PathParam;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import rx.Completable;
 import rx.Observable;
@@ -21,6 +25,18 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static org.junit.Assert.*;
 
 public class AzureProxyTests {
+    private long delayInMillisecondsBackup;
+
+    @Before
+    public void beforeTest() {
+        delayInMillisecondsBackup = AzureProxy.defaultDelayInMilliseconds();
+        AzureProxy.setDefaultDelayInMilliseconds(0);
+    }
+
+    @After
+    public void afterTest() {
+        AzureProxy.setDefaultDelayInMilliseconds(delayInMillisecondsBackup);
+    }
 
     @Host("https://mock.azure.com")
     private interface MockResourceService {
@@ -297,6 +313,34 @@ public class AzureProxyTests {
         assertEquals(1, httpClient.createRequests());
         assertEquals(0, httpClient.deleteRequests());
         assertEquals(3, httpClient.pollRequests());
+    }
+
+    @Test
+    public void createAsyncWithAzureAsyncOperationAndPollsWithDelay() throws InterruptedException {
+        final long delayInMilliseconds = 100;
+        AzureProxy.setDefaultDelayInMilliseconds(delayInMilliseconds);
+
+        final MockAzureHttpClient httpClient = new MockAzureHttpClient();
+        final int pollsUntilResource = 3;
+        createMockService(MockResourceService.class, httpClient)
+                .createAsyncWithAzureAsyncOperationAndPolls("1", "mine", "c", pollsUntilResource)
+                .subscribe();
+
+        Thread.sleep((long)(delayInMilliseconds * 0.75));
+
+        for (int i = 0; i < pollsUntilResource; ++i) {
+            assertEquals(0, httpClient.getRequests());
+            assertEquals(1, httpClient.createRequests());
+            assertEquals(0, httpClient.deleteRequests());
+            assertEquals(i, httpClient.pollRequests());
+
+            Thread.sleep(delayInMilliseconds);
+        }
+
+        assertEquals(1, httpClient.getRequests());
+        assertEquals(1, httpClient.createRequests());
+        assertEquals(0, httpClient.deleteRequests());
+        assertEquals(pollsUntilResource, httpClient.pollRequests());
     }
 
     @Test

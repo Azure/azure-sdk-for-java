@@ -16,8 +16,9 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * The current state of polling for the result of a long running operation.
+ * @param <T> The type of value that will be returned from the long running operation.
  */
-class OperationStatus<T> {
+public class OperationStatus<T> {
     private PollStrategy pollStrategy;
     private T result;
 

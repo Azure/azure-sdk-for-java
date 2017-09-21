@@ -19,6 +19,10 @@ import java.io.IOException;
 abstract class PollStrategy {
     private long delayInMilliseconds;
 
+    PollStrategy(long delayInMilliseconds) {
+        this.delayInMilliseconds = delayInMilliseconds;
+    }
+
     /**
      * Get the number of milliseconds to delay before sending the next poll request.
      * @return The number of milliseconds to delay.
@@ -42,8 +46,7 @@ abstract class PollStrategy {
         final String retryAfterSecondsString = httpPollResponse.headerValue("Retry-After");
         if (retryAfterSecondsString != null && !retryAfterSecondsString.isEmpty()) {
             try {
-                final long responseDelayInMilliseconds = Long.valueOf(retryAfterSecondsString) * 1000;
-                delayInMilliseconds = Math.max(responseDelayInMilliseconds, AzureProxy.defaultDelayInMilliseconds());
+                delayInMilliseconds = Long.valueOf(retryAfterSecondsString) * 1000;
             }
             catch (NumberFormatException ignored) {
             }
