@@ -9,7 +9,6 @@ package com.microsoft.rest;
 
 import com.microsoft.rest.credentials.BasicAuthenticationCredentials;
 import com.microsoft.rest.credentials.TokenCredentials;
-import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.http.HttpRequest;
@@ -31,11 +30,9 @@ public class RestClientTests {
         RestClient restClient = new RestClient.Builder()
                 .withBaseUrl("https://management.azure.com/")
                 .withSerializerAdapter(new JacksonAdapter())
-                .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
                 .build();
         Assert.assertEquals("https://management.azure.com/", restClient.baseURL());
         Assert.assertEquals(LogLevel.NONE, restClient.logLevel());
-        Assert.assertTrue(restClient.responseBuilderFactory() instanceof ServiceResponseBuilder.Factory);
         Assert.assertTrue(restClient.serializerAdapter() instanceof JacksonAdapter);
         Assert.assertNull(restClient.credentials());
     }
@@ -45,7 +42,6 @@ public class RestClientTests {
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
-            .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC)
             .addCustomPolicy(new RequestPolicy.Factory() {
@@ -67,7 +63,6 @@ public class RestClientTests {
         Assert.assertEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
-        Assert.assertEquals(restClient.responseBuilderFactory(), newClient.responseBuilderFactory());
         Assert.assertEquals(restClient.credentials(), newClient.credentials());
         Assert.assertEquals(restClient.userAgent(), newClient.userAgent());
         Assert.assertEquals(restClient.customPolicyFactories().size(), newClient.customPolicyFactories().size());
@@ -79,7 +74,6 @@ public class RestClientTests {
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
-            .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
             .withCredentials(new TokenCredentials("Bearer", "token"))
             .withLogLevel(LogLevel.BASIC.withPrettyJson(true))
             .addCustomPolicy(new RequestPolicy.Factory() {
@@ -133,18 +127,11 @@ public class RestClientTests {
                     return null;
                 }
             })
-            .withResponseBuilderFactory(new ResponseBuilder.Factory() {
-                @Override
-                public <T, E extends RestException> ResponseBuilder<T, E> newInstance(SerializerAdapter<?> serializerAdapter) {
-                    return null;
-                }
-            })
             .build();
         Assert.assertNotEquals(restClient.baseURL(), newClient.baseURL());
         Assert.assertNotEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertNotEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertNotEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
-        Assert.assertNotEquals(restClient.responseBuilderFactory(), newClient.responseBuilderFactory());
         Assert.assertNotEquals(restClient.credentials(), newClient.credentials());
         Assert.assertEquals("user", restClient.userAgent());
         Assert.assertEquals("anotheruser", newClient.userAgent());

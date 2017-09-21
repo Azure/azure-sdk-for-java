@@ -8,7 +8,6 @@ package com.microsoft.rest;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.protocol.Environment;
-import com.microsoft.rest.protocol.ResponseBuilder;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.http.ChannelHandlerConfig;
 import com.microsoft.rest.v2.http.HttpClient;
@@ -35,7 +34,6 @@ public final class RestClient {
     private final long readTimeoutMillis;
     private final long connectionTimeoutMillis;
     private final SerializerAdapter<?> serializerAdapter;
-    private final ResponseBuilder.Factory responseBuilderFactory;
     private final ServiceClientCredentials credentials;
     private final LogLevel logLevel;
 
@@ -47,7 +45,6 @@ public final class RestClient {
         this.readTimeoutMillis = builder.readTimeoutMillis;
         this.connectionTimeoutMillis = builder.connectionTimeoutMillis;
         this.serializerAdapter = builder.serializerAdapter;
-        this.responseBuilderFactory = builder.responseBuilderFactory;
         this.credentials = builder.credentials;
         this.logLevel = builder.logLevel;
         this.customPolicyFactories = builder.customPolicyFactories;
@@ -79,13 +76,6 @@ public final class RestClient {
      */
     public SerializerAdapter<?> serializerAdapter() {
         return serializerAdapter;
-    }
-
-    /**
-     * @return the current respnose builder factory.
-     */
-    public ResponseBuilder.Factory responseBuilderFactory() {
-        return responseBuilderFactory;
     }
 
     /**
@@ -158,15 +148,12 @@ public final class RestClient {
         private long connectionTimeoutMillis = defaultConnectionTimeoutMillis;
         /** The adapter for serializations and deserializations. */
         private SerializerAdapter<?> serializerAdapter;
-        /** The builder factory for response builders. */
-        private ResponseBuilder.Factory responseBuilderFactory;
         /** The logging level to use. */
         private LogLevel logLevel = LogLevel.NONE;
 
         private Builder(final RestClient restClient) {
             this.baseUrl = restClient.baseURL;
             this.userAgent = restClient.userAgent;
-            this.responseBuilderFactory = restClient.responseBuilderFactory;
             this.connectionTimeoutMillis = restClient.connectionTimeoutMillis;
             this.readTimeoutMillis = restClient.readTimeoutMillis;
             this.serializerAdapter = restClient.serializerAdapter;
@@ -211,17 +198,6 @@ public final class RestClient {
          */
         public Builder withSerializerAdapter(SerializerAdapter<?> serializerAdapter) {
             this.serializerAdapter = serializerAdapter;
-            return this;
-        }
-
-        /**
-         * Sets the response builder factory.
-         *
-         * @param responseBuilderFactory the response builder factory
-         * @return the builder itself for chaining
-         */
-        public Builder withResponseBuilderFactory(ResponseBuilder.Factory responseBuilderFactory) {
-            this.responseBuilderFactory = responseBuilderFactory;
             return this;
         }
 
@@ -319,9 +295,6 @@ public final class RestClient {
         public RestClient build() {
             if (baseUrl == null) {
                 throw new IllegalArgumentException("Please set base URL.");
-            }
-            if (responseBuilderFactory == null) {
-                throw new IllegalArgumentException("Please set response builder factory.");
             }
             if (serializerAdapter == null) {
                 throw new IllegalArgumentException("Please set serializer adapter.");
