@@ -63,6 +63,11 @@ public class MockAzureHttpResponse extends HttpResponse {
         return headers.value(headerName);
     }
 
+    @Override
+    public HttpHeaders headers() {
+        return new HttpHeaders(headers);
+    }
+
     public MockAzureHttpResponse withHeader(String headerName, String headerValue) {
         headers.add(headerName, headerValue);
         return this;

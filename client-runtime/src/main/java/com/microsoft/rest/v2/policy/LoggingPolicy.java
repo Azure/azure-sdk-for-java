@@ -11,6 +11,7 @@ import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
+import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import rx.Single;
@@ -68,7 +69,7 @@ public final class LoggingPolicy implements RequestPolicy {
     }
 
     @Override
-    public Single<HttpResponse> sendAsync(HttpRequest request) {
+    public Single<HttpResponse> sendAsync(final HttpRequest request) {
         String context = request.callerMethod();
         if (context == null) {
             context = "";
@@ -85,7 +86,7 @@ public final class LoggingPolicy implements RequestPolicy {
             }
         }
 
-        if (logLevel.shouldLogBody()) {
+        if (logLevel.shouldLogBody() && request.body() != null) {
             // TODO: maximum content-length?
             // TODO: check MIME type?
             InputStream is = request.body().createInputStream();
@@ -109,29 +110,46 @@ public final class LoggingPolicy implements RequestPolicy {
             @Override
             public void call(HttpResponse httpResponse) {
                 long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
-                logResponse(logger, httpResponse, tookMs);
+                logResponse(logger, httpResponse, request.url(), tookMs);
             }
         });
     }
 
-    private static void logResponse(Logger logger, HttpResponse response, long tookMs) {
-        logger.warn("[WARNING] Logging HTTP responses not implemented.");
-//        long contentLength = response.body.contentLength();
-//        String bodySize = contentLength != -1 ? contentLength + "-byte" : "unknown-length";
-//
-//        // log URL
-//        if (logLevel != LogLevel.NONE) {
-//            log(logger, String.format("<-- %s %s %s (%s ms, %s body)", response.code(), response.message(), response.request().url(), tookMs, bodySize));
-//        }
-//
-//        // log headers
-//        if (logLevel == LogLevel.HEADERS || logLevel == LogLevel.BODY_AND_HEADERS) {
-//            for (String header : response.headers().names()) {
-//                log(logger, String.format("%s: %s", header, Joiner.on(", ").join(response.headers(header))));
-//            }
-//        }
-//
-//        // log body
+    private void logResponse(Logger logger, HttpResponse response, String url, long tookMs) {
+        String bodySize;
+        try {
+            long contentLength = Long.parseLong(response.headerValue("Content-Length"));
+            bodySize = contentLength != -1 ? contentLength + "-byte" : "unknown-length";
+        } catch (NumberFormatException e) {
+            bodySize = "unknown-length";
+        }
+
+        HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
+        if (logLevel.shouldLogURL()) {
+            log(logger, String.format("<-- %s %s %s (%s ms, %s body)", response.statusCode(), responseStatus.reasonPhrase(), url, tookMs, bodySize));
+        }
+
+        if (logLevel.shouldLogHeaders()) {
+            for (HttpHeader header : response.headers()) {
+                log(logger, header.toString());
+            }
+        }
+
+        if (logLevel.shouldLogBody()) {
+            logger.warn("Logging HTTP response bodies not fully implemented.");
+            String contentTypeHeader = response.headerValue("Content-Type");
+            if ("application/json".equals(contentTypeHeader)) {
+                try {
+                    log(logger, response.bodyAsString());
+                } catch (IOException e) {
+                    log(logger, "Error occurred when logging body: " + e.getMessage());
+                }
+            } else {
+                log(logger, "Not logging response body because the Content-Type is " + contentTypeHeader);
+            }
+            log(logger, "<-- END HTTP");
+        }
+
 //        if (logLevel == LogLevel.BODY || logLevel == LogLevel.BODY_AND_HEADERS) {
 //            if (response.body() != null) {
 //                BufferedSource source = responseBody.source();

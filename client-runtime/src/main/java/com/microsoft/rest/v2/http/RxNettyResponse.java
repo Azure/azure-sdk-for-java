@@ -38,6 +38,15 @@ class RxNettyResponse extends HttpResponse {
         return rxnRes.getHeader(headerName);
     }
 
+    @Override
+    public HttpHeaders headers() {
+        HttpHeaders headers = new HttpHeaders();
+        for (String headerName : rxnRes.getHeaderNames()) {
+            headers.add(headerName, rxnRes.getHeader(headerName));
+        }
+        return headers;
+    }
+
     private Single<ByteBuf> collectContent(boolean pooled) {
         // Reading entire response into memory-- not sure if this is OK
         int contentLength = (int) rxnRes.getContentLength();

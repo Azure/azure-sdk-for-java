@@ -27,6 +27,7 @@ public abstract class ServiceClient {
     protected ServiceClient(String baseUrl) {
         this(new RestClient.Builder()
                 .withBaseUrl(baseUrl)
+                .withLogLevel(LogLevel.BODY_AND_HEADERS)
                 .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
                 .withSerializerAdapter(new JacksonAdapter())
                 .build());

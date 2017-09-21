@@ -63,6 +63,11 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
+    public HttpHeaders headers() {
+        return new HttpHeaders(headers);
+    }
+
+    @Override
     public Single<? extends InputStream> bodyAsInputStreamAsync() {
         return Single.just(new ByteArrayInputStream(byteArray));
     }
