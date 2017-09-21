@@ -2,7 +2,7 @@ var path = require('path');
 var gulp = require('gulp');
 var args = require('yargs').argv;
 var colors = require('colors');
-var exec = require('child_process').exec;
+var spawn = require('child_process').spawn;
 var fs = require('fs');
 
 var mappings = {
@@ -188,14 +188,14 @@ var mappings = {
     },
     'storage': {
         'dir': 'azure-mgmt-storage',
-        'source': 'arm-storage/2016-01-01/swagger/storage.json',
+        'source': 'specification/storage/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.storage',
-        'args': '-FT 2'
+        'args': '--payload-flattening-threshold=2 --tag=package-2017-06'
     },
     'resources': {
         'dir': 'azure-mgmt-resources',
-        'source': 'arm-resources/resources/2016-09-01/swagger/resources.json',
-        'package': 'com.microsoft.azure.management.resources'
+        'source': 'specification/resources/resource-manager/readme.md',
+        'package': 'com.microsoft.azure.management.resources --tag=package-resources-2017-05'
     },
     'subscriptions': {
         'dir': 'azure-mgmt-resources',
@@ -436,10 +436,9 @@ var codegen = function(project, cb) {
         cmd = cmd + ' ' + mappings[project].args;
     }
     console.log('Command: ' + cmd);
-    exec(cmd, function(err, stdout, stderr) {
-        console.log(stdout);
-        console.error(stderr);
-    });
+    const subproc = spawn(cmd, [], { shell: true });
+    subproc.stdout.pipe(process.stdout);
+    subproc.stderr.pipe(process.stderr);
 };
 
 var deleteFolderRecursive = function(path) {
