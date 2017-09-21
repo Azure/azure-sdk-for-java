@@ -8,8 +8,6 @@ package com.microsoft.azure;
 
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import com.microsoft.rest.ServiceResponseWithHeaders;
-import rx.Observable;
 import rx.Single;
 import rx.Subscriber;
 import rx.functions.Func1;

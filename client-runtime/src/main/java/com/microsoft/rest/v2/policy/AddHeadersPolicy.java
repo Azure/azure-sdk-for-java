@@ -35,6 +35,10 @@ public final class AddHeadersPolicy implements RequestPolicy {
     public static class Factory implements RequestPolicy.Factory {
         private final HttpHeaders headers;
 
+        /**
+         * Creates a AddHeadersPolicy.Factory which adds headers from this HttpHeaders object to the request.
+         * @param headers The headers to add to outgoing requests.
+         */
         public Factory(HttpHeaders headers) {
             this.headers = headers;
         }
