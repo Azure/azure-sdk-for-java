@@ -99,65 +99,57 @@ var mappings = {
     },
     'recoveryservices': {
         'dir': 'azure-mgmt-recoveryservices',
-        'source': 'arm-recoveryservices/compositeRecoveryServicesClient.json',
+        'source': 'specification/recoveryservices/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.recoveryservices',
-        'args': '--payload-flattening-threshold=1',
-        'modeler': 'CompositeSwagger'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-12'
     },
     'recoveryservicesbackup': {
         'dir': 'azure-mgmt-recoveryservicesbackup',
-        'source': 'arm-recoveryservicesbackup/2016-12-01/swagger/backupManagement.json',
+        'source': 'specification/recoveryservicesbackup/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.recoveryservicesbackup',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-06'
     },
     'recoveryservicessiterecovery': {
         'dir': 'azure-mgmt-recoveryservicessiterecovery',
-        'source': 'arm-recoveryservicessiterecovery/2016-08-10/swagger/service.json',
+        'source': 'specification/recoveryservicessiterecovery/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.recoveryservicessiterecovery',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-08'
     },
     'relay': {
         'dir': 'azure-mgmt-relay',
-        'source': 'arm-relay/2017-04-01/swagger/relay.json',
+        'source': 'specification/relay/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.relay',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-04'
     },
     'servermanagement': {
         'dir': 'azure-mgmt-servermanagement',
-        'source': 'arm-servermanagement/2016-07-01-preview/swagger/servermanagement.json',
+        'source': 'specification/servermanagement/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.servermanagement',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-07-preview'
     },
     'storsimple8000series': {
         'dir': 'azure-mgmt-storsimple8000series',
-        'source': 'arm-storsimple8000series/2017-06-01/swagger/storsimple.json',
+        'source': 'specification/storsimple8000series/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.storsimple8000series',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-06'
     },
     'streamanalytics': {
         'dir': 'azure-mgmt-streamanalytics',
-        'source': 'arm-streamanalytics/compositeStreamAnalytics.json',
+        'source': 'specification/streamanalytics/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.streamanalytics',
-        'args': '--payload-flattening-threshold=1',
-        'modeler': 'CompositeSwagger'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-03'
     },
     'graphrbac': {
         'dir': 'azure-mgmt-graph-rbac',
-        'source': 'arm-graphrbac/1.6/swagger/graphrbac.json',
+        'source': 'specification/graphrbac/data-plane/readme.md',
         'package': 'com.microsoft.azure.management.graphrbac',
-        'args': '--payload-flattening-threshold=1'
-    },
-    'authorization': {
-        'dir': 'azure-mgmt-authorization',
-        'source': 'arm-authorization/2015-07-01/swagger/authorization.json',
-        'package': 'com.microsoft.azure.management.authorization',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=1.6'
     },
     'arm-keyvault': {
         'dir': 'azure-mgmt-keyvault',
-        'source': 'arm-keyvault/2015-06-01/swagger/keyvault.json',
+        'source': 'specification/keyvault/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.keyvault',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2015-06'
     },
     'storage': {
         'dir': 'azure-mgmt-storage',
@@ -189,33 +181,31 @@ var mappings = {
         'dir': 'azure-mgmt-network',
         'source': 'specification/network/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.network',
-        'args': '--payload-flattening-threshold=1',
-        'modeler': 'CompositeSwagger'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-08'
     },
     'appservice': {
         'dir': 'azure-mgmt-appservice',
-        'source': 'arm-web/compositeWebAppClient.json',
+        'source': 'specification/web/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.appservice',
-        'args': '--payload-flattening-threshold=1',
-        'modeler': 'CompositeSwagger'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-09'
     },
     'redis': {
         'dir': 'azure-mgmt-redis',
-        'source': 'arm-redis/2016-04-01/swagger/redis.json',
+        'source': 'specification/redis/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.redis',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-04'
     },
     'search': {
         'dir': 'azure-mgmt-search',
-        'source': 'arm-search/2015-08-19/swagger/search.json',
+        'source': 'specification/search/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.search',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2015-08'
     },
     'trafficmanager': {
         'dir': 'azure-mgmt-trafficmanager',
-        'source': 'arm-trafficmanager/2017-05-01/swagger/trafficmanager.json',
+        'source': 'specification/trafficmanager/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.trafficmanager',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-05'
     },
     'datalake.store.account': {
         'dir': 'azure-mgmt-datalake-store',
