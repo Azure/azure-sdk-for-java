@@ -70,21 +70,21 @@ public class StorageAccountsImpl implements StorageAccounts {
      * used by Retrofit to perform actually REST calls.
      */
     interface StorageAccountsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.StorageAccounts get" })
-        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}")
-        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.StorageAccounts delete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.StorageAccounts add" })
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}")
+        Observable<Response<ResponseBody>> add(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Body AddStorageAccountParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.StorageAccounts update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}")
         Observable<Response<ResponseBody>> update(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Body UpdateStorageAccountParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.StorageAccounts add" })
-        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}")
-        Observable<Response<ResponseBody>> add(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Body AddStorageAccountParameters parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.StorageAccounts delete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> delete(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.StorageAccounts get" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}")
+        Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("accountName") String accountName, @Path("storageAccountName") String storageAccountName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.datalake.analytics.StorageAccounts getStorageContainer" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.DataLakeAnalytics/accounts/{accountName}/StorageAccounts/{storageAccountName}/Containers/{containerName}")
@@ -117,137 +117,47 @@ public class StorageAccountsImpl implements StorageAccounts {
     }
 
     /**
-     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
+     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
-     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the StorageAccountInfo object if successful.
-     */
-    public StorageAccountInfo get(String resourceGroupName, String accountName, String storageAccountName) {
-        return getWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName).toBlocking().single().body();
-    }
-
-    /**
-     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
-     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<StorageAccountInfo> getAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<StorageAccountInfo> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
-    }
-
-    /**
-     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
-     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the StorageAccountInfo object
-     */
-    public Observable<StorageAccountInfo> getAsync(String resourceGroupName, String accountName, String storageAccountName) {
-        return getWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName).map(new Func1<ServiceResponse<StorageAccountInfo>, StorageAccountInfo>() {
-            @Override
-            public StorageAccountInfo call(ServiceResponse<StorageAccountInfo> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
-     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the StorageAccountInfo object
-     */
-    public Observable<ServiceResponse<StorageAccountInfo>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String storageAccountName) {
-        if (resourceGroupName == null) {
-            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
-        }
-        if (accountName == null) {
-            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
-        }
-        if (storageAccountName == null) {
-            throw new IllegalArgumentException("Parameter storageAccountName is required and cannot be null.");
-        }
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageAccountInfo>>>() {
-                @Override
-                public Observable<ServiceResponse<StorageAccountInfo>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<StorageAccountInfo> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<StorageAccountInfo> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<StorageAccountInfo, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<StorageAccountInfo>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
-
-    /**
-     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
-     * @param storageAccountName The name of the Azure Storage account to remove
+     * @param accountName The name of the Data Lake Analytics account to which to add the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to add
+     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void delete(String resourceGroupName, String accountName, String storageAccountName) {
-        deleteWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName).toBlocking().single().body();
+    public void add(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters) {
+        addWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters).toBlocking().single().body();
     }
 
     /**
-     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
+     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
-     * @param storageAccountName The name of the Azure Storage account to remove
+     * @param accountName The name of the Data Lake Analytics account to which to add the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to add
+     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
+    public ServiceFuture<Void> addAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(addWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters), serviceCallback);
     }
 
     /**
-     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
+     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
-     * @param storageAccountName The name of the Azure Storage account to remove
+     * @param accountName The name of the Data Lake Analytics account to which to add the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to add
+     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String accountName, String storageAccountName) {
-        return deleteWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> addAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters) {
+        return addWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -256,15 +166,16 @@ public class StorageAccountsImpl implements StorageAccounts {
     }
 
     /**
-     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
+     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
-     * @param storageAccountName The name of the Azure Storage account to remove
+     * @param accountName The name of the Data Lake Analytics account to which to add the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to add
+     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName, String storageAccountName) {
+    public Observable<ServiceResponse<Void>> addWithServiceResponseAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -277,15 +188,19 @@ public class StorageAccountsImpl implements StorageAccounts {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
+        if (parameters == null) {
+            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
+        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.delete(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Validator.validate(parameters);
+        return service.add(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        ServiceResponse<Void> clientResponse = addDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -294,7 +209,7 @@ public class StorageAccountsImpl implements StorageAccounts {
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> addDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
@@ -485,47 +400,44 @@ public class StorageAccountsImpl implements StorageAccounts {
     }
 
     /**
-     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
+     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account to which to add the Azure Storage account.
-     * @param storageAccountName The name of the Azure Storage account to add
-     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to remove
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void add(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters) {
-        addWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters).toBlocking().single().body();
+    public void delete(String resourceGroupName, String accountName, String storageAccountName) {
+        deleteWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName).toBlocking().single().body();
     }
 
     /**
-     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
+     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account to which to add the Azure Storage account.
-     * @param storageAccountName The name of the Azure Storage account to add
-     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to remove
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> addAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(addWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters), serviceCallback);
+    public ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
     }
 
     /**
-     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
+     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account to which to add the Azure Storage account.
-     * @param storageAccountName The name of the Azure Storage account to add
-     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to remove
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> addAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters) {
-        return addWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName, parameters).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> deleteAsync(String resourceGroupName, String accountName, String storageAccountName) {
+        return deleteWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -534,16 +446,15 @@ public class StorageAccountsImpl implements StorageAccounts {
     }
 
     /**
-     * Updates the specified Data Lake Analytics account to add an Azure Storage account.
+     * Updates the specified Data Lake Analytics account to remove an Azure Storage account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account to which to add the Azure Storage account.
-     * @param storageAccountName The name of the Azure Storage account to add
-     * @param parameters The parameters containing the access key and optional suffix for the Azure Storage Account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Azure Storage account.
+     * @param storageAccountName The name of the Azure Storage account to remove
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> addWithServiceResponseAsync(String resourceGroupName, String accountName, String storageAccountName, AddStorageAccountParameters parameters) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName, String storageAccountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -556,19 +467,15 @@ public class StorageAccountsImpl implements StorageAccounts {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Validator.validate(parameters);
-        return service.add(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.delete(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = addDelegate(response);
+                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -577,9 +484,102 @@ public class StorageAccountsImpl implements StorageAccounts {
             });
     }
 
-    private ServiceResponse<Void> addDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
+     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the StorageAccountInfo object if successful.
+     */
+    public StorageAccountInfo get(String resourceGroupName, String accountName, String storageAccountName) {
+        return getWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
+     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<StorageAccountInfo> getAsync(String resourceGroupName, String accountName, String storageAccountName, final ServiceCallback<StorageAccountInfo> serviceCallback) {
+        return ServiceFuture.fromResponse(getWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName), serviceCallback);
+    }
+
+    /**
+     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
+     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageAccountInfo object
+     */
+    public Observable<StorageAccountInfo> getAsync(String resourceGroupName, String accountName, String storageAccountName) {
+        return getWithServiceResponseAsync(resourceGroupName, accountName, storageAccountName).map(new Func1<ServiceResponse<StorageAccountInfo>, StorageAccountInfo>() {
+            @Override
+            public StorageAccountInfo call(ServiceResponse<StorageAccountInfo> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the specified Azure Storage account linked to the given Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve Azure storage account details.
+     * @param storageAccountName The name of the Azure Storage account for which to retrieve the details.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the StorageAccountInfo object
+     */
+    public Observable<ServiceResponse<StorageAccountInfo>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String storageAccountName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (accountName == null) {
+            throw new IllegalArgumentException("Parameter accountName is required and cannot be null.");
+        }
+        if (storageAccountName == null) {
+            throw new IllegalArgumentException("Parameter storageAccountName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.get(resourceGroupName, accountName, storageAccountName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<StorageAccountInfo>>>() {
+                @Override
+                public Observable<ServiceResponse<StorageAccountInfo>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<StorageAccountInfo> clientResponse = getDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<StorageAccountInfo> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<StorageAccountInfo, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<StorageAccountInfo>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

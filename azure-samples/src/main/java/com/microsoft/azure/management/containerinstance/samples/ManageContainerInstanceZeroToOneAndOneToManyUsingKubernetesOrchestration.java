@@ -182,8 +182,8 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
 
             //=============================================================
             // Create a container group with one container instance of default CPU core count and memory size
-            //   using public Docker image "microsoft/aci-helloworld" which mounts the file share created previously
-            //   as read/write shared container volume.
+            //   using public Docker image "microsoft/aci-helloworld" and mounts a new file share as read/write
+            //   shared container volume.
 
             ContainerGroup containerGroup = azure.containerGroups().define(aciName)
                 .withRegion(region)
