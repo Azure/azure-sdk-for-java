@@ -5,21 +5,36 @@ var colors = require('colors');
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 
-var mappings = require('./mappings.json');
+const mappings = require('./mappings.json');
+const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current";
 
 gulp.task('default', function() {
-    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] [--projects <project names>] [--autorest <autorest info>] [--autorest-args <AutoRest arguments>]\n");
+    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] " +
+        "[--projects <project names>] " +
+        "[--autorest <autorest info>] " +
+        "[--autorest-java <autorest.java info>] " +
+        "[--autorest-args <AutoRest arguments>]\n");
+
     console.log("--spec-root");
-    console.log("\tRoot location of Swagger API specs, default value is \"https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current\"");
+    console.log(`\tRoot location of Swagger API specs, default value is "${defaultSpecRoot}"`);
+
     console.log("--projects\n\tComma separated projects to regenerate, default is all. List of available project names:");
     Object.keys(mappings).forEach(function(i) {
         console.log('\t' + i.magenta);
     });
-    console.log("--autorest\n\tThe version of AutoRest. E.g. 1.0.1-20170222-2300-nightly, or the location of AutoRest repo, E.g. E:\\repo\\autorest");
+
+    console.log("--autorest\n\tThe version of AutoRest. E.g. 2.0.9, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
+    
+    console.log(
+        "--autorest-java\n\tPath to an autorest.java generator to pass as a --use argument to AutoRest.\n\t" +
+        "Usually you'll only need to provide this and not a " +
+        "--autorest argument in order to work on Java code generation.\n\t" +
+        "See https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
+
     console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
 });
 
-var specRoot = args['spec-root'] || "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current";
+var specRoot = args['spec-root'] || defaultSpecRoot;
 var projects = args['projects'];
 var autoRestVersion = 'latest'; // default
 if (args['autorest'] !== undefined) {
@@ -74,7 +89,7 @@ var codegen = function(project, cb) {
     }
 
     const generatorPath = args['autorest-java']
-        ? `--use=${path.resolve(autoRestVersion, args['autorest-java'])} `
+        ? `--use=${path.resolve(args['autorest-java'])} `
         : '';
 
     const regenManager = args['regenerate-manager'] ? ' --regenerate-manager=true ' : '';
