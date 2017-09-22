@@ -28,15 +28,13 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
     private Integer port;
 
     /**
-     * Protocol. Possible values are: 'Http' and 'Https'. Possible values
-     * include: 'Http', 'Https'.
+     * Protocol. Possible values include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
     private ApplicationGatewayProtocol protocol;
 
     /**
-     * Cookie based affinity. Possible values are: 'Enabled' and 'Disabled'.
-     * Possible values include: 'Enabled', 'Disabled'.
+     * Cookie based affinity. Possible values include: 'Enabled', 'Disabled'.
      */
     @JsonProperty(value = "properties.cookieBasedAffinity")
     private ApplicationGatewayCookieBasedAffinity cookieBasedAffinity;
@@ -62,17 +60,49 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
     private List<SubResource> authenticationCertificates;
 
     /**
+     * Connection draining of the backend http settings resource.
+     */
+    @JsonProperty(value = "properties.connectionDraining")
+    private ApplicationGatewayConnectionDraining connectionDraining;
+
+    /**
+     * Host header to be sent to the backend servers.
+     */
+    @JsonProperty(value = "properties.hostName")
+    private String hostName;
+
+    /**
+     * Whether to pick host header should be picked from the host name of the
+     * backend server. Default value is false.
+     */
+    @JsonProperty(value = "properties.pickHostNameFromBackendAddress")
+    private Boolean pickHostNameFromBackendAddress;
+
+    /**
+     * Cookie name to use for the affinity cookie.
+     */
+    @JsonProperty(value = "properties.affinityCookieName")
+    private String affinityCookieName;
+
+    /**
+     * Whether the probe is enabled. Default value is false.
+     */
+    @JsonProperty(value = "properties.probeEnabled")
+    private Boolean probeEnabled;
+
+    /**
+     * Path which should be used as a prefix for all HTTP requests. Null means
+     * no path will be prefixed. Default value is null.
+     */
+    @JsonProperty(value = "properties.path")
+    private String path;
+
+    /**
      * Provisioning state of the backend http settings resource. Possible
      * values are: 'Updating', 'Deleting', and 'Failed'.
      */
     @JsonProperty(value = "properties.provisioningState")
     private String provisioningState;
-
-    /**
-     * Connection draining of the backend http settings resource.
-     */
-    @JsonProperty(value = "properties.connectionDraining")
-    private ApplicationGatewayConnectionDraining connectionDraining;
 
     /**
      * Name of the resource that is unique within a resource group. This name
@@ -86,6 +116,12 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
 
     /**
      * Get the port value.
@@ -208,26 +244,6 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
     }
 
     /**
-     * Get the provisioningState value.
-     *
-     * @return the provisioningState value
-     */
-    public String provisioningState() {
-        return this.provisioningState;
-    }
-
-    /**
-     * Set the provisioningState value.
-     *
-     * @param provisioningState the provisioningState value to set
-     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
-     */
-    public ApplicationGatewayBackendHttpSettingsInner withProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
-        return this;
-    }
-
-    /**
      * Get the connectionDraining value.
      *
      * @return the connectionDraining value
@@ -244,6 +260,126 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettingsInner withConnectionDraining(ApplicationGatewayConnectionDraining connectionDraining) {
         this.connectionDraining = connectionDraining;
+        return this;
+    }
+
+    /**
+     * Get the hostName value.
+     *
+     * @return the hostName value
+     */
+    public String hostName() {
+        return this.hostName;
+    }
+
+    /**
+     * Set the hostName value.
+     *
+     * @param hostName the hostName value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withHostName(String hostName) {
+        this.hostName = hostName;
+        return this;
+    }
+
+    /**
+     * Get the pickHostNameFromBackendAddress value.
+     *
+     * @return the pickHostNameFromBackendAddress value
+     */
+    public Boolean pickHostNameFromBackendAddress() {
+        return this.pickHostNameFromBackendAddress;
+    }
+
+    /**
+     * Set the pickHostNameFromBackendAddress value.
+     *
+     * @param pickHostNameFromBackendAddress the pickHostNameFromBackendAddress value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withPickHostNameFromBackendAddress(Boolean pickHostNameFromBackendAddress) {
+        this.pickHostNameFromBackendAddress = pickHostNameFromBackendAddress;
+        return this;
+    }
+
+    /**
+     * Get the affinityCookieName value.
+     *
+     * @return the affinityCookieName value
+     */
+    public String affinityCookieName() {
+        return this.affinityCookieName;
+    }
+
+    /**
+     * Set the affinityCookieName value.
+     *
+     * @param affinityCookieName the affinityCookieName value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withAffinityCookieName(String affinityCookieName) {
+        this.affinityCookieName = affinityCookieName;
+        return this;
+    }
+
+    /**
+     * Get the probeEnabled value.
+     *
+     * @return the probeEnabled value
+     */
+    public Boolean probeEnabled() {
+        return this.probeEnabled;
+    }
+
+    /**
+     * Set the probeEnabled value.
+     *
+     * @param probeEnabled the probeEnabled value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withProbeEnabled(Boolean probeEnabled) {
+        this.probeEnabled = probeEnabled;
+        return this;
+    }
+
+    /**
+     * Get the path value.
+     *
+     * @return the path value
+     */
+    public String path() {
+        return this.path;
+    }
+
+    /**
+     * Set the path value.
+     *
+     * @param path the path value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withPath(String path) {
+        this.path = path;
+        return this;
+    }
+
+    /**
+     * Get the provisioningState value.
+     *
+     * @return the provisioningState value
+     */
+    public String provisioningState() {
+        return this.provisioningState;
+    }
+
+    /**
+     * Set the provisioningState value.
+     *
+     * @param provisioningState the provisioningState value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
         return this;
     }
 
@@ -284,6 +420,26 @@ public class ApplicationGatewayBackendHttpSettingsInner extends SubResource {
      */
     public ApplicationGatewayBackendHttpSettingsInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the ApplicationGatewayBackendHttpSettingsInner object itself.
+     */
+    public ApplicationGatewayBackendHttpSettingsInner withType(String type) {
+        this.type = type;
         return this;
     }
 

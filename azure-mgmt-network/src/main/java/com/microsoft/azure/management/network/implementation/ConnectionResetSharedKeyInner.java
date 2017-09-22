@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The ConnectionResetSharedKeyInner model.
+ * The virtual network connection reset shared key.
  */
 public class ConnectionResetSharedKeyInner {
     /**

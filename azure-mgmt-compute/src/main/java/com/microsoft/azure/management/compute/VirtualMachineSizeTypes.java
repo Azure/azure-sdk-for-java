@@ -65,6 +65,27 @@ public final class VirtualMachineSizeTypes {
     /** Static value Standard_A11 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_A11 = new VirtualMachineSizeTypes("Standard_A11");
 
+    /** Static value Standard_A1_v2 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_A1_V2 = new VirtualMachineSizeTypes("Standard_A1_v2");
+
+    /** Static value Standard_A2_v2 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_A2_V2 = new VirtualMachineSizeTypes("Standard_A2_v2");
+
+    /** Static value Standard_A4_v2 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_A4_V2 = new VirtualMachineSizeTypes("Standard_A4_v2");
+
+    /** Static value Standard_A8_v2 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_A8_V2 = new VirtualMachineSizeTypes("Standard_A8_v2");
+
+    /** Static value Standard_A2m_v2 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_A2M_V2 = new VirtualMachineSizeTypes("Standard_A2m_v2");
+
+    /** Static value Standard_A4m_v2 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_A4M_V2 = new VirtualMachineSizeTypes("Standard_A4m_v2");
+
+    /** Static value Standard_A8m_v2 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_A8M_V2 = new VirtualMachineSizeTypes("Standard_A8m_v2");
+
     /** Static value Standard_D1 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_D1 = new VirtualMachineSizeTypes("Standard_D1");
 
@@ -173,6 +194,36 @@ public final class VirtualMachineSizeTypes {
     /** Static value Standard_DS15_v2 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_DS15_V2 = new VirtualMachineSizeTypes("Standard_DS15_v2");
 
+    /** Static value Standard_F1 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F1 = new VirtualMachineSizeTypes("Standard_F1");
+
+    /** Static value Standard_F2 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F2 = new VirtualMachineSizeTypes("Standard_F2");
+
+    /** Static value Standard_F4 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F4 = new VirtualMachineSizeTypes("Standard_F4");
+
+    /** Static value Standard_F8 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F8 = new VirtualMachineSizeTypes("Standard_F8");
+
+    /** Static value Standard_F16 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F16 = new VirtualMachineSizeTypes("Standard_F16");
+
+    /** Static value Standard_F1s for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F1S = new VirtualMachineSizeTypes("Standard_F1s");
+
+    /** Static value Standard_F2s for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F2S = new VirtualMachineSizeTypes("Standard_F2s");
+
+    /** Static value Standard_F4s for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F4S = new VirtualMachineSizeTypes("Standard_F4s");
+
+    /** Static value Standard_F8s for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F8S = new VirtualMachineSizeTypes("Standard_F8s");
+
+    /** Static value Standard_F16s for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_F16S = new VirtualMachineSizeTypes("Standard_F16s");
+
     /** Static value Standard_G1 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_G1 = new VirtualMachineSizeTypes("Standard_G1");
 
@@ -202,6 +253,57 @@ public final class VirtualMachineSizeTypes {
 
     /** Static value Standard_GS5 for VirtualMachineSizeTypes. */
     public static final VirtualMachineSizeTypes STANDARD_GS5 = new VirtualMachineSizeTypes("Standard_GS5");
+
+    /** Static value Standard_H8 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_H8 = new VirtualMachineSizeTypes("Standard_H8");
+
+    /** Static value Standard_H16 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_H16 = new VirtualMachineSizeTypes("Standard_H16");
+
+    /** Static value Standard_H8m for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_H8M = new VirtualMachineSizeTypes("Standard_H8m");
+
+    /** Static value Standard_H16m for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_H16M = new VirtualMachineSizeTypes("Standard_H16m");
+
+    /** Static value Standard_H16r for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_H16R = new VirtualMachineSizeTypes("Standard_H16r");
+
+    /** Static value Standard_H16mr for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_H16MR = new VirtualMachineSizeTypes("Standard_H16mr");
+
+    /** Static value Standard_L4s for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_L4S = new VirtualMachineSizeTypes("Standard_L4s");
+
+    /** Static value Standard_L8s for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_L8S = new VirtualMachineSizeTypes("Standard_L8s");
+
+    /** Static value Standard_L16s for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_L16S = new VirtualMachineSizeTypes("Standard_L16s");
+
+    /** Static value Standard_L32s for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_L32S = new VirtualMachineSizeTypes("Standard_L32s");
+
+    /** Static value Standard_NC6 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_NC6 = new VirtualMachineSizeTypes("Standard_NC6");
+
+    /** Static value Standard_NC12 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_NC12 = new VirtualMachineSizeTypes("Standard_NC12");
+
+    /** Static value Standard_NC24 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_NC24 = new VirtualMachineSizeTypes("Standard_NC24");
+
+    /** Static value Standard_NC24r for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_NC24R = new VirtualMachineSizeTypes("Standard_NC24r");
+
+    /** Static value Standard_NV6 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_NV6 = new VirtualMachineSizeTypes("Standard_NV6");
+
+    /** Static value Standard_NV12 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_NV12 = new VirtualMachineSizeTypes("Standard_NV12");
+
+    /** Static value Standard_NV24 for VirtualMachineSizeTypes. */
+    public static final VirtualMachineSizeTypes STANDARD_NV24 = new VirtualMachineSizeTypes("Standard_NV24");
 
     private String value;
 

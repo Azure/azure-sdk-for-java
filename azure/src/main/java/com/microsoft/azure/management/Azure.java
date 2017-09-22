@@ -30,6 +30,8 @@ import com.microsoft.azure.management.compute.VirtualMachineImages;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSets;
 import com.microsoft.azure.management.compute.VirtualMachines;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
+import com.microsoft.azure.management.containerinstance.ContainerGroups;
+import com.microsoft.azure.management.containerinstance.implementation.ContainerInstanceManager;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.dns.DnsZones;
@@ -47,6 +49,7 @@ import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
+import com.microsoft.azure.management.network.LocalNetworkGateways;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkUsages;
@@ -54,6 +57,7 @@ import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.NetworkWatchers;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
+import com.microsoft.azure.management.network.VirtualNetworkGateways;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.redis.implementation.RedisManager;
@@ -71,7 +75,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
 import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.management.resources.implementation.ResourceManagementClientImpl;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.search.SearchServices;
 import com.microsoft.azure.management.search.implementation.SearchServiceManager;
@@ -107,6 +110,7 @@ public final class Azure {
     private final AppServiceManager appServiceManager;
     private final SqlServerManager sqlServerManager;
     private final ServiceBusManager serviceBusManager;
+    private final ContainerInstanceManager containerInstanceManager;
     private final ContainerRegistryManager containerRegistryManager;
     private final SearchServiceManager searchServiceManager;
     private final CosmosDBManager cosmosDBManager;
@@ -366,8 +370,6 @@ public final class Azure {
     }
 
     private Azure(RestClient restClient, String subscriptionId, String tenantId, Authenticated authenticated) {
-        ResourceManagementClientImpl resourceManagementClient = new ResourceManagementClientImpl(restClient);
-        resourceManagementClient.withSubscriptionId(subscriptionId);
         this.resourceManager = ResourceManager.authenticate(restClient).withSubscription(subscriptionId);
         this.storageManager = StorageManager.authenticate(restClient, subscriptionId);
         this.computeManager = ComputeManager.authenticate(restClient, subscriptionId);
@@ -381,6 +383,7 @@ public final class Azure {
         this.appServiceManager = AppServiceManager.authenticate(restClient, tenantId, subscriptionId);
         this.sqlServerManager = SqlServerManager.authenticate(restClient, subscriptionId);
         this.serviceBusManager = ServiceBusManager.authenticate(restClient, subscriptionId);
+        this.containerInstanceManager = ContainerInstanceManager.authenticate(restClient, subscriptionId);
         this.containerRegistryManager = ContainerRegistryManager.authenticate(restClient, subscriptionId);
         this.cosmosDBManager = CosmosDBManager.authenticate(restClient, subscriptionId);
         this.searchServiceManager = SearchServiceManager.authenticate(restClient, subscriptionId);
@@ -526,6 +529,20 @@ public final class Azure {
      */
     public NetworkWatchers networkWatchers() {
         return networkManager.networkWatchers();
+    }
+
+    /**
+     * @return entry point to managing virtual network gateways
+     */
+    public VirtualNetworkGateways virtualNetworkGateways() {
+        return networkManager.virtualNetworkGateways();
+    }
+
+    /**
+     * @return entry point to managing local network gateways
+     */
+    public LocalNetworkGateways localNetworkGateways() {
+        return networkManager.localNetworkGateways();
     }
 
     /**
@@ -679,6 +696,14 @@ public final class Azure {
     @Beta(SinceVersion.V1_1_0)
     public ContainerServices containerServices() {
         return computeManager.containerServices();
+    }
+
+    /**
+     * @return entry point to managing Azure Container Instances.
+     */
+    @Beta(SinceVersion.V1_3_0)
+    public ContainerGroups containerGroups() {
+        return containerInstanceManager.containerGroups();
     }
 
     /**

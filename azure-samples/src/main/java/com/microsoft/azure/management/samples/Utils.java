@@ -26,12 +26,18 @@ import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.ContainerService;
-import com.microsoft.azure.management.compute.ContainerServiceOchestratorTypes;
+import com.microsoft.azure.management.compute.ContainerServiceOrchestratorTypes;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.ImageDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
 import com.microsoft.azure.management.compute.VirtualMachineCustomImage;
 import com.microsoft.azure.management.compute.VirtualMachineExtension;
+import com.microsoft.azure.management.containerinstance.Container;
+import com.microsoft.azure.management.containerinstance.ContainerGroup;
+import com.microsoft.azure.management.containerinstance.ContainerPort;
+import com.microsoft.azure.management.containerinstance.EnvironmentVariable;
+import com.microsoft.azure.management.containerinstance.Volume;
+import com.microsoft.azure.management.containerinstance.VolumeMount;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
 import com.microsoft.azure.management.cosmosdb.CosmosDBAccount;
@@ -84,6 +90,7 @@ import com.microsoft.azure.management.network.LoadBalancerTcpProbe;
 import com.microsoft.azure.management.network.LoadBalancingRule;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.network.NetworkPeering;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkSecurityRule;
 import com.microsoft.azure.management.network.NetworkWatcher;
@@ -91,6 +98,7 @@ import com.microsoft.azure.management.network.NextHop;
 import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PacketCaptureFilter;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.SecurityGroupNetworkInterface;
 import com.microsoft.azure.management.network.SecurityGroupView;
 import com.microsoft.azure.management.network.Subnet;
@@ -128,6 +136,8 @@ import com.microsoft.azure.management.trafficmanager.TrafficManagerAzureEndpoint
 import com.microsoft.azure.management.trafficmanager.TrafficManagerExternalEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerNestedProfileEndpoint;
 import com.microsoft.azure.management.trafficmanager.TrafficManagerProfile;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.net.ftp.FTP;
 import org.apache.commons.net.ftp.FTPClient;
@@ -144,6 +154,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Properties;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Common utils for Azure management samples.
@@ -267,6 +278,9 @@ public final class Utils {
         msi.append("\n\t\t\tMSI Active Directory Service Principal Id:").append(resource.managedServiceIdentityPrincipalId());
         msi.append("\n\t\t\tMSI Active Directory Tenant Id:").append(resource.managedServiceIdentityTenantId());
 
+        StringBuilder zones = new StringBuilder().append("\n\tZones: ");
+        zones.append(resource.availabilityZones());
+
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
             .append("Name: ").append(resource.name())
             .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -279,6 +293,7 @@ public final class Utils {
             .append(networkProfile)
             .append(extensions)
             .append(msi)
+            .append(zones)
             .toString());
     }
 
@@ -320,12 +335,29 @@ public final class Utils {
         for (Subnet subnet : resource.subnets().values()) {
             info.append("\n\tSubnet: ").append(subnet.name())
                 .append("\n\t\tAddress prefix: ").append(subnet.addressPrefix());
+
+            // Output associated NSG
             NetworkSecurityGroup subnetNsg = subnet.getNetworkSecurityGroup();
             if (subnetNsg != null) {
-                info.append("\n\t\tNetwork security group: ").append(subnetNsg.id());
+                info.append("\n\t\tNetwork security group ID: ").append(subnetNsg.id());
+            }
+
+            // Output associated route table
+            RouteTable routeTable = subnet.getRouteTable();
+            if (routeTable != null) {
+                info.append("\n\tRoute table ID: ").append(routeTable.id());
             }
         }
 
+        // Output peerings
+        for (NetworkPeering peering : resource.peerings().list()) {
+            info.append("\n\tPeering: ").append(peering.name())
+                .append("\n\t\tRemote network ID: ").append(peering.remoteNetworkId())
+                .append("\n\t\tPeering state: ").append(peering.state())
+                .append("\n\t\tIs traffic forwarded from remote network allowed? ").append(peering.isTrafficForwardingFromRemoteNetworkAllowed())
+                //TODO .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessFromRemoteNetworkAllowed())
+                .append("\n\t\tGateway use: ").append(peering.gatewayUse());
+        }
         System.out.println(info.toString());
     }
 
@@ -410,6 +442,7 @@ public final class Utils {
             .append("\n\tReverse FQDN: ").append(resource.reverseFqdn())
             .append("\n\tIdle timeout (minutes): ").append(resource.idleTimeoutInMinutes())
             .append("\n\tIP allocation method: ").append(resource.ipAllocationMethod())
+            .append("\n\tZones: ").append(resource.availabilityZones())
             .toString());
     }
 
@@ -1097,7 +1130,7 @@ public final class Utils {
             .append("\n\t\tAgent pool leaf domain label: ").append(containerService.agentPoolLeafDomainLabel())
             .append("\n\tLinux user name: ").append(containerService.linuxRootUsername())
             .append("\n\tSSH key: ").append(containerService.sshKey());
-        if (containerService.orchestratorType() == ContainerServiceOchestratorTypes.KUBERNETES) {
+        if (containerService.orchestratorType() == ContainerServiceOrchestratorTypes.KUBERNETES) {
             info.append("\n\tName: ").append(containerService.servicePrincipalClientId());
         }
 
@@ -1933,7 +1966,7 @@ public final class Utils {
                     .append("\n\t\t\tName :").append(readReplica.locationName());
         }
     }
-    
+
     /**
      * Print Active Directory User info.
      * @param user active directory user
@@ -2210,5 +2243,110 @@ public final class Utils {
                 .append("\n\tNext hop ip address: ").append(resource.nextHopIpAddress())
                 .append("\n\tRoute table id: ").append(resource.routeTableId())
                 .toString());
+    }
+
+    /**
+     * Print container group info.
+     *
+     * @param resource a container group
+     */
+    public static void print(ContainerGroup resource) {
+        StringBuilder info = new StringBuilder().append("Container Group: ").append(resource.id())
+            .append("Name: ").append(resource.name())
+            .append("\n\tResource group: ").append(resource.resourceGroupName())
+            .append("\n\tRegion: ").append(resource.region())
+            .append("\n\tTags: ").append(resource.tags())
+            .append("\n\tOS type: ").append(resource.osType());
+
+        if (resource.ipAddress() != null) {
+            info.append("\n\tPublic IP address: ").append(resource.ipAddress());
+        }
+        if (resource.externalTcpPorts() != null) {
+            info.append("\n\tExternal TCP ports:");
+            for (int port : resource.externalTcpPorts()) {
+                info.append(" ").append(port);
+            }
+        }
+        if (resource.externalUdpPorts() != null) {
+            info.append("\n\tExternal UDP ports:");
+            for (int port : resource.externalUdpPorts()) {
+                info.append(" ").append(port);
+            }
+        }
+        if (resource.imageRegistryServers() != null) {
+            info.append("\n\tPrivate Docker image registries:");
+            for (String server : resource.imageRegistryServers()) {
+                info.append(" ").append(server);
+            }
+        }
+        if (resource.volumes() != null) {
+            info.append("\n\tVolume mapping: ");
+            for (Map.Entry<String, Volume> entry: resource.volumes().entrySet()) {
+                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ").append(entry.getValue().azureFile().shareName());
+            }
+        }
+        if (resource.containers() != null) {
+            info.append("\n\tContainer instances: ");
+            for (Map.Entry<String, Container> entry: resource.containers().entrySet()) {
+                Container container = entry.getValue();
+                info.append("\n\t\tName: ").append(entry.getKey()).append(" -> ").append(container.image());
+                info.append("\n\t\t\tResources: ");
+                info.append(container.resources().requests().cpu()).append("CPUs ");
+                info.append(container.resources().requests().memoryInGB()).append("GB");
+                info.append("\n\t\t\tPorts:");
+                for (ContainerPort port : container.ports()) {
+                    info.append(" ").append(port.port());
+                }
+                if (container.volumeMounts() != null) {
+                    info.append("\n\t\t\tVolume mounts:");
+                    for (VolumeMount volumeMount : container.volumeMounts()) {
+                        info.append(" ").append(volumeMount.name()).append("->").append(volumeMount.mountPath());
+                    }
+                }
+                if (container.command() != null) {
+                    info.append("\n\t\t\tStart commands:");
+                    for (String command : container.command()) {
+                        info.append("\n\t\t\t\t").append(command);
+                    }
+                }
+                if (container.environmentVariables() != null) {
+                    info.append("\n\t\t\tENV vars:");
+                    for (EnvironmentVariable envVar : container.environmentVariables()) {
+                        info.append("\n\t\t\t\t").append(envVar.name()).append("=").append(envVar.value());
+                    }
+                }
+            }
+        }
+
+        System.out.println(info.toString());
+    }
+
+    private static OkHttpClient httpClient;
+
+    /**
+     * Ensure the HTTP client is valid.
+     *
+     */
+    private static OkHttpClient ensureValidHttpClient() {
+        if (httpClient == null) {
+            httpClient = new OkHttpClient.Builder().readTimeout(1, TimeUnit.MINUTES).build();
+        }
+
+        return httpClient;
+    }
+
+    /**
+     * Connect to a specified URL using "curl" like HTTP GET client.
+     *
+     * @param url URL to be tested
+     * @return the HTTP GET response content
+     */
+    public static String curl(String url) {
+        Request request = new Request.Builder().url(url).get().build();
+        try {
+            return ensureValidHttpClient().newCall(request).execute().body().string();
+        } catch (IOException e) {
+            return null;
+        }
     }
 }

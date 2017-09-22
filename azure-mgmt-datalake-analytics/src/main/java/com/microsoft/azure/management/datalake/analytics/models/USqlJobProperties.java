@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * U-SQL job properties used when submitting and retrieving U-SQL jobs.
+ * U-SQL job properties used when retrieving U-SQL jobs.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "type")
 @JsonTypeName("USql")
@@ -23,25 +23,25 @@ public class USqlJobProperties extends JobProperties {
     /**
      * the list of resources that are required by the job.
      */
-    @JsonProperty(value = "resources")
+    @JsonProperty(value = "resources", access = JsonProperty.Access.WRITE_ONLY)
     private List<JobResource> resources;
 
     /**
      * the job specific statistics.
      */
-    @JsonProperty(value = "statistics")
+    @JsonProperty(value = "statistics", access = JsonProperty.Access.WRITE_ONLY)
     private JobStatistics statistics;
 
     /**
      * the job specific debug data locations.
      */
-    @JsonProperty(value = "debugData")
+    @JsonProperty(value = "debugData", access = JsonProperty.Access.WRITE_ONLY)
     private JobDataPath debugData;
 
     /**
      * the diagnostics for the job.
      */
-    @JsonProperty(value = "diagnostics")
+    @JsonProperty(value = "diagnostics", access = JsonProperty.Access.WRITE_ONLY)
     private List<Diagnostics> diagnostics;
 
     /**
@@ -100,12 +100,12 @@ public class USqlJobProperties extends JobProperties {
     private Long yarnApplicationTimeStamp;
 
     /**
-     * Optionally enforces a specific compilation mode for the job during
-     * execution. If this is not specified during submission, the server will
-     * determine the optimal compilation mode. Possible values include:
-     * 'Semantic', 'Full', 'SingleBox'.
+     * the specific compilation mode for the job used during execution. If this
+     * is not specified during submission, the server will determine the
+     * optimal compilation mode. Possible values include: 'Semantic', 'Full',
+     * 'SingleBox'.
      */
-    @JsonProperty(value = "compileMode")
+    @JsonProperty(value = "compileMode", access = JsonProperty.Access.WRITE_ONLY)
     private CompileMode compileMode;
 
     /**
@@ -118,34 +118,12 @@ public class USqlJobProperties extends JobProperties {
     }
 
     /**
-     * Set the resources value.
-     *
-     * @param resources the resources value to set
-     * @return the USqlJobProperties object itself.
-     */
-    public USqlJobProperties withResources(List<JobResource> resources) {
-        this.resources = resources;
-        return this;
-    }
-
-    /**
      * Get the statistics value.
      *
      * @return the statistics value
      */
     public JobStatistics statistics() {
         return this.statistics;
-    }
-
-    /**
-     * Set the statistics value.
-     *
-     * @param statistics the statistics value to set
-     * @return the USqlJobProperties object itself.
-     */
-    public USqlJobProperties withStatistics(JobStatistics statistics) {
-        this.statistics = statistics;
-        return this;
     }
 
     /**
@@ -158,34 +136,12 @@ public class USqlJobProperties extends JobProperties {
     }
 
     /**
-     * Set the debugData value.
-     *
-     * @param debugData the debugData value to set
-     * @return the USqlJobProperties object itself.
-     */
-    public USqlJobProperties withDebugData(JobDataPath debugData) {
-        this.debugData = debugData;
-        return this;
-    }
-
-    /**
      * Get the diagnostics value.
      *
      * @return the diagnostics value
      */
     public List<Diagnostics> diagnostics() {
         return this.diagnostics;
-    }
-
-    /**
-     * Set the diagnostics value.
-     *
-     * @param diagnostics the diagnostics value to set
-     * @return the USqlJobProperties object itself.
-     */
-    public USqlJobProperties withDiagnostics(List<Diagnostics> diagnostics) {
-        this.diagnostics = diagnostics;
-        return this;
     }
 
     /**
@@ -267,17 +223,6 @@ public class USqlJobProperties extends JobProperties {
      */
     public CompileMode compileMode() {
         return this.compileMode;
-    }
-
-    /**
-     * Set the compileMode value.
-     *
-     * @param compileMode the compileMode value to set
-     * @return the USqlJobProperties object itself.
-     */
-    public USqlJobProperties withCompileMode(CompileMode compileMode) {
-        this.compileMode = compileMode;
-        return this;
     }
 
 }

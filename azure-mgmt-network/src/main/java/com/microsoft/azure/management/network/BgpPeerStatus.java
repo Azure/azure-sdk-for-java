@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The BgpPeerStatus model.
+ * BGP peer status details.
  */
 public class BgpPeerStatus {
     /**
@@ -61,7 +61,7 @@ public class BgpPeerStatus {
      * The number of BGP messages received.
      */
     @JsonProperty(value = "messagesReceived", access = JsonProperty.Access.WRITE_ONLY)
-    private Integer messagesReceived;
+    private Long messagesReceived;
 
     /**
      * Get the localAddress value.
@@ -131,7 +131,7 @@ public class BgpPeerStatus {
      *
      * @return the messagesReceived value
      */
-    public Integer messagesReceived() {
+    public Long messagesReceived() {
         return this.messagesReceived;
     }
 

@@ -19,8 +19,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
     /**
-     * Rule type. Possible values are: 'Basic' and 'PathBasedRouting'. Possible
-     * values include: 'Basic', 'PathBasedRouting'.
+     * Rule type. Possible values include: 'Basic', 'PathBasedRouting'.
      */
     @JsonProperty(value = "properties.ruleType")
     private ApplicationGatewayRequestRoutingRuleType ruleType;
@@ -50,6 +49,12 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
     private SubResource urlPathMap;
 
     /**
+     * Redirect configuration resource of the application gateway.
+     */
+    @JsonProperty(value = "properties.redirectConfiguration")
+    private SubResource redirectConfiguration;
+
+    /**
      * Provisioning state of the request routing rule resource. Possible values
      * are: 'Updating', 'Deleting', and 'Failed'.
      */
@@ -68,6 +73,12 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
 
     /**
      * Get the ruleType value.
@@ -170,6 +181,26 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
     }
 
     /**
+     * Get the redirectConfiguration value.
+     *
+     * @return the redirectConfiguration value
+     */
+    public SubResource redirectConfiguration() {
+        return this.redirectConfiguration;
+    }
+
+    /**
+     * Set the redirectConfiguration value.
+     *
+     * @param redirectConfiguration the redirectConfiguration value to set
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner withRedirectConfiguration(SubResource redirectConfiguration) {
+        this.redirectConfiguration = redirectConfiguration;
+        return this;
+    }
+
+    /**
      * Get the provisioningState value.
      *
      * @return the provisioningState value
@@ -226,6 +257,26 @@ public class ApplicationGatewayRequestRoutingRuleInner extends SubResource {
      */
     public ApplicationGatewayRequestRoutingRuleInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the ApplicationGatewayRequestRoutingRuleInner object itself.
+     */
+    public ApplicationGatewayRequestRoutingRuleInner withType(String type) {
+        this.type = type;
         return this;
     }
 

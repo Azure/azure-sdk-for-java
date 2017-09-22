@@ -25,16 +25,22 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
     private List<String> paths;
 
     /**
-     * Backend address pool resource of URL path map.
+     * Backend address pool resource of URL path map path rule.
      */
     @JsonProperty(value = "properties.backendAddressPool")
     private SubResource backendAddressPool;
 
     /**
-     * Backend http settings resource of URL path map.
+     * Backend http settings resource of URL path map path rule.
      */
     @JsonProperty(value = "properties.backendHttpSettings")
     private SubResource backendHttpSettings;
+
+    /**
+     * Redirect configuration resource of URL path map path rule.
+     */
+    @JsonProperty(value = "properties.redirectConfiguration")
+    private SubResource redirectConfiguration;
 
     /**
      * Path rule of URL path map resource. Possible values are: 'Updating',
@@ -55,6 +61,12 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
 
     /**
      * Get the paths value.
@@ -117,6 +129,26 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
     }
 
     /**
+     * Get the redirectConfiguration value.
+     *
+     * @return the redirectConfiguration value
+     */
+    public SubResource redirectConfiguration() {
+        return this.redirectConfiguration;
+    }
+
+    /**
+     * Set the redirectConfiguration value.
+     *
+     * @param redirectConfiguration the redirectConfiguration value to set
+     * @return the ApplicationGatewayPathRuleInner object itself.
+     */
+    public ApplicationGatewayPathRuleInner withRedirectConfiguration(SubResource redirectConfiguration) {
+        this.redirectConfiguration = redirectConfiguration;
+        return this;
+    }
+
+    /**
      * Get the provisioningState value.
      *
      * @return the provisioningState value
@@ -173,6 +205,26 @@ public class ApplicationGatewayPathRuleInner extends SubResource {
      */
     public ApplicationGatewayPathRuleInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the ApplicationGatewayPathRuleInner object itself.
+     */
+    public ApplicationGatewayPathRuleInner withType(String type) {
+        this.type = type;
         return this;
     }
 

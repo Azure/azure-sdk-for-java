@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.SubResource;
+import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -25,12 +25,11 @@ public class ApplicationGatewayBackendHealthServer {
      * Reference of IP configuration of backend server.
      */
     @JsonProperty(value = "ipConfiguration")
-    private SubResource ipConfiguration;
+    private NetworkInterfaceIPConfigurationInner ipConfiguration;
 
     /**
-     * Health of backend server. Possible values are: 'Unknown', 'Up', 'Down',
-     * and 'Partial'. Possible values include: 'Unknown', 'Up', 'Down',
-     * 'Partial'.
+     * Health of backend server. Possible values include: 'Unknown', 'Up',
+     * 'Down', 'Partial', 'Draining'.
      */
     @JsonProperty(value = "health")
     private ApplicationGatewayBackendHealthServerHealth health;
@@ -60,7 +59,7 @@ public class ApplicationGatewayBackendHealthServer {
      *
      * @return the ipConfiguration value
      */
-    public SubResource ipConfiguration() {
+    public NetworkInterfaceIPConfigurationInner ipConfiguration() {
         return this.ipConfiguration;
     }
 
@@ -70,7 +69,7 @@ public class ApplicationGatewayBackendHealthServer {
      * @param ipConfiguration the ipConfiguration value to set
      * @return the ApplicationGatewayBackendHealthServer object itself.
      */
-    public ApplicationGatewayBackendHealthServer withIPConfiguration(SubResource ipConfiguration) {
+    public ApplicationGatewayBackendHealthServer withIpConfiguration(NetworkInterfaceIPConfigurationInner ipConfiguration) {
         this.ipConfiguration = ipConfiguration;
         return this;
     }

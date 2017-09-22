@@ -172,7 +172,7 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, imageName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ImageInner>() { }.getType());
     }
@@ -247,7 +247,7 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.beginCreateOrUpdate(resourceGroupName, imageName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageInner>>>() {
                 @Override
@@ -332,7 +332,7 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, imageName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
@@ -399,7 +399,7 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.beginDelete(resourceGroupName, imageName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatusResponseInner>>>() {
                 @Override
@@ -485,7 +485,7 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         final String expand = null;
         return service.getByResourceGroup(resourceGroupName, imageName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageInner>>>() {
@@ -567,7 +567,7 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.getByResourceGroup(resourceGroupName, imageName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageInner>>>() {
                 @Override
@@ -680,7 +680,7 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ImageInner>>>>() {
                 @Override
@@ -785,7 +785,7 @@ public class ImagesInner implements InnerSupportsGet<ImageInner>, InnerSupportsD
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ImageInner>>>>() {
                 @Override

@@ -46,6 +46,12 @@ public class ApplicationGatewayIPConfigurationInner extends SubResource {
     private String etag;
 
     /**
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
+
+    /**
      * Get the subnet value.
      *
      * @return the subnet value
@@ -122,6 +128,26 @@ public class ApplicationGatewayIPConfigurationInner extends SubResource {
      */
     public ApplicationGatewayIPConfigurationInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the ApplicationGatewayIPConfigurationInner object itself.
+     */
+    public ApplicationGatewayIPConfigurationInner withType(String type) {
+        this.type = type;
         return this;
     }
 

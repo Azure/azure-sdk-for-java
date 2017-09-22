@@ -6,7 +6,9 @@
 
 package com.microsoft.azure.management.datalake.store;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
+import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountBasic;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountUpdateParameters;
 import org.junit.Assert;
 import org.junit.Test;
@@ -52,9 +54,9 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         Assert.assertEquals(2, getResponse.getTags().size());
 
         // list all accounts and make sure there is one.
-        List<DataLakeStoreAccount> listResult = dataLakeStoreAccountManagementClient.accounts().list();
-        DataLakeStoreAccount discoveredAcct = null;
-        for (DataLakeStoreAccount acct : listResult) {
+        PagedList<DataLakeStoreAccountBasic> listResult = dataLakeStoreAccountManagementClient.accounts().list();
+        DataLakeStoreAccountBasic discoveredAcct = null;
+        for (DataLakeStoreAccountBasic acct : listResult) {
             if (acct.name().equals(adlsAcct)) {
                 discoveredAcct = acct;
                 break;
@@ -67,14 +69,11 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         Assert.assertNotNull(discoveredAcct.id());
         Assert.assertTrue(discoveredAcct.id().contains(adlsAcct));
         Assert.assertEquals(2, discoveredAcct.getTags().size());
-
-        // the properties should be empty when we do list calls
-        Assert.assertNull(discoveredAcct.defaultGroup());
 
         // list within a resource group
         listResult = dataLakeStoreAccountManagementClient.accounts().listByResourceGroup(resourceGroupName);
         discoveredAcct = null;
-        for (DataLakeStoreAccount acct : listResult) {
+        for (DataLakeStoreAccountBasic acct : listResult) {
             if (acct.name().equals(adlsAcct)) {
                 discoveredAcct = acct;
                 break;
@@ -87,9 +86,6 @@ public class DataLakeStoreAccountOperationsTests extends DataLakeStoreManagement
         Assert.assertNotNull(discoveredAcct.id());
         Assert.assertTrue(discoveredAcct.id().contains(adlsAcct));
         Assert.assertEquals(2, discoveredAcct.getTags().size());
-
-        // the properties should be empty when we do list calls
-        Assert.assertNull(discoveredAcct.defaultGroup());
 
         // Delete the ADLS account
         dataLakeStoreAccountManagementClient.accounts().delete(resourceGroupName, adlsAcct);

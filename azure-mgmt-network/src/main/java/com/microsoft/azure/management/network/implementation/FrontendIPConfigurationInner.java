@@ -76,6 +76,13 @@ public class FrontendIPConfigurationInner extends SubResource {
     private String provisioningState;
 
     /**
+     * A list of availability zones denoting the IP allocated for the resource
+     * needs to come from.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /**
      * The name of the resource that is unique within a resource group. This
      * name can be used to access the resource.
      */
@@ -221,6 +228,26 @@ public class FrontendIPConfigurationInner extends SubResource {
      */
     public FrontendIPConfigurationInner withProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
+        return this;
+    }
+
+    /**
+     * Get the zones value.
+     *
+     * @return the zones value
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones value.
+     *
+     * @param zones the zones value to set
+     * @return the FrontendIPConfigurationInner object itself.
+     */
+    public FrontendIPConfigurationInner withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

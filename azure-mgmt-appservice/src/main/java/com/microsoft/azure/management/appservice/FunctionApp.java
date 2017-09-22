@@ -30,6 +30,13 @@ public interface FunctionApp extends
     Updatable<FunctionApp.Update> {
 
     /**
+
+     * @return the entry point to deployment slot management API under the function app
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    FunctionDeploymentSlots deploymentSlots();
+
+    /**
      * @return the storage account associated with the function app
      */
     StorageAccount storageAccount();

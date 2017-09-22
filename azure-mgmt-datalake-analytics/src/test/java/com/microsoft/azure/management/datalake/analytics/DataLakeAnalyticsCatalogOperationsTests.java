@@ -25,7 +25,7 @@ import java.util.List;
 import java.util.UUID;
 
 public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsManagementTestBase {
-    // catalog names
+    // Catalog names
     protected static String dbName;
     protected static String tableName;
     protected static String tvfName;
@@ -39,7 +39,8 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) throws IOException {
         super.initializeClients(restClient, defaultSubscription, domain);
-        // define catalog items
+
+        // Define catalog items
         dbName = generateRandomResourceName("testdb1", 15);
         tableName = generateRandomResourceName("testtable1", 15);
         tvfName = generateRandomResourceName("testtvf1", 15);
@@ -62,7 +63,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
                 "        ClickedUrls     string,\r\n" +
                 "    INDEX idx1 //Name of index\r\n" +
                 "    CLUSTERED (Region ASC) //Column to cluster by\r\n" +
-                "    PARTITIONED BY BUCKETS (UserId) HASH (Region) //Column to partition by\r\n" +
+                "    PARTITIONED BY (UserId) HASH (Region) //Column to partition by\r\n" +
                 ");\r\n" +
                 "\r\n" +
                 "ALTER TABLE {0}.dbo.{1} ADD IF NOT EXISTS PARTITION (1);\r\n" +
@@ -141,7 +142,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
                 "  T(a, b);\r\n" +
                 "END;", dbName, tableName, tvfName, viewName, procName);
 
-        // create the catalog
+        // Create the catalog
         try {
             UUID mockId = UUID.fromString("b9e2ef31-a25d-4a8f-be26-f558b823376f");
             UUID idToUse;
@@ -160,13 +161,13 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         }
     }
 
-    // TODO: re-enable this test once the underlying issue is investigated and resolved by the product team.
+    // TODO: re-enable this test once the underlying issue is investigated and resolved by the product team
     //@Test
     public void canGetCatalogItems() throws Exception {
         List<USqlDatabase> dbListResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().listDatabases(jobAndCatalogAdlaName);
         Assert.assertTrue(dbListResponse.size() >= 1);
 
-        // look for the DB we created
+        // Look for the DB we created
         boolean foundCatalogElement = false;
         for (USqlDatabase db: dbListResponse) {
             if (db.name().equals(dbName)) {
@@ -207,7 +208,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
 
         Assert.assertTrue(tvfListResponse.size() >= 1);
 
-        // look for the tvf we created
+        // Look for the tvf we created
         foundCatalogElement = false;
         for (USqlTableValuedFunction tvf: tvfListResponse) {
             if (tvf.name().equals(tvfName)) {
@@ -228,7 +229,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
 
         Assert.assertTrue(viewListResponse.size() >= 1);
 
-        // look for the view we created
+        // Look for the view we created
         foundCatalogElement = false;
         for (USqlView view: viewListResponse) {
             if (view.name().equals(viewName)) {
@@ -250,7 +251,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
 
         Assert.assertTrue(procListResponse.size() >= 1);
 
-        // look for the procedure we created
+        // Look for the procedure we created
         foundCatalogElement = false;
         for (USqlProcedure proc: procListResponse) {
             if (proc.name().equals(procName)) {
@@ -291,9 +292,21 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         Assert.assertFalse(foundCatalogElement);
     }
 
-    @Test
+    // TODO: got the error: "CREATE/ALTER/DROP CREDENTIAL statements have been deprecated and removed from the language."  Details below:
+    // DETAILS: to fix this, I must use Azure Powershell cmdlets instead for such operations (https://msdn.microsoft.com/en-us/library/azure/mt621327.aspx).
+    //          will consider how to test this in the near future
+    // SPECIFIC ERROR MESSAGE:
+    // "errorId":"E_CSC_USER_CREDENTIALDDLISREMOVED",
+    // "severity":"Error",
+    // "component":"CSC",
+    // "source":"USER",
+    // "message":"CREATE/ALTER/DROP CREDENTIAL statements used in the script are removed from U-SQL language.",
+    // "details":"at token 'CREATE', line 1\r\nnear the ###:\r\n**************\r\nUSE testdb117763a;  ### CREATE CREDENTIAL testcred178426 WITH USER_NAME = \"scope@rkm4grspxa\", IDENTITY = \"a7f0a37750c5425\";",
+    // "description":"CREATE/ALTER/DROP CREDENTIAL statements have been deprecated and removed from the language.",
+    // "resolution":"Use credential management commandlets in the latest Azure Powershell.",
+    //@Test
     public void  canCreateUpdateDeleteSecretsAndCredentials() throws Exception {
-        // create the secret
+        // Create the secret
         DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters createParams = new DataLakeAnalyticsCatalogSecretCreateOrUpdateParameters();
         createParams.withPassword(secretPwd);
         createParams.withUri("https://adlasecrettest.contoso.com:443");
@@ -307,14 +320,14 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
                 jobAndCatalogAdlaName,
                 dbName, secretName,
                 createParams);
-            // should never make it here
+            // Should never make it here
             Assert.assertTrue(false);
         }
         catch(Exception e) {
-            // expected.
+            // Expected
         }
 
-        // Get the secret and ensure the response contains a date.
+        // Get the secret and ensure the response contains a date
         USqlSecret secretGetResponse = dataLakeAnalyticsCatalogManagementClient.catalogs().getSecret(
                 jobAndCatalogAdlaName, dbName, secretName);
 
@@ -326,7 +339,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
                 String.format("USE %s; CREATE CREDENTIAL %s WITH USER_NAME = \"scope@rkm4grspxa\", IDENTITY = \"%s\";",
                         dbName, credentialName, secretName);
 
-        // setup job ids for mocks
+        // Setup job ids for mocks
         UUID mockedId = UUID.fromString("fa9fa5bf-ff12-48af-8a0b-2800049ef23e");
         UUID toUse;
         if(isRecordMode()) {
@@ -343,7 +356,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
                 jobAndCatalogAdlaName, dbName);
         Assert.assertTrue(credListResponse.size() >= 1);
 
-        // look for the credential we created
+        // Look for the credential we created
         boolean foundCatalogElement = false;
         for (USqlCredential cred: credListResponse) {
             if (cred.name().equals(credentialName)) {
@@ -362,7 +375,7 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
         String credentialDropScript =
                 String.format("USE %s; DROP CREDENTIAL %s;", dbName, credentialName);
 
-        // setup job ids for mocks
+        // Setup job ids for mocks
         UUID mockedId2 = UUID.fromString("54a54b5b-6209-455e-8bd1-832a6fcff3d8");
         UUID toUse2;
         if(isRecordMode()) {
@@ -384,11 +397,11 @@ public class DataLakeAnalyticsCatalogOperationsTests extends DataLakeAnalyticsMa
             USqlSecret nothing = dataLakeAnalyticsCatalogManagementClient.catalogs().getSecret(
                     jobAndCatalogAdlaName, dbName, secretName);
 
-            // should never make it here and if we do there should not be a secret.
+            // Should never make it here and if we do there should not be a secret
             Assert.assertNull("Was able to retrieve a deleted secret", nothing);
         }
         catch (Exception e) {
-            // expected
+            // Expected
         }
 
     }

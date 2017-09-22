@@ -46,12 +46,6 @@ public class AvailabilitySetInner extends Resource {
     private List<InstanceViewStatus> statuses;
 
     /**
-     * If the availability set supports managed disks.
-     */
-    @JsonProperty(value = "properties.managed")
-    private Boolean managed;
-
-    /**
      * Sku of the availability set.
      */
     @JsonProperty(value = "sku")
@@ -124,26 +118,6 @@ public class AvailabilitySetInner extends Resource {
      */
     public List<InstanceViewStatus> statuses() {
         return this.statuses;
-    }
-
-    /**
-     * Get the managed value.
-     *
-     * @return the managed value
-     */
-    public Boolean managed() {
-        return this.managed;
-    }
-
-    /**
-     * Set the managed value.
-     *
-     * @param managed the managed value to set
-     * @return the AvailabilitySetInner object itself.
-     */
-    public AvailabilitySetInner withManaged(Boolean managed) {
-        this.managed = managed;
-        return this;
     }
 
     /**
