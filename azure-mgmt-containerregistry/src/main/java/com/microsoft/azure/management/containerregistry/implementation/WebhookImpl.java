@@ -260,6 +260,26 @@ public class WebhookImpl
     }
 
     @Override
+    public Observable<Webhook> refreshAsync() {
+        final WebhookImpl self = this;
+        final WebhooksInner webhooksInner = this.innerOperations;
+        return super.refreshAsync()
+            .flatMap(new Func1<Webhook, Observable<CallbackConfigInner>>() {
+                @Override
+                public Observable<CallbackConfigInner> call(Webhook webhook) {
+                    return webhooksInner.getCallbackConfigAsync(self.parent().resourceGroupName(), self.parent().name(), self.name());
+                }
+            }).map(new Func1<CallbackConfigInner, Webhook>() {
+                @Override
+                public Webhook call(CallbackConfigInner callbackConfigInner) {
+                    self.serviceUri = callbackConfigInner.serviceUri();
+                    self.customHeaders = callbackConfigInner.customHeaders() != null ? callbackConfigInner.customHeaders() : new HashMap<String, String>();
+                    return self;
+                }
+            });
+    }
+
+    @Override
     public Webhook apply() {
         return this.applyAsync().toBlocking().last();
     }
