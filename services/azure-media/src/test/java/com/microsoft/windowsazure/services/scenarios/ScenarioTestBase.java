@@ -17,6 +17,12 @@ package com.microsoft.windowsazure.services.scenarios;
 
 import static org.junit.Assert.fail;
 
+import java.net.MalformedURLException;
+import java.net.URI;
+import java.net.URISyntaxException;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 import org.junit.Rule;
 import org.junit.rules.MethodRule;
 import org.junit.runners.model.FrameworkMethod;
@@ -25,37 +31,45 @@ import org.junit.runners.model.Statement;
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.services.blob.BlobConfiguration;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdClientSymmetricKey;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenCredentials;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProvider;
+import com.microsoft.windowsazure.services.media.authentication.AzureEnvironments;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 
 public abstract class ScenarioTestBase {
     protected static Configuration config;
+    protected static ExecutorService executorService;
 
     @Rule
     public SetupManager setupManager = new SetupManager();
 
     protected static void initializeConfig() {
-        config = new Configuration();
-
-        overrideWithEnv(config, BlobConfiguration.ACCOUNT_NAME);
-        overrideWithEnv(config, BlobConfiguration.ACCOUNT_KEY);
-        overrideWithEnv(config, BlobConfiguration.URI);
-
-        overrideWithEnv(config, QueueConfiguration.ACCOUNT_NAME);
-        overrideWithEnv(config, QueueConfiguration.ACCOUNT_KEY);
-        overrideWithEnv(config, QueueConfiguration.URI);
-
-        overrideWithEnv(config, MediaConfiguration.URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
-        
-        config = Configuration.getInstance();
-        overrideWithEnv(config, MediaConfiguration.URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
+    	executorService = Executors.newFixedThreadPool(5);
+    	config = Configuration.getInstance();
+    	
+    	String tenant = config.getProperty("media.azuread.test.tenant").toString();
+    	String clientId = config.getProperty("media.azuread.test.clientid").toString();
+    	String clientKey = config.getProperty("media.azuread.test.clientkey").toString();
+    	String apiserver = config.getProperty("media.azuread.test.account_api_uri").toString();
+    	
+    	// Setup Azure AD Credentials (in this case using username and password)
+    	AzureAdTokenCredentials credentials = new AzureAdTokenCredentials(
+    			tenant,
+    			new AzureAdClientSymmetricKey(clientId, clientKey), 
+    			AzureEnvironments.AzureCloudEnvironment);
+    	
+    	AzureAdTokenProvider provider = null;
+    	
+		try {
+			provider = new AzureAdTokenProvider(credentials, executorService);
+		} catch (MalformedURLException e) {
+			throw new RuntimeException(e);
+		}
+    	
+    	// configure the account endpoint and the token provider for injection
+    	config.setProperty(MediaConfiguration.AZURE_AD_API_SERVER, apiserver);
+    	config.setProperty(MediaConfiguration.AZURE_AD_TOKEN_PROVIDER, provider);
 
         overrideWithEnv(config, QueueConfiguration.ACCOUNT_KEY,
                 "media.queue.account.key");
@@ -63,6 +77,12 @@ public abstract class ScenarioTestBase {
                 "media.queue.account.name");
         overrideWithEnv(config, QueueConfiguration.URI, "media.queue.uri");
     }
+    
+    protected static void cleanupConfig() {
+    	
+        // shutdown the executor service required by ADAL4J
+        executorService.shutdown();
+	}
 
     private static void overrideWithEnv(Configuration config, String key) {
         String value = System.getenv(key);
@@ -127,5 +147,5 @@ public abstract class ScenarioTestBase {
                 }
             }
         }
-    }
+    }	
 }

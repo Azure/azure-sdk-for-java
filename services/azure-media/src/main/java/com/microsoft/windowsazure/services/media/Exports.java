@@ -21,14 +21,12 @@ import javax.xml.parsers.ParserConfigurationException;
 
 import com.microsoft.windowsazure.core.Builder;
 import com.microsoft.windowsazure.core.UserAgentFilter;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenFactory;
 import com.microsoft.windowsazure.services.media.implementation.BatchMimeMultipartBodyWritter;
 import com.microsoft.windowsazure.services.media.implementation.MediaContentProvider;
 import com.microsoft.windowsazure.services.media.implementation.MediaExceptionProcessor;
 import com.microsoft.windowsazure.services.media.implementation.MediaRestProxy;
-import com.microsoft.windowsazure.services.media.implementation.OAuthContract;
 import com.microsoft.windowsazure.services.media.implementation.OAuthFilter;
-import com.microsoft.windowsazure.services.media.implementation.OAuthRestProxy;
-import com.microsoft.windowsazure.services.media.implementation.OAuthTokenManager;
 import com.microsoft.windowsazure.services.media.implementation.ODataEntityCollectionProvider;
 import com.microsoft.windowsazure.services.media.implementation.ODataEntityProvider;
 import com.microsoft.windowsazure.services.media.implementation.RedirectFilter;
@@ -44,10 +42,9 @@ public class Exports implements Builder.Exports {
      */
     @Override
     public void register(Builder.Registry registry) {
+        registry.add(new AzureAdTokenFactory()); 
         registry.add(MediaContract.class, MediaExceptionProcessor.class);
         registry.add(MediaRestProxy.class);
-        registry.add(OAuthContract.class, OAuthRestProxy.class);
-        registry.add(OAuthTokenManager.class);
         registry.add(OAuthFilter.class);
         registry.add(ResourceLocationManager.class);
         registry.add(RedirectFilter.class);

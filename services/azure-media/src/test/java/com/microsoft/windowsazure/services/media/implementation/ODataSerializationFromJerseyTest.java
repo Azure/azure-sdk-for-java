@@ -28,6 +28,7 @@ import com.microsoft.windowsazure.core.utils.DefaultDateFactory;
 import com.microsoft.windowsazure.services.media.IntegrationTestBase;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.media.MediaContract;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProvider;
 import com.microsoft.windowsazure.services.media.implementation.content.AssetType;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
@@ -54,7 +55,7 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
 
         // c.addFilter(new LoggingFilter(System.out));
         c.addFilter(new RedirectFilter(createLocationManager()));
-        c.addFilter(new OAuthFilter(createTokenManager()));
+        c.addFilter(new OAuthFilter(tokenProvider));
         c.addFilter(new VersionHeadersFilter());
 
         WebResource assetResource = c.resource("Assets");
@@ -74,25 +75,10 @@ public class ODataSerializationFromJerseyTest extends IntegrationTestBase {
         Assert.assertEquals("some external id", newAsset.getAlternateId());
     }
 
-    private OAuthContract createOAuthContract() {
-        return new OAuthRestProxy(Client.create(), new UserAgentFilter());
-    }
-
-    private OAuthTokenManager createTokenManager() throws URISyntaxException {
-        return new OAuthTokenManager(
-                createOAuthContract(),
-                new DefaultDateFactory(),
-                (String) config.getProperty(MediaConfiguration.OAUTH_URI),
-                (String) config.getProperty(MediaConfiguration.OAUTH_CLIENT_ID),
-                (String) config
-                        .getProperty(MediaConfiguration.OAUTH_CLIENT_SECRET),
-                (String) config.getProperty(MediaConfiguration.OAUTH_SCOPE));
-    }
-
     private ResourceLocationManager createLocationManager()
             throws URISyntaxException {
         return new ResourceLocationManager(
-                (String) config.getProperty(MediaConfiguration.URI));
+                (String) config.getProperty(MediaConfiguration.AZURE_AD_API_SERVER));
     }
 
     @Test

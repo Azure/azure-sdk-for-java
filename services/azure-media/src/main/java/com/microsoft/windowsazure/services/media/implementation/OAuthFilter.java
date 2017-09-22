@@ -14,10 +14,12 @@
  */
 package com.microsoft.windowsazure.services.media.implementation;
 
-import java.net.URISyntaxException;
+import javax.inject.Named;
 
 import com.microsoft.windowsazure.core.pipeline.jersey.IdempotentClientFilter;
-import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.services.media.MediaConfiguration;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdAccessToken;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProvider;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -27,40 +29,37 @@ import com.sun.jersey.api.client.ClientResponse;
  * 
  */
 public class OAuthFilter extends IdempotentClientFilter {
-    private final OAuthTokenManager oAuthTokenManager;
+	// private final OAuthTokenManager oAuthTokenManager;
+	private final AzureAdTokenProvider azureAdTokenProvider;
 
-    /**
-     * Creates an <code>OAuthFilter</code> object with specified
-     * <code>OAuthTokenManager</code> instance.
-     * 
-     * @param oAuthTokenManager
-     */
-    public OAuthFilter(OAuthTokenManager oAuthTokenManager) {
-        this.oAuthTokenManager = oAuthTokenManager;
-    }
+	/**
+	 * Creates an <code>OAuthFilter</code> object with specified
+	 * <code>AzureAdTokenProvider</code> instance.
+	 * 
+	 * @param azureAdTokenProvider
+	 */
+	public OAuthFilter(@Named(MediaConfiguration.AZURE_AD_TOKEN_PROVIDER) AzureAdTokenProvider azureAdTokenProvider) {
+		this.azureAdTokenProvider = azureAdTokenProvider;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle
-     * (com.sun.jersey.api.client.ClientRequest)
-     */@Override
-    public ClientResponse doHandle(ClientRequest clientRequest) {
-        String accessToken;
-        try {
-            accessToken = oAuthTokenManager.getAccessToken();
-        } catch (ServiceException e) {
-            // must wrap exception because of base class signature
-            throw new ClientHandlerException(e);
-        } catch (URISyntaxException e) {
-            // must wrap exception because of base class signature
-            throw new ClientHandlerException(e);
-        }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * com.microsoft.windowsazure.services.core.IdempotentClientFilter#doHandle
+	 * (com.sun.jersey.api.client.ClientRequest)
+	 */
+	@Override
+	public ClientResponse doHandle(ClientRequest clientRequest) {
+		AzureAdAccessToken accessToken = azureAdTokenProvider.acquireAccessToken();
 
-        clientRequest.getHeaders()
-                .add("Authorization", "Bearer " + accessToken);
+		if (accessToken == null) {
+			// must wrap exception because of base class signature
+			throw new ClientHandlerException("No access token available");
+		}
 
-        return this.getNext().handle(clientRequest);
-    }
+		clientRequest.getHeaders().add("Authorization", "Bearer " + accessToken.getAccessToken());
+
+		return this.getNext().handle(clientRequest);
+	}
 }

@@ -61,6 +61,7 @@ public class MediaServiceScenarioTest extends ScenarioTestBase {
         wrapper.removeAllAssetsWithPrefix(rootTestAssetPrefix);
         wrapper.removeAllAccessPoliciesWithPrefix();
         wrapper.removeAllJobWithPrefix(testJobPrefix);
+        ScenarioTestBase.cleanupConfig();
     }
 
     @Test
