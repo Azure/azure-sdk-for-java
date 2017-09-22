@@ -6,12 +6,12 @@
 
 package com.microsoft.rest;
 
-import com.microsoft.rest.v2.http.HttpClient;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.MockHttpResponse;
-import com.microsoft.rest.v2.policy.RequestPolicy;
-import com.microsoft.rest.v2.policy.UserAgentPolicy;
+import com.microsoft.rest.http.HttpClient;
+import com.microsoft.rest.http.HttpRequest;
+import com.microsoft.rest.http.HttpResponse;
+import com.microsoft.rest.http.MockHttpResponse;
+import com.microsoft.rest.policy.RequestPolicy;
+import com.microsoft.rest.policy.UserAgentPolicy;
 import org.junit.Assert;
 import org.junit.Test;
 

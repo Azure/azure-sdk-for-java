@@ -6,7 +6,7 @@
 
 package com.microsoft.rest;
 
-import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.http.HttpResponse;
 import okhttp3.ResponseBody;
 import retrofit2.Response;
 
