@@ -209,104 +209,105 @@ var mappings = {
     },
     'datalake.store.account': {
         'dir': 'azure-mgmt-datalake-store',
-        'source': 'arm-datalake-store/account/2016-11-01/swagger/account.json',
+        'source': 'specification/datalake-store/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.datalake.store',
+        'args': '--tag=package-2016-11',
         'fluent': false
     },
     'datalake.analytics.account': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/account/2016-11-01/swagger/account.json',
+        'source': 'specification/datalake-analytics/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.datalake.analytics',
+        'args': '--tag=package-2016-11',
         'fluent': false
     },
     'datalake.analytics.job': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/job/2016-11-01/swagger/job.json',
+        'source': 'specification/datalake-analytics/data-plane/readme.md',
         'package': 'com.microsoft.azure.management.datalake.analytics',
+        'args': '--tag=package-job-2016-11',
         'fluent': false
     },
     'datalake.analytics.catalog': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/catalog/2016-11-01/swagger/catalog.json',
+        'source': 'specification/datalake-analytics/data-plane/readme.md',
         'package': 'com.microsoft.azure.management.datalake.analytics',
+        'args': '--tag=package-catalog-2016-11',
         'fluent': false
     },
     'batchService': {
         'dir': 'azure-batch',
-        'source': 'batch/2016-07-01.3.1/swagger/BatchService.json',
+        'source': 'specification/batch/data-plane/readme.md',
         'package': 'com.microsoft.azure.batch.protocol',
-        'fluent': false,
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-07.3.1',
+        'fluent': false
     },
     'keyvault': {
         'dir': 'azure-keyvault',
-        'source': 'keyvault/2015-06-01/swagger/keyvault.json',
+        'source': 'specification/keyvault/resource-manager/readme.md',
         'package': 'com.microsoft.azure.keyvault',
-        'fluent': false,
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2015-06',
+        'fluent': false
     },
     'batch': {
         'dir': 'azure-mgmt-batch',
-        'source': 'arm-batch/2017-05-01/swagger/BatchManagement.json',
+        'source': 'specification/batch/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.batch',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-05'
     },
     'sql': {
         'dir': 'azure-mgmt-sql',
-        'source': 'arm-sql/compositeSql.json',
+        'source': 'specification/sql/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.sql',
-        'args': '--payload-flattening-threshold=1',
-        'modeler': 'CompositeSwagger'
+        'args': '--payload-flattening-threshold=1 --tag=package-2015-05-preview'
     },
     'cdn': {
         'dir': 'azure-mgmt-cdn',
-        'source': 'arm-cdn/2016-10-02/swagger/cdn.json',
+        'source': 'specification/cdn/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.cdn',
-        'args': '--payload-flattening-threshold=2'
+        'args': '--payload-flattening-threshold=2 --tag=package-2016-10'
     },
     'dns': {
         'dir': 'azure-mgmt-dns',
-        'source': 'arm-dns/2016-04-01/swagger/dns.json',
+        'source': 'specification/dns/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.dns',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-04'
     },
     'servicebus': {
         'dir': 'azure-mgmt-servicebus',
-        'source': 'arm-servicebus/2015-08-01/swagger/servicebus.json',
+        'source': 'specification/servicebus/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.servicebus',
-        'args': '--payload-flattening-threshold=1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2015-08'
     },
     'monitor': {
         'dir': 'azure-mgmt-monitor',
-        'source': 'arm-monitor/compositeMonitorManagementClient.json',
+        'source': 'specification/monitor/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.monitor',
-        'args': '--payload-flattening-threshold=1',
-        'modeler': 'CompositeSwagger'
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-08'
     },
     'monitor-dataplane': {
         'dir': 'azure-mgmt-monitor',
-        'source': 'monitor/compositeMonitorClient.json',
+        'source': 'specification/monitor/data-plane/readme.md',
         'package': 'com.microsoft.azure.management.monitor',
-        'args': '-FT 1 -ServiceName Monitor',
-        'modeler': 'CompositeSwagger'
+        'args': '--payload-flattening-threshold=1 --service-name=Monitor --tag=package-2016-09'
     },
     'containerregistry': {
         'dir': 'azure-mgmt-containerregistry',
-        'source': 'arm-containerregistry/2017-03-01/swagger/containerregistry.json',
+        'source': 'specification/containerregistry/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.containerregistry',
-        'args': '--payload-flattening-threshold=1',
+        'args': '--payload-flattening-threshold=1 --tag=package-2017-03'
     },
     'scheduler': {
         'dir': 'azure-mgmt-scheduler',
-        'source': 'arm-scheduler/2016-03-01/swagger/scheduler.json',
+        'source': 'specification/scheduler/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.scheduler',
-        'args': '-FT 1'
+        'args': '--payload-flattening-threshold=1 --tag=package-2016-03'
     },
     'cosmosdb': {
         'dir': 'azure-mgmt-cosmosdb',
-        'source': 'arm-documentdb/2015-04-08/swagger/documentdb.json',
+        'source': 'specification/cosmos-db/resource-manager/readme.md',
         'package': 'com.microsoft.azure.management.cosmosdb',
-        'args': '--payload-flattening-threshold=1',
+        'args': '--payload-flattening-threshold=1 --tag=package-2015-04',
     }
 };
 
