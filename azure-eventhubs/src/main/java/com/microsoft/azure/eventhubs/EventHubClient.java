@@ -1275,12 +1275,14 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      * Retries until it reaches the operation timeout, then either rethrows the last error if available or
      * returns null to indicate timeout.
      * 
-     * @return CompletableFuture which returns an EventHubRuntimeInformation on success, or null on timeout.  
+     * @return CompletableFuture which returns an EventHubRuntimeInformation on success, or null on timeout.
      */
     @Override
     public CompletableFuture<EventHubRuntimeInformation> getRuntimeInformation() {
     	CompletableFuture<EventHubRuntimeInformation> future1 = null;
     	
+    	throwIfClosed();
+
     	Map<String, String> request = new HashMap<String, String>();
         request.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_EVENTHUB_ENTITY_TYPE);
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
@@ -1317,6 +1319,8 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     public CompletableFuture<EventHubPartitionRuntimeInformation> getPartitionRuntimeInformation(String partitionId) {
     	CompletableFuture<EventHubPartitionRuntimeInformation> future1 = null;
     	
+    	throwIfClosed();
+
     	Map<String, String> request = new HashMap<String, String>();
         request.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_PARTITION_ENTITY_TYPE);
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);

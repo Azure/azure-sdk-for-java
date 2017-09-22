@@ -337,6 +337,34 @@ public class RequestResponseTest  extends ApiTestBase {
     	ehc.closeSync();
     }
     
+    @Test
+    public void testGetRuntimesClosedClient() throws EventHubException, IOException, InterruptedException, ExecutionException {
+    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+    	ehc.closeSync();
+
+    	try {
+    		ehc.getRuntimeInformation().get();
+    		Assert.fail("getRuntimeInformation did not throw as expected");
+    	}
+    	catch (IllegalStateException e) {
+    		// Success
+    	}
+    	catch (Exception e) {
+    		Assert.fail("Unexpected exception from getRuntimeInformation " + e.toString());
+    	}
+
+    	try {
+    		ehc.getPartitionRuntimeInformation("0").get();
+    		Assert.fail("getPartitionRuntimeInformation did not throw as expected");
+    	}
+    	catch (IllegalStateException e) {
+    		// Success
+    	}
+    	catch (Exception e) {
+    		Assert.fail("Unexpected exception from getPartitionRuntimeInformation " + e.toString());
+    	}
+    }
+
     @AfterClass()
     public static void cleanup() throws EventHubException {
 
