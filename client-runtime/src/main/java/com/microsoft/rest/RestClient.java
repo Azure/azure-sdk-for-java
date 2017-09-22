@@ -17,6 +17,8 @@ import com.microsoft.rest.policy.LoggingPolicy;
 import com.microsoft.rest.policy.RequestPolicy;
 import com.microsoft.rest.policy.RetryPolicy;
 import com.microsoft.rest.policy.UserAgentPolicy;
+import com.microsoft.rest.serializer.JacksonAdapter;
+import sun.plugin2.message.Serializer;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +29,6 @@ import java.util.concurrent.TimeUnit;
  * An instance of this class stores configuration for setting up specific service clients.
  */
 public final class RestClient {
-
     private final HttpClient httpClient;
     private final String baseURL;
     private final String userAgent;
@@ -126,6 +127,20 @@ public final class RestClient {
      */
     public String userAgent() {
         return userAgent;
+    }
+
+    /**
+     * @return a new initialized instance of the default HttpClient type.
+     */
+    public static HttpClient createDefaultHttpClient() {
+        return new RxNettyAdapter(Collections.<RequestPolicy.Factory>emptyList(), Collections.<ChannelHandlerConfig>emptyList());
+    }
+
+    /**
+     * @return a new initialized instance of the default SerializerAdapter type.
+     */
+    public static SerializerAdapter<?> createDefaultSerializer() {
+        return new JacksonAdapter();
     }
 
     /**

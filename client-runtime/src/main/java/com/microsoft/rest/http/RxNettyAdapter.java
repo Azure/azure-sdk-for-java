@@ -23,6 +23,7 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
@@ -48,6 +49,8 @@ public class RxNettyAdapter extends HttpClient {
         super(policyFactories);
         this.handlerConfigs = handlerConfigs;
     }
+
+    public RxNettyAdapter withProxy(Proxy proxy)
 
     private SSLEngine getSSLEngine(String host) {
         SSLContext sslCtx;

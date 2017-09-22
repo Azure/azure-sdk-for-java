@@ -7,8 +7,7 @@
 package com.microsoft.azure;
 
 import com.microsoft.rest.RestException;
-import okhttp3.ResponseBody;
-import retrofit2.Response;
+import com.microsoft.rest.http.HttpResponse;
 
 /**
  * Exception thrown for an invalid response with custom error information.
@@ -20,7 +19,7 @@ public final class CloudException extends RestException {
      * @param message the exception message or the response content if a message is not available
      * @param response the HTTP response
      */
-    public CloudException(final String message, final Response<ResponseBody> response) {
+    public CloudException(String message, HttpResponse response) {
         super(message, response);
     }
 
@@ -31,7 +30,7 @@ public final class CloudException extends RestException {
      * @param response the HTTP response
      * @param body the deserialized response body
      */
-    public CloudException(final String message, Response<ResponseBody> response, CloudError body) {
+    public CloudException(String message, HttpResponse response, CloudError body) {
         super(message, response, body);
     }
 

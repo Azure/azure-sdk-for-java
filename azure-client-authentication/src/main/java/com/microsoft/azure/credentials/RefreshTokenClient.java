@@ -9,15 +9,15 @@ package com.microsoft.azure.credentials;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.RestProxy;
+import com.microsoft.rest.annotations.BodyParam;
+import com.microsoft.rest.annotations.POST;
+import com.microsoft.rest.annotations.PathParam;
+import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.serializer.JacksonAdapter;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
-import retrofit2.http.POST;
-import retrofit2.http.Path;
 import rx.Observable;
+import rx.Single;
 
 import java.net.Proxy;
 import java.util.Date;
@@ -35,17 +35,25 @@ final class RefreshTokenClient {
         if (proxy != null) {
             builder = builder.proxy(proxy);
         }
-        service = new Retrofit.Builder()
-                .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
-                .addConverterFactory(new JacksonAdapter().converterFactory())
-                .baseUrl(baseUrl)
-                .client(builder.build())
-            .build().create(RefreshTokenService.class);
+
+        final HttpClient httpClient = RestClient.createDefaultHttpClient();
+        httpClient.
+
+
+        service = RestProxy.create(RefreshTokenService.class, baseUrl, RestClient.DEFAULT_HTTP_CLIENT, RestClient.DEFAULT_SERIALIZER);
     }
 
-    AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
+    AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResoureRefreshToken) {
+        return null;
+    }
+
+    Single<AuthenticationResult> refreshTokenAsync(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
+
+    }
+
+    AuthenticationResult refreshTokenOriginal(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResourceRefreshToken) {
         try {
-            RefreshTokenResult result = service.refreshToken(tenant, clientId, "refresh_token", resource, refreshToken)
+            RefreshTokenResponse result = service.refreshToken(tenant, clientId, "refresh_token", resource, refreshToken)
                 .toBlocking().single();
             if (result == null) {
                 return null;
@@ -64,17 +72,17 @@ final class RefreshTokenClient {
     }
 
     private interface RefreshTokenService {
-        @FormUrlEncoded
         @POST("{tenant}/oauth2/token")
-        Observable<RefreshTokenResult> refreshToken(
-            @Path("tenant") String tenant,
+        Observable<RefreshTokenResponse> refreshToken(
+            @PathParam("tenant") String tenant,
+            @BodyParam String requestBody;
             @Field("client_id") String clientId,
             @Field("grant_type") String grantType,
             @Field("resource") String resource,
             @Field("refresh_token") String refreshToken);
     }
 
-    private static class RefreshTokenResult {
+    private static class RefreshTokenResponse {
         @JsonProperty("token_type")
         private String tokenType;
         @JsonProperty("expires_in")

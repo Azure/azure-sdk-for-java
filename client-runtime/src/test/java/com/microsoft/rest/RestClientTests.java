@@ -16,7 +16,6 @@ import com.microsoft.rest.http.HttpResponse;
 import com.microsoft.rest.policy.RequestPolicy;
 import org.junit.Assert;
 import org.junit.Test;
-import retrofit2.Converter;
 import rx.Single;
 
 import java.io.IOException;
@@ -100,11 +99,6 @@ public class RestClientTests {
                 @Override
                 public Object serializer() {
                     return null;
-                }
-
-                @Override
-                public Converter.Factory converterFactory() {
-                    return retrofit2.converter.jackson.JacksonConverterFactory.create();
                 }
 
                 @Override
