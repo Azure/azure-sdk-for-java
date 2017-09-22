@@ -25,8 +25,8 @@ public class ApplicationGatewayFrontendIPConfigurationInner extends SubResource 
     private String privateIPAddress;
 
     /**
-     * PrivateIP allocation method. Possible values are: 'Static' and
-     * 'Dynamic'. Possible values include: 'Static', 'Dynamic'.
+     * PrivateIP allocation method. Possible values include: 'Static',
+     * 'Dynamic'.
      */
     @JsonProperty(value = "properties.privateIPAllocationMethod")
     private IPAllocationMethod privateIPAllocationMethod;
@@ -62,6 +62,12 @@ public class ApplicationGatewayFrontendIPConfigurationInner extends SubResource 
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
 
     /**
      * Get the privateIPAddress value.
@@ -200,6 +206,26 @@ public class ApplicationGatewayFrontendIPConfigurationInner extends SubResource 
      */
     public ApplicationGatewayFrontendIPConfigurationInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the ApplicationGatewayFrontendIPConfigurationInner object itself.
+     */
+    public ApplicationGatewayFrontendIPConfigurationInner withType(String type) {
+        this.type = type;
         return this;
     }
 

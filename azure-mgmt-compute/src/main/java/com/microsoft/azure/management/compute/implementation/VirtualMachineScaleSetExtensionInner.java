@@ -9,8 +9,8 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.management.compute.SubResourceReadOnly;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.management.compute.SubResourceReadOnly;
 
 /**
  * Describes a Virtual Machine Scale Set Extension.
@@ -22,6 +22,14 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      */
     @JsonProperty(value = "name")
     private String name;
+
+    /**
+     * If a value is provided and is different from the previous value, the
+     * extension handler will be forced to update even if the extension
+     * configuration has not changed.
+     */
+    @JsonProperty(value = "properties.forceUpdateTag")
+    private String forceUpdateTag;
 
     /**
      * The name of the extension handler publisher.
@@ -83,6 +91,26 @@ public class VirtualMachineScaleSetExtensionInner extends SubResourceReadOnly {
      */
     public VirtualMachineScaleSetExtensionInner withName(String name) {
         this.name = name;
+        return this;
+    }
+
+    /**
+     * Get the forceUpdateTag value.
+     *
+     * @return the forceUpdateTag value
+     */
+    public String forceUpdateTag() {
+        return this.forceUpdateTag;
+    }
+
+    /**
+     * Set the forceUpdateTag value.
+     *
+     * @param forceUpdateTag the forceUpdateTag value to set
+     * @return the VirtualMachineScaleSetExtensionInner object itself.
+     */
+    public VirtualMachineScaleSetExtensionInner withForceUpdateTag(String forceUpdateTag) {
+        this.forceUpdateTag = forceUpdateTag;
         return this;
     }
 

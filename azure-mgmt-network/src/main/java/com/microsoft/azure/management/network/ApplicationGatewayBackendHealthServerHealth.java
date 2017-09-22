@@ -26,6 +26,9 @@ public final class ApplicationGatewayBackendHealthServerHealth {
     /** Static value Partial for ApplicationGatewayBackendHealthServerHealth. */
     public static final ApplicationGatewayBackendHealthServerHealth PARTIAL = new ApplicationGatewayBackendHealthServerHealth("Partial");
 
+    /** Static value Draining for ApplicationGatewayBackendHealthServerHealth. */
+    public static final ApplicationGatewayBackendHealthServerHealth DRAINING = new ApplicationGatewayBackendHealthServerHealth("Draining");
+
     private String value;
 
     /**

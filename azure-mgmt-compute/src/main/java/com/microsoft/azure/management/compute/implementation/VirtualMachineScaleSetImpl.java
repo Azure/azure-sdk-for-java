@@ -49,6 +49,7 @@ import com.microsoft.azure.management.network.LoadBalancer;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.VirtualMachineScaleSetNetworkInterface;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -70,8 +71,10 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 /**
  * Implementation of VirtualMachineScaleSet.
@@ -1023,6 +1026,17 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public Set<AvailabilityZoneId> availabilityZones() {
+        Set<AvailabilityZoneId> zones = new HashSet<>();
+        if (this.inner().zones() != null) {
+            for (String zone : this.inner().zones()) {
+                zones.add(AvailabilityZoneId.fromString(zone));
+            }
+        }
+        return Collections.unmodifiableSet(zones);
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withUnmanagedDisks() {
         this.isUnmanagedDiskSelected = true;
         return this;
@@ -1907,6 +1921,19 @@ public class VirtualMachineScaleSetImpl
                 .storageProfile()
                 .dataDisks();
         dataDisks.add(unmanagedDisk.inner());
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
+        // Note: Only for virtual machine scale set, new zone can be specified, hence
+        // this option is available for both definition and update cases.
+        //
+        //
+        if (this.inner().zones() == null) {
+            this.inner().withZones(new ArrayList<String>());
+        }
+        this.inner().zones().add(zoneId.toString());
         return this;
     }
 

@@ -12,7 +12,6 @@ import com.microsoft.azure.management.sql.samples.ManageSqlDatabasesAcrossDiffer
 import com.microsoft.azure.management.sql.samples.ManageSqlFirewallRules;
 import com.microsoft.rest.RestClient;
 import org.junit.Assert;
-import org.junit.Ignore;
 import org.junit.Test;
 
 import java.util.concurrent.TimeUnit;

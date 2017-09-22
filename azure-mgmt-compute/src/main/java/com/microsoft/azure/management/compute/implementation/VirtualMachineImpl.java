@@ -56,6 +56,7 @@ import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.PublicIPAddress;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -79,8 +80,10 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.UUID;
 
 /**
@@ -149,6 +152,8 @@ class VirtualMachineImpl
     private String creatableDiagnosticsStorageAccountKey;
     // Utility to setup MSI for the virtual machine
     private VirtualMachineMsiHelper virtualMachineMsiHelper;
+    // Reference to the PublicIp creatable that is implicitly created
+    private  PublicIPAddress.DefinitionStages.WithCreate implicitPipCreatable;
 
     VirtualMachineImpl(String name,
                        VirtualMachineInner innerModel,
@@ -451,8 +456,20 @@ class VirtualMachineImpl
 
     @Override
     public VirtualMachineImpl withNewPrimaryPublicIPAddress(String leafDnsLabel) {
+        PublicIPAddress.DefinitionStages.WithGroup definitionWithGroup = this.networkManager.publicIPAddresses()
+                .define(this.namer.randomName("pip", 15))
+                .withRegion(this.regionName());
+        PublicIPAddress.DefinitionStages.WithCreate definitionAfterGroup;
+        if (this.creatableGroup != null) {
+            definitionAfterGroup = definitionWithGroup.withNewResourceGroup(this.creatableGroup);
+        } else {
+            definitionAfterGroup = definitionWithGroup.withExistingResourceGroup(this.resourceGroupName());
+        }
+        this.implicitPipCreatable = definitionAfterGroup.withLeafDomainLabel(leafDnsLabel);
+        // Create NIC with creatable PIP
+        //
         Creatable<NetworkInterface> nicCreatable = this.nicDefinitionWithCreate
-                .withNewPrimaryPublicIPAddress(leafDnsLabel);
+                .withNewPrimaryPublicIPAddress(this.implicitPipCreatable);
         this.creatablePrimaryNetworkInterfaceKey = nicCreatable.key();
         this.addCreatableDependency(nicCreatable);
         return this;
@@ -1531,6 +1548,17 @@ class VirtualMachineImpl
     }
 
     @Override
+    public Set<AvailabilityZoneId> availabilityZones() {
+        Set<AvailabilityZoneId> zones = new HashSet<>();
+        if (this.inner().zones() != null) {
+            for (String zone : this.inner().zones()) {
+                zones.add(AvailabilityZoneId.fromString(zone));
+            }
+        }
+        return Collections.unmodifiableSet(zones);
+    }
+
+    @Override
     public PowerState powerState() {
         return PowerState.fromInstanceView(this.instanceView());
     }
@@ -1605,6 +1633,9 @@ class VirtualMachineImpl
                     public Observable<? extends VirtualMachine> call(StorageAccount storageAccount) {
                         handleNetworkSettings();
                         handleAvailabilitySettings();
+                        // inner().withZones(new ArrayList<String>());
+                        // inner().zones().add("1");
+
                         return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
                                 .map(new Func1<VirtualMachineInner, VirtualMachine>() {
                                     @Override
@@ -1662,6 +1693,30 @@ class VirtualMachineImpl
                 .add(dataDisk.inner());
         this.unmanagedDataDisks
                 .add(dataDisk);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
+        if (isInCreateMode()) {
+            // Note: Zone is not updatable as of now, so this is available only during definition time.
+            // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
+            // zone or remove one. Trying to remove the last one means attempt to change resource from
+            // zonal to regional, which is not supported.
+            //
+            // though not updatable, still adding above 'isInCreateMode' check just as a reminder to
+            // take special handling of 'implicitPipCreatable' when avail zone update is supported.
+            //
+            if (this.inner().zones() == null) {
+                this.inner().withZones(new ArrayList<String>());
+            }
+            this.inner().zones().add(zoneId.toString());
+            // zone aware VM can be attached to only zone aware public IP.
+            //
+            if (this.implicitPipCreatable != null) {
+                this.implicitPipCreatable.withAvailabilityZone(zoneId);
+            }
+        }
         return this;
     }
 

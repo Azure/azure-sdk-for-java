@@ -8,9 +8,12 @@ package com.microsoft.azure.management.network;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
+
+import java.util.Set;
 
 /**
  * A client-side representation of a private frontend of an internal load balancer.
@@ -28,6 +31,12 @@ public interface LoadBalancerPrivateFrontend extends
      * Note this makes a separate call to Azure.
      */
     Subnet getSubnet();
+
+    /**
+     * @return the availability zones assigned to private frontend.
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    Set<AvailabilityZoneId> availabilityZones();
 
     /**
      * Grouping of private frontend definition stages.
@@ -55,6 +64,22 @@ public interface LoadBalancerPrivateFrontend extends
         }
 
         /**
+         * The stage of a private frontend definition allowing to specify availability zone.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone<ParentT> {
+            /**
+             * Specifies the availability zone for the private frontend.
+             *
+             * @param zoneId the zone identifier.
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithAttach<ParentT> withAvailabilityZone(AvailabilityZoneId zoneId);
+        }
+
+        /**
          * The final stage of a private frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
@@ -63,7 +88,8 @@ public interface LoadBalancerPrivateFrontend extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InDefinitionAlt<ParentT>,
-            HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
+            HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
+            DefinitionStages.WithAvailabilityZone<ParentT> {
         }
     }
 
@@ -128,6 +154,22 @@ public interface LoadBalancerPrivateFrontend extends
             WithAttach<ParentT> withExistingSubnet(Network network, String subnetName);
         }
 
+        /**
+         * The stage of a private frontend definition allowing to specify availability zone.
+         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone<ParentT> {
+            /**
+             * Specifies the availability zone for the private frontend.
+             *
+             * @param zoneId the zone identifier.
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithAttach<ParentT> withAvailabilityZone(AvailabilityZoneId zoneId);
+        }
+
         /** The final stage of an internal frontend definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the frontend definition
@@ -136,7 +178,8 @@ public interface LoadBalancerPrivateFrontend extends
          */
         interface WithAttach<ParentT> extends
             Attachable.InUpdateAlt<ParentT>,
-            HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
+            HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>>,
+            WithAvailabilityZone<ParentT> {
         }
     }
 

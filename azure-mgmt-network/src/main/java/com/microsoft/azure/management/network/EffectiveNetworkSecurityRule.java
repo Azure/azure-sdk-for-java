@@ -24,10 +24,10 @@ public class EffectiveNetworkSecurityRule {
 
     /**
      * The network protocol this rule applies to. Possible values are: 'Tcp',
-     * 'Udp', and '*'. Possible values include: 'Tcp', 'Udp', '*'.
+     * 'Udp', and 'All'. Possible values include: 'Tcp', 'Udp', 'All'.
      */
     @JsonProperty(value = "protocol")
-    private SecurityRuleProtocol protocol;
+    private EffectiveSecurityRuleProtocol protocol;
 
     /**
      * The source port or range.
@@ -42,6 +42,22 @@ public class EffectiveNetworkSecurityRule {
     private String destinationPortRange;
 
     /**
+     * The source port ranges. Expected values include a single integer between
+     * 0 and 65535, a range using '-' as seperator (e.g. 100-400), or an
+     * asterix (*).
+     */
+    @JsonProperty(value = "sourcePortRanges")
+    private List<String> sourcePortRanges;
+
+    /**
+     * The destination port ranges. Expected values include a single integer
+     * between 0 and 65535, a range using '-' as seperator (e.g. 100-400), or
+     * an asterix (*).
+     */
+    @JsonProperty(value = "destinationPortRanges")
+    private List<String> destinationPortRanges;
+
+    /**
      * The source address prefix.
      */
     @JsonProperty(value = "sourceAddressPrefix")
@@ -52,6 +68,22 @@ public class EffectiveNetworkSecurityRule {
      */
     @JsonProperty(value = "destinationAddressPrefix")
     private String destinationAddressPrefix;
+
+    /**
+     * The source address prefixes. Expected values include CIDR IP ranges,
+     * Default Tags (VirtualNetwork, AureLoadBalancer, Internet), System Tags,
+     * and the asterix (*).
+     */
+    @JsonProperty(value = "sourceAddressPrefixes")
+    private List<String> sourceAddressPrefixes;
+
+    /**
+     * The destination address prefixes. Expected values include CIDR IP
+     * ranges, Default Tags (VirtualNetwork, AureLoadBalancer, Internet),
+     * System Tags, and the asterix (*).
+     */
+    @JsonProperty(value = "destinationAddressPrefixes")
+    private List<String> destinationAddressPrefixes;
 
     /**
      * The expanded source address prefix.
@@ -110,7 +142,7 @@ public class EffectiveNetworkSecurityRule {
      *
      * @return the protocol value
      */
-    public SecurityRuleProtocol protocol() {
+    public EffectiveSecurityRuleProtocol protocol() {
         return this.protocol;
     }
 
@@ -120,7 +152,7 @@ public class EffectiveNetworkSecurityRule {
      * @param protocol the protocol value to set
      * @return the EffectiveNetworkSecurityRule object itself.
      */
-    public EffectiveNetworkSecurityRule withProtocol(SecurityRuleProtocol protocol) {
+    public EffectiveNetworkSecurityRule withProtocol(EffectiveSecurityRuleProtocol protocol) {
         this.protocol = protocol;
         return this;
     }
@@ -166,6 +198,46 @@ public class EffectiveNetworkSecurityRule {
     }
 
     /**
+     * Get the sourcePortRanges value.
+     *
+     * @return the sourcePortRanges value
+     */
+    public List<String> sourcePortRanges() {
+        return this.sourcePortRanges;
+    }
+
+    /**
+     * Set the sourcePortRanges value.
+     *
+     * @param sourcePortRanges the sourcePortRanges value to set
+     * @return the EffectiveNetworkSecurityRule object itself.
+     */
+    public EffectiveNetworkSecurityRule withSourcePortRanges(List<String> sourcePortRanges) {
+        this.sourcePortRanges = sourcePortRanges;
+        return this;
+    }
+
+    /**
+     * Get the destinationPortRanges value.
+     *
+     * @return the destinationPortRanges value
+     */
+    public List<String> destinationPortRanges() {
+        return this.destinationPortRanges;
+    }
+
+    /**
+     * Set the destinationPortRanges value.
+     *
+     * @param destinationPortRanges the destinationPortRanges value to set
+     * @return the EffectiveNetworkSecurityRule object itself.
+     */
+    public EffectiveNetworkSecurityRule withDestinationPortRanges(List<String> destinationPortRanges) {
+        this.destinationPortRanges = destinationPortRanges;
+        return this;
+    }
+
+    /**
      * Get the sourceAddressPrefix value.
      *
      * @return the sourceAddressPrefix value
@@ -202,6 +274,46 @@ public class EffectiveNetworkSecurityRule {
      */
     public EffectiveNetworkSecurityRule withDestinationAddressPrefix(String destinationAddressPrefix) {
         this.destinationAddressPrefix = destinationAddressPrefix;
+        return this;
+    }
+
+    /**
+     * Get the sourceAddressPrefixes value.
+     *
+     * @return the sourceAddressPrefixes value
+     */
+    public List<String> sourceAddressPrefixes() {
+        return this.sourceAddressPrefixes;
+    }
+
+    /**
+     * Set the sourceAddressPrefixes value.
+     *
+     * @param sourceAddressPrefixes the sourceAddressPrefixes value to set
+     * @return the EffectiveNetworkSecurityRule object itself.
+     */
+    public EffectiveNetworkSecurityRule withSourceAddressPrefixes(List<String> sourceAddressPrefixes) {
+        this.sourceAddressPrefixes = sourceAddressPrefixes;
+        return this;
+    }
+
+    /**
+     * Get the destinationAddressPrefixes value.
+     *
+     * @return the destinationAddressPrefixes value
+     */
+    public List<String> destinationAddressPrefixes() {
+        return this.destinationAddressPrefixes;
+    }
+
+    /**
+     * Set the destinationAddressPrefixes value.
+     *
+     * @param destinationAddressPrefixes the destinationAddressPrefixes value to set
+     * @return the EffectiveNetworkSecurityRule object itself.
+     */
+    public EffectiveNetworkSecurityRule withDestinationAddressPrefixes(List<String> destinationAddressPrefixes) {
+        this.destinationAddressPrefixes = destinationAddressPrefixes;
         return this;
     }
 

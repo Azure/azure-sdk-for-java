@@ -11,6 +11,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringType;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringState;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringConfig;
+import com.microsoft.azure.management.network.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -119,6 +120,12 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      */
     @JsonProperty(value = "properties.routeFilter")
     private RouteFilterInner routeFilter;
+
+    /**
+     * The IPv6 peering configuration.
+     */
+    @JsonProperty(value = "properties.ipv6PeeringConfig")
+    private Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig;
 
     /**
      * Gets name of the resource that is unique within a resource group. This
@@ -450,6 +457,26 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      */
     public ExpressRouteCircuitPeeringInner withRouteFilter(RouteFilterInner routeFilter) {
         this.routeFilter = routeFilter;
+        return this;
+    }
+
+    /**
+     * Get the ipv6PeeringConfig value.
+     *
+     * @return the ipv6PeeringConfig value
+     */
+    public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
+        return this.ipv6PeeringConfig;
+    }
+
+    /**
+     * Set the ipv6PeeringConfig value.
+     *
+     * @param ipv6PeeringConfig the ipv6PeeringConfig value to set
+     * @return the ExpressRouteCircuitPeeringInner object itself.
+     */
+    public ExpressRouteCircuitPeeringInner withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig) {
+        this.ipv6PeeringConfig = ipv6PeeringConfig;
         return this;
     }
 

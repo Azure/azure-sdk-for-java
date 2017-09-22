@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
+import com.microsoft.azure.management.network.ApplicationGatewayProbeHealthResponseMatch;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -19,8 +20,7 @@ import com.microsoft.azure.SubResource;
 @JsonFlatten
 public class ApplicationGatewayProbeInner extends SubResource {
     /**
-     * Protocol. Possible values are: 'Http' and 'Https'. Possible values
-     * include: 'Http', 'Https'.
+     * Protocol. Possible values include: 'Http', 'Https'.
      */
     @JsonProperty(value = "properties.protocol")
     private ApplicationGatewayProtocol protocol;
@@ -63,6 +63,26 @@ public class ApplicationGatewayProbeInner extends SubResource {
     private Integer unhealthyThreshold;
 
     /**
+     * Whether the host header should be picked from the backend http settings.
+     * Default value is false.
+     */
+    @JsonProperty(value = "properties.pickHostNameFromBackendHttpSettings")
+    private Boolean pickHostNameFromBackendHttpSettings;
+
+    /**
+     * Minimum number of servers that are always marked healthy. Default value
+     * is 0.
+     */
+    @JsonProperty(value = "properties.minServers")
+    private Integer minServers;
+
+    /**
+     * Criterion for classifying a healthy probe response.
+     */
+    @JsonProperty(value = "properties.match")
+    private ApplicationGatewayProbeHealthResponseMatch match;
+
+    /**
      * Provisioning state of the backend http settings resource. Possible
      * values are: 'Updating', 'Deleting', and 'Failed'.
      */
@@ -81,6 +101,12 @@ public class ApplicationGatewayProbeInner extends SubResource {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
 
     /**
      * Get the protocol value.
@@ -203,6 +229,66 @@ public class ApplicationGatewayProbeInner extends SubResource {
     }
 
     /**
+     * Get the pickHostNameFromBackendHttpSettings value.
+     *
+     * @return the pickHostNameFromBackendHttpSettings value
+     */
+    public Boolean pickHostNameFromBackendHttpSettings() {
+        return this.pickHostNameFromBackendHttpSettings;
+    }
+
+    /**
+     * Set the pickHostNameFromBackendHttpSettings value.
+     *
+     * @param pickHostNameFromBackendHttpSettings the pickHostNameFromBackendHttpSettings value to set
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withPickHostNameFromBackendHttpSettings(Boolean pickHostNameFromBackendHttpSettings) {
+        this.pickHostNameFromBackendHttpSettings = pickHostNameFromBackendHttpSettings;
+        return this;
+    }
+
+    /**
+     * Get the minServers value.
+     *
+     * @return the minServers value
+     */
+    public Integer minServers() {
+        return this.minServers;
+    }
+
+    /**
+     * Set the minServers value.
+     *
+     * @param minServers the minServers value to set
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withMinServers(Integer minServers) {
+        this.minServers = minServers;
+        return this;
+    }
+
+    /**
+     * Get the match value.
+     *
+     * @return the match value
+     */
+    public ApplicationGatewayProbeHealthResponseMatch match() {
+        return this.match;
+    }
+
+    /**
+     * Set the match value.
+     *
+     * @param match the match value to set
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withMatch(ApplicationGatewayProbeHealthResponseMatch match) {
+        this.match = match;
+        return this;
+    }
+
+    /**
      * Get the provisioningState value.
      *
      * @return the provisioningState value
@@ -259,6 +345,26 @@ public class ApplicationGatewayProbeInner extends SubResource {
      */
     public ApplicationGatewayProbeInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the ApplicationGatewayProbeInner object itself.
+     */
+    public ApplicationGatewayProbeInner withType(String type) {
+        this.type = type;
         return this;
     }
 

@@ -8,9 +8,7 @@
 
 package com.microsoft.azure.management.compute.implementation;
 
-import com.microsoft.azure.management.compute.StorageAccountTypes;
 import com.microsoft.azure.management.compute.OperatingSystemTypes;
-import com.microsoft.azure.management.compute.CreationData;
 import com.microsoft.azure.management.compute.EncryptionSettings;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -22,24 +20,10 @@ import com.microsoft.azure.management.compute.ResourceUpdate;
 @JsonFlatten
 public class DiskUpdateInner extends ResourceUpdate {
     /**
-     * the storage account type of the disk. Possible values include:
-     * 'Standard_LRS', 'Premium_LRS'.
-     */
-    @JsonProperty(value = "properties.accountType")
-    private StorageAccountTypes accountType;
-
-    /**
      * the Operating System type. Possible values include: 'Windows', 'Linux'.
      */
     @JsonProperty(value = "properties.osType")
     private OperatingSystemTypes osType;
-
-    /**
-     * disk source information. CreationData information cannot be changed
-     * after the disk has been created.
-     */
-    @JsonProperty(value = "properties.creationData")
-    private CreationData creationData;
 
     /**
      * If creationData.createOption is Empty, this field is mandatory and it
@@ -58,26 +42,6 @@ public class DiskUpdateInner extends ResourceUpdate {
     private EncryptionSettings encryptionSettings;
 
     /**
-     * Get the accountType value.
-     *
-     * @return the accountType value
-     */
-    public StorageAccountTypes accountType() {
-        return this.accountType;
-    }
-
-    /**
-     * Set the accountType value.
-     *
-     * @param accountType the accountType value to set
-     * @return the DiskUpdateInner object itself.
-     */
-    public DiskUpdateInner withAccountType(StorageAccountTypes accountType) {
-        this.accountType = accountType;
-        return this;
-    }
-
-    /**
      * Get the osType value.
      *
      * @return the osType value
@@ -94,26 +58,6 @@ public class DiskUpdateInner extends ResourceUpdate {
      */
     public DiskUpdateInner withOsType(OperatingSystemTypes osType) {
         this.osType = osType;
-        return this;
-    }
-
-    /**
-     * Get the creationData value.
-     *
-     * @return the creationData value
-     */
-    public CreationData creationData() {
-        return this.creationData;
-    }
-
-    /**
-     * Set the creationData value.
-     *
-     * @param creationData the creationData value to set
-     * @return the DiskUpdateInner object itself.
-     */
-    public DiskUpdateInner withCreationData(CreationData creationData) {
-        this.creationData = creationData;
         return this;
     }
 

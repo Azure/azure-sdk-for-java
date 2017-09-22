@@ -36,7 +36,6 @@ public class ApplicationGatewayInner extends Resource {
 
     /**
      * Operational state of the application gateway resource. Possible values
-     * are: 'Stopped', 'Started', 'Running', and 'Stopping'. Possible values
      * include: 'Stopped', 'Starting', 'Running', 'Stopping'.
      */
     @JsonProperty(value = "properties.operationalState", access = JsonProperty.Access.WRITE_ONLY)
@@ -107,6 +106,12 @@ public class ApplicationGatewayInner extends Resource {
      */
     @JsonProperty(value = "properties.requestRoutingRules")
     private List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules;
+
+    /**
+     * Redirect configurations of the application gateway resource.
+     */
+    @JsonProperty(value = "properties.redirectConfigurations")
+    private List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations;
 
     /**
      * Web application firewall configuration.
@@ -399,6 +404,26 @@ public class ApplicationGatewayInner extends Resource {
      */
     public ApplicationGatewayInner withRequestRoutingRules(List<ApplicationGatewayRequestRoutingRuleInner> requestRoutingRules) {
         this.requestRoutingRules = requestRoutingRules;
+        return this;
+    }
+
+    /**
+     * Get the redirectConfigurations value.
+     *
+     * @return the redirectConfigurations value
+     */
+    public List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations() {
+        return this.redirectConfigurations;
+    }
+
+    /**
+     * Set the redirectConfigurations value.
+     *
+     * @param redirectConfigurations the redirectConfigurations value to set
+     * @return the ApplicationGatewayInner object itself.
+     */
+    public ApplicationGatewayInner withRedirectConfigurations(List<ApplicationGatewayRedirectConfigurationInner> redirectConfigurations) {
+        this.redirectConfigurations = redirectConfigurations;
         return this;
     }
 

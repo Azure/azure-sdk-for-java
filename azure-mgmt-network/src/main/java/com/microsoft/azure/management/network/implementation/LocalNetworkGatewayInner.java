@@ -22,7 +22,7 @@ public class LocalNetworkGatewayInner extends Resource {
     /**
      * Local network site address space.
      */
-    @JsonProperty(value = "properties.localNetworkAddressSpace", required = true)
+    @JsonProperty(value = "properties.localNetworkAddressSpace")
     private AddressSpace localNetworkAddressSpace;
 
     /**

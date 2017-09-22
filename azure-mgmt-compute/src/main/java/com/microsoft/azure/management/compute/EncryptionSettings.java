@@ -25,13 +25,13 @@ public class EncryptionSettings {
     private Boolean enabled;
 
     /**
-     * Key Vault Secret URL and vault ID of the disk encryption key.
+     * Key Vault Secret Url and vault id of the disk encryption key.
      */
     @JsonProperty(value = "diskEncryptionKey")
     private KeyVaultAndSecretReference diskEncryptionKey;
 
     /**
-     * Key Vault Key URL and vault ID of the key encryption key.
+     * Key Vault Key Url and vault id of the key encryption key.
      */
     @JsonProperty(value = "keyEncryptionKey")
     private KeyVaultAndKeyReference keyEncryptionKey;
