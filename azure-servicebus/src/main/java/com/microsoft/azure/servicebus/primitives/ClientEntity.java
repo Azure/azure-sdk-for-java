@@ -127,7 +127,7 @@ public abstract class ClientEntity
 	{
 		if (this.getIsClosingOrClosed())
 		{
-			throw new IllegalStateException(String.format(Locale.US, "Operation not allowed after the %s instance is Closed.", this.getClass().getName()), cause);
+			throw new IllegalStateException(String.format(Locale.US, "Operation not allowed after the %s instance is closed.", this.getClass().getName()), cause);
 		}
 	}
 	

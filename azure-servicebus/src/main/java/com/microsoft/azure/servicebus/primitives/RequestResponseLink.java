@@ -203,16 +203,50 @@ class RequestResponseLink extends ClientEntity{
 	{
 	    TRACE_LOGGER.info("RequestResponseLink - recreating internal send and receive links to {}", this.linkPath);
 		CompletableFuture<Void> closeFuture = CompletableFuture.allOf(this.amqpSender.closeAsync(), this.amqpReceiver.closeAsync());
-		return closeFuture.handleAsync((closeResult, closeEx) -> 
+		CompletableFuture<Void> recreateInternalLinksFuture = closeFuture.handleAsync((closeResult, closeEx) -> 
 		{
 		    // Ignore exception in closing
 		    // Create new internal sender and receiver objects, as old ones are closed
 		    this.amqpSender = new InternalSender(this.getClientId() + ":internalSender", this, this.amqpSender);
 	        this.amqpReceiver = new InternalReceiver(this.getClientId() + ":interalReceiver", this);
 		    
-		    this.createInternalLinks();
+		    try
+	        {
+	            this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+	            {
+	                @Override
+	                public void onEvent()
+	                {
+	                    RequestResponseLink.this.createInternalLinks();
+	                }
+	            });
+	        }
+	        catch (IOException ioException)
+	        {
+	            // throwing RuntimeException to work around the inability to throw a checked exception from within lambdas
+	            throw new IllegalStateException("Scheduling action on reactor thread failed.", ioException);
+	        }
 		    return null;
 		}).thenCompose((v) -> CompletableFuture.allOf(this.amqpSender.openFuture, this.amqpReceiver.openFuture));
+		
+		Timer.schedule(
+            new Runnable()
+            {
+                public void run()
+                {
+                    if (!recreateInternalLinksFuture.isDone())
+                    {
+                        Exception operationTimedout = new TimeoutException(
+                                String.format(Locale.US, "Recreating internal links of requestresponselink to %s.", RequestResponseLink.this.linkPath));
+                        TRACE_LOGGER.error("Recreating internal links of requestresponselink timed out.", operationTimedout);
+                        recreateInternalLinksFuture.completeExceptionally(operationTimedout);
+                    }
+                }
+            }
+            , this.underlyingFactory.getOperationTimeout()
+            , TimerType.OneTimeRun);
+		
+		return recreateInternalLinksFuture;
 	}
 	
 	private void completeAllPendingRequestsWithException(Exception exception)
@@ -242,7 +276,7 @@ class RequestResponseLink extends ClientEntity{
                     {
                         if(recreationEx != null)
                         {
-                            this.closeAsync();
+                            TRACE_LOGGER.error("Recreating internal links of reqestresponselink '{}' failed.", this.linkPath, ExceptionUtil.extractAsyncCompletionCause(recreationEx));
                         }
                         
                         synchronized (this.recreateLinksLock)
@@ -800,7 +834,7 @@ class RequestResponseLink extends ClientEntity{
 		    
 		    try
             {
-                while(this.sendLink.getLocalState() == EndpointState.ACTIVE && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.availableCredit.get() > 0)
+                while(this.sendLink != null && this.sendLink.getLocalState() == EndpointState.ACTIVE && this.sendLink.getRemoteState() == EndpointState.ACTIVE && this.availableCredit.get() > 0)
                 {
                     Message requestToBeSent = null;
                     synchronized(pendingSendsSyncLock)
