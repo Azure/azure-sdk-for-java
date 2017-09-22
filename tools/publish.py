@@ -37,10 +37,6 @@ def main(argv):
         pkg_name = parts[len(parts) - 2]
         if len(parts) == len(folder.rsplit("\\")) + 1:
             # root folder
-            shutil.copyfile(i, "%s/%s-%s.pom" % (working, "azure-bom", version))
-            pkg_name = "azure-bom"
-        elif pkg_name == "azure":
-            # parent folder
             shutil.copyfile(i, "%s/%s-%s.pom" % (working, "azure-parent", version))
             pkg_name = "azure-parent"
         else:
@@ -56,18 +52,6 @@ def main(argv):
     if len(to_pub) == 0:
         print "No compiled package matches the regex. Exiting."
         exit(1)
-    for pkg in to_pub:
-        cmd = "mvn gpg:sign-and-deploy-file"
-        cmd += " -Durl=https://oss.sonatype.org/service/local/staging/deploy/maven2/"
-        cmd += " -DrepositoryId=sonatype-nexus-staging -DpomFile=%s-%s.pom" % (pkg, version)
-        assert isinstance(pkg, str)
-        if pkg.endswith("azure-parent") or pkg.endswith("azure-bom"):
-            cmd += " -Dfile=%s-%s.pom -Dgpg.passphrase=%s" % (pkg, version, argv[2])
-            os.system(cmd)
-        else:
-            os.system(cmd + " -Dfile=%s-%s.jar -Dgpg.passphrase=%s" % (pkg, version, argv[2]))
-            os.system(cmd + " -Dfile=%s-%s-javadoc.jar -Dclassifier=javadoc -Dgpg.passphrase=%s" % (pkg, version, argv[2]))
-            os.system(cmd + " -Dfile=%s-%s-sources.jar -Dclassifier=sources -Dgpg.passphrase=%s" % (pkg, version, argv[2]))
     print "Finished."
 
 

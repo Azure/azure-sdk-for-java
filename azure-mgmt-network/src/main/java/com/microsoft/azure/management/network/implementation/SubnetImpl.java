@@ -205,4 +205,26 @@ class SubnetImpl
         ipAddresses.addAll(result.availableIPAddresses());
         return ipAddresses;
     }
+
+    @Override
+    public Set<String> listAvailablePrivateIPAddresses() {
+        Set<String> ipAddresses = new TreeSet<>();
+
+        String cidr = this.addressPrefix();
+        if (cidr == null) {
+            return ipAddresses; // Should never happen, but just in case
+        }
+        String takenIPAddress = cidr.split("/")[0];
+
+        IPAddressAvailabilityResultInner result = this.parent().manager().networks().inner().checkIPAddressAvailability(
+                this.parent().resourceGroupName(),
+                this.parent().name(),
+                takenIPAddress);
+        if (result == null) {
+            return ipAddresses;
+        }
+
+        ipAddresses.addAll(result.availableIPAddresses());
+        return ipAddresses;
+    }
 }

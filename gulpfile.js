@@ -246,25 +246,25 @@ var mappings = {
     },
     'datalake.store.account': {
         'dir': 'azure-mgmt-datalake-store',
-        'source': 'arm-datalake-store/account/2016-11-01/swagger/account.json',
+        'source': 'specification/datalake-store/resource-manager/Microsoft.DataLakeStore/2016-11-01/account.json',
         'package': 'com.microsoft.azure.management.datalake.store',
         'fluent': false
     },
     'datalake.analytics.account': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/account/2016-11-01/swagger/account.json',
+        'source': 'specification/datalake-analytics/resource-manager/Microsoft.DataLakeAnalytics/2016-11-01/account.json',
         'package': 'com.microsoft.azure.management.datalake.analytics',
         'fluent': false
     },
     'datalake.analytics.job': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/job/2016-11-01/swagger/job.json',
+        'source': 'specification/datalake-analytics/data-plane/Microsoft.DataLakeAnalytics/2016-11-01/job.json',
         'package': 'com.microsoft.azure.management.datalake.analytics',
         'fluent': false
     },
     'datalake.analytics.catalog': {
         'dir': 'azure-mgmt-datalake-analytics',
-        'source': 'arm-datalake-analytics/catalog/2016-11-01/swagger/catalog.json',
+        'source': 'specification/datalake-analytics/data-plane/Microsoft.DataLakeAnalytics/2016-11-01/catalog.json',
         'package': 'com.microsoft.azure.management.datalake.analytics',
         'fluent': false
     },
@@ -332,6 +332,12 @@ var mappings = {
         'source': 'arm-containerregistry/2017-03-01/swagger/containerregistry.json',
         'package': 'com.microsoft.azure.management.containerregistry',
         'args': '--payload-flattening-threshold=1',
+    },
+    'containerinstance': {
+        'dir': 'azure-mgmt-containerinstance',
+        'source': 'arm-containerinstance/2017-08-01-preview/swagger/ContainerInstance.json',
+        'package': 'com.microsoft.azure.management.containerinstance',
+        'args': '-FT 1',
     },
     'scheduler': {
         'dir': 'azure-mgmt-scheduler',

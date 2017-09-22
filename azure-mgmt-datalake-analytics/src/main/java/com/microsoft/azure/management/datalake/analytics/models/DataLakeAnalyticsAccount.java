@@ -8,8 +8,9 @@
 
 package com.microsoft.azure.management.datalake.analytics.models;
 
-import java.util.List;
 import org.joda.time.DateTime;
+import java.util.UUID;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -34,6 +35,30 @@ public class DataLakeAnalyticsAccount extends Resource {
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private DataLakeAnalyticsAccountState state;
+
+    /**
+     * the account creation time.
+     */
+    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime creationTime;
+
+    /**
+     * the account last modified time.
+     */
+    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastModifiedTime;
+
+    /**
+     * the full CName endpoint for this account.
+     */
+    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String endpoint;
+
+    /**
+     * The unique identifier associated with this Data Lake Analytics account.
+     */
+    @JsonProperty(value = "properties.accountId", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID accountId;
 
     /**
      * the default data lake storage account associated with this Data Lake
@@ -87,24 +112,6 @@ public class DataLakeAnalyticsAccount extends Resource {
      */
     @JsonProperty(value = "properties.storageAccounts")
     private List<StorageAccountInfo> storageAccounts;
-
-    /**
-     * the account creation time.
-     */
-    @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime creationTime;
-
-    /**
-     * the account last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime lastModifiedTime;
-
-    /**
-     * the full CName endpoint for this account.
-     */
-    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String endpoint;
 
     /**
      * the commitment tier for the next month. Possible values include:
@@ -183,6 +190,42 @@ public class DataLakeAnalyticsAccount extends Resource {
      */
     public DataLakeAnalyticsAccountState state() {
         return this.state;
+    }
+
+    /**
+     * Get the creationTime value.
+     *
+     * @return the creationTime value
+     */
+    public DateTime creationTime() {
+        return this.creationTime;
+    }
+
+    /**
+     * Get the lastModifiedTime value.
+     *
+     * @return the lastModifiedTime value
+     */
+    public DateTime lastModifiedTime() {
+        return this.lastModifiedTime;
+    }
+
+    /**
+     * Get the endpoint value.
+     *
+     * @return the endpoint value
+     */
+    public String endpoint() {
+        return this.endpoint;
+    }
+
+    /**
+     * Get the accountId value.
+     *
+     * @return the accountId value
+     */
+    public UUID accountId() {
+        return this.accountId;
     }
 
     /**
@@ -321,33 +364,6 @@ public class DataLakeAnalyticsAccount extends Resource {
     public DataLakeAnalyticsAccount withStorageAccounts(List<StorageAccountInfo> storageAccounts) {
         this.storageAccounts = storageAccounts;
         return this;
-    }
-
-    /**
-     * Get the creationTime value.
-     *
-     * @return the creationTime value
-     */
-    public DateTime creationTime() {
-        return this.creationTime;
-    }
-
-    /**
-     * Get the lastModifiedTime value.
-     *
-     * @return the lastModifiedTime value
-     */
-    public DateTime lastModifiedTime() {
-        return this.lastModifiedTime;
-    }
-
-    /**
-     * Get the endpoint value.
-     *
-     * @return the endpoint value
-     */
-    public String endpoint() {
-        return this.endpoint;
     }
 
     /**

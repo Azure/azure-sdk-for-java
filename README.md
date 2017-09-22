@@ -2,13 +2,13 @@
 
 # Azure Management Libraries for Java
 
-This README is based on the released stable version (1.1.0). If you are looking for other releases, see [More Information](#more-information).
+This README is based on the released stable version (1.2.0). If you are looking for other releases, see [More Information](#more-information).
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources. If you are looking for Java client libraries for Azure services, please see [Azure libraries for Java](https://docs.microsoft.com/en-us/java/azure/java-sdk-azure-install) - this page will be maintained regularly to ensure that it is up to date.
 
 Note: This page will be maintained regularly to ensure that it is up to date.
 
-## Feature Availability and Road Map as of Version 1.1.0 ##
+## Feature Availability and Road Map as of Version 1.2.0 ##
 
 <table>
   <tr>
@@ -21,13 +21,13 @@ Note: This page will be maintained regularly to ensure that it is up to date.
     <td>Compute</td>
     <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
     <td valign="top">Azure container service and registry</td>
-    <td valign="top"></td>
+    <td valign="top">More Azure container registry features</td>
   </tr>
   <tr>
     <td>Storage</td>
     <td>Storage accounts</td>
-    <td></td>
     <td>Encryption</td>
+    <td></td>
   </tr>
   <tr>
     <td>SQL Database</td>
@@ -38,18 +38,18 @@ Note: This page will be maintained regularly to ensure that it is up to date.
   <tr>
     <td>Networking</td>
     <td>Virtual networks<br>Network interfaces<br>IP addresses<br>Routing table<br>Network security groups<br>Application gateways<br>DNS<br>Traffic managers</td>
-    <td valign="top">Load balancers</td>
-    <td valign="top">VPN<br>Network watchers<br>More application gateway features</td>
+    <td valign="top">Load balancers<br>Network watchers</td>
+    <td valign="top">VPN<br>More application gateway features</td>
   </tr>
   <tr>
     <td>More services</td>
     <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
-    <td valign="top">Web apps<br>Function Apps<br>Service bus<br>Graph RBAC<br>ComsosDB</td>
-    <td valign="top">Monitor<br>Scheduler<br>Functions management<br>Search<br>More Graph RBAC features</td>
+    <td valign="top">Web apps<br>Function Apps<br>Service bus<br>Graph RBAC<br>Cosmos DB<br>Search</td>
+    <td valign="top">Monitor<br>Azure container instances<br>Data Lake</td>
   </tr>
   <tr>
     <td>Fundamentals</td>
-    <td>Authentication - core<br>Async methods</td>
+    <td>Authentication - core<br>Async methods<br>Managed Service Identity</td>
     <td></td>
     <td valign="top"></td>
   </tr>
@@ -180,12 +180,12 @@ ApplicationGateway applicationGateway = azure.applicationGateways().define("myFi
         .fromPublicFrontend()
         .fromFrontendHttpPort(80)
         .toBackendHttpPort(8080)
-        .toBackendIpAddress("11.1.1.1")
-        .toBackendIpAddress("11.1.1.2")
-        .toBackendIpAddress("11.1.1.3")
-        .toBackendIpAddress("11.1.1.4")
+        .toBackendIPAddress("11.1.1.1")
+        .toBackendIPAddress("11.1.1.2")
+        .toBackendIPAddress("11.1.1.3")
+        .toBackendIPAddress("11.1.1.4")
         .attach()
-    .withExistingPublicIpAddress(publicIpAddress)
+    .withExistingPublicIPAddress(publicIpAddress)
     .create();
 ```
 
@@ -248,7 +248,8 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-VHD">Create virtual machine by importing a specialized operating system disk VHD</li>
 <li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-snapshot">Create virtual machine using specialized VHD from snapshot</li>
 <li><a href="https://github.com/Azure-Samples/managed-disk-java-convert-existing-virtual-machines-to-use-managed-disks">Convert virtual machines to use managed disks</li>
-<li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machine-with-unmanaged-disks">Manage virtual machine with unmanaged disks</li></ul></td>
+<li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machine-with-unmanaged-disks">Manage virtual machine with unmanaged disks</li>
+<li><a href="https://github.com/Azure-Samples/aad-java-manage-resources-from-vm-with-msi">Manage Azure resources from a virtual machine with managed service identity (MSI)</a></li></ul></td>
   </tr>
   <tr>
     <td>Virtual Machines - parallel execution</td>
@@ -270,7 +271,7 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
     <td>Active Directory</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/aad-java-manage-service-principals">Manage service principals using Java</a></li>
-<li><a href="https://github.com/Azure-Samples/aad-java-browse-graph-and-manage-roles">Browse graph (users, groups and members) and managing roles</a></li>
+<li><a href="https://github.com/Azure-Samples/aad-java-manage-users-groups-and-roles">Manage users and groups and manage their roles</a></li>
 <li><a href="https://github.com/Azure-Samples/aad-java-manage-passwords">Manage passwords</li>
 </ul></td>
   </tr>
@@ -305,6 +306,8 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/network-java-manage-ip-address">Manage IP address</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-internet-facing-load-balancers">Manage Internet facing load balancers</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-internal-load-balancers">Manage internal load balancers</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-use-new-watcher">Use net watcher</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-create-simple-internet-facing-load-balancer">Create simple Internet facing load balancer</a></li>
 </ul>
 </td>
   </tr>
@@ -437,20 +440,28 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/batch-java-manage-batch-accounts">Manage batch accounts</a></li>
 </ul></td>
   </tr>
+
+  <tr>
+    <td>Search</td>
+    <td><ul style="list-style-type:circle">
+<li><a href="https://github.com/Azure-Samples/search-java-manage-search-service">Manage Azure search</a></li>
+</ul></td>
+  </tr>
+
 </table>
 
 # Download
 
 
-**1.1.0**
+**1.2.0**
 
-If you are using released builds from 1.1.0, add the following to your POM file:
+If you are using released builds from 1.2.0, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.1.0</version>
+    <version>1.2.1</version>
 </dependency>
 ```
 
@@ -477,22 +488,22 @@ If you are using snapshots builds for this repo, add the following repository an
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.1.3-SNAPSHOT</version>
+    <version>1.2.2-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-client-runtime</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-client-authentication</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.rest</groupId>
     <artifactId>client-runtime</artifactId>
-    <version>1.0.5-SNAPSHOT</version>
+    <version>1.1.1-SNAPSHOT</version>
 </dependency>
 ```
 
@@ -505,7 +516,7 @@ If you are using snapshots builds for this repo, add the following repository an
 
 ## Help
 
-If you are migrating your code to 1.1.0, you can use these notes for [preparing your code for 1.1.0 from 1.0.0](./notes/prepare-for-1.1.0.md).
+If you are migrating your code to 1.2.0, you can use these notes for [preparing your code for 1.2.0 from 1.1.0](./notes/prepare-for-1.2.0.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
@@ -528,6 +539,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.1.0       | [1.1.0](https://github.com/Azure/azure-sdk-for-java/tree/v1.1.0)               | Tagged release for 1.1.0 version of Azure management libraries |
 | 1.0.0       | [1.0.0](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0)               | Tagged release for 1.0.0 version of Azure management libraries |
 | 1.0.0-beta5       | [1.0.0-beta5](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta5)               | Tagged release for 1.0.0-beta5 version of Azure management libraries |
 | 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |

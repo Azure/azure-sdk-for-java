@@ -18,16 +18,16 @@ import com.microsoft.rest.serializer.JsonFlatten;
 @JsonFlatten
 public class StorageContainer {
     /**
-     * the name of the blob container.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /**
      * the unique identifier of the blob container.
      */
     @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
     private String id;
+
+    /**
+     * the name of the blob container.
+     */
+    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
+    private String name;
 
     /**
      * the type of the blob container.
@@ -42,21 +42,21 @@ public class StorageContainer {
     private DateTime lastModifiedTime;
 
     /**
-     * Get the name value.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
      * Get the id value.
      *
      * @return the id value
      */
     public String id() {
         return this.id;
+    }
+
+    /**
+     * Get the name value.
+     *
+     * @return the name value
+     */
+    public String name() {
+        return this.name;
     }
 
     /**
