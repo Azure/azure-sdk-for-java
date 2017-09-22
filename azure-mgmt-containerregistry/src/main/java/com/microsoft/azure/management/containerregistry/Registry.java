@@ -111,52 +111,52 @@ public interface Registry extends
     Observable<RegistryUsage> listQuotaUsagesAsync();
 
     /**
-     * Gets the properties of the specified web hook.
+     * Gets the properties of the specified webhook.
      *
-     * @param webhookName the name of the web hook
+     * @param webhookName the name of the webhook
      * @return the Webhook object if successful
      */
     @Beta(SinceVersion.V1_3_0)
     Webhook getWebhook(String webhookName);
 
     /**
-     * Gets the properties of the specified web hook.
+     * Gets the properties of the specified webhook.
      *
-     * @param webhookName the name of the web hook
+     * @param webhookName the name of the webhook
      * @return a representation of the future computation of this call, returning the Webhook object
      */
     @Beta(SinceVersion.V1_3_0)
     Observable<Webhook> getWebhookAsync(String webhookName);
 
     /**
-     * Deletes a web hook from the container registry.
+     * Deletes a webhook from the container registry.
      *
-     * @param webhookName the name of the web hook
+     * @param webhookName the name of the webhook
      */
     @Beta(SinceVersion.V1_3_0)
     void deleteWebhook(String webhookName);
 
     /**
-     * Deletes a web hook from the container registry.
+     * Deletes a webhook from the container registry.
      *
-     * @param webhookName the name of the web hook
+     * @param webhookName the name of the webhook
      * @return a representation of the future computation of this call
      */
     @Beta(SinceVersion.V1_3_0)
     Completable deleteWebhookAsync(String webhookName);
 
     /**
-     * Lists all the web hooks for the container registry.
+     * Lists all the webhooks for the container registry.
      *
-     * @return the list of all the web hooks for the specified container registry
+     * @return the list of all the webhooks for the specified container registry
      */
     @Beta(SinceVersion.V1_3_0)
     PagedList<Webhook> listWebhooks();
 
     /**
-     * Lists all the web hooks for the container registry.
+     * Lists all the webhooks for the container registry.
      *
-     * @return a representation of the future computation of this call, returning the list of all the web hooks for the specified container registry
+     * @return a representation of the future computation of this call, returning the list of all the webhooks for the specified container registry
      */
     @Beta(SinceVersion.V1_3_0)
     Observable<Webhook> listWebhooksAsync();
@@ -246,18 +246,19 @@ public interface Registry extends
              * <p>
              * If specified, the storage account must be in the same physical location as the container registry.
              *
-             * @param storageAccountName the name of the storage account; must be in the same physical location as the container registry.
+             * @param resourceGroupName the name of resource group for the the storage account
+             * @param storageAccountName the name of the storage account; must be in the same physical location as the container registry
              * @return the next stage
              */
             @Beta(SinceVersion.V1_3_0)
-            WithCreate withExistingStorageAccountName(String storageAccountName);
+            WithCreate withExistingStorageAccountName(String resourceGroupName, String storageAccountName);
 
             /**
              * The parameters of a storage account for the container registry.
              * <p>
              * If specified, the storage account must be in the same physical location as the container registry.
              *
-             * @param id the resource id of the storage account; must be in the same physical location as the container registry.
+             * @param id the resource id of the storage account; must be in the same physical location as the container registry
              * @return the next stage
              */
             @Beta(SinceVersion.V1_3_0)
@@ -297,13 +298,27 @@ public interface Registry extends
         }
 
         /**
+         * The stage of the container registry definition allowing to add or remove a webhook.
+         */
+        interface WithWebhook {
+            /**
+             * Begins the definition of a new webhook to be added to this container registry.
+             *
+             * @param name the name of the new webhook
+             * @return the first stage of the new webhook definition
+             */
+            Webhook.DefinitionStages.Blank<WithCreate> defineWebhook(String name);
+        }
+
+        /**
          * The stage of the definition which contains all the minimum required inputs for the resource to be created,
          *  but also allows for any other optional settings to be specified.
          */
         interface WithCreate extends
                 Creatable<Registry>,
-                Resource.DefinitionWithTags<WithCreate>,
-                WithAdminUserEnabled {
+                WithAdminUserEnabled,
+                WithWebhook,
+                Resource.DefinitionWithTags<WithCreate> {
         }
     }
 
@@ -314,7 +329,8 @@ public interface Registry extends
             Resource.UpdateWithTags<Update>,
             Appliable<Registry>,
             UpdateStages.WithAdminUserEnabled,
-            UpdateStages.WithSku {
+            UpdateStages.WithSku,
+            UpdateStages.WithWebhook {
     }
 
     /**
@@ -362,6 +378,32 @@ public interface Registry extends
              */
             @Beta(SinceVersion.V1_3_0)
             Update withPremiumSku();
+        }
+
+        /**
+         * The stage of the container registry update allowing to add or remove a webhook.
+         */
+        interface WithWebhook {
+            /**
+             * Begins the definition of a new webhook to be added to this container registry.
+             * @param name the name of the new webhook
+             * @return the first stage of the new webhook definition
+             */
+            Webhook.UpdateDefinitionStages.Blank<Update> withNewWebhook(String name);
+
+            /**
+             * Removes a webhook from the container registry.
+             * @param name name of the webhook to remove
+             * @return the next stage of the container registry update
+             */
+            Update withoutWebhook(String name);
+
+            /**
+             * Begins the description of an update of an existing webhook of this container registry.
+             * @param name the name of an existing webhook
+             * @return the first stage of the webhook update description
+             */
+            Webhook.UpdateResourceStages.Blank<Update> updateWebhook(String name);
         }
     }
 

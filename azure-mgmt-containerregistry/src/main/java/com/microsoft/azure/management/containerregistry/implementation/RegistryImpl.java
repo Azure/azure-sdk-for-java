@@ -29,18 +29,18 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.Collection;
+import java.util.List;
 
 /**
  * Implementation for Registry and its create and update interfaces.
  */
 @LangDefinition
 public class RegistryImpl
-        extends
-        GroupableResourceImpl<
-                        Registry,
-                        RegistryInner,
-                        RegistryImpl,
-                        ContainerRegistryManager>
+        extends GroupableResourceImpl<
+                                    Registry,
+                                    RegistryInner,
+                                    RegistryImpl,
+                                    ContainerRegistryManager>
         implements Registry,
         Registry.Definition,
         Registry.Update {
@@ -52,7 +52,7 @@ public class RegistryImpl
     private String existingStorageAccountResourceGroupName;
     private String storageAccountId;
     private String creatableStorageAccountKey;
-    private boolean hasManagedStorageAccount;
+    private WebhooksImpl webhooks;
 
     protected RegistryImpl(String name, RegistryInner innerObject, ContainerRegistryManager manager,
                            final StorageManager storageManager) {
@@ -60,8 +60,9 @@ public class RegistryImpl
         this.storageManager = storageManager;
 
         this.existingStorageAccountName = null;
+        this.existingStorageAccountResourceGroupName = null;
         this.storageAccountId = null;
-        this.hasManagedStorageAccount = true;
+        this.webhooks = new WebhooksImpl(this, "Webhook");
     }
 
     @Override
@@ -122,6 +123,17 @@ public class RegistryImpl
                         self.setInner(containerServiceInner);
                         return self;
                     }
+                }).flatMap(new Func1<Registry, Observable<? extends Registry>>() {
+                    @Override
+                    public Observable<? extends Registry> call(Registry registry) {
+                        return self.webhooks.commitAndGetAllAsync()
+                            .map(new Func1<List<WebhookImpl>, Registry>() {
+                                @Override
+                                public Registry call(List<WebhookImpl> webhooks) {
+                                    return self;
+                                }
+                            });
+                    }
                 });
         }
     }
@@ -167,7 +179,6 @@ public class RegistryImpl
     @Override
     public RegistryImpl withClassicSku() {
         if (this.isInCreateMode()) {
-            this.hasManagedStorageAccount = false;
             this.inner().withSku(new Sku().withName(SkuName.BASIC));
             this.inner().withStorageAccount(new StorageAccountProperties());
         }
@@ -191,7 +202,6 @@ public class RegistryImpl
     }
 
     private RegistryImpl setManagedSku(Sku sku) {
-        this.hasManagedStorageAccount = true;
         if (this.isInCreateMode()) {
             this.inner().withSku(sku);
             this.inner().withStorageAccount(null);
@@ -212,8 +222,9 @@ public class RegistryImpl
     }
 
     @Override
-    public RegistryImpl withExistingStorageAccountName(String storageAccountName) {
+    public RegistryImpl withExistingStorageAccountName(String resourceGroupName, String storageAccountName) {
         this.existingStorageAccountName = storageAccountName;
+        this.existingStorageAccountResourceGroupName = resourceGroupName;
         this.storageAccountId = null;
 
         return this;
@@ -382,4 +393,24 @@ public class RegistryImpl
             });
     }
 
+    @Override
+    public RegistryImpl withoutWebhook(String name) {
+        webhooks.withoutWebhook(name);
+        return this;
+    }
+
+    @Override
+    public WebhookImpl withNewWebhook(String name) {
+        return webhooks.defineWebhook(name);
+    }
+
+    @Override
+    public WebhookImpl updateWebhook(String name) {
+        return webhooks.updateWebhook(name);
+    }
+
+    @Override
+    public WebhookImpl defineWebhook(String name) {
+        return webhooks.defineWebhook(name);
+    }
 }
