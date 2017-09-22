@@ -15,15 +15,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class Sku {
     /**
-     * The SKU name of the the container registry. Required for registry
-     * creation. Possible values include: 'Basic', 'Managed_Basic',
-     * 'Managed_Standard', 'Managed_Premium'.
+     * The SKU name of the container registry. Required for registry creation.
+     * Possible values include: 'Classic', 'Managed_Basic', 'Managed_Standard',
+     * 'Managed_Premium'.
      */
     @JsonProperty(value = "name", required = true)
     private SkuName name;
 
     /**
-     * The SKU tier based on the SKU name. Possible values include: 'Basic',
+     * The SKU tier based on the SKU name. Possible values include: 'Classic',
      * 'Managed'.
      */
     @JsonProperty(value = "tier", access = JsonProperty.Access.WRITE_ONLY)

@@ -215,7 +215,7 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2017-06-01-preview";
+        this.apiVersion = "2017-10-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
@@ -233,6 +233,6 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ContainerRegistryManagementClient", "2017-06-01-preview");
+        return String.format("%s (%s, %s)", super.userAgent(), "ContainerRegistryManagementClient", "2017-10-01");
     }
 }

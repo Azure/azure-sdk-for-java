@@ -63,7 +63,7 @@ public class RegistryInner extends Resource {
 
     /**
      * The properties of the storage account for the container registry. Only
-     * applicable to Basic SKU.
+     * applicable to Classic SKU.
      */
     @JsonProperty(value = "properties.storageAccount")
     private StorageAccountProperties storageAccount;

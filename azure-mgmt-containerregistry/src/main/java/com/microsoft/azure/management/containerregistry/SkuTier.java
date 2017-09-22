@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for SkuTier.
  */
 public final class SkuTier {
-    /** Static value Basic for SkuTier. */
-    public static final SkuTier BASIC = new SkuTier("Basic");
+    /** Static value Classic for SkuTier. */
+    public static final SkuTier CLASSIC = new SkuTier("Classic");
 
     /** Static value Managed for SkuTier. */
     public static final SkuTier MANAGED = new SkuTier("Managed");

@@ -14,8 +14,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for SkuName.
  */
 public final class SkuName {
-    /** Static value Basic for SkuName. */
-    public static final SkuName BASIC = new SkuName("Basic");
+    /** Static value Classic for SkuName. */
+    public static final SkuName CLASSIC = new SkuName("Classic");
 
     /** Static value Managed_Basic for SkuName. */
     public static final SkuName MANAGED_BASIC = new SkuName("Managed_Basic");

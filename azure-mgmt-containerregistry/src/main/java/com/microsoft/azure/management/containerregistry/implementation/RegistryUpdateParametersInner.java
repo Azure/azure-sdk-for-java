@@ -39,7 +39,7 @@ public class RegistryUpdateParametersInner {
 
     /**
      * The parameters of a storage account for the container registry. Only
-     * applicable to Basic SKU. If specified, the storage account must be in
+     * applicable to Classic SKU. If specified, the storage account must be in
      * the same physical location as the container registry.
      */
     @JsonProperty(value = "properties.storageAccount")

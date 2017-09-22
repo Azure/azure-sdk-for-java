@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The properties of a storage account for a container registry. Only
- * applicable to Basic SKU.
+ * applicable to Classic SKU.
  */
 public class StorageAccountProperties {
     /**
