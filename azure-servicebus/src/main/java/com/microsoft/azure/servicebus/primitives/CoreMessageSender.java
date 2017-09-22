@@ -25,6 +25,7 @@ import java.util.concurrent.ScheduledFuture;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.Rejected;
@@ -406,16 +407,17 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		}
 		else
 		{
-		    TRACE_LOGGER.error("Opending send link to '{}' failed", this.sendPath, completionException);
 		    this.cancelSASTokenRenewTimer();
 			if (!this.linkFirstOpen.isDone())
-			{			    
+			{
+			    TRACE_LOGGER.error("Opening send link to '{}' failed", this.sendPath, completionException);
 				this.setClosed();				
 				ExceptionUtil.completeExceptionally(this.linkFirstOpen, completionException, this, true);
 			}
 			
 			if(this.sendLinkReopenFuture != null && !this.sendLinkReopenFuture.isDone())
             {
+			    TRACE_LOGGER.error("Opening send link to '{}' failed", this.sendPath, completionException);
                 AsyncUtil.completeFutureExceptionally(this.sendLinkReopenFuture, completionException);
                 this.sendLinkReopenFuture = null;
             }
@@ -584,8 +586,9 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		TRACE_LOGGER.debug("Send link settle mode '{}'", settleMode);
 		sender.setSenderSettleMode(settleMode);
 
-		Map linkProperties = new HashMap();
-		linkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis());
+		Map<Symbol, Object> linkProperties = new HashMap<>();
+		// ServiceBus expects timeout to be of type unsignedint
+		linkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis()));
 		sender.setProperties(linkProperties);
 		
 		SendLinkHandler handler = new SendLinkHandler(CoreMessageSender.this);

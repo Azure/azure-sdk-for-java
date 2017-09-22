@@ -27,6 +27,7 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
 import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -350,8 +351,9 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		
 		Source source = new Source();
 		source.setAddress(receivePath);
-		Map linkProperties = new HashMap();
-		linkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis());
+		Map<Symbol, Object> linkProperties = new HashMap<>();
+		// ServiceBus expects timeout to be of type unsignedint
+		linkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis()));
 		
 		if(this.isSessionReceiver)
 		{

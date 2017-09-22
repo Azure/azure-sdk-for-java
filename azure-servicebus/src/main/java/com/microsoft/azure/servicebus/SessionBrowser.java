@@ -13,7 +13,6 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.MiscRequestResponseOperationHandler;
-import com.microsoft.azure.servicebus.primitives.Pair;
 
 final class SessionBrowser {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SessionBrowser.class);

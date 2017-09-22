@@ -13,6 +13,8 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnsignedInteger;
 import org.apache.qpid.proton.amqp.messaging.Accepted;
 import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
@@ -43,14 +45,17 @@ import com.microsoft.azure.servicebus.amqp.SessionHandler;
 class RequestResponseLink extends ClientEntity{
 	private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseLink.class);
 	
-	private MessagingFactory underlyingFactory;
-	private String linkPath;
+	private final Object recreateLinksLock;
+	private final MessagingFactory underlyingFactory;
+	private final String linkPath;
+	private final CompletableFuture<RequestResponseLink> createFuture;
+	private final ConcurrentHashMap<String, RequestResponseWorkItem> pendingRequests;
+    private final AtomicInteger requestCounter;
+    
 	private InternalReceiver amqpReceiver;
-	private InternalSender amqpSender;
-	private CompletableFuture<RequestResponseLink> createFuture;
+	private InternalSender amqpSender;	
 	private String replyTo;
-	private ConcurrentHashMap<String, RequestResponseWorkItem> pendingRequests;
-	private AtomicInteger requestCounter;
+	private boolean isRecreateLinksInProgress;
 	
 	public static CompletableFuture<RequestResponseLink> createAsync(MessagingFactory messagingFactory, String linkName, String linkPath)
 	{
@@ -116,9 +121,11 @@ class RequestResponseLink extends ClientEntity{
 	{
 		super(linkName, null);
 		
+		this.recreateLinksLock = new Object();
+		this.isRecreateLinksInProgress = false;
 		this.underlyingFactory = messagingFactory;
 		this.linkPath = linkPath;
-		this.amqpSender = new InternalSender(linkName + ":internalSender", this);
+		this.amqpSender = new InternalSender(linkName + ":internalSender", this, null);
 		this.amqpReceiver = new InternalReceiver(linkName + ":interalReceiver", this);
 		this.pendingRequests = new ConcurrentHashMap<>();
 		this.requestCounter = new AtomicInteger();
@@ -135,8 +142,9 @@ class RequestResponseLink extends ClientEntity{
 	{
 		this.replyTo = UUID.randomUUID().toString();
 		
-		Map commonLinkProperties = new HashMap();
-		commonLinkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis());
+		Map<Symbol, Object> commonLinkProperties = new HashMap<>();
+		// ServiceBus expects timeout to be of type unsignedint
+		commonLinkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis()));
 		
 		// Create send link
 		final Connection connection = this.underlyingFactory.getConnection();
@@ -198,6 +206,10 @@ class RequestResponseLink extends ClientEntity{
 		return closeFuture.handleAsync((closeResult, closeEx) -> 
 		{
 		    // Ignore exception in closing
+		    // Create new internal sender and receiver objects, as old ones are closed
+		    this.amqpSender = new InternalSender(this.getClientId() + ":internalSender", this, this.amqpSender);
+	        this.amqpReceiver = new InternalReceiver(this.getClientId() + ":interalReceiver", this);
+		    
 		    this.createInternalLinks();
 		    return null;
 		}).thenCompose((v) -> CompletableFuture.allOf(this.amqpSender.openFuture, this.amqpReceiver.openFuture));
@@ -222,15 +234,26 @@ class RequestResponseLink extends ClientEntity{
         if((this.amqpSender.sendLink.getLocalState() == EndpointState.CLOSED || this.amqpSender.sendLink.getRemoteState() == EndpointState.CLOSED)
                 || (this.amqpReceiver.receiveLink.getLocalState() == EndpointState.CLOSED || this.amqpReceiver.receiveLink.getRemoteState() == EndpointState.CLOSED))
         {
-            this.recreateInternalLinks().handleAsync((v, recreationEx) ->
-            {
-                if(recreationEx != null)
+            synchronized (this.recreateLinksLock) {
+                if(!this.isRecreateLinksInProgress)
                 {
-                    this.closeAsync();
+                    this.isRecreateLinksInProgress = true;
+                    this.recreateInternalLinks().handleAsync((v, recreationEx) ->
+                    {
+                        if(recreationEx != null)
+                        {
+                            this.closeAsync();
+                        }
+                        
+                        synchronized (this.recreateLinksLock)
+                        {
+                            this.isRecreateLinksInProgress = false;
+                        }
+                        
+                        return null;
+                    });
                 }
-                
-                return null;
-            });
+            }
         }
         
 		CompletableFuture<Message> responseFuture = new CompletableFuture<Message>();
@@ -549,16 +572,25 @@ class RequestResponseLink extends ClientEntity{
 		private Object pendingSendsSyncLock;
 		private boolean isSendLoopRunning;
 
-		protected InternalSender(String clientId, RequestResponseLink parent) {
+		protected InternalSender(String clientId, RequestResponseLink parent, InternalSender senderToBeCopied) {
 			super(clientId, parent);			
 			this.parent = parent;
 			this.availableCredit = new AtomicInteger(0);
 			this.pendingSendsSyncLock = new Object();
 			this.isSendLoopRunning = false;
-			this.pendingFreshSends = new LinkedList<>();
-			this.pendingRetrySends = new LinkedList<>();
 			this.openFuture = new CompletableFuture<Void>();
 			this.closeFuture = new CompletableFuture<Void>();
+			
+			if(senderToBeCopied == null)
+			{
+			    this.pendingFreshSends = new LinkedList<>();
+	            this.pendingRetrySends = new LinkedList<>();
+			}
+			else
+			{
+			    this.pendingFreshSends = senderToBeCopied.pendingFreshSends;
+                this.pendingRetrySends = senderToBeCopied.pendingRetrySends;
+			}
 		}		
 
 		@Override
