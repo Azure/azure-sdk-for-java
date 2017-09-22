@@ -179,7 +179,7 @@ public class RegistryImpl
     @Override
     public RegistryImpl withClassicSku() {
         if (this.isInCreateMode()) {
-            this.inner().withSku(new Sku().withName(SkuName.BASIC));
+            this.inner().withSku(new Sku().withName(SkuName.CLASSIC));
             this.inner().withStorageAccount(new StorageAccountProperties());
         }
 
