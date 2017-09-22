@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.model;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.NetworkInterface;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.HasId;
 
 import java.util.List;
 
@@ -14,7 +15,7 @@ import java.util.List;
  * Interface exposing a list of network interfaces.
  */
 @Fluent()
-public interface HasNetworkInterfaces {
+public interface HasNetworkInterfaces extends HasId {
     /**
      * Gets the primary network interface.
      * <p>

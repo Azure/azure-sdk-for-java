@@ -54,6 +54,13 @@ public class ImageDataDisk {
     private Integer diskSizeGB;
 
     /**
+     * The Storage Account type. Possible values include: 'Standard_LRS',
+     * 'Premium_LRS'.
+     */
+    @JsonProperty(value = "storageAccountType")
+    private StorageAccountTypes storageAccountType;
+
+    /**
      * Get the lun value.
      *
      * @return the lun value
@@ -170,6 +177,26 @@ public class ImageDataDisk {
      */
     public ImageDataDisk withDiskSizeGB(Integer diskSizeGB) {
         this.diskSizeGB = diskSizeGB;
+        return this;
+    }
+
+    /**
+     * Get the storageAccountType value.
+     *
+     * @return the storageAccountType value
+     */
+    public StorageAccountTypes storageAccountType() {
+        return this.storageAccountType;
+    }
+
+    /**
+     * Set the storageAccountType value.
+     *
+     * @param storageAccountType the storageAccountType value to set
+     * @return the ImageDataDisk object itself.
+     */
+    public ImageDataDisk withStorageAccountType(StorageAccountTypes storageAccountType) {
+        this.storageAccountType = storageAccountType;
         return this;
     }
 

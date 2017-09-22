@@ -37,6 +37,26 @@ public class VpnClientConfiguration {
     private List<VpnClientRevokedCertificateInner> vpnClientRevokedCertificates;
 
     /**
+     * VpnClientProtocols for Virtual network gateway.
+     */
+    @JsonProperty(value = "vpnClientProtocols")
+    private List<VpnClientProtocol> vpnClientProtocols;
+
+    /**
+     * The radius server address property of the VirtualNetworkGateway resource
+     * for vpn client connection.
+     */
+    @JsonProperty(value = "radiusServerAddress")
+    private String radiusServerAddress;
+
+    /**
+     * The radius secret property of the VirtualNetworkGateway resource for vpn
+     * client connection.
+     */
+    @JsonProperty(value = "radiusServerSecret")
+    private String radiusServerSecret;
+
+    /**
      * Get the vpnClientAddressPool value.
      *
      * @return the vpnClientAddressPool value
@@ -93,6 +113,66 @@ public class VpnClientConfiguration {
      */
     public VpnClientConfiguration withVpnClientRevokedCertificates(List<VpnClientRevokedCertificateInner> vpnClientRevokedCertificates) {
         this.vpnClientRevokedCertificates = vpnClientRevokedCertificates;
+        return this;
+    }
+
+    /**
+     * Get the vpnClientProtocols value.
+     *
+     * @return the vpnClientProtocols value
+     */
+    public List<VpnClientProtocol> vpnClientProtocols() {
+        return this.vpnClientProtocols;
+    }
+
+    /**
+     * Set the vpnClientProtocols value.
+     *
+     * @param vpnClientProtocols the vpnClientProtocols value to set
+     * @return the VpnClientConfiguration object itself.
+     */
+    public VpnClientConfiguration withVpnClientProtocols(List<VpnClientProtocol> vpnClientProtocols) {
+        this.vpnClientProtocols = vpnClientProtocols;
+        return this;
+    }
+
+    /**
+     * Get the radiusServerAddress value.
+     *
+     * @return the radiusServerAddress value
+     */
+    public String radiusServerAddress() {
+        return this.radiusServerAddress;
+    }
+
+    /**
+     * Set the radiusServerAddress value.
+     *
+     * @param radiusServerAddress the radiusServerAddress value to set
+     * @return the VpnClientConfiguration object itself.
+     */
+    public VpnClientConfiguration withRadiusServerAddress(String radiusServerAddress) {
+        this.radiusServerAddress = radiusServerAddress;
+        return this;
+    }
+
+    /**
+     * Get the radiusServerSecret value.
+     *
+     * @return the radiusServerSecret value
+     */
+    public String radiusServerSecret() {
+        return this.radiusServerSecret;
+    }
+
+    /**
+     * Set the radiusServerSecret value.
+     *
+     * @param radiusServerSecret the radiusServerSecret value to set
+     * @return the VpnClientConfiguration object itself.
+     */
+    public VpnClientConfiguration withRadiusServerSecret(String radiusServerSecret) {
+        this.radiusServerSecret = radiusServerSecret;
         return this;
     }
 

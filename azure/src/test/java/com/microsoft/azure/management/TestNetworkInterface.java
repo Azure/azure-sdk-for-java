@@ -5,8 +5,8 @@
  */
 package com.microsoft.azure.management;
 
+import java.util.Collection;
 import java.util.List;
-import java.util.Set;
 
 import org.junit.Assert;
 
@@ -58,7 +58,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
         Subnet subnet = network.subnets().get(ipConfig.subnetName());
         Assert.assertNotNull(subnet);
         Assert.assertEquals(1, subnet.networkInterfaceIPConfigurationCount());
-        Set<NicIPConfiguration> ipConfigs = subnet.listNetworkInterfaceIPConfigurations();
+        Collection<NicIPConfiguration> ipConfigs = subnet.listNetworkInterfaceIPConfigurations();
         Assert.assertNotNull(ipConfigs);
         Assert.assertEquals(1, ipConfigs.size());
         NicIPConfiguration ipConfig2 = null;

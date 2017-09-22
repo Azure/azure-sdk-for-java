@@ -67,6 +67,19 @@ public final class DiskSkuTypes {
     }
 
     /**
+     * Parses a value into a disk SKU type and creates a new DiskSkuType instance if not found among the existing ones.
+     *
+     * @param diskSku a disk SKU type name
+     * @return the parsed or created disk SKU type
+     */
+    public static DiskSkuTypes fromDiskSku(DiskSku diskSku) {
+        if (diskSku == null) {
+            return null;
+        }
+        return fromStorageAccountType(diskSku.name());
+    }
+
+    /**
      * @return the account type associated with the SKU.
      */
     public StorageAccountTypes accountType() {

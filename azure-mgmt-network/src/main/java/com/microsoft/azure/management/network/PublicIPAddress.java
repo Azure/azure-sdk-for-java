@@ -5,15 +5,19 @@
  */
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.PublicIPAddressInner;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
+
+import java.util.Set;
 
 /**
  * Public IP address.
@@ -80,6 +84,18 @@ public interface PublicIPAddress extends
      * @return true if this public IP address is assigned to a network interface
      */
     boolean hasAssignedNetworkInterface();
+
+    /**
+     * @return the availability zones assigned to the public IP address
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    Set<AvailabilityZoneId> availabilityZones();
+
+    /**
+     * @return public IP address sku.
+     */
+    @Beta(Beta.SinceVersion.V1_3_0)
+    PublicIPSkuType sku();
 
     /**
      * Container interface for all the definitions.
@@ -187,6 +203,35 @@ public interface PublicIPAddress extends
         }
 
         /**
+         * The stage of the IP address definition allowing to specify availability zone.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithAvailabilityZone {
+            /**
+             * Specifies the availability zone for the IP address.
+             *
+             * @param zoneId the zone identifier.
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_3_0)
+            WithCreate withAvailabilityZone(AvailabilityZoneId zoneId);
+        }
+
+        /**
+         * The stage of the IP address definition allowing to specify SKU.
+         */
+        @Beta(Beta.SinceVersion.V1_3_0)
+        interface WithSku {
+            /**
+             * Specifies the SKU for the IP address.
+             *
+             * @param skuType the SKU type
+             * @return the next stage of the definition
+             */
+            WithCreate withSku(PublicIPSkuType skuType);
+        }
+
+        /**
          * The stage of the public IP definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
@@ -197,6 +242,8 @@ public interface PublicIPAddress extends
             DefinitionStages.WithIPAddress,
             DefinitionStages.WithReverseFQDN,
             DefinitionStages.WithIdleTimeout,
+            DefinitionStages.WithAvailabilityZone,
+            DefinitionStages.WithSku,
             Resource.DefinitionWithTags<WithCreate> {
         }
     }

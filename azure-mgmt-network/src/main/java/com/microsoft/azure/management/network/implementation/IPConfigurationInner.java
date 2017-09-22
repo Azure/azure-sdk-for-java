@@ -14,7 +14,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
 
 /**
- * IPConfiguration.
+ * IP configuration.
  */
 @JsonFlatten
 public class IPConfigurationInner extends SubResource {

@@ -22,6 +22,12 @@ public class ResourceUpdate {
     private Map<String, String> tags;
 
     /**
+     * The sku property.
+     */
+    @JsonProperty(value = "sku")
+    private DiskSku sku;
+
+    /**
      * Get the tags value.
      *
      * @return the tags value
@@ -38,6 +44,26 @@ public class ResourceUpdate {
      */
     public ResourceUpdate withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public DiskSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     * @return the ResourceUpdate object itself.
+     */
+    public ResourceUpdate withSku(DiskSku sku) {
+        this.sku = sku;
         return this;
     }
 

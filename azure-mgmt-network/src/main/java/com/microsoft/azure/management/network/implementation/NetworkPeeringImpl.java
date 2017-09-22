@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.NetworkPeeringGatewayUse;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkPeering;
 import com.microsoft.azure.management.network.NetworkPeering.DefinitionStages.WithCreate;
@@ -95,21 +96,18 @@ class NetworkPeeringImpl
         return Utils.toPrimitiveBoolean(this.inner().allowForwardedTraffic());
     }
 
-    @Override
-    public boolean isAccessFromRemoteNetworkAllowed() {
+    private boolean isAccessFromRemoteNetworkAllowed() {
         return Utils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess());
     }
 
     // Fluent setters
 
-    @Override
-    public NetworkPeeringImpl withoutAccessFromRemoteNetwork() {
+    private NetworkPeeringImpl withoutAccessFromRemoteNetwork() {
         this.inner().withAllowVirtualNetworkAccess(false);
         return this;
     }
 
-    @Override
-    public NetworkPeeringImpl withAccessFromRemoteNetwork() {
+    private NetworkPeeringImpl withAccessFromRemoteNetwork() {
         this.inner().withAllowVirtualNetworkAccess(true);
         return this;
     }
@@ -174,14 +172,12 @@ class NetworkPeeringImpl
         return this.withTrafficForwardingFromRemoteNetwork().withTrafficForwardingToRemoteNetwork();
     }
 
-    @Override
-    public NetworkPeeringImpl withoutAccessToRemoteNetwork() {
+    private NetworkPeeringImpl withoutAccessToRemoteNetwork() {
         this.remoteAccess = false;
         return this;
     }
 
-    @Override
-    public NetworkPeeringImpl withAccessToRemoteNetwork() {
+    private NetworkPeeringImpl withAccessToRemoteNetwork() {
         this.remoteAccess = true;
         return this;
     }
@@ -238,6 +234,23 @@ class NetworkPeeringImpl
     // Actions
 
     @Override
+    public boolean checkAccessBetweenNetworks() {
+        if (!Utils.toPrimitiveBoolean(this.inner().allowVirtualNetworkAccess())) {
+            // If network access is disabled on this peering, then it's disabled for both networks, regardless of what the remote peering says
+            return false;
+        }
+
+        // Check the access setting on the remote peering
+        NetworkPeering remotePeering = this.getRemotePeering();
+        if (remotePeering == null) {
+            return false;
+        } else {
+            // Access is enabled on local peering, so up to the remote peering to determine whether it's enabled or disabled overall
+            return Utils.toPrimitiveBoolean(remotePeering.inner().allowVirtualNetworkAccess());
+        }
+    }
+
+    @Override
     protected Observable<NetworkPeering> createChildResourceAsync() {
         final NetworkPeeringImpl localPeering = this;
         final String networkName = ResourceUtils.nameFromResourceId(this.networkId());
@@ -284,7 +297,7 @@ class NetworkPeeringImpl
                             }
                         })
 
-                        // If no existing matching peering found, then create a matching peering on the remote network
+                        // Depending on the existence of a matching remote peering, create one or update existing
                         .flatMap(new Func1<NetworkPeering, Observable<Indexable>>() {
                             @Override
                             public Observable<Indexable> call(NetworkPeering remotePeering) {
@@ -304,25 +317,25 @@ class NetworkPeeringImpl
                                         remotePeeringUpdate = remotePeeringUpdate.withoutTrafficForwardingFromRemoteNetwork();
                                     }
 
-                                    // Update network access on the remote peering if neede
+                                    // Update network access on the remote peering if needed
                                     if (localPeering.remoteAccess == null) {
                                         // No access change, so ignore
-                                    } else if (localPeering.remoteAccess.booleanValue() && !remotePeering.isAccessFromRemoteNetworkAllowed()) {
+                                    } else if (localPeering.remoteAccess.booleanValue() && !((NetworkPeeringImpl) remotePeering).isAccessFromRemoteNetworkAllowed()) {
                                         isUpdateNeeded = true;
-                                        remotePeeringUpdate = remotePeeringUpdate.withAccessFromRemoteNetwork();
-                                    } else if (!localPeering.remoteAccess.booleanValue() && remotePeering.isAccessFromRemoteNetworkAllowed()) {
+                                        remotePeeringUpdate = ((NetworkPeeringImpl) remotePeeringUpdate).withAccessFromRemoteNetwork();
+                                    } else if (!localPeering.remoteAccess.booleanValue() && ((NetworkPeeringImpl) remotePeering).isAccessFromRemoteNetworkAllowed()) {
                                         isUpdateNeeded = true;
-                                        remotePeeringUpdate = remotePeeringUpdate.withoutAccessFromRemoteNetwork();
+                                        remotePeeringUpdate = ((NetworkPeeringImpl) remotePeeringUpdate).withoutAccessFromRemoteNetwork();
                                     }
 
                                     // Update gateway use permission on the remote peering if needed
                                     if (localPeering.allowGatewayUseOnRemoteNetwork == null) {
                                         // No change, so ignore
-                                    } else if (localPeering.allowGatewayUseOnRemoteNetwork.booleanValue() && remotePeering.gatewayUse() != GatewayUse.BY_REMOTE_NETWORK) {
+                                    } else if (localPeering.allowGatewayUseOnRemoteNetwork.booleanValue() && remotePeering.gatewayUse() != NetworkPeeringGatewayUse.BY_REMOTE_NETWORK) {
                                         // Allow gateway use on remote network
                                         isUpdateNeeded = true;
                                         remotePeeringUpdate.withGatewayUseByRemoteNetworkAllowed();
-                                    } else if (!localPeering.allowGatewayUseOnRemoteNetwork.booleanValue() && remotePeering.gatewayUse() == GatewayUse.BY_REMOTE_NETWORK) {
+                                    } else if (!localPeering.allowGatewayUseOnRemoteNetwork.booleanValue() && remotePeering.gatewayUse() == NetworkPeeringGatewayUse.BY_REMOTE_NETWORK) {
                                         // Disallow gateway use on remote network
                                         isUpdateNeeded = true;
                                         remotePeeringUpdate.withoutGatewayUseByRemoteNetwork();
@@ -331,10 +344,10 @@ class NetworkPeeringImpl
                                     // Update gateway use start on the remote peering if needed
                                     if (localPeering.startGatewayUseByRemoteNetwork == null) {
                                         // No change, so ignore
-                                    } else if (localPeering.startGatewayUseByRemoteNetwork.booleanValue() && remotePeering.gatewayUse() != GatewayUse.ON_REMOTE_NETWORK) {
+                                    } else if (localPeering.startGatewayUseByRemoteNetwork.booleanValue() && remotePeering.gatewayUse() != NetworkPeeringGatewayUse.ON_REMOTE_NETWORK) {
                                         remotePeeringUpdate.withGatewayUseOnRemoteNetworkStarted();
                                         isUpdateNeeded = true;
-                                    } else if (!localPeering.startGatewayUseByRemoteNetwork.booleanValue() && remotePeering.gatewayUse() == GatewayUse.ON_REMOTE_NETWORK) {
+                                    } else if (!localPeering.startGatewayUseByRemoteNetwork.booleanValue() && remotePeering.gatewayUse() == NetworkPeeringGatewayUse.ON_REMOTE_NETWORK) {
                                         remotePeeringUpdate.withoutGatewayUseOnRemoteNetwork();
                                         isUpdateNeeded = true;
                                     }
@@ -373,7 +386,7 @@ class NetworkPeeringImpl
                                     }
 
                                     if (localPeering.remoteAccess != null && !localPeering.remoteAccess) {
-                                        remotePeeringDefinition.withoutAccessFromRemoteNetwork(); // Assumes by default access is on for new peerings
+                                        ((NetworkPeeringImpl) remotePeeringDefinition).withoutAccessFromRemoteNetwork(); // Assumes by default access is on for new peerings
                                     }
 
                                     if (localPeering.remoteForwarding != null && localPeering.remoteForwarding.booleanValue()) {
@@ -405,12 +418,10 @@ class NetworkPeeringImpl
                 .flatMap(new Func1<Network, Observable<Network>>() {
                     @Override
                     public Observable<Network> call(Network t) {
-                        if (localPeering.remoteNetwork == null) {
-                            return Observable.just(null);
-                        } else if (!ResourceUtils.subscriptionFromResourceId(localPeering.remoteNetworkId()).equalsIgnoreCase(ResourceUtils.subscriptionFromResourceId(localPeering.id()))) {
-                            return Observable.just(null);
-                        } else {
+                        if (localPeering.remoteNetwork != null && localPeering.isSameSubscription()) {
                             return localPeering.remoteNetwork.refreshAsync();
+                        } else {
+                            return Observable.just(null);
                         }
                     }
                 })
@@ -442,7 +453,7 @@ class NetworkPeeringImpl
         final NetworkPeeringImpl self = this;
         if (self.remoteNetwork != null) {
             return Observable.just(self.remoteNetwork);
-        } else if (ResourceUtils.subscriptionFromResourceId(this.remoteNetworkId()).equalsIgnoreCase(ResourceUtils.subscriptionFromResourceId(this.id()))) {
+        } else if (this.isSameSubscription()) {
             // Fetch the remote network if within the same subscription
             return this.manager().networks().getByIdAsync(this.remoteNetworkId())
                 .doOnNext(new Action1<Network>() {
@@ -481,13 +492,13 @@ class NetworkPeeringImpl
     }
 
     @Override
-    public GatewayUse gatewayUse() {
+    public NetworkPeeringGatewayUse gatewayUse() {
         if (Utils.toPrimitiveBoolean(this.inner().allowGatewayTransit())) {
-            return GatewayUse.BY_REMOTE_NETWORK;
+            return NetworkPeeringGatewayUse.BY_REMOTE_NETWORK;
         } else if (Utils.toPrimitiveBoolean(this.inner().useRemoteGateways())) {
-            return GatewayUse.ON_REMOTE_NETWORK;
+            return NetworkPeeringGatewayUse.ON_REMOTE_NETWORK;
         } else {
-            return GatewayUse.NONE;
+            return NetworkPeeringGatewayUse.NONE;
         }
     }
 }

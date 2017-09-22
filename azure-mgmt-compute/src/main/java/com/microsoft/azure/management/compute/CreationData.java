@@ -15,8 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CreationData {
     /**
-     * Possible values include: 'Empty', 'Attach', 'FromImage', 'Import',
-     * 'Copy', 'Restore'.
+     * This enumerates the possible sources of a disk's creation. Possible
+     * values include: 'Empty', 'Attach', 'FromImage', 'Import', 'Copy'.
      */
     @JsonProperty(value = "createOption", required = true)
     private DiskCreateOption createOption;
@@ -36,18 +36,15 @@ public class CreationData {
     private ImageDiskReference imageReference;
 
     /**
-     * If creationOption is Import, this is a SAS URI to a blob to be imported
-     * into a managed disk. If creationOption is Copy, this is a relative Uri
-     * containing the id of the source snapshot to be copied into a managed
-     * disk.
+     * If creationOption is Import, this is the URI of a blob to be imported
+     * into a managed disk.
      */
     @JsonProperty(value = "sourceUri")
     private String sourceUri;
 
     /**
      * If createOption is Copy, this is the ARM id of the source snapshot or
-     * disk. If creationOption is Restore, this is the ARM-like id of the
-     * source disk restore point.
+     * disk.
      */
     @JsonProperty(value = "sourceResourceId")
     private String sourceResourceId;

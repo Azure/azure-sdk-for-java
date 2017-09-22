@@ -49,7 +49,7 @@ public class TestContainerService extends TestTemplate<ContainerService, Contain
         Assert.assertEquals(resource.agentPoolName(), "agentPool0" + newName);
         Assert.assertEquals(resource.agentPoolLeafDomainLabel(), "ap0" + dnsPrefix);
         Assert.assertEquals(resource.agentPoolVMSize(), ContainerServiceVMSizeTypes.STANDARD_A1);
-        Assert.assertEquals(resource.orchestratorType(), ContainerServiceOchestratorTypes.DCOS);
+        Assert.assertEquals(resource.orchestratorType(), ContainerServiceOrchestratorTypes.DCOS);
         Assert.assertTrue(resource.isDiagnosticsEnabled());
         Assert.assertTrue(resource.tags().containsKey("tag1"));
         return resource;

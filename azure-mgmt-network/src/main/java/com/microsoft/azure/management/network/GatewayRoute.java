@@ -11,7 +11,7 @@ package com.microsoft.azure.management.network;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The GatewayRoute model.
+ * Gateway routing details.
  */
 public class GatewayRoute {
     /**

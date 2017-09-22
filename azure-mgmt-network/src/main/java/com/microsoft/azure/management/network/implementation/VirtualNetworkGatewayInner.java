@@ -27,14 +27,14 @@ public class VirtualNetworkGatewayInner extends Resource {
     /**
      * IP configurations for virtual network gateway.
      */
-    @JsonProperty(value = "properties.ipConfigurations", required = true)
+    @JsonProperty(value = "properties.ipConfigurations")
     private List<VirtualNetworkGatewayIPConfigurationInner> ipConfigurations;
 
     /**
      * The type of this virtual network gateway. Possible values are: 'Vpn' and
      * 'ExpressRoute'. Possible values include: 'Vpn', 'ExpressRoute'.
      */
-    @JsonProperty(value = "properties.gatewayType", required = true)
+    @JsonProperty(value = "properties.gatewayType")
     private VirtualNetworkGatewayType gatewayType;
 
     /**
@@ -42,7 +42,7 @@ public class VirtualNetworkGatewayInner extends Resource {
      * 'PolicyBased' and 'RouteBased'. Possible values include: 'PolicyBased',
      * 'RouteBased'.
      */
-    @JsonProperty(value = "properties.vpnType", required = true)
+    @JsonProperty(value = "properties.vpnType")
     private VpnType vpnType;
 
     /**

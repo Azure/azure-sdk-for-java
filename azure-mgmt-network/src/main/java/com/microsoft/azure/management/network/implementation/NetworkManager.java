@@ -14,6 +14,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
+import com.microsoft.azure.management.network.LocalNetworkGateways;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
@@ -23,6 +24,7 @@ import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.network.NetworkWatchers;
+import com.microsoft.azure.management.network.VirtualNetworkGateways;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -54,6 +56,8 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private ApplicationGateways applicationGateways;
     private NetworkUsages networkUsages;
     private NetworkWatchers networkWatchers;
+    private VirtualNetworkGateways virtualNetworkGateways;
+    private LocalNetworkGateways localNetworkGateways;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager}
@@ -216,6 +220,26 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             this.networkWatchers = new NetworkWatchersImpl(this);
         }
         return this.networkWatchers;
+    }
+
+    /**
+     * @return entry point to virtual network gateways management
+     */
+    public VirtualNetworkGateways virtualNetworkGateways() {
+        if (this.virtualNetworkGateways == null) {
+            this.virtualNetworkGateways = new VirtualNetworkGatewaysImpl(this);
+        }
+        return this.virtualNetworkGateways;
+    }
+
+    /**
+     * @return entry point to local network gateway management
+     */
+    public LocalNetworkGateways localNetworkGateways() {
+        if (this.localNetworkGateways == null) {
+            this.localNetworkGateways = new LocalNetworkGatewaysImpl(this);
+        }
+        return this.localNetworkGateways;
     }
 
     // Internal utility function

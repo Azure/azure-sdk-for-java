@@ -18,8 +18,8 @@ public class BGPCommunity {
     /**
      * The region which the service support. e.g. For O365, region is Global.
      */
-    @JsonProperty(value = "region")
-    private String region;
+    @JsonProperty(value = "serviceSupportedRegion")
+    private String serviceSupportedRegion;
 
     /**
      * The name of the bgp community. e.g. Skype.
@@ -41,22 +41,34 @@ public class BGPCommunity {
     private List<String> communityPrefixes;
 
     /**
-     * Get the region value.
-     *
-     * @return the region value
+     * Customer is authorized to use bgp community or not.
      */
-    public String region() {
-        return this.region;
+    @JsonProperty(value = "isAuthorizedToUse")
+    private Boolean isAuthorizedToUse;
+
+    /**
+     * The service group of the bgp community contains.
+     */
+    @JsonProperty(value = "serviceGroup")
+    private String serviceGroup;
+
+    /**
+     * Get the serviceSupportedRegion value.
+     *
+     * @return the serviceSupportedRegion value
+     */
+    public String serviceSupportedRegion() {
+        return this.serviceSupportedRegion;
     }
 
     /**
-     * Set the region value.
+     * Set the serviceSupportedRegion value.
      *
-     * @param region the region value to set
+     * @param serviceSupportedRegion the serviceSupportedRegion value to set
      * @return the BGPCommunity object itself.
      */
-    public BGPCommunity withRegion(String region) {
-        this.region = region;
+    public BGPCommunity withServiceSupportedRegion(String serviceSupportedRegion) {
+        this.serviceSupportedRegion = serviceSupportedRegion;
         return this;
     }
 
@@ -117,6 +129,46 @@ public class BGPCommunity {
      */
     public BGPCommunity withCommunityPrefixes(List<String> communityPrefixes) {
         this.communityPrefixes = communityPrefixes;
+        return this;
+    }
+
+    /**
+     * Get the isAuthorizedToUse value.
+     *
+     * @return the isAuthorizedToUse value
+     */
+    public Boolean isAuthorizedToUse() {
+        return this.isAuthorizedToUse;
+    }
+
+    /**
+     * Set the isAuthorizedToUse value.
+     *
+     * @param isAuthorizedToUse the isAuthorizedToUse value to set
+     * @return the BGPCommunity object itself.
+     */
+    public BGPCommunity withIsAuthorizedToUse(Boolean isAuthorizedToUse) {
+        this.isAuthorizedToUse = isAuthorizedToUse;
+        return this;
+    }
+
+    /**
+     * Get the serviceGroup value.
+     *
+     * @return the serviceGroup value
+     */
+    public String serviceGroup() {
+        return this.serviceGroup;
+    }
+
+    /**
+     * Set the serviceGroup value.
+     *
+     * @param serviceGroup the serviceGroup value to set
+     * @return the BGPCommunity object itself.
+     */
+    public BGPCommunity withServiceGroup(String serviceGroup) {
+        this.serviceGroup = serviceGroup;
         return this;
     }
 

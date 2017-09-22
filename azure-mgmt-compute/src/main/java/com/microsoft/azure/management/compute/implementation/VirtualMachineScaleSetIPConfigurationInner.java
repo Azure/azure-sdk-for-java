@@ -9,6 +9,8 @@
 package com.microsoft.azure.management.compute.implementation;
 
 import com.microsoft.azure.management.compute.ApiEntityReference;
+import com.microsoft.azure.management.compute.VirtualMachineScaleSetPublicIPAddressConfiguration;
+import com.microsoft.azure.management.compute.IPVersion;
 import java.util.List;
 import com.microsoft.azure.SubResource;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -28,8 +30,30 @@ public class VirtualMachineScaleSetIPConfigurationInner extends SubResource {
     /**
      * The subnet.
      */
-    @JsonProperty(value = "properties.subnet", required = true)
+    @JsonProperty(value = "properties.subnet")
     private ApiEntityReference subnet;
+
+    /**
+     * Specifies the primary IP Configuration in case the network interface has
+     * more than one IP Configuration.
+     */
+    @JsonProperty(value = "properties.primary")
+    private Boolean primary;
+
+    /**
+     * The publicIPAddressConfiguration.
+     */
+    @JsonProperty(value = "properties.publicIPAddressConfiguration")
+    private VirtualMachineScaleSetPublicIPAddressConfiguration publicIPAddressConfiguration;
+
+    /**
+     * Available from Api-Version 2017-03-30 onwards, it represents whether the
+     * specific ipconfiguration is IPv4 or IPv6. Default is taken as IPv4.
+     * Possible values are: 'IPv4' and 'IPv6'. Possible values include: 'IPv4',
+     * 'IPv6'.
+     */
+    @JsonProperty(value = "properties.privateIPAddressVersion")
+    private IPVersion privateIPAddressVersion;
 
     /**
      * The application gateway backend address pools.
@@ -86,6 +110,66 @@ public class VirtualMachineScaleSetIPConfigurationInner extends SubResource {
      */
     public VirtualMachineScaleSetIPConfigurationInner withSubnet(ApiEntityReference subnet) {
         this.subnet = subnet;
+        return this;
+    }
+
+    /**
+     * Get the primary value.
+     *
+     * @return the primary value
+     */
+    public Boolean primary() {
+        return this.primary;
+    }
+
+    /**
+     * Set the primary value.
+     *
+     * @param primary the primary value to set
+     * @return the VirtualMachineScaleSetIPConfigurationInner object itself.
+     */
+    public VirtualMachineScaleSetIPConfigurationInner withPrimary(Boolean primary) {
+        this.primary = primary;
+        return this;
+    }
+
+    /**
+     * Get the publicIPAddressConfiguration value.
+     *
+     * @return the publicIPAddressConfiguration value
+     */
+    public VirtualMachineScaleSetPublicIPAddressConfiguration publicIPAddressConfiguration() {
+        return this.publicIPAddressConfiguration;
+    }
+
+    /**
+     * Set the publicIPAddressConfiguration value.
+     *
+     * @param publicIPAddressConfiguration the publicIPAddressConfiguration value to set
+     * @return the VirtualMachineScaleSetIPConfigurationInner object itself.
+     */
+    public VirtualMachineScaleSetIPConfigurationInner withPublicIPAddressConfiguration(VirtualMachineScaleSetPublicIPAddressConfiguration publicIPAddressConfiguration) {
+        this.publicIPAddressConfiguration = publicIPAddressConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the privateIPAddressVersion value.
+     *
+     * @return the privateIPAddressVersion value
+     */
+    public IPVersion privateIPAddressVersion() {
+        return this.privateIPAddressVersion;
+    }
+
+    /**
+     * Set the privateIPAddressVersion value.
+     *
+     * @param privateIPAddressVersion the privateIPAddressVersion value to set
+     * @return the VirtualMachineScaleSetIPConfigurationInner object itself.
+     */
+    public VirtualMachineScaleSetIPConfigurationInner withPrivateIPAddressVersion(IPVersion privateIPAddressVersion) {
+        this.privateIPAddressVersion = privateIPAddressVersion;
         return this;
     }
 

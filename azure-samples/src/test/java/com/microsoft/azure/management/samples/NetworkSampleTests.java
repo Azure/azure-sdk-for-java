@@ -18,6 +18,11 @@ public class NetworkSampleTests extends SamplesTestBase {
     }
 
     @Test
+    public void testVerifyNetworkPeeringWithNetworkWatcher() {
+        Assert.assertTrue(VerifyNetworkPeeringWithNetworkWatcher.runSample(azure));
+    }
+
+    @Test
     public void testManageApplicationGateway() {
         Assert.assertTrue(ManageApplicationGateway.runSample(azure));
     }

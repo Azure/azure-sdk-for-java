@@ -170,6 +170,7 @@ public interface PacketCapture extends
              * Begin the definition of packet capture filter.
              * @return the next stage
              */
+            @Method
             PCFilter.DefinitionStages.Blank<WithCreate> definePacketCaptureFilter();
         }
 

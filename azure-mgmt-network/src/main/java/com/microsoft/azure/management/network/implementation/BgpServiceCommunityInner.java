@@ -20,28 +20,54 @@ import com.microsoft.azure.Resource;
 @JsonFlatten
 public class BgpServiceCommunityInner extends Resource {
     /**
-     * Get a list of bgp communities.
+     * The name of the bgp community. e.g. Skype.
      */
-    @JsonProperty(value = "properties.communities")
-    private List<BGPCommunity> communities;
+    @JsonProperty(value = "properties.serviceName")
+    private String serviceName;
 
     /**
-     * Get the communities value.
-     *
-     * @return the communities value
+     * Get a list of bgp communities.
      */
-    public List<BGPCommunity> communities() {
-        return this.communities;
+    @JsonProperty(value = "properties.bgpCommunities")
+    private List<BGPCommunity> bgpCommunities;
+
+    /**
+     * Get the serviceName value.
+     *
+     * @return the serviceName value
+     */
+    public String serviceName() {
+        return this.serviceName;
     }
 
     /**
-     * Set the communities value.
+     * Set the serviceName value.
      *
-     * @param communities the communities value to set
+     * @param serviceName the serviceName value to set
      * @return the BgpServiceCommunityInner object itself.
      */
-    public BgpServiceCommunityInner withCommunities(List<BGPCommunity> communities) {
-        this.communities = communities;
+    public BgpServiceCommunityInner withServiceName(String serviceName) {
+        this.serviceName = serviceName;
+        return this;
+    }
+
+    /**
+     * Get the bgpCommunities value.
+     *
+     * @return the bgpCommunities value
+     */
+    public List<BGPCommunity> bgpCommunities() {
+        return this.bgpCommunities;
+    }
+
+    /**
+     * Set the bgpCommunities value.
+     *
+     * @param bgpCommunities the bgpCommunities value to set
+     * @return the BgpServiceCommunityInner object itself.
+     */
+    public BgpServiceCommunityInner withBgpCommunities(List<BGPCommunity> bgpCommunities) {
+        this.bgpCommunities = bgpCommunities;
         return this;
     }
 

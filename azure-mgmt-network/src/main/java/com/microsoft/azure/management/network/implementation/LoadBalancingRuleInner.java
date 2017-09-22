@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * A loag balancing rule for a load balancer.
+ * A load balancing rule for a load balancer.
  */
 @JsonFlatten
 public class LoadBalancingRuleInner extends SubResource {
@@ -85,6 +85,13 @@ public class LoadBalancingRuleInner extends SubResource {
      */
     @JsonProperty(value = "properties.enableFloatingIP")
     private Boolean enableFloatingIP;
+
+    /**
+     * Configures SNAT for the VMs in the backend pool to use the publicIP
+     * address specified in the frontend of the load balancing rule.
+     */
+    @JsonProperty(value = "properties.disableOutboundSnat")
+    private Boolean disableOutboundSnat;
 
     /**
      * Gets the provisioning state of the PublicIP resource. Possible values
@@ -283,6 +290,26 @@ public class LoadBalancingRuleInner extends SubResource {
      */
     public LoadBalancingRuleInner withEnableFloatingIP(Boolean enableFloatingIP) {
         this.enableFloatingIP = enableFloatingIP;
+        return this;
+    }
+
+    /**
+     * Get the disableOutboundSnat value.
+     *
+     * @return the disableOutboundSnat value
+     */
+    public Boolean disableOutboundSnat() {
+        return this.disableOutboundSnat;
+    }
+
+    /**
+     * Set the disableOutboundSnat value.
+     *
+     * @param disableOutboundSnat the disableOutboundSnat value to set
+     * @return the LoadBalancingRuleInner object itself.
+     */
+    public LoadBalancingRuleInner withDisableOutboundSnat(Boolean disableOutboundSnat) {
+        this.disableOutboundSnat = disableOutboundSnat;
         return this;
     }
 

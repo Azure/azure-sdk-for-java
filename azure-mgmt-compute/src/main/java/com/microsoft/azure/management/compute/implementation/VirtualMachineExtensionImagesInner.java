@@ -69,7 +69,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a virtual machine extension image.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @param version the String value
@@ -85,7 +85,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a virtual machine extension image.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @param version the String value
@@ -100,7 +100,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a virtual machine extension image.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @param version the String value
@@ -119,7 +119,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a virtual machine extension image.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @param version the String value
@@ -142,7 +142,7 @@ public class VirtualMachineExtensionImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.get(location, publisherName, type, version, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineExtensionImageInner>>>() {
                 @Override
@@ -167,7 +167,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image types.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
@@ -181,7 +181,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image types.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -194,7 +194,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image types.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineExtensionImageInner&gt; object
@@ -211,7 +211,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image types.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;VirtualMachineExtensionImageInner&gt; object
@@ -226,7 +226,7 @@ public class VirtualMachineExtensionImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.listTypes(location, publisherName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineExtensionImageInner>>>>() {
                 @Override
@@ -251,7 +251,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image versions.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -266,7 +266,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image versions.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -280,7 +280,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image versions.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -298,7 +298,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image versions.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -317,7 +317,7 @@ public class VirtualMachineExtensionImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         final String filter = null;
         final Integer top = null;
         final String orderby = null;
@@ -338,7 +338,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image versions.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @param filter The filter to apply on the operation.
@@ -356,7 +356,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image versions.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @param filter The filter to apply on the operation.
@@ -373,7 +373,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image versions.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @param filter The filter to apply on the operation.
@@ -394,7 +394,7 @@ public class VirtualMachineExtensionImagesInner {
     /**
      * Gets a list of virtual machine extension image versions.
      *
-     * @param location the String value
+     * @param location The name of a supported Azure region.
      * @param publisherName the String value
      * @param type the String value
      * @param filter The filter to apply on the operation.
@@ -416,7 +416,7 @@ public class VirtualMachineExtensionImagesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.listVersions(location, publisherName, type, this.client.subscriptionId(), filter, top, orderby, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<VirtualMachineExtensionImageInner>>>>() {
                 @Override
