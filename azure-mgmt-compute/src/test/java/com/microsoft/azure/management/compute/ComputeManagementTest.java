@@ -10,9 +10,13 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
+import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.LoadBalancer;
+import com.microsoft.azure.management.network.LoadBalancerSku;
+import com.microsoft.azure.management.network.LoadBalancerSkuType;
 import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPSkuType;
 import com.microsoft.azure.management.network.TransportProtocol;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.ResourceGroup;
@@ -167,7 +171,7 @@ public abstract class ComputeManagementTest extends TestBase {
 
     }
 
-    protected LoadBalancer createInternetFacingLoadBalancer(Region region, ResourceGroup resourceGroup, String id) throws Exception {
+    protected LoadBalancer createInternetFacingLoadBalancer(Region region, ResourceGroup resourceGroup, String id, LoadBalancerSkuType lbSkuType) throws Exception {
         final String loadBalancerName = generateRandomResourceName("extlb" + id + "-", 18);
         final String publicIPName = "pip-" + loadBalancerName;
         final String frontendName = loadBalancerName + "-FE1";
@@ -176,10 +180,18 @@ public abstract class ComputeManagementTest extends TestBase {
         final String natPoolName1 = loadBalancerName + "-INP1";
         final String natPoolName2 = loadBalancerName + "-INP2";
 
+        // Sku of PublicIP and LoadBalancer must match
+        //
+        PublicIPSkuType publicIPSkuType = lbSkuType.equals(LoadBalancerSkuType.BASIC) ? PublicIPSkuType.BASIC : PublicIPSkuType.STANDARD;
+
         PublicIPAddress publicIPAddress = this.networkManager.publicIPAddresses().define(publicIPName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
                 .withLeafDomainLabel(publicIPName)
+                // Optionals
+                .withStaticIP()
+                .withSku(publicIPSkuType)
+                // Create
                 .create();
 
         LoadBalancer loadBalancer = this.networkManager.loadBalancers().define(loadBalancerName)
@@ -218,7 +230,7 @@ public abstract class ComputeManagementTest extends TestBase {
 
                 // Explicitly define the frontend
                 .definePublicFrontend(frontendName)
-                    .withExistingPublicIPAddress(publicIPAddress)
+                    .withExistingPublicIPAddress(publicIPAddress)   // Frontend with PIP means internet-facing load-balancer
                     .attach()
 
                     // Add two probes one per rule
@@ -228,6 +240,7 @@ public abstract class ComputeManagementTest extends TestBase {
                 .defineHttpProbe("httpsProbe")
                     .withRequestPath("/")
                     .attach()
+                .withSku(lbSkuType)
                 .create();
         return loadBalancer;
     }
@@ -277,7 +290,7 @@ public abstract class ComputeManagementTest extends TestBase {
 
                 // Explicitly define the frontend
                 .definePrivateFrontend(privateFrontEndName)
-                    .withExistingSubnet(network, subnetName)
+                    .withExistingSubnet(network, subnetName) // Frontend with VNET means internal load-balancer
                     .attach()
 
                 // Add two probes one per rule

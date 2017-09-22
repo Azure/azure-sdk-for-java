@@ -216,6 +216,84 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The LoadBalancerBackendAddressPoolsInner object to access its operations.
+     */
+    private LoadBalancerBackendAddressPoolsInner loadBalancerBackendAddressPools;
+
+    /**
+     * Gets the LoadBalancerBackendAddressPoolsInner object to access its operations.
+     * @return the LoadBalancerBackendAddressPoolsInner object.
+     */
+    public LoadBalancerBackendAddressPoolsInner loadBalancerBackendAddressPools() {
+        return this.loadBalancerBackendAddressPools;
+    }
+
+    /**
+     * The LoadBalancerFrontendIPConfigurationsInner object to access its operations.
+     */
+    private LoadBalancerFrontendIPConfigurationsInner loadBalancerFrontendIPConfigurations;
+
+    /**
+     * Gets the LoadBalancerFrontendIPConfigurationsInner object to access its operations.
+     * @return the LoadBalancerFrontendIPConfigurationsInner object.
+     */
+    public LoadBalancerFrontendIPConfigurationsInner loadBalancerFrontendIPConfigurations() {
+        return this.loadBalancerFrontendIPConfigurations;
+    }
+
+    /**
+     * The InboundNatRulesInner object to access its operations.
+     */
+    private InboundNatRulesInner inboundNatRules;
+
+    /**
+     * Gets the InboundNatRulesInner object to access its operations.
+     * @return the InboundNatRulesInner object.
+     */
+    public InboundNatRulesInner inboundNatRules() {
+        return this.inboundNatRules;
+    }
+
+    /**
+     * The LoadBalancerLoadBalancingRulesInner object to access its operations.
+     */
+    private LoadBalancerLoadBalancingRulesInner loadBalancerLoadBalancingRules;
+
+    /**
+     * Gets the LoadBalancerLoadBalancingRulesInner object to access its operations.
+     * @return the LoadBalancerLoadBalancingRulesInner object.
+     */
+    public LoadBalancerLoadBalancingRulesInner loadBalancerLoadBalancingRules() {
+        return this.loadBalancerLoadBalancingRules;
+    }
+
+    /**
+     * The LoadBalancerNetworkInterfacesInner object to access its operations.
+     */
+    private LoadBalancerNetworkInterfacesInner loadBalancerNetworkInterfaces;
+
+    /**
+     * Gets the LoadBalancerNetworkInterfacesInner object to access its operations.
+     * @return the LoadBalancerNetworkInterfacesInner object.
+     */
+    public LoadBalancerNetworkInterfacesInner loadBalancerNetworkInterfaces() {
+        return this.loadBalancerNetworkInterfaces;
+    }
+
+    /**
+     * The LoadBalancerProbesInner object to access its operations.
+     */
+    private LoadBalancerProbesInner loadBalancerProbes;
+
+    /**
+     * Gets the LoadBalancerProbesInner object to access its operations.
+     * @return the LoadBalancerProbesInner object.
+     */
+    public LoadBalancerProbesInner loadBalancerProbes() {
+        return this.loadBalancerProbes;
+    }
+
+    /**
      * The NetworkInterfacesInner object to access its operations.
      */
     private NetworkInterfacesInner networkInterfaces;
@@ -226,6 +304,32 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      */
     public NetworkInterfacesInner networkInterfaces() {
         return this.networkInterfaces;
+    }
+
+    /**
+     * The NetworkInterfaceIPConfigurationsInner object to access its operations.
+     */
+    private NetworkInterfaceIPConfigurationsInner networkInterfaceIPConfigurations;
+
+    /**
+     * Gets the NetworkInterfaceIPConfigurationsInner object to access its operations.
+     * @return the NetworkInterfaceIPConfigurationsInner object.
+     */
+    public NetworkInterfaceIPConfigurationsInner networkInterfaceIPConfigurations() {
+        return this.networkInterfaceIPConfigurations;
+    }
+
+    /**
+     * The NetworkInterfaceLoadBalancersInner object to access its operations.
+     */
+    private NetworkInterfaceLoadBalancersInner networkInterfaceLoadBalancers;
+
+    /**
+     * Gets the NetworkInterfaceLoadBalancersInner object to access its operations.
+     * @return the NetworkInterfaceLoadBalancersInner object.
+     */
+    public NetworkInterfaceLoadBalancersInner networkInterfaceLoadBalancers() {
+        return this.networkInterfaceLoadBalancers;
     }
 
     /**
@@ -252,6 +356,19 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
      */
     public SecurityRulesInner securityRules() {
         return this.securityRules;
+    }
+
+    /**
+     * The DefaultSecurityRulesInner object to access its operations.
+     */
+    private DefaultSecurityRulesInner defaultSecurityRules;
+
+    /**
+     * Gets the DefaultSecurityRulesInner object to access its operations.
+     * @return the DefaultSecurityRulesInner object.
+     */
+    public DefaultSecurityRulesInner defaultSecurityRules() {
+        return this.defaultSecurityRules;
     }
 
     /**
@@ -489,9 +606,18 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.expressRouteCircuits = new ExpressRouteCircuitsInner(restClient().retrofit(), this);
         this.expressRouteServiceProviders = new ExpressRouteServiceProvidersInner(restClient().retrofit(), this);
         this.loadBalancers = new LoadBalancersInner(restClient().retrofit(), this);
+        this.loadBalancerBackendAddressPools = new LoadBalancerBackendAddressPoolsInner(restClient().retrofit(), this);
+        this.loadBalancerFrontendIPConfigurations = new LoadBalancerFrontendIPConfigurationsInner(restClient().retrofit(), this);
+        this.inboundNatRules = new InboundNatRulesInner(restClient().retrofit(), this);
+        this.loadBalancerLoadBalancingRules = new LoadBalancerLoadBalancingRulesInner(restClient().retrofit(), this);
+        this.loadBalancerNetworkInterfaces = new LoadBalancerNetworkInterfacesInner(restClient().retrofit(), this);
+        this.loadBalancerProbes = new LoadBalancerProbesInner(restClient().retrofit(), this);
         this.networkInterfaces = new NetworkInterfacesInner(restClient().retrofit(), this);
+        this.networkInterfaceIPConfigurations = new NetworkInterfaceIPConfigurationsInner(restClient().retrofit(), this);
+        this.networkInterfaceLoadBalancers = new NetworkInterfaceLoadBalancersInner(restClient().retrofit(), this);
         this.networkSecurityGroups = new NetworkSecurityGroupsInner(restClient().retrofit(), this);
         this.securityRules = new SecurityRulesInner(restClient().retrofit(), this);
+        this.defaultSecurityRules = new DefaultSecurityRulesInner(restClient().retrofit(), this);
         this.networkWatchers = new NetworkWatchersInner(restClient().retrofit(), this);
         this.packetCaptures = new PacketCapturesInner(restClient().retrofit(), this);
         this.publicIPAddresses = new PublicIPAddressesInner(restClient().retrofit(), this);
@@ -591,7 +717,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2017-03-01";
+        final String apiVersion = "2017-08-01";
         final String domainNameLabel = null;
         return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, apiVersion, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DnsNameAvailabilityResultInner>>>() {
@@ -666,7 +792,7 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         if (this.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2017-03-01";
+        final String apiVersion = "2017-08-01";
         return service.checkDnsNameAvailability(location, this.subscriptionId(), domainNameLabel, apiVersion, this.acceptLanguage(), this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DnsNameAvailabilityResultInner>>>() {
                 @Override

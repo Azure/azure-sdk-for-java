@@ -123,7 +123,7 @@ public class SubnetInner extends SubResource {
      * @param routeTable the routeTable value to set
      * @return the SubnetInner object itself.
      */
-    public SubnetInner withRouteTable(SubResource routeTable) {
+    public SubResource withRouteTable(SubResource routeTable) {
         this.routeTable = routeTable;
         return this;
     }

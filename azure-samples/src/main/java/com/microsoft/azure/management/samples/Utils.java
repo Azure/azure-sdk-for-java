@@ -26,7 +26,7 @@ import com.microsoft.azure.management.batch.BatchAccount;
 import com.microsoft.azure.management.batch.BatchAccountKeys;
 import com.microsoft.azure.management.compute.AvailabilitySet;
 import com.microsoft.azure.management.compute.ContainerService;
-import com.microsoft.azure.management.compute.ContainerServiceOchestratorTypes;
+import com.microsoft.azure.management.compute.ContainerServiceOrchestratorTypes;
 import com.microsoft.azure.management.compute.DataDisk;
 import com.microsoft.azure.management.compute.ImageDataDisk;
 import com.microsoft.azure.management.compute.VirtualMachine;
@@ -278,6 +278,9 @@ public final class Utils {
         msi.append("\n\t\t\tMSI Active Directory Service Principal Id:").append(resource.managedServiceIdentityPrincipalId());
         msi.append("\n\t\t\tMSI Active Directory Tenant Id:").append(resource.managedServiceIdentityTenantId());
 
+        StringBuilder zones = new StringBuilder().append("\n\tZones: ");
+        zones.append(resource.availabilityZones());
+
         System.out.println(new StringBuilder().append("Virtual Machine: ").append(resource.id())
             .append("Name: ").append(resource.name())
             .append("\n\tResource group: ").append(resource.resourceGroupName())
@@ -290,6 +293,7 @@ public final class Utils {
             .append(networkProfile)
             .append(extensions)
             .append(msi)
+            .append(zones)
             .toString());
     }
 
@@ -351,7 +355,7 @@ public final class Utils {
                 .append("\n\t\tRemote network ID: ").append(peering.remoteNetworkId())
                 .append("\n\t\tPeering state: ").append(peering.state())
                 .append("\n\t\tIs traffic forwarded from remote network allowed? ").append(peering.isTrafficForwardingFromRemoteNetworkAllowed())
-                .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessFromRemoteNetworkAllowed())
+                //TODO .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessFromRemoteNetworkAllowed())
                 .append("\n\t\tGateway use: ").append(peering.gatewayUse());
         }
         System.out.println(info.toString());
@@ -438,6 +442,7 @@ public final class Utils {
             .append("\n\tReverse FQDN: ").append(resource.reverseFqdn())
             .append("\n\tIdle timeout (minutes): ").append(resource.idleTimeoutInMinutes())
             .append("\n\tIP allocation method: ").append(resource.ipAllocationMethod())
+            .append("\n\tZones: ").append(resource.availabilityZones())
             .toString());
     }
 
@@ -1125,7 +1130,7 @@ public final class Utils {
             .append("\n\t\tAgent pool leaf domain label: ").append(containerService.agentPoolLeafDomainLabel())
             .append("\n\tLinux user name: ").append(containerService.linuxRootUsername())
             .append("\n\tSSH key: ").append(containerService.sshKey());
-        if (containerService.orchestratorType() == ContainerServiceOchestratorTypes.KUBERNETES) {
+        if (containerService.orchestratorType() == ContainerServiceOrchestratorTypes.KUBERNETES) {
             info.append("\n\tName: ").append(containerService.servicePrincipalClientId());
         }
 

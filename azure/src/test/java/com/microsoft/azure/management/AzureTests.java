@@ -19,6 +19,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
+import com.microsoft.azure.management.network.ConnectivityCheck;
 import com.microsoft.azure.management.network.Direction;
 import com.microsoft.azure.management.network.FlowLogSettings;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
@@ -27,6 +28,7 @@ import com.microsoft.azure.management.network.NextHop;
 import com.microsoft.azure.management.network.NextHopType;
 import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PcProtocol;
+import com.microsoft.azure.management.network.PcStatus;
 import com.microsoft.azure.management.network.Protocol;
 import com.microsoft.azure.management.network.SecurityGroupView;
 import com.microsoft.azure.management.network.Topology;
@@ -320,6 +322,17 @@ public class AzureTests extends TestBase {
     public void testLoadBalancersInternalMinimum() throws Exception {
         new TestLoadBalancer.InternalMinimal(azure.virtualMachines().manager())
             .runTest(azure.loadBalancers(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the internal load balancer with availability zone.
+     * @throws Exception
+     */
+    @Test
+    @Ignore("Though valid scenario, NRP is failing")
+    public void testLoadBalancersInternalWithAvailabilityZone() throws Exception {
+        new TestLoadBalancer.InternalWithZone(azure.virtualMachines().manager())
+                .runTest(azure.loadBalancers(), azure.resourceGroups());
     }
 
     /**
@@ -617,8 +630,15 @@ public class AzureTests extends TestBase {
         Assert.assertEquals("127.0.0.1;127.0.0.5", packetCapture.filters().get(0).localIPAddress());
 //        Assert.assertEquals("Running", packetCapture.getStatus().packetCaptureStatus().toString());
         packetCapture.stop();
-        Assert.assertEquals("Stopped", packetCapture.getStatus().packetCaptureStatus().toString());
+        Assert.assertEquals(PcStatus.STOPPED, packetCapture.getStatus().packetCaptureStatus());
         nw.packetCaptures().deleteByName(packetCapture.name());
+
+        ConnectivityCheck connectivityCheck = nw.checkConnectivity()
+                .toDestinationResourceId(virtualMachines[1].id())
+                .toDestinationPort(80)
+                .fromSourceVirtualMachine(virtualMachines[0].id())
+                .execute();
+        Assert.assertEquals("Reachable", connectivityCheck.connectionStatus().toString());
 
         azure.virtualMachines().deleteById(virtualMachines[1].id());
         topology.refresh();
@@ -626,6 +646,44 @@ public class AzureTests extends TestBase {
 
         azure.resourceGroups().deleteByName(nw.resourceGroupName());
         azure.resourceGroups().deleteByName(tnw.groupName());
+    }
+
+    /**
+     * Tests the virtual network gateway implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualNetworkGateways() throws Exception {
+        new TestVirtualNetworkGateway.Basic(azure.virtualNetworkGateways().manager()).runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the virtual network gateway and virtual network gateway connection implementations for Site-to-Site connection.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualNetworkGatewaySiteToSite() throws Exception {
+        new TestVirtualNetworkGateway.SiteToSite(azure.virtualNetworkGateways().manager())
+                .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the virtual network gateway and virtual network gateway connection implementations for VNet-to-VNet connection.
+     * @throws Exception
+     */
+    @Test
+    public void testVirtualNetworkGatewayVNetToVNet() throws Exception {
+        new TestVirtualNetworkGateway.VNetToVNet(azure.virtualNetworkGateways().manager())
+                .runTest(azure.virtualNetworkGateways(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the local network gateway implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testLocalNetworkGateways() throws Exception {
+        new TestLocalNetworkGateway().runTest(azure.localNetworkGateways(), azure.resourceGroups());
     }
 
     /**

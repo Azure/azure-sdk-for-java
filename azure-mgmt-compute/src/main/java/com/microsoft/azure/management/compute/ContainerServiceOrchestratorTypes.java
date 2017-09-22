@@ -12,9 +12,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for ContainerServiceOchestratorTypes.
+ * Defines values for ContainerServiceOrchestratorTypes.
  */
-public enum ContainerServiceOchestratorTypes {
+public enum ContainerServiceOrchestratorTypes {
     /** Enum value Swarm. */
     SWARM("Swarm"),
 
@@ -27,23 +27,23 @@ public enum ContainerServiceOchestratorTypes {
     /** Enum value Kubernetes. */
     KUBERNETES("Kubernetes");
 
-    /** The actual serialized value for a ContainerServiceOchestratorTypes instance. */
+    /** The actual serialized value for a ContainerServiceOrchestratorTypes instance. */
     private String value;
 
-    ContainerServiceOchestratorTypes(String value) {
+    ContainerServiceOrchestratorTypes(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a ContainerServiceOchestratorTypes instance.
+     * Parses a serialized value to a ContainerServiceOrchestratorTypes instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed ContainerServiceOchestratorTypes object, or null if unable to parse.
+     * @return the parsed ContainerServiceOrchestratorTypes object, or null if unable to parse.
      */
     @JsonCreator
-    public static ContainerServiceOchestratorTypes fromString(String value) {
-        ContainerServiceOchestratorTypes[] items = ContainerServiceOchestratorTypes.values();
-        for (ContainerServiceOchestratorTypes item : items) {
+    public static ContainerServiceOrchestratorTypes fromString(String value) {
+        ContainerServiceOrchestratorTypes[] items = ContainerServiceOrchestratorTypes.values();
+        for (ContainerServiceOrchestratorTypes item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

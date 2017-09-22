@@ -8,8 +8,8 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.ContainerService;
 import com.microsoft.azure.management.compute.ContainerServiceAgentPoolProfile;
+import com.microsoft.azure.management.compute.ContainerServiceOrchestratorTypes;
 import com.microsoft.azure.management.compute.ContainerServiceVMSizeTypes;
-import com.microsoft.azure.management.compute.ContainerServiceOchestratorTypes;
 import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
 import com.microsoft.azure.management.compute.ContainerServiceLinuxProfile;
 import com.microsoft.azure.management.compute.ContainerServiceOrchestratorProfile;
@@ -59,7 +59,7 @@ public class ContainerServiceImpl
     }
 
     @Override
-    public ContainerServiceOchestratorTypes orchestratorType() {
+    public ContainerServiceOrchestratorTypes orchestratorType() {
         if (this.inner().orchestratorProfile() == null) {
             throw new RuntimeException("Orchestrator profile is missing!");
         }
@@ -234,19 +234,19 @@ public class ContainerServiceImpl
 
     @Override
     public ContainerServiceImpl withSwarmOrchestration() {
-        this.withOrchestratorProfile(ContainerServiceOchestratorTypes.SWARM);
+        this.withOrchestratorProfile(ContainerServiceOrchestratorTypes.SWARM);
         return this;
     }
 
     @Override
     public ContainerServiceImpl withDcosOrchestration() {
-        this.withOrchestratorProfile(ContainerServiceOchestratorTypes.DCOS);
+        this.withOrchestratorProfile(ContainerServiceOrchestratorTypes.DCOS);
         return this;
     }
 
     @Override
     public ContainerServiceImpl withKubernetesOrchestration() {
-        this.withOrchestratorProfile(ContainerServiceOchestratorTypes.KUBERNETES);
+        this.withOrchestratorProfile(ContainerServiceOrchestratorTypes.KUBERNETES);
         return this;
     }
 
@@ -265,7 +265,7 @@ public class ContainerServiceImpl
         this.inner().agentPoolProfiles().add(agentPoolProfile.inner());
     }
 
-    private ContainerServiceImpl withOrchestratorProfile(ContainerServiceOchestratorTypes orchestratorType) {
+    private ContainerServiceImpl withOrchestratorProfile(ContainerServiceOrchestratorTypes orchestratorType) {
         ContainerServiceOrchestratorProfile orchestratorProfile = new ContainerServiceOrchestratorProfile();
         orchestratorProfile.withOrchestratorType(orchestratorType);
         this.inner().withOrchestratorProfile(orchestratorProfile);

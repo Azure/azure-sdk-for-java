@@ -32,29 +32,17 @@ public interface NetworkPeering extends
     Updatable<NetworkPeering.Update> {
 
     /**
-     * Possible gateway use scenarios.
-     */
-    enum GatewayUse {
-        /**
-         * The remote network is allowed to use this network's gateway (but not necessarily using it currently).
-         */
-        BY_REMOTE_NETWORK,
-
-        /**
-         * This network is configured to use the remote network's gateway.
-         */
-        ON_REMOTE_NETWORK,
-
-        /**
-         * No gateway use is configured.
-         */
-        NONE
-    }
-
-    /**
      * @return the local virtual network's ID
      */
     String networkId();
+
+    /**
+     * @return true if the peering enables IP addresses within the peered networks to be accessible from both networks, otherwise false
+     * <p>
+     * (Note this method makes a separate call to Azure.)
+     */
+    @Method
+    boolean checkAccessBetweenNetworks();
 
     /**
      * @return the associated remote virtual network's ID
@@ -95,17 +83,12 @@ public interface NetworkPeering extends
     /**
      * @return the type of gateway use enabled for this network
      */
-    GatewayUse gatewayUse();
+    NetworkPeeringGatewayUse gatewayUse();
 
     /**
      * @return true if traffic forwarding from the remote network is allowed into this network
      */
     boolean isTrafficForwardingFromRemoteNetworkAllowed();
-
-    /**
-     * @return true if virtual machines on this network's address spaces are accessible from the remote network
-     */
-    boolean isAccessFromRemoteNetworkAllowed();
 
     /**
      * @return true if the peered networks are in the same subscription, otherwise false
@@ -225,21 +208,6 @@ public interface NetworkPeering extends
          * The stage of a network peering definition allowing to control access from and to the remote network.
          */
         interface WithAccess {
-            /**
-             * Disallows access to this network's address space from the remote network.
-             * @return the next stage of the definition
-             */
-            WithCreate withoutAccessFromRemoteNetwork();
-
-            /**
-             * Disallows access to the remote network's address space from this network.
-             * <p>
-             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
-             * the corresponding access setting on the remote network's matching peering explicitly.
-             * @return the next stage of the definition
-             */
-            WithCreate withoutAccessToRemoteNetwork();
-
             /**
              * Disallows access to either peered network from the other.
              * <p>
@@ -408,36 +376,6 @@ public interface NetworkPeering extends
          * The stage of a network peering update allowing to control access from and to the remote network.
          */
         interface WithAccess {
-            /**
-             * Disallows access to this network's address space from the remote network.
-             * @return the next stage of the update
-             */
-            Update withoutAccessFromRemoteNetwork();
-
-            /**
-             * Allows access to this network's address space from the remote network.
-             * @return the next stage of the update
-             */
-            Update withAccessFromRemoteNetwork();
-
-            /**
-             * Disallows access to the remote network's address space from this network.
-             * <p>
-             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
-             * the corresponding access setting on the remote network's matching peering explicitly.
-             * @return the next stage of the update
-             */
-            Update withoutAccessToRemoteNetwork();
-
-            /**
-             * Enables access to the remote network's address space from this network.
-             * <p>
-             * This setting will have effect on the remote network only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
-             * the corresponding access setting on the remote network's matching peering explicitly.
-             * @return the next stage of the update
-             */
-            Update withAccessToRemoteNetwork();
-
             /**
              * Enables access to either peered virtual network from the other.
              * <p>

@@ -8,9 +8,11 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.PublicIPAddressSku;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.Resource;
@@ -20,6 +22,12 @@ import com.microsoft.azure.Resource;
  */
 @JsonFlatten
 public class PublicIPAddressInner extends Resource {
+    /**
+     * The public IP address SKU.
+     */
+    @JsonProperty(value = "sku")
+    private PublicIPAddressSku sku;
+
     /**
      * The public IP allocation method. Possible values are: 'Static' and
      * 'Dynamic'. Possible values include: 'Static', 'Dynamic'.
@@ -35,7 +43,7 @@ public class PublicIPAddressInner extends Resource {
     private IPVersion publicIPAddressVersion;
 
     /**
-     * The ipConfiguration property.
+     * The IP configuration associated with the public IP address.
      */
     @JsonProperty(value = "properties.ipConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private IPConfigurationInner ipConfiguration;
@@ -47,7 +55,7 @@ public class PublicIPAddressInner extends Resource {
     private PublicIPAddressDnsSettings dnsSettings;
 
     /**
-     * The ipAddress property.
+     * The IP address associated with the public IP address resource.
      */
     @JsonProperty(value = "properties.ipAddress")
     private String ipAddress;
@@ -76,6 +84,33 @@ public class PublicIPAddressInner extends Resource {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * A list of availability zones denoting the IP allocated for the resource
+     * needs to come from.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public PublicIPAddressSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     * @return the PublicIPAddressInner object itself.
+     */
+    public PublicIPAddressInner withSku(PublicIPAddressSku sku) {
+        this.sku = sku;
+        return this;
+    }
 
     /**
      * Get the publicIPAllocationMethod value.
@@ -243,6 +278,26 @@ public class PublicIPAddressInner extends Resource {
      */
     public PublicIPAddressInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the zones value.
+     *
+     * @return the zones value
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones value.
+     *
+     * @param zones the zones value to set
+     * @return the PublicIPAddressInner object itself.
+     */
+    public PublicIPAddressInner withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

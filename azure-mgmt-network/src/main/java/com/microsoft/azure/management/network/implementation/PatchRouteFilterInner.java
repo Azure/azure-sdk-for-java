@@ -28,7 +28,7 @@ public class PatchRouteFilterInner extends SubResource {
     /**
      * A collection of references to express route circuit peerings.
      */
-    @JsonProperty(value = "properties.peerings", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "properties.peerings")
     private List<ExpressRouteCircuitPeeringInner> peerings;
 
     /**
@@ -90,6 +90,17 @@ public class PatchRouteFilterInner extends SubResource {
      */
     public List<ExpressRouteCircuitPeeringInner> peerings() {
         return this.peerings;
+    }
+
+    /**
+     * Set the peerings value.
+     *
+     * @param peerings the peerings value to set
+     * @return the PatchRouteFilterInner object itself.
+     */
+    public PatchRouteFilterInner withPeerings(List<ExpressRouteCircuitPeeringInner> peerings) {
+        this.peerings = peerings;
+        return this;
     }
 
     /**

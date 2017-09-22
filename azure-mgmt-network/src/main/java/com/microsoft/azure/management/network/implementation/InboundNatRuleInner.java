@@ -27,7 +27,7 @@ public class InboundNatRuleInner extends SubResource {
     /**
      * A reference to a private IP address defined on a network interface of a
      * VM. Traffic sent to the frontend port of each of the frontend IP
-     * configurations is forwarded to the backed IP.
+     * configurations is forwarded to the backend IP.
      */
     @JsonProperty(value = "properties.backendIPConfiguration", access = JsonProperty.Access.WRITE_ONLY)
     private NetworkInterfaceIPConfigurationInner backendIPConfiguration;

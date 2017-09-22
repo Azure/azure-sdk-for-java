@@ -49,6 +49,7 @@ import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.network.LoadBalancers;
+import com.microsoft.azure.management.network.LocalNetworkGateways;
 import com.microsoft.azure.management.network.NetworkInterfaces;
 import com.microsoft.azure.management.network.NetworkSecurityGroups;
 import com.microsoft.azure.management.network.NetworkUsages;
@@ -56,6 +57,7 @@ import com.microsoft.azure.management.network.Networks;
 import com.microsoft.azure.management.network.NetworkWatchers;
 import com.microsoft.azure.management.network.PublicIPAddresses;
 import com.microsoft.azure.management.network.RouteTables;
+import com.microsoft.azure.management.network.VirtualNetworkGateways;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.redis.RedisCaches;
 import com.microsoft.azure.management.redis.implementation.RedisManager;
@@ -527,6 +529,20 @@ public final class Azure {
      */
     public NetworkWatchers networkWatchers() {
         return networkManager.networkWatchers();
+    }
+
+    /**
+     * @return entry point to managing virtual network gateways
+     */
+    public VirtualNetworkGateways virtualNetworkGateways() {
+        return networkManager.virtualNetworkGateways();
+    }
+
+    /**
+     * @return entry point to managing local network gateways
+     */
+    public LocalNetworkGateways localNetworkGateways() {
+        return networkManager.localNetworkGateways();
     }
 
     /**

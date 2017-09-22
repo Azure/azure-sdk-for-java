@@ -41,7 +41,7 @@ import java.util.Arrays;
  *   - no gateway transit between one network and the other will be enabled
  *
  * 3. Update the peering...
- * - disable IP address space access from network A to network B
+ * - disable IP address space between the networks
  * - enable traffic forwarding from network A to network B
  * 
  * 4. Delete the peering
@@ -79,17 +79,17 @@ public final class ManageNetworkPeeringInSameSubscription {
             System.out.println("Creating two virtual networks in the same region and subscription...");
 
             Creatable<Network> networkADefinition = azure.networks().define(vnetAName)
-                            .withRegion(region)
-                            .withNewResourceGroup(resourceGroupName)
-                            .withAddressSpace("10.0.0.0/27")
-                            .withSubnet("subnet1", "10.0.0.0/28")
-                            .withSubnet("subnet2", "10.0.0.16/28");
+                    .withRegion(region)
+                    .withNewResourceGroup(resourceGroupName)
+                    .withAddressSpace("10.0.0.0/27")
+                    .withSubnet("subnet1", "10.0.0.0/28")
+                    .withSubnet("subnet2", "10.0.0.16/28");
 
             Creatable<Network> networkBDefinition = azure.networks().define(vnetBName)
-                        .withRegion(region)
-                        .withNewResourceGroup(resourceGroupName)
-                        .withAddressSpace("10.1.0.0/27")
-                        .withSubnet("subnet3", "10.1.0.0/27");
+                    .withRegion(region)
+                    .withNewResourceGroup(resourceGroupName)
+                    .withAddressSpace("10.1.0.0/27")
+                    .withSubnet("subnet3", "10.1.0.0/27");
 
             // Create the networks in parallel for better performance
             CreatedResources<Network> created = azure.networks().create(Arrays.asList(networkADefinition, networkBDefinition));
@@ -127,11 +127,11 @@ public final class ManageNetworkPeeringInSameSubscription {
 
             System.out.println("Updating the peering ...");
             peeringAB.update()
-                .withoutAccessFromRemoteNetwork()
+                .withoutAccessFromEitherNetwork()
                 .withTrafficForwardingFromRemoteNetwork()
                 .apply();
 
-            System.out.println("Updated the peering to disallow network access from B to A but allow traffic forwarding from B to A.");
+            System.out.println("Updated the peering to disallow network access between B and A but allow traffic forwarding from B to A.");
 
             //=============================================================
             // Show the new network information
@@ -159,7 +159,6 @@ public final class ManageNetworkPeeringInSameSubscription {
             try {
                 System.out.println("Deleting Resource Group: " + resourceGroupName);
                 azure.resourceGroups().beginDeleteByName(resourceGroupName);
-                System.out.println("Deleted Resource Group: " + resourceGroupName);
             } catch (NullPointerException npe) {
                 System.out.println("Did not create any resources in Azure. No clean up is necessary");
             } catch (Exception g) {

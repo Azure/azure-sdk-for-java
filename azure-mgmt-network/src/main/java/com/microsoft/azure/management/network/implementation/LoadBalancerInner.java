@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network.implementation;
 
+import com.microsoft.azure.management.network.LoadBalancerSku;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -18,6 +19,12 @@ import com.microsoft.azure.Resource;
  */
 @JsonFlatten
 public class LoadBalancerInner extends Resource {
+    /**
+     * The load balancer SKU.
+     */
+    @JsonProperty(value = "sku")
+    private LoadBalancerSku sku;
+
     /**
      * Object representing the frontend IPs to be used for the load balancer.
      */
@@ -91,6 +98,33 @@ public class LoadBalancerInner extends Resource {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * A list of availability zones denoting the IP allocated for the resource
+     * needs to come from.
+     */
+    @JsonProperty(value = "zones")
+    private List<String> zones;
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public LoadBalancerSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     * @return the LoadBalancerInner object itself.
+     */
+    public LoadBalancerInner withSku(LoadBalancerSku sku) {
+        this.sku = sku;
+        return this;
+    }
 
     /**
      * Get the frontendIPConfigurations value.
@@ -289,6 +323,26 @@ public class LoadBalancerInner extends Resource {
      */
     public LoadBalancerInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the zones value.
+     *
+     * @return the zones value
+     */
+    public List<String> zones() {
+        return this.zones;
+    }
+
+    /**
+     * Set the zones value.
+     *
+     * @param zones the zones value to set
+     * @return the LoadBalancerInner object itself.
+     */
+    public LoadBalancerInner withZones(List<String> zones) {
+        this.zones = zones;
         return this;
     }
 

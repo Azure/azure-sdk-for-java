@@ -26,6 +26,15 @@ public final class VirtualNetworkGatewaySkuName {
     /** Static value UltraPerformance for VirtualNetworkGatewaySkuName. */
     public static final VirtualNetworkGatewaySkuName ULTRA_PERFORMANCE = new VirtualNetworkGatewaySkuName("UltraPerformance");
 
+    /** Static value VpnGw1 for VirtualNetworkGatewaySkuName. */
+    public static final VirtualNetworkGatewaySkuName VPN_GW1 = new VirtualNetworkGatewaySkuName("VpnGw1");
+
+    /** Static value VpnGw2 for VirtualNetworkGatewaySkuName. */
+    public static final VirtualNetworkGatewaySkuName VPN_GW2 = new VirtualNetworkGatewaySkuName("VpnGw2");
+
+    /** Static value VpnGw3 for VirtualNetworkGatewaySkuName. */
+    public static final VirtualNetworkGatewaySkuName VPN_GW3 = new VirtualNetworkGatewaySkuName("VpnGw3");
+
     private String value;
 
     /**
