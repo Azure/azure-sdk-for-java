@@ -9,6 +9,7 @@ import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayConnectionDraining;
 import com.microsoft.azure.management.network.ApplicationGatewayCookieBasedAffinity;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
@@ -46,6 +47,42 @@ class ApplicationGatewayBackendHttpConfigurationImpl
         } else {
             return null;
         }
+    }
+
+    @Override
+    public String hostHeader() {
+        return this.inner().hostName();
+    }
+
+    @Override
+    public boolean isHostHeaderFromBackend() {
+        return Utils.toPrimitiveBoolean(this.inner().pickHostNameFromBackendAddress());
+    }
+
+    @Override
+    public boolean isProbeEnabled() {
+        return Utils.toPrimitiveBoolean(this.inner().probeEnabled());
+    }
+
+    @Override
+    public int connectionDrainingTimeoutInSeconds() {
+        if (this.inner().connectionDraining() == null) {
+            return 0;
+        } else if (!this.inner().connectionDraining().enabled()) {
+            return 0;
+        } else {
+            return this.inner().connectionDraining().drainTimeoutInSec();
+        }
+    }
+
+    @Override
+    public String affinityCookieName() {
+        return this.inner().affinityCookieName();
+    }
+
+    @Override
+    public String path() {
+        return this.inner().path();
     }
 
     // Verbs
@@ -123,6 +160,67 @@ class ApplicationGatewayBackendHttpConfigurationImpl
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl withoutProbe() {
         this.inner().withProbe(null);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withHostHeaderFromBackend() {
+        this.inner()
+            .withPickHostNameFromBackendAddress(true)
+            .withHostName(null);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withHostHeader(String hostHeader) {
+        this.inner()
+            .withHostName(hostHeader)
+            .withPickHostNameFromBackendAddress(false);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withoutHostHeader() {
+        this.inner()
+            .withHostName(null)
+            .withPickHostNameFromBackendAddress(false);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withConnectionDrainingTimeoutInSeconds(int seconds) {
+        if (this.inner().connectionDraining() == null) {
+            this.inner().withConnectionDraining(new ApplicationGatewayConnectionDraining());
+        }
+        if (seconds > 0) {
+            this.inner().connectionDraining().withDrainTimeoutInSec(seconds).withEnabled(true);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withoutConnectionDraining() {
+        this.inner().withConnectionDraining(null);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withAffinityCookieName(String name) {
+        this.inner().withAffinityCookieName(name);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayBackendHttpConfigurationImpl withPath(String path) {
+        if (path != null) {
+            if (!path.startsWith("/")) {
+                path = "/" + path;
+            }
+            if (!path.endsWith("/")) {
+                path += "/";
+            }
+        }
+        this.inner().withPath(path);
         return this;
     }
 }

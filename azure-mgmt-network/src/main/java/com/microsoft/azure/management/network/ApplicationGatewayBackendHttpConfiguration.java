@@ -40,8 +40,43 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
     /**
      * @return the probe associated with this backend
      */
-    @Beta(SinceVersion.V1_1_0)
     ApplicationGatewayProbe probe();
+
+    /**
+     * @return host header to be sent to the backend servers
+     */
+    @Beta(SinceVersion.V1_4_0)
+    String hostHeader();
+
+    /**
+     * @return whether the host header should come from the host name of the backend server
+     */
+    @Beta(SinceVersion.V1_4_0)
+    boolean isHostHeaderFromBackend();
+
+    /**
+     * @return true if the probe is enabled
+     */
+    @Beta(SinceVersion.V1_4_0)
+    boolean isProbeEnabled();
+
+    /**
+     * @return if 0 then connection draining is not enabled, otherwise if between 1 and 3600, then the number of seconds when connection draining is active
+     */
+    @Beta(SinceVersion.V1_4_0)
+    int connectionDrainingTimeoutInSeconds();
+
+    /**
+     * @return name used for the affinity cookie
+     */
+    @Beta(SinceVersion.V1_4_0)
+    String affinityCookieName();
+
+    /**
+     * @return the path, if any, used as a prefix for all HTTP requests.
+     */
+    @Beta(SinceVersion.V1_4_0)
+    String path();
 
     //TODO Map<String, ApplicationGatewayCertificate> authenticationCertificates()
 
@@ -84,6 +119,34 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         }
 
         /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the name for the affinity cookie.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithCookieName<ParentT> {
+            /**
+             * Specifies the name for the affinity cookie.
+             * @param name a name
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withAffinityCookieName(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the path to use as the prefix for all HTTP requests.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithPath<ParentT> {
+            /**
+             * Specifies the path prefix for all HTTP requests.
+             * @param path a path
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withPath(String path);
+        }
+
+        /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the request timeout.
          * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
          */
@@ -109,8 +172,42 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * @param name the name of an existing probe
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_1_0)
             WithAttach<ParentT> withProbe(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the host header.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithHostHeader<ParentT> {
+            /**
+             * Specifies that the host header should come from the host name of the backend server.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withHostHeaderFromBackend();
+
+            /**
+             * Specifies the host header.
+             * @param hostHeader the host header
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withHostHeader(String hostHeader);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to control connection draining.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithConnectionDraining<ParentT> {
+            /**
+             * Specifies the number of seconds when connection draining is active.
+             * @param seconds a number of seconds between 1 and 3600
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withConnectionDrainingTimeoutInSeconds(int seconds);
         }
 
         /** The final stage of an application gateway backend HTTP configuration.
@@ -125,7 +222,11 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
             WithAffinity<ParentT>,
             WithProtocol<ParentT>,
             WithRequestTimeout<ParentT>,
-            WithProbe<ParentT> {
+            WithProbe<ParentT>,
+            WithHostHeader<ParentT>,
+            WithConnectionDraining<ParentT>,
+            WithCookieName<ParentT>,
+            WithPath<ParentT> {
         }
     }
 
@@ -196,17 +297,89 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * @param name the name of an existing probe
              * @return the next stage of the update
              */
-            @Beta(SinceVersion.V1_1_0)
             Update withProbe(String name);
 
             /**
              * Removes the association with a probe.
              * @return the next stage of the update
              */
-            @Beta(SinceVersion.V1_1_0)
             @Method
             Update withoutProbe();
         }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the host header.
+         */
+        interface WithHostHeader {
+            /**
+             * Specifies that the host header should come from the host name of the backend server.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withHostHeaderFromBackend();
+
+            /**
+             * Specifies that no host header should be used.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutHostHeader();
+
+            /**
+             * Specifies the host header.
+             * @param hostHeader the host header
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withHostHeader(String hostHeader);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to control connection draining.
+         */
+        interface WithConnectionDraining {
+            /**
+             * Specifies the number of seconds when connection draining is active.
+             * @param seconds a number of seconds between 1 and 3600
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withConnectionDrainingTimeoutInSeconds(int seconds);
+
+            /**
+             * Disables connection draining.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutConnectionDraining();
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the name for the affinity cookie.
+         */
+        interface WithCookieName {
+            /**
+             * Specifies the name for the affinity cookie.
+             * @param name a name
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withAffinityCookieName(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the path to use as the prefix for all HTTP requests.
+         */
+        interface WithPath {
+            /**
+             * Specifies the path prefix for all HTTP requests.
+             * @param path a path
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withPath(String path);
+        }
+
     }
 
     /**
@@ -218,7 +391,11 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         UpdateStages.WithAffinity,
         UpdateStages.WithProtocol,
         UpdateStages.WithRequestTimeout,
-        UpdateStages.WithProbe {
+        UpdateStages.WithProbe,
+        UpdateStages.WithHostHeader,
+        UpdateStages.WithConnectionDraining,
+        UpdateStages.WithCookieName,
+        UpdateStages.WithPath {
     }
 
     /**
@@ -243,7 +420,11 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
             WithPort<ParentT>,
             WithAffinity<ParentT>,
             WithProtocol<ParentT>,
-            WithRequestTimeout<ParentT> {
+            WithRequestTimeout<ParentT>,
+            WithHostHeader<ParentT>,
+            WithConnectionDraining<ParentT>,
+            WithCookieName<ParentT>,
+            WithPath<ParentT> {
         }
 
         /**
@@ -294,6 +475,34 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         }
 
         /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the name for the affinity cookie.
+         * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithCookieName<ParentT> {
+            /**
+             * Specifies the name for the affinity cookie.
+             * @param name a name
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withAffinityCookieName(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the path to use as the prefix for all HTTP requests.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithPath<ParentT> {
+            /**
+             * Specifies the path prefix for all HTTP requests.
+             * @param path a path
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withPath(String path);
+        }
+
+        /**
          * The stage of an application gateway backend HTTP configuration allowing to associate an existing probe.
          * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
          */
@@ -306,8 +515,42 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * @param name the name of an existing probe
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_1_0)
             WithAttach<ParentT> withProbe(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the host header.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithHostHeader<ParentT> {
+            /**
+             * Specifies the host header.
+             * @param hostHeader the host header
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withHostHeader(String hostHeader);
+
+            /**
+             * Specifies that the host header should come from the host name of the backend server.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withHostHeaderFromBackend();
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to control connection draining.
+         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithConnectionDraining<ParentT> {
+            /**
+             * Specifies the number of seconds when connection draining is active.
+             * @param seconds a number of seconds between 1 and 3600
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withConnectionDrainingTimeoutInSeconds(int seconds);
         }
     }
 
