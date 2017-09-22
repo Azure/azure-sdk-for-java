@@ -8,7 +8,7 @@ package com.microsoft.rest;
 
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
-import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.http.HttpClient;
 
 /**
  * The base class for generated service clients.

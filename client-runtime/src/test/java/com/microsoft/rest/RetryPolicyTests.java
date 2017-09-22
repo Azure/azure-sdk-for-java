@@ -7,9 +7,9 @@
 package com.microsoft.rest;
 
 
-import com.microsoft.rest.v2.http.*;
-import com.microsoft.rest.v2.policy.RequestPolicy;
-import com.microsoft.rest.v2.policy.RetryPolicy;
+import com.microsoft.rest.http.*;
+import com.microsoft.rest.policy.RequestPolicy;
+import com.microsoft.rest.policy.RetryPolicy;
 import org.junit.Assert;
 import org.junit.Test;
 
