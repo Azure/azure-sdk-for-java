@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.datalake.store.models;
 
 import org.joda.time.DateTime;
+import java.util.UUID;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -26,16 +27,16 @@ public class DataLakeStoreAccount extends Resource {
     private EncryptionIdentity identity;
 
     /**
-     * the status of the Data Lake Store account while being provisioned.
-     * Possible values include: 'Failed', 'Creating', 'Running', 'Succeeded',
-     * 'Patching', 'Suspending', 'Resuming', 'Deleting', 'Deleted'.
+     * the provisioning status of the Data Lake Store account. Possible values
+     * include: 'Failed', 'Creating', 'Running', 'Succeeded', 'Patching',
+     * 'Suspending', 'Resuming', 'Deleting', 'Deleted'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private DataLakeStoreAccountStatus provisioningState;
 
     /**
-     * the status of the Data Lake Store account after provisioning has
-     * completed. Possible values include: 'Active', 'Suspended'.
+     * the state of the Data Lake Store account. Possible values include:
+     * 'Active', 'Suspended'.
      */
     @JsonProperty(value = "properties.state", access = JsonProperty.Access.WRITE_ONLY)
     private DataLakeStoreAccountState state;
@@ -45,6 +46,24 @@ public class DataLakeStoreAccount extends Resource {
      */
     @JsonProperty(value = "properties.creationTime", access = JsonProperty.Access.WRITE_ONLY)
     private DateTime creationTime;
+
+    /**
+     * the account last modified time.
+     */
+    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
+    private DateTime lastModifiedTime;
+
+    /**
+     * the full CName endpoint for this account.
+     */
+    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
+    private String endpoint;
+
+    /**
+     * The unique identifier associated with this Data Lake Store account.
+     */
+    @JsonProperty(value = "properties.accountId", access = JsonProperty.Access.WRITE_ONLY)
+    private UUID accountId;
 
     /**
      * The current state of encryption for this Data Lake store account.
@@ -92,18 +111,6 @@ public class DataLakeStoreAccount extends Resource {
      */
     @JsonProperty(value = "properties.trustedIdProviders")
     private List<TrustedIdProvider> trustedIdProviders;
-
-    /**
-     * the account last modified time.
-     */
-    @JsonProperty(value = "properties.lastModifiedTime", access = JsonProperty.Access.WRITE_ONLY)
-    private DateTime lastModifiedTime;
-
-    /**
-     * the gateway host.
-     */
-    @JsonProperty(value = "properties.endpoint", access = JsonProperty.Access.WRITE_ONLY)
-    private String endpoint;
 
     /**
      * the default owner group for all new folders and files created in the
@@ -182,6 +189,33 @@ public class DataLakeStoreAccount extends Resource {
      */
     public DateTime creationTime() {
         return this.creationTime;
+    }
+
+    /**
+     * Get the lastModifiedTime value.
+     *
+     * @return the lastModifiedTime value
+     */
+    public DateTime lastModifiedTime() {
+        return this.lastModifiedTime;
+    }
+
+    /**
+     * Get the endpoint value.
+     *
+     * @return the endpoint value
+     */
+    public String endpoint() {
+        return this.endpoint;
+    }
+
+    /**
+     * Get the accountId value.
+     *
+     * @return the accountId value
+     */
+    public UUID accountId() {
+        return this.accountId;
     }
 
     /**
@@ -311,24 +345,6 @@ public class DataLakeStoreAccount extends Resource {
     public DataLakeStoreAccount withTrustedIdProviders(List<TrustedIdProvider> trustedIdProviders) {
         this.trustedIdProviders = trustedIdProviders;
         return this;
-    }
-
-    /**
-     * Get the lastModifiedTime value.
-     *
-     * @return the lastModifiedTime value
-     */
-    public DateTime lastModifiedTime() {
-        return this.lastModifiedTime;
-    }
-
-    /**
-     * Get the endpoint value.
-     *
-     * @return the endpoint value
-     */
-    public String endpoint() {
-        return this.endpoint;
     }
 
     /**

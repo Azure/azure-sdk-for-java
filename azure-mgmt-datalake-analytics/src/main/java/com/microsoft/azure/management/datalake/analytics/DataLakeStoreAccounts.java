@@ -26,99 +26,6 @@ import rx.Observable;
  */
 public interface DataLakeStoreAccounts {
     /**
-     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DataLakeStoreAccountInfo object if successful.
-     */
-    DataLakeStoreAccountInfo get(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
-
-    /**
-     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<DataLakeStoreAccountInfo> serviceCallback);
-
-    /**
-     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DataLakeStoreAccountInfo object
-     */
-    Observable<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
-
-    /**
-     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DataLakeStoreAccountInfo object
-     */
-    Observable<ServiceResponse<DataLakeStoreAccountInfo>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
-
-    /**
-     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws CloudException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     */
-    void delete(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
-
-    /**
-     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback);
-
-    /**
-     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
-
-    /**
-     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
-     *
-     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
-     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
-     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
-
-    /**
      * Updates the specified Data Lake Analytics account to include the additional Data Lake Store account.
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
@@ -212,6 +119,99 @@ public interface DataLakeStoreAccounts {
      * @return the {@link ServiceResponse} object if successful.
      */
     Observable<ServiceResponse<Void>> addWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, AddDataLakeStoreParameters parameters);
+
+    /**
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    void delete(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+
+    /**
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<Void> serviceCallback);
+
+    /**
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<Void> deleteAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+
+    /**
+     * Updates the Data Lake Analytics account specified to remove the specified Data Lake Store account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to remove the Data Lake Store account.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to remove
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the DataLakeStoreAccountInfo object if successful.
+     */
+    DataLakeStoreAccountInfo get(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName, final ServiceCallback<DataLakeStoreAccountInfo> serviceCallback);
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DataLakeStoreAccountInfo object
+     */
+    Observable<DataLakeStoreAccountInfo> getAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
+
+    /**
+     * Gets the specified Data Lake Store account details in the specified Data Lake Analytics account.
+     *
+     * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Analytics account.
+     * @param accountName The name of the Data Lake Analytics account from which to retrieve the Data Lake Store account details.
+     * @param dataLakeStoreAccountName The name of the Data Lake Store account to retrieve
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the DataLakeStoreAccountInfo object
+     */
+    Observable<ServiceResponse<DataLakeStoreAccountInfo>> getWithServiceResponseAsync(String resourceGroupName, String accountName, String dataLakeStoreAccountName);
 
     /**
      * Gets the first page of Data Lake Store accounts linked to the specified Data Lake Analytics account. The response includes a link to the next page, if any.

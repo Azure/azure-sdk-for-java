@@ -53,21 +53,18 @@ import org.apache.commons.codec.binary.Base64;
 
 /**
  * Azure Container Registry sample for deploying a container image to Azure Container Service with Kubernetes orchestration.
- *     - Create an Azure Container Registry to be used for holding the Docker images
- *     - If a local Docker engine cannot be found, create a Linux virtual machine that will host a Docker engine
- *         to be used for this sample
- *     - Use Docker Java to create a Docker client that will push/pull an image to/from Azure Container Registry
- *     - Pull a test image from the public Docker repo (tomcat:8) to be used as a sample for pushing/pulling
- *         to/from an Azure Container Registry
- *     - Create a new Docker container from an image that was pulled from Azure Container Registry
- *     - Create a SSH private/public key to be used when creating a container service
- *     - Create an Azure Container Service with Kubernetes orchestration
- *     - Log in via the SSH client and download the Kubernetes config
- *     - Create a Kubernetes client using the Kubernetes config file downloaded from one of the virtual machine managers
- *     - Create a Kubernetes namespace
- *     - Create a Kubernetes secret of type "docker-registry" using the Azure Container Registry credentials from above
- *     - Create a Kubernetes replication controller using a container image from the Azure private registry from above
- *         and a load balancer service that will expose the app to the world
+ *  - Create an Azure Container Registry to be used for holding the Docker images
+ *  - If a local Docker engine cannot be found, create a Linux virtual machine that will host a Docker engine to be used for this sample
+ *  - Use Docker Java to create a Docker client that will push/pull an image to/from Azure Container Registry
+ *  - Pull a test image from the public Docker repo (tomcat:8) to be used as a sample for pushing/pulling to/from an Azure Container Registry
+ *  - Create a new Docker container from an image that was pulled from Azure Container Registry
+ *  - Create a SSH private/public key to be used when creating a container service
+ *  - Create an Azure Container Service with Kubernetes orchestration
+ *  - Log in via the SSH client and download the Kubernetes config
+ *  - Create a Kubernetes client using the Kubernetes config file downloaded from one of the virtual machine managers
+ *  - Create a Kubernetes namespace
+ *  - Create a Kubernetes secret of type "docker-registry" using the Azure Container Registry credentials from above
+ *  - Create a Kubernetes replication controller using a container image from the Azure private registry from above and a load balancer service that will expose the app to the world
  */
 public class DeployImageFromContainerRegistryToKubernetes {
 

@@ -45,7 +45,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
         final Region region = Region.US_WEST_CENTRAL;
 
         final String installScript = "https://raw.githubusercontent.com/Azure/azure-sdk-for-java/master/azure-samples/src/main/resources/create_resources_with_msi.sh";
-        String installCommand = "bash create_resources_with_msi.sh {subscriptionID} {port} {stgName} {rgName} {location}";
+        String installCommand = "bash create_resources_with_msi.sh {stgName} {rgName} {location}";
         List<String> fileUris = new ArrayList<>();
         fileUris.add(installScript);
 
@@ -77,9 +77,7 @@ public final class ManageStorageFromMSIEnabledVirtualMachine {
             // Prepare custom script t install az cli that uses MSI to create a storage account
             //
             final String stgName = Utils.createRandomName("st44");
-            installCommand = installCommand.replace("{subscriptionID}", azure.subscriptionId())
-                            .replace("{port}", "50342")
-                            .replace("{stgName}", stgName)
+            installCommand = installCommand.replace("{stgName}", stgName)
                             .replace("{rgName}", rgName)
                             .replace("{location}", region.name());
 
