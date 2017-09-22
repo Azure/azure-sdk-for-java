@@ -5,15 +5,6 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
-import java.util.TreeMap;
-import java.util.TreeSet;
-
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.Network;
@@ -24,6 +15,15 @@ import com.microsoft.azure.management.network.RouteTable;
 import com.microsoft.azure.management.network.Subnet;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ChildResourceImpl;
+
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 /**
  *  Implementation for Subnet and its create and update interfaces.
@@ -182,28 +182,6 @@ class SubnetImpl
         }
 
         return Collections.unmodifiableCollection(ipConfigs);
-    }
-
-    @Override
-    public Set<String> listAvailablePrivateIPAddresses() {
-        Set<String> ipAddresses = new TreeSet<>();
-
-        String cidr = this.addressPrefix();
-        if (cidr == null) {
-            return ipAddresses; // Should never happen, but just in case
-        }
-        String takenIPAddress = cidr.split("/")[0];
-
-        IPAddressAvailabilityResultInner result = this.parent().manager().networks().inner().checkIPAddressAvailability(
-                this.parent().resourceGroupName(),
-                this.parent().name(),
-                takenIPAddress);
-        if (result == null) {
-            return ipAddresses;
-        }
-
-        ipAddresses.addAll(result.availableIPAddresses());
-        return ipAddresses;
     }
 
     @Override
