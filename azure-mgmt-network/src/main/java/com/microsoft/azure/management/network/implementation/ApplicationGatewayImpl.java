@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayAuthenticationCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
@@ -71,6 +72,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayListener> listeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
+    private Map<String, ApplicationGatewayAuthenticationCertificate> authCertificates;
 
     private static final String DEFAULT = "default";
     private ApplicationGatewayFrontendImpl defaultPrivateFrontend;
@@ -116,9 +118,21 @@ class ApplicationGatewayImpl
         initializeHttpListenersFromInner();
         initializeRequestRoutingRulesFromInner();
         initializeSslCertificatesFromInner();
+        initializeAuthCertificatesFromInner();
         this.defaultPrivateFrontend = null;
         this.defaultPublicFrontend = null;
         this.creatablePipsByFrontend = new HashMap<>();
+    }
+
+    private void initializeAuthCertificatesFromInner() {
+        this.authCertificates = new TreeMap<>();
+        List<ApplicationGatewayAuthenticationCertificateInner> inners = this.inner().authenticationCertificates();
+        if (inners != null) {
+            for (ApplicationGatewayAuthenticationCertificateInner inner : inners) {
+                ApplicationGatewayAuthenticationCertificateImpl cert = new ApplicationGatewayAuthenticationCertificateImpl(inner, this);
+                this.authCertificates.put(inner.name(), cert);
+            }
+        }
     }
 
     private void initializeSslCertificatesFromInner() {
@@ -293,6 +307,9 @@ class ApplicationGatewayImpl
 
         // Reset and update SSL certs
         this.inner().withSslCertificates(innersFromWrappers(this.sslCerts.values()));
+
+        // Reset and update auth certs
+        this.inner().withAuthenticationCertificates(innersFromWrappers(this.authCertificates.values()));
     }
 
     @Override
@@ -576,6 +593,13 @@ class ApplicationGatewayImpl
         return this;
     }
 
+    ApplicationGatewayImpl withAuthenticationCertificate(ApplicationGatewayAuthenticationCertificateImpl authCert) {
+        if (authCert != null) {
+            this.authCertificates.put(authCert.name(), authCert);
+        }
+        return this;
+    }
+
     ApplicationGatewayImpl withSslCertificate(ApplicationGatewaySslCertificateImpl cert) {
         if (cert != null) {
             this.sslCerts.put(cert.name(), cert);
@@ -691,6 +715,17 @@ class ApplicationGatewayImpl
             return new ApplicationGatewayBackendImpl(inner, this);
         } else {
             return (ApplicationGatewayBackendImpl) backend;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayAuthenticationCertificateImpl defineAuthenticationCertificate(String name) {
+        ApplicationGatewayAuthenticationCertificate cert = this.authCertificates.get(name);
+        if (cert == null) {
+            ApplicationGatewayAuthenticationCertificateInner inner = new ApplicationGatewayAuthenticationCertificateInner().withName(name);
+            return new ApplicationGatewayAuthenticationCertificateImpl(inner, this);
+        } else {
+            return (ApplicationGatewayAuthenticationCertificateImpl) cert;
         }
     }
 
@@ -1084,6 +1119,11 @@ class ApplicationGatewayImpl
             }
         }
         return listener;
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates() {
+        return Collections.unmodifiableMap(this.authCertificates);
     }
 
     @Override

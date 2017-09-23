@@ -16,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayAuthenticationCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
@@ -335,6 +336,11 @@ public class TestApplicationGateway {
                                 .withPfxPassword("Abc123")
                                 .attach()
 
+                            // Authentication certificates
+                            .defineAuthenticationCertificate("auth1")
+                                .fromFile(new File(getClass().getClassLoader().getResource("myTest.cer").getFile()))
+                                .attach()
+
                             .withExistingSubnet(vnet, "subnet1")
                             .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                             .withInstanceCount(2)
@@ -389,9 +395,15 @@ public class TestApplicationGateway {
             Assert.assertTrue(appGateway.listenerByPortNumber(80) != null);
             Assert.assertTrue(appGateway.listenerByPortNumber(443) != null);
 
-            // Verify certificates
-            Assert.assertTrue(appGateway.sslCertificates().size() == 2);
+            // Verify SSL certificates
+            Assert.assertEquals(2, appGateway.sslCertificates().size());
             Assert.assertTrue(appGateway.sslCertificates().containsKey("cert1"));
+
+            // Verify authentication certificates
+            Assert.assertEquals(1, appGateway.authenticationCertificates().size());
+            ApplicationGatewayAuthenticationCertificate authCert = appGateway.authenticationCertificates().get("auth1");
+            Assert.assertNotNull(authCert);
+            Assert.assertNotNull(authCert.data());
 
             // Verify backend HTTP settings configs
             Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 3);
@@ -1189,6 +1201,14 @@ public class TestApplicationGateway {
                 .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
                 .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
                 .append("\n\t\tHost: ").append(probe.host());
+        }
+
+        // Show authentication certificates
+        Map<String, ApplicationGatewayAuthenticationCertificate> certs = resource.authenticationCertificates();
+        info.append("\n\tAuthentication certificates: ").append(certs.size());
+        for (ApplicationGatewayAuthenticationCertificate cert : certs.values()) {
+            info.append("\n\t\tName: ").append(cert.name())
+                .append("\n\t\tBase-64 encoded data: ").append(cert.data());
         }
 
         // Show request routing rules
