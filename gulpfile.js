@@ -5,7 +5,7 @@ var colors = require('colors');
 var spawn = require('child_process').spawn;
 var fs = require('fs');
 
-const mappings = require('./mappings.json');
+const mappings = require('./api-specs.json');
 const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current";
 
 gulp.task('default', function() {
