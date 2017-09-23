@@ -125,7 +125,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
         }
 
         final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver, receiverOptions);
-        return receiver.createInternalReceiver().thenApply(new Function<Void, PartitionReceiver>() {
+        return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>() {
             public PartitionReceiver apply(Void a) {
                 return receiver;
             }
@@ -137,7 +137,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                 StringUtil.getRandomString(),
                 String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
                 PartitionReceiver.DEFAULT_PREFETCH_COUNT, this)
-                .thenAccept(new Consumer<MessageReceiver>() {
+                .thenAcceptAsync(new Consumer<MessageReceiver>() {
                     public void accept(MessageReceiver r) {
                         PartitionReceiver.this.internalReceiver = r;
                     }
@@ -289,7 +289,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      * @return A completableFuture that will yield a batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
      */
     public CompletableFuture<Iterable<EventData>> receive(final int maxEventCount) {
-        return this.internalReceiver.receive(maxEventCount).thenApply(new Function<Collection<Message>, Iterable<EventData>>() {
+        return this.internalReceiver.receive(maxEventCount).thenApplyAsync(new Function<Collection<Message>, Iterable<EventData>>() {
             @Override
             public Iterable<EventData> apply(Collection<Message> amqpMessages) {
                 PassByRef<Message> lastMessageRef = null;

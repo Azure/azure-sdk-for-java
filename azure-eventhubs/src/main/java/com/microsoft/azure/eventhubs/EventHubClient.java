@@ -123,7 +123,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
         final EventHubClient eventHubClient = new EventHubClient(connStr);
 
         return MessagingFactory.createFromConnectionString(connectionString.toString(), retryPolicy)
-                .thenApply(new Function<MessagingFactory, EventHubClient>() {
+                .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
                     @Override
                     public EventHubClient apply(MessagingFactory factory) {
                         eventHubClient.underlyingFactory = factory;
@@ -141,7 +141,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      */
     public final EventDataBatch createBatch(BatchOptions options) throws EventHubException {
         try {
-            int maxSize = this.createInternalSender().thenApply((aVoid) -> this.sender.getMaxMessageSize()).get();
+            int maxSize = this.createInternalSender().thenApplyAsync((aVoid) -> this.sender.getMaxMessageSize()).get();
             if (options.maxMessageSize == null) {
                 return new EventDataBatch(maxSize, options.partitionKey);
             }
@@ -239,7 +239,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             throw new IllegalArgumentException("EventData cannot be empty.");
         }
 
-        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClient.this.sender.send(data.toAmqpMessage());
@@ -323,7 +323,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
         }
 
-        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClient.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas));
@@ -442,7 +442,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             throw new IllegalArgumentException("partitionKey cannot be null");
         }
 
-        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClient.this.sender.send(eventData.toAmqpMessage(partitionKey));
@@ -512,7 +512,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
                     String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: {0}", ClientConstants.MAX_PARTITION_KEY_LENGTH));
         }
 
-        return this.createInternalSender().thenCompose(new Function<Void, CompletableFuture<Void>>() {
+        return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClient.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey));
@@ -1236,7 +1236,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
         if (this.underlyingFactory != null) {
             synchronized (this.senderCreateSync) {
                 final CompletableFuture<Void> internalSenderClose = this.sender != null
-                        ? this.sender.close().thenCompose(new Function<Void, CompletableFuture<Void>>() {
+                        ? this.sender.close().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
                     @Override
                     public CompletableFuture<Void> apply(Void voidArg) {
                         return EventHubClient.this.underlyingFactory.close();
@@ -1256,7 +1256,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             synchronized (this.senderCreateSync) {
                 if (!this.isSenderCreateStarted) {
                     this.createSender = MessageSender.create(this.underlyingFactory, StringUtil.getRandomString(), this.eventHubName)
-                            .thenAccept(new Consumer<MessageSender>() {
+                            .thenAcceptAsync(new Consumer<MessageSender>() {
                                 public void accept(MessageSender a) {
                                     EventHubClient.this.sender = a;
                                 }
@@ -1290,7 +1290,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
         future1 = this.<EventHubRuntimeInformation>addManagementToken(request);
 
         if (future1 == null) {
-	        future1 = managementWithRetry(request).thenCompose(new Function<Map<String, Object>, CompletableFuture<EventHubRuntimeInformation>>() {
+	        future1 = managementWithRetry(request).thenComposeAsync(new Function<Map<String, Object>, CompletableFuture<EventHubRuntimeInformation>>() {
 				@Override
 				public CompletableFuture<EventHubRuntimeInformation> apply(Map<String, Object> rawdata) {
 			        CompletableFuture<EventHubRuntimeInformation> future2 = new CompletableFuture<EventHubRuntimeInformation>();
@@ -1329,7 +1329,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
         future1 = this.<EventHubPartitionRuntimeInformation>addManagementToken(request);
 
         if (future1 == null) {
-	        future1 = managementWithRetry(request).thenCompose(new Function<Map<String, Object>, CompletableFuture<EventHubPartitionRuntimeInformation>>() {
+	        future1 = managementWithRetry(request).thenComposeAsync(new Function<Map<String, Object>, CompletableFuture<EventHubPartitionRuntimeInformation>>() {
 				@Override
 				public CompletableFuture<EventHubPartitionRuntimeInformation> apply(Map<String, Object> rawdata) {
 					CompletableFuture<EventHubPartitionRuntimeInformation> future2 = new CompletableFuture<EventHubPartitionRuntimeInformation>();

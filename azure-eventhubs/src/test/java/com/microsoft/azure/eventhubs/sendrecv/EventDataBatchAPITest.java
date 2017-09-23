@@ -4,7 +4,9 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
+import java.nio.charset.Charset;
 import java.time.Duration;
+import java.time.Instant;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;

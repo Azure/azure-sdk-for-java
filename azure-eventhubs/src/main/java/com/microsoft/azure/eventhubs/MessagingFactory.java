@@ -87,7 +87,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
                 : new SharedAccessSignatureTokenProvider(builder.getSharedAccessSignature());
 
         this.closeTask = new CompletableFuture<>();
-        this.closeTask.thenAccept(new Consumer<Void>() {
+        this.closeTask.thenAcceptAsync(new Consumer<Void>() {
             @Override
             public void accept(Void arg0) {
                 Timer.unregister(getClientId());
