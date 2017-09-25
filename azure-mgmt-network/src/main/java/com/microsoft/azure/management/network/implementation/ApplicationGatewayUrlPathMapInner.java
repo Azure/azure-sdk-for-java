@@ -32,6 +32,12 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
     private SubResource defaultBackendHttpSettings;
 
     /**
+     * Default redirect configuration resource of URL path map.
+     */
+    @JsonProperty(value = "properties.defaultRedirectConfiguration")
+    private SubResource defaultRedirectConfiguration;
+
+    /**
      * Path rule of URL path map resource.
      */
     @JsonProperty(value = "properties.pathRules")
@@ -56,6 +62,12 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
      */
     @JsonProperty(value = "etag")
     private String etag;
+
+    /**
+     * Type of the resource.
+     */
+    @JsonProperty(value = "type")
+    private String type;
 
     /**
      * Get the defaultBackendAddressPool value.
@@ -94,6 +106,26 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
      */
     public ApplicationGatewayUrlPathMapInner withDefaultBackendHttpSettings(SubResource defaultBackendHttpSettings) {
         this.defaultBackendHttpSettings = defaultBackendHttpSettings;
+        return this;
+    }
+
+    /**
+     * Get the defaultRedirectConfiguration value.
+     *
+     * @return the defaultRedirectConfiguration value
+     */
+    public SubResource defaultRedirectConfiguration() {
+        return this.defaultRedirectConfiguration;
+    }
+
+    /**
+     * Set the defaultRedirectConfiguration value.
+     *
+     * @param defaultRedirectConfiguration the defaultRedirectConfiguration value to set
+     * @return the ApplicationGatewayUrlPathMapInner object itself.
+     */
+    public ApplicationGatewayUrlPathMapInner withDefaultRedirectConfiguration(SubResource defaultRedirectConfiguration) {
+        this.defaultRedirectConfiguration = defaultRedirectConfiguration;
         return this;
     }
 
@@ -174,6 +206,26 @@ public class ApplicationGatewayUrlPathMapInner extends SubResource {
      */
     public ApplicationGatewayUrlPathMapInner withEtag(String etag) {
         this.etag = etag;
+        return this;
+    }
+
+    /**
+     * Get the type value.
+     *
+     * @return the type value
+     */
+    public String type() {
+        return this.type;
+    }
+
+    /**
+     * Set the type value.
+     *
+     * @param type the type value to set
+     * @return the ApplicationGatewayUrlPathMapInner object itself.
+     */
+    public ApplicationGatewayUrlPathMapInner withType(String type) {
+        this.type = type;
         return this;
     }
 

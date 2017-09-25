@@ -154,7 +154,7 @@ public class VirtualMachineExtensionsInner {
             throw new IllegalArgumentException("Parameter extensionParameters is required and cannot be null.");
         }
         Validator.validate(extensionParameters);
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), extensionParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<VirtualMachineExtensionInner>() { }.getType());
     }
@@ -236,7 +236,7 @@ public class VirtualMachineExtensionsInner {
             throw new IllegalArgumentException("Parameter extensionParameters is required and cannot be null.");
         }
         Validator.validate(extensionParameters);
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.beginCreateOrUpdate(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), extensionParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineExtensionInner>>>() {
                 @Override
@@ -328,7 +328,7 @@ public class VirtualMachineExtensionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<OperationStatusResponseInner>() { }.getType());
     }
@@ -402,7 +402,7 @@ public class VirtualMachineExtensionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.beginDelete(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OperationStatusResponseInner>>>() {
                 @Override
@@ -495,7 +495,7 @@ public class VirtualMachineExtensionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         final String expand = null;
         return service.get(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineExtensionInner>>>() {
@@ -584,7 +584,7 @@ public class VirtualMachineExtensionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-04-30-preview";
+        final String apiVersion = "2017-03-30";
         return service.get(resourceGroupName, vmName, vmExtensionName, this.client.subscriptionId(), expand, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VirtualMachineExtensionInner>>>() {
                 @Override

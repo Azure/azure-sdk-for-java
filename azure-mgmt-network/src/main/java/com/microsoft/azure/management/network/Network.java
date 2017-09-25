@@ -8,7 +8,9 @@ package com.microsoft.azure.management.network;
 import java.util.List;
 import java.util.Map;
 
+import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -27,9 +29,22 @@ public interface Network extends
         Refreshable<Network>,
         Updatable<Network.Update> {
 
-    /***********************************************************
-     * Getters
-     ***********************************************************/
+    /**
+     * Checks if the specified private IP address is available in this network.
+     * @param ipAddress an IP address from this network's address space
+     * @return true if the address is within this network's address space and is available
+     */
+    @Beta(SinceVersion.V1_3_0)
+    boolean isPrivateIPAddressAvailable(String ipAddress);
+
+    /**
+     * Checks if the specified private IP address is within this network's address space.
+     * @param ipAddress an IP address
+     * @return true if the specified IP address is within this network's address space, otherwise false
+     */
+    @Beta(SinceVersion.V1_3_0)
+    boolean isPrivateIPAddressInNetwork(String ipAddress);
+
     /**
      * @return list of address spaces associated with this virtual network, in the CIDR notation
      */
@@ -47,6 +62,12 @@ public interface Network extends
      * automatically created with the name "subnet1".
      */
     Map<String, Subnet> subnets();
+
+    /**
+     * @return entry point to managing virtual network peerings for this network
+     */
+    @Beta(SinceVersion.V1_3_0)
+    NetworkPeerings peerings();
 
     /**
      * The entirety of the virtual network definition.
@@ -113,11 +134,10 @@ public interface Network extends
 
         /**
          * The stage of the virtual network definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified, except for adding subnets.
          * <p>
-         * Subnets can be added only right after the address space is explicitly specified
-         * (see {@link WithCreate#withAddressSpace(String)}).
+         * Subnets can be added only right after the address space is explicitly specified.
          */
         interface WithCreate extends
             Creatable<Network>,

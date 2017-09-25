@@ -14,10 +14,17 @@ import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.LoadBalancerPublicFrontend;
 import com.microsoft.azure.management.network.PublicIPAddressDnsSettings;
 import com.microsoft.azure.management.network.PublicIPAddress;
+import com.microsoft.azure.management.network.PublicIPSkuType;
+import com.microsoft.azure.management.resources.fluentcore.arm.AvailabilityZoneId;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
+
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  *  Implementation for PublicIPAddress and its create and update interfaces.
@@ -74,6 +81,30 @@ class PublicIPAddressImpl
     }
 
     @Override
+    public PublicIPAddressImpl withAvailabilityZone(AvailabilityZoneId zoneId) {
+        // Note: Zone is not updatable as of now, so this is available only during definition time.
+        // Service return `ResourceAvailabilityZonesCannotBeModified` upon attempt to append a new
+        // zone or remove one. Trying to remove the last one means attempt to change resource from
+        // zonal to regional, which is not supported.
+        //
+        if (this.inner().zones() == null) {
+            this.inner().withZones(new ArrayList<String>());
+        }
+        this.inner().zones().add(zoneId.toString());
+        return this;
+    }
+
+    @Override
+    public PublicIPAddressImpl withSku(PublicIPSkuType skuType) {
+        // Note: SKU is not updatable as of now, so this is available only during definition time.
+        // Service return `SkuCannotBeChangedOnUpdate` upon attempt to change it.
+        // Service default is PublicIPSkuType.BASIC
+        //
+        this.inner().withSku(skuType.sku());
+        return this;
+    }
+
+    @Override
     public PublicIPAddressImpl withoutLeafDomainLabel() {
         return this.withLeafDomainLabel(null);
     }
@@ -88,7 +119,6 @@ class PublicIPAddressImpl
     public PublicIPAddressImpl withoutReverseFqdn() {
         return this.withReverseFqdn(null);
     }
-
 
     // Getters
 
@@ -189,6 +219,22 @@ class PublicIPAddressImpl
     @Override
     public boolean hasAssignedNetworkInterface() {
         return equalsResourceType("ipConfigurations");
+    }
+
+    @Override
+    public Set<AvailabilityZoneId> availabilityZones() {
+        Set<AvailabilityZoneId> zones = new HashSet<>();
+        if (this.inner().zones() != null) {
+            for (String zone : this.inner().zones()) {
+                zones.add(AvailabilityZoneId.fromString(zone));
+            }
+        }
+        return Collections.unmodifiableSet(zones);
+    }
+
+    @Override
+    public PublicIPSkuType sku() {
+        return PublicIPSkuType.fromSku(this.inner().sku());
     }
 
     @Override

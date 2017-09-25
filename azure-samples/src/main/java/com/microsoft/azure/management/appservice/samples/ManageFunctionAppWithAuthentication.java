@@ -33,7 +33,7 @@ import java.util.concurrent.TimeUnit;
 /**
  * Azure App Service basic sample for managing function apps.
  *  - Create 3 function apps under the same new app service plan and with the same storage account
- *    - Deploy 1 & 2 via Git a function that calculates the square of a number
+ *    - Deploy 1 &amp; 2 via Git a function that calculates the square of a number
  *    - Deploy 3 via Web Deploy
  *    - Enable app level authentication for the 1st function app
  *    - Verify the 1st function app can be accessed with the admin key

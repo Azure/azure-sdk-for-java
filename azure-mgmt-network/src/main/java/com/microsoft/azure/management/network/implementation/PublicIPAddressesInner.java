@@ -92,6 +92,18 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Network/publicIPAddresses")
         Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.PublicIPAddresses listVirtualMachineScaleSetPublicIPAddresses" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/publicipaddresses")
+        Observable<Response<ResponseBody>> listVirtualMachineScaleSetPublicIPAddresses(@Path("resourceGroupName") String resourceGroupName, @Path("virtualMachineScaleSetName") String virtualMachineScaleSetName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.PublicIPAddresses listVirtualMachineScaleSetVMPublicIPAddresses" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses")
+        Observable<Response<ResponseBody>> listVirtualMachineScaleSetVMPublicIPAddresses(@Path("resourceGroupName") String resourceGroupName, @Path("virtualMachineScaleSetName") String virtualMachineScaleSetName, @Path("virtualmachineIndex") String virtualmachineIndex, @Path("networkInterfaceName") String networkInterfaceName, @Path("ipConfigurationName") String ipConfigurationName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.PublicIPAddresses getVirtualMachineScaleSetPublicIPAddress" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachineScaleSets/{virtualMachineScaleSetName}/virtualMachines/{virtualmachineIndex}/networkInterfaces/{networkInterfaceName}/ipconfigurations/{ipConfigurationName}/publicipaddresses/{publicIpAddressName}")
+        Observable<Response<ResponseBody>> getVirtualMachineScaleSetPublicIPAddress(@Path("resourceGroupName") String resourceGroupName, @Path("virtualMachineScaleSetName") String virtualMachineScaleSetName, @Path("virtualmachineIndex") String virtualmachineIndex, @Path("networkInterfaceName") String networkInterfaceName, @Path("ipConfigurationName") String ipConfigurationName, @Path("publicIpAddressName") String publicIpAddressName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Query("$expand") String expand, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.PublicIPAddresses listNext" })
         @GET
         Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -99,6 +111,14 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.PublicIPAddresses listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.PublicIPAddresses listVirtualMachineScaleSetPublicIPAddressesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listVirtualMachineScaleSetPublicIPAddressesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.network.PublicIPAddresses listVirtualMachineScaleSetVMPublicIPAddressesNext" })
+        @GET
+        Observable<Response<ResponseBody>> listVirtualMachineScaleSetVMPublicIPAddressesNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
     }
 
@@ -163,7 +183,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -229,7 +249,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginDelete(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -315,7 +335,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         final String expand = null;
         return service.getByResourceGroup(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicIPAddressInner>>>() {
@@ -397,7 +417,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.getByResourceGroup(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicIPAddressInner>>>() {
                 @Override
@@ -489,7 +509,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<PublicIPAddressInner>() { }.getType());
     }
@@ -564,7 +584,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
             throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
         }
         Validator.validate(parameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginCreateOrUpdate(resourceGroupName, publicIpAddressName, this.client.subscriptionId(), parameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicIPAddressInner>>>() {
                 @Override
@@ -670,7 +690,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.list(this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override
@@ -783,7 +803,7 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
                 @Override
@@ -801,6 +821,494 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
     private ServiceResponse<PageImpl<PublicIPAddressInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<PublicIPAddressInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PublicIPAddressInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
+     */
+    public PagedList<PublicIPAddressInner> listVirtualMachineScaleSetPublicIPAddresses(final String resourceGroupName, final String virtualMachineScaleSetName) {
+        ServiceResponse<Page<PublicIPAddressInner>> response = listVirtualMachineScaleSetPublicIPAddressesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName).toBlocking().single();
+        return new PagedList<PublicIPAddressInner>(response.body()) {
+            @Override
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
+                return listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PublicIPAddressInner>> listVirtualMachineScaleSetPublicIPAddressesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listVirtualMachineScaleSetPublicIPAddressesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName),
+            new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(String nextPageLink) {
+                    return listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<Page<PublicIPAddressInner>> listVirtualMachineScaleSetPublicIPAddressesAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
+        return listVirtualMachineScaleSetPublicIPAddressesWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName)
+            .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
+                @Override
+                public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listVirtualMachineScaleSetPublicIPAddressesWithServiceResponseAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
+        return listVirtualMachineScaleSetPublicIPAddressesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName)
+            .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listVirtualMachineScaleSetPublicIPAddressesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listVirtualMachineScaleSetPublicIPAddressesSinglePageAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualMachineScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2017-03-30";
+        return service.listVirtualMachineScaleSetPublicIPAddresses(resourceGroupName, virtualMachineScaleSetName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicIPAddressInner>> result = listVirtualMachineScaleSetPublicIPAddressesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PublicIPAddressInner>> listVirtualMachineScaleSetPublicIPAddressesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PublicIPAddressInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PublicIPAddressInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
+     */
+    public PagedList<PublicIPAddressInner> listVirtualMachineScaleSetVMPublicIPAddresses(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final String networkInterfaceName, final String ipConfigurationName) {
+        ServiceResponse<Page<PublicIPAddressInner>> response = listVirtualMachineScaleSetVMPublicIPAddressesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName).toBlocking().single();
+        return new PagedList<PublicIPAddressInner>(response.body()) {
+            @Override
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
+                return listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PublicIPAddressInner>> listVirtualMachineScaleSetVMPublicIPAddressesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final String networkInterfaceName, final String ipConfigurationName, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listVirtualMachineScaleSetVMPublicIPAddressesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName),
+            new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(String nextPageLink) {
+                    return listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<Page<PublicIPAddressInner>> listVirtualMachineScaleSetVMPublicIPAddressesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final String networkInterfaceName, final String ipConfigurationName) {
+        return listVirtualMachineScaleSetVMPublicIPAddressesWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName)
+            .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
+                @Override
+                public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The network interface name.
+     * @param ipConfigurationName The IP configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listVirtualMachineScaleSetVMPublicIPAddressesWithServiceResponseAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final String networkInterfaceName, final String ipConfigurationName) {
+        return listVirtualMachineScaleSetVMPublicIPAddressesSinglePageAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName)
+            .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listVirtualMachineScaleSetVMPublicIPAddressesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param virtualmachineIndex The virtual machine index.
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param networkInterfaceName The network interface name.
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param ipConfigurationName The IP configuration name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listVirtualMachineScaleSetVMPublicIPAddressesSinglePageAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final String networkInterfaceName, final String ipConfigurationName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualMachineScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null.");
+        }
+        if (virtualmachineIndex == null) {
+            throw new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null.");
+        }
+        if (networkInterfaceName == null) {
+            throw new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null.");
+        }
+        if (ipConfigurationName == null) {
+            throw new IllegalArgumentException("Parameter ipConfigurationName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2017-03-30";
+        return service.listVirtualMachineScaleSetVMPublicIPAddresses(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicIPAddressInner>> result = listVirtualMachineScaleSetVMPublicIPAddressesDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PublicIPAddressInner>> listVirtualMachineScaleSetVMPublicIPAddressesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PublicIPAddressInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PublicIPAddressInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PublicIPAddressInner object if successful.
+     */
+    public PublicIPAddressInner getVirtualMachineScaleSetPublicIPAddress(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName) {
+        return getVirtualMachineScaleSetPublicIPAddressWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName).toBlocking().single().body();
+    }
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PublicIPAddressInner> getVirtualMachineScaleSetPublicIPAddressAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVirtualMachineScaleSetPublicIPAddressWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName), serviceCallback);
+    }
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<PublicIPAddressInner> getVirtualMachineScaleSetPublicIPAddressAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName) {
+        return getVirtualMachineScaleSetPublicIPAddressWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
+            @Override
+            public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<ServiceResponse<PublicIPAddressInner>> getVirtualMachineScaleSetPublicIPAddressWithServiceResponseAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualMachineScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null.");
+        }
+        if (virtualmachineIndex == null) {
+            throw new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null.");
+        }
+        if (networkInterfaceName == null) {
+            throw new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null.");
+        }
+        if (ipConfigurationName == null) {
+            throw new IllegalArgumentException("Parameter ipConfigurationName is required and cannot be null.");
+        }
+        if (publicIpAddressName == null) {
+            throw new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2017-03-30";
+        final String expand = null;
+        return service.getVirtualMachineScaleSetPublicIPAddress(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicIPAddressInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PublicIPAddressInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PublicIPAddressInner> clientResponse = getVirtualMachineScaleSetPublicIPAddressDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PublicIPAddressInner object if successful.
+     */
+    public PublicIPAddressInner getVirtualMachineScaleSetPublicIPAddress(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName, String expand) {
+        return getVirtualMachineScaleSetPublicIPAddressWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, expand).toBlocking().single().body();
+    }
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<PublicIPAddressInner> getVirtualMachineScaleSetPublicIPAddressAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName, String expand, final ServiceCallback<PublicIPAddressInner> serviceCallback) {
+        return ServiceFuture.fromResponse(getVirtualMachineScaleSetPublicIPAddressWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, expand), serviceCallback);
+    }
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<PublicIPAddressInner> getVirtualMachineScaleSetPublicIPAddressAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName, String expand) {
+        return getVirtualMachineScaleSetPublicIPAddressWithServiceResponseAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, expand).map(new Func1<ServiceResponse<PublicIPAddressInner>, PublicIPAddressInner>() {
+            @Override
+            public PublicIPAddressInner call(ServiceResponse<PublicIPAddressInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Get the specified public IP address in a virtual machine scale set.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param virtualMachineScaleSetName The name of the virtual machine scale set.
+     * @param virtualmachineIndex The virtual machine index.
+     * @param networkInterfaceName The name of the network interface.
+     * @param ipConfigurationName The name of the IP configuration.
+     * @param publicIpAddressName The name of the public IP Address.
+     * @param expand Expands referenced resources.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PublicIPAddressInner object
+     */
+    public Observable<ServiceResponse<PublicIPAddressInner>> getVirtualMachineScaleSetPublicIPAddressWithServiceResponseAsync(String resourceGroupName, String virtualMachineScaleSetName, String virtualmachineIndex, String networkInterfaceName, String ipConfigurationName, String publicIpAddressName, String expand) {
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (virtualMachineScaleSetName == null) {
+            throw new IllegalArgumentException("Parameter virtualMachineScaleSetName is required and cannot be null.");
+        }
+        if (virtualmachineIndex == null) {
+            throw new IllegalArgumentException("Parameter virtualmachineIndex is required and cannot be null.");
+        }
+        if (networkInterfaceName == null) {
+            throw new IllegalArgumentException("Parameter networkInterfaceName is required and cannot be null.");
+        }
+        if (ipConfigurationName == null) {
+            throw new IllegalArgumentException("Parameter ipConfigurationName is required and cannot be null.");
+        }
+        if (publicIpAddressName == null) {
+            throw new IllegalArgumentException("Parameter publicIpAddressName is required and cannot be null.");
+        }
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        final String apiVersion = "2017-03-30";
+        return service.getVirtualMachineScaleSetPublicIPAddress(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName, publicIpAddressName, this.client.subscriptionId(), apiVersion, expand, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PublicIPAddressInner>>>() {
+                @Override
+                public Observable<ServiceResponse<PublicIPAddressInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PublicIPAddressInner> clientResponse = getVirtualMachineScaleSetPublicIPAddressDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PublicIPAddressInner> getVirtualMachineScaleSetPublicIPAddressDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PublicIPAddressInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PublicIPAddressInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1021,6 +1529,228 @@ public class PublicIPAddressesInner implements InnerSupportsGet<PublicIPAddressI
     }
 
     private ServiceResponse<PageImpl<PublicIPAddressInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PublicIPAddressInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PublicIPAddressInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
+     */
+    public PagedList<PublicIPAddressInner> listVirtualMachineScaleSetPublicIPAddressesNext(final String nextPageLink) {
+        ServiceResponse<Page<PublicIPAddressInner>> response = listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PublicIPAddressInner>(response.body()) {
+            @Override
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
+                return listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PublicIPAddressInner>> listVirtualMachineScaleSetPublicIPAddressesNextAsync(final String nextPageLink, final ServiceFuture<List<PublicIPAddressInner>> serviceFuture, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(String nextPageLink) {
+                    return listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<Page<PublicIPAddressInner>> listVirtualMachineScaleSetPublicIPAddressesNextAsync(final String nextPageLink) {
+        return listVirtualMachineScaleSetPublicIPAddressesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
+                @Override
+                public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listVirtualMachineScaleSetPublicIPAddressesNextWithServiceResponseAsync(final String nextPageLink) {
+        return listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listVirtualMachineScaleSetPublicIPAddressesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets information about all public IP addresses on a virtual machine scale set level.
+     *
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listVirtualMachineScaleSetPublicIPAddressesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listVirtualMachineScaleSetPublicIPAddressesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicIPAddressInner>> result = listVirtualMachineScaleSetPublicIPAddressesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PublicIPAddressInner>> listVirtualMachineScaleSetPublicIPAddressesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<PublicIPAddressInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<PublicIPAddressInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object if successful.
+     */
+    public PagedList<PublicIPAddressInner> listVirtualMachineScaleSetVMPublicIPAddressesNext(final String nextPageLink) {
+        ServiceResponse<Page<PublicIPAddressInner>> response = listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<PublicIPAddressInner>(response.body()) {
+            @Override
+            public Page<PublicIPAddressInner> nextPage(String nextPageLink) {
+                return listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<PublicIPAddressInner>> listVirtualMachineScaleSetVMPublicIPAddressesNextAsync(final String nextPageLink, final ServiceFuture<List<PublicIPAddressInner>> serviceFuture, final ListOperationCallback<PublicIPAddressInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(String nextPageLink) {
+                    return listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<Page<PublicIPAddressInner>> listVirtualMachineScaleSetVMPublicIPAddressesNextAsync(final String nextPageLink) {
+        return listVirtualMachineScaleSetVMPublicIPAddressesNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Page<PublicIPAddressInner>>() {
+                @Override
+                public Page<PublicIPAddressInner> call(ServiceResponse<Page<PublicIPAddressInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;PublicIPAddressInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listVirtualMachineScaleSetVMPublicIPAddressesNextWithServiceResponseAsync(final String nextPageLink) {
+        return listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<PublicIPAddressInner>>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(ServiceResponse<Page<PublicIPAddressInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listVirtualMachineScaleSetVMPublicIPAddressesNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets information about all public IP addresses in a virtual machine IP configuration in a virtual machine scale set.
+     *
+    ServiceResponse<PageImpl<PublicIPAddressInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;PublicIPAddressInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<PublicIPAddressInner>>> listVirtualMachineScaleSetVMPublicIPAddressesNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listVirtualMachineScaleSetVMPublicIPAddressesNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PublicIPAddressInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<PublicIPAddressInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<PublicIPAddressInner>> result = listVirtualMachineScaleSetVMPublicIPAddressesNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<PublicIPAddressInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<PublicIPAddressInner>> listVirtualMachineScaleSetVMPublicIPAddressesNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<PageImpl<PublicIPAddressInner>, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<PageImpl<PublicIPAddressInner>>() { }.getType())
                 .registerError(CloudException.class)

@@ -159,7 +159,7 @@ public class SecurityRulesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
@@ -232,7 +232,7 @@ public class SecurityRulesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginDelete(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
@@ -325,7 +325,7 @@ public class SecurityRulesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.get(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecurityRuleInner>>>() {
                 @Override
@@ -424,7 +424,7 @@ public class SecurityRulesInner {
             throw new IllegalArgumentException("Parameter securityRuleParameters is required and cannot be null.");
         }
         Validator.validate(securityRuleParameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), securityRuleParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<SecurityRuleInner>() { }.getType());
     }
@@ -506,7 +506,7 @@ public class SecurityRulesInner {
             throw new IllegalArgumentException("Parameter securityRuleParameters is required and cannot be null.");
         }
         Validator.validate(securityRuleParameters);
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.beginCreateOrUpdate(resourceGroupName, networkSecurityGroupName, securityRuleName, this.client.subscriptionId(), securityRuleParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SecurityRuleInner>>>() {
                 @Override
@@ -628,7 +628,7 @@ public class SecurityRulesInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        final String apiVersion = "2016-12-01";
+        final String apiVersion = "2017-08-01";
         return service.list(resourceGroupName, networkSecurityGroupName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SecurityRuleInner>>>>() {
                 @Override

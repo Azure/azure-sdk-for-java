@@ -36,7 +36,7 @@ public final class Utils {
         if (value == null) {
             return false;
         }
-        return value;
+        return value.booleanValue();
     }
 
     /**
@@ -49,7 +49,7 @@ public final class Utils {
         if (value == null) {
             return 0;
         }
-        return value;
+        return value.intValue();
     }
 
     /**

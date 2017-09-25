@@ -6,6 +6,6 @@
 
 /**
  * This package contains the implementation classes for NetworkManagementClient.
- * Composite Swagger for Network Client.
+ * Network Client.
  */
 package com.microsoft.azure.management.network.implementation;

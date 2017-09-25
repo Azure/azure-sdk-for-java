@@ -15,6 +15,7 @@ import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccount;
+import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountBasic;
 import com.microsoft.azure.management.datalake.store.models.DataLakeStoreAccountUpdateParameters;
 import com.microsoft.azure.management.datalake.store.models.PageImpl;
 import com.microsoft.azure.Page;
@@ -283,8 +284,8 @@ public class AccountsImpl implements Accounts {
 
     private ServiceResponse<DataLakeStoreAccount> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<DataLakeStoreAccount, CloudException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<DataLakeStoreAccount>() { }.getType())
                 .register(200, new TypeToken<DataLakeStoreAccount>() { }.getType())
+                .register(201, new TypeToken<DataLakeStoreAccount>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -794,13 +795,13 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object if successful.
      */
-    public PagedList<DataLakeStoreAccount> listByResourceGroup(final String resourceGroupName) {
-        ServiceResponse<Page<DataLakeStoreAccount>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<DataLakeStoreAccount>(response.body()) {
+    public PagedList<DataLakeStoreAccountBasic> listByResourceGroup(final String resourceGroupName) {
+        ServiceResponse<Page<DataLakeStoreAccountBasic>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
+        return new PagedList<DataLakeStoreAccountBasic>(response.body()) {
             @Override
-            public Page<DataLakeStoreAccount> nextPage(String nextPageLink) {
+            public Page<DataLakeStoreAccountBasic> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -814,12 +815,12 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceFuture<List<DataLakeStoreAccountBasic>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<DataLakeStoreAccountBasic> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName),
-            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(String nextPageLink) {
                     return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -831,13 +832,13 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName) {
+    public Observable<Page<DataLakeStoreAccountBasic>> listByResourceGroupAsync(final String resourceGroupName) {
         return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
-            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Page<DataLakeStoreAccount>>() {
+            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Page<DataLakeStoreAccountBasic>>() {
                 @Override
-                public Page<DataLakeStoreAccount> call(ServiceResponse<Page<DataLakeStoreAccount>> response) {
+                public Page<DataLakeStoreAccountBasic> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> response) {
                     return response.body();
                 }
             });
@@ -848,13 +849,13 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
         return listByResourceGroupSinglePageAsync(resourceGroupName)
-            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(ServiceResponse<Page<DataLakeStoreAccount>> page) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -869,9 +870,9 @@ public class AccountsImpl implements Accounts {
      *
      * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -888,12 +889,12 @@ public class AccountsImpl implements Accounts {
         final String orderby = null;
         final Boolean count = null;
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<DataLakeStoreAccount>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccount>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccountBasic>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -914,13 +915,13 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object if successful.
      */
-    public PagedList<DataLakeStoreAccount> listByResourceGroup(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
-        ServiceResponse<Page<DataLakeStoreAccount>> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<DataLakeStoreAccount>(response.body()) {
+    public PagedList<DataLakeStoreAccountBasic> listByResourceGroup(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+        ServiceResponse<Page<DataLakeStoreAccountBasic>> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skip, select, orderby, count).toBlocking().single();
+        return new PagedList<DataLakeStoreAccountBasic>(response.body()) {
             @Override
-            public Page<DataLakeStoreAccount> nextPage(String nextPageLink) {
+            public Page<DataLakeStoreAccountBasic> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -940,12 +941,12 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceFuture<List<DataLakeStoreAccountBasic>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccountBasic> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skip, select, orderby, count),
-            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(String nextPageLink) {
                     return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -963,13 +964,13 @@ public class AccountsImpl implements Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<Page<DataLakeStoreAccount>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+    public Observable<Page<DataLakeStoreAccountBasic>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter, top, skip, select, orderby, count)
-            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Page<DataLakeStoreAccount>>() {
+            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Page<DataLakeStoreAccountBasic>>() {
                 @Override
-                public Page<DataLakeStoreAccount> call(ServiceResponse<Page<DataLakeStoreAccount>> response) {
+                public Page<DataLakeStoreAccountBasic> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> response) {
                     return response.body();
                 }
             });
@@ -986,13 +987,13 @@ public class AccountsImpl implements Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         return listByResourceGroupSinglePageAsync(resourceGroupName, filter, top, skip, select, orderby, count)
-            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(ServiceResponse<Page<DataLakeStoreAccount>> page) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1005,17 +1006,17 @@ public class AccountsImpl implements Accounts {
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param filter OData filter. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param top The number of items to return. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param skip The number of items to skip over before returning elements. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param resourceGroupName The name of the Azure resource group that contains the Data Lake Store account(s).
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param count A Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1026,12 +1027,12 @@ public class AccountsImpl implements Accounts {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, top, skip, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<DataLakeStoreAccount>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccount>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> result = listByResourceGroupDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccountBasic>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1039,9 +1040,9 @@ public class AccountsImpl implements Accounts {
             });
     }
 
-    private ServiceResponse<PageImpl<DataLakeStoreAccount>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<DataLakeStoreAccount>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<DataLakeStoreAccount>>() { }.getType())
+    private ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DataLakeStoreAccountBasic>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DataLakeStoreAccountBasic>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1052,13 +1053,13 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object if successful.
      */
-    public PagedList<DataLakeStoreAccount> list() {
-        ServiceResponse<Page<DataLakeStoreAccount>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<DataLakeStoreAccount>(response.body()) {
+    public PagedList<DataLakeStoreAccountBasic> list() {
+        ServiceResponse<Page<DataLakeStoreAccountBasic>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<DataLakeStoreAccountBasic>(response.body()) {
             @Override
-            public Page<DataLakeStoreAccount> nextPage(String nextPageLink) {
+            public Page<DataLakeStoreAccountBasic> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1071,12 +1072,12 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<DataLakeStoreAccount>> listAsync(final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceFuture<List<DataLakeStoreAccountBasic>> listAsync(final ListOperationCallback<DataLakeStoreAccountBasic> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1087,13 +1088,13 @@ public class AccountsImpl implements Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<Page<DataLakeStoreAccount>> listAsync() {
+    public Observable<Page<DataLakeStoreAccountBasic>> listAsync() {
         return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Page<DataLakeStoreAccount>>() {
+            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Page<DataLakeStoreAccountBasic>>() {
                 @Override
-                public Page<DataLakeStoreAccount> call(ServiceResponse<Page<DataLakeStoreAccount>> response) {
+                public Page<DataLakeStoreAccountBasic> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> response) {
                     return response.body();
                 }
             });
@@ -1103,13 +1104,13 @@ public class AccountsImpl implements Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listWithServiceResponseAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(ServiceResponse<Page<DataLakeStoreAccount>> page) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1123,9 +1124,9 @@ public class AccountsImpl implements Accounts {
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listSinglePageAsync() {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1139,12 +1140,12 @@ public class AccountsImpl implements Accounts {
         final String orderby = null;
         final Boolean count = null;
         return service.list(this.client.subscriptionId(), filter, top, skip, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<DataLakeStoreAccount>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccount>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccountBasic>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1164,13 +1165,13 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object if successful.
      */
-    public PagedList<DataLakeStoreAccount> list(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
-        ServiceResponse<Page<DataLakeStoreAccount>> response = listSinglePageAsync(filter, top, skip, select, orderby, count).toBlocking().single();
-        return new PagedList<DataLakeStoreAccount>(response.body()) {
+    public PagedList<DataLakeStoreAccountBasic> list(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+        ServiceResponse<Page<DataLakeStoreAccountBasic>> response = listSinglePageAsync(filter, top, skip, select, orderby, count).toBlocking().single();
+        return new PagedList<DataLakeStoreAccountBasic>(response.body()) {
             @Override
-            public Page<DataLakeStoreAccount> nextPage(String nextPageLink) {
+            public Page<DataLakeStoreAccountBasic> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1189,12 +1190,12 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceFuture<List<DataLakeStoreAccountBasic>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count, final ListOperationCallback<DataLakeStoreAccountBasic> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(filter, top, skip, select, orderby, count),
-            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1211,13 +1212,13 @@ public class AccountsImpl implements Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<Page<DataLakeStoreAccount>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+    public Observable<Page<DataLakeStoreAccountBasic>> listAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         return listWithServiceResponseAsync(filter, top, skip, select, orderby, count)
-            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Page<DataLakeStoreAccount>>() {
+            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Page<DataLakeStoreAccountBasic>>() {
                 @Override
-                public Page<DataLakeStoreAccount> call(ServiceResponse<Page<DataLakeStoreAccount>> response) {
+                public Page<DataLakeStoreAccountBasic> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> response) {
                     return response.body();
                 }
             });
@@ -1233,13 +1234,13 @@ public class AccountsImpl implements Accounts {
      * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
      * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listWithServiceResponseAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listWithServiceResponseAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         return listSinglePageAsync(filter, top, skip, select, orderby, count)
-            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(ServiceResponse<Page<DataLakeStoreAccount>> page) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1252,16 +1253,16 @@ public class AccountsImpl implements Accounts {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param filter OData filter. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param top The number of items to return. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param skip The number of items to skip over before returning elements. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param filter OData filter. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param top The number of items to return. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param skip The number of items to skip over before returning elements. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param select OData Select statement. Limits the properties on each entry to just those requested, e.g. Categories?$select=CategoryName,Description. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param orderby OrderBy clause. One or more comma-separated expressions with an optional "asc" (the default) or "desc" depending on the order you'd like the values sorted, e.g. Categories?$orderby=CategoryName desc. Optional.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param count The Boolean value of true or false to request a count of the matching resources included with the resources in the response, e.g. Categories?$count=true. Optional.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listSinglePageAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listSinglePageAsync(final String filter, final Integer top, final Integer skip, final String select, final String orderby, final Boolean count) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1269,12 +1270,12 @@ public class AccountsImpl implements Accounts {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), filter, top, skip, select, orderby, count, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<DataLakeStoreAccount>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccount>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccountBasic>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1282,9 +1283,9 @@ public class AccountsImpl implements Accounts {
             });
     }
 
-    private ServiceResponse<PageImpl<DataLakeStoreAccount>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<DataLakeStoreAccount>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<DataLakeStoreAccount>>() { }.getType())
+    private ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DataLakeStoreAccountBasic>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DataLakeStoreAccountBasic>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1296,13 +1297,13 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object if successful.
      */
-    public PagedList<DataLakeStoreAccount> listByResourceGroupNext(final String nextPageLink) {
-        ServiceResponse<Page<DataLakeStoreAccount>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DataLakeStoreAccount>(response.body()) {
+    public PagedList<DataLakeStoreAccountBasic> listByResourceGroupNext(final String nextPageLink) {
+        ServiceResponse<Page<DataLakeStoreAccountBasic>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<DataLakeStoreAccountBasic>(response.body()) {
             @Override
-            public Page<DataLakeStoreAccount> nextPage(String nextPageLink) {
+            public Page<DataLakeStoreAccountBasic> nextPage(String nextPageLink) {
                 return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1317,12 +1318,12 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeStoreAccount>> serviceFuture, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceFuture<List<DataLakeStoreAccountBasic>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeStoreAccountBasic>> serviceFuture, final ListOperationCallback<DataLakeStoreAccountBasic> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listByResourceGroupNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(String nextPageLink) {
                     return listByResourceGroupNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1334,13 +1335,13 @@ public class AccountsImpl implements Accounts {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<Page<DataLakeStoreAccount>> listByResourceGroupNextAsync(final String nextPageLink) {
+    public Observable<Page<DataLakeStoreAccountBasic>> listByResourceGroupNextAsync(final String nextPageLink) {
         return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Page<DataLakeStoreAccount>>() {
+            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Page<DataLakeStoreAccountBasic>>() {
                 @Override
-                public Page<DataLakeStoreAccount> call(ServiceResponse<Page<DataLakeStoreAccount>> response) {
+                public Page<DataLakeStoreAccountBasic> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> response) {
                     return response.body();
                 }
             });
@@ -1351,13 +1352,13 @@ public class AccountsImpl implements Accounts {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
         return listByResourceGroupNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(ServiceResponse<Page<DataLakeStoreAccount>> page) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1370,22 +1371,22 @@ public class AccountsImpl implements Accounts {
     /**
      * Lists the Data Lake Store accounts within a specific resource group. The response includes a link to the next page of results, if any.
      *
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<DataLakeStoreAccount>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccount>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> result = listByResourceGroupNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccountBasic>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1393,9 +1394,9 @@ public class AccountsImpl implements Accounts {
             });
     }
 
-    private ServiceResponse<PageImpl<DataLakeStoreAccount>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<DataLakeStoreAccount>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<DataLakeStoreAccount>>() { }.getType())
+    private ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DataLakeStoreAccountBasic>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DataLakeStoreAccountBasic>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -1407,13 +1408,13 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object if successful.
      */
-    public PagedList<DataLakeStoreAccount> listNext(final String nextPageLink) {
-        ServiceResponse<Page<DataLakeStoreAccount>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<DataLakeStoreAccount>(response.body()) {
+    public PagedList<DataLakeStoreAccountBasic> listNext(final String nextPageLink) {
+        ServiceResponse<Page<DataLakeStoreAccountBasic>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<DataLakeStoreAccountBasic>(response.body()) {
             @Override
-            public Page<DataLakeStoreAccount> nextPage(String nextPageLink) {
+            public Page<DataLakeStoreAccountBasic> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1428,12 +1429,12 @@ public class AccountsImpl implements Accounts {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<DataLakeStoreAccount>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeStoreAccount>> serviceFuture, final ListOperationCallback<DataLakeStoreAccount> serviceCallback) {
+    public ServiceFuture<List<DataLakeStoreAccountBasic>> listNextAsync(final String nextPageLink, final ServiceFuture<List<DataLakeStoreAccountBasic>> serviceFuture, final ListOperationCallback<DataLakeStoreAccountBasic> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1445,13 +1446,13 @@ public class AccountsImpl implements Accounts {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<Page<DataLakeStoreAccount>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<DataLakeStoreAccountBasic>> listNextAsync(final String nextPageLink) {
         return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Page<DataLakeStoreAccount>>() {
+            .map(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Page<DataLakeStoreAccountBasic>>() {
                 @Override
-                public Page<DataLakeStoreAccount> call(ServiceResponse<Page<DataLakeStoreAccount>> response) {
+                public Page<DataLakeStoreAccountBasic> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> response) {
                     return response.body();
                 }
             });
@@ -1462,13 +1463,13 @@ public class AccountsImpl implements Accounts {
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;DataLakeStoreAccount&gt; object
+     * @return the observable to the PagedList&lt;DataLakeStoreAccountBasic&gt; object
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccount>>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<DataLakeStoreAccountBasic>>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(ServiceResponse<Page<DataLakeStoreAccount>> page) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(ServiceResponse<Page<DataLakeStoreAccountBasic>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1481,22 +1482,22 @@ public class AccountsImpl implements Accounts {
     /**
      * Lists the Data Lake Store accounts within the subscription. The response includes a link to the next page of results, if any.
      *
-    ServiceResponse<PageImpl<DataLakeStoreAccount>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;DataLakeStoreAccount&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;DataLakeStoreAccountBasic&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccount>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<DataLakeStoreAccount>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<DataLakeStoreAccountBasic>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<DataLakeStoreAccount>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccount>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<DataLakeStoreAccountBasic>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1504,9 +1505,9 @@ public class AccountsImpl implements Accounts {
             });
     }
 
-    private ServiceResponse<PageImpl<DataLakeStoreAccount>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<DataLakeStoreAccount>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<DataLakeStoreAccount>>() { }.getType())
+    private ServiceResponse<PageImpl<DataLakeStoreAccountBasic>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<DataLakeStoreAccountBasic>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<DataLakeStoreAccountBasic>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

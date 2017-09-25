@@ -71,11 +71,11 @@ public interface NextHop extends Executable<NextHop>,
 
 
     /**
-     * Grouping of virtual machine definition stages.
+     * Grouping of next hop definition stages.
      */
     interface DefinitionStages {
         /**
-         * The first stage of a virtual machine definition.
+         * The first stage of next hop parameters definition.
          */
         interface WithTargetResource {
             /**
@@ -128,8 +128,7 @@ public interface NextHop extends Executable<NextHop>,
         }
 
         /**
-         * The stage of the definition which contains all the minimum required inputs for
-         * the resource to be created, but also allows
+         * The stage of the definition which contains all the minimum required inputs for execution, but also allows
          * for any other optional settings to be specified.
          */
         interface WithExecute extends

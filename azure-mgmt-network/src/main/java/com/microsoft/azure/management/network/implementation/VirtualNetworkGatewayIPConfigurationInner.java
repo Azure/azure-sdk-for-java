@@ -28,13 +28,13 @@ public class VirtualNetworkGatewayIPConfigurationInner extends SubResource {
     /**
      * The reference of the subnet resource.
      */
-    @JsonProperty(value = "properties.subnet", required = true)
+    @JsonProperty(value = "properties.subnet")
     private SubResource subnet;
 
     /**
      * The reference of the public IP resource.
      */
-    @JsonProperty(value = "properties.publicIPAddress", required = true)
+    @JsonProperty(value = "properties.publicIPAddress")
     private SubResource publicIPAddress;
 
     /**

@@ -20,14 +20,14 @@ public class ContainerServiceOrchestratorProfile {
      * 'Swarm', 'DCOS', 'Custom', 'Kubernetes'.
      */
     @JsonProperty(value = "orchestratorType", required = true)
-    private ContainerServiceOchestratorTypes orchestratorType;
+    private ContainerServiceOrchestratorTypes orchestratorType;
 
     /**
      * Get the orchestratorType value.
      *
      * @return the orchestratorType value
      */
-    public ContainerServiceOchestratorTypes orchestratorType() {
+    public ContainerServiceOrchestratorTypes orchestratorType() {
         return this.orchestratorType;
     }
 
@@ -37,7 +37,7 @@ public class ContainerServiceOrchestratorProfile {
      * @param orchestratorType the orchestratorType value to set
      * @return the ContainerServiceOrchestratorProfile object itself.
      */
-    public ContainerServiceOrchestratorProfile withOrchestratorType(ContainerServiceOchestratorTypes orchestratorType) {
+    public ContainerServiceOrchestratorProfile withOrchestratorType(ContainerServiceOrchestratorTypes orchestratorType) {
         this.orchestratorType = orchestratorType;
         return this;
     }

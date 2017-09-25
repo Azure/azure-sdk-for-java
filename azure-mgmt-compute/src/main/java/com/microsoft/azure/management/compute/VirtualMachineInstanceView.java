@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.compute;
 
 import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -38,6 +39,12 @@ public class VirtualMachineInstanceView {
      */
     @JsonProperty(value = "vmAgent")
     private VirtualMachineAgentInstanceView vmAgent;
+
+    /**
+     * The Maintenance Operation status on the virtual machine.
+     */
+    @JsonProperty(value = "maintenanceRedeployStatus")
+    private MaintenanceRedeployStatus maintenanceRedeployStatus;
 
     /**
      * The virtual machine disk information.
@@ -140,6 +147,26 @@ public class VirtualMachineInstanceView {
      */
     public VirtualMachineInstanceView withVmAgent(VirtualMachineAgentInstanceView vmAgent) {
         this.vmAgent = vmAgent;
+        return this;
+    }
+
+    /**
+     * Get the maintenanceRedeployStatus value.
+     *
+     * @return the maintenanceRedeployStatus value
+     */
+    public MaintenanceRedeployStatus maintenanceRedeployStatus() {
+        return this.maintenanceRedeployStatus;
+    }
+
+    /**
+     * Set the maintenanceRedeployStatus value.
+     *
+     * @param maintenanceRedeployStatus the maintenanceRedeployStatus value to set
+     * @return the VirtualMachineInstanceView object itself.
+     */
+    public VirtualMachineInstanceView withMaintenanceRedeployStatus(MaintenanceRedeployStatus maintenanceRedeployStatus) {
+        this.maintenanceRedeployStatus = maintenanceRedeployStatus;
         return this;
     }
 

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.network;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,11 +22,30 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
     private boolean enabled;
 
     /**
-     * Web application firewall mode. Possible values are: 'Detection' and
-     * 'Prevention'. Possible values include: 'Detection', 'Prevention'.
+     * Web application firewall mode. Possible values include: 'Detection',
+     * 'Prevention'.
      */
-    @JsonProperty(value = "firewallMode")
+    @JsonProperty(value = "firewallMode", required = true)
     private ApplicationGatewayFirewallMode firewallMode;
+
+    /**
+     * The type of the web application firewall rule set. Possible values are:
+     * 'OWASP'.
+     */
+    @JsonProperty(value = "ruleSetType", required = true)
+    private String ruleSetType;
+
+    /**
+     * The version of the rule set type.
+     */
+    @JsonProperty(value = "ruleSetVersion", required = true)
+    private String ruleSetVersion;
+
+    /**
+     * The disabled rule groups.
+     */
+    @JsonProperty(value = "disabledRuleGroups")
+    private List<ApplicationGatewayFirewallDisabledRuleGroup> disabledRuleGroups;
 
     /**
      * Get the enabled value.
@@ -64,6 +84,66 @@ public class ApplicationGatewayWebApplicationFirewallConfiguration {
      */
     public ApplicationGatewayWebApplicationFirewallConfiguration withFirewallMode(ApplicationGatewayFirewallMode firewallMode) {
         this.firewallMode = firewallMode;
+        return this;
+    }
+
+    /**
+     * Get the ruleSetType value.
+     *
+     * @return the ruleSetType value
+     */
+    public String ruleSetType() {
+        return this.ruleSetType;
+    }
+
+    /**
+     * Set the ruleSetType value.
+     *
+     * @param ruleSetType the ruleSetType value to set
+     * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
+     */
+    public ApplicationGatewayWebApplicationFirewallConfiguration withRuleSetType(String ruleSetType) {
+        this.ruleSetType = ruleSetType;
+        return this;
+    }
+
+    /**
+     * Get the ruleSetVersion value.
+     *
+     * @return the ruleSetVersion value
+     */
+    public String ruleSetVersion() {
+        return this.ruleSetVersion;
+    }
+
+    /**
+     * Set the ruleSetVersion value.
+     *
+     * @param ruleSetVersion the ruleSetVersion value to set
+     * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
+     */
+    public ApplicationGatewayWebApplicationFirewallConfiguration withRuleSetVersion(String ruleSetVersion) {
+        this.ruleSetVersion = ruleSetVersion;
+        return this;
+    }
+
+    /**
+     * Get the disabledRuleGroups value.
+     *
+     * @return the disabledRuleGroups value
+     */
+    public List<ApplicationGatewayFirewallDisabledRuleGroup> disabledRuleGroups() {
+        return this.disabledRuleGroups;
+    }
+
+    /**
+     * Set the disabledRuleGroups value.
+     *
+     * @param disabledRuleGroups the disabledRuleGroups value to set
+     * @return the ApplicationGatewayWebApplicationFirewallConfiguration object itself.
+     */
+    public ApplicationGatewayWebApplicationFirewallConfiguration withDisabledRuleGroups(List<ApplicationGatewayFirewallDisabledRuleGroup> disabledRuleGroups) {
+        this.disabledRuleGroups = disabledRuleGroups;
         return this;
     }
 
