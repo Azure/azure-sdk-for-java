@@ -1,6 +1,5 @@
 package com.microsoft.azure;
 
-import com.microsoft.azure.Value;
 import org.junit.Test;
 
 import static org.junit.Assert.*;

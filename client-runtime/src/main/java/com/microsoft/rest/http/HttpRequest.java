@@ -103,7 +103,8 @@ public class HttpRequest {
     public HttpRequest withBody(HttpRequestBody body, String mimeType) {
         this.body = body;
         this.mimeType = mimeType;
-        return withHeader("Content-Length", String.valueOf(body.contentLength()));
+        headers.set("Content-Length", String.valueOf(body.contentLength()));
+        return this;
     }
 
     /**

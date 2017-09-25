@@ -613,6 +613,45 @@ public abstract class RestProxyTests {
         }
     }
 
+    @Host("https://httpbin.org")
+    private interface Service16 {
+        @PUT("put")
+        @ExpectedResponses({200})
+        HttpBinJSON putByteArray(@BodyParam byte[] bytes);
+
+        @PUT("put")
+        @ExpectedResponses({200})
+        Single<HttpBinJSON> putByteArrayAsync(@BodyParam byte[] bytes);
+    }
+
+    @Test
+    public void service16Put() throws Exception {
+        final Service16 service16 = createService(Service16.class);
+        final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
+        final HttpBinJSON httpBinJSON = service16.putByteArray(expectedBytes);
+
+        // httpbin sends the data back as a string like "\u0001\u0002\u0003\u0004"
+        assertTrue(httpBinJSON.data instanceof String);
+
+        final String base64String = (String) httpBinJSON.data;
+        final byte[] actualBytes = base64String.getBytes();
+        assertArrayEquals(expectedBytes, actualBytes);
+    }
+
+    @Test
+    public void service16PutAsync() throws Exception {
+        final Service16 service16 = createService(Service16.class);
+        final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
+        final HttpBinJSON httpBinJSON = service16.putByteArrayAsync(expectedBytes)
+                .toBlocking()
+                .value();
+        assertTrue(httpBinJSON.data instanceof String);
+
+        final String base64String = (String) httpBinJSON.data;
+        final byte[] actualBytes = base64String.getBytes();
+        assertArrayEquals(expectedBytes, actualBytes);
+    }
+
     // Helpers
     private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
