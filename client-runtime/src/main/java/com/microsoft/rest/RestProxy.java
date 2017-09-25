@@ -7,6 +7,7 @@
 package com.microsoft.rest;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.rest.http.ContentType;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeader;
@@ -133,9 +134,21 @@ public class RestProxy implements InvocationHandler {
 
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject != null) {
-            final String mimeType = "application/json";
-            final String bodyContentString = serializer.serialize(bodyContentObject);
-            request.withBody(bodyContentString, mimeType);
+            final String contentType = methodParser.bodyContentType();
+            if (ContentType.APPLICATION_JSON.equalsIgnoreCase(contentType)) {
+                final String bodyContentString = serializer.serialize(bodyContentObject);
+                request.withBody(bodyContentString, contentType);
+            }
+            else if (bodyContentObject instanceof byte[]) {
+                request.withBody((byte[]) bodyContentObject, contentType == null ? ContentType.APPLICATION_OCTET_STREAM : contentType);
+            }
+            else if (bodyContentObject instanceof String) {
+                request.withBody((String) bodyContentObject, contentType == null ? ContentType.APPLICATION_OCTET_STREAM : contentType);
+            }
+            else {
+                final String bodyContentString = serializer.serialize(bodyContentObject);
+                request.withBody(bodyContentString, contentType);
+            }
         }
 
         return request;

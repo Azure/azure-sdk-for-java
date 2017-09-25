@@ -18,7 +18,6 @@ import com.microsoft.rest.policy.RequestPolicy;
 import com.microsoft.rest.policy.RetryPolicy;
 import com.microsoft.rest.policy.UserAgentPolicy;
 import com.microsoft.rest.serializer.JacksonAdapter;
-import sun.plugin2.message.Serializer;
 
 import java.util.ArrayList;
 import java.util.Collections;

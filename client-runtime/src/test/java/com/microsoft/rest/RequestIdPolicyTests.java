@@ -10,6 +10,7 @@ import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeaders;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
+import com.microsoft.rest.http.MockHttpClient;
 import com.microsoft.rest.policy.RequestIdPolicy;
 import com.microsoft.rest.policy.RequestPolicy;
 import com.microsoft.rest.policy.RetryPolicy;
@@ -65,7 +66,7 @@ public class RequestIdPolicyTests {
 
     @Test
     public void newRequestIdForEachCall() throws Exception {
-        HttpClient client = new HttpClient(Collections.<RequestPolicy.Factory>singletonList(new RequestIdPolicy.Factory())) {
+        HttpClient client = new MockHttpClient(Collections.singletonList(new RequestIdPolicy.Factory())) {
             String firstRequestId = null;
             @Override
             public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
@@ -91,7 +92,7 @@ public class RequestIdPolicyTests {
     @Test
     public void sameRequestIdForRetry() throws Exception {
         List<RequestPolicy.Factory> policies = Arrays.asList(new RequestIdPolicy.Factory(), new RetryPolicy.Factory(1));
-        HttpClient client = new HttpClient(policies) {
+        HttpClient client = new MockHttpClient(policies) {
                     String firstRequestId = null;
                     @Override
                     public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {

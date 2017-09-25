@@ -50,8 +50,6 @@ public class RxNettyAdapter extends HttpClient {
         this.handlerConfigs = handlerConfigs;
     }
 
-    public RxNettyAdapter withProxy(Proxy proxy)
-
     private SSLEngine getSSLEngine(String host) {
         SSLContext sslCtx;
         try {
@@ -62,6 +60,11 @@ public class RxNettyAdapter extends HttpClient {
         SSLEngine engine = sslCtx.createSSLEngine(host, 443);
         engine.setUseClientMode(true);
         return engine;
+    }
+
+    @Override
+    public HttpClient withProxy(Proxy proxy) {
+        return this;
     }
 
     @Override
@@ -76,7 +79,7 @@ public class RxNettyAdapter extends HttpClient {
                 rxnHeaders.put(header.name(), Collections.<Object>singleton(header.value()));
             }
 
-            String mimeType = request.mimeType();
+            String mimeType = request.mimeContentType();
             if (mimeType != null) {
                 rxnHeaders.put("Content-Type", Collections.<Object>singleton(mimeType));
             }

@@ -50,6 +50,7 @@ public class SwaggerMethodParser {
     private final List<Substitution> headerSubstitutions = new ArrayList<>();
     private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
+    private String bodyContentType;
     private int[] expectedStatusCodes;
     private Type returnType;
     private Class<? extends RestException> exceptionType;
@@ -163,7 +164,9 @@ public class SwaggerMethodParser {
                     headerSubstitutions.add(new Substitution(headerParamAnnotation.value(), parameterIndex, false));
                 }
                 else if (annotationType.equals(BodyParam.class)) {
+                    final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
+                    bodyContentType = bodyParamAnnotation.contentType();
                 }
             }
         }
@@ -307,6 +310,13 @@ public class SwaggerMethodParser {
         }
 
         return result;
+    }
+
+    /**
+     * @return the Content-Type of the body of this Swagger method.
+     */
+    public String bodyContentType() {
+        return bodyContentType;
     }
 
     /**

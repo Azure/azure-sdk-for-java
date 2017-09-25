@@ -15,7 +15,6 @@ public class HttpRequest {
     private final String url;
     private final HttpHeaders headers = new HttpHeaders();
     private HttpRequestBody body;
-    private String mimeType;
 
     /**
      * Create a new HttpRequest object with the provided HTTP method (GET, POST, PUT, etc.) and the
@@ -76,33 +75,31 @@ public class HttpRequest {
     /**
      * Set the body of this HTTP request.
      * @param body The body of this HTTP request.
-     * @param mimeType The MIME type of the body's contents.
+     * @param mimeContentType The MIME Content-Type of the body's contents.
      * @return This HttpRequest so that multiple operations can be chained together.
      */
-    public HttpRequest withBody(String body, String mimeType) {
+    public HttpRequest withBody(String body, String mimeContentType) {
         final byte[] bodyBytes = body.getBytes();
-        return withBody(bodyBytes, mimeType);
+        return withBody(bodyBytes, mimeContentType);
     }
 
     /**
      * Set the body of this HTTP request.
      * @param body The body of this HTTP request.
-     * @param mimeType The MIME type of the body's contents.
+     * @param mimeContentType The MIME Content-Type of the body's contents.
      * @return This HttpRequest so that multiple operations can be chained together.
      */
-    public HttpRequest withBody(byte[] body, String mimeType) {
-        return withBody(new ByteArrayHttpRequestBody(body), mimeType);
+    public HttpRequest withBody(byte[] body, String mimeContentType) {
+        return withBody(new ByteArrayHttpRequestBody(body, mimeContentType));
     }
 
     /**
      * Set the body of this HTTP request.
      * @param body The body of this HTTP request.
-     * @param mimeType The MIME type of the body's contents.
      * @return This HttpRequest so that multiple operations can be chained together.
      */
-    public HttpRequest withBody(HttpRequestBody body, String mimeType) {
+    public HttpRequest withBody(HttpRequestBody body) {
         this.body = body;
-        this.mimeType = mimeType;
         return withHeader("Content-Length", String.valueOf(body.contentLength()));
     }
 
@@ -118,7 +115,7 @@ public class HttpRequest {
      * Get the assigned MIME type for this HttpRequest's body.
      * @return The assigned MIME type for this HttpRequest's body.
      */
-    public String mimeType() {
-        return mimeType;
+    public String mimeContentType() {
+        return body == null ? null : body.contentType();
     }
 }

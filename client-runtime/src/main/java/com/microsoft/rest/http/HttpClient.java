@@ -10,6 +10,7 @@ import com.microsoft.rest.policy.RequestPolicy;
 import rx.Single;
 
 import java.io.IOException;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -31,12 +32,18 @@ public abstract class HttpClient {
         this.policyFactories = Collections.emptyList();
     }
 
-    protected HttpClient(List<RequestPolicy.Factory> policyFactories) {
+    protected HttpClient(List<? extends RequestPolicy.Factory> policyFactories) {
         this.policyFactories = new ArrayList<>(policyFactories);
 
         // Reversing the list facilitates the creation of the RequestPolicy linked list per-request.
         Collections.reverse(this.policyFactories);
     }
+
+    /**
+     * @param proxy The proxy to use with this HttpClient.
+     * @return this HttpClient with the provided Proxy added to it.
+     */
+    public abstract HttpClient withProxy(Proxy proxy);
 
     /**
      * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
