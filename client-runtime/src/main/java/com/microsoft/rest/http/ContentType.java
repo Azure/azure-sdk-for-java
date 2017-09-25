@@ -9,7 +9,13 @@ package com.microsoft.rest.http;
 /**
  * The different values that we commonly use for Content-Type headers.
  */
-public abstract class ContentType {
+public final class ContentType {
+    /**
+     * Private constructor that prevents creation of ContentType objects.
+     */
+    private ContentType() {
+    }
+
     /**
      * The default JSON Content-Type header.
      */
