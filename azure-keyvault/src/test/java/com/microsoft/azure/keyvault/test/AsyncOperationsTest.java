@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import com.microsoft.rest.ServiceCallback;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -202,7 +203,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         certificateOperation = keyVaultClient.getCertificateOperationAsync(vault, certificateName, null).get(); 
         Assert.assertNotNull(certificateOperation);
 
-        certificateBundle = keyVaultClient.getCertificateAsync(vault, certificateName, null).get(); 
+        certificateBundle = keyVaultClient.getCertificateAsync(vault, certificateName, (ServiceCallback<CertificateBundle>) null).get();
         Assert.assertNotNull(certificateBundle);
         
         String cert = keyVaultClient.getPendingCertificateSigningRequestAsync(vault, certificateName, null).get();
