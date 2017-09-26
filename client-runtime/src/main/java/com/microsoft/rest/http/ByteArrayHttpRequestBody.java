@@ -14,18 +14,26 @@ import java.io.InputStream;
  */
 public class ByteArrayHttpRequestBody implements HttpRequestBody {
     private final byte[] contents;
+    private final String contentType;
 
     /**
      * Create a new ByteArrayHttpRequestBody with the provided byte[].
      * @param contents The byte[] to store in this ByteArrayHttpRequestBody.
+     * @param contentType The MIME Content-Type of this request body.
      */
-    public ByteArrayHttpRequestBody(byte[] contents) {
+    public ByteArrayHttpRequestBody(byte[] contents, String contentType) {
         this.contents = contents;
+        this.contentType = contentType;
     }
 
     @Override
     public int contentLength() {
         return contents.length;
+    }
+
+    @Override
+    public String contentType() {
+        return contentType;
     }
 
     @Override

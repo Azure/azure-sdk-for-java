@@ -7,7 +7,6 @@
 package com.microsoft.rest.protocol;
 
 import com.microsoft.rest.CollectionFormat;
-import retrofit2.Converter;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
@@ -24,11 +23,6 @@ public interface SerializerAdapter<T> {
      * @return the adapted original serializer
      */
     T serializer();
-
-    /**
-     * @return a converter factory for Retrofit
-     */
-    Converter.Factory converterFactory();
 
     /**
      * Serializes an object into a JSON string.

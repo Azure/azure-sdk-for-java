@@ -7,6 +7,7 @@
 package com.microsoft.rest;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.rest.http.ContentType;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeader;
@@ -131,19 +132,29 @@ public class RestProxy implements InvocationHandler {
             request.withHeader(header.name(), header.value());
         }
 
-        String mimeType = request.headers().value("Content-Type");
         final Object bodyContentObject = methodParser.body(args);
-        if (bodyContentObject instanceof byte[]) {
-            if (mimeType == null) {
-                mimeType = "application/octet-stream";
+        if (bodyContentObject != null) {
+            String contentType = methodParser.bodyContentType();
+            if (ContentType.APPLICATION_JSON.equalsIgnoreCase(contentType)) {
+                final String bodyContentString = serializer.serialize(bodyContentObject);
+                request.withBody(bodyContentString, contentType);
             }
-            request.withBody((byte[]) bodyContentObject, mimeType);
-        } else if (bodyContentObject != null) {
-            if (mimeType == null) {
-                mimeType = "application/json";
+            else if (bodyContentObject instanceof byte[]) {
+                if (contentType == null) {
+                    contentType = ContentType.APPLICATION_OCTET_STREAM;
+                }
+                request.withBody((byte[]) bodyContentObject, contentType);
             }
-            final String bodyContentString = serializer.serialize(bodyContentObject);
-            request.withBody(bodyContentString, mimeType);
+            else if (bodyContentObject instanceof String) {
+                if (contentType == null) {
+                    contentType = ContentType.APPLICATION_OCTET_STREAM;
+                }
+                request.withBody((String) bodyContentObject, contentType);
+            }
+            else {
+                final String bodyContentString = serializer.serialize(bodyContentObject);
+                request.withBody(bodyContentString, contentType);
+            }
         }
 
         return request;

@@ -46,7 +46,7 @@ public final class UseOtherHostPolicy implements RequestPolicy {
         String newURL = "https://httpbin.org/" + url.getPath() + url.getQuery();
 
         HttpRequest newRequest = new HttpRequest(request.callerMethod(), request.httpMethod(), newURL);
-        newRequest.withBody(request.body(), request.mimeType());
+        newRequest.withBody(request.body());
 
         return next.sendAsync(newRequest);
     }

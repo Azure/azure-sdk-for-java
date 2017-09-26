@@ -31,7 +31,7 @@ public abstract class HttpClient {
         this.policyFactories = Collections.emptyList();
     }
 
-    protected HttpClient(List<RequestPolicy.Factory> policyFactories) {
+    protected HttpClient(List<? extends RequestPolicy.Factory> policyFactories) {
         this.policyFactories = new ArrayList<>(policyFactories);
 
         // Reversing the list facilitates the creation of the RequestPolicy linked list per-request.

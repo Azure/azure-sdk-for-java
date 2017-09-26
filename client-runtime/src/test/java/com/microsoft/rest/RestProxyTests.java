@@ -24,6 +24,7 @@ import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
@@ -347,7 +348,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service8.class)
                 .post("I'm a post body!");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("\"I'm a post body!\"", (String)json.data);
+        assertEquals("I'm a post body!", (String)json.data);
     }
 
     @Test
@@ -356,7 +357,7 @@ public abstract class RestProxyTests {
                 .postAsync("I'm a post body!")
                 .toBlocking().value();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("\"I'm a post body!\"", (String)json.data);
+        assertEquals("I'm a post body!", (String)json.data);
     }
 
     @Host("http://httpbin.org")
@@ -407,7 +408,7 @@ public abstract class RestProxyTests {
             assertTrue(e.body() instanceof LinkedHashMap);
 
             final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.body();
-            assertEquals("\"I'm the body!\"", expectedBody.get("data"));
+            assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
 
@@ -419,7 +420,7 @@ public abstract class RestProxyTests {
             fail("Expected RestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.body());
-            assertEquals("\"I'm the body!\"", e.body().data);
+            assertEquals("I'm the body!", e.body().data);
         } catch (Throwable e) {
             fail("Throwable of wrong type thrown.");
         }
@@ -516,7 +517,7 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service12.class)
                 .patch("body-contents");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("\"body-contents\"", (String)json.data);
+        assertEquals("body-contents", (String)json.data);
     }
 
     @Test
@@ -525,7 +526,7 @@ public abstract class RestProxyTests {
                 .patchAsync("body-contents")
                 .toBlocking().value();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("\"body-contents\"", (String)json.data);
+        assertEquals("body-contents", (String)json.data);
     }
 
     @Host("http://httpbin.org")

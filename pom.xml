@@ -59,36 +59,6 @@
         <version>20.0</version>
       </dependency>
       <dependency>
-        <groupId>com.squareup.retrofit2</groupId>
-        <artifactId>retrofit</artifactId>
-        <version>2.1.0</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp</artifactId>
-        <version>3.3.1</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>logging-interceptor</artifactId>
-        <version>3.3.1</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okhttp-urlconnection</artifactId>
-        <version>3.3.1</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.okhttp3</groupId>
-        <artifactId>okio</artifactId>
-        <version>0.13.0</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.retrofit2</groupId>
-        <artifactId>converter-jackson</artifactId>
-        <version>2.1.0</version>
-      </dependency>
-      <dependency>
         <groupId>com.fasterxml.jackson.datatype</groupId>
         <artifactId>jackson-datatype-joda</artifactId>
         <version>2.7.2</version>
@@ -112,11 +82,6 @@
         <groupId>io.reactivex</groupId>
         <artifactId>rxjava</artifactId>
         <version>1.2.4</version>
-      </dependency>
-      <dependency>
-        <groupId>com.squareup.retrofit2</groupId>
-        <artifactId>adapter-rxjava</artifactId>
-        <version>2.1.0</version>
       </dependency>
       <dependency>
         <groupId>org.slf4j</groupId>
@@ -159,6 +124,11 @@
         <groupId>io.netty</groupId>
         <artifactId>netty-handler</artifactId>
         <version>4.1.3.Final</version>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
+        <artifactId>netty-handler-proxy</artifactId>
+        <version>4.1.16.Final</version>
       </dependency>
       <dependency>
         <groupId>io.netty</groupId>

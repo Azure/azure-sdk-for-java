@@ -19,6 +19,11 @@ public interface HttpRequestBody {
     int contentLength();
 
     /**
+     * @return the MIME Content-Type of this request body.
+     */
+    String contentType();
+
+    /**
      * Create an InputStream that contains the contents of this request body.
      * @return An InputStream that contains the contents of this request body.
      */
