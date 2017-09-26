@@ -1,6 +1,7 @@
 package com.microsoft.windowsazure.services.media.authentication;
 
 import java.net.MalformedURLException;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
@@ -14,9 +15,25 @@ import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 
 public class AzureAdTokenProvider {
+	private static final int DEFAULT_EXECUTOR_NTHREADS = 1;
 	private final AuthenticationContext authenticationContext;
     private final AzureAdTokenCredentials tokenCredentials;
     private final ExecutorService executorService;
+    
+    /**
+     * Creates an instance of the AzureAdTokenProvider
+     * @param tokenCredentials The token credentials
+     * @throws MalformedURLException 
+     */
+    public AzureAdTokenProvider(AzureAdTokenCredentials tokenCredentials) throws MalformedURLException
+    {
+    	this(tokenCredentials, DEFAULT_EXECUTOR_NTHREADS);
+    }
+    
+    public AzureAdTokenProvider(AzureAdTokenCredentials tokenCredentials, int executorThreads) throws MalformedURLException
+    {
+    	this(tokenCredentials, Executors.newFixedThreadPool(executorThreads));
+    }
     
     public AzureAdTokenProvider(AzureAdTokenCredentials tokenCredentials, ExecutorService executorService) throws MalformedURLException
     {
@@ -41,18 +58,9 @@ public class AzureAdTokenProvider {
         this.authenticationContext = new AuthenticationContext(authority.toString(), false, this.executorService);
     }
     
-    public AzureAdAccessToken acquireAccessToken() {
-    	Future<AuthenticationResult> futureToken = getToken();
-    	AzureAdAccessToken result = null;
-    	
-		try {
-			AuthenticationResult authResult = futureToken.get();
-			result = new AzureAdAccessToken(authResult.getAccessToken(), authResult.getExpiresOnDate());
-		} catch (Throwable e) {
-			// returns null if any error occurs
-		}
-    	
-    	return result; 
+    public AzureAdAccessToken acquireAccessToken() throws Exception {
+    	AuthenticationResult authResult = getToken().get();
+    	return new AzureAdAccessToken(authResult.getAccessToken(), authResult.getExpiresOnDate()); 
     }
     
     private Future<AuthenticationResult> getToken()
@@ -82,6 +90,10 @@ public class AzureAdTokenProvider {
             			null);
             	
         	case UserCredential:
+        		throw new NotImplementedException(
+                        String.format(
+                            "Interactive user credential is currently not supported by the java sdk",
+                            this.tokenCredentials.getCredentialType()));
             default:
                 throw new NotImplementedException(
                     String.format(
@@ -100,5 +112,4 @@ public class AzureAdTokenProvider {
         
         return authority;
     }
-
 }

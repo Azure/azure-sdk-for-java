@@ -51,11 +51,12 @@ public class OAuthFilter extends IdempotentClientFilter {
 	 */
 	@Override
 	public ClientResponse doHandle(ClientRequest clientRequest) {
-		AzureAdAccessToken accessToken = azureAdTokenProvider.acquireAccessToken();
-
-		if (accessToken == null) {
-			// must wrap exception because of base class signature
-			throw new ClientHandlerException("No access token available");
+		AzureAdAccessToken accessToken;
+		
+		try {
+			accessToken = azureAdTokenProvider.acquireAccessToken();
+		} catch (Exception e) {
+			throw new ClientHandlerException("Failed to acquire access token", e);
 		}
 
 		clientRequest.getHeaders().add("Authorization", "Bearer " + accessToken.getAccessToken());
