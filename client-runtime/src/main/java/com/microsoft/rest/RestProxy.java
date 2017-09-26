@@ -134,16 +134,22 @@ public class RestProxy implements InvocationHandler {
 
         final Object bodyContentObject = methodParser.body(args);
         if (bodyContentObject != null) {
-            final String contentType = methodParser.bodyContentType();
+            String contentType = methodParser.bodyContentType();
             if (ContentType.APPLICATION_JSON.equalsIgnoreCase(contentType)) {
                 final String bodyContentString = serializer.serialize(bodyContentObject);
                 request.withBody(bodyContentString, contentType);
             }
             else if (bodyContentObject instanceof byte[]) {
-                request.withBody((byte[]) bodyContentObject, contentType == null ? ContentType.APPLICATION_OCTET_STREAM : contentType);
+                if (contentType == null) {
+                    contentType = ContentType.APPLICATION_OCTET_STREAM;
+                }
+                request.withBody((byte[]) bodyContentObject, contentType);
             }
             else if (bodyContentObject instanceof String) {
-                request.withBody((String) bodyContentObject, contentType == null ? ContentType.APPLICATION_OCTET_STREAM : contentType);
+                if (contentType == null) {
+                    contentType = ContentType.APPLICATION_OCTET_STREAM;
+                }
+                request.withBody((String) bodyContentObject, contentType);
             }
             else {
                 final String bodyContentString = serializer.serialize(bodyContentObject);

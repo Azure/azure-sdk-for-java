@@ -100,7 +100,8 @@ public class HttpRequest {
      */
     public HttpRequest withBody(HttpRequestBody body) {
         this.body = body;
-        return withHeader("Content-Length", String.valueOf(body.contentLength()));
+        headers.set("Content-Length", String.valueOf(body.contentLength()));
+        return this;
     }
 
     /**

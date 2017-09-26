@@ -49,7 +49,7 @@ class RxNettyResponse extends HttpResponse {
 
     private Single<ByteBuf> collectContent(boolean pooled) {
         // Reading entire response into memory-- not sure if this is OK
-        int contentLength = (int) rxnRes.getContentLength();
+        int contentLength = (int) rxnRes.getContentLength(0);
         final ByteBuf collector;
         if (pooled) {
             collector = PooledByteBufAllocator.DEFAULT.heapBuffer(contentLength);
