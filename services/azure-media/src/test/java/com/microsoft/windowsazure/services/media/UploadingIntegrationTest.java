@@ -114,7 +114,6 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
     	};
 
         blobWriter.createBlockBlob("uploadLargeBlockBlobTest", blobContent);
-        System.out.print("AAA");
     }
 
     @Test
