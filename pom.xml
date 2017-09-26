@@ -384,18 +384,19 @@
     <module>./azure-mgmt-consumption</module>
     <module>./azure-mgmt-containerinstance</module>
     <module>./azure-mgmt-containerregistry</module>
+    <module>./azure-mgmt-cosmosdb</module>
     <module>./azure-mgmt-customerinsights</module>
     <module>./azure-mgmt-datalake-analytics</module>
     <module>./azure-mgmt-datalake-store</module>
     <module>./azure-mgmt-devices</module>
     <module>./azure-mgmt-devtestlab</module>
     <module>./azure-mgmt-dns</module>
-    <module>./azure-mgmt-cosmosdb</module>
     <module>./azure-mgmt-eventhub</module>
     <module>./azure-mgmt-graph-rbac</module>
     <module>./azure-mgmt-insights</module>
     <module>./azure-mgmt-keyvault</module>
     <module>./azure-mgmt-logic</module>
+    <module>./azure-mgmt-locks</module>
     <module>./azure-mgmt-machinelearning</module>
     <module>./azure-mgmt-monitor</module>
     <module>./azure-mgmt-network</module>
