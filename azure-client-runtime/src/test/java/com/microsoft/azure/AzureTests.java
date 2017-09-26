@@ -16,7 +16,7 @@ public class AzureTests {
     @AzureHost("{vaultBaseUrl}")
     public interface HttpBinService {
         @GET("secrets/{secretName}")
-        String getSecret(@HostParam String vaultBaseUrl, @PathParam("secretName") String secretName);
+        String getSecret(@HostParam("vaultBaseUrl") String vaultBaseUrl, @PathParam("secretName") String secretName);
     }
 
 // @AzureHost not yet supported.

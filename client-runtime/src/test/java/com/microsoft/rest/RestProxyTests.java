@@ -652,6 +652,33 @@ public abstract class RestProxyTests {
         assertArrayEquals(expectedBytes, actualBytes);
     }
 
+    @Host("http://{hostPart1}{hostPart2}.org")
+    private interface Service17 {
+        @GET("get")
+        @ExpectedResponses({200})
+        HttpBinJSON get(@HostParam("hostPart1") String hostPart1, @HostParam("hostPart2") String hostPart2);
+
+        @GET("get")
+        @ExpectedResponses({200})
+        Single<HttpBinJSON> getAsync(@HostParam("hostPart1") String hostPart1, @HostParam("hostPart2") String hostPart2);
+    }
+
+    @Test
+    public void SyncRequestWithMultipleHostParams() {
+        final Service17 service17 = createService(Service17.class);
+        final HttpBinJSON result = service17.get("http", "bin");
+        assertNotNull(result);
+        assertEquals("http://httpbin.org/get", result.url);
+    }
+
+    @Test
+    public void AsyncRequestWithMultipleHostParams() {
+        final Service17 service17 = createService(Service17.class);
+        final HttpBinJSON result = service17.getAsync("http", "bin").toBlocking().value();
+        assertNotNull(result);
+        assertEquals("http://httpbin.org/get", result.url);
+    }
+
     // Helpers
     private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();

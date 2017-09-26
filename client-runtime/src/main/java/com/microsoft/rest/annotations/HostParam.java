@@ -46,7 +46,7 @@ public @interface HostParam {
      * @return The name of the variable in the endpoint uri template which will be replaced with the
      * value of the parameter annotated with this annotation.
      */
-    String value() default "";
+    String value();
     /**
      * A value true for this argument indicates that value of {@link HostParam#value()} is already
      * encoded hence engine should not encode it, by default value will be encoded.
