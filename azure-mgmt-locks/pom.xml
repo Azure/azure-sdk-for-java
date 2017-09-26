@@ -13,10 +13,10 @@
         <version>1.2.2-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-authorization</artifactId>
+    <artifactId>azure-mgmt-locks</artifactId>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Authorization Management</name>
-    <description>This package contains Microsoft Authorization Management SDK.</description>
+    <name>Microsoft Azure SDK for Locks Management</name>
+    <description>This package contains Microsoft Locks Management SDK.</description>
     <url>https://github.com/Azure/azure-sdk-for-java</url>
     <licenses>
         <license>
