@@ -53,7 +53,7 @@ class RequestResponseLink extends ClientEntity{
     private final AtomicInteger requestCounter;
     
 	private InternalReceiver amqpReceiver;
-	private InternalSender amqpSender;	
+	private InternalSender amqpSender;
 	private String replyTo;
 	private boolean isRecreateLinksInProgress;
 	
@@ -154,7 +154,7 @@ class RequestResponseLink extends ClientEntity{
 		session.open();
 		BaseHandler.setHandler(session, new SessionHandler(this.linkPath));
 
-		String sendLinkNamePrefix = StringUtil.getShortRandomString();
+		String sendLinkNamePrefix = "RequestResponseLink-Sender".concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(StringUtil.getShortRandomString());
 		String sendLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer()) ?
 				sendLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
 				sendLinkNamePrefix;
@@ -175,7 +175,7 @@ class RequestResponseLink extends ClientEntity{
 		sender.open();
 		
 		// Create receive link
-		String receiveLinkNamePrefix = StringUtil.getShortRandomString();
+		String receiveLinkNamePrefix = "RequestResponseLink-Receiver".concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(StringUtil.getShortRandomString());
 		String receiveLinkName = !StringUtil.isNullOrEmpty(connection.getRemoteContainer()) ? 
 				receiveLinkNamePrefix.concat(TrackingUtil.TRACKING_ID_TOKEN_SEPARATOR).concat(connection.getRemoteContainer()) :
 				receiveLinkNamePrefix;
@@ -202,32 +202,33 @@ class RequestResponseLink extends ClientEntity{
 	private CompletableFuture<Void> recreateInternalLinks()
 	{
 	    TRACE_LOGGER.info("RequestResponseLink - recreating internal send and receive links to {}", this.linkPath);
-		CompletableFuture<Void> closeFuture = CompletableFuture.allOf(this.amqpSender.closeAsync(), this.amqpReceiver.closeAsync());
-		CompletableFuture<Void> recreateInternalLinksFuture = closeFuture.handleAsync((closeResult, closeEx) -> 
-		{
-		    // Ignore exception in closing
-		    // Create new internal sender and receiver objects, as old ones are closed
-		    this.amqpSender = new InternalSender(this.getClientId() + ":internalSender", this, this.amqpSender);
-	        this.amqpReceiver = new InternalReceiver(this.getClientId() + ":interalReceiver", this);
-		    
-		    try
-	        {
-	            this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
-	            {
-	                @Override
-	                public void onEvent()
-	                {
-	                    RequestResponseLink.this.createInternalLinks();
-	                }
-	            });
-	        }
-	        catch (IOException ioException)
-	        {
-	            // throwing RuntimeException to work around the inability to throw a checked exception from within lambdas
-	            throw new IllegalStateException("Scheduling action on reactor thread failed.", ioException);
-	        }
-		    return null;
-		}).thenCompose((v) -> CompletableFuture.allOf(this.amqpSender.openFuture, this.amqpReceiver.openFuture));
+		this.amqpSender.closeInternals(false);
+		this.amqpSender.setClosed();
+		this.amqpReceiver.closeInternals(false);
+		this.amqpReceiver.setClosed();
+		
+		// Create new internal sender and receiver objects, as old ones are closed
+        this.amqpSender = new InternalSender(this.getClientId() + ":internalSender", this, this.amqpSender);
+        this.amqpReceiver = new InternalReceiver(this.getClientId() + ":interalReceiver", this);
+        try
+        {
+            this.underlyingFactory.scheduleOnReactorThread(new DispatchHandler()
+            {
+                @Override
+                public void onEvent()
+                {
+                    RequestResponseLink.this.createInternalLinks();
+                }
+            });
+        }
+        catch (IOException ioException)
+        {
+            CompletableFuture<Void> exceptionFuture = new CompletableFuture<Void>();
+            exceptionFuture.completeExceptionally(ioException);
+            return exceptionFuture;
+        }
+        
+        CompletableFuture<Void> recreateInternalLinksFuture = CompletableFuture.allOf(this.amqpSender.openFuture, this.amqpReceiver.openFuture);
 		
 		Timer.schedule(
             new Runnable()
@@ -441,7 +442,7 @@ class RequestResponseLink extends ClientEntity{
 		void closeInternals(boolean waitForCloseCompletion)
 		{
 		    if (!this.getIsClosed())
-            {               
+            {
                 if (this.receiveLink != null && this.receiveLink.getLocalState() != EndpointState.CLOSED)
                 {
                     try {
@@ -511,6 +512,8 @@ class RequestResponseLink extends ClientEntity{
 				}
 			}
 			
+			this.parent.amqpSender.closeInternals(false);
+            this.parent.amqpSender.setClosed();
 			this.parent.completeAllPendingRequestsWithException(exception);
 		}
 
@@ -544,6 +547,8 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
+					    this.parent.amqpSender.closeInternals(false);
+					    this.parent.amqpSender.setClosed();
 					    this.parent.completeAllPendingRequestsWithException(exception);
 					}
 				}
@@ -570,16 +575,20 @@ class RequestResponseLink extends ClientEntity{
 			    return;
 		    }
 			
-			String requestMessageId = (String)responseMessage.getCorrelationId();
-			if(requestMessageId != null)
-			{
-			    TRACE_LOGGER.debug("RequestRespnseLink received response for request with id :{}", requestMessageId);
-				this.parent.completeRequestWithResponse(requestMessageId, responseMessage);
-			}
-			else
-			{
-				TRACE_LOGGER.warn("RequestRespnseLink received a message with null correlationId");
-			}
+		    // Return response in a separate thread so reactor thread is free to handle reactor events
+		    final Message finalResponseMessage = responseMessage;
+		    AsyncUtil.executorService.submit(() -> {
+		        String requestMessageId = (String)finalResponseMessage.getCorrelationId();
+		        if(requestMessageId != null)
+	            {
+	                TRACE_LOGGER.debug("RequestRespnseLink received response for request with id :{}", requestMessageId);
+	                this.parent.completeRequestWithResponse(requestMessageId, finalResponseMessage);
+	            }
+	            else
+	            {
+	                TRACE_LOGGER.warn("RequestRespnseLink received a message with null correlationId");
+	            }
+		    });
 		}
 
 		public void setReceiveLink(Receiver receiveLink) {
@@ -704,6 +713,8 @@ class RequestResponseLink extends ClientEntity{
 				}
 			}
 			
+			this.parent.amqpReceiver.closeInternals(false);
+            this.parent.amqpReceiver.setClosed();
 			this.parent.completeAllPendingRequestsWithException(exception);
 		}
 
@@ -737,6 +748,8 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
+					    this.parent.amqpReceiver.closeInternals(false);
+                        this.parent.amqpReceiver.setClosed();
 					    this.parent.completeAllPendingRequestsWithException(exception);
 					}
 				}
@@ -830,7 +843,7 @@ class RequestResponseLink extends ClientEntity{
 		        }
 		    }
 		    
-		    TRACE_LOGGER.debug("Staring requestResponseLink {} internal sender send loop", this.parent.linkPath);
+		    TRACE_LOGGER.debug("Starting requestResponseLink {} internal sender send loop", this.parent.linkPath);
 		    
 		    try
             {

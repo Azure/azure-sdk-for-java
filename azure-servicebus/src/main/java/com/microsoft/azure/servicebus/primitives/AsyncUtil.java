@@ -10,7 +10,7 @@ import java.util.concurrent.ForkJoinPool;
 // which badly affects perf and a client can potentially kill the thread or lock the thread.
 class AsyncUtil {
 	// Use default asynchronous executor of the CompletableFuture
-	private static ExecutorService executorService = ForkJoinPool.commonPool();
+	static ExecutorService executorService = ForkJoinPool.commonPool();
 	
 	public static <T> boolean completeFutureAndGetStatus(CompletableFuture<T> future, T result)
 	{

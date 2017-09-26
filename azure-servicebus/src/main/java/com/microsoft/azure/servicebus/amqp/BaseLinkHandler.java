@@ -30,7 +30,7 @@ public class BaseLinkHandler extends BaseHandler {
 
     @Override
     public void onLinkRemoteClose(Event event) {
-        final Link link = event.getLink();        
+        final Link link = event.getLink();
         if(link != null)
         {
             TRACE_LOGGER.debug("link remote close. linkName:{}", link.getName());
@@ -61,7 +61,7 @@ public class BaseLinkHandler extends BaseHandler {
     }
 
     public void processOnClose(Link link, ErrorCondition condition) {
-        if (condition != null) {            
+        if (condition != null) {
             TRACE_LOGGER.debug("linkName:{}, ErrorCondition:{}, {}", link.getName(), condition.getCondition(), condition.getDescription());
         }
 
