@@ -16,6 +16,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import rx.Completable;
+import rx.Observable;
 
 import java.util.List;
 import java.util.Map;
@@ -303,6 +304,14 @@ public interface VirtualMachineScaleSetVM extends
      */
     @Method
     VirtualMachineInstanceView refreshInstanceView();
+
+    /**
+     * Refreshes the instance view.
+     *
+     * @return an observable that emits the instance view of the virtual machine instance.
+     */
+    @Method
+    Observable<VirtualMachineInstanceView> refreshInstanceViewAsync();
 
     /**
      * @return the power state of the virtual machine instance
