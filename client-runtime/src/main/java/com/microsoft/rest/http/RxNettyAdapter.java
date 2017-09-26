@@ -8,14 +8,17 @@ package com.microsoft.rest.http;
 
 import com.microsoft.rest.policy.RequestPolicy;
 import io.netty.buffer.ByteBuf;
+import io.netty.channel.ChannelHandler;
 import io.netty.handler.codec.http.HttpMethod;
 import io.netty.util.concurrent.DefaultEventExecutorGroup;
 import io.netty.util.concurrent.EventExecutorGroup;
+import io.netty.handler.proxy.HttpProxyHandler;
 import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 import rx.Observable;
 import rx.Observer;
 import rx.Single;
+import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.observables.SyncOnSubscribe;
 
@@ -27,7 +30,9 @@ import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.NoSuchAlgorithmException;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
@@ -60,11 +65,6 @@ public class RxNettyAdapter extends HttpClient {
         SSLEngine engine = sslCtx.createSSLEngine(host, 443);
         engine.setUseClientMode(true);
         return engine;
-    }
-
-    @Override
-    public HttpClient withProxy(Proxy proxy) {
-        return this;
     }
 
     @Override
@@ -174,6 +174,67 @@ public class RxNettyAdapter extends HttpClient {
                 observer.onError(e);
             }
             return state;
+        }
+    }
+
+    /**
+     * The builder class for building a RxNettyAdapter.
+     */
+    public static class Builder {
+        private final List<RequestPolicy.Factory> requestPolicyFactories = new ArrayList<>();
+        private final List<ChannelHandlerConfig> channelHandlerConfigs = new ArrayList<>();
+
+        /**
+         * Add the provided RequestPolicy.Factory to this Builder's configuration.
+         * @param requestPolicyFactory The RequestPolicy.Factory to add.
+         * @return The Builder itself for chaining.
+         */
+        public Builder withRequestPolicy(RequestPolicy.Factory requestPolicyFactory) {
+            requestPolicyFactories.add(requestPolicyFactory);
+            return this;
+        }
+
+        /**
+         * Add the provided RequestPolicy.Factories to this Builder's configuration.
+         * @param requestPolicyFactories The RequestPolicy.Factories to add.
+         * @return The Builder itself for chaining.
+         */
+        public Builder withRequestPolicies(Collection<RequestPolicy.Factory> requestPolicyFactories) {
+            this.requestPolicyFactories.addAll(requestPolicyFactories);
+            return this;
+        }
+
+        /**
+         * Add the provided ChannelHandlerConfig to this Builder's configuration.
+         * @param channelHandlerConfig The ChannelHandlerConfig to add.
+         * @return The Builder itself for chaining.
+         */
+        public Builder withChannelHandler(ChannelHandlerConfig channelHandlerConfig) {
+            channelHandlerConfigs.add(channelHandlerConfig);
+            return this;
+        }
+
+        /**
+         * Add a Proxy to the RxNettyAdapter that will be built from this Builder.
+         * @param proxy The Proxy to add.
+         * @return The Builder itself for chaining.
+         */
+        public Builder withProxy(final Proxy proxy) {
+            return withChannelHandler(new ChannelHandlerConfig(new Func0<ChannelHandler>() {
+                @Override
+                public ChannelHandler call() {
+                    return new HttpProxyHandler(proxy.address());
+                }
+            },
+            false));
+        }
+
+        /**
+         * Build a RxNettyAdapter using this Builder's configuration.
+         * @return An RxNettyAdapter that uses this Builder's configuration.
+         */
+        public RxNettyAdapter build() {
+            return new RxNettyAdapter(requestPolicyFactories, channelHandlerConfigs);
         }
     }
 }

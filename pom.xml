@@ -127,6 +127,11 @@
       </dependency>
       <dependency>
         <groupId>io.netty</groupId>
+        <artifactId>netty-handler-proxy</artifactId>
+        <version>4.1.16.Final</version>
+      </dependency>
+      <dependency>
+        <groupId>io.netty</groupId>
         <artifactId>netty-codec-http</artifactId>
         <version>4.1.3.Final</version>
       </dependency>

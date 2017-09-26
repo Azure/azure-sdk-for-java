@@ -49,19 +49,16 @@ public final class RestClient {
         this.logLevel = builder.logLevel;
         this.customPolicyFactories = builder.customPolicyFactories;
 
-        this.httpClient = new RxNettyAdapter(createPolicyFactories(), Collections.<ChannelHandlerConfig>emptyList());
-    }
-
-    private List<RequestPolicy.Factory> createPolicyFactories() {
-        List<RequestPolicy.Factory> allFactories = new ArrayList<>();
-        allFactories.add(new UserAgentPolicy.Factory(userAgent));
-        allFactories.add(new RetryPolicy.Factory());
-        allFactories.add(new LoggingPolicy.Factory(logLevel));
+        final RxNettyAdapter.Builder httpClientBuilder = new RxNettyAdapter.Builder()
+            .withRequestPolicy(new UserAgentPolicy.Factory(userAgent))
+            .withRequestPolicy(new RetryPolicy.Factory())
+            .withRequestPolicy(new LoggingPolicy.Factory(logLevel));
         if (credentials != null) {
-            allFactories.add(new CredentialsPolicy.Factory(credentials));
+            httpClientBuilder.withRequestPolicy(new CredentialsPolicy.Factory(credentials));
         }
-        allFactories.addAll(customPolicyFactories);
-        return allFactories;
+        httpClientBuilder.withRequestPolicies(customPolicyFactories);
+
+        this.httpClient = httpClientBuilder.build();
     }
 
     /**

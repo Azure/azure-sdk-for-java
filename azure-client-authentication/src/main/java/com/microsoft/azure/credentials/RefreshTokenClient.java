@@ -18,6 +18,7 @@ import com.microsoft.rest.annotations.ExpectedResponses;
 import com.microsoft.rest.annotations.POST;
 import com.microsoft.rest.annotations.PathParam;
 import com.microsoft.rest.http.HttpClient;
+import com.microsoft.rest.http.RxNettyAdapter;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import rx.Single;
 import rx.functions.Func1;
@@ -33,12 +34,18 @@ final class RefreshTokenClient {
     private final RefreshTokenService service;
 
     RefreshTokenClient(String baseUrl, Proxy proxy) {
-        this(baseUrl, RestClient.createDefaultHttpClient().withProxy(proxy));
+        this(baseUrl, createHttpClient(proxy));
     }
 
     RefreshTokenClient(String baseUrl, HttpClient httpClient) {
         final SerializerAdapter<?> serializer = RestClient.createDefaultSerializer();
         service = RestProxy.create(RefreshTokenService.class, baseUrl, httpClient, serializer);
+    }
+
+    private static HttpClient createHttpClient(Proxy proxy) {
+        return new RxNettyAdapter.Builder()
+                .withProxy(proxy)
+                .build();
     }
 
     AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResoureRefreshToken) {

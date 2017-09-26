@@ -55,11 +55,6 @@ public class MockAzureHttpClient extends HttpClient {
     }
 
     @Override
-    public HttpClient withProxy(Proxy proxy) {
-        return this;
-    }
-
-    @Override
     protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
         MockAzureHttpResponse response = null;
 

@@ -30,11 +30,6 @@ public class MockHttpClient extends HttpClient {
     }
 
     @Override
-    public HttpClient withProxy(Proxy proxy) {
-        return this;
-    }
-
-    @Override
     protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
         requests.add(request);
 
