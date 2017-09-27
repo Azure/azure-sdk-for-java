@@ -2,6 +2,9 @@ package com.microsoft.windowsazure.services.media.authentication;
 
 import java.net.URI;
 
+/**
+ * Represents an Azure Environment
+ */
 public class AzureEnvironment {
 	
     private URI activeDirectoryEndpoint;

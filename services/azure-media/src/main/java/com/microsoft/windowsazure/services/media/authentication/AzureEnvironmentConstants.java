@@ -60,11 +60,6 @@ public class AzureEnvironmentConstants {
      */
     public static final URI SdkAadApplicationRedirectUri = makeURI("https://AzureMediaServicesNativeSDK");
     
-    /**
-     * Helper method to catch URISyntaxException
-     * @param urlString
-     * @return
-     */
     private static URI makeURI(String urlString) {
         try {
             return new URI(urlString);

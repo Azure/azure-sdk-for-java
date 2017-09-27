@@ -1,5 +1,9 @@
 package com.microsoft.windowsazure.services.media.authentication;
 
+/**
+ * Enumerates the different types of credentials available
+ *
+ */
 public enum AzureAdTokenCredentialType {
 	
 	/**
@@ -20,6 +24,5 @@ public enum AzureAdTokenCredentialType {
     /**
      * Service Principal with the certificate credential.
      */
-    ServicePrincipalWithClientCertificate,
-    
+    ServicePrincipalWithClientCertificate    
 }

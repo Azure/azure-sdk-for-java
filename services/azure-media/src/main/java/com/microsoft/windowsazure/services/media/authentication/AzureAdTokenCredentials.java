@@ -4,6 +4,9 @@ import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.ClientAssertion;
 import com.microsoft.aad.adal4j.ClientCredential;
 
+/**
+ * Represents an Azure AD Credential for a specific resource
+ */
 public class AzureAdTokenCredentials {
 	
 	private String tenant;

@@ -2,6 +2,9 @@ package com.microsoft.windowsazure.services.media.authentication;
 
 import java.util.Date;
 
+/**
+ * Represents an access token 
+ */
 public class AzureAdAccessToken {
 
 	private final String accessToken;

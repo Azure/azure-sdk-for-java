@@ -1,40 +1,29 @@
 package com.microsoft.windowsazure.services.media.authentication;
 
 import java.net.MalformedURLException;
-import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-
-import javax.inject.Named;
 
 import org.apache.commons.lang.NotImplementedException;
 
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.windowsazure.services.media.MediaConfiguration;
 
+/**
+ * Azure Active Directory Access Token Provider for
+ * the Azure Media Services JDK.
+ */
 public class AzureAdTokenProvider {
-	private static final int DEFAULT_EXECUTOR_NTHREADS = 1;
 	private final AuthenticationContext authenticationContext;
     private final AzureAdTokenCredentials tokenCredentials;
     private final ExecutorService executorService;
     
     /**
      * Creates an instance of the AzureAdTokenProvider
-     * @param tokenCredentials The token credentials
+     * @param tokenCredentials The credentials
+     * @param executorService An ExecutorService 
      * @throws MalformedURLException 
-     */
-    public AzureAdTokenProvider(AzureAdTokenCredentials tokenCredentials) throws MalformedURLException
-    {
-    	this(tokenCredentials, DEFAULT_EXECUTOR_NTHREADS);
-    }
-    
-    public AzureAdTokenProvider(AzureAdTokenCredentials tokenCredentials, int executorThreads) throws MalformedURLException
-    {
-    	this(tokenCredentials, Executors.newFixedThreadPool(executorThreads));
-    }
-    
+     */  
     public AzureAdTokenProvider(AzureAdTokenCredentials tokenCredentials, ExecutorService executorService) throws MalformedURLException
     {
         if (tokenCredentials == null)
@@ -58,6 +47,12 @@ public class AzureAdTokenProvider {
         this.authenticationContext = new AuthenticationContext(authority.toString(), false, this.executorService);
     }
     
+    /**
+     * Acquire an access token
+     * 
+     * @return a valid access token
+     * @throws Exception 
+     */
     public AzureAdAccessToken acquireAccessToken() throws Exception {
     	AuthenticationResult authResult = getToken().get();
     	return new AzureAdAccessToken(authResult.getAccessToken(), authResult.getExpiresOnDate()); 

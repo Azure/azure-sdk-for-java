@@ -1,5 +1,8 @@
 package com.microsoft.windowsazure.services.media.authentication;
 
+/**
+ * Represents a pair of username & password credentials
+ */
 public class AzureAdClientUsernamePassword {
 	
 	private final String username;

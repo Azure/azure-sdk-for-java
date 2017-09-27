@@ -4,6 +4,11 @@ import java.util.Map;
 
 import com.microsoft.windowsazure.core.Builder;
 
+/**
+ * AzureAdTokenProvider's Factory
+ * 
+ * Internal use.
+ */
 public class AzureAdTokenFactory implements Builder.Factory<AzureAdTokenProvider>  {
 
 	@Override
