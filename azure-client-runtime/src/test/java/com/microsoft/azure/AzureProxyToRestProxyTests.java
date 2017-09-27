@@ -1,5 +1,6 @@
 package com.microsoft.azure;
 
+import com.microsoft.rest.InvalidReturnTypeException;
 import com.microsoft.rest.RestException;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
@@ -22,6 +23,7 @@ import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeaders;
 import org.junit.Test;
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
 
 import java.io.IOException;
@@ -351,7 +353,7 @@ public abstract class AzureProxyToRestProxyTests {
         final HttpBinJSON json = createService(Service8.class)
                 .post("I'm a post body!");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("\"I'm a post body!\"", (String)json.data);
+        assertEquals("I'm a post body!", (String)json.data);
     }
 
     @Test
@@ -360,7 +362,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .postAsync("I'm a post body!")
                 .toBlocking().value();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("\"I'm a post body!\"", (String)json.data);
+        assertEquals("I'm a post body!", (String)json.data);
     }
 
     @Host("http://httpbin.org")
@@ -411,7 +413,7 @@ public abstract class AzureProxyToRestProxyTests {
             assertTrue(e.body() instanceof LinkedHashMap);
 
             final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.body();
-            assertEquals("\"I'm the body!\"", expectedBody.get("data"));
+            assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
 
@@ -423,7 +425,7 @@ public abstract class AzureProxyToRestProxyTests {
             fail("Expected RestException would be thrown.");
         } catch (MyAzureException e) {
             assertNotNull(e.body());
-            assertEquals("\"I'm the body!\"", e.body().data);
+            assertEquals("I'm the body!", e.body().data);
         } catch (Throwable e) {
             fail("Throwable of wrong type thrown.");
         }
@@ -520,7 +522,7 @@ public abstract class AzureProxyToRestProxyTests {
         final HttpBinJSON json = createService(Service12.class)
                 .patch("body-contents");
         assertEquals(String.class, json.data.getClass());
-        assertEquals("\"body-contents\"", (String)json.data);
+        assertEquals("body-contents", (String)json.data);
     }
 
     @Test
@@ -529,7 +531,7 @@ public abstract class AzureProxyToRestProxyTests {
                 .patchAsync("body-contents")
                 .toBlocking().value();
         assertEquals(String.class, json.data.getClass());
-        assertEquals("\"body-contents\"", (String)json.data);
+        assertEquals("body-contents", (String)json.data);
     }
 
     @Host("http://httpbin.org")
@@ -597,9 +599,65 @@ public abstract class AzureProxyToRestProxyTests {
         assertEquals("MyHeaderValue", headers.value("MyHeader"));
     }
 
+    @Host("https://httpbin.org")
+    private interface Service15 {
+        @GET("anything")
+        @ExpectedResponses({200})
+        Observable<HttpBinJSON> get();
+    }
+
+    @Test
+    public void service15Get() {
+        final Service15 service = createService(Service15.class);
+        try {
+            service.get();
+            fail("Expected exception.");
+        }
+        catch (InvalidReturnTypeException e) {
+            assertContains(e.getMessage(), "rx.Observable<com.microsoft.azure.HttpBinJSON>");
+            assertContains(e.getMessage(), "AzureProxyToRestProxyTests$Service15.get()");
+        }
+    }
+
+    @Host("http://httpbin.org")
+    private interface Service16 {
+        @PUT("put")
+        @ExpectedResponses({200})
+        HttpBinJSON put(@BodyParam byte[] putBody);
+
+        @PUT("put")
+        @ExpectedResponses({200})
+        Single<HttpBinJSON> putAsync(@BodyParam byte[] putBody);
+    }
+
+    @Test
+    public void service16Put() {
+        final Service16 service = createService(Service16.class);
+        final HttpBinJSON result = service.put(new byte[] { 0, 1, 2, 3, 4, 5 });
+        assertNotNull(result);
+        assertEquals("http://httpbin.org/put", result.url);
+        assertTrue(result.data instanceof String);
+        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String)result.data).getBytes());
+    }
+
+    @Test
+    public void service16PutAsync() {
+        final Service16 service = createService(Service16.class);
+        final HttpBinJSON result = service.putAsync(new byte[] { 0, 1, 2, 3, 4, 5 })
+                .toBlocking().value();
+        assertNotNull(result);
+        assertEquals("http://httpbin.org/put", result.url);
+        assertTrue(result.data instanceof String);
+        assertArrayEquals(new byte[] { 0, 1, 2, 3, 4, 5 }, ((String)result.data).getBytes());
+    }
+
     private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
         return AzureProxy.create(serviceClass, (AzureEnvironment) null, httpClient, serializer);
+    }
+
+    private static void assertContains(String value, String expectedSubstring) {
+        assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 
     private static final SerializerAdapter<?> serializer = new JacksonAdapter();

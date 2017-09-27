@@ -22,6 +22,7 @@ import rx.Single;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.Proxy;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -54,7 +55,7 @@ public class MockAzureHttpClient extends HttpClient {
     }
 
     @Override
-    public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+    protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
         MockAzureHttpResponse response = null;
 
         try {
@@ -78,6 +79,7 @@ public class MockAzureHttpClient extends HttpClient {
                 }
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
+                    json.url = request.url();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(200, json);
                 }
@@ -89,16 +91,19 @@ public class MockAzureHttpClient extends HttpClient {
                 }
                 else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
+                    json.url = request.url();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
+                    json.url = request.url();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
+                    json.url = request.url();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(200, json);
                 }

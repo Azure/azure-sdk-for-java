@@ -9,6 +9,7 @@ package com.microsoft.rest;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
+import com.microsoft.rest.http.MockHttpClient;
 import com.microsoft.rest.http.MockHttpResponse;
 import com.microsoft.rest.policy.RequestPolicy;
 import com.microsoft.rest.policy.UserAgentPolicy;
@@ -22,7 +23,7 @@ import java.util.Collections;
 public class UserAgentTests {
     @Test
     public void defaultUserAgentTests() throws Exception {
-        HttpClient client = new HttpClient(Collections.<RequestPolicy.Factory>singletonList(new UserAgentPolicy.Factory("AutoRest-Java"))) {
+        HttpClient client = new MockHttpClient(Collections.singletonList(new UserAgentPolicy.Factory("AutoRest-Java"))) {
             @Override
             public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                 Assert.assertEquals(
@@ -41,7 +42,7 @@ public class UserAgentTests {
 
     @Test
     public void customUserAgentTests() throws Exception {
-        HttpClient client = new HttpClient(Collections.<RequestPolicy.Factory>singletonList(new UserAgentPolicy.Factory("Awesome"))) {
+        HttpClient client = new MockHttpClient(Collections.singletonList(new UserAgentPolicy.Factory("Awesome"))) {
             @Override
             public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                 String header = request.headers().value("User-Agent");

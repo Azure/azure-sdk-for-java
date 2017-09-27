@@ -17,6 +17,7 @@ import com.microsoft.rest.policy.LoggingPolicy;
 import com.microsoft.rest.policy.RequestPolicy;
 import com.microsoft.rest.policy.RetryPolicy;
 import com.microsoft.rest.policy.UserAgentPolicy;
+import com.microsoft.rest.serializer.JacksonAdapter;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -27,7 +28,6 @@ import java.util.concurrent.TimeUnit;
  * An instance of this class stores configuration for setting up specific service clients.
  */
 public final class RestClient {
-
     private final HttpClient httpClient;
     private final String baseURL;
     private final String userAgent;
@@ -49,19 +49,16 @@ public final class RestClient {
         this.logLevel = builder.logLevel;
         this.customPolicyFactories = builder.customPolicyFactories;
 
-        this.httpClient = new RxNettyAdapter(createPolicyFactories(), Collections.<ChannelHandlerConfig>emptyList());
-    }
-
-    private List<RequestPolicy.Factory> createPolicyFactories() {
-        List<RequestPolicy.Factory> allFactories = new ArrayList<>();
-        allFactories.add(new UserAgentPolicy.Factory(userAgent));
-        allFactories.add(new RetryPolicy.Factory());
-        allFactories.add(new LoggingPolicy.Factory(logLevel));
+        final RxNettyAdapter.Builder httpClientBuilder = new RxNettyAdapter.Builder()
+            .withRequestPolicy(new UserAgentPolicy.Factory(userAgent))
+            .withRequestPolicy(new RetryPolicy.Factory())
+            .withRequestPolicy(new LoggingPolicy.Factory(logLevel));
         if (credentials != null) {
-            allFactories.add(new CredentialsPolicy.Factory(credentials));
+            httpClientBuilder.withRequestPolicy(new CredentialsPolicy.Factory(credentials));
         }
-        allFactories.addAll(customPolicyFactories);
-        return allFactories;
+        httpClientBuilder.withRequestPolicies(customPolicyFactories);
+
+        this.httpClient = httpClientBuilder.build();
     }
 
     /**
@@ -126,6 +123,20 @@ public final class RestClient {
      */
     public String userAgent() {
         return userAgent;
+    }
+
+    /**
+     * @return a new initialized instance of the default HttpClient type.
+     */
+    public static HttpClient createDefaultHttpClient() {
+        return new RxNettyAdapter(Collections.<RequestPolicy.Factory>emptyList(), Collections.<ChannelHandlerConfig>emptyList());
+    }
+
+    /**
+     * @return a new initialized instance of the default SerializerAdapter type.
+     */
+    public static SerializerAdapter<?> createDefaultSerializer() {
+        return new JacksonAdapter();
     }
 
     /**

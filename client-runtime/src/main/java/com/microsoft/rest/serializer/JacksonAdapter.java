@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * A serialization helper class wrapped around {@link JacksonConverterFactory} and {@link ObjectMapper}.
+ * A serialization helper class wrapped around {@link ObjectMapper}.
  */
 public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     /**
@@ -39,11 +39,6 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
      * An instance of {@link ObjectMapper} that does not do flattening.
      */
     private final ObjectMapper simpleMapper;
-
-    /**
-     * An instance of {@link JacksonConverterFactory} for Retrofit to use.
-     */
-    private JacksonConverterFactory converterFactory;
 
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
@@ -67,11 +62,6 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     @Override
     public ObjectMapper serializer() {
         return mapper;
-    }
-
-    @Override
-    public JacksonConverterFactory converterFactory() {
-        return JacksonConverterFactory.create(serializer());
     }
 
     @Override
@@ -148,8 +138,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
                 .registerModule(ByteArraySerializer.getModule())
                 .registerModule(Base64UrlSerializer.getModule())
                 .registerModule(DateTimeSerializer.getModule())
-                .registerModule(DateTimeRfc1123Serializer.getModule())
-                .registerModule(HeadersSerializer.getModule());
+                .registerModule(DateTimeRfc1123Serializer.getModule());
         mapper.setVisibility(mapper.getSerializationConfig().getDefaultVisibilityChecker()
                 .withFieldVisibility(JsonAutoDetect.Visibility.ANY)
                 .withSetterVisibility(JsonAutoDetect.Visibility.NONE)
