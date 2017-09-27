@@ -160,6 +160,12 @@
     "args": "--payload-flattening-threshold=1 --tag=package-2015-06",
     "fluent": false
   },
+  "locks": {
+    "dir": "azure-mgmt-locks",
+    "source": "specification/resources/resource-manager/readme.md",
+    "package": "com.microsoft.azure.management.locks",
+    "args": "--payload-flattening-threshold=1 --tag=package-locks-2016-09"
+  },
   "logic": {
     "dir": "azure-mgmt-logic",
     "source": "specification/logic/resource-manager/readme.md",
