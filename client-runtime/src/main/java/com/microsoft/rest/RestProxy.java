@@ -173,7 +173,7 @@ public class RestProxy implements InvocationHandler {
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + responseContent, response, exceptionBody);
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             String message = "Status code " + responseStatusCode + ", but an instance of " + exceptionType.getCanonicalName() + " cannot be created.";
-            if (responseContent != null && responseContent.isEmpty()) {
+            if (responseContent != null && !responseContent.isEmpty()) {
                 message += " Response content: \"" + responseContent + "\"";
             }
             result = new IOException(message, e);
