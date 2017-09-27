@@ -350,6 +350,12 @@ var mappings = {
         'source': 'arm-documentdb/2015-04-08/swagger/documentdb.json',
         'package': 'com.microsoft.azure.management.cosmosdb',
         'args': '--payload-flattening-threshold=1',
+    },
+    'locks': {
+        'dir': 'azure-mgmt-locks',
+        'source': 'specification/resources/resource-manager/readme.md',
+        'package': 'com.microsoft.azure.management.locks',
+        'args': '--payload-flattening-threshold=1 --tag=package-locks-2016-09'
     }
 };
 
