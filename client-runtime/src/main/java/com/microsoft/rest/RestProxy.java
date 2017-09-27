@@ -204,14 +204,12 @@ public class RestProxy implements InvocationHandler {
     private Single<?> toProxyReturnValue(HttpResponse response, SwaggerMethodParser methodParser, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final Single<?> asyncResult;
-        if (methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
+        if (entityTypeToken.isSubtypeOf(void.class) || methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
             asyncResult = Single.just(null);
         } else if (entityTypeToken.isSubtypeOf(InputStream.class)) {
             asyncResult = response.bodyAsInputStreamAsync();
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
             asyncResult = response.bodyAsByteArrayAsync();
-        } else if (entityTypeToken.isSubtypeOf(void.class)) {
-            asyncResult = Single.just(null);
         } else {
             final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
             asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
