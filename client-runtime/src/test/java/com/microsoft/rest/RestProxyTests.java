@@ -434,7 +434,7 @@ public abstract class RestProxyTests {
             assertTrue(e.body() instanceof LinkedHashMap);
 
             final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.body();
-            assertEquals("\"I'm the body!\"", expectedBody.get("data"));
+            assertEquals("I'm the body!", expectedBody.get("data"));
         }
     }
 
@@ -462,7 +462,7 @@ public abstract class RestProxyTests {
             fail("Expected RestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.body());
-            assertEquals("\"I'm the body!\"", e.body().data);
+            assertEquals("I'm the body!", e.body().data);
         } catch (Throwable e) {
             fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
         }
