@@ -26,9 +26,10 @@ import java.util.Map;
  * An object that represents a webhook for a container registry.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_3_0)
+@Beta(Beta.SinceVersion.V1_4_0)
 public interface Webhook extends
     ExternalChildResource<Webhook, Registry>,
+    Resource,
     HasInner<WebhookInner>,
     Refreshable<Webhook>,
     Updatable<Webhook.Update> {

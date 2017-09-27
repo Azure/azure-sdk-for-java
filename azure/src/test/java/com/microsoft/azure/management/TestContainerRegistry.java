@@ -21,79 +21,23 @@ import java.util.List;
 
 public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
-    private void test(Registries registries) {
-        Registry registry = registries.define("acr")
-            .withRegion(Region.US_WEST)
-            .withNewResourceGroup()
-            .withBasicSku()
-            .withRegistryNameAsAdminUser()
-            .withTag("tag1", "value1")
-            .defineWebhook("webhook")
-                .withTriggerWhen(WebhookAction.PUSH)
-                .withServiceUri("website")
-                .withDefaultStatus(WebhookStatus.DISABLED)
-                .withRepositoriesScope("")
-                .withTag("tag", "value")
-                .withCustomHeader("blah", "blah")
-                .attach()
-            .create();
-
-
-        registry.update()
-            .withoutWebhook("webhook")
-            .withNewWebhook("blah2")
-                .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
-                .withServiceUri("blah")
-                .withRepositoriesScope("")
-                .withDefaultStatus(WebhookStatus.ENABLED)
-                .attach()
-            .updateWebhook("blah1")
-                .withServiceUri("srv")
-                .withTriggerWhen(WebhookAction.DELETE)
-                .withCustomHeader("header", "value")
-                .withoutTag("blah")
-                .withTag("tag", "value")
-                .parent()
-            .withBasicSku()
-            .withoutTag("tag")
-            .withTag("tag2", "value")
-            .apply();
-
-        Webhook webhook = registry.getWebhook("blah2");
-
-        webhook.refresh();
-        webhook.update()
-            .withCustomHeader("header1", "value1")
-            .withDefaultStatus(WebhookStatus.DISABLED)
-            .withServiceUri("something")
-            .withRepositoriesScope("")
-            .withTriggerWhen(WebhookAction.PUSH)
-            .withoutTag("tag2")
-            .withTag("tag", "value")
-            .apply();
-
-        Registry containerRegistry = registries.getByResourceGroup("test-acr", "test11223344");
-
-        Collection<RegistryUsage> registryUsages = containerRegistry.listQuotaUsages();
-
-//        List<OperationDefinitionInner> operations = containerRegistry.manager().inner().operations().list();
-//
-//        for (OperationDefinitionInner op : operations) {
-//            System.out.format("Name: %s\n\tOp: %s\n\tProv: %s\n\tRes: %s\n\tDesc: %s\n", op.name(), op.display().operation(), op.display().provider(), op.display().resource(), op.display().description());
-//        }
-
-        List<Webhook> webhookList = containerRegistry.listWebhooks();
-    }
-
     @Override
     public Registry createResource(Registries registries) throws Exception {
-        final String newName = "registry" + this.testId;
-        Registry registry = registries.define(newName)
-                .withRegion(Region.US_EAST)
+        final String newName = "acr" + this.testId;
+        Registry registry = registries.define(newName + "1")
+                .withRegion(Region.US_WEST_CENTRAL)
                 .withNewResourceGroup()
                 .withClassicSku()
                 .withNewStorageAccount("crsa" + this.testId)
                 .withRegistryNameAsAdminUser()
+                .defineWebhook("webhook-bing")
+                    .withTriggerWhen(WebhookAction.PUSH)
+                    .withServiceUri("https://www.bing.com")
+                    .withDefaultStatus(WebhookStatus.ENABLED)
+                    .withRepositoriesScope("")
+                    .withTag("tag", "value")
+                    .attach()
+                .withTag("tag1", "value1")
                 .create();
 
         Assert.assertTrue(registry.adminUserEnabled());
@@ -104,18 +48,80 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
         Assert.assertEquals(newName, registryCredentials.username());
         Assert.assertEquals(2, registryCredentials.accessKeys().size());
 
+        registry = registries.define(newName + "2")
+            .withRegion(Region.US_WEST_CENTRAL)
+            .withNewResourceGroup()
+            .withBasicSku()
+            .withRegistryNameAsAdminUser()
+            .defineWebhook("webhook-bing1")
+                .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
+                .withServiceUri("https://www.bing.com")
+                .withDefaultStatus(WebhookStatus.DISABLED)
+                .withRepositoriesScope("")
+                .withTag("tag", "value")
+                .withCustomHeader("name", "value")
+                .attach()
+            .defineWebhook("webhook-bing2")
+                .withTriggerWhen(WebhookAction.PUSH)
+                .withServiceUri("https://www.bing.com")
+                .withDefaultStatus(WebhookStatus.DISABLED)
+                .withRepositoriesScope("")
+                .withTag("tag", "value")
+                .withCustomHeader("name", "value")
+                .attach()
+            .withTag("tag1", "value1")
+            .create();
+
+        Assert.assertTrue(registry.adminUserEnabled());
+
+        registryCredentials = registry.getCredentials();
+        Assert.assertNotNull(registryCredentials);
+        Assert.assertEquals(newName, registryCredentials.username());
+        Assert.assertEquals(2, registryCredentials.accessKeys().size());
+
+        Webhook webhook = registry.getWebhook("webhook-bing1");
+        Assert.assertFalse(webhook.isEnabled());
+        Assert.assertTrue(webhook.tags().containsKey("tag"));
+
         return registry;
     }
 
     @Override
     public Registry updateResource(Registry resource) throws Exception {
-        resource =  resource.update()
-                .withTag("tag2", "value2")
-                .withTag("tag3", "value3")
-                .withoutTag("tag1")
-                .apply();
+        resource.update()
+            .withoutWebhook("webhook-bing1")
+            .withNewWebhook("webhook-ms")
+                .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
+                .withServiceUri("https://www.microsoft.com")
+                .withRepositoriesScope("")
+                .withDefaultStatus(WebhookStatus.ENABLED)
+                .attach()
+            .updateWebhook("webhook-bing2")
+                .withServiceUri("https://www.bing.com/maps")
+                .withTriggerWhen(WebhookAction.DELETE)
+                .withCustomHeader("header", "value")
+                .withoutTag("tag")
+                .withTag("tag2", "value")
+                .parent()
+            .withStandardSku()
+            .withoutTag("tag1")
+            .withTag("tag2", "value")
+            .apply();
+
         Assert.assertTrue(resource.tags().containsKey("tag2"));
-        Assert.assertTrue(!resource.tags().containsKey("tag1"));
+        Assert.assertFalse(resource.tags().containsKey("tag1"));
+
+        Webhook webhook = resource.getWebhook("webhook-bing2");
+        webhook.refresh();
+        webhook.update()
+            .withCustomHeader("header1", "value1")
+            .withDefaultStatus(WebhookStatus.DISABLED)
+            .withServiceUri("https://www.msn.com")
+            .withRepositoriesScope("")
+            .withTriggerWhen(WebhookAction.PUSH)
+            .withoutTag("tag2")
+            .withTag("tag3", "value")
+            .apply();
 
         return resource;
     }

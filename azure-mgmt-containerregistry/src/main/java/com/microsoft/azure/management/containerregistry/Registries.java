@@ -48,7 +48,7 @@ public interface Registries extends
      * @param registryName the registry name
      * @return the container registry's login credentials
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     RegistryCredentials getCredentials(String resourceGroupName, String registryName);
 
     /**
@@ -58,7 +58,7 @@ public interface Registries extends
      * @param registryName the registry name
      * @return a representation of the future computation of this call, returning the container registry's login credentials
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Observable<RegistryCredentials> getCredentialsAsync(String resourceGroupName, String registryName);
 
     /**
@@ -69,7 +69,7 @@ public interface Registries extends
      * @param accessKeyName the admin user access key name to regenerate the value for
      * @return the container registry's login credentials
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     RegistryCredentials regenerateCredential(String resourceGroupName, String registryName, AccessKeyName accessKeyName);
 
     /**
@@ -80,7 +80,7 @@ public interface Registries extends
      * @param accessKeyName the admin user access key name to regenerate the value for
      * @return a representation of the future computation of this call, returning the container registry's login credentials
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Observable<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, AccessKeyName accessKeyName);
 
     /**
@@ -90,7 +90,7 @@ public interface Registries extends
      * @param registryName the registry name
      * @return the list of container registry's quota usages
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Collection<RegistryUsage> listQuotaUsages(String resourceGroupName, String registryName);
 
     /**
@@ -100,7 +100,7 @@ public interface Registries extends
      * @param registryName the registry name
      * @return a representation of the future computation of this call, returning the list of container registry's quota usages
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Observable<RegistryUsage> listQuotaUsagesAsync(String resourceGroupName, String registryName);
 
     /**
@@ -109,7 +109,7 @@ public interface Registries extends
      * @param name the container registry name to check
      * @return whether the name is available and other info if not
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     CheckNameAvailabilityResult checkNameAvailability(String name);
 
     /**
@@ -118,6 +118,6 @@ public interface Registries extends
      * @param name the container registry name to check
      * @return a representation of the future computation of this call, returning whether the name is available or other info if not
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
 }

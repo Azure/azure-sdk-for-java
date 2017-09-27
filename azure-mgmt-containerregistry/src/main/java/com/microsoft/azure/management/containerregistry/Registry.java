@@ -62,19 +62,19 @@ public interface Registry extends
     /**
      * @return the id of the storage account for the container registry; 'null' if container register SKU a managed tier
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     String storageAccountId();
 
     /**
      * @return the login credentials for the specified container registry
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     RegistryCredentials getCredentials();
 
     /**
      * @return a representation of the future computation of this call
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Observable<RegistryCredentials> getCredentialsAsync();
 
     /**
@@ -82,7 +82,7 @@ public interface Registry extends
      * @param accessKeyName the admin user access key name to regenerate the value for
      * @return the result of the regeneration
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     RegistryCredentials regenerateCredential(AccessKeyName accessKeyName);
 
     /**
@@ -91,7 +91,7 @@ public interface Registry extends
      * @param accessKeyName the admin user access key name to regenerate the value for
      * @return a representation of the future computation of this call
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Observable<RegistryCredentials> regenerateCredentialAsync(AccessKeyName accessKeyName);
 
     /**
@@ -99,7 +99,7 @@ public interface Registry extends
      *
      * @return the list of container registry's quota usages
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Collection<RegistryUsage> listQuotaUsages();
 
     /**
@@ -107,7 +107,7 @@ public interface Registry extends
      *
      * @return a representation of the future computation of this call
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Observable<RegistryUsage> listQuotaUsagesAsync();
 
     /**
@@ -116,7 +116,7 @@ public interface Registry extends
      * @param webhookName the name of the webhook
      * @return the Webhook object if successful
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Webhook getWebhook(String webhookName);
 
     /**
@@ -125,7 +125,7 @@ public interface Registry extends
      * @param webhookName the name of the webhook
      * @return a representation of the future computation of this call, returning the Webhook object
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Observable<Webhook> getWebhookAsync(String webhookName);
 
     /**
@@ -133,7 +133,7 @@ public interface Registry extends
      *
      * @param webhookName the name of the webhook
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     void deleteWebhook(String webhookName);
 
     /**
@@ -142,7 +142,7 @@ public interface Registry extends
      * @param webhookName the name of the webhook
      * @return a representation of the future computation of this call
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Completable deleteWebhookAsync(String webhookName);
 
     /**
@@ -150,7 +150,7 @@ public interface Registry extends
      *
      * @return the list of all the webhooks for the specified container registry
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     PagedList<Webhook> listWebhooks();
 
     /**
@@ -158,7 +158,7 @@ public interface Registry extends
      *
      * @return a representation of the future computation of this call, returning the list of all the webhooks for the specified container registry
      */
-    @Beta(SinceVersion.V1_3_0)
+    @Beta(SinceVersion.V1_4_0)
     Observable<Webhook> listWebhooksAsync();
 
 
@@ -188,7 +188,7 @@ public interface Registry extends
         /**
          * The stage of the container service definition allowing to specify the resource group.
          */
-        @Beta(SinceVersion.V1_3_0)
+        @Beta(SinceVersion.V1_4_0)
         interface WithGroup extends
                 GroupableResource.DefinitionStages.WithGroup<WithSku> {
         }
@@ -201,28 +201,28 @@ public interface Registry extends
              * Creates a container registry with a 'Classic' SKU type.
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             WithStorageAccount withClassicSku();
 
             /**
              * Creates a "managed' registry with a 'Basic' SKU type.
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             WithCreate withBasicSku();
 
             /**
              * Creates a "managed' registry with a 'Standard' SKU type.
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             WithCreate withStandardSku();
 
             /**
              * Creates a "managed' registry with a 'Premium' SKU type.
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             WithCreate withPremiumSku();
         }
 
@@ -250,7 +250,7 @@ public interface Registry extends
              * @param storageAccountName the name of the storage account; must be in the same physical location as the container registry
              * @return the next stage
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             WithCreate withExistingStorageAccountName(String resourceGroupName, String storageAccountName);
 
             /**
@@ -261,7 +261,7 @@ public interface Registry extends
              * @param id the resource id of the storage account; must be in the same physical location as the container registry
              * @return the next stage
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             WithCreate withExistingStorageAccountId(String id);
 
             /**
@@ -272,7 +272,7 @@ public interface Registry extends
              * @param storageAccountName the name of the storage account
              * @return the next stage
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             WithCreate withNewStorageAccount(String storageAccountName);
 
             /**
@@ -362,21 +362,21 @@ public interface Registry extends
              * Updates the current container registry to a "managed' registry with a 'Basic' SKU type.
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             Update withBasicSku();
 
             /**
              * Updates the current container registry to a "managed' registry with a 'Standard' SKU type.
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             Update withStandardSku();
 
             /**
              * Updates the current container registry to a "managed' registry with a 'Premium' SKU type.
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_3_0)
+            @Beta(SinceVersion.V1_4_0)
             Update withPremiumSku();
         }
 

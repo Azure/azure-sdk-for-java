@@ -12,7 +12,7 @@ import com.microsoft.azure.management.apigeneration.Fluent;
  * Response containing the primary and secondary admin API keys for a given Azure Search service.
  */
 @Fluent
-@Beta(Beta.SinceVersion.V1_3_0)
+@Beta(Beta.SinceVersion.V1_4_0)
 public interface WebhookEventInfo {
     /**
      * Gets the event request object.

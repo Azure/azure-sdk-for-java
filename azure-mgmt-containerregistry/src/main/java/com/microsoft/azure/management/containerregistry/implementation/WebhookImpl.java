@@ -14,6 +14,7 @@ import com.microsoft.azure.management.containerregistry.Webhook;
 import com.microsoft.azure.management.containerregistry.WebhookAction;
 import com.microsoft.azure.management.containerregistry.WebhookEventInfo;
 import com.microsoft.azure.management.containerregistry.WebhookStatus;
+import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCallback;
@@ -26,6 +27,7 @@ import java.util.Collection;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.TreeMap;
 
 /**
  * Implementation for Webhook.
@@ -64,6 +66,35 @@ public class WebhookImpl
         this.webhookCreateParametersInner = null;
         this.webhookUpdateParametersInner = null;
         this.isInCreateMode = false;
+    }
+
+    @Override
+    public String id() {
+        return this.inner().id();
+    }
+
+    @Override
+    public String type() {
+        return this.inner().type();
+    }
+
+    @Override
+    public String regionName() {
+        return this.inner().location();
+    }
+
+    @Override
+    public Region region() {
+        return Region.findByLabelOrName(this.regionName());
+    }
+
+    @Override
+    public Map<String, String> tags() {
+        Map<String, String> tags = this.inner().getTags();
+        if (tags == null) {
+            tags = new TreeMap<>();
+        }
+        return Collections.unmodifiableMap(tags);
     }
 
     @Override
@@ -170,11 +201,6 @@ public class WebhookImpl
                     return new WebhookEventInfoImpl(inner);
                 }
             });
-    }
-
-    @Override
-    public String id() {
-        return this.inner().id();
     }
 
     @Override
