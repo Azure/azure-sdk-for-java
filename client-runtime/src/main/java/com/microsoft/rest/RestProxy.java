@@ -155,9 +155,13 @@ public class RestProxy implements InvocationHandler {
         return handleSyncHttpResponse(httpRequest, httpResponse, methodParser, returnType);
     }
 
-    protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type returnType) throws IOException {
-        // TODO: clean up these overloads
-        return handleAsyncHttpResponse(httpRequest, Single.just(httpResponse), methodParser);
+    protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, final Type returnType) throws IOException {
+        ensureExpectedStatus(httpResponse, methodParser).toBlocking().value();
+        if (!TypeToken.of(returnType).isSubtypeOf(void.class)) {
+            return toProxyReturnValue(httpResponse, methodParser, returnType).toBlocking().value();
+        } else {
+            return null;
+        }
     }
 
     private Exception instantiateUnexpectedException(SwaggerMethodParser methodParser, HttpResponse response, String responseContent) {
@@ -201,16 +205,14 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private Single<?> toProxyReturnValue(HttpResponse response, SwaggerMethodParser methodParser) {
-        Single<?> asyncResult;
-        final Type singleReturnType = ((ParameterizedType) methodParser.returnType()).getActualTypeArguments()[0];
-        final TypeToken singleReturnTypeToken = TypeToken.of(singleReturnType);
-
+    private Single<?> toProxyReturnValue(HttpResponse response, SwaggerMethodParser methodParser, final Type entityType) {
+        final TypeToken entityTypeToken = TypeToken.of(entityType);
+        final Single<?> asyncResult;
         if (methodParser.httpMethod().equalsIgnoreCase("HEAD")) {
             asyncResult = Single.just(null);
-        } else if (singleReturnTypeToken.isSubtypeOf(InputStream.class)) {
+        } else if (entityTypeToken.isSubtypeOf(InputStream.class)) {
             asyncResult = response.bodyAsInputStreamAsync();
-        } else if (singleReturnTypeToken.isSubtypeOf(byte[].class)) {
+        } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
             asyncResult = response.bodyAsByteArrayAsync();
         } else {
             final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
@@ -218,7 +220,7 @@ public class RestProxy implements InvocationHandler {
                 @Override
                 public Single<Object> call(String responseBodyString) {
                     try {
-                        return Single.just(serializer.deserialize(responseBodyString, singleReturnType));
+                        return Single.just(serializer.deserialize(responseBodyString, entityType));
                     } catch (Throwable e) {
                         return Single.error(e);
                     }
@@ -233,19 +235,23 @@ public class RestProxy implements InvocationHandler {
 
         final Type returnType = methodParser.returnType();
         final TypeToken returnTypeToken = TypeToken.of(returnType);
+
+        final Single<HttpResponse> asyncExpectedResponse = asyncHttpResponse.flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
+            @Override
+            public Single<HttpResponse> call(HttpResponse response) {
+                return ensureExpectedStatus(response, methodParser);
+            }
+        });
+
         if (returnTypeToken.isSubtypeOf(Completable.class)) {
-            result = Completable.fromSingle(asyncHttpResponse);
+            result = Completable.fromSingle(asyncExpectedResponse);
         }
         else if (returnTypeToken.isSubtypeOf(Single.class)) {
-            result = asyncHttpResponse.flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
-                @Override
-                public Single<HttpResponse> call(HttpResponse response) {
-                    return ensureExpectedStatus(response, methodParser);
-                }
-            }).flatMap(new Func1<HttpResponse, Single<?>>() {
+            final Type singleTypeParam = ((ParameterizedType) methodParser.returnType()).getActualTypeArguments()[0];
+            result = asyncExpectedResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
                 @Override
                 public Single<?> call(HttpResponse response) {
-                    return toProxyReturnValue(response, methodParser);
+                    return toProxyReturnValue(response, methodParser, singleTypeParam);
                 }
             });
         }
