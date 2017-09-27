@@ -51,10 +51,10 @@ class RequestResponseLink extends ClientEntity{
 	private final CompletableFuture<RequestResponseLink> createFuture;
 	private final ConcurrentHashMap<String, RequestResponseWorkItem> pendingRequests;
     private final AtomicInteger requestCounter;
+    private final String replyTo;
     
 	private InternalReceiver amqpReceiver;
 	private InternalSender amqpSender;
-	private String replyTo;
 	private boolean isRecreateLinksInProgress;
 	
 	public static CompletableFuture<RequestResponseLink> createAsync(MessagingFactory messagingFactory, String linkName, String linkPath)
@@ -129,7 +129,7 @@ class RequestResponseLink extends ClientEntity{
 		this.amqpReceiver = new InternalReceiver(linkName + ":interalReceiver", this);
 		this.pendingRequests = new ConcurrentHashMap<>();
 		this.requestCounter = new AtomicInteger();
-		
+		this.replyTo = UUID.randomUUID().toString();
 		this.createFuture = new CompletableFuture<RequestResponseLink>();
 	}
 	
@@ -140,8 +140,6 @@ class RequestResponseLink extends ClientEntity{
 	
 	private void createInternalLinks()
 	{
-		this.replyTo = UUID.randomUUID().toString();
-		
 		Map<Symbol, Object> commonLinkProperties = new HashMap<>();
 		// ServiceBus expects timeout to be of type unsignedint
 		commonLinkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis()));
@@ -512,6 +510,7 @@ class RequestResponseLink extends ClientEntity{
 				}
 			}
 			
+			TRACE_LOGGER.error("Internal receive link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
 			this.parent.amqpSender.closeInternals(false);
             this.parent.amqpSender.setClosed();
 			this.parent.completeAllPendingRequestsWithException(exception);
@@ -547,6 +546,7 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
+					    TRACE_LOGGER.error("Internal receive link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
 					    this.parent.amqpSender.closeInternals(false);
 					    this.parent.amqpSender.setClosed();
 					    this.parent.completeAllPendingRequestsWithException(exception);
@@ -713,6 +713,7 @@ class RequestResponseLink extends ClientEntity{
 				}
 			}
 			
+			TRACE_LOGGER.error("Internal send link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
 			this.parent.amqpReceiver.closeInternals(false);
             this.parent.amqpReceiver.setClosed();
 			this.parent.completeAllPendingRequestsWithException(exception);
@@ -748,6 +749,7 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
+					    TRACE_LOGGER.error("Internal send link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
 					    this.parent.amqpReceiver.closeInternals(false);
                         this.parent.amqpReceiver.setClosed();
 					    this.parent.completeAllPendingRequestsWithException(exception);

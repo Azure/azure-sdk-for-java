@@ -642,6 +642,13 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             {
 			    AsyncUtil.completeFutureExceptionally(this.receiveLinkReopenFuture, exception);
 			    this.receiveLinkReopenFuture = null;
+			    if(this.isSessionReceiver && (exception instanceof SessionLockLostException || exception instanceof SessionCannotBeLockedException))
+                {
+                    // No point in retrying to establish a link.. SessionLock is lost
+                    TRACE_LOGGER.warn("SessionId '{}' lock lost. Closing receiver.", this.sessionId);
+                    this.isSessionLockLost = true;
+                    this.closeAsync();
+                }
             }
 
 			this.lastKnownLinkError = exception;
