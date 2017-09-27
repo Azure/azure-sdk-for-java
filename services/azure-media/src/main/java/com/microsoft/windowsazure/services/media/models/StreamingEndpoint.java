@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -40,7 +40,7 @@ import com.sun.jersey.api.client.UniformInterfaceException;
 
 /**
  * Class for creating operations to manipulate Asset entities.
- * 
+ *
  */
 public final class StreamingEndpoint {
 
@@ -56,7 +56,7 @@ public final class StreamingEndpoint {
 
     /**
      * Creates an Asset Creator.
-     * 
+     *
      * @return the creator
      */
     public static Creator create() {
@@ -96,6 +96,7 @@ public final class StreamingEndpoint {
             ClientResponse clientResponse = (ClientResponse) rawResponse;
 
             if (clientResponse.getStatus() >= 300) {
+                clientResponse.bufferEntity();
                 throw new UniformInterfaceException(
                         String.format("Received: %s", clientResponse.getEntity(String.class)), clientResponse);
             }
@@ -113,7 +114,7 @@ public final class StreamingEndpoint {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.microsoft.windowsazure.services.media.entityoperations.
          * EntityCreateOperation#getRequestContents()
          */
@@ -133,7 +134,7 @@ public final class StreamingEndpoint {
 
         /**
          * Set the name of the streaming endpoint to be created.
-         * 
+         *
          * @param name
          *            The name
          * @return The creator object (for call chaining)
@@ -145,7 +146,7 @@ public final class StreamingEndpoint {
 
         /**
          * Set the description of the streaming endpoint to be created.
-         * 
+         *
          * @param description
          *            The description
          * @return The creator object (for call chaining)
@@ -157,7 +158,7 @@ public final class StreamingEndpoint {
 
         /**
          * Set the scale units of the streaming endpoint to be created.
-         * 
+         *
          * @param scaleUnits
          *            the scale units
          * @return The creator object (for call chaining)
@@ -169,7 +170,7 @@ public final class StreamingEndpoint {
 
         /**
          * Set if CDN is enabled on the streaming endpoint to be created.
-         * 
+         *
          * @param cdnEnabled
          *            true if CDN is enabled
          * @return The creator object (for call chaining)
@@ -182,7 +183,7 @@ public final class StreamingEndpoint {
         /**
          * Set the access control policies of the streaming endpoint to be
          * created.
-         * 
+         *
          * @param streamingEndpointAccessControl
          *            the access control policies
          * @return The creator object (for call chaining)
@@ -195,7 +196,7 @@ public final class StreamingEndpoint {
         /**
          * Set the list of custom host names of the streaming endpoint to be
          * created.
-         * 
+         *
          * @param customHostNames
          *            the list of custom host names
          * @return The creator object (for call chaining)
@@ -208,7 +209,7 @@ public final class StreamingEndpoint {
         /**
          * Set the streaming endpoint cache control of the streaming endpoint to
          * be created.
-         * 
+         *
          * @param streamingEndpointCacheControl
          *            the streaming endpoint cache control
          * @return The creator object (for call chaining)
@@ -221,7 +222,7 @@ public final class StreamingEndpoint {
         /**
          * Set the cross site access policies of the streaming endpoint to be
          * created.
-         * 
+         *
          * @param crossSiteAccessPolicies
          *            the cross site access policies
          * @return The creator object (for call chaining)
@@ -235,7 +236,7 @@ public final class StreamingEndpoint {
 
     /**
      * Create an operation object that will get the state of the given asset.
-     * 
+     *
      * @param assetId
      *            id of asset to retrieve
      * @return the get operation
@@ -247,7 +248,7 @@ public final class StreamingEndpoint {
 
     /**
      * Create an operation that will list all the assets.
-     * 
+     *
      * @return The list operation
      */
     public static DefaultListOperation<StreamingEndpointInfo> list() {
@@ -258,7 +259,7 @@ public final class StreamingEndpoint {
 
     /**
      * Create an operation that will update the given asset.
-     * 
+     *
      * @param assetId
      *            id of the asset to update
      * @return the update operation
@@ -285,7 +286,7 @@ public final class StreamingEndpoint {
 
         /**
          * Instantiates a new updater.
-         * 
+         *
          * @param assetId
          *            the asset id
          */
@@ -305,7 +306,7 @@ public final class StreamingEndpoint {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.microsoft.windowsazure.services.media.entityoperations.
          * EntityOperation
          * #setProxyData(com.microsoft.windowsazure.services.media
@@ -318,7 +319,7 @@ public final class StreamingEndpoint {
 
         /*
          * (non-Javadoc)
-         * 
+         *
          * @see com.microsoft.windowsazure.services.media.entityoperations.
          * EntityUpdateOperation#getRequestContents()
          */
@@ -336,7 +337,7 @@ public final class StreamingEndpoint {
 
         /**
          * Set the new description of the streaming endpoint to be updated.
-         * 
+         *
          * @param description
          *            The description
          * @return The creator object (for call chaining)
@@ -349,7 +350,7 @@ public final class StreamingEndpoint {
         /**
          * Set the new value for CDN enabled on the streaming endpoint to be
          * updated.
-         * 
+         *
          * @param cdnEnabled
          *            true if CDN is enabled
          * @return The creator object (for call chaining)
@@ -362,7 +363,7 @@ public final class StreamingEndpoint {
         /**
          * Set the new access control policies of the streaming endpoint to be
          * updated.
-         * 
+         *
          * @param streamingEndpointAccessControl
          *            the access control policies
          * @return The creator object (for call chaining)
@@ -375,7 +376,7 @@ public final class StreamingEndpoint {
         /**
          * Set the new list of custom host names of the streaming endpoint to be
          * updated.
-         * 
+         *
          * @param customHostNames
          *            the list of custom host names
          * @return The creator object (for call chaining)
@@ -388,7 +389,7 @@ public final class StreamingEndpoint {
         /**
          * Set the new streaming endpoint cache control of the streaming
          * endpoint to be updated.
-         * 
+         *
          * @param streamingEndpointCacheControl
          *            the streaming endpoint cache control
          * @return The creator object (for call chaining)
@@ -401,7 +402,7 @@ public final class StreamingEndpoint {
         /**
          * Set the new cross site access policies of the streaming endpoint to
          * be updated.
-         * 
+         *
          * @param crossSiteAccessPolicies
          *            the cross site access policies
          * @return The creator object (for call chaining)
@@ -414,7 +415,7 @@ public final class StreamingEndpoint {
 
     /**
      * Create an operation to delete the given streaming endpoint
-     * 
+     *
      * @param assetId
      *            id of asset to delete
      * @return the delete operation
