@@ -157,11 +157,7 @@ public class RestProxy implements InvocationHandler {
 
     protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, final Type returnType) throws IOException {
         ensureExpectedStatus(httpResponse, methodParser).toBlocking().value();
-        if (!TypeToken.of(returnType).isSubtypeOf(void.class)) {
-            return toProxyReturnValue(httpResponse, methodParser, returnType).toBlocking().value();
-        } else {
-            return null;
-        }
+        return toProxyReturnValue(httpResponse, methodParser, returnType).toBlocking().value();
     }
 
     private Exception instantiateUnexpectedException(SwaggerMethodParser methodParser, HttpResponse response, String responseContent) {
@@ -214,6 +210,8 @@ public class RestProxy implements InvocationHandler {
             asyncResult = response.bodyAsInputStreamAsync();
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
             asyncResult = response.bodyAsByteArrayAsync();
+        } else if (entityTypeToken.isSubtypeOf(void.class)) {
+            asyncResult = Single.just(null);
         } else {
             final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
             asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
