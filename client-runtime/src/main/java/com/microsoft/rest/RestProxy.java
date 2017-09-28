@@ -166,7 +166,7 @@ public class RestProxy implements InvocationHandler {
         return handleSyncHttpResponse(httpRequest, httpResponse, methodParser, returnType);
     }
 
-    protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, final Type returnType) throws IOException {
+    protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type returnType) throws IOException {
         ensureExpectedStatus(httpResponse, methodParser).toBlocking().value();
         return toProxyReturnValue(httpResponse, methodParser, returnType).toBlocking().value();
     }
