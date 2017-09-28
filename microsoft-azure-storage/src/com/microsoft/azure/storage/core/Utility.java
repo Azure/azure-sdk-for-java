@@ -767,8 +767,15 @@ public final class Utility {
      * @return A <code>java.io.IOException</code> object that represents the created IO exception.
      */
     public static IOException initIOException(final Exception ex) {
-        final IOException retEx = new IOException();
-        retEx.initCause(ex);
+        String message = null;
+        if (ex != null && ex.getMessage() != null) {
+            message = ex.getMessage() + " Please see the cause for further information.";
+        }
+        else {
+            message = "Please see the cause for further information.";
+        }
+
+        final IOException retEx = new IOException(message, ex);
         return retEx;
     }
 

@@ -1,5 +1,6 @@
 2017.XX.XX Version 6.0.0
  * Added support for taking a snapshot of a share.
+ * IOExceptions wrapping StorageExceptions will now contain the StorageException message in the outer exception.
 
 2017.08.28 Version 5.5.0
  * Fixed a bug when using a SAS token where the token was being omitted from calls to delete a directory in the file service.
