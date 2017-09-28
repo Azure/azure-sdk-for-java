@@ -107,6 +107,11 @@ public class MockAzureHttpClient extends HttpClient {
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(200, json);
                 }
+                else if (requestPathLower.startsWith("/status/")) {
+                    final String statusCodeString = requestPathLower.substring("/status/".length());
+                    final int statusCode = Integer.valueOf(statusCodeString);
+                    response = new MockAzureHttpResponse(statusCode);
+                }
             }
             else if (requestHost.equalsIgnoreCase("mock.azure.com")) {
                 if (request.httpMethod().equalsIgnoreCase("GET")) {

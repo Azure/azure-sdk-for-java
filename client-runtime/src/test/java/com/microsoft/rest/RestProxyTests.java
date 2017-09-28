@@ -48,6 +48,9 @@ public abstract class RestProxyTests {
         @GET("bytes/100")
         @ExpectedResponses({200})
         Single<byte[]> getByteArrayAsync();
+
+        @GET("bytes/100")
+        Single<byte[]> getByteArrayAsyncWithNoExpectedResponses();
     }
 
     @Test
@@ -62,6 +65,15 @@ public abstract class RestProxyTests {
     public void AsyncRequestWithByteArrayReturnType() {
         final byte[] result = createService(Service1.class)
                 .getByteArrayAsync()
+                .toBlocking().value();
+        assertNotNull(result);
+        assertEquals(result.length, 100);
+    }
+
+    @Test
+    public void getByteArrayAsyncWithNoExpectedResponses() {
+        final byte[] result = createService(Service1.class)
+                .getByteArrayAsyncWithNoExpectedResponses()
                 .toBlocking().value();
         assertNotNull(result);
         assertEquals(result.length, 100);
@@ -720,6 +732,85 @@ public abstract class RestProxyTests {
         final HttpBinJSON result = service17.getAsync("http", "bin").toBlocking().value();
         assertNotNull(result);
         assertEquals("http://httpbin.org/get", result.url);
+    }
+
+    @Host("https://httpbin.org")
+    private interface Service18 {
+        @GET("status/200")
+        void getStatus200();
+
+        @GET("status/200")
+        @ExpectedResponses({200})
+        void getStatus200WithExpectedResponse200();
+
+        @GET("status/300")
+        void getStatus300();
+
+        @GET("status/300")
+        @ExpectedResponses({300})
+        void getStatus300WithExpectedResponse300();
+
+        @GET("status/400")
+        void getStatus400();
+
+        @GET("status/400")
+        @ExpectedResponses({400})
+        void getStatus400WithExpectedResponse400();
+
+        @GET("status/500")
+        void getStatus500();
+
+        @GET("status/500")
+        @ExpectedResponses({500})
+        void getStatus500WithExpectedResponse500();
+    }
+
+    @Test
+    public void service18GetStatus200() {
+        createService(Service18.class)
+                .getStatus200();
+    }
+
+    @Test
+    public void service18GetStatus200WithExpectedResponse200() {
+        createService(Service18.class)
+                .getStatus200WithExpectedResponse200();
+    }
+
+    @Test
+    public void service18GetStatus300() {
+        createService(Service18.class)
+                .getStatus300();
+    }
+
+    @Test
+    public void service18GetStatus300WithExpectedResponse300() {
+        createService(Service18.class)
+                .getStatus300WithExpectedResponse300();
+    }
+
+    @Test(expected = RestException.class)
+    public void service18GetStatus400() {
+        createService(Service18.class)
+                .getStatus400();
+    }
+
+    @Test
+    public void service18GetStatus400WithExpectedResponse400() {
+        createService(Service18.class)
+                .getStatus400WithExpectedResponse400();
+    }
+
+    @Test(expected = RestException.class)
+    public void service18GetStatus500() {
+        createService(Service18.class)
+                .getStatus500();
+    }
+
+    @Test
+    public void service18GetStatus500WithExpectedResponse500() {
+        createService(Service18.class)
+                .getStatus500WithExpectedResponse500();
     }
 
     // Helpers

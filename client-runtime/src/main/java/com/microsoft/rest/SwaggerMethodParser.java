@@ -119,10 +119,7 @@ public class SwaggerMethodParser {
         }
 
         final ExpectedResponses expectedResponses = swaggerMethod.getAnnotation(ExpectedResponses.class);
-        if (expectedResponses == null) {
-            throw new MissingRequiredAnnotationException(ExpectedResponses.class, swaggerMethod);
-        }
-        else {
+        if (expectedResponses != null) {
             expectedStatusCodes = expectedResponses.value();
         }
 
@@ -190,8 +187,10 @@ public class SwaggerMethodParser {
 
     /**
      * Get the HTTP response status codes that are expected when a request is sent out for this
-     * Swagger method.
-     * @return The expected HTTP response status codes for this Swagger method.
+     * Swagger method. If the returned int[] is null, then all status codes less than 400 are
+     * allowed.
+     * @return The expected HTTP response status codes for this Swagger method or null if all status
+     * codes less than 400 are allowed.
      */
     public int[] expectedStatusCodes() {
         return expectedStatusCodes;
@@ -261,9 +260,14 @@ public class SwaggerMethodParser {
      * for this Swagger method.
      */
     public boolean isExpectedResponseStatusCode(int responseStatusCode) {
-        boolean result = false;
+        boolean result;
 
-        if (expectedStatusCodes != null && expectedStatusCodes.length > 0) {
+        if (expectedStatusCodes == null) {
+            result = (responseStatusCode < 400);
+        }
+        else {
+            result = false;
+
             for (int expectedStatusCode : expectedStatusCodes) {
                 if (expectedStatusCode == responseStatusCode) {
                     result = true;
