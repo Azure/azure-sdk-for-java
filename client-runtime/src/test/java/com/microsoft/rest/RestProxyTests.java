@@ -376,8 +376,17 @@ public abstract class RestProxyTests {
 
         @PUT("put")
         @ExpectedResponses({201})
+        Single<HttpBinJSON> putWithUnexpectedResponseAsync(@BodyParam String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MyRestException.class)
         HttpBinJSON putWithUnexpectedResponseAndExceptionType(@BodyParam String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        Single<HttpBinJSON> putWithUnexpectedResponseAndExceptionTypeAsync(@BodyParam String putBody);
     }
 
     @Test
@@ -413,6 +422,23 @@ public abstract class RestProxyTests {
     }
 
     @Test
+    public void AsyncPutRequestWithUnexpectedResponse() {
+        try {
+            createService(Service9.class)
+                    .putWithUnexpectedResponseAsync("I'm the body!")
+                    .toBlocking()
+                    .value();
+            fail("Expected RestException would be thrown.");
+        } catch (RestException e) {
+            assertNotNull(e.body());
+            assertTrue(e.body() instanceof LinkedHashMap);
+
+            final LinkedHashMap<String,String> expectedBody = (LinkedHashMap<String, String>)e.body();
+            assertEquals("I'm the body!", expectedBody.get("data"));
+        }
+    }
+
+    @Test
     public void SyncPutRequestWithUnexpectedResponseAndExceptionType() {
         try {
             createService(Service9.class)
@@ -422,7 +448,23 @@ public abstract class RestProxyTests {
             assertNotNull(e.body());
             assertEquals("I'm the body!", e.body().data);
         } catch (Throwable e) {
-            fail("Throwable of wrong type thrown.");
+            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
+        }
+    }
+
+    @Test
+    public void AsyncPutRequestWithUnexpectedResponseAndExceptionType() {
+        try {
+            createService(Service9.class)
+                    .putWithUnexpectedResponseAndExceptionTypeAsync("I'm the body!")
+                    .toBlocking()
+                    .value();
+            fail("Expected RestException would be thrown.");
+        } catch (MyRestException e) {
+            assertNotNull(e.body());
+            assertEquals("I'm the body!", e.body().data);
+        } catch (Throwable e) {
+            fail("Expected MyRestException would be thrown. Instead got " + e.getClass().getSimpleName());
         }
     }
 
