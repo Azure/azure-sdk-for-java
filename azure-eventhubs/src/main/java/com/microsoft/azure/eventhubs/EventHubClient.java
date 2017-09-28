@@ -4,6 +4,8 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import com.microsoft.azure.eventhubs.amqp.AmqpException;
+
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.security.InvalidKeyException;
@@ -1410,7 +1412,13 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
 						}
 						else if (error instanceof Exception) {
 							if ((error instanceof ExecutionException) && (error.getCause() != null) && (error.getCause() instanceof Exception)) {
-								lastException = (Exception)error.getCause();
+							    if(error.getCause() instanceof AmqpException) {
+							        lastException = ExceptionUtil.toException(((AmqpException) error.getCause()).getError());
+                                }
+                                else {
+							        lastException = (Exception)error.getCause();
+                                }
+
 								completeWith = error.getCause();
 							}
 							else {
