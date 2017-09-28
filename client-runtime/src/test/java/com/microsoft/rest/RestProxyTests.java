@@ -48,6 +48,9 @@ public abstract class RestProxyTests {
         @GET("bytes/100")
         @ExpectedResponses({200})
         Single<byte[]> getByteArrayAsync();
+
+        @GET("bytes/100")
+        Single<byte[]> getByteArrayAsyncWithNoExpectedResponses();
     }
 
     @Test
@@ -62,6 +65,15 @@ public abstract class RestProxyTests {
     public void AsyncRequestWithByteArrayReturnType() {
         final byte[] result = createService(Service1.class)
                 .getByteArrayAsync()
+                .toBlocking().value();
+        assertNotNull(result);
+        assertEquals(result.length, 100);
+    }
+
+    @Test
+    public void getByteArrayAsyncWithNoExpectedResponses() {
+        final byte[] result = createService(Service1.class)
+                .getByteArrayAsyncWithNoExpectedResponses()
                 .toBlocking().value();
         assertNotNull(result);
         assertEquals(result.length, 100);
