@@ -1,4 +1,4 @@
-#Consuming Events with the Java Event Processor Host for Azure Event Hubs
+# Consuming Events with the Java Event Processor Host for Azure Event Hubs
 
 Event Processor Host is built on top of the Java client for Azure Event Hubs and provides a number of features
 not present in that lower layer:
@@ -24,13 +24,13 @@ not present in that lower layer:
    the processing code in order to keep up with event flow might checkpoint once every hundred messages, or once
    per second, etc.
 
-##Getting Started
+## Getting Started
 
 This library is available from the Maven Central Repository. See the readme for the Java Azure Event Hubs client for more information.
 
-##Using Event Processor Host
+## Using Event Processor Host
 
-###Step 1: Implement IEventProcessor
+### Step 1: Implement IEventProcessor
 
 There are four methods which need to be implemented: onOpen, onClose, onError, and onEvents.
 onOpen and onClose are called when an event processor instance is created and shut down, respectively, and are intended for setup
@@ -100,7 +100,7 @@ pattern is not appropriate for every application.
     }
     ```
 
-###Step 2: Implement the General Error Notification Handler
+### Step 2: Implement the General Error Notification Handler
 
 This is a class which implements Consumer<ExceptionReceivedEventArgs>. There is just one required method, accept, which will be
 called with an argument of type ExceptionReceivedEventArgs if an error occurs which is not tied to any particular event processor. The
@@ -120,7 +120,7 @@ notification is primarily informational.
     }
     ```
 
-###Step 3: Instantiate EventProcessorHost
+### Step 3: Instantiate EventProcessorHost
 
 In order to do this, the user will first need to build a connection string for the Event Hub. This may be conveniently done using
 the ConnectionStringBuilder class provided by the Java client for Azure Event Hubs. Make sure the sasKey has listen permission.
@@ -137,7 +137,7 @@ of ILeaseManager and ICheckpointManager (for example, to use Zookeeper instead o
     EventProcessorHost host = new EventProcessorHost(eventHubName, consumerGroupName, eventHubConnectionString.toString(), storageConnectionString, storageContainerName);
     ```
 
-###Step 4: Register the Event Processor Implementation to Start Processing Events
+### Step 4: Register the Event Processor Implementation to Start Processing Events
 
 Instantiate an object of class EventProcessorOptions and call the setExceptionNotification method with an object of the class
 implemented in step 2. This is also the time to modify the maximum event batch size (setMaxBatchSize), or set other options
@@ -174,7 +174,7 @@ implementation to EventProcessorHost.registerEventProcessorFactory.
     }
     ```
 
-###Step 5: Graceful Shutdown
+### Step 5: Graceful Shutdown
 
 When the time comes to shut down the instance of EventProcessorHost, call the unregisterEventProcessor method.
 
@@ -194,7 +194,7 @@ shown here is very, very conservative.
     EventProcessorHost.forceExecutorShutdown(120);
     ```
 
-##Threading Notes
+## Threading Notes
 
 Calls to the IEventProcessor methods onOpen, onEvents, and onClose are serialized for a given partition. There is no guarantee that
 calls to these methods will be on any particular thread, but there will only be one call to any of these methods at a time. The onError
@@ -208,7 +208,7 @@ event processor factory can implement any pattern, such as creating only one IEv
 by every partition. In that example, onEvents will not receive multiple calls for any given partition at the same time, but it can be called
 on multiple threads for different partitions.
 
-##Running Tests
+## Running Tests
 
 Event Processor Host comes with a suite of JUnit-based tests. To run these tests, you will need an event hub and an Azure Storage account.
 You can create both through the Azure Portal at [portal.azure.com](http://portal.azure.com/). Once you have done that, get the
@@ -222,7 +222,7 @@ cases to run in order to detect major breakage. There are also some test cases i
 general use. That file preserves repro code from times when we had to mount a major investigation to get to the
 bottom of a problem.
 
-##Tracing
+## Tracing
 
 Event Processor Host can trace its execution for debugging and problem diagnosis, using the standard Java java.util.logging facilities.
 So can the underlying Java Azure Event Hubs client, and the Apache Qpid Proton-J AMQP client underneath that.

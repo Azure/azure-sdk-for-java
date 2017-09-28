@@ -1,9 +1,9 @@
-#Publishing Events with the Java client for Azure Event Hubs 
+# Publishing Events with the Java client for Azure Event Hubs 
 
 The vast majority of Event Hub applications using this and the other client libraries are and will be event publishers. 
 And for most of these publishers, publishing events is extremely simple and handled with just a few API gestures.
 
-##Getting Started
+## Getting Started
 
 This library is available for use in Maven projects from the Maven Central Repository, and can be referenced using the
 following dependency declaration inside of your Maven project file:    
@@ -11,8 +11,8 @@ following dependency declaration inside of your Maven project file:
 ```XML
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
-   		<artifactId>azure-eventhubs-clients</artifactId> 
-   		<version>0.14.5</version>
+   		<artifactId>azure-eventhubs</artifactId>
+   		<version>0.15.0</version>
    	</dependency>
  ```
  
@@ -54,7 +54,7 @@ we use to illustrate the functionality send a UTF-8 encoded JSON data, but you c
 The entire client API is built for Java 8's concurrent task model, generally returning 
 [*CompletableFuture<T>*](https://docs.oracle.com/javase/8/docs/api/java/util/concurrent/CompletableFuture.html), so the library has these methods suffixed with *Sync* as their Synchronous counterparts/varaints.
 
-##AMQP 1.0
+## AMQP 1.0
 Azure Event Hubs allows for publishing events using the HTTPS and AMQP 1.0 protocols. The Azure Event Hub endpoints
 also support AMQP over the WebSocket protocol, allowing event traffic to leverage the same outbound TCP port as 
 HTTPS. 
@@ -73,7 +73,7 @@ TCP port 5672.
 
 This library will provide HTTPS support via WebSockets when Proton-J supports HTTPS.
 
-##Connection Strings
+## Connection Strings
 
 Azure Event Hubs and Azure Service Bus share a common format for connection strings. A connection string holds all required
 information to set up a connection with an Event Hub. The format is a simple property/value list of the form 
@@ -93,13 +93,13 @@ A connection string will therefore have the following form:
   Endpoint=sb://clemensveu.servicebus.windows.net&EntityPath=myeventhub&SharedAccessSignature=....
 ```
 
-##Advanced Operations
+## Advanced Operations
 
 The publisher example shown in the overview above sends an event into the Event Hub without further qualification. This is 
 the preferred and most flexible and reliable option. For specific needs, Event Hubs offers two extra options to 
 qualify send operations: Publisher policies and partion addressing.     
 
-###Partition Addressing
+### Partition Addressing
 
 Any Event Hub's event store is split up into at least 4 partitions, each maintaining a separate event log. You can think 
 of partitions like lanes on a highway. The more events the Event Hub needs to handle, the more lanes (partitions) you have 
@@ -118,7 +118,7 @@ Partition addressing is designed as a routing capability that consistently assig
 downstream consumer systems to be optimized, but under the assumption of very many of such sources (hundreds, thousands) share 
 the same partition. If you need fine-grained content-based routing, Service Bus Topics might be the better option. 
 
-####Using Partition Keys
+#### Using Partition Keys
 
 Of the two addressing options, the preferable one is to let the hash algorithm map the event to the appropriate partition.
 The gesture is a straightforward extra override to the send operation supplying the partition key: 
@@ -128,7 +128,7 @@ The gesture is a straightforward extra override to the send operation supplying 
 >   ehClient.sendSync(sendEvent, partitionKey);
 ```
      
-####Using Partition Ids
+#### Using Partition Ids
 
 If you indeed need to target a specific partition, for instance because you must use a particular distribution strategy, 
 you can send directly to the partition, but doing so requires an extra gesture so that you don't accidentally choose this
@@ -145,7 +145,7 @@ option. To send to a partition you explicitly need to create a client object tha
 
 Event Hub Publisher Policies are not yet supported by this client and will be supported in a future release.
  
-####Special considerations for partitions and publisher policies
+#### Special considerations for partitions and publisher policies
 
 Using partitions or publisher policies (which are effectively a special kind of partition key) may impact throughput 
 and availability of your Event Hub solution. 

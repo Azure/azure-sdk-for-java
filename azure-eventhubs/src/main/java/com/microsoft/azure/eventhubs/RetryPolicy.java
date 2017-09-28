@@ -47,8 +47,8 @@ public abstract class RetryPolicy {
 
     public static RetryPolicy getDefault() {
         return new RetryExponential(
-                ClientConstants.DEFAULT_RERTRY_MIN_BACKOFF,
-                ClientConstants.DEFAULT_RERTRY_MAX_BACKOFF,
+                ClientConstants.DEFAULT_RETRY_MIN_BACKOFF,
+                ClientConstants.DEFAULT_RETRY_MAX_BACKOFF,
                 ClientConstants.DEFAULT_MAX_RETRY_COUNT,
                 ClientConstants.DEFAULT_RETRY);
     }

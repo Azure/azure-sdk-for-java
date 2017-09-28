@@ -33,8 +33,8 @@ public final class ClientConstants {
 
     public final static Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
 
-    public final static Duration DEFAULT_RERTRY_MIN_BACKOFF = Duration.ofSeconds(0);
-    public final static Duration DEFAULT_RERTRY_MAX_BACKOFF = Duration.ofSeconds(30);
+    public final static Duration DEFAULT_RETRY_MIN_BACKOFF = Duration.ofSeconds(0);
+    public final static Duration DEFAULT_RETRY_MAX_BACKOFF = Duration.ofSeconds(30);
     public final static Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(10); // renew every 10 mins, which expires 20 mins
     public final static Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
 
@@ -51,7 +51,7 @@ public final class ClientConstants {
     public final static String DEFAULT_RETRY = "Default";
 
     public final static String PRODUCT_NAME = "MSJavaClient";
-    public final static String CURRENT_JAVACLIENT_VERSION = "0.15.0-SNAPSHOT";
+    public final static String CURRENT_JAVACLIENT_VERSION = "0.15.0";
 
     public static final String PLATFORM_INFO = getPlatformInfo();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
