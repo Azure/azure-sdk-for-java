@@ -51,12 +51,13 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      * @return This HttpHeaders so that multiple operations can be chained together.
      */
     public HttpHeaders add(String headerName, String headerValue) {
-        final String headerKey = headerName.toLowerCase();
-        if (!headers.containsKey(headerKey)) {
-            headers.put(headerKey, new HttpHeader(headerName, headerValue));
-        }
-        else {
-            headers.get(headerKey).addValue(headerValue);
+        if (headerValue != null && !headerValue.isEmpty()) {
+            final String headerKey = headerName.toLowerCase();
+            if (!headers.containsKey(headerKey)) {
+                headers.put(headerKey, new HttpHeader(headerName, headerValue));
+            } else {
+                headers.get(headerKey).addValue(headerValue);
+            }
         }
         return this;
     }
@@ -70,7 +71,12 @@ public class HttpHeaders implements Iterable<HttpHeader> {
      */
     public HttpHeaders set(String headerName, String headerValue) {
         final String headerKey = headerName.toLowerCase();
-        headers.put(headerKey, new HttpHeader(headerName, headerValue));
+        if (headerValue == null || headerValue.isEmpty()) {
+            headers.remove(headerKey);
+        }
+        else {
+            headers.put(headerKey, new HttpHeader(headerName, headerValue));
+        }
         return this;
     }
 

@@ -383,9 +383,11 @@ public class SwaggerMethodParser {
                 if (0 <= parameterIndex && parameterIndex < methodArguments.length) {
                     final Object methodArgument = methodArguments[substitution.methodParameterIndex()];
 
-                    String parameterValue = String.valueOf(methodArgument);
-                    if (substitution.shouldEncode() && escaper != null) {
-                        parameterValue = escaper.escape(parameterValue);
+                    String parameterValue = methodArgument == null ? null : methodArgument.toString();
+                    if (parameterValue != null && !parameterValue.isEmpty()) {
+                        if (substitution.shouldEncode() && escaper != null) {
+                            parameterValue = escaper.escape(parameterValue);
+                        }
                     }
 
                     result.add(new EncodedParameter(substitution.urlParameterName(), parameterValue));
