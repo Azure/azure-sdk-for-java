@@ -361,8 +361,8 @@ public class SwaggerMethodParser {
                 if (0 <= substitutionParameterIndex && substitutionParameterIndex < methodArguments.length) {
                     final Object methodArgument = methodArguments[substitutionParameterIndex];
 
-                    String substitutionValue = String.valueOf(methodArgument);
-                    if (substitution.shouldEncode()) {
+                    String substitutionValue = methodArgument == null ? "" : methodArgument.toString();
+                    if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode() && escaper != null) {
                         substitutionValue = escaper.escape(substitutionValue);
                     }
 
@@ -383,8 +383,8 @@ public class SwaggerMethodParser {
                 if (0 <= parameterIndex && parameterIndex < methodArguments.length) {
                     final Object methodArgument = methodArguments[substitution.methodParameterIndex()];
 
-                    String parameterValue = String.valueOf(methodArgument);
-                    if (substitution.shouldEncode() && escaper != null) {
+                    String parameterValue = methodArgument == null ? "" : methodArgument.toString();
+                    if (parameterValue != null && !parameterValue.isEmpty() && substitution.shouldEncode() && escaper != null) {
                         parameterValue = escaper.escape(parameterValue);
                     }
 
