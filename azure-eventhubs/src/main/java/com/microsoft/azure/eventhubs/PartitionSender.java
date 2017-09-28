@@ -58,6 +58,7 @@ public final class PartitionSender extends ClientEntity {
      * Creates an Empty Collection of {@link EventData}.
      * The same partitionKey must be used while sending these events using {@link PartitionSender#send(EventDataBatch)}.
      *
+     * @param options see {@link BatchOptions} for more usage details
      * @return the empty {@link EventDataBatch}, after negotiating maximum message size with EventHubs service
      */
     public EventDataBatch createBatch(BatchOptions options) {
@@ -126,7 +127,7 @@ public final class PartitionSender extends ClientEntity {
      * <pre>
      * i.   {@link EventHubClient#send(EventData)}, {@link EventHubClient#send(Iterable)}, {@link EventHubClient#send(EventDataBatch)}
      * ii.  {@link EventHubClient#send(EventData, String)} or {@link EventHubClient#send(Iterable, String)}
-     * iii. {@link PartitionSender#send(EventData)}, {@link PartitionSender#send(Iterable)}, or {@link PartitionSender(EventDataBatch)}
+     * iii. {@link PartitionSender#send(EventData)}, {@link PartitionSender#send(Iterable)}, or {@link PartitionSender#send(EventDataBatch)}
      * </pre>
      * <p>
      * Use this type of Send, if:

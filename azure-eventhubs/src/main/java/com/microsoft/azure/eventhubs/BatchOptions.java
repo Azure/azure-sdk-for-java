@@ -44,6 +44,7 @@ import java.util.function.Consumer;
  *         options.maxMessageSize = 100 * 1024;
  *     };
  *     EventDataBatch edb3 = client.createBatch(options);
+ *     }
  * </pre>
  */
 public final class BatchOptions {

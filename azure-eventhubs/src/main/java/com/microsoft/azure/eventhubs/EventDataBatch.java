@@ -32,9 +32,10 @@ public final class EventDataBatch {
 
     /**
      * Get the number of events present in this {@link EventDataBatch}
+     *
+     * @return the EventDataBatch size
      */
     public final int getSize() {
-
         return events.size();
     }
 
