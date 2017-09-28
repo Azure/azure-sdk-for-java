@@ -200,7 +200,7 @@ public class RequestResponseTest  extends ApiTestBase {
     	Assert.assertNotNull(ehInfo);
     	Assert.assertTrue(connectionString.getEntityPath().equalsIgnoreCase(ehInfo.getPath()));
     	Assert.assertNotNull(ehInfo.getCreatedAt()); // creation time could be almost anything, can't really check value
-    	Assert.assertTrue(ehInfo.getPartitionCount() > 2); // max legal partition count is variable but 2 is hard minimum
+    	Assert.assertTrue(ehInfo.getPartitionCount() >= 2); // max legal partition count is variable but 2 is hard minimum
     	Assert.assertEquals(ehInfo.getPartitionIds().length, ehInfo.getPartitionCount());
     	/*
     	System.out.println("Event hub name: " + ehInfo.getPath());
