@@ -171,12 +171,13 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
 
     /**
      * Creates an Empty Collection of {@link EventData}.
+     * The same partitionKey must be used while sending these events using {@link EventHubClient#send(EventDataBatch)}.
      *
      * @return the empty {@link EventDataBatch}, after negotiating maximum message size with EventHubs service
      * @throws EventHubException if the Microsoft Azure Event Hubs service encountered problems during the operation.
      */
     public final EventDataBatch createBatch() throws EventHubException {
-        return this.createBatch(null);
+        return this.createBatch(new BatchOptions());
     }
 
     /**

@@ -56,6 +56,8 @@ public final class PartitionSender extends ClientEntity {
 
     /**
      * Creates an Empty Collection of {@link EventData}.
+     * The same partitionKey must be used while sending these events using {@link PartitionSender#send(EventDataBatch)}.
+     *
      * @return the empty {@link EventDataBatch}, after negotiating maximum message size with EventHubs service
      */
     public EventDataBatch createBatch(BatchOptions options) {
@@ -76,6 +78,16 @@ public final class PartitionSender extends ClientEntity {
         }
 
         return new EventDataBatch(options.maxMessageSize, null);
+    }
+
+    /**
+     * Creates an Empty Collection of {@link EventData}.
+     * The same partitionKey must be used while sending these events using {@link PartitionSender#send(EventDataBatch)}.
+     *
+     * @return the empty {@link EventDataBatch}, after negotiating maximum message size with EventHubs service
+     */
+    public final EventDataBatch createBatch() {
+        return this.createBatch(new BatchOptions());
     }
 
     /**
