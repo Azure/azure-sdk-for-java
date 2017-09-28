@@ -187,9 +187,10 @@ public class SwaggerMethodParser {
 
     /**
      * Get the HTTP response status codes that are expected when a request is sent out for this
-     * Swagger method. If the returned int[] is null, then all status codes are allowed.
+     * Swagger method. If the returned int[] is null, then all status codes less than 400 are
+     * allowed.
      * @return The expected HTTP response status codes for this Swagger method or null if all status
-     * codes are allowed..
+     * codes less than 400 are allowed.
      */
     public int[] expectedStatusCodes() {
         return expectedStatusCodes;
@@ -262,7 +263,7 @@ public class SwaggerMethodParser {
         boolean result;
 
         if (expectedStatusCodes == null) {
-            result = true;
+            result = (responseStatusCode < 400);
         }
         else {
             result = false;
