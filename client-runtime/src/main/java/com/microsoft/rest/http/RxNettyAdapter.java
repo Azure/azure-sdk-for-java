@@ -80,7 +80,9 @@ public class RxNettyAdapter extends HttpClient {
             }
 
             String mimeType = request.mimeContentType();
-            if (mimeType != null) {
+            // FIXME: this stopgap fix only puts the mimeContentType in request headers if it's non-empty.
+            // In the future, a HttpRequestBody should be considered malformed if it's missing a mimeContentType.
+            if (mimeType != null && !mimeType.isEmpty()) {
                 rxnHeaders.put("Content-Type", Collections.<Object>singleton(mimeType));
             }
 
