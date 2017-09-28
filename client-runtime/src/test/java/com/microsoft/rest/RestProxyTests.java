@@ -304,6 +304,14 @@ public abstract class RestProxyTests {
         assertEquals("http://httpbin.org/anything?a=A&b=15", json.url);
     }
 
+    @Test
+    public void SyncGetRequestWithNullQueryParameter() {
+        final HttpBinJSON json = createService(Service6.class)
+                .getAnything(null, 15);
+        assertNotNull(json);
+        assertEquals("http://httpbin.org/anything?b=15", json.url);
+    }
+
     @Host("http://httpbin.org")
     private interface Service7 {
         @GET("anything")
@@ -340,6 +348,19 @@ public abstract class RestProxyTests {
         final HttpHeaders headers = new HttpHeaders(json.headers);
         assertEquals("A", headers.value("A"));
         assertArrayEquals(new String[]{"A"}, headers.values("A"));
+        assertEquals("15", headers.value("B"));
+        assertArrayEquals(new String[]{"15"}, headers.values("B"));
+    }
+
+    @Test
+    public void SyncGetRequestWithNullHeader() {
+        final HttpBinJSON json = createService(Service7.class)
+                .getAnything(null, 15);
+
+        final HttpHeaders headers = new HttpHeaders(json.headers);
+
+        assertEquals(null, headers.value("A"));
+        assertArrayEquals(null, headers.values("A"));
         assertEquals("15", headers.value("B"));
         assertArrayEquals(new String[]{"15"}, headers.values("B"));
     }
