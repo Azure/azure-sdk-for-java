@@ -393,6 +393,12 @@ public abstract class RestProxyTests {
         assertEquals("I'm a post body!", (String)json.data);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void SyncPostRequestWithNullBody() {
+        final HttpBinJSON json = createService(Service8.class)
+                .post(null);
+    }
+
     @Host("http://httpbin.org")
     private interface Service9 {
         @PUT("put")
