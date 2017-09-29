@@ -148,6 +148,8 @@ public class RestProxy implements InvocationHandler {
                 }
             }
 
+            request.headers().set("Content-Type", contentType);
+
             if (ContentType.APPLICATION_JSON.equalsIgnoreCase(contentType)) {
                 final String bodyContentString = serializer.serialize(bodyContentObject);
                 request.withBody(bodyContentString, contentType);
