@@ -313,7 +313,8 @@ You can find plenty of sample code that illustrates management scenarios (95+ en
 <li><a href="https://github.com/Azure-Samples/network-java-manage-ip-address">Manage IP address</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-internet-facing-load-balancers">Manage Internet facing load balancers</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-internal-load-balancers">Manage internal load balancers</a></li>
-<li><a href="https://github.com/Azure-Samples/network-java-use-new-watcher">Use net watcher</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-create-simple-internet-facing-load-balancer">Create simple Internet facing load balancer</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-use-new-watcher">Use net watcher</a>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-network-peering">Manage network peering between two virtual networks</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-use-network-watcher-to-check-connectivity">Use network watcher to check connectivity between virtual machines in peered networks</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-virtual-network-with-site-to-site-vpn-connection">Manage virtual network with site-to-site VPN connection</a></li>
