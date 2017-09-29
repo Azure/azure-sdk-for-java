@@ -1,5 +1,6 @@
 package com.microsoft.rest;
 
+import com.microsoft.rest.http.ContentType;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.annotations.BodyParam;
@@ -838,6 +839,302 @@ public abstract class RestProxyTests {
     public void service18GetStatus500WithExpectedResponse500() {
         createService(Service18.class)
                 .getStatus500WithExpectedResponse500();
+    }
+
+    @Host("http://httpbin.org")
+    private interface Service19 {
+        @PUT("put")
+        HttpBinJSON putWithNoContentTypeAndStringBody(@BodyParam String body);
+
+        @PUT("put")
+        HttpBinJSON putWithNoContentTypeAndByteArrayBody(@BodyParam byte[] body);
+
+        @PUT("put")
+        @Headers({ "Content-Type: application/json" })
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndStringBody(@BodyParam String body);
+
+        @PUT("put")
+        @Headers({ "Content-Type: application/json" })
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@BodyParam byte[] body);
+
+        @PUT("put")
+        @Headers({ "Content-Type: application/json; charset=utf-8" })
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@BodyParam String body);
+
+        @PUT("put")
+        @Headers({ "Content-Type: application/octet-stream" })
+        HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@BodyParam String body);
+
+        @PUT("put")
+        @Headers({ "Content-Type: application/octet-stream" })
+        HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@BodyParam byte[] body);
+
+        @PUT("put")
+        HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_JSON) String body);
+
+        @PUT("put")
+        HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(@BodyParam(ContentType.APPLICATION_JSON + "; charset=utf-8") String body);
+
+        @PUT("put")
+        HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_JSON) byte[] body);
+
+        @PUT("put")
+        HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
+
+        @PUT("put")
+        HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+    }
+
+    @Test
+    public void service19PutWithNoContentTypeAndStringBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithNoContentTypeAndStringBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithNoContentTypeAndStringBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithNoContentTypeAndStringBody("");
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithNoContentTypeAndStringBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithNoContentTypeAndStringBody("hello");
+        assertEquals("hello", result.data);
+    }
+
+    @Test
+    public void service19PutWithNoContentTypeAndByteArrayBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithNoContentTypeAndByteArrayBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithNoContentTypeAndByteArrayBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithNoContentTypeAndByteArrayBody(new byte[0]);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithNoContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithNoContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndStringBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndStringBody("");
+        assertEquals("\"\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndStringBody("soups and stuff");
+        assertEquals("\"soups and stuff\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(new byte[0]);
+        assertEquals("\"\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
+        assertEquals("\"AAECAwQ=\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody("");
+        assertEquals("\"\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody("soups and stuff");
+        assertEquals("\"soups and stuff\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationOctetStreamContentTypeAndStringBody("");
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationOctetStreamContentTypeAndStringBody("penguins");
+        assertEquals("penguins", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(new byte[0]);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndStringBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndStringBody("");
+        assertEquals("\"\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndStringBody("soups and stuff");
+        assertEquals("\"soups and stuff\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody("");
+        assertEquals("\"\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody("soups and stuff");
+        assertEquals("\"soups and stuff\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(new byte[0]);
+        assertEquals("\"\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
+        assertEquals("\"AAECAwQ=\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody("");
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody("penguins");
+        assertEquals("penguins", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(new byte[0]);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
+        assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
     }
 
     // Helpers

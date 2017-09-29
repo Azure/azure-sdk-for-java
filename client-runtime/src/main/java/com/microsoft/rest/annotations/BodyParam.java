@@ -36,5 +36,5 @@ public @interface BodyParam {
     /**
      * @return the Content-Type that the body should be treated as.
      */
-    String contentType() default "";
+    String value() default "";
 }
