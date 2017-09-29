@@ -1,11 +1,11 @@
 package com.microsoft.windowsazure.services.media.authentication;
 
-public class AzureEnvironments {
-	
-	// Utility classes should not have a public or default constructor.
-	private AzureEnvironments() {
-	}
-	
+public final class AzureEnvironments {
+
+    // Utility classes should not have a public or default constructor.
+    private AzureEnvironments() {
+    }
+
     /**
      * Azure Cloud environment.
      */

@@ -4,10 +4,10 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class AzureEnvironmentConstants {
-	
-	// Utility classes should not have a public or default constructor.
-	private AzureEnvironmentConstants() {
-	}
+
+    // Utility classes should not have a public or default constructor.
+    private AzureEnvironmentConstants() {
+    }
 
     /**
      * The Active Directory endpoint for Azure Cloud environment.

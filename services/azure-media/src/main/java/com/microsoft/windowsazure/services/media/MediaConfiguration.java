@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -21,7 +21,7 @@ import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProv
 
 /**
  * Provides functionality to create a media services configuration.
- * 
+ *
  */
 public final class MediaConfiguration {
 
@@ -32,7 +32,7 @@ public final class MediaConfiguration {
      * The token provider object
      */
     public static final String AZURE_AD_TOKEN_PROVIDER = "media.azuread.tokenprovider";
-    
+
     /**
      * The azure media services account uri
      */
@@ -45,12 +45,12 @@ public final class MediaConfiguration {
      * @return a Configuration
      */
     public static Configuration configureWithAzureAdTokenProvider(
-    		URI apiServer,
-    		AzureAdTokenProvider azureAdTokenProvider) {
-    	
-    	return configureWithAzureAdTokenProvider(Configuration.getInstance(), apiServer, azureAdTokenProvider);
+            URI apiServer,
+            AzureAdTokenProvider azureAdTokenProvider) {
+
+        return configureWithAzureAdTokenProvider(Configuration.getInstance(), apiServer, azureAdTokenProvider);
     }
-    
+
     /**
      * Setup a Configuration with specified Configuration, AMS account and token provider
      * @param configuration The target configuration
@@ -59,12 +59,12 @@ public final class MediaConfiguration {
      * @return the target Configuration
      */
     public static Configuration configureWithAzureAdTokenProvider(
-    		Configuration configuration, 
-    		URI apiServer,
-    		AzureAdTokenProvider azureAdTokenProvider) {
+            Configuration configuration,
+            URI apiServer,
+            AzureAdTokenProvider azureAdTokenProvider) {
 
-    	configuration.setProperty(AZURE_AD_API_SERVER, apiServer.toString());
-    	configuration.setProperty(AZURE_AD_TOKEN_PROVIDER, azureAdTokenProvider);
+        configuration.setProperty(AZURE_AD_API_SERVER, apiServer.toString());
+        configuration.setProperty(AZURE_AD_TOKEN_PROVIDER, azureAdTokenProvider);
 
         return configuration;
     }
