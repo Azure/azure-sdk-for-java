@@ -26,7 +26,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Azure Network sample for enabling and updating network peering between two virtual networks
+ * Azure Network sample for verifying connectivity between two peered virtual networks using Azure Network Watcher.
  *
  * Summary ...
  *
