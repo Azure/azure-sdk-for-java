@@ -32,22 +32,12 @@ import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
 
 public class AzureAdTokenProviderTest extends IntegrationTestBase {
-//	
-//	@BeforeClass
-//    public static void setup() throws Exception {
-//		
-//	}
-//	
-//	@AfterClass
-//    public static void cleanup() throws Exception {
-//		
-//	}
-//	
+
 	@Test
     public void ServicePrincipalClientSymmetricKeyShouldWork() throws Exception {
         // Arrange
 		String tenant = config.getProperty("media.azuread.test.tenant").toString();
-    	String apiserver = config.getProperty("media.azuread.test.account_api_uri").toString();
+    	String restApiEndpoint = config.getProperty("media.azuread.test.account_api_uri").toString();
 		String clientId = config.getProperty("media.azuread.test.clientid").toString();
     	String clientKey = config.getProperty("media.azuread.test.clientkey").toString();
     	AzureAdTokenCredentials credentials = new AzureAdTokenCredentials(
@@ -56,7 +46,7 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
     			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
     	AzureAdTokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
     	Configuration configuration = MediaConfiguration.configureWithAzureAdTokenProvider(
-    			new URI(apiserver),
+    			new URI(restApiEndpoint),
     			provider);
       	MediaContract mediaService = MediaService.create(configuration);
       	
@@ -71,7 +61,7 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
 	public void UserPasswordShouldWork() throws Exception {		
 		// Arrange
 		String tenant = config.getProperty("media.azuread.test.tenant").toString();
-    	String apiserver = config.getProperty("media.azuread.test.account_api_uri").toString();
+    	String restApiEndpoint = config.getProperty("media.azuread.test.account_api_uri").toString();
     	String username = config.getProperty("media.azuread.test.useraccount").toString();
     	String password = config.getProperty("media.azuread.test.userpassword").toString();
     	
@@ -84,7 +74,7 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
     			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
     	AzureAdTokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
     	Configuration configuration = MediaConfiguration.configureWithAzureAdTokenProvider(
-    			new URI(apiserver),
+    			new URI(restApiEndpoint),
     			provider);
       	MediaContract mediaService = MediaService.create(configuration);
 
@@ -99,22 +89,22 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
     public void ServicePrincipalWithCertificateShouldWork() throws Exception {
         // Arrange
 		String tenant = config.getProperty("media.azuread.test.tenant").toString();
-    	String apiserver = config.getProperty("media.azuread.test.account_api_uri").toString();
+    	String restApiEndpoint = config.getProperty("media.azuread.test.account_api_uri").toString();
 		String clientId = config.getProperty("media.azuread.test.clientid").toString();
-    	String pfxfile = config.getProperty("media.azuread.test.pfxfile").toString();
-    	String pfxpassword = config.getProperty("media.azuread.test.pfxpassword").toString();
+    	String pfxFile = config.getProperty("media.azuread.test.pfxfile").toString();
+    	String pfxPassword = config.getProperty("media.azuread.test.pfxpassword").toString();
     	
-    	assumeFalse(pfxfile.equals("undefined"));
-    	assumeFalse(pfxpassword.equals("undefined"));
+    	assumeFalse(pfxFile.equals("undefined"));
+    	assumeFalse(pfxPassword.equals("undefined"));
 
-    	InputStream pfx = new FileInputStream(pfxfile);
+    	InputStream pfx = new FileInputStream(pfxFile);
     	AzureAdTokenCredentials credentials = new AzureAdTokenCredentials(
     			tenant,
-    			AsymmetricKeyCredential.create(clientId, pfx, pfxpassword),
+    			AsymmetricKeyCredential.create(clientId, pfx, pfxPassword),
     			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
     	AzureAdTokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
     	Configuration configuration = MediaConfiguration.configureWithAzureAdTokenProvider(
-    			new URI(apiserver),
+    			new URI(restApiEndpoint),
     			provider);
       	MediaContract mediaService = MediaService.create(configuration);
       	
