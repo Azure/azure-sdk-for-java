@@ -4,11 +4,11 @@ import java.net.URI;
 import java.net.URISyntaxException;
 
 public class AzureEnvironmentConstants {
-	
-	/**
-	 * The Active Directory endpoint for Azure Cloud environment.
-	 */
-	public static final URI AzureCloudActiveDirectoryEndpoint = makeURI("https://login.microsoftonline.com/");
+
+    /**
+     * The Active Directory endpoint for Azure Cloud environment.
+     */
+    public static final URI AzureCloudActiveDirectoryEndpoint = makeURI("https://login.microsoftonline.com/");
 
     /**
      * The Media Services resource for Azure Cloud environment.
@@ -51,7 +51,7 @@ public class AzureEnvironmentConstants {
     public static final String AzureGermanCloudMediaServicesResource = "https://rest.media.cloudapi.de";
 
     /**
-     * The native SDK AAD application ID for Azure Cloud, Azure China Cloud and Azure German Cloud environment. 
+     * The native SDK AAD application ID for Azure Cloud, Azure China Cloud and Azure German Cloud environment.
      */
     public static final String SdkAadApplicationId = "d476653d-842c-4f52-862d-397463ada5e7";
 
@@ -59,12 +59,12 @@ public class AzureEnvironmentConstants {
      * The native SDK AAD application's redirect URL for all environments.
      */
     public static final URI SdkAadApplicationRedirectUri = makeURI("https://AzureMediaServicesNativeSDK");
-    
+
     private static URI makeURI(String urlString) {
         try {
             return new URI(urlString);
         } catch (URISyntaxException e) {
             return null;
         }
-    }	
+    }
 }

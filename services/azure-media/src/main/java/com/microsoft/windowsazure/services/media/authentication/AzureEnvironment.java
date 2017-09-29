@@ -6,45 +6,45 @@ import java.net.URI;
  * Represents an Azure Environment
  */
 public class AzureEnvironment {
-	
-    private URI activeDirectoryEndpoint;
-    
-    private String mediaServicesResource;
-    
-    private String mediaServicesSdkClientId;
-    
-    private URI mediaServicesSdkRedirectUri;
-    
-	/**
-	 * Gets the Active Directory endpoint.
-	 * @return Active Directory endpoint.
-	 */
-	public URI getActiveDirectoryEndpoint() { 
-		return this.activeDirectoryEndpoint;
-	}
 
-	/**
-	 * Gets the Media Services resource.
-	 * @return Media Services resource
-	 */
-    public String getMediaServicesResource() { 
-    	return this.mediaServicesResource;
+    private URI activeDirectoryEndpoint;
+
+    private String mediaServicesResource;
+
+    private String mediaServicesSdkClientId;
+
+    private URI mediaServicesSdkRedirectUri;
+
+    /**
+     * Gets the Active Directory endpoint.
+     * @return Active Directory endpoint.
+     */
+    public URI getActiveDirectoryEndpoint() {
+        return this.activeDirectoryEndpoint;
+    }
+
+    /**
+     * Gets the Media Services resource.
+     * @return Media Services resource
+     */
+    public String getMediaServicesResource() {
+        return this.mediaServicesResource;
     }
 
     /**
      * Gets the Media Services SDK client ID.
      * @return Media Services SDK client ID
      */
-    public String getMediaServicesSdkClientId() { 
-    	return this.mediaServicesSdkClientId; 
+    public String getMediaServicesSdkClientId() {
+        return this.mediaServicesSdkClientId;
     }
 
     /**
      * Gets Media Services SDK application redirect URI.
      * @return Media Services SDK application redirect URI.
      */
-    public URI getMediaServicesSdkRedirectUri() { 
-    	return this.mediaServicesSdkRedirectUri; 
+    public URI getMediaServicesSdkRedirectUri() {
+        return this.mediaServicesSdkRedirectUri;
     }
 
     /**
@@ -58,25 +58,20 @@ public class AzureEnvironment {
         URI activeDirectoryEndpoint,
         String mediaServicesResource,
         String mediaServicesSdkClientId,
-        URI mediaServicesSdkRedirectUri)
-    {
-        if (activeDirectoryEndpoint == null)
-        {
+        URI mediaServicesSdkRedirectUri) {
+        if (activeDirectoryEndpoint == null) {
             throw new NullPointerException("activeDirectoryEndpoint");
         }
 
-        if (mediaServicesResource == null || mediaServicesResource.trim().isEmpty())
-        {
+        if (mediaServicesResource == null || mediaServicesResource.trim().isEmpty()) {
             throw new IllegalArgumentException("mediaServicesResource");
         }
 
-        if (mediaServicesSdkClientId == null || mediaServicesSdkClientId.trim().isEmpty())
-        {
+        if (mediaServicesSdkClientId == null || mediaServicesSdkClientId.trim().isEmpty()) {
             throw new IllegalArgumentException("mediaServicesSdkClientId");
         }
 
-        if (mediaServicesSdkRedirectUri == null)
-        {
+        if (mediaServicesSdkRedirectUri == null) {
             throw new NullPointerException("mediaServicesSdkRedirectUri");
         }
 

@@ -2,15 +2,15 @@ package com.microsoft.windowsazure.services.media.authentication;
 
 public class AzureEnvironments {
 
-	/**
-	 * Azure Cloud environment.
-	 */
+    /**
+     * Azure Cloud environment.
+     */
     public static final AzureEnvironment AzureCloudEnvironment = new AzureEnvironment(
         AzureEnvironmentConstants.AzureCloudActiveDirectoryEndpoint,
         AzureEnvironmentConstants.AzureCloudMediaServicesResource,
         AzureEnvironmentConstants.SdkAadApplicationId,
         AzureEnvironmentConstants.SdkAadApplicationRedirectUri);
-    
+
     /**
      *  Azure China Cloud environment.
      */
@@ -36,5 +36,5 @@ public class AzureEnvironments {
         AzureEnvironmentConstants.AzureGermanCloudActiveDirectoryEndpoint,
         AzureEnvironmentConstants.AzureGermanCloudMediaServicesResource,
         AzureEnvironmentConstants.SdkAadApplicationId,
-        AzureEnvironmentConstants.SdkAadApplicationRedirectUri);	
+        AzureEnvironmentConstants.SdkAadApplicationRedirectUri);
 }
