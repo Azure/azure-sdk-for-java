@@ -243,7 +243,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	    if(this.cbsLink == null)
 	    {
 	        this.createCBSLinkAsync();
-	    }	    
+	    }
 	}
 
 	/**
@@ -260,6 +260,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		if (!this.factoryOpenFuture.isDone())
 		{		    
 		    AsyncUtil.completeFutureExceptionally(this.factoryOpenFuture, ExceptionUtil.toException(error));
+		    this.setClosed();
 		}
 		else
 		{
@@ -280,6 +281,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		if (!this.factoryOpenFuture.isDone())
 		{
 		    AsyncUtil.completeFutureExceptionally(this.factoryOpenFuture, cause);
+		    this.setClosed();
 		}
 		else
 		{
@@ -295,7 +297,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 			catch (IOException e)
 			{
 			    Marker fatalMarker = MarkerFactory.getMarker(ClientConstants.FATAL_MARKER);
-			    TRACE_LOGGER.error(fatalMarker, "Re-starting reactor failed with exception.", e);							
+			    TRACE_LOGGER.error(fatalMarker, "Re-starting reactor failed with exception.", e);
 				this.onReactorError(cause);
 			}
 			
@@ -389,7 +391,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	                    });
 	                } catch (IOException e) {
 	                    AsyncUtil.completeFutureExceptionally(this.connetionCloseFuture, e);
-	                }	                
+	                }
 	            }
 	            else if(this.connection == null || this.connection.getRemoteState() == EndpointState.CLOSED)
 	            {
