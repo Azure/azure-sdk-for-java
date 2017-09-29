@@ -167,7 +167,7 @@ public class RestProxy implements InvocationHandler {
                 request.withBody((byte[]) bodyContentObject, contentType);
             }
             else if (bodyContentObject instanceof String) {
-                final String bodyContentString = (String)bodyContentObject;
+                final String bodyContentString = (String) bodyContentObject;
                 if (!bodyContentString.isEmpty()) {
                     request.withBody((String) bodyContentObject, contentType);
                 }
