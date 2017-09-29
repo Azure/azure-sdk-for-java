@@ -40,7 +40,7 @@ public final class MediaService {
      * 
      * @param config
      *            A <code>Configuration</code> object that represents the
-     *            configuration for the service bus service.
+     *            configuration for the media service account.
      * 
      */
     public static MediaContract create(Configuration config) {
@@ -61,7 +61,7 @@ public final class MediaService {
      * 
      * @param config
      *            A <code>Configuration</code> object that represents the
-     *            configuration for the service bus service.
+     *            configuration for the media service account.
      * 
      */
     public static MediaContract create(String profile, Configuration config) {
