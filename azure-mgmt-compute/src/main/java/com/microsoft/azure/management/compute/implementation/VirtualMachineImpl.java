@@ -148,8 +148,8 @@ class VirtualMachineImpl
     private List<VirtualMachineUnmanagedDataDisk> unmanagedDataDisks;
     // To track the managed data disks
     private final ManagedDataDiskCollection managedDataDisks;
-    // Unique key of a creatable storage account to be used for boot diagnostics
-    private String creatableDiagnosticsStorageAccountKey;
+    // To manage boot diagnostics specific operations
+    private final BootDiagnosticsHandler bootDiagnosticsHandler;
     // Utility to setup MSI for the virtual machine
     private VirtualMachineMsiHelper virtualMachineMsiHelper;
     // Reference to the PublicIp creatable that is implicitly created
@@ -178,6 +178,7 @@ class VirtualMachineImpl
         this.virtualMachineExtensions = new VirtualMachineExtensionsImpl(computeManager.inner().virtualMachineExtensions(), this);
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         initializeDataDisks();
+        this.bootDiagnosticsHandler = new BootDiagnosticsHandler(this);
         this.virtualMachineMsiHelper = new VirtualMachineMsiHelper(rbacManager);
     }
 
@@ -1250,43 +1251,33 @@ class VirtualMachineImpl
         return this;
     }
 
-
     @Override
     public VirtualMachineImpl withBootDiagnostics() {
-        // Diagnostics storage uri will be set later by this.handleBootDiagnosticsStorageSettings(..)
-        //
-        this.enableDisableBootDiagnostics(true);
+        this.bootDiagnosticsHandler.withBootDiagnostics();
         return this;
     }
 
     @Override
     public VirtualMachineImpl withBootDiagnostics(Creatable<StorageAccount> creatable) {
-        // Diagnostics storage uri will be set later by this.handleBootDiagnosticsStorageSettings(..)
-        //
-        enableDisableBootDiagnostics(true);
-        this.creatableDiagnosticsStorageAccountKey = creatable.key();
-        this.addCreatableDependency(creatable);
+        this.bootDiagnosticsHandler.withBootDiagnostics(creatable);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withBootDiagnostics(String storageAccountBlobEndpointUri) {
-        this.enableDisableBootDiagnostics(true);
-        this.inner()
-                .diagnosticsProfile()
-                .bootDiagnostics()
-                .withStorageUri(storageAccountBlobEndpointUri);
+        this.bootDiagnosticsHandler.withBootDiagnostics(storageAccountBlobEndpointUri);
         return this;
     }
 
     @Override
     public VirtualMachineImpl withBootDiagnostics(StorageAccount storageAccount) {
-        return this.withBootDiagnostics(storageAccount.endPoints().primary().blob());
+        this.bootDiagnosticsHandler.withBootDiagnostics(storageAccount);
+        return this;
     }
 
     @Override
     public VirtualMachineImpl withoutBootDiagnostics() {
-        this.enableDisableBootDiagnostics(false);
+        this.bootDiagnosticsHandler.withoutBootDiagnostics();
         return this;
     }
 
@@ -1565,22 +1556,12 @@ class VirtualMachineImpl
 
     @Override
     public boolean isBootDiagnosticsEnabled() {
-        if (this.inner().diagnosticsProfile() != null
-                && this.inner().diagnosticsProfile().bootDiagnostics() != null
-                && this.inner().diagnosticsProfile().bootDiagnostics().enabled() != null) {
-            return this.inner().diagnosticsProfile().bootDiagnostics().enabled();
-        }
-        return false;
+        return this.bootDiagnosticsHandler.isBootDiagnosticsEnabled();
     }
 
     @Override
     public String bootDiagnosticsStorageUri() {
-        // Even though diagnostics can disabled azure still keep the storage uri
-        if (this.inner().diagnosticsProfile() != null
-                && this.inner().diagnosticsProfile().bootDiagnostics() != null) {
-            return this.inner().diagnosticsProfile().bootDiagnostics().storageUri();
-        }
-        return null;
+        return this.bootDiagnosticsHandler.bootDiagnosticsStorageUri();
     }
 
     @Override
@@ -1619,59 +1600,48 @@ class VirtualMachineImpl
         } else {
             UnmanagedDataDiskImpl.setDataDisksDefaults(this.unmanagedDataDisks, this.vmName);
         }
+        this.handleUnManagedOSAndDataDisksStorageSettings();
+        this.bootDiagnosticsHandler.handleDiagnosticsSettings();
+        this.handleNetworkSettings();
+        this.handleAvailabilitySettings();
+
         final VirtualMachineImpl self = this;
         final VirtualMachinesInner client = this.manager().inner().virtualMachines();
-        return handleStorageSettingsAsync()
-                .flatMap(new Func1<StorageAccount, Observable<StorageAccount>>() {
+        return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
+                .map(new Func1<VirtualMachineInner, VirtualMachine>() {
                     @Override
-                    public Observable<StorageAccount> call(StorageAccount storageAccount) {
-                        return handleBootDiagnosticsStorageSettings(storageAccount);
+                    public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
+                        reset(virtualMachineInner);
+                        return self;
                     }
-                })
-                .flatMap(new Func1<StorageAccount, Observable<? extends VirtualMachine>>() {
-                    @Override
-                    public Observable<? extends VirtualMachine> call(StorageAccount storageAccount) {
-                        handleNetworkSettings();
-                        handleAvailabilitySettings();
-                        // inner().withZones(new ArrayList<String>());
-                        // inner().zones().add("1");
 
-                        return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
-                                .map(new Func1<VirtualMachineInner, VirtualMachine>() {
-                                    @Override
-                                    public VirtualMachine call(VirtualMachineInner virtualMachineInner) {
-                                        reset(virtualMachineInner);
-                                        return self;
+            }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
+                @Override
+                public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
+                    return self.virtualMachineExtensions.commitAndGetAllAsync()
+                            .map(new Func1<List<VirtualMachineExtensionImpl>, VirtualMachine>() {
+                                @Override
+                                public VirtualMachine call(List<VirtualMachineExtensionImpl> virtualMachineExtensions) {
+                                    return self;
+                                }
+                            });
+                }
+            }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
+                @Override
+                public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
+                    return virtualMachineMsiHelper.setupVirtualMachineMSIResourcesAsync(self)
+                            .flatMap(new Func1<VirtualMachineMsiHelper.MSIResourcesSetupResult, Observable<VirtualMachine>>() {
+                                @Override
+                                public Observable<VirtualMachine> call(VirtualMachineMsiHelper.MSIResourcesSetupResult result) {
+                                    if (result.isExtensionInstalledOrUpdated) {
+                                        return refreshAsync();
+                                    } else {
+                                        return Observable.just((VirtualMachine) self);
                                     }
-                                });
-                    }
-                }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
-                    @Override
-                    public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
-                        return self.virtualMachineExtensions.commitAndGetAllAsync()
-                                .map(new Func1<List<VirtualMachineExtensionImpl>, VirtualMachine>() {
-                                    @Override
-                                    public VirtualMachine call(List<VirtualMachineExtensionImpl> virtualMachineExtensions) {
-                                        return self;
-                                    }
-                                });
-                    }
-                }).flatMap(new Func1<VirtualMachine, Observable<? extends VirtualMachine>>() {
-                    @Override
-                    public Observable<? extends VirtualMachine> call(VirtualMachine virtualMachine) {
-                        return virtualMachineMsiHelper.setupVirtualMachineMSIResourcesAsync(self)
-                                .flatMap(new Func1<VirtualMachineMsiHelper.MSIResourcesSetupResult, Observable<VirtualMachine>>() {
-                                    @Override
-                                    public Observable<VirtualMachine> call(VirtualMachineMsiHelper.MSIResourcesSetupResult result) {
-                                        if (result.isExtensionInstalledOrUpdated) {
-                                            return refreshAsync();
-                                        } else {
-                                            return Observable.just((VirtualMachine) self);
-                                        }
-                                    }
-                                });
-                    }
-                });
+                                }
+                            });
+                }
+            });
     }
 
     // Helpers
@@ -1860,91 +1830,66 @@ class VirtualMachineImpl
         }
     }
 
-    private Observable<StorageAccount> handleStorageSettingsAsync() {
-        final Func1<StorageAccount, StorageAccount> onStorageAccountReady = new Func1<StorageAccount, StorageAccount>() {
-            @Override
-            public StorageAccount call(StorageAccount storageAccount) {
-                if (!isManagedDiskEnabled()) {
-                    if (isInCreateMode()) {
-                        if (isOSDiskFromPlatformImage(inner().storageProfile())) {
-                            String uri = inner()
-                                    .storageProfile()
-                                    .osDisk().vhd().uri()
-                                    .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
-                            inner().storageProfile().osDisk().vhd().withUri(uri);
-                        }
-                        UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, storageAccount, vmName);
-                    } else {
-                        if (storageAccount != null) {
-                            UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, storageAccount, vmName);
-                        } else {
-                            UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, vmName);
-                        }
-                    }
+    @Override
+    public void prepare() {
+        // Add delayed dependencies for StorageProfile
+        //
+        if (creatableStorageAccountKey == null && existingStorageAccountToAssociate == null) {
+            if (osDiskRequiresImplicitStorageAccountCreation()
+                    || dataDisksRequiresImplicitStorageAccountCreation()) {
+                Creatable<StorageAccount> storageAccountCreatable = null;
+                if (this.creatableGroup != null) {
+                    storageAccountCreatable = this.storageManager.storageAccounts()
+                            .define(this.namer.randomName("stg", 24).replace("-", ""))
+                            .withRegion(this.regionName())
+                            .withNewResourceGroup(this.creatableGroup);
+                } else {
+                    storageAccountCreatable = this.storageManager.storageAccounts()
+                            .define(this.namer.randomName("stg", 24).replace("-", ""))
+                            .withRegion(this.regionName())
+                            .withExistingResourceGroup(this.resourceGroupName());
                 }
-                return storageAccount;
+                this.creatableStorageAccountKey = storageAccountCreatable.key();
+                this.addCreatableDependency(storageAccountCreatable);
             }
-        };
-        if (this.creatableStorageAccountKey != null) {
-            return Observable.just((StorageAccount) this.createdResource(this.creatableStorageAccountKey))
-                    .map(onStorageAccountReady);
-        } else if (this.existingStorageAccountToAssociate != null) {
-            return Observable.just(this.existingStorageAccountToAssociate)
-                    .map(onStorageAccountReady);
-        } else if (osDiskRequiresImplicitStorageAccountCreation()
-                || dataDisksRequiresImplicitStorageAccountCreation()) {
-            return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
-                    .define(this.namer.randomName("stg", 24).replace("-", ""))
-                    .withRegion(this.regionName())
-                    .withExistingResourceGroup(this.resourceGroupName())
-                    .createAsync())
-                    .map(onStorageAccountReady);
         }
-        return Observable.just(null);
+        // Add delayed dependencies for DiagnosticsProfile
+        //
+        this.bootDiagnosticsHandler.prepare();
     }
 
-    private Observable<StorageAccount> handleBootDiagnosticsStorageSettings(StorageAccount diskStorageAccount) {
-        final Observable<StorageAccount> diskStgObservable = Observable.just(diskStorageAccount);
-        DiagnosticsProfile diagnosticsProfile = this.inner().diagnosticsProfile();
-        if (diagnosticsProfile == null
-                || diagnosticsProfile.bootDiagnostics() == null) {
-            return diskStgObservable;
-        } else if (diagnosticsProfile.bootDiagnostics().storageUri() != null) {
-            return diskStgObservable;
-        } else if (diagnosticsProfile.bootDiagnostics().enabled() != null
-                && diagnosticsProfile.bootDiagnostics().enabled()) {
-            if (this.creatableDiagnosticsStorageAccountKey != null) {
-                StorageAccount diagnosticsStgAccount = (StorageAccount) this.createdResource(this.creatableDiagnosticsStorageAccountKey);
-                this.inner()
-                        .diagnosticsProfile()
-                        .bootDiagnostics()
-                        .withStorageUri(diagnosticsStgAccount.endPoints().primary().blob());
-                return diskStgObservable == null ? Observable.just(diagnosticsStgAccount) : diskStgObservable;
-            } else if (diskStorageAccount != null) {
-                this.inner()
-                        .diagnosticsProfile()
-                        .bootDiagnostics()
-                        .withStorageUri(diskStorageAccount.endPoints().primary().blob());
-                return diskStgObservable;
+    /**
+     * Prepare virtual machine disks profile (StorageProfile).
+     */
+    private void handleUnManagedOSAndDataDisksStorageSettings() {
+        if (isManagedDiskEnabled()) {
+            // NOP if the virtual machine is based on managed disk (managed and un-managed disk cannot be mixed)
+            return;
+        }
+        StorageAccount storageAccount = null;
+        if (this.creatableStorageAccountKey != null) {
+            storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);
+        } else if (this.existingStorageAccountToAssociate != null) {
+            storageAccount = this.existingStorageAccountToAssociate;
+        }
+        if (isInCreateMode()) {
+            if (storageAccount != null) {
+                if (isOSDiskFromPlatformImage(inner().storageProfile())) {
+                    String uri = inner()
+                            .storageProfile()
+                            .osDisk().vhd().uri()
+                            .replaceFirst("\\{storage-base-url}", storageAccount.endPoints().primary().blob());
+                    inner().storageProfile().osDisk().vhd().withUri(uri);
+                }
+                UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, storageAccount, vmName);
+            }
+        } else {    // Update Mode
+            if (storageAccount != null) {
+                UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, storageAccount, vmName);
             } else {
-                return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
-                        .define(this.namer.randomName("stg", 24).replace("-", ""))
-                        .withRegion(this.regionName())
-                        .withExistingResourceGroup(this.resourceGroupName())
-                        .createAsync())
-                        .flatMap(new Func1<StorageAccount, Observable<StorageAccount>>() {
-                            @Override
-                            public Observable<StorageAccount> call(StorageAccount storageAccount) {
-                                inner()
-                                        .diagnosticsProfile()
-                                        .bootDiagnostics()
-                                        .withStorageUri(storageAccount.endPoints().primary().blob());
-                                return diskStgObservable;
-                            }
-                        });
+                UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, vmName);
             }
         }
-        return diskStgObservable;
     }
 
     private void handleNetworkSettings() {
@@ -2048,21 +1993,6 @@ class VirtualMachineImpl
             return true;
         }
         return false;
-    }
-
-    private void enableDisableBootDiagnostics(boolean enable) {
-        if (this.inner().diagnosticsProfile() == null) {
-            this.inner().withDiagnosticsProfile(new DiagnosticsProfile());
-        }
-        if (this.inner().diagnosticsProfile().bootDiagnostics() == null) {
-            this.inner().diagnosticsProfile().withBootDiagnostics(new BootDiagnostics());
-        }
-        if (enable) {
-            this.inner().diagnosticsProfile().bootDiagnostics().withEnabled(true);
-        } else {
-            this.inner().diagnosticsProfile().bootDiagnostics().withEnabled(false);
-            this.inner().diagnosticsProfile().bootDiagnostics().withStorageUri(null);
-        }
     }
 
     /**
@@ -2419,6 +2349,152 @@ class VirtualMachineImpl
                 return StorageAccountTypes.STANDARD_LRS;
             }
             return defaultStorageAccountType;
+        }
+    }
+
+    /**
+     * Class to manage VM boot diagnostics settings.
+     */
+    private class BootDiagnosticsHandler {
+        private final VirtualMachineImpl vmImpl;
+        private String creatableDiagnosticsStorageAccountKey;
+
+        BootDiagnosticsHandler(VirtualMachineImpl vmImpl) {
+            this.vmImpl = vmImpl;
+        }
+
+        public boolean isBootDiagnosticsEnabled() {
+            if (this.vmInner().diagnosticsProfile() != null
+                    && this.vmInner().diagnosticsProfile().bootDiagnostics() != null
+                    && this.vmInner().diagnosticsProfile().bootDiagnostics().enabled() != null) {
+                return this.vmInner().diagnosticsProfile().bootDiagnostics().enabled();
+            }
+            return false;
+        }
+
+        public String bootDiagnosticsStorageUri() {
+            // Even though diagnostics can disabled azure still keep the storage uri
+            if (this.vmInner().diagnosticsProfile() != null
+                    && this.vmInner().diagnosticsProfile().bootDiagnostics() != null) {
+                return this.vmInner().diagnosticsProfile().bootDiagnostics().storageUri();
+            }
+            return null;
+        }
+
+        BootDiagnosticsHandler withBootDiagnostics() {
+            // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
+            //
+            this.enableDisable(true);
+            return this;
+        }
+
+        BootDiagnosticsHandler withBootDiagnostics(Creatable<StorageAccount> creatable) {
+            // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
+            //
+            this.enableDisable(true);
+            this.creatableDiagnosticsStorageAccountKey = creatable.key();
+            this.vmImpl.addCreatableDependency(creatable);
+            return this;
+        }
+
+        BootDiagnosticsHandler withBootDiagnostics(String storageAccountBlobEndpointUri) {
+            this.enableDisable(true);
+            this.vmInner()
+                    .diagnosticsProfile()
+                    .bootDiagnostics()
+                    .withStorageUri(storageAccountBlobEndpointUri);
+            return this;
+        }
+
+        BootDiagnosticsHandler withBootDiagnostics(StorageAccount storageAccount) {
+            return this.withBootDiagnostics(storageAccount.endPoints().primary().blob());
+        }
+
+        BootDiagnosticsHandler withoutBootDiagnostics() {
+            this.enableDisable(false);
+            return this;
+        }
+
+        void prepare() {
+            DiagnosticsProfile diagnosticsProfile = this.vmInner().diagnosticsProfile();
+            if (diagnosticsProfile == null
+                    || diagnosticsProfile.bootDiagnostics() == null
+                    || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
+                return;
+            }
+            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            if (!enableBD) {
+                return;
+            }
+            if (this.creatableDiagnosticsStorageAccountKey != null
+                    || this.vmImpl.creatableStorageAccountKey != null
+                    || this.vmImpl.existingStorageAccountToAssociate != null) {
+                return;
+            }
+            String accountName = this.vmImpl.namer.randomName("stg", 24).replace("-", "");
+            Creatable<StorageAccount> storageAccountCreatable;
+            if (this.vmImpl.creatableGroup != null) {
+                storageAccountCreatable = this.vmImpl.storageManager.storageAccounts()
+                        .define(accountName)
+                        .withRegion(this.vmImpl.regionName())
+                        .withNewResourceGroup(this.vmImpl.creatableGroup);
+            } else {
+                storageAccountCreatable = this.vmImpl.storageManager.storageAccounts()
+                        .define(accountName)
+                        .withRegion(this.vmImpl.regionName())
+                        .withExistingResourceGroup(this.vmImpl.resourceGroupName());
+            }
+            this.creatableDiagnosticsStorageAccountKey = storageAccountCreatable.key();
+            this.vmImpl.addCreatableDependency(storageAccountCreatable);
+        }
+
+        void handleDiagnosticsSettings() {
+            DiagnosticsProfile diagnosticsProfile = this.vmInner().diagnosticsProfile();
+            if (diagnosticsProfile == null
+                    || diagnosticsProfile.bootDiagnostics() == null
+                    || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
+                return;
+            }
+            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            if (!enableBD) {
+                return;
+            }
+            StorageAccount storageAccount = null;
+            if (creatableDiagnosticsStorageAccountKey != null) {
+                storageAccount = (StorageAccount) this.vmImpl.createdResource(creatableDiagnosticsStorageAccountKey);
+            } else if (this.vmImpl.creatableStorageAccountKey != null) {
+                storageAccount = (StorageAccount) this.vmImpl.createdResource(this.vmImpl.creatableStorageAccountKey);
+            } else if (this.vmImpl.existingStorageAccountToAssociate != null) {
+                storageAccount = this.vmImpl.existingStorageAccountToAssociate;
+            }
+            if (storageAccount == null) {
+                throw new IllegalStateException("Unable to retrieve expected storageAccount instance for BootDiagnostics");
+            }
+            vmInner()
+                .diagnosticsProfile()
+                .bootDiagnostics()
+                .withStorageUri(storageAccount.endPoints().primary().blob());
+        }
+
+        private VirtualMachineInner vmInner() {
+            // Inner cannot be cached as parent VirtualMachineImpl can refresh the inner in various cases
+            //
+            return this.vmImpl.inner();
+        }
+
+        private void enableDisable(boolean enable) {
+            if (this.vmInner().diagnosticsProfile() == null) {
+                this.vmInner().withDiagnosticsProfile(new DiagnosticsProfile());
+            }
+            if (this.vmInner().diagnosticsProfile().bootDiagnostics() == null) {
+                this.vmInner().diagnosticsProfile().withBootDiagnostics(new BootDiagnostics());
+            }
+            if (enable) {
+                this.vmInner().diagnosticsProfile().bootDiagnostics().withEnabled(true);
+            } else {
+                this.vmInner().diagnosticsProfile().bootDiagnostics().withEnabled(false);
+                this.vmInner().diagnosticsProfile().bootDiagnostics().withStorageUri(null);
+            }
         }
     }
 }
