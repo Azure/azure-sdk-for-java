@@ -1600,13 +1600,13 @@ class VirtualMachineImpl
         } else {
             UnmanagedDataDiskImpl.setDataDisksDefaults(this.unmanagedDataDisks, this.vmName);
         }
-        final VirtualMachinesInner client = this.manager().inner().virtualMachines();
-        this.handleStorageSettings();
+        this.handleUnManagedOSAndDataDisksStorageSettings();
         this.bootDiagnosticsHandler.handleDiagnosticsSettings();
         this.handleNetworkSettings();
         this.handleAvailabilitySettings();
 
         final VirtualMachineImpl self = this;
+        final VirtualMachinesInner client = this.manager().inner().virtualMachines();
         return client.createOrUpdateAsync(resourceGroupName(), vmName, inner())
                 .map(new Func1<VirtualMachineInner, VirtualMachine>() {
                     @Override
@@ -1859,11 +1859,13 @@ class VirtualMachineImpl
     }
 
     /**
-     * Prepare the the StorageProfile of the virtual machine.
-     *
-     * @return the storageAccount used to setup the storageProfile, null if the storageAccount is not available.
+     * Prepare virtual machine disks profile (StorageProfile).
      */
-    private StorageAccount handleStorageSettings() {
+    private void handleUnManagedOSAndDataDisksStorageSettings() {
+        if (isManagedDiskEnabled()) {
+            // NOP if the virtual machine is based on managed disk (managed and un-managed disk cannot be mixed)
+            return;
+        }
         StorageAccount storageAccount = null;
         if (this.creatableStorageAccountKey != null) {
             storageAccount = (StorageAccount) this.createdResource(this.creatableStorageAccountKey);
@@ -1888,7 +1890,6 @@ class VirtualMachineImpl
                 UnmanagedDataDiskImpl.ensureDisksVhdUri(unmanagedDataDisks, vmName);
             }
         }
-        return storageAccount;
     }
 
     private void handleNetworkSettings() {
