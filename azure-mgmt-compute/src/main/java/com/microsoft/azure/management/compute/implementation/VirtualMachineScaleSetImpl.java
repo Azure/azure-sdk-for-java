@@ -1266,26 +1266,22 @@ public class VirtualMachineScaleSetImpl
                     .dataDisks();
             VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
         }
+        this.handleUnManagedOSDiskContainers();
+
         final VirtualMachineScaleSetsInner client = this.manager().inner().virtualMachineScaleSets();
         final VirtualMachineScaleSet self = this;
-        return this.handleOSDiskContainersAsync()
-                .flatMap(new Func1<Void, Observable<VirtualMachineScaleSetInner>>() {
+        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
+                .flatMap(new Func1<VirtualMachineScaleSetInner, Observable<VirtualMachineScaleSetInner>>() {
                     @Override
-                    public Observable<VirtualMachineScaleSetInner> call(Void aVoid) {
-                        return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
-                                .flatMap(new Func1<VirtualMachineScaleSetInner, Observable<VirtualMachineScaleSetInner>>() {
+                    public Observable<VirtualMachineScaleSetInner> call(final VirtualMachineScaleSetInner scaleSetInner) {
+                        setInner(scaleSetInner);  // Inner has to be updated so that virtualMachineScaleSetMsiHelper can fetch MSI identity
+                        return virtualMachineScaleSetMsiHelper.createMSIRbacRoleAssignmentsAsync(self)
+                                .switchIfEmpty(Observable.<RoleAssignment>just(null))
+                                .last()
+                                .map(new Func1<RoleAssignment, VirtualMachineScaleSetInner>() {
                                     @Override
-                                    public Observable<VirtualMachineScaleSetInner> call(final VirtualMachineScaleSetInner scaleSetInner) {
-                                        setInner(scaleSetInner);  // Inner has to be updated so that virtualMachineScaleSetMsiHelper can fetch MSI identity
-                                        return virtualMachineScaleSetMsiHelper.createMSIRbacRoleAssignmentsAsync(self)
-                                                .switchIfEmpty(Observable.<RoleAssignment>just(null))
-                                                .last()
-                                                .map(new Func1<RoleAssignment, VirtualMachineScaleSetInner>() {
-                                                    @Override
-                                                    public VirtualMachineScaleSetInner call(RoleAssignment roleAssignment) {
-                                                        return scaleSetInner;
-                                                    }
-                                                });
+                                    public VirtualMachineScaleSetInner call(RoleAssignment roleAssignment) {
+                                        return scaleSetInner;
                                     }
                                 });
                     }
@@ -1413,14 +1409,55 @@ public class VirtualMachineScaleSetImpl
         }
     }
 
-    private Observable<Void> handleOSDiskContainersAsync() {
+    @Override
+    public void prepare() {
+        // Adding delayed storage account dependency if needed
+        //
+        this.prepareOSDiskContainers();
+    }
+
+    protected void prepareOSDiskContainers() {
+        if (isManagedDiskEnabled()) {
+            return;
+        }
+        final VirtualMachineScaleSetStorageProfile storageProfile = inner()
+                .virtualMachineProfile()
+                .storageProfile();
+        if (isOSDiskFromStoredImage(storageProfile)) {
+            // There is a restriction currently that virtual machine's disk cannot be stored in multiple storage
+            // accounts if scale set is based on stored image. Remove this check once azure start supporting it.
+            //
+            return;
+        }
+        if (this.isInCreateMode()
+                && this.creatableStorageAccountKeys.isEmpty()
+                && this.existingStorageAccountsToAssociate.isEmpty()) {
+            String accountName = this.namer.randomName("stg", 24).replace("-", "");
+            Creatable<StorageAccount> storageAccountCreatable;
+            if (this.creatableGroup != null) {
+                storageAccountCreatable = this.storageManager.storageAccounts()
+                        .define(accountName)
+                        .withRegion(this.regionName())
+                        .withNewResourceGroup(this.creatableGroup);
+            } else {
+                storageAccountCreatable = this.storageManager.storageAccounts()
+                        .define(accountName)
+                        .withRegion(this.regionName())
+                        .withExistingResourceGroup(this.resourceGroupName());
+            }
+            this.addCreatableDependency(storageAccountCreatable);
+            this.creatableStorageAccountKeys.add(storageAccountCreatable.key());
+        }
+    }
+
+    private void handleUnManagedOSDiskContainers() {
         final VirtualMachineScaleSetStorageProfile storageProfile = inner()
                 .virtualMachineProfile()
                 .storageProfile();
         if (isManagedDiskEnabled()) {
             storageProfile.osDisk()
                     .withVhdContainers(null);
-            return Observable.just(null);
+            return;
         }
         if (isOSDiskFromStoredImage(storageProfile)) {
             // There is a restriction currently that virtual machine's disk cannot be stored in multiple storage
@@ -1429,64 +1466,42 @@ public class VirtualMachineScaleSetImpl
             storageProfile.osDisk()
                     .vhdContainers()
                     .clear();
-            return Observable.just(null);
+            return;
         }
-        if (this.isInCreateMode()
+
+        String containerName = this.vhdContainerName;
+        if (containerName == null) {
+            for (String containerUrl : storageProfile.osDisk().vhdContainers()) {
+                containerName = containerUrl.substring(containerUrl.lastIndexOf("/") + 1);
+                break;
+            }
+        }
+
+        if (containerName == null) {
+            containerName = "vhds";
+        }
+
+        if (isInCreateMode()
                 && this.creatableStorageAccountKeys.isEmpty()
                 && this.existingStorageAccountsToAssociate.isEmpty()) {
-            // If storage account(s) are not explicitly asked to create then create one implicitly
-            //
-            return Utils.<StorageAccount>rootResource(this.storageManager.storageAccounts()
-                    .define(this.namer.randomName("stg", 24).replace("-", ""))
-                    .withRegion(this.regionName())
-                    .withExistingResourceGroup(this.resourceGroupName())
-                    .createAsync())
-                    .map(new Func1<StorageAccount, Void>() {
-                        @Override
-                        public Void call(StorageAccount storageAccount) {
-                            String containerName = vhdContainerName;
-                            if (containerName == null) {
-                                containerName = "vhds";
-                            }
-                            storageProfile.osDisk()
-                                    .vhdContainers()
-                                    .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
-                            vhdContainerName = null;
-                            creatableStorageAccountKeys.clear();
-                            existingStorageAccountsToAssociate.clear();
-                            return null;
-                        }
-                    });
-        } else {
-            String containerName = this.vhdContainerName;
-            if (containerName == null) {
-                for (String containerUrl : storageProfile.osDisk().vhdContainers()) {
-                    containerName = containerUrl.substring(containerUrl.lastIndexOf("/") + 1);
-                    break;
-                }
-            }
-
-            if (containerName == null) {
-                containerName = "vhds";
-            }
-
-            for (String storageAccountKey : this.creatableStorageAccountKeys) {
-                StorageAccount storageAccount = (StorageAccount) createdResource(storageAccountKey);
-                storageProfile.osDisk()
-                        .vhdContainers()
-                        .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
-            }
-
-            for (StorageAccount storageAccount : this.existingStorageAccountsToAssociate) {
-                storageProfile.osDisk()
-                        .vhdContainers()
-                        .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
-            }
-            this.vhdContainerName = null;
-            this.creatableStorageAccountKeys.clear();
-            this.existingStorageAccountsToAssociate.clear();
-            return Observable.just(null);
+            throw new IllegalStateException("Expected storage account(s) for VMSS OS disk containers not found");
         }
+
+        for (String storageAccountKey : this.creatableStorageAccountKeys) {
+            StorageAccount storageAccount = (StorageAccount) createdResource(storageAccountKey);
+            storageProfile.osDisk()
+                    .vhdContainers()
+                    .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
+        }
+
+        for (StorageAccount storageAccount : this.existingStorageAccountsToAssociate) {
+            storageProfile.osDisk()
+                    .vhdContainers()
+                    .add(mergePath(storageAccount.endPoints().primary().blob(), containerName));
+        }
+        this.vhdContainerName = null;
+        this.creatableStorageAccountKeys.clear();
+        this.existingStorageAccountsToAssociate.clear();
     }
 
     private void setPrimaryIpConfigurationSubnet() {
