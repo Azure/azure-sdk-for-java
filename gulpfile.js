@@ -2,7 +2,9 @@ var path = require('path');
 var gulp = require('gulp');
 var args = require('yargs').argv;
 var colors = require('colors');
-var spawn = require('child_process').spawn;
+var execa = require('execa');
+var pAll = require('p-all');
+var os = require('os');
 var fs = require('fs');
 
 const mappings = require('./api-specs.json');
@@ -56,18 +58,22 @@ gulp.task('codegen', function(cb) {
 
 var handleInput = function(projects, cb) {
     if (projects === undefined) {
-        Object.keys(mappings).forEach(function(proj) {
-            codegen(proj, cb);
+        const actions = Object.keys(mappings).map(proj => {
+            return () => codegen(proj, cb);
         });
+        pAll(actions, { concurrency: os.cpus().length });
     } else {
-        projects.split(",").forEach(function(proj) {
-            proj = proj.replace(/\ /g, '');
-            if (mappings[proj] === undefined) {
-                console.error('Invalid project name "' + proj + '"!');
-                process.exit(1);
+        const actions = projects.split(",").map(proj => {
+            return () => {
+                proj = proj.replace(/\ /g, '');
+                if (mappings[proj] === undefined) {
+                    console.error('Invalid project name "' + proj + '"!');
+                    process.exit(1);
+                }
+                return codegen(proj, cb);
             }
-            codegen(proj, cb);
         });
+        pAll(actions, { concurrency: os.cpus().length });
     }
 }
 
@@ -111,7 +117,7 @@ var codegen = function(project, cb) {
         cmd = cmd + ' ' + mappings[project].args;
     }
     console.log('Command: ' + cmd);
-    spawn(cmd, [], { shell: true, stdio: "inherit" });
+    return execa(cmd, [], { shell: true, stdio: "inherit" });
 };
 
 var deleteFolderRecursive = function(path) {
