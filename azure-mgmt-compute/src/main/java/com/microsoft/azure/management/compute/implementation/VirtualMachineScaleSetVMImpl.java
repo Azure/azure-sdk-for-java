@@ -380,21 +380,30 @@ class VirtualMachineScaleSetVMImpl
 
     @Override
     public VirtualMachineInstanceView refreshInstanceView() {
-        VirtualMachineScaleSetVMInstanceViewInner instanceViewInner = this.client.getInstanceView(this.parent().resourceGroupName(),
-                this.parent().name(),
-                this.instanceId());
-        if (instanceViewInner != null) {
-            this.virtualMachineInstanceView = new VirtualMachineInstanceView()
-                    .withBootDiagnostics(instanceViewInner.bootDiagnostics())
-                    .withDisks(instanceViewInner.disks())
-                    .withExtensions(instanceViewInner.extensions())
-                    .withPlatformFaultDomain(instanceViewInner.platformFaultDomain())
-                    .withPlatformUpdateDomain(instanceViewInner.platformUpdateDomain())
-                    .withRdpThumbPrint(instanceViewInner.rdpThumbPrint())
-                    .withStatuses(instanceViewInner.statuses())
-                    .withVmAgent(instanceViewInner.vmAgent());
-        }
-        return this.virtualMachineInstanceView;
+        return refreshInstanceViewAsync().toBlocking().last();
+    }
+
+    public Observable<VirtualMachineInstanceView> refreshInstanceViewAsync() {
+        return this.client.getInstanceViewAsync(this.parent().resourceGroupName(),
+            this.parent().name(),
+            this.instanceId())
+            .map(new Func1<VirtualMachineScaleSetVMInstanceViewInner, VirtualMachineInstanceView>() {
+                @Override
+                public VirtualMachineInstanceView call(VirtualMachineScaleSetVMInstanceViewInner instanceViewInner) {
+                    if (instanceViewInner != null) {
+                        virtualMachineInstanceView = new VirtualMachineInstanceView()
+                            .withBootDiagnostics(instanceViewInner.bootDiagnostics())
+                            .withDisks(instanceViewInner.disks())
+                            .withExtensions(instanceViewInner.extensions())
+                            .withPlatformFaultDomain(instanceViewInner.platformFaultDomain())
+                            .withPlatformUpdateDomain(instanceViewInner.platformUpdateDomain())
+                            .withRdpThumbPrint(instanceViewInner.rdpThumbPrint())
+                            .withStatuses(instanceViewInner.statuses())
+                            .withVmAgent(instanceViewInner.vmAgent());
+                    }
+                    return virtualMachineInstanceView;
+                }
+            });
     }
 
     @Override
