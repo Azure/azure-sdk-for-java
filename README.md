@@ -279,7 +279,7 @@ You can find plenty of sample code that illustrates management scenarios (95+ en
 </ul></td>
   </tr>
 <tr>
-    <td>Container Service, Container Registry and Container Instances</td>
+    <td>Container Service<br>Container Registry and <br>Container Instances</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/acr-java-manage-azure-container-registry">Manage container registry</a></li>
 <li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-acr-to-kubernetes">Deploy an image from container registry to Kubernetes cluster</a></li>
