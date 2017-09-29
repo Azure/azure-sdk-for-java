@@ -163,7 +163,7 @@ public class SwaggerMethodParser {
                 else if (annotationType.equals(BodyParam.class)) {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
-                    bodyContentType = bodyParamAnnotation.contentType();
+                    bodyContentType = bodyParamAnnotation.value();
                 }
             }
         }

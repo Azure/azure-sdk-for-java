@@ -14,9 +14,7 @@ import rx.Single;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.Proxy;
 import java.net.URI;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -98,9 +96,16 @@ public class MockHttpClient extends HttpClient {
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
-        try (final InputStream bodyStream = request.body().createInputStream()) {
-            return CharStreams.toString(new InputStreamReader(bodyStream));
+        String result = "";
+
+        final HttpRequestBody body = request.body();
+        if (body != null) {
+            try (final InputStream bodyStream = body.createInputStream()) {
+                result = CharStreams.toString(new InputStreamReader(bodyStream));
+            }
         }
+
+        return result;
     }
 
     private static Map<String, String> toMap(HttpHeaders headers) {

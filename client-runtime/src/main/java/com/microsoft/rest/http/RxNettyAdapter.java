@@ -79,13 +79,6 @@ public class RxNettyAdapter extends HttpClient {
                 rxnHeaders.put(header.name(), Collections.<Object>singleton(header.value()));
             }
 
-            String mimeType = request.mimeContentType();
-            // FIXME: this stopgap fix only puts the mimeContentType in request headers if it's non-empty.
-            // In the future, a HttpRequestBody should be considered malformed if it's missing a mimeContentType.
-            if (mimeType != null && !mimeType.isEmpty()) {
-                rxnHeaders.put("Content-Type", Collections.<Object>singleton(mimeType));
-            }
-
             final boolean isSecure = "https".equalsIgnoreCase(uri.getScheme());
             final int port;
             if (uri.getPort() != -1) {
