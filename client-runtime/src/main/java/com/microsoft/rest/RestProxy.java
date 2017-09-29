@@ -150,7 +150,16 @@ public class RestProxy implements InvocationHandler {
 
             request.headers().set("Content-Type", contentType);
 
-            if (ContentType.APPLICATION_JSON.equalsIgnoreCase(contentType)) {
+            boolean isJson = false;
+            final String[] contentTypeParts = contentType.split(";");
+            for (String contentTypePart : contentTypeParts) {
+                if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
+                    isJson = true;
+                    break;
+                }
+            }
+
+            if (isJson) {
                 final String bodyContentString = serializer.serialize(bodyContentObject);
                 request.withBody(bodyContentString, contentType);
             }
@@ -165,9 +174,7 @@ public class RestProxy implements InvocationHandler {
             }
             else {
                 final String bodyContentString = serializer.serialize(bodyContentObject);
-                if (!bodyContentString.isEmpty()) {
-                    request.withBody(bodyContentString, contentType);
-                }
+                request.withBody(bodyContentString, contentType);
             }
         }
 

@@ -852,6 +852,10 @@ public abstract class RestProxyTests {
         HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@BodyParam byte[] body);
 
         @PUT("put")
+        @Headers({ "Content-Type: application/json; charset=utf-8" })
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@BodyParam String body);
+
+        @PUT("put")
         @Headers({ "Content-Type: application/octet-stream" })
         HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@BodyParam String body);
 
@@ -861,6 +865,9 @@ public abstract class RestProxyTests {
 
         @PUT("put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_JSON) String body);
+
+        @PUT("put")
+        HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(@BodyParam(ContentType.APPLICATION_JSON + "; charset=utf-8") String body);
 
         @PUT("put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_JSON) byte[] body);
@@ -957,6 +964,27 @@ public abstract class RestProxyTests {
     }
 
     @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody("");
+        assertEquals("\"\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody("soups and stuff");
+        assertEquals("\"soups and stuff\"", result.data);
+    }
+
+    @Test
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(null);
@@ -1016,6 +1044,27 @@ public abstract class RestProxyTests {
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndStringBody("soups and stuff");
+        assertEquals("\"soups and stuff\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(null);
+        assertEquals("", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody("");
+        assertEquals("\"\"", result.data);
+    }
+
+    @Test
+    public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
+        final HttpBinJSON result = createService(Service19.class)
+                .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody("soups and stuff");
         assertEquals("\"soups and stuff\"", result.data);
     }
 
