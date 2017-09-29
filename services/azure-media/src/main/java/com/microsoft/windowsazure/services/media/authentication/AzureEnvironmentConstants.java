@@ -3,7 +3,7 @@ package com.microsoft.windowsazure.services.media.authentication;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-public class AzureEnvironmentConstants {
+public final class AzureEnvironmentConstants {
 
     // Utility classes should not have a public or default constructor.
     private AzureEnvironmentConstants() {

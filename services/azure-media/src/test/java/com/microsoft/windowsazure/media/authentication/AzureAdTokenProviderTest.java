@@ -53,7 +53,7 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
     	AzureAdTokenCredentials credentials = new AzureAdTokenCredentials(
     			tenant,
     			new AzureAdClientSymmetricKey(clientId, clientKey),
-    			AzureEnvironments.AzureCloudEnvironment);
+    			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
     	AzureAdTokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
     	Configuration configuration = MediaConfiguration.configureWithAzureAdTokenProvider(
     			new URI(apiserver),
@@ -81,7 +81,7 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
     	AzureAdTokenCredentials credentials = new AzureAdTokenCredentials(
     			tenant,
     			new AzureAdClientUsernamePassword(username, password),
-    			AzureEnvironments.AzureCloudEnvironment);
+    			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
     	AzureAdTokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
     	Configuration configuration = MediaConfiguration.configureWithAzureAdTokenProvider(
     			new URI(apiserver),
@@ -111,7 +111,7 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
     	AzureAdTokenCredentials credentials = new AzureAdTokenCredentials(
     			tenant,
     			AsymmetricKeyCredential.create(clientId, pfx, pfxpassword),
-    			AzureEnvironments.AzureCloudEnvironment);
+    			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
     	AzureAdTokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
     	Configuration configuration = MediaConfiguration.configureWithAzureAdTokenProvider(
     			new URI(apiserver),

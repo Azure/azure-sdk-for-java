@@ -57,7 +57,7 @@ public abstract class ScenarioTestBase {
     	AzureAdTokenCredentials credentials = new AzureAdTokenCredentials(
     			tenant,
     			new AzureAdClientSymmetricKey(clientId, clientKey), 
-    			AzureEnvironments.AzureCloudEnvironment);
+    			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
     	
     	AzureAdTokenProvider provider = null;
     	

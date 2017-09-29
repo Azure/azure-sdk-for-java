@@ -112,7 +112,7 @@ public abstract class IntegrationTestBase {
     	AzureAdTokenCredentials credentials = new AzureAdTokenCredentials(
     			tenant,
     			new AzureAdClientSymmetricKey(clientId, clientKey), 
-    			AzureEnvironments.AzureCloudEnvironment);
+    			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
     	
     	tokenProvider = new AzureAdTokenProvider(credentials, executorService);
     	
