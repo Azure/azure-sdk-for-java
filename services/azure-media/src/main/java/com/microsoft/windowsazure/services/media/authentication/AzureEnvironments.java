@@ -1,40 +1,44 @@
 package com.microsoft.windowsazure.services.media.authentication;
 
 public class AzureEnvironments {
-
+	
+	// Utility classes should not have a public or default constructor.
+	private AzureEnvironments() {
+	}
+	
     /**
      * Azure Cloud environment.
      */
     public static final AzureEnvironment AzureCloudEnvironment = new AzureEnvironment(
-        AzureEnvironmentConstants.AzureCloudActiveDirectoryEndpoint,
-        AzureEnvironmentConstants.AzureCloudMediaServicesResource,
-        AzureEnvironmentConstants.SdkAadApplicationId,
-        AzureEnvironmentConstants.SdkAadApplicationRedirectUri);
+        AzureEnvironmentConstants.AZURE_CLOUD_ACTIVE_DIRECTORY_ENDPOINT,
+        AzureEnvironmentConstants.AZURE_CLOUD_MEDIA_SERVICES_RESOURCE,
+        AzureEnvironmentConstants.SDK_AAD_APPLICATION_ID,
+        AzureEnvironmentConstants.SDK_AAD_APPLICATION_REDIRECT_URI);
 
     /**
      *  Azure China Cloud environment.
      */
     public static final AzureEnvironment AzureChinaCloudEnvironment = new AzureEnvironment(
-        AzureEnvironmentConstants.AzureChinaCloudActiveDirectoryEndpoint,
-        AzureEnvironmentConstants.AzureChinaCloudMediaServicesResource,
-        AzureEnvironmentConstants.SdkAadApplicationId,
-        AzureEnvironmentConstants.SdkAadApplicationRedirectUri);
+        AzureEnvironmentConstants.AZURE_CHINA_CLOUD_ACTIVE_DIRECTORY_ENDPOINT,
+        AzureEnvironmentConstants.AZURE_CHINA_CLOUD_MEDIA_SERVICES_RESOURCE,
+        AzureEnvironmentConstants.SDK_AAD_APPLICATION_ID,
+        AzureEnvironmentConstants.SDK_AAD_APPLICATION_REDIRECT_URI);
 
     /**
      * Azure US Government environment.
      */
     public static final AzureEnvironment AzureUsGovernmentEnvironment = new AzureEnvironment(
-        AzureEnvironmentConstants.AzureUsGovernmentActiveDirectoryEndpoint,
-        AzureEnvironmentConstants.AzureUsGovernmentMediaServicesResource,
-        AzureEnvironmentConstants.AzureUsGovernmentSdkAadAppliationId,
-        AzureEnvironmentConstants.SdkAadApplicationRedirectUri);
+        AzureEnvironmentConstants.AZURE_US_GOVERNMENT_ACTIVE_DIRECTORY_ENDPOINT,
+        AzureEnvironmentConstants.AZURE_US_GOVERNMENT_MEDIA_SERVICES_RESOURCE,
+        AzureEnvironmentConstants.AZURE_US_GOVERNMENT_SDK_AAD_APPLIATION_ID,
+        AzureEnvironmentConstants.SDK_AAD_APPLICATION_REDIRECT_URI);
 
     /**
      * Azure German Cloud environment.
      */
     public static final AzureEnvironment AzureGermanCloudEnvironment = new AzureEnvironment(
-        AzureEnvironmentConstants.AzureGermanCloudActiveDirectoryEndpoint,
-        AzureEnvironmentConstants.AzureGermanCloudMediaServicesResource,
-        AzureEnvironmentConstants.SdkAadApplicationId,
-        AzureEnvironmentConstants.SdkAadApplicationRedirectUri);
+        AzureEnvironmentConstants.AZURE_GERMAN_CLOUD_ACTIVE_DIRECTORY_ENDPOINT,
+        AzureEnvironmentConstants.AZURE_GERMAN_CLOUD_MEDIA_SERVICES_RESOURCE,
+        AzureEnvironmentConstants.SDK_AAD_APPLICATION_ID,
+        AzureEnvironmentConstants.SDK_AAD_APPLICATION_REDIRECT_URI);
 }
