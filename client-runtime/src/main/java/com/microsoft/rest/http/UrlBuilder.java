@@ -44,9 +44,6 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPath(String path) {
-        if (path != null && !path.startsWith("/")) {
-            path = "/" + path;
-        }
         this.path = path;
         return this;
     }
@@ -89,6 +86,9 @@ public class UrlBuilder {
         }
 
         if (path != null) {
+            if (result.length() != 0 && !path.startsWith("/")) {
+                result.append('/');
+            }
             result.append(path);
         }
 

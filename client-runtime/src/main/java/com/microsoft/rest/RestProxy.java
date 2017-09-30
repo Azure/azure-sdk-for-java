@@ -117,10 +117,16 @@ public class RestProxy implements InvocationHandler {
      * @throws IOException Thrown if the body contents cannot be serialized.
      */
     private HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
+        final String path = methodParser.path(args);
+        final boolean isAbsolute = path.startsWith("http://") || path.startsWith("https://");
+
         final UrlBuilder urlBuilder = new UrlBuilder()
-                .withScheme(methodParser.scheme(args))
-                .withHost(methodParser.host(args))
-                .withPath(methodParser.path(args));
+                .withPath(path);
+
+        if (!isAbsolute) {
+            urlBuilder.withScheme(methodParser.scheme(args))
+                    .withHost(methodParser.host(args));
+        }
 
         for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
             urlBuilder.withQueryParameter(queryParameter.name(), queryParameter.encodedValue());
