@@ -40,12 +40,16 @@ public class MockHttpClient extends HttpClient {
                 final String requestPath = requestUrl.getPath();
                 final String requestPathLower = requestPath.toLowerCase();
                 if (requestPathLower.equals("/anything") || requestPathLower.startsWith("/anything/")) {
-                    final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url()
-                            // This is just to mimic the behavior we've seen with httpbin.org.
-                            .replace("%20", " ");
-                    json.headers = toMap(request.headers());
-                    response = new MockHttpResponse(200, json);
+                    if ("HEAD".equals(request.httpMethod())) {
+                        response = new MockHttpResponse(200, "");
+                    } else {
+                        final HttpBinJSON json = new HttpBinJSON();
+                        json.url = request.url()
+                                // This is just to mimic the behavior we've seen with httpbin.org.
+                                .replace("%20", " ");
+                        json.headers = toMap(request.headers());
+                        response = new MockHttpResponse(200, json);
+                    }
                 }
                 else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
