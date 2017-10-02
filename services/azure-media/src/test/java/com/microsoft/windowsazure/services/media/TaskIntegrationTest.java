@@ -244,7 +244,6 @@ public class TaskIntegrationTest extends IntegrationTestBase {
                 initializationVector, actual.getInitializationVector());
 
         // Read-only fields
-        assertNotNull(actual.getEndTime());
         assertNotNull(message + " getErrorDetails", actual.getErrorDetails());
         assertEquals(message + " getErrorDetails.size", 0, actual
                 .getErrorDetails().size());
