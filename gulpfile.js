@@ -31,7 +31,7 @@ gulp.task('default', function() {
     
     console.log("--autorest-java");
     console.log("\tPath to an autorest.java generator to pass as a --use argument to AutoRest.");
-    console.log("\tUsually you'll only need to provide this and not a --autorest-args argument in order to work on Java code generation.");
+    console.log("\tUsually you'll only need to provide this and not a --autorest argument in order to work on Java code generation.");
     console.log("\tSee https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
     
     console.log("--debug");
