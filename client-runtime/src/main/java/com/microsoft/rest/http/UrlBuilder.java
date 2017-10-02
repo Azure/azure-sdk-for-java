@@ -44,7 +44,21 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPath(String path) {
-        this.path = path;
+        if (path != null) {
+            String[] parts = path.split("\\?");
+            this.path = parts[0];
+            if (parts.length > 1) {
+                String[] queryPairs = parts[1].split("&");
+                for (String queryPair : queryPairs) {
+                    String[] nameAndValue = queryPair.split("=");
+                    if (nameAndValue.length != 2) {
+                        throw new IllegalArgumentException("Path contained malformed query: " + path);
+                    }
+
+                    withQueryParameter(nameAndValue[0], nameAndValue[1]);
+                }
+            }
+        }
         return this;
     }
 
