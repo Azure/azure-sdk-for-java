@@ -32,10 +32,9 @@ import java.util.List;
  *  - Create a zone resilient load balancer with
  *         - the existing zone resilient ip address
  *         - two load balancing rule which is applied to two different backend pools
- *  - Create two zone redundant virtual machine scale set each associated with one backend pool
- *  - Update the virtual machine scale set by appending new zone.
+ *  - Create two zone aware virtual machine scale set each associated with one backend pool.
  */
-public final class ManageZoneRedundantVirtualMachineScaleSet {
+public final class ManageZonalVirtualMachineScaleSet {
     /**
      * Main function which runs the actual sample.
      * @param azure instance of the azure client
@@ -161,9 +160,9 @@ public final class ManageZoneRedundantVirtualMachineScaleSet {
             Utils.print(network);
 
             //=============================================================
-            // Create a zone redundant virtual machine scale set
+            // Create a zone aware virtual machine scale set
 
-            System.out.println("Creating a zone redundant virtual machine scale set");
+            System.out.println("Creating a zone aware virtual machine scale set");
 
             // HTTP goes to this virtual machine scale set
             //
@@ -181,15 +180,14 @@ public final class ManageZoneRedundantVirtualMachineScaleSet {
                     .withRootUsername(userName)
                     .withRootPassword(password)
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
-                    .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
                     .create();
 
-            System.out.println("Created zone redundant virtual machine scale set");
+            System.out.println("Created zone aware virtual machine scale set");
 
             //=============================================================
-            // Create a zone redundant virtual machine scale set
+            // Create a zone aware virtual machine scale set
 
-            System.out.println("Creating second zone redundant virtual machine scale set");
+            System.out.println("Creating second zone aware virtual machine scale set");
 
             // HTTPS goes to this virtual machine scale set
             //
@@ -207,23 +205,9 @@ public final class ManageZoneRedundantVirtualMachineScaleSet {
                     .withRootUsername(userName)
                     .withRootPassword(password)
                     .withAvailabilityZone(AvailabilityZoneId.ZONE_1)
-                    .withAvailabilityZone(AvailabilityZoneId.ZONE_2)
                     .create();
 
-            // Note: updating zone for VMSS will be supported as part of GA, this functionality is not yet deployed.
-
-            // System.out.println("Created second zone redundant virtual machine scale set");
-
-            //=============================================================
-            // Update a zone redundant virtual machine scale set with new zone
-
-            // System.out.println("Updating zone redundant virtual machine scale set to have additional zone");
-
-            // virtualMachineScaleSet1.update()
-            //        .withAvailabilityZone(AvailabilityZoneId.ZONE_3)
-            //        .apply();
-
-            // System.out.println("Updated zone redundant virtual machine scale set");
+            System.out.println("Created zone aware virtual machine scale set");
 
             return true;
         } catch (Exception f) {
@@ -272,7 +256,7 @@ public final class ManageZoneRedundantVirtualMachineScaleSet {
         }
     }
 
-    private ManageZoneRedundantVirtualMachineScaleSet() {
+    private ManageZonalVirtualMachineScaleSet() {
 
     }
 }
