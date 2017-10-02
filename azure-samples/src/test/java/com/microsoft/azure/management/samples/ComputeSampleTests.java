@@ -32,7 +32,7 @@ import com.microsoft.azure.management.compute.samples.ManageVirtualMachineWithUn
 import com.microsoft.azure.management.compute.samples.ManageVirtualMachinesInParallel;
 import com.microsoft.azure.management.compute.samples.ConvertVirtualMachineToManagedDisks;
 import com.microsoft.azure.management.compute.samples.ManageZonalVirtualMachine;
-import com.microsoft.azure.management.compute.samples.ManageZoneRedundantVirtualMachineScaleSet;
+import com.microsoft.azure.management.compute.samples.ManageZonalVirtualMachineScaleSet;
 import org.junit.Assert;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -178,7 +178,7 @@ public class ComputeSampleTests extends SamplesTestBase {
     }
 
     @Test
-    public void testManageZoneRedundantVirtualMachineScaleSet() {
-        Assert.assertTrue(ManageZoneRedundantVirtualMachineScaleSet.runSample(azure));
+    public void testManageZonalVirtualMachineScaleSet() {
+        Assert.assertTrue(ManageZonalVirtualMachineScaleSet.runSample(azure));
     }
 }
