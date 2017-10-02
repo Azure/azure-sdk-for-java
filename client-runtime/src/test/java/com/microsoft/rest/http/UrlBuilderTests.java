@@ -163,4 +163,33 @@ public class UrlBuilderTests {
                 .withPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&C=D", builder.toString());
     }
+
+    @Test
+    public void withAbsolutePath() {
+        final UrlBuilder builder = new UrlBuilder()
+                .withScheme("http")
+                .withHost("www.example.com")
+                .withPath("http://www.othersite.com");
+        assertEquals("http://www.othersite.com", builder.toString());
+    }
+
+    @Test
+    public void withQueryInPath() {
+        final UrlBuilder builder = new UrlBuilder()
+                .withScheme("http")
+                .withHost("www.example.com")
+                .withPath("mypath?thing=stuff")
+                .withQueryParameter("otherthing", "otherstuff");
+        assertEquals("http://www.example.com/mypath?thing=stuff&otherthing=otherstuff", builder.toString());
+    }
+
+    @Test
+    public void withAbsolutePathAndQuery() {
+        final UrlBuilder builder = new UrlBuilder()
+                .withScheme("http")
+                .withHost("www.example.com")
+                .withPath("http://www.othersite.com/mypath?thing=stuff")
+                .withQueryParameter("otherthing", "otherstuff");
+        assertEquals("http://www.othersite.com/mypath?thing=stuff&otherthing=otherstuff", builder.toString());
+    }
 }

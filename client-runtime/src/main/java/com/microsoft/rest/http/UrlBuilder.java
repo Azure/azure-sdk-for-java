@@ -87,16 +87,19 @@ public class UrlBuilder {
     public String toString() {
         final StringBuilder result = new StringBuilder();
 
-        if (scheme != null) {
-            result.append(scheme);
+        final boolean isAbsolutePath = path != null && (path.startsWith("http://") || path.startsWith("https://"));
+        if (!isAbsolutePath) {
+            if (scheme != null) {
+                result.append(scheme);
 
-            if (!scheme.endsWith("://")) {
-                result.append("://");
+                if (!scheme.endsWith("://")) {
+                    result.append("://");
+                }
             }
-        }
 
-        if (host != null) {
-            result.append(host);
+            if (host != null) {
+                result.append(host);
+            }
         }
 
         if (path != null) {
