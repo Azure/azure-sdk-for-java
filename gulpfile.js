@@ -17,7 +17,7 @@ gulp.task('default', function() {
         "[--autorest <autorest info>] " +
         "[--autorest-java <autorest.java info>] " +
         "[--debug] " +
-        "[--concurrency <number>" +
+        "[--concurrency <number>] " +
         "[--autorest-args <AutoRest arguments>]\n");
 
     console.log("--spec-root");
