@@ -33,14 +33,11 @@ following dependency declaration inside of your Maven project file:
 For different types of build environments, the latest released JAR files can also be [explicitly obtained from the 
 Maven Central Repository]() or from [the Release distribution point on GitHub]().  
 
-For a simple event publisher, you'll need to import the *com.microsoft.azure.eventhubs* package for the Event Hub client classes
-and the *com.microsoft.azure.servicebus* package for utility classes like common exceptions that are shared with the  
-Azure Service Bus Messaging client. 
- 
+For a simple event publisher, you'll need to import the *com.microsoft.azure.eventhubs* package for the Event Hub client classes.
+
 ```Java
     import com.microsoft.azure.eventhubs.*;
-    import com.microsoft.azure.servicebus.*;
-```        
+```
 
 The receiver code creates an *EventHubClient* from a given connecting string
       
