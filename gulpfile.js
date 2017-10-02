@@ -15,7 +15,8 @@ gulp.task('default', function() {
         "[--projects <project names>] " +
         "[--autorest <autorest info>] " +
         "[--autorest-java <autorest.java info>] " +
-        "[--autorest-args <AutoRest arguments>]\n");
+        "[--autorest-args <AutoRest arguments>]" + 
+        "[--concurrency <number>");
 
     console.log("--spec-root");
     console.log(`\tRoot location of Swagger API specs, default value is "${defaultSpecRoot}"`);
@@ -34,8 +35,11 @@ gulp.task('default', function() {
         "See https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
 
     console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
+    console.log("--concurrency\n\tSpecifies the max number of projects to generate concurrently.\n\t" +
+        "Defaults to the number of logical CPUs on the system. (On this system, " + os.cpus().length + ")");
 });
 
+const concurrency = parseInt(args['concurrency'], 10) || os.cpus().length;
 var specRoot = args['spec-root'] || defaultSpecRoot;
 var projects = args['projects'];
 var autoRestVersion = 'latest'; // default
@@ -57,11 +61,12 @@ gulp.task('codegen', function(cb) {
 });
 
 var handleInput = function(projects, cb) {
+    console.info(`Generating up to ${concurrency} projects concurrently..`);
     if (projects === undefined) {
         const actions = Object.keys(mappings).map(proj => {
             return () => codegen(proj, cb);
         });
-        pAll(actions, { concurrency: os.cpus().length });
+        pAll(actions, { concurrency });
     } else {
         const actions = projects.split(",").map(proj => {
             return () => {
@@ -73,7 +78,7 @@ var handleInput = function(projects, cb) {
                 return codegen(proj, cb);
             }
         });
-        pAll(actions, { concurrency: os.cpus().length });
+        pAll(actions, { concurrency });
     }
 }
 
