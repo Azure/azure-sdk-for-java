@@ -445,19 +445,19 @@ public abstract class AzureProxyToRestProxyTests {
 
     @Host("http://httpbin.org")
     private interface Service10 {
-        @HEAD("get")
+        @HEAD("anything")
         @ExpectedResponses({200})
         HttpBinJSON head();
 
-        @HEAD("get")
+        @HEAD("anything")
         @ExpectedResponses({200})
         void voidHead();
 
-        @HEAD("get")
+        @HEAD("anything")
         @ExpectedResponses({200})
         Single<HttpBinJSON> headAsync();
 
-        @HEAD("get")
+        @HEAD("anything")
         @ExpectedResponses({200})
         Completable completableHeadAsync();
     }

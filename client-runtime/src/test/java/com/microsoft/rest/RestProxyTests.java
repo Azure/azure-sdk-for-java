@@ -394,6 +394,11 @@ public abstract class RestProxyTests {
         assertEquals("I'm a post body!", (String)json.data);
     }
 
+    @Test(expected = IllegalArgumentException.class)
+    public void SyncPostRequestWithNullBody() {
+        createService(Service8.class).post(null);
+    }
+
     @Host("http://httpbin.org")
     private interface Service9 {
         @PUT("put")
@@ -504,19 +509,27 @@ public abstract class RestProxyTests {
 
     @Host("http://httpbin.org")
     private interface Service10 {
-        @HEAD("get")
+        @HEAD("anything")
         @ExpectedResponses({200})
         HttpBinJSON head();
 
-        @HEAD("get")
+        @HEAD("anything")
+        @ExpectedResponses({200})
+        boolean headBoolean();
+
+        @HEAD("anything")
         @ExpectedResponses({200})
         void voidHead();
 
-        @HEAD("get")
+        @HEAD("anything")
         @ExpectedResponses({200})
         Single<HttpBinJSON> headAsync();
 
-        @HEAD("get")
+        @HEAD("anything")
+        @ExpectedResponses({200})
+        Single<Boolean> headBooleanAsync();
+
+        @HEAD("anything")
         @ExpectedResponses({200})
         Completable completableHeadAsync();
     }
@@ -526,6 +539,12 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service10.class)
                 .head();
         assertNull(json);
+    }
+
+    @Test
+    public void SyncHeadBooleanRequest() {
+        final boolean result = createService(Service10.class).headBoolean();
+        assertTrue(result);
     }
 
     @Test
@@ -540,6 +559,12 @@ public abstract class RestProxyTests {
                 .headAsync()
                 .toBlocking().value();
         assertNull(json);
+    }
+
+    @Test
+    public void AsyncHeadBooleanRequest() {
+        final boolean result = createService(Service10.class).headBooleanAsync().toBlocking().value();
+        assertTrue(result);
     }
 
     @Test
@@ -879,11 +904,10 @@ public abstract class RestProxyTests {
         HttpBinJSON putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithNoContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithNoContentTypeAndStringBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -900,11 +924,10 @@ public abstract class RestProxyTests {
         assertEquals("hello", result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithNoContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithNoContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -921,11 +944,10 @@ public abstract class RestProxyTests {
         assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithHeaderApplicationJsonContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndStringBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -942,11 +964,10 @@ public abstract class RestProxyTests {
         assertEquals("\"soups and stuff\"", result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithHeaderApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -963,11 +984,10 @@ public abstract class RestProxyTests {
         assertEquals("\"AAECAwQ=\"", result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -984,11 +1004,10 @@ public abstract class RestProxyTests {
         assertEquals("\"soups and stuff\"", result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithHeaderApplicationOctetStreamContentTypeAndStringBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -1005,11 +1024,10 @@ public abstract class RestProxyTests {
         assertEquals("penguins", result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithHeaderApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -1026,11 +1044,10 @@ public abstract class RestProxyTests {
         assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithBodyParamApplicationJsonContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndStringBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -1047,11 +1064,10 @@ public abstract class RestProxyTests {
         assertEquals("\"soups and stuff\"", result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndCharsetAndStringBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -1068,11 +1084,10 @@ public abstract class RestProxyTests {
         assertEquals("\"soups and stuff\"", result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithBodyParamApplicationJsonContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithBodyParamApplicationJsonContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -1089,11 +1104,10 @@ public abstract class RestProxyTests {
         assertEquals("\"AAECAwQ=\"", result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndStringBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithBodyParamApplicationOctetStreamContentTypeAndStringBody(null);
-        assertEquals("", result.data);
     }
 
     @Test
@@ -1110,11 +1124,10 @@ public abstract class RestProxyTests {
         assertEquals("penguins", result.data);
     }
 
-    @Test
+    @Test(expected = IllegalArgumentException.class)
     public void service19PutWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBodyWithNullBody() {
-        final HttpBinJSON result = createService(Service19.class)
+        createService(Service19.class)
                 .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(null);
-        assertEquals("", result.data);
     }
 
     @Test

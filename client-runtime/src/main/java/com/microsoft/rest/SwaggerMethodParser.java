@@ -309,8 +309,12 @@ public class SwaggerMethodParser {
 
         if (bodyContentMethodParameterIndex != null
                 && swaggerMethodArguments != null
-                && 0 <= bodyContentMethodParameterIndex && bodyContentMethodParameterIndex < swaggerMethodArguments.length) {
+                && 0 <= bodyContentMethodParameterIndex
+                && bodyContentMethodParameterIndex < swaggerMethodArguments.length) {
             result = swaggerMethodArguments[bodyContentMethodParameterIndex];
+            if (result == null) {
+                throw new IllegalArgumentException("Argument for @BodyParam parameter must be non-null.");
+            }
         }
 
         return result;
@@ -382,9 +386,8 @@ public class SwaggerMethodParser {
                 final int parameterIndex = substitution.methodParameterIndex();
                 if (0 <= parameterIndex && parameterIndex < methodArguments.length) {
                     final Object methodArgument = methodArguments[substitution.methodParameterIndex()];
-
-                    String parameterValue = methodArgument == null ? "" : methodArgument.toString();
-                    if (parameterValue != null && !parameterValue.isEmpty()) {
+                    String parameterValue = methodArgument == null ? null : methodArgument.toString();
+                    if (parameterValue != null) {
                         if (substitution.shouldEncode() && escaper != null) {
                             parameterValue = escaper.escape(parameterValue);
                         }
