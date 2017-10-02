@@ -509,19 +509,27 @@ public abstract class RestProxyTests {
 
     @Host("http://httpbin.org")
     private interface Service10 {
-        @HEAD("get")
+        @HEAD("anything")
         @ExpectedResponses({200})
         HttpBinJSON head();
 
-        @HEAD("get")
+        @HEAD("anything")
+        @ExpectedResponses({200})
+        boolean headBoolean();
+
+        @HEAD("anything")
         @ExpectedResponses({200})
         void voidHead();
 
-        @HEAD("get")
+        @HEAD("anything")
         @ExpectedResponses({200})
         Single<HttpBinJSON> headAsync();
 
-        @HEAD("get")
+        @HEAD("anything")
+        @ExpectedResponses({200})
+        Single<Boolean> headBooleanAsync();
+
+        @HEAD("anything")
         @ExpectedResponses({200})
         Completable completableHeadAsync();
     }
@@ -531,6 +539,12 @@ public abstract class RestProxyTests {
         final HttpBinJSON json = createService(Service10.class)
                 .head();
         assertNull(json);
+    }
+
+    @Test
+    public void SyncHeadBooleanRequest() {
+        final boolean result = createService(Service10.class).headBoolean();
+        assertTrue(result);
     }
 
     @Test
@@ -545,6 +559,12 @@ public abstract class RestProxyTests {
                 .headAsync()
                 .toBlocking().value();
         assertNull(json);
+    }
+
+    @Test
+    public void AsyncHeadBooleanRequest() {
+        final boolean result = createService(Service10.class).headBooleanAsync().toBlocking().value();
+        assertTrue(result);
     }
 
     @Test
