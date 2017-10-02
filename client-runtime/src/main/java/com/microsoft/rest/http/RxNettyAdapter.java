@@ -18,6 +18,7 @@ import io.reactivex.netty.protocol.http.client.HttpClientResponse;
 import rx.Observable;
 import rx.Observer;
 import rx.Single;
+import rx.exceptions.Exceptions;
 import rx.functions.Func0;
 import rx.functions.Func1;
 import rx.observables.SyncOnSubscribe;
@@ -26,6 +27,8 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.CookieHandler;
+import java.net.CookieManager;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -44,6 +47,7 @@ import java.util.Set;
  */
 public class RxNettyAdapter extends HttpClient {
     private final List<ChannelHandlerConfig> handlerConfigs;
+    private final CookieHandler cookies = new CookieManager();
 
     /**
      * Creates RxNettyClient.
@@ -68,14 +72,17 @@ public class RxNettyAdapter extends HttpClient {
     }
 
     @Override
-    public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+    public Single<HttpResponse> sendRequestInternalAsync(final HttpRequest request) {
         Single<HttpResponse> result;
 
         try {
             final URI uri = new URI(request.url());
 
+            // Unfortunately necessary due to conflicting APIs
+            Map<String, List<String>> cookieHeaders = new HashMap<>();
             Map<String, Set<Object>> rxnHeaders = new HashMap<>();
             for (HttpHeader header : request.headers()) {
+                cookieHeaders.put(header.name(), Arrays.asList(request.headers().values(header.name())));
                 rxnHeaders.put(header.name(), Collections.<Object>singleton(header.value()));
             }
 
@@ -104,9 +111,20 @@ public class RxNettyAdapter extends HttpClient {
                 rxnClient = rxnClient.secure(getSSLEngine(uri.getHost()));
             }
 
-            HttpClientRequest<ByteBuf, ByteBuf> rxnReq = rxnClient
+            Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
+            Map<String, Iterable<Object>> rxnCookies = new HashMap<>();
+            for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
+                if (entry.getValue().size() != 0) {
+                    List<Object> cookieValues = new ArrayList<>();
+                    cookieValues.addAll(entry.getValue());
+                    rxnCookies.put(entry.getKey(), cookieValues);
+                }
+            }
+
+            final HttpClientRequest<ByteBuf, ByteBuf> rxnReq = rxnClient
                     .createRequest(HttpMethod.valueOf(request.httpMethod()), uri.toASCIIString())
-                    .addHeaders(rxnHeaders);
+                    .addHeaders(rxnHeaders)
+                    .addHeaders(rxnCookies);
 
             Observable<HttpClientResponse<ByteBuf>> obsResponse = rxnReq;
 
@@ -117,10 +135,21 @@ public class RxNettyAdapter extends HttpClient {
                 }
             }
 
+
             result = obsResponse
                     .map(new Func1<HttpClientResponse<ByteBuf>, HttpResponse>() {
                         @Override
                         public HttpResponse call(HttpClientResponse<ByteBuf> rxnRes) {
+                            Map<String, List<String>> responseHeaders = new HashMap<>();
+                            for (String headerName : rxnRes.getHeaderNames()) {
+                                responseHeaders.put(headerName, rxnRes.getAllHeaderValues(headerName));
+                            }
+                            try {
+                                cookies.put(uri, responseHeaders);
+                            } catch (IOException e) {
+                                throw Exceptions.propagate(e);
+                            }
+
                             return new RxNettyResponse(rxnRes);
                         }
                     })

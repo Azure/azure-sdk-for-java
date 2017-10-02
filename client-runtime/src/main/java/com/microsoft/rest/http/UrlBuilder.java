@@ -44,10 +44,21 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPath(String path) {
-        if (path != null && !path.startsWith("/")) {
-            path = "/" + path;
+        if (path != null) {
+            String[] parts = path.split("\\?");
+            this.path = parts[0];
+            if (parts.length > 1) {
+                String[] queryPairs = parts[1].split("&");
+                for (String queryPair : queryPairs) {
+                    String[] nameAndValue = queryPair.split("=");
+                    if (nameAndValue.length != 2) {
+                        throw new IllegalArgumentException("Path contained malformed query: " + path);
+                    }
+
+                    withQueryParameter(nameAndValue[0], nameAndValue[1]);
+                }
+            }
         }
-        this.path = path;
         return this;
     }
 
@@ -76,19 +87,25 @@ public class UrlBuilder {
     public String toString() {
         final StringBuilder result = new StringBuilder();
 
-        if (scheme != null) {
-            result.append(scheme);
+        final boolean isAbsolutePath = path != null && (path.startsWith("http://") || path.startsWith("https://"));
+        if (!isAbsolutePath) {
+            if (scheme != null) {
+                result.append(scheme);
 
-            if (!scheme.endsWith("://")) {
-                result.append("://");
+                if (!scheme.endsWith("://")) {
+                    result.append("://");
+                }
+            }
+
+            if (host != null) {
+                result.append(host);
             }
         }
 
-        if (host != null) {
-            result.append(host);
-        }
-
         if (path != null) {
+            if (result.length() != 0 && !path.startsWith("/")) {
+                result.append('/');
+            }
             result.append(path);
         }
 
