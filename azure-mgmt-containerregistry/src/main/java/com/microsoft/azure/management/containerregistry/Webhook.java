@@ -152,7 +152,7 @@ public interface Webhook extends
          */
         interface WithServiceUri<ParentT> {
             /**
-             * Specifies the the service URI for post notifications.
+             * Specifies the service URI for post notifications.
              *
              * @param serviceUri the service URI for the post notifications
              * @return the next stage of the definition
@@ -304,7 +304,7 @@ public interface Webhook extends
          */
         interface WithServiceUri<ParentT> {
             /**
-             * Specifies the the service URI for post notifications.
+             * Specifies the service URI for post notifications.
              *
              * @param serviceUri the service URI for the post notifications
              * @return the next stage of the definition
@@ -453,7 +453,7 @@ public interface Webhook extends
          */
         interface WithServiceUri {
             /**
-             * Specifies the the service URI for post notifications.
+             * Specifies the service URI for post notifications.
              *
              * @param serviceUri the service URI for the post notifications
              * @return the next stage of the resource update
@@ -552,7 +552,7 @@ public interface Webhook extends
          */
         interface WithServiceUri<ParentT> {
             /**
-             * Specifies the the service URI for post notifications.
+             * Specifies the service URI for post notifications.
              *
              * @param serviceUri the service URI for the post notifications
              * @return the next stage of the resource update
@@ -578,7 +578,7 @@ public interface Webhook extends
             WithAttach<ParentT> withCustomHeader(String name, String value);
 
             /**
-             * Specifies the the service URI for post notifications.
+             * Specifies the custom headers that will be added to the notifications.
              *
              * @param customHeaders the "Name=Value" custom headers.
              * @return the next stage of the resource update
