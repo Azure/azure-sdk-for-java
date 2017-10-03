@@ -43,7 +43,11 @@ public final class LocationPollStrategy extends PollStrategy {
     public void updateFrom(HttpResponse httpPollResponse) throws IOException {
         final int httpStatusCode = httpPollResponse.statusCode();
         if (httpStatusCode == 202) {
-            locationUrl = httpPollResponse.headerValue(HEADER_NAME);
+            String newLocationUrl = httpPollResponse.headerValue(HEADER_NAME);
+            if (newLocationUrl != null) {
+                locationUrl = newLocationUrl;
+            }
+            
             updateDelayInMillisecondsFrom(httpPollResponse);
         }
         else {
