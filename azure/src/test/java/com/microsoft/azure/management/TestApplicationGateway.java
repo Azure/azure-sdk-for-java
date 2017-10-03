@@ -305,15 +305,6 @@ public class TestApplicationGateway {
                                 .toBackend("backend1")
                                 .attach()
 
-                            // Additional/explicit backend HTTP setting configs
-                            .defineBackendHttpConfiguration("config1")
-                                .withPort(8081)
-                                .withRequestTimeout(45)
-                                .attach()
-
-                            .defineBackendHttpConfiguration("config2")
-                                .attach()
-
                             // Additional/explicit backends
                             .defineBackend("backend1")
                                 .withIPAddress("11.1.1.3")
@@ -337,8 +328,24 @@ public class TestApplicationGateway {
                                 .attach()
 
                             // Authentication certificates
-                            .defineAuthenticationCertificate("auth1")
-                                .fromFile(new File(getClass().getClassLoader().getResource("myTest.cer").getFile()))
+                            .defineAuthenticationCertificate("auth2")
+                                .fromFile(new File(getClass().getClassLoader().getResource("myTest2.cer").getFile()))
+                                .attach()
+
+                            // Additional/explicit backend HTTP setting configs
+                            .defineBackendHttpConfiguration("config1")
+                                .withPort(8081)
+                                .withRequestTimeout(45)
+                                .withHttps()
+                                .withAuthenticationCertificateFromFile(new File(getClass().getClassLoader().getResource("myTest.cer").getFile()))
+                                .attach()
+
+                            .defineBackendHttpConfiguration("config2")
+                                .withPort(8082)
+                                .withHttps()
+                                .withAuthenticationCertificate("auth2")
+                                // Add the same cert, so only one should be added
+                                .withAuthenticationCertificateFromFile(new File(getClass().getClassLoader().getResource("myTest2.cer").getFile()))
                                 .attach()
 
                             .withExistingSubnet(vnet, "subnet1")
@@ -399,19 +406,28 @@ public class TestApplicationGateway {
             Assert.assertEquals(2, appGateway.sslCertificates().size());
             Assert.assertTrue(appGateway.sslCertificates().containsKey("cert1"));
 
-            // Verify authentication certificates
-            Assert.assertEquals(1, appGateway.authenticationCertificates().size());
-            ApplicationGatewayAuthenticationCertificate authCert = appGateway.authenticationCertificates().get("auth1");
-            Assert.assertNotNull(authCert);
-            Assert.assertNotNull(authCert.data());
-
             // Verify backend HTTP settings configs
             Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 3);
             ApplicationGatewayBackendHttpConfiguration config = appGateway.backendHttpConfigurations().get("config1");
             Assert.assertTrue(config != null);
             Assert.assertTrue(config.port() == 8081);
             Assert.assertTrue(config.requestTimeout() == 45);
-            Assert.assertTrue(appGateway.backendHttpConfigurations().containsKey("config2"));
+            Assert.assertEquals(1, config.authenticationCertificates().size());
+
+            ApplicationGatewayBackendHttpConfiguration config2 = appGateway.backendHttpConfigurations().get("config2");
+            Assert.assertNotNull(config2);
+
+            // Verify authentication certificates
+            Assert.assertEquals(2, appGateway.authenticationCertificates().size());
+            ApplicationGatewayAuthenticationCertificate authCert2 = appGateway.authenticationCertificates().get("auth2");
+            Assert.assertNotNull(authCert2);
+            Assert.assertNotNull(authCert2.data());
+
+            ApplicationGatewayAuthenticationCertificate authCert = config.authenticationCertificates().values().iterator().next();
+            Assert.assertNotNull(authCert);
+
+            Assert.assertEquals(1, config2.authenticationCertificates().size());
+            Assert.assertEquals(authCert2.name(), config2.authenticationCertificates().values().iterator().next().name());
 
             // Verify backends
             Assert.assertTrue(appGateway.backends().size() == 3);
@@ -471,7 +487,10 @@ public class TestApplicationGateway {
             final int ruleCount = resource.requestRoutingRules().size();
             final int backendCount = resource.backends().size();
             final int configCount = resource.backendHttpConfigurations().size();
-            final int certCount = resource.sslCertificates().size();
+            final int sslCertCount = resource.sslCertificates().size();
+            final int authCertCount = resource.authenticationCertificates().size();
+            final ApplicationGatewayAuthenticationCertificate authCert1 = resource.backendHttpConfigurations().get("config1").authenticationCertificates().values().iterator().next();
+            Assert.assertNotNull(authCert1);
 
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
 
@@ -484,7 +503,8 @@ public class TestApplicationGateway {
                 .withoutBackendHttpConfiguration("config2")
                 .withoutBackend("backend2")
                 .withoutRequestRoutingRule("rule9000")
-                .withoutCertificate("cert1")
+                .withoutSslCertificate("cert1")
+                .withoutAuthenticationCertificate(authCert1.name())
                 .updateListener(resource.requestRoutingRules().get("rule443").listener().name())
                     .withHostName("foobar")
                     .parent()
@@ -492,6 +512,7 @@ public class TestApplicationGateway {
                     .withPort(8082)
                     .withCookieBasedAffinity()
                     .withRequestTimeout(20)
+                    .withAuthenticationCertificate("auth2")
                     .parent()
                 .updateBackend("backend1")
                     .withoutIPAddress("11.1.1.3")
@@ -511,63 +532,70 @@ public class TestApplicationGateway {
             // Get the resource created so far
             Assert.assertTrue(resource.tags().containsKey("tag1"));
             Assert.assertTrue(resource.tags().containsKey("tag2"));
-            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_SMALL.equals(resource.size()));
-            Assert.assertTrue(resource.instanceCount() == 1);
+            Assert.assertEquals(ApplicationGatewaySkuName.STANDARD_SMALL, resource.size());
+            Assert.assertEquals(1, resource.instanceCount());
 
             // Verify frontend ports
-            Assert.assertTrue(resource.frontendPorts().size() == portCount - 1);
-            Assert.assertTrue(resource.frontendPortNameFromNumber(9000) == null);
+            Assert.assertEquals(portCount - 1, resource.frontendPorts().size());
+            Assert.assertNull(resource.frontendPortNameFromNumber(9000));
 
             // Verify frontends
-            Assert.assertTrue(resource.frontends().size() == frontendCount + 1);
-            Assert.assertTrue(resource.publicFrontends().size() == 1);
+            Assert.assertEquals(frontendCount + 1, resource.frontends().size());
+            Assert.assertEquals(1, resource.publicFrontends().size());
             Assert.assertTrue(resource.publicFrontends().values().iterator().next().publicIPAddressId().equalsIgnoreCase(pip.id()));
-            Assert.assertTrue(resource.privateFrontends().size() == 1);
+            Assert.assertEquals(1, resource.privateFrontends().size());
             ApplicationGatewayFrontend frontend = resource.privateFrontends().values().iterator().next();
-            Assert.assertTrue(!frontend.isPublic());
+            Assert.assertFalse(frontend.isPublic());
             Assert.assertTrue(frontend.isPrivate());
 
             // Verify listeners
-            Assert.assertTrue(resource.listeners().size() == listenerCount - 1);
-            Assert.assertTrue(!resource.listeners().containsKey("listener1"));
+            Assert.assertEquals(listenerCount - 1, resource.listeners().size());
+            Assert.assertFalse(resource.listeners().containsKey("listener1"));
 
             // Verify backends
-            Assert.assertTrue(resource.backends().size() == backendCount - 1);
-            Assert.assertTrue(!resource.backends().containsKey("backend2"));
+            Assert.assertEquals(backendCount - 1, resource.backends().size());
+            Assert.assertFalse(resource.backends().containsKey("backend2"));
             ApplicationGatewayBackend backend = resource.backends().get("backend1");
-            Assert.assertTrue(backend != null);
-            Assert.assertTrue(backend.addresses().size() == 1);
+            Assert.assertNotNull(backend);
+            Assert.assertEquals(1, backend.addresses().size());
             Assert.assertTrue(backend.containsIPAddress("11.1.1.5"));
-            Assert.assertTrue(!backend.containsIPAddress("11.1.1.3"));
-            Assert.assertTrue(!backend.containsIPAddress("11.1.1.4"));
+            Assert.assertFalse(backend.containsIPAddress("11.1.1.3"));
+            Assert.assertFalse(backend.containsIPAddress("11.1.1.4"));
 
             // Verify HTTP configs
-            Assert.assertTrue(resource.backendHttpConfigurations().size() == configCount - 1);
-            Assert.assertTrue(!resource.backendHttpConfigurations().containsKey("config2"));
+            Assert.assertEquals(configCount - 1, resource.backendHttpConfigurations().size());
+            Assert.assertFalse(resource.backendHttpConfigurations().containsKey("config2"));
             ApplicationGatewayBackendHttpConfiguration config = resource.backendHttpConfigurations().get("config1");
-            Assert.assertTrue(config.port() == 8082);
-            Assert.assertTrue(config.requestTimeout() == 20);
+            Assert.assertEquals(8082, config.port());
+            Assert.assertEquals(20, config.requestTimeout());
             Assert.assertTrue(config.cookieBasedAffinity());
+            Assert.assertEquals(1, config.authenticationCertificates().size());
+            Assert.assertFalse(config.authenticationCertificates().containsKey(authCert1.name()));
+            Assert.assertTrue(config.authenticationCertificates().containsKey("auth2"));
 
             // Verify rules
-            Assert.assertTrue(resource.requestRoutingRules().size() == ruleCount - 1);
-            Assert.assertTrue(!resource.requestRoutingRules().containsKey("rule9000"));
+            Assert.assertEquals(ruleCount - 1, resource.requestRoutingRules().size());
+            Assert.assertFalse(resource.requestRoutingRules().containsKey("rule9000"));
 
             ApplicationGatewayRequestRoutingRule rule = resource.requestRoutingRules().get("rule80");
-            Assert.assertTrue(rule != null);
-            Assert.assertTrue(rule.backend() != null);
+            Assert.assertNotNull(rule);
+            Assert.assertNotNull(rule.backend());
             Assert.assertTrue("backend1".equalsIgnoreCase(rule.backend().name()));
-            Assert.assertTrue(rule.backendHttpConfiguration() != null);
+            Assert.assertNotNull(rule.backendHttpConfiguration());
             Assert.assertTrue("config1".equalsIgnoreCase(rule.backendHttpConfiguration().name()));
 
             rule = resource.requestRoutingRules().get("rule443");
-            Assert.assertTrue(rule != null);
-            Assert.assertTrue(rule.listener() != null);
+            Assert.assertNotNull(rule);
+            Assert.assertNotNull(rule.listener());
             Assert.assertTrue("foobar".equalsIgnoreCase(rule.listener().hostName()));
 
-            // Verify certificates
-            Assert.assertTrue(resource.sslCertificates().size() == certCount - 1);
-            Assert.assertTrue(!resource.sslCertificates().containsKey("cert1"));
+            // Verify SSL certificates
+            Assert.assertEquals(sslCertCount - 1, resource.sslCertificates().size());
+            Assert.assertFalse(resource.sslCertificates().containsKey("cert1"));
+
+            // Verify authentication certificates
+            Assert.assertEquals(authCertCount - 1, resource.authenticationCertificates().size());
+            Assert.assertFalse(resource.authenticationCertificates().containsKey("auth1"));
 
             // Test stop/start
             resource.stop();
@@ -1200,7 +1228,8 @@ public class TestApplicationGateway {
                 .append("\n\t\tInterval in seconds: ").append(probe.timeBetweenProbesInSeconds())
                 .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
                 .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
-                .append("\n\t\tHost: ").append(probe.host());
+                .append("\n\t\tHost: ").append(probe.host())
+                .append("\n\t\tHealthy HTTP response status code ranges: ").append(probe.healthyHttpResponseStatusCodeRanges());
         }
 
         // Show authentication certificates

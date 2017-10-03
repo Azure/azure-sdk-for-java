@@ -49,18 +49,25 @@ public interface ApplicationGatewayAuthenticationCertificate extends
         interface WithData<ReturnT> {
             /**
              * Specifies an X.509 certificate to upload.
-             * @param data the base-64 encoded bytes of an X.509 certificate
+             * @param derData the DER-encoded bytes of an X.509 certificate
              * @return the next stage of the definition
              */
-            WithAttach<ReturnT> fromBytes(byte[] data);
+            WithAttach<ReturnT> fromBytes(byte[] derData);
 
             /**
              * Specifies an X.509 certificate to upload.
-             * @param certificateFile a base-64 encoded X.509 certificate file
+             * @param certificateFile a DER encoded X.509 certificate file
              * @return the next stage of the definition
              * @throws IOException when there are problems reading the certificate file
              */
             WithAttach<ReturnT> fromFile(File certificateFile) throws IOException;
+
+            /**
+             * Specifies an X.509 certificate to upload.
+             * @param base64data base-64 encoded data of the certificate
+             * @return the next stage of the definition
+             */
+            WithAttach<ReturnT> fromBase64(String base64data);
         }
 
         /** The final stage of an application gateway authentication certificate definition.
@@ -104,7 +111,35 @@ public interface ApplicationGatewayAuthenticationCertificate extends
          * The first stage of an application gateway authentication certificate definition.
          * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface Blank<ReturnT> extends WithAttach<ReturnT> {
+        interface Blank<ReturnT> extends WithData<ReturnT> {
+        }
+
+        /**
+         * The stage of an application gateway authentication certificate definition allowing to specify the data of the certificate.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithData<ReturnT> {
+            /**
+             * Specifies an X.509 certificate to upload.
+             * @param data the DER-encoded bytes of an X.509 certificate
+             * @return the next stage of the definition
+             */
+            WithAttach<ReturnT> fromBytes(byte[] data);
+
+            /**
+             * Specifies an X.509 certificate to upload.
+             * @param certificateFile a DER encoded X.509 certificate file
+             * @return the next stage of the definition
+             * @throws IOException when there are problems reading the certificate file
+             */
+            WithAttach<ReturnT> fromFile(File certificateFile) throws IOException;
+
+            /**
+             * Specifies an X.509 certificate to upload.
+             * @param base64data base-64 encoded data of the certificate
+             * @return the next stage of the definition
+             */
+            WithAttach<ReturnT> fromBase64(String base64data);
         }
 
         /** The final stage of an application gateway authentication certificate definition.
@@ -123,6 +158,7 @@ public interface ApplicationGatewayAuthenticationCertificate extends
      */
     interface UpdateDefinition<ReturnT> extends
         UpdateDefinitionStages.Blank<ReturnT>,
-        UpdateDefinitionStages.WithAttach<ReturnT> {
+        UpdateDefinitionStages.WithAttach<ReturnT>,
+        UpdateDefinitionStages.WithData<ReturnT> {
     }
 }

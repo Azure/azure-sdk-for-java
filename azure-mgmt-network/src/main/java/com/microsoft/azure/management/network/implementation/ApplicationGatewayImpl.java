@@ -68,7 +68,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayProbe> probes;
     private Map<String, ApplicationGatewayBackend> backends;
-    private Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigs;
+    private Map<String, ApplicationGatewayBackendHttpConfiguration> backendConfigs;
     private Map<String, ApplicationGatewayListener> listeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
@@ -180,12 +180,12 @@ class ApplicationGatewayImpl
     }
 
     private void initializeBackendHttpConfigsFromInner() {
-        this.backendHttpConfigs = new TreeMap<>();
+        this.backendConfigs = new TreeMap<>();
         List<ApplicationGatewayBackendHttpSettingsInner> inners = this.inner().backendHttpSettingsCollection();
         if (inners != null) {
             for (ApplicationGatewayBackendHttpSettingsInner inner : inners) {
                 ApplicationGatewayBackendHttpConfigurationImpl httpConfig = new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
-                this.backendHttpConfigs.put(inner.name(), httpConfig);
+                this.backendConfigs.put(inner.name(), httpConfig);
             }
         }
     }
@@ -242,18 +242,36 @@ class ApplicationGatewayImpl
         // Reset and update probes
         this.inner().withProbes(innersFromWrappers(this.probes.values()));
 
+        // Reset and update auth certs
+        this.inner().withAuthenticationCertificates(innersFromWrappers(this.authCertificates.values()));
+
         // Reset and update backends
         this.inner().withBackendAddressPools(innersFromWrappers(this.backends.values()));
 
+        // Reset and update SSL certs
+        this.inner().withSslCertificates(innersFromWrappers(this.sslCerts.values()));
+
         // Reset and update backend HTTP settings configs
-        this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.backendHttpConfigs.values()));
-        for (ApplicationGatewayBackendHttpConfiguration config : this.backendHttpConfigs.values()) {
+        this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.backendConfigs.values()));
+        for (ApplicationGatewayBackendHttpConfiguration config : this.backendConfigs.values()) {
             SubResource ref;
 
             // Clear deleted probe references
             ref = config.inner().probe();
             if (ref != null && !this.probes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 config.inner().withProbe(null);
+            }
+
+            // Clear deleted auth cert references
+            List<SubResource> certRefs = config.inner().authenticationCertificates();
+            if (certRefs != null) {
+                // Make a copy of the cert refs, because we will be deleting in place
+                certRefs = new ArrayList<>(certRefs);
+                for (SubResource certRef : certRefs) {
+                    if (certRef != null && !this.authCertificates.containsKey(ResourceUtils.nameFromResourceId(certRef.id()))) {
+                        config.inner().authenticationCertificates().remove(certRef);
+                    }
+                }
             }
         }
 
@@ -294,7 +312,7 @@ class ApplicationGatewayImpl
 
             // Clear deleted backend HTTP configs
             ref = rule.inner().backendHttpSettings();
-            if (ref != null && !this.backendHttpConfigurations().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+            if (ref != null && !this.backendConfigs.containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 rule.inner().withBackendHttpSettings(null);
             }
 
@@ -304,12 +322,6 @@ class ApplicationGatewayImpl
                 rule.inner().withHttpListener(null);
             }
         }
-
-        // Reset and update SSL certs
-        this.inner().withSslCertificates(innersFromWrappers(this.sslCerts.values()));
-
-        // Reset and update auth certs
-        this.inner().withAuthenticationCertificates(innersFromWrappers(this.authCertificates.values()));
     }
 
     @Override
@@ -623,7 +635,7 @@ class ApplicationGatewayImpl
 
     ApplicationGatewayImpl withBackendHttpConfiguration(ApplicationGatewayBackendHttpConfigurationImpl httpConfig) {
         if (httpConfig != null) {
-            this.backendHttpConfigs.put(httpConfig.name(), httpConfig);
+            this.backendConfigs.put(httpConfig.name(), httpConfig);
         }
         return this;
     }
@@ -766,7 +778,7 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl defineBackendHttpConfiguration(String name) {
-        ApplicationGatewayBackendHttpConfiguration httpConfig = this.backendHttpConfigs.get(name);
+        ApplicationGatewayBackendHttpConfiguration httpConfig = this.backendConfigs.get(name);
         if (httpConfig == null) {
             ApplicationGatewayBackendHttpSettingsInner inner = new ApplicationGatewayBackendHttpSettingsInner()
                     .withName(name)
@@ -968,7 +980,18 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutCertificate(String name) {
+        return this.withoutSslCertificate(name);
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutSslCertificate(String name) {
         this.sslCerts.remove(name);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutAuthenticationCertificate(String name) {
+        this.authCertificates.remove(name);
         return this;
     }
 
@@ -1018,13 +1041,13 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutBackendHttpConfiguration(String name) {
-        this.backendHttpConfigs.remove(name);
+        this.backendConfigs.remove(name);
         return this;
     }
 
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl updateBackendHttpConfiguration(String name) {
-        return (ApplicationGatewayBackendHttpConfigurationImpl) this.backendHttpConfigs.get(name);
+        return (ApplicationGatewayBackendHttpConfigurationImpl) this.backendConfigs.get(name);
     }
 
     @Override
@@ -1128,7 +1151,7 @@ class ApplicationGatewayImpl
 
     @Override
     public Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations() {
-        return Collections.unmodifiableMap(this.backendHttpConfigs);
+        return Collections.unmodifiableMap(this.backendConfigs);
     }
 
     @Override

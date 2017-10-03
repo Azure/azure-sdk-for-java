@@ -61,8 +61,7 @@ class ApplicationGatewayAuthenticationCertificateImpl
     @Override
     public ApplicationGatewayAuthenticationCertificateImpl fromBytes(byte[] data) {
         String encoded = new String(BaseEncoding.base64().encode(data));
-        this.inner().withData(encoded);
-        return this;
+        return this.fromBase64(encoded);
     }
 
     @Override
@@ -73,5 +72,15 @@ class ApplicationGatewayAuthenticationCertificateImpl
 
         byte[] content = Files.readAllBytes(certificateFile.toPath());
         return (content != null) ? this.fromBytes(content) : null;
+    }
+
+    @Override
+    public ApplicationGatewayAuthenticationCertificateImpl fromBase64(String base64data) {
+        if (base64data == null) {
+            return this;
+        }
+
+        this.inner().withData(base64data);
+        return this;
     }
 }
