@@ -9,29 +9,36 @@ const mappings = require('./api-specs.json');
 const defaultSpecRoot = "https://raw.githubusercontent.com/Azure/azure-rest-api-specs/current";
 
 gulp.task('default', function() {
-    console.log("Usage: gulp codegen [--spec-root <swagger specs root>] " +
+    console.log("Usage: gulp codegen " +
+        "[--spec-root <swagger specs root>] " +
         "[--projects <project names>] " +
         "[--autorest <autorest info>] " +
         "[--autorest-java <autorest.java info>] " +
+        "[--debug] " +
         "[--autorest-args <AutoRest arguments>]\n");
 
     console.log("--spec-root");
     console.log(`\tRoot location of Swagger API specs, default value is "${defaultSpecRoot}"`);
 
-    console.log("--projects\n\tComma separated projects to regenerate, default is all. List of available project names:");
+    console.log("--projects");
+    console.log("\tComma separated projects to regenerate, default is all. List of available project names:");
     Object.keys(mappings).forEach(function(i) {
         console.log('\t' + i.magenta);
     });
 
-    console.log("--autorest\n\tThe version of AutoRest. E.g. 2.0.9, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
+    console.log("--autorest");
+    console.log("\tThe version of AutoRest. E.g. 2.0.9, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
     
-    console.log(
-        "--autorest-java\n\tPath to an autorest.java generator to pass as a --use argument to AutoRest.\n\t" +
-        "Usually you'll only need to provide this and not a " +
-        "--autorest argument in order to work on Java code generation.\n\t" +
-        "See https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
+    console.log("--autorest-java");
+    console.log("\tPath to an autorest.java generator to pass as a --use argument to AutoRest.");
+    console.log("\tUsually you'll only need to provide this and not a --autorest argument in order to work on Java code generation.");
+    console.log("\tSee https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
+    
+    console.log("--debug");
+    console.log("\tFlag that allows you to attach a debugger to the autorest.java generator.");
 
-    console.log("--autorest-args\n\tPasses additional argument to AutoRest generator");
+    console.log("--autorest-args");
+    console.log("\tPasses additional argument to AutoRest generator");
 });
 
 var specRoot = args['spec-root'] || defaultSpecRoot;
@@ -40,6 +47,7 @@ var autoRestVersion = 'latest'; // default
 if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
+var debug = args['debug'];
 var autoRestArgs = args['autorest-args'] || '';
 var autoRestExe;
 
@@ -108,8 +116,13 @@ var codegen = function(project, cb) {
                         autoRestArgs;
 
     if (mappings[project].args !== undefined) {
-        cmd = cmd + ' ' + mappings[project].args;
+        cmd += ' ' + mappings[project].args;
     }
+
+    if (debug) {
+        cmd += ' --java.debugger';
+    }
+
     console.log('Command: ' + cmd);
     spawn(cmd, [], { shell: true, stdio: "inherit" });
 };
