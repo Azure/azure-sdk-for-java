@@ -65,13 +65,16 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
 
     @Override
     public HttpRequest createPollRequest() {
-        String pollUrl = null;
+        String pollUrl;
         if (!pollingCompleted) {
             pollUrl = operationResourceUrl;
         }
         else if (pollingSucceeded) {
             pollUrl = originalResourceUrl;
+        } else {
+            throw new IllegalStateException("Polling is completed and did not succeed. Cannot create a polling request.");
         }
+
         return new HttpRequest(fullyQualifiedMethodName, "GET", pollUrl);
     }
 
