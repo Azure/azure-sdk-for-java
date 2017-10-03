@@ -1559,7 +1559,8 @@ public final class Utils {
                 .append("\n\t\tInterval in seconds: ").append(probe.timeBetweenProbesInSeconds())
                 .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
                 .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
-                .append("\n\t\tHost: ").append(probe.host());
+                .append("\n\t\tHost: ").append(probe.host())
+                .append("\n\t\tHealthy HTTP response status code ranges: ").append(probe.healthyHttpResponseStatusCodeRanges());
         }
 
         // Show request routing rules

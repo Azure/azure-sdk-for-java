@@ -690,6 +690,8 @@ public class TestApplicationGateway {
                             .withExistingPublicIPAddress(pip)
                             .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                             .withInstanceCount(2)
+
+                            // Probes
                             .defineProbe("probe1")
                                 .withHost("microsoft.com")
                                 .withPath("/")
@@ -697,6 +699,15 @@ public class TestApplicationGateway {
                                 .withTimeoutInSeconds(10)
                                 .withTimeBetweenProbesInSeconds(9)
                                 .withRetriesBeforeUnhealthy(5)
+                                .withHealthyHttpResponseStatusCodeRange(200, 249)
+                                .attach()
+                            .defineProbe("probe2")
+                                .withHost("microsoft.com")
+                                .withPath("/")
+                                .withHttps()
+                                .withTimeoutInSeconds(11)
+                                .withHealthyHttpResponseStatusCodeRange(600, 610)
+                                .withHealthyHttpResponseStatusCodeRange(650, 660)
                                 .attach()
 
                             // Additional/explicit backend HTTP setting configs
@@ -824,7 +835,7 @@ public class TestApplicationGateway {
             Assert.assertEquals("cookie", config.affinityCookieName());
 
             // Verify probes
-            Assert.assertEquals(1, appGateway.probes().size());
+            Assert.assertEquals(2, appGateway.probes().size());
             ApplicationGatewayProbe probe;
             probe = appGateway.probes().get("probe1");
             Assert.assertNotNull(probe);
@@ -834,6 +845,17 @@ public class TestApplicationGateway {
             Assert.assertEquals(5,  probe.retriesBeforeUnhealthy());
             Assert.assertEquals(9, probe.timeBetweenProbesInSeconds());
             Assert.assertEquals(10, probe.timeoutInSeconds());
+            Assert.assertNotNull(probe.healthyHttpResponseStatusCodeRanges());
+            Assert.assertEquals(1, probe.healthyHttpResponseStatusCodeRanges().size());
+            Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().contains("200-249"));
+
+            probe = appGateway.probes().get("probe2");
+            Assert.assertNotNull(probe);
+            Assert.assertEquals(ApplicationGatewayProtocol.HTTPS, probe.protocol());
+            Assert.assertEquals(2, probe.healthyHttpResponseStatusCodeRanges().size());
+            Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().contains("600-610"));
+            Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().contains("650-660"));
+
             creationThread.join();
 
             // Verify SSL policy - disabled protocols
@@ -873,6 +895,9 @@ public class TestApplicationGateway {
                     .parent()
                 .withoutRequestRoutingRule("rule9000")
                 .withoutProbe("probe1")
+                .updateProbe("probe2")
+                    .withoutHealthyHttpResponseStatusCodeRanges()
+                    .parent()
                 .withoutDisabledSslProtocols(ApplicationGatewaySslProtocol.TLSV1_0, ApplicationGatewaySslProtocol.TLSV1_1)
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -897,7 +922,10 @@ public class TestApplicationGateway {
             Assert.assertTrue("listener1".equalsIgnoreCase(rule.listener().name()));
 
             // Verify probes
-            Assert.assertTrue(resource.probes().isEmpty());
+            Assert.assertEquals(1, resource.probes().size());
+            ApplicationGatewayProbe probe = resource.probes().get("probe2");
+            Assert.assertNotNull(probe);
+            Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().isEmpty());
 
             // Verify backend configs
             ApplicationGatewayBackendHttpConfiguration backendConfig = resource.backendHttpConfigurations().get("config1");
