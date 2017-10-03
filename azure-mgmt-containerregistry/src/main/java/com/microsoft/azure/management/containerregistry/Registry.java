@@ -377,7 +377,7 @@ public interface Registry extends
              * @param name the name of the new webhook
              * @return the first stage of the new webhook definition
              */
-            Webhook.UpdateDefinitionStages.Blank<Update> withNewWebhook(String name);
+            Webhook.UpdateDefinitionStages.Blank<Update> defineWebhook(String name);
 
             /**
              * Removes a webhook from the container registry.

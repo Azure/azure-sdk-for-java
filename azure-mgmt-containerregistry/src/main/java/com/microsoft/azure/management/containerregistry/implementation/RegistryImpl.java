@@ -47,7 +47,6 @@ public class RegistryImpl
 
     private RegistryUpdateParametersInner updateParameters;
     private final StorageManager storageManager;
-//    private StorageAccount storageAccount;
     private String existingStorageAccountName;
     private String existingStorageAccountResourceGroupName;
     private String storageAccountId;
@@ -388,11 +387,6 @@ public class RegistryImpl
     public RegistryImpl withoutWebhook(String name) {
         webhooks.withoutWebhook(name);
         return this;
-    }
-
-    @Override
-    public WebhookImpl withNewWebhook(String name) {
-        return webhooks.defineWebhook(name);
     }
 
     @Override

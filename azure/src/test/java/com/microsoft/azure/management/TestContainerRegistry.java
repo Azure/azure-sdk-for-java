@@ -90,7 +90,7 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
     public Registry updateResource(Registry resource) throws Exception {
         resource.update()
             .withoutWebhook("webhook-bing1")
-            .withNewWebhook("webhook-ms")
+            .defineWebhook("webhook-ms")
                 .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
                 .withServiceUri("https://www.microsoft.com")
                 .withRepositoriesScope("")
