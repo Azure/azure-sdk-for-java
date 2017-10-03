@@ -7,8 +7,10 @@
 package com.microsoft.rest;
 
 import com.google.common.util.concurrent.AbstractFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.Subscription;
+import rx.functions.Action0;
 import rx.functions.Action1;
 
 /**
@@ -85,12 +87,12 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
     }
 
     /**
-     * Creates a ServiceCall from an observable object and a callback.
+     * Creates a ServiceFuture from an observable object and a callback.
      *
      * @param observable the observable to create from
      * @param callback the callback to call when events happen
      * @param <T> the type of the response
-     * @return the created ServiceCall
+     * @return the created ServiceFuture
      */
     public static <T> ServiceFuture<T> fromBody(final Observable<T> observable, final ServiceCallback<T> callback) {
         final ServiceFuture<T> serviceFuture = new ServiceFuture<>();
@@ -115,6 +117,36 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
                 });
         return serviceFuture;
     }
+
+    /**
+     * Creates a ServiceFuture from an Completable object and a callback.
+     *
+     * @param completable the completable to create from
+     * @param callback the callback to call when event happen
+     * @return the created ServiceFuture
+     */
+    public static ServiceFuture<Void> fromBody(final Completable completable, final ServiceCallback<Void> callback) {
+        final ServiceFuture<Void> serviceFuture = new ServiceFuture<>();
+        completable.subscribe(new Action0() {
+            Void value = null;
+            @Override
+            public void call() {
+                if (callback != null) {
+                    callback.success(value);
+                }
+                serviceFuture.set(value);
+            }
+        }, new Action1<Throwable>() {
+            @Override
+            public void call(Throwable throwable) {
+                if (callback != null) {
+                    callback.failure(throwable);
+                }
+                serviceFuture.setException(throwable);
+            }
+        });
+        return serviceFuture;
+    };
 
     /**
      * Creates a ServiceCall from an observable and a callback for a header response.
