@@ -184,7 +184,8 @@ public interface VirtualNetworkGateway extends
              * virtual network gateway, it will be created with the specified address space and a subnet for virtual network gateway.
              *
              * @param name the name of the new virtual network
-             * @param addressSpace the address space for rhe virtual network
+             * @param addressSpace the address space for the virtual network
+             * @param subnetAddressSpaceCidr the address space for the subnet
              * @return the next stage of the definition
              */
             WithGatewayType withNewNetwork(String name, String addressSpace, String subnetAddressSpaceCidr);
@@ -195,6 +196,7 @@ public interface VirtualNetworkGateway extends
              * it will be created with the specified address space and a default subnet for virtual network gateway.
              *
              * @param addressSpaceCidr the address space for the virtual network
+             * @param subnetAddressSpaceCidr the address space for the subnet
              * @return the next stage of the definition
              */
             WithGatewayType withNewNetwork(String addressSpaceCidr, String subnetAddressSpaceCidr);
@@ -228,13 +230,14 @@ public interface VirtualNetworkGateway extends
             /**
              * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
+             * @return the next stage of the definition
              */
             WithCreate withBgp(long asn, String bgpPeeringAddress);
         }
 
         /**
          * The stage of the virtual network gateway definition which contains all the minimum required inputs for
-         * the resource to be created (via {@link WithCreate#create()}), but also allows
+         * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
@@ -262,15 +265,18 @@ public interface VirtualNetworkGateway extends
          */
         interface WithBgp {
             /**
+             * Enables BGP.
              * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
+             * @return the next stage of the update
              */
             Update withBgp(long asn, String bgpPeeringAddress);
 
             /**
-             * Disable BGP for this virtual network gateway.
+             * Disables BGP for this virtual network gateway.
+             * @return the next stage of the update
              */
-            Update disableBgp();
+            Update withoutBgp();
         }
     }
 

@@ -5,7 +5,12 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Set;
+
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayProbeInner;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
@@ -26,6 +31,18 @@ public interface ApplicationGatewayProbe extends
      * @return the number of seconds between probe retries
      */
     int timeBetweenProbesInSeconds();
+
+    /**
+     * @return HTTP response code ranges in the format ###-### returned by the backend which the probe considers healthy.
+     */
+    @Beta(SinceVersion.V1_4_0)
+    Set<String> healthyHttpResponseStatusCodeRanges();
+
+    /**
+     * @return the body contents of an HTTP response to a probe to check for to determine backend health, or null if none specified
+     */
+    @Beta(SinceVersion.V1_4_0)
+    String healthyHttpResponseBodyContents();
 
     /**
      * @return the relative path to be called by the probe
@@ -145,16 +162,63 @@ public interface ApplicationGatewayProbe extends
         }
 
         /**
+         * The stage of an application gateway probe definition allowing to specify healthy HTTP response status code ranges.
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithHealthyHttpResponseStatusCodeRanges<ReturnT> {
+            /**
+             * Specifies the ranges of the backend's HTTP response status codes that are to be considered healthy.
+             * @param ranges number ranges expressed in the format "###-###", for example "200-399", which is the default
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRanges(Set<String> ranges);
+
+            /**
+             * Adds the specified range of the backend's HTTP response status codes that are to be considered healthy.
+             * @param range a number range expressed in the format "###-###", for example "200-399", which is the default
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(String range);
+
+            /**
+             * Adds the specified range of the backend's HTTP response status codes that are to be considered healthy.
+             * @param from the lowest number in the range
+             * @param to the highest number in the range
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(int from, int to);
+        }
+
+        /**
+         * The stage of an application gateway probe definition allowing to specify the body contents of a healthy HTTP response to a probe.
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithHealthyHttpResponseBodyContents<ReturnT> {
+            /**
+             * Specifies the content, if any, to look for in the body of an HTTP response to a probe to determine the health status of the backend.
+             * @param text contents to look for
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseBodyContents(String text);
+        }
+
+        /**
          * The final stage of an application gateway probe definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the probe definition
          * can be attached to the parent application gateway definition.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            Attachable.InDefinitionAlt<ParentT>,
-            WithInterval<ParentT>,
-            WithRetries<ParentT> {
+        interface WithAttach<ReturnT> extends
+            Attachable.InDefinitionAlt<ReturnT>,
+            WithInterval<ReturnT>,
+            WithRetries<ReturnT>,
+            WithHealthyHttpResponseStatusCodeRanges<ReturnT>,
+            WithHealthyHttpResponseBodyContents<ReturnT> {
         }
     }
 
@@ -252,6 +316,57 @@ public interface ApplicationGatewayProbe extends
              */
             Update withRetriesBeforeUnhealthy(int retryCount);
         }
+
+        /**
+         * The stage of an application gateway probe update allowing to specify healthy HTTP response status code ranges.
+         */
+        interface WithHealthyHttpResponseStatusCodeRanges {
+            /**
+             * Specifies the ranges of the backend's HTTP response status codes that are to be considered healthy.
+             * @param ranges number ranges expressed in the format "###-###", for example "200-399", which is the default
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withHealthyHttpResponseStatusCodeRanges(Set<String> ranges);
+
+            /**
+             * Adds the specified range of the backend's HTTP response status codes that are to be considered healthy.
+             * @param range a number range expressed in the format "###-###", for example "200-399", which is the default
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withHealthyHttpResponseStatusCodeRange(String range);
+
+            /**
+             * Adds the specified range of the backend's HTTP response status codes that are to be considered healthy.
+             * @param from the lowest number in the range
+             * @param to the highest number in the range
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withHealthyHttpResponseStatusCodeRange(int from, int to);
+
+            /**
+             * Removes all healthy HTTP status response code ranges.
+             * @return the next stage of the update
+             */
+            @Method
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutHealthyHttpResponseStatusCodeRanges();
+        }
+
+        /**
+         * The stage of an application gateway probe update allowing to specify the body contents of a healthy HTTP response to a probe.
+         */
+        interface WithHealthyHttpResponseBodyContents {
+            /**
+             * Specifies the content, if any, to look for in the body of an HTTP response to a probe to determine the health status of the backend.
+             * @param text contents to look for
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withHealthyHttpResponseBodyContents(String text);
+        }
     }
 
     /**
@@ -264,7 +379,9 @@ public interface ApplicationGatewayProbe extends
         UpdateStages.WithHost,
         UpdateStages.WithTimeout,
         UpdateStages.WithInterval,
-        UpdateStages.WithRetries {
+        UpdateStages.WithRetries,
+        UpdateStages.WithHealthyHttpResponseStatusCodeRanges,
+        UpdateStages.WithHealthyHttpResponseBodyContents {
     }
 
     /**
@@ -280,7 +397,7 @@ public interface ApplicationGatewayProbe extends
 
         /**
          * Stage of an application gateway probe definition allowing to specify the host to send the probe to.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
          */
         interface WithHost<ParentT> {
             /**
@@ -293,7 +410,7 @@ public interface ApplicationGatewayProbe extends
 
         /**
          * Stage of an application gateway probe definition allowing to specify the protocol of the probe.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
          */
         interface WithProtocol<ParentT> extends HasProtocol.UpdateDefinitionStages.WithProtocol<WithTimeout<ParentT>, ApplicationGatewayProtocol> {
             /**
@@ -311,7 +428,7 @@ public interface ApplicationGatewayProbe extends
 
         /**
          * Stage of an application gateway probe definition allowing to specify the amount of time to after which the probe is considered failed.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
          */
         interface WithTimeout<ParentT> {
             /**
@@ -324,7 +441,7 @@ public interface ApplicationGatewayProbe extends
 
         /**
          * Stage of an application gateway probe definition allowing to specify the path to send the probe to.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
          */
         interface WithPath<ParentT> {
             /**
@@ -338,7 +455,7 @@ public interface ApplicationGatewayProbe extends
 
         /**
          * Stage of an application gateway probe definition allowing to specify the time interval between consecutive probes.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
          */
         interface WithInterval<ParentT> {
             /**
@@ -351,7 +468,7 @@ public interface ApplicationGatewayProbe extends
 
         /**
          * Stage of an application gateway probe definition allowing to specify the number of retries before the server is considered unhealthy.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
          */
         interface WithRetries<ParentT> {
             /**
@@ -360,6 +477,51 @@ public interface ApplicationGatewayProbe extends
              * @return the next stage of the definition
              */
             WithAttach<ParentT> withRetriesBeforeUnhealthy(int retryCount);
+        }
+
+        /**
+         * The stage of an application gateway probe definition allowing to specify healthy HTTP response status code ranges.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithHealthyHttpResponseStatusCodeRanges<ReturnT> {
+            /**
+             * Specifies the ranges of the backend's HTTP response status codes that are to be considered healthy.
+             * @param ranges number ranges expressed in the format "###-###", for example "200-399", which is the default
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRanges(Set<String> ranges);
+
+            /**
+             * Adds the specified range of the backend's HTTP response status codes that are to be considered healthy.
+             * @param range a number range expressed in the format "###-###", for example "200-399", which is the default
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(String range);
+
+            /**
+             * Adds the specified range of the backend's HTTP response status codes that are to be considered healthy.
+             * @param from the lowest number in the range
+             * @param to the highest number in the range
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(int from, int to);
+        }
+
+        /**
+         * The stage of an application gateway probe definition allowing to specify the body contents of a healthy HTTP response to a probe.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithHealthyHttpResponseBodyContents<ReturnT> {
+            /**
+             * Specifies the content, if any, to look for in the body of an HTTP response to a probe to determine the health status of the backend.
+             * @param text contents to look for
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseBodyContents(String text);
         }
 
         /** The final stage of an application gateway probe definition.
@@ -371,7 +533,9 @@ public interface ApplicationGatewayProbe extends
         interface WithAttach<ParentT> extends
             Attachable.InUpdateAlt<ParentT>,
             WithInterval<ParentT>,
-            WithRetries<ParentT> {
+            WithRetries<ParentT>,
+            WithHealthyHttpResponseStatusCodeRanges<ParentT>,
+            WithHealthyHttpResponseBodyContents<ParentT> {
         }
     }
 

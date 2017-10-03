@@ -355,7 +355,6 @@ public final class Utils {
                 .append("\n\t\tRemote network ID: ").append(peering.remoteNetworkId())
                 .append("\n\t\tPeering state: ").append(peering.state())
                 .append("\n\t\tIs traffic forwarded from remote network allowed? ").append(peering.isTrafficForwardingFromRemoteNetworkAllowed())
-                //TODO .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessFromRemoteNetworkAllowed())
                 .append("\n\t\tGateway use: ").append(peering.gatewayUse());
         }
         System.out.println(info.toString());
@@ -1514,12 +1513,17 @@ public final class Utils {
                 .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
                 .append("\n\t\t\tPort: ").append(httpConfig.port())
                 .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
-                .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
-
+                .append("\n\t\t\tProtocol: ").append(httpConfig.protocol())
+                .append("\n\t\tHost header: ").append(httpConfig.hostHeader())
+                .append("\n\t\tHost header comes from backend? ").append(httpConfig.isHostHeaderFromBackend())
+                .append("\n\t\tConnection draining timeout in seconds: ").append(httpConfig.connectionDrainingTimeoutInSeconds())
+                .append("\n\t\tAffinity cookie name: ").append(httpConfig.affinityCookieName())
+                .append("\n\t\tPath: ").append(httpConfig.path());
             ApplicationGatewayProbe probe = httpConfig.probe();
             if (probe != null) {
                 info.append("\n\t\tProbe: " + probe.name());
             }
+            info.append("\n\t\tIs probe enabled? ").append(httpConfig.isProbeEnabled());
         }
 
         // Show SSL certificates
@@ -1555,7 +1559,9 @@ public final class Utils {
                 .append("\n\t\tInterval in seconds: ").append(probe.timeBetweenProbesInSeconds())
                 .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
                 .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
-                .append("\n\t\tHost: ").append(probe.host());
+                .append("\n\t\tHost: ").append(probe.host())
+                .append("\n\t\tHealthy HTTP response status code ranges: ").append(probe.healthyHttpResponseStatusCodeRanges())
+                .append("\n\t\tHealthy HTTP response body contents: ").append(probe.healthyHttpResponseBodyContents());
         }
 
         // Show request routing rules

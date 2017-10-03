@@ -81,6 +81,11 @@ public interface LocalNetworkGateway extends
          * The stage of the local network gateway definition allowing to specify IP address of local network gateway.
          */
         interface WithIPAddress {
+            /**
+             * Specifies the IP address of the local network gateway.
+             * @param ipAddress an IP address
+             * @return the next stage of the definition
+             */
             WithAddressSpace withIPAddress(String ipAddress);
         }
 
@@ -101,8 +106,10 @@ public interface LocalNetworkGateway extends
          */
         interface WithBgp {
             /**
+             * Enables BGP.
              * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
+             * @return the next stage of the definition
              */
             WithCreate withBgp(long asn, String bgpPeeringAddress);
         }
@@ -137,13 +144,15 @@ public interface LocalNetworkGateway extends
             /**
              * Adds address space.
              * Note: this method's effect is additive, i.e. each time it is used, a new address space is added to the network.
-             * @param cidr the CIDR representation of the local network site address space.
+             * @param cidr the CIDR representation of the local network site address space
+             * @return the next stage of the update
              */
             Update withAddressSpace(String cidr);
 
             /**
              * Remove address space. Note: address space will be removed only in case of exact cidr string match.
-             * @param cidr the CIDR representation of the local network site address space.
+             * @param cidr the CIDR representation of the local network site address space
+             * @return the next stage of the update
              */
             Update withoutAddressSpace(String cidr);
         }
@@ -153,20 +162,24 @@ public interface LocalNetworkGateway extends
          */
         interface WithBgp {
             /**
+             * Enables BGP.
              * @param asn the BGP speaker's ASN
              * @param bgpPeeringAddress the BGP peering address and BGP identifier of this BGP speaker
+             * @return the next stage of the update
              */
             Update withBgp(long asn, String bgpPeeringAddress);
 
-            Update disableBgp();
+            /**
+             * Disables BGP.
+             * @return the next stage of the update
+             */
+            Update withoutBgp();
         }
     }
 
     /**
      * The template for a local network gateway update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<LocalNetworkGateway>,

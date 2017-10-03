@@ -178,6 +178,12 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayRequestRoutingRule> requestRoutingRules();
 
     /**
+     * @return authentication certificates
+     */
+    @Beta(SinceVersion.V1_4_0)
+    Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates();
+
+    /**
      * Returns the name of the existing port, if any, that is associated with the specified port number.
      * @param portNumber a port number
      * @return the existing port name for that port number, or null if none found
@@ -314,6 +320,19 @@ public interface ApplicationGateway extends
              * @return the first stage of the certificate definition
              */
             ApplicationGatewaySslCertificate.DefinitionStages.Blank<WithCreate> defineSslCertificate(String name);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add an authentication certificate for the backends to use.
+         */
+        interface WithAuthenticationCertificate {
+            /**
+             * Begins the definition of a new application gateway authentication certificate to be attached to the gateway for use by the backends.
+             * @param name a unique name for the certificate
+             * @return the first stage of the certificate definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            ApplicationGatewayAuthenticationCertificate.DefinitionStages.Blank<WithCreate> defineAuthenticationCertificate(String name);
         }
 
         /**
@@ -472,7 +491,8 @@ public interface ApplicationGateway extends
             WithPublicFrontend,
             WithPublicIPAddress,
             WithProbe,
-            WithDisabledSslProtocol {
+            WithDisabledSslProtocol,
+            WithAuthenticationCertificate {
         }
     }
 
@@ -480,6 +500,27 @@ public interface ApplicationGateway extends
      * Grouping of application gateway update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of an application gateway update allowing to manage authentication certificates for the backends to use.
+         */
+        interface WithAuthenticationCertificate {
+            /**
+             * Begins the definition of a new application gateway authentication certificate to be attached to the gateway for use by the backends.
+             * @param name a unique name for the certificate
+             * @return the first stage of the certificate definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            ApplicationGatewayAuthenticationCertificate.UpdateDefinitionStages.Blank<Update> defineAuthenticationCertificate(String name);
+
+            /**
+             * Removes an existing application gateway authentication certificate.
+             * @param name the name of an existing certificate
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutAuthenticationCertificate(String name);
+        }
+
         /**
          * The stage of an internal application gateway update allowing to make the application gateway accessible to its
          * virtual network.
@@ -795,8 +836,19 @@ public interface ApplicationGateway extends
              * Note that removing a certificate referenced by other settings may break the application gateway.
              * @param name the name of the certificate to remove
              * @return the next stage of the update
+             * @deprecated Use {@link #withoutSslCertificate} instead
              */
+            @Deprecated
             Update withoutCertificate(String name);
+
+            /**
+             * Removes the specified SSL certificate from the application gateway.
+             * <p>
+             * Note that removing a certificate referenced by other settings may break the application gateway.
+             * @param name the name of the certificate to remove
+             * @return the next stage of the update
+             */
+            Update withoutSslCertificate(String name);
         }
 
         /**
@@ -947,6 +999,7 @@ public interface ApplicationGateway extends
         UpdateStages.WithRequestRoutingRule,
         UpdateStages.WithExistingSubnet,
         UpdateStages.WithProbe,
-        UpdateStages.WithDisabledSslProtocol {
+        UpdateStages.WithDisabledSslProtocol,
+        UpdateStages.WithAuthenticationCertificate {
     }
 }
