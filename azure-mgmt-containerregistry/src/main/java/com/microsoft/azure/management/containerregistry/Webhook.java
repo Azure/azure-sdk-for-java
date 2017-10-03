@@ -219,30 +219,6 @@ public interface Webhook extends
             WithAttach<ParentT> withDefaultStatus(WebhookStatus defaultStatus);
         }
 
-        /**
-         * The stage of the webhook definition allowing to specify the tags.
-         *
-         * @param <ParentT> the stage of the parent definition to return to after attaching this definition
-         */
-        interface WithTags<ParentT> {
-            /**
-             * Specifies tags for the webhook.
-             *
-             * @param tags a {@link Map} of tags
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withTags(Map<String, String> tags);
-
-            /**
-             * Adds a tag to the webhook.
-             *
-             * @param key the key for the tag
-             * @param value the value for the tag
-             * @return the next stage of the definition
-             */
-            WithAttach<ParentT> withTag(String key, String value);
-        }
-
         /** The final stage of the webhook definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the webhook definition
@@ -253,7 +229,7 @@ public interface Webhook extends
             WithCustomHeaders<ParentT>,
             WithRepositoriesScope<ParentT>,
             WithDefaultStatus<ParentT>,
-            WithTags<ParentT>,
+            DefinitionWithTags<WithAttach<ParentT>>,
             Attachable.InDefinition<ParentT> {
         }
     }
