@@ -56,6 +56,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
     private final Object cbsChannelCreateLock;
     private final Object mgmtChannelCreateLock;
     private final SharedAccessSignatureTokenProvider tokenProvider;
+    private final ThreadFactory reactorThreadFactory;
+    private final ReactorFactory reactorFactory;
 
     private Reactor reactor;
     private ReactorDispatcher reactorScheduler;
@@ -69,11 +71,16 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
     private ScheduledFuture openTimer;
     private ScheduledFuture closeTimer;
 
-    MessagingFactory(final ConnectionStringBuilder builder, final RetryPolicy retryPolicy) {
+    MessagingFactory(final ConnectionStringBuilder builder,
+                     final RetryPolicy retryPolicy,
+                     final ThreadFactory reactorThreadFactory,
+                     final ReactorFactory reactorFactory) {
         super("MessagingFactory".concat(StringUtil.getRandomString()), null);
 
         Timer.register(this.getClientId());
         this.hostName = builder.getEndpoint().getHost();
+        this.reactorThreadFactory = reactorThreadFactory;
+        this.reactorFactory = reactorFactory;
 
         this.operationTimeout = builder.getOperationTimeout();
         this.retryPolicy = retryPolicy;
@@ -129,14 +136,14 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
     }
 
     private void startReactor(final ReactorHandler reactorHandler) throws IOException {
-        final Reactor newReactor = ProtonUtil.reactor(reactorHandler);
+        final Reactor newReactor = this.reactorFactory.create(reactorHandler);
         synchronized (this.reactorLock) {
             this.reactor = newReactor;
             this.reactorScheduler = new ReactorDispatcher(newReactor);
             reactorHandler.unsafeSetReactorDispatcher(this.reactorScheduler);
         }
 
-        final Thread reactorThread = new Thread(new RunReactor(newReactor));
+        final Thread reactorThread = this.reactorThreadFactory.create(new RunReactor(newReactor));
         reactorThread.start();
     }
 
@@ -191,9 +198,22 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
         return createFromConnectionString(connectionString, RetryPolicy.getDefault());
     }
 
-    public static CompletableFuture<MessagingFactory> createFromConnectionString(final String connectionString, final RetryPolicy retryPolicy) throws IOException {
+    public static CompletableFuture<MessagingFactory> createFromConnectionString(
+            final String connectionString,
+            final RetryPolicy retryPolicy) throws IOException {
+        return createFromConnectionString(connectionString, retryPolicy, new ThreadFactory(), new ReactorFactory());
+    }
+
+    public static CompletableFuture<MessagingFactory> createFromConnectionString(
+            final String connectionString,
+            final RetryPolicy retryPolicy,
+            final ThreadFactory threadFactory,
+            final ReactorFactory reactorFactory) throws IOException {
         final ConnectionStringBuilder builder = new ConnectionStringBuilder(connectionString);
-        final MessagingFactory messagingFactory = new MessagingFactory(builder, (retryPolicy != null) ? retryPolicy : RetryPolicy.getDefault());
+        final MessagingFactory messagingFactory = new MessagingFactory(builder,
+                (retryPolicy != null) ? retryPolicy : RetryPolicy.getDefault(),
+                threadFactory,
+                reactorFactory);
         messagingFactory.openTimer = Timer.schedule(new Runnable() {
                                                         @Override
                                                         public void run() {
@@ -229,6 +249,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
     public void onConnectionError(ErrorCondition error) {
 
         if (!this.open.isDone()) {
+            Timer.unregister(this.getClientId());
+            this.getReactor().stop();
             this.onOpenComplete(ExceptionUtil.toException(error));
         } else {
             final Connection currentConnection = this.connection;
@@ -440,5 +462,19 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
     public void scheduleOnReactorThread(final int delay, final DispatchHandler handler) throws IOException {
         this.getReactorScheduler().invoke(delay, handler);
+    }
+
+    public static class ThreadFactory {
+
+        public Thread create(final Runnable worker) {
+            return new Thread(worker);
+        }
+    }
+
+    public static class ReactorFactory {
+
+        public Reactor create(final ReactorHandler reactorHandler) throws IOException {
+            return ProtonUtil.reactor(reactorHandler);
+        }
     }
 }
