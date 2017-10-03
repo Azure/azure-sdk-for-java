@@ -70,7 +70,7 @@ class SnapshotsImpl
 
     @Override
     public ServiceFuture<Void> revokeAccessAsync(String resourceGroupName, String snapName, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.revokeAccessAsync(resourceGroupName, snapName).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.revokeAccessAsync(resourceGroupName, snapName), callback);
     }
 
     @Override

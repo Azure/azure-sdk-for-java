@@ -77,7 +77,7 @@ class VirtualMachinesImpl
 
     @Override
     public ServiceFuture<Void> deallocateAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deallocateAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deallocateAsync(groupName, name), callback);
     }
 
     @Override
@@ -92,7 +92,7 @@ class VirtualMachinesImpl
 
     @Override
     public ServiceFuture<Void> generalizeAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(generalizeAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(generalizeAsync(groupName, name), callback);
     }
 
     @Override
@@ -107,7 +107,7 @@ class VirtualMachinesImpl
 
     @Override
     public ServiceFuture<Void> powerOffAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(powerOffAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(powerOffAsync(groupName, name), callback);
     }
 
     @Override
@@ -122,7 +122,7 @@ class VirtualMachinesImpl
 
     @Override
     public ServiceFuture<Void> restartAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(restartAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(restartAsync(groupName, name), callback);
     }
 
     @Override
@@ -137,7 +137,7 @@ class VirtualMachinesImpl
 
     @Override
     public ServiceFuture<Void> startAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(startAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(startAsync(groupName, name), callback);
     }
 
     @Override
@@ -152,7 +152,7 @@ class VirtualMachinesImpl
 
     @Override
     public ServiceFuture<Void> redeployAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(redeployAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(redeployAsync(groupName, name), callback);
     }
 
     @Override
@@ -204,7 +204,7 @@ class VirtualMachinesImpl
 
     @Override
     public ServiceFuture<Void> migrateToManagedAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(migrateToManagedAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(migrateToManagedAsync(groupName, name), callback);
     }
 
     // Getters

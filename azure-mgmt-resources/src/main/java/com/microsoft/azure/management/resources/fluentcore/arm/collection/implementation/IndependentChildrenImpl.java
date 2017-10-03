@@ -112,7 +112,7 @@ public abstract class IndependentChildrenImpl<
 
     @Override
     public ServiceFuture<Void> deleteByParentAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByParentAsync(groupName, parentName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deleteByParentAsync(groupName, parentName, name), callback);
     }
 
     @Override
