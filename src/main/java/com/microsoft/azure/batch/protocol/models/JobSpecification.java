@@ -35,7 +35,8 @@ public class JobSpecification {
     private String displayName;
 
     /**
-     * The flag that determines if this job will use tasks with dependencies.
+     * Whether tasks in the job can define dependencies on each other. The
+     * default is false.
      */
     @JsonProperty(value = "usesTaskDependencies")
     private Boolean usesTaskDependencies;
@@ -57,8 +58,10 @@ public class JobSpecification {
     /**
      * The action the Batch service should take when any task fails in a job
      * created under this schedule. A task is considered to have failed if it
-     * completes with a non-zero exit code and has exhausted its retry count,
-     * or if it had a scheduling error.
+     * have failed if has a failureInfo. A failureInfo is set if the task
+     * completes with a non-zero exit code after exhausting its retry count, or
+     * if there was an error starting the task, for example due to a resource
+     * file download error.
      * The default is noAction. Possible values include: 'noAction',
      * 'performExitOptionsJobAction'.
      */

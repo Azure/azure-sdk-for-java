@@ -20,8 +20,8 @@ public class JobScheduleAddParameter {
      * A string that uniquely identifies the schedule within the account.
      * The ID can contain any combination of alphanumeric characters including
      * hyphens and underscores, and cannot contain more than 64 characters. The
-     * id is case-preserving and case-insensitive (that is, you may not have
-     * two ids within an account that differ only by case).
+     * ID is case-preserving and case-insensitive (that is, you may not have
+     * two IDs within an account that differ only by case).
      */
     @JsonProperty(value = "id", required = true)
     private String id;

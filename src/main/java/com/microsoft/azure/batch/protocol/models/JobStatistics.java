@@ -51,6 +51,11 @@ public class JobStatistics {
 
     /**
      * The total wall clock time of all tasks in the job.
+     * The wall clock time is the elapsed time from when the task started
+     * running on a compute node to when it finished (or to the last time the
+     * statistics were updated, if the task had not finished by then). If a
+     * task was retried, this includes the wall clock time of all the task
+     * retries.
      */
     @JsonProperty(value = "wallClockTime", required = true)
     private Period wallClockTime;

@@ -13,11 +13,24 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Specifies details of a Job Manager task.
+ * The Job Manager task is automatically started when the job is created. The
+ * Batch service tries to schedule the Job Manager task before any other tasks
+ * in the job. When shrinking a pool, the Batch service tries to preserve
+ * compute nodes where Job Manager tasks are running for as long as possible
+ * (that is, nodes running 'normal' tasks are removed before nodes running Job
+ * Manager tasks). When a Job Manager task fails and needs to be restarted, the
+ * system tries to schedule it at the highest priority. If there are no idle
+ * nodes available, the system may terminate one of the running tasks in the
+ * pool and return it to the queue in order to make room for the Job Manager
+ * task to restart. Note that a Job Manager task in one job does not have
+ * priority over tasks in other jobs. Across jobs, only job level priorities
+ * are observed. For example, if a Job Manager in a priority 0 job needs to be
+ * restarted, it will not displace tasks of a priority 1 job.
  */
 public class JobManagerTask {
     /**
-     * A string that uniquely identifies the Job Manager taskwithin the job.
-     * The id can contain any combination of alphanumeric characters including
+     * A string that uniquely identifies the Job Manager task within the job.
+     * The ID can contain any combination of alphanumeric characters including
      * hyphens and underscores and cannot contain more than 64 characters.
      */
     @JsonProperty(value = "id", required = true)
@@ -43,6 +56,19 @@ public class JobManagerTask {
     private String commandLine;
 
     /**
+     * The settings for the container under which the Job Manager task runs.
+     * If the pool that will run this task has containerConfiguration set, this
+     * must be set as well. If the pool that will run this task doesn't have
+     * containerConfiguration set, this must not be set. When this is
+     * specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR
+     * (the root of Azure Batch directories on the node) are mapped into the
+     * container, all task environment variables are mapped into the container,
+     * and the task command line is executed in the container.
+     */
+    @JsonProperty(value = "containerSettings")
+    private TaskContainerSettings containerSettings;
+
+    /**
      * A list of files that the Batch service will download to the compute node
      * before running the command line.
      * Files listed under this element are located in the task's working
@@ -54,6 +80,8 @@ public class JobManagerTask {
     /**
      * A list of files that the Batch service will upload from the compute node
      * after running the command line.
+     * For multi-instance tasks, the files will only be uploaded from the
+     * compute node on which the primary task is executed.
      */
     @JsonProperty(value = "outputFiles")
     private List<OutputFile> outputFiles;
@@ -114,12 +142,11 @@ public class JobManagerTask {
      * A list of application packages that the Batch service will deploy to the
      * compute node before running the command line.
      * Application packages are downloaded and deployed to a shared directory,
-     * not the task directory. Therefore, if a referenced package is already on
-     * the compute node, and is up to date, then it is not re-downloaded; the
-     * existing copy on the compute node is used. If a referenced application
-     * package cannot be installed, for example because the package has been
-     * deleted or because download failed, the task fails with a scheduling
-     * error.
+     * not the task working directory. Therefore, if a referenced package is
+     * already on the compute node, and is up to date, then it is not
+     * re-downloaded; the existing copy on the compute node is used. If a
+     * referenced application package cannot be installed, for example because
+     * the package has been deleted or because download failed, the task fails.
      */
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
@@ -203,6 +230,26 @@ public class JobManagerTask {
      */
     public JobManagerTask withCommandLine(String commandLine) {
         this.commandLine = commandLine;
+        return this;
+    }
+
+    /**
+     * Get the containerSettings value.
+     *
+     * @return the containerSettings value
+     */
+    public TaskContainerSettings containerSettings() {
+        return this.containerSettings;
+    }
+
+    /**
+     * Set the containerSettings value.
+     *
+     * @param containerSettings the containerSettings value to set
+     * @return the JobManagerTask object itself.
+     */
+    public JobManagerTask withContainerSettings(TaskContainerSettings containerSettings) {
+        this.containerSettings = containerSettings;
         return this;
     }
 

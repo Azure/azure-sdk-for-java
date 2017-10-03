@@ -17,10 +17,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class StartTaskInformation {
     /**
      * The state of the start task on the compute node.
-     * running - The start task is currently running. completed - The start
-     * task has exited with exit code 0, or the start task has failed and the
-     * retry limit has reached, or the start task process did not run due to
-     * scheduling errors. Possible values include: 'running', 'completed'.
+     * Values are:
+     *
+     * running - The start task is currently running.
+     * completed - The start task has exited with exit code 0, or the start
+     * task has failed and the retry limit has reached, or the start task
+     * process did not run due to task preparation errors (such as resource
+     * file download failures). Possible values include: 'running',
+     * 'completed'.
      */
     @JsonProperty(value = "state", required = true)
     private StartTaskState state;
@@ -58,6 +62,13 @@ public class StartTaskInformation {
     private Integer exitCode;
 
     /**
+     * Information about the container under which the task is executing.
+     * This property is set only if the task runs in a container context.
+     */
+    @JsonProperty(value = "containerInfo")
+    private TaskContainerExecutionInformation containerInfo;
+
+    /**
      * Information describing the task failure, if any.
      * This property is set only if the task is in the completed state and
      * encountered a failure.
@@ -67,11 +78,10 @@ public class StartTaskInformation {
 
     /**
      * The number of times the task has been retried by the Batch service.
-     * The number of times the task has been retried by the Batch service. Task
-     * application failures (non-zero exit code) are retried, pre-processing
-     * errors (the task could not be run) and file upload errors are not
-     * retried. The Batch service will retry the task up to the limit specified
-     * by the constraints.
+     * Task application failures (non-zero exit code) are retried,
+     * pre-processing errors (the task could not be run) and file upload errors
+     * are not retried. The Batch service will retry the task up to the limit
+     * specified by the constraints.
      */
     @JsonProperty(value = "retryCount", required = true)
     private int retryCount;
@@ -173,6 +183,26 @@ public class StartTaskInformation {
      */
     public StartTaskInformation withExitCode(Integer exitCode) {
         this.exitCode = exitCode;
+        return this;
+    }
+
+    /**
+     * Get the containerInfo value.
+     *
+     * @return the containerInfo value
+     */
+    public TaskContainerExecutionInformation containerInfo() {
+        return this.containerInfo;
+    }
+
+    /**
+     * Set the containerInfo value.
+     *
+     * @param containerInfo the containerInfo value to set
+     * @return the StartTaskInformation object itself.
+     */
+    public StartTaskInformation withContainerInfo(TaskContainerExecutionInformation containerInfo) {
+        this.containerInfo = containerInfo;
         return this;
     }
 

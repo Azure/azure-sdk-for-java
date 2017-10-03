@@ -16,8 +16,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class ComputeNodeInformation {
     /**
      * An identifier for the compute node on which the task ran, which can be
-     * passed when adding a task to request that the task be scheduled close to
-     * this compute node.
+     * passed when adding a task to request that the task be scheduled on this
+     * compute node.
      */
     @JsonProperty(value = "affinityId")
     private String affinityId;

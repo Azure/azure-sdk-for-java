@@ -19,7 +19,6 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class CloudJobSchedule {
     /**
      * A string that uniquely identifies the schedule within the account.
-     * It is common to use a GUID for the id.
      */
     @JsonProperty(value = "id")
     private String id;

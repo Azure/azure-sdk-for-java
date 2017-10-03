@@ -57,6 +57,13 @@ public class SubtaskInformation {
     private Integer exitCode;
 
     /**
+     * Information about the container under which the task is executing.
+     * This property is set only if the task runs in a container context.
+     */
+    @JsonProperty(value = "containerInfo")
+    private TaskContainerExecutionInformation containerInfo;
+
+    /**
      * Information describing the task failure, if any.
      * This property is set only if the task is in the completed state and
      * encountered a failure.
@@ -198,6 +205,26 @@ public class SubtaskInformation {
      */
     public SubtaskInformation withExitCode(Integer exitCode) {
         this.exitCode = exitCode;
+        return this;
+    }
+
+    /**
+     * Get the containerInfo value.
+     *
+     * @return the containerInfo value
+     */
+    public TaskContainerExecutionInformation containerInfo() {
+        return this.containerInfo;
+    }
+
+    /**
+     * Set the containerInfo value.
+     *
+     * @param containerInfo the containerInfo value to set
+     * @return the SubtaskInformation object itself.
+     */
+    public SubtaskInformation withContainerInfo(TaskContainerExecutionInformation containerInfo) {
+        this.containerInfo = containerInfo;
         return this;
     }
 

@@ -78,7 +78,7 @@ public class PoolSpecification {
     private Integer maxTasksPerNode;
 
     /**
-     * How tasks are distributed among compute nodes in the pool.
+     * How tasks are distributed across compute nodes in a pool.
      */
     @JsonProperty(value = "taskSchedulingPolicy")
     private TaskSchedulingPolicy taskSchedulingPolicy;

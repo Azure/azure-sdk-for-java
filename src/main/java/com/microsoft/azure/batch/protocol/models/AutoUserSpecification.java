@@ -17,10 +17,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class AutoUserSpecification {
     /**
      * The scope for the auto user.
+     * Values are:
+     *
      * pool - specifies that the task runs as the common auto user account
-     * which is created on every node in a pool. task - specifies that the
-     * service should create a new user for the task. The default value is
-     * task. Possible values include: 'task', 'pool'.
+     * which is created on every node in a pool.
+     * task - specifies that the service should create a new user for the task.
+     * The default value is task. Possible values include: 'task', 'pool'.
      */
     @JsonProperty(value = "scope")
     private AutoUserScope scope;

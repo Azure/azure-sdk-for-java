@@ -48,10 +48,12 @@ public class CertificateReference {
     /**
      * The name of the certificate store on the compute node into which to
      * install the certificate.
-     * The default value is My. This property is applicable only for pools
-     * configured with Windows nodes (that is, created with
-     * cloudServiceConfiguration, or with virtualMachineConfiguration using a
-     * Windows image reference).
+     * This property is applicable only for pools configured with Windows nodes
+     * (that is, created with cloudServiceConfiguration, or with
+     * virtualMachineConfiguration using a Windows image reference). Common
+     * store names include: My, Root, CA, Trust, Disallowed, TrustedPeople,
+     * TrustedPublisher, AuthRoot, AddressBook, but any custom store name can
+     * also be used. The default value is My.
      */
     @JsonProperty(value = "storeName")
     private String storeName;
@@ -59,7 +61,14 @@ public class CertificateReference {
     /**
      * Which user accounts on the compute node should have access to the
      * private data of the certificate.
-     * The default is all accounts.
+     * Values are:
+     *
+     * starttask - The user account under which the start task is run.
+     * task - The accounts under which job tasks are run.
+     * remoteuser - The accounts under which users remotely access the node.
+     *
+     * You can specify more than one visibility in this collection. The default
+     * is all accounts.
      */
     @JsonProperty(value = "visibility")
     private List<CertificateVisibility> visibility;

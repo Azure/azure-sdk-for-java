@@ -16,6 +16,7 @@ import org.junit.Test;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 
 public class TaskTests  extends BatchTestBase {
     private static CloudPool livePool;
@@ -324,12 +325,57 @@ public class TaskTests  extends BatchTestBase {
             behaviors.add(option);
             batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
 
+            TimeUnit.SECONDS.sleep(30);
+
             // Test Job count
             counts = batchClient.jobOperations().getTaskCounts(jobId);
             all = counts.active() + counts.completed() + counts.running();
             Assert.assertEquals(counts.validationStatus(), TaskCountValidationStatus.VALIDATED);
             Assert.assertEquals(all, TASK_COUNT);
         } finally {
+            try {
+                batchClient.jobOperations().deleteJob(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+        }
+    }
+
+    @Test
+    public void failCreateContainerTaskWithRegularPool() throws Exception {
+        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String taskId = "mytask";
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.withPoolId(liveIaaSPool.id());
+        batchClient.jobOperations().createJob(jobId, poolInfo);
+
+        TaskAddParameter taskToAdd = new TaskAddParameter();
+        taskToAdd.withId(taskId)
+                .withContainerSettings(new TaskContainerSettings()
+                        .withContainerRunOptions("--rm")
+                        .withImageName("centos"))
+                .withCommandLine("bash -c \"echo hello\"");
+
+        try
+        {
+            batchClient.taskOperations().createTask(jobId, taskToAdd);
+        }
+        catch (BatchErrorException err) {
+            if (err.body().code().equals("InvalidPropertyValue")) {
+                // Accepted Error
+                for (int i = 0; i < err.body().values().size(); i++) {
+                    if (err.body().values().get(i).key().equals("Reason")) {
+                        Assert.assertEquals("The specified imageReference with publisher Canonical offer UbuntuServer sku 16.04-LTS does not support container feature.", err.body().values().get(i).value());
+                        return;
+                    }
+                }
+                throw new Exception("Couldn't find expect error reason");
+            } else {
+                throw err;
+            }
+        }
+        finally {
             try {
                 batchClient.jobOperations().deleteJob(jobId);
             } catch (Exception e) {

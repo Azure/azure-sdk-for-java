@@ -50,7 +50,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
-     * @param filePath The path to the task file that you want to delete.
+     * @param filePath The path to the task file or directory that you want to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -62,7 +62,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
-     * @param filePath The path to the task file that you want to delete.
+     * @param filePath The path to the task file or directory that you want to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -74,7 +74,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
-     * @param filePath The path to the task file that you want to delete.
+     * @param filePath The path to the task file or directory that you want to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
@@ -85,7 +85,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
-     * @param filePath The path to the task file that you want to delete.
+     * @param filePath The path to the task file or directory that you want to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
@@ -95,7 +95,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
-     * @param filePath The path to the task file that you want to delete.
+     * @param filePath The path to the task file or directory that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -109,7 +109,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
-     * @param filePath The path to the task file that you want to delete.
+     * @param filePath The path to the task file or directory that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -123,7 +123,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
-     * @param filePath The path to the task file that you want to delete.
+     * @param filePath The path to the task file or directory that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -136,7 +136,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose file you want to delete.
-     * @param filePath The path to the task file that you want to delete.
+     * @param filePath The path to the task file or directory that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromTaskOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -337,11 +337,11 @@ public interface Files {
     Observable<ServiceResponseWithHeaders<Void, FileGetPropertiesFromTaskHeaders>> getPropertiesFromTaskWithServiceResponseAsync(String jobId, String taskId, String filePath, FileGetPropertiesFromTaskOptions fileGetPropertiesFromTaskOptions);
 
     /**
-     * Deletes the specified task file from the compute node.
+     * Deletes the specified file from the compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param filePath The path to the file that you want to delete.
+     * @param filePath The path to the file or directory that you want to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -349,11 +349,11 @@ public interface Files {
     void deleteFromComputeNode(String poolId, String nodeId, String filePath);
 
     /**
-     * Deletes the specified task file from the compute node.
+     * Deletes the specified file from the compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param filePath The path to the file that you want to delete.
+     * @param filePath The path to the file or directory that you want to delete.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -361,32 +361,32 @@ public interface Files {
     ServiceFuture<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Deletes the specified task file from the compute node.
+     * Deletes the specified file from the compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param filePath The path to the file that you want to delete.
+     * @param filePath The path to the file or directory that you want to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath);
 
     /**
-     * Deletes the specified task file from the compute node.
+     * Deletes the specified file from the compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param filePath The path to the file that you want to delete.
+     * @param filePath The path to the file or directory that you want to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>> deleteFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath);
     /**
-     * Deletes the specified task file from the compute node.
+     * Deletes the specified file from the compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param filePath The path to the file that you want to delete.
+     * @param filePath The path to the file or directory that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -396,11 +396,11 @@ public interface Files {
     void deleteFromComputeNode(String poolId, String nodeId, String filePath, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions);
 
     /**
-     * Deletes the specified task file from the compute node.
+     * Deletes the specified file from the compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param filePath The path to the file that you want to delete.
+     * @param filePath The path to the file or directory that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -410,11 +410,11 @@ public interface Files {
     ServiceFuture<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Deletes the specified task file from the compute node.
+     * Deletes the specified file from the compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param filePath The path to the file that you want to delete.
+     * @param filePath The path to the file or directory that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -423,11 +423,11 @@ public interface Files {
     Observable<Void> deleteFromComputeNodeAsync(String poolId, String nodeId, String filePath, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions);
 
     /**
-     * Deletes the specified task file from the compute node.
+     * Deletes the specified file from the compute node.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node from which you want to delete the file.
-     * @param filePath The path to the file that you want to delete.
+     * @param filePath The path to the file or directory that you want to delete.
      * @param recursive Whether to delete children of a directory. If the filePath parameter represents a directory instead of a file, you can set recursive to true to delete the directory and all of the files and subdirectories in it. If recursive is false then the directory must be empty or deletion will fail.
      * @param fileDeleteFromComputeNodeOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -436,11 +436,11 @@ public interface Files {
     Observable<ServiceResponseWithHeaders<Void, FileDeleteFromComputeNodeHeaders>> deleteFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath, Boolean recursive, FileDeleteFromComputeNodeOptions fileDeleteFromComputeNodeOptions);
 
     /**
-     * Returns the content of the specified task file.
+     * Returns the content of the specified compute node file.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
-     * @param filePath The path to the task file that you want to get the content of.
+     * @param filePath The path to the compute node file that you want to get the content of.
      * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -449,11 +449,11 @@ public interface Files {
     void getFromComputeNode(String poolId, String nodeId, String filePath, OutputStream outputStream);
 
     /**
-     * Returns the content of the specified task file.
+     * Returns the content of the specified compute node file.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
-     * @param filePath The path to the task file that you want to get the content of.
+     * @param filePath The path to the compute node file that you want to get the content of.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -461,32 +461,32 @@ public interface Files {
     ServiceFuture<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath, final ServiceCallback<InputStream> serviceCallback);
 
     /**
-     * Returns the content of the specified task file.
+     * Returns the content of the specified compute node file.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
-     * @param filePath The path to the task file that you want to get the content of.
+     * @param filePath The path to the compute node file that you want to get the content of.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath);
 
     /**
-     * Returns the content of the specified task file.
+     * Returns the content of the specified compute node file.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
-     * @param filePath The path to the task file that you want to get the content of.
+     * @param filePath The path to the compute node file that you want to get the content of.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
      */
     Observable<ServiceResponseWithHeaders<InputStream, FileGetFromComputeNodeHeaders>> getFromComputeNodeWithServiceResponseAsync(String poolId, String nodeId, String filePath);
     /**
-     * Returns the content of the specified task file.
+     * Returns the content of the specified compute node file.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
-     * @param filePath The path to the task file that you want to get the content of.
+     * @param filePath The path to the compute node file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
      * @param outputStream The OutputStream object which data will be written to if successful.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -496,11 +496,11 @@ public interface Files {
     void getFromComputeNode(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, OutputStream outputStream);
 
     /**
-     * Returns the content of the specified task file.
+     * Returns the content of the specified compute node file.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
-     * @param filePath The path to the task file that you want to get the content of.
+     * @param filePath The path to the compute node file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -509,11 +509,11 @@ public interface Files {
     ServiceFuture<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions, final ServiceCallback<InputStream> serviceCallback);
 
     /**
-     * Returns the content of the specified task file.
+     * Returns the content of the specified compute node file.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
-     * @param filePath The path to the task file that you want to get the content of.
+     * @param filePath The path to the compute node file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
@@ -521,11 +521,11 @@ public interface Files {
     Observable<InputStream> getFromComputeNodeAsync(String poolId, String nodeId, String filePath, FileGetFromComputeNodeOptions fileGetFromComputeNodeOptions);
 
     /**
-     * Returns the content of the specified task file.
+     * Returns the content of the specified compute node file.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that contains the file.
-     * @param filePath The path to the task file that you want to get the content of.
+     * @param filePath The path to the compute node file that you want to get the content of.
      * @param fileGetFromComputeNodeOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the InputStream object
@@ -674,7 +674,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
+     * @param recursive Whether to list children of the task directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -688,7 +688,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
+     * @param recursive Whether to list children of the task directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -701,7 +701,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
+     * @param recursive Whether to list children of the task directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object
@@ -713,7 +713,7 @@ public interface Files {
      *
      * @param jobId The ID of the job that contains the task.
      * @param taskId The ID of the task whose files you want to list.
-     * @param recursive Whether to list children of a directory. This parameter can be used in combination with the filter parameter to list specific type of files.
+     * @param recursive Whether to list children of the task directory. This parameter can be used in combination with the filter parameter to list specific type of files.
      * @param fileListFromTaskOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PagedList&lt;NodeFile&gt; object

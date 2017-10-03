@@ -37,7 +37,7 @@ public class JobExecutionInformation {
      * element, which contains the pool configuration data from when the job
      * was added or updated. That poolInfo element may also contain a poolId
      * element. If it does, the two IDs are the same. If it does not, it means
-     * the job ran on an auto pool, and this property contains the id of that
+     * the job ran on an auto pool, and this property contains the ID of that
      * auto pool.
      */
     @JsonProperty(value = "poolId")

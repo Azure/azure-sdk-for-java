@@ -50,6 +50,7 @@ import rx.Observable;
 public interface Tasks {
     /**
      * Adds a task to the specified job.
+     * The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
@@ -61,6 +62,7 @@ public interface Tasks {
 
     /**
      * Adds a task to the specified job.
+     * The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
@@ -72,6 +74,7 @@ public interface Tasks {
 
     /**
      * Adds a task to the specified job.
+     * The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
@@ -82,6 +85,7 @@ public interface Tasks {
 
     /**
      * Adds a task to the specified job.
+     * The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
@@ -91,6 +95,7 @@ public interface Tasks {
     Observable<ServiceResponseWithHeaders<Void, TaskAddHeaders>> addWithServiceResponseAsync(String jobId, TaskAddParameter task);
     /**
      * Adds a task to the specified job.
+     * The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
@@ -103,6 +108,7 @@ public interface Tasks {
 
     /**
      * Adds a task to the specified job.
+     * The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
@@ -115,6 +121,7 @@ public interface Tasks {
 
     /**
      * Adds a task to the specified job.
+     * The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
@@ -126,6 +133,7 @@ public interface Tasks {
 
     /**
      * Adds a task to the specified job.
+     * The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task is to be added.
      * @param task The task to be added.
@@ -226,10 +234,10 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
-     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task IDs during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly. If the response contains any tasks which failed to add, a client can retry the request. In a retry, it is most efficient to resubmit only tasks that failed to add, and to omit tasks that were successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. The total serialized size of this collection must be less than 4MB. If it is greater than 4MB (for example if each task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer tasks.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -239,10 +247,10 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
-     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task IDs during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly. If the response contains any tasks which failed to add, a client can retry the request. In a retry, it is most efficient to resubmit only tasks that failed to add, and to omit tasks that were successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. The total serialized size of this collection must be less than 4MB. If it is greater than 4MB (for example if each task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer tasks.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -251,10 +259,10 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
-     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task IDs during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly. If the response contains any tasks which failed to add, a client can retry the request. In a retry, it is most efficient to resubmit only tasks that failed to add, and to omit tasks that were successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. The total serialized size of this collection must be less than 4MB. If it is greater than 4MB (for example if each task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer tasks.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskAddCollectionResult object
      */
@@ -262,20 +270,20 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
-     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task IDs during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly. If the response contains any tasks which failed to add, a client can retry the request. In a retry, it is most efficient to resubmit only tasks that failed to add, and to omit tasks that were successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. The total serialized size of this collection must be less than 4MB. If it is greater than 4MB (for example if each task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer tasks.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskAddCollectionResult object
      */
     Observable<ServiceResponseWithHeaders<TaskAddCollectionResult, TaskAddCollectionHeaders>> addCollectionWithServiceResponseAsync(String jobId, List<TaskAddParameter> value);
     /**
      * Adds a collection of tasks to the specified job.
-     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task IDs during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly. If the response contains any tasks which failed to add, a client can retry the request. In a retry, it is most efficient to resubmit only tasks that failed to add, and to omit tasks that were successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. The total serialized size of this collection must be less than 4MB. If it is greater than 4MB (for example if each task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer tasks.
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -286,10 +294,10 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
-     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task IDs during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly. If the response contains any tasks which failed to add, a client can retry the request. In a retry, it is most efficient to resubmit only tasks that failed to add, and to omit tasks that were successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. The total serialized size of this collection must be less than 4MB. If it is greater than 4MB (for example if each task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer tasks.
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -299,10 +307,10 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
-     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task IDs during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly. If the response contains any tasks which failed to add, a client can retry the request. In a retry, it is most efficient to resubmit only tasks that failed to add, and to omit tasks that were successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. The total serialized size of this collection must be less than 4MB. If it is greater than 4MB (for example if each task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer tasks.
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskAddCollectionResult object
@@ -311,10 +319,10 @@ public interface Tasks {
 
     /**
      * Adds a collection of tasks to the specified job.
-     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task ids during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly.
+     * Note that each task must have a unique ID. The Batch service may not return the results for each task in the same order the tasks were submitted in this request. If the server times out or the connection is closed during the request, the request may have been partially or fully processed, or not at all. In such cases, the user should re-issue the request. Note that it is up to the user to correctly handle failures when re-issuing a request. For example, you should use the same task IDs during a retry so that if the prior operation succeeded, the retry will not create extra tasks unexpectedly. If the response contains any tasks which failed to add, a client can retry the request. In a retry, it is most efficient to resubmit only tasks that failed to add, and to omit tasks that were successfully added on the first attempt. The maximum lifetime of a task from addition to completion is 7 days. If a task has not completed within 7 days of being added it will be terminated by the Batch service and left in whatever state it was in at that time.
      *
      * @param jobId The ID of the job to which the task collection is to be added.
-     * @param value The collection of tasks to add.
+     * @param value The collection of tasks to add. The total serialized size of this collection must be less than 4MB. If it is greater than 4MB (for example if each task has 100's of resource files or environment variables), the request will fail with code 'RequestBodyTooLarge' and should be retried again with fewer tasks.
      * @param taskAddCollectionOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TaskAddCollectionResult object
@@ -559,7 +567,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to update.
-     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
+     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints. For multi-instance tasks, updating the retention time applies only to the primary task and not subtasks.
      * @param taskUpdateOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -572,7 +580,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to update.
-     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
+     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints. For multi-instance tasks, updating the retention time applies only to the primary task and not subtasks.
      * @param taskUpdateOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -585,7 +593,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to update.
-     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
+     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints. For multi-instance tasks, updating the retention time applies only to the primary task and not subtasks.
      * @param taskUpdateOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -597,7 +605,7 @@ public interface Tasks {
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to update.
-     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints.
+     * @param constraints Constraints that apply to this task. If omitted, the task is given the default constraints. For multi-instance tasks, updating the retention time applies only to the primary task and not subtasks.
      * @param taskUpdateOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -797,8 +805,8 @@ public interface Tasks {
     Observable<ServiceResponseWithHeaders<Void, TaskTerminateHeaders>> terminateWithServiceResponseAsync(String jobId, String taskId, TaskTerminateOptions taskTerminateOptions);
 
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivates a task, allowing it to run again even if its retry count has been exhausted.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or failure information is no longer available after reactivation. Each time a task is reactivated, its retry count is reset to 0. Reactivation will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, it will fail if the job has completed (or is terminating or deleting).
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
@@ -809,8 +817,8 @@ public interface Tasks {
     void reactivate(String jobId, String taskId);
 
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivates a task, allowing it to run again even if its retry count has been exhausted.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or failure information is no longer available after reactivation. Each time a task is reactivated, its retry count is reset to 0. Reactivation will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, it will fail if the job has completed (or is terminating or deleting).
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
@@ -821,8 +829,8 @@ public interface Tasks {
     ServiceFuture<Void> reactivateAsync(String jobId, String taskId, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivates a task, allowing it to run again even if its retry count has been exhausted.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or failure information is no longer available after reactivation. Each time a task is reactivated, its retry count is reset to 0. Reactivation will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, it will fail if the job has completed (or is terminating or deleting).
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
@@ -832,8 +840,8 @@ public interface Tasks {
     Observable<Void> reactivateAsync(String jobId, String taskId);
 
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivates a task, allowing it to run again even if its retry count has been exhausted.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or failure information is no longer available after reactivation. Each time a task is reactivated, its retry count is reset to 0. Reactivation will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, it will fail if the job has completed (or is terminating or deleting).
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
@@ -842,8 +850,8 @@ public interface Tasks {
      */
     Observable<ServiceResponseWithHeaders<Void, TaskReactivateHeaders>> reactivateWithServiceResponseAsync(String jobId, String taskId);
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivates a task, allowing it to run again even if its retry count has been exhausted.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or failure information is no longer available after reactivation. Each time a task is reactivated, its retry count is reset to 0. Reactivation will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, it will fail if the job has completed (or is terminating or deleting).
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
@@ -855,8 +863,8 @@ public interface Tasks {
     void reactivate(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions);
 
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivates a task, allowing it to run again even if its retry count has been exhausted.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or failure information is no longer available after reactivation. Each time a task is reactivated, its retry count is reset to 0. Reactivation will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, it will fail if the job has completed (or is terminating or deleting).
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
@@ -868,8 +876,8 @@ public interface Tasks {
     ServiceFuture<Void> reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions, final ServiceCallback<Void> serviceCallback);
 
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivates a task, allowing it to run again even if its retry count has been exhausted.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or failure information is no longer available after reactivation. Each time a task is reactivated, its retry count is reset to 0. Reactivation will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, it will fail if the job has completed (or is terminating or deleting).
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.
@@ -880,8 +888,8 @@ public interface Tasks {
     Observable<Void> reactivateAsync(String jobId, String taskId, TaskReactivateOptions taskReactivateOptions);
 
     /**
-     * Reactivates the specified task.
-     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or scheduling error is no longer available after reactivation. This will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, this will fail if the job has completed (or is terminating or deleting).
+     * Reactivates a task, allowing it to run again even if its retry count has been exhausted.
+     * Reactivation makes a task eligible to be retried again up to its maximum retry count. The task's state is changed to active. As the task is no longer in the completed state, any previous exit code or failure information is no longer available after reactivation. Each time a task is reactivated, its retry count is reset to 0. Reactivation will fail for tasks that are not completed or that previously completed successfully (with an exit code of 0). Additionally, it will fail if the job has completed (or is terminating or deleting).
      *
      * @param jobId The ID of the job containing the task.
      * @param taskId The ID of the task to reactivate.

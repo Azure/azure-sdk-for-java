@@ -11,30 +11,31 @@ package com.microsoft.azure.batch.protocol.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A reference to an Azure Virtual Machines Marketplace image. To get the list
- * of all imageReferences verified by Azure Batch, see the 'List supported node
- * agent SKUs' operation.
+ * A reference to an Azure Virtual Machines Marketplace image or a custom Azure
+ * Virtual Machine image. To get the list of all Azure Marketplace image
+ * references verified by Azure Batch, see the 'List node agent SKUs'
+ * operation.
  */
 public class ImageReference {
     /**
      * The publisher of the Azure Virtual Machines Marketplace image.
      * For example, Canonical or MicrosoftWindowsServer.
      */
-    @JsonProperty(value = "publisher", required = true)
+    @JsonProperty(value = "publisher")
     private String publisher;
 
     /**
      * The offer type of the Azure Virtual Machines Marketplace image.
      * For example, UbuntuServer or WindowsServer.
      */
-    @JsonProperty(value = "offer", required = true)
+    @JsonProperty(value = "offer")
     private String offer;
 
     /**
      * The SKU of the Azure Virtual Machines Marketplace image.
      * For example, 14.04.0-LTS or 2012-R2-Datacenter.
      */
-    @JsonProperty(value = "sku", required = true)
+    @JsonProperty(value = "sku")
     private String sku;
 
     /**
@@ -44,6 +45,20 @@ public class ImageReference {
      */
     @JsonProperty(value = "version")
     private String version;
+
+    /**
+     * The ARM resource identifier of the virtual machine image. Computes nodes
+     * of the pool will be created using this custom image. This is of the form
+     * /subscriptions/{subscriptionId}/resourceGroups/{resourceGroup}/providers/Microsoft.Compute/images/{imageName}.
+     * This property is mutually exclusive with other ImageReference
+     * properties. The virtual machine image must be in the same region and
+     * subscription as the Azure Batch account. For information about the
+     * firewall settings for the Batch node agent to communicate with the Batch
+     * service see
+     * https://docs.microsoft.com/en-us/azure/batch/batch-api-basics#virtual-network-vnet-and-firewall-configuration.
+     */
+    @JsonProperty(value = "virtualMachineImageId")
+    private String virtualMachineImageId;
 
     /**
      * Get the publisher value.
@@ -122,6 +137,26 @@ public class ImageReference {
      */
     public ImageReference withVersion(String version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the virtualMachineImageId value.
+     *
+     * @return the virtualMachineImageId value
+     */
+    public String virtualMachineImageId() {
+        return this.virtualMachineImageId;
+    }
+
+    /**
+     * Set the virtualMachineImageId value.
+     *
+     * @param virtualMachineImageId the virtualMachineImageId value to set
+     * @return the ImageReference object itself.
+     */
+    public ImageReference withVirtualMachineImageId(String virtualMachineImageId) {
+        this.virtualMachineImageId = virtualMachineImageId;
         return this;
     }
 

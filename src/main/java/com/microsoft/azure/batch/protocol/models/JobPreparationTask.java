@@ -14,6 +14,23 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 /**
  * A Job Preparation task to run before any tasks of the job on any given
  * compute node.
+ * You can use Job Preparation to prepare a compute node to run tasks for the
+ * job. Activities commonly performed in Job Preparation include: Downloading
+ * common resource files used by all the tasks in the job. The Job Preparation
+ * task can download these common resource files to the shared location on the
+ * compute node. (AZ_BATCH_NODE_ROOT_DIR\shared), or starting a local service
+ * on the compute node so that all tasks of that job can communicate with it.
+ * If the Job Preparation task fails (that is, exhausts its retry count before
+ * exiting with exit code 0), Batch will not run tasks of this job on the
+ * compute node. The node remains ineligible to run tasks of this job until it
+ * is reimaged. The node remains active and can be used for other jobs. The Job
+ * Preparation task can run multiple times on the same compute node. Therefore,
+ * you should write the Job Preparation task to handle re-execution. If the
+ * compute node is rebooted, the Job Preparation task is run again on the node
+ * before scheduling any other task of the job, if
+ * rerunOnNodeRebootAfterSuccess is true or if the Job Preparation task did not
+ * previously complete. If the compute node is reimaged, the Job Preparation
+ * task is run again before scheduling any task of the job.
  */
 public class JobPreparationTask {
     /**
@@ -22,7 +39,7 @@ public class JobPreparationTask {
      * The ID can contain any combination of alphanumeric characters including
      * hyphens and underscores and cannot contain more than 64 characters. If
      * you do not specify this property, the Batch service assigns a default
-     * value of 'jobpreparation'. No other task in the job can have the same id
+     * value of 'jobpreparation'. No other task in the job can have the same ID
      * as the Job Preparation task. If you try to submit a task with the same
      * id, the Batch service rejects the request with error code
      * TaskIdSameAsJobPreparationTask; if you are calling the REST API
@@ -41,6 +58,18 @@ public class JobPreparationTask {
      */
     @JsonProperty(value = "commandLine", required = true)
     private String commandLine;
+
+    /**
+     * The settings for the container under which the Job Preparation task
+     * runs.
+     * When this is specified, all directories recursively below the
+     * AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node)
+     * are mapped into the container, all task environment variables are mapped
+     * into the container, and the task command line is executed in the
+     * container.
+     */
+    @JsonProperty(value = "containerSettings")
+    private TaskContainerSettings containerSettings;
 
     /**
      * A list of files that the Batch service will download to the compute node
@@ -66,7 +95,8 @@ public class JobPreparationTask {
     /**
      * Whether the Batch service should wait for the Job Preparation task to
      * complete successfully before scheduling any other tasks of the job on
-     * the compute node.
+     * the compute node. A Job Preparation task has completed successfully if
+     * it exits with exit code 0.
      * If true and the Job Preparation task fails on a compute node, the Batch
      * service retries the Job Preparation task up to its maximum retry count
      * (as specified in the constraints element). If the task has still not
@@ -85,7 +115,8 @@ public class JobPreparationTask {
     /**
      * The user identity under which the Job Preparation task runs.
      * If omitted, the task runs as a non-administrative user unique to the
-     * task.
+     * task on Windows nodes, or a a non-administrative user unique to the pool
+     * on Linux nodes.
      */
     @JsonProperty(value = "userIdentity")
     private UserIdentity userIdentity;
@@ -139,6 +170,26 @@ public class JobPreparationTask {
      */
     public JobPreparationTask withCommandLine(String commandLine) {
         this.commandLine = commandLine;
+        return this;
+    }
+
+    /**
+     * Get the containerSettings value.
+     *
+     * @return the containerSettings value
+     */
+    public TaskContainerSettings containerSettings() {
+        return this.containerSettings;
+    }
+
+    /**
+     * Set the containerSettings value.
+     *
+     * @param containerSettings the containerSettings value to set
+     * @return the JobPreparationTask object itself.
+     */
+    public JobPreparationTask withContainerSettings(TaskContainerSettings containerSettings) {
+        this.containerSettings = containerSettings;
         return this;
     }
 

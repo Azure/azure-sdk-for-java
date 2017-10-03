@@ -20,8 +20,9 @@ public class CloudPool {
     /**
      * A string that uniquely identifies the pool within the account.
      * The ID can contain any combination of alphanumeric characters including
-     * hyphens and underscores, and cannot contain more than 64 characters. It
-     * is common to use a GUID for the id.
+     * hyphens and underscores, and cannot contain more than 64 characters. The
+     * ID is case-preserving and case-insensitive (that is, you may not have
+     * two IDs within an account that differ only by case).
      */
     @JsonProperty(value = "id")
     private String id;
@@ -67,14 +68,18 @@ public class CloudPool {
 
     /**
      * The current state of the pool.
+     * Values are:
+     *
      * active - The pool is available to run tasks subject to the availability
-     * of compute nodes. deleting - The user has requested that the pool be
-     * deleted, but the delete operation has not yet completed. upgrading - The
-     * user has requested that the operating system of the pool's nodes be
-     * upgraded, but the upgrade operation has not yet completed (that is, some
-     * nodes in the pool have not yet been upgraded). While upgrading, the pool
-     * may be able to run tasks (with reduced capacity) but this is not
-     * guaranteed. Possible values include: 'active', 'deleting', 'upgrading'.
+     * of compute nodes.
+     * deleting - The user has requested that the pool be deleted, but the
+     * delete operation has not yet completed.
+     * upgrading - The user has requested that the operating system of the
+     * pool's nodes be upgraded, but the upgrade operation has not yet
+     * completed (that is, some nodes in the pool have not yet been upgraded).
+     * While upgrading, the pool may be able to run tasks (with reduced
+     * capacity) but this is not guaranteed. Possible values include: 'active',
+     * 'deleting', 'upgrading'.
      */
     @JsonProperty(value = "state")
     private PoolState state;
@@ -87,14 +92,17 @@ public class CloudPool {
 
     /**
      * Whether the pool is resizing.
+     * Values are:
+     *
      * steady - The pool is not resizing. There are no changes to the number of
      * nodes in the pool in progress. A pool enters this state when it is
      * created and when no operations are being performed on the pool to change
-     * the number of dedicated nodes. resizing - The pool is resizing; that is,
-     * compute nodes are being added to or removed from the pool. stopping -
-     * The pool was resizing, but the user has requested that the resize be
-     * stopped, but the stop request has not yet been completed. Possible
-     * values include: 'steady', 'resizing', 'stopping'.
+     * the number of dedicated nodes.
+     * resizing - The pool is resizing; that is, compute nodes are being added
+     * to or removed from the pool.
+     * stopping - The pool was resizing, but the user has requested that the
+     * resize be stopped, but the stop request has not yet been completed.
+     * Possible values include: 'steady', 'resizing', 'stopping'.
      */
     @JsonProperty(value = "allocationState")
     private AllocationState allocationState;
@@ -283,8 +291,7 @@ public class CloudPool {
     private Integer maxTasksPerNode;
 
     /**
-     * How the Batch service distributes tasks between compute nodes in the
-     * pool.
+     * How tasks are distributed across compute nodes in a pool.
      */
     @JsonProperty(value = "taskSchedulingPolicy")
     private TaskSchedulingPolicy taskSchedulingPolicy;

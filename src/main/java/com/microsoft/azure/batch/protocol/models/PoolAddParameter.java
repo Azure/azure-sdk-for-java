@@ -201,8 +201,7 @@ public class PoolAddParameter {
     private Integer maxTasksPerNode;
 
     /**
-     * How the Batch service distributes tasks between compute nodes in the
-     * pool.
+     * How tasks are distributed across compute nodes in a pool.
      */
     @JsonProperty(value = "taskSchedulingPolicy")
     private TaskSchedulingPolicy taskSchedulingPolicy;

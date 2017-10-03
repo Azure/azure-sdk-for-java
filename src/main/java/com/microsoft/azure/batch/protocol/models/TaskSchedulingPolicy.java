@@ -15,7 +15,12 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class TaskSchedulingPolicy {
     /**
-     * How tasks should be distributed across compute nodes.
+     * How tasks are distributed across compute nodes in a pool. Values are:
+     *
+     * pack - As many tasks as possible (maxTasksPerNode) should be assigned to
+     * each node in the pool before any tasks are assigned to the next node in
+     * the pool.
+     * spread - Tasks should be assigned evenly across all nodes in the pool.
      * Possible values include: 'spread', 'pack'.
      */
     @JsonProperty(value = "nodeFillType", required = true)

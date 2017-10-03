@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class NodeRemoveParameter {
     /**
-     * A list containing the ids of the compute nodes to be removed from the
+     * A list containing the IDs of the compute nodes to be removed from the
      * specified pool.
      */
     @JsonProperty(value = "nodeList", required = true)

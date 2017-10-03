@@ -18,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class JobPreparationTaskExecutionInformation {
     /**
      * The time at which the task started running.
-     * Note that every time the task is restarted, this value is updated.
+     * If the task has been restarted or retried, this is the most recent time
+     * at which the task started running.
      */
     @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
@@ -32,10 +33,13 @@ public class JobPreparationTaskExecutionInformation {
 
     /**
      * The current state of the Job Preparation task on the compute node.
-     * running - the task is currently running (including retrying). completed
-     * - the task has exited with exit code 0, or the task has exhausted its
-     * retry limit, or the Batch service was unable to start the task due to
-     * scheduling errors. Possible values include: 'running', 'completed'.
+     * Values are:
+     *
+     * running - the task is currently running (including retrying).
+     * completed - the task has exited with exit code 0, or the task has
+     * exhausted its retry limit, or the Batch service was unable to start the
+     * task due to task preparation errors (such as resource file download
+     * failures). Possible values include: 'running', 'completed'.
      */
     @JsonProperty(value = "state", required = true)
     private JobPreparationTaskState state;
@@ -69,6 +73,13 @@ public class JobPreparationTaskExecutionInformation {
     private Integer exitCode;
 
     /**
+     * Information about the container under which the task is executing.
+     * This property is set only if the task runs in a container context.
+     */
+    @JsonProperty(value = "containerInfo")
+    private TaskContainerExecutionInformation containerInfo;
+
+    /**
      * Information describing the task failure, if any.
      * This property is set only if the task is in the completed state and
      * encountered a failure.
@@ -82,6 +93,10 @@ public class JobPreparationTaskExecutionInformation {
      * errors (the task could not be run) and file upload errors are not
      * retried. The Batch service will retry the task up to the limit specified
      * by the constraints.
+     * Task application failures (non-zero exit code) are retried,
+     * pre-processing errors (the task could not be run) and file upload errors
+     * are not retried. The Batch service will retry the task up to the limit
+     * specified by the constraints.
      */
     @JsonProperty(value = "retryCount", required = true)
     private int retryCount;
@@ -224,6 +239,26 @@ public class JobPreparationTaskExecutionInformation {
      */
     public JobPreparationTaskExecutionInformation withExitCode(Integer exitCode) {
         this.exitCode = exitCode;
+        return this;
+    }
+
+    /**
+     * Get the containerInfo value.
+     *
+     * @return the containerInfo value
+     */
+    public TaskContainerExecutionInformation containerInfo() {
+        return this.containerInfo;
+    }
+
+    /**
+     * Set the containerInfo value.
+     *
+     * @param containerInfo the containerInfo value to set
+     * @return the JobPreparationTaskExecutionInformation object itself.
+     */
+    public JobPreparationTaskExecutionInformation withContainerInfo(TaskContainerExecutionInformation containerInfo) {
+        this.containerInfo = containerInfo;
         return this;
     }
 

@@ -18,8 +18,9 @@ public class JobAddParameter {
     /**
      * A string that uniquely identifies the job within the account.
      * The ID can contain any combination of alphanumeric characters including
-     * hyphens and underscores, and cannot contain more than 64 characters. It
-     * is common to use a GUID for the id.
+     * hyphens and underscores, and cannot contain more than 64 characters. The
+     * ID is case-preserving and case-insensitive (that is, you may not have
+     * two IDs within an account that differ only by case).
      */
     @JsonProperty(value = "id", required = true)
     private String id;
@@ -91,6 +92,8 @@ public class JobAddParameter {
      * The list of common environment variable settings. These environment
      * variables are set for all tasks in the job (including the Job Manager,
      * Job Preparation and Job Release tasks).
+     * Individual tasks can override an environment setting specified here by
+     * specifying the same setting name with a different value.
      */
     @JsonProperty(value = "commonEnvironmentSettings")
     private List<EnvironmentSetting> commonEnvironmentSettings;
@@ -120,13 +123,15 @@ public class JobAddParameter {
 
     /**
      * The action the Batch service should take when any task in the job fails.
-     * A task is considered to have failed if it completes with a non-zero exit
-     * code and has exhausted its retry count, or if it had a scheduling error.
-     * noAction - do nothing. performExitOptionsJobAction - take the action
-     * associated with the task exit condition in the task's exitConditions
-     * collection. (This may still result in no action being taken, if that is
-     * what the task specifies.) The default is noAction. Possible values
-     * include: 'noAction', 'performExitOptionsJobAction'.
+     * A task is considered to have failed if has a failureInfo. A failureInfo
+     * is set if the task completes with a non-zero exit code after exhausting
+     * its retry count, or if there was an error starting the task, for example
+     * due to a resource file download error. noAction - do nothing.
+     * performExitOptionsJobAction - take the action associated with the task
+     * exit condition in the task's exitConditions collection. (This may still
+     * result in no action being taken, if that is what the task specifies.)
+     * The default is noAction. Possible values include: 'noAction',
+     * 'performExitOptionsJobAction'.
      */
     @JsonProperty(value = "onTaskFailure")
     private OnTaskFailure onTaskFailure;
@@ -140,7 +145,8 @@ public class JobAddParameter {
     private List<MetadataItem> metadata;
 
     /**
-     * The flag that determines if this job will use tasks with dependencies.
+     * Whether tasks in the job can define dependencies on each other. The
+     * default is false.
      */
     @JsonProperty(value = "usesTaskDependencies")
     private Boolean usesTaskDependencies;

@@ -55,7 +55,6 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import com.microsoft.rest.Validator;
-
 import java.io.*;
 import java.util.List;
 import java.util.UUID;
@@ -584,7 +583,7 @@ public class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Updates the password or expiration time of a user account on the specified compute node.
+     * Updates the password and expiration time of a user account on the specified compute node.
      * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
      * @param poolId The ID of the pool that contains the compute node.
@@ -600,7 +599,7 @@ public class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Updates the password or expiration time of a user account on the specified compute node.
+     * Updates the password and expiration time of a user account on the specified compute node.
      * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
      * @param poolId The ID of the pool that contains the compute node.
@@ -616,7 +615,7 @@ public class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Updates the password or expiration time of a user account on the specified compute node.
+     * Updates the password and expiration time of a user account on the specified compute node.
      * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
      * @param poolId The ID of the pool that contains the compute node.
@@ -636,7 +635,7 @@ public class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Updates the password or expiration time of a user account on the specified compute node.
+     * Updates the password and expiration time of a user account on the specified compute node.
      * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
      * @param poolId The ID of the pool that contains the compute node.
@@ -687,7 +686,7 @@ public class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Updates the password or expiration time of a user account on the specified compute node.
+     * Updates the password and expiration time of a user account on the specified compute node.
      * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
      * @param poolId The ID of the pool that contains the compute node.
@@ -704,7 +703,7 @@ public class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Updates the password or expiration time of a user account on the specified compute node.
+     * Updates the password and expiration time of a user account on the specified compute node.
      * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
      * @param poolId The ID of the pool that contains the compute node.
@@ -721,7 +720,7 @@ public class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Updates the password or expiration time of a user account on the specified compute node.
+     * Updates the password and expiration time of a user account on the specified compute node.
      * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
      * @param poolId The ID of the pool that contains the compute node.
@@ -742,7 +741,7 @@ public class ComputeNodesImpl implements ComputeNodes {
     }
 
     /**
-     * Updates the password or expiration time of a user account on the specified compute node.
+     * Updates the password and expiration time of a user account on the specified compute node.
      * This operation replaces of all the updateable properties of the account. For example, if the expiryTime element is not specified, the current value is replaced with the default value, not left unmodified. You can update a user account on a node only when it is in the idle or running state.
      *
      * @param poolId The ID of the pool that contains the compute node.
@@ -1107,7 +1106,12 @@ public class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that you want to restart.
-     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks will run again when a node is available. Restart the node as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Restart the node as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Restart the node when all tasks have completed.
+      retaineddata - Allow currently running tasks to complete, then wait for all task data retention periods to expire. Schedule no new tasks while waiting. Restart the node when all task retention periods have expired.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
      * @param computeNodeRebootOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -1123,7 +1127,12 @@ public class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that you want to restart.
-     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks will run again when a node is available. Restart the node as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Restart the node as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Restart the node when all tasks have completed.
+      retaineddata - Allow currently running tasks to complete, then wait for all task data retention periods to expire. Schedule no new tasks while waiting. Restart the node when all task retention periods have expired.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
      * @param computeNodeRebootOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1139,7 +1148,12 @@ public class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that you want to restart.
-     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks will run again when a node is available. Restart the node as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Restart the node as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Restart the node when all tasks have completed.
+      retaineddata - Allow currently running tasks to complete, then wait for all task data retention periods to expire. Schedule no new tasks while waiting. Restart the node when all task retention periods have expired.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
      * @param computeNodeRebootOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -1159,7 +1173,12 @@ public class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that you want to restart.
-     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param nodeRebootOption When to reboot the compute node and what to do with currently running tasks. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks will run again when a node is available. Restart the node as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Restart the node as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Restart the node when all tasks have completed.
+      retaineddata - Allow currently running tasks to complete, then wait for all task data retention periods to expire. Schedule no new tasks while waiting. Restart the node when all task retention periods have expired.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
      * @param computeNodeRebootOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -1318,7 +1337,12 @@ public class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that you want to restart.
-     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks will run again when a node is available. Reimage the node as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Reimage the node as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Reimage the node when all tasks have completed.
+      retaineddata - Allow currently running tasks to complete, then wait for all task data retention periods to expire. Schedule no new tasks while waiting. Reimage the node when all task retention periods have expired.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
      * @param computeNodeReimageOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -1334,7 +1358,12 @@ public class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that you want to restart.
-     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks will run again when a node is available. Reimage the node as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Reimage the node as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Reimage the node when all tasks have completed.
+      retaineddata - Allow currently running tasks to complete, then wait for all task data retention periods to expire. Schedule no new tasks while waiting. Reimage the node when all task retention periods have expired.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
      * @param computeNodeReimageOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1350,7 +1379,12 @@ public class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that you want to restart.
-     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks will run again when a node is available. Reimage the node as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Reimage the node as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Reimage the node when all tasks have completed.
+      retaineddata - Allow currently running tasks to complete, then wait for all task data retention periods to expire. Schedule no new tasks while waiting. Reimage the node when all task retention periods have expired.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
      * @param computeNodeReimageOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -1370,7 +1404,12 @@ public class ComputeNodesImpl implements ComputeNodes {
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node that you want to restart.
-     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
+     * @param nodeReimageOption When to reimage the compute node and what to do with currently running tasks. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks will run again when a node is available. Reimage the node as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Reimage the node as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Reimage the node when all tasks have completed.
+      retaineddata - Allow currently running tasks to complete, then wait for all task data retention periods to expire. Schedule no new tasks while waiting. Reimage the node when all task retention periods have expired.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion', 'retainedData'
      * @param computeNodeReimageOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -1434,6 +1473,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Disables task scheduling on the specified compute node.
+     * You can disable task scheduling on a node only if its current scheduling state is enabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to disable task scheduling.
@@ -1447,6 +1487,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Disables task scheduling on the specified compute node.
+     * You can disable task scheduling on a node only if its current scheduling state is enabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to disable task scheduling.
@@ -1460,6 +1501,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Disables task scheduling on the specified compute node.
+     * You can disable task scheduling on a node only if its current scheduling state is enabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to disable task scheduling.
@@ -1477,6 +1519,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Disables task scheduling on the specified compute node.
+     * You can disable task scheduling on a node only if its current scheduling state is enabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to disable task scheduling.
@@ -1521,10 +1564,15 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Disables task scheduling on the specified compute node.
+     * You can disable task scheduling on a node only if its current scheduling state is enabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to disable task scheduling.
-     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion'
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks may run again on other compute nodes, or when task scheduling is re-enabled on this node. Enter offline state as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Enter offline state as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Enter offline state when all tasks have completed.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -1536,10 +1584,15 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Disables task scheduling on the specified compute node.
+     * You can disable task scheduling on a node only if its current scheduling state is enabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to disable task scheduling.
-     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion'
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks may run again on other compute nodes, or when task scheduling is re-enabled on this node. Enter offline state as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Enter offline state as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Enter offline state when all tasks have completed.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -1551,10 +1604,15 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Disables task scheduling on the specified compute node.
+     * You can disable task scheduling on a node only if its current scheduling state is enabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to disable task scheduling.
-     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion'
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks may run again on other compute nodes, or when task scheduling is re-enabled on this node. Enter offline state as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Enter offline state as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Enter offline state when all tasks have completed.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -1570,10 +1628,15 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Disables task scheduling on the specified compute node.
+     * You can disable task scheduling on a node only if its current scheduling state is enabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to disable task scheduling.
-     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion'
+     * @param nodeDisableSchedulingOption What to do with currently running tasks when disabling task scheduling on the compute node. Values are:
+      requeue - Terminate running task processes and requeue the tasks. The tasks may run again on other compute nodes, or when task scheduling is re-enabled on this node. Enter offline state as soon as tasks have been terminated.
+      terminate - Terminate running tasks. The tasks will not run again. Enter offline state as soon as tasks have been terminated.
+      taskcompletion - Allow currently running tasks to complete. Schedule no new tasks while waiting. Enter offline state when all tasks have completed.
+      The default value is requeue. Possible values include: 'requeue', 'terminate', 'taskCompletion'
      * @param computeNodeDisableSchedulingOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
@@ -1637,6 +1700,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Enables task scheduling on the specified compute node.
+     * You can enable task scheduling on a node only if its current scheduling state is disabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to enable task scheduling.
@@ -1650,6 +1714,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Enables task scheduling on the specified compute node.
+     * You can enable task scheduling on a node only if its current scheduling state is disabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to enable task scheduling.
@@ -1663,6 +1728,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Enables task scheduling on the specified compute node.
+     * You can enable task scheduling on a node only if its current scheduling state is disabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to enable task scheduling.
@@ -1680,6 +1746,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Enables task scheduling on the specified compute node.
+     * You can enable task scheduling on a node only if its current scheduling state is disabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to enable task scheduling.
@@ -1721,6 +1788,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Enables task scheduling on the specified compute node.
+     * You can enable task scheduling on a node only if its current scheduling state is disabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to enable task scheduling.
@@ -1735,6 +1803,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Enables task scheduling on the specified compute node.
+     * You can enable task scheduling on a node only if its current scheduling state is disabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to enable task scheduling.
@@ -1749,6 +1818,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Enables task scheduling on the specified compute node.
+     * You can enable task scheduling on a node only if its current scheduling state is disabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to enable task scheduling.
@@ -1767,6 +1837,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Enables task scheduling on the specified compute node.
+     * You can enable task scheduling on a node only if its current scheduling state is disabled.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node on which you want to enable task scheduling.
@@ -1828,7 +1899,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
-     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property. For pools created with a cloud service configuration, see the GetRemoteDesktop API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which to obtain the remote login settings.
@@ -1843,7 +1914,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
-     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property. For pools created with a cloud service configuration, see the GetRemoteDesktop API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which to obtain the remote login settings.
@@ -1857,7 +1928,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
-     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property. For pools created with a cloud service configuration, see the GetRemoteDesktop API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which to obtain the remote login settings.
@@ -1875,7 +1946,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
-     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property. For pools created with a cloud service configuration, see the GetRemoteDesktop API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which to obtain the remote login settings.
@@ -1917,7 +1988,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
-     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property. For pools created with a cloud service configuration, see the GetRemoteDesktop API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which to obtain the remote login settings.
@@ -1933,7 +2004,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
-     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property. For pools created with a cloud service configuration, see the GetRemoteDesktop API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which to obtain the remote login settings.
@@ -1948,7 +2019,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
-     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property. For pools created with a cloud service configuration, see the GetRemoteDesktop API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which to obtain the remote login settings.
@@ -1967,7 +2038,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the settings required for remote login to a compute node.
-     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property.
+     * Before you can remotely login to a node using the remote login settings, you must create a user account on the node. This API can be invoked only on pools created with the virtual machine configuration property. For pools created with a cloud service configuration, see the GetRemoteDesktop API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which to obtain the remote login settings.
@@ -2029,7 +2100,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
-     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
@@ -2059,7 +2130,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
-     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
@@ -2073,7 +2144,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
-     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
@@ -2091,7 +2162,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
-     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
@@ -2133,7 +2204,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
-     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
@@ -2164,7 +2235,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
-     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
@@ -2179,7 +2250,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
-     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.
@@ -2198,7 +2269,7 @@ public class ComputeNodesImpl implements ComputeNodes {
 
     /**
      * Gets the Remote Desktop Protocol file for the specified compute node.
-     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with the cloud service configuration property.
+     * Before you can access a node by using the RDP file, you must create a user account on the node. This API can only be invoked on pools created with a cloud service configuration. For pools created with a virtual machine configuration, see the GetRemoteLoginSettings API.
      *
      * @param poolId The ID of the pool that contains the compute node.
      * @param nodeId The ID of the compute node for which you want to get the Remote Desktop Protocol file.

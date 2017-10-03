@@ -28,8 +28,21 @@ public class StartTask {
     private String commandLine;
 
     /**
+     * The settings for the container under which the start task runs.
+     * When this is specified, all directories recursively below the
+     * AZ_BATCH_NODE_ROOT_DIR (the root of Azure Batch directories on the node)
+     * are mapped into the container, all task environment variables are mapped
+     * into the container, and the task command line is executed in the
+     * container.
+     */
+    @JsonProperty(value = "containerSettings")
+    private TaskContainerSettings containerSettings;
+
+    /**
      * A list of files that the Batch service will download to the compute node
      * before running the command line.
+     * Files listed under this element are located in the task's working
+     * directory.
      */
     @JsonProperty(value = "resourceFiles")
     private List<ResourceFile> resourceFiles;
@@ -70,7 +83,7 @@ public class StartTask {
      * (maxTaskRetryCount). If the task has still not completed successfully
      * after all retries, then the Batch service marks the compute node
      * unusable, and will not schedule tasks to it. This condition can be
-     * detected via the node state and scheduling error detail. If false, the
+     * detected via the node state and failure info details. If false, the
      * Batch service will not wait for the start task to complete. In this
      * case, other tasks can start executing on the compute node while the
      * start task is still running; and even if the start task fails, new tasks
@@ -96,6 +109,26 @@ public class StartTask {
      */
     public StartTask withCommandLine(String commandLine) {
         this.commandLine = commandLine;
+        return this;
+    }
+
+    /**
+     * Get the containerSettings value.
+     *
+     * @return the containerSettings value
+     */
+    public TaskContainerSettings containerSettings() {
+        return this.containerSettings;
+    }
+
+    /**
+     * Set the containerSettings value.
+     *
+     * @param containerSettings the containerSettings value to set
+     * @return the StartTask object itself.
+     */
+    public StartTask withContainerSettings(TaskContainerSettings containerSettings) {
+        this.containerSettings = containerSettings;
         return this;
     }
 

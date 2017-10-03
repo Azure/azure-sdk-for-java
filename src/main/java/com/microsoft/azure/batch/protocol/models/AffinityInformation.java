@@ -18,8 +18,10 @@ public class AffinityInformation {
     /**
      * An opaque string representing the location of a compute node or a task
      * that has run previously.
-     * You can pass the affinityId of a compute node or task to indicate that
-     * this task needs to be placed close to the node or task.
+     * You can pass the affinityId of a compute node to indicate that this task
+     * needs to run on that compute node. Note that this is just a soft
+     * affinity. If the target node is busy or unavailable at the time the task
+     * is scheduled, then the task will be scheduled elsewhere.
      */
     @JsonProperty(value = "affinityId", required = true)
     private String affinityId;

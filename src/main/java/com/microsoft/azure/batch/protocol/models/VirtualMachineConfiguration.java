@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.batch.protocol.models;
 
+import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,19 +17,14 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class VirtualMachineConfiguration {
     /**
-     * A reference to the Azure Virtual Machines Marketplace image to use.
-     * This property and osDisk are mutually exclusive and one of the
-     * properties must be specified.
+     * A reference to the Azure Virtual Machines Marketplace image or the
+     * custom Virtual Machine image to use.
      */
-    @JsonProperty(value = "imageReference")
+    @JsonProperty(value = "imageReference", required = true)
     private ImageReference imageReference;
 
     /**
-     * A reference to the OS disk image to use.
-     * This property can be specified only if the Batch account was created
-     * with its poolAllocationMode property set to 'UserSubscription'. This
-     * property and imageReference are mutually exclusive and one of the
-     * properties must be specified.
+     * Settings for the operating system disk of the Virtual Machine.
      */
     @JsonProperty(value = "osDisk")
     private OSDisk osDisk;
@@ -54,6 +50,39 @@ public class VirtualMachineConfiguration {
      */
     @JsonProperty(value = "windowsConfiguration")
     private WindowsConfiguration windowsConfiguration;
+
+    /**
+     * The configuration for data disks attached to the comptue nodes in the
+     * pool.
+     * This property must be specified if the compute nodes in the pool need to
+     * have empty data disks attached to them. This cannot be updated.
+     */
+    @JsonProperty(value = "dataDisks")
+    private List<DataDisk> dataDisks;
+
+    /**
+     * The type of on-premises license to be used when deploying the operating
+     * system.
+     * This only applies to images that contain the Windows operating system,
+     * and should only be used when you hold valid on-premises licenses for the
+     * nodes which will be deployed. If omitted, no on-premises licensing
+     * discount is applied. Values are:
+     *
+     * Windows_Server - The on-premises license is for Windows Server.
+     * Windows_Client - The on-premises license is for Windows Client.
+     */
+    @JsonProperty(value = "licenseType")
+    private String licenseType;
+
+    /**
+     * The container configuration for the pool.
+     * If specified, setup is performed on each node in the pool to allow tasks
+     * to run in containers. All regular tasks and job manager tasks run on
+     * this pool must specify the containerSettings property, and all other
+     * tasks may specify it.
+     */
+    @JsonProperty(value = "containerConfiguration")
+    private ContainerConfiguration containerConfiguration;
 
     /**
      * Get the imageReference value.
@@ -132,6 +161,66 @@ public class VirtualMachineConfiguration {
      */
     public VirtualMachineConfiguration withWindowsConfiguration(WindowsConfiguration windowsConfiguration) {
         this.windowsConfiguration = windowsConfiguration;
+        return this;
+    }
+
+    /**
+     * Get the dataDisks value.
+     *
+     * @return the dataDisks value
+     */
+    public List<DataDisk> dataDisks() {
+        return this.dataDisks;
+    }
+
+    /**
+     * Set the dataDisks value.
+     *
+     * @param dataDisks the dataDisks value to set
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    public VirtualMachineConfiguration withDataDisks(List<DataDisk> dataDisks) {
+        this.dataDisks = dataDisks;
+        return this;
+    }
+
+    /**
+     * Get the licenseType value.
+     *
+     * @return the licenseType value
+     */
+    public String licenseType() {
+        return this.licenseType;
+    }
+
+    /**
+     * Set the licenseType value.
+     *
+     * @param licenseType the licenseType value to set
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    public VirtualMachineConfiguration withLicenseType(String licenseType) {
+        this.licenseType = licenseType;
+        return this;
+    }
+
+    /**
+     * Get the containerConfiguration value.
+     *
+     * @return the containerConfiguration value
+     */
+    public ContainerConfiguration containerConfiguration() {
+        return this.containerConfiguration;
+    }
+
+    /**
+     * Set the containerConfiguration value.
+     *
+     * @param containerConfiguration the containerConfiguration value to set
+     * @return the VirtualMachineConfiguration object itself.
+     */
+    public VirtualMachineConfiguration withContainerConfiguration(ContainerConfiguration containerConfiguration) {
+        this.containerConfiguration = containerConfiguration;
         return this;
     }
 

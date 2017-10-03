@@ -26,7 +26,8 @@ public class NodeAgentSku {
     private String id;
 
     /**
-     * The list of images verified to be compatible with this node agent SKU.
+     * The list of Azure Marketplace images verified to be compatible with this
+     * node agent SKU.
      * This collection is not exhaustive (the node agent may be compatible with
      * other images).
      */

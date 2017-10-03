@@ -2,12 +2,12 @@
 
 ## Azure Batch Libraries for Java
 
-This README is based on the latest released version Azure Batch SDK (2.1.0). If you are looking for other releases, see [More Information](#more-information)
+This README is based on the latest released version Azure Batch SDK (3.0.0). If you are looking for other releases, see [More Information](#more-information)
 
 The Azure Batch Libraries for Java is a higher-level, object-oriented API for interacting with the Azure Batch service.
 
 
-> **2.1.0** is a release that supports all features of Azure Batch service with API version "2017-06-01.5.1". We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
+> **3.0.0** is a release that supports all features of Azure Batch service with API version "2017-09-01.6.0". We will be adding support for more new features and tweaking the API associated with Azure Batch service newer release.
 
 **Azure Batch Authentication**
 
@@ -60,7 +60,7 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 # Download
 
 
-**2.1.0**
+**3.0.0**
 
 If you are using released builds from 2.1.0, add the following to your POM file:
 
@@ -68,7 +68,7 @@ If you are using released builds from 2.1.0, add the following to your POM file:
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-batch</artifactId>
-    <version>2.1.0</version>
+    <version>3.0.0</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.rest</groupId>
@@ -112,7 +112,8 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| 2.1.0             | [2.1.0](https://github.com/Azure/azure-sdk-for-java/tree/master)                          | Tagged release for 2.1.0 version of Azure Batch libraries |
+| 2.1.0             | [3.0.0](https://github.com/Azure/azure-sdk-for-java/tree/master)                          | Tagged release for 3.0.0 version of Azure Batch libraries |
+| 2.1.0             | [2.1.0](https://github.com/Azure/azure-batch-sdk-for-java/releases/tag/v2.1.0)                          | Tagged release for 2.1.0 version of Azure Batch libraries |
 | 2.0.0             | [2.0.0](https://github.com/Azure/azure-batch-sdk-for-java/releases/tag/v2.0.0)                          | Tagged release for 2.0.0 version of Azure Batch libraries |
 | 1.0.0             | [1.0.0](https://github.com/Azure/azure-batch-sdk-for-java/releases/tag/v1.0.0)                          | Tagged release for 1.0.0 version of Azure Batch libraries |
 | 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure Batch libraries |

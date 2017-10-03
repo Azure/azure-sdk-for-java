@@ -46,7 +46,7 @@ public class CloudServiceConfiguration {
      * virtual machines have upgraded, currentOSVersion is updated to be the
      * same as targetOSVersion.
      */
-    @JsonProperty(value = "currentOSVersion")
+    @JsonProperty(value = "currentOSVersion", access = JsonProperty.Access.WRITE_ONLY)
     private String currentOSVersion;
 
     /**
@@ -96,17 +96,6 @@ public class CloudServiceConfiguration {
      */
     public String currentOSVersion() {
         return this.currentOSVersion;
-    }
-
-    /**
-     * Set the currentOSVersion value.
-     *
-     * @param currentOSVersion the currentOSVersion value to set
-     * @return the CloudServiceConfiguration object itself.
-     */
-    public CloudServiceConfiguration withCurrentOSVersion(String currentOSVersion) {
-        this.currentOSVersion = currentOSVersion;
-        return this;
     }
 
 }

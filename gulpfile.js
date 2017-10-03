@@ -6,7 +6,7 @@ var fs = require('fs');
 
 var mappings = {
     'batchService': {
-        'source': 'specification/batch/data-plane/Microsoft.Batch/2017-06-01.5.1/BatchService.json',
+        'source': 'specification/batch/data-plane/Microsoft.Batch/2017-09-01.6.0/BatchService.json',
         'package': 'com.microsoft.azure.batch.protocol',
         'fluent': false,
         'args': '-FT 1'

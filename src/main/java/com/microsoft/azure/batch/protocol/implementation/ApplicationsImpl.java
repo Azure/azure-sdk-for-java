@@ -357,6 +357,7 @@ public class ApplicationsImpl implements Applications {
 
     /**
      * Gets information about the specified application.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -370,6 +371,7 @@ public class ApplicationsImpl implements Applications {
 
     /**
      * Gets information about the specified application.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the application.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -382,6 +384,7 @@ public class ApplicationsImpl implements Applications {
 
     /**
      * Gets information about the specified application.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -398,6 +401,7 @@ public class ApplicationsImpl implements Applications {
 
     /**
      * Gets information about the specified application.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the application.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -435,6 +439,7 @@ public class ApplicationsImpl implements Applications {
 
     /**
      * Gets information about the specified application.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
@@ -449,6 +454,7 @@ public class ApplicationsImpl implements Applications {
 
     /**
      * Gets information about the specified application.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
@@ -462,6 +468,7 @@ public class ApplicationsImpl implements Applications {
 
     /**
      * Gets information about the specified application.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation
@@ -479,6 +486,7 @@ public class ApplicationsImpl implements Applications {
 
     /**
      * Gets information about the specified application.
+     * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
      * @param applicationId The ID of the application.
      * @param applicationGetOptions Additional parameters for the operation

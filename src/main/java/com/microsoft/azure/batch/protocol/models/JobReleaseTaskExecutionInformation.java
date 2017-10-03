@@ -17,8 +17,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobReleaseTaskExecutionInformation {
     /**
-     * The time at which the task started running. Note that every time the
-     * task is restarted, this value is updated.
+     * The time at which the task started running.
+     * If the task has been restarted or retried, this is the most recent time
+     * at which the task started running.
      */
     @JsonProperty(value = "startTime", required = true)
     private DateTime startTime;
@@ -32,10 +33,12 @@ public class JobReleaseTaskExecutionInformation {
 
     /**
      * The current state of the Job Release task on the compute node.
-     * running - the task is currently running (including retrying). completed
-     * - the task has exited, or the Batch service was unable to start the task
-     * due to scheduling errors. Possible values include: 'running',
-     * 'completed'.
+     * Values are:
+     *
+     * running - the task is currently running (including retrying).
+     * completed - the task has exited, or the Batch service was unable to
+     * start the task due to task preparation errors (such as resource file
+     * download failures). Possible values include: 'running', 'completed'.
      */
     @JsonProperty(value = "state", required = true)
     private JobReleaseTaskState state;
@@ -66,6 +69,13 @@ public class JobReleaseTaskExecutionInformation {
      */
     @JsonProperty(value = "exitCode")
     private Integer exitCode;
+
+    /**
+     * Information about the container under which the task is executing.
+     * This property is set only if the task runs in a container context.
+     */
+    @JsonProperty(value = "containerInfo")
+    private TaskContainerExecutionInformation containerInfo;
 
     /**
      * Information describing the task failure, if any.
@@ -201,6 +211,26 @@ public class JobReleaseTaskExecutionInformation {
      */
     public JobReleaseTaskExecutionInformation withExitCode(Integer exitCode) {
         this.exitCode = exitCode;
+        return this;
+    }
+
+    /**
+     * Get the containerInfo value.
+     *
+     * @return the containerInfo value
+     */
+    public TaskContainerExecutionInformation containerInfo() {
+        return this.containerInfo;
+    }
+
+    /**
+     * Set the containerInfo value.
+     *
+     * @param containerInfo the containerInfo value to set
+     * @return the JobReleaseTaskExecutionInformation object itself.
+     */
+    public JobReleaseTaskExecutionInformation withContainerInfo(TaskContainerExecutionInformation containerInfo) {
+        this.containerInfo = containerInfo;
         return this;
     }
 

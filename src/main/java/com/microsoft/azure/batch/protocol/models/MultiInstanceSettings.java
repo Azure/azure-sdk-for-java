@@ -18,9 +18,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class MultiInstanceSettings {
     /**
      * The number of compute nodes required by the task.
+     * If omitted, the default is 1.
      */
-    @JsonProperty(value = "numberOfInstances", required = true)
-    private int numberOfInstances;
+    @JsonProperty(value = "numberOfInstances")
+    private Integer numberOfInstances;
 
     /**
      * The command line to run on all the compute nodes to enable them to
@@ -28,7 +29,7 @@ public class MultiInstanceSettings {
      * A typical coordination command line launches a background service and
      * verifies that the service is ready to process inter-node messages.
      */
-    @JsonProperty(value = "coordinationCommandLine")
+    @JsonProperty(value = "coordinationCommandLine", required = true)
     private String coordinationCommandLine;
 
     /**
@@ -37,7 +38,9 @@ public class MultiInstanceSettings {
      * The difference between common resource files and task resource files is
      * that common resource files are downloaded for all subtasks including the
      * primary, whereas task resource files are downloaded only for the
-     * primary.
+     * primary. Also note that these resource files are not downloaded to the
+     * task working directory, but instead are downloaded to the task root
+     * directory (one directory above the working directory).
      */
     @JsonProperty(value = "commonResourceFiles")
     private List<ResourceFile> commonResourceFiles;
@@ -47,7 +50,7 @@ public class MultiInstanceSettings {
      *
      * @return the numberOfInstances value
      */
-    public int numberOfInstances() {
+    public Integer numberOfInstances() {
         return this.numberOfInstances;
     }
 
@@ -57,7 +60,7 @@ public class MultiInstanceSettings {
      * @param numberOfInstances the numberOfInstances value to set
      * @return the MultiInstanceSettings object itself.
      */
-    public MultiInstanceSettings withNumberOfInstances(int numberOfInstances) {
+    public MultiInstanceSettings withNumberOfInstances(Integer numberOfInstances) {
         this.numberOfInstances = numberOfInstances;
         return this;
     }

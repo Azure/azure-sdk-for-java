@@ -108,6 +108,19 @@ public class CloudTask {
     private String commandLine;
 
     /**
+     * The settings for the container under which the task runs.
+     * If the pool that will run this task has containerConfiguration set, this
+     * must be set as well. If the pool that will run this task doesn't have
+     * containerConfiguration set, this must not be set. When this is
+     * specified, all directories recursively below the AZ_BATCH_NODE_ROOT_DIR
+     * (the root of Azure Batch directories on the node) are mapped into the
+     * container, all task environment variables are mapped into the container,
+     * and the task command line is executed in the container.
+     */
+    @JsonProperty(value = "containerSettings")
+    private TaskContainerSettings containerSettings;
+
+    /**
      * A list of files that the Batch service will download to the compute node
      * before running the command line.
      * For multi-instance tasks, the resource files will only be downloaded to
@@ -189,6 +202,12 @@ public class CloudTask {
     /**
      * A list of application packages that the Batch service will deploy to the
      * compute node before running the command line.
+     * Application packages are downloaded and deployed to a shared directory,
+     * not the task working directory. Therefore, if a referenced package is
+     * already on the compute node, and is up to date, then it is not
+     * re-downloaded; the existing copy on the compute node is used. If a
+     * referenced application package cannot be installed, for example because
+     * the package has been deleted or because download failed, the task fails.
      */
     @JsonProperty(value = "applicationPackageReferences")
     private List<ApplicationPackageReference> applicationPackageReferences;
@@ -445,6 +464,26 @@ public class CloudTask {
      */
     public CloudTask withCommandLine(String commandLine) {
         this.commandLine = commandLine;
+        return this;
+    }
+
+    /**
+     * Get the containerSettings value.
+     *
+     * @return the containerSettings value
+     */
+    public TaskContainerSettings containerSettings() {
+        return this.containerSettings;
+    }
+
+    /**
+     * Set the containerSettings value.
+     *
+     * @param containerSettings the containerSettings value to set
+     * @return the CloudTask object itself.
+     */
+    public CloudTask withContainerSettings(TaskContainerSettings containerSettings) {
+        this.containerSettings = containerSettings;
         return this;
     }
 

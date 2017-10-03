@@ -19,7 +19,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class JobListPreparationAndReleaseTaskStatusOptions {
     /**
-     * An OData $filter clause.
+     * An OData $filter clause. To get the status of the Job Preparation and
+     * Job Release tasks on a specific compute node, use "nodeId eq
+     * '{desired-node-id}'".
      */
     @JsonProperty(value = "")
     private String filter;

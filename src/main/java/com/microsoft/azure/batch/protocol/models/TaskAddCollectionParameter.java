@@ -17,6 +17,10 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public class TaskAddCollectionParameter {
     /**
      * The collection of tasks to add.
+     * The total serialized size of this collection must be less than 4MB. If
+     * it is greater than 4MB (for example if each task has 100's of resource
+     * files or environment variables), the request will fail with code
+     * 'RequestBodyTooLarge' and should be retried again with fewer tasks.
      */
     @JsonProperty(value = "value", required = true)
     private List<TaskAddParameter> value;
