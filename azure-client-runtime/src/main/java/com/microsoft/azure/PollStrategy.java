@@ -11,6 +11,7 @@ import com.microsoft.rest.http.HttpResponse;
 import rx.Single;
 
 import java.io.IOException;
+import java.util.concurrent.TimeUnit;
 
 /**
  * An abstract class for the different strategies that an OperationStatus can use when checking the
@@ -51,6 +52,33 @@ abstract class PollStrategy {
             catch (NumberFormatException ignored) {
             }
         }
+    }
+
+    /**
+     * If this PollStrategy has a retryAfterSeconds value, delay (and block) the current thread for
+     * the number of seconds that are in the retryAfterSeconds value. If this PollStrategy doesn't
+     * have a retryAfterSeconds value, then just return.
+     */
+    void delay() throws InterruptedException {
+        if (delayInMilliseconds > 0) {
+            Thread.sleep(delayInMilliseconds);
+        }
+    }
+
+    /**
+     * If this OperationStatus has a retryAfterSeconds value, return an Single that is delayed by the
+     * number of seconds that are in the retryAfterSeconds value. If this OperationStatus doesn't have
+     * a retryAfterSeconds value, then return an Single with no delay.
+     * @return A Single with delay if this OperationStatus has a retryAfterSeconds value.
+     */
+    Single<Void> delayAsync() {
+        Single<Void> result = Single.just(null);
+
+        if (delayInMilliseconds > 0) {
+            result = result.delay(delayInMilliseconds, TimeUnit.MILLISECONDS);
+        }
+
+        return result;
     }
 
     /**
