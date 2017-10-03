@@ -708,6 +708,7 @@ public class TestApplicationGateway {
                                 .withTimeoutInSeconds(11)
                                 .withHealthyHttpResponseStatusCodeRange(600, 610)
                                 .withHealthyHttpResponseStatusCodeRange(650, 660)
+                                .withHealthyHttpResponseBodyContents("I am too healthy for this test.")
                                 .attach()
 
                             // Additional/explicit backend HTTP setting configs
@@ -855,6 +856,7 @@ public class TestApplicationGateway {
             Assert.assertEquals(2, probe.healthyHttpResponseStatusCodeRanges().size());
             Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().contains("600-610"));
             Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().contains("650-660"));
+            Assert.assertEquals("I am too healthy for this test.", probe.healthyHttpResponseBodyContents());
 
             creationThread.join();
 
@@ -897,6 +899,7 @@ public class TestApplicationGateway {
                 .withoutProbe("probe1")
                 .updateProbe("probe2")
                     .withoutHealthyHttpResponseStatusCodeRanges()
+                    .withHealthyHttpResponseBodyContents(null)
                     .parent()
                 .withoutDisabledSslProtocols(ApplicationGatewaySslProtocol.TLSV1_0, ApplicationGatewaySslProtocol.TLSV1_1)
                 .withTag("tag1", "value1")
@@ -926,6 +929,7 @@ public class TestApplicationGateway {
             ApplicationGatewayProbe probe = resource.probes().get("probe2");
             Assert.assertNotNull(probe);
             Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().isEmpty());
+            Assert.assertNull(probe.healthyHttpResponseBodyContents());
 
             // Verify backend configs
             ApplicationGatewayBackendHttpConfiguration backendConfig = resource.backendHttpConfigurations().get("config1");
@@ -1257,7 +1261,8 @@ public class TestApplicationGateway {
                 .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
                 .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
                 .append("\n\t\tHost: ").append(probe.host())
-                .append("\n\t\tHealthy HTTP response status code ranges: ").append(probe.healthyHttpResponseStatusCodeRanges());
+                .append("\n\t\tHealthy HTTP response status code ranges: ").append(probe.healthyHttpResponseStatusCodeRanges())
+                .append("\n\t\tHealthy HTTP response body contents: ").append(probe.healthyHttpResponseBodyContents());
         }
 
         // Show authentication certificates

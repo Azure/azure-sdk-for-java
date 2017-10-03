@@ -39,6 +39,12 @@ public interface ApplicationGatewayProbe extends
     Set<String> healthyHttpResponseStatusCodeRanges();
 
     /**
+     * @return the body contents of an HTTP response to a probe to check for to determine backend health, or null if none specified
+     */
+    @Beta(SinceVersion.V1_4_0)
+    String healthyHttpResponseBodyContents();
+
+    /**
      * @return the relative path to be called by the probe
      */
     String path();
@@ -187,17 +193,32 @@ public interface ApplicationGatewayProbe extends
         }
 
         /**
+         * The stage of an application gateway probe definition allowing to specify the body contents of a healthy HTTP response to a probe.
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithHealthyHttpResponseBodyContents<ReturnT> {
+            /**
+             * Specifies the content, if any, to look for in the body of an HTTP response to a probe to determine the health status of the backend.
+             * @param text contents to look for
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseBodyContents(String text);
+        }
+
+        /**
          * The final stage of an application gateway probe definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the probe definition
          * can be attached to the parent application gateway definition.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            Attachable.InDefinitionAlt<ParentT>,
-            WithInterval<ParentT>,
-            WithRetries<ParentT>,
-            WithHealthyHttpResponseStatusCodeRanges<ParentT> {
+        interface WithAttach<ReturnT> extends
+            Attachable.InDefinitionAlt<ReturnT>,
+            WithInterval<ReturnT>,
+            WithRetries<ReturnT>,
+            WithHealthyHttpResponseStatusCodeRanges<ReturnT>,
+            WithHealthyHttpResponseBodyContents<ReturnT> {
         }
     }
 
@@ -297,7 +318,7 @@ public interface ApplicationGatewayProbe extends
         }
 
         /**
-         * The stage of an application gateway probe definition allowing to specify healthy HTTP response status code ranges.
+         * The stage of an application gateway probe update allowing to specify healthy HTTP response status code ranges.
          */
         interface WithHealthyHttpResponseStatusCodeRanges {
             /**
@@ -333,6 +354,19 @@ public interface ApplicationGatewayProbe extends
             @Beta(SinceVersion.V1_4_0)
             Update withoutHealthyHttpResponseStatusCodeRanges();
         }
+
+        /**
+         * The stage of an application gateway probe update allowing to specify the body contents of a healthy HTTP response to a probe.
+         */
+        interface WithHealthyHttpResponseBodyContents {
+            /**
+             * Specifies the content, if any, to look for in the body of an HTTP response to a probe to determine the health status of the backend.
+             * @param text contents to look for
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withHealthyHttpResponseBodyContents(String text);
+        }
     }
 
     /**
@@ -346,7 +380,8 @@ public interface ApplicationGatewayProbe extends
         UpdateStages.WithTimeout,
         UpdateStages.WithInterval,
         UpdateStages.WithRetries,
-        UpdateStages.WithHealthyHttpResponseStatusCodeRanges {
+        UpdateStages.WithHealthyHttpResponseStatusCodeRanges,
+        UpdateStages.WithHealthyHttpResponseBodyContents {
     }
 
     /**
@@ -475,6 +510,20 @@ public interface ApplicationGatewayProbe extends
             WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(int from, int to);
         }
 
+        /**
+         * The stage of an application gateway probe definition allowing to specify the body contents of a healthy HTTP response to a probe.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithHealthyHttpResponseBodyContents<ReturnT> {
+            /**
+             * Specifies the content, if any, to look for in the body of an HTTP response to a probe to determine the health status of the backend.
+             * @param text contents to look for
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHealthyHttpResponseBodyContents(String text);
+        }
+
         /** The final stage of an application gateway probe definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the probe definition
@@ -485,7 +534,8 @@ public interface ApplicationGatewayProbe extends
             Attachable.InUpdateAlt<ParentT>,
             WithInterval<ParentT>,
             WithRetries<ParentT>,
-            WithHealthyHttpResponseStatusCodeRanges<ParentT> {
+            WithHealthyHttpResponseStatusCodeRanges<ParentT>,
+            WithHealthyHttpResponseBodyContents<ParentT> {
         }
     }
 

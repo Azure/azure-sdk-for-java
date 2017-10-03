@@ -42,6 +42,16 @@ class ApplicationGatewayProbeImpl
     }
 
     @Override
+    public String healthyHttpResponseBodyContents() {
+        ApplicationGatewayProbeHealthResponseMatch match = this.inner().match();
+        if (match == null) {
+            return null;
+        } else {
+            return match.body();
+        }
+    }
+
+    @Override
     public ApplicationGatewayProtocol protocol() {
         return this.inner().protocol();
     }
@@ -190,6 +200,28 @@ class ApplicationGatewayProbeImpl
             }
         }
 
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayProbeImpl withHealthyHttpResponseBodyContents(String text) {
+        ApplicationGatewayProbeHealthResponseMatch match = this.inner().match();
+        if (text != null) {
+            if (match == null) {
+                match = new ApplicationGatewayProbeHealthResponseMatch();
+                this.inner().withMatch(match);
+            }
+            match.withBody(text);
+        } else {
+            if (match == null) {
+                // Nothing else to do
+            } else if (match.statusCodes() == null || match.statusCodes().isEmpty()) {
+                // If match is becoming empty then remove altogether
+                this.inner().withMatch(null);
+            } else {
+                match.withBody(null);
+            }
+        }
         return this;
     }
 

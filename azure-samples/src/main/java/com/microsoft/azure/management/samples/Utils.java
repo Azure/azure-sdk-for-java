@@ -1560,7 +1560,8 @@ public final class Utils {
                 .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
                 .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
                 .append("\n\t\tHost: ").append(probe.host())
-                .append("\n\t\tHealthy HTTP response status code ranges: ").append(probe.healthyHttpResponseStatusCodeRanges());
+                .append("\n\t\tHealthy HTTP response status code ranges: ").append(probe.healthyHttpResponseStatusCodeRanges())
+                .append("\n\t\tHealthy HTTP response body contents: ").append(probe.healthyHttpResponseBodyContents());
         }
 
         // Show request routing rules
