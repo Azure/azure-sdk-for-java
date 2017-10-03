@@ -167,7 +167,9 @@ public interface Webhook extends
          */
         interface WithCustomHeaders<ParentT> {
             /**
-             * Specifies a custom header that will be added to the notifications.
+             * Specifies a custom header that will be added to notifications.
+             * <p>
+             * Consecutive calls to this method will add additional headers.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -317,7 +319,9 @@ public interface Webhook extends
          */
         interface WithCustomHeaders<ParentT> {
             /**
-             * Specifies a custom header that will be added to the notifications.
+             * Specifies a custom header that will be added to notifications.
+             * <p>
+             * Consecutive calls to this method will add additional headers.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -462,7 +466,9 @@ public interface Webhook extends
          */
         interface WithCustomHeaders {
             /**
-             * Specifies a custom header that will be added to the notifications.
+             * Specifies a custom header that will be added to notifications.
+             * <p>
+             * Consecutive calls to this method will add additional headers.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -561,7 +567,9 @@ public interface Webhook extends
          */
         interface WithCustomHeaders<ParentT> {
             /**
-             * Specifies custom headers that will be added to the notifications.
+             * Specifies a custom header that will be added to notifications.
+             * <p>
+             * Consecutive calls to this method will add additional headers.
              *
              * @param name of the optional header
              * @param value of the optional header
