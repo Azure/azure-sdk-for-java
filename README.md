@@ -62,7 +62,7 @@ You can find sample code that illustrates Batch usage scenarios in https://githu
 
 **3.0.0**
 
-If you are using released builds from 2.1.0, add the following to your POM file:
+If you are using released builds from 3.0.0, add the following to your POM file:
 
 ```xml
 <dependency>
@@ -112,7 +112,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
-| 2.1.0             | [3.0.0](https://github.com/Azure/azure-sdk-for-java/tree/master)                          | Tagged release for 3.0.0 version of Azure Batch libraries |
+| 3.0.0             | [3.0.0](https://github.com/Azure/azure-sdk-for-java/tree/master)                          | Tagged release for 3.0.0 version of Azure Batch libraries |
 | 2.1.0             | [2.1.0](https://github.com/Azure/azure-batch-sdk-for-java/releases/tag/v2.1.0)                          | Tagged release for 2.1.0 version of Azure Batch libraries |
 | 2.0.0             | [2.0.0](https://github.com/Azure/azure-batch-sdk-for-java/releases/tag/v2.0.0)                          | Tagged release for 2.0.0 version of Azure Batch libraries |
 | 1.0.0             | [1.0.0](https://github.com/Azure/azure-batch-sdk-for-java/releases/tag/v1.0.0)                          | Tagged release for 1.0.0 version of Azure Batch libraries |
