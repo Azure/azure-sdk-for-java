@@ -7,16 +7,17 @@
 package com.microsoft.rest;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.protocol.Environment;
-import com.microsoft.rest.protocol.SerializerAdapter;
-import com.microsoft.rest.http.ChannelHandlerConfig;
-import com.microsoft.rest.http.HttpClient;
-import com.microsoft.rest.http.RxNettyAdapter;
+import com.microsoft.rest.policy.AddCookiesPolicy;
 import com.microsoft.rest.policy.CredentialsPolicy;
 import com.microsoft.rest.policy.LoggingPolicy;
 import com.microsoft.rest.policy.RequestPolicy;
 import com.microsoft.rest.policy.RetryPolicy;
 import com.microsoft.rest.policy.UserAgentPolicy;
+import com.microsoft.rest.protocol.Environment;
+import com.microsoft.rest.protocol.SerializerAdapter;
+import com.microsoft.rest.http.ChannelHandlerConfig;
+import com.microsoft.rest.http.HttpClient;
+import com.microsoft.rest.http.RxNettyAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
 
 import java.util.ArrayList;
@@ -52,6 +53,7 @@ public final class RestClient {
         final RxNettyAdapter.Builder httpClientBuilder = new RxNettyAdapter.Builder()
             .withRequestPolicy(new UserAgentPolicy.Factory(userAgent))
             .withRequestPolicy(new RetryPolicy.Factory())
+            .withRequestPolicy(new AddCookiesPolicy.Factory())
             .withRequestPolicy(new LoggingPolicy.Factory(logLevel));
         if (credentials != null) {
             httpClientBuilder.withRequestPolicy(new CredentialsPolicy.Factory(credentials));
