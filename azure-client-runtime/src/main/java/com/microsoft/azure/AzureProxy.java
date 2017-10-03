@@ -106,7 +106,7 @@ public final class AzureProxy extends RestProxy {
     protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser) throws IOException, InterruptedException {
         final SerializerAdapter<?> serializer = serializer();
 
-        final OperationStatus<Object> operationStatus = new OperationStatus<>(httpRequest, httpResponse, serializer);
+        final OperationStatus<Object> operationStatus = new OperationStatus<>(httpRequest, httpResponse, serializer, defaultDelayInMilliseconds());
         while (!operationStatus.isDone()) {
             operationStatus.delay();
 
@@ -133,7 +133,7 @@ public final class AzureProxy extends RestProxy {
                     .flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
                         @Override
                         public Single<? extends HttpResponse> call(HttpResponse httpResponse) {
-                            final OperationStatus<Object> operationStatus = new OperationStatus<>(httpRequest, httpResponse, serializer);
+                            final OperationStatus<Object> operationStatus = new OperationStatus<>(httpRequest, httpResponse, serializer, defaultDelayInMilliseconds());
 
                             Single<HttpResponse> result;
                             if (operationStatus.isDone()) {
@@ -169,7 +169,7 @@ public final class AzureProxy extends RestProxy {
                         .flatMap(new Func1<HttpResponse, Observable<OperationStatus<Object>>>() {
                             @Override
                             public Observable<OperationStatus<Object>> call(HttpResponse httpResponse) {
-                                final OperationStatus<Object> operationStatus = new OperationStatus<>(httpRequest, httpResponse, serializer);
+                                final OperationStatus<Object> operationStatus = new OperationStatus<>(httpRequest, httpResponse, serializer, defaultDelayInMilliseconds());
 
                                 Observable<OperationStatus<Object>> result;
                                 if (operationStatus.isDone()) {

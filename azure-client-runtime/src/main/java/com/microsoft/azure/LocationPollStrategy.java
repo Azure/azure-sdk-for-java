@@ -27,8 +27,8 @@ public final class LocationPollStrategy extends PollStrategy {
      */
     public static final String HEADER_NAME = "Location";
 
-    private LocationPollStrategy(String fullyQualifiedMethodName, String locationUrl) {
-        super(AzureProxy.defaultDelayInMilliseconds());
+    private LocationPollStrategy(String fullyQualifiedMethodName, String locationUrl, long delayInMilliseconds) {
+        super(delayInMilliseconds);
 
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.locationUrl = locationUrl;
@@ -76,11 +76,13 @@ public final class LocationPollStrategy extends PollStrategy {
      *                                 long running operation.
      * @param httpResponse The HTTP response that the required header values for this pollStrategy
      *                     will be read from.
+     * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
+     *                            use when polling.
      */
-    static LocationPollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse) {
+    static LocationPollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse, long delayInMilliseconds) {
         final String locationUrl = httpResponse.headerValue(HEADER_NAME);
         return locationUrl != null && !locationUrl.isEmpty()
-                ? new LocationPollStrategy(fullyQualifiedMethodName, locationUrl)
+                ? new LocationPollStrategy(fullyQualifiedMethodName, locationUrl, delayInMilliseconds)
                 : null;
     }
 }

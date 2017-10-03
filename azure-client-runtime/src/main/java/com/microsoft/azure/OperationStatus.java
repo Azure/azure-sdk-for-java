@@ -28,8 +28,9 @@ public class OperationStatus<T> {
      * @param originalHttpResponse The HttpResponse from the request that initiated the long running
      *                             operation.
      * @param serializer The serializer used to deserialize the response body.
+     * @param delayInMilliseconds The
      */
-    OperationStatus(HttpRequest originalHttpRequest, HttpResponse originalHttpResponse, SerializerAdapter<?> serializer) {
+    OperationStatus(HttpRequest originalHttpRequest, HttpResponse originalHttpResponse, SerializerAdapter<?> serializer, long delayInMilliseconds) {
         final int httpStatusCode = originalHttpResponse.statusCode();
 
         if (httpStatusCode != 200) {
@@ -39,18 +40,18 @@ public class OperationStatus<T> {
 
             if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
                 if (httpStatusCode == 201) {
-                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer);
+                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
                 } else if (httpStatusCode == 202) {
-                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer);
+                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
                     if (pollStrategy == null) {
-                        pollStrategy = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse);
+                        pollStrategy = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, delayInMilliseconds);
                     }
                 }
             } else /* if (originalRequestHttpMethod.equalsIgnoreCase("DELETE") || originalRequestHttpMethod.equalsIgnoreCase("POST") */ {
                 if (httpStatusCode == 202) {
-                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer);
+                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
                     if (pollStrategy == null) {
-                        pollStrategy = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse);
+                        pollStrategy = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, originalHttpResponse, delayInMilliseconds);
                     }
                 }
             }
