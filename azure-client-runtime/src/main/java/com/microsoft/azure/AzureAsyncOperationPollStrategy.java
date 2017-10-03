@@ -103,10 +103,13 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                                         pollingSucceeded = SUCCEEDED.equalsIgnoreCase(provisioningState);
                                         clearDelayInMilliseconds();
                                     }
-                                } else if (httpPollResponse.statusCode() == 200) {
-                                    throw new CloudException("Response does not contain a valid body", httpPollResponse, null);
                                 }
-                                result = Single.just(httpPollResponse);
+
+                                if (httpPollResponse.statusCode() == 200 && operationResource == null) {
+                                    result = Single.error(new CloudException("Response does not contain a valid body", httpPollResponse, null));
+                                } else {
+                                    result = Single.just(httpPollResponse);
+                                }
                             } catch (IOException e) {
                                 result = Single.error(e);
                             }
