@@ -19,6 +19,7 @@ import java.net.CookieManager;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.Arrays;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -57,7 +58,7 @@ public final class AddCookiesPolicy implements RequestPolicy {
                 public HttpResponse call(HttpResponse httpResponse) {
                     Map<String, List<String>> responseHeaders = new HashMap<>();
                     for (HttpHeader header : httpResponse.headers()) {
-                        responseHeaders.put(header.name(), Arrays.asList(header.values()));
+                        responseHeaders.put(header.name(), Collections.singletonList(header.value()));
                     }
 
                     try {
