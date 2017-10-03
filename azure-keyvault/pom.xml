@@ -36,6 +36,7 @@
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
+      <testMode>playback</testMode>  
   </properties>
 
   <developers>
@@ -45,35 +46,99 @@
     </developer>
   </developers>
 
+  <repositories>
+    <repository>
+      <id>ossrh</id>
+      <name>Sonatype Snapshots</name>
+      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
+      <layout>default</layout>
+      <snapshots>
+        <enabled>true</enabled>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+    </repository>
+  </repositories>
 
   <dependencies>
     <dependency>
-    	<groupId>com.microsoft.azure</groupId>
-    	<artifactId>azure-client-runtime</artifactId>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure</artifactId>
+      <version>1.3.1-SNAPSHOT</version>
     </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-runtime</artifactId>
+      <version>1.1.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-client-authentication</artifactId>
+      <version>1.1.1-SNAPSHOT</version>
+    </dependency>
+    <dependency>
+      <groupId>com.microsoft.rest</groupId>
+      <artifactId>client-runtime</artifactId>
+      <version>1.1.1-SNAPSHOT</version>
+    </dependency>
+    <!--<dependency>-->
+    	<!--<groupId>com.microsoft.azure</groupId>-->
+    	<!--<artifactId>azure-client-runtime</artifactId>-->
+    <!--</dependency>-->
     <dependency>
     	<groupId>com.microsoft.azure</groupId>
     	<artifactId>azure-keyvault-webkey</artifactId>
-    	<version>1.0.1-SNAPSHOT</version>
+    	<version>1.0.0</version>
     </dependency>
-    
-    <!-- Test dependencies -->    
+    <!-- Test dependencies -->
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
       <scope>test</scope>
     </dependency>
+
+    <dependency>
+      <groupId>com.microsoft.azure</groupId>
+      <artifactId>azure-mgmt-resources</artifactId>
+      <version>1.3.1-SNAPSHOT</version>
+      <type>test-jar</type>
+      <scope>test</scope>
+    </dependency>
+
+
     <dependency>
     	<groupId>com.microsoft.azure</groupId>
     	<artifactId>adal4j</artifactId>
     	<scope>test</scope>
     </dependency>
+    <dependency>
+      <groupId>org.bouncycastle</groupId>
+      <artifactId>bcprov-jdk15on</artifactId>
+      <version>1.54</version>
+    </dependency>
+    
   </dependencies>
   <build>
     <plugins>
+    <plugin>
+  <groupId>org.eclipse.jetty</groupId>
+  <artifactId>jetty-maven-plugin</artifactId>
+  <version>9.2.22.v20170606</version>
+  <configuration>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopPort>11079</stopPort>
+          <stopKey>STOP</stopKey>
+          <httpConnector>
+            <port>${playbackServerPort}</port>
+          </httpConnector>
+       
+        </configuration>
+        
+</plugin>
+    
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-jar-plugin</artifactId>
+        <version>3.0.2</version>
         <configuration>
           <archive>
             <manifest>
@@ -86,6 +151,8 @@
       <plugin>
         <groupId>org.codehaus.mojo</groupId>
         <artifactId>build-helper-maven-plugin</artifactId>
+                <version>1.12</version>
+        
       </plugin>
 
       <plugin>
@@ -111,6 +178,8 @@
 <br />*/</code>]]></bottom>
         </configuration>
       </plugin>
+
+
     </plugins>
   </build>
 </project>

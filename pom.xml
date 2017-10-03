@@ -32,6 +32,8 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
+    <playbackServerPort>11080</playbackServerPort>
+    
   </properties>
 
   <developers>
@@ -189,9 +191,52 @@
         <artifactId>maven-release-plugin</artifactId>
         <version>2.5.3</version>
       </plugin>
+    
+    <plugin>
+  <groupId>org.eclipse.jetty</groupId>
+  <artifactId>jetty-maven-plugin</artifactId>
+  <version>9.2.22.v20170606</version>
+  <configuration>
+          <scanIntervalSeconds>0</scanIntervalSeconds>
+          <stopPort>11079</stopPort>
+          <stopKey>STOP</stopKey>
+          <httpConnector>
+            <port>${playbackServerPort}</port>
+          </httpConnector>
+       
+        </configuration>
+        
+</plugin>
     </plugins>
+
     <pluginManagement>
       <plugins>
+      
+      <plugin>
+    <groupId>org.codehaus.mojo</groupId>
+    <artifactId>properties-maven-plugin</artifactId>
+    <version>1.0.0</version>
+    <executions>
+        <execution>
+            <goals>
+                <goal>set-system-properties</goal>
+            </goals>
+            <configuration>
+                <properties>
+                    <property>
+<name>keyvault.vaulturi</name>
+       		<value>https://tifchen-keyvault-fancy.vault.azure.net</value>
+                    </property>
+                    
+                    <property>
+                           		<name>keyvault.vaulturi.alt</name>
+       		<value>https://tifchen-keyvault-fancier.vault.azure.net</value>
+                    </property>
+                </properties>
+            </configuration>
+        </execution>
+    </executions>
+</plugin>
         <plugin>
           <groupId>org.apache.maven.plugins</groupId>
           <artifactId>maven-resources-plugin</artifactId>
@@ -211,6 +256,8 @@
             </includes>
             <environmentVariables>
               <test.mode>${testMode}</test.mode>
+              <keyvault.vaulturi>https://tifchen-keyvault-fancy.vault.azure.net</keyvault.vaulturi>
+              <keyvault.vaulturi.alt>https://tifchen-keyvault-fancier.vault.azure.net</keyvault.vaulturi.alt>
             </environmentVariables>
           </configuration>
         </plugin>

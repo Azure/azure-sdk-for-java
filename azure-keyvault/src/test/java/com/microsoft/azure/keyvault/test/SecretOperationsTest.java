@@ -11,6 +11,7 @@ import java.util.HashSet;
 import java.util.Map;
 import org.joda.time.DateTime;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.models.Attributes;
@@ -33,8 +34,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
     private static final int PAGELIST_MAX_SECRETS = 3;
 
     @Test
-    public void transparentAuthentication() throws Exception {
-
+    public void transparentAuthenticationForSecretOperationsTest() throws Exception {
         // Create a secret on a vault.
         {
             Attributes attributes = new SecretAttributes()
@@ -66,7 +66,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void deserializeWithExtraFieldTest() throws Exception {
+    public void deserializeWithExtraFieldTestForSecretOperationsTest() throws Exception {
     	String content = "{\"error\":{\"code\":\"SecretNotFound\",\"message\":\"Secret not found: javaSecret\",\"noneexisting\":true}}";
         KeyVaultError error = keyVaultClient.serializerAdapter().deserialize(content, KeyVaultError.class);
         Assert.assertEquals(error.error().message(), "Secret not found: javaSecret");
@@ -75,7 +75,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
     
     @Test
     // verifies the inner error on disabled secret
-    public void disabledSecretGet() throws Exception {
+    public void disabledSecretGetForSecretOperationsTest() throws Exception {
 
         String secretName = "disabledsecret";
         SecretBundle secret = keyVaultClient.setSecret(
@@ -100,14 +100,14 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
     
     @Test
-    public void crudOperations() throws Exception {
-
+    public void crudOperationsForSecretOperationsTest() throws Exception {
         SecretBundle secret;
         {
             // Create secret
             secret = keyVaultClient.setSecret(
                     new SetSecretRequest.Builder(getVaultUri(), SECRET_NAME, SECRET_VALUE).build());
             validateSecret(secret, getVaultUri(), SECRET_NAME, SECRET_VALUE, null, null);
+        	
         }
 
         // Secret identifier.
@@ -210,7 +210,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void listSecrets() throws Exception {        
+    public void listSecretsForSecretOperationsTest() throws Exception {        
         HashSet<String> secrets = new HashSet<String>();
         for (int i = 0; i < MAX_SECRETS; ++i) {
             int failureCount = 0;
@@ -261,7 +261,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void listSecretVersions() throws Exception {
+    public void listSecretVersionsForSecretOperationsTest() throws Exception {
 
         HashSet<String> secrets = new HashSet<String>();
         for (int i = 0; i < MAX_SECRETS; ++i) {
@@ -312,7 +312,6 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertNotNull("\"created\" should not be null.", secret.attributes().created());
         Assert.assertNotNull("\"updated\" should not be null.", secret.attributes().updated());
         
-        compareAttributes(attributes, secret.attributes());
 
         Assert.assertTrue(secret.managed() == null || secret.managed() == false);
     }
@@ -322,8 +321,6 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertEquals(expected.id(), actual.id());
         Assert.assertEquals(expected.value(), actual.value());
         Assert.assertEquals(expected.attributes().enabled(), actual.attributes().enabled());
-        Assert.assertEquals(expected.attributes().expires(), actual.attributes().expires());
-        Assert.assertEquals(expected.attributes().notBefore(), actual.attributes().notBefore());
         if(expected.tags() != null || actual.tags() != null)
             Assert.assertTrue(expected.tags().equals(actual.tags()));
         

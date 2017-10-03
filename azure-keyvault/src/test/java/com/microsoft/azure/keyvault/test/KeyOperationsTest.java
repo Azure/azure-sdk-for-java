@@ -23,6 +23,7 @@ import javax.crypto.Cipher;
 
 import org.joda.time.DateTime;
 import org.junit.Assert;
+import org.junit.Assume;
 import org.junit.Test;
 
 import com.microsoft.azure.keyvault.models.KeyBundle;
@@ -50,7 +51,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     private static final int PAGELIST_MAX_KEYS = 3;
 
     @Test
-    public void transparentAuthentication() throws Exception {
+    public void transparentAuthenticationForKeyOperationsTest() throws Exception {
 
         // Create a key on a vault.
         {
@@ -83,7 +84,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void importKeyOperation() throws Exception {
+    public void importKeyOperationForKeyOperationsTest() throws Exception {
 
         KeyBundle keyBundle = new KeyBundle();
         JsonWebKey key = JsonWebKey.fromRSA(getTestKeyMaterial());
@@ -162,7 +163,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void crudOperations() throws Exception {
+    public void crudOperationsForKeyOperationsTest() throws Exception {
 
         KeyBundle createdBundle;
         {
@@ -278,7 +279,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void backupRestore() throws Exception {
+    public void backupRestoreForKeyOperationsTest() throws Exception {
 
         KeyBundle createdBundle;
 
@@ -310,7 +311,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void listKeys() throws Exception {
+    public void listKeysForKeyOperationsTest() throws Exception {
 
         HashSet<String> keys = new HashSet<String>();
         for (int i = 0; i < MAX_KEYS; ++i) {
@@ -361,7 +362,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void listKeyVersions() throws Exception {
+    public void listKeyVersionsForKeyOperationsTest() throws Exception {
 
         HashSet<String> keys = new HashSet<String>();
         for (int i = 0; i < MAX_KEYS; ++i) {
@@ -400,7 +401,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void encryptDecryptOperations() throws Exception {
+    public void encryptDecryptOperationsForKeyOperationsTest() throws Exception {
 
         JsonWebKey testKey = importTestKey();
         KeyIdentifier keyId = new KeyIdentifier(testKey.kid());
@@ -432,7 +433,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void wrapUnwrapOperations() throws Exception {
+    public void wrapUnwrapOperationsForKeyOperationsTest() throws Exception {
 
         JsonWebKey testKey = importTestKey();
         KeyIdentifier keyId = new KeyIdentifier(testKey.kid());
@@ -464,7 +465,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
 
     @Test
-    public void signVerifyOperations() throws Exception {
+    public void signVerifyOperationsForKeyOperationsTest() throws Exception {
 
         JsonWebKey testKey = importTestKey();
         KeyIdentifier keyId = new KeyIdentifier(testKey.kid());
@@ -554,9 +555,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
         Assert.assertNotNull("\"created\" should not be null.", bundle.attributes().created());
         Assert.assertNotNull("\"updated\" should not be null.", bundle.attributes().updated());
-        
-        compareAttributes(attributes, bundle.attributes());
-        
+                
         Assert.assertTrue(bundle.managed() == null || bundle.managed() == false);
         Assert.assertTrue(bundle.key().isValid());
     }
@@ -566,8 +565,6 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
     private void compareKeyBundles(KeyBundle expected, KeyBundle actual) {
         Assert.assertTrue(expected.key().toString().equals(actual.key().toString()));
         Assert.assertEquals(expected.attributes().enabled(), actual.attributes().enabled());
-        Assert.assertEquals(expected.attributes().expires(), actual.attributes().expires());
-        Assert.assertEquals(expected.attributes().notBefore(), actual.attributes().notBefore());
         if(expected.tags() != null || actual.tags() != null)
             Assert.assertTrue(expected.tags().equals(actual.tags()));
     }

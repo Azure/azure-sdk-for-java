@@ -53,7 +53,7 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     
     @Test
-    public void keyAsync() throws Exception {
+    public void keyAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         String keyname = "mykey";
@@ -125,7 +125,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
     
     @Test
-    public void secretAsync() throws Exception {
+    public void secretAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         String secretname = "mySecret";
@@ -165,7 +165,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
     
     @Test
-    public void certificateAsync() throws Exception {
+    public void certificateAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         String certificateName = "myCertificate";
@@ -233,7 +233,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
     
     @Test
-    public void issuerAsync() throws Exception {
+    public void issuerAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         String issuerName = "myIssuer";
@@ -257,7 +257,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     
 
     @Test
-    public void certificateContactsAsync() throws Exception {
+    public void certificateContactsAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         
