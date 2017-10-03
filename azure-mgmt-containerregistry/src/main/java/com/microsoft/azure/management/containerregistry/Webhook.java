@@ -167,7 +167,7 @@ public interface Webhook extends
          */
         interface WithCustomHeaders<ParentT> {
             /**
-             * Specifies custom headers that will be added to the notifications.
+             * Specifies a custom header that will be added to the notifications.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -176,7 +176,7 @@ public interface Webhook extends
             WithAttach<ParentT> withCustomHeader(String name, String value);
 
             /**
-             * Specifies the the service URI for post notifications.
+             * Specifies the custom headers that will be added to the notifications.
              *
              * @param customHeaders the "Name=Value" custom headers.
              * @return the next stage of the definition
@@ -317,7 +317,7 @@ public interface Webhook extends
          */
         interface WithCustomHeaders<ParentT> {
             /**
-             * Specifies custom headers that will be added to the notifications.
+             * Specifies a custom header that will be added to the notifications.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -326,7 +326,7 @@ public interface Webhook extends
             WithAttach<ParentT> withCustomHeader(String name, String value);
 
             /**
-             * Specifies the the service URI for post notifications.
+             * Specifies the custom headers that will be added to the notifications.
              *
              * @param customHeaders the "Name=Value" custom headers.
              * @return the next stage of the definition
@@ -462,7 +462,7 @@ public interface Webhook extends
          */
         interface WithCustomHeaders {
             /**
-             * Specifies custom headers that will be added to the notifications.
+             * Specifies a custom header that will be added to the notifications.
              *
              * @param name of the optional header
              * @param value of the optional header
@@ -471,7 +471,7 @@ public interface Webhook extends
             Update withCustomHeader(String name, String value);
 
             /**
-             * Specifies the the service URI for post notifications.
+             * Specifies custom headers that will be added to the notifications.
              *
              * @param customHeaders the "Name=Value" custom headers.
              * @return the next stage of the resource update
@@ -507,7 +507,6 @@ public interface Webhook extends
              */
             Update withDefaultStatus(WebhookStatus defaultStatus);
         }
-
     }
 
     /**

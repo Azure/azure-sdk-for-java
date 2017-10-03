@@ -16,26 +16,26 @@ import java.util.Collection;
  */
 @Fluent
 @Beta(Beta.SinceVersion.V1_3_0)
-public class AccessKeyName extends ExpandableStringEnum<AccessKeyName> {
-    /** Static value 'password'. */
-    public static final AccessKeyName PRIMARY_KEY = fromString(PasswordName.PASSWORD.toString());
+public class AccessKeyType extends ExpandableStringEnum<AccessKeyType> {
+    /** Primary key. */
+    public static final AccessKeyType PRIMARY = fromString(PasswordName.PASSWORD.toString());
 
-    /** Static value 'password2'. */
-    public static final AccessKeyName SECONDARY_KEY = fromString(PasswordName.PASSWORD2.toString());
+    /** Secondary key. */
+    public static final AccessKeyType SECONDARY = fromString(PasswordName.PASSWORD2.toString());
 
     /**
      * Finds or creates an access key name based on the provided name.
      * @param name a name
-     * @return a AccessKeyName instance
+     * @return a AccessKeyType instance
      */
-    public static AccessKeyName fromString(String name) {
-        return fromString(name, AccessKeyName.class);
+    public static AccessKeyType fromString(String name) {
+        return fromString(name, AccessKeyType.class);
     }
 
     /**
      * @return known admin user access key names
      */
-    public static Collection<AccessKeyName> values() {
-        return values(AccessKeyName.class);
+    public static Collection<AccessKeyType> values() {
+        return values(AccessKeyType.class);
     }
 }

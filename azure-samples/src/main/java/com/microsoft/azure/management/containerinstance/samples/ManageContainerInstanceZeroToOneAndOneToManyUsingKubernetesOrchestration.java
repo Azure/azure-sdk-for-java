@@ -18,7 +18,7 @@ import com.microsoft.azure.management.compute.ContainerService;
 import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
 import com.microsoft.azure.management.compute.ContainerServiceVMSizeTypes;
 import com.microsoft.azure.management.containerinstance.ContainerGroup;
-import com.microsoft.azure.management.containerregistry.AccessKeyName;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -126,7 +126,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
 
             RegistryCredentials acrCredentials = azureRegistry.getCredentials();
             DockerClient dockerClient = DockerUtils.createDockerClient(azure, rgName, region,
-                azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyName.PRIMARY_KEY));
+                azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             //=============================================================
             // Pull a temp image from public Docker repo and create a temporary container from that image
@@ -189,7 +189,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
                 .withRegion(region)
                 .withNewResourceGroup(rgName)
                 .withLinux()
-                .withPrivateImageRegistry(azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyName.PRIMARY_KEY))
+                .withPrivateImageRegistry(azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
                 .withoutVolume()
                 .defineContainerInstance(aciName)
                     .withImage(privateRepoUrl)
@@ -334,7 +334,7 @@ public class ManageContainerInstanceZeroToOneAndOneToManyUsingKubernetesOrchestr
             // Create a secret of type "docker-repository" that will be used for downloading the container image from
             //     our Azure private container repo
 
-            String basicAuth = new String(Base64.encodeBase64((acrCredentials.username() + ":" + acrCredentials.accessKeys().get(AccessKeyName.PRIMARY_KEY)).getBytes()));
+            String basicAuth = new String(Base64.encodeBase64((acrCredentials.username() + ":" + acrCredentials.accessKeys().get(AccessKeyType.PRIMARY)).getBytes()));
             HashMap<String, String> secretData = new HashMap<>(1);
             String dockerCfg = String.format("{ \"%s\": { \"auth\": \"%s\", \"email\": \"%s\" } }",
                 azureRegistry.loginServerUrl(),

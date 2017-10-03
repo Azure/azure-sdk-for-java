@@ -8,7 +8,7 @@ package com.microsoft.azure.management.containerregistry.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.containerregistry.AccessKeyName;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.containerregistry.PasswordName;
 import com.microsoft.azure.management.containerregistry.Registries;
@@ -139,13 +139,13 @@ public class RegistriesImpl
     }
 
     @Override
-    public RegistryCredentials regenerateCredential(String resourceGroupName, String registryName, AccessKeyName accessKeyName) {
-        return new RegistryCredentialsImpl(this.inner().regenerateCredential(resourceGroupName, registryName, PasswordName.fromString(accessKeyName.toString())));
+    public RegistryCredentials regenerateCredential(String resourceGroupName, String registryName, AccessKeyType accessKeyType) {
+        return new RegistryCredentialsImpl(this.inner().regenerateCredential(resourceGroupName, registryName, PasswordName.fromString(accessKeyType.toString())));
     }
 
     @Override
-    public Observable<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, AccessKeyName accessKeyName) {
-        return this.inner().regenerateCredentialAsync(resourceGroupName, registryName, PasswordName.fromString(accessKeyName.toString()))
+    public Observable<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, AccessKeyType accessKeyType) {
+        return this.inner().regenerateCredentialAsync(resourceGroupName, registryName, PasswordName.fromString(accessKeyType.toString()))
             .map(new Func1<RegistryListCredentialsResultInner, RegistryCredentials>() {
                 @Override
                 public RegistryCredentials call(RegistryListCredentialsResultInner registryListCredentialsResultInner) {

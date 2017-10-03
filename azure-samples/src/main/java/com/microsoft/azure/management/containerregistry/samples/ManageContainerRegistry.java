@@ -14,7 +14,7 @@ import com.github.dockerjava.api.model.Image;
 import com.github.dockerjava.core.command.PullImageResultCallback;
 import com.github.dockerjava.core.command.PushImageResultCallback;
 import com.microsoft.azure.management.Azure;
-import com.microsoft.azure.management.containerregistry.AccessKeyName;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -78,7 +78,7 @@ public class ManageContainerRegistry {
 
             RegistryCredentials acrCredentials = azureRegistry.getCredentials();
             DockerClient dockerClient = DockerUtils.createDockerClient(azure, rgName, region,
-                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyName.PRIMARY_KEY));
+                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             //=============================================================
             // Pull a temp image from public Docker repo and create a temporary container from that image

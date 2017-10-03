@@ -66,25 +66,25 @@ public interface Registries extends
      *
      * @param resourceGroupName the resource group name
      * @param registryName the registry name
-     * @param accessKeyName the admin user access key name to regenerate the value for
+     * @param accessKeyType the admin user access key name to regenerate the value for
      * @return the container registry's login credentials
      */
     @Beta(SinceVersion.V1_4_0)
-    RegistryCredentials regenerateCredential(String resourceGroupName, String registryName, AccessKeyName accessKeyName);
+    RegistryCredentials regenerateCredential(String resourceGroupName, String registryName, AccessKeyType accessKeyType);
 
     /**
      * Regenerates the value for one of the admin user access key for the specified container registry.
      *
      * @param resourceGroupName the resource group name
      * @param registryName the registry name
-     * @param accessKeyName the admin user access key name to regenerate the value for
+     * @param accessKeyType the admin user access key name to regenerate the value for
      * @return a representation of the future computation of this call, returning the container registry's login credentials
      */
     @Beta(SinceVersion.V1_4_0)
-    Observable<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, AccessKeyName accessKeyName);
+    Observable<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, AccessKeyType accessKeyType);
 
     /**
-     * Gets the quota usages for the specified container registry.
+     * Lists the quota usages for the specified container registry.
      *
      * @param resourceGroupName the resource group name
      * @param registryName the registry name
@@ -94,7 +94,7 @@ public interface Registries extends
     Collection<RegistryUsage> listQuotaUsages(String resourceGroupName, String registryName);
 
     /**
-     * Gets the quota usages for the specified container registry.
+     * Lists the quota usages for the specified container registry.
      *
      * @param resourceGroupName the resource group name
      * @param registryName the registry name

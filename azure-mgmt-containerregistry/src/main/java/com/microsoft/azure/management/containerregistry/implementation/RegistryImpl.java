@@ -9,7 +9,7 @@ package com.microsoft.azure.management.containerregistry.implementation;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.containerregistry.AccessKeyName;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.containerregistry.RegistryUsage;
@@ -222,16 +222,7 @@ public class RegistryImpl
     }
 
     @Override
-    public RegistryImpl withExistingStorageAccountName(String resourceGroupName, String storageAccountName) {
-        this.existingStorageAccountName = storageAccountName;
-        this.existingStorageAccountResourceGroupName = resourceGroupName;
-        this.storageAccountId = null;
-
-        return this;
-    }
-
-    @Override
-    public RegistryImpl withExistingStorageAccountId(String id) {
+    public RegistryImpl withExistingStorageAccount(String id) {
         this.existingStorageAccountName = null;
         this.storageAccountId = id;
 
@@ -304,15 +295,15 @@ public class RegistryImpl
     }
 
     @Override
-    public RegistryCredentials regenerateCredential(AccessKeyName accessKeyName) {
+    public RegistryCredentials regenerateCredential(AccessKeyType accessKeyType) {
         return this.manager().containerRegistries()
-            .regenerateCredential(this.resourceGroupName(), this.name(), accessKeyName);
+            .regenerateCredential(this.resourceGroupName(), this.name(), accessKeyType);
     }
 
     @Override
-    public Observable<RegistryCredentials> regenerateCredentialAsync(AccessKeyName accessKeyName) {
+    public Observable<RegistryCredentials> regenerateCredentialAsync(AccessKeyType accessKeyType) {
         return this.manager().containerRegistries()
-            .regenerateCredentialAsync(this.resourceGroupName(), this.name(), accessKeyName);
+            .regenerateCredentialAsync(this.resourceGroupName(), this.name(), accessKeyType);
     }
 
     @Override

@@ -6,7 +6,7 @@
 package com.microsoft.azure.management.containerregistry.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.containerregistry.AccessKeyName;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.containerregistry.RegistryPassword;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.WrapperImpl;
@@ -20,7 +20,7 @@ import java.util.Map;
  */
 @LangDefinition
 public class RegistryCredentialsImpl extends WrapperImpl<RegistryListCredentialsResultInner> implements RegistryCredentials {
-    private Map<AccessKeyName, String> accessKeys;
+    private Map<AccessKeyType, String> accessKeys;
 
     protected RegistryCredentialsImpl(RegistryListCredentialsResultInner innerObject) {
         super(innerObject);
@@ -28,16 +28,16 @@ public class RegistryCredentialsImpl extends WrapperImpl<RegistryListCredentials
         this.accessKeys = new HashMap<>();
         if (this.inner().passwords() != null) {
             for (RegistryPassword registryPassword : this.inner().passwords()) {
-                AccessKeyName accessKeyName = AccessKeyName.fromString(registryPassword.name().toString());
-                if (accessKeyName != null) {
-                    this.accessKeys.put(accessKeyName, registryPassword.value());
+                AccessKeyType accessKeyType = AccessKeyType.fromString(registryPassword.name().toString());
+                if (accessKeyType != null) {
+                    this.accessKeys.put(accessKeyType, registryPassword.value());
                 }
             }
         }
     }
 
     @Override
-    public Map<AccessKeyName, String> accessKeys() {
+    public Map<AccessKeyType, String> accessKeys() {
         return Collections.unmodifiableMap(this.accessKeys);
     }
 

@@ -38,7 +38,7 @@ import com.microsoft.azure.management.containerinstance.ContainerPort;
 import com.microsoft.azure.management.containerinstance.EnvironmentVariable;
 import com.microsoft.azure.management.containerinstance.Volume;
 import com.microsoft.azure.management.containerinstance.VolumeMount;
-import com.microsoft.azure.management.containerregistry.AccessKeyName;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.cosmosdb.CosmosDBAccount;
@@ -1106,8 +1106,8 @@ public final class Utils {
             .append("\n\tName: ").append(azureRegistry.name())
             .append("\n\tServer Url: ").append(azureRegistry.loginServerUrl())
             .append("\n\tUser: ").append(acrCredentials.username())
-            .append("\n\tFirst Password: ").append(acrCredentials.accessKeys().get(AccessKeyName.PRIMARY_KEY))
-            .append("\n\tSecond Password: ").append(acrCredentials.accessKeys().get(AccessKeyName.SECONDARY_KEY));
+            .append("\n\tFirst Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
+            .append("\n\tSecond Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.SECONDARY));
         System.out.println(info.toString());
     }
 

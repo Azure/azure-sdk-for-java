@@ -119,7 +119,7 @@ public class WebhookImpl
 
     @Override
     public Collection<WebhookAction> triggers() {
-        return Collections.unmodifiableList(this.inner().actions());
+        return Collections.unmodifiableCollection(this.inner().actions());
     }
 
     @Override

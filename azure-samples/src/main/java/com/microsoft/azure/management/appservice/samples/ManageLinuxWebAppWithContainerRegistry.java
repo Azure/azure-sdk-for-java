@@ -15,7 +15,7 @@ import com.github.dockerjava.core.command.PushImageResultCallback;
 import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.appservice.PricingTier;
 import com.microsoft.azure.management.appservice.WebApp;
-import com.microsoft.azure.management.containerregistry.AccessKeyName;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
@@ -87,7 +87,7 @@ public class ManageLinuxWebAppWithContainerRegistry {
 
             RegistryCredentials acrCredentials = azureRegistry.getCredentials();
             DockerClient dockerClient = DockerUtils.createDockerClient(azure, rgName, region,
-                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyName.PRIMARY_KEY));
+                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             //=============================================================
             // Pull a temp image from public Docker repo and create a temporary container from that image
@@ -144,7 +144,7 @@ public class ManageLinuxWebAppWithContainerRegistry {
                     .withExistingResourceGroup(rgName)
                     .withNewLinuxPlan(PricingTier.STANDARD_S1)
                     .withPrivateRegistryImage(privateRepoUrl + ":latest", "http://" + azureRegistry.loginServerUrl())
-                    .withCredentials(acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyName.PRIMARY_KEY))
+                    .withCredentials(acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
                     .withAppSetting("PORT", "8080")
                     .create();
 

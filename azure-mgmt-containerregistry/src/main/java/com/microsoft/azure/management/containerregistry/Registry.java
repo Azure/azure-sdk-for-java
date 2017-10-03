@@ -50,7 +50,7 @@ public interface Registry extends
     DateTime creationDate();
 
     /**
-     * @return the value that indicates whether the admin user is enabled. This value is false by default
+     * @return the value that indicates whether the admin user is enabled
      */
     boolean adminUserEnabled();
 
@@ -60,7 +60,7 @@ public interface Registry extends
     String storageAccountName();
 
     /**
-     * @return the id of the storage account for the container registry; 'null' if container register SKU a managed tier
+     * @return the ID of the storage account for the container registry; 'null' if container register SKU a managed tier
      */
     @Beta(SinceVersion.V1_4_0)
     String storageAccountId();
@@ -79,23 +79,23 @@ public interface Registry extends
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
-     * @param accessKeyName the admin user access key name to regenerate the value for
+     * @param accessKeyType the admin user access key name to regenerate the value for
      * @return the result of the regeneration
      */
     @Beta(SinceVersion.V1_4_0)
-    RegistryCredentials regenerateCredential(AccessKeyName accessKeyName);
+    RegistryCredentials regenerateCredential(AccessKeyType accessKeyType);
 
     /**
      * Regenerates one of the login credentials for the specified container registry.
      *
-     * @param accessKeyName the admin user access key name to regenerate the value for
+     * @param accessKeyType the admin user access key name to regenerate the value for
      * @return a representation of the future computation of this call
      */
     @Beta(SinceVersion.V1_4_0)
-    Observable<RegistryCredentials> regenerateCredentialAsync(AccessKeyName accessKeyName);
+    Observable<RegistryCredentials> regenerateCredentialAsync(AccessKeyType accessKeyType);
 
     /**
-     * Gets the quota usages for the specified container registry.
+     * Lists the quota usages for the specified container registry.
      *
      * @return the list of container registry's quota usages
      */
@@ -103,7 +103,7 @@ public interface Registry extends
     Collection<RegistryUsage> listQuotaUsages();
 
     /**
-     * Gets the quota usages for the specified container registry.
+     * Lists the quota usages for the specified container registry.
      *
      * @return a representation of the future computation of this call
      */
@@ -242,27 +242,15 @@ public interface Registry extends
             WithCreate withExistingStorageAccount(StorageAccount storageAccount);
 
             /**
-             * The parameters of a storage account for the container registry.
+             * The ID of an existing storage account for the container registry.
              * <p>
              * If specified, the storage account must be in the same physical location as the container registry.
              *
-             * @param resourceGroupName the name of resource group for the the storage account
-             * @param storageAccountName the name of the storage account; must be in the same physical location as the container registry
+             * @param id the resource ID of the storage account; must be in the same physical location as the container registry
              * @return the next stage
              */
             @Beta(SinceVersion.V1_4_0)
-            WithCreate withExistingStorageAccountName(String resourceGroupName, String storageAccountName);
-
-            /**
-             * The parameters of a storage account for the container registry.
-             * <p>
-             * If specified, the storage account must be in the same physical location as the container registry.
-             *
-             * @param id the resource id of the storage account; must be in the same physical location as the container registry
-             * @return the next stage
-             */
-            @Beta(SinceVersion.V1_4_0)
-            WithCreate withExistingStorageAccountId(String id);
+            WithCreate withExistingStorageAccount(String id);
 
             /**
              * The parameters for a storage account for the container registry.
