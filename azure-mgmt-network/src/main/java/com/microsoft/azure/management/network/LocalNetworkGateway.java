@@ -82,7 +82,7 @@ public interface LocalNetworkGateway extends
          */
         interface WithIPAddress {
             /**
-             * Specifies the IP address of the local network gateway
+             * Specifies the IP address of the local network gateway.
              * @param ipAddress an IP address
              * @return the next stage of the definition
              */
