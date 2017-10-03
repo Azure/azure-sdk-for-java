@@ -7,6 +7,8 @@ package com.microsoft.azure.management.network;
 
 import java.util.Set;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayProbeInner;
@@ -33,6 +35,7 @@ public interface ApplicationGatewayProbe extends
     /**
      * @return HTTP response code ranges in the format ###-### returned by the backend which the probe considers healthy.
      */
+    @Beta(SinceVersion.V1_4_0)
     Set<String> healthyHttpResponseStatusCodeRanges();
 
     /**
@@ -162,6 +165,7 @@ public interface ApplicationGatewayProbe extends
              * @param ranges number ranges expressed in the format "###-###", for example "200-399", which is the default
              * @return the next stage of the definition
              */
+            @Beta(SinceVersion.V1_4_0)
             WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRanges(Set<String> ranges);
 
             /**
@@ -169,6 +173,7 @@ public interface ApplicationGatewayProbe extends
              * @param range a number range expressed in the format "###-###", for example "200-399", which is the default
              * @return the next stage of the definition
              */
+            @Beta(SinceVersion.V1_4_0)
             WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(String range);
 
             /**
@@ -177,6 +182,7 @@ public interface ApplicationGatewayProbe extends
              * @param to the highest number in the range
              * @return the next stage of the definition
              */
+            @Beta(SinceVersion.V1_4_0)
             WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(int from, int to);
         }
 
@@ -299,6 +305,7 @@ public interface ApplicationGatewayProbe extends
              * @param ranges number ranges expressed in the format "###-###", for example "200-399", which is the default
              * @return the next stage of the update
              */
+            @Beta(SinceVersion.V1_4_0)
             Update withHealthyHttpResponseStatusCodeRanges(Set<String> ranges);
 
             /**
@@ -306,6 +313,7 @@ public interface ApplicationGatewayProbe extends
              * @param range a number range expressed in the format "###-###", for example "200-399", which is the default
              * @return the next stage of the update
              */
+            @Beta(SinceVersion.V1_4_0)
             Update withHealthyHttpResponseStatusCodeRange(String range);
 
             /**
@@ -314,6 +322,7 @@ public interface ApplicationGatewayProbe extends
              * @param to the highest number in the range
              * @return the next stage of the update
              */
+            @Beta(SinceVersion.V1_4_0)
             Update withHealthyHttpResponseStatusCodeRange(int from, int to);
 
             /**
@@ -321,6 +330,7 @@ public interface ApplicationGatewayProbe extends
              * @return the next stage of the update
              */
             @Method
+            @Beta(SinceVersion.V1_4_0)
             Update withoutHealthyHttpResponseStatusCodeRanges();
         }
     }
@@ -444,6 +454,7 @@ public interface ApplicationGatewayProbe extends
              * @param ranges number ranges expressed in the format "###-###", for example "200-399", which is the default
              * @return the next stage of the definition
              */
+            @Beta(SinceVersion.V1_4_0)
             WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRanges(Set<String> ranges);
 
             /**
@@ -451,6 +462,7 @@ public interface ApplicationGatewayProbe extends
              * @param range a number range expressed in the format "###-###", for example "200-399", which is the default
              * @return the next stage of the definition
              */
+            @Beta(SinceVersion.V1_4_0)
             WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(String range);
 
             /**
@@ -459,6 +471,7 @@ public interface ApplicationGatewayProbe extends
              * @param to the highest number in the range
              * @return the next stage of the definition
              */
+            @Beta(SinceVersion.V1_4_0)
             WithAttach<ReturnT> withHealthyHttpResponseStatusCodeRange(int from, int to);
         }
 
