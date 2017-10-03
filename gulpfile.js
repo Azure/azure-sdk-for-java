@@ -2,7 +2,9 @@ var path = require('path');
 var gulp = require('gulp');
 var args = require('yargs').argv;
 var colors = require('colors');
-var spawn = require('child_process').spawn;
+var childProcess = require('child_process');
+var spawn = childProcess.spawn;
+var spawnSync = childProcess.spawnSync;
 var fs = require('fs');
 
 const mappings = require('./api-specs.json');
@@ -14,6 +16,7 @@ gulp.task('default', function() {
         "[--projects <project names>] " +
         "[--autorest <autorest info>] " +
         "[--autorest-java <autorest.java info>] " +
+        "[--parallel] " +
         "[--debug] " +
         "[--autorest-args <AutoRest arguments>]\n");
 
@@ -33,6 +36,9 @@ gulp.task('default', function() {
     console.log("\tPath to an autorest.java generator to pass as a --use argument to AutoRest.");
     console.log("\tUsually you'll only need to provide this and not a --autorest argument in order to work on Java code generation.");
     console.log("\tSee https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
+
+    console.log("--parallel");
+    console.log("\tWhether or not to run code generation in parallel for each of the specified projects.");
     
     console.log("--debug");
     console.log("\tFlag that allows you to attach a debugger to the autorest.java generator.");
@@ -48,6 +54,7 @@ if (args['autorest'] !== undefined) {
     autoRestVersion = args['autorest'];
 }
 var debug = args['debug'];
+var parallel = args['parallel'];
 var autoRestArgs = args['autorest-args'] || '';
 var autoRestExe;
 
@@ -124,7 +131,14 @@ var codegen = function(project, cb) {
     }
 
     console.log('Command: ' + cmd);
-    spawn(cmd, [], { shell: true, stdio: "inherit" });
+    var spawnArgs = [];
+    var spawnOptions = { shell: true, stdio: "inherit" };
+    if (!parallel) {
+        spawnSync(cmd, spawnArgs, spawnOptions);
+    }
+    else {
+        spawn(cmd, spawnArgs, spawnOptions);
+    }
 };
 
 var deleteFolderRecursive = function(path) {
