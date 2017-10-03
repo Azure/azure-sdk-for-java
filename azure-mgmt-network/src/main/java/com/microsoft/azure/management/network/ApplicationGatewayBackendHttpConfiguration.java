@@ -114,7 +114,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * Specifies the transport protocol.
              * @param protocol a transport protocol
              * @return the next stage of the definition
-             * @deprecated use {@link withHttpProtocol()} or {@link withHttpsProtocol()} instead
+             * @deprecated use {@link #withHttps()} instead (HTTP is the default)
              */
             @Deprecated
             WithAttach<ReturnT> withProtocol(ApplicationGatewayProtocol protocol);
@@ -264,6 +264,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * Multiple calls to this method will add additional certificate references.
              * @param certificateFile a file containing the DER format representation of an X.509 certificate
              * @return the next stage of the definition
+             * @throws IOException when there are issues reading from the specified file
              */
             @Beta(SinceVersion.V1_4_0)
             WithAttachAndAuthCert<ReturnT> withAuthenticationCertificateFromFile(File certificateFile) throws IOException;
@@ -353,7 +354,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * Specifies the transport protocol.
              * @param protocol a transport protocol
              * @return the next stage of the update
-             * @deprecated use {@link withHttpProtocol()} or {@link withHttpsProtocol()} instead
+             * @deprecated use {@link #withHttp()} or {@link #withHttps()} instead
              */
             @Deprecated
             Update withProtocol(ApplicationGatewayProtocol protocol);
@@ -510,6 +511,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * Associates a new, automatically named certificate with this HTTP backend configuration loaded from the specified file.
              * @param certificateFile a file containing the DER representation of an X.509 certificate
              * @return the next stage of the update
+             * @throws IOException when there are issues reading the specified file
              */
             @Beta(SinceVersion.V1_4_0)
             Update withAuthenticationCertificateFromFile(File certificateFile) throws IOException;
@@ -630,6 +632,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * Multiple calls to this method will add additional certificate references.
              * @param certificateFile a file containing the DER representation of an X.509 certificate
              * @return the next stage of the definition
+             * @throws IOException when there are issues reading from the specified file
              */
             @Beta(SinceVersion.V1_4_0)
             WithAttachAndAuthCert<ReturnT> withAuthenticationCertificateFromFile(File certificateFile) throws IOException;
@@ -674,7 +677,7 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * Specifies the transport protocol.
              * @param protocol a transport protocol
              * @return the next stage of the definition
-             * @deprecated use {@link withHttpProtocol()} or {@link withHttpsProtocol()} instead
+             * @deprecated use {@link #withHttps()} instead (HTTP is the default)
              */
             @Deprecated
             WithAttach<ReturnT> withProtocol(ApplicationGatewayProtocol protocol);

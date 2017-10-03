@@ -146,6 +146,7 @@ public interface NetworkPeering extends
              * <p>
              * This setting will have effect only if the remote network is in the same subscription. Otherwise, it will be ignored and you need to change
              * the corresponding traffic forwarding setting on the remote network's matching peering explicitly.
+             * @return the next stage of the definition
              */
             WithCreate withTrafficForwardingToRemoteNetwork();
 
