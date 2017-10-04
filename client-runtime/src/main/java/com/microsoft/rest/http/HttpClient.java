@@ -9,7 +9,6 @@ package com.microsoft.rest.http;
 import com.microsoft.rest.policy.RequestPolicy;
 import rx.Single;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -50,17 +49,6 @@ public abstract class HttpClient {
             next = factory.create(next);
         }
         return next.sendAsync(request);
-    }
-
-    /**
-     * Send the provided request and block until the response is received.
-     * @param request The HTTP request to send.
-     * @return The HTTP response received.
-     * @throws IOException On network issues.
-     */
-    public final HttpResponse sendRequest(HttpRequest request) throws IOException {
-        final Single<? extends HttpResponse> asyncResult = sendRequestAsync(request);
-        return asyncResult.toBlocking().value();
     }
 
     /**

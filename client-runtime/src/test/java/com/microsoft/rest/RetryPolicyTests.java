@@ -31,11 +31,11 @@ public class RetryPolicyTests {
             }
         };
 
-        HttpResponse response = client.sendRequest(
+        HttpResponse response = client.sendRequestAsync(
                 new HttpRequest(
                         "exponentialRetryEndOn501",
                         "GET",
-                        "http://localhost/"));
+                        "http://localhost/")).toBlocking().value();
 
         Assert.assertEquals(501, response.statusCode());
     }
@@ -53,11 +53,11 @@ public class RetryPolicyTests {
             }
         };
 
-        HttpResponse response = client.sendRequest(
+        HttpResponse response = client.sendRequestAsync(
                 new HttpRequest(
                         "exponentialRetryMax",
                         "GET",
-                        "http://localhost/"));
+                        "http://localhost/")).toBlocking().value();
 
         Assert.assertEquals(500, response.statusCode());
     }
