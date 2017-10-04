@@ -355,7 +355,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.startAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.startAsync(), callback);
     }
 
     @Override
@@ -370,7 +370,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public ServiceFuture<Void> stopAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.stopAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.stopAsync(), callback);
     }
 
     @Override
@@ -387,7 +387,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public ServiceFuture<Void> purgeContentAsync(Set<String> contentPaths, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.purgeContentAsync(contentPaths).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.purgeContentAsync(contentPaths), callback);
     }
 
     @Override
@@ -402,7 +402,7 @@ class CdnEndpointImpl extends ExternalChildResourceImpl<CdnEndpoint,
 
     @Override
     public ServiceFuture<Void> loadContentAsync(Set<String> contentPaths, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.loadContentAsync(contentPaths).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.loadContentAsync(contentPaths), callback);
     }
 
     @Override

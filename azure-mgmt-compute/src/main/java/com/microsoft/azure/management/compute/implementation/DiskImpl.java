@@ -135,7 +135,7 @@ class DiskImpl
 
     @Override
     public ServiceFuture<Void> revokeAccessAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.revokeAccessAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.revokeAccessAsync(), callback);
     }
 
     @Override

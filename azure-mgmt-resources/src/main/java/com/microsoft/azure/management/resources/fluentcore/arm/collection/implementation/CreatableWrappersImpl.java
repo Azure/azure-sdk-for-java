@@ -34,6 +34,6 @@ public abstract class CreatableWrappersImpl<T, ImplT extends T, InnerT>
 
     @Override
     public ServiceFuture<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deleteByIdAsync(id), callback);
     }
 }
