@@ -173,6 +173,12 @@ public interface ApplicationGateway extends
     Map<String, ApplicationGatewayListener> listeners();
 
     /**
+     * @return redirect configurations, indexed by name
+     */
+    @Beta(SinceVersion.V1_4_0)
+    Map<String, ApplicationGatewayRedirectConfiguration> redirectConfigurations();
+
+    /**
      * @return request routing rules, indexed by name
      */
     Map<String, ApplicationGatewayRequestRoutingRule> requestRoutingRules();
@@ -196,17 +202,6 @@ public interface ApplicationGateway extends
      * @return a front end listener, or null if none found
      */
     ApplicationGatewayListener listenerByPortNumber(int portNumber);
-
-    /**
-     * The entirety of the application gateway definition.
-     */
-    interface Definition extends
-        DefinitionStages.Blank,
-        DefinitionStages.WithGroup,
-        DefinitionStages.WithCreate,
-        DefinitionStages.WithRequestRoutingRule,
-        DefinitionStages.WithRequestRoutingRuleOrCreate {
-    }
 
     /**
      * Grouping of application gateway definition stages.
@@ -276,6 +271,19 @@ public interface ApplicationGateway extends
              * @return the first stage of the listener definition
              */
             ApplicationGatewayListener.DefinitionStages.Blank<WithCreate> defineListener(String name);
+        }
+
+        /**
+         * The stage of an application gateway definition allowing to add a redirect configuration.
+         */
+        interface WithRedirectConfiguration {
+            /**
+             * Begins the definition of a new application gateway redirect configuration to be attached to the gateway.
+             * @param name a unique name for the redirect configuration
+             * @return the first stage of the redirect configuration definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            ApplicationGatewayRedirectConfiguration.DefinitionStages.Blank<WithCreate> defineRedirectConfiguration(String name);
         }
 
         /**
@@ -492,8 +500,20 @@ public interface ApplicationGateway extends
             WithPublicIPAddress,
             WithProbe,
             WithDisabledSslProtocol,
-            WithAuthenticationCertificate {
+            WithAuthenticationCertificate,
+            WithRedirectConfiguration {
         }
+    }
+
+    /**
+     * The entirety of the application gateway definition.
+     */
+    interface Definition extends
+        DefinitionStages.Blank,
+        DefinitionStages.WithGroup,
+        DefinitionStages.WithCreate,
+        DefinitionStages.WithRequestRoutingRule,
+        DefinitionStages.WithRequestRoutingRuleOrCreate {
     }
 
     /**
@@ -880,6 +900,37 @@ public interface ApplicationGateway extends
         }
 
         /**
+         * The stage of an application gateway definition allowing to add a redirect configuration.
+         */
+        interface WithRedirectConfiguration {
+            /**
+             * Begins the definition of a new application gateway redirect configuration to be attached to the gateway.
+             * @param name a unique name for the redirect configuration
+             * @return the first stage of the redirect configuration definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            ApplicationGatewayRedirectConfiguration.UpdateDefinitionStages.Blank<Update> defineRedirectConfiguration(String name);
+
+            /**
+             * Removes a redirect configuration from the application gateway.
+             * <p>
+             * Note that removing a redirect configuration referenced by other settings may break the application gateway.
+             * @param name the name of the redirect configuration to remove
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutRedirectConfiguration(String name);
+
+            /**
+             * Begins the update of a redirect configuration.
+             * @param name the name of an existing redirect configuration to update
+             * @return the next stage of the definition or null if the requested redirect configuration does not exist
+             */
+            @Beta(SinceVersion.V1_4_0)
+            ApplicationGatewayRedirectConfiguration.Update updateRedirectConfiguration(String name);
+        }
+
+        /**
          * The stage of an application gateway update allowing to modify backend HTTP configurations.
          */
         interface WithBackendHttpConfig {
@@ -1000,6 +1051,7 @@ public interface ApplicationGateway extends
         UpdateStages.WithExistingSubnet,
         UpdateStages.WithProbe,
         UpdateStages.WithDisabledSslProtocol,
-        UpdateStages.WithAuthenticationCertificate {
+        UpdateStages.WithAuthenticationCertificate,
+        UpdateStages.WithRedirectConfiguration {
     }
 }
