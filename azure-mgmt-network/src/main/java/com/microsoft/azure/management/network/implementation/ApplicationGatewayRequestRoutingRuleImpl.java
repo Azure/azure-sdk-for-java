@@ -382,7 +382,10 @@ class ApplicationGatewayRequestRoutingRuleImpl
             this.inner().withRedirectConfiguration(null);
         } else {
             SubResource ref = new SubResource().withId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
-            this.inner().withRedirectConfiguration(ref);
+            this.inner()
+                .withRedirectConfiguration(ref)
+                .withBackendAddressPool(null)
+                .withBackendHttpSettings(null);
         }
         return this;
     }

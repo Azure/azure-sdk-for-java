@@ -380,6 +380,9 @@ public interface ApplicationGatewayRequestRoutingRule extends
         interface WithRedirectConfig {
             /**
              * Associates the specified redirect configuration with this request routing rule.
+             * <p>
+             * Note that no backend can be associated with this request routing rule if it has a redirect configuration assigned to it,
+             * so this will also remove any backend and backend HTTP settings configuration.
              * @param name the name of a redirect configuration on this application gateway
              * @return the next stage of the update
              */
@@ -471,6 +474,13 @@ public interface ApplicationGatewayRequestRoutingRule extends
         }
 
         /**
+         * The stage of an application gateway request routing rule definition allowing to select either a backend or a redirect configuration.
+         * @param <ParentT> the stage of the application gateway update to return to after attaching this definition
+         */
+        interface WithBackendHttpConfigOrRedirect<ParentT> extends WithBackendHttpConfiguration<ParentT>, WithRedirectConfig<ParentT> {
+        }
+
+        /**
          * The stage of an application gateway request routing rule definition allowing to associate the rule with a redirect configuration.
          * @param <ParentT> the stage of the application gateway update to return to after attaching this definition
          */
@@ -500,7 +510,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of a listener to reference
              * @return the next stage of the definition
              */
-            WithBackendHttpConfiguration<ParentT> fromListener(String name);
+            WithBackendHttpConfigOrRedirect<ParentT> fromListener(String name);
         }
 
         /**
@@ -554,7 +564,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param portNumber the port number to listen to
              * @return the next stage of the definition, or null if the specified port number is already used for a different protocol
              */
-            WithBackendHttpConfiguration<ParentT> fromFrontendHttpPort(int portNumber);
+            WithBackendHttpConfigOrRedirect<ParentT> fromFrontendHttpPort(int portNumber);
 
             /**
              * Associates a new listener for the specified port number and the HTTPS protocol with this rule.
@@ -569,7 +579,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * @param <ParentT> the next stage of the definition
          */
         interface WithSslCertificate<ParentT> extends
-            HasSslCertificate.UpdateDefinitionStages.WithSslCertificate<WithBackendHttpConfigurationOrSni<ParentT>> {
+            HasSslCertificate.UpdateDefinitionStages.WithSslCertificate<WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
         }
 
         /**
@@ -659,6 +669,13 @@ public interface ApplicationGatewayRequestRoutingRule extends
         }
 
         /**
+         * The stage of an application gateway request routing rule allowing to specify backend HTTP settings, or SNI, or a redirect configuration.
+         * @param <ParentT> the stage of the application gateway update to return to after attaching this definition
+         */
+        interface WithBackendHttpConfigOrSniOrRedirect<ParentT> extends WithBackendHttpConfigurationOrSni<ParentT>, WithRedirectConfig<ParentT> {
+        }
+
+        /**
          * The stage of an application gateway request routing rule definition allowing to specify the backend HTTP settings configuration
          * to associate the routing rule with.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
@@ -718,8 +735,10 @@ public interface ApplicationGatewayRequestRoutingRule extends
         UpdateDefinitionStages.WithBackendOrAddress<ParentT>,
         UpdateDefinitionStages.WithBackendAddressOrAttach<ParentT>,
         UpdateDefinitionStages.WithBackendHttpConfiguration<ParentT>,
+        UpdateDefinitionStages.WithBackendHttpConfigOrRedirect<ParentT>,
         UpdateDefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>,
+        UpdateDefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>,
         UpdateDefinitionStages.WithSslCertificate<ParentT>,
-        UpdateDefinitionStages.WithSslPassword<UpdateDefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>> {
+        UpdateDefinitionStages.WithSslPassword<UpdateDefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
     }
 }

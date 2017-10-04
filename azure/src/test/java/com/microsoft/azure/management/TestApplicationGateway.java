@@ -21,7 +21,6 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
-import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
@@ -64,6 +63,7 @@ public class TestApplicationGateway {
         APP_GATEWAY_NAME = "ag" + TEST_ID;
         PIP_NAMES = new String[]{"pipa" + TEST_ID, "pipb" + TEST_ID};
     }
+
     /**
      * Minimalistic internal (private) app gateway test.
      */
@@ -677,12 +677,6 @@ public class TestApplicationGateway {
             // Verify authentication certificates
             Assert.assertEquals(authCertCount - 1, resource.authenticationCertificates().size());
             Assert.assertFalse(resource.authenticationCertificates().containsKey("auth1"));
-
-            // Test stop/start
-            resource.stop();
-            Assert.assertEquals(ApplicationGatewayOperationalState.STOPPED, resource.operationalState());
-            resource.start();
-            Assert.assertEquals(ApplicationGatewayOperationalState.RUNNING, resource.operationalState());
 
             return resource;
         }
