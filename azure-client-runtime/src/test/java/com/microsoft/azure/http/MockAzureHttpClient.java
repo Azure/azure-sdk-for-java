@@ -12,6 +12,7 @@ import com.microsoft.azure.HttpBinJSON;
 import com.microsoft.azure.LocationPollStrategy;
 import com.microsoft.azure.MockResource;
 import com.microsoft.azure.OperationResource;
+import com.microsoft.azure.ProvisioningState;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeader;
 import com.microsoft.rest.http.HttpHeaders;
@@ -135,11 +136,11 @@ public class MockAzureHttpClient extends HttpClient {
                         if (pollType.equalsIgnoreCase(AzureAsyncOperationPollStrategy.HEADER_NAME)) {
                             final OperationResource.Properties properties = new OperationResource.Properties();
                             if (pollsRemaining <= 1) {
-                                properties.setProvisioningState(AzureAsyncOperationPollStrategy.SUCCEEDED);
+                                properties.setProvisioningState(ProvisioningState.SUCCEEDED);
                             }
                             else {
                                 --pollsRemaining;
-                                properties.setProvisioningState(AzureAsyncOperationPollStrategy.IN_PROGRESS);
+                                properties.setProvisioningState(ProvisioningState.IN_PROGRESS);
                             }
                             final OperationResource operationResource = new OperationResource();
                             operationResource.setProperties(properties);

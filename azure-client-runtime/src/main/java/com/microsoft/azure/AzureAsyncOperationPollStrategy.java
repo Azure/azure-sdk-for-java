@@ -34,16 +34,6 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     public static final String HEADER_NAME = "Azure-AsyncOperation";
 
     /**
-     * The provisioning state of the operation resource if the operation is still in progress.
-     */
-    public static final String IN_PROGRESS = "InProgress";
-
-    /**
-     * The provisioning state of the operation resource if the operation is successful.
-     */
-    public static final String SUCCEEDED = "Succeeded";
-
-    /**
      * Create a new AzureAsyncOperationPollStrategy object that will poll the provided operation
      * resource URL.
      * @param fullyQualifiedMethodName The fully qualified name of the method that initiated the
@@ -94,10 +84,12 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                             try {
                                 final OperationResource operationResource = serializer.deserialize(bodyString, OperationResource.class);
                                 if (operationResource != null) {
-                                    final String provisioningState = provisioningState(operationResource);
-                                    pollingCompleted = !IN_PROGRESS.equalsIgnoreCase(provisioningState);
+                                    final String resourceProvisioningState = provisioningState(operationResource);
+                                    setProvisioningState(resourceProvisioningState);
+
+                                    pollingCompleted = !ProvisioningState.IN_PROGRESS.equalsIgnoreCase(resourceProvisioningState);
                                     if (pollingCompleted) {
-                                        pollingSucceeded = SUCCEEDED.equalsIgnoreCase(provisioningState);
+                                        pollingSucceeded = ProvisioningState.SUCCEEDED.equalsIgnoreCase(resourceProvisioningState);
                                         clearDelayInMilliseconds();
                                     }
                                 }
