@@ -212,6 +212,7 @@ public final class AzureProxy extends RestProxy {
 
     private static PollStrategy createPollStrategy(HttpRequest httpRequest, HttpResponse httpResponse, SerializerAdapter<?> serializer) {
         PollStrategy result = null;
+        final long delayInMilliseconds = defaultDelayInMilliseconds();
 
         final int httpStatusCode = httpResponse.statusCode();
         if (httpStatusCode != 200) {
@@ -221,18 +222,18 @@ public final class AzureProxy extends RestProxy {
 
             if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
                 if (httpStatusCode == 201) {
-                    result = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, originalHttpRequestUrl, serializer);
+                    result = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
                 } else if (httpStatusCode == 202) {
-                    result = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, originalHttpRequestUrl, serializer);
+                    result = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
                     if (result == null) {
-                        result = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse);
+                        result = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, delayInMilliseconds);
                     }
                 }
             } else /* if (originalRequestHttpMethod.equalsIgnoreCase("DELETE") || originalRequestHttpMethod.equalsIgnoreCase("POST") */ {
                 if (httpStatusCode == 202) {
-                    result = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, originalHttpRequestUrl, serializer);
+                    result = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
                     if (result == null) {
-                        result = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse);
+                        result = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, delayInMilliseconds);
                     }
                 }
             }
