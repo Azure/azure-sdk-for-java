@@ -8,7 +8,6 @@ package com.microsoft.rest;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
-import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.annotations.BodyParam;
 import com.microsoft.rest.annotations.DELETE;
 import com.microsoft.rest.annotations.ExpectedResponses;
@@ -25,9 +24,6 @@ import com.microsoft.rest.annotations.PathParam;
 import com.microsoft.rest.annotations.QueryParam;
 import com.microsoft.rest.http.HttpHeader;
 import com.microsoft.rest.http.HttpHeaders;
-import rx.Completable;
-import rx.Observable;
-import rx.Single;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
