@@ -10,8 +10,6 @@ import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import rx.Single;
 
-import java.io.IOException;
-
 /**
  * A PollStrategy type that uses the Location header value to check the status of a long running
  * operation.
@@ -40,7 +38,7 @@ public final class LocationPollStrategy extends PollStrategy {
     }
 
     @Override
-    public void updateFrom(HttpResponse httpPollResponse) throws IOException {
+    public Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
         final int httpStatusCode = httpPollResponse.statusCode();
         if (httpStatusCode == 202) {
             String newLocationUrl = httpPollResponse.headerValue(HEADER_NAME);
@@ -53,18 +51,7 @@ public final class LocationPollStrategy extends PollStrategy {
         else {
             done = true;
         }
-    }
-
-    @Override
-    public Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
-        Single<HttpResponse> result;
-        try {
-            updateFrom(httpPollResponse);
-            result = Single.just(httpPollResponse);
-        } catch (IOException e) {
-            result = Single.error(e);
-        }
-        return result;
+        return Single.just(httpPollResponse);
     }
 
     @Override

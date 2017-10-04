@@ -85,8 +85,8 @@ public class RequestIdPolicyTests {
             }
         };
 
-        client.sendRequest(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/"));
-        client.sendRequest(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/"));
+        client.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).toBlocking().value();
+        client.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).toBlocking().value();
     }
 
     @Test
@@ -111,6 +111,6 @@ public class RequestIdPolicyTests {
                     }
                 };
 
-        client.sendRequest(new HttpRequest("sameRequestIdForRetry", "GET", "http://localhost/"));
+        client.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", "GET", "http://localhost/")).toBlocking().value();
     }
 }

@@ -17,13 +17,11 @@ import com.microsoft.rest.SwaggerMethodParser;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
-import rx.Completable;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
-import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -104,62 +102,14 @@ public final class AzureProxy extends RestProxy {
     }
 
     @Override
-    protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser) throws IOException, InterruptedException {
+    protected Object handleAsyncHttpResponse(final HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
         final SerializerAdapter<?> serializer = serializer();
 
-        final PollStrategy pollStrategy = createPollStrategy(httpRequest, httpResponse, serializer);
-        if (pollStrategy != null) {
-            while (!pollStrategy.isDone()) {
-                pollStrategy.delay();
+        Object result;
 
-                final HttpRequest pollRequest = pollStrategy.createPollRequest();
-                httpResponse = sendHttpRequest(pollRequest);
-
-                pollStrategy.updateFrom(httpResponse);
-            }
-        }
-
-        return super.handleSyncHttpResponse(httpRequest, httpResponse, methodParser);
-    }
-
-    @Override
-    protected Object handleAsyncHttpResponse(final HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser) {
-        final SerializerAdapter<?> serializer = serializer();
-
-        Object result = null;
-
-        final Type returnType = methodParser.returnType();
         final TypeToken returnTypeToken = TypeToken.of(returnType);
 
-        if (returnTypeToken.isSubtypeOf(Completable.class) || returnTypeToken.isSubtypeOf(Single.class)) {
-            asyncHttpResponse = asyncHttpResponse
-                    .flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
-                        @Override
-                        public Single<? extends HttpResponse> call(HttpResponse httpResponse) {
-                            final PollStrategy pollStrategy = createPollStrategy(httpRequest, httpResponse, serializer);
-
-                            Single<HttpResponse> result;
-                            if (pollStrategy == null || pollStrategy.isDone()) {
-                                result = Single.just(httpResponse);
-                            }
-                            else {
-                                result = sendPollRequestWithDelay(pollStrategy)
-                                        .repeat()
-                                        .takeUntil(new Func1<HttpResponse, Boolean>() {
-                                            @Override
-                                            public Boolean call(HttpResponse ignored) {
-                                                return pollStrategy.isDone();
-                                            }
-                                        })
-                                        .last()
-                                        .toSingle();
-                            }
-                            return result;
-                        }
-                    });
-            result = super.handleAsyncHttpResponse(httpRequest, asyncHttpResponse, methodParser);
-        }
-        else if (returnTypeToken.isSubtypeOf(Observable.class)) {
+        if (returnTypeToken.isSubtypeOf(Observable.class)) {
             final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
             final TypeToken operationStatusTypeToken = TypeToken.of(operationStatusType);
             if (!operationStatusTypeToken.isSubtypeOf(OperationStatus.class)) {
@@ -206,6 +156,34 @@ public final class AzureProxy extends RestProxy {
                         });
             }
         }
+        else {
+            asyncHttpResponse = asyncHttpResponse
+                    .flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
+                        @Override
+                        public Single<? extends HttpResponse> call(HttpResponse httpResponse) {
+                            final PollStrategy pollStrategy = createPollStrategy(httpRequest, httpResponse, serializer);
+
+                            Single<HttpResponse> result;
+                            if (pollStrategy == null || pollStrategy.isDone()) {
+                                result = Single.just(httpResponse);
+                            }
+                            else {
+                                result = sendPollRequestWithDelay(pollStrategy)
+                                        .repeat()
+                                        .takeUntil(new Func1<HttpResponse, Boolean>() {
+                                            @Override
+                                            public Boolean call(HttpResponse ignored) {
+                                                return pollStrategy.isDone();
+                                            }
+                                        })
+                                        .last()
+                                        .toSingle();
+                            }
+                            return result;
+                        }
+                    });
+            result = super.handleAsyncHttpResponse(httpRequest, asyncHttpResponse, methodParser, returnType);
+        }
 
         return result;
     }
@@ -245,15 +223,13 @@ public final class AzureProxy extends RestProxy {
     private Observable<OperationStatus<Object>> toCompletedOperationStatusObservable(String provisioningState, HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
         Observable<OperationStatus<Object>> result;
         try {
-            final Object resultObject = super.handleSyncHttpResponse(httpRequest, httpResponse, methodParser, operationStatusResultType);
+            final Object resultObject = super.handleAsyncHttpResponse(httpRequest, Single.just(httpResponse), methodParser, operationStatusResultType);
             result = Observable.just(new OperationStatus<>(resultObject, provisioningState));
         } catch (RestException e) {
             if (ProvisioningState.SUCCEEDED.equals(provisioningState)) {
                 provisioningState = ProvisioningState.FAILED;
             }
             result = Observable.just(new OperationStatus<>(e, provisioningState));
-        } catch (IOException e) {
-            result = Observable.error(e);
         }
         return result;
     }

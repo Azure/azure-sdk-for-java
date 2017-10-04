@@ -71,11 +71,6 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     }
 
     @Override
-    public void updateFrom(HttpResponse httpPollResponse) throws IOException {
-        updateFromAsync(httpPollResponse).toBlocking().value();
-    }
-
-    @Override
     public Single<HttpResponse> updateFromAsync(final HttpResponse httpPollResponse) {
         updateDelayInMillisecondsFrom(httpPollResponse);
 
