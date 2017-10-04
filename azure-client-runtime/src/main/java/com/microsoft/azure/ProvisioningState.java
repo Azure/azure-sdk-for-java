@@ -1,6 +1,10 @@
-package com.microsoft.azure;
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
 
-import com.microsoft.rest.ExpandableStringEnum;
+package com.microsoft.azure;
 
 /**
  * The different provisioning states that a long running operation can be in.
