@@ -140,8 +140,8 @@ public final class LoggingPolicy implements RequestPolicy {
             String contentTypeHeader = response.headerValue("Content-Type");
             if ("application/json".equals(contentTypeHeader)) {
                 try {
-                    log(logger, response.bodyAsString());
-                } catch (IOException e) {
+                    log(logger, response.bodyAsStringAsync().toBlocking().value());
+                } catch (Throwable e) {
                     log(logger, "Error occurred when logging body: " + e.getMessage());
                 }
             } else {
