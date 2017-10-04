@@ -14,28 +14,30 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-//
-// An ILeaseManager implementation based on an in-memory store. This is obviously volatile
-// and can only be shared among hosts within a process, but is useful for testing. It is intended
-// to provide behavior generally similar to that of AzureStorageCheckpointLeaseManager, but 
-// it is completely separate from the InMemoryCheckpointManager, to allow testing scenarios where
-// the two stores are not combined.
-//
-// With an ordinary store, there is a clear and distinct line between the values that are persisted
-// and the values that are live in memory. With an in-memory store, that line gets blurry. If we
-// accidentally hand out a reference to the in-store object, then the calling code is operating on
-// the "persisted" values without going through the manager and behavior will be very different.
-// Hence, the implementation takes pains to distinguish between references to "live" and "persisted"
-// leases.
-//
-
+/***
+ * An ILeaseManager implementation based on an in-memory store. 
+ *
+ * THIS CLASS IS PROVIDED AS A CONVENIENCE FOR TESTING ONLY. All data stored via this class is in memory
+ * only and not persisted in any way. In addition, it is only visible within the same process: multiple
+ * instances of EventProcessorHost in the same process will share the same in-memory store and leases
+ * created by one will be visible to the others, but that is not true across processes.
+ * 
+ * With an ordinary store, there is a clear and distinct line between the values that are persisted
+ * and the values that are live in memory. With an in-memory store, that line gets blurry. If we
+ * accidentally hand out a reference to the in-store object, then the calling code is operating on
+ * the "persisted" values without going through the manager and behavior will be very different.
+ * Hence, the implementation takes pains to distinguish between references to "live" and "persisted"
+ * checkpoints.
+ * 
+ * To use this class, create a new instance and pass it to the EventProcessorHost constructor that takes
+ * ILeaseManager as an argument. After the EventProcessorHost instance is constructed, be sure to
+ * call initialize() on this object before starting processing with EventProcessorHost.registerEventProcessor()
+ * or EventProcessorHost.registerEventProcessorFactory().
+ */
 public class InMemoryLeaseManager implements ILeaseManager
 {
     private EventProcessorHost host;
     private ExecutorService executor;
-
-    private final static int leaseDurationInMillieconds = 30 * 1000;	   // thirty seconds
-    private final static int leaseRenewIntervalInMilliseconds = 10 * 1000; // ten seconds
 
     private final static Logger TRACE_LOGGER = LoggerFactory.getLogger(InMemoryLeaseManager.class);
 
@@ -54,13 +56,13 @@ public class InMemoryLeaseManager implements ILeaseManager
     @Override
     public int getLeaseRenewIntervalInMilliseconds()
     {
-    	return InMemoryLeaseManager.leaseRenewIntervalInMilliseconds;
+    	return this.host.getPartitionManagerOptions().getLeaseRenewIntervalInSeconds() * 1000;
     }
     
     @Override
     public int getLeaseDurationInMilliseconds()
     {
-    	return InMemoryLeaseManager.leaseDurationInMillieconds;
+    	return this.host.getPartitionManagerOptions().getLeaseDurationInSeconds() * 1000;
     }
 
     @Override
@@ -82,7 +84,7 @@ public class InMemoryLeaseManager implements ILeaseManager
 
     private Boolean createLeaseStoreIfNotExistsSync()
     {
-    	InMemoryLeaseStore.singleton.initializeMap();
+    	InMemoryLeaseStore.singleton.initializeMap(getLeaseDurationInMilliseconds());
         return true;
     }
     
@@ -214,7 +216,7 @@ public class InMemoryLeaseManager implements ILeaseManager
 	            	TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), lease.getPartitionId(),
                             "acquireLease() stole lease from " + oldOwner));
 	            }
-	            long newExpiration = System.currentTimeMillis() + InMemoryLeaseManager.leaseDurationInMillieconds;
+	            long newExpiration = System.currentTimeMillis() + getLeaseDurationInMilliseconds();
 	        	// Make change in both persisted lease and live lease!
 	            leaseInStore.setExpirationTime(newExpiration);
 	            lease.setExpirationTime(newExpiration);
@@ -249,7 +251,7 @@ public class InMemoryLeaseManager implements ILeaseManager
         	// So don't check expiration, just ownership.
         	if (/* !wrapIsExpired(leaseInStore) && */ (leaseInStore.getOwner().compareTo(this.host.getHostName()) == 0))
         	{
-                long newExpiration = System.currentTimeMillis() + InMemoryLeaseManager.leaseDurationInMillieconds;
+                long newExpiration = System.currentTimeMillis() + getLeaseDurationInMilliseconds();
             	// Make change in both persisted lease and live lease!
                 leaseInStore.setExpirationTime(newExpiration);
                 lease.setExpirationTime(newExpiration);
@@ -371,6 +373,7 @@ public class InMemoryLeaseManager implements ILeaseManager
     private static class InMemoryLeaseStore
     {
         final static InMemoryLeaseStore singleton = new InMemoryLeaseStore();
+        private static int leaseDurationInMilliseconds;
 
         private ConcurrentHashMap<String, InMemoryLease> inMemoryLeasesPrivate = null;
         
@@ -379,12 +382,13 @@ public class InMemoryLeaseManager implements ILeaseManager
         	return (this.inMemoryLeasesPrivate != null);
         }
         
-        synchronized void initializeMap()
+        synchronized void initializeMap(int leaseDurationInMilliseconds)
         {
         	if (this.inMemoryLeasesPrivate == null)
         	{
         		this.inMemoryLeasesPrivate = new ConcurrentHashMap<String, InMemoryLease>();
         	}
+        	InMemoryLeaseStore.leaseDurationInMilliseconds = leaseDurationInMilliseconds;
         }
         
         synchronized void deleteMap()
@@ -405,7 +409,7 @@ public class InMemoryLeaseManager implements ILeaseManager
 				if (leaseInStore.isExpired() || (leaseInStore.getOwner() == null) || leaseInStore.getOwner().isEmpty())
 				{
 					leaseInStore.setOwner(newOwner);
-	                leaseInStore.setExpirationTime(System.currentTimeMillis() + InMemoryLeaseManager.leaseDurationInMillieconds);
+	                leaseInStore.setExpirationTime(System.currentTimeMillis() + InMemoryLeaseStore.leaseDurationInMilliseconds);
 				}
 				else
 				{

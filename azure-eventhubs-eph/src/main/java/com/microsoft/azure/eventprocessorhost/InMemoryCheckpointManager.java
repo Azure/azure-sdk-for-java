@@ -13,21 +13,26 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
-
-//
-// An ICheckpointManager implementation based on an in-memory store. This is obviously volatile
-// and can only be shared among hosts within a process, but is useful for testing. Overall, its
-// behavior is fairly close to that of AzureStorageCheckpointLeaseManager, but it is completely
-// separate from the InMemoryLeaseManager, to allow testing scenarios where the two stores are not combined.
-//
-// With an ordinary store, there is a clear and distinct line between the values that are persisted
-// and the values that are live in memory. With an in-memory store, that line gets blurry. If we
-// accidentally hand out a reference to the in-store object, then the calling code is operating on
-// the "persisted" values without going through the manager and behavior will be very different.
-// Hence, the implementation takes pains to distinguish between references to "live" and "persisted"
-// checkpoints.
-//
-
+/***
+ * An ICheckpointManager implementation based on an in-memory store. 
+ *
+ * THIS CLASS IS PROVIDED AS A CONVENIENCE FOR TESTING ONLY. All data stored via this class is in memory
+ * only and not persisted in any way. In addition, it is only visible within the same process: multiple
+ * instances of EventProcessorHost in the same process will share the same in-memory store and checkpoints
+ * created by one will be visible to the others, but that is not true across processes.
+ * 
+ * With an ordinary store, there is a clear and distinct line between the values that are persisted
+ * and the values that are live in memory. With an in-memory store, that line gets blurry. If we
+ * accidentally hand out a reference to the in-store object, then the calling code is operating on
+ * the "persisted" values without going through the manager and behavior will be very different.
+ * Hence, the implementation takes pains to distinguish between references to "live" and "persisted"
+ * checkpoints.
+ * 
+ * To use this class, create a new instance and pass it to the EventProcessorHost constructor that takes
+ * ICheckpointManager as an argument. After the EventProcessorHost instance is constructed, be sure to
+ * call initialize() on this object before starting processing with EventProcessorHost.registerEventProcessor()
+ * or EventProcessorHost.registerEventProcessorFactory().
+ */
 public class InMemoryCheckpointManager implements ICheckpointManager
 {
     private EventProcessorHost host;
