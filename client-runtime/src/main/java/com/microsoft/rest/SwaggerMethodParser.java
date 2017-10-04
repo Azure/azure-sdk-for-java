@@ -336,15 +336,6 @@ public class SwaggerMethodParser {
     }
 
     /**
-     * Get whether or not this parser's swagger method is asynchronous.
-     * @return Whether or not this parser's swagger method is asynchronous.
-     */
-    public boolean isAsync() {
-        final TypeToken returnTypeToken = TypeToken.of(returnType);
-        return returnTypeToken.isSubtypeOf(Completable.class) || returnTypeToken.isSubtypeOf(Single.class) || returnTypeToken.isSubtypeOf(Observable.class);
-    }
-
-    /**
      * Set both the HTTP method and the path that will be used to complete the Swagger method's
      * request.
      * @param httpMethod The HTTP method that will be used to complete the Swagger method's request.
