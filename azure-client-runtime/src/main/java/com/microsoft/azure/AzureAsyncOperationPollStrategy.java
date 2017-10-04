@@ -57,13 +57,16 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
 
     @Override
     public HttpRequest createPollRequest() {
-        String pollUrl = null;
+        String pollUrl;
         if (!pollingCompleted) {
             pollUrl = operationResourceUrl;
         }
         else if (pollingSucceeded) {
             pollUrl = originalResourceUrl;
+        } else {
+            throw new IllegalStateException("Polling is completed and did not succeed. Cannot create a polling request.");
         }
+
         return new HttpRequest(fullyQualifiedMethodName, "GET", pollUrl);
     }
 
@@ -90,7 +93,12 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                                         clearDelayInMilliseconds();
                                     }
                                 }
-                                result = Single.just(httpPollResponse);
+
+                                if (httpPollResponse.statusCode() == 200 && operationResource == null) {
+                                    result = Single.error(new CloudException("Response does not contain a valid body", httpPollResponse, null));
+                                } else {
+                                    result = Single.just(httpPollResponse);
+                                }
                             } catch (IOException e) {
                                 result = Single.error(e);
                             }
