@@ -10,7 +10,6 @@ import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import rx.Single;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -23,14 +22,6 @@ abstract class PollStrategy {
 
     PollStrategy(long delayInMilliseconds) {
         this.delayInMilliseconds = delayInMilliseconds;
-    }
-
-    /**
-     * Get the number of milliseconds to delay before sending the next poll request.
-     * @return The number of milliseconds to delay.
-     */
-    final long delayInMilliseconds() {
-        return delayInMilliseconds;
     }
 
     /**
@@ -52,17 +43,6 @@ abstract class PollStrategy {
             }
             catch (NumberFormatException ignored) {
             }
-        }
-    }
-
-    /**
-     * If this PollStrategy has a retryAfterSeconds value, delay (and block) the current thread for
-     * the number of seconds that are in the retryAfterSeconds value. If this PollStrategy doesn't
-     * have a retryAfterSeconds value, then just return.
-     */
-    void delay() throws InterruptedException {
-        if (delayInMilliseconds > 0) {
-            Thread.sleep(delayInMilliseconds);
         }
     }
 
@@ -102,12 +82,6 @@ abstract class PollStrategy {
      * @return A new HTTP poll request.
      */
     abstract HttpRequest createPollRequest();
-
-    /**
-     * Update the status of this PollStrategy from the provided HTTP poll response.
-     * @param httpPollResponse The response of the most recent poll request.
-     */
-    abstract void updateFrom(HttpResponse httpPollResponse) throws IOException;
 
     /**
      * Update the status of this PollStrategy from the provided HTTP poll response.

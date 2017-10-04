@@ -33,9 +33,9 @@ public class UserAgentTests {
             }
         };
 
-        HttpResponse response = client.sendRequest(new HttpRequest(
+        HttpResponse response = client.sendRequestAsync(new HttpRequest(
                 "defaultUserAgentTests",
-                "GET", "http://localhost"));
+                "GET", "http://localhost")).toBlocking().value();
 
         Assert.assertEquals(200, response.statusCode());
     }
@@ -51,7 +51,7 @@ public class UserAgentTests {
             }
         };
 
-        HttpResponse response = client.sendRequest(new HttpRequest("customUserAgentTests", "GET", "http://localhost"));
+        HttpResponse response = client.sendRequestAsync(new HttpRequest("customUserAgentTests", "GET", "http://localhost")).toBlocking().value();
         Assert.assertEquals(200, response.statusCode());
     }
 }

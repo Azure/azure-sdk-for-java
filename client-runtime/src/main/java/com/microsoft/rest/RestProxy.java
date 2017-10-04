@@ -15,6 +15,7 @@ import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import com.microsoft.rest.http.UrlBuilder;
 import rx.Completable;
+import rx.Observable;
 import rx.Single;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
@@ -72,16 +73,6 @@ public class RestProxy implements InvocationHandler {
     }
 
     /**
-     * Send the provided request and block until the response is received.
-     * @param request The HTTP request to send.
-     * @return The HTTP response received.
-     * @throws IOException On network issues.
-     */
-    public HttpResponse sendHttpRequest(HttpRequest request) throws IOException {
-        return httpClient.sendRequest(request);
-    }
-
-    /**
      * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
      * @param request The HTTP request to send.
      * @return A {@link Single} representing the HTTP response that will arrive asynchronously.
@@ -96,17 +87,9 @@ public class RestProxy implements InvocationHandler {
 
         final HttpRequest request = createHttpRequest(methodParser, args);
 
-        Object result;
-        if (methodParser.isAsync()) {
-            final Single<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
-            result = handleAsyncHttpResponse(request, asyncResponse, methodParser);
-        }
-        else {
-            final HttpResponse response = sendHttpRequest(request);
-            result = handleSyncHttpResponse(request, response, methodParser);
-        }
+        final Single<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
 
-        return result;
+        return handleAsyncHttpResponse(request, asyncResponse, methodParser, methodParser.returnType());
     }
 
     /**
@@ -181,16 +164,6 @@ public class RestProxy implements InvocationHandler {
         return request;
     }
 
-    protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser) throws IOException, InterruptedException {
-        final Type returnType = methodParser.returnType();
-        return handleSyncHttpResponse(httpRequest, httpResponse, methodParser, returnType);
-    }
-
-    protected Object handleSyncHttpResponse(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type returnType) throws IOException {
-        ensureExpectedStatus(httpResponse, methodParser).toBlocking().value();
-        return toProxyReturnValue(httpResponse, methodParser, returnType).toBlocking().value();
-    }
-
     private Exception instantiateUnexpectedException(SwaggerMethodParser methodParser, HttpResponse response, String responseContent) {
         final int responseStatusCode = response.statusCode();
         final Class<? extends RestException> exceptionType = methodParser.exceptionType();
@@ -226,18 +199,18 @@ public class RestProxy implements InvocationHandler {
                 }
             });
         } else {
-             asyncResult = Single.just(response);
+            asyncResult = Single.just(response);
         }
 
         return asyncResult;
     }
 
-    private Single<?> toProxyReturnValue(HttpResponse response, SwaggerMethodParser methodParser, final Type entityType) {
+    private Single<?> toProxyReturnValueAsync(HttpResponse response, String httpMethod, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final Single<?> asyncResult;
         if (entityTypeToken.isSubtypeOf(void.class) || entityTypeToken.isSubtypeOf(Void.class)) {
             asyncResult = Single.just(null);
-        } else if (methodParser.httpMethod().equalsIgnoreCase("HEAD")
+        } else if (httpMethod.equalsIgnoreCase("HEAD")
                 && (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class))) {
             boolean isSuccess = response.statusCode() / 100 == 2;
             asyncResult = Single.just(isSuccess);
@@ -265,33 +238,45 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    protected Object handleAsyncHttpResponse(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser) {
+    protected Object handleAsyncHttpResponse(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
         Object result;
 
-        final Type returnType = methodParser.returnType();
         final TypeToken returnTypeToken = TypeToken.of(returnType);
 
-        final Single<HttpResponse> asyncExpectedResponse = asyncHttpResponse.flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
-            @Override
-            public Single<HttpResponse> call(HttpResponse response) {
-                return ensureExpectedStatus(response, methodParser);
-            }
-        });
+        final Single<HttpResponse> asyncExpectedResponse = asyncHttpResponse
+                .flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
+                    @Override
+                    public Single<HttpResponse> call(HttpResponse response) {
+                        return ensureExpectedStatus(response, methodParser);
+                    }
+                });
 
         if (returnTypeToken.isSubtypeOf(Completable.class)) {
             result = Completable.fromSingle(asyncExpectedResponse);
         }
         else if (returnTypeToken.isSubtypeOf(Single.class)) {
-            final Type singleTypeParam = ((ParameterizedType) methodParser.returnType()).getActualTypeArguments()[0];
+            final Type singleTypeParam = ((ParameterizedType) returnType).getActualTypeArguments()[0];
             result = asyncExpectedResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
                 @Override
                 public Single<?> call(HttpResponse response) {
-                    return toProxyReturnValue(response, methodParser, singleTypeParam);
+                    return toProxyReturnValueAsync(response, methodParser.httpMethod(), singleTypeParam);
                 }
             });
         }
-        else {
+        else if (returnTypeToken.isSubtypeOf(Observable.class)) {
             throw new InvalidReturnTypeException("RestProxy does not support swagger interface methods (such as " + methodParser.fullyQualifiedMethodName() + "()) with a return type of " + returnType.toString());
+        }
+        else {
+            // The return value is not an asynchronous type (Completable, Single, or Observable), so
+            // block the deserialization until a value is received.
+            result = asyncExpectedResponse
+                    .flatMap(new Func1<HttpResponse, Single<?>>() {
+                        @Override
+                        public Single<?> call(HttpResponse httpResponse) {
+                            return toProxyReturnValueAsync(httpResponse, methodParser.httpMethod(), returnType);
+                        }
+                    })
+                    .toBlocking().value();
         }
 
         return result;
