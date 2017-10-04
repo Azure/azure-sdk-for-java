@@ -8,6 +8,7 @@ package com.microsoft.azure;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.annotations.AzureHost;
+import com.microsoft.rest.RestException;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.InvalidReturnTypeException;
 import com.microsoft.rest.RestProxy;
@@ -175,7 +176,8 @@ public final class AzureProxy extends RestProxy {
 
                                 Observable<OperationStatus<Object>> result;
                                 if (pollStrategy == null || pollStrategy.isDone()) {
-                                    result = toCompletedOperationStatusObservable(httpRequest, httpResponse, methodParser, operationStatusResultType);
+                                    final String provisioningState = pollStrategy == null ? ProvisioningState.SUCCEEDED : pollStrategy.provisioningState();
+                                    result = toCompletedOperationStatusObservable(provisioningState, httpRequest, httpResponse, methodParser, operationStatusResultType);
                                 } else {
                                     result = sendPollRequestWithDelay(pollStrategy)
                                             .flatMap(new Func1<HttpResponse, Observable<OperationStatus<Object>>>() {
@@ -186,7 +188,7 @@ public final class AzureProxy extends RestProxy {
                                                         result = Observable.just(new OperationStatus<>(pollStrategy));
                                                     }
                                                     else {
-                                                        result = toCompletedOperationStatusObservable(httpRequest, httpResponse, methodParser, operationStatusResultType);
+                                                        result = toCompletedOperationStatusObservable(pollStrategy.provisioningState(), httpRequest, httpResponse, methodParser, operationStatusResultType);
                                                     }
                                                     return result;
                                                 }
@@ -240,11 +242,16 @@ public final class AzureProxy extends RestProxy {
         return result;
     }
 
-    private Observable<OperationStatus<Object>> toCompletedOperationStatusObservable(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
+    private Observable<OperationStatus<Object>> toCompletedOperationStatusObservable(String provisioningState, HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
         Observable<OperationStatus<Object>> result;
         try {
             final Object resultObject = super.handleSyncHttpResponse(httpRequest, httpResponse, methodParser, operationStatusResultType);
-            result = Observable.just(new OperationStatus<>(resultObject));
+            result = Observable.just(new OperationStatus<>(resultObject, provisioningState));
+        } catch (RestException e) {
+            if (ProvisioningState.SUCCEEDED.equals(provisioningState)) {
+                provisioningState = ProvisioningState.FAILED;
+            }
+            result = Observable.just(new OperationStatus<>(e, provisioningState));
         } catch (IOException e) {
             result = Observable.error(e);
         }

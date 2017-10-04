@@ -19,6 +19,7 @@ import java.util.concurrent.TimeUnit;
  */
 abstract class PollStrategy {
     private long delayInMilliseconds;
+    private String provisioningState;
 
     PollStrategy(long delayInMilliseconds) {
         this.delayInMilliseconds = delayInMilliseconds;
@@ -79,6 +80,21 @@ abstract class PollStrategy {
         }
 
         return result;
+    }
+
+    /**
+     * @return the current provisioning state of the long running operation.
+     */
+    String provisioningState() {
+        return provisioningState;
+    }
+
+    /**
+     * Set the current provisioning state of the long running operation.
+     * @param provisioningState The current provisioning state of the long running operation.
+     */
+    protected void setProvisioningState(String provisioningState) {
+        this.provisioningState = provisioningState;
     }
 
     /**
