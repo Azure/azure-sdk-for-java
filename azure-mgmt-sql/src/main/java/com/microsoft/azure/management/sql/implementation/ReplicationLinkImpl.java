@@ -119,7 +119,7 @@ class ReplicationLinkImpl
 
     @Override
     public ServiceFuture<Void> failoverAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.failoverAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.failoverAsync(), callback);
     }
 
     @Override
@@ -138,7 +138,7 @@ class ReplicationLinkImpl
 
     @Override
     public ServiceFuture<Void> forceFailoverAllowDataLossAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.forceFailoverAllowDataLossAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.forceFailoverAllowDataLossAsync(), callback);
     }
 
     @Override

@@ -194,7 +194,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public ServiceFuture<Void> deallocateAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.deallocateAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.deallocateAsync(), callback);
     }
 
     @Override
@@ -209,7 +209,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public ServiceFuture<Void> powerOffAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.powerOffAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.powerOffAsync(), callback);
     }
 
     @Override
@@ -224,7 +224,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public ServiceFuture<Void> restartAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.restartAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.restartAsync(), callback);
     }
 
     @Override
@@ -239,7 +239,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public ServiceFuture<Void> startAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.startAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.startAsync(), callback);
     }
 
     @Override
@@ -254,7 +254,7 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public ServiceFuture<Void> reimageAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.reimageAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.reimageAsync(), callback);
     }
 
     @Override

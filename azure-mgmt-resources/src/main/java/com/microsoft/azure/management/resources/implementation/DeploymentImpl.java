@@ -174,7 +174,7 @@ public final class DeploymentImpl extends
 
     @Override
     public ServiceFuture<Void> cancelAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.cancelAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.cancelAsync(), callback);
     }
 
     @Override
