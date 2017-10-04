@@ -90,6 +90,10 @@ public class AzureProxyTests {
         @ExpectedResponses({200})
         Observable<MockResource> beginCreateAsyncWithBadReturnType(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
 
+        @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Location&PollsRemaining=1&InitialResponseStatusCode=294")
+        @ExpectedResponses({200})
+        Observable<OperationStatus<MockResource>> beginCreateAsyncWithLocationAndPollsAndUnexpectedStatusCode(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName);
+
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Location&PollsRemaining={pollsRemaining}")
         @ExpectedResponses({200})
         Observable<OperationStatus<MockResource>> beginCreateAsyncWithLocationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
@@ -354,6 +358,29 @@ public class AzureProxyTests {
             assertContains(e.getMessage(), "AzureProxyTests$MockResourceService.beginCreateAsyncWithBadReturnType()");
             assertContains(e.getMessage(), "rx.Observable<com.microsoft.azure.MockResource>");
         }
+
+        assertEquals(0, httpClient.getRequests());
+        assertEquals(1, httpClient.createRequests());
+        assertEquals(0, httpClient.deleteRequests());
+        assertEquals(0, httpClient.pollRequests());
+    }
+
+    @Test
+    public void beginCreateAsyncWithLocationAndPollsAndUnexpectedStatusCode() {
+        final MockAzureHttpClient httpClient = new MockAzureHttpClient();
+
+        createMockService(MockResourceService.class, httpClient)
+                .beginCreateAsyncWithLocationAndPollsAndUnexpectedStatusCode("1", "mine", "c")
+                .subscribe(new Action1<OperationStatus<MockResource>>() {
+                    @Override
+                    public void call(OperationStatus<MockResource> operationStatus) {
+                        assertTrue(operationStatus.isDone());
+                        assertNull(operationStatus.result());
+                        assertNotNull(operationStatus.error());
+                        assertEquals("Status code 294, null", operationStatus.error().getMessage());
+                        assertEquals(ProvisioningState.FAILED, operationStatus.provisioningState());
+                    }
+                });
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());

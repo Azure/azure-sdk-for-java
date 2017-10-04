@@ -6,13 +6,17 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.rest.RestException;
+
 /**
  * The current state of polling for the result of a long running operation.
  * @param <T> The type of value that will be returned from the long running operation.
  */
 public class OperationStatus<T> {
-    private PollStrategy pollStrategy;
-    private T result;
+    private final PollStrategy pollStrategy;
+    private final T result;
+    private final RestException error;
+    private final String provisioningState;
 
     /**
      * Create a new OperationStatus with the provided PollStrategy.
@@ -21,18 +25,30 @@ public class OperationStatus<T> {
      */
     OperationStatus(PollStrategy pollStrategy) {
         this.pollStrategy = pollStrategy;
+        this.result = null;
+        this.error = null;
+        this.provisioningState = pollStrategy.provisioningState();
     }
 
     /**
      * Create a new OperationStatus with the provided result.
      * @param result The final result of a long running operation.
      */
-    OperationStatus(T result) {
+    OperationStatus(T result, String provisioningState) {
+        this.pollStrategy = null;
         this.result = result;
+        this.error = null;
+        this.provisioningState = provisioningState;
+    }
+
+    OperationStatus(RestException error, String provisioningState) {
+        this.pollStrategy = null;
+        this.result = null;
+        this.error = error;
+        this.provisioningState = provisioningState;
     }
 
     /**
-     * Get whether or not the long running operation is done.
      * @return Whether or not the long running operation is done.
      */
     public boolean isDone() {
@@ -40,11 +56,27 @@ public class OperationStatus<T> {
     }
 
     /**
+     * @return the current provisioning state of the long running operation.
+     */
+    public String provisioningState() {
+        return provisioningState;
+    }
+
+    /**
      * If the long running operation is done, get the result of the operation. If the operation is
-     * not done, then return null.
-     * @return The result of the operation, or null if the operation isn't done yet.
+     * not done or if the operation failed, then return null.
+     * @return The result of the operation, or null if the operation isn't done yet or if it failed.
      */
     public T result() {
         return result;
+    }
+
+    /**
+     * If the long running operation failed, get the error that occurred. If the operation is not
+     * done or did not fail, then return null.
+     * @return The error of the operation, or null if the operation isn't done or didn't fail.
+     */
+    public RestException error() {
+        return error;
     }
 }

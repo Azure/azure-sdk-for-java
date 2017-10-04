@@ -34,16 +34,6 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     public static final String HEADER_NAME = "Azure-AsyncOperation";
 
     /**
-     * The provisioning state of the operation resource if the operation is still in progress.
-     */
-    public static final String IN_PROGRESS = "InProgress";
-
-    /**
-     * The provisioning state of the operation resource if the operation is successful.
-     */
-    public static final String SUCCEEDED = "Succeeded";
-
-    /**
      * Create a new AzureAsyncOperationPollStrategy object that will poll the provided operation
      * resource URL.
      * @param fullyQualifiedMethodName The fully qualified name of the method that initiated the
@@ -53,9 +43,11 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      *                            operating on.
      * @param serializer The serializer that will deserialize the operation resource and the
      *                   final operation result.
+     * @param delayInMilliseconds The delay (in milliseconds) that the pollStrategy will use when
+     *                            polling.
      */
-    private AzureAsyncOperationPollStrategy(String fullyQualifiedMethodName, String operationResourceUrl, String originalResourceUrl, SerializerAdapter<?> serializer) {
-        super(AzureProxy.defaultDelayInMilliseconds());
+    private AzureAsyncOperationPollStrategy(String fullyQualifiedMethodName, String operationResourceUrl, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
+        super(delayInMilliseconds);
 
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.operationResourceUrl = operationResourceUrl;
@@ -97,10 +89,12 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                             try {
                                 final OperationResource operationResource = serializer.deserialize(bodyString, OperationResource.class);
                                 if (operationResource != null) {
-                                    final String provisioningState = provisioningState(operationResource);
-                                    pollingCompleted = !IN_PROGRESS.equalsIgnoreCase(provisioningState);
+                                    final String resourceProvisioningState = provisioningState(operationResource);
+                                    setProvisioningState(resourceProvisioningState);
+
+                                    pollingCompleted = !ProvisioningState.IN_PROGRESS.equalsIgnoreCase(resourceProvisioningState);
                                     if (pollingCompleted) {
-                                        pollingSucceeded = SUCCEEDED.equalsIgnoreCase(provisioningState);
+                                        pollingSucceeded = ProvisioningState.SUCCEEDED.equalsIgnoreCase(resourceProvisioningState);
                                         clearDelayInMilliseconds();
                                     }
                                 }
@@ -152,11 +146,13 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      *                                 long running operation.
      * @param httpResponse The HTTP response that the required header values for this pollStrategy
      *                     will be read from.
+     * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
+     *                            use when polling.
      */
-    static AzureAsyncOperationPollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse, String originalResourceUrl, SerializerAdapter<?> serializer) {
+    static AzureAsyncOperationPollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
         final String azureAsyncOperationUrl = httpResponse.headerValue(HEADER_NAME);
         return azureAsyncOperationUrl != null && !azureAsyncOperationUrl.isEmpty()
-                ? new AzureAsyncOperationPollStrategy(fullyQualifiedMethodName, azureAsyncOperationUrl, originalResourceUrl, serializer)
+                ? new AzureAsyncOperationPollStrategy(fullyQualifiedMethodName, azureAsyncOperationUrl, originalResourceUrl, serializer, delayInMilliseconds)
                 : null;
     }
 }
