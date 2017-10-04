@@ -8,39 +8,39 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.annotations.BodyParam;
+import com.microsoft.rest.annotations.DELETE;
+import com.microsoft.rest.annotations.ExpectedResponses;
+import com.microsoft.rest.annotations.GET;
+import com.microsoft.rest.annotations.HeaderParam;
+import com.microsoft.rest.annotations.Headers;
+import com.microsoft.rest.annotations.Host;
+import com.microsoft.rest.annotations.PathParam;
+import com.microsoft.rest.annotations.PUT;
+import com.microsoft.rest.annotations.QueryParam;
+import com.microsoft.rest.annotations.UnexpectedResponseExceptionType;
+import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
-import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import rx.Single;
+import com.microsoft.azure.AzureProxy;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in PolicyDefinitions.
  */
 public class PolicyDefinitionsInner {
-    /** The Retrofit service to perform REST calls. */
+    /** The RestProxy service to perform REST calls. */
     private PolicyDefinitionsService service;
     /** The service client containing this operation class. */
     private PolicyClientImpl client;
@@ -48,38 +48,48 @@ public class PolicyDefinitionsInner {
     /**
      * Initializes an instance of PolicyDefinitionsInner.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PolicyDefinitionsInner(Retrofit retrofit, PolicyClientImpl client) {
-        this.service = retrofit.create(PolicyDefinitionsService.class);
+    public PolicyDefinitionsInner(PolicyClientImpl client) {
+        this.service = AzureProxy.create(PolicyDefinitionsService.class, client.restClient().baseURL(), client.httpClient(), client.serializerAdapter());
         this.client = client;
     }
 
     /**
      * The interface defining all the services for PolicyDefinitions to be
-     * used by Retrofit to perform actually REST calls.
+     * used by RestProxy to perform REST calls.
      */
+    @Host("https://management.azure.com")
     interface PolicyDefinitionsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions createOrUpdate" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}")
-        Observable<Response<ResponseBody>> createOrUpdate(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Body PolicyDefinitionInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PolicyDefinitionInner> createOrUpdate(@PathParam("policyDefinitionName") String policyDefinitionName, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json; charset=utf-8") PolicyDefinitionInner parameters, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions delete" })
-        @HTTP(path = "subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions delete" })
+        @DELETE("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}")
+        @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<Void> delete(@PathParam("policyDefinitionName") String policyDefinitionName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions get" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions get" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions/{policyDefinitionName}")
-        Observable<Response<ResponseBody>> get(@Path("policyDefinitionName") String policyDefinitionName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PolicyDefinitionInner> get(@PathParam("policyDefinitionName") String policyDefinitionName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions list" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policydefinitions")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<PolicyDefinitionInner>> list(@PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions listNext" })
-        @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyDefinitions listNext" })
+        @GET("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<PolicyDefinitionInner>> listNext(@PathParam(value = "nextUrl", encoded = true) String nextUrl, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
     }
 
@@ -94,7 +104,7 @@ public class PolicyDefinitionsInner {
      * @return the PolicyDefinitionInner object if successful.
      */
     public PolicyDefinitionInner createOrUpdate(String policyDefinitionName, PolicyDefinitionInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(policyDefinitionName, parameters).toBlocking().single().body();
+        return createOrUpdateAsync(policyDefinitionName, parameters).toBlocking().value();
     }
 
     /**
@@ -107,7 +117,7 @@ public class PolicyDefinitionsInner {
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyDefinitionInner> createOrUpdateAsync(String policyDefinitionName, PolicyDefinitionInner parameters, final ServiceCallback<PolicyDefinitionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateWithServiceResponseAsync(policyDefinitionName, parameters), serviceCallback);
+        return ServiceFuture.fromBody(createOrUpdateAsync(policyDefinitionName, parameters), serviceCallback);
     }
 
     /**
@@ -118,24 +128,7 @@ public class PolicyDefinitionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyDefinitionInner object
      */
-    public Observable<PolicyDefinitionInner> createOrUpdateAsync(String policyDefinitionName, PolicyDefinitionInner parameters) {
-        return createOrUpdateWithServiceResponseAsync(policyDefinitionName, parameters).map(new Func1<ServiceResponse<PolicyDefinitionInner>, PolicyDefinitionInner>() {
-            @Override
-            public PolicyDefinitionInner call(ServiceResponse<PolicyDefinitionInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates a policy definition.
-     *
-     * @param policyDefinitionName The name of the policy definition to create.
-     * @param parameters The policy definition properties.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyDefinitionInner object
-     */
-    public Observable<ServiceResponse<PolicyDefinitionInner>> createOrUpdateWithServiceResponseAsync(String policyDefinitionName, PolicyDefinitionInner parameters) {
+    public Single<PolicyDefinitionInner> createOrUpdateAsync(String policyDefinitionName, PolicyDefinitionInner parameters) {
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
@@ -149,26 +142,9 @@ public class PolicyDefinitionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createOrUpdate(policyDefinitionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyDefinitionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PolicyDefinitionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PolicyDefinitionInner> clientResponse = createOrUpdateDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.createOrUpdate(policyDefinitionName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<PolicyDefinitionInner> createOrUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyDefinitionInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<PolicyDefinitionInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Deletes a policy definition.
@@ -179,7 +155,7 @@ public class PolicyDefinitionsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String policyDefinitionName) {
-        deleteWithServiceResponseAsync(policyDefinitionName).toBlocking().single().body();
+        deleteAsync(policyDefinitionName).toBlocking().value();
     }
 
     /**
@@ -191,7 +167,7 @@ public class PolicyDefinitionsInner {
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAsync(String policyDefinitionName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(policyDefinitionName), serviceCallback);
+        return ServiceFuture.fromBody(deleteAsync(policyDefinitionName), serviceCallback);
     }
 
     /**
@@ -199,25 +175,9 @@ public class PolicyDefinitionsInner {
      *
      * @param policyDefinitionName The name of the policy definition to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the {@link Single<Void>} object if successful.
      */
-    public Observable<Void> deleteAsync(String policyDefinitionName) {
-        return deleteWithServiceResponseAsync(policyDefinitionName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes a policy definition.
-     *
-     * @param policyDefinitionName The name of the policy definition to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String policyDefinitionName) {
+    public Single<Void> deleteAsync(String policyDefinitionName) {
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
@@ -227,27 +187,9 @@ public class PolicyDefinitionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.delete(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.delete(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets the policy definition.
@@ -259,7 +201,7 @@ public class PolicyDefinitionsInner {
      * @return the PolicyDefinitionInner object if successful.
      */
     public PolicyDefinitionInner get(String policyDefinitionName) {
-        return getWithServiceResponseAsync(policyDefinitionName).toBlocking().single().body();
+        return getAsync(policyDefinitionName).toBlocking().value();
     }
 
     /**
@@ -271,7 +213,7 @@ public class PolicyDefinitionsInner {
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyDefinitionInner> getAsync(String policyDefinitionName, final ServiceCallback<PolicyDefinitionInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(policyDefinitionName), serviceCallback);
+        return ServiceFuture.fromBody(getAsync(policyDefinitionName), serviceCallback);
     }
 
     /**
@@ -281,23 +223,7 @@ public class PolicyDefinitionsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyDefinitionInner object
      */
-    public Observable<PolicyDefinitionInner> getAsync(String policyDefinitionName) {
-        return getWithServiceResponseAsync(policyDefinitionName).map(new Func1<ServiceResponse<PolicyDefinitionInner>, PolicyDefinitionInner>() {
-            @Override
-            public PolicyDefinitionInner call(ServiceResponse<PolicyDefinitionInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets the policy definition.
-     *
-     * @param policyDefinitionName The name of the policy definition to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyDefinitionInner object
-     */
-    public Observable<ServiceResponse<PolicyDefinitionInner>> getWithServiceResponseAsync(String policyDefinitionName) {
+    public Single<PolicyDefinitionInner> getAsync(String policyDefinitionName) {
         if (policyDefinitionName == null) {
             throw new IllegalArgumentException("Parameter policyDefinitionName is required and cannot be null.");
         }
@@ -307,26 +233,9 @@ public class PolicyDefinitionsInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyDefinitionInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PolicyDefinitionInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PolicyDefinitionInner> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.get(policyDefinitionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<PolicyDefinitionInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyDefinitionInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyDefinitionInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the policy definitions for a subscription.
@@ -337,32 +246,13 @@ public class PolicyDefinitionsInner {
      * @return the PagedList&lt;PolicyDefinitionInner&gt; object if successful.
      */
     public PagedList<PolicyDefinitionInner> list() {
-        ServiceResponse<Page<PolicyDefinitionInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<PolicyDefinitionInner>(response.body()) {
+        Page<PolicyDefinitionInner> response = listSinglePageAsync().toBlocking().value();
+        return new PagedList<PolicyDefinitionInner>(response) {
             @Override
             public Page<PolicyDefinitionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
-    }
-
-    /**
-     * Gets all the policy definitions for a subscription.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyDefinitionInner>> listAsync(final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
     }
 
     /**
@@ -372,31 +262,16 @@ public class PolicyDefinitionsInner {
      * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
      */
     public Observable<Page<PolicyDefinitionInner>> listAsync() {
-        return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Page<PolicyDefinitionInner>>() {
-                @Override
-                public Page<PolicyDefinitionInner> call(ServiceResponse<Page<PolicyDefinitionInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the policy definitions for a subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listWithServiceResponseAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyDefinitionInner>, Observable<Page<PolicyDefinitionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(ServiceResponse<Page<PolicyDefinitionInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyDefinitionInner>> call(Page<PolicyDefinitionInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextAsync(nextPageLink));
                 }
             });
     }
@@ -405,9 +280,9 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyDefinitionInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listSinglePageAsync() {
+    public Single<Page<PolicyDefinitionInner>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -415,16 +290,10 @@ public class PolicyDefinitionsInner {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
+        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyDefinitionInner>, Page<PolicyDefinitionInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyDefinitionInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyDefinitionInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyDefinitionInner> call(PageImpl<PolicyDefinitionInner> productPage) {
+                    return productPage;
                 }
             });
     }
@@ -439,11 +308,11 @@ public class PolicyDefinitionsInner {
      * @return the PagedList&lt;PolicyDefinitionInner&gt; object if successful.
      */
     public PagedList<PolicyDefinitionInner> list(final String filter) {
-        ServiceResponse<Page<PolicyDefinitionInner>> response = listSinglePageAsync(filter).toBlocking().single();
-        return new PagedList<PolicyDefinitionInner>(response.body()) {
+        Page<PolicyDefinitionInner> response = listSinglePageAsync(filter).toBlocking().value();
+        return new PagedList<PolicyDefinitionInner>(response) {
             @Override
             public Page<PolicyDefinitionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -452,56 +321,20 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyDefinitionInner>> listAsync(final String filter, final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(filter),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the policy definitions for a subscription.
-     *
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
+     * @return the observable to the PagedList<PolicyDefinitionInner> object
      */
     public Observable<Page<PolicyDefinitionInner>> listAsync(final String filter) {
-        return listWithServiceResponseAsync(filter)
-            .map(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Page<PolicyDefinitionInner>>() {
-                @Override
-                public Page<PolicyDefinitionInner> call(ServiceResponse<Page<PolicyDefinitionInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the policy definitions for a subscription.
-     *
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listWithServiceResponseAsync(final String filter) {
         return listSinglePageAsync(filter)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyDefinitionInner>, Observable<Page<PolicyDefinitionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(ServiceResponse<Page<PolicyDefinitionInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyDefinitionInner>> call(Page<PolicyDefinitionInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextAsync(nextPageLink));
                 }
             });
     }
@@ -509,37 +342,25 @@ public class PolicyDefinitionsInner {
     /**
      * Gets all the policy definitions for a subscription.
      *
-    ServiceResponse<PageImpl<PolicyDefinitionInner>> * @param filter The filter to apply on the operation.
+    PageImpl<PolicyDefinitionInner> * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyDefinitionInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listSinglePageAsync(final String filter) {
+    public Single<Page<PolicyDefinitionInner>> listSinglePageAsync(final String filter) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
+        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyDefinitionInner>, Page<PolicyDefinitionInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyDefinitionInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyDefinitionInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyDefinitionInner> call(PageImpl<PolicyDefinitionInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<PolicyDefinitionInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<PolicyDefinitionInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the policy definitions for a subscription.
@@ -551,11 +372,11 @@ public class PolicyDefinitionsInner {
      * @return the PagedList&lt;PolicyDefinitionInner&gt; object if successful.
      */
     public PagedList<PolicyDefinitionInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<PolicyDefinitionInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PolicyDefinitionInner>(response.body()) {
+        Page<PolicyDefinitionInner> response = listNextSinglePageAsync(nextPageLink).toBlocking().value();
+        return new PagedList<PolicyDefinitionInner>(response) {
             @Override
             public Page<PolicyDefinitionInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -564,57 +385,20 @@ public class PolicyDefinitionsInner {
      * Gets all the policy definitions for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyDefinitionInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyDefinitionInner>> serviceFuture, final ListOperationCallback<PolicyDefinitionInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the policy definitions for a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
+     * @return the observable to the PagedList<PolicyDefinitionInner> object
      */
     public Observable<Page<PolicyDefinitionInner>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Page<PolicyDefinitionInner>>() {
-                @Override
-                public Page<PolicyDefinitionInner> call(ServiceResponse<Page<PolicyDefinitionInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the policy definitions for a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyDefinitionInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyDefinitionInner>>, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyDefinitionInner>, Observable<Page<PolicyDefinitionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(ServiceResponse<Page<PolicyDefinitionInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyDefinitionInner>> call(Page<PolicyDefinitionInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextAsync(nextPageLink));
                 }
             });
     }
@@ -622,34 +406,22 @@ public class PolicyDefinitionsInner {
     /**
      * Gets all the policy definitions for a subscription.
      *
-    ServiceResponse<PageImpl<PolicyDefinitionInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    PageImpl<PolicyDefinitionInner> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyDefinitionInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyDefinitionInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Single<Page<PolicyDefinitionInner>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyDefinitionInner>>>>() {
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyDefinitionInner>, Page<PolicyDefinitionInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyDefinitionInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyDefinitionInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyDefinitionInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyDefinitionInner> call(PageImpl<PolicyDefinitionInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<PolicyDefinitionInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyDefinitionInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<PolicyDefinitionInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
 }

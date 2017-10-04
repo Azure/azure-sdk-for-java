@@ -10,6 +10,7 @@ package com.microsoft.azure.management.powerbi.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.management.powerbi.AccessKeyName;
@@ -35,6 +36,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -145,7 +147,7 @@ public class WorkspaceCollectionsInner implements InnerSupportsGet<WorkspaceColl
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the WorkspaceCollectionInner object
      */
-    public Observable<WorkspaceCollectionInner> getByResourceGroupAsync(String resourceGroupName, String workspaceCollectionName) {
+    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String workspaceCollectionName) {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, workspaceCollectionName).map(new Func1<ServiceResponse<WorkspaceCollectionInner>, WorkspaceCollectionInner>() {
             @Override
             public WorkspaceCollectionInner call(ServiceResponse<WorkspaceCollectionInner> response) {
@@ -499,7 +501,7 @@ public class WorkspaceCollectionsInner implements InnerSupportsGet<WorkspaceColl
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String workspaceCollectionName) {
+    public Single<Void> deleteAsync(String resourceGroupName, String workspaceCollectionName) {
         return deleteWithServiceResponseAsync(resourceGroupName, workspaceCollectionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {

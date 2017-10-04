@@ -10,6 +10,7 @@ package com.microsoft.azure.management.scheduler.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -36,6 +37,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -376,7 +378,7 @@ public class JobCollectionsInner implements InnerSupportsGet<JobCollectionDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the JobCollectionDefinitionInner object
      */
-    public Observable<JobCollectionDefinitionInner> getByResourceGroupAsync(String resourceGroupName, String jobCollectionName) {
+    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String jobCollectionName) {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, jobCollectionName).map(new Func1<ServiceResponse<JobCollectionDefinitionInner>, JobCollectionDefinitionInner>() {
             @Override
             public JobCollectionDefinitionInner call(ServiceResponse<JobCollectionDefinitionInner> response) {
@@ -650,7 +652,7 @@ public class JobCollectionsInner implements InnerSupportsGet<JobCollectionDefini
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String jobCollectionName) {
+    public Single<Void> deleteAsync(String resourceGroupName, String jobCollectionName) {
         return deleteWithServiceResponseAsync(resourceGroupName, jobCollectionName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {

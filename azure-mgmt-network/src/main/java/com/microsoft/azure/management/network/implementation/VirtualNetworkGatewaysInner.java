@@ -10,6 +10,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -35,6 +36,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -353,7 +355,7 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualNetworkGatewayInner object
      */
-    public Observable<VirtualNetworkGatewayInner> getByResourceGroupAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String virtualNetworkGatewayName) {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).map(new Func1<ServiceResponse<VirtualNetworkGatewayInner>, VirtualNetworkGatewayInner>() {
             @Override
             public VirtualNetworkGatewayInner call(ServiceResponse<VirtualNetworkGatewayInner> response) {
@@ -436,7 +438,7 @@ public class VirtualNetworkGatewaysInner implements InnerSupportsGet<VirtualNetw
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName) {
+    public Single<Void> deleteAsync(String resourceGroupName, String virtualNetworkGatewayName) {
         return deleteWithServiceResponseAsync(resourceGroupName, virtualNetworkGatewayName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {

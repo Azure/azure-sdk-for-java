@@ -13,6 +13,7 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
@@ -34,6 +35,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -378,7 +380,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner>, InnerS
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ProfileInner object
      */
-    public Observable<ProfileInner> getByResourceGroupAsync(String resourceGroupName, String profileName) {
+    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String profileName) {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<ProfileInner>, ProfileInner>() {
             @Override
             public ProfileInner call(ServiceResponse<ProfileInner> response) {
@@ -559,7 +561,7 @@ public class ProfilesInner implements InnerSupportsListing<ProfileInner>, InnerS
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DeleteOperationResultInner object
      */
-    public Observable<DeleteOperationResultInner> deleteAsync(String resourceGroupName, String profileName) {
+    public Single<Void> deleteAsync(String resourceGroupName, String profileName) {
         return deleteWithServiceResponseAsync(resourceGroupName, profileName).map(new Func1<ServiceResponse<DeleteOperationResultInner>, DeleteOperationResultInner>() {
             @Override
             public DeleteOperationResultInner call(ServiceResponse<DeleteOperationResultInner> response) {

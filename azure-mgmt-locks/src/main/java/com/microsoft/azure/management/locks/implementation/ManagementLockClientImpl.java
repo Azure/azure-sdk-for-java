@@ -8,25 +8,17 @@
 
 package com.microsoft.azure.management.locks.implementation;
 
-import com.microsoft.azure.AzureClient;
+import com.microsoft.azure.AzureProxy;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
+import rx.Single;
 
 /**
  * Initializes a new instance of the ManagementLockClientImpl class.
  */
 public class ManagementLockClientImpl extends AzureServiceClient {
-    /** the {@link AzureClient} used for long running operations. */
-    private AzureClient azureClient;
 
-    /**
-     * Gets the {@link AzureClient} used for long running operations.
-     * @return the azure client;
-     */
-    public AzureClient getAzureClient() {
-        return this.azureClient;
-    }
 
     /** The ID of the target subscription. */
     private String subscriptionId;
@@ -180,8 +172,7 @@ public class ManagementLockClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.managementLocks = new ManagementLocksInner(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(this);
+        this.managementLocks = new ManagementLocksInner(this);
     }
 
     /**

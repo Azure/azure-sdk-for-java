@@ -8,55 +8,37 @@
 
 package com.microsoft.azure.management.resources;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for PolicyType.
  */
-public final class PolicyType {
+public final class PolicyType extends ExpandableStringEnum<PolicyType> {
     /** Static value NotSpecified for PolicyType. */
-    public static final PolicyType NOT_SPECIFIED = new PolicyType("NotSpecified");
+    public static final PolicyType NOT_SPECIFIED = fromString("NotSpecified");
 
     /** Static value BuiltIn for PolicyType. */
-    public static final PolicyType BUILT_IN = new PolicyType("BuiltIn");
+    public static final PolicyType BUILT_IN = fromString("BuiltIn");
 
     /** Static value Custom for PolicyType. */
-    public static final PolicyType CUSTOM = new PolicyType("Custom");
-
-    private String value;
+    public static final PolicyType CUSTOM = fromString("Custom");
 
     /**
-     * Creates a custom value for PolicyType.
-     * @param value the custom value
+     * Creates or finds a PolicyType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding PolicyType
      */
-    public PolicyType(String value) {
-        this.value = value;
+    @JsonCreator
+    public static PolicyType fromString(String name) {
+        return fromString(name, PolicyType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof PolicyType)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        PolicyType rhs = (PolicyType) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known PolicyType values
+     */
+    public static Collection<PolicyType> values() {
+        return values(PolicyType.class);
     }
 }

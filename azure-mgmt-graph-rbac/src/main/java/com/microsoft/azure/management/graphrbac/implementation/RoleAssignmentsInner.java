@@ -34,6 +34,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -678,7 +679,7 @@ public class RoleAssignmentsInner implements InnerSupportsDelete<RoleAssignmentI
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RoleAssignmentInner object
      */
-    public Observable<RoleAssignmentInner> deleteAsync(String scope, String roleAssignmentName) {
+    public Single<Void> deleteAsync(String scope, String roleAssignmentName) {
         return deleteWithServiceResponseAsync(scope, roleAssignmentName).map(new Func1<ServiceResponse<RoleAssignmentInner>, RoleAssignmentInner>() {
             @Override
             public RoleAssignmentInner call(ServiceResponse<RoleAssignmentInner> response) {

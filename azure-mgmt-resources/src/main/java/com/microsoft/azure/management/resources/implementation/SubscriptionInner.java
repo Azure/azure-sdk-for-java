@@ -30,12 +30,6 @@ public class SubscriptionInner {
     private String subscriptionId;
 
     /**
-     * The tenant ID.
-     */
-    @JsonProperty(value = "tenantId", access = JsonProperty.Access.WRITE_ONLY)
-    private String tenantId;
-
-    /**
      * The subscription display name.
      */
     @JsonProperty(value = "displayName", access = JsonProperty.Access.WRITE_ONLY)
@@ -79,15 +73,6 @@ public class SubscriptionInner {
      */
     public String subscriptionId() {
         return this.subscriptionId;
-    }
-
-    /**
-     * Get the tenantId value.
-     *
-     * @return the tenantId value
-     */
-    public String tenantId() {
-        return this.tenantId;
     }
 
     /**

@@ -8,25 +8,17 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.AzureClient;
+import com.microsoft.azure.AzureProxy;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
+import rx.Single;
 
 /**
  * Initializes a new instance of the PolicyClientImpl class.
  */
 public class PolicyClientImpl extends AzureServiceClient {
-    /** the {@link AzureClient} used for long running operations. */
-    private AzureClient azureClient;
 
-    /**
-     * Gets the {@link AzureClient} used for long running operations.
-     * @return the azure client;
-     */
-    public AzureClient getAzureClient() {
-        return this.azureClient;
-    }
 
     /** The ID of the target subscription. */
     private String subscriptionId;
@@ -193,9 +185,8 @@ public class PolicyClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.policyAssignments = new PolicyAssignmentsInner(restClient().retrofit(), this);
-        this.policyDefinitions = new PolicyDefinitionsInner(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(this);
+        this.policyAssignments = new PolicyAssignmentsInner(this);
+        this.policyDefinitions = new PolicyDefinitionsInner(this);
     }
 
     /**
