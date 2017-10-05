@@ -150,8 +150,8 @@ public abstract class TestBase {
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
+                    .addCustomPolicy(interceptorManager.initInterceptor())
                     // FIXME
-//                    .withNetworkInterceptor(interceptorManager.initInterceptor())
 //                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
                     ,true);
 
@@ -175,8 +175,8 @@ public abstract class TestBase {
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withReadTimeout(3, TimeUnit.MINUTES)
+                    .addCustomPolicy(interceptorManager.initInterceptor())
                     // FIXME
-//                    .withNetworkInterceptor(interceptorManager.initInterceptor())
 //                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
                     ,false);
 
@@ -195,8 +195,7 @@ public abstract class TestBase {
             return;
         }
         cleanUpResources();
-        // FIXME
-//        interceptorManager.finalizeInterceptor();
+        interceptorManager.finalizeInterceptor();
     }
 
     protected void addTextReplacementRule(String from, String to ) {
