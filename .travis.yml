@@ -10,7 +10,7 @@ matrix:
 script:
 - cd azure-documentdb-rx
 - mvn dependency:resolve
-- zip -d $HOME/.m2/repository/com/microsoft/azure/azure-documentdb/1.11.0/azure-documentdb-1.11.0.jar 'META-INF/*.SF' 'META-INF/*.RSA' || echo "maybe already fixed and cached!" 
+- find $HOME/.m2/repository/com/microsoft/azure/azure-documentdb -iname '*.jar' -exec sh -c 'zip -d "{}" META-INF/*.SF' 'META-INF/*.RSA' \; || echo "maybe already fixed and cached!" 
 - mvn test -P fast -DargLine="-DACCOUNT_HOST=$ACCOUNT_HOST -DACCOUNT_KEY=$ACCOUNT_KEY" cobertura:cobertura
 after_success:
   - bash <(curl -s https://codecov.io/bash)
