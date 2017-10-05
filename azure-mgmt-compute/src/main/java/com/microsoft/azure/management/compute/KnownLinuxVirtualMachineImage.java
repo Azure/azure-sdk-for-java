@@ -18,8 +18,10 @@ public enum KnownLinuxVirtualMachineImage {
     /** CentOS 7.2. */
     CENTOS_7_2("OpenLogic", "CentOS", "7.2"),
     /** OpenSUSE-Leap 42.1. */
+    @Deprecated
     OPENSUSE_LEAP_42_1("SUSE", "openSUSE-Leap", "42.1"),
     /** SLES 12-SP1. */
+    @Deprecated
     SLES_12_SP1("SUSE", "SLES", "12-SP1");
 
     private final String publisher;
