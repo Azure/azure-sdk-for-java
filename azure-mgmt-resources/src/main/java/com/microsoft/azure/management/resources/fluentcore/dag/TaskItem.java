@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
 import rx.Observable;
+import rx.Single;
 
 /**
  * Type representing a task in a task group {@link TaskGroup}.

@@ -11,15 +11,15 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.implementation.PageImpl;
-import okhttp3.ResponseBody;
-import retrofit2.Retrofit;
-import retrofit2.http.GET;
-import retrofit2.http.Url;
+import com.microsoft.rest.RestProxy;
+import com.microsoft.rest.annotations.GET;
+import com.microsoft.rest.annotations.PathParam;
+import com.microsoft.rest.http.HttpClient;
+import com.microsoft.rest.serializer.JacksonAdapter;
 import rx.Observable;
-import rx.exceptions.Exceptions;
+import rx.Single;
 import rx.functions.Func1;
 
-import java.io.IOException;
 import java.util.List;
 
 /**
@@ -105,34 +105,25 @@ public final class Utils {
      * @return an observable that emits last item
      */
     @SuppressWarnings("unchecked")
-    public static <U extends Indexable> Observable<U> rootResource(Observable<Indexable> stream) {
+    public static <U extends Indexable> Single<U> rootResource(Observable<Indexable> stream) {
         return stream.last().map(new Func1<Indexable, U>() {
             @Override
             public U call(Indexable indexable) {
                 return (U) indexable;
             }
-        });
+        }).toSingle();
     }
 
     /**
      * Download a file asynchronously.
      * @param url the URL pointing to the file
-     * @param retrofit the retrofit client
+     * @param httpClient the HTTP client
      * @return an Observable pointing to the content of the file
      */
-    public static Observable<byte[]> downloadFileAsync(String url, Retrofit retrofit) {
-        FileService service = retrofit.create(FileService.class);
-        Observable<ResponseBody> response = service.download(url);
-        return response.map(new Func1<ResponseBody, byte[]>() {
-            @Override
-            public byte[] call(ResponseBody responseBody) {
-                try {
-                    return responseBody.bytes();
-                } catch (IOException e) {
-                    throw Exceptions.propagate(e);
-                }
-            }
-        });
+    public static Observable<byte[]> downloadFileAsync(String url, HttpClient httpClient) {
+        FileService service = RestProxy.create(FileService.class, null, httpClient, new JacksonAdapter());
+        Observable<byte[]> response = service.download(url);
+        return response;
     }
 
     /**
@@ -167,8 +158,8 @@ public final class Utils {
      * A Retrofit service used to download a file.
      */
     private interface FileService {
-        @GET
-        Observable<ResponseBody> download(@Url String url);
+        @GET("{url}")
+        Observable<byte[]> download(@PathParam("url") String url);
     }
 
     private Utils() {

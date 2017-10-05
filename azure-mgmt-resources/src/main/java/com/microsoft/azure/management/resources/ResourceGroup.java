@@ -20,6 +20,7 @@ import com.microsoft.azure.management.resources.implementation.ResourceGroupInne
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.Single;
 
 /**
  * An immutable client-side representation of an Azure resource group.
@@ -52,7 +53,7 @@ public interface ResourceGroup extends
      * @param options the export options
      * @return a representation of the deferred computation of this call returning the result of the template export
      */
-    Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options);
+    Single<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options);
 
     /**
      * Captures the specified resource group as a template asynchronously.

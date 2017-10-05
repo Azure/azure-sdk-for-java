@@ -11,11 +11,13 @@ import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.ResourceGroups;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 /**
  * The implementation for {@link ResourceGroups} and its parent interfaces.
@@ -63,7 +65,7 @@ final class ResourceGroupsImpl
 
     @Override
     public ServiceFuture<Void> deleteByNameAsync(String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromResponse(client.deleteWithServiceResponseAsync(name), callback);
+        return ServiceFuture.fromBody(client.deleteAsync(name), callback);
     }
 
     @Override
@@ -98,7 +100,7 @@ final class ResourceGroupsImpl
 
     @Override
     public void beginDeleteByName(String id) {
-        beginDeleteByNameAsync(id).toBlocking().subscribe();
+        beginDeleteByNameAsync(id).toBlocking().value();
     }
 
     @Override
@@ -107,8 +109,8 @@ final class ResourceGroupsImpl
     }
 
     @Override
-    public Observable<Void> beginDeleteByNameAsync(String name) {
-        return client.beginDeleteAsync(name);
+    public Single<Void> beginDeleteByNameAsync(String name) {
+        return RXMapper.<Void>map(client.beginDeleteAsync(name).first(), null).toSingle();
     }
 
     @Override

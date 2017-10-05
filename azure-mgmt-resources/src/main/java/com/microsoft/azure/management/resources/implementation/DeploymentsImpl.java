@@ -20,6 +20,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 import java.util.List;
@@ -73,7 +74,7 @@ final class DeploymentsImpl
     }
 
     @Override
-    public Observable<Deployment> getByResourceGroupAsync(String groupName, String name) {
+    public Single<Deployment> getByResourceGroupAsync(String groupName, String name) {
         return this.manager().inner().deployments().getByResourceGroupAsync(groupName, name).map(new Func1<DeploymentExtendedInner, Deployment>() {
             @Override
             public Deployment call(DeploymentExtendedInner deploymentExtendedInner) {
@@ -89,7 +90,7 @@ final class DeploymentsImpl
 
     @Override
     public ServiceFuture<Void> deleteByResourceGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByResourceGroupAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deleteByResourceGroupAsync(groupName, name), callback);
     }
 
     @Override
@@ -131,7 +132,7 @@ final class DeploymentsImpl
 
     @Override
     public ServiceFuture<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deleteByIdAsync(id), callback);
     }
 
     @Override

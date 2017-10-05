@@ -8,6 +8,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.models.implement
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -106,11 +107,11 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
 
     @Override
     public final FluentModelT refresh() {
-        return refreshAsync().toBlocking().last();
+        return refreshAsync().toBlocking().value();
     }
 
     @Override
-    public Observable<FluentModelT> refreshAsync() {
+    public Single<FluentModelT> refreshAsync() {
         final ExternalChildResourceImpl<FluentModelT, InnerModelT, ParentImplT, ParentT> self = this;
         return this.getInnerAsync().map(new Func1<InnerModelT, FluentModelT>() {
             @Override
@@ -121,7 +122,7 @@ public abstract class ExternalChildResourceImpl<FluentModelT,
         });
     }
 
-    protected abstract Observable<InnerModelT> getInnerAsync();
+    protected abstract Single<InnerModelT> getInnerAsync();
 
     /**
      * The possible operation pending on a child resource in-memory.

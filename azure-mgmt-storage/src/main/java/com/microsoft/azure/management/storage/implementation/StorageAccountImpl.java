@@ -27,6 +27,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Action1;
 import rx.functions.Func1;
 
@@ -143,11 +144,11 @@ class StorageAccountImpl
 
     @Override
     public List<StorageAccountKey> getKeys() {
-        return this.getKeysAsync().toBlocking().last();
+        return this.getKeysAsync().toBlocking().value();
     }
 
     @Override
-    public Observable<List<StorageAccountKey>> getKeysAsync() {
+    public Single<List<StorageAccountKey>> getKeysAsync() {
         return this.manager().inner().storageAccounts().listKeysAsync(
                 this.resourceGroupName(), this.name()).map(new Func1<StorageAccountListKeysResultInner, List<StorageAccountKey>>() {
             @Override
@@ -164,11 +165,11 @@ class StorageAccountImpl
 
     @Override
     public List<StorageAccountKey> regenerateKey(String keyName) {
-        return this.regenerateKeyAsync(keyName).toBlocking().last();
+        return this.regenerateKeyAsync(keyName).toBlocking().value();
     }
 
     @Override
-    public Observable<List<StorageAccountKey>> regenerateKeyAsync(String keyName) {
+    public Single<List<StorageAccountKey>> regenerateKeyAsync(String keyName) {
         return this.manager().inner().storageAccounts().regenerateKeyAsync(
                 this.resourceGroupName(), this.name(), keyName).map(new Func1<StorageAccountListKeysResultInner, List<StorageAccountKey>>() {
             @Override
@@ -184,7 +185,7 @@ class StorageAccountImpl
     }
 
     @Override
-    public Observable<StorageAccount> refreshAsync() {
+    public Single<StorageAccount> refreshAsync() {
         return super.refreshAsync().map(new Func1<StorageAccount, StorageAccount>() {
             @Override
             public StorageAccount call(StorageAccount storageAccount) {
@@ -196,7 +197,7 @@ class StorageAccountImpl
     }
 
     @Override
-    protected Observable<StorageAccountInner> getInnerAsync() {
+    protected Single<StorageAccountInner> getInnerAsync() {
         return this.manager().inner().storageAccounts().getByResourceGroupAsync(this.resourceGroupName(), this.name());
     }
 
@@ -297,7 +298,8 @@ class StorageAccountImpl
         updateParameters.withTags(this.inner().getTags());
         return this.manager().inner().storageAccounts().updateAsync(
                 resourceGroupName(), name(), updateParameters)
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                .toObservable();
     }
 
     @Override
@@ -341,18 +343,19 @@ class StorageAccountImpl
         final StorageAccountsInner client = this.manager().inner().storageAccounts();
         return this.manager().inner().storageAccounts().createAsync(
                 this.resourceGroupName(), this.name(), createParameters)
-                .flatMap(new Func1<StorageAccountInner, Observable<StorageAccountInner>>() {
+                .flatMap(new Func1<StorageAccountInner, Single<StorageAccountInner>>() {
                     @Override
-                    public Observable<StorageAccountInner> call(StorageAccountInner storageAccountInner) {
+                    public Single<StorageAccountInner> call(StorageAccountInner storageAccountInner) {
                         return client.getByResourceGroupAsync(resourceGroupName(), name());
                     }
                 })
                 .map(innerToFluentMap(this))
-                .doOnNext(new Action1<StorageAccount>() {
+                .doOnSuccess(new Action1<StorageAccount>() {
                     @Override
                     public void call(StorageAccount storageAccount) {
                         clearWrapperProperties();
                     }
-                });
+                })
+                .toObservable();
     }
 }

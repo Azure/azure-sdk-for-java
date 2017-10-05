@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.storage.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
@@ -48,9 +47,9 @@ public final class StorageManager extends Manager<StorageManager, StorageManagem
                 .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                // FIXME
+//                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
+//                .withInterceptor(new ResourceManagerThrottlingInterceptor())
                 .build(), subscriptionId);
     }
 

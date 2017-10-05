@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func0;
 
 /**

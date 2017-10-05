@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -77,7 +78,7 @@ final class GenericResourceImpl
     }
 
     @Override
-    protected Observable<GenericResourceInner> getInnerAsync() {
+    protected Single<GenericResourceInner> getInnerAsync() {
         return this.manager().inner().resources().getAsync(
                 resourceGroupName(),
                 resourceProviderNamespace(),
@@ -136,10 +137,10 @@ final class GenericResourceImpl
     @Override
     public Observable<GenericResource> createResourceAsync() {
         final GenericResourceImpl self = this;
-        Observable<String> observable = Observable.just(apiVersion);
+        Single<String> single = Single.just(apiVersion);
         if (apiVersion == null) {
             final ResourceManagementClientImpl serviceClient = this.manager().inner();
-            observable = this.manager().providers().getByNameAsync(resourceProviderNamespace)
+            single = this.manager().providers().getByNameAsync(resourceProviderNamespace)
                     .map(new Func1<Provider, String>() {
                         @Override
                         public String call(Provider provider) {
@@ -161,10 +162,10 @@ final class GenericResourceImpl
                     });
         }
         final ResourcesInner resourceClient = this.manager().inner().resources();
-        return observable
-                .flatMap(new Func1<String, Observable<GenericResource>>() {
+        return single
+                .flatMap(new Func1<String, Single<GenericResource>>() {
                     @Override
-                    public Observable<GenericResource> call(String api) {
+                    public Single<GenericResource> call(String api) {
                         String name = name();
                         if (!isInCreateMode()) {
                             name = ResourceUtils.nameFromResourceId(inner().id());
@@ -180,6 +181,6 @@ final class GenericResourceImpl
                                 .subscribeOn(SdkContext.getRxScheduler())
                                 .map(innerToFluentMap(self));
                     }
-                });
+                }).toObservable();
     }
 }

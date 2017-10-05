@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsLi
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Entry point to features management API.
@@ -33,7 +34,7 @@ public interface Features extends
      * @param featureName the name of the feature
      * @return a representation of the deferred computation of this call returning the registered feature
      */
-    Observable<Feature> registerAsync(String resourceProviderName, String featureName);
+    Single<Feature> registerAsync(String resourceProviderName, String featureName);
 
     /**
      * Registers a feature in a resource provider asynchronously.

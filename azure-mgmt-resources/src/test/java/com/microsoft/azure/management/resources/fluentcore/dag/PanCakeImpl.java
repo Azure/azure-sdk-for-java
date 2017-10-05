@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import org.junit.Assert;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
@@ -111,7 +112,7 @@ class PancakeImpl
     }
 
     @Override
-    protected Observable<PancakeInner> getInnerAsync() {
+    protected Single<PancakeInner> getInnerAsync() {
         return null;
     }
 

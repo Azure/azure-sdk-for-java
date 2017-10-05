@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import org.junit.Assert;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
@@ -87,7 +88,7 @@ class PizzaImpl
     }
 
     @Override
-    protected Observable<PizzaInner> getInnerAsync() {
-        return Observable.just(this.inner());
+    protected Single<PizzaInner> getInnerAsync() {
+        return Single.just(this.inner());
     }
 }

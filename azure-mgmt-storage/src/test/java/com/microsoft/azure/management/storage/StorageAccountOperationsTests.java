@@ -47,7 +47,7 @@ public class StorageAccountOperationsTests extends StorageManagementTest {
                 .withTag("tag1", "value1")
                 .createAsync();
         StorageAccount storageAccount = Utils.<StorageAccount>rootResource(resourceStream)
-                .toBlocking().last();
+                .toBlocking().value();
         Assert.assertEquals(RG_NAME, storageAccount.resourceGroupName());
         Assert.assertEquals(SkuName.STANDARD_GRS, storageAccount.sku().name());
         // List

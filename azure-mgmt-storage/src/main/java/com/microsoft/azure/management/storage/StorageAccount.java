@@ -20,7 +20,7 @@ import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
-import rx.Observable;
+import rx.Single;
 
 import java.util.List;
 import java.util.Map;
@@ -124,7 +124,7 @@ public interface StorageAccount extends
      *
      * @return a representation of the deferred computation of this call, returning the access keys
      */
-    Observable<List<StorageAccountKey>> getKeysAsync();
+    Single<List<StorageAccountKey>> getKeysAsync();
 
     /**
      * Fetch the up-to-date access keys from Azure for this storage account asynchronously.
@@ -148,7 +148,7 @@ public interface StorageAccount extends
      * @param keyName if the key name
      * @return a representation of the deferred computation of this call, returning the regenerated access key
      */
-    Observable<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
+    Single<List<StorageAccountKey>> regenerateKeyAsync(String keyName);
 
     /**
      * Regenerates the access keys for this storage account asynchronously.

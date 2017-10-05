@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.SupportsGettingByIdImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -40,7 +41,7 @@ final class SubscriptionsImpl
 
 
     @Override
-    public Observable<Subscription> getByIdAsync(String id) {
+    public Single<Subscription> getByIdAsync(String id) {
         return client.getAsync(id).map(new Func1<SubscriptionInner, Subscription>() {
             @Override
             public Subscription call(SubscriptionInner subscriptionInner) {

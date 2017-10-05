@@ -8,6 +8,7 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -26,11 +27,11 @@ public abstract class RefreshableWrapperImpl<InnerT, Impl>
 
     @Override
     public final Impl refresh() {
-        return this.refreshAsync().toBlocking().last();
+        return this.refreshAsync().toBlocking().value();
     }
 
     @Override
-    public Observable<Impl> refreshAsync() {
+    public Single<Impl> refreshAsync() {
         final RefreshableWrapperImpl<InnerT, Impl> self = this;
 
         return this.getInnerAsync().map(new Func1<InnerT, Impl>() {
@@ -42,5 +43,5 @@ public abstract class RefreshableWrapperImpl<InnerT, Impl>
         });
     }
 
-    protected abstract Observable<InnerT> getInnerAsync();
+    protected abstract Single<InnerT> getInnerAsync();
 }

@@ -381,7 +381,7 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the StorageAccountInner object
      */
-    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
+    public Single<StorageAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }

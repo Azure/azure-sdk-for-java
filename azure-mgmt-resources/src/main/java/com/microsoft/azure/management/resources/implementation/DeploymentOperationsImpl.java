@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -38,11 +39,11 @@ final class DeploymentOperationsImpl
 
     @Override
     public DeploymentOperation getById(String operationId) {
-        return getByIdAsync(operationId).toBlocking().last();
+        return getByIdAsync(operationId).toBlocking().value();
     }
 
     @Override
-    public Observable<DeploymentOperation> getByIdAsync(String operationId) {
+    public Single<DeploymentOperation> getByIdAsync(String operationId) {
         return client.getAsync(deployment.resourceGroupName(), deployment.name(), operationId).map(new Func1<DeploymentOperationInner, DeploymentOperation>() {
             @Override
             public DeploymentOperation call(DeploymentOperationInner deploymentOperationInner) {

@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.PolicyDefinition;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableImpl;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Implementation for {@link PolicyAssignment}.
@@ -91,7 +92,8 @@ final class PolicyAssignmentImpl extends
     @Override
     public Observable<PolicyAssignment> createResourceAsync() {
         return innerCollection.createAsync(inner().scope(), name(), inner())
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                .toObservable();
     }
 
     @Override
@@ -100,7 +102,7 @@ final class PolicyAssignmentImpl extends
     }
 
     @Override
-    protected Observable<PolicyAssignmentInner> getInnerAsync() {
+    protected Single<PolicyAssignmentInner> getInnerAsync() {
         return innerCollection.getAsync(inner().scope(), name());
     }
 }

@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.fluentcore.dag;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import org.junit.Assert;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
@@ -110,8 +111,8 @@ class PastaImpl
     }
 
     @Override
-    protected Observable<PastaInner> getInnerAsync() {
-        return Observable.just(this.inner());
+    protected Single<PastaInner> getInnerAsync() {
+        return Single.just(this.inner());
     }
 
     private Observable<IPasta> toErrorObservable(Throwable throwable) {

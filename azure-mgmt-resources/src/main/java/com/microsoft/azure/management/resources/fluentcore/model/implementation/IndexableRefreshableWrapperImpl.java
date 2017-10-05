@@ -10,6 +10,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -44,11 +45,11 @@ public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
 
     @Override
     public final FluentModelT refresh() {
-        return refreshAsync().toBlocking().last();
+        return refreshAsync().toBlocking().value();
     }
 
     @Override
-    public Observable<FluentModelT> refreshAsync() {
+    public Single<FluentModelT> refreshAsync() {
         final IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT> self = this;
         return getInnerAsync().map(new Func1<InnerModelT, FluentModelT>() {
             @Override
@@ -59,5 +60,5 @@ public abstract class IndexableRefreshableWrapperImpl<FluentModelT, InnerModelT>
         });
     }
 
-    protected abstract Observable<InnerModelT> getInnerAsync();
+    protected abstract Single<InnerModelT> getInnerAsync();
 }

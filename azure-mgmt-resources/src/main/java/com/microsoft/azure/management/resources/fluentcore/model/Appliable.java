@@ -11,6 +11,7 @@ import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
+import rx.Single;
 
 /**
  * The base interface for all template interfaces that support update operations.

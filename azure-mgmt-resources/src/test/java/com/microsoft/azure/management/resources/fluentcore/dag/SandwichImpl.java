@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.fluentcore.dag;
 import com.microsoft.azure.management.resources.fluentcore.model.Executable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 import java.util.concurrent.TimeUnit;
@@ -55,7 +56,7 @@ public class SandwichImpl
     }
 
     @Override
-    protected Observable<SandwichInner> getInnerAsync() {
-        return Observable.just(this.inner());
+    protected Single<SandwichInner> getInnerAsync() {
+        return Single.just(this.inner());
     }
 }

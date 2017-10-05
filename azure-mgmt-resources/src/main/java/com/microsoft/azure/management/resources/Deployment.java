@@ -28,6 +28,7 @@ import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import java.io.IOException;
 import java.util.List;
@@ -147,7 +148,7 @@ public interface Deployment extends
      * @return a representation of the deferred computation of this call returning the export result
      */
     @Method
-    Observable<DeploymentExportResult> exportTemplateAsync();
+    Single<DeploymentExportResult> exportTemplateAsync();
 
     /**
      * Exports a deployment template asynchronously.

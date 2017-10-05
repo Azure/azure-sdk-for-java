@@ -12,6 +12,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConvers
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Provides access to getting a specific Azure resource based on its resource ID.
@@ -36,7 +37,7 @@ public interface SupportsGettingById<T> {
      * @param id the id of the resource.
      * @return an immutable representation of the resource
      */
-    Observable<T> getByIdAsync(String id);
+    Single<T> getByIdAsync(String id);
 
     /**
      * Gets the information about a resource from Azure based on the resource id.

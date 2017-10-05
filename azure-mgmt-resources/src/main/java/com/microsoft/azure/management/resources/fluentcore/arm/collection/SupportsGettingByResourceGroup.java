@@ -11,6 +11,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition.MethodConvers
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Provides access to getting a specific Azure resource based on its name and resource group.
@@ -37,7 +38,7 @@ public interface SupportsGettingByResourceGroup<T> {
      * @param name the name of the resource. (Note, this is not the ID)
      * @return Observable to an immutable representation of the resource
      */
-    Observable<T> getByResourceGroupAsync(String resourceGroupName, String name);
+    Single<T> getByResourceGroupAsync(String resourceGroupName, String name);
 
     /**
      * Gets the information about a resource from Azure based on the resource name and the name of its resource group.

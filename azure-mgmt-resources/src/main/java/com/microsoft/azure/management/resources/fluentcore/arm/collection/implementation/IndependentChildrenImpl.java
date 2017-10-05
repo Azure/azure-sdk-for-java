@@ -24,6 +24,7 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Base class for independent child collection class.
@@ -67,26 +68,26 @@ public abstract class IndependentChildrenImpl<
 
     @Override
     public T getByParent(String resourceGroup, String parentName, String name) {
-        return getByParentAsync(resourceGroup, parentName, name).toBlocking().last();
+        return getByParentAsync(resourceGroup, parentName, name).toBlocking().value();
     }
 
     @Override
     public T getByParent(ParentT parentResource, String name) {
-        return getByParentAsync(parentResource, name).toBlocking().last();
+        return getByParentAsync(parentResource, name).toBlocking().value();
     }
 
     @Override
-    public Observable<T> getByParentAsync(ParentT parentResource, String name) {
+    public Single<T> getByParentAsync(ParentT parentResource, String name) {
         return getByParentAsync(parentResource.resourceGroupName(), parentResource.name(), name);
     }
 
     @Override
     public T getById(String id) {
-        return getByIdAsync(id).toBlocking().last();
+        return getByIdAsync(id).toBlocking().value();
     }
 
     @Override
-    public Observable<T> getByIdAsync(String id) {
+    public Single<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
         if (resourceId == null) {
             return null;
@@ -112,7 +113,7 @@ public abstract class IndependentChildrenImpl<
 
     @Override
     public ServiceFuture<Void> deleteByParentAsync(String groupName, String parentName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByParentAsync(groupName, parentName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deleteByParentAsync(groupName, parentName, name), callback);
     }
 
     @Override

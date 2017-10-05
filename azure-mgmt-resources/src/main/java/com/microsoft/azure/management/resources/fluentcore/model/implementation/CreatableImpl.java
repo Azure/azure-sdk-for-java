@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Indexable;
 import rx.Observable;
+import rx.Single;
 
 /**
  * The base class for all creatable resource.
