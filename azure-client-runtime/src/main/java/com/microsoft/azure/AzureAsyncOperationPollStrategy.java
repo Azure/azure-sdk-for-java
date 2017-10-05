@@ -79,7 +79,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                         public Single<HttpResponse> call(String bodyString) {
                             Single<HttpResponse> result;
                             try {
-                                final OperationResource operationResource = serializer.deserialize(bodyString, OperationResource.class);
+                                final ResourceWithProvisioningState operationResource = serializer.deserialize(bodyString, ResourceWithProvisioningState.class);
                                 if (operationResource != null) {
                                     final String resourceProvisioningState = provisioningState(operationResource);
                                     setProvisioningState(resourceProvisioningState);
@@ -109,10 +109,10 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         return result;
     }
 
-    private static String provisioningState(OperationResource operationResource) {
+    private static String provisioningState(ResourceWithProvisioningState operationResource) {
         String provisioningState = null;
 
-        final OperationResource.Properties properties = operationResource.properties();
+        final ResourceWithProvisioningState.Properties properties = operationResource.properties();
         if (properties != null) {
             provisioningState = properties.provisioningState();
         }
@@ -136,7 +136,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
      *                            use when polling.
      */
-    static AzureAsyncOperationPollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
         final String azureAsyncOperationUrl = httpResponse.headerValue(HEADER_NAME);
         return azureAsyncOperationUrl != null && !azureAsyncOperationUrl.isEmpty()
                 ? new AzureAsyncOperationPollStrategy(fullyQualifiedMethodName, azureAsyncOperationUrl, originalResourceUrl, serializer, delayInMilliseconds)

@@ -66,7 +66,7 @@ public final class LocationPollStrategy extends PollStrategy {
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
      *                            use when polling.
      */
-    static LocationPollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse, long delayInMilliseconds) {
         final String locationUrl = httpResponse.headerValue(HEADER_NAME);
         return locationUrl != null && !locationUrl.isEmpty()
                 ? new LocationPollStrategy(fullyQualifiedMethodName, locationUrl, delayInMilliseconds)
