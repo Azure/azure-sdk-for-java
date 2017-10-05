@@ -785,6 +785,9 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                 .withRoleBasedAccessTo(storageAccount.id(), BuiltInRole.CONTRIBUTOR)
                 .create();
 
+        Assert.assertNotNull(virtualMachineScaleSet.managedServiceIdentityType());
+        Assert.assertTrue(virtualMachineScaleSet.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED));
+
         // Validate service created service principal
         //
         ServicePrincipal servicePrincipal = rbacManager

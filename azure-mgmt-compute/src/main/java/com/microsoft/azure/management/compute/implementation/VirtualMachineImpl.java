@@ -34,6 +34,7 @@ import com.microsoft.azure.management.compute.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.Plan;
 import com.microsoft.azure.management.compute.PowerState;
 import com.microsoft.azure.management.compute.PurchasePlan;
+import com.microsoft.azure.management.compute.ResourceIdentityType;
 import com.microsoft.azure.management.compute.SshConfiguration;
 import com.microsoft.azure.management.compute.SshPublicKey;
 import com.microsoft.azure.management.compute.StorageAccountTypes;
@@ -1582,6 +1583,14 @@ class VirtualMachineImpl
     public String managedServiceIdentityPrincipalId() {
         if (this.inner().identity() != null) {
             return this.inner().identity().principalId();
+        }
+        return null;
+    }
+
+    @Override
+    public ResourceIdentityType managedServiceIdentityType() {
+        if (this.inner().identity() != null) {
+            return this.inner().identity().type();
         }
         return null;
     }

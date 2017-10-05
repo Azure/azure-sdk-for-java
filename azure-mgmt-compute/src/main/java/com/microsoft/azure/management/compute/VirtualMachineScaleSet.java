@@ -332,6 +332,12 @@ public interface VirtualMachineScaleSet extends
     String managedServiceIdentityPrincipalId();
 
     /**
+     * @return the type of Managed Service Identity used for the virtual machine scale set.
+     */
+    @Beta(Beta.SinceVersion.V1_4_0)
+    ResourceIdentityType managedServiceIdentityType();
+
+    /**
      * @return the availability zones assigned to virtual machine scale set.
      */
     @Beta(Beta.SinceVersion.V1_3_0)
