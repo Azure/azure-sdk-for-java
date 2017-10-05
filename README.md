@@ -2,13 +2,13 @@
 
 # Azure Management Libraries for Java
 
-This README is based on the released stable version (1.2.0). If you are looking for other releases, see [More Information](#more-information).
+This README is based on the released stable version (1.3.0). If you are looking for other releases, see [More Information](#more-information).
 
 The Azure Management Libraries for Java is a higher-level, object-oriented API for managing Azure resources. If you are looking for Java client libraries for Azure services, please see [Azure libraries for Java](https://docs.microsoft.com/en-us/java/azure/java-sdk-azure-install) - this page will be maintained regularly to ensure that it is up to date.
 
 Note: This page will be maintained regularly to ensure that it is up to date.
 
-## Feature Availability and Road Map as of Version 1.2.0 ##
+## Feature Availability and Road Map as of Version 1.3.0 ##
 
 <table>
   <tr>
@@ -20,7 +20,7 @@ Note: This page will be maintained regularly to ensure that it is up to date.
   <tr>
     <td>Compute</td>
     <td>Virtual machines and VM extensions<br>Virtual machine scale sets<br>Managed disks</td>
-    <td valign="top">Azure container service and registry</td>
+    <td valign="top">Azure container service + registry + instances<br>Availability Zones</td>
     <td valign="top">More Azure container registry features</td>
   </tr>
   <tr>
@@ -38,14 +38,14 @@ Note: This page will be maintained regularly to ensure that it is up to date.
   <tr>
     <td>Networking</td>
     <td>Virtual networks<br>Network interfaces<br>IP addresses<br>Routing table<br>Network security groups<br>Application gateways<br>DNS<br>Traffic managers</td>
-    <td valign="top">Load balancers<br>Network watchers</td>
+    <td valign="top">Load balancers<br>Network peering<br>Virtual Network Gateway<br>Network watchers</td>
     <td valign="top">VPN<br>More application gateway features</td>
   </tr>
   <tr>
     <td>More services</td>
     <td>Resource Manager<br>Key Vault<br>Redis<br>CDN<br>Batch</td>
     <td valign="top">Web apps<br>Function Apps<br>Service bus<br>Graph RBAC<br>Cosmos DB<br>Search</td>
-    <td valign="top">Monitor<br>Azure container instances<br>Data Lake</td>
+    <td valign="top">Monitor<br>Data Lake</td>
   </tr>
   <tr>
     <td>Fundamentals</td>
@@ -226,7 +226,7 @@ SqlDatabase database = sqlServer.databases().define("myNewDatabase")
 
 # Sample Code
 
-You can find plenty of sample code that illustrates management scenarios (80+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Active Directory Azure Container Service and Registry, Storage, Networking, Resource Manager, SQL Database, Cosmos DB, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
+You can find plenty of sample code that illustrates management scenarios (95+ end-to-end scenarios) for Azure Virtual Machines, Virtual Machine Scale Sets, Managed Disks, Active Directory Azure Container Service and Registry, Storage, Networking, Resource Manager, SQL Database, Cosmos DB, App Service (Web Apps on Windows and Linux), Functions, Service Bus, Key Vault, Redis, CDN and Batch … 
 
 <table>
   <tr>
@@ -249,7 +249,10 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/managed-disk-java-create-virtual-machine-using-specialized-disk-from-snapshot">Create virtual machine using specialized VHD from snapshot</li>
 <li><a href="https://github.com/Azure-Samples/managed-disk-java-convert-existing-virtual-machines-to-use-managed-disks">Convert virtual machines to use managed disks</li>
 <li><a href="https://github.com/azure-samples/compute-java-manage-virtual-machine-with-unmanaged-disks">Manage virtual machine with unmanaged disks</li>
-<li><a href="https://github.com/Azure-Samples/aad-java-manage-resources-from-vm-with-msi">Manage Azure resources from a virtual machine with managed service identity (MSI)</a></li></ul></td>
+<li><a href="https://github.com/Azure-Samples/aad-java-manage-resources-from-vm-with-msi">Manage Azure resources from a virtual machine with managed service identity (MSI)</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-vms-in-availability-zones">Manage virtual machines in availability zones</a></li>
+<li><a href="https://github.com/Azure-Samples/compute-java-manage-vmss-in-availability-zones">Manage virtual machine scale sets in availability zones</a></li>
+</ul></td>
   </tr>
   <tr>
     <td>Virtual Machines - parallel execution</td>
@@ -276,7 +279,7 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 </ul></td>
   </tr>
 <tr>
-    <td>Container Service and Container Registry</td>
+    <td>Container Service<br>Container Registry and <br>Container Instances</td>
     <td><ul style="list-style-type:circle">
 <li><a href="https://github.com/Azure-Samples/acr-java-manage-azure-container-registry">Manage container registry</a></li>
 <li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-acr-to-kubernetes">Deploy an image from container registry to Kubernetes cluster</a></li>
@@ -286,6 +289,10 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/acs-java-deploy-image-from-docker-hub-to-swarm">Deploy an image from Docker hub to Swarm cluster</li>
 -->
 <li><a href="https://github.com/Azure-Samples/acs-java-manage-azure-container-service">Manage container service</li>
+<li><a href="https://github.com/Azure-Samples/aci-java-manage-container-instances-1">Manage Azure Container Instances with new Azure File Share</li>
+<li><a href="https://github.com/Azure-Samples/aci-java-manage-container-instances-2">Manage Azure Container Instances with an existing Azure File Share</li>
+<li><a href="https://github.com/Azure-Samples/aci-java-create-container-groups">Create Container Group with multiple instances and container images</li>
+<li><a href="https://github.com/Azure-Samples/aci-java-scale-up-containers-using-kubernetes-in-acs">Create Container Group and scale up containers using Kubernetes in ACS</li>
 </ul></td>
   </tr>
   <tr>
@@ -306,8 +313,12 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 <li><a href="https://github.com/Azure-Samples/network-java-manage-ip-address">Manage IP address</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-internet-facing-load-balancers">Manage Internet facing load balancers</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-manage-internal-load-balancers">Manage internal load balancers</a></li>
-<li><a href="https://github.com/Azure-Samples/network-java-use-new-watcher">Use net watcher</a></li>
 <li><a href="https://github.com/Azure-Samples/network-java-create-simple-internet-facing-load-balancer">Create simple Internet facing load balancer</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-use-new-watcher">Use net watcher</a>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-network-peering">Manage network peering between two virtual networks</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-use-network-watcher-to-check-connectivity">Use network watcher to check connectivity between virtual machines in peered networks</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-virtual-network-with-site-to-site-vpn-connection">Manage virtual network with site-to-site VPN connection</a></li>
+<li><a href="https://github.com/Azure-Samples/network-java-manage-virtual-network-to-virtual-network-vpn-connection">Manage virtual network to virtual network VPN connection</a></li>
 </ul>
 </td>
   </tr>
@@ -453,15 +464,15 @@ You can find plenty of sample code that illustrates management scenarios (80+ en
 # Download
 
 
-**1.2.0**
+**1.3.0**
 
-If you are using released builds from 1.2.0, add the following to your POM file:
+If you are using released builds from 1.3.0, add the following to your POM file:
 
 ```xml
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.2.1</version>
+    <version>1.3.0</version>
 </dependency>
 ```
 
@@ -488,7 +499,7 @@ If you are using snapshots builds for this repo, add the following repository an
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure</artifactId>
-    <version>1.2.2-SNAPSHOT</version>
+    <version>1.3.1-SNAPSHOT</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -516,7 +527,7 @@ If you are using snapshots builds for this repo, add the following repository an
 
 ## Help
 
-If you are migrating your code to 1.2.0, you can use these notes for [preparing your code for 1.2.0 from 1.1.0](./notes/prepare-for-1.2.0.md).
+If you are migrating your code to 1.3.0, you can use these notes for [preparing your code for 1.3.0 from 1.2.0](./notes/prepare-for-1.3.0.md).
 
 If you encounter any bugs with these libraries, please file issues via [Issues](https://github.com/Azure/azure-sdk-for-java/issues) or checkout [StackOverflow for Azure Java SDK](http://stackoverflow.com/questions/tagged/azure-java-sdk).
 
@@ -539,6 +550,7 @@ If you would like to become an active contributor to this project please follow 
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.2.1       | [1.2.1](https://github.com/Azure/azure-sdk-for-java/tree/v1.2.1)               | Tagged release for 1.2.1 version of Azure management libraries |
 | 1.1.0       | [1.1.0](https://github.com/Azure/azure-sdk-for-java/tree/v1.1.0)               | Tagged release for 1.1.0 version of Azure management libraries |
 | 1.0.0       | [1.0.0](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0)               | Tagged release for 1.0.0 version of Azure management libraries |
 | 1.0.0-beta5       | [1.0.0-beta5](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta5)               | Tagged release for 1.0.0-beta5 version of Azure management libraries |
