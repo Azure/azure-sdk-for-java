@@ -10,7 +10,9 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.ApiEntityReference;
+import com.microsoft.azure.management.compute.BootDiagnostics;
 import com.microsoft.azure.management.compute.CachingTypes;
+import com.microsoft.azure.management.compute.DiagnosticsProfile;
 import com.microsoft.azure.management.compute.DiskCreateOptionTypes;
 import com.microsoft.azure.management.compute.ImageReference;
 import com.microsoft.azure.management.compute.KnownLinuxVirtualMachineImage;
@@ -136,6 +138,8 @@ public class VirtualMachineScaleSetImpl
     private final ManagedDataDiskCollection managedDataDisks;
     // Utility to setup MSI for the virtual machine scale set
     VirtualMachineScaleSetMsiHelper virtualMachineScaleSetMsiHelper;
+    // To manage boot diagnostics specific operations
+    private final BootDiagnosticsHandler bootDiagnosticsHandler;
 
     VirtualMachineScaleSetImpl(
             String name,
@@ -156,6 +160,7 @@ public class VirtualMachineScaleSetImpl
         };
         this.managedDataDisks = new ManagedDataDiskCollection(this);
         this.virtualMachineScaleSetMsiHelper = new VirtualMachineScaleSetMsiHelper(rbacManager);
+        this.bootDiagnosticsHandler = new BootDiagnosticsHandler(this);
     }
 
     @Override
@@ -1037,6 +1042,16 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public boolean isBootDiagnosticsEnabled() {
+        return this.bootDiagnosticsHandler.isBootDiagnosticsEnabled();
+    }
+
+    @Override
+    public String bootDiagnosticsStorageUri() {
+        return this.bootDiagnosticsHandler.bootDiagnosticsStorageUri();
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withUnmanagedDisks() {
         this.isUnmanagedDiskSelected = true;
         return this;
@@ -1267,7 +1282,7 @@ public class VirtualMachineScaleSetImpl
             VirtualMachineScaleSetUnmanagedDataDiskImpl.setDataDisksDefaults(dataDisks, this.name());
         }
         this.handleUnManagedOSDiskContainers();
-
+        this.bootDiagnosticsHandler.handleDiagnosticsSettings();
         final VirtualMachineScaleSetsInner client = this.manager().inner().virtualMachineScaleSets();
         final VirtualMachineScaleSet self = this;
         return client.createOrUpdateAsync(resourceGroupName(), name(), inner())
@@ -1414,6 +1429,7 @@ public class VirtualMachineScaleSetImpl
         // Adding delayed storage account dependency if needed
         //
         this.prepareOSDiskContainers();
+        this.bootDiagnosticsHandler.prepare();
     }
 
     protected void prepareOSDiskContainers() {
@@ -2042,6 +2058,36 @@ public class VirtualMachineScaleSetImpl
         throw new RuntimeException("Unable to resolve the operating system type");
     }
 
+    @Override
+    public VirtualMachineScaleSetImpl withBootDiagnostics() {
+        this.bootDiagnosticsHandler.withBootDiagnostics();
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withBootDiagnostics(Creatable<StorageAccount> creatable) {
+        this.bootDiagnosticsHandler.withBootDiagnostics(creatable);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withBootDiagnostics(StorageAccount storageAccount) {
+        this.bootDiagnosticsHandler.withBootDiagnostics(storageAccount);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withBootDiagnostics(String storageAccountBlobEndpointUri) {
+        this.bootDiagnosticsHandler.withBootDiagnostics(storageAccountBlobEndpointUri);
+        return this;
+    }
+
+    @Override
+    public VirtualMachineScaleSetImpl withoutBootDiagnostics() {
+        this.bootDiagnosticsHandler.withoutBootDiagnostics();
+        return this;
+    }
+
     /**
      * Class to manage Data Disk collection.
      */
@@ -2205,6 +2251,169 @@ public class VirtualMachineScaleSetImpl
                 return StorageAccountTypes.STANDARD_LRS;
             }
             return defaultStorageAccountType;
+        }
+    }
+
+    /**
+     * Class to manage VMSS boot diagnostics settings.
+     */
+    private class BootDiagnosticsHandler {
+        private final VirtualMachineScaleSetImpl vmssImpl;
+        private String creatableDiagnosticsStorageAccountKey;
+        private String creatableStorageAccountKey;
+        private StorageAccount existingStorageAccountToAssociate;
+
+        BootDiagnosticsHandler(VirtualMachineScaleSetImpl vmssImpl) {
+            this.vmssImpl = vmssImpl;
+        }
+
+        public boolean isBootDiagnosticsEnabled() {
+            DiagnosticsProfile diagnosticsProfile = this.vmssInner().virtualMachineProfile().diagnosticsProfile();
+            if (diagnosticsProfile != null
+                    && diagnosticsProfile.bootDiagnostics() != null
+                    && diagnosticsProfile.bootDiagnostics().enabled() != null) {
+                return diagnosticsProfile.bootDiagnostics().enabled();
+            }
+            return false;
+        }
+
+        public String bootDiagnosticsStorageUri() {
+            DiagnosticsProfile diagnosticsProfile = this.vmssInner().virtualMachineProfile().diagnosticsProfile();
+            // Even though diagnostics can disabled azure still keep the storage uri
+            if (diagnosticsProfile != null
+                    && diagnosticsProfile.bootDiagnostics() != null) {
+                return diagnosticsProfile.bootDiagnostics().storageUri();
+            }
+            return null;
+        }
+
+        BootDiagnosticsHandler withBootDiagnostics() {
+            // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
+            //
+            this.enableDisable(true);
+            return this;
+        }
+
+        BootDiagnosticsHandler withBootDiagnostics(Creatable<StorageAccount> creatable) {
+            // Diagnostics storage uri will be set later by this.handleDiagnosticsSettings(..)
+            //
+            this.enableDisable(true);
+            this.creatableDiagnosticsStorageAccountKey = creatable.key();
+            this.vmssImpl.addCreatableDependency(creatable);
+            return this;
+        }
+
+        BootDiagnosticsHandler withBootDiagnostics(String storageAccountBlobEndpointUri) {
+            this.enableDisable(true);
+            this.vmssInner()
+                    .virtualMachineProfile()
+                    .diagnosticsProfile()
+                    .bootDiagnostics()
+                    .withStorageUri(storageAccountBlobEndpointUri);
+            return this;
+        }
+
+        BootDiagnosticsHandler withBootDiagnostics(StorageAccount storageAccount) {
+            return this.withBootDiagnostics(storageAccount.endPoints().primary().blob());
+        }
+
+        BootDiagnosticsHandler withoutBootDiagnostics() {
+            this.enableDisable(false);
+            return this;
+        }
+
+        void prepare() {
+            this.creatableStorageAccountKey = null;
+            this.existingStorageAccountToAssociate = null;
+
+            DiagnosticsProfile diagnosticsProfile = this.vmssInner().virtualMachineProfile().diagnosticsProfile();
+            if (diagnosticsProfile == null
+                    || diagnosticsProfile.bootDiagnostics() == null
+                    || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
+                return;
+            }
+            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            if (!enableBD) {
+                return;
+            }
+
+            if (this.creatableDiagnosticsStorageAccountKey != null) {
+                return;
+            }
+            if (!this.vmssImpl.creatableStorageAccountKeys.isEmpty()) {
+                this.creatableStorageAccountKey = this.vmssImpl.creatableStorageAccountKeys.get(0);
+                return;
+            }
+            if (!this.vmssImpl.existingStorageAccountsToAssociate.isEmpty()) {
+                this.existingStorageAccountToAssociate = this.vmssImpl.existingStorageAccountsToAssociate.get(0);
+                return;
+            }
+
+            String accountName = this.vmssImpl.namer.randomName("stg", 24).replace("-", "");
+            Creatable<StorageAccount> storageAccountCreatable;
+            if (this.vmssImpl.creatableGroup != null) {
+                storageAccountCreatable = this.vmssImpl.storageManager.storageAccounts()
+                        .define(accountName)
+                        .withRegion(this.vmssImpl.regionName())
+                        .withNewResourceGroup(this.vmssImpl.creatableGroup);
+            } else {
+                storageAccountCreatable = this.vmssImpl.storageManager.storageAccounts()
+                        .define(accountName)
+                        .withRegion(this.vmssImpl.regionName())
+                        .withExistingResourceGroup(this.vmssImpl.resourceGroupName());
+            }
+            this.creatableDiagnosticsStorageAccountKey = storageAccountCreatable.key();
+            this.vmssImpl.addCreatableDependency(storageAccountCreatable);
+        }
+
+        void handleDiagnosticsSettings() {
+            DiagnosticsProfile diagnosticsProfile = this.vmssInner().virtualMachineProfile().diagnosticsProfile();
+            if (diagnosticsProfile == null
+                    || diagnosticsProfile.bootDiagnostics() == null
+                    || diagnosticsProfile.bootDiagnostics().storageUri() != null) {
+                return;
+            }
+            boolean enableBD = Utils.toPrimitiveBoolean(diagnosticsProfile.bootDiagnostics().enabled());
+            if (!enableBD) {
+                return;
+            }
+            StorageAccount storageAccount = null;
+            if (creatableDiagnosticsStorageAccountKey != null) {
+                storageAccount = (StorageAccount) this.vmssImpl.createdResource(creatableDiagnosticsStorageAccountKey);
+            } else if (this.creatableStorageAccountKey != null) {
+                storageAccount = (StorageAccount) this.vmssImpl.createdResource(this.creatableStorageAccountKey);
+            } else if (this.existingStorageAccountToAssociate != null) {
+                storageAccount = this.existingStorageAccountToAssociate;
+            }
+            if (storageAccount == null) {
+                throw new IllegalStateException("Unable to retrieve expected storageAccount instance for BootDiagnostics");
+            }
+            vmssInner()
+                    .virtualMachineProfile()
+                    .diagnosticsProfile()
+                    .bootDiagnostics()
+                    .withStorageUri(storageAccount.endPoints().primary().blob());
+        }
+
+        private VirtualMachineScaleSetInner vmssInner() {
+            // Inner cannot be cached as parent VirtualMachineScaleSetImpl can refresh the inner in various cases
+            //
+            return this.vmssImpl.inner();
+        }
+
+        private void enableDisable(boolean enable) {
+            if (this.vmssInner().virtualMachineProfile().diagnosticsProfile() == null) {
+                this.vmssInner().virtualMachineProfile().withDiagnosticsProfile(new DiagnosticsProfile());
+            }
+            if (this.vmssInner().virtualMachineProfile().diagnosticsProfile().bootDiagnostics() == null) {
+                this.vmssInner().virtualMachineProfile().diagnosticsProfile().withBootDiagnostics(new BootDiagnostics());
+            }
+            if (enable) {
+                this.vmssInner().virtualMachineProfile().diagnosticsProfile().bootDiagnostics().withEnabled(true);
+            } else {
+                this.vmssInner().virtualMachineProfile().diagnosticsProfile().bootDiagnostics().withEnabled(false);
+                this.vmssInner().virtualMachineProfile().diagnosticsProfile().bootDiagnostics().withStorageUri(null);
+            }
         }
     }
 }
