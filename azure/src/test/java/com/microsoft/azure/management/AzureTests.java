@@ -385,6 +385,34 @@ public class AzureTests extends TestBase {
     }
 
     @Test
+    public void testAppGatewaysStartStop() throws Exception {
+        String rgName = SdkContext.randomResourceName("rg", 13);
+        Region region = Region.US_EAST;
+        String name = SdkContext.randomResourceName("ag", 15);
+        ApplicationGateway appGateway = azure.applicationGateways().define(name)
+            .withRegion(region)
+            .withNewResourceGroup(rgName)
+
+        // Request routing rules
+        .defineRequestRoutingRule("rule1")
+            .fromPrivateFrontend()
+            .fromFrontendHttpPort(80)
+            .toBackendHttpPort(8080)
+            .toBackendIPAddress("11.1.1.1")
+            .toBackendIPAddress("11.1.1.2")
+            .attach()
+        .create();
+
+        // Test stop/start
+        appGateway.stop();
+        Assert.assertEquals(ApplicationGatewayOperationalState.STOPPED, appGateway.operationalState());
+        appGateway.start();
+        Assert.assertEquals(ApplicationGatewayOperationalState.RUNNING, appGateway.operationalState());
+
+        azure.resourceGroups().beginDeleteByName(rgName);
+    }
+
+    @Test
     public void testApplicationGatewaysInParallel() throws Exception {
         String rgName = SdkContext.randomResourceName("rg", 13);
         Region region = Region.US_EAST;

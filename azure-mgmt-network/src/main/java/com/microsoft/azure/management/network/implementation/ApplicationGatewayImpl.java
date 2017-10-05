@@ -14,6 +14,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
+import com.microsoft.azure.management.network.ApplicationGatewayRedirectConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySku;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
@@ -73,6 +74,7 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
     private Map<String, ApplicationGatewayAuthenticationCertificate> authCertificates;
+    private Map<String, ApplicationGatewayRedirectConfiguration> redirectConfigs;
 
     private static final String DEFAULT = "default";
     private ApplicationGatewayFrontendImpl defaultPrivateFrontend;
@@ -116,6 +118,7 @@ class ApplicationGatewayImpl
         initializeBackendsFromInner();
         initializeBackendHttpConfigsFromInner();
         initializeHttpListenersFromInner();
+        initializeRedirectConfigurationsFromInner();
         initializeRequestRoutingRulesFromInner();
         initializeSslCertificatesFromInner();
         initializeAuthCertificatesFromInner();
@@ -201,6 +204,17 @@ class ApplicationGatewayImpl
         }
     }
 
+    private void initializeRedirectConfigurationsFromInner() {
+        this.redirectConfigs = new TreeMap<>();
+        List<ApplicationGatewayRedirectConfigurationInner> inners = this.inner().redirectConfigurations();
+        if (inners != null) {
+            for (ApplicationGatewayRedirectConfigurationInner inner : inners) {
+                ApplicationGatewayRedirectConfigurationImpl redirectConfig = new ApplicationGatewayRedirectConfigurationImpl(inner, this);
+                this.redirectConfigs.put(inner.name(), redirectConfig);
+            }
+        }
+    }
+
     private void initializeRequestRoutingRulesFromInner() {
         this.rules = new TreeMap<>();
         List<ApplicationGatewayRequestRoutingRuleInner> inners = this.inner().requestRoutingRules();
@@ -275,6 +289,18 @@ class ApplicationGatewayImpl
             }
         }
 
+        // Reset and update redirect configurations
+        this.inner().withRedirectConfigurations(innersFromWrappers(this.redirectConfigs.values()));
+        for (ApplicationGatewayRedirectConfiguration redirect : this.redirectConfigs.values()) {
+            SubResource ref;
+
+            // Clear deleted listener references
+            ref = redirect.inner().targetListener();
+            if (ref != null && !this.listeners.containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                redirect.inner().withTargetListener(null);
+            }
+        }
+
         // Reset and update HTTP listeners
         this.inner().withHttpListeners(innersFromWrappers(this.listeners.values()));
         for (ApplicationGatewayListener listener : this.listeners.values()) {
@@ -303,6 +329,12 @@ class ApplicationGatewayImpl
         this.inner().withRequestRoutingRules(innersFromWrappers(this.rules.values()));
         for (ApplicationGatewayRequestRoutingRule rule : this.rules.values()) {
             SubResource ref;
+
+            // Clear deleted redirect configs
+            ref = rule.inner().redirectConfiguration();
+            if (ref != null && !this.redirectConfigs.containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                rule.inner().withRedirectConfiguration(null);
+            }
 
             // Clear deleted backends
             ref = rule.inner().backendAddressPool();
@@ -626,6 +658,13 @@ class ApplicationGatewayImpl
         return this;
     }
 
+    ApplicationGatewayImpl withRedirectConfiguration(ApplicationGatewayRedirectConfigurationImpl redirectConfig) {
+        if (redirectConfig != null) {
+            this.redirectConfigs.put(redirectConfig.name(), redirectConfig);
+        }
+        return this;
+    }
+
     ApplicationGatewayImpl withRequestRoutingRule(ApplicationGatewayRequestRoutingRuleImpl rule) {
         if (rule != null) {
             this.rules.put(rule.name(), rule);
@@ -761,6 +800,18 @@ class ApplicationGatewayImpl
             return new ApplicationGatewayListenerImpl(inner, this);
         } else {
             return (ApplicationGatewayListenerImpl) httpListener;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayRedirectConfigurationImpl defineRedirectConfiguration(String name) {
+        ApplicationGatewayRedirectConfiguration redirectConfig = this.redirectConfigs.get(name);
+        if (redirectConfig == null) {
+            ApplicationGatewayRedirectConfigurationInner inner = new ApplicationGatewayRedirectConfigurationInner()
+                    .withName(name);
+            return new ApplicationGatewayRedirectConfigurationImpl(inner, this);
+        } else {
+            return (ApplicationGatewayRedirectConfigurationImpl) redirectConfig;
         }
     }
 
@@ -1008,6 +1059,12 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayImpl withoutRedirectConfiguration(String name) {
+        this.redirectConfigs.remove(name);
+        return this;
+    }
+
+    @Override
     public ApplicationGatewayImpl withoutRequestRoutingRule(String name) {
         this.rules.remove(name);
         return this;
@@ -1032,6 +1089,11 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayListenerImpl updateListener(String name) {
         return (ApplicationGatewayListenerImpl) this.listeners.get(name);
+    }
+
+    @Override
+    public ApplicationGatewayRedirectConfigurationImpl updateRedirectConfiguration(String name) {
+        return (ApplicationGatewayRedirectConfigurationImpl) this.redirectConfigs.get(name);
     }
 
     @Override
@@ -1182,6 +1244,11 @@ class ApplicationGatewayImpl
     @Override
     public Map<String, ApplicationGatewayListener> listeners() {
         return Collections.unmodifiableMap(this.listeners);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayRedirectConfiguration> redirectConfigurations() {
+        return Collections.unmodifiableMap(this.redirectConfigs);
     }
 
     @Override

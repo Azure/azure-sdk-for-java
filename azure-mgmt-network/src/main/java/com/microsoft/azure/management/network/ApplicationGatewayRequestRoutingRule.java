@@ -7,6 +7,8 @@ package com.microsoft.azure.management.network;
 
 import java.util.Collection;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewayRequestRoutingRuleInner;
@@ -36,6 +38,12 @@ public interface ApplicationGatewayRequestRoutingRule extends
     HasHostName,
     HasCookieBasedAffinity,
     HasServerNameIndication {
+
+    /**
+     * @return the redirect configuration associated with this request routing rule, if any
+     */
+    @Beta(SinceVersion.V1_4_0)
+    ApplicationGatewayRedirectConfiguration redirectConfiguration();
 
     /**
      * @return the frontend protocol
@@ -108,7 +116,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of a listener to reference
              * @return the next stage of the definition
              */
-            WithBackendHttpConfiguration<ParentT> fromListener(String name);
+            WithBackendHttpConfigOrRedirect<ParentT> fromListener(String name);
         }
 
         /**
@@ -162,7 +170,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param portNumber the port number to listen to
              * @return the next stage of the definition, or null if the specified port number is already used for a different protocol
              */
-            WithBackendHttpConfiguration<ParentT> fromFrontendHttpPort(int portNumber);
+            WithBackendHttpConfigOrRedirect<ParentT> fromFrontendHttpPort(int portNumber);
 
             /**
              * Associates a new listener for the specified port number and the HTTPS protocol with this rule.
@@ -177,7 +185,14 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithSslCertificate<ParentT> extends
-            HasSslCertificate.DefinitionStages.WithSslCertificate<WithBackendHttpConfigurationOrSni<ParentT>> {
+            HasSslCertificate.DefinitionStages.WithSslCertificate<WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
+        }
+
+        /**
+         * The stage of an application gateway request routing rule allowing to specify backend HTTP settings, or SNI, or a redirect configuration.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithBackendHttpConfigOrSniOrRedirect<ParentT> extends WithBackendHttpConfigurationOrSni<ParentT>, WithRedirectConfig<ParentT> {
         }
 
         /**
@@ -296,6 +311,13 @@ public interface ApplicationGatewayRequestRoutingRule extends
         }
 
         /**
+         * The stage of an application gateway request routing rule definition allowing to select either a backend or a redirect configuration.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithBackendHttpConfigOrRedirect<ParentT> extends WithBackendHttpConfiguration<ParentT>, WithRedirectConfig<ParentT> {
+        }
+
+        /**
          * The stage of an application gateway request routing rule definition allowing to specify the host name of a backend website
          * for the listener to receive traffic for.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
@@ -308,6 +330,20 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
          */
         interface WithServerNameIndication<ParentT> extends HasServerNameIndication.DefinitionStages.WithServerNameIndication<WithAttach<ParentT>> {
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to associate the rule with a redirect configuration.
+         * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
+         */
+        interface WithRedirectConfig<ParentT> {
+            /**
+             * Associates the specified redirect configuration with this request routing rule.
+             * @param name the name of a redirect configuration on this application gateway
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withRedirectConfiguration(String name);
         }
     }
 
@@ -326,16 +362,41 @@ public interface ApplicationGatewayRequestRoutingRule extends
         DefinitionStages.WithBackendAddress<ParentT>,
         DefinitionStages.WithBackendOrAddress<ParentT>,
         DefinitionStages.WithBackendAddressOrAttach<ParentT>,
+        DefinitionStages.WithBackendHttpConfigOrRedirect<ParentT>,
         DefinitionStages.WithBackendHttpConfiguration<ParentT>,
         DefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>,
         DefinitionStages.WithSslCertificate<ParentT>,
-        DefinitionStages.WithSslPassword<DefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>> {
+        DefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>,
+        DefinitionStages.WithSslPassword<DefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
     }
 
     /**
      * Grouping of application gateway request routing rule update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of an application gateway request routing rule update allowing to associate the rule with a redirect configuration.
+         */
+        interface WithRedirectConfig {
+            /**
+             * Associates the specified redirect configuration with this request routing rule.
+             * <p>
+             * Note that no backend can be associated with this request routing rule if it has a redirect configuration assigned to it,
+             * so this will also remove any backend and backend HTTP settings configuration.
+             * @param name the name of a redirect configuration on this application gateway
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withRedirectConfiguration(String name);
+
+            /**
+             * Removes the association with a redirect configuration, if any.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutRedirectConfiguration();
+        }
+
         /**
          * The stage of an application gateway request routing rule update allowing to specify an existing listener to
          * associate the routing rule with.
@@ -384,7 +445,8 @@ public interface ApplicationGatewayRequestRoutingRule extends
         Settable<ApplicationGateway.Update>,
         UpdateStages.WithListener,
         UpdateStages.WithBackend,
-        UpdateStages.WithBackendHttpConfiguration {
+        UpdateStages.WithBackendHttpConfiguration,
+        UpdateStages.WithRedirectConfig {
     }
 
     /**
@@ -407,7 +469,29 @@ public interface ApplicationGatewayRequestRoutingRule extends
         interface WithAttach<ParentT> extends
             Attachable.InUpdate<ParentT>,
             WithHostName<ParentT>,
-            WithCookieBasedAffinity<ParentT> {
+            WithCookieBasedAffinity<ParentT>,
+            WithRedirectConfig<ParentT> {
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to select either a backend or a redirect configuration.
+         * @param <ParentT> the stage of the application gateway update to return to after attaching this definition
+         */
+        interface WithBackendHttpConfigOrRedirect<ParentT> extends WithBackendHttpConfiguration<ParentT>, WithRedirectConfig<ParentT> {
+        }
+
+        /**
+         * The stage of an application gateway request routing rule definition allowing to associate the rule with a redirect configuration.
+         * @param <ParentT> the stage of the application gateway update to return to after attaching this definition
+         */
+        interface WithRedirectConfig<ParentT> {
+            /**
+             * Associates the specified redirect configuration with this request routing rule.
+             * @param name the name of a redirect configuration on this application gateway
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withRedirectConfiguration(String name);
         }
 
         /**
@@ -426,7 +510,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param name the name of a listener to reference
              * @return the next stage of the definition
              */
-            WithBackendHttpConfiguration<ParentT> fromListener(String name);
+            WithBackendHttpConfigOrRedirect<ParentT> fromListener(String name);
         }
 
         /**
@@ -480,7 +564,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @param portNumber the port number to listen to
              * @return the next stage of the definition, or null if the specified port number is already used for a different protocol
              */
-            WithBackendHttpConfiguration<ParentT> fromFrontendHttpPort(int portNumber);
+            WithBackendHttpConfigOrRedirect<ParentT> fromFrontendHttpPort(int portNumber);
 
             /**
              * Associates a new listener for the specified port number and the HTTPS protocol with this rule.
@@ -495,7 +579,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
          * @param <ParentT> the next stage of the definition
          */
         interface WithSslCertificate<ParentT> extends
-            HasSslCertificate.UpdateDefinitionStages.WithSslCertificate<WithBackendHttpConfigurationOrSni<ParentT>> {
+            HasSslCertificate.UpdateDefinitionStages.WithSslCertificate<WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
         }
 
         /**
@@ -585,6 +669,13 @@ public interface ApplicationGatewayRequestRoutingRule extends
         }
 
         /**
+         * The stage of an application gateway request routing rule allowing to specify backend HTTP settings, or SNI, or a redirect configuration.
+         * @param <ParentT> the stage of the application gateway update to return to after attaching this definition
+         */
+        interface WithBackendHttpConfigOrSniOrRedirect<ParentT> extends WithBackendHttpConfigurationOrSni<ParentT>, WithRedirectConfig<ParentT> {
+        }
+
+        /**
          * The stage of an application gateway request routing rule definition allowing to specify the backend HTTP settings configuration
          * to associate the routing rule with.
          * @param <ParentT> the stage of the application gateway definition to return to after attaching this definition
@@ -644,8 +735,10 @@ public interface ApplicationGatewayRequestRoutingRule extends
         UpdateDefinitionStages.WithBackendOrAddress<ParentT>,
         UpdateDefinitionStages.WithBackendAddressOrAttach<ParentT>,
         UpdateDefinitionStages.WithBackendHttpConfiguration<ParentT>,
+        UpdateDefinitionStages.WithBackendHttpConfigOrRedirect<ParentT>,
         UpdateDefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>,
+        UpdateDefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>,
         UpdateDefinitionStages.WithSslCertificate<ParentT>,
-        UpdateDefinitionStages.WithSslPassword<UpdateDefinitionStages.WithBackendHttpConfigurationOrSni<ParentT>> {
+        UpdateDefinitionStages.WithSslPassword<UpdateDefinitionStages.WithBackendHttpConfigOrSniOrRedirect<ParentT>> {
     }
 }

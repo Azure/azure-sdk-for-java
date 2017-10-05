@@ -73,6 +73,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
+import com.microsoft.azure.management.network.ApplicationGatewayRedirectConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.EffectiveNetworkSecurityRule;
@@ -1534,6 +1535,19 @@ public final class Utils {
                 .append("\n\t\t\tCert data: ").append(cert.publicData());
         }
 
+        // Show redirect configurations
+        Map<String, ApplicationGatewayRedirectConfiguration> redirects = resource.redirectConfigurations();
+        info.append("\n\tRedirect configurations: ").append(redirects.size());
+        for (ApplicationGatewayRedirectConfiguration redirect : redirects.values()) {
+            info.append("\n\t\tName: ").append(redirect.name())
+                .append("\n\t\tTarget URL: ").append(redirect.type())
+                .append("\n\t\tTarget URL: ").append(redirect.targetUrl())
+                .append("\n\t\tTarget listener: ").append(redirect.targetListener() != null ? redirect.targetListener().name() : null)
+                .append("\n\t\tIs path included? ").append(redirect.isPathIncluded())
+                .append("\n\t\tIs query string included? ").append(redirect.isQueryStringIncluded())
+                .append("\n\t\tReferencing request routing rules: ").append(redirect.requestRoutingRules().values());
+        }
+
         // Show HTTP listeners
         Map<String, ApplicationGatewayListener> listeners = resource.listeners();
         info.append("\n\tHTTP listeners: ").append(listeners.size());
@@ -1569,14 +1583,15 @@ public final class Utils {
         info.append("\n\tRequest routing rules: ").append(rules.size());
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
             info.append("\n\t\tName: ").append(rule.name())
-                .append("\n\t\t\tType: ").append(rule.ruleType())
-                .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
-                .append("\n\t\t\tHost name: ").append(rule.hostName())
-                .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
-                .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                .append("\n\t\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
-                .append("\n\t\t\tBackend port: ").append(rule.backendPort())
-                .append("\n\t\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity());
+                .append("\n\t\tType: ").append(rule.ruleType())
+                .append("\n\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
+                .append("\n\t\tHost name: ").append(rule.hostName())
+                .append("\n\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
+                .append("\n\t\tFrontend port: ").append(rule.frontendPort())
+                .append("\n\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
+                .append("\n\t\tBackend port: ").append(rule.backendPort())
+                .append("\n\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity())
+                .append("\n\t\tRedirect configuration: ").append(rule.redirectConfiguration() != null ? rule.redirectConfiguration().name() : "(none)");
 
             // Show backend addresses
             Collection<ApplicationGatewayBackendAddress> addresses = rule.backendAddresses();
