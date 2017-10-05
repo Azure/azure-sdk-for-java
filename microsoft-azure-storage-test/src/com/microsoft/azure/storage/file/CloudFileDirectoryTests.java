@@ -60,7 +60,7 @@ public class CloudFileDirectoryTests {
 
     @After
     public void cloudFileDirectoryTearDown() throws StorageException {
-        this.share.deleteIfExists();
+        this.share.deleteIfExists(DeleteShareSnapshotsOption.INCLUDE_SNAPSHOTS, null, null, null);
     }
     
     /**

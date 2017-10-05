@@ -1020,10 +1020,10 @@ public final class CloudFileShare {
                     throws Exception {
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
                     share.updatePropertiesFromResponse(this.getConnection());
-//                    final FileShareAttributes attributes = FileResponse.getFileShareAttributes(this.getConnection(),
-//                            client.isUsePathStyleUris());
-//                    share.metadata = attributes.getMetadata();
-//                    share.properties = attributes.getProperties();
+                    final FileShareAttributes attributes = FileResponse.getFileShareAttributes(this.getConnection(),
+                            client.isUsePathStyleUris());
+                    share.metadata = attributes.getMetadata();
+                    share.properties = attributes.getProperties();
 
                     return Boolean.valueOf(true);
                 }

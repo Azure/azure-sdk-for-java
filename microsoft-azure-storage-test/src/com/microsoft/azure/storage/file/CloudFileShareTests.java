@@ -62,7 +62,7 @@ public class CloudFileShareTests {
 
     @After
     public void fileShareTestMethodTearDown() throws StorageException {
-        this.share.deleteIfExists();
+        this.share.deleteIfExists(DeleteShareSnapshotsOption.INCLUDE_SNAPSHOTS, null, null, null);
     }
     
     /**
