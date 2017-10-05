@@ -229,6 +229,7 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
                     .withPublicSetting("fileUris",fileUris)
                     .withPublicSetting("commandToExecute", installCommand)
                 .attach()
+                .withUpgradeMode(UpgradeMode.MANUAL)
                 .create();
 
         checkVMInstances(virtualMachineScaleSet);
@@ -837,7 +838,11 @@ public class VirtualMachineScaleSetOperationsTests extends ComputeManagementTest
     private void checkVMInstances(VirtualMachineScaleSet vmScaleSet) {
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
         PagedList<VirtualMachineScaleSetVM> virtualMachines = virtualMachineScaleSetVMs.list();
+
         Assert.assertEquals(virtualMachines.size(), vmScaleSet.capacity());
+        Assert.assertTrue(virtualMachines.size() > 0);
+        virtualMachineScaleSetVMs.updateInstances(virtualMachines.get(0).instanceId());
+
         for (VirtualMachineScaleSetVM vm : virtualMachines) {
             Assert.assertNotNull(vm.size());
             Assert.assertEquals(vm.osType(), OperatingSystemTypes.LINUX);
