@@ -25,6 +25,14 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
 
+import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
+import com.microsoft.azure.eventhubs.amqp.AmqpException;
+import com.microsoft.azure.eventhubs.amqp.AmqpUtil;
+import com.microsoft.azure.eventhubs.amqp.DispatchHandler;
+import com.microsoft.azure.eventhubs.amqp.IAmqpSender;
+import com.microsoft.azure.eventhubs.amqp.IOperationResult;
+import com.microsoft.azure.eventhubs.amqp.SendLinkHandler;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -47,13 +55,6 @@ import org.apache.qpid.proton.engine.Sender;
 import org.apache.qpid.proton.engine.Session;
 import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
-
-import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
-import com.microsoft.azure.eventhubs.amqp.AmqpUtil;
-import com.microsoft.azure.eventhubs.amqp.DispatchHandler;
-import com.microsoft.azure.eventhubs.amqp.IAmqpSender;
-import com.microsoft.azure.eventhubs.amqp.IOperationResult;
-import com.microsoft.azure.eventhubs.amqp.SendLinkHandler;
 
 /**
  * Abstracts all amqp related details
@@ -599,7 +600,18 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
                         @Override
                         public void onError(Exception error) {
-                            MessageSender.this.onError(error);
+                            final Exception completionException;
+                            if (error!= null && error instanceof AmqpException) {
+                                completionException = ExceptionUtil.toException(((AmqpException) error).getError());
+                                if (completionException != error && completionException.getCause() == null) {
+                                    completionException.initCause(error);
+                                }
+                            }
+                            else {
+                                completionException = error;
+                            }
+
+                            MessageSender.this.onError(completionException);
                         }
                     });
         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | RuntimeException exception) {

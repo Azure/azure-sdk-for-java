@@ -5,6 +5,7 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import java.time.Duration;
+import java.util.UUID;
 
 import com.microsoft.azure.eventhubs.*;
 import org.junit.After;
@@ -133,6 +134,34 @@ public class SecurityExceptionsTest extends ApiTestBase
 				"---------------wrongkey------------",
 				correctConnectionString.getSasKey());
 		
+		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+		ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, PartitionReceiver.START_OF_STREAM);
+	}
+
+	@Test (expected = IllegalEntityException.class)
+	public void testSendToNonExistantEventHub() throws Throwable
+	{
+		final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
+		final ConnectionStringBuilder connectionString = new ConnectionStringBuilder(
+				correctConnectionString.getEndpoint(),
+				"non-existant-entity" + UUID.randomUUID().toString(),
+				correctConnectionString.getSasKeyName(),
+				correctConnectionString.getSasKey());
+
+		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+		ehClient.sendSync(new EventData("test string".getBytes()));
+	}
+
+	@Test (expected = IllegalEntityException.class)
+	public void testReceiveFromNonExistantEventHub() throws Throwable
+	{
+		final ConnectionStringBuilder correctConnectionString = TestContext.getConnectionString();
+		final ConnectionStringBuilder connectionString = new ConnectionStringBuilder(
+				correctConnectionString.getEndpoint(),
+				"non-existant-entity" + UUID.randomUUID().toString(),
+				correctConnectionString.getSasKeyName(),
+				correctConnectionString.getSasKey());
+
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
 		ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, PartitionReceiver.START_OF_STREAM);
 	}
