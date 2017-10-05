@@ -54,6 +54,9 @@ class PtrRecordSetsImpl
 
     @Override
     protected PtrRecordSetImpl wrapModel(RecordSetInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new PtrRecordSetImpl(this.dnsZone, inner);
     }
 }
