@@ -10,10 +10,11 @@ hs_err_pid*
 # MacOS files #
 .DS_Store 
 
-# Eclipse files #
+# IDE files #
 .project
 .settings
 .classpath
+.idea
 
 doc
 docs
