@@ -1,17 +1,17 @@
 /**
  * The MIT License (MIT)
  * Copyright (c) 2017 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -50,12 +50,12 @@ import rx.observers.TestSubscriber;
 
 public class TestSuiteBase {
 
-    protected static final int TIMEOUT = 4000;
-    protected static final int SETUP_TIMEOUT = 6000;
-    protected static final int SHUTDOWN_TIMEOUT = 6000;
+    protected static final int TIMEOUT = 8000;
+    protected static final int SETUP_TIMEOUT = 12000;
+    protected static final int SHUTDOWN_TIMEOUT = 12000;
 
     protected int subscriberValidationTimeout = TIMEOUT;
-    
+
     static {
         HttpClientFactory.DISABLE_HOST_NAME_VERIFICATION = true;
     }
@@ -95,13 +95,13 @@ public class TestSuiteBase {
     }
 
     public static void deleteCollectionIfExists(AsyncDocumentClient client, String databaseLink, String collectionId) {
-       List<DocumentCollection> res = client.queryCollections(databaseLink, 
+        List<DocumentCollection> res = client.queryCollections(databaseLink,
                 String.format("SELECT * FROM root r where r.id = '%s'", collectionId), null).toBlocking().single().getResults();
-       if (!res.isEmpty()) {
-           deleteCollection(client, Utils.getCollectionNameLink(databaseLink, collectionId));
-       }
+        if (!res.isEmpty()) {
+            deleteCollection(client, Utils.getCollectionNameLink(databaseLink, collectionId));
+        }
     }
-    
+
     public static void deleteCollection(AsyncDocumentClient client, String collectionLink) {
         client.deleteCollection(collectionLink, null).toBlocking().single();
     }
@@ -152,13 +152,13 @@ public class TestSuiteBase {
         validator.validate(testSubscriber.getOnNextEvents().get(0));
     }
 
-    public <T extends Resource> void validateFailure(Observable<ResourceResponse<T>> observable, 
+    public <T extends Resource> void validateFailure(Observable<ResourceResponse<T>> observable,
             FailureValidator validator)
                     throws InterruptedException {
         validateFailure(observable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateFailure(Observable<ResourceResponse<T>> observable, 
+    public static <T extends Resource> void validateFailure(Observable<ResourceResponse<T>> observable,
             FailureValidator validator, long timeout)
                     throws InterruptedException {
 
@@ -169,7 +169,7 @@ public class TestSuiteBase {
         testSubscriber.assertNotCompleted();
         testSubscriber.assertTerminalEvent();
         assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));        
+        validator.validate(testSubscriber.getOnErrorEvents().get(0));
     }
 
     public <T extends Resource> void validateQuerySuccess(Observable<FeedResponsePage<T>> observable,
@@ -189,13 +189,13 @@ public class TestSuiteBase {
         validator.validate(testSubscriber.getOnNextEvents());
     }
 
-    public <T extends Resource> void validateQueryFailure(Observable<FeedResponsePage<T>> observable, 
+    public <T extends Resource> void validateQueryFailure(Observable<FeedResponsePage<T>> observable,
             FailureValidator validator)
                     throws InterruptedException {
         validateQueryFailure(observable, validator, subscriberValidationTimeout);
     }
 
-    public static <T extends Resource> void validateQueryFailure(Observable<FeedResponsePage<T>> observable, 
+    public static <T extends Resource> void validateQueryFailure(Observable<FeedResponsePage<T>> observable,
             FailureValidator validator, long timeout)
                     throws InterruptedException {
 
@@ -206,7 +206,7 @@ public class TestSuiteBase {
         testSubscriber.assertNotCompleted();
         testSubscriber.assertTerminalEvent();
         assertThat(testSubscriber.getOnErrorEvents()).hasSize(1);
-        validator.validate(testSubscriber.getOnErrorEvents().get(0));        
+        validator.validate(testSubscriber.getOnErrorEvents().get(0));
     }
 
     @DataProvider
