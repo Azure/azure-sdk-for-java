@@ -54,6 +54,9 @@ class TxtRecordSetsImpl
 
     @Override
     protected TxtRecordSetImpl wrapModel(RecordSetInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new TxtRecordSetImpl(this.dnsZone, inner);
     }
 }

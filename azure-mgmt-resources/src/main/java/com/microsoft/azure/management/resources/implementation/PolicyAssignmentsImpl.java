@@ -59,6 +59,9 @@ final class PolicyAssignmentsImpl
 
     @Override
     protected PolicyAssignmentImpl wrapModel(PolicyAssignmentInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new PolicyAssignmentImpl(inner, client);
     }
 

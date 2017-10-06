@@ -40,6 +40,9 @@ class DnsZonesImpl extends TopLevelModifiableResourcesImpl<
 
     @Override
     protected DnsZoneImpl wrapModel(ZoneInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new DnsZoneImpl(inner.name(), inner, this.manager());
     }
 

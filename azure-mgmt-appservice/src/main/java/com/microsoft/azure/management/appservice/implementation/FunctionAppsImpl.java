@@ -66,6 +66,9 @@ class FunctionAppsImpl
 
     @Override
     protected FunctionAppImpl wrapModel(SiteInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return wrapModel(inner, null);
     }
 

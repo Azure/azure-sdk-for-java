@@ -53,6 +53,9 @@ class AaaaRecordSetsImpl
 
     @Override
     protected AaaaRecordSetImpl wrapModel(RecordSetInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new AaaaRecordSetImpl(this.dnsZone, inner);
     }
 }

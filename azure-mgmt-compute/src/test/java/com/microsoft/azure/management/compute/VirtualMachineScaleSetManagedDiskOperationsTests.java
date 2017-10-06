@@ -52,7 +52,7 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .define(vmssName)
                 .withRegion(region)
                 .withExistingResourceGroup(resourceGroup)
-                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_D5_V2)
+                .withSku(VirtualMachineScaleSetSkuTypes.STANDARD_DS1_V2)
                 .withExistingPrimaryNetworkSubnet(network, "subnet1")
                 .withExistingPrimaryInternetFacingLoadBalancer(publicLoadBalancer)
                 .withoutPrimaryInternalLoadBalancer()
@@ -62,8 +62,10 @@ public class VirtualMachineScaleSetManagedDiskOperationsTests extends ComputeMan
                 .withNewDataDisk(100)
                 .withNewDataDisk(100, 1, CachingTypes.READ_WRITE)
                 .withNewDataDisk(100, 2, CachingTypes.READ_ONLY)
+                .withOSDiskStorageAccountType(StorageAccountTypes.PREMIUM_LRS) // Override the default STANDARD_LRS
                 .create();
 
+        Assert.assertTrue(vmScaleSet.managedOSDiskStorageAccountType().equals(StorageAccountTypes.PREMIUM_LRS));
         VirtualMachineScaleSetVMs virtualMachineScaleSetVMs = vmScaleSet.virtualMachines();
         PagedList<VirtualMachineScaleSetVM> virtualMachines = virtualMachineScaleSetVMs.list();
         Assert.assertEquals(virtualMachines.size(), vmScaleSet.capacity());

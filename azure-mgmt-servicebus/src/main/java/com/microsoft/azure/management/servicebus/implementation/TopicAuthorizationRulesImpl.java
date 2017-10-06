@@ -106,6 +106,9 @@ class TopicAuthorizationRulesImpl
 
     @Override
     protected TopicAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new TopicAuthorizationRuleImpl(this.resourceGroupName,
                 this.namespaceName,
                 this.topicName,

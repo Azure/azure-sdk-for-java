@@ -425,6 +425,12 @@ public interface VirtualMachine extends
     @Beta(Beta.SinceVersion.V1_2_0)
     String managedServiceIdentityPrincipalId();
 
+    /**
+     * @return the type of Managed Service Identity used for the virtual machine.
+     */
+    @Beta(Beta.SinceVersion.V1_4_0)
+    ResourceIdentityType managedServiceIdentityType();
+
     // Setters
     //
 
