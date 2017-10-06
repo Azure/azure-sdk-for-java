@@ -1,10 +1,7 @@
 ﻿Changes in 6.0.0
 
 FILE
-* CloudFileShare constructor now takes a snapshotID String which can be null.
-
-* FileRequest get methods now takes a snapshotID String which can be null.
-
+* Many File service APIs can now throw a URISyntaxException.
 * Changed listShares() ShareListingDetails parameter to be an enum set like what is done for listing blobs.
 
 Changes in 5.1.1
