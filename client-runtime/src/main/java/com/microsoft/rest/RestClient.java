@@ -20,6 +20,7 @@ import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.RxNettyAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
 
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -30,6 +31,7 @@ import java.util.concurrent.TimeUnit;
  */
 public final class RestClient {
     private final HttpClient httpClient;
+    private final Proxy proxy;
     private final String baseURL;
     private final String userAgent;
     private final long readTimeoutMillis;
@@ -41,6 +43,7 @@ public final class RestClient {
     private final List<RequestPolicy.Factory> customPolicyFactories;
 
     private RestClient(RestClient.Builder builder) {
+        this.proxy = builder.proxy;
         this.baseURL = builder.baseUrl;
         this.userAgent = builder.userAgent;
         this.readTimeoutMillis = builder.readTimeoutMillis;
@@ -53,12 +56,12 @@ public final class RestClient {
         final RxNettyAdapter.Builder httpClientBuilder = new RxNettyAdapter.Builder()
             .withRequestPolicy(new UserAgentPolicy.Factory(userAgent))
             .withRequestPolicy(new RetryPolicy.Factory())
-            .withRequestPolicy(new AddCookiesPolicy.Factory())
-            .withRequestPolicy(new LoggingPolicy.Factory(logLevel));
+            .withRequestPolicy(new AddCookiesPolicy.Factory());
         if (credentials != null) {
             httpClientBuilder.withRequestPolicy(new CredentialsPolicy.Factory(credentials));
         }
-        httpClientBuilder.withRequestPolicies(customPolicyFactories);
+        httpClientBuilder.withRequestPolicies(customPolicyFactories)
+            .withRequestPolicy(new LoggingPolicy.Factory(logLevel));
 
         this.httpClient = httpClientBuilder.build();
     }
@@ -82,6 +85,13 @@ public final class RestClient {
      */
     public HttpClient httpClient() {
         return httpClient;
+    }
+
+    /**
+     * @return the {@link Proxy} to use
+     */
+    public Proxy proxy() {
+        return proxy;
     }
 
     /**
@@ -148,6 +158,7 @@ public final class RestClient {
         private final long defaultReadTimeoutMillis = 10000;
         private final long defaultConnectionTimeoutMillis = 10000;
 
+        private Proxy proxy;
         /** The dynamic base URL with variables wrapped in "{" and "}". */
         private String baseUrl;
         /** The credentials to authenticate. */
@@ -165,6 +176,7 @@ public final class RestClient {
         private LogLevel logLevel = LogLevel.NONE;
 
         private Builder(final RestClient restClient) {
+            this.proxy = restClient.proxy;
             this.baseUrl = restClient.baseURL;
             this.userAgent = restClient.userAgent;
             this.connectionTimeoutMillis = restClient.connectionTimeoutMillis;
@@ -179,6 +191,16 @@ public final class RestClient {
          * Creates an instance of the builder.
          */
         public Builder() { }
+
+        /**
+         * Sets the proxy.
+         * @param proxy the proxy to use.
+         * @return the builder itself for chaining.
+         */
+        public Builder withProxy(Proxy proxy) {
+            this.proxy = proxy;
+            return this;
+        }
 
         /**
          * Sets the dynamic base URL.
