@@ -67,7 +67,7 @@ public class CloudFileClientTests {
             do {
 
                 ResultSegment<CloudFileShare> segment = fileClient.listSharesSegmented(prefix,
-                        ShareListingDetails.ALL, 15, token, null, null);
+                        EnumSet.allOf(ShareListingDetails.class), 15, token, null, null);
 
                 for (final CloudFileShare share : segment.getResults()) {
                     share.downloadAttributes();
@@ -104,7 +104,7 @@ public class CloudFileClientTests {
         for (int i = 0; i >= -2; i--) {
             try{ 
                 fileClient.listSharesSegmented(
-                        prefix, ShareListingDetails.ALL, i, null, null, null);
+                        prefix, EnumSet.allOf(ShareListingDetails.class), i, null, null, null);
                 fail();
             }
             catch (IllegalArgumentException e) {
@@ -119,42 +119,46 @@ public class CloudFileClientTests {
     public void testListSharesWithSnapshot() throws StorageException, URISyntaxException {
         CloudFileClient fileClient = FileTestHelper.createCloudFileClient();
         CloudFileShare share = fileClient.getShareReference(UUID.randomUUID().toString());
-        share.create();
+        try {
+            share.create();
 
-        HashMap<String, String> shareMeta = new HashMap<String, String>();
-        shareMeta.put("key1", "value1");
-        share.setMetadata(shareMeta);
-        share.uploadMetadata();
+            HashMap<String, String> shareMeta = new HashMap<String, String>();
+            shareMeta.put("key1", "value1");
+            share.setMetadata(shareMeta);
+            share.uploadMetadata();
 
-        CloudFileShare snapshot = share.createSnapshot();
-        HashMap<String, String> meta2 = new HashMap<String, String>();
-        meta2.put("key2", "value2");
-        share.setMetadata(meta2);
-        share.uploadMetadata();
+            CloudFileShare snapshot = share.createSnapshot();
+            HashMap<String, String> meta2 = new HashMap<String, String>();
+            meta2.put("key2", "value2");
+            share.setMetadata(meta2);
+            share.uploadMetadata();
 
-        CloudFileClient client = FileTestHelper.createCloudFileClient();
-        Iterable<CloudFileShare> listResult = client.listShares(share.name, ShareListingDetails.ALL, null, null);
+            CloudFileClient client = FileTestHelper.createCloudFileClient();
+            Iterable<CloudFileShare> listResult = client.listShares(share.name, EnumSet.allOf(ShareListingDetails.class), null, null);
 
-        int count = 0;
-        boolean originalFound = false;
-        boolean snapshotFound = false;
-        for (CloudFileShare listShareItem : listResult) {
-            if (listShareItem.getName().equals(share.getName()) && !listShareItem.isSnapshot() && !originalFound)
-            {
-                count++;
-                originalFound = true;
-                assertEquals(share.getMetadata(), listShareItem.getMetadata());
-                assertEquals(share.getStorageUri(), listShareItem.getStorageUri());
+            int count = 0;
+            boolean originalFound = false;
+            boolean snapshotFound = false;
+            for (CloudFileShare listShareItem : listResult) {
+                if (listShareItem.getName().equals(share.getName()) && !listShareItem.isSnapshot() && !originalFound) {
+                    count++;
+                    originalFound = true;
+                    assertEquals(share.getMetadata(), listShareItem.getMetadata());
+                    assertEquals(share.getStorageUri(), listShareItem.getStorageUri());
+                } else if (listShareItem.getName().equals(share.getName()) &&
+                        listShareItem.isSnapshot() && !snapshotFound) {
+                    count++;
+                    snapshotFound = true;
+                    assertEquals(snapshot.getMetadata(), listShareItem.getMetadata());
+                    assertEquals(snapshot.getStorageUri(), listShareItem.getStorageUri());
+                }
             }
-            else if (listShareItem.getName().equals(share.getName()) &&
-                    listShareItem.isSnapshot() && !snapshotFound) {
-                count++;
-                snapshotFound = true;
-                assertEquals(snapshot.getMetadata(), listShareItem.getMetadata());
-                assertEquals(snapshot.getStorageUri(), listShareItem.getStorageUri());
-            }
+
+            assertEquals(2, count);
         }
-
-        assertEquals(2, count);
+        finally
+        {
+            share.deleteIfExists(DeleteShareSnapshotsOption.INCLUDE_SNAPSHOTS, null, null, null);
+        }
     }
 }
