@@ -131,7 +131,7 @@ final class FileRequest {
      *            the share snapshot version to the query builder.
      * @throws StorageException
      */
-    protected static void addShareSnapshot(final UriQueryBuilder builder, final String snapshotVersion)
+    public static void addShareSnapshot(final UriQueryBuilder builder, final String snapshotVersion)
             throws StorageException {
         if (snapshotVersion != null) {
             builder.add(Constants.QueryConstants.SHARE_SNAPSHOT, snapshotVersion);
@@ -288,26 +288,26 @@ final class FileRequest {
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection deleteShare(final URI uri, final FileRequestOptions fileOptions,
-            final OperationContext opContext, final AccessCondition accessCondition) 
+            final OperationContext opContext, final AccessCondition accessCondition, String snapshotVersion, DeleteShareSnapshotsOption deleteSnapshotsOption) 
                     throws IOException, URISyntaxException, StorageException {
         final UriQueryBuilder shareBuilder = getShareUriQueryBuilder();
-        //FileRequest.addShareSnapshot(shareBuilder, snapshotVersion);
+        FileRequest.addShareSnapshot(shareBuilder, snapshotVersion);
         HttpURLConnection request = BaseRequest.delete(uri, fileOptions, shareBuilder, opContext);
         if (accessCondition != null) {
             accessCondition.applyConditionToRequest(request);
         }
 
-//        switch (deleteSnapshotsOption) {
-//        case NONE:
-//            // nop
-//            break;
-//        case INCLUDE_SNAPSHOTS:
-//            request.setRequestProperty(Constants.HeaderConstants.DELETE_SNAPSHOT_HEADER,
-//                    Constants.HeaderConstants.INCLUDE_SNAPSHOTS_VALUE);
-//            break;
-//        default:
-//            break;
-//        }
+        switch (deleteSnapshotsOption) {
+        case NONE:
+            // nop
+            break;
+        case INCLUDE_SNAPSHOTS:
+            request.setRequestProperty(Constants.HeaderConstants.DELETE_SNAPSHOT_HEADER,
+                    Constants.HeaderConstants.INCLUDE_SNAPSHOTS_VALUE);
+            break;
+        default:
+            break;
+        }
 
         return request;
     }
@@ -362,6 +362,8 @@ final class FileRequest {
      *            the operation.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the file.
+     * @param snapshotVersion
+     *            The snapshot version, if the share is a snapshot.
      * @param offset
      *            The offset at which to begin returning content.
      * @param count
@@ -378,7 +380,7 @@ final class FileRequest {
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection getFile(final URI uri, final FileRequestOptions fileOptions,
-            final OperationContext opContext, final AccessCondition accessCondition, final Long offset,
+            final OperationContext opContext, final AccessCondition accessCondition, final String snapshotVersion, final Long offset,
             final Long count, boolean requestRangeContentMD5) throws IOException, URISyntaxException, StorageException {
 
         if (offset != null && requestRangeContentMD5) {
@@ -387,7 +389,7 @@ final class FileRequest {
         }
 
         final UriQueryBuilder builder = new UriQueryBuilder();
-        //FileRequest.addShareSnapshot(builder, snapshotVersion);
+        FileRequest.addShareSnapshot(builder, snapshotVersion);
         final HttpURLConnection request = BaseRequest.createURLConnection(uri, fileOptions, builder, opContext);
         request.setRequestMethod(Constants.HTTP_GET);
 
@@ -432,6 +434,8 @@ final class FileRequest {
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the file.
      * @return a HttpURLConnection to use to perform the operation.
+     * @param snapshotVersion
+     *            the snapshot version to the query builder.
      * @throws IOException
      *             if there is an error opening the connection
      * @throws URISyntaxException
@@ -441,11 +445,11 @@ final class FileRequest {
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection getFileProperties(final URI uri, final FileRequestOptions fileOptions,
-            final OperationContext opContext, final AccessCondition accessCondition) throws StorageException,
+            final OperationContext opContext, final AccessCondition accessCondition, final String snapshotVersion) throws StorageException,
             IOException, URISyntaxException {
         final UriQueryBuilder builder = new UriQueryBuilder();
 
-        return getProperties(uri, fileOptions, opContext, accessCondition, builder);
+        return getProperties(uri, fileOptions, opContext, accessCondition, builder, snapshotVersion);
     }
 
     /**
@@ -475,11 +479,11 @@ final class FileRequest {
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection getFileRanges(final URI uri, final FileRequestOptions fileOptions,
-            final OperationContext opContext, final AccessCondition accessCondition) throws StorageException,
+            final OperationContext opContext, final AccessCondition accessCondition, final String snapshotVersion) throws StorageException,
             IOException, URISyntaxException {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
-        //addShareSnapshot(builder, snapshotVersion);
+        addShareSnapshot(builder, snapshotVersion);
         builder.add(Constants.QueryConstants.COMPONENT, RANGE_LIST_QUERY_ELEMENT_NAME);
 
         final HttpURLConnection request = BaseRequest.createURLConnection(uri, fileOptions, builder, opContext);
@@ -507,15 +511,17 @@ final class FileRequest {
      *            the operation.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the share.
+     * @param snapshotVersion
+     *            the snapshot version to the query builder.
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * */
     public static HttpURLConnection getShareProperties(final URI uri, final FileRequestOptions fileOptions,
-            final OperationContext opContext, AccessCondition accessCondition) throws IOException, URISyntaxException,
+            final OperationContext opContext, AccessCondition accessCondition, final String snapshotVersion) throws IOException, URISyntaxException,
             StorageException {
         final UriQueryBuilder shareBuilder = getShareUriQueryBuilder();
 
-        return getProperties(uri, fileOptions, opContext, accessCondition, shareBuilder);
+        return getProperties(uri, fileOptions, opContext, accessCondition, shareBuilder, snapshotVersion);
     }
 
     /**
@@ -598,13 +604,16 @@ final class FileRequest {
      *            the operation.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the share.
+     * @param snapshotVersion
+     *            the snapshot version to the query builder.
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * */
     private static HttpURLConnection getProperties(final URI uri, final FileRequestOptions fileOptions,
-            final OperationContext opContext, AccessCondition accessCondition, final UriQueryBuilder builder)
+            final OperationContext opContext, AccessCondition accessCondition, final UriQueryBuilder builder,
+            String snapshotVersion)
             throws IOException, URISyntaxException, StorageException {
-        //addShareSnapshot(builder, snapshotVersion);
+        addShareSnapshot(builder, snapshotVersion);
         HttpURLConnection request = BaseRequest.getProperties(uri, fileOptions, builder, opContext);
 
         if (accessCondition != null) {
@@ -801,14 +810,16 @@ final class FileRequest {
      *            the operation.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the directory.
+     * @param snapshotVersion
+     *            the snapshot version to the query builder.
      * @return a HttpURLConnection configured for the operation.
      * @throws StorageException
      * */
     public static HttpURLConnection getDirectoryProperties(final URI uri, final FileRequestOptions fileOptions,
-            final OperationContext opContext, AccessCondition accessCondition) throws IOException, URISyntaxException,
+            final OperationContext opContext, AccessCondition accessCondition, String snapshotVersion) throws IOException, URISyntaxException,
             StorageException {
         final UriQueryBuilder directoryBuilder = getDirectoryUriQueryBuilder();
-        return getProperties(uri, fileOptions, opContext, accessCondition, directoryBuilder);
+        return getProperties(uri, fileOptions, opContext, accessCondition, directoryBuilder, snapshotVersion);
     }
 
     /**
@@ -827,6 +838,8 @@ final class FileRequest {
      *            the operation.
      * @param listingContext
      *            A set of parameters for the listing operation.
+     * @param snapshotVersion
+     *            the snapshot version to the query builder.
      * @return a HttpURLConnection configured for the operation.
      * @throws IOException
      * @throws URISyntaxException
@@ -834,11 +847,11 @@ final class FileRequest {
      * @throws IllegalArgumentException
      */
     public static HttpURLConnection listFilesAndDirectories(final URI uri, final FileRequestOptions fileOptions,
-            final OperationContext opContext, final ListingContext listingContext) throws URISyntaxException,
+            final OperationContext opContext, final ListingContext listingContext, String snapshotVersion) throws URISyntaxException,
             IOException, StorageException {
 
         final UriQueryBuilder builder = getDirectoryUriQueryBuilder();
-        //addShareSnapshot(builder, snapshotVersion);
+        addShareSnapshot(builder, snapshotVersion);
         builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.LIST);
 
         if (listingContext != null) {
