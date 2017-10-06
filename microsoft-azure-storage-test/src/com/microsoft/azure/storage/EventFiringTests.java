@@ -20,14 +20,10 @@ import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 
-import org.apache.http.protocol.HTTP;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.SocketException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -121,39 +117,46 @@ public class EventFiringTests {
             }
         });
 
-        OperationContext.getGlobalErrorReceivingResponseEventHandler().addListener(new StorageEvent<ErrorReceivingResponseEvent>() {
+        StorageEvent<ErrorReceivingResponseEvent> globalResponseReceivedListener = new StorageEvent<ErrorReceivingResponseEvent>() {
 
             @Override
             public void eventOccurred(ErrorReceivingResponseEvent eventArg) {
                 fail("This event should not trigger");
             }
-        });
+        };
 
-        assertEquals(0, callList.size());
-        assertEquals(0, globalCallList.size());
+        try {
+            OperationContext.getGlobalErrorReceivingResponseEventHandler().addListener(globalResponseReceivedListener);
 
-        CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
-        CloudBlobContainer container = blobClient.getContainerReference("container1");
+            assertEquals(0, callList.size());
+            assertEquals(0, globalCallList.size());
 
-        // make sure both update
-        container.exists(null, null, eventContext);
-        assertEquals(1, callList.size());
-        assertEquals(1, globalCallList.size());
+            CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
+            CloudBlobContainer container = blobClient.getContainerReference("container1");
 
-        // make sure only global updates
-        container.exists();
-        assertEquals(1, callList.size());
-        assertEquals(2, globalCallList.size());
+            // make sure both update
+            container.exists(null, null, eventContext);
+            assertEquals(1, callList.size());
+            assertEquals(1, globalCallList.size());
 
-        OperationContext
-                .setGlobalResponseReceivedEventHandler(new StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>>());
-        eventContext
-                .setResponseReceivedEventHandler(new StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>>());
+            // make sure only global updates
+            container.exists();
+            assertEquals(1, callList.size());
+            assertEquals(2, globalCallList.size());
 
-        // make sure neither update
-        container.exists(null, null, eventContext);
-        assertEquals(1, callList.size());
-        assertEquals(2, globalCallList.size());
+            OperationContext
+                    .setGlobalResponseReceivedEventHandler(new StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>>());
+            eventContext
+                    .setResponseReceivedEventHandler(new StorageEventMultiCaster<ResponseReceivedEvent, StorageEvent<ResponseReceivedEvent>>());
+
+            // make sure neither update
+            container.exists(null, null, eventContext);
+            assertEquals(1, callList.size());
+            assertEquals(2, globalCallList.size());
+        }
+        finally {
+            OperationContext.getGlobalErrorReceivingResponseEventHandler().removeListener(globalResponseReceivedListener);
+        }
     }
 
     @Test
