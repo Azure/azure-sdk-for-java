@@ -63,6 +63,10 @@ public final class RestClient {
         httpClientBuilder.withRequestPolicies(customPolicyFactories)
             .withRequestPolicy(new LoggingPolicy.Factory(logLevel));
 
+        if (proxy != null) {
+            httpClientBuilder.withProxy(proxy);
+        }
+
         this.httpClient = httpClientBuilder.build();
     }
 
