@@ -4,6 +4,10 @@ FILE
 * Many File service APIs can now throw a URISyntaxException.
 * Changed listShares() ShareListingDetails parameter to be an enum set like what is done for listing blobs.
 
+OTHER
+ * DefaultEndpointsProtocol will now be explicitly included in generated connection strings.
+ * Connection string parsing has been substantially re-written and expanded. Please refer to current documentation about connection string formats.
+
 Changes in 5.1.1
 OTHER
   * Reverted the code from 5.1.0 because it contained a regression and an accidental change.

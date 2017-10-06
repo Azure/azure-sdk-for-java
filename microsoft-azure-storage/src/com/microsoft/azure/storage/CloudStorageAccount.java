@@ -18,6 +18,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -76,6 +77,11 @@ public final class CloudStorageAccount {
     protected static final String BLOB_ENDPOINT_NAME = "BlobEndpoint";
 
     /**
+     * Represents the setting name for a custom blob storage secondary endpoint.
+     */
+    protected static final String BLOB_SECONDARY_ENDPOINT_NAME = "BlobSecondaryEndpoint";
+
+    /**
      * The setting name for using the default storage endpoints with the specified protocol.
      */
     private static final String DEFAULT_ENDPOINTS_PROTOCOL_NAME = "DefaultEndpointsProtocol";
@@ -112,6 +118,11 @@ public final class CloudStorageAccount {
     private static final String FILE_ENDPOINT_NAME = "FileEndpoint";
 
     /**
+     * Represents the setting name for a custom file secondary endpoint.
+     */
+    private static final String FILE_SECONDARY_ENDPOINT_NAME = "FileSecondaryEndpoint";
+
+    /**
      * The format string for the primary endpoint.
      */
     private static final String PRIMARY_ENDPOINT_FORMAT = "%s://%s.%s";
@@ -127,6 +138,11 @@ public final class CloudStorageAccount {
     protected static final String QUEUE_ENDPOINT_NAME = "QueueEndpoint";
 
     /**
+     * Represents the setting name for a custom queue secondary endpoint.
+     */
+    protected static final String QUEUE_SECONDARY_ENDPOINT_NAME = "QueueSecondaryEndpoint";
+
+    /**
      * Represents the setting name for a shared access key.
      */
     protected static final String SHARED_ACCESS_SIGNATURE_NAME = "SharedAccessSignature";
@@ -135,6 +151,11 @@ public final class CloudStorageAccount {
      * Represents the setting name for a custom table storage endpoint.
      */
     protected static final String TABLE_ENDPOINT_NAME = "TableEndpoint";
+
+    /**
+     * Represents the setting name for a custom table storage secondary endpoint.
+     */
+    protected static final String TABLE_SECONDARY_ENDPOINT_NAME = "TableSecondaryEndpoint";
 
     /**
      * The setting name for using the development storage.
@@ -272,29 +293,31 @@ public final class CloudStorageAccount {
      *            the connection settings.
      * @param service
      *            A String that represents the service's base DNS name.
-     * @param serviceEndpoint
+     * @param serviceEndpointName
      *            The service endpoint name to check in settings.
+     * @param serviceSecondaryEndpointName
+     *            The service secondary endpoint name to check in settings.
+     * @param matchesAutomaticEndpointsSpec
+     *            Whether the settings match the automatic endpoints specification.
      * @return The {@link StorageUri}.
      * @throws URISyntaxException
      */
     private static StorageUri getStorageUri(
-            final Map<String, String> settings, final String service, final String serviceEndpoint)
+            final Map<String, String> settings, final String service, final String serviceEndpointName, final String serviceSecondaryEndpointName, final Boolean matchesAutomaticEndpointsSpec)
             throws URISyntaxException {
-        // Explicit Endpoint Case
-        if (settings.containsKey(serviceEndpoint)) {
-            return new StorageUri(new URI(settings.get(serviceEndpoint)));
-        }
-        // Automatic Endpoint Case
-        else if (settings.containsKey(DEFAULT_ENDPOINTS_PROTOCOL_NAME) &&
-                 settings.containsKey(CloudStorageAccount.ACCOUNT_NAME_NAME) &&
-                 settings.containsKey(CloudStorageAccount.ACCOUNT_KEY_NAME)) {
+        String serviceEndpoint = settingOrDefault(settings, serviceEndpointName);
+        String serviceSecondaryEndpoint = settingOrDefault(settings, serviceSecondaryEndpointName);
+
+        if (serviceSecondaryEndpoint != null && serviceEndpoint != null) {
+            return new StorageUri(new URI(serviceEndpoint), new URI(serviceSecondaryEndpoint));
+        } else if (serviceEndpoint != null) {
+            return new StorageUri(new URI(serviceEndpoint));
+        } else if (matchesAutomaticEndpointsSpec) {
             final String scheme = settings.get(CloudStorageAccount.DEFAULT_ENDPOINTS_PROTOCOL_NAME);
             final String accountName = settings.get(CloudStorageAccount.ACCOUNT_NAME_NAME);
             final String endpointSuffix = settings.get(CloudStorageAccount.ENDPOINT_SUFFIX_NAME);
             return getDefaultStorageUri(scheme, accountName, getDNS(service, endpointSuffix));
-        }
-        // Otherwise
-        else {
+        } else {
             return null;
         }
     }
@@ -356,21 +379,197 @@ public final class CloudStorageAccount {
      */
     private static CloudStorageAccount tryConfigureDevStore(final Map<String, String> settings)
             throws URISyntaxException {
-        if (settings.containsKey(USE_DEVELOPMENT_STORAGE_NAME)) {
+        if (matchesSpecification(
+                settings,
+                allRequired(USE_DEVELOPMENT_STORAGE_NAME),
+                optional(DEVELOPMENT_STORAGE_PROXY_URI_NAME))) {
             if (!Boolean.parseBoolean(settings.get(USE_DEVELOPMENT_STORAGE_NAME))) {
                 throw new IllegalArgumentException(SR.INVALID_CONNECTION_STRING_DEV_STORE_NOT_TRUE);
             }
 
             URI devStoreProxyUri = null;
+
             if (settings.containsKey(DEVELOPMENT_STORAGE_PROXY_URI_NAME)) {
                 devStoreProxyUri = new URI(settings.get(DEVELOPMENT_STORAGE_PROXY_URI_NAME));
             }
 
             return getDevelopmentStorageAccount(devStoreProxyUri);
-        }
-        else {
+        } else {
             return null;
         }
+    }
+
+    private interface ConnectionStringFilter {
+        Map<String, String> apply(Map<String, String> settings);
+    }
+
+    private static ConnectionStringFilter allRequired(final String... settingNames) {
+        return new ConnectionStringFilter() {
+            @Override
+            public Map<String, String> apply(Map<String, String> settings) {
+                final Map<String, String> result = new HashMap<String, String>(settings);
+
+                for (final String settingName : settingNames) {
+                    if (result.containsKey(settingName)) {
+                        result.remove(settingName);
+                    } else {
+                        return null;
+                    }
+                }
+
+                return result;
+            }
+        };
+    }
+
+    private static ConnectionStringFilter optional(final String... settingNames) {
+        return new ConnectionStringFilter() {
+            @Override
+            public Map<String, String> apply(Map<String, String> settings) {
+                final Map<String, String> result = new HashMap<String, String>(settings);
+
+                for (final String settingName : settingNames) {
+                    if (result.containsKey(settingName)) {
+                        result.remove(settingName);
+                    }
+                }
+
+                return result;
+            }
+        };
+    }
+
+    private static ConnectionStringFilter atLeastOne(final String... settingNames) {
+        return new ConnectionStringFilter() {
+            @Override
+            public Map<String, String> apply(Map<String, String> settings) {
+                final Map<String, String> result = new HashMap<String, String>(settings);
+                Boolean foundOne = false;
+
+                for (final String settingName : settingNames) {
+                    if (result.containsKey(settingName)) {
+                        result.remove(settingName);
+                        foundOne = true;
+                    }
+                }
+
+                return foundOne ? result : null;
+            }
+        };
+    }
+
+    private static ConnectionStringFilter none(final String... settingNames) {
+        return new ConnectionStringFilter() {
+            @Override
+            public Map<String, String> apply(Map<String, String> settings) {
+                final Map<String, String> result = new HashMap<String, String>(settings);
+                Boolean foundOne = false;
+
+                for (final String settingName : settingNames) {
+                    if (result.containsKey(settingName)) {
+                        result.remove(settingName);
+                        foundOne = true;
+                    }
+                }
+
+                return foundOne ? null : result;
+            }
+        };
+    }
+
+    private static ConnectionStringFilter matchesAll(final ConnectionStringFilter... filters) {
+        return new ConnectionStringFilter() {
+            @Override
+            public Map<String, String> apply(Map<String, String> settings) {
+                Map<String, String> result = new HashMap<String, String>(settings);
+
+                for (final ConnectionStringFilter filter : filters) {
+                    if (result == null) {
+                        break;
+                    }
+
+                    result = filter.apply(result);
+                }
+
+                return result;
+            }
+        };
+    }
+
+    private static ConnectionStringFilter matchesOne(final ConnectionStringFilter... filters) {
+        return new ConnectionStringFilter() {
+            @Override
+            public Map<String, String> apply(Map<String, String> settings) {
+                Map<String, String> matchResult = null;
+
+                for (final ConnectionStringFilter filter : filters) {
+                    Map<String, String> result = filter.apply(new HashMap<String, String>(settings));
+
+                    if (result != null) {
+                        if (matchResult == null) {
+                            matchResult = result;
+                        } else {
+                            return null;
+                        }
+                    }
+                }
+
+                return matchResult;
+            }
+        };
+    }
+
+    private static ConnectionStringFilter matchesExactly(final ConnectionStringFilter filter) {
+        return new ConnectionStringFilter() {
+            @Override
+            public Map<String, String> apply(Map<String, String> settings) {
+                Map<String, String> result = new HashMap<String, String>(settings);
+
+                result = filter.apply(result);
+
+                if (result == null || !result.isEmpty()) {
+                    return null;
+                } else {
+                    return  result;
+                }
+            }
+        };
+    }
+
+    private static ConnectionStringFilter validCredentials =
+            matchesOne(
+                    matchesAll(allRequired(ACCOUNT_NAME_NAME, ACCOUNT_KEY_NAME), none(SHARED_ACCESS_SIGNATURE_NAME)),
+                    matchesAll(allRequired(SHARED_ACCESS_SIGNATURE_NAME), optional(ACCOUNT_NAME_NAME), none(ACCOUNT_KEY_NAME)),
+                    none(ACCOUNT_NAME_NAME, ACCOUNT_KEY_NAME, SHARED_ACCESS_SIGNATURE_NAME)
+            );
+
+
+    private static Boolean matchesSpecification(
+            Map<String, String> settings,
+            ConnectionStringFilter... constraints) {
+        for (ConnectionStringFilter constraint: constraints) {
+            Map<String, String> remainingSettings = constraint.apply(settings);
+
+            if (remainingSettings == null) {
+                return false;
+            } else {
+                settings = remainingSettings;
+            }
+        }
+
+        if (settings.isEmpty()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private static Boolean isValidEndpointPair(String primary, String secondary) {
+        return (primary != null) || (/* primary is null, and... */ secondary == null);
+    }
+
+    private static String settingOrDefault(Map<String, String> settings, String key) {
+        return settings.containsKey(key) ? settings.get(key) : null;
     }
 
     /**
@@ -387,50 +586,97 @@ public final class CloudStorageAccount {
      */
     private static CloudStorageAccount tryConfigureServiceAccount(final Map<String, String> settings)
             throws URISyntaxException, InvalidKeyException {
-        if (settings.containsKey(USE_DEVELOPMENT_STORAGE_NAME)) {
-            if (!Boolean.parseBoolean(settings.get(USE_DEVELOPMENT_STORAGE_NAME))) {
-                throw new IllegalArgumentException(SR.INVALID_CONNECTION_STRING_DEV_STORE_NOT_TRUE);
+
+        ConnectionStringFilter endpointsOptional =
+                optional(
+                        BLOB_ENDPOINT_NAME, BLOB_SECONDARY_ENDPOINT_NAME,
+                        QUEUE_ENDPOINT_NAME, QUEUE_SECONDARY_ENDPOINT_NAME,
+                        TABLE_ENDPOINT_NAME, TABLE_SECONDARY_ENDPOINT_NAME,
+                        FILE_ENDPOINT_NAME, FILE_SECONDARY_ENDPOINT_NAME
+                );
+
+        ConnectionStringFilter primaryEndpointRequired =
+                atLeastOne(
+                        BLOB_ENDPOINT_NAME,
+                        QUEUE_ENDPOINT_NAME,
+                        TABLE_ENDPOINT_NAME,
+                        FILE_ENDPOINT_NAME
+                );
+
+        ConnectionStringFilter secondaryEndpointsOptional =
+                optional(
+                        BLOB_SECONDARY_ENDPOINT_NAME,
+                        QUEUE_SECONDARY_ENDPOINT_NAME,
+                        TABLE_SECONDARY_ENDPOINT_NAME,
+                        FILE_SECONDARY_ENDPOINT_NAME
+                );
+
+        ConnectionStringFilter automaticEndpointsMatchSpec =
+                matchesExactly(matchesAll(
+                        matchesOne(
+                                matchesAll(allRequired(ACCOUNT_KEY_NAME)), // Key + Name, Endpoints optional
+                                allRequired(SHARED_ACCESS_SIGNATURE_NAME) // SAS + Name, Endpoints optional
+                        ),
+                        allRequired(ACCOUNT_NAME_NAME), // Name required to automatically create URIs
+                        endpointsOptional,
+                        optional(DEFAULT_ENDPOINTS_PROTOCOL_NAME, ENDPOINT_SUFFIX_NAME)
+                ));
+
+        ConnectionStringFilter explicitEndpointsMatchSpec =
+                matchesExactly(matchesAll( // Any Credentials, Endpoints must be explicitly declared
+                        validCredentials,
+                        primaryEndpointRequired,
+                        secondaryEndpointsOptional
+                ));
+
+        Boolean matchesAutomaticEndpointsSpec = matchesSpecification(settings, automaticEndpointsMatchSpec);
+        Boolean matchesExplicitEndpointsSpec = matchesSpecification(settings, explicitEndpointsMatchSpec);
+
+        if (matchesAutomaticEndpointsSpec || matchesExplicitEndpointsSpec) {
+            if (matchesAutomaticEndpointsSpec && !settings.containsKey(DEFAULT_ENDPOINTS_PROTOCOL_NAME)) {
+                settings.put(DEFAULT_ENDPOINTS_PROTOCOL_NAME, "https");
             }
-            else {
-                return null;
+
+            String blobEndpoint = settingOrDefault(settings, BLOB_ENDPOINT_NAME);
+            String queueEndpoint = settingOrDefault(settings, QUEUE_ENDPOINT_NAME);
+            String tableEndpoint = settingOrDefault(settings, TABLE_ENDPOINT_NAME);
+            String fileEndpoint = settingOrDefault(settings, FILE_ENDPOINT_NAME);
+            String blobSecondaryEndpoint = settingOrDefault(settings, BLOB_SECONDARY_ENDPOINT_NAME);
+            String queueSecondaryEndpoint = settingOrDefault(settings, QUEUE_SECONDARY_ENDPOINT_NAME);
+            String tableSecondaryEndpoint = settingOrDefault(settings, TABLE_SECONDARY_ENDPOINT_NAME);
+            String fileSecondaryEndpoint = settingOrDefault(settings, FILE_SECONDARY_ENDPOINT_NAME);
+
+            // if secondary is specified, primary must also be specified
+
+            if (
+                    isValidEndpointPair(blobEndpoint, blobSecondaryEndpoint)
+                            && isValidEndpointPair(queueEndpoint, queueSecondaryEndpoint)
+                            && isValidEndpointPair(tableEndpoint, tableSecondaryEndpoint)
+                            && isValidEndpointPair(fileEndpoint, fileSecondaryEndpoint)
+                    ) {
+                CloudStorageAccount accountInformation =
+                        new CloudStorageAccount(
+                                StorageCredentials.tryParseCredentials(settings),
+                                getStorageUri(settings, SR.BLOB, BLOB_ENDPOINT_NAME, BLOB_SECONDARY_ENDPOINT_NAME, matchesAutomaticEndpointsSpec),
+                                getStorageUri(settings, SR.QUEUE, QUEUE_ENDPOINT_NAME, QUEUE_SECONDARY_ENDPOINT_NAME, matchesAutomaticEndpointsSpec),
+                                getStorageUri(settings, SR.TABLE, TABLE_ENDPOINT_NAME, TABLE_SECONDARY_ENDPOINT_NAME, matchesAutomaticEndpointsSpec),
+                                getStorageUri(settings, SR.FILE, FILE_ENDPOINT_NAME, FILE_SECONDARY_ENDPOINT_NAME, matchesAutomaticEndpointsSpec)
+                        );
+
+                accountInformation.isBlobEndpointDefault = blobEndpoint == null;
+                accountInformation.isFileEndpointDefault = fileEndpoint == null;
+                accountInformation.isQueueEndpointDefault = queueEndpoint == null;
+                accountInformation.isTableEndpointDefault = tableEndpoint == null;
+
+                accountInformation.endpointSuffix = settingOrDefault(settings, ENDPOINT_SUFFIX_NAME);
+
+                accountInformation.accountName = settingOrDefault(settings, ACCOUNT_NAME_NAME);
+
+                return accountInformation;
             }
         }
 
-        String defaultEndpointSetting = settings.get(DEFAULT_ENDPOINTS_PROTOCOL_NAME);
-        if (defaultEndpointSetting != null) {
-            defaultEndpointSetting = defaultEndpointSetting.toLowerCase();
-            if(!defaultEndpointSetting.equals(Constants.HTTP)
-                    && !defaultEndpointSetting.equals(Constants.HTTPS)) {
-                return null;
-            }
-        }
-
-        final StorageCredentials credentials = StorageCredentials.tryParseCredentials(settings);
-        final CloudStorageAccount account = new CloudStorageAccount(credentials,
-                getStorageUri(settings, SR.BLOB, BLOB_ENDPOINT_NAME),
-                getStorageUri(settings, SR.QUEUE, QUEUE_ENDPOINT_NAME),
-                getStorageUri(settings, SR.TABLE, TABLE_ENDPOINT_NAME),
-                getStorageUri(settings, SR.FILE, FILE_ENDPOINT_NAME));
-        
-        // Invalid Account String
-        if ((account.getBlobEndpoint() == null) && (account.getFileEndpoint() == null) &&
-                (account.getQueueEndpoint() == null) && (account.getTableEndpoint() == null)) {
-            return null;
-        }
-
-        // Endpoint is only default if it is neither null nor explicitly specified
-        account.isBlobEndpointDefault = !((account.getBlobEndpoint() == null) ||
-                  settings.containsKey(CloudStorageAccount.BLOB_ENDPOINT_NAME));
-        account.isFileEndpointDefault = !((account.getFileEndpoint() == null) ||
-                  settings.containsKey(CloudStorageAccount.FILE_ENDPOINT_NAME));
-        account.isQueueEndpointDefault = !((account.getQueueEndpoint() == null) ||
-                  settings.containsKey(CloudStorageAccount.QUEUE_ENDPOINT_NAME));
-        account.isTableEndpointDefault = !((account.getTableEndpoint() == null) ||
-                  settings.containsKey(CloudStorageAccount.TABLE_ENDPOINT_NAME));
-        
-        account.endpointSuffix = settings.get(CloudStorageAccount.ENDPOINT_SUFFIX_NAME);
-        
-        return account;
+        return null;
     }
 
     
@@ -463,7 +709,12 @@ public final class CloudStorageAccount {
      * The internal Storage Credentials.
      */
     private StorageCredentials credentials;
-    
+
+    /**
+     * The internal account name.
+     */
+    private String accountName;
+
     /**
      * Internal flag storing true if the blob endpoint was created using default settings.
      * False if the caller specified the blob endpoint explicitly.
@@ -624,7 +875,7 @@ public final class CloudStorageAccount {
         }
         else if (!Utility.isNullOrEmpty(storageCredentials.getAccountName()) &&
                 !accountName.equals(storageCredentials.getAccountName())) {
-            
+
             throw new IllegalArgumentException(SR.ACCOUNT_NAME_MISMATCH);
         }
         
@@ -1027,11 +1278,8 @@ public final class CloudStorageAccount {
      *         optionally with sensitive data.
      */
     public String toString(final boolean exportSecrets) {
-        if (this.credentials != null && Utility.isNullOrEmpty(this.credentials.getAccountName())) {
-            return this.credentials.toString(exportSecrets);
-        }
-
         final List<String> values = new ArrayList<String>();
+
         if (this.isDevStoreAccount) {
             values.add(String.format("%s=true", USE_DEVELOPMENT_STORAGE_NAME));
             if (!this.getBlobEndpoint().toString().equals("http://127.0.0.1:10000/devstoreaccount1")) {
@@ -1090,6 +1338,10 @@ public final class CloudStorageAccount {
 
             if (this.getCredentials() != null) {
                 values.add(this.getCredentials().toString(exportSecrets));
+            }
+
+            if (this.accountName != null && (this.getCredentials() != null ? this.getCredentials().getAccountName() == null : true)) {
+                values.add(String.format(attributeFormat, ACCOUNT_NAME_NAME, this.accountName));
             }
         }
 
