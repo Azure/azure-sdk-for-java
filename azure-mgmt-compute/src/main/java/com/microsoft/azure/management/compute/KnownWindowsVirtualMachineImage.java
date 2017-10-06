@@ -16,14 +16,20 @@ public enum KnownWindowsVirtualMachineImage {
     /** Windows Server 2012 R2 Data center. */
     WINDOWS_SERVER_2012_R2_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"),
     /**
-     * Windows Server 2016 technical preview with container support.
-     * @deprecated use withLatestWindowsImage("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter-with-Containers") instead.
+     * Windows Server 2016 technical preview with container.
+     *
+     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
+     * and for virtual machine scale set use {@link VirtualMachineScaleSet.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
+     * with publisher as "MicrosoftWindowsServer", offer as "WindowsServer" and sku as "2016-Datacenter-with-Containers")}.
      */
     @Deprecated
     WINDOWS_SERVER_2016_TECHNICAL_PREVIEW_WITH_CONTAINERS("MicrosoftWindowsServer", "WindowsServer", "2016-Technical-Preview-with-Containers"),
     /**
      * Windows Server 2016 technical preview.
-     * @deprecated use withLatestWindowsImage("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter") instead.
+     *
+     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
+     * and for virtual machine scale set use {@link VirtualMachineScaleSet.DefinitionShared#withLatestWindowsImage(String publisher, String offer, String sku)}
+     * with publisher as "MicrosoftWindowsServer", offer as "WindowsServer" and sku as "2016-Datacenter")}.
      */
     @Deprecated
     WINDOWS_SERVER_TECHNICAL_PREVIEW("MicrosoftWindowsServer", "WindowsServer", "Windows-Server-Technical-Preview");
