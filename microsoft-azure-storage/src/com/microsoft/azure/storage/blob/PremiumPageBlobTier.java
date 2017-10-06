@@ -77,32 +77,35 @@ public enum PremiumPageBlobTier {
      * 
      * @return A <code>PremiumPageBlobTier</code> value that represents the premium page blob tier.
      */
-    protected static PremiumPageBlobTier parse(final String premiumBlobTierString) {
+    protected static PremiumPageBlobTier parse(String premiumBlobTierString) {
+
         if (Utility.isNullOrEmpty(premiumBlobTierString)) {
             return UNKNOWN;
         }
-        else if ("p4".equals(premiumBlobTierString.toLowerCase(Locale.US))) {
+
+        premiumBlobTierString = premiumBlobTierString.toLowerCase(Locale.US);
+        if ("p4".equals(premiumBlobTierString)) {
             return P4;
         }
-        else if ("p6".equals(premiumBlobTierString.toLowerCase(Locale.US))) {
+        else if ("p6".equals(premiumBlobTierString)) {
             return P6;
         }
-        else if ("p10".equals(premiumBlobTierString.toLowerCase(Locale.US))) {
+        else if ("p10".equals(premiumBlobTierString)) {
             return P10;
         }
-        else if ("p20".equals(premiumBlobTierString.toLowerCase(Locale.US))) {
+        else if ("p20".equals(premiumBlobTierString)) {
             return P20;
         }
-        else if ("p30".equals(premiumBlobTierString.toLowerCase(Locale.US))) {
+        else if ("p30".equals(premiumBlobTierString)) {
             return P30;
         }
-        else if ("p40".equals(premiumBlobTierString.toLowerCase(Locale.US))) {
+        else if ("p40".equals(premiumBlobTierString)) {
             return P40;
         }
-        else if ("p50".equals(premiumBlobTierString.toLowerCase(Locale.US))) {
+        else if ("p50".equals(premiumBlobTierString)) {
             return P50;
         }
-        else if ("p60".equals(premiumBlobTierString.toLowerCase(Locale.US))) {
+        else if ("p60".equals(premiumBlobTierString)) {
             return P60;
         }
         else {
