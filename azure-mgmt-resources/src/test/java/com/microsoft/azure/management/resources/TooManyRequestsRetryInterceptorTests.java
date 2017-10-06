@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.resources;
 
+import com.microsoft.azure.CloudException;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.rest.RestClient;
@@ -48,7 +49,11 @@ public class TooManyRequestsRetryInterceptorTests extends ResourceManagerTestBas
                     @Override
                     public void call(Subscriber<? super Void> subscriber) {
                         System.out.format("Current time for %d is: %d\n", iteration, System.currentTimeMillis());
-                        rg.update().apply();
+                        try {
+                            rg.update().apply();
+                        } catch (CloudException e) {
+                            System.err.println(e.getMessage());
+                        }
                         subscriber.onCompleted();
                     }
                 });
