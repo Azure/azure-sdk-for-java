@@ -11,8 +11,8 @@ package com.microsoft.azure.management.storage.implementation;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
+import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import com.microsoft.azure.management.storage.StorageAccountCheckNameAvailabilityParameters;
 import com.microsoft.azure.management.storage.StorageAccountRegenerateKeyParameters;
 import com.microsoft.azure.OperationStatus;
@@ -32,10 +32,11 @@ import com.microsoft.rest.annotations.POST;
 import com.microsoft.rest.annotations.PUT;
 import com.microsoft.rest.annotations.QueryParam;
 import com.microsoft.rest.annotations.UnexpectedResponseExceptionType;
+import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.Validator;
-
+import java.io.IOException;
 import java.util.List;
 import rx.functions.Func1;
 import rx.Observable;
@@ -108,13 +109,13 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Storage/storageAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Single<List<StorageAccountInner>> list(@PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
+        Single<PageImpl<StorageAccountInner>> list(@PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
         @Headers({ "x-ms-logging-context: com.microsoft.azure.management.storage.StorageAccounts listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Single<List<StorageAccountInner>> listByResourceGroup(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
+        Single<PageImpl<StorageAccountInner>> listByResourceGroup(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
         @Headers({ "x-ms-logging-context: com.microsoft.azure.management.storage.StorageAccounts listKeys" })
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Storage/storageAccounts/{accountName}/listKeys")
@@ -486,11 +487,9 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<List<StorageAccountInner>, Page<StorageAccountInner>>() {
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<StorageAccountInner>, Page<StorageAccountInner>>() {
             @Override
-            public Page<StorageAccountInner> call(List<StorageAccountInner> response) {
-                PageImpl<StorageAccountInner> page = new PageImpl<>();
-                page.setItems(response);
+            public Page<StorageAccountInner> call(PageImpl<StorageAccountInner> page) {
                 return page;
             }
         }).toObservable();
@@ -531,11 +530,9 @@ public class StorageAccountsInner implements InnerSupportsGet<StorageAccountInne
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<List<StorageAccountInner>, Page<StorageAccountInner>>() {
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<StorageAccountInner>, Page<StorageAccountInner>>() {
             @Override
-            public Page<StorageAccountInner> call(List<StorageAccountInner> response) {
-                PageImpl<StorageAccountInner> page = new PageImpl<>();
-                page.setItems(response);
+            public Page<StorageAccountInner> call(PageImpl<StorageAccountInner> page) {
                 return page;
             }
         }).toObservable();

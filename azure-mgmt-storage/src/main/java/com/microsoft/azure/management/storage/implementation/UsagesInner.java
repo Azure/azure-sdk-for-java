@@ -60,7 +60,7 @@ public class UsagesInner {
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Storage/usages")
         @ExpectedResponses({200})
         @UnexpectedResponseExceptionType(CloudException.class)
-        Single<List<UsageInner>> list(@PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
+        Single<PageImpl<UsageInner>> list(@PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
     }
 
@@ -93,11 +93,9 @@ public class UsagesInner {
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<List<UsageInner>, Page<UsageInner>>() {
+        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<UsageInner>, Page<UsageInner>>() {
             @Override
-            public Page<UsageInner> call(List<UsageInner> response) {
-                PageImpl<UsageInner> page = new PageImpl<>();
-                page.setItems(response);
+            public Page<UsageInner> call(PageImpl<UsageInner> page) {
                 return page;
             }
         }).toObservable();
