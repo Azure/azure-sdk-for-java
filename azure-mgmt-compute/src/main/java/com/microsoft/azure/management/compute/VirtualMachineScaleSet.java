@@ -356,6 +356,13 @@ public interface VirtualMachineScaleSet extends
     String bootDiagnosticsStorageUri();
 
     /**
+     * @return the storage account type of the OS managed disk. A null value will be returned if the
+     * virtual machine scale set is based on un-managed disk.
+     */
+    @Beta(Beta.SinceVersion.V1_4_0)
+    StorageAccountTypes managedOSDiskStorageAccountType();
+
+    /**
      * The virtual machine scale set stages shared between managed and unmanaged based
      * virtual machine scale set definitions.
      */

@@ -1061,6 +1061,22 @@ public class VirtualMachineScaleSetImpl
     }
 
     @Override
+    public StorageAccountTypes managedOSDiskStorageAccountType() {
+        if (this.inner().virtualMachineProfile() != null
+                && this.inner().virtualMachineProfile().storageProfile() != null
+                && this.inner().virtualMachineProfile().storageProfile().osDisk() != null
+                && this.inner().virtualMachineProfile().storageProfile().osDisk().managedDisk() != null) {
+            return this.inner()
+                    .virtualMachineProfile()
+                    .storageProfile()
+                    .osDisk()
+                    .managedDisk()
+                    .storageAccountType();
+        }
+        return null;
+    }
+
+    @Override
     public VirtualMachineScaleSetImpl withUnmanagedDisks() {
         this.isUnmanagedDiskSelected = true;
         return this;
@@ -1207,7 +1223,12 @@ public class VirtualMachineScaleSetImpl
 
     @Override
     public VirtualMachineScaleSetImpl withOSDiskStorageAccountType(StorageAccountTypes accountType) {
-        this.managedDataDisks.setDefaultStorageAccountType(accountType);
+        // withers is limited to VMSS based on ManagedDisk.
+        this.inner()
+                .virtualMachineProfile()
+                .storageProfile()
+                .osDisk()
+                .withManagedDisk(new VirtualMachineScaleSetManagedDiskParameters().withStorageAccountType(accountType));
         return this;
     }
 
