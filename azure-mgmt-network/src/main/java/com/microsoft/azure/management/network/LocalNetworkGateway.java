@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LocalNetworkGatewayInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -22,7 +23,7 @@ import java.util.Set;
  * Entry point for Local Network Gateway management API in Azure.
  */
 @Fluent
-@Beta
+@Beta(SinceVersion.V1_3_0)
 public interface LocalNetworkGateway extends
         GroupableResource<NetworkManager, LocalNetworkGatewayInner>,
         Refreshable<LocalNetworkGateway>,

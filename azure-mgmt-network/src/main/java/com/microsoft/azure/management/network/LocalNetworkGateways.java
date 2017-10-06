@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.LocalNetworkGatewaysInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -23,7 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * Entry point to local network gateways management API in Azure.
  */
 @Fluent
-@Beta
+@Beta(SinceVersion.V1_3_0)
 public interface LocalNetworkGateways extends
         SupportsCreating<LocalNetworkGateway.DefinitionStages.Blank>,
         SupportsListing<LocalNetworkGateway>,
