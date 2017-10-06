@@ -30,6 +30,7 @@ import java.util.concurrent.TimeUnit;
  * An instance of this class stores configuration for setting up specific service clients.
  */
 public final class RestClient {
+    private final HttpClient.Factory httpClientFactory;
     private final HttpClient httpClient;
     private final Proxy proxy;
     private final String baseURL;
@@ -53,21 +54,20 @@ public final class RestClient {
         this.logLevel = builder.logLevel;
         this.customPolicyFactories = builder.customPolicyFactories;
 
-        final RxNettyAdapter.Builder httpClientBuilder = new RxNettyAdapter.Builder()
-            .withRequestPolicy(new UserAgentPolicy.Factory(userAgent))
-            .withRequestPolicy(new RetryPolicy.Factory())
-            .withRequestPolicy(new AddCookiesPolicy.Factory());
+        this.httpClientFactory = builder.httpClientFactory;
+
+        List<RequestPolicy.Factory> policyFactories = new ArrayList<>();
+        policyFactories.add(new UserAgentPolicy.Factory(userAgent));
+        policyFactories.add(new RetryPolicy.Factory());
+        policyFactories.add(new AddCookiesPolicy.Factory());
         if (credentials != null) {
-            httpClientBuilder.withRequestPolicy(new CredentialsPolicy.Factory(credentials));
+            policyFactories.add(new CredentialsPolicy.Factory(credentials));
         }
-        httpClientBuilder.withRequestPolicies(customPolicyFactories)
-            .withRequestPolicy(new LoggingPolicy.Factory(logLevel));
+        policyFactories.addAll(customPolicyFactories);
+        policyFactories.add(new LoggingPolicy.Factory(logLevel));
 
-        if (proxy != null) {
-            httpClientBuilder.withProxy(proxy);
-        }
-
-        this.httpClient = httpClientBuilder.build();
+        HttpClient.Configuration configuration = new HttpClient.Configuration(policyFactories, proxy);
+        this.httpClient = httpClientFactory.create(configuration);
     }
 
     /**
@@ -162,6 +162,7 @@ public final class RestClient {
         private final long defaultReadTimeoutMillis = 10000;
         private final long defaultConnectionTimeoutMillis = 10000;
 
+        private HttpClient.Factory httpClientFactory;
         private Proxy proxy;
         /** The dynamic base URL with variables wrapped in "{" and "}". */
         private String baseUrl;
@@ -180,6 +181,7 @@ public final class RestClient {
         private LogLevel logLevel = LogLevel.NONE;
 
         private Builder(final RestClient restClient) {
+            this.httpClientFactory = restClient.httpClientFactory;
             this.proxy = restClient.proxy;
             this.baseUrl = restClient.baseURL;
             this.userAgent = restClient.userAgent;
@@ -194,7 +196,19 @@ public final class RestClient {
         /**
          * Creates an instance of the builder.
          */
-        public Builder() { }
+        public Builder() {
+            this.httpClientFactory = new RxNettyAdapter.Factory();
+        }
+
+        /**
+         * Sets the httpClientFactory.
+         * @param httpClientFactory the httpClientFactory to use.
+         * @return the builder itself for chaining.
+         */
+        public Builder withHttpClientFactory(HttpClient.Factory httpClientFactory) {
+            this.httpClientFactory = httpClientFactory;
+            return this;
+        }
 
         /**
          * Sets the proxy.
