@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -28,7 +29,7 @@ import java.util.Collection;
  * Entry point for Virtual Network Gateway management API in Azure.
  */
 @Fluent
-@Beta
+@Beta(SinceVersion.V1_3_0)
 public interface VirtualNetworkGateway extends
         GroupableResource<NetworkManager, VirtualNetworkGatewayInner>,
         Refreshable<VirtualNetworkGateway>,
@@ -276,6 +277,7 @@ public interface VirtualNetworkGateway extends
              * Disables BGP for this virtual network gateway.
              * @return the next stage of the update
              */
+            @Method
             Update withoutBgp();
         }
     }
@@ -283,8 +285,6 @@ public interface VirtualNetworkGateway extends
     /**
      * The template for a virtual network gateway update operation, containing all the settings that
      * can be modified.
-     * <p>
-     * Call {@link Update#apply()} to apply the changes to the resource in Azure.
      */
     interface Update extends
             Appliable<VirtualNetworkGateway>,
