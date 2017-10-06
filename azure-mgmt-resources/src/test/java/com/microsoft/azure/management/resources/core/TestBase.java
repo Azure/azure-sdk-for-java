@@ -8,8 +8,9 @@ package com.microsoft.azure.management.resources.core;
 
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.resources.core.InterceptorManager.PlaybackClient;
+import com.microsoft.azure.management.resources.core.InterceptorManager.PlaybackClientFactory;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingPolicy;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
@@ -150,9 +151,8 @@ public abstract class TestBase {
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                    .addCustomPolicy(interceptorManager.initInterceptor())
-                    // FIXME
-//                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                    .addCustomPolicy(new ResourceManagerThrottlingPolicy.Factory())
+                    .withHttpClientFactory(interceptorManager.initPlaybackFactory())
                     ,true);
 
             defaultSubscription = ZERO_SUBSCRIPTION;
@@ -175,9 +175,8 @@ public abstract class TestBase {
                     .withCredentials(credentials)
                     .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withReadTimeout(3, TimeUnit.MINUTES)
-                    .addCustomPolicy(interceptorManager.initInterceptor())
-                    // FIXME
-//                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                    .addCustomPolicy(interceptorManager.initRecordPolicy())
+                    .addCustomPolicy(new ResourceManagerThrottlingPolicy.Factory())
                     ,false);
 
             defaultSubscription = credentials.defaultSubscriptionId();

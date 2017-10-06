@@ -9,8 +9,7 @@ package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 import com.microsoft.azure.AzureEnvironment;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingPolicy;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
@@ -106,7 +105,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
                 .withCredentials(credentials)
                 // FIXME
 //                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-//                .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                .addCustomPolicy(new ResourceManagerThrottlingPolicy.Factory())
                 .build();
         if (client.proxy() != null) {
             credentials.withProxy(client.proxy());
