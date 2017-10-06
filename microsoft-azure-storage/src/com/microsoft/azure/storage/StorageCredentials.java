@@ -68,7 +68,7 @@ public abstract class StorageCredentials {
                 throw new InvalidKeyException(SR.INVALID_KEY);
             }
         }
-        if (accountName == null && accountKey == null && sasSignature != null) {
+        if (accountKey == null && sasSignature != null) {
             return new StorageCredentialsSharedAccessSignature(sasSignature);
         }
 

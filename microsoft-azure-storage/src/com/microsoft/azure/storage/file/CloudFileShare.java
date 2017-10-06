@@ -81,7 +81,7 @@ public final class CloudFileShare {
     /**
      * Holds the snapshot ID.
      */
-    //String snapshotID;
+    String snapshotID;
 
     /**
      * Holds a reference to the associated service client.
@@ -111,14 +111,14 @@ public final class CloudFileShare {
      * @see <a href="http://msdn.microsoft.com/en-us/library/azure/dn167011.aspx">Naming and Referencing Shares,
      *      Directories, Files, and Metadata</a>
      */
-    protected CloudFileShare(final String shareName, /*String snapshotID,*/ final CloudFileClient client) throws URISyntaxException,
+    public CloudFileShare(final String shareName, String snapshotID, final CloudFileClient client) throws URISyntaxException,
             StorageException {
         Utility.assertNotNull("client", client);
         Utility.assertNotNull("shareName", shareName);
 
         this.storageUri = PathUtility.appendPathToUri(client.getStorageUri(), shareName);
         this.name = shareName;
-        //this.snapshotID = snapshotID;
+        this.snapshotID = snapshotID;
         this.fileServiceClient = client;
     }
     
@@ -155,6 +155,8 @@ public final class CloudFileShare {
      *            A <code>java.net.URI</code> object that represents the absolute URI of the share.
      * @param credentials
      *            A {@link StorageCredentials} object used to authenticate access.
+     * @param snapshotID
+     *            A <code>String</code> that represents the snapshot version, if applicable.
      * 
      * @throws StorageException
      *             If a storage service error occurred.
@@ -220,7 +222,7 @@ public final class CloudFileShare {
             opContext = new OperationContext();
         }
 
-        //assertNoSnapshot();
+        assertNoSnapshot();
         if (this.properties != null && this.properties.getShareQuota() != null) {
             Utility.assertInBounds("Share Quota", this.properties.getShareQuota(), 1, FileConstants.MAX_SHARE_QUOTA);
         }
@@ -393,7 +395,7 @@ public final class CloudFileShare {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    protected void delete(DeleteShareSnapshotsOption deleteSnapshotsOption, AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
+    public void delete(DeleteShareSnapshotsOption deleteSnapshotsOption, AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
         if (opContext == null) {
             opContext = new OperationContext();
@@ -416,7 +418,7 @@ public final class CloudFileShare {
             public HttpURLConnection buildRequest(
                     CloudFileClient client, CloudFileShare share, OperationContext context) throws Exception {
                 return FileRequest.deleteShare(
-                        share.getTransformedAddress().getPrimaryUri(), options, context, accessCondition);
+                        share.getTransformedAddress().getPrimaryUri(), options, context, accessCondition, share.snapshotID, deleteSnapshotsOption);
             }
 
             @Override
@@ -506,7 +508,7 @@ public final class CloudFileShare {
      *             If a storage service error occurred.
      */
     @DoesServiceRequest
-    protected boolean deleteIfExists(DeleteShareSnapshotsOption deleteSnapshotsOption, AccessCondition accessCondition, FileRequestOptions options,
+    public boolean deleteIfExists(DeleteShareSnapshotsOption deleteSnapshotsOption, AccessCondition accessCondition, FileRequestOptions options,
             OperationContext opContext) throws StorageException {
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
 
@@ -588,7 +590,7 @@ public final class CloudFileShare {
             public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share, OperationContext context)
                     throws Exception {
                 return FileRequest.getShareProperties(share.getTransformedAddress().getUri(this.getCurrentLocation()),
-                        options, context, accessCondition);
+                        options, context, accessCondition, share.snapshotID);
             }
 
             @Override
@@ -656,7 +658,7 @@ public final class CloudFileShare {
             opContext = new OperationContext();
         }
 
-        //assertNoSnapshot();
+        assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -717,135 +719,135 @@ public final class CloudFileShare {
         return getRequest;
     }
 
-//    /**
-//     * Creates a snapshot of the share.
-//     *
-//     * @return A <code>CloudFileShare</code> object that represents the snapshot of the share.
-//     *
-//     * @throws StorageException
-//     *             If a storage service error occurred.
-//     */
-//    @DoesServiceRequest
-//    protected final CloudFileShare createSnapshot() throws StorageException {
-//        return this
-//                .createSnapshot(null /* metadata */, null /* accessCondition */, null /* options */, null /* opContext */);
-//    }
-//
-//    /**
-//     * Creates a snapshot of the file share using the specified request options and operation context.
-//     *
-//     * @param accessCondition
-//     *            An {@link AccessCondition} object that represents the access conditions for the share.
-//     * @param options
-//     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
-//     *            <code>null</code> will use the default request options from the associated service client (
-//     *            {@link CloudFileClient}).
-//     * @param opContext
-//     *            An {@link OperationContext} object that represents the context for the current operation. This object
-//     *            is used to track requests to the storage service, and to provide additional runtime information about
-//     *            the operation.
-//     *
-//     * @return A <code>CloudFileShare</code> object that represents the snapshot of the file share.
-//     *
-//     * @throws StorageException
-//     *             If a storage service error occurred.
-//     */
-//    @DoesServiceRequest
-//    protected final CloudFileShare createSnapshot(final AccessCondition accessCondition, FileRequestOptions options,
-//            OperationContext opContext) throws StorageException {
-//        return this.createSnapshot(null /* metadata */, accessCondition, options, opContext);
-//    }
-//
-//    /**
-//     * Creates a snapshot of the file share using the specified request options and operation context.
-//     *
-//     * @param metadata
-//     *            A collection of name-value pairs defining the metadata of the snapshot, or null.
-//     * @param accessCondition
-//     *            An {@link AccessCondition} object that represents the access conditions for the file share.
-//     * @param options
-//     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
-//     *            <code>null</code> will use the default request options from the associated service client (
-//     *            {@link CloudFileClient}).
-//     * @param opContext
-//     *            An {@link OperationContext} object that represents the context for the current operation. This object
-//     *            is used to track requests to the storage service, and to provide additional runtime information about
-//     *            the operation.
-//     *
-//     * @return A <code>CloudFileShare</code> object that represents the snapshot of the file share.
-//     *
-//     * @throws StorageException
-//     *             If a storage service error occurred.
-//     */
-//    @DoesServiceRequest
-//    protected final CloudFileShare createSnapshot(final HashMap<String, String> metadata,
-//            final AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
-//            throws StorageException {
-//        //assertNoSnapshot();
-//
-//        if (opContext == null) {
-//            opContext = new OperationContext();
-//        }
-//
-//        opContext.initialize();
-//        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
-//
-//        return ExecutionEngine
-//                .executeWithRetry(this.fileServiceClient, this,
-//                        this.createSnapshotImpl(metadata, accessCondition, options), options.getRetryPolicyFactory(),
-//                        opContext);
-//    }
+    /**
+     * Creates a snapshot of the share.
+     *
+     * @return A <code>CloudFileShare</code> object that represents the snapshot of the share.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final CloudFileShare createSnapshot() throws StorageException {
+        return this
+                .createSnapshot(null /* metadata */, null /* accessCondition */, null /* options */, null /* opContext */);
+    }
 
-//    private StorageRequest<CloudFileClient, CloudFileShare, CloudFileShare> createSnapshotImpl(
-//            final HashMap<String, String> metadata, final AccessCondition accessCondition,
-//            final FileRequestOptions options) {
-//        final StorageRequest<CloudFileClient, CloudFileShare, CloudFileShare> putRequest =
-//                new StorageRequest<CloudFileClient, CloudFileShare, CloudFileShare>(
-//                options, this.getStorageUri()) {
-//
-//            @Override
-//            public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share, OperationContext context)
-//                    throws Exception {
-//                return FileRequest.snapshotShare(share.getTransformedAddress().getUri(this.getCurrentLocation()),
-//                        options, context, accessCondition);
-//            }
-//
-//            @Override
-//            public void setHeaders(HttpURLConnection connection, CloudFileShare share, OperationContext context) {
-//                if (metadata != null) {
-//                    FileRequest.addMetadata(connection, metadata, context);
-//                }
-//            }
-//
-//            @Override
-//            public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
-//                    throws Exception {
-//                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
-//            }
-//
-//            @Override
-//            public CloudFileShare preProcessResponse(CloudFileShare share, CloudFileClient client, OperationContext context)
-//                    throws Exception {
-//                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
-//                    this.setNonExceptionedRetryableFailure(true);
-//                    return null;
-//                }
-//
-//                final String snapshotTime = FileResponse.getSnapshotTime(this.getConnection());
-//                CloudFileShare snapshot = new CloudFileShare(share.getName(), snapshotTime, client);
-//                snapshot.setProperties(new FileShareProperties(share.properties));
-//
-//                // use the specified metadata if not null : otherwise share's metadata
-//                snapshot.setMetadata(metadata != null ? metadata : share.metadata);
-//
-//                snapshot.updatePropertiesFromResponse(this.getConnection());
-//
-//                return snapshot;
-//            }
-//        };
-//
-//        return putRequest;
-//    }
+    /**
+     * Creates a snapshot of the file share using the specified request options and operation context.
+     *
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the share.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @return A <code>CloudFileShare</code> object that represents the snapshot of the file share.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final CloudFileShare createSnapshot(final AccessCondition accessCondition, FileRequestOptions options,
+            OperationContext opContext) throws StorageException {
+        return this.createSnapshot(null /* metadata */, accessCondition, options, opContext);
+    }
+
+    /**
+     * Creates a snapshot of the file share using the specified request options and operation context.
+     *
+     * @param metadata
+     *            A collection of name-value pairs defining the metadata of the snapshot, or null.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the file share.
+     * @param options
+     *            A {@link FileRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudFileClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @return A <code>CloudFileShare</code> object that represents the snapshot of the file share.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final CloudFileShare createSnapshot(final HashMap<String, String> metadata,
+            final AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
+            throws StorageException {
+        assertNoSnapshot();
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
+
+        return ExecutionEngine
+                .executeWithRetry(this.fileServiceClient, this,
+                        this.createSnapshotImpl(metadata, accessCondition, options), options.getRetryPolicyFactory(),
+                        opContext);
+    }
+
+    private StorageRequest<CloudFileClient, CloudFileShare, CloudFileShare> createSnapshotImpl(
+            final HashMap<String, String> metadata, final AccessCondition accessCondition,
+            final FileRequestOptions options) {
+        final StorageRequest<CloudFileClient, CloudFileShare, CloudFileShare> putRequest =
+                new StorageRequest<CloudFileClient, CloudFileShare, CloudFileShare>(
+                options, this.getStorageUri()) {
+
+            @Override
+            public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share, OperationContext context)
+                    throws Exception {
+                return FileRequest.snapshotShare(share.getTransformedAddress().getUri(this.getCurrentLocation()),
+                        options, context, accessCondition);
+            }
+
+            @Override
+            public void setHeaders(HttpURLConnection connection, CloudFileShare share, OperationContext context) {
+                if (metadata != null) {
+                    FileRequest.addMetadata(connection, metadata, context);
+                }
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudFileClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, 0L, context);
+            }
+
+            @Override
+            public CloudFileShare preProcessResponse(CloudFileShare share, CloudFileClient client, OperationContext context)
+                    throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_CREATED) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                final String snapshotTime = FileResponse.getSnapshotTime(this.getConnection());
+                CloudFileShare snapshot = new CloudFileShare(share.getName(), snapshotTime, client);
+                snapshot.setProperties(new FileShareProperties(share.properties));
+
+                // use the specified metadata if not null : otherwise share's metadata
+                snapshot.setMetadata(metadata != null ? metadata : share.metadata);
+
+                snapshot.updatePropertiesFromResponse(this.getConnection());
+
+                return snapshot;
+            }
+        };
+
+        return putRequest;
+    }
 
     /**
      * Queries the service for this share's {@link ShareStats}.
@@ -883,7 +885,7 @@ public final class CloudFileShare {
             opContext = new OperationContext();
         }
 
-        //assertNoSnapshot();
+        assertNoSnapshot();
 
         opContext.initialize();
         options = FileRequestOptions.populateAndApplyDefaults(options, this.fileServiceClient);
@@ -1004,7 +1006,7 @@ public final class CloudFileShare {
             public HttpURLConnection buildRequest(CloudFileClient client, CloudFileShare share, OperationContext context)
                     throws Exception {
                 return FileRequest.getShareProperties(share.getTransformedAddress().getUri(this.getCurrentLocation()),
-                        options, context, accessCondition);
+                        options, context, accessCondition, share.snapshotID);
             }
 
             @Override
@@ -1018,10 +1020,10 @@ public final class CloudFileShare {
                     throws Exception {
                 if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
                     share.updatePropertiesFromResponse(this.getConnection());
-//                    final FileShareAttributes attributes = FileResponse.getFileShareAttributes(this.getConnection(),
-//                            client.isUsePathStyleUris());
-//                    share.metadata = attributes.getMetadata();
-//                    share.properties = attributes.getProperties();
+                    final FileShareAttributes attributes = FileResponse.getFileShareAttributes(this.getConnection(),
+                            client.isUsePathStyleUris());
+                    share.metadata = attributes.getMetadata();
+                    share.properties = attributes.getProperties();
 
                     return Boolean.valueOf(true);
                 }
@@ -1057,14 +1059,14 @@ public final class CloudFileShare {
         }
     }
 
-//    /**
-//     * Asserts that the share is not a snapshot.
-//     */
-//    protected void assertNoSnapshot() {
-//        if (isSnapshot()) {
-//            throw new IllegalArgumentException(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT);
-//        }
-//    }
+    /**
+     * Asserts that the share is not a snapshot.
+     */
+    protected void assertNoSnapshot() {
+        if (isSnapshot()) {
+            throw new IllegalArgumentException(SR.INVALID_OPERATION_FOR_A_SHARE_SNAPSHOT);
+        }
+    }
 
     /**
      * Returns a shared access signature for the share. Note this does not contain the leading "?".
@@ -1173,7 +1175,7 @@ public final class CloudFileShare {
     @DoesServiceRequest
     public void uploadMetadata(AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
-        //assertNoSnapshot();
+        assertNoSnapshot();
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -1263,7 +1265,7 @@ public final class CloudFileShare {
     public final void uploadProperties(
             AccessCondition accessCondition, FileRequestOptions options, OperationContext opContext)
             throws StorageException {
-        //assertNoSnapshot();
+        assertNoSnapshot();
 
         if (this.properties != null && this.properties.getShareQuota() != null) {
             Utility.assertInBounds("Share Quota", this.properties.getShareQuota(), 1, FileConstants.MAX_SHARE_QUOTA);
@@ -1350,7 +1352,7 @@ public final class CloudFileShare {
     @DoesServiceRequest
     public void uploadPermissions(final FileSharePermissions permissions, final AccessCondition accessCondition,
             FileRequestOptions options, OperationContext opContext) throws StorageException {
-        //assertNoSnapshot();
+        assertNoSnapshot();
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -1452,12 +1454,12 @@ public final class CloudFileShare {
 
         this.storageUri = PathUtility.stripURIQueryAndFragment(completeUri);
 
-//        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
+        final HashMap<String, String[]> queryParameters = PathUtility.parseQueryString(completeUri.getQuery());
 
-//        final String[] snapshotIDs = queryParameters.get(Constants.QueryConstants.SHARE_SNAPSHOT);
-//        if (snapshotIDs != null && snapshotIDs.length > 0) {
-//            this.snapshotID = snapshotIDs[0];
-//        }
+        final String[] snapshotIDs = queryParameters.get(Constants.QueryConstants.SHARE_SNAPSHOT);
+        if (snapshotIDs != null && snapshotIDs.length > 0) {
+            this.snapshotID = snapshotIDs[0];
+        }
 
         final StorageCredentialsSharedAccessSignature parsedCredentials = 
                 SharedAccessSignatureHelper.parseQuery(completeUri);
@@ -1495,25 +1497,25 @@ public final class CloudFileShare {
         return this.storageUri.getPrimaryUri();
     }
 
-//    /**
-//     * Returns the snapshotID for this share.
-//     * 
-//     * @return The snapshotID as a string for this share.
-//     */
-//    protected final String getSnapshot() {
-//        return this.snapshotID;
-//    }
-//
-//    /**
-//     * Indicates whether this share is a snapshot.
-//     *
-//     * @return <code>true</code> if the share is a snapshot, otherwise <code>false</code>.
-//     *
-//     * @see DeleteSnapshotsOption
-//     */
-//    protected final boolean isSnapshot() {
-//        return this.snapshotID != null;
-//    }
+    /**
+     * Returns the snapshotID for this share.
+     * 
+     * @return The snapshotID as a string for this share.
+     */
+    public final String getSnapshot() {
+        return this.snapshotID;
+    }
+
+    /**
+     * Indicates whether this share is a snapshot.
+     *
+     * @return <code>true</code> if the share is a snapshot, otherwise <code>false</code>.
+     *
+     * @see DeleteSnapshotsOption
+     */
+    public final boolean isSnapshot() {
+        return this.snapshotID != null;
+    }
 
     /**
      * Returns the list of URIs for all locations.
@@ -1524,23 +1526,23 @@ public final class CloudFileShare {
         return this.storageUri;
     }
 
-//    /**
-//     * Returns the snapshot or shared access signature qualified URI for this share.
-//     *
-//     * @return A <code>java.net.URI</code> object that represents the snapshot or shared access signature.
-//     *
-//     * @throws StorageException
-//     *             If a storage service error occurred.
-//     * @throws URISyntaxException
-//     *             If the resource URI is invalid.
-//     */
-//    public final URI getQualifiedUri() throws URISyntaxException, StorageException {
-//        if (this.isSnapshot()) {
-//            return PathUtility.addToQuery(this.getUri(), String.format("sharesnapshot=%s", this.snapshotID));
-//        }
-//
-//        return this.fileServiceClient.getCredentials().transformUri(this.getUri());
-//    }
+    /**
+     * Returns the snapshot or shared access signature qualified URI for this share.
+     *
+     * @return A <code>java.net.URI</code> object that represents the snapshot or shared access signature.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     * @throws URISyntaxException
+     *             If the resource URI is invalid.
+     */
+    public final URI getQualifiedUri() throws URISyntaxException, StorageException {
+        if (this.isSnapshot()) {
+            return PathUtility.addToQuery(this.getUri(), String.format("sharesnapshot=%s", this.snapshotID));
+        }
+
+        return this.fileServiceClient.getCredentials().transformUri(this.getUri());
+    }
 
     /**
      * Returns the name of the share.
@@ -1589,7 +1591,7 @@ public final class CloudFileShare {
      *            A {@link FileShareProperties} object that represents the properties being assigned to the
      *            share.
      */
-    protected void setProperties(final FileShareProperties properties) {
+    public void setProperties(final FileShareProperties properties) {
         this.properties = properties;
     }
 
