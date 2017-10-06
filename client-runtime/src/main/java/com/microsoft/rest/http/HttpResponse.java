@@ -7,6 +7,7 @@
 package com.microsoft.rest.http;
 
 import rx.Single;
+import rx.functions.Func1;
 
 import java.io.InputStream;
 
@@ -58,4 +59,17 @@ public abstract class HttpResponse {
      * then null will be returned.
      */
     public abstract Single<String> bodyAsStringAsync();
+
+    /**
+     * Buffers the HTTP response body into memory, allowing the content to be inspected and replayed.
+     * @return This HTTP response, with body content buffered into memory.
+     */
+    public Single<BufferedHttpResponse> buffer() {
+        return bodyAsStringAsync().map(new Func1<String, BufferedHttpResponse>() {
+            @Override
+            public BufferedHttpResponse call(String body) {
+                return new BufferedHttpResponse(statusCode(), headers(), body);
+            }
+        });
+    }
 }

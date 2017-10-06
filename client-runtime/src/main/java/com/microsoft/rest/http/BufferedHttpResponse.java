@@ -61,4 +61,16 @@ public final class BufferedHttpResponse extends HttpResponse {
     public Single<String> bodyAsStringAsync() {
         return Single.just(body);
     }
+
+    @Override
+    public Single<BufferedHttpResponse> buffer() {
+        return Single.just(this);
+    }
+
+    /**
+     * @return The buffered HTTP response body. Will not cause blocking.
+     */
+    public String body() {
+        return body;
+    }
 }
