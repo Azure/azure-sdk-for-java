@@ -5,7 +5,9 @@ import com.fasterxml.jackson.databind.SerializationFeature;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 
 import com.microsoft.rest.http.*;
+import com.microsoft.rest.http.HttpClient.Configuration;
 import com.microsoft.rest.policy.RequestPolicy;
+import com.microsoft.rest.policy.RequestPolicy.Factory;
 import org.apache.commons.io.IOUtils;
 import org.apache.http.HttpStatus;
 import rx.Single;
@@ -70,20 +72,14 @@ public class InterceptorManager {
         return testMode == TestBase.TestMode.PLAYBACK;
     }
 
-    // FIXME
-    public RequestPolicy.Factory initInterceptor() throws IOException {
-        switch (testMode) {
-            case RECORD:
-                recordedData = new RecordedData();
-                return new RecordPolicyFactory();
-            case PLAYBACK:
-                readDataFromFile();
-                return new PlaybackPolicyFactory();
-            default:
-                System.out.println("==> Unknown AZURE_TEST_MODE: " + testMode);
-        }
+    public RecordPolicyFactory initRecordPolicy() {
+        recordedData = new RecordedData();
+        return new RecordPolicyFactory();
+    }
 
-        return null;
+    public HttpClient.Factory initPlaybackFactory() throws IOException {
+        readDataFromFile();
+        return new PlaybackClientFactory();
     }
 
     public void finalizeInterceptor() throws IOException {
@@ -156,16 +152,20 @@ public class InterceptorManager {
         }
     }
 
-    class PlaybackPolicyFactory implements RequestPolicy.Factory {
+    final class PlaybackClientFactory implements HttpClient.Factory {
         @Override
-        public RequestPolicy create(RequestPolicy ignored) {
-            return new PlaybackPolicy();
+        public HttpClient create(Configuration configuration) {
+            return new PlaybackClient(configuration.policyFactories());
         }
     }
 
-    class PlaybackPolicy implements RequestPolicy {
+    final class PlaybackClient extends HttpClient{
+        PlaybackClient(List<RequestPolicy.Factory> policyFactories) {
+            super(policyFactories);
+        }
 
-        public Single<HttpResponse> sendAsync(HttpRequest request) {
+        @Override
+        public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
             String incomingUrl = applyReplacementRule(request.url());
             String incomingMethod = request.httpMethod();
 
