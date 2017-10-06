@@ -17,10 +17,16 @@ public enum KnownLinuxVirtualMachineImage {
     DEBIAN_8("credativ", "Debian", "8"),
     /** CentOS 7.2. */
     CENTOS_7_2("OpenLogic", "CentOS", "7.2"),
-    /** OpenSUSE-Leap 42.1. */
+    /**
+     * OpenSUSE-Leap 42.1.
+     * @deprecated use withLatestLinuxImage("SUSE", "openSUSE-Leap", "42.3") instead.
+     */
     @Deprecated
     OPENSUSE_LEAP_42_1("SUSE", "openSUSE-Leap", "42.1"),
-    /** SLES 12-SP1. */
+    /**
+     * SLES 12-SP1.
+     * @deprecated use withLatestLinuxImage("SUSE", "SLES", "12-SP3") instead.
+     */
     @Deprecated
     SLES_12_SP1("SUSE", "SLES", "12-SP1");
 

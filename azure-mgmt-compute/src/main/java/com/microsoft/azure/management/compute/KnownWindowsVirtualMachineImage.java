@@ -15,10 +15,16 @@ public enum KnownWindowsVirtualMachineImage {
     WINDOWS_SERVER_2012_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-Datacenter"),
     /** Windows Server 2012 R2 Data center. */
     WINDOWS_SERVER_2012_R2_DATACENTER("MicrosoftWindowsServer", "WindowsServer", "2012-R2-Datacenter"),
-    /** Windows Server 2016 technical preview with container support. */
+    /**
+     * Windows Server 2016 technical preview with container support.
+     * @deprecated use withLatestWindowsImage("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter-with-Containers") instead.
+     */
     @Deprecated
     WINDOWS_SERVER_2016_TECHNICAL_PREVIEW_WITH_CONTAINERS("MicrosoftWindowsServer", "WindowsServer", "2016-Technical-Preview-with-Containers"),
-    /** Windows Server 2016 technical preview. */
+    /**
+     * Windows Server 2016 technical preview.
+     * @deprecated use withLatestWindowsImage("MicrosoftWindowsServer", "WindowsServer", "2016-Datacenter") instead.
+     */
     @Deprecated
     WINDOWS_SERVER_TECHNICAL_PREVIEW("MicrosoftWindowsServer", "WindowsServer", "Windows-Server-Technical-Preview");
 
