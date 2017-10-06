@@ -20,14 +20,10 @@ import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 
-import org.apache.http.protocol.HTTP;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 
-import java.io.ByteArrayInputStream;
-import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.SocketException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 
@@ -121,14 +117,16 @@ public class EventFiringTests {
             }
         });
 
-        try {
-            OperationContext.getGlobalErrorReceivingResponseEventHandler().addListener(new StorageEvent<ErrorReceivingResponseEvent>() {
+        StorageEvent<ErrorReceivingResponseEvent> globalResponseReceivedListener = new StorageEvent<ErrorReceivingResponseEvent>() {
 
-                @Override
-                public void eventOccurred(ErrorReceivingResponseEvent eventArg) {
-                    fail("This event should not trigger");
-                }
-            });
+            @Override
+            public void eventOccurred(ErrorReceivingResponseEvent eventArg) {
+                fail("This event should not trigger");
+            }
+        };
+
+        try {
+            OperationContext.getGlobalErrorReceivingResponseEventHandler().addListener(globalResponseReceivedListener);
 
             assertEquals(0, callList.size());
             assertEquals(0, globalCallList.size());
@@ -157,8 +155,7 @@ public class EventFiringTests {
             assertEquals(2, globalCallList.size());
         }
         finally {
-            // reset event handler to prevent future tests from failing
-            OperationContext.setGlobalErrorReceivingResponseEventHandler(new StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>>());
+            OperationContext.getGlobalErrorReceivingResponseEventHandler().removeListener(globalResponseReceivedListener);
         }
     }
 

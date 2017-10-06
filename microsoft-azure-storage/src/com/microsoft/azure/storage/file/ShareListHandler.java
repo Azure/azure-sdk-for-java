@@ -107,7 +107,7 @@ final class ShareListHandler extends DefaultHandler {
                 CloudFileShare retShare = this.serviceClient.getShareReference(this.shareName);
                 retShare.setMetadata(this.attributes.getMetadata());
                 retShare.setProperties(this.attributes.getProperties());
-                //retShare.snapshotID = this.snapshotID;
+                retShare.snapshotID = this.snapshotID;
 
                 this.response.getResults().add(retShare);
             }
