@@ -73,6 +73,10 @@ public class RestProxy implements InvocationHandler {
         return serializer;
     }
 
+    public <T> T deserialize(String value, Type resultType) throws IOException {
+        return serializer.deserialize(value, resultType);
+    }
+
     /**
      * Send the provided request asynchronously, applying any request policies provided to the HttpClient instance.
      * @param request The HTTP request to send.
@@ -223,10 +227,14 @@ public class RestProxy implements InvocationHandler {
         final Single<?> asyncResult;
         if (entityTypeToken.isSubtypeOf(void.class) || entityTypeToken.isSubtypeOf(Void.class)) {
             asyncResult = Single.just(null);
-        } else if (httpMethod.equalsIgnoreCase("HEAD")
-                && (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class))) {
-            boolean isSuccess = (responseStatusCode / 100) == 2;
-            asyncResult = Single.just(isSuccess);
+        } else if (httpMethod.equalsIgnoreCase("HEAD")) {
+            if (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class)) {
+                boolean isSuccess = (responseStatusCode / 100) == 2;
+                asyncResult = Single.just(isSuccess);
+            }
+            else {
+                asyncResult = Single.just(null);
+            }
         } else if (entityTypeToken.isSubtypeOf(InputStream.class)) {
             asyncResult = response.bodyAsInputStreamAsync();
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {

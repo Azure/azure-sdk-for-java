@@ -140,12 +140,13 @@ public final class LoggingPolicy implements RequestPolicy {
         if (logLevel.shouldLogBody()) {
             String contentTypeHeader = response.headerValue("Content-Type");
             if ((contentTypeHeader == null || "application/json".equals(contentTypeHeader))) {
-                return response.bodyAsStringAsync().map(new Func1<String, HttpResponse>() {
+                final HttpResponse bufferedResponse = response.buffer();
+                return bufferedResponse.bodyAsStringAsync().map(new Func1<String, HttpResponse>() {
                     @Override
                     public HttpResponse call(String s) {
                         log(logger, s);
                         log(logger, "<-- END HTTP");
-                        return new BufferedHttpResponse(response.statusCode(), response.headers(), s);
+                        return bufferedResponse;
                     }
                 });
             } else {

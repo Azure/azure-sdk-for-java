@@ -17,6 +17,7 @@ import rx.Single;
 import rx.functions.Func0;
 import rx.functions.Func1;
 
+import java.io.IOException;
 import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
@@ -33,6 +34,10 @@ abstract class PollStrategy {
     PollStrategy(RestProxy restProxy, long delayInMilliseconds) {
         this.restProxy = restProxy;
         this.delayInMilliseconds = delayInMilliseconds;
+    }
+
+    protected <T> T deserialize(String value, Type returnType) throws IOException {
+        return restProxy.deserialize(value, returnType);
     }
 
     /**
