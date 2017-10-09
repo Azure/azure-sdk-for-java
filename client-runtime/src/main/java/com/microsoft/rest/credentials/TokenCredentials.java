@@ -6,6 +6,8 @@
 
 package com.microsoft.rest.credentials;
 
+import java.io.IOException;
+
 /**
  * Token based credentials for use with a REST Service Client.
  */
@@ -31,7 +33,7 @@ public class TokenCredentials implements ServiceClientCredentials {
     }
 
     @Override
-    public String headerValue(String uri) {
+    public String authorizationHeaderValue(String uri) throws IOException {
         return scheme + " " + token;
     }
 }

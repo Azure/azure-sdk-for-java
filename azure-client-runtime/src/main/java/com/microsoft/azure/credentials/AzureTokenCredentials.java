@@ -71,6 +71,11 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
      */
     public abstract String getToken(String resource) throws IOException;
 
+    @Override
+    public String authorizationHeaderValue(String uri) throws IOException {
+        return "Bearer " + getTokenFromUri(uri);
+    }
+
     /**
      * Override this method to provide the domain or tenant ID the token is valid in.
      *

@@ -35,7 +35,7 @@ public class BasicAuthenticationCredentials implements ServiceClientCredentials 
     }
 
     @Override
-    public String headerValue(String uri) {
+    public String authorizationHeaderValue(String uri) {
         String credential = userName + ":" + password;
         String encodedCredential;
         try {

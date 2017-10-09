@@ -11,6 +11,8 @@ import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import rx.Single;
 
+import java.io.IOException;
+
 /**
  * Adds credentials from ServiceClientCredentials to a request.
  */
@@ -50,8 +52,12 @@ public final class CredentialsPolicy implements RequestPolicy {
      */
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
-        String token = credentials.headerValue(request.url());
-        request.headers().add("Authorization", token);
-        return next.sendAsync(request);
+        try {
+            String token = credentials.authorizationHeaderValue(request.url());
+            request.headers().add("Authorization", token);
+            return next.sendAsync(request);
+        } catch (IOException e) {
+            return Single.error(e);
+        }
     }
 }
