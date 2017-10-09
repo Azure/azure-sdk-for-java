@@ -71,7 +71,7 @@ gulp.task('codegen', function(cb) {
 });
 
 var handleInput = function(projects, cb) {
-    console.info(`Generating up to ${maxParallelism} projects concurrently..`);
+    console.info(`Generating up to ${maxParallelism} projects in parallel..`);
     if (projects === undefined) {
         const actions = Object.keys(mappings).map(proj => {
             return () => codegen(proj, cb);
