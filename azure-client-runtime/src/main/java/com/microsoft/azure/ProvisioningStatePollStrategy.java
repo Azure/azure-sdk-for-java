@@ -1,17 +1,24 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.azure;
 
 import com.microsoft.rest.RestProxy;
-import com.microsoft.rest.SwaggerMethodParser;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
-import rx.Observable;
 import rx.Single;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 
 import java.io.IOException;
-import java.lang.reflect.Type;
 
+/**
+ * A PollStrategy that will continue to poll a resource's URL until the resource's provisioning
+ * state property is in a completed state.
+ */
 public class ProvisioningStatePollStrategy extends PollStrategy {
     private final HttpRequest originalRequest;
     private HttpResponse latestHttpResponse;

@@ -25,6 +25,11 @@ public final class ProvisioningState {
      */
     public static final String FAILED = "Failed";
 
+    /**
+     * Get whether or not the provided provisioning state represents a completed state.
+     * @param provisioningState The provisioning state to check.
+     * @return Whether or not the provided provisioning state represents a completed state.
+     */
     public static boolean isCompleted(String provisioningState) {
         return SUCCEEDED.equalsIgnoreCase(provisioningState) || FAILED.equalsIgnoreCase(provisioningState);
     }

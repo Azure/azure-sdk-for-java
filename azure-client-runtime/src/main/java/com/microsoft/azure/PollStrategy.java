@@ -11,7 +11,6 @@ import com.microsoft.rest.RestProxy;
 import com.microsoft.rest.SwaggerMethodParser;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
-import com.microsoft.rest.protocol.SerializerAdapter;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func0;

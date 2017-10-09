@@ -8,7 +8,6 @@ package com.microsoft.azure;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.annotations.AzureHost;
-import com.microsoft.rest.http.BufferedHttpResponse;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.InvalidReturnTypeException;
 import com.microsoft.rest.RestProxy;
@@ -19,7 +18,6 @@ import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import rx.Observable;
 import rx.Single;
-import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 
 import java.io.IOException;
