@@ -6,6 +6,7 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.rest.RestProxy;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import rx.Single;
@@ -25,8 +26,8 @@ public final class LocationPollStrategy extends PollStrategy {
      */
     public static final String HEADER_NAME = "Location";
 
-    private LocationPollStrategy(String fullyQualifiedMethodName, String locationUrl, long delayInMilliseconds) {
-        super(delayInMilliseconds);
+    private LocationPollStrategy(RestProxy restProxy, String fullyQualifiedMethodName, String locationUrl, long delayInMilliseconds) {
+        super(restProxy, delayInMilliseconds);
 
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.locationUrl = locationUrl;
@@ -70,10 +71,10 @@ public final class LocationPollStrategy extends PollStrategy {
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
      *                            use when polling.
      */
-    static PollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(RestProxy restProxy, String fullyQualifiedMethodName, HttpResponse httpResponse, long delayInMilliseconds) {
         final String locationUrl = httpResponse.headerValue(HEADER_NAME);
         return locationUrl != null && !locationUrl.isEmpty()
-                ? new LocationPollStrategy(fullyQualifiedMethodName, locationUrl, delayInMilliseconds)
+                ? new LocationPollStrategy(restProxy, fullyQualifiedMethodName, locationUrl, delayInMilliseconds)
                 : null;
     }
 }

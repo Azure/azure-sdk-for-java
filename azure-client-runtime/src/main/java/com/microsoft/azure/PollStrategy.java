@@ -6,10 +6,18 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.rest.RestException;
+import com.microsoft.rest.RestProxy;
+import com.microsoft.rest.SwaggerMethodParser;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
+import com.microsoft.rest.protocol.SerializerAdapter;
+import rx.Observable;
 import rx.Single;
+import rx.functions.Func0;
+import rx.functions.Func1;
 
+import java.lang.reflect.Type;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -17,10 +25,13 @@ import java.util.concurrent.TimeUnit;
  * status of a long running operation.
  */
 abstract class PollStrategy {
+    private final RestProxy restProxy;
+
     private long delayInMilliseconds;
     private String provisioningState;
 
-    PollStrategy(long delayInMilliseconds) {
+    PollStrategy(RestProxy restProxy, long delayInMilliseconds) {
+        this.restProxy = restProxy;
         this.delayInMilliseconds = delayInMilliseconds;
     }
 
@@ -73,7 +84,7 @@ abstract class PollStrategy {
      * Set the current provisioning state of the long running operation.
      * @param provisioningState The current provisioning state of the long running operation.
      */
-    protected void setProvisioningState(String provisioningState) {
+    void setProvisioningState(String provisioningState) {
         this.provisioningState = provisioningState;
     }
 
@@ -95,4 +106,73 @@ abstract class PollStrategy {
      * @return Whether or not this PollStrategy's long running operation is done.
      */
     abstract boolean isDone();
+
+    Observable<HttpResponse> sendPollRequestWithDelay() {
+        return Observable.defer(new Func0<Observable<HttpResponse>>() {
+            @Override
+            public Observable<HttpResponse> call() {
+                return delayAsync()
+                        .flatMap(new Func1<Void, Single<HttpResponse>>() {
+                            @Override
+                            public Single<HttpResponse> call(Void ignored) {
+                                final HttpRequest pollRequest = createPollRequest();
+                                return restProxy.sendHttpRequestAsync(pollRequest);
+                            }
+                        })
+                        .flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
+                            @Override
+                            public Single<HttpResponse> call(HttpResponse response) {
+                                return updateFromAsync(response);
+                            }
+                        })
+                        .toObservable();
+            }
+        });
+    }
+
+    Observable<OperationStatus<Object>> createOperationStatusObservable(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
+        OperationStatus<Object> operationStatus;
+        if (!isDone()) {
+            operationStatus = new OperationStatus<>(this);
+        }
+        else {
+            try {
+                final Object resultObject = restProxy.handleAsyncHttpResponseInner(httpRequest, Single.just(httpResponse), methodParser, operationStatusResultType);
+                operationStatus = new OperationStatus<>(resultObject, provisioningState());
+            } catch (RestException e) {
+                operationStatus = new OperationStatus<>(e, ProvisioningState.FAILED);
+            }
+        }
+        return Observable.just(operationStatus);
+    }
+
+    Observable<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
+        return sendPollRequestWithDelay()
+                    .flatMap(new Func1<HttpResponse, Observable<OperationStatus<Object>>>() {
+                        @Override
+                        public Observable<OperationStatus<Object>> call(HttpResponse httpResponse) {
+                            return createOperationStatusObservable(originalHttpRequest, httpResponse, methodParser, operationStatusResultType);
+                        }
+                    })
+                    .repeat()
+                    .takeUntil(new Func1<OperationStatus<Object>, Boolean>() {
+                        @Override
+                        public Boolean call(OperationStatus<Object> operationStatus) {
+                            return isDone();
+                        }
+                    });
+    }
+
+    Single<HttpResponse> pollUntilDone() {
+        return sendPollRequestWithDelay()
+                .repeat()
+                .takeUntil(new Func1<HttpResponse, Boolean>() {
+                    @Override
+                    public Boolean call(HttpResponse ignored) {
+                        return isDone();
+                    }
+                })
+                .last()
+                .toSingle();
+    }
 }

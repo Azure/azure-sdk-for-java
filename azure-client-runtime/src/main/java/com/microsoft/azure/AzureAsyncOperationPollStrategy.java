@@ -6,6 +6,7 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.rest.RestProxy;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
@@ -46,8 +47,8 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * @param delayInMilliseconds The delay (in milliseconds) that the pollStrategy will use when
      *                            polling.
      */
-    private AzureAsyncOperationPollStrategy(String fullyQualifiedMethodName, String operationResourceUrl, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
-        super(delayInMilliseconds);
+    private AzureAsyncOperationPollStrategy(RestProxy restProxy, String fullyQualifiedMethodName, String operationResourceUrl, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
+        super(restProxy, delayInMilliseconds);
 
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.operationResourceUrl = operationResourceUrl;
@@ -144,10 +145,10 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
      *                            use when polling.
      */
-    static PollStrategy tryToCreate(String fullyQualifiedMethodName, HttpResponse httpResponse, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(RestProxy restProxy, String fullyQualifiedMethodName, HttpResponse httpResponse, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
         final String azureAsyncOperationUrl = httpResponse.headerValue(HEADER_NAME);
         return azureAsyncOperationUrl != null && !azureAsyncOperationUrl.isEmpty()
-                ? new AzureAsyncOperationPollStrategy(fullyQualifiedMethodName, azureAsyncOperationUrl, originalResourceUrl, serializer, delayInMilliseconds)
+                ? new AzureAsyncOperationPollStrategy(restProxy, fullyQualifiedMethodName, azureAsyncOperationUrl, originalResourceUrl, serializer, delayInMilliseconds)
                 : null;
     }
 }

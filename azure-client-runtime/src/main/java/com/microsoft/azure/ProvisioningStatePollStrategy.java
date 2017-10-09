@@ -1,22 +1,33 @@
 package com.microsoft.azure;
 
+import com.microsoft.rest.RestProxy;
+import com.microsoft.rest.SwaggerMethodParser;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import com.microsoft.rest.protocol.SerializerAdapter;
+import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 
 import java.io.IOException;
+import java.lang.reflect.Type;
 
 public class ProvisioningStatePollStrategy extends PollStrategy {
     private final HttpRequest originalRequest;
-    private final SerializerAdapter<?> serializer;
+    private final HttpResponse originalResponse;
+//    private final SerializerAdapter<?> serializer;
+//    private Object pollResult;
+//    private Type pollResultType;
 
-    private ProvisioningStatePollStrategy(HttpRequest originalRequest, SerializerAdapter<?> serializer, long delayInMilliseconds) {
-        super(delayInMilliseconds);
+    //ProvisioningStatePollStrategy(HttpRequest originalRequest, String provisioningState, SerializerAdapter<?> serializer, Type pollResultType, long delayInMilliseconds) {
+    ProvisioningStatePollStrategy(RestProxy restProxy, HttpRequest originalRequest, HttpResponse originalResponse, long delayInMilliseconds) {
+        super(restProxy, delayInMilliseconds);
 
         this.originalRequest = originalRequest;
-        this.serializer = serializer;
+        this.originalResponse = originalResponse;
+//        this.serializer = serializer;
+//        this.pollResultType = pollResultType;
+        setProvisioningState(ProvisioningState.SUCCEEDED);
     }
 
     @Override
@@ -26,45 +37,47 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
 
     @Override
     Single<HttpResponse> updateFromAsync(final HttpResponse httpPollResponse) {
-        return httpPollResponse.bodyAsStringAsync()
-                .flatMap(new Func1<String, Single<HttpResponse>>() {
-                    @Override
-                    public Single<HttpResponse> call(String responseBody) {
-                        Single<HttpResponse> result;
-                        try {
-                            final ResourceWithProvisioningState resourceWithProvisioningState = serializer.deserialize(responseBody, ResourceWithProvisioningState.class);
-                            if (resourceWithProvisioningState == null || resourceWithProvisioningState.properties() == null || resourceWithProvisioningState.properties().provisioningState() == null) {
-                                setProvisioningState(ProvisioningState.IN_PROGRESS);
-                            }
-                            else {
-                                setProvisioningState(resourceWithProvisioningState.properties().provisioningState());
-                            }
-
-                            result = Single.just(httpPollResponse);
-                        } catch (IOException e) {
-                            result = Single.error(e);
-                        }
-                        return result;
-                    }
-                });
+        return Single.just(httpPollResponse);
+//        return httpPollResponse.bodyAsStringAsync()
+//                .flatMap(new Func1<String, Single<HttpResponse>>() {
+//                    @Override
+//                    public Single<HttpResponse> call(String responseBody) {
+//                        Single<HttpResponse> result;
+//                        try {
+//                            final ResourceWithProvisioningState resource = serializer.deserialize(responseBody, ResourceWithProvisioningState.class);
+//                            if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
+//                                setProvisioningState(ProvisioningState.IN_PROGRESS);
+//                            }
+//                            else {
+//                                setProvisioningState(resource.properties().provisioningState());
+//                            }
+//
+//                            if (isDone()) {
+//                                pollResult = serializer.deserialize(responseBody, pollResultType);
+//                            }
+//
+//                            result = Single.just(httpPollResponse);
+//                        } catch (IOException e) {
+//                            result = Single.error(e);
+//                        }
+//                        return result;
+//                    }
+//                });
     }
 
     @Override
     boolean isDone() {
-        final String currentProvisioningState = provisioningState();
-        return ProvisioningState.SUCCEEDED.equalsIgnoreCase(currentProvisioningState) ||
-                ProvisioningState.FAILED.equals(currentProvisioningState);
+        //return ProvisioningState.isCompleted(provisioningState());
+        return true;
     }
 
-    public static Single<PollStrategy> tryToCreate(HttpRequest originalRequest, HttpResponse originalResponse, SerializerAdapter<?> serializer, long delayInMilliseconds) {
-        final ProvisioningStatePollStrategy pollStrategy = new ProvisioningStatePollStrategy(originalRequest, serializer, delayInMilliseconds);
-        return pollStrategy
-                .updateFromAsync(originalResponse)
-                .map(new Func1<HttpResponse, PollStrategy>() {
-                    @Override
-                    public PollStrategy call(HttpResponse httpResponse) {
-                        return pollStrategy;
-                    }
-                });
+    @Override
+    Observable<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
+        return createOperationStatusObservable(originalHttpRequest, originalResponse, methodParser, operationStatusResultType);
+    }
+
+    @Override
+    public Single<HttpResponse> pollUntilDone() {
+        return Single.just(originalResponse);
     }
 }

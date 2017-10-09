@@ -24,4 +24,8 @@ public final class ProvisioningState {
      * The provisioning state of the operation resource if the operation is unsuccessful.
      */
     public static final String FAILED = "Failed";
+
+    public static boolean isCompleted(String provisioningState) {
+        return SUCCEEDED.equalsIgnoreCase(provisioningState) || FAILED.equalsIgnoreCase(provisioningState);
+    }
 }

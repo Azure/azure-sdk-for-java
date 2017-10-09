@@ -20,6 +20,7 @@ import rx.Single;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 
+import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -89,7 +90,8 @@ public class RestProxy implements InvocationHandler {
 
         final Single<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
 
-        return handleAsyncHttpResponse(request, asyncResponse, methodParser, methodParser.returnType());
+        final Type returnType = methodParser.returnType();
+        return handleAsyncHttpResponse(request, asyncResponse, methodParser, returnType);
     }
 
     /**
@@ -188,7 +190,17 @@ public class RestProxy implements InvocationHandler {
         return result;
     }
 
-    private Single<HttpResponse> ensureExpectedStatus(final HttpResponse response, final SwaggerMethodParser methodParser) {
+    Single<HttpResponse> ensureExpectedStatus(Single<HttpResponse> asyncResponse, final SwaggerMethodParser methodParser) {
+        return asyncResponse
+                .flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
+                    @Override
+                    public Single<? extends HttpResponse> call(HttpResponse httpResponse) {
+                        return ensureExpectedStatus(httpResponse, methodParser);
+                    }
+                });
+    }
+
+    Single<HttpResponse> ensureExpectedStatus(final HttpResponse response, final SwaggerMethodParser methodParser) {
         final int responseStatusCode = response.statusCode();
         final Single<HttpResponse> asyncResult;
         if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
@@ -205,51 +217,67 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private Single<?> toProxyReturnValueAsync(HttpResponse response, String httpMethod, final Type entityType) {
+    private Single<?> toProxyReturnValueAsync(HttpResponse response, final String httpMethod, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
+        final int responseStatusCode = response.statusCode();
         final Single<?> asyncResult;
         if (entityTypeToken.isSubtypeOf(void.class) || entityTypeToken.isSubtypeOf(Void.class)) {
             asyncResult = Single.just(null);
         } else if (httpMethod.equalsIgnoreCase("HEAD")
                 && (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class))) {
-            boolean isSuccess = response.statusCode() / 100 == 2;
+            boolean isSuccess = (responseStatusCode / 100) == 2;
             asyncResult = Single.just(isSuccess);
         } else if (entityTypeToken.isSubtypeOf(InputStream.class)) {
             asyncResult = response.bodyAsInputStreamAsync();
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
             asyncResult = response.bodyAsByteArrayAsync();
         } else {
-            final Single<String> asyncResponseBodyString = response.bodyAsStringAsync();
-            asyncResult = asyncResponseBodyString.flatMap(new Func1<String, Single<Object>>() {
-                @Override
-                public Single<Object> call(String responseBodyString) {
-                    try {
-                        Object responseBodyObject = null;
-                        if (responseBodyString != null && !responseBodyString.isEmpty()) {
-                            responseBodyObject = serializer.deserialize(responseBodyString, entityType);
-                        }
-                        return Single.just(responseBodyObject);
-                    } catch (Throwable e) {
-                        return Single.error(e);
-                    }
-                }
-            });
+            asyncResult = response
+                    .bodyAsStringAsync()
+                    .flatMap(new Func1<String, Single<Object>>() {
+                        @Override
+                        public Single<Object> call(String responseBodyString) {
+                                try {
+                                    return Single.just(toProxyReturnValue(responseStatusCode, responseBodyString, httpMethod, entityType));
+                                } catch (Throwable e) {
+                                    return Single.error(e);
+                                }
+                            }
+                        });
         }
         return asyncResult;
     }
 
-    protected Object handleAsyncHttpResponse(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
+    private Object toProxyReturnValue(int httpResponseStatusCode, String httpResponseBody, String httpMethod, Type entityType) throws IOException {
+        final TypeToken entityTypeToken = TypeToken.of(entityType);
+        Object result = null;
+        if (entityTypeToken.isSubtypeOf(void.class) || entityTypeToken.isSubtypeOf(Void.class)) {
+            result = null;
+        } else if (httpMethod.equalsIgnoreCase("HEAD")
+                && (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class))) {
+            result = httpResponseStatusCode / 100 == 2;
+        } else if (entityTypeToken.isSubtypeOf(InputStream.class)) {
+            result = new ByteArrayInputStream(httpResponseBody.getBytes());
+        } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
+            result = httpResponseBody.getBytes();
+        } else {
+            if (httpResponseBody != null && !httpResponseBody.isEmpty()) {
+                result = serializer.deserialize(httpResponseBody, entityType);
+            }
+        }
+        return result;
+    }
+
+    protected Object handleAsyncHttpResponse(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, SwaggerMethodParser methodParser, Type returnType) {
+        return handleAsyncHttpResponseInner(httpRequest, asyncHttpResponse, methodParser, returnType);
+    }
+
+    public Object handleAsyncHttpResponseInner(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
         Object result;
 
         final TypeToken returnTypeToken = TypeToken.of(returnType);
 
-        final Single<HttpResponse> asyncExpectedResponse = asyncHttpResponse
-                .flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
-                    @Override
-                    public Single<HttpResponse> call(HttpResponse response) {
-                        return ensureExpectedStatus(response, methodParser);
-                    }
-                });
+        final Single<HttpResponse> asyncExpectedResponse = ensureExpectedStatus(asyncHttpResponse, methodParser);
 
         if (returnTypeToken.isSubtypeOf(Completable.class)) {
             result = Completable.fromSingle(asyncExpectedResponse);
