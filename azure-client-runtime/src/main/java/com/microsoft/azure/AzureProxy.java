@@ -166,7 +166,8 @@ public final class AzureProxy extends RestProxy {
                                         pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, fullyQualifiedMethodName, originalHttpResponse, delayInMilliseconds);
                                     }
                                 }
-                            } else /* if (originalRequestHttpMethod.equalsIgnoreCase("DELETE") || originalRequestHttpMethod.equalsIgnoreCase("POST") */ {
+                            }
+                            else {
                                 if (httpStatusCode == 202) {
                                     pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
                                     if (pollStrategy == null) {
