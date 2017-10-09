@@ -7,7 +7,6 @@
 package com.microsoft.rest.http;
 
 import rx.Single;
-import rx.functions.Func1;
 
 import java.io.InputStream;
 

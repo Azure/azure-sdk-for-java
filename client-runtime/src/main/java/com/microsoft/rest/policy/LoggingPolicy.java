@@ -8,7 +8,6 @@ package com.microsoft.rest.policy;
 
 import com.google.common.io.CharStreams;
 import com.microsoft.rest.LogLevel;
-import com.microsoft.rest.http.BufferedHttpResponse;
 import com.microsoft.rest.http.HttpHeader;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;

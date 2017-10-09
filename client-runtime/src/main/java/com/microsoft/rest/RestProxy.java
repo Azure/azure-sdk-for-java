@@ -73,6 +73,14 @@ public class RestProxy implements InvocationHandler {
         return serializer;
     }
 
+    /**
+     * Use this RestProxy's serializer to deserialize the provided String into the provided Type.
+     * @param value The String value to deserialize.
+     * @param resultType The Type of the object to return.
+     * @param <T> The type of the object to return. This should be the same as the resultType parameter.
+     * @return The deserialized version of the provided String value.
+     * @throws IOException if there is an error deserializing.
+     */
     public <T> T deserialize(String value, Type resultType) throws IOException {
         return serializer.deserialize(value, resultType);
     }
@@ -280,7 +288,15 @@ public class RestProxy implements InvocationHandler {
         return handleAsyncHttpResponseInner(httpRequest, asyncHttpResponse, methodParser, returnType);
     }
 
-    public Object handleAsyncHttpResponseInner(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
+    /**
+     * Handle the provided asynchronous HTTP response and return the deserialized value.
+     * @param httpRequest The original HTTP request.
+     * @param asyncHttpResponse The asynchronous HTTP response to the original HTTP request.
+     * @param methodParser The SwaggerMethodParser that the request originates from.
+     * @param returnType The type of value that will be returned.
+     * @return The deserialized result.
+     */
+    public final Object handleAsyncHttpResponseInner(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
         Object result;
 
         final TypeToken returnTypeToken = TypeToken.of(returnType);
