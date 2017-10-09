@@ -9,16 +9,14 @@ package com.microsoft.azure;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The OperationResource class is a POJO representation of the Azure-AsyncOperation Operation
- * Resource format (see https://github.com/Azure/azure-resource-manager-rpc/blob/master/v1.0/Addendum.md#operation-resource-format
- * for more information).
+ * The ResourceWithProvisioningState class is a POJO representation of any Azure resource that has a
+ * provisioningState property.
  */
-public class OperationResource {
+public class ResourceWithProvisioningState {
     @JsonProperty(value = "properties")
     private Properties properties;
 
     /**
-     * Get the inner properties object.
      * @return The inner properties object.
      */
     public Properties properties() {
@@ -26,8 +24,8 @@ public class OperationResource {
     }
 
     /**
-     * Set the properties of this OperationResource.
-     * @param properties The properties of this OperationResource.
+     * Set the properties of this ResourceWithProvisioningState.
+     * @param properties The properties of this ResourceWithProvisioningState.
      */
     public void setProperties(Properties properties) {
         this.properties = properties;
@@ -41,7 +39,6 @@ public class OperationResource {
         private String provisioningState;
 
         /**
-         * Get the provisioning state of the resource.
          * @return The provisioning state of the resource.
          */
         String provisioningState() {
@@ -49,8 +46,8 @@ public class OperationResource {
         }
 
         /**
-         * Set the provisioning state of this OperationResource.
-         * @param provisioningState The provisioning state of this OperationResource.
+         * Set the provisioning state of this ResourceWithProvisioningState.
+         * @param provisioningState The provisioning state of this ResourceWithProvisioningState.
          */
         public void setProvisioningState(String provisioningState) {
             this.provisioningState = provisioningState;

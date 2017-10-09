@@ -6,10 +6,10 @@
 
 package com.microsoft.azure.http;
 
-import com.microsoft.rest.protocol.SerializerAdapter;
-import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.http.HttpHeaders;
 import com.microsoft.rest.http.HttpResponse;
+import com.microsoft.rest.protocol.SerializerAdapter;
+import com.microsoft.rest.serializer.JacksonAdapter;
 import rx.Single;
 
 import java.io.ByteArrayInputStream;
@@ -23,34 +23,36 @@ public class MockAzureHttpResponse extends HttpResponse {
 
     private final HttpHeaders headers;
 
-    private byte[] byteArray;
-    private String string;
+    private final byte[] bodyBytes;
 
-    public MockAzureHttpResponse(int statusCode) {
+    public MockAzureHttpResponse(int statusCode, byte[] bodyBytes) {
+        this.headers = new HttpHeaders();
+
         this.statusCode = statusCode;
-        headers = new HttpHeaders();
+        this.bodyBytes = bodyBytes;
     }
 
-    public MockAzureHttpResponse(int statusCode, byte[] byteArray) {
-        this(statusCode);
-
-        this.byteArray = byteArray;
+    public MockAzureHttpResponse(int statusCode) {
+        this(statusCode, (byte[])null);
     }
 
     public MockAzureHttpResponse(int statusCode, String string) {
-        this(statusCode);
-
-        this.string = string;
+        this(statusCode, string == null ? null : string.getBytes());
     }
 
     public MockAzureHttpResponse(int statusCode, Object serializable) {
-        this(statusCode);
+        this(statusCode, serialize(serializable));
+    }
 
+    private static byte[] serialize(Object serializable) {
+        byte[] result = null;
         try {
-            this.string = serializer.serialize(serializable);
+            final String serializedString = serializer.serialize(serializable);
+            result = serializedString == null ? null : serializedString.getBytes();
         } catch (IOException e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     @Override
@@ -68,23 +70,23 @@ public class MockAzureHttpResponse extends HttpResponse {
         return new HttpHeaders(headers);
     }
 
-    public MockAzureHttpResponse withHeader(String headerName, String headerValue) {
-        headers.add(headerName, headerValue);
-        return this;
-    }
-
     @Override
     public Single<? extends InputStream> bodyAsInputStreamAsync() {
-        return Single.just(new ByteArrayInputStream(byteArray));
+        return Single.just(new ByteArrayInputStream(bodyBytes));
     }
 
     @Override
     public Single<byte[]> bodyAsByteArrayAsync() {
-        return Single.just(byteArray);
+        return Single.just(bodyBytes);
     }
 
     @Override
     public Single<String> bodyAsStringAsync() {
-        return Single.just(string);
+        return Single.just(bodyBytes == null ? null : new String(bodyBytes));
+    }
+
+    public MockAzureHttpResponse withHeader(String headerName, String headerValue) {
+        headers.set(headerName, headerValue);
+        return this;
     }
 }
