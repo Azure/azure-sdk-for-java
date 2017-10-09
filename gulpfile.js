@@ -17,7 +17,7 @@ gulp.task('default', function() {
         "[--autorest <autorest info>] " +
         "[--autorest-java <autorest.java info>] " +
         "[--debug] " +
-        "[--concurrency <number>] " +
+        "[--parallel <number>] " +
         "[--autorest-args <AutoRest arguments>]\n");
 
     console.log("--spec-root");
@@ -31,24 +31,24 @@ gulp.task('default', function() {
 
     console.log("--autorest");
     console.log("\tThe version of AutoRest. E.g. 2.0.9, or the location of AutoRest repo, e.g. E:\\repo\\autorest");
-    
+
     console.log("--autorest-java");
     console.log("\tPath to an autorest.java generator to pass as a --use argument to AutoRest.");
     console.log("\tUsually you'll only need to provide this and not a --autorest argument in order to work on Java code generation.");
     console.log("\tSee https://github.com/Azure/autorest/blob/master/docs/developer/autorest-extension.md");
-    
+
     console.log("--debug");
     console.log("\tFlag that allows you to attach a debugger to the autorest.java generator.");
-    
-    console.log("--concurrency");
-    console.log("\tSpecifies the max number of projects to generate concurrently.");
+
+    console.log("--parallel");
+    console.log("\tSpecifies the maximum number of projects to generate in parallel.");
     console.log("\tDefaults to the number of logical CPUs on the system. (On this system, " + os.cpus().length + ")");
 
     console.log("--autorest-args");
     console.log("\tPasses additional argument to AutoRest generator");
 });
 
-const concurrency = parseInt(args['concurrency'], 10) || os.cpus().length;
+const maxParallelism = parseInt(args['parallel'], 10) || os.cpus().length;
 var specRoot = args['spec-root'] || defaultSpecRoot;
 var projects = args['projects'];
 var autoRestVersion = 'latest'; // default
@@ -71,12 +71,12 @@ gulp.task('codegen', function(cb) {
 });
 
 var handleInput = function(projects, cb) {
-    console.info(`Generating up to ${concurrency} projects concurrently..`);
+    console.info(`Generating up to ${maxParallelism} projects concurrently..`);
     if (projects === undefined) {
         const actions = Object.keys(mappings).map(proj => {
             return () => codegen(proj, cb);
         });
-        pAll(actions, { concurrency });
+        pAll(actions, { concurrency: maxParallelism });
     } else {
         const actions = projects.split(",").map(proj => {
             return () => {
@@ -88,7 +88,7 @@ var handleInput = function(projects, cb) {
                 return codegen(proj, cb);
             }
         });
-        pAll(actions, { concurrency });
+        pAll(actions, { maxParallelism });
     }
 }
 
