@@ -9,17 +9,11 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.RegistryCredentials;
-import com.microsoft.azure.management.containerregistry.RegistryUsage;
 import com.microsoft.azure.management.containerregistry.Webhook;
 import com.microsoft.azure.management.containerregistry.WebhookAction;
 import com.microsoft.azure.management.containerregistry.WebhookStatus;
-import com.microsoft.azure.management.containerregistry.implementation.ContainerRegistryManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
-
-import java.util.Collection;
-import java.util.List;
 
 public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
 
@@ -53,7 +47,6 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
             .defineWebhook("webhookbing1")
                 .withTriggerWhen(WebhookAction.PUSH, WebhookAction.DELETE)
                 .withServiceUri("https://www.bing.com")
-//                .withDefaultStatus(WebhookStatus.DISABLED)
                 .withRepositoriesScope("")
                 .withTag("tag", "value")
                 .withCustomHeader("name", "value")
