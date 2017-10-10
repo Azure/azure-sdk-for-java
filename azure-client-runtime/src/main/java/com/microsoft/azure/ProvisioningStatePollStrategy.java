@@ -45,7 +45,7 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
                         try {
                             final ResourceWithProvisioningState resource = deserialize(responseBody, ResourceWithProvisioningState.class);
                             if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
-                                setProvisioningState(ProvisioningState.IN_PROGRESS);
+                                setProvisioningState(ProvisioningState.FAILED);
                             }
                             else {
                                 setProvisioningState(resource.properties().provisioningState());
