@@ -48,6 +48,7 @@ import com.microsoft.azure.management.graphrbac.implementation.GraphRbacManager;
 import com.microsoft.azure.management.keyvault.Vaults;
 import com.microsoft.azure.management.keyvault.implementation.KeyVaultManager;
 import com.microsoft.azure.management.network.ApplicationGateways;
+import com.microsoft.azure.management.network.ExpressRouteCircuits;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LocalNetworkGateways;
 import com.microsoft.azure.management.network.NetworkInterfaces;
@@ -543,6 +544,13 @@ public final class Azure {
      */
     public LocalNetworkGateways localNetworkGateways() {
         return networkManager.localNetworkGateways();
+    }
+
+    /**
+     * @return entry point to managing express route circuits
+     */
+    public ExpressRouteCircuits expressRouteCircuits() {
+        return networkManager.expressRouteCircuits();
     }
 
     /**

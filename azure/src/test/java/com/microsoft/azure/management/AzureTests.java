@@ -715,6 +715,15 @@ public class AzureTests extends TestBase {
     }
 
     /**
+     * Tests the express route circuit implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testExpressRouteCircuits() throws Exception {
+        new TestExpressRouteCircuit().runTest(azure.expressRouteCircuits(), azure.resourceGroups());
+    }
+
+    /**
      * Tests virtual machines.
      * @throws Exception
      */
