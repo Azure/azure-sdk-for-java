@@ -6,8 +6,6 @@
 
 package com.microsoft.azure.management.containerregistry.implementation;
 
-import com.microsoft.azure.Page;
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.Registry;
@@ -16,15 +14,12 @@ import com.microsoft.azure.management.containerregistry.RegistryUsage;
 import com.microsoft.azure.management.containerregistry.Sku;
 import com.microsoft.azure.management.containerregistry.SkuName;
 import com.microsoft.azure.management.containerregistry.StorageAccountProperties;
-import com.microsoft.azure.management.containerregistry.Webhook;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
-import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import org.joda.time.DateTime;
-import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -93,6 +88,17 @@ public class RegistryImpl
                                         self.setInner(containerServiceInner);
                                         return self;
                                     }
+                                }).flatMap(new Func1<Registry, Observable<? extends Registry>>() {
+                                    @Override
+                                    public Observable<? extends Registry> call(Registry registry) {
+                                        return self.webhooks.commitAndGetAllAsync()
+                                            .map(new Func1<List<WebhookImpl>, Registry>() {
+                                                @Override
+                                                public Registry call(List<WebhookImpl> webhooks) {
+                                                    return self;
+                                                }
+                                            });
+                                    }
                                 });
                         }
                     });
@@ -110,6 +116,17 @@ public class RegistryImpl
                         public Registry call(RegistryInner containerServiceInner) {
                             self.setInner(containerServiceInner);
                             return self;
+                        }
+                    }).flatMap(new Func1<Registry, Observable<? extends Registry>>() {
+                        @Override
+                        public Observable<? extends Registry> call(Registry registry) {
+                            return self.webhooks.commitAndGetAllAsync()
+                                .map(new Func1<List<WebhookImpl>, Registry>() {
+                                    @Override
+                                    public Registry call(List<WebhookImpl> webhooks) {
+                                        return self;
+                                    }
+                                });
                         }
                     });
             }
@@ -187,17 +204,17 @@ public class RegistryImpl
 
     @Override
     public RegistryImpl withBasicSku() {
-        return setManagedSku(new Sku().withName(SkuName.MANAGED_BASIC));
+        return setManagedSku(new Sku().withName(SkuName.BASIC));
     }
 
     @Override
     public RegistryImpl withStandardSku() {
-        return setManagedSku(new Sku().withName(SkuName.MANAGED_STANDARD));
+        return setManagedSku(new Sku().withName(SkuName.STANDARD));
     }
 
     @Override
     public RegistryImpl withPremiumSku() {
-        return setManagedSku(new Sku().withName(SkuName.MANAGED_PREMIUM));
+        return setManagedSku(new Sku().withName(SkuName.PREMIUM));
     }
 
     private RegistryImpl setManagedSku(Sku sku) {
@@ -318,69 +335,8 @@ public class RegistryImpl
     }
 
     @Override
-    public Webhook getWebhook(String webhookName) {
-        WebhooksInner webhooksInner = this.manager().inner().webhooks();
-        return new WebhookImpl(webhookName, this,
-            webhooksInner.get(this.resourceGroupName(), this.name(), webhookName),
-            webhooksInner);
-    }
-
-    @Override
-    public Observable<Webhook> getWebhookAsync(final String webhookName) {
-        final RegistryImpl self = this;
-        final WebhooksInner webhooksInner = this.manager().inner().webhooks();
-
-        return webhooksInner.getAsync(this.resourceGroupName(), this.name(), webhookName)
-            .map(new Func1<WebhookInner, Webhook>() {
-                @Override
-                public Webhook call(WebhookInner webhookInner) {
-                    return new WebhookImpl(webhookName, self, webhookInner, webhooksInner);
-                }
-            });
-    }
-
-    @Override
-    public void deleteWebhook(String webhookName) {
-        this.manager().inner().webhooks()
-            .delete(this.resourceGroupName(), this.name(), webhookName);
-    }
-
-    @Override
-    public Completable deleteWebhookAsync(String webhookName) {
-        return this.manager().inner().webhooks()
-            .deleteAsync(this.resourceGroupName(), this.name(), webhookName).toCompletable();
-    }
-
-    @Override
-    public PagedList<Webhook> listWebhooks() {
-        final RegistryImpl self = this;
-        final WebhooksInner webhooksInner = this.manager().inner().webhooks();
-        final PagedListConverter<WebhookInner, Webhook> converter = new PagedListConverter<WebhookInner, Webhook>() {
-            @Override
-            public Webhook typeConvert(WebhookInner inner) {
-                return new WebhookImpl(inner.name(), self, inner, webhooksInner);
-            }
-        };
-        return converter.convert(this.manager().inner().webhooks().list(self.resourceGroupName(), self.name()));
-    }
-
-    @Override
-    public Observable<Webhook> listWebhooksAsync() {
-        final RegistryImpl self = this;
-        final WebhooksInner webhooksInner = this.manager().inner().webhooks();
-
-        return webhooksInner.listAsync(resourceGroupName(), this.name())
-            .flatMap(new Func1<Page<WebhookInner>, Observable<WebhookInner>>() {
-                @Override
-                public Observable<WebhookInner> call(Page<WebhookInner> webhookInnerPage) {
-                    return Observable.from(webhookInnerPage.items());
-                }
-            }).map(new Func1<WebhookInner, Webhook>() {
-                @Override
-                public Webhook call(WebhookInner inner) {
-                    return new WebhookImpl(inner.name(), self, inner, webhooksInner);
-                }
-            });
+    public WebhookOps webhooks() {
+        return new WebhookOpsImpl(this);
     }
 
     @Override

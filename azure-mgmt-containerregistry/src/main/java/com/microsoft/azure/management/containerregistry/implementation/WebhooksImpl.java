@@ -32,14 +32,14 @@ public class WebhooksImpl
     }
 
     WebhookImpl defineWebhook(String name) {
-        return prepareDefine(new WebhookImpl(name, this.parent(), new WebhookInner(), this.parent().manager().inner().webhooks()).setCreateMode(true));
+        return prepareDefine(new WebhookImpl(name, this.parent(), new WebhookInner(), this.parent().manager()).setCreateMode(true));
     }
 
     WebhookImpl updateWebhook(String name) {
-        return prepareUpdate(new WebhookImpl(name, this.parent(), new WebhookInner(), this.parent().manager().inner().webhooks()).setCreateMode(false));
+        return prepareUpdate(new WebhookImpl(name, this.parent(), new WebhookInner(), this.parent().manager()).setCreateMode(false));
     }
 
     void withoutWebhook(String name) {
-        prepareRemove(new WebhookImpl(name, this.parent(), new WebhookInner(), this.parent().manager().inner().webhooks()).setCreateMode(false));
+        prepareRemove(new WebhookImpl(name, this.parent(), new WebhookInner(), this.parent().manager()).setCreateMode(false));
     }
 }

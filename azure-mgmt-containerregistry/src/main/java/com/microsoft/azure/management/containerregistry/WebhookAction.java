@@ -8,52 +8,34 @@
 
 package com.microsoft.azure.management.containerregistry;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for WebhookAction.
  */
-public final class WebhookAction {
+public final class WebhookAction extends ExpandableStringEnum<WebhookAction> {
     /** Static value push for WebhookAction. */
-    public static final WebhookAction PUSH = new WebhookAction("push");
+    public static final WebhookAction PUSH = fromString("push");
 
     /** Static value delete for WebhookAction. */
-    public static final WebhookAction DELETE = new WebhookAction("delete");
-
-    private String value;
+    public static final WebhookAction DELETE = fromString("delete");
 
     /**
-     * Creates a custom value for WebhookAction.
-     * @param value the custom value
+     * Creates or finds a WebhookAction from its string representation.
+     * @param name a name to look for
+     * @return the corresponding WebhookAction
      */
-    public WebhookAction(String value) {
-        this.value = value;
+    @JsonCreator
+    public static WebhookAction fromString(String name) {
+        return fromString(name, WebhookAction.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof WebhookAction)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        WebhookAction rhs = (WebhookAction) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known WebhookAction values
+     */
+    public static Collection<WebhookAction> values() {
+        return values(WebhookAction.class);
     }
 }

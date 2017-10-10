@@ -111,56 +111,66 @@ public interface Registry extends
     Observable<RegistryUsage> listQuotaUsagesAsync();
 
     /**
-     * Gets the properties of the specified webhook.
-     *
-     * @param webhookName the name of the webhook
-     * @return the Webhook object if successful
+     * @return returns entry point to manage container registry webhooks.
      */
-    @Beta(SinceVersion.V1_4_0)
-    Webhook getWebhook(String webhookName);
+    WebhookOps webhooks();
 
     /**
-     * Gets the properties of the specified webhook.
-     *
-     * @param webhookName the name of the webhook
-     * @return a representation of the future computation of this call, returning the Webhook object
+     * Grouping of registry webhook actions.
      */
-    @Beta(SinceVersion.V1_4_0)
-    Observable<Webhook> getWebhookAsync(String webhookName);
+    interface WebhookOps {
+        /**
+         * Gets the properties of the specified webhook.
+         *
+         * @param webhookName the name of the webhook
+         * @return the Webhook object if successful
+         */
+        @Beta(SinceVersion.V1_4_0)
+        Webhook get(String webhookName);
 
-    /**
-     * Deletes a webhook from the container registry.
-     *
-     * @param webhookName the name of the webhook
-     */
-    @Beta(SinceVersion.V1_4_0)
-    void deleteWebhook(String webhookName);
+        /**
+         * Gets the properties of the specified webhook.
+         *
+         * @param webhookName the name of the webhook
+         * @return a representation of the future computation of this call, returning the Webhook object
+         */
+        @Beta(SinceVersion.V1_4_0)
+        Observable<Webhook> getAsync(String webhookName);
 
-    /**
-     * Deletes a webhook from the container registry.
-     *
-     * @param webhookName the name of the webhook
-     * @return a representation of the future computation of this call
-     */
-    @Beta(SinceVersion.V1_4_0)
-    Completable deleteWebhookAsync(String webhookName);
+        /**
+         * Deletes a webhook from the container registry.
+         *
+         * @param webhookName the name of the webhook
+         */
+        @Beta(SinceVersion.V1_4_0)
+        void delete(String webhookName);
 
-    /**
-     * Lists all the webhooks for the container registry.
-     *
-     * @return the list of all the webhooks for the specified container registry
-     */
-    @Beta(SinceVersion.V1_4_0)
-    PagedList<Webhook> listWebhooks();
+        /**
+         * Deletes a webhook from the container registry.
+         *
+         * @param webhookName the name of the webhook
+         * @return a representation of the future computation of this call
+         */
+        @Beta(SinceVersion.V1_4_0)
+        Completable deleteAsync(String webhookName);
 
-    /**
-     * Lists all the webhooks for the container registry.
-     *
-     * @return a representation of the future computation of this call, returning the list of all the webhooks for the specified container registry
-     */
-    @Beta(SinceVersion.V1_4_0)
-    Observable<Webhook> listWebhooksAsync();
+        /**
+         * Lists all the webhooks for the container registry.
+         *
+         * @return the list of all the webhooks for the specified container registry
+         */
+        @Beta(SinceVersion.V1_4_0)
+        PagedList<Webhook> list();
 
+        /**
+         * Lists all the webhooks for the container registry.
+         *
+         * @return a representation of the future computation of this call, returning the list of all the webhooks for the specified container registry
+         */
+        @Beta(SinceVersion.V1_4_0)
+        Observable<Webhook> listAsync();
+
+    }
 
 
     /**

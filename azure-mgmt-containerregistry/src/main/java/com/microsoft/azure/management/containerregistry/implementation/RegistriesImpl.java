@@ -186,4 +186,9 @@ public class RegistriesImpl
             }
         });
     }
+
+    @Override
+    public WebhooksClient webhooks() {
+        return new WebhooksClientImpl(this.manager(), null);
+    }
 }

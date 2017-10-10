@@ -42,7 +42,6 @@ public class WebhookImpl
         Webhook.UpdateResource<Registry.Update>,
         Webhook.Update {
 
-    private WebhooksInner innerOperations;
     private WebhookCreateParametersInner webhookCreateParametersInner;
     private WebhookUpdateParametersInner webhookUpdateParametersInner;
 
@@ -51,6 +50,10 @@ public class WebhookImpl
     private String serviceUri;
     private boolean isInCreateMode;
 
+    private ContainerRegistryManager containerRegistryManager;
+    private String resourceGroupName;
+    private String registryName;
+
 
     /**
      * Creates an instance of external child resource in-memory.
@@ -58,11 +61,38 @@ public class WebhookImpl
      * @param name        the name of this external child resource
      * @param parent      reference to the parent of this external child resource
      * @param innerObject reference to the inner object representing this external child resource
-     * @param innerOperations reference to the inner object that accesses web hook operations
+     * @param containerRegistryManager reference to the container registry manager that accesses web hook operations
      */
-    WebhookImpl(String name, RegistryImpl parent, WebhookInner innerObject, WebhooksInner innerOperations) {
+    WebhookImpl(String name, RegistryImpl parent, WebhookInner innerObject, ContainerRegistryManager containerRegistryManager) {
         super(name, parent, innerObject);
-        this.innerOperations = innerOperations;
+        this.containerRegistryManager = containerRegistryManager;
+        if (parent != null) {
+            this.resourceGroupName = parent.resourceGroupName();
+            this.registryName = parent.name();
+        }
+
+        this.initCreateUpdateParams();
+    }
+
+    /**
+     * Creates an instance of external child resource in-memory.
+     *
+     * @param resourceGroupName the resource group name
+     * @param registryName the registry name
+     * @param name        the name of this external child resource
+     * @param innerObject reference to the inner object representing this external child resource
+     * @param containerRegistryManager reference to the container registry manager that accesses web hook operations
+     */
+    WebhookImpl(String resourceGroupName, String registryName, String name, WebhookInner innerObject, ContainerRegistryManager containerRegistryManager) {
+        super(name, null, innerObject);
+        this.containerRegistryManager = containerRegistryManager;
+        this.resourceGroupName = resourceGroupName;
+        this.registryName = registryName;
+
+        this.initCreateUpdateParams();
+    }
+
+    private void initCreateUpdateParams() {
         this.webhookCreateParametersInner = null;
         this.webhookUpdateParametersInner = null;
         this.isInCreateMode = false;
@@ -128,6 +158,14 @@ public class WebhookImpl
     }
 
     @Override
+    public Webhook refreshWithParent() {
+        return new WebhookImpl(this.name(),
+            (RegistryImpl) containerRegistryManager.containerRegistries().getByResourceGroup(resourceGroupName, registryName),
+            this.getInnerAsync().toBlocking().single(),
+            this.containerRegistryManager);
+    }
+
+    @Override
     public Webhook enable() {
         return this.update()
             .withDefaultStatus(WebhookStatus.ENABLED)
@@ -157,12 +195,14 @@ public class WebhookImpl
 
     @Override
     public String ping() {
-        return this.innerOperations.ping(parent().resourceGroupName(), parent().name(), name()).id();
+        return this.containerRegistryManager.inner().webhooks()
+            .ping(this.resourceGroupName, this.registryName, name()).id();
     }
 
     @Override
     public Observable<String> pingAsync() {
-        return this.innerOperations.pingAsync(parent().resourceGroupName(), parent().name(), name())
+        return this.containerRegistryManager.inner().webhooks()
+            .pingAsync(this.resourceGroupName, this.registryName, name())
             .map(new Func1<EventInfoInner, String>() {
                 @Override
                 public String call(EventInfoInner eventInfoInner) {
@@ -174,22 +214,22 @@ public class WebhookImpl
     @Override
     public PagedList<WebhookEventInfo> listEvents() {
         final WebhookImpl self = this;
-        final WebhooksInner webhooksInner = this.innerOperations;
         final PagedListConverter<EventInner, WebhookEventInfo> converter = new PagedListConverter<EventInner, WebhookEventInfo>() {
             @Override
             public WebhookEventInfo typeConvert(EventInner inner) {
                 return new WebhookEventInfoImpl(inner);
             }
         };
-        return converter.convert(webhooksInner.listEvents(self.parent().resourceGroupName(), self.parent().name(), self.name()));
+        return converter.convert(this.containerRegistryManager.inner().webhooks()
+            .listEvents(self.resourceGroupName, self.registryName, self.name()));
     }
 
     @Override
     public Observable<WebhookEventInfo> listEventsAsync() {
         final WebhookImpl self = this;
-        final WebhooksInner webhooksInner = this.innerOperations;
 
-        return webhooksInner.listEventsAsync(self.parent().resourceGroupName(), self.parent().name(), self.name())
+        return this.containerRegistryManager.inner().webhooks()
+            .listEventsAsync(self.resourceGroupName, self.registryName, self.name())
             .flatMap(new Func1<Page<EventInner>, Observable<EventInner>>() {
                 @Override
                 public Observable<EventInner> call(Page<EventInner> eventInnerPage) {
@@ -206,30 +246,23 @@ public class WebhookImpl
     @Override
     public Observable<Webhook> createAsync() {
         final WebhookImpl self = this;
-        final WebhooksInner webhooksInner = this.innerOperations;
         if (webhookCreateParametersInner != null) {
-            return webhooksInner.createAsync(self.parent().resourceGroupName(),
-                    this.parent().name(),
+            return this.containerRegistryManager.inner().webhooks()
+                .createAsync(self.resourceGroupName,
+                    this.registryName,
                     this.name(),
                     this.webhookCreateParametersInner)
-                .map(new Func1<WebhookInner, Webhook>() {
+                .map(new Func1<WebhookInner, WebhookImpl>() {
                     @Override
-                    public Webhook call(WebhookInner inner) {
+                    public WebhookImpl call(WebhookInner inner) {
                         self.webhookCreateParametersInner = null;
                         self.setInner(inner);
                         return self;
                     }
-                }).flatMap(new Func1<Webhook, Observable<CallbackConfigInner>>() {
+                }).flatMap(new Func1<WebhookImpl, Observable<Webhook>>() {
                     @Override
-                    public Observable<CallbackConfigInner> call(Webhook webhook) {
-                        return webhooksInner.getCallbackConfigAsync(self.parent().resourceGroupName(), self.parent().name(), self.name());
-                    }
-                }).map(new Func1<CallbackConfigInner, Webhook>() {
-                    @Override
-                    public Webhook call(CallbackConfigInner callbackConfigInner) {
-                        self.serviceUri = callbackConfigInner.serviceUri();
-                        self.customHeaders = callbackConfigInner.customHeaders() != null ? callbackConfigInner.customHeaders() : new HashMap<String, String>();
-                        return self;
+                    public Observable<Webhook> call(WebhookImpl webhook) {
+                        return self.setCallbackConfigAsync();
                     }
                 });
         } else {
@@ -242,23 +275,46 @@ public class WebhookImpl
         }
     }
 
+    WebhookImpl setCallbackConfig(CallbackConfigInner callbackConfigInner) {
+        this.serviceUri = callbackConfigInner.serviceUri();
+        this.customHeaders = callbackConfigInner.customHeaders() != null ? callbackConfigInner.customHeaders() : new HashMap<String, String>();
+        return this;
+    }
+
+    Observable<Webhook> setCallbackConfigAsync() {
+        final WebhookImpl self = this;
+
+        return this.containerRegistryManager.inner().webhooks()
+            .getCallbackConfigAsync(self.resourceGroupName, self.registryName, self.name())
+            .map(new Func1<CallbackConfigInner, Webhook>() {
+                @Override
+                public Webhook call(CallbackConfigInner callbackConfigInner) {
+                    setCallbackConfig(callbackConfigInner);
+                    return self;
+                }
+            });
+    }
+
     @Override
     public Observable<Webhook> updateAsync() {
         final WebhookImpl self = this;
         if (webhookUpdateParametersInner != null) {
-            return this.innerOperations.updateAsync(self.parent().resourceGroupName(),
-                    self.parent().name(),
+            return this.containerRegistryManager.inner().webhooks()
+                .updateAsync(self.resourceGroupName,
+                    self.registryName,
                     self.name(),
                     self.webhookUpdateParametersInner)
-                .map(new Func1<WebhookInner, Webhook>() {
+                .map(new Func1<WebhookInner, WebhookImpl>() {
                     @Override
-                    public Webhook call(WebhookInner inner) {
+                    public WebhookImpl call(WebhookInner inner) {
                         self.setInner(inner);
-                        if (webhookUpdateParametersInner.serviceUri() != null) {
-                            self.serviceUri = webhookUpdateParametersInner.serviceUri();
-                        }
                         self.webhookUpdateParametersInner = null;
                         return self;
+                    }
+                }).flatMap(new Func1<WebhookImpl, Observable<Webhook>>() {
+                    @Override
+                    public Observable<Webhook> call(WebhookImpl webhook) {
+                        return self.setCallbackConfigAsync();
                     }
                 });
         } else {
@@ -273,34 +329,29 @@ public class WebhookImpl
 
     @Override
     public Observable<Void> deleteAsync() {
-        return this.innerOperations.deleteAsync(this.parent().resourceGroupName(),
-            this.parent().name(),
+        return this.containerRegistryManager.inner().webhooks()
+            .deleteAsync(this.resourceGroupName,
+            this.registryName,
             this.name());
     }
 
     @Override
     protected Observable<WebhookInner> getInnerAsync() {
-        return this.innerOperations.getAsync(this.parent().resourceGroupName(),
-            this.parent().name(),
-            this.name());
-    }
-
-    @Override
-    public Observable<Webhook> refreshAsync() {
         final WebhookImpl self = this;
-        final WebhooksInner webhooksInner = this.innerOperations;
-        return super.refreshAsync()
-            .flatMap(new Func1<Webhook, Observable<CallbackConfigInner>>() {
+        final WebhooksInner webhooksInner = this.containerRegistryManager.inner().webhooks();
+        return webhooksInner.getAsync(this.resourceGroupName,
+            this.registryName,
+            this.name())
+            .flatMap(new Func1<WebhookInner, Observable<CallbackConfigInner>>() {
                 @Override
-                public Observable<CallbackConfigInner> call(Webhook webhook) {
-                    return webhooksInner.getCallbackConfigAsync(self.parent().resourceGroupName(), self.parent().name(), self.name());
+                public Observable<CallbackConfigInner> call(WebhookInner webhookInner) {
+                    self.setInner(webhookInner);
+                    return webhooksInner.getCallbackConfigAsync(self.resourceGroupName, self.registryName, self.name());
                 }
-            }).map(new Func1<CallbackConfigInner, Webhook>() {
+            }).map(new Func1<CallbackConfigInner, WebhookInner>() {
                 @Override
-                public Webhook call(CallbackConfigInner callbackConfigInner) {
-                    self.serviceUri = callbackConfigInner.serviceUri();
-                    self.customHeaders = callbackConfigInner.customHeaders() != null ? callbackConfigInner.customHeaders() : new HashMap<String, String>();
-                    return self;
+                public WebhookInner call(CallbackConfigInner callbackConfigInner) {
+                    return setCallbackConfig(callbackConfigInner).inner();
                 }
             });
     }
@@ -335,7 +386,7 @@ public class WebhookImpl
     WebhookImpl setCreateMode(boolean isInCreateMode) {
         this.isInCreateMode = isInCreateMode;
 
-        if (this.isInCreateMode) {
+        if (this.isInCreateMode && parent() != null) {
             this.webhookCreateParametersInner = new WebhookCreateParametersInner().withLocation(parent().regionName());
         } else {
             this.webhookUpdateParametersInner = new WebhookUpdateParametersInner();
@@ -442,14 +493,14 @@ public class WebhookImpl
     }
 
     private WebhookCreateParametersInner ensureWebhookCreateParametersInner() {
-        if (this.webhookCreateParametersInner == null) {
+        if (this.webhookCreateParametersInner == null && parent() != null) {
             this.webhookCreateParametersInner = new WebhookCreateParametersInner().withLocation(parent().regionName());
         }
         return this.webhookCreateParametersInner;
     }
 
     private WebhookUpdateParametersInner ensureWebhookUpdateParametersInner() {
-        if (this.webhookUpdateParametersInner == null) {
+        if (this.webhookUpdateParametersInner == null && parent() != null) {
             this.webhookUpdateParametersInner = new WebhookUpdateParametersInner();
         }
         return this.webhookUpdateParametersInner;

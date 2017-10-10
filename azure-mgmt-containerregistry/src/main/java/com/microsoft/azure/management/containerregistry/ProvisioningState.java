@@ -8,64 +8,46 @@
 
 package com.microsoft.azure.management.containerregistry;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for ProvisioningState.
  */
-public final class ProvisioningState {
+public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
     /** Static value Creating for ProvisioningState. */
-    public static final ProvisioningState CREATING = new ProvisioningState("Creating");
+    public static final ProvisioningState CREATING = fromString("Creating");
 
     /** Static value Updating for ProvisioningState. */
-    public static final ProvisioningState UPDATING = new ProvisioningState("Updating");
+    public static final ProvisioningState UPDATING = fromString("Updating");
 
     /** Static value Deleting for ProvisioningState. */
-    public static final ProvisioningState DELETING = new ProvisioningState("Deleting");
+    public static final ProvisioningState DELETING = fromString("Deleting");
 
     /** Static value Succeeded for ProvisioningState. */
-    public static final ProvisioningState SUCCEEDED = new ProvisioningState("Succeeded");
+    public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
 
     /** Static value Failed for ProvisioningState. */
-    public static final ProvisioningState FAILED = new ProvisioningState("Failed");
+    public static final ProvisioningState FAILED = fromString("Failed");
 
     /** Static value Canceled for ProvisioningState. */
-    public static final ProvisioningState CANCELED = new ProvisioningState("Canceled");
-
-    private String value;
+    public static final ProvisioningState CANCELED = fromString("Canceled");
 
     /**
-     * Creates a custom value for ProvisioningState.
-     * @param value the custom value
+     * Creates or finds a ProvisioningState from its string representation.
+     * @param name a name to look for
+     * @return the corresponding ProvisioningState
      */
-    public ProvisioningState(String value) {
-        this.value = value;
+    @JsonCreator
+    public static ProvisioningState fromString(String name) {
+        return fromString(name, ProvisioningState.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof ProvisioningState)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        ProvisioningState rhs = (ProvisioningState) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known ProvisioningState values
+     */
+    public static Collection<ProvisioningState> values() {
+        return values(ProvisioningState.class);
     }
 }

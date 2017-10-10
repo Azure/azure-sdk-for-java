@@ -8,52 +8,34 @@
 
 package com.microsoft.azure.management.containerregistry;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for WebhookStatus.
  */
-public final class WebhookStatus {
+public final class WebhookStatus extends ExpandableStringEnum<WebhookStatus> {
     /** Static value enabled for WebhookStatus. */
-    public static final WebhookStatus ENABLED = new WebhookStatus("enabled");
+    public static final WebhookStatus ENABLED = fromString("enabled");
 
     /** Static value disabled for WebhookStatus. */
-    public static final WebhookStatus DISABLED = new WebhookStatus("disabled");
-
-    private String value;
+    public static final WebhookStatus DISABLED = fromString("disabled");
 
     /**
-     * Creates a custom value for WebhookStatus.
-     * @param value the custom value
+     * Creates or finds a WebhookStatus from its string representation.
+     * @param name a name to look for
+     * @return the corresponding WebhookStatus
      */
-    public WebhookStatus(String value) {
-        this.value = value;
+    @JsonCreator
+    public static WebhookStatus fromString(String name) {
+        return fromString(name, WebhookStatus.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof WebhookStatus)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        WebhookStatus rhs = (WebhookStatus) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known WebhookStatus values
+     */
+    public static Collection<WebhookStatus> values() {
+        return values(WebhookStatus.class);
     }
 }

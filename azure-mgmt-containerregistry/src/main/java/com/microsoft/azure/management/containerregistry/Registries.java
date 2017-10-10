@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.containerregistry;
 
+import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
@@ -20,6 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.collection.SupportsCr
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsDeletingById;
 import com.microsoft.azure.management.resources.fluentcore.collection.SupportsListing;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import rx.Completable;
 import rx.Observable;
 
 import java.util.Collection;
@@ -120,4 +122,80 @@ public interface Registries extends
      */
     @Beta(SinceVersion.V1_4_0)
     Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
+
+    /**
+     * @return returns entry point to manage container registry webhooks.
+     */
+    WebhooksClient webhooks();
+
+
+    /**
+     * Grouping of registry webhook actions.
+     */
+    interface WebhooksClient {
+        /**
+         * Gets the properties of the specified webhook.
+         *
+         * @param resourceGroupName the resource group name
+         * @param registryName the registry name
+         * @param webhookName the name of the webhook
+         * @return the Webhook object if successful
+         */
+        @Beta(SinceVersion.V1_4_0)
+        Webhook get(String resourceGroupName, String registryName, String webhookName);
+
+        /**
+         * Gets the properties of the specified webhook.
+         *
+         * @param resourceGroupName the resource group name
+         * @param registryName the registry name
+         * @param webhookName the name of the webhook
+         * @return a representation of the future computation of this call, returning the Webhook object
+         */
+        @Beta(SinceVersion.V1_4_0)
+        Observable<Webhook> getAsync(String resourceGroupName, String registryName, String webhookName);
+
+        /**
+         * Deletes a webhook from the container registry.
+         *
+         * @param resourceGroupName the resource group name
+         * @param registryName the registry name
+         * @param webhookName the name of the webhook
+         */
+        @Beta(SinceVersion.V1_4_0)
+        void delete(String resourceGroupName, String registryName, String webhookName);
+
+        /**
+         * Deletes a webhook from the container registry.
+         *
+         * @param resourceGroupName the resource group name
+         * @param registryName the registry name
+         * @param webhookName the name of the webhook
+         * @return a representation of the future computation of this call
+         */
+        @Beta(SinceVersion.V1_4_0)
+        Completable deleteAsync(String resourceGroupName, String registryName, String webhookName);
+
+        /**
+         * Lists all the webhooks for the container registry.
+         *
+         * @param resourceGroupName the resource group name
+         * @param registryName the registry name
+         * @return the list of all the webhooks for the specified container registry
+         */
+        @Beta(SinceVersion.V1_4_0)
+        PagedList<Webhook> list(String resourceGroupName, String registryName);
+
+        /**
+         * Lists all the webhooks for the container registry.
+         *
+         * @param resourceGroupName the resource group name
+         * @param registryName the registry name
+         * @return a representation of the future computation of this call, returning the list of all the webhooks for the specified container registry
+         */
+        @Beta(SinceVersion.V1_4_0)
+        Observable<Webhook> listAsync(String resourceGroupName, String registryName);
+
+    }
+
 }

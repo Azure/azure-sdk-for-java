@@ -8,52 +8,34 @@
 
 package com.microsoft.azure.management.containerregistry;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for RegistryUsageUnit.
  */
-public final class RegistryUsageUnit {
+public final class RegistryUsageUnit extends ExpandableStringEnum<RegistryUsageUnit> {
     /** Static value Count for RegistryUsageUnit. */
-    public static final RegistryUsageUnit COUNT = new RegistryUsageUnit("Count");
+    public static final RegistryUsageUnit COUNT = fromString("Count");
 
     /** Static value Bytes for RegistryUsageUnit. */
-    public static final RegistryUsageUnit BYTES = new RegistryUsageUnit("Bytes");
-
-    private String value;
+    public static final RegistryUsageUnit BYTES = fromString("Bytes");
 
     /**
-     * Creates a custom value for RegistryUsageUnit.
-     * @param value the custom value
+     * Creates or finds a RegistryUsageUnit from its string representation.
+     * @param name a name to look for
+     * @return the corresponding RegistryUsageUnit
      */
-    public RegistryUsageUnit(String value) {
-        this.value = value;
+    @JsonCreator
+    public static RegistryUsageUnit fromString(String name) {
+        return fromString(name, RegistryUsageUnit.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof RegistryUsageUnit)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        RegistryUsageUnit rhs = (RegistryUsageUnit) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known RegistryUsageUnit values
+     */
+    public static Collection<RegistryUsageUnit> values() {
+        return values(RegistryUsageUnit.class);
     }
 }
