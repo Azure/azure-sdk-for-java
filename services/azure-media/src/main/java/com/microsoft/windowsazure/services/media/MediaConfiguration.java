@@ -17,7 +17,7 @@ package com.microsoft.windowsazure.services.media;
 import java.net.URI;
 
 import com.microsoft.windowsazure.Configuration;
-import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProvider;
+import com.microsoft.windowsazure.services.media.authentication.TokenProvider;
 
 /**
  * Provides functionality to create a media services configuration.
@@ -46,7 +46,7 @@ public final class MediaConfiguration {
      */
     public static Configuration configureWithAzureAdTokenProvider(
             URI apiServer,
-            AzureAdTokenProvider azureAdTokenProvider) {
+            TokenProvider azureAdTokenProvider) {
 
         return configureWithAzureAdTokenProvider(Configuration.getInstance(), apiServer, azureAdTokenProvider);
     }
@@ -61,7 +61,7 @@ public final class MediaConfiguration {
     public static Configuration configureWithAzureAdTokenProvider(
             Configuration configuration,
             URI apiServer,
-            AzureAdTokenProvider azureAdTokenProvider) {
+            TokenProvider azureAdTokenProvider) {
 
         configuration.setProperty(AZURE_AD_API_SERVER, apiServer.toString());
         configuration.setProperty(AZURE_AD_TOKEN_PROVIDER, azureAdTokenProvider);

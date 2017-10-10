@@ -43,6 +43,7 @@ import com.microsoft.windowsazure.services.media.authentication.AzureAdClientSym
 import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenCredentials;
 import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProvider;
 import com.microsoft.windowsazure.services.media.authentication.AzureEnvironments;
+import com.microsoft.windowsazure.services.media.authentication.TokenProvider;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
@@ -76,7 +77,7 @@ public abstract class IntegrationTestBase {
     protected static QueueContract queueService;
     protected static Configuration config;
     protected static ExecutorService executorService;
-    protected static AzureAdTokenProvider tokenProvider;
+    protected static TokenProvider tokenProvider;
     
     protected static final String testAssetPrefix = "testAsset";
     protected static final String testPolicyPrefix = "testPolicy";

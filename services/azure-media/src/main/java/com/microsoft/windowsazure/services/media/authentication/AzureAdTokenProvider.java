@@ -13,7 +13,7 @@ import com.microsoft.aad.adal4j.AuthenticationResult;
  * Azure Active Directory Access Token Provider for
  * the Azure Media Services JDK.
  */
-public class AzureAdTokenProvider {
+public class AzureAdTokenProvider implements TokenProvider {
     private final AuthenticationContext authenticationContext;
     private final AzureAdTokenCredentials tokenCredentials;
     private final ExecutorService executorService;
@@ -45,11 +45,10 @@ public class AzureAdTokenProvider {
     }
 
     /**
-     * Acquire an access token
-     *
-     * @return a valid access token
-     * @throws Exception
+     * Acquires an access token
+     * @see com.microsoft.windowsazure.services.media.authentication.TokenProvider#acquireAccessToken()
      */
+    @Override
     public AzureAdAccessToken acquireAccessToken() throws Exception {
         AuthenticationResult authResult = getToken().get();
         return new AzureAdAccessToken(authResult.getAccessToken(), authResult.getExpiresOnDate());

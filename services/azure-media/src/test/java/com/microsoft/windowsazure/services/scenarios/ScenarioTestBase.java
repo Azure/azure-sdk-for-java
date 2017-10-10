@@ -35,6 +35,7 @@ import com.microsoft.windowsazure.services.media.authentication.AzureAdClientSym
 import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenCredentials;
 import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProvider;
 import com.microsoft.windowsazure.services.media.authentication.AzureEnvironments;
+import com.microsoft.windowsazure.services.media.authentication.TokenProvider;
 import com.microsoft.windowsazure.services.queue.QueueConfiguration;
 
 public abstract class ScenarioTestBase {
@@ -59,7 +60,7 @@ public abstract class ScenarioTestBase {
     			new AzureAdClientSymmetricKey(clientId, clientKey), 
     			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
     	
-    	AzureAdTokenProvider provider = null;
+    	TokenProvider provider = null;
     	
 		try {
 			provider = new AzureAdTokenProvider(credentials, executorService);

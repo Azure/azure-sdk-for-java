@@ -9,12 +9,12 @@ import com.microsoft.windowsazure.core.Builder;
  *
  * Internal use.
  */
-public class AzureAdTokenFactory implements Builder.Factory<AzureAdTokenProvider>  {
+public class AzureAdTokenFactory implements Builder.Factory<TokenProvider>  {
 
     @Override
-    public <S> AzureAdTokenProvider create(String profile, Class<S> service, Builder builder,
+    public <S> TokenProvider create(String profile, Class<S> service, Builder builder,
             Map<String, Object> properties) {
-        return (AzureAdTokenProvider) properties.get(profile);
+        return (TokenProvider) properties.get(profile);
     }
 
 }

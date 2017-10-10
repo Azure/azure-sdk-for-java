@@ -27,6 +27,7 @@ import com.microsoft.windowsazure.services.media.authentication.AzureAdClientUse
 import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenCredentials;
 import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProvider;
 import com.microsoft.windowsazure.services.media.authentication.AzureEnvironments;
+import com.microsoft.windowsazure.services.media.authentication.TokenProvider;
 import com.microsoft.windowsazure.services.media.models.Asset;
 import com.microsoft.windowsazure.services.media.models.AssetInfo;
 import com.microsoft.windowsazure.services.media.models.ListResult;
@@ -44,7 +45,7 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
     			tenant,
     			new AzureAdClientSymmetricKey(clientId, clientKey),
     			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
-    	AzureAdTokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
+    	TokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
     	Configuration configuration = MediaConfiguration.configureWithAzureAdTokenProvider(
     			new URI(restApiEndpoint),
     			provider);
@@ -72,7 +73,7 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
     			tenant,
     			new AzureAdClientUsernamePassword(username, password),
     			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
-    	AzureAdTokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
+    	TokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
     	Configuration configuration = MediaConfiguration.configureWithAzureAdTokenProvider(
     			new URI(restApiEndpoint),
     			provider);
@@ -102,7 +103,7 @@ public class AzureAdTokenProviderTest extends IntegrationTestBase {
     			tenant,
     			AsymmetricKeyCredential.create(clientId, pfx, pfxPassword),
     			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
-    	AzureAdTokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
+    	TokenProvider provider = new AzureAdTokenProvider(credentials, executorService);
     	Configuration configuration = MediaConfiguration.configureWithAzureAdTokenProvider(
     			new URI(restApiEndpoint),
     			provider);

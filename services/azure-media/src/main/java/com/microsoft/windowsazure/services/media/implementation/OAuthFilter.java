@@ -19,7 +19,7 @@ import javax.inject.Named;
 import com.microsoft.windowsazure.core.pipeline.jersey.IdempotentClientFilter;
 import com.microsoft.windowsazure.services.media.MediaConfiguration;
 import com.microsoft.windowsazure.services.media.authentication.AzureAdAccessToken;
-import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProvider;
+import com.microsoft.windowsazure.services.media.authentication.TokenProvider;
 import com.sun.jersey.api.client.ClientHandlerException;
 import com.sun.jersey.api.client.ClientRequest;
 import com.sun.jersey.api.client.ClientResponse;
@@ -29,16 +29,15 @@ import com.sun.jersey.api.client.ClientResponse;
  *
  */
 public class OAuthFilter extends IdempotentClientFilter {
-    // private final OAuthTokenManager oAuthTokenManager;
-    private final AzureAdTokenProvider azureAdTokenProvider;
+    private final TokenProvider azureAdTokenProvider;
 
     /**
      * Creates an <code>OAuthFilter</code> object with specified
-     * <code>AzureAdTokenProvider</code> instance.
+     * <code>TokenProvider</code> instance.
      *
      * @param azureAdTokenProvider
      */
-    public OAuthFilter(@Named(MediaConfiguration.AZURE_AD_TOKEN_PROVIDER) AzureAdTokenProvider azureAdTokenProvider) {
+    public OAuthFilter(@Named(MediaConfiguration.AZURE_AD_TOKEN_PROVIDER) TokenProvider azureAdTokenProvider) {
         this.azureAdTokenProvider = azureAdTokenProvider;
     }
 
