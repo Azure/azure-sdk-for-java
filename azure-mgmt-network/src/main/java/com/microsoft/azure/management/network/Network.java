@@ -255,9 +255,17 @@ public interface Network extends
              * This method does not check for conflicts or overlaps with other address spaces. If there is a conflict,
              * a cloud exception may be thrown after the update is applied.
              * @param cidr the CIDR representation of the address space
-             * @return the next stage of the virtual network update
+             * @return the next stage of the update
              */
             Update withAddressSpace(String cidr);
+
+            /**
+             * Removes the specified address space from the virtual network, assuming it's not in use bu any of the subnets.
+             * @param cidr the address space to remove, in CIDR format, matching exactly one of the CIDRs associated with this network
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutAddressSpace(String cidr);
         }
     }
 

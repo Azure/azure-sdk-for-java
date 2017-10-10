@@ -301,6 +301,9 @@ public class VirtualMachineManagedServiceIdentityOperationsTests extends Compute
         Assert.assertNotNull(virtualMachine.managedServiceIdentityPrincipalId());
         Assert.assertNotNull(virtualMachine.managedServiceIdentityTenantId());
 
+        Assert.assertNotNull(virtualMachine.managedServiceIdentityType());
+        Assert.assertTrue(virtualMachine.managedServiceIdentityType().equals(ResourceIdentityType.SYSTEM_ASSIGNED));
+
         // Ensure the MSI extension is set
         //
         Map<String, VirtualMachineExtension> extensions = virtualMachine.listExtensions();

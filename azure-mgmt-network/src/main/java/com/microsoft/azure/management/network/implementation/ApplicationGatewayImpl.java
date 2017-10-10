@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayAuthenticationCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
@@ -13,6 +14,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
+import com.microsoft.azure.management.network.ApplicationGatewayRedirectConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySku;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
@@ -67,10 +69,12 @@ class ApplicationGatewayImpl
     private Map<String, ApplicationGatewayFrontend> frontends;
     private Map<String, ApplicationGatewayProbe> probes;
     private Map<String, ApplicationGatewayBackend> backends;
-    private Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigs;
+    private Map<String, ApplicationGatewayBackendHttpConfiguration> backendConfigs;
     private Map<String, ApplicationGatewayListener> listeners;
     private Map<String, ApplicationGatewayRequestRoutingRule> rules;
     private Map<String, ApplicationGatewaySslCertificate> sslCerts;
+    private Map<String, ApplicationGatewayAuthenticationCertificate> authCertificates;
+    private Map<String, ApplicationGatewayRedirectConfiguration> redirectConfigs;
 
     private static final String DEFAULT = "default";
     private ApplicationGatewayFrontendImpl defaultPrivateFrontend;
@@ -114,11 +118,24 @@ class ApplicationGatewayImpl
         initializeBackendsFromInner();
         initializeBackendHttpConfigsFromInner();
         initializeHttpListenersFromInner();
+        initializeRedirectConfigurationsFromInner();
         initializeRequestRoutingRulesFromInner();
         initializeSslCertificatesFromInner();
+        initializeAuthCertificatesFromInner();
         this.defaultPrivateFrontend = null;
         this.defaultPublicFrontend = null;
         this.creatablePipsByFrontend = new HashMap<>();
+    }
+
+    private void initializeAuthCertificatesFromInner() {
+        this.authCertificates = new TreeMap<>();
+        List<ApplicationGatewayAuthenticationCertificateInner> inners = this.inner().authenticationCertificates();
+        if (inners != null) {
+            for (ApplicationGatewayAuthenticationCertificateInner inner : inners) {
+                ApplicationGatewayAuthenticationCertificateImpl cert = new ApplicationGatewayAuthenticationCertificateImpl(inner, this);
+                this.authCertificates.put(inner.name(), cert);
+            }
+        }
     }
 
     private void initializeSslCertificatesFromInner() {
@@ -166,12 +183,12 @@ class ApplicationGatewayImpl
     }
 
     private void initializeBackendHttpConfigsFromInner() {
-        this.backendHttpConfigs = new TreeMap<>();
+        this.backendConfigs = new TreeMap<>();
         List<ApplicationGatewayBackendHttpSettingsInner> inners = this.inner().backendHttpSettingsCollection();
         if (inners != null) {
             for (ApplicationGatewayBackendHttpSettingsInner inner : inners) {
                 ApplicationGatewayBackendHttpConfigurationImpl httpConfig = new ApplicationGatewayBackendHttpConfigurationImpl(inner, this);
-                this.backendHttpConfigs.put(inner.name(), httpConfig);
+                this.backendConfigs.put(inner.name(), httpConfig);
             }
         }
     }
@@ -183,6 +200,17 @@ class ApplicationGatewayImpl
             for (ApplicationGatewayHttpListenerInner inner : inners) {
                 ApplicationGatewayListenerImpl httpListener = new ApplicationGatewayListenerImpl(inner, this);
                 this.listeners.put(inner.name(), httpListener);
+            }
+        }
+    }
+
+    private void initializeRedirectConfigurationsFromInner() {
+        this.redirectConfigs = new TreeMap<>();
+        List<ApplicationGatewayRedirectConfigurationInner> inners = this.inner().redirectConfigurations();
+        if (inners != null) {
+            for (ApplicationGatewayRedirectConfigurationInner inner : inners) {
+                ApplicationGatewayRedirectConfigurationImpl redirectConfig = new ApplicationGatewayRedirectConfigurationImpl(inner, this);
+                this.redirectConfigs.put(inner.name(), redirectConfig);
             }
         }
     }
@@ -228,18 +256,48 @@ class ApplicationGatewayImpl
         // Reset and update probes
         this.inner().withProbes(innersFromWrappers(this.probes.values()));
 
+        // Reset and update auth certs
+        this.inner().withAuthenticationCertificates(innersFromWrappers(this.authCertificates.values()));
+
         // Reset and update backends
         this.inner().withBackendAddressPools(innersFromWrappers(this.backends.values()));
 
+        // Reset and update SSL certs
+        this.inner().withSslCertificates(innersFromWrappers(this.sslCerts.values()));
+
         // Reset and update backend HTTP settings configs
-        this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.backendHttpConfigs.values()));
-        for (ApplicationGatewayBackendHttpConfiguration config : this.backendHttpConfigs.values()) {
+        this.inner().withBackendHttpSettingsCollection(innersFromWrappers(this.backendConfigs.values()));
+        for (ApplicationGatewayBackendHttpConfiguration config : this.backendConfigs.values()) {
             SubResource ref;
 
             // Clear deleted probe references
             ref = config.inner().probe();
             if (ref != null && !this.probes().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 config.inner().withProbe(null);
+            }
+
+            // Clear deleted auth cert references
+            List<SubResource> certRefs = config.inner().authenticationCertificates();
+            if (certRefs != null) {
+                // Make a copy of the cert refs, because we will be deleting in place
+                certRefs = new ArrayList<>(certRefs);
+                for (SubResource certRef : certRefs) {
+                    if (certRef != null && !this.authCertificates.containsKey(ResourceUtils.nameFromResourceId(certRef.id()))) {
+                        config.inner().authenticationCertificates().remove(certRef);
+                    }
+                }
+            }
+        }
+
+        // Reset and update redirect configurations
+        this.inner().withRedirectConfigurations(innersFromWrappers(this.redirectConfigs.values()));
+        for (ApplicationGatewayRedirectConfiguration redirect : this.redirectConfigs.values()) {
+            SubResource ref;
+
+            // Clear deleted listener references
+            ref = redirect.inner().targetListener();
+            if (ref != null && !this.listeners.containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                redirect.inner().withTargetListener(null);
             }
         }
 
@@ -272,6 +330,12 @@ class ApplicationGatewayImpl
         for (ApplicationGatewayRequestRoutingRule rule : this.rules.values()) {
             SubResource ref;
 
+            // Clear deleted redirect configs
+            ref = rule.inner().redirectConfiguration();
+            if (ref != null && !this.redirectConfigs.containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+                rule.inner().withRedirectConfiguration(null);
+            }
+
             // Clear deleted backends
             ref = rule.inner().backendAddressPool();
             if (ref != null && !this.backends().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
@@ -280,7 +344,7 @@ class ApplicationGatewayImpl
 
             // Clear deleted backend HTTP configs
             ref = rule.inner().backendHttpSettings();
-            if (ref != null && !this.backendHttpConfigurations().containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
+            if (ref != null && !this.backendConfigs.containsKey(ResourceUtils.nameFromResourceId(ref.id()))) {
                 rule.inner().withBackendHttpSettings(null);
             }
 
@@ -290,9 +354,6 @@ class ApplicationGatewayImpl
                 rule.inner().withHttpListener(null);
             }
         }
-
-        // Reset and update SSL certs
-        this.inner().withSslCertificates(innersFromWrappers(this.sslCerts.values()));
     }
 
     @Override
@@ -576,6 +637,13 @@ class ApplicationGatewayImpl
         return this;
     }
 
+    ApplicationGatewayImpl withAuthenticationCertificate(ApplicationGatewayAuthenticationCertificateImpl authCert) {
+        if (authCert != null) {
+            this.authCertificates.put(authCert.name(), authCert);
+        }
+        return this;
+    }
+
     ApplicationGatewayImpl withSslCertificate(ApplicationGatewaySslCertificateImpl cert) {
         if (cert != null) {
             this.sslCerts.put(cert.name(), cert);
@@ -590,6 +658,13 @@ class ApplicationGatewayImpl
         return this;
     }
 
+    ApplicationGatewayImpl withRedirectConfiguration(ApplicationGatewayRedirectConfigurationImpl redirectConfig) {
+        if (redirectConfig != null) {
+            this.redirectConfigs.put(redirectConfig.name(), redirectConfig);
+        }
+        return this;
+    }
+
     ApplicationGatewayImpl withRequestRoutingRule(ApplicationGatewayRequestRoutingRuleImpl rule) {
         if (rule != null) {
             this.rules.put(rule.name(), rule);
@@ -599,7 +674,7 @@ class ApplicationGatewayImpl
 
     ApplicationGatewayImpl withBackendHttpConfiguration(ApplicationGatewayBackendHttpConfigurationImpl httpConfig) {
         if (httpConfig != null) {
-            this.backendHttpConfigs.put(httpConfig.name(), httpConfig);
+            this.backendConfigs.put(httpConfig.name(), httpConfig);
         }
         return this;
     }
@@ -695,6 +770,17 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayAuthenticationCertificateImpl defineAuthenticationCertificate(String name) {
+        ApplicationGatewayAuthenticationCertificate cert = this.authCertificates.get(name);
+        if (cert == null) {
+            ApplicationGatewayAuthenticationCertificateInner inner = new ApplicationGatewayAuthenticationCertificateInner().withName(name);
+            return new ApplicationGatewayAuthenticationCertificateImpl(inner, this);
+        } else {
+            return (ApplicationGatewayAuthenticationCertificateImpl) cert;
+        }
+    }
+
+    @Override
     public ApplicationGatewayProbeImpl defineProbe(String name) {
         ApplicationGatewayProbe probe = this.probes.get(name);
         if (probe == null) {
@@ -718,6 +804,18 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayRedirectConfigurationImpl defineRedirectConfiguration(String name) {
+        ApplicationGatewayRedirectConfiguration redirectConfig = this.redirectConfigs.get(name);
+        if (redirectConfig == null) {
+            ApplicationGatewayRedirectConfigurationInner inner = new ApplicationGatewayRedirectConfigurationInner()
+                    .withName(name);
+            return new ApplicationGatewayRedirectConfigurationImpl(inner, this);
+        } else {
+            return (ApplicationGatewayRedirectConfigurationImpl) redirectConfig;
+        }
+    }
+
+    @Override
     public ApplicationGatewayRequestRoutingRuleImpl defineRequestRoutingRule(String name) {
         ApplicationGatewayRequestRoutingRule rule = this.rules.get(name);
         if (rule == null) {
@@ -731,7 +829,7 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl defineBackendHttpConfiguration(String name) {
-        ApplicationGatewayBackendHttpConfiguration httpConfig = this.backendHttpConfigs.get(name);
+        ApplicationGatewayBackendHttpConfiguration httpConfig = this.backendConfigs.get(name);
         if (httpConfig == null) {
             ApplicationGatewayBackendHttpSettingsInner inner = new ApplicationGatewayBackendHttpSettingsInner()
                     .withName(name)
@@ -933,7 +1031,18 @@ class ApplicationGatewayImpl
 
     @Override
     public ApplicationGatewayImpl withoutCertificate(String name) {
+        return this.withoutSslCertificate(name);
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutSslCertificate(String name) {
         this.sslCerts.remove(name);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutAuthenticationCertificate(String name) {
+        this.authCertificates.remove(name);
         return this;
     }
 
@@ -946,6 +1055,12 @@ class ApplicationGatewayImpl
     @Override
     public ApplicationGatewayImpl withoutListener(String name) {
         this.listeners.remove(name);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayImpl withoutRedirectConfiguration(String name) {
+        this.redirectConfigs.remove(name);
         return this;
     }
 
@@ -977,19 +1092,24 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public ApplicationGatewayRedirectConfigurationImpl updateRedirectConfiguration(String name) {
+        return (ApplicationGatewayRedirectConfigurationImpl) this.redirectConfigs.get(name);
+    }
+
+    @Override
     public ApplicationGatewayRequestRoutingRuleImpl updateRequestRoutingRule(String name) {
         return (ApplicationGatewayRequestRoutingRuleImpl) this.rules.get(name);
     }
 
     @Override
     public ApplicationGatewayImpl withoutBackendHttpConfiguration(String name) {
-        this.backendHttpConfigs.remove(name);
+        this.backendConfigs.remove(name);
         return this;
     }
 
     @Override
     public ApplicationGatewayBackendHttpConfigurationImpl updateBackendHttpConfiguration(String name) {
-        return (ApplicationGatewayBackendHttpConfigurationImpl) this.backendHttpConfigs.get(name);
+        return (ApplicationGatewayBackendHttpConfigurationImpl) this.backendConfigs.get(name);
     }
 
     @Override
@@ -1087,8 +1207,13 @@ class ApplicationGatewayImpl
     }
 
     @Override
+    public Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates() {
+        return Collections.unmodifiableMap(this.authCertificates);
+    }
+
+    @Override
     public Map<String, ApplicationGatewayBackendHttpConfiguration> backendHttpConfigurations() {
-        return Collections.unmodifiableMap(this.backendHttpConfigs);
+        return Collections.unmodifiableMap(this.backendConfigs);
     }
 
     @Override
@@ -1119,6 +1244,11 @@ class ApplicationGatewayImpl
     @Override
     public Map<String, ApplicationGatewayListener> listeners() {
         return Collections.unmodifiableMap(this.listeners);
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayRedirectConfiguration> redirectConfigurations() {
+        return Collections.unmodifiableMap(this.redirectConfigs);
     }
 
     @Override

@@ -37,7 +37,7 @@ class SqlWarehouseImpl
 
     @Override
     public ServiceFuture<Void> pauseDataWarehouseAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.pauseDataWarehouseAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.pauseDataWarehouseAsync(), callback);
     }
 
     @Override
@@ -53,6 +53,6 @@ class SqlWarehouseImpl
 
     @Override
     public ServiceFuture<Void> resumeDataWarehouseAsync(ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.resumeDataWarehouseAsync().<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.resumeDataWarehouseAsync(), callback);
     }
 }

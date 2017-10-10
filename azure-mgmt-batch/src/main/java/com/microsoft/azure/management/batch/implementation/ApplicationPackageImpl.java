@@ -107,7 +107,7 @@ public class ApplicationPackageImpl
 
     @Override
     public ServiceFuture<Void> activateAsync(String format, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.activateAsync(format).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.activateAsync(format), callback);
     }
 
     @Override

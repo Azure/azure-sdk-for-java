@@ -92,7 +92,7 @@ class CdnProfileImpl
 
     @Override
     public ServiceFuture<Void> startEndpointAsync(String endpointName, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.startEndpointAsync(endpointName).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.startEndpointAsync(endpointName), callback);
     }
 
     @Override
@@ -107,7 +107,7 @@ class CdnProfileImpl
 
     @Override
     public ServiceFuture<Void> stopEndpointAsync(String endpointName, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.stopEndpointAsync(endpointName).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.stopEndpointAsync(endpointName), callback);
     }
 
     @Override
@@ -138,7 +138,7 @@ class CdnProfileImpl
 
     @Override
     public ServiceFuture<Void> purgeEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.purgeEndpointContentAsync(endpointName, contentPaths).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.purgeEndpointContentAsync(endpointName, contentPaths), callback);
     }
 
     @Override
@@ -157,7 +157,7 @@ class CdnProfileImpl
 
     @Override
     public ServiceFuture<Void> loadEndpointContentAsync(String endpointName, Set<String> contentPaths, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.loadEndpointContentAsync(endpointName, contentPaths).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.loadEndpointContentAsync(endpointName, contentPaths), callback);
     }
 
     @Override

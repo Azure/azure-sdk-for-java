@@ -17,9 +17,23 @@ public enum KnownLinuxVirtualMachineImage {
     DEBIAN_8("credativ", "Debian", "8"),
     /** CentOS 7.2. */
     CENTOS_7_2("OpenLogic", "CentOS", "7.2"),
-    /** OpenSUSE-Leap 42.1. */
+    /**
+     * OpenSUSE-Leap 42.1.
+     *
+     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher, String offer, String sku)}
+     * and for virtual machine scale set use {@link VirtualMachineScaleSet.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher, String offer, String sku)}
+     * with publisher as "SUSE", offer as "openSUSE-Leap" and sku as "42.3")}.
+     */
+    @Deprecated
     OPENSUSE_LEAP_42_1("SUSE", "openSUSE-Leap", "42.1"),
-    /** SLES 12-SP1. */
+    /**
+     * SLES 12-SP1.
+     *
+     * @deprecated for virtual machine use {@link VirtualMachine.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher, String offer, String sku)}
+     * and for virtual machine scale set use {@link VirtualMachineScaleSet.DefinitionShared#withLatestLinuxImage(String, String, String)}(String publisher, String offer, String sku)}
+     * with publisher as "SUSE", offer as "SLES" and sku as "12-SP3")}.
+     */
+    @Deprecated
     SLES_12_SP1("SUSE", "SLES", "12-SP1");
 
     private final String publisher;

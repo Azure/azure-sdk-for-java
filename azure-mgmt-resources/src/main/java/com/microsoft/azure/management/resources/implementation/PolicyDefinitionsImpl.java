@@ -61,6 +61,9 @@ final class PolicyDefinitionsImpl
 
     @Override
     protected PolicyDefinitionImpl wrapModel(PolicyDefinitionInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new PolicyDefinitionImpl(inner, client);
     }
 

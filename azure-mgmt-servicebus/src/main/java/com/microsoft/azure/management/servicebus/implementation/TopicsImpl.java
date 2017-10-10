@@ -91,6 +91,9 @@ class TopicsImpl
 
     @Override
     protected TopicImpl wrapModel(TopicInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new TopicImpl(this.resourceGroupName,
                 this.namespaceName,
                 inner.name(),

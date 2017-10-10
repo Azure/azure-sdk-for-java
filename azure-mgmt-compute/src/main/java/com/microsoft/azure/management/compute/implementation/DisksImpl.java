@@ -75,7 +75,7 @@ class DisksImpl
 
     @Override
     public ServiceFuture<Void> revokeAccessAsync(String resourceGroupName, String diskName, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.revokeAccessAsync(resourceGroupName, diskName).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.revokeAccessAsync(resourceGroupName, diskName), callback);
     }
 
     @Override

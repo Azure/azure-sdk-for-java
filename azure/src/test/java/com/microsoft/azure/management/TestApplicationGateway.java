@@ -16,15 +16,17 @@ import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import org.junit.Assert;
 
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayAuthenticationCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
-import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
 import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
+import com.microsoft.azure.management.network.ApplicationGatewayRedirectConfiguration;
+import com.microsoft.azure.management.network.ApplicationGatewayRedirectType;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
@@ -61,6 +63,7 @@ public class TestApplicationGateway {
         APP_GATEWAY_NAME = "ag" + TEST_ID;
         PIP_NAMES = new String[]{"pipa" + TEST_ID, "pipb" + TEST_ID};
     }
+
     /**
      * Minimalistic internal (private) app gateway test.
      */
@@ -303,14 +306,11 @@ public class TestApplicationGateway {
                                 .toBackendHttpConfiguration("config1")
                                 .toBackend("backend1")
                                 .attach()
-
-                            // Additional/explicit backend HTTP setting configs
-                            .defineBackendHttpConfiguration("config1")
-                                .withPort(8081)
-                                .withRequestTimeout(45)
-                                .attach()
-
-                            .defineBackendHttpConfiguration("config2")
+                            .defineRequestRoutingRule("ruleRedirect")
+                                .fromPrivateFrontend()
+                                .fromFrontendHttpsPort(444)
+                                .withSslCertificate("cert1")
+                                .withRedirectConfiguration("redirect1")
                                 .attach()
 
                             // Additional/explicit backends
@@ -335,6 +335,39 @@ public class TestApplicationGateway {
                                 .withPfxPassword("Abc123")
                                 .attach()
 
+                            // Authentication certificates
+                            .defineAuthenticationCertificate("auth2")
+                                .fromFile(new File(getClass().getClassLoader().getResource("myTest2.cer").getFile()))
+                                .attach()
+
+                            // Additional/explicit backend HTTP setting configs
+                            .defineBackendHttpConfiguration("config1")
+                                .withPort(8081)
+                                .withRequestTimeout(45)
+                                .withHttps()
+                                .withAuthenticationCertificateFromFile(new File(getClass().getClassLoader().getResource("myTest.cer").getFile()))
+                                .attach()
+
+                            .defineBackendHttpConfiguration("config2")
+                                .withPort(8082)
+                                .withHttps()
+                                .withAuthenticationCertificate("auth2")
+                                // Add the same cert, so only one should be added
+                                .withAuthenticationCertificateFromFile(new File(getClass().getClassLoader().getResource("myTest2.cer").getFile()))
+                                .attach()
+
+                            // Redirect configurations
+                            .defineRedirectConfiguration("redirect1")
+                                .withType(ApplicationGatewayRedirectType.PERMANENT)
+                                .withTargetListener("listener1")
+                                .withPathIncluded()
+                                .attach()
+                            .defineRedirectConfiguration("redirect2")
+                                .withType(ApplicationGatewayRedirectType.TEMPORARY)
+                                .withTargetUrl("http://www.microsoft.com")
+                                .withQueryStringIncluded()
+                                .attach()
+
                             .withExistingSubnet(vnet, "subnet1")
                             .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                             .withInstanceCount(2)
@@ -355,96 +388,139 @@ public class TestApplicationGateway {
             // Get the resource as created so far
             String resourceId = createResourceId(resources.manager().subscriptionId());
             ApplicationGateway appGateway = resources.getById(resourceId);
-            Assert.assertTrue(appGateway != null);
-            Assert.assertTrue(ApplicationGatewayTier.STANDARD.equals(appGateway.tier()));
-            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_MEDIUM.equals(appGateway.size()));
-            Assert.assertTrue(appGateway.instanceCount() == 2);
-            Assert.assertTrue(!appGateway.isPublic());
+            Assert.assertNotNull(appGateway);
+            Assert.assertEquals(ApplicationGatewayTier.STANDARD, appGateway.tier());
+            Assert.assertEquals(ApplicationGatewaySkuName.STANDARD_MEDIUM, appGateway.size());
+            Assert.assertEquals(2, appGateway.instanceCount());
+            Assert.assertFalse(appGateway.isPublic());
             Assert.assertTrue(appGateway.isPrivate());
-            Assert.assertTrue(appGateway.ipConfigurations().size() == 1);
+            Assert.assertEquals(1, appGateway.ipConfigurations().size());
+
+            // Verify redirect configurations
+            Assert.assertEquals(2, appGateway.redirectConfigurations().size());
+            ApplicationGatewayRedirectConfiguration redirect = appGateway.redirectConfigurations().get("redirect1");
+            Assert.assertNotNull(redirect);
+            Assert.assertEquals(ApplicationGatewayRedirectType.PERMANENT, redirect.type());
+            Assert.assertNotNull(redirect.targetListener());
+            Assert.assertEquals("listener1", redirect.targetListener().name());
+            Assert.assertNull(redirect.targetUrl());
+            Assert.assertTrue(redirect.isPathIncluded());
+            Assert.assertFalse(redirect.isQueryStringIncluded());
+            Assert.assertEquals(1, redirect.requestRoutingRules().size());
+
+            redirect = appGateway.redirectConfigurations().get("redirect2");
+            Assert.assertNotNull(redirect);
+            Assert.assertEquals(ApplicationGatewayRedirectType.TEMPORARY, redirect.type());
+            Assert.assertNull(redirect.targetListener());
+            Assert.assertNotNull(redirect.targetUrl());
+            Assert.assertEquals("http://www.microsoft.com", redirect.targetUrl());
+            Assert.assertTrue(redirect.isQueryStringIncluded());
+            Assert.assertFalse(redirect.isPathIncluded());
 
             // Verify frontend ports
-            Assert.assertTrue(appGateway.frontendPorts().size() == 3);
-            Assert.assertTrue(appGateway.frontendPortNameFromNumber(80) != null);
-            Assert.assertTrue(appGateway.frontendPortNameFromNumber(443) != null);
-            Assert.assertTrue(appGateway.frontendPortNameFromNumber(9000) != null);
+            Assert.assertEquals(4, appGateway.frontendPorts().size());
+            Assert.assertNotNull(appGateway.frontendPortNameFromNumber(80));
+            Assert.assertNotNull(appGateway.frontendPortNameFromNumber(443));
+            Assert.assertNotNull(appGateway.frontendPortNameFromNumber(9000));
+            Assert.assertNotNull(appGateway.frontendPortNameFromNumber(444));
 
             // Verify frontends
-            Assert.assertTrue(appGateway.frontends().size() == 1);
-            Assert.assertTrue(appGateway.publicFrontends().size() == 0);
-            Assert.assertTrue(appGateway.privateFrontends().size() == 1);
+            Assert.assertEquals(1, appGateway.frontends().size());
+            Assert.assertTrue(appGateway.publicFrontends().isEmpty());
+            Assert.assertEquals(1, appGateway.privateFrontends().size());
             ApplicationGatewayFrontend frontend = appGateway.privateFrontends().values().iterator().next();
-            Assert.assertTrue(!frontend.isPublic());
+            Assert.assertFalse(frontend.isPublic());
             Assert.assertTrue(frontend.isPrivate());
 
             // Verify listeners
-            Assert.assertTrue(appGateway.listeners().size() == 3);
+            Assert.assertEquals(4, appGateway.listeners().size());
             ApplicationGatewayListener listener = appGateway.listeners().get("listener1");
-            Assert.assertTrue(listener != null);
-            Assert.assertTrue(listener.frontendPortNumber() == 9000);
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTP.equals(listener.protocol()));
-            Assert.assertTrue(listener.frontend() != null);
+            Assert.assertNotNull(listener);
+            Assert.assertEquals(9000, listener.frontendPortNumber());
+            Assert.assertEquals(ApplicationGatewayProtocol.HTTP, listener.protocol());
+            Assert.assertNotNull(listener.frontend());
             Assert.assertTrue(listener.frontend().isPrivate());
-            Assert.assertTrue(!listener.frontend().isPublic());
-            Assert.assertTrue(appGateway.listenerByPortNumber(80) != null);
-            Assert.assertTrue(appGateway.listenerByPortNumber(443) != null);
+            Assert.assertFalse(listener.frontend().isPublic());
+            Assert.assertNotNull(appGateway.listenerByPortNumber(80));
+            Assert.assertNotNull(appGateway.listenerByPortNumber(443));
+            Assert.assertNotNull(appGateway.listenerByPortNumber(444));
 
-            // Verify certificates
-            Assert.assertTrue(appGateway.sslCertificates().size() == 2);
+            // Verify SSL certificates
+            Assert.assertEquals(2, appGateway.sslCertificates().size());
             Assert.assertTrue(appGateway.sslCertificates().containsKey("cert1"));
 
             // Verify backend HTTP settings configs
-            Assert.assertTrue(appGateway.backendHttpConfigurations().size() == 3);
+            Assert.assertEquals(3, appGateway.backendHttpConfigurations().size());
             ApplicationGatewayBackendHttpConfiguration config = appGateway.backendHttpConfigurations().get("config1");
-            Assert.assertTrue(config != null);
-            Assert.assertTrue(config.port() == 8081);
-            Assert.assertTrue(config.requestTimeout() == 45);
-            Assert.assertTrue(appGateway.backendHttpConfigurations().containsKey("config2"));
+            Assert.assertNotNull(config);
+            Assert.assertEquals(8081, config.port());
+            Assert.assertEquals(45, config.requestTimeout());
+            Assert.assertEquals(1, config.authenticationCertificates().size());
+
+            ApplicationGatewayBackendHttpConfiguration config2 = appGateway.backendHttpConfigurations().get("config2");
+            Assert.assertNotNull(config2);
+
+            // Verify authentication certificates
+            Assert.assertEquals(2, appGateway.authenticationCertificates().size());
+            ApplicationGatewayAuthenticationCertificate authCert2 = appGateway.authenticationCertificates().get("auth2");
+            Assert.assertNotNull(authCert2);
+            Assert.assertNotNull(authCert2.data());
+
+            ApplicationGatewayAuthenticationCertificate authCert = config.authenticationCertificates().values().iterator().next();
+            Assert.assertNotNull(authCert);
+
+            Assert.assertEquals(1, config2.authenticationCertificates().size());
+            Assert.assertEquals(authCert2.name(), config2.authenticationCertificates().values().iterator().next().name());
 
             // Verify backends
-            Assert.assertTrue(appGateway.backends().size() == 3);
+            Assert.assertEquals(3, appGateway.backends().size());
             ApplicationGatewayBackend backend = appGateway.backends().get("backend1");
-            Assert.assertTrue(backend != null);
-            Assert.assertTrue(backend.addresses().size() == 2);
+            Assert.assertNotNull(backend);
+            Assert.assertEquals(2, backend.addresses().size());
             Assert.assertTrue(backend.containsIPAddress("11.1.1.3"));
             Assert.assertTrue(backend.containsIPAddress("11.1.1.4"));
             Assert.assertTrue(appGateway.backends().containsKey("backend2"));
 
             // Verify request routing rules
-            Assert.assertTrue(appGateway.requestRoutingRules().size() == 3);
+            Assert.assertEquals(4, appGateway.requestRoutingRules().size());
             ApplicationGatewayRequestRoutingRule rule;
 
             rule = appGateway.requestRoutingRules().get("rule80");
-            Assert.assertTrue(rule != null);
+            Assert.assertNotNull(rule);
             Assert.assertTrue(vnet.id().equalsIgnoreCase(rule.listener().frontend().networkId()));
-            Assert.assertTrue(rule.frontendPort() == 80);
-            Assert.assertTrue(rule.backendPort() == 8080);
+            Assert.assertEquals(80, rule.frontendPort());
+            Assert.assertEquals(8080, rule.backendPort());
             Assert.assertTrue(rule.cookieBasedAffinity());
-            Assert.assertTrue(rule.backendAddresses().size() == 2);
+            Assert.assertEquals(2, rule.backendAddresses().size());
             Assert.assertTrue(rule.backend().containsIPAddress("11.1.1.1"));
             Assert.assertTrue(rule.backend().containsIPAddress("11.1.1.2"));
 
             rule = appGateway.requestRoutingRules().get("rule443");
-            Assert.assertTrue(rule != null);
+            Assert.assertNotNull(rule);
             Assert.assertTrue(vnet.id().equalsIgnoreCase(rule.listener().frontend().networkId()));
-            Assert.assertTrue(rule.frontendPort() == 443);
-            Assert.assertTrue(ApplicationGatewayProtocol.HTTPS.equals(rule.frontendProtocol()));
-            Assert.assertTrue(rule.sslCertificate() != null);
-            Assert.assertTrue(rule.backendHttpConfiguration() != null);
+            Assert.assertEquals(443, rule.frontendPort());
+            Assert.assertEquals(ApplicationGatewayProtocol.HTTPS, rule.frontendProtocol());
+            Assert.assertNotNull(rule.sslCertificate());
+            Assert.assertNotNull(rule.backendHttpConfiguration());
             Assert.assertTrue(rule.backendHttpConfiguration().name().equalsIgnoreCase("config1"));
-            Assert.assertTrue(rule.backend() != null);
+            Assert.assertNotNull(rule.backend());
             Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
 
             rule = appGateway.requestRoutingRules().get("rule9000");
-            Assert.assertTrue(rule != null);
-            Assert.assertTrue(rule.listener() != null);
+            Assert.assertNotNull(rule);
+            Assert.assertNotNull(rule.listener());
             Assert.assertTrue(rule.listener().name().equalsIgnoreCase("listener1"));
-            Assert.assertTrue(rule.listener().subnetName() != null);
-            Assert.assertTrue(rule.listener().networkId() != null);
-            Assert.assertTrue(rule.backendHttpConfiguration() != null);
+            Assert.assertNotNull(rule.listener().subnetName());
+            Assert.assertNotNull(rule.listener().networkId());
+            Assert.assertNotNull(rule.backendHttpConfiguration());
             Assert.assertTrue(rule.backendHttpConfiguration().name().equalsIgnoreCase("config1"));
-            Assert.assertTrue(rule.backend() != null);
+            Assert.assertNotNull(rule.backend());
             Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
+
+            rule = appGateway.requestRoutingRules().get("ruleRedirect");
+            Assert.assertNotNull(rule);
+            Assert.assertNotNull(rule.redirectConfiguration());
+            Assert.assertEquals("redirect1", rule.redirectConfiguration().name());
 
             creationThread.join();
 
@@ -459,9 +535,16 @@ public class TestApplicationGateway {
             final int ruleCount = resource.requestRoutingRules().size();
             final int backendCount = resource.backends().size();
             final int configCount = resource.backendHttpConfigurations().size();
-            final int certCount = resource.sslCertificates().size();
+            final int sslCertCount = resource.sslCertificates().size();
+            final int authCertCount = resource.authenticationCertificates().size();
+            final ApplicationGatewayAuthenticationCertificate authCert1 = resource.backendHttpConfigurations().get("config1").authenticationCertificates().values().iterator().next();
+            Assert.assertNotNull(authCert1);
 
             PublicIPAddress pip = resource.manager().publicIPAddresses().getByResourceGroup(GROUP_NAME, PIP_NAMES[0]);
+            ApplicationGatewayListener listener443 = resource.requestRoutingRules().get("rule443").listener();
+            Assert.assertNotNull(listener443);
+            ApplicationGatewayListener listenerRedirect = resource.requestRoutingRules().get("ruleRedirect").listener();
+            Assert.assertNotNull(listenerRedirect);
 
             resource.update()
                 .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
@@ -472,23 +555,44 @@ public class TestApplicationGateway {
                 .withoutBackendHttpConfiguration("config2")
                 .withoutBackend("backend2")
                 .withoutRequestRoutingRule("rule9000")
-                .withoutCertificate("cert1")
-                .updateListener(resource.requestRoutingRules().get("rule443").listener().name())
+                .withoutSslCertificate("cert1")
+                .withoutAuthenticationCertificate(authCert1.name())
+
+                .updateListener(listener443.name())
                     .withHostName("foobar")
                     .parent()
+                .updateListener(listenerRedirect.name())
+                    .withHttp()
+                    .parent()
+
                 .updateBackendHttpConfiguration("config1")
                     .withPort(8082)
                     .withCookieBasedAffinity()
                     .withRequestTimeout(20)
+                    .withAuthenticationCertificate("auth2")
                     .parent()
+
                 .updateBackend("backend1")
                     .withoutIPAddress("11.1.1.3")
                     .withIPAddress("11.1.1.5")
                     .parent()
+
                 .updateRequestRoutingRule("rule80")
                     .toBackend("backend1")
                     .toBackendHttpConfiguration("config1")
                     .parent()
+                .updateRequestRoutingRule("rule443")
+                    .withoutRedirectConfiguration()
+                    .parent()
+
+                .updateRedirectConfiguration("redirect1")
+                    .withTargetUrl("http://azure.com")
+                    .withType(ApplicationGatewayRedirectType.FOUND)
+                    .withQueryStringIncluded()
+                    .withoutPathIncluded()
+                    .parent()
+                .withoutRedirectConfiguration("redirect2")
+
                 .withExistingPublicIPAddress(pip) // Associate with a public IP as well
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -499,69 +603,80 @@ public class TestApplicationGateway {
             // Get the resource created so far
             Assert.assertTrue(resource.tags().containsKey("tag1"));
             Assert.assertTrue(resource.tags().containsKey("tag2"));
-            Assert.assertTrue(ApplicationGatewaySkuName.STANDARD_SMALL.equals(resource.size()));
-            Assert.assertTrue(resource.instanceCount() == 1);
+            Assert.assertEquals(ApplicationGatewaySkuName.STANDARD_SMALL, resource.size());
+            Assert.assertEquals(1, resource.instanceCount());
+
+            // Verify redirect configurations
+            Assert.assertEquals(1, resource.redirectConfigurations().size());
+            ApplicationGatewayRedirectConfiguration redirect = resource.redirectConfigurations().get("redirect1");
+            Assert.assertNotNull(redirect);
+            Assert.assertEquals(ApplicationGatewayRedirectType.FOUND, redirect.type());
+            Assert.assertNull(redirect.targetListener());
+            Assert.assertNotNull(redirect.targetUrl());
+            Assert.assertEquals("http://azure.com", redirect.targetUrl());
 
             // Verify frontend ports
-            Assert.assertTrue(resource.frontendPorts().size() == portCount - 1);
-            Assert.assertTrue(resource.frontendPortNameFromNumber(9000) == null);
+            Assert.assertEquals(portCount - 1, resource.frontendPorts().size());
+            Assert.assertNull(resource.frontendPortNameFromNumber(9000));
 
             // Verify frontends
-            Assert.assertTrue(resource.frontends().size() == frontendCount + 1);
-            Assert.assertTrue(resource.publicFrontends().size() == 1);
+            Assert.assertEquals(frontendCount + 1, resource.frontends().size());
+            Assert.assertEquals(1, resource.publicFrontends().size());
             Assert.assertTrue(resource.publicFrontends().values().iterator().next().publicIPAddressId().equalsIgnoreCase(pip.id()));
-            Assert.assertTrue(resource.privateFrontends().size() == 1);
+            Assert.assertEquals(1, resource.privateFrontends().size());
             ApplicationGatewayFrontend frontend = resource.privateFrontends().values().iterator().next();
-            Assert.assertTrue(!frontend.isPublic());
+            Assert.assertFalse(frontend.isPublic());
             Assert.assertTrue(frontend.isPrivate());
 
             // Verify listeners
-            Assert.assertTrue(resource.listeners().size() == listenerCount - 1);
-            Assert.assertTrue(!resource.listeners().containsKey("listener1"));
+            Assert.assertEquals(listenerCount - 1, resource.listeners().size());
+            Assert.assertFalse(resource.listeners().containsKey("listener1"));
 
             // Verify backends
-            Assert.assertTrue(resource.backends().size() == backendCount - 1);
-            Assert.assertTrue(!resource.backends().containsKey("backend2"));
+            Assert.assertEquals(backendCount - 1, resource.backends().size());
+            Assert.assertFalse(resource.backends().containsKey("backend2"));
             ApplicationGatewayBackend backend = resource.backends().get("backend1");
-            Assert.assertTrue(backend != null);
-            Assert.assertTrue(backend.addresses().size() == 1);
+            Assert.assertNotNull(backend);
+            Assert.assertEquals(1, backend.addresses().size());
             Assert.assertTrue(backend.containsIPAddress("11.1.1.5"));
-            Assert.assertTrue(!backend.containsIPAddress("11.1.1.3"));
-            Assert.assertTrue(!backend.containsIPAddress("11.1.1.4"));
+            Assert.assertFalse(backend.containsIPAddress("11.1.1.3"));
+            Assert.assertFalse(backend.containsIPAddress("11.1.1.4"));
 
             // Verify HTTP configs
-            Assert.assertTrue(resource.backendHttpConfigurations().size() == configCount - 1);
-            Assert.assertTrue(!resource.backendHttpConfigurations().containsKey("config2"));
+            Assert.assertEquals(configCount - 1, resource.backendHttpConfigurations().size());
+            Assert.assertFalse(resource.backendHttpConfigurations().containsKey("config2"));
             ApplicationGatewayBackendHttpConfiguration config = resource.backendHttpConfigurations().get("config1");
-            Assert.assertTrue(config.port() == 8082);
-            Assert.assertTrue(config.requestTimeout() == 20);
+            Assert.assertEquals(8082, config.port());
+            Assert.assertEquals(20, config.requestTimeout());
             Assert.assertTrue(config.cookieBasedAffinity());
+            Assert.assertEquals(1, config.authenticationCertificates().size());
+            Assert.assertFalse(config.authenticationCertificates().containsKey(authCert1.name()));
+            Assert.assertTrue(config.authenticationCertificates().containsKey("auth2"));
 
             // Verify rules
-            Assert.assertTrue(resource.requestRoutingRules().size() == ruleCount - 1);
-            Assert.assertTrue(!resource.requestRoutingRules().containsKey("rule9000"));
+            Assert.assertEquals(ruleCount - 1, resource.requestRoutingRules().size());
+            Assert.assertFalse(resource.requestRoutingRules().containsKey("rule9000"));
 
             ApplicationGatewayRequestRoutingRule rule = resource.requestRoutingRules().get("rule80");
-            Assert.assertTrue(rule != null);
-            Assert.assertTrue(rule.backend() != null);
+            Assert.assertNotNull(rule);
+            Assert.assertNotNull(rule.backend());
             Assert.assertTrue("backend1".equalsIgnoreCase(rule.backend().name()));
-            Assert.assertTrue(rule.backendHttpConfiguration() != null);
+            Assert.assertNotNull(rule.backendHttpConfiguration());
             Assert.assertTrue("config1".equalsIgnoreCase(rule.backendHttpConfiguration().name()));
 
             rule = resource.requestRoutingRules().get("rule443");
-            Assert.assertTrue(rule != null);
-            Assert.assertTrue(rule.listener() != null);
+            Assert.assertNotNull(rule);
+            Assert.assertNotNull(rule.listener());
             Assert.assertTrue("foobar".equalsIgnoreCase(rule.listener().hostName()));
+            Assert.assertNull(rule.redirectConfiguration());
 
-            // Verify certificates
-            Assert.assertTrue(resource.sslCertificates().size() == certCount - 1);
-            Assert.assertTrue(!resource.sslCertificates().containsKey("cert1"));
+            // Verify SSL certificates
+            Assert.assertEquals(sslCertCount - 1, resource.sslCertificates().size());
+            Assert.assertFalse(resource.sslCertificates().containsKey("cert1"));
 
-            // Test stop/start
-            resource.stop();
-            Assert.assertEquals(ApplicationGatewayOperationalState.STOPPED, resource.operationalState());
-            resource.start();
-            Assert.assertEquals(ApplicationGatewayOperationalState.RUNNING, resource.operationalState());
+            // Verify authentication certificates
+            Assert.assertEquals(authCertCount - 1, resource.authenticationCertificates().size());
+            Assert.assertFalse(resource.authenticationCertificates().containsKey("auth1"));
 
             return resource;
         }
@@ -573,7 +688,6 @@ public class TestApplicationGateway {
     public static class PublicComplex extends TestTemplate<ApplicationGateway, ApplicationGateways> {
         /**
          * Tests minimal internal app gateways.
-         * @param pips public IPs
          * @throws Exception when something goes wrong with test PIP creation
          */
         public PublicComplex() throws Exception {
@@ -651,6 +765,8 @@ public class TestApplicationGateway {
                             .withExistingPublicIPAddress(pip)
                             .withSize(ApplicationGatewaySkuName.STANDARD_MEDIUM)
                             .withInstanceCount(2)
+
+                            // Probes
                             .defineProbe("probe1")
                                 .withHost("microsoft.com")
                                 .withPath("/")
@@ -658,6 +774,16 @@ public class TestApplicationGateway {
                                 .withTimeoutInSeconds(10)
                                 .withTimeBetweenProbesInSeconds(9)
                                 .withRetriesBeforeUnhealthy(5)
+                                .withHealthyHttpResponseStatusCodeRange(200, 249)
+                                .attach()
+                            .defineProbe("probe2")
+                                .withHost("microsoft.com")
+                                .withPath("/")
+                                .withHttps()
+                                .withTimeoutInSeconds(11)
+                                .withHealthyHttpResponseStatusCodeRange(600, 610)
+                                .withHealthyHttpResponseStatusCodeRange(650, 660)
+                                .withHealthyHttpResponseBodyContents("I am too healthy for this test.")
                                 .attach()
 
                             // Additional/explicit backend HTTP setting configs
@@ -665,6 +791,10 @@ public class TestApplicationGateway {
                                 .withPort(8081)
                                 .withRequestTimeout(45)
                                 .withProbe("probe1")
+                                .withHostHeader("foo")
+                                .withConnectionDrainingTimeoutInSeconds(100)
+                                .withPath("path")
+                                .withAffinityCookieName("cookie")
                                 .attach()
 
                             .withDisabledSslProtocols(ApplicationGatewaySslProtocol.TLSV1_0, ApplicationGatewaySslProtocol.TLSV1_1)
@@ -724,15 +854,6 @@ public class TestApplicationGateway {
             // Verify certificates
             Assert.assertEquals(2, appGateway.sslCertificates().size());
 
-            // Verify backend HTTP settings configs
-            Assert.assertEquals(2, appGateway.backendHttpConfigurations().size());
-            ApplicationGatewayBackendHttpConfiguration config = appGateway.backendHttpConfigurations().get("config1");
-            Assert.assertNotNull(config);
-            Assert.assertEquals(8081, config.port());
-            Assert.assertEquals(45, config.requestTimeout());
-            Assert.assertNotNull(config.probe());
-            Assert.assertEquals("probe1", config.probe().name());
-
             // Verify backends
             Assert.assertEquals(2, appGateway.backends().size());
             ApplicationGatewayBackend backend = appGateway.backends().get("backend1");
@@ -741,19 +862,19 @@ public class TestApplicationGateway {
 
             // Verify request routing rules
             Assert.assertEquals(3, appGateway.requestRoutingRules().size());
-            ApplicationGatewayRequestRoutingRule rule;
+            ApplicationGatewayRequestRoutingRule rule, rule80;
 
-            rule = appGateway.requestRoutingRules().get("rule80");
-            Assert.assertNotNull(rule);
-            Assert.assertTrue(pip.id().equalsIgnoreCase(rule.publicIPAddressId()));
-            Assert.assertEquals(80, rule.frontendPort());
-            Assert.assertEquals(8080, rule.backendPort());
-            Assert.assertTrue(rule.cookieBasedAffinity());
-            Assert.assertEquals(4, rule.backendAddresses().size());
-            Assert.assertTrue(rule.backend().containsIPAddress("11.1.1.2"));
-            Assert.assertTrue(rule.backend().containsIPAddress("11.1.1.1"));
-            Assert.assertTrue(rule.backend().containsFqdn("www.microsoft.com"));
-            Assert.assertTrue(rule.backend().containsFqdn("www.example.com"));
+            rule80 = appGateway.requestRoutingRules().get("rule80");
+            Assert.assertNotNull(rule80);
+            Assert.assertTrue(pip.id().equalsIgnoreCase(rule80.publicIPAddressId()));
+            Assert.assertEquals(80, rule80.frontendPort());
+            Assert.assertEquals(8080, rule80.backendPort());
+            Assert.assertTrue(rule80.cookieBasedAffinity());
+            Assert.assertEquals(4, rule80.backendAddresses().size());
+            Assert.assertTrue(rule80.backend().containsIPAddress("11.1.1.2"));
+            Assert.assertTrue(rule80.backend().containsIPAddress("11.1.1.1"));
+            Assert.assertTrue(rule80.backend().containsFqdn("www.microsoft.com"));
+            Assert.assertTrue(rule80.backend().containsFqdn("www.example.com"));
 
             rule = appGateway.requestRoutingRules().get("rule443");
             Assert.assertNotNull(rule);
@@ -775,8 +896,22 @@ public class TestApplicationGateway {
             Assert.assertNotNull(rule.backend());
             Assert.assertTrue(rule.backend().name().equalsIgnoreCase("backend1"));
 
+            // Verify backend HTTP settings configs
+            Assert.assertEquals(2, appGateway.backendHttpConfigurations().size());
+            ApplicationGatewayBackendHttpConfiguration config = appGateway.backendHttpConfigurations().get("config1");
+            Assert.assertNotNull(config);
+            Assert.assertEquals(8081, config.port());
+            Assert.assertEquals(45, config.requestTimeout());
+            Assert.assertNotNull(config.probe());
+            Assert.assertEquals("probe1", config.probe().name());
+            Assert.assertFalse(config.isHostHeaderFromBackend());
+            Assert.assertEquals("foo", config.hostHeader());
+            Assert.assertEquals(100, config.connectionDrainingTimeoutInSeconds());
+            Assert.assertEquals("/path/", config.path());
+            Assert.assertEquals("cookie", config.affinityCookieName());
+
             // Verify probes
-            Assert.assertEquals(1, appGateway.probes().size());
+            Assert.assertEquals(2, appGateway.probes().size());
             ApplicationGatewayProbe probe;
             probe = appGateway.probes().get("probe1");
             Assert.assertNotNull(probe);
@@ -786,6 +921,18 @@ public class TestApplicationGateway {
             Assert.assertEquals(5,  probe.retriesBeforeUnhealthy());
             Assert.assertEquals(9, probe.timeBetweenProbesInSeconds());
             Assert.assertEquals(10, probe.timeoutInSeconds());
+            Assert.assertNotNull(probe.healthyHttpResponseStatusCodeRanges());
+            Assert.assertEquals(1, probe.healthyHttpResponseStatusCodeRanges().size());
+            Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().contains("200-249"));
+
+            probe = appGateway.probes().get("probe2");
+            Assert.assertNotNull(probe);
+            Assert.assertEquals(ApplicationGatewayProtocol.HTTPS, probe.protocol());
+            Assert.assertEquals(2, probe.healthyHttpResponseStatusCodeRanges().size());
+            Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().contains("600-610"));
+            Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().contains("650-660"));
+            Assert.assertEquals("I am too healthy for this test.", probe.healthyHttpResponseBodyContents());
+
             creationThread.join();
 
             // Verify SSL policy - disabled protocols
@@ -800,6 +947,10 @@ public class TestApplicationGateway {
         @Override
         public ApplicationGateway updateResource(final ApplicationGateway resource) throws Exception {
             final int rulesCount = resource.requestRoutingRules().size();
+            ApplicationGatewayRequestRoutingRule rule80 = resource.requestRoutingRules().get("rule80");
+            Assert.assertNotNull(rule80);
+            ApplicationGatewayBackendHttpConfiguration backendConfig80 = rule80.backendHttpConfiguration();
+            Assert.assertNotNull(backendConfig80);
 
             resource.update()
                 .withSize(ApplicationGatewaySkuName.STANDARD_SMALL)
@@ -810,8 +961,21 @@ public class TestApplicationGateway {
                 .updateRequestRoutingRule("rule443")
                     .fromListener("listener1")
                     .parent()
+                .updateBackendHttpConfiguration("config1")
+                    .withoutHostHeader()
+                    .withoutConnectionDraining()
+                    .withAffinityCookieName(null)
+                    .withPath(null)
+                    .parent()
+                .updateBackendHttpConfiguration(backendConfig80.name())
+                    .withHostHeaderFromBackend()
+                    .parent()
                 .withoutRequestRoutingRule("rule9000")
                 .withoutProbe("probe1")
+                .updateProbe("probe2")
+                    .withoutHealthyHttpResponseStatusCodeRanges()
+                    .withHealthyHttpResponseBodyContents(null)
+                    .parent()
                 .withoutDisabledSslProtocols(ApplicationGatewaySslProtocol.TLSV1_0, ApplicationGatewaySslProtocol.TLSV1_1)
                 .withTag("tag1", "value1")
                 .withTag("tag2", "value2")
@@ -836,10 +1000,28 @@ public class TestApplicationGateway {
             Assert.assertTrue("listener1".equalsIgnoreCase(rule.listener().name()));
 
             // Verify probes
-            Assert.assertTrue(resource.probes().isEmpty());
+            Assert.assertEquals(1, resource.probes().size());
+            ApplicationGatewayProbe probe = resource.probes().get("probe2");
+            Assert.assertNotNull(probe);
+            Assert.assertTrue(probe.healthyHttpResponseStatusCodeRanges().isEmpty());
+            Assert.assertNull(probe.healthyHttpResponseBodyContents());
 
             // Verify backend configs
-            Assert.assertNull(resource.backendHttpConfigurations().get("config1").probe());
+            ApplicationGatewayBackendHttpConfiguration backendConfig = resource.backendHttpConfigurations().get("config1");
+            Assert.assertNotNull(backendConfig);
+            Assert.assertNull(backendConfig.probe());
+            Assert.assertFalse(backendConfig.isHostHeaderFromBackend());
+            Assert.assertNull(backendConfig.hostHeader());
+            Assert.assertEquals(0, backendConfig.connectionDrainingTimeoutInSeconds());
+            Assert.assertNull(backendConfig.affinityCookieName());
+            Assert.assertNull(backendConfig.path());
+
+            rule80 = resource.requestRoutingRules().get("rule80");
+            Assert.assertNotNull(rule80);
+            backendConfig80 = rule80.backendHttpConfiguration();
+            Assert.assertNotNull(backendConfig80);
+            Assert.assertTrue(backendConfig80.isHostHeaderFromBackend());
+            Assert.assertNull(backendConfig80.hostHeader());
 
             // Verify SSL policy - disabled protocols
             Assert.assertEquals(0, resource.disabledSslProtocols().size());
@@ -1107,11 +1289,17 @@ public class TestApplicationGateway {
                 .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
                 .append("\n\t\t\tPort: ").append(httpConfig.port())
                 .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
-                .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
+                .append("\n\t\t\tProtocol: ").append(httpConfig.protocol())
+                .append("\n\t\tHost header: ").append(httpConfig.hostHeader())
+                .append("\n\t\tHost header comes from backend? ").append(httpConfig.isHostHeaderFromBackend())
+                .append("\n\t\tConnection draining timeout in seconds: ").append(httpConfig.connectionDrainingTimeoutInSeconds())
+                .append("\n\t\tAffinity cookie name: ").append(httpConfig.affinityCookieName())
+                .append("\n\t\tPath: ").append(httpConfig.path());
 
             if (httpConfig.probe() != null) {
                 info.append("\n\t\t\tProbe: " + httpConfig.probe().name());
             }
+            info.append("\n\t\tIs probe enabled? ").append(httpConfig.isProbeEnabled());
         }
 
         // Show SSL certificates
@@ -1147,7 +1335,30 @@ public class TestApplicationGateway {
                 .append("\n\t\tInterval in seconds: ").append(probe.timeBetweenProbesInSeconds())
                 .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
                 .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
-                .append("\n\t\tHost: ").append(probe.host());
+                .append("\n\t\tHost: ").append(probe.host())
+                .append("\n\t\tHealthy HTTP response status code ranges: ").append(probe.healthyHttpResponseStatusCodeRanges())
+                .append("\n\t\tHealthy HTTP response body contents: ").append(probe.healthyHttpResponseBodyContents());
+        }
+
+        // Show authentication certificates
+        Map<String, ApplicationGatewayAuthenticationCertificate> certs = resource.authenticationCertificates();
+        info.append("\n\tAuthentication certificates: ").append(certs.size());
+        for (ApplicationGatewayAuthenticationCertificate cert : certs.values()) {
+            info.append("\n\t\tName: ").append(cert.name())
+                .append("\n\t\tBase-64 encoded data: ").append(cert.data());
+        }
+
+        // Show redirect configurations
+        Map<String, ApplicationGatewayRedirectConfiguration> redirects = resource.redirectConfigurations();
+        info.append("\n\tRedirect configurations: ").append(redirects.size());
+        for (ApplicationGatewayRedirectConfiguration redirect : redirects.values()) {
+            info.append("\n\t\tName: ").append(redirect.name())
+                .append("\n\t\tTarget URL: ").append(redirect.type())
+                .append("\n\t\tTarget URL: ").append(redirect.targetUrl())
+                .append("\n\t\tTarget listener: ").append(redirect.targetListener() != null ? redirect.targetListener().name() : null)
+                .append("\n\t\tIs path included? ").append(redirect.isPathIncluded())
+                .append("\n\t\tIs query string included? ").append(redirect.isQueryStringIncluded())
+                .append("\n\t\tReferencing request routing rules: ").append(redirect.requestRoutingRules().values());
         }
 
         // Show request routing rules
@@ -1155,14 +1366,15 @@ public class TestApplicationGateway {
         info.append("\n\tRequest routing rules: ").append(rules.size());
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
             info.append("\n\t\tName: ").append(rule.name())
-                .append("\n\t\t\tType: ").append(rule.ruleType())
-                .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
-                .append("\n\t\t\tHost name: ").append(rule.hostName())
-                .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
-                .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                .append("\n\t\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
-                .append("\n\t\t\tBackend port: ").append(rule.backendPort())
-                .append("\n\t\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity());
+                .append("\n\t\tType: ").append(rule.ruleType())
+                .append("\n\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
+                .append("\n\t\tHost name: ").append(rule.hostName())
+                .append("\n\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
+                .append("\n\t\tFrontend port: ").append(rule.frontendPort())
+                .append("\n\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
+                .append("\n\t\tBackend port: ").append(rule.backendPort())
+                .append("\n\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity())
+                .append("\n\t\tRedirect configuration: ").append(rule.redirectConfiguration() != null ? rule.redirectConfiguration().name() : "(none)");
 
             // Show backend addresses
             Collection<ApplicationGatewayBackendAddress> addresses = rule.backendAddresses();
@@ -1206,7 +1418,7 @@ public class TestApplicationGateway {
             if (listener == null) {
                 info.append("(None)");
             } else {
-                info.append(config.name());
+                info.append(listener.name());
             }
         }
         System.out.println(info.toString());

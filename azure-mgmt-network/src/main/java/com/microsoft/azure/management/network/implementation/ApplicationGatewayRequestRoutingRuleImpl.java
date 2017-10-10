@@ -19,6 +19,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
+import com.microsoft.azure.management.network.ApplicationGatewayRedirectConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
@@ -151,6 +152,16 @@ class ApplicationGatewayRequestRoutingRuleImpl
             return (ApplicationGatewayListenerImpl) this.parent().listeners().get(listenerName);
         } else {
             return null;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayRedirectConfiguration redirectConfiguration() {
+        SubResource ref = this.inner().redirectConfiguration();
+        if (ref == null) {
+            return null;
+        } else {
+            return this.parent().redirectConfigurations().get(ResourceUtils.nameFromResourceId(ref.id()));
         }
     }
 
@@ -362,6 +373,26 @@ class ApplicationGatewayRequestRoutingRuleImpl
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackendFqdn(String fqdn) {
         this.parent().updateBackend(ensureBackend().name()).withFqdn(fqdn);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withRedirectConfiguration(String name) {
+        if (name == null) {
+            this.inner().withRedirectConfiguration(null);
+        } else {
+            SubResource ref = new SubResource().withId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
+            this.inner()
+                .withRedirectConfiguration(ref)
+                .withBackendAddressPool(null)
+                .withBackendHttpSettings(null);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withoutRedirectConfiguration() {
+        this.inner().withRedirectConfiguration(null);
         return this;
     }
 }

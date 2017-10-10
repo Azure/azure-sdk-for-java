@@ -332,10 +332,35 @@ public interface VirtualMachineScaleSet extends
     String managedServiceIdentityPrincipalId();
 
     /**
+     * @return the type of Managed Service Identity used for the virtual machine scale set.
+     */
+    @Beta(Beta.SinceVersion.V1_4_0)
+    ResourceIdentityType managedServiceIdentityType();
+
+    /**
      * @return the availability zones assigned to virtual machine scale set.
      */
     @Beta(Beta.SinceVersion.V1_3_0)
     Set<AvailabilityZoneId> availabilityZones();
+
+    /**
+     * @return true if boot diagnostics is enabled for the virtual machine scale set.
+     */
+    @Beta(Beta.SinceVersion.V1_4_0)
+    boolean isBootDiagnosticsEnabled();
+
+    /**
+     * @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine scale set.
+     */
+    @Beta(Beta.SinceVersion.V1_4_0)
+    String bootDiagnosticsStorageUri();
+
+    /**
+     * @return the storage account type of the OS managed disk. A null value will be returned if the
+     * virtual machine scale set is based on un-managed disk.
+     */
+    @Beta(Beta.SinceVersion.V1_4_0)
+    StorageAccountTypes managedOSDiskStorageAccountType();
 
     /**
      * The virtual machine scale set stages shared between managed and unmanaged based
@@ -1387,6 +1412,47 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
+         * The stage of the virtual machine scale set definition allowing to enable boot diagnostics.
+         */
+        @Beta(Beta.SinceVersion.V1_4_0)
+        interface WithBootDiagnostics {
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
+             *
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_4_0)
+            WithCreate withBootDiagnostics();
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
+             *
+             * @param creatable the storage account to be created and used for store the boot diagnostics
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_4_0)
+            WithCreate withBootDiagnostics(Creatable<StorageAccount> creatable);
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
+             *
+             * @param storageAccount an existing storage account to be uses to store the boot diagnostics
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_4_0)
+            WithCreate withBootDiagnostics(StorageAccount storageAccount);
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
+             *
+             * @param storageAccountBlobEndpointUri a storage account blob endpoint to store the boot diagnostics
+             * @return the next stage of the definition
+             */
+            @Beta(Beta.SinceVersion.V1_4_0)
+            WithCreate withBootDiagnostics(String storageAccountBlobEndpointUri);
+        }
+
+        /**
          * The stage of a virtual machine scale set definition containing all the required inputs for the resource
          * to be created, but also allowing for any other optional settings
          * to be specified.
@@ -1402,6 +1468,7 @@ public interface VirtualMachineScaleSet extends
                 DefinitionStages.WithCustomData,
                 DefinitionStages.WithExtension,
                 DefinitionStages.WithManagedServiceIdentity,
+                DefinitionStages.WithBootDiagnostics,
                 Resource.DefinitionWithTags<VirtualMachineScaleSet.DefinitionStages.WithCreate> {
         }
     }
@@ -1728,6 +1795,56 @@ public interface VirtualMachineScaleSet extends
         }
 
         /**
+         * The stage of the virtual machine scale set definition allowing to enable boot diagnostics.
+         */
+        @Beta(Beta.SinceVersion.V1_4_0)
+        interface WithBootDiagnostics {
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_4_0)
+            Update withBootDiagnostics();
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
+             *
+             * @param creatable the storage account to be created and used for store the boot diagnostics
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_4_0)
+            Update withBootDiagnostics(Creatable<StorageAccount> creatable);
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
+             *
+             * @param storageAccount an existing storage account to be uses to store the boot diagnostics
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_4_0)
+            Update withBootDiagnostics(StorageAccount storageAccount);
+
+            /**
+             * Specifies that boot diagnostics needs to be enabled in the virtual machine scale set.
+             *
+             * @param storageAccountBlobEndpointUri a storage account blob endpoint to store the boot diagnostics
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_4_0)
+            Update withBootDiagnostics(String storageAccountBlobEndpointUri);
+
+            /**
+             * Specifies that boot diagnostics needs to be disabled in the virtual machine scale set.
+             *
+             * @return the next stage of the update
+             */
+            @Beta(Beta.SinceVersion.V1_4_0)
+            Update withoutBootDiagnostics();
+        }
+
+
+        /**
          * The stage of the virtual machine scale set definition allowing to specify unmanaged data disk.
          */
         interface WithUnmanagedDataDisk {
@@ -1843,6 +1960,7 @@ public interface VirtualMachineScaleSet extends
                 UpdateStages.WithoutPrimaryLoadBalancerBackend,
                 UpdateStages.WithoutPrimaryLoadBalancerNatPool,
                 UpdateStages.WithManagedServiceIdentity,
+                UpdateStages.WithBootDiagnostics,
                 UpdateStages.WithAvailabilityZone {
         }
     }

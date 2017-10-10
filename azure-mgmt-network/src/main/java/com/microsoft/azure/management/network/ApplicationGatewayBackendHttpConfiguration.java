@@ -5,6 +5,10 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.io.File;
+import java.io.IOException;
+import java.util.Map;
+
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -14,8 +18,8 @@ import com.microsoft.azure.management.network.model.HasPort;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Attachable;
-import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
+import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 
 /**
  * A client-side representation of an application gateway's backend HTTP configuration.
@@ -26,6 +30,11 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
     ChildResource<ApplicationGateway>,
     HasProtocol<ApplicationGatewayProtocol>,
     HasPort {
+    /**
+     * @return authentication certificates associated with this backend HTTPS configuration
+     */
+    @Beta(SinceVersion.V1_4_0)
+    Map<String, ApplicationGatewayAuthenticationCertificate> authenticationCertificates();
 
     /**
      * @return true if cookie based affinity (sticky sessions) is enabled, else false
@@ -40,67 +49,144 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
     /**
      * @return the probe associated with this backend
      */
-    @Beta(SinceVersion.V1_1_0)
     ApplicationGatewayProbe probe();
 
-    //TODO Map<String, ApplicationGatewayCertificate> authenticationCertificates()
+    /**
+     * @return host header to be sent to the backend servers
+     */
+    @Beta(SinceVersion.V1_4_0)
+    String hostHeader();
 
     /**
-     * Grouping of application gateway backend HTTP configuration stages.
+     * @return whether the host header should come from the host name of the backend server
+     */
+    @Beta(SinceVersion.V1_4_0)
+    boolean isHostHeaderFromBackend();
+
+    /**
+     * @return true if the probe is enabled
+     */
+    @Beta(SinceVersion.V1_4_0)
+    boolean isProbeEnabled();
+
+    /**
+     * @return if 0 then connection draining is not enabled, otherwise if between 1 and 3600, then the number of seconds when connection draining is active
+     */
+    @Beta(SinceVersion.V1_4_0)
+    int connectionDrainingTimeoutInSeconds();
+
+    /**
+     * @return name used for the affinity cookie
+     */
+    @Beta(SinceVersion.V1_4_0)
+    String affinityCookieName();
+
+    /**
+     * @return the path, if any, used as a prefix for all HTTP requests
+     */
+    @Beta(SinceVersion.V1_4_0)
+    String path();
+
+    /**
+     * Grouping of application gateway backend HTTPS configuration stages.
      */
     interface DefinitionStages {
         /**
          * The first stage of an application gateway backend HTTP configuration.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ReturnT> extends WithAttach<ReturnT> {
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the port number.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithPort<ParentT> extends HasPort.DefinitionStages.WithPort<WithAttach<ParentT>> {
+        interface WithPort<ReturnT> extends HasPort.DefinitionStages.WithPort<WithAttach<ReturnT>> {
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the protocol.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithProtocol<ParentT> extends HasProtocol.DefinitionStages.WithProtocol<WithAttach<ParentT>, ApplicationGatewayProtocol> {
+        interface WithProtocol<ReturnT> {
+            /**
+             * Specifies the transport protocol.
+             * @param protocol a transport protocol
+             * @return the next stage of the definition
+             * @deprecated use {@link #withHttps()} instead (HTTP is the default)
+             */
+            @Deprecated
+            WithAttach<ReturnT> withProtocol(ApplicationGatewayProtocol protocol);
+
+            /**
+             * Specifies HTTPS as the protocol.
+             * @return the next stage of the definition
+             */
+            @Method
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withHttps();
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to enable cookie based affinity.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithAffinity<ParentT> {
+        interface WithAffinity<ReturnT> {
             /**
              * Enables cookie based affinity.
              * @return the next stage of the update
              */
             @Method
-            WithAttach<ParentT> withCookieBasedAffinity();
+            WithAttach<ReturnT> withCookieBasedAffinity();
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the name for the affinity cookie.
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithCookieName<ReturnT> {
+            /**
+             * Specifies the name for the affinity cookie.
+             * @param name a name
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withAffinityCookieName(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the path to use as the prefix for all HTTP requests.
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithPath<ReturnT> {
+            /**
+             * Specifies the path prefix for all HTTP requests.
+             * @param path a path
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withPath(String path);
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the request timeout.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithRequestTimeout<ParentT> {
+        interface WithRequestTimeout<ReturnT> {
             /**
              * Specifies the request timeout.
              * @param seconds a number of seconds
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withRequestTimeout(int seconds);
+            WithAttach<ReturnT> withRequestTimeout(int seconds);
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to associate an existing probe.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithProbe<ParentT> {
+        interface WithProbe<ReturnT> {
             /**
              * Specifies an existing probe on this application gateway to associate with this backend.
              * <p>
@@ -109,36 +195,130 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * @param name the name of an existing probe
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_1_0)
-            WithAttach<ParentT> withProbe(String name);
+            WithAttach<ReturnT> withProbe(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the host header.
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithHostHeader<ReturnT> {
+            /**
+             * Specifies that the host header should come from the host name of the backend server.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHostHeaderFromBackend();
+
+            /**
+             * Specifies the host header.
+             * @param hostHeader the host header
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHostHeader(String hostHeader);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to control connection draining.
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithConnectionDraining<ReturnT> {
+            /**
+             * Specifies the number of seconds when connection draining is active.
+             * @param seconds a number of seconds between 1 and 3600
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withConnectionDrainingTimeoutInSeconds(int seconds);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to add an authentication certificate.
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithAuthenticationCertificate<ReturnT> {
+            /**
+             * Associates the specified authentication certificate that exists on this application gateway with this backend HTTP confifuration.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param name the name of an existing authentication certificate
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withAuthenticationCertificate(String name);
+
+            /**
+             * Associates a new, automatically named certificate with this HTTP backend configuration based on the specified data.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param derData the DER-encoded data of an X.509 certificate
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withAuthenticationCertificateFromBytes(byte[] derData);
+
+            /**
+             * Associates a new, automatically named certificate with this HTTP backend configuration loaded from the specified file.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param certificateFile a file containing the DER format representation of an X.509 certificate
+             * @return the next stage of the definition
+             * @throws IOException when there are issues reading from the specified file
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withAuthenticationCertificateFromFile(File certificateFile) throws IOException;
+
+            /**
+             * Associates a new, automatically named certificate with this HTTP backend configuration loaded from the specified file.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param base64Data the base-64 encoded data of an X.509 certificate
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withAuthenticationCertificateFromBase64(String base64Data);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to add an authentication certificate,
+         * specify other options or attach to the parent application gateway definition.
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
+         */
+        interface WithAttachAndAuthCert<ReturnT> extends WithAttach<ReturnT>, WithAuthenticationCertificate<ReturnT> {
         }
 
         /** The final stage of an application gateway backend HTTP configuration.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
          * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            Attachable.InDefinition<ParentT>,
-            WithPort<ParentT>,
-            WithAffinity<ParentT>,
-            WithProtocol<ParentT>,
-            WithRequestTimeout<ParentT>,
-            WithProbe<ParentT> {
+        interface WithAttach<ReturnT> extends
+            Attachable.InDefinition<ReturnT>,
+            WithPort<ReturnT>,
+            WithAffinity<ReturnT>,
+            WithProtocol<ReturnT>,
+            WithRequestTimeout<ReturnT>,
+            WithProbe<ReturnT>,
+            WithHostHeader<ReturnT>,
+            WithConnectionDraining<ReturnT>,
+            WithCookieName<ReturnT>,
+            WithPath<ReturnT> {
         }
     }
 
-    /** The entirety of an application gateway backend HTTP configuration definition.
-     * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+    /** The entirety of an application gateway backend HTTPS configuration definition.
+     * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
      */
-    interface Definition<ParentT> extends
-        DefinitionStages.Blank<ParentT>,
-        DefinitionStages.WithAttach<ParentT> {
+    interface Definition<ReturnT> extends
+        DefinitionStages.Blank<ReturnT>,
+        DefinitionStages.WithAttach<ReturnT>,
+        DefinitionStages.WithAttachAndAuthCert<ReturnT> {
     }
 
     /**
-     * Grouping of application gateway backend HTTP configuration update stages.
+     * Grouping of application gateway backend HTTPS configuration update stages.
      */
     interface UpdateStages {
         /**
@@ -169,7 +349,31 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the protocol.
          */
-        interface WithProtocol extends HasProtocol.UpdateStages.WithProtocol<Update, ApplicationGatewayProtocol> {
+        interface WithProtocol {
+            /**
+             * Specifies the transport protocol.
+             * @param protocol a transport protocol
+             * @return the next stage of the update
+             * @deprecated use {@link #withHttp()} or {@link #withHttps()} instead
+             */
+            @Deprecated
+            Update withProtocol(ApplicationGatewayProtocol protocol);
+
+            /**
+             * Specifies HTTPS as the protocol.
+             * @return the next stage of the update
+             */
+            @Method
+            @Beta(SinceVersion.V1_4_0)
+            Update withHttps();
+
+            /**
+             * Specifies HTTP as the protocol.
+             * @return the next stage of the update
+             */
+            @Method
+            @Beta(SinceVersion.V1_4_0)
+            Update withHttp();
         }
 
         /**
@@ -196,21 +400,154 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * @param name the name of an existing probe
              * @return the next stage of the update
              */
-            @Beta(SinceVersion.V1_1_0)
             Update withProbe(String name);
 
             /**
              * Removes the association with a probe.
              * @return the next stage of the update
              */
-            @Beta(SinceVersion.V1_1_0)
             @Method
             Update withoutProbe();
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the host header.
+         */
+        interface WithHostHeader {
+            /**
+             * Specifies that the host header should come from the host name of the backend server.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withHostHeaderFromBackend();
+
+            /**
+             * Specifies that no host header should be used.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutHostHeader();
+
+            /**
+             * Specifies the host header.
+             * @param hostHeader the host header
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withHostHeader(String hostHeader);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to control connection draining.
+         */
+        interface WithConnectionDraining {
+            /**
+             * Specifies the number of seconds when connection draining is active.
+             * @param seconds a number of seconds between 1 and 3600
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withConnectionDrainingTimeoutInSeconds(int seconds);
+
+            /**
+             * Disables connection draining.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutConnectionDraining();
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the name for the affinity cookie.
+         */
+        interface WithCookieName {
+            /**
+             * Specifies the name for the affinity cookie.
+             * @param name a name
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withAffinityCookieName(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the path to use as the prefix for all HTTP requests.
+         */
+        interface WithPath {
+            /**
+             * Specifies the path prefix for all HTTP requests.
+             * @param path a path
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withPath(String path);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to add an authentication certificate.
+         */
+        interface WithAuthenticationCertificate {
+            /**
+             * Associates the specified authentication certificate that exists on this application gateway with this backend HTTP confifuration.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param name the name of an existing authentication certificate
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withAuthenticationCertificate(String name);
+
+            /**
+             * Associates a new, automatically named certificate with this HTTP backend configuration based on the specified data.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param derData the DER-encoded data of an X.509 certificate
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withAuthenticationCertificateFromBytes(byte[] derData);
+
+            /**
+             * Associates a new, automatically named certificate with this HTTP backend configuration loaded from the specified file.
+             * @param certificateFile a file containing the DER representation of an X.509 certificate
+             * @return the next stage of the update
+             * @throws IOException when there are issues reading the specified file
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withAuthenticationCertificateFromFile(File certificateFile) throws IOException;
+
+            /**
+             * Associates a new, automatically named certificate with this HTTP backend configuration loaded from the specified file.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param base64Data the base-64 encoded data of an X.509 certificate
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withAuthenticationCertificateFromBase64(String base64Data);
+
+            /**
+             * Removes the reference to the specified authentication certificate from this HTTP backend configuration.
+             * <p>
+             * Note the certificate will remain associated with the application gateway until removed from it explicitly.
+             * @param name the name of an existing authentication certificate associated with this HTTP backend configuration
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutAuthenticationCertificate(String name);
+
+            /**
+             * Removes all references to any authentication certificates.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            @Method
+            Update withoutAuthenticationCertificates();
         }
     }
 
     /**
-     * The entirety of an application gateway backend HTTP configuration update as part of an application gateway update.
+     * The entirety of an application gateway backend HTTPS configuration update as part of an application gateway update.
      */
     interface Update extends
         Settable<ApplicationGateway.Update>,
@@ -218,86 +555,195 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
         UpdateStages.WithAffinity,
         UpdateStages.WithProtocol,
         UpdateStages.WithRequestTimeout,
-        UpdateStages.WithProbe {
+        UpdateStages.WithProbe,
+        UpdateStages.WithHostHeader,
+        UpdateStages.WithConnectionDraining,
+        UpdateStages.WithCookieName,
+        UpdateStages.WithPath,
+        UpdateStages.WithAuthenticationCertificate {
     }
 
     /**
-     * Grouping of application gateway backend HTTP configuration definition stages applicable as part of an application gateway update.
+     * Grouping of application gateway backend HTTPS configuration definition stages applicable as part of an application gateway update.
      */
     interface UpdateDefinitionStages {
         /**
          * The first stage of an application gateway backend HTTP configuration definition.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
          */
-        interface Blank<ParentT> extends WithAttach<ParentT> {
+        interface Blank<ReturnT> extends WithAttach<ReturnT> {
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to add an authentication certificate,
+         * specify other options or attach to the parent application gateway update.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithAttachAndAuthCert<ReturnT> extends WithAttach<ReturnT>, WithAuthenticationCertificate<ReturnT> {
         }
 
         /** The final stage of an application gateway backend HTTP configuration definition.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the definition
          * can be attached to the parent application gateway definition using {@link WithAttach#attach()}.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway definition to return to after attaching this definition
          */
-        interface WithAttach<ParentT> extends
-            Attachable.InUpdate<ParentT>,
-            WithPort<ParentT>,
-            WithAffinity<ParentT>,
-            WithProtocol<ParentT>,
-            WithRequestTimeout<ParentT> {
+        interface WithAttach<ReturnT> extends
+            Attachable.InUpdate<ReturnT>,
+            WithPort<ReturnT>,
+            WithAffinity<ReturnT>,
+            WithProtocol<ReturnT>,
+            WithRequestTimeout<ReturnT>,
+            WithHostHeader<ReturnT>,
+            WithConnectionDraining<ReturnT>,
+            WithCookieName<ReturnT>,
+            WithPath<ReturnT>,
+            WithAuthenticationCertificate<ReturnT> {
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to add an authentication certificate.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithAuthenticationCertificate<ReturnT> {
+            /**
+             * Associates the specified authentication certificate that exists on this application gateway with this backend HTTP confifuration.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param name the name of an existing authentication certificate
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withAuthenticationCertificate(String name);
+
+            /**
+             * Associates a new, automatically named certificate with this HTTP backend configuration based on the specified data.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param derData the DER encoded data of an X.509 certificate
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withAuthenticationCertificateFromBytes(byte[] derData);
+
+            /**
+             * Associates a new, automatically named certificate with this HTTP backend configuration loaded from the specified file.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param certificateFile a file containing the DER representation of an X.509 certificate
+             * @return the next stage of the definition
+             * @throws IOException when there are issues reading from the specified file
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withAuthenticationCertificateFromFile(File certificateFile) throws IOException;
+
+            /**
+             * Associates a new, automatically named certificate with this HTTP backend configuration loaded from the specified file.
+             * <p>
+             * Multiple calls to this method will add additional certificate references.
+             * @param base64Data the base-64 encoded data of an X.509 certificate
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withAuthenticationCertificateFromBase64(String base64Data);
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the port number.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
          */
-        interface WithPort<ParentT> extends HasPort.UpdateDefinitionStages.WithPort<WithAttach<ParentT>> {
+        interface WithPort<ReturnT> extends HasPort.UpdateDefinitionStages.WithPort<WithAttach<ReturnT>> {
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the request timeout.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
          */
-        interface WithRequestTimeout<ParentT> {
+        interface WithRequestTimeout<ReturnT> {
             /**
              * Specifies the request timeout.
              * @param seconds a number of seconds
              * @return the next stage of the definition
              */
-            WithAttach<ParentT> withRequestTimeout(int seconds);
+            WithAttach<ReturnT> withRequestTimeout(int seconds);
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to specify the protocol.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
          */
-        interface WithProtocol<ParentT> extends HasProtocol.UpdateDefinitionStages.WithProtocol<WithAttach<ParentT>, ApplicationGatewayProtocol> {
+        interface WithProtocol<ReturnT> {
+            /**
+             * Specifies the transport protocol.
+             * @param protocol a transport protocol
+             * @return the next stage of the definition
+             * @deprecated use {@link #withHttps()} instead (HTTP is the default)
+             */
+            @Deprecated
+            WithAttach<ReturnT> withProtocol(ApplicationGatewayProtocol protocol);
+
+            /**
+             * Specifies HTTPS as the protocol.
+             * @return the next stage of the definition
+             */
+            @Method
+            @Beta(SinceVersion.V1_4_0)
+            WithAttachAndAuthCert<ReturnT> withHttps();
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to enable or disable cookie based affinity.
-         * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
          */
-        interface WithAffinity<ParentT> {
+        interface WithAffinity<ReturnT> {
             /**
              * Enables cookie based affinity.
              * @return the next stage of the update
              */
             @Method
-            WithAttach<ParentT> withCookieBasedAffinity();
+            WithAttach<ReturnT> withCookieBasedAffinity();
 
             /**
              * Disables cookie based affinity.
              * @return the next stage of the update
              */
             @Method
-            WithAttach<ParentT> withoutCookieBasedAffinity();
+            WithAttach<ReturnT> withoutCookieBasedAffinity();
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the name for the affinity cookie.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithCookieName<ReturnT> {
+            /**
+             * Specifies the name for the affinity cookie.
+             * @param name a name
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withAffinityCookieName(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the path to use as the prefix for all HTTP requests.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithPath<ReturnT> {
+            /**
+             * Specifies the path prefix for all HTTP requests.
+             * @param path a path
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withPath(String path);
         }
 
         /**
          * The stage of an application gateway backend HTTP configuration allowing to associate an existing probe.
-         * @param <ParentT> the stage of the parent application gateway update to return to after attaching this definition
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
          */
-        interface WithProbe<ParentT> {
+        interface WithProbe<ReturnT> {
             /**
              * Specifies an existing probe on this application gateway to associate with this backend.
              * <p>
@@ -306,16 +752,51 @@ public interface ApplicationGatewayBackendHttpConfiguration extends
              * @param name the name of an existing probe
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_1_0)
-            WithAttach<ParentT> withProbe(String name);
+            WithAttach<ReturnT> withProbe(String name);
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to specify the host header.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithHostHeader<ReturnT> {
+            /**
+             * Specifies the host header.
+             * @param hostHeader the host header
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHostHeader(String hostHeader);
+
+            /**
+             * Specifies that the host header should come from the host name of the backend server.
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withHostHeaderFromBackend();
+        }
+
+        /**
+         * The stage of an application gateway backend HTTP configuration allowing to control connection draining.
+         * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
+         */
+        interface WithConnectionDraining<ReturnT> {
+            /**
+             * Specifies the number of seconds when connection draining is active.
+             * @param seconds a number of seconds between 1 and 3600
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ReturnT> withConnectionDrainingTimeoutInSeconds(int seconds);
         }
     }
 
-    /** The entirety of an application gateway backend HTTP configuration definition as part of an application gateway update.
-     * @param <ParentT> the stage of the parent application gateway definition to return to after attaching this definition
+    /** The entirety of an application gateway backend HTTPS configuration definition as part of an application gateway update.
+     * @param <ReturnT> the stage of the parent application gateway update to return to after attaching this definition
      */
-    interface UpdateDefinition<ParentT> extends
-        UpdateDefinitionStages.Blank<ParentT>,
-        UpdateDefinitionStages.WithAttach<ParentT> {
+    interface UpdateDefinition<ReturnT> extends
+        UpdateDefinitionStages.Blank<ReturnT>,
+        UpdateDefinitionStages.WithAttach<ReturnT>,
+        UpdateDefinitionStages.WithAttachAndAuthCert<ReturnT> {
     }
 }

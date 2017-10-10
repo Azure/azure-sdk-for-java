@@ -80,7 +80,7 @@ public class TestNetworkInterface extends TestTemplate<NetworkInterface, Network
                 .withoutIPForwarding()
                 .withoutAcceleratedNetworking()
                 .withSubnet("subnet2")
-                .updateIPConfiguration("primary")  // Updating the primary ip configuration
+                .updateIPConfiguration("primary")  // Updating the primary IP configuration
                     .withPrivateIPAddressDynamic() // Equivalent to ..update().withPrimaryPrivateIPAddressDynamic()
                     .withoutPublicIPAddress()      // Equivalent to ..update().withoutPrimaryPublicIPAddress()
                     .parent()
