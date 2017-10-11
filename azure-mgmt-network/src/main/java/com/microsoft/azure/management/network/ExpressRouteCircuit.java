@@ -37,7 +37,11 @@ public interface ExpressRouteCircuit extends
         interface Definition extends
                 DefinitionStages.Blank,
                 DefinitionStages.WithGroup,
-                DefinitionStages.WithSku,
+                DefinitionStages.WithServiceProvider,
+                DefinitionStages.WithPeeringLocation,
+                DefinitionStages.WithBandwidth,
+                DefinitionStages.WithSkuTier,
+                DefinitionStages.WithSkuFamily,
                 DefinitionStages.WithCreate {
         }
 
@@ -55,14 +59,42 @@ public interface ExpressRouteCircuit extends
              * The stage of express route circuit definition allowing to specify the resource group.
              */
             interface WithGroup
-                    extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithCreate> {
+                    extends GroupableResource.DefinitionStages.WithGroup<DefinitionStages.WithServiceProvider> {
             }
 
             /**
-             * The stage of express route circuit definition allowing to specify SKU.
+             * The stage of express route circuit definition allowing to specify service provider name
              */
-            interface WithSku {
-                WithCreate withSku(ExpressRouteCircuitSku skuName);
+            interface WithServiceProvider {
+                WithPeeringLocation withServiceProvidet(String serviceProviderName);
+            }
+
+            /**
+             * The stage of express route circuit definition allowing to specify service provider peering location
+             */
+            interface WithPeeringLocation {
+                WithBandwidth withPeeringLocation(String location);
+            }
+
+            /**
+             * The stage of express route circuit definition allowing to specify service provider bandwidth
+             */
+            interface WithBandwidth {
+                WithSkuTier withBandwidthInMbps(int bandwidthInMbps);
+            }
+
+            /**
+             * The stage of express route circuit definition allowing to specify SKU tier. Possible values include: 'Standard', 'Premium'.
+             */
+            interface WithSkuTier {
+                WithSkuFamily withSkuTier(ExpressRouteCircuitSkuTier skuTier);
+            }
+
+            /**
+             * The stage of express route circuit definition allowing to specify SKU family. Possible values include: 'UnlimitedData', 'MeteredData'.
+             */
+            interface WithSkuFamily {
+                WithCreate withSkuFamily(ExpressRouteCircuitSkuFamily skuFamily);
             }
 
             /**
@@ -83,8 +115,8 @@ public interface ExpressRouteCircuit extends
             /**
              * The stage of express route circuit update allowing to change SKU.
              */
-            interface WithSku {
-                Update withSku(ExpressRouteCircuitSku skuName);
+            interface WithSkuTier {
+                Update withSkuTier(ExpressRouteCircuitSkuTier skuName);
             }
         }
 
@@ -95,6 +127,6 @@ public interface ExpressRouteCircuit extends
         interface Update extends
                 Appliable<ExpressRouteCircuit>,
                 Resource.UpdateWithTags<Update>,
-                UpdateStages.WithSku {
+                UpdateStages.WithSkuTier {
         }
     }

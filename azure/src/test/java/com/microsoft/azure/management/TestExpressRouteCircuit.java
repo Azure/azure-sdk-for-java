@@ -6,6 +6,8 @@
 package com.microsoft.azure.management;
 
 import com.microsoft.azure.management.network.ExpressRouteCircuit;
+import com.microsoft.azure.management.network.ExpressRouteCircuitSkuFamily;
+import com.microsoft.azure.management.network.ExpressRouteCircuitSkuTier;
 import com.microsoft.azure.management.network.ExpressRouteCircuits;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
@@ -32,6 +34,11 @@ public class TestExpressRouteCircuit extends TestTemplate<ExpressRouteCircuit, E
         ExpressRouteCircuit erc = expressRouteCircuits.define(circuitName)
                 .withRegion(REGION)
                 .withNewResourceGroup()
+                .withServiceProvidet("Equinix")
+                .withPeeringLocation("Silicon Valley")
+                .withBandwidthInMbps(200)
+                .withSkuTier(ExpressRouteCircuitSkuTier.STANDARD)
+                .withSkuFamily(ExpressRouteCircuitSkuFamily.METERED_DATA)
                 .withTag("tag1", "value1")
                 .create();
         return erc;
