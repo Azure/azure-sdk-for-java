@@ -54,6 +54,8 @@ final class BlobRequest {
 
     private static final String SNAPSHOTS_QUERY_ELEMENT_NAME = "snapshots";
 
+    private static final String DELETED_QUERY_ELEMENT_NAME = "deleted";
+
     private static final String TIER_QUERY_ELEMENT_NAME = "tier";
 
     private static final String UNCOMMITTED_BLOBS_QUERY_ELEMENT_NAME = "uncommittedblobs";
@@ -349,6 +351,8 @@ final class BlobRequest {
      *            The snapshot version, if the blob is a snapshot.
      * @param deleteSnapshotsOption
      *            A set of options indicating whether to delete only blobs, only snapshots, or both.
+     * @param deleteType
+     *            The option to indicate whether the delete is permanent or not.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection
@@ -360,7 +364,8 @@ final class BlobRequest {
      */
     public static HttpURLConnection deleteBlob(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final AccessCondition accessCondition, final String snapshotVersion,
-            final DeleteSnapshotsOption deleteSnapshotsOption) throws IOException, URISyntaxException, StorageException {
+            final DeleteSnapshotsOption deleteSnapshotsOption, final DeleteType deleteType)
+            throws IOException, URISyntaxException, StorageException {
 
         if (snapshotVersion != null && deleteSnapshotsOption != DeleteSnapshotsOption.NONE) {
             throw new IllegalArgumentException(String.format(SR.DELETE_SNAPSHOT_NOT_VALID_ERROR,
@@ -369,6 +374,16 @@ final class BlobRequest {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         BlobRequest.addSnapshot(builder, snapshotVersion);
+
+        switch (deleteType) {
+            case NONE: // the delete type should be ignored if it's none
+                break;
+            case PERMANENT:
+                builder.add(Constants.QueryConstants.DELETE_TYPE, Constants.QueryConstants.PERMANENT_DELETE);
+            default:
+                break;
+        }
+
         final HttpURLConnection request = BaseRequest.delete(uri, blobOptions, builder, opContext);
 
         if (accessCondition != null) {
@@ -392,6 +407,35 @@ final class BlobRequest {
         }
 
         return request;
+    }
+
+    /**
+     * Constructs a HttpURLConnection to un-delete the blob, Sign with no length specified.
+     *
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param blobOptions
+     *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudBlobClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @return a HttpURLConnection to use to perform the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if the resource URI is invalid
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     */
+    public static HttpURLConnection undeleteBlob(final URI uri, final BlobRequestOptions blobOptions,
+                                               final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        return BaseRequest.undelete(uri, blobOptions, builder, opContext);
     }
 
     /**
@@ -1068,6 +1112,17 @@ final class BlobRequest {
                     }
 
                     sb.append(Constants.QueryConstants.METADATA);
+                }
+
+                if (listingContext.getListingDetails().contains(BlobListingDetails.DELETED)) {
+                    if (!started) {
+                        started = true;
+                    }
+                    else {
+                        sb.append(",");
+                    }
+
+                    sb.append(DELETED_QUERY_ELEMENT_NAME);
                 }
 
                 builder.add(Constants.QueryConstants.INCLUDE, sb.toString());

@@ -85,6 +85,11 @@ public abstract class CloudBlob implements ListBlobItem {
     String snapshotID;
 
     /**
+     * Indicates whether the blob is being retained by the service after being deleted.
+     */
+    boolean deleted;
+
+    /**
      * Holds the blob's container reference.
      */
     private CloudBlobContainer container;
@@ -922,6 +927,9 @@ public abstract class CloudBlob implements ListBlobItem {
     /**
      * Deletes the blob.
      *
+     * If a delete retention policy is enabled on the service, the blob will be retained for a specified period of time,
+     * before being removed permanently by garbage collection.
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -932,6 +940,10 @@ public abstract class CloudBlob implements ListBlobItem {
 
     /**
      * Deletes the blob using the specified snapshot and request options, and operation context.
+     *
+     * If a delete retention policy is enabled on the service, the blob will be retained for a specified period of time,
+     * before being removed permanently by garbage collection.
+     *
      * <p>
      * A blob that has snapshots cannot be deleted unless the snapshots are also deleted. If a blob has snapshots, use
      * the {@link DeleteSnapshotsOption#DELETE_SNAPSHOTS_ONLY} or {@link DeleteSnapshotsOption#INCLUDE_SNAPSHOTS} value
@@ -968,7 +980,105 @@ public abstract class CloudBlob implements ListBlobItem {
         options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
 
         ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
-                this.deleteImpl(deleteSnapshotsOption, accessCondition, options), options.getRetryPolicyFactory(),
+                this.deleteImpl(deleteSnapshotsOption, DeleteType.NONE, accessCondition, options), options.getRetryPolicyFactory(),
+                opContext);
+    }
+
+    /**
+     * Permanently deletes the blob. This API is only valid for blobs that have been previously soft-deleted.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void deletePermanently() throws StorageException {
+        this.deletePermanently(DeleteSnapshotsOption.NONE, null /* accessCondition */, null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Permanently deletes the blob using the specified snapshot and request options, and operation context.
+     * This API is only valid for blobs that have been previously soft-deleted.
+     *
+     * <p>
+     * A blob that has snapshots cannot be deleted unless the snapshots are also deleted. If a blob has snapshots, use
+     * the {@link DeleteSnapshotsOption#DELETE_SNAPSHOTS_ONLY} or {@link DeleteSnapshotsOption#INCLUDE_SNAPSHOTS} value
+     * in the <code>deleteSnapshotsOption</code> parameter to specify how the snapshots should be handled when the blob
+     * is deleted.
+     *
+     * @param deleteSnapshotsOption
+     *            A {@link DeleteSnapshotsOption} object that indicates whether to delete only snapshots, or the blob
+     *            and its snapshots.
+     * @param accessCondition
+     *            An {@link AccessCondition} object that represents the access conditions for the blob.
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void deletePermanently(final DeleteSnapshotsOption deleteSnapshotsOption, final AccessCondition accessCondition,
+                             BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        Utility.assertNotNull("deleteSnapshotsOption", deleteSnapshotsOption);
+
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+
+        ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.deleteImpl(deleteSnapshotsOption, DeleteType.PERMANENT, accessCondition, options), options.getRetryPolicyFactory(),
+                opContext);
+    }
+
+    /**
+     * Un-deletes a blob and all its snapshots that have been soft-deleted.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void undelete() throws StorageException {
+        this.undelete(null /* options */, null /* opContext */);
+    }
+
+    /**
+     * Un-deletes a blob that has been soft-deleted, using the specified request options, and operation context.
+     * <p>
+     * The un-delete Blob operation restores the contents and metadata of soft deleted blob and all its snapshots.
+     * Attempting to undelete a blob or snapshot that is not soft deleted will succeed without any changes.
+     *
+     * @param options
+     *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
+     *            <code>null</code> will use the default request options from the associated service client (
+     *            {@link CloudBlobClient}).
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     *
+     * @throws StorageException
+     *             If a storage service error occurred.
+     */
+    @DoesServiceRequest
+    public final void undelete(BlobRequestOptions options, OperationContext opContext) throws StorageException {
+        if (opContext == null) {
+            opContext = new OperationContext();
+        }
+
+        opContext.initialize();
+        options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient);
+
+        ExecutionEngine.executeWithRetry(this.blobServiceClient, this,
+                this.undeleteImpl(options), options.getRetryPolicyFactory(),
                 opContext);
     }
 
@@ -1048,7 +1158,7 @@ public abstract class CloudBlob implements ListBlobItem {
     }
 
     private StorageRequest<CloudBlobClient, CloudBlob, Void> deleteImpl(
-            final DeleteSnapshotsOption deleteSnapshotsOption, final AccessCondition accessCondition,
+            final DeleteSnapshotsOption deleteSnapshotsOption, final DeleteType deleteType, final AccessCondition accessCondition,
             final BlobRequestOptions options) {
         final StorageRequest<CloudBlobClient, CloudBlob, Void> deleteRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
                 options, this.getStorageUri()) {
@@ -1057,7 +1167,7 @@ public abstract class CloudBlob implements ListBlobItem {
             public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
                     throws Exception {
                 return BlobRequest.deleteBlob(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
-                        options, context, accessCondition, blob.snapshotID, deleteSnapshotsOption);
+                        options, context, accessCondition, blob.snapshotID, deleteSnapshotsOption, deleteType);
             }
 
             @Override
@@ -1076,9 +1186,57 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 return null;
             }
+
+            @Override
+            public Void postProcessResponse(HttpURLConnection connection, CloudBlob parentObject, CloudBlobClient client, OperationContext context, Void storageObject) throws Exception {
+                if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_ACCEPTED) {
+                    parentObject.deleted = true;
+                }
+                return null;
+            }
         };
 
         return deleteRequest;
+    }
+
+    private StorageRequest<CloudBlobClient, CloudBlob, Void> undeleteImpl(final BlobRequestOptions options) {
+        final StorageRequest<CloudBlobClient, CloudBlob, Void> undeleteRequest = new StorageRequest<CloudBlobClient, CloudBlob, Void>(
+                options, this.getStorageUri()) {
+
+            @Override
+            public HttpURLConnection buildRequest(CloudBlobClient client, CloudBlob blob, OperationContext context)
+                    throws Exception {
+                return BlobRequest.undeleteBlob(blob.getTransformedAddress(context).getUri(this.getCurrentLocation()),
+                        options, context);
+            }
+
+            @Override
+            public void signRequest(HttpURLConnection connection, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                StorageRequest.signBlobQueueAndFileRequest(connection, client, -1L, context);
+            }
+
+            @Override
+            public Void preProcessResponse(CloudBlob parentObject, CloudBlobClient client, OperationContext context)
+                    throws Exception {
+                if (this.getResult().getStatusCode() != HttpURLConnection.HTTP_OK) {
+                    this.setNonExceptionedRetryableFailure(true);
+                    return null;
+                }
+
+                return null;
+            }
+
+            @Override
+            public Void postProcessResponse(HttpURLConnection connection, CloudBlob parentObject, CloudBlobClient client, OperationContext context, Void storageObject) throws Exception {
+                if (this.getResult().getStatusCode() == HttpURLConnection.HTTP_OK) {
+                    parentObject.deleted = false;
+                }
+                return null;
+            }
+        };
+
+        return undeleteRequest;
     }
 
     /**

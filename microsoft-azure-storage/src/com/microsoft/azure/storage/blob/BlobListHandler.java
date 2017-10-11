@@ -53,6 +53,7 @@ final class BlobListHandler extends DefaultHandler {
     private CopyState copyState;
     private String blobName;
     private String snapshotID;
+    private boolean deleted;
 
     private BlobListHandler(CloudBlobContainer container) {
         this.container = container;
@@ -87,6 +88,7 @@ final class BlobListHandler extends DefaultHandler {
             this.properties = new BlobProperties();
             this.metadata = new HashMap<String, String>();
             this.copyState = null;
+            this.deleted = false;
         }
     }
 
@@ -136,6 +138,7 @@ final class BlobListHandler extends DefaultHandler {
             retBlob.properties = this.properties;
             retBlob.metadata = this.metadata;
             retBlob.properties.setCopyState(this.copyState);
+            retBlob.deleted = this.deleted;
 
             this.response.getResults().add(retBlob);
         }
@@ -170,6 +173,9 @@ final class BlobListHandler extends DefaultHandler {
             }
             else if (BlobConstants.SNAPSHOT_ELEMENT.equals(currentNode)) {
                 this.snapshotID = value;
+            }
+            else if (BlobConstants.DELETED_ELEMENT.equals(currentNode)) {
+                this.deleted = Boolean.parseBoolean(value);
             }
         }
         else if (BlobConstants.BLOB_PREFIX_ELEMENT.equals(parentNode)) {
@@ -250,9 +256,6 @@ final class BlobListHandler extends DefaultHandler {
             final LeaseStatus tempStatus = LeaseStatus.parse(value);
             if (!tempStatus.equals(LeaseStatus.UNSPECIFIED)) {
                 this.properties.setLeaseStatus(tempStatus);
-            }
-            else {
-                throw new SAXException(SR.INVALID_RESPONSE_RECEIVED);
             }
         }
         else if (Constants.LEASE_STATE_ELEMENT.equals(currentNode)) {
@@ -357,6 +360,12 @@ final class BlobListHandler extends DefaultHandler {
         }
         else if (Constants.ARCHIVE_STATUS.equals(currentNode)) {
             this.properties.setRehydrationStatus(RehydrationStatus.parse(value));
+        }
+        else if (BlobConstants.DELETED_TIME.equals(currentNode)) {
+            this.properties.setDeletedTime(Utility.parseRFC1123DateFromStringInGMT(value));
+        }
+        else if (BlobConstants.REMAINING_RETENTION_DAYS.equals(currentNode)) {
+            this.properties.setRemainingRetentionDays(Integer.parseInt(value));
         }
     }
 }

@@ -223,6 +223,16 @@ public final class Constants {
          */
         public static final String WRITE_ELEMENT = "Write";
 
+        /**
+         * The XML element for the delete retention policy.
+         */
+        public static final String DELETE_RETENTION_POLICY_ELEMENT = "DeleteRetentionPolicy";
+
+        /**
+         * The XML element for the retained versions per blob.
+         */
+        public static final String RETAINED_VERSIONS_PER_BLOB = "RetainedVersionsPerBlob";
+
     }
 
     /**
@@ -641,7 +651,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2017-04-17";
+        public static final String TARGET_STORAGE_VERSION = "2017-07-29";
 
         /**
          * The header that specifies the next visible time for a queue message.
@@ -817,6 +827,21 @@ public final class Constants {
          * The query component for snapshot time.
          */
         public static final String SHARE_SNAPSHOT = "sharesnapshot";
+
+        /**
+         * The query component for un-delete operation.
+         */
+        public static final String UNDELETE = "undelete";
+
+        /**
+         * The query component for delete type.
+         */
+        public static final String DELETE_TYPE = "deletetype";
+
+        /**
+         * The query component for permanent delete type.
+         */
+        public static final String PERMANENT_DELETE = "permanent";
 
         /**
          * The query component for the SAS start partition key.
