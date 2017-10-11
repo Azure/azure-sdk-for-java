@@ -24,7 +24,7 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
         ExpressRouteCircuit,
         ExpressRouteCircuit.Definition,
         ExpressRouteCircuit.Update {
-    private static String SKU_DELIMITER = "_";
+    private static final String SKU_DELIMITER = "_";
 
     protected ExpressRouteCircuitImpl(String name, ExpressRouteCircuitInner innerObject, NetworkManager manager) {
         super(name, innerObject, manager);
