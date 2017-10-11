@@ -54,6 +54,9 @@ class CNameRecordSetsImpl
 
     @Override
     protected CNameRecordSetImpl wrapModel(RecordSetInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new CNameRecordSetImpl(this.dnsZone, inner);
     }
 }

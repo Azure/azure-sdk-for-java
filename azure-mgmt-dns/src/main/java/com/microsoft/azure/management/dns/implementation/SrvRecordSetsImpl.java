@@ -54,6 +54,9 @@ class SrvRecordSetsImpl
 
     @Override
     protected SrvRecordSetImpl wrapModel(RecordSetInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new SrvRecordSetImpl(this.dnsZone, inner);
     }
 }

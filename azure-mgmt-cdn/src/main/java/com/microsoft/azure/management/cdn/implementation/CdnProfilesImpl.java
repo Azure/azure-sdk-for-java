@@ -47,6 +47,9 @@ class CdnProfilesImpl
 
     @Override
     protected CdnProfileImpl wrapModel(ProfileInner inner) {
+        if (inner ==  null) {
+            return null;
+        }
         return new CdnProfileImpl(inner.name(), inner, this.manager());
     }
 

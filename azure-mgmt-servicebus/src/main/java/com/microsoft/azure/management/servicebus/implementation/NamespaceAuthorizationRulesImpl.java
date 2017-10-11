@@ -96,6 +96,9 @@ class NamespaceAuthorizationRulesImpl
 
     @Override
     protected NamespaceAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new NamespaceAuthorizationRuleImpl(this.resourceGroupName,
                 this.namespaceName,
                 inner.name(),

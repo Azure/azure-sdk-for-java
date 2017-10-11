@@ -59,6 +59,9 @@ class MXRecordSetsImpl
 
     @Override
     protected MXRecordSetImpl wrapModel(RecordSetInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new MXRecordSetImpl(this.dnsZone, inner);
     }
 }

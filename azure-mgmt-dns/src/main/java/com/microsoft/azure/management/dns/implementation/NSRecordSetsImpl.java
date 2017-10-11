@@ -54,6 +54,9 @@ class NSRecordSetsImpl
 
     @Override
     protected NSRecordSetImpl wrapModel(RecordSetInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new NSRecordSetImpl(this.dnsZone, inner);
     }
 }

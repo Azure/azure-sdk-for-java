@@ -77,6 +77,9 @@ class TrafficManagerProfilesImpl
 
     @Override
     protected TrafficManagerProfileImpl wrapModel(ProfileInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new TrafficManagerProfileImpl(inner.name(), inner, this.manager());
     }
 
