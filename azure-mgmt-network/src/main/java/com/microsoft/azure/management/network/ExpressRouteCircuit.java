@@ -63,21 +63,21 @@ public interface ExpressRouteCircuit extends
             }
 
             /**
-             * The stage of express route circuit definition allowing to specify service provider name
+             * The stage of express route circuit definition allowing to specify service provider name.
              */
             interface WithServiceProvider {
                 WithPeeringLocation withServiceProvidet(String serviceProviderName);
             }
 
             /**
-             * The stage of express route circuit definition allowing to specify service provider peering location
+             * The stage of express route circuit definition allowing to specify service provider peering location.
              */
             interface WithPeeringLocation {
                 WithBandwidth withPeeringLocation(String location);
             }
 
             /**
-             * The stage of express route circuit definition allowing to specify service provider bandwidth
+             * The stage of express route circuit definition allowing to specify service provider bandwidth.
              */
             interface WithBandwidth {
                 WithSkuTier withBandwidthInMbps(int bandwidthInMbps);
