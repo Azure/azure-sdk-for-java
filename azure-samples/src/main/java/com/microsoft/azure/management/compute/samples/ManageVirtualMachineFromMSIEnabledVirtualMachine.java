@@ -18,7 +18,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.samples.Utils;
 
 /**
- * Azure Compute sample for managing virtual machine from MSI enabled virtual machine -
+ * Azure Compute sample for managing virtual machine from Managed Service Identity (MSI) enabled virtual machine -
  *   - Create a virtual machine using MSI credentials from MSI enabled VM
  *   - Delete the virtual machine using MSI credentials from MSI enabled VM.
  */
@@ -33,7 +33,7 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
             final String rgName = "msi-rg-test";
             final Region region = Region.US_WEST_CENTRAL;
 
-// This sample required to be run from an MSI virtual machine with role
+// This sample required to be run from a MSI enabled virtual machine with role
 // based contributor access to the resource group with name "msi-rg-test". MSI
 // enabled VM can be created using service principal credentials as shown below.
 //
@@ -59,11 +59,11 @@ public final class ManageVirtualMachineFromMSIEnabledVirtualMachine {
 //                    .create();
 
 
+            // Specify your subscription Id
+            final String subscriptionId = "<subscription-id>";
             final String linuxVMName = Utils.createRandomName("VM1");
             final String userName = "tirekicker";
             final String password = "12NewPA$$w0rd!";
-            // Specify your subscription Id
-            final String subscriptionId = "<subscription-id>";
 
             //=============================================================
             // MSI Authenticate
