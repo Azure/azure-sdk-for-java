@@ -40,7 +40,7 @@ public class SASUtil {
             throw new IllegalArgumentException("validityInSeconds should be positive");
         }
         
-        String validUntil = String.valueOf(Instant.now().getEpochSecond() + validityInSeconds);        
+        String validUntil = String.valueOf(Instant.now().getEpochSecond() + validityInSeconds);
         try
         {
             String utf8EncodingName = StandardCharsets.UTF_8.name();
