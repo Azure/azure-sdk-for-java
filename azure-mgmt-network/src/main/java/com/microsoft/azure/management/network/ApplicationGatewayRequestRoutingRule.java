@@ -244,6 +244,14 @@ public interface ApplicationGatewayRequestRoutingRule extends
             WithBackendAddressOrAttach<ParentT> toBackendIPAddress(String ipAddress);
 
             /**
+             * Adds the specified IP addresses to the backend associated with this rule
+             * @param ipAddresses IP addresses to add
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithBackendAddressOrAttach<ParentT> toBackendIPAddresses(String...ipAddresses);
+
+            /**
              * Adds an FQDN (fully qualified domain name) to the backend associated with this rule.
              * <p>
              * If no backend has been associated with this rule yet, a new one will be created with an auto-generated name.
@@ -629,6 +637,14 @@ public interface ApplicationGatewayRequestRoutingRule extends
              * @return the next stage of the definition
              */
             WithBackendAddressOrAttach<ParentT> toBackendIPAddress(String ipAddress);
+
+            /**
+             * Adds the specified IP addresses to the backend associated with this rule
+             * @param ipAddresses IP addresses to add
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithBackendAddressOrAttach<ParentT> toBackendIPAddresses(String...ipAddresses);
 
             /**
              * Adds an FQDN (fully qualified domain name) to the backend associated with this rule.

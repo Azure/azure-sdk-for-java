@@ -370,6 +370,17 @@ class ApplicationGatewayRequestRoutingRuleImpl
         return this;
     }
 
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendIPAddresses(String... ipAddresses) {
+        if (ipAddresses != null) {
+            for (String ipAddress : ipAddresses) {
+                this.toBackendIPAddress(ipAddress);
+            }
+        }
+        return this;
+    }
+
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackendFqdn(String fqdn) {
         this.parent().updateBackend(ensureBackend().name()).withFqdn(fqdn);
