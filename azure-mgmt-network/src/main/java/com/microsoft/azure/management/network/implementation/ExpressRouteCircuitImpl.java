@@ -11,7 +11,9 @@ import com.microsoft.azure.management.network.ExpressRouteCircuitServiceProvider
 import com.microsoft.azure.management.network.ExpressRouteCircuitSku;
 import com.microsoft.azure.management.network.ExpressRouteCircuitSkuFamily;
 import com.microsoft.azure.management.network.ExpressRouteCircuitSkuTier;
+import com.microsoft.azure.management.network.ServiceProviderProvisioningState;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
 @LangDefinition
@@ -90,5 +92,47 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
     @Override
     protected Observable<ExpressRouteCircuitInner> getInnerAsync() {
         return this.manager().inner().expressRouteCircuits().getByResourceGroupAsync(this.resourceGroupName(), this.name());
+    }
+
+    // Getters
+
+    @Override
+    public ExpressRouteCircuitSku getSku() {
+        return inner().sku();
+    }
+
+    @Override
+    public boolean isAllowClassicOperations() {
+        return Utils.toPrimitiveBoolean(inner().allowClassicOperations());
+    }
+
+    @Override
+    public String getCircuitProvisioningState() {
+        return inner().circuitProvisioningState();
+    }
+
+    @Override
+    public ServiceProviderProvisioningState getServiceProviderProvisioningState() {
+        return inner().serviceProviderProvisioningState();
+    }
+
+    @Override
+    public String serviceKey() {
+        return inner().serviceKey();
+    }
+
+    @Override
+    public String serviceProviderNotes() {
+        return inner().serviceProviderNotes();
+    }
+
+    @Override
+    public ExpressRouteCircuitServiceProviderProperties serviceProviderProperties() {
+        return inner().serviceProviderProperties();
+    }
+
+    @Override
+    public String provisioningState() {
+        return inner().provisioningState();
     }
 }
