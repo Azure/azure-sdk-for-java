@@ -8,14 +8,9 @@ package com.microsoft.azure.management.network.implementation;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
-import java.util.Collections;
-import java.util.Map;
-import java.util.TreeMap;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
-import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
-import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthPool;
 import com.microsoft.azure.management.network.ApplicationGatewaySkuName;
 import com.microsoft.azure.management.network.ApplicationGateways;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
@@ -23,7 +18,6 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
 
 import rx.Observable;
-import rx.functions.Func1;
 
 /**
  *  Implementation for ApplicationGateways.
@@ -125,32 +119,5 @@ class ApplicationGatewaysImpl
             observables.add(o);
         }
         return Observable.mergeDelayError(observables);
-    }
-
-    @Override
-    public Map<String, ApplicationGatewayBackendHealth> checkBackendHealth(String applicationGatewayId) {
-        return this.checkBackendHealthAsync(applicationGatewayId).toBlocking().last();
-    }
-
-    @Override
-    public Observable<Map<String, ApplicationGatewayBackendHealth>> checkBackendHealthAsync(String applicationGatewayId) {
-        if (applicationGatewayId == null) {
-            throw new IllegalArgumentException("Missing application gateway resource ID.");
-        }
-        return this.manager().inner().applicationGateways()
-                .backendHealthAsync(ResourceUtils.groupFromResourceId(applicationGatewayId), ResourceUtils.nameFromResourceId(applicationGatewayId))
-                .map(new Func1<ApplicationGatewayBackendHealthInner, Map<String, ApplicationGatewayBackendHealth>>() {
-                    @Override
-                    public Map<String, ApplicationGatewayBackendHealth> call(ApplicationGatewayBackendHealthInner inner) {
-                        Map<String, ApplicationGatewayBackendHealth> backendHealths = new TreeMap<>();
-                        if (inner != null) {
-                            for (ApplicationGatewayBackendHealthPool healthInner : inner.backendAddressPools()) {
-                                ApplicationGatewayBackendHealth backendHealth = new ApplicationGatewayBackendHealthImpl(healthInner, manager());
-                                backendHealths.put(backendHealth.name(), backendHealth);
-                            }
-                        }
-                        return Collections.unmodifiableMap(backendHealths);
-                    }
-                });
     }
 }

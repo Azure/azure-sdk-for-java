@@ -5,12 +5,17 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.microsoft.azure.management.apigeneration.LangDefinition;
-import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthHttpSettings;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthServer;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfigurationHealth;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendServerHealth;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 
 /**
@@ -21,10 +26,18 @@ public class ApplicationGatewayBackendHttpConfigurationHealthImpl implements App
 
     private final ApplicationGatewayBackendHealthHttpSettings inner;
     private final ApplicationGatewayBackendHealthImpl backendHealth;
+    private final Map<String, ApplicationGatewayBackendServerHealth> serverHealths = new TreeMap<>();
 
     ApplicationGatewayBackendHttpConfigurationHealthImpl(ApplicationGatewayBackendHealthHttpSettings inner, ApplicationGatewayBackendHealthImpl backendHealth) {
         this.inner = inner;
         this.backendHealth = backendHealth;
+
+        if (inner.servers() != null) {
+            for (ApplicationGatewayBackendHealthServer serverHealthInner : this.inner().servers()) {
+                ApplicationGatewayBackendServerHealth serverHealth = new ApplicationGatewayBackendServerHealthImpl(serverHealthInner, this);
+                this.serverHealths.put(serverHealth.ipAddress(), serverHealth);
+            }
+        }
     }
 
     @Override
@@ -42,24 +55,22 @@ public class ApplicationGatewayBackendHttpConfigurationHealthImpl implements App
     }
 
     @Override
-    public ApplicationGatewayBackendHttpConfiguration getBackendHttpConfiguration() {
+    public ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration() {
         if (this.inner.backendHttpSettings() == null) {
             return null;
         }
 
-        String appGatewayId = ResourceUtils.parentResourceIdFromResourceId(this.inner.backendHttpSettings().id());
         String name = ResourceUtils.nameFromResourceId(this.inner.backendHttpSettings().id());
-
-        ApplicationGateway appGateway = this.parent().manager().applicationGateways().getById(appGatewayId);
-        if (appGateway == null) {
-            return null;
-        }
-
-        return appGateway.backendHttpConfigurations().get(name);
+        return this.parent().parent().backendHttpConfigurations().get(name);
     }
 
     @Override
     public ApplicationGatewayBackendHealth parent() {
         return this.backendHealth;
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayBackendServerHealth> serverHealths() {
+        return Collections.unmodifiableMap(this.serverHealths);
     }
 }

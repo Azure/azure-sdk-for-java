@@ -20,8 +20,8 @@ import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
-import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthServer;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfigurationHealth;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendServerHealth;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ConnectivityCheck;
 import com.microsoft.azure.management.network.Direction;
@@ -342,7 +342,7 @@ public class AzureTests extends TestBase {
     }
 
     /**
-     * Tests a complex internal application gateway
+     * Tests a complex internal application gateway.
      * @throws Exception
      */
     @Test
@@ -416,11 +416,14 @@ public class AzureTests extends TestBase {
         for (ApplicationGatewayBackendHealth backendHealth : backendHealths.values()) {
             info.append("\n\tApplication gateway backend name: ").append(backendHealth.name())
                 .append("\n\t\tHTTP configuration healths: ").append(backendHealth.httpConfigurationHealths().size());
+            Assert.assertNotNull(backendHealth.backend());
             for (ApplicationGatewayBackendHttpConfigurationHealth backendConfigHealth : backendHealth.httpConfigurationHealths().values()) {
                 info.append("\n\t\t\tHTTP configuration name: ").append(backendConfigHealth.name())
                     .append("\n\t\t\tServers: ").append(backendConfigHealth.inner().servers().size());
-                for (ApplicationGatewayBackendHealthServer server : backendConfigHealth.inner().servers()) {
-                    info.append("\n\t\t\t\tServer: " + server.address() + ": " + server.health().toString());
+                Assert.assertNotNull(backendConfigHealth.backendHttpConfiguration());
+                for (ApplicationGatewayBackendServerHealth serverHealth : backendConfigHealth.serverHealths().values()) {
+                    info.append("\n\t\t\t\tServer IP: " + serverHealth.ipAddress())
+                        .append("\n\t\t\t\t\tHealth status: ").append(serverHealth.status());
                 }
             }
         }
@@ -433,7 +436,7 @@ public class AzureTests extends TestBase {
         Assert.assertEquals(1, backendHealths.size());
         ApplicationGatewayBackendHealth backendHealth = backendHealths.get(agBackend.name());
         Assert.assertNotNull(backendHealth);
-        ApplicationGatewayBackend healthBackend = backendHealth.getBackend();
+        ApplicationGatewayBackend healthBackend = backendHealth.backend();
         Assert.assertNotNull(healthBackend);
         for (int i = 0; i < ipAddresses.length; i++) {
             Assert.assertTrue(healthBackend.containsIPAddress(ipAddresses[i]));

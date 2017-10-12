@@ -244,7 +244,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
             WithBackendAddressOrAttach<ParentT> toBackendIPAddress(String ipAddress);
 
             /**
-             * Adds the specified IP addresses to the backend associated with this rule
+             * Adds the specified IP addresses to the backend associated with this rule.
              * @param ipAddresses IP addresses to add
              * @return the next stage of the definition
              */
@@ -639,7 +639,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
             WithBackendAddressOrAttach<ParentT> toBackendIPAddress(String ipAddress);
 
             /**
-             * Adds the specified IP addresses to the backend associated with this rule
+             * Adds the specified IP addresses to the backend associated with this rule.
              * @param ipAddresses IP addresses to add
              * @return the next stage of the definition
              */

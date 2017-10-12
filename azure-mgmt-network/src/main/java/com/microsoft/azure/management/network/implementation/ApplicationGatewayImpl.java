@@ -9,6 +9,7 @@ import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayAuthenticationCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthPool;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
@@ -1468,6 +1469,20 @@ class ApplicationGatewayImpl
 
     @Override
     public Observable<Map<String, ApplicationGatewayBackendHealth>> checkBackendHealthAsync() {
-        return this.manager().applicationGateways().checkBackendHealthAsync(this.id());
+        return this.manager().inner().applicationGateways()
+                .backendHealthAsync(this.resourceGroupName(), this.name())
+                .map(new Func1<ApplicationGatewayBackendHealthInner, Map<String, ApplicationGatewayBackendHealth>>() {
+                    @Override
+                    public Map<String, ApplicationGatewayBackendHealth> call(ApplicationGatewayBackendHealthInner inner) {
+                        Map<String, ApplicationGatewayBackendHealth> backendHealths = new TreeMap<>();
+                        if (inner != null) {
+                            for (ApplicationGatewayBackendHealthPool healthInner : inner.backendAddressPools()) {
+                                ApplicationGatewayBackendHealth backendHealth = new ApplicationGatewayBackendHealthImpl(healthInner, ApplicationGatewayImpl.this);
+                                backendHealths.put(backendHealth.name(), backendHealth);
+                            }
+                        }
+                        return Collections.unmodifiableMap(backendHealths);
+                    }
+                });
     }
 }

@@ -5,10 +5,11 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Map;
+
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasName;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
@@ -24,9 +25,12 @@ public interface ApplicationGatewayBackendHttpConfigurationHealth extends
     HasName {
 
     /**
-     * Gets the application gateway backend HTTP configuration settings of the application gateway that this health information pertains to.
-     * @return the associated application gateway backend HTTP configuration settings
+     * @return the associated application gateway backend HTTP configuration settings this health information pertains to
      */
-    @Method
-    ApplicationGatewayBackendHttpConfiguration getBackendHttpConfiguration();
+    ApplicationGatewayBackendHttpConfiguration backendHttpConfiguration();
+
+    /**
+     * @return information about the health of each backend server, indexed by the server's IP address
+     */
+    Map<String, ApplicationGatewayBackendServerHealth> serverHealths();
 }

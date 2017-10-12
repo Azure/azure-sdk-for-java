@@ -25,12 +25,12 @@ import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBackendHealth {
 
     private final ApplicationGatewayBackendHealthPool inner;
-    private final NetworkManager manager;
+    private final ApplicationGatewayImpl appGateway;
     private final Map<String, ApplicationGatewayBackendHttpConfigurationHealth> httpConfigHealths = new TreeMap<>();
 
-    ApplicationGatewayBackendHealthImpl(ApplicationGatewayBackendHealthPool inner, NetworkManager manager) {
+    ApplicationGatewayBackendHealthImpl(ApplicationGatewayBackendHealthPool inner, ApplicationGatewayImpl appGateway) {
         this.inner = inner;
-        this.manager = manager;
+        this.appGateway = appGateway;
         if (inner != null) {
             for (ApplicationGatewayBackendHealthHttpSettings httpConfigInner : inner.backendHttpSettingsCollection()) {
                 ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth  = new ApplicationGatewayBackendHttpConfigurationHealthImpl(httpConfigInner, this);
@@ -54,29 +54,22 @@ public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBa
     }
 
     @Override
-    public ApplicationGatewayBackend getBackend() {
+    public ApplicationGatewayBackend backend() {
         if (this.inner.backendAddressPool() == null) {
             return null;
         }
 
-        String appGatewayId = ResourceUtils.parentResourceIdFromResourceId(this.inner.backendAddressPool().id());
         String backendName = ResourceUtils.nameFromResourceId(this.inner.backendAddressPool().id());
-
-        ApplicationGateway appGateway = this.manager().applicationGateways().getById(appGatewayId);
-        if (appGateway == null) {
-            return null;
-        }
-
-        return appGateway.backends().get(backendName);
-    }
-
-    @Override
-    public NetworkManager manager() {
-        return this.manager;
+        return this.appGateway.backends().get(backendName);
     }
 
     @Override
     public Map<String, ApplicationGatewayBackendHttpConfigurationHealth> httpConfigurationHealths() {
         return Collections.unmodifiableMap(this.httpConfigHealths);
+    }
+
+    @Override
+    public ApplicationGateway parent() {
+        return this.appGateway;
     }
 }
