@@ -91,7 +91,9 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
         Assert.assertEquals(1, webhook.triggers().size());
         Assert.assertEquals(WebhookAction.PUSH, webhook.triggers().toArray()[0]);
 
-        return registry2;
+        Registry registry3 = registries.getById(webhook.parentId());
+
+        return registry3;
     }
 
     @Override
@@ -141,8 +143,6 @@ public class TestContainerRegistry extends TestTemplate<Registry, Registries> {
             .withoutTag("tag2")
             .withTag("tag3", "value")
             .apply();
-
-        webhook.refreshWithParent();
 
         Assert.assertFalse(webhook.isEnabled());
         Assert.assertTrue(webhook.tags().containsKey("tag3"));

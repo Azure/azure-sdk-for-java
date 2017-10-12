@@ -71,11 +71,9 @@ public interface Webhook extends
     ProvisioningState provisioningState();
 
     /**
-     * Refreshes the webhook and its parent container registry to the latest state at the time of this call.
-     *
-     * @return the webhook
+     * @return the webhook parent ID
      */
-    Webhook refreshWithParent();
+    String parentId();
 
     /**
      * Changes the status of the webhook to "enabled".

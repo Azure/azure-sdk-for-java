@@ -15,8 +15,10 @@ import com.microsoft.azure.management.containerregistry.WebhookAction;
 import com.microsoft.azure.management.containerregistry.WebhookEventInfo;
 import com.microsoft.azure.management.containerregistry.WebhookStatus;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
+import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
@@ -158,11 +160,8 @@ public class WebhookImpl
     }
 
     @Override
-    public Webhook refreshWithParent() {
-        return new WebhookImpl(this.name(),
-            (RegistryImpl) containerRegistryManager.containerRegistries().getByResourceGroup(resourceGroupName, registryName),
-            this.getInnerAsync().toBlocking().single(),
-            this.containerRegistryManager);
+    public String parentId() {
+        return ResourceUtils.parentResourceIdFromResourceId(this.id());
     }
 
     @Override
