@@ -6,7 +6,10 @@
 package com.microsoft.azure.management.network;
 
 import java.util.Collection;
+import java.util.Map;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewaysInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
@@ -41,6 +44,22 @@ public interface ApplicationGateways extends
     SupportsBatchDeletion,
     HasManager<NetworkManager>,
     HasInner<ApplicationGatewaysInner> {
+
+    /**
+     * Checks the backend health of the specified application gateway.
+     * @param applicationGatewayId the resource ID of an existing application gateway
+     * @return backend healths indexed by backend name
+     */
+    @Beta(SinceVersion.V1_4_0)
+    Map<String, ApplicationGatewayBackendHealth> checkBackendHealth(String applicationGatewayId);
+
+    /**
+     * Checks the backend health of the specified application gateway asynchronously.
+     * @param applicationGatewayId the resource ID of an existing application gateway
+     * @return a representation of a future computation of this call
+     */
+    @Beta(SinceVersion.V1_4_0)
+    Observable<Map<String, ApplicationGatewayBackendHealth>> checkBackendHealthAsync(String applicationGatewayId);
 
     /**
      * Starts the specified application gateways.

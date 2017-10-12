@@ -18,10 +18,14 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthHttpSettings;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthServer;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ConnectivityCheck;
 import com.microsoft.azure.management.network.Direction;
 import com.microsoft.azure.management.network.FlowLogSettings;
+import com.microsoft.azure.management.network.Network;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkWatcher;
 import com.microsoft.azure.management.network.NextHop;
@@ -57,6 +61,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -343,6 +348,72 @@ public class AzureTests extends TestBase {
     public void testAppGatewaysInternalComplex() throws Exception {
         new TestApplicationGateway.PrivateComplex()
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    @Test
+    public void testAppGatewayBackendHealthCheck() throws Exception {
+        String testId = SdkContext.randomResourceName("", 15);
+        String name = "ag" + testId;
+        Region region = Region.US_EAST;
+        String password = SdkContext.randomResourceName("Abc.123", 12);
+        String vnetName = "net" + testId;
+        String rgName = "rg" + testId;
+
+        // Create a vnet
+        Network network = azure.networks().define(vnetName)
+                .withRegion(region)
+                .withNewResourceGroup(rgName)
+                .withAddressSpace("10.0.0.0/28")
+                .withSubnet("subnet1", "10.0.0.0/29")
+                .withSubnet("subnet2", "10.0.0.8/29")
+                .create();
+
+        // Create a couple of VMs for the backend in the network
+        List<Creatable<VirtualMachine>> vmsDefinitions = new ArrayList<>();
+        for (int i = 0; i < 2; i++) {
+            vmsDefinitions.add(azure.virtualMachines().define("vm" + i + testId)
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    .withExistingPrimaryNetwork(network)
+                    .withSubnet("subnet2")
+                    .withPrimaryPrivateIPAddressDynamic()
+                    .withoutPrimaryPublicIPAddress()
+                    .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                    .withRootUsername("tester")
+                    .withRootPassword(password));
+        }
+
+        CreatedResources<VirtualMachine> createdVms = azure.virtualMachines().create(vmsDefinitions);
+        VirtualMachine[] vms = new VirtualMachine[createdVms.size()];
+        for (int i = 0; i < vmsDefinitions.size(); i++) {
+            vms[i] = createdVms.get(vmsDefinitions.get(i).key());
+        }
+
+        // Create the app gateway in the other subnet of the same vnet and point the backend at the VMs
+        ApplicationGateway appGateway = azure.applicationGateways().define(name)
+                .withRegion(region)
+                .withExistingResourceGroup(rgName)
+                .defineRequestRoutingRule("rule1")
+                    .fromPrivateFrontend()
+                    .fromFrontendHttpPort(80)
+                    .toBackendHttpPort(8080)
+                    .toBackendIPAddress(vms[0].getPrimaryNetworkInterface().primaryPrivateIP())
+                    .toBackendIPAddress(vms[1].getPrimaryNetworkInterface().primaryPrivateIP())
+                    .attach()
+                .withExistingSubnet(network.subnets().get("subnet1"))
+                .create();
+
+        // Get the health of the VMs
+        Map<String, ApplicationGatewayBackendHealth> backendHealths = appGateway.checkBackendHealth();
+        for (ApplicationGatewayBackendHealth backendHealth : backendHealths.values()) {
+            for (ApplicationGatewayBackendHealthHttpSettings backendConfig : backendHealth.inner().backendHttpSettingsCollection()) {
+                for (ApplicationGatewayBackendHealthServer server : backendConfig.servers()) {
+                    System.out.println("Server: " + server.address() + ": " + server.health().toString());
+                }
+            }
+        }
+
+        azure.resourceGroups().beginDeleteByName(rgName);
     }
 
     @Test

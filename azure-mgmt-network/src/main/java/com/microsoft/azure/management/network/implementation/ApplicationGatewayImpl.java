@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayAuthenticationCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
@@ -1458,5 +1459,15 @@ class ApplicationGatewayImpl
         }
 
         return policy;
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayBackendHealth> checkBackendHealth() {
+        return this.checkBackendHealthAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<Map<String, ApplicationGatewayBackendHealth>> checkBackendHealthAsync() {
+        return this.manager().applicationGateways().checkBackendHealthAsync(this.id());
     }
 }
