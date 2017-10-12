@@ -219,7 +219,7 @@ public class InterceptorManager {
                 }
             }
 
-            HttpResponse response = new BufferedHttpResponse(recordStatusCode, headers, rawBody);
+            HttpResponse response = new MockHttpResponse(recordStatusCode, headers, rawBody);
             return Single.just(response);
         }
     }
@@ -251,7 +251,7 @@ public class InterceptorManager {
                 public HttpResponse call(String content) {
                     content = applyReplacementRule(content);
                     responseData.put("Body", content);
-                    return new BufferedHttpResponse(response.statusCode(), response.headers(), content);
+                    return new MockHttpResponse(response.statusCode(), response.headers(), content);
                 }
             });
         } else {
@@ -266,7 +266,7 @@ public class InterceptorManager {
 
                         content = applyReplacementRule(content);
                         responseData.put("Body", content);
-                        return new BufferedHttpResponse(response.statusCode(), response.headers(), content);
+                        return new MockHttpResponse(response.statusCode(), response.headers(), content);
                     } catch (IOException e) {
                         throw Exceptions.propagate(e);
                     }

@@ -52,10 +52,11 @@ public final class ResourceManagerThrottlingPolicy implements RequestPolicy {
                 if (response.statusCode() != HTTP_TOO_MANY_REQUESTS) {
                     return Single.just(response);
                 } else {
-                    return response.buffer().flatMap(new Func1<BufferedHttpResponse, Single<HttpResponse>>() {
+                    final HttpResponse bufferedResponse = response.buffer();
+                    return bufferedResponse.bodyAsStringAsync().flatMap(new Func1<String, Single<HttpResponse>>() {
                         @Override
-                        public Single<HttpResponse> call(BufferedHttpResponse bufferedHttpResponse) {
-                            return delayIfTooManyRequests(request, bufferedHttpResponse);
+                        public Single<HttpResponse> call(String body) {
+                            return delayIfTooManyRequests(request, bufferedResponse, body);
                         }
                     });
                 }
@@ -63,7 +64,7 @@ public final class ResourceManagerThrottlingPolicy implements RequestPolicy {
         });
     }
 
-    private Single<HttpResponse> delayIfTooManyRequests(final HttpRequest request, BufferedHttpResponse bufferedResponse) {
+    private Single<HttpResponse> delayIfTooManyRequests(final HttpRequest request, HttpResponse bufferedResponse, String body) {
         String retryAfterHeader = bufferedResponse.headerValue("Retry-After");
         int retryAfter = 0;
         if (retryAfterHeader != null) {
@@ -76,7 +77,7 @@ public final class ResourceManagerThrottlingPolicy implements RequestPolicy {
 
         if (retryAfter <= 0) {
             Pattern pattern = Pattern.compile("try again after '([0-9]*)' minutes", Pattern.CASE_INSENSITIVE);
-            Matcher matcher = pattern.matcher(bufferedResponse.body());
+            Matcher matcher = pattern.matcher(body);
             if (matcher.find()) {
                 retryAfter = (int) TimeUnit.MINUTES.toSeconds(Integer.parseInt(matcher.group(1)));
             }
