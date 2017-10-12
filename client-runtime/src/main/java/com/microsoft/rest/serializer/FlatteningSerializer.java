@@ -138,28 +138,28 @@ public class FlatteningSerializer extends StdSerializer<Object> implements Resol
             if (property != null && !property.value().isEmpty()) {
                 wireName = f.getAnnotation(JsonProperty.class).value();
             }
-            if (value.getClass().isAnnotationPresent(JsonFlatten.class) && wireName.matches(".+[^\\\\]\\..+")) {
-                String[] values = wireName.split("((?<!\\\\))\\.");
-                for (int i = 0; i < values.length; ++i) {
-                    values[i] = values[i].replace("\\.", ".");
-                    if (i == values.length - 1) {
-                        break;
-                    }
-                    String val = values[i];
-                    if (!pointer.has(val)) {
-                        ObjectNode child = new ObjectNode(mapper.getNodeFactory());
-                        pointer.set(val, child);
-                        pointer = child;
-                    } else {
-                        pointer = (ObjectNode) pointer.get(val);
-                    }
-                }
-                wireName = values[values.length - 1];
-            }
             try {
-                Object val = f.get(value);
-                if (val != null) {
-                    pointer.set(wireName, serializePartial(val));
+                Object propValue = f.get(value);
+                if (propValue != null) {
+                    if (value.getClass().isAnnotationPresent(JsonFlatten.class) && wireName.matches(".+[^\\\\]\\..+")) {
+                        String[] values = wireName.split("((?<!\\\\))\\.");
+                        for (int i = 0; i < values.length; ++i) {
+                            values[i] = values[i].replace("\\.", ".");
+                            if (i == values.length - 1) {
+                                break;
+                            }
+                            String val = values[i];
+                            if (!pointer.has(val)) {
+                                ObjectNode child = new ObjectNode(mapper.getNodeFactory());
+                                pointer.set(val, child);
+                                pointer = child;
+                            } else {
+                                pointer = (ObjectNode) pointer.get(val);
+                            }
+                        }
+                        wireName = values[values.length - 1];
+                    }
+                    pointer.set(wireName, serializePartial(propValue));
                 }
             } catch (IllegalAccessException e) {
                 e.printStackTrace();
