@@ -20,8 +20,8 @@ import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
-import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthHttpSettings;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthServer;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfigurationHealth;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
 import com.microsoft.azure.management.network.ConnectivityCheck;
 import com.microsoft.azure.management.network.Direction;
@@ -410,13 +410,21 @@ public class AzureTests extends TestBase {
 
         // Get the health of the VMs
         Map<String, ApplicationGatewayBackendHealth> backendHealths = appGateway.checkBackendHealth();
+
+        StringBuilder info = new StringBuilder();
+        info.append("\nApplication gateway backend healths: ").append(backendHealths.size());
         for (ApplicationGatewayBackendHealth backendHealth : backendHealths.values()) {
-            for (ApplicationGatewayBackendHealthHttpSettings backendConfig : backendHealth.inner().backendHttpSettingsCollection()) {
-                for (ApplicationGatewayBackendHealthServer server : backendConfig.servers()) {
-                    System.out.println("Server: " + server.address() + ": " + server.health().toString());
+            info.append("\n\tApplication gateway backend name: ").append(backendHealth.name())
+                .append("\n\t\tHTTP configuration healths: ").append(backendHealth.httpConfigurationHealths().size());
+            for (ApplicationGatewayBackendHttpConfigurationHealth backendConfigHealth : backendHealth.httpConfigurationHealths().values()) {
+                info.append("\n\t\t\tHTTP configuration name: ").append(backendConfigHealth.name())
+                    .append("\n\t\t\tServers: ").append(backendConfigHealth.inner().servers().size());
+                for (ApplicationGatewayBackendHealthServer server : backendConfigHealth.inner().servers()) {
+                    info.append("\n\t\t\t\tServer: " + server.address() + ": " + server.health().toString());
                 }
             }
         }
+        System.out.println(info.toString());
 
         // Verify health
         Assert.assertEquals(1,  appGateway.backends().size());

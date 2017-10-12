@@ -5,11 +5,17 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Collections;
+import java.util.Map;
+import java.util.TreeMap;
+
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthHttpSettings;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthPool;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfigurationHealth;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 
 /**
@@ -20,10 +26,17 @@ public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBa
 
     private final ApplicationGatewayBackendHealthPool inner;
     private final NetworkManager manager;
+    private final Map<String, ApplicationGatewayBackendHttpConfigurationHealth> httpConfigHealths = new TreeMap<>();
 
     ApplicationGatewayBackendHealthImpl(ApplicationGatewayBackendHealthPool inner, NetworkManager manager) {
         this.inner = inner;
         this.manager = manager;
+        if (inner != null) {
+            for (ApplicationGatewayBackendHealthHttpSettings httpConfigInner : inner.backendHttpSettingsCollection()) {
+                ApplicationGatewayBackendHttpConfigurationHealthImpl httpConfigHealth  = new ApplicationGatewayBackendHttpConfigurationHealthImpl(httpConfigInner, this);
+                this.httpConfigHealths.put(httpConfigHealth.name(), httpConfigHealth);
+            }
+        }
     }
 
     @Override
@@ -60,5 +73,10 @@ public class ApplicationGatewayBackendHealthImpl implements ApplicationGatewayBa
     @Override
     public NetworkManager manager() {
         return this.manager;
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayBackendHttpConfigurationHealth> httpConfigurationHealths() {
+        return Collections.unmodifiableMap(this.httpConfigHealths);
     }
 }

@@ -5,6 +5,8 @@
  */
 package com.microsoft.azure.management.network;
 
+import java.util.Map;
+
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
@@ -30,4 +32,9 @@ public interface ApplicationGatewayBackendHealth extends
      */
     @Method
     ApplicationGatewayBackend getBackend();
+
+    /**
+     * @return the health information about each associated backend HTTP settings configuration, indexed by its name
+     */
+    Map<String, ApplicationGatewayBackendHttpConfigurationHealth> httpConfigurationHealths();
 }
