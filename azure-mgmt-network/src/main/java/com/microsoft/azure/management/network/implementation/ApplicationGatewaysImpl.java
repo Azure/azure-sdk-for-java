@@ -145,8 +145,8 @@ class ApplicationGatewaysImpl
                         Map<String, ApplicationGatewayBackendHealth> backendHealths = new TreeMap<>();
                         if (inner != null) {
                             for (ApplicationGatewayBackendHealthPool healthInner : inner.backendAddressPools()) {
-                                ApplicationGatewayBackendHealth backendHealth = new ApplicationGatewayBackendHealthImpl(healthInner);
-                                backendHealths.put(ResourceUtils.nameFromResourceId(backendHealth.inner().backendAddressPool().id()), backendHealth);
+                                ApplicationGatewayBackendHealth backendHealth = new ApplicationGatewayBackendHealthImpl(healthInner, manager());
+                                backendHealths.put(backendHealth.name(), backendHealth);
                             }
                         }
                         return Collections.unmodifiableMap(backendHealths);

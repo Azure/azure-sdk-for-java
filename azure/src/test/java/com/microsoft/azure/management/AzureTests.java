@@ -18,6 +18,7 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthHttpSettings;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthServer;
@@ -389,6 +390,11 @@ public class AzureTests extends TestBase {
             vms[i] = createdVms.get(vmsDefinitions.get(i).key());
         }
 
+        String[] ipAddresses = new String[vms.length];
+        for (int i = 0; i < vms.length; i++) {
+            ipAddresses[i] = vms[i].getPrimaryNetworkInterface().primaryPrivateIP();
+        }
+
         // Create the app gateway in the other subnet of the same vnet and point the backend at the VMs
         ApplicationGateway appGateway = azure.applicationGateways().define(name)
                 .withRegion(region)
@@ -397,8 +403,7 @@ public class AzureTests extends TestBase {
                     .fromPrivateFrontend()
                     .fromFrontendHttpPort(80)
                     .toBackendHttpPort(8080)
-                    .toBackendIPAddress(vms[0].getPrimaryNetworkInterface().primaryPrivateIP())
-                    .toBackendIPAddress(vms[1].getPrimaryNetworkInterface().primaryPrivateIP())
+                    .toBackendIPAddresses(ipAddresses)
                     .attach()
                 .withExistingSubnet(network.subnets().get("subnet1"))
                 .create();
@@ -411,6 +416,19 @@ public class AzureTests extends TestBase {
                     System.out.println("Server: " + server.address() + ": " + server.health().toString());
                 }
             }
+        }
+
+        // Verify health
+        Assert.assertEquals(1,  appGateway.backends().size());
+        ApplicationGatewayBackend agBackend = appGateway.backends().values().iterator().next();
+
+        Assert.assertEquals(1, backendHealths.size());
+        ApplicationGatewayBackendHealth backendHealth = backendHealths.get(agBackend.name());
+        Assert.assertNotNull(backendHealth);
+        ApplicationGatewayBackend healthBackend = backendHealth.getBackend();
+        Assert.assertNotNull(healthBackend);
+        for (int i = 0; i < ipAddresses.length; i++) {
+            Assert.assertTrue(healthBackend.containsIPAddress(ipAddresses[i]));
         }
 
         azure.resourceGroups().beginDeleteByName(rgName);
