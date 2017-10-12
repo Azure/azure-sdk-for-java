@@ -8,7 +8,6 @@ package com.microsoft.azure;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.annotations.AzureHost;
-import com.microsoft.rest.RestException;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.InvalidReturnTypeException;
 import com.microsoft.rest.RestProxy;
@@ -19,9 +18,9 @@ import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import rx.Observable;
 import rx.Single;
-import rx.functions.Func0;
 import rx.functions.Func1;
 
+import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -102,7 +101,7 @@ public final class AzureProxy extends RestProxy {
     }
 
     @Override
-    protected Object handleAsyncHttpResponse(final HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
+    protected Object handleAsyncHttpResponse(final HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
         final SerializerAdapter<?> serializer = serializer();
 
         Object result;
@@ -117,144 +116,96 @@ public final class AzureProxy extends RestProxy {
             }
             else {
                 final Type operationStatusResultType = ((ParameterizedType) operationStatusType).getActualTypeArguments()[0];
-                result = asyncHttpResponse
-                        .toObservable()
-                        .flatMap(new Func1<HttpResponse, Observable<OperationStatus<Object>>>() {
-                            @Override
-                            public Observable<OperationStatus<Object>> call(HttpResponse httpResponse) {
-                                final PollStrategy pollStrategy = createPollStrategy(httpRequest, httpResponse, serializer);
-
-                                Observable<OperationStatus<Object>> result;
-                                if (pollStrategy == null || pollStrategy.isDone()) {
-                                    final String provisioningState = pollStrategy == null ? ProvisioningState.SUCCEEDED : pollStrategy.provisioningState();
-                                    result = toCompletedOperationStatusObservable(provisioningState, httpRequest, httpResponse, methodParser, operationStatusResultType);
-                                } else {
-                                    result = sendPollRequestWithDelay(pollStrategy)
-                                            .flatMap(new Func1<HttpResponse, Observable<OperationStatus<Object>>>() {
-                                                @Override
-                                                public Observable<OperationStatus<Object>> call(HttpResponse httpResponse) {
-                                                    Observable<OperationStatus<Object>> result;
-                                                    if (!pollStrategy.isDone()) {
-                                                        result = Observable.just(new OperationStatus<>(pollStrategy));
-                                                    }
-                                                    else {
-                                                        result = toCompletedOperationStatusObservable(pollStrategy.provisioningState(), httpRequest, httpResponse, methodParser, operationStatusResultType);
-                                                    }
-                                                    return result;
-                                                }
-                                            })
-                                            .repeat()
-                                            .takeUntil(new Func1<OperationStatus<Object>, Boolean>() {
-                                                @Override
-                                                public Boolean call(OperationStatus<Object> operationStatus) {
-                                                    return operationStatus.isDone();
-                                                }
-                                            });
+                result = createPollStrategy(httpRequest, asyncHttpResponse, serializer)
+                            .toObservable()
+                            .flatMap(new Func1<PollStrategy, Observable<OperationStatus<Object>>>() {
+                                @Override
+                                public Observable<OperationStatus<Object>> call(final PollStrategy pollStrategy) {
+                                    return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);
                                 }
-                                return result;
-                            }
-                        });
+                            });
             }
         }
         else {
-            asyncHttpResponse = asyncHttpResponse
-                    .flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
+            final Single<HttpResponse> lastAsyncHttpResponse = createPollStrategy(httpRequest, asyncHttpResponse, serializer)
+                    .flatMap(new Func1<PollStrategy, Single<HttpResponse>>() {
                         @Override
-                        public Single<? extends HttpResponse> call(HttpResponse httpResponse) {
-                            final PollStrategy pollStrategy = createPollStrategy(httpRequest, httpResponse, serializer);
-
-                            Single<HttpResponse> result;
-                            if (pollStrategy == null || pollStrategy.isDone()) {
-                                result = Single.just(httpResponse);
-                            }
-                            else {
-                                result = sendPollRequestWithDelay(pollStrategy)
-                                        .repeat()
-                                        .takeUntil(new Func1<HttpResponse, Boolean>() {
-                                            @Override
-                                            public Boolean call(HttpResponse ignored) {
-                                                return pollStrategy.isDone();
-                                            }
-                                        })
-                                        .last()
-                                        .toSingle();
-                            }
-                            return result;
+                        public Single<HttpResponse> call(PollStrategy pollStrategy) {
+                            return pollStrategy.pollUntilDone();
                         }
                     });
-            result = super.handleAsyncHttpResponse(httpRequest, asyncHttpResponse, methodParser, returnType);
+            result = handleAsyncHttpResponseInner(httpRequest, lastAsyncHttpResponse, methodParser, returnType);
         }
 
         return result;
     }
 
-    private static PollStrategy createPollStrategy(HttpRequest httpRequest, HttpResponse httpResponse, SerializerAdapter<?> serializer) {
-        PollStrategy result = null;
-        final long delayInMilliseconds = defaultDelayInMilliseconds();
+    private Single<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Single<HttpResponse> asyncOriginalHttpResponse, final SerializerAdapter<?> serializer) {
+        return asyncOriginalHttpResponse
+                .flatMap(new Func1<HttpResponse, Single<PollStrategy>>() {
+                    @Override
+                    public Single<PollStrategy> call(final HttpResponse originalHttpResponse) {
+                        Single<PollStrategy> result = null;
+                        final long delayInMilliseconds = defaultDelayInMilliseconds();
 
-        final int httpStatusCode = httpResponse.statusCode();
-        if (httpStatusCode != 200) {
-            final String fullyQualifiedMethodName = httpRequest.callerMethod();
-            final String originalHttpRequestMethod = httpRequest.httpMethod();
-            final String originalHttpRequestUrl = httpRequest.url();
+                        final int httpStatusCode = originalHttpResponse.statusCode();
+                        if (httpStatusCode != 200) {
+                            PollStrategy pollStrategy = null;
+                            final String fullyQualifiedMethodName = originalHttpRequest.callerMethod();
+                            final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
+                            final String originalHttpRequestUrl = originalHttpRequest.url();
 
-            if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
-                if (httpStatusCode == 201) {
-                    result = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
-                } else if (httpStatusCode == 202) {
-                    result = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
-                    if (result == null) {
-                        result = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, delayInMilliseconds);
-                    }
-                }
-            } else /* if (originalRequestHttpMethod.equalsIgnoreCase("DELETE") || originalRequestHttpMethod.equalsIgnoreCase("POST") */ {
-                if (httpStatusCode == 202) {
-                    result = AzureAsyncOperationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
-                    if (result == null) {
-                        result = LocationPollStrategy.tryToCreate(fullyQualifiedMethodName, httpResponse, delayInMilliseconds);
-                    }
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private Observable<OperationStatus<Object>> toCompletedOperationStatusObservable(String provisioningState, HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
-        Observable<OperationStatus<Object>> result;
-        try {
-            final Object resultObject = super.handleAsyncHttpResponse(httpRequest, Single.just(httpResponse), methodParser, operationStatusResultType);
-            result = Observable.just(new OperationStatus<>(resultObject, provisioningState));
-        } catch (RestException e) {
-            if (ProvisioningState.SUCCEEDED.equals(provisioningState)) {
-                provisioningState = ProvisioningState.FAILED;
-            }
-            result = Observable.just(new OperationStatus<>(e, provisioningState));
-        }
-        return result;
-    }
-
-    private Observable<HttpResponse> sendPollRequestWithDelay(final PollStrategy pollStrategy) {
-        return Observable.defer(new Func0<Observable<HttpResponse>>() {
-            @Override
-            public Observable<HttpResponse> call() {
-                return pollStrategy
-                        .delayAsync()
-                        .flatMap(new Func1<Void, Single<HttpResponse>>() {
-                            @Override
-                            public Single<HttpResponse> call(Void ignored) {
-                                final HttpRequest pollRequest = pollStrategy.createPollRequest();
-                                return sendHttpRequestAsync(pollRequest);
+                            if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
+                                if (httpStatusCode == 201) {
+                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
+                                } else if (httpStatusCode == 202) {
+                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
+                                    if (pollStrategy == null) {
+                                        pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, fullyQualifiedMethodName, originalHttpResponse, delayInMilliseconds);
+                                    }
+                                }
                             }
-                        })
-                        .flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
-                            @Override
-                            public Single<HttpResponse> call(HttpResponse response) {
-                                return pollStrategy.updateFromAsync(response);
+                            else {
+                                if (httpStatusCode == 202) {
+                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, fullyQualifiedMethodName, originalHttpResponse, originalHttpRequestUrl, serializer, delayInMilliseconds);
+                                    if (pollStrategy == null) {
+                                        pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, fullyQualifiedMethodName, originalHttpResponse, delayInMilliseconds);
+                                    }
+                                }
                             }
-                        })
-                        .toObservable();
-            }
-        });
+
+                            if (pollStrategy != null) {
+                                result = Single.just(pollStrategy);
+                            }
+                        }
+
+                        if (result == null) {
+                            final HttpResponse bufferedOriginalHttpRespose = originalHttpResponse.buffer();
+                            result = bufferedOriginalHttpRespose.bodyAsStringAsync()
+                                .map(new Func1<String, PollStrategy>() {
+                                    @Override
+                                    public PollStrategy call(String originalHttpResponseBody) {
+                                        PollStrategy result = null;
+
+                                        try {
+                                            final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class);
+                                            if (resource != null && resource.properties() != null && !ProvisioningState.isCompleted(resource.properties().provisioningState())) {
+                                                result = new ProvisioningStatePollStrategy(AzureProxy.this, originalHttpRequest, resource.properties().provisioningState(), delayInMilliseconds);
+                                            }
+                                        } catch (IOException e) {
+                                        }
+
+                                        if (result == null) {
+                                            result = new CompletedPollStrategy(AzureProxy.this, bufferedOriginalHttpRespose);
+                                        }
+
+                                        return result;
+                                    }
+                                });
+                        }
+
+                        return result;
+                    }
+                });
     }
 }

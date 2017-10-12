@@ -11,7 +11,7 @@ import com.microsoft.azure.AzureAsyncOperationPollStrategy;
 import com.microsoft.azure.HttpBinJSON;
 import com.microsoft.azure.LocationPollStrategy;
 import com.microsoft.azure.MockResource;
-import com.microsoft.azure.OperationResource;
+import com.microsoft.azure.ResourceWithProvisioningState;
 import com.microsoft.azure.ProvisioningState;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeader;
@@ -23,7 +23,6 @@ import rx.Single;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.Proxy;
 import java.net.URI;
 import java.util.HashMap;
 import java.util.Map;
@@ -122,8 +121,12 @@ public class MockAzureHttpClient extends HttpClient {
                 if (request.httpMethod().equalsIgnoreCase("GET")) {
                     if (requestPathLower.contains("/mockprovider/mockresources/")) {
                         ++getRequests;
+                        --pollsRemaining;
+
                         final MockResource resource = new MockResource();
                         resource.name = requestPath.substring(requestPath.lastIndexOf('/') + 1);
+                        resource.properties = new MockResource.Properties();
+                        resource.properties.provisioningState = (pollsRemaining <= 0 ? ProvisioningState.SUCCEEDED : ProvisioningState.IN_PROGRESS);
                         response = new MockAzureHttpResponse(200, resource);
                     }
                     else if (requestPathLower.contains("/mockprovider/mockoperations/")) {
@@ -134,7 +137,7 @@ public class MockAzureHttpClient extends HttpClient {
                         final String pollType = requestQueryMap.get("PollType");
 
                         if (pollType.equalsIgnoreCase(AzureAsyncOperationPollStrategy.HEADER_NAME)) {
-                            final OperationResource.Properties properties = new OperationResource.Properties();
+                            final ResourceWithProvisioningState.Properties properties = new ResourceWithProvisioningState.Properties();
                             if (pollsRemaining <= 1) {
                                 properties.setProvisioningState(ProvisioningState.SUCCEEDED);
                             }
@@ -142,7 +145,7 @@ public class MockAzureHttpClient extends HttpClient {
                                 --pollsRemaining;
                                 properties.setProvisioningState(ProvisioningState.IN_PROGRESS);
                             }
-                            final OperationResource operationResource = new OperationResource();
+                            final ResourceWithProvisioningState operationResource = new ResourceWithProvisioningState();
                             operationResource.setProperties(properties);
                             response = new MockAzureHttpResponse(200, operationResource);
                         }
@@ -172,8 +175,23 @@ public class MockAzureHttpClient extends HttpClient {
                         final MockResource resource = new MockResource();
                         resource.name = "c";
                         response = new MockAzureHttpResponse(200, resource);
-                    } else {
+                    }
+                    else if (pollType.equalsIgnoreCase("ProvisioningState")) {
 
+                        if (pollsRemainingString == null) {
+                            pollsRemaining = 1;
+                        }
+                        else {
+                            pollsRemaining = Integer.valueOf(pollsRemainingString);
+                        }
+
+                        final MockResource resource = new MockResource();
+                        resource.name = "c";
+                        resource.properties = new MockResource.Properties();
+                        resource.properties.provisioningState = (pollsRemaining <= 0 ? ProvisioningState.SUCCEEDED : ProvisioningState.IN_PROGRESS);
+                        response = new MockAzureHttpResponse(200, resource);
+                    }
+                    else {
                         if (pollsRemainingString == null) {
                             pollsRemaining = 1;
                         }
