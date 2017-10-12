@@ -9,6 +9,7 @@ package com.microsoft.rest.http;
 import com.microsoft.rest.policy.RequestPolicy;
 import rx.Single;
 
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
@@ -57,4 +58,48 @@ public abstract class HttpClient {
      * @return A {@link Single} representing the HTTP response that will arrive asynchronously.
      */
     protected abstract Single<HttpResponse> sendRequestInternalAsync(HttpRequest request);
+
+    /**
+     * The set of parameters used to create an HTTP client.
+     */
+    public static final class Configuration {
+        private final List<RequestPolicy.Factory> policyFactories;
+        private final Proxy proxy;
+
+        /**
+         * @return The policy factories to use when creating RequestPolicies to intercept requests.
+         */
+        public List<RequestPolicy.Factory> policyFactories() {
+            return policyFactories;
+        }
+
+        /**
+         * @return The optional proxy to use.
+         */
+        public Proxy proxy() {
+            return proxy;
+        }
+
+        /**
+         * Creates a Configuration.
+         * @param policyFactories The policy factories to use when creating RequestPolicies to intercept requests.
+         * @param proxy The optional proxy to use.
+         */
+        public Configuration(List<RequestPolicy.Factory> policyFactories, Proxy proxy) {
+            this.policyFactories = policyFactories;
+            this.proxy = proxy;
+        }
+    }
+
+    /**
+     * Creates an HttpClient from a Configuration.
+     */
+    public interface Factory {
+        /**
+         * Creates an HttpClient with the given Configuration.
+         * @param configuration the configuration.
+         * @return the HttpClient.
+         */
+        HttpClient create(Configuration configuration);
+    }
 }

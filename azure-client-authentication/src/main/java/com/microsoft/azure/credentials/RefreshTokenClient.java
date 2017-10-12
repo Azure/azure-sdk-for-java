@@ -18,12 +18,15 @@ import com.microsoft.rest.annotations.ExpectedResponses;
 import com.microsoft.rest.annotations.POST;
 import com.microsoft.rest.annotations.PathParam;
 import com.microsoft.rest.http.HttpClient;
+import com.microsoft.rest.http.HttpClient.Configuration;
 import com.microsoft.rest.http.RxNettyAdapter;
+import com.microsoft.rest.policy.RequestPolicy;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import rx.Single;
 import rx.functions.Func1;
 
 import java.net.Proxy;
+import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -43,9 +46,8 @@ final class RefreshTokenClient {
     }
 
     private static HttpClient createHttpClient(Proxy proxy) {
-        return new RxNettyAdapter.Builder()
-                .withProxy(proxy)
-                .build();
+        return new RxNettyAdapter.Factory()
+                .create(new Configuration(Collections.<RequestPolicy.Factory>emptyList(), proxy));
     }
 
     AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResoureRefreshToken) {
