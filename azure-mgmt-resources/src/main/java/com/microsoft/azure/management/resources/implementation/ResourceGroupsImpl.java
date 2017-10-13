@@ -18,7 +18,7 @@ import rx.Completable;
 import rx.Observable;
 
 /**
- * The implementation for {@link ResourceGroups} and its parent interfaces.
+ * The implementation for ResourceGroups.
  */
 final class ResourceGroupsImpl
         extends CreatableResourcesImpl<ResourceGroup, ResourceGroupImpl, ResourceGroupInner>
@@ -78,6 +78,11 @@ final class ResourceGroupsImpl
 
     @Override
     public boolean checkExistence(String name) {
+        return this.contain(name);
+    }
+
+    @Override
+    public boolean contain(String name) {
         return client.checkExistence(name);
     }
 
