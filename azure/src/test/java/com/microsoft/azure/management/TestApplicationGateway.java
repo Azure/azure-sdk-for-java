@@ -845,13 +845,13 @@ public class TestApplicationGateway {
             Assert.assertTrue("www.fabricam.com".equalsIgnoreCase(listener.hostName()));
             Assert.assertTrue(listener.requiresServerNameIndication());
             Assert.assertNotNull(listener.frontend());
-            Assert.assertTrue(!listener.frontend().isPrivate());
+            Assert.assertFalse(listener.frontend().isPrivate());
             Assert.assertTrue(listener.frontend().isPublic());
             Assert.assertEquals(ApplicationGatewayProtocol.HTTPS, listener.protocol());
             Assert.assertNotNull(appGateway.listenerByPortNumber(80));
             Assert.assertNotNull(appGateway.listenerByPortNumber(443));
 
-            // Verify certificates
+            // Verify SSL certificates
             Assert.assertEquals(2, appGateway.sslCertificates().size());
 
             // Verify backends

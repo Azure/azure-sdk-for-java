@@ -18,14 +18,22 @@ import com.microsoft.azure.management.compute.VirtualMachineSizeTypes;
 import com.microsoft.azure.management.compute.VirtualMachineSku;
 import com.microsoft.azure.management.network.Access;
 import com.microsoft.azure.management.network.ApplicationGateway;
+import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfigurationHealth;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendServerHealth;
 import com.microsoft.azure.management.network.ApplicationGatewayOperationalState;
+import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ConnectivityCheck;
 import com.microsoft.azure.management.network.Direction;
 import com.microsoft.azure.management.network.FlowLogSettings;
+import com.microsoft.azure.management.network.Network;
+import com.microsoft.azure.management.network.NetworkInterface;
 import com.microsoft.azure.management.network.NetworkSecurityGroup;
 import com.microsoft.azure.management.network.NetworkWatcher;
 import com.microsoft.azure.management.network.NextHop;
 import com.microsoft.azure.management.network.NextHopType;
+import com.microsoft.azure.management.network.NicIPConfiguration;
 import com.microsoft.azure.management.network.PacketCapture;
 import com.microsoft.azure.management.network.PcProtocol;
 import com.microsoft.azure.management.network.PcStatus;
@@ -57,6 +65,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.TimeUnit;
@@ -336,13 +345,157 @@ public class AzureTests extends TestBase {
     }
 
     /**
-     * Tests a complex internal application gateway
+     * Tests a complex internal application gateway.
      * @throws Exception
      */
     @Test
     public void testAppGatewaysInternalComplex() throws Exception {
         new TestApplicationGateway.PrivateComplex()
             .runTest(azure.applicationGateways(),  azure.resourceGroups());
+    }
+
+    @Test
+    public void testAppGatewayBackendHealthCheck() throws Exception {
+        String testId = SdkContext.randomResourceName("", 15);
+        String name = "ag" + testId;
+        Region region = Region.US_EAST;
+        String password = SdkContext.randomResourceName("Abc.123", 12);
+        String vnetName = "net" + testId;
+        String rgName = "rg" + testId;
+
+        try {
+            // Create a vnet
+            Network network = azure.networks().define(vnetName)
+                    .withRegion(region)
+                    .withNewResourceGroup(rgName)
+                    .withAddressSpace("10.0.0.0/28")
+                    .withSubnet("subnet1", "10.0.0.0/29")
+                    .withSubnet("subnet2", "10.0.0.8/29")
+                    .create();
+
+            // Create VMs for the backend in the network to connect to
+            List<Creatable<VirtualMachine>> vmsDefinitions = new ArrayList<>();
+            for (int i = 0; i < 2; i++) {
+                vmsDefinitions.add(azure.virtualMachines().define("vm" + i + testId)
+                        .withRegion(region)
+                        .withExistingResourceGroup(rgName)
+                        .withExistingPrimaryNetwork(network)
+                        .withSubnet("subnet2")
+                        .withPrimaryPrivateIPAddressDynamic()
+                        .withoutPrimaryPublicIPAddress()
+                        .withPopularLinuxImage(KnownLinuxVirtualMachineImage.UBUNTU_SERVER_16_04_LTS)
+                        .withRootUsername("tester")
+                        .withRootPassword(password));
+            }
+
+            CreatedResources<VirtualMachine> createdVms = azure.virtualMachines().create(vmsDefinitions);
+            VirtualMachine[] vms = new VirtualMachine[createdVms.size()];
+            for (int i = 0; i < vmsDefinitions.size(); i++) {
+                vms[i] = createdVms.get(vmsDefinitions.get(i).key());
+            }
+
+            String[] ipAddresses = new String[vms.length];
+            for (int i = 0; i < vms.length; i++) {
+                ipAddresses[i] = vms[i].getPrimaryNetworkInterface().primaryPrivateIP();
+            }
+
+            // Create the app gateway in the other subnet of the same vnet and point the backend at the VMs
+            ApplicationGateway appGateway = azure.applicationGateways().define(name)
+                    .withRegion(region)
+                    .withExistingResourceGroup(rgName)
+                    .defineRequestRoutingRule("rule1")
+                        .fromPrivateFrontend()
+                        .fromFrontendHttpPort(80)
+                        .toBackendHttpPort(8080)
+                        .toBackendIPAddresses(ipAddresses) // Connect the VMs via IP addresses
+                        .attach()
+                    .defineRequestRoutingRule("rule2")
+                        .fromPrivateFrontend()
+                        .fromFrontendHttpPort(25)
+                        .toBackendHttpPort(22)
+                        .toBackend("nicBackend")
+                        .attach()
+                    .withExistingSubnet(network.subnets().get("subnet1")) // Backend for connecting the VMs via NICs
+                    .create();
+
+            // Connect the 1st VM via NIC IP config
+            NetworkInterface nic = vms[0].getPrimaryNetworkInterface();
+            Assert.assertNotNull(nic);
+            ApplicationGatewayBackend appGatewayBackend = appGateway.backends().get("nicBackend");
+            Assert.assertNotNull(appGatewayBackend);
+            nic.update().updateIPConfiguration(nic.primaryIPConfiguration().name())
+                .withExistingApplicationGatewayBackend(appGateway, appGatewayBackend.name())
+                .parent()
+            .apply();
+
+            // Get the health of the VMs
+            appGateway.refresh();
+            Map<String, ApplicationGatewayBackendHealth> backendHealths = appGateway.checkBackendHealth();
+
+            StringBuilder info = new StringBuilder();
+            info.append("\nApplication gateway backend healths: ").append(backendHealths.size());
+            for (ApplicationGatewayBackendHealth backendHealth : backendHealths.values()) {
+                info.append("\n\tApplication gateway backend name: ").append(backendHealth.name())
+                    .append("\n\t\tHTTP configuration healths: ").append(backendHealth.httpConfigurationHealths().size());
+                Assert.assertNotNull(backendHealth.backend());
+                for (ApplicationGatewayBackendHttpConfigurationHealth backendConfigHealth : backendHealth.httpConfigurationHealths().values()) {
+                    info.append("\n\t\t\tHTTP configuration name: ").append(backendConfigHealth.name())
+                        .append("\n\t\t\tServers: ").append(backendConfigHealth.inner().servers().size());
+                    Assert.assertNotNull(backendConfigHealth.backendHttpConfiguration());
+                    for (ApplicationGatewayBackendServerHealth serverHealth : backendConfigHealth.serverHealths().values()) {
+                        NicIPConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
+                        info.append("\n\t\t\t\t\tHealth status: ").append(serverHealth.status());
+                        if (ipConfig != null) {
+                            info.append("\n\t\t\t\tServer NIC ID: ").append(ipConfig.parent().id())
+                                .append("\n\t\t\t\tIP Config name: ").append(ipConfig.name());
+                        } else {
+                            info.append("\n\t\t\t\tServer IP: " + serverHealth.ipAddress());
+                        }
+                    }
+                }
+            }
+            System.out.println(info.toString());
+
+            // Verify app gateway
+            Assert.assertEquals(2,  appGateway.backends().size());
+            ApplicationGatewayRequestRoutingRule rule1 = appGateway.requestRoutingRules().get("rule1");
+            Assert.assertNotNull(rule1);
+            ApplicationGatewayBackend backend1 = rule1.backend();
+            Assert.assertNotNull(backend1);
+            ApplicationGatewayRequestRoutingRule rule2 = appGateway.requestRoutingRules().get("rule2");
+            Assert.assertNotNull(rule2);
+            ApplicationGatewayBackend backend2 = rule2.backend();
+            Assert.assertNotNull(backend2);
+
+            Assert.assertEquals(2, backendHealths.size());
+
+            // Verify first backend (IP address-based)
+            ApplicationGatewayBackendHealth backendHealth1 = backendHealths.get(backend1.name());
+            Assert.assertNotNull(backendHealth1);
+            Assert.assertNotNull(backendHealth1.backend());
+            for (int i = 0; i < ipAddresses.length; i++) {
+                Assert.assertTrue(backend1.containsIPAddress(ipAddresses[i]));
+            }
+
+            // Verify second backend (NIC based)
+            ApplicationGatewayBackendHealth backendHealth2 = backendHealths.get(backend2.name());
+            Assert.assertNotNull(backendHealth2);
+            Assert.assertNotNull(backendHealth2.backend());
+            Assert.assertEquals(backend2.name(), backendHealth2.name());
+            Assert.assertEquals(1,  backendHealth2.httpConfigurationHealths().size());
+            ApplicationGatewayBackendHttpConfigurationHealth httpConfigHealth2 = backendHealth2.httpConfigurationHealths().values().iterator().next();
+            Assert.assertNotNull(httpConfigHealth2.backendHttpConfiguration());
+            Assert.assertEquals(1, httpConfigHealth2.serverHealths().size());
+            ApplicationGatewayBackendServerHealth serverHealth = httpConfigHealth2.serverHealths().values().iterator().next();
+            NicIPConfiguration ipConfig2 = serverHealth.getNetworkInterfaceIPConfiguration();
+            Assert.assertEquals(nic.primaryIPConfiguration().name(), ipConfig2.name());
+        } catch (Exception e) {
+            throw e;
+        } finally {
+            if (azure.resourceGroups().contain(rgName)) {
+                azure.resourceGroups().beginDeleteByName(rgName);
+            }
+        }
     }
 
     @Test

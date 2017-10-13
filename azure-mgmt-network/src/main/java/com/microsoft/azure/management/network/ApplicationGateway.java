@@ -25,6 +25,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
 import rx.Completable;
+import rx.Observable;
 
 /**
  * Entry point for application gateway management API in Azure.
@@ -43,6 +44,22 @@ public interface ApplicationGateway extends
      */
     @Method
     void start();
+
+    /**
+     * Checks the backend health.
+     * @return backend healths indexed by backend name
+     */
+    @Method
+    @Beta(SinceVersion.V1_4_0)
+    Map<String, ApplicationGatewayBackendHealth> checkBackendHealth();
+
+    /**
+     * Checks the backend health asynchronously.
+     * @return a representation of the future computation of this call
+     */
+    @Method
+    @Beta(SinceVersion.V1_4_0)
+    Observable<Map<String, ApplicationGatewayBackendHealth>> checkBackendHealthAsync();
 
     /**
      * Stops the application gateway.
