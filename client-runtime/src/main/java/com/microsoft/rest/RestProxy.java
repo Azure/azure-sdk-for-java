@@ -269,16 +269,16 @@ public class RestProxy implements InvocationHandler {
                 final TypeToken deserializedBodyTypeToken = TypeToken.of(deserializedBodyType);
                 if (deserializedBodyTypeToken.isSubtypeOf(byte[].class)) {
                     asyncResult = response.bodyAsByteArrayAsync()
-                            .map(new Func1<byte[], RestResponseWithBody<?,byte[]>>() {
+                            .map(new Func1<byte[], RestResponseWithBody<?, byte[]>>() {
                                 @Override
-                                public RestResponseWithBody<?,byte[]> call(byte[] responseBodyBytes) {
+                                public RestResponseWithBody<?, byte[]> call(byte[] responseBodyBytes) {
                                     return new RestResponseWithBody<>(responseStatusCode, deserializedHeaders, responseBodyBytes);
                                 }
                             });
                 }
                 else {
                     asyncResult = response.bodyAsStringAsync()
-                            .map(new Func1<String, RestResponseWithBody<?,?>>() {
+                            .map(new Func1<String, RestResponseWithBody<?, ?>>() {
                                 @Override
                                 public RestResponseWithBody<?, ?> call(String responseBodyString) {
                                     final Object deserializedBody = deserialize(responseBodyString, deserializedBodyType);
