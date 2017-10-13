@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.dns;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.dns.implementation.RecordSetInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
@@ -167,7 +166,6 @@ public interface DnsRecordSet extends
              * @param alias the alias
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithCNameRecordSetAttachable<ParentT> withAlias(String alias);
         }
 
@@ -390,7 +388,6 @@ public interface DnsRecordSet extends
              *
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT> withETagCheck();
         }
 
@@ -532,7 +529,6 @@ public interface DnsRecordSet extends
              * @param alias the alias
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithCNameRecordSetAttachable<ParentT> withAlias(String alias);
         }
 
@@ -755,7 +751,6 @@ public interface DnsRecordSet extends
              *
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT> withETagCheck();
     }
 
@@ -928,7 +923,6 @@ public interface DnsRecordSet extends
              * @param alias the alias
              * @return the next stage of the record set update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             UpdateCNameRecordSet withAlias(String alias);
         }
 
@@ -1050,7 +1044,6 @@ public interface DnsRecordSet extends
              * @param textChunks the text value as list
              * @return the next stage of the record set update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             UpdateTxtRecordSet withoutText(List<String> textChunks);
         }
 
@@ -1155,7 +1148,6 @@ public interface DnsRecordSet extends
              *
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withETagCheck();
 
             /**
@@ -1164,7 +1156,6 @@ public interface DnsRecordSet extends
              * @param eTagValue the eTag value
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withETagCheck(String eTagValue);
         }
     }
