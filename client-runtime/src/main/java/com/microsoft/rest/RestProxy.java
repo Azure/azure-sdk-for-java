@@ -15,7 +15,6 @@ import com.microsoft.rest.http.HttpHeader;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import com.microsoft.rest.http.UrlBuilder;
-import org.json.JSONObject;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -301,9 +300,12 @@ public class RestProxy implements InvocationHandler {
     }
 
     private Object deserializeHeaders(HttpHeaders headers, Type deserializedHeadersType) {
-        final JSONObject headersJson = headers.toJSON();
-        final String headersJsonString = headersJson.toString();
-        return deserialize(headersJsonString, deserializedHeadersType);
+        try {
+            final String headersJsonString = serializer.serialize(headers);
+            return deserialize(headersJsonString, deserializedHeadersType);
+        } catch (IOException e) {
+            throw Exceptions.propagate(e);
+        }
     }
 
     protected Object handleAsyncHttpResponse(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, SwaggerMethodParser methodParser, Type returnType) {

@@ -135,11 +135,6 @@
         <artifactId>netty-codec-http</artifactId>
         <version>4.1.3.Final</version>
       </dependency>
-      <dependency>
-        <groupId>org.json</groupId>
-        <artifactId>json</artifactId>
-        <version>20170516</version>
-      </dependency>
     </dependencies>
   </dependencyManagement>
 
