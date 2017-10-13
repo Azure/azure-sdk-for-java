@@ -25,7 +25,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  * Entry point for load balancer management API in Azure.
  */
 @Fluent
-@Beta
 public interface LoadBalancer extends
         GroupableResource<NetworkManager, LoadBalancerInner>,
         Refreshable<LoadBalancer>,
@@ -66,7 +65,6 @@ public interface LoadBalancer extends
     /**
      * @return private (internal) frontends
      */
-    @Beta(SinceVersion.V1_2_0)
     Map<String, LoadBalancerPrivateFrontend> privateFrontends();
 
     /**
@@ -74,7 +72,6 @@ public interface LoadBalancer extends
      * @param publicIPAddress a public IP address to search by
      * @return a public frontend associated with the provided public IP address
      */
-    @Beta(SinceVersion.V1_2_0)
     LoadBalancerPublicFrontend findFrontendByPublicIPAddress(PublicIPAddress publicIPAddress);
 
     /**
@@ -82,13 +79,11 @@ public interface LoadBalancer extends
      * @param publicIPAddressId the resource ID of a public IP address to search by
      * @return a public frontend associated with the provided public IP address
      */
-    @Beta(SinceVersion.V1_2_0)
     LoadBalancerPublicFrontend findFrontendByPublicIPAddress(String publicIPAddressId);
 
     /**
      * @return public (Internet-facing) frontends
      */
-    @Beta(SinceVersion.V1_2_0)
     Map<String, LoadBalancerPublicFrontend> publicFrontends();
 
     /**
