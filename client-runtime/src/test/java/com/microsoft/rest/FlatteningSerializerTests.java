@@ -41,5 +41,7 @@ public class FlatteningSerializerTests {
         private List<String> baz;
         @JsonProperty(value = "properties.props.q.qux")
         private Map<String, String> qux;
+        @JsonProperty(value = "props.empty")
+        private Integer empty;
     }
 }

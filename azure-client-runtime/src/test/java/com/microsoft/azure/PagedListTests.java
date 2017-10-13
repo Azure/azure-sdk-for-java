@@ -9,10 +9,14 @@ package com.microsoft.azure;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
+import rx.Observable;
+import rx.functions.Action1;
+import rx.functions.Func0;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.ListIterator;
 
 public class PagedListTests {
     private PagedList<Integer> list;
@@ -97,6 +101,228 @@ public class PagedListTests {
     public void testLastIndexOf() {
         Assert.assertEquals(15, list.lastIndexOf(15));
     }
+
+
+    @Test
+    public void testIteratorWithListSizeInvocation() {
+        ListIterator<Integer> itr = list.listIterator();
+        list.size();
+        int j = 0;
+        while (itr.hasNext()) {
+            Assert.assertEquals(j++, (long) itr.next());
+        }
+    }
+
+    @Test
+    public void testIteratorPartsWithSizeInvocation() {
+        ListIterator<Integer> itr = list.listIterator();
+        int j = 0;
+        while (j < 5) {
+            Assert.assertTrue(itr.hasNext());
+            Assert.assertEquals(j++, (long) itr.next());
+        }
+        list.size();
+        while (j < 10) {
+            Assert.assertTrue(itr.hasNext());
+            Assert.assertEquals(j++, (long) itr.next());
+        }
+    }
+
+    @Test
+    public void testIteratorWithLoadNextPageInvocation() {
+        ListIterator<Integer> itr = list.listIterator();
+        int j = 0;
+        while (j < 5) {
+            Assert.assertTrue(itr.hasNext());
+            Assert.assertEquals(j++, (long) itr.next());
+        }
+        list.loadNextPage();
+        while (j < 10) {
+            Assert.assertTrue(itr.hasNext());
+            Assert.assertEquals(j++, (long) itr.next());
+        }
+        list.loadNextPage();
+        while (itr.hasNext()) {
+            Assert.assertEquals(j++, (long) itr.next());
+        }
+        Assert.assertEquals(20, j);
+    }
+
+    @Test
+    public void testIteratorOperations() {
+        ListIterator<Integer> itr1 = list.listIterator();
+        IllegalStateException expectedException = null;
+        try {
+            itr1.remove();
+        } catch (IllegalStateException ex) {
+            expectedException = ex;
+        }
+        Assert.assertNotNull(expectedException);
+
+        ListIterator<Integer> itr2 = list.listIterator();
+        Assert.assertTrue(itr2.hasNext());
+        Assert.assertEquals(0, (long) itr2.next());
+        itr2.remove();
+        Assert.assertTrue(itr2.hasNext());
+        Assert.assertEquals(1, (long) itr2.next());
+
+        itr2.set(100);
+        Assert.assertTrue(itr2.hasPrevious());
+        Assert.assertEquals(100, (long) itr2.previous());
+        Assert.assertTrue(itr2.hasNext());
+        Assert.assertEquals(100, (long) itr2.next());
+    }
+
+    @Test
+    public void testAddViaIteratorWhileIterating() {
+        ListIterator<Integer> itr1 = list.listIterator();
+        while (itr1.hasNext()) {
+            Integer val = itr1.next();
+            if (val < 10) {
+                itr1.add(99);
+            }
+        }
+        Assert.assertEquals(30, list.size());
+    }
+
+    @Test
+    public void testRemoveViaIteratorWhileIterating() {
+        ListIterator<Integer> itr1 = list.listIterator();
+        while (itr1.hasNext()) {
+            itr1.next();
+            itr1.remove();
+        }
+        Assert.assertEquals(0, list.size());
+    }
+
+    @Test
+    public void canHandleIntermediateEmptyPage() {
+        List<Integer> pagedList = new PagedList<Integer>(new Page<Integer>() {
+            @Override
+            public String nextPageLink() {
+                return "A";
+            }
+
+            @Override
+            public List<Integer> items() {
+                List<Integer> list = new ArrayList<>();
+                list.add(1);
+                list.add(2);
+                return list;
+            }
+        }) {
+            @Override
+            public Page<Integer> nextPage(String nextPageLink) {
+                if (nextPageLink == "A") {
+                    return new Page<Integer>() {
+                        @Override
+                        public String nextPageLink() {
+                            return "B";
+                        }
+
+                        @Override
+                        public List<Integer> items() {
+                            return new ArrayList<>(); // EMPTY PAGE
+                        }
+                    };
+                } else if (nextPageLink == "B") {
+                    return new Page<Integer>() {
+                        @Override
+                        public String nextPageLink() {
+                            return "C";
+                        }
+
+                        @Override
+                        public List<Integer> items() {
+                            List<Integer> list = new ArrayList<>();
+                            list.add(3);
+                            list.add(4);
+                            return list;
+                        }
+                    };
+                } else if (nextPageLink == "C") {
+                    return new Page<Integer>() {
+                        @Override
+                        public String nextPageLink() {
+                            return null;
+                        }
+
+                        @Override
+                        public List<Integer> items() {
+                            List<Integer> list = new ArrayList<>();
+                            list.add(5);
+                            list.add(6);
+                            return list;
+                        }
+                    };
+                }
+                throw new RuntimeException("nextPage should not be called after a page with next link as null");
+            }
+        };
+        ListIterator<Integer> itr = pagedList.listIterator();
+        int c = 1;
+        while (itr.hasNext()) {
+            Assert.assertEquals(c, (int) itr.next());
+            c++;
+        }
+        Assert.assertEquals(7, c);
+    }
+
+    @Test
+    public void canCreateObservableFromPagedList() {
+        // Test lazy observable can be created by ensuring loadNextPage invoked lazily
+        //
+        class ObservableFromPagedList {
+            int loadNextPageCallCount;
+
+            Observable<Integer> toObservable() {
+                return firstObservable().concatWith(nextObservable());
+            }
+
+            rx.Observable<Integer> firstObservable() {
+                return rx.Observable.defer(new Func0<rx.Observable<Integer>>() {
+                    @Override
+                    public rx.Observable<Integer> call() {
+                        return rx.Observable.from(list.currentPage().items());
+                    }
+                });
+            }
+
+            Observable<Integer> nextObservable() {
+                return Observable.defer(new Func0<Observable<Integer>>() {
+                    @Override
+                    public Observable<Integer> call() {
+                        if (list.hasNextPage()) {
+                            list.loadNextPage();
+                            loadNextPageCallCount++;
+                            return rx.Observable.from(list.currentPage().items()).concatWith(Observable.defer(new Func0<Observable<Integer>>() {
+                                @Override
+                                public Observable<Integer> call() {
+                                    return nextObservable();
+                                }
+                            }));
+                        } else {
+                            return rx.Observable.empty();
+                        }
+                    }
+                });
+            }
+        }
+
+        ObservableFromPagedList obpl = new ObservableFromPagedList();
+
+        final Integer[] cnt = new Integer[] { 0 };
+        obpl.toObservable().subscribe(new Action1<Integer>() {
+            @Override
+            public void call(Integer integer) {
+                Assert.assertEquals(cnt[0], integer);
+                cnt[0]++;
+            }
+        });
+        Assert.assertEquals(20, (long) cnt[0]);
+        Assert.assertEquals(19, obpl.loadNextPageCallCount);
+    }
+
 
     public static class TestPage implements Page<Integer> {
         private int page;

@@ -43,6 +43,7 @@ public final class AzureEnvironment implements Environment {
         put("activeDirectoryEndpointUrl", "https://login.microsoftonline.com/");
         put("activeDirectoryResourceId", "https://management.core.windows.net/");
         put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
+        put("dataLakeEndpointResourceId", "https://datalake.azure.net/");
         put("activeDirectoryGraphApiVersion", "2013-04-05");
         put("storageEndpointSuffix", ".core.windows.net");
         put("keyVaultDnsSuffix", ".vault.azure.net");
@@ -64,6 +65,8 @@ public final class AzureEnvironment implements Environment {
         put("activeDirectoryEndpointUrl", "https://login.chinacloudapi.cn/");
         put("activeDirectoryResourceId", "https://management.core.chinacloudapi.cn/");
         put("activeDirectoryGraphResourceId", "https://graph.chinacloudapi.cn/");
+        // TODO: add resource id for the china cloud for datalake once it is defined.
+        put("dataLakeEndpointResourceId", "N/A");
         put("activeDirectoryGraphApiVersion", "2013-04-05");
         put("storageEndpointSuffix", ".core.chinacloudapi.cn");
         put("keyVaultDnsSuffix", ".vault.azure.cn");
@@ -86,6 +89,8 @@ public final class AzureEnvironment implements Environment {
         put("activeDirectoryEndpointUrl", "https://login-us.microsoftonline.com/");
         put("activeDirectoryResourceId", "https://management.core.usgovcloudapi.net/");
         put("activeDirectoryGraphResourceId", "https://graph.windows.net/");
+        // TODO: add resource id for the US government for datalake once it is defined.
+        put("dataLakeEndpointResourceId", "N/A");
         put("activeDirectoryGraphApiVersion", "2013-04-05");
         put("storageEndpointSuffix", ".core.usgovcloudapi.net");
         put("keyVaultDnsSuffix", ".vault.usgovcloudapi.net");
@@ -108,12 +113,14 @@ public final class AzureEnvironment implements Environment {
         put("activeDirectoryEndpointUrl", "https://login.microsoftonline.de/");
         put("activeDirectoryResourceId", "https://management.core.cloudapi.de/");
         put("activeDirectoryGraphResourceId", "https://graph.cloudapi.de/");
+        // TODO: add resource id for the germany cloud for datalake once it is defined.
+        put("dataLakeEndpointResourceId", "N/A");
         put("activeDirectoryGraphApiVersion", "2013-04-05");
         put("storageEndpointSuffix", ".core.cloudapi.de");
         put("keyVaultDnsSuffix", ".vault.microsoftazure.de");
-        // TODO: add dns suffixes for the US government for datalake store and datalake analytics once they are defined.
+        // TODO: add dns suffixes for the germany cloud for datalake store and datalake analytics once they are defined.
         put("azureDataLakeStoreFileSystemEndpointSuffix", "N/A");
-        put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/");
+        put("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix", "N/A");
     }});
 
     /**
@@ -202,6 +209,13 @@ public final class AzureEnvironment implements Environment {
     }
 
     /**
+     * @return the Data Lake resource ID.
+     */
+    public String dataLakeEndpointResourceId() {
+        return endpoints.get("dataLakeEndpointResourceId");
+    }
+
+    /**
      * @return the Active Directory api version.
      */
     public String activeDirectoryGraphApiVersion() {
@@ -241,20 +255,24 @@ public final class AzureEnvironment implements Environment {
      * The enum representing available endpoints in an environment.
      */
     public enum Endpoint implements Environment.Endpoint {
+        /** Azure management endpoint. */
+        MANAGEMENT("managementEndpointUrl"),
         /** Azure Resource Manager endpoint. */
         RESOURCE_MANAGER("resourceManagerEndpointUrl"),
-        /** Azure Active Directory Graph APIs endpoint. */
-        GRAPH("activeDirectoryGraphResourceId"),
         /** Azure SQL endpoint. */
         SQL("sqlManagementEndpointUrl"),
         /** Azure Gallery endpoint. */
         GALLERY("galleryEndpointUrl"),
         /** Active Directory authentication endpoint. */
         ACTIVE_DIRECTORY("activeDirectoryEndpointUrl"),
-        /** Azure management endpoint. */
-        MANAGEMENT("managementEndpointUrl"),
+        /** Azure Active Directory Graph APIs endpoint. */
+        GRAPH("activeDirectoryGraphResourceId"),
         /** Key Vault DNS suffix. */
-        KEYVAULT("keyVaultDnsSuffix");
+        KEYVAULT("keyVaultDnsSuffix"),
+        /** Azure Data Lake Store DNS suffix. */
+        DATA_LAKE_STORE("azureDataLakeStoreFileSystemEndpointSuffix"),
+        /** Azure Data Lake Analytics DNS suffix. */
+        DATA_LAKE_ANALYTICS("azureDataLakeAnalyticsCatalogAndJobEndpointSuffix");
 
         private String field;
 
