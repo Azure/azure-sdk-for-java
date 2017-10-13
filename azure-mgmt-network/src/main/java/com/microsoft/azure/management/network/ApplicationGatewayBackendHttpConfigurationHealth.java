@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 
 /**
- * A client-side representation of the health information of an application gateway backend HTTP configuration settings.
+ * A client-side representation of the health information of an application gateway backend HTTP settings configuration.
  */
 @Fluent
 @Beta(SinceVersion.V1_4_0)

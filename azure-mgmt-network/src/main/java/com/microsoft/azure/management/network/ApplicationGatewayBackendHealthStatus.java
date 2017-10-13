@@ -7,11 +7,14 @@ package com.microsoft.azure.management.network;
 
 import java.util.Collection;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.resources.fluentcore.arm.ExpandableStringEnum;
 
 /**
  * Application gateway backend health status.
  */
+@Beta(SinceVersion.V1_4_0)
 public class ApplicationGatewayBackendHealthStatus extends ExpandableStringEnum<ApplicationGatewayBackendHealthStatus> {
     /**
      * Unknown health status.
