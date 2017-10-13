@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.servicebus;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
@@ -22,7 +21,6 @@ import org.joda.time.Period;
  * Type representing Service Bus queue.
  */
 @Fluent
-@Beta
 public interface Queue extends
         IndependentChildResource<ServiceBusManager, QueueInner>,
         Refreshable<Queue>,
