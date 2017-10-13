@@ -23,9 +23,8 @@ public class MockHttpResponse extends HttpResponse {
 
     private final byte[] bodyBytes;
 
-    public MockHttpResponse(int statusCode, byte[] bodyBytes) {
-        this.headers = new HttpHeaders();
-
+    public MockHttpResponse(int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+        this.headers = headers;
         this.statusCode = statusCode;
         this.bodyBytes = bodyBytes;
     }
@@ -35,11 +34,11 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     public MockHttpResponse(int statusCode, String string) {
-        this(statusCode, string == null ? null : string.getBytes());
+        this(statusCode, new HttpHeaders(), string == null ? null : string.getBytes());
     }
 
     public MockHttpResponse(int statusCode, Object serializable) {
-        this(statusCode, serialize(serializable));
+        this(statusCode, new HttpHeaders(), serialize(serializable));
     }
 
     private static byte[] serialize(Object serializable) {

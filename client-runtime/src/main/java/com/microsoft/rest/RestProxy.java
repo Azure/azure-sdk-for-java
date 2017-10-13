@@ -229,7 +229,7 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private Single<?> toProxyReturnValueAsync(HttpResponse response, final String httpMethod, final Type entityType) {
+    private Single<?> toProxyReturnValueAsync(final HttpResponse response, final String httpMethod, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final int responseStatusCode = response.statusCode();
         final Single<?> asyncResult;
@@ -254,7 +254,7 @@ public class RestProxy implements InvocationHandler {
                         @Override
                         public Single<Object> call(String responseBodyString) {
                                 try {
-                                    return Single.just(toProxyReturnValue(responseStatusCode, responseBodyString, httpMethod, entityType));
+                                    return Single.just(toProxyReturnValue(response, responseBodyString, httpMethod, entityType));
                                 } catch (Throwable e) {
                                     return Single.error(e);
                                 }
@@ -264,21 +264,33 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private Object toProxyReturnValue(int httpResponseStatusCode, String httpResponseBody, String httpMethod, Type entityType) throws IOException {
+    private SerializerAdapter.Encoding responseBodyEncoding(HttpResponse response) {
+        String mimeContentType = response.headerValue("Content-Type");
+        if (mimeContentType != null) {
+            String[] parts = mimeContentType.split(";");
+            if (parts[0].equalsIgnoreCase("application/xml") || parts[0].equalsIgnoreCase("text/xml")) {
+                return SerializerAdapter.Encoding.XML;
+            }
+        }
+
+        return SerializerAdapter.Encoding.JSON;
+    }
+
+    private Object toProxyReturnValue(HttpResponse httpResponse, String httpResponseBody, String httpMethod, Type entityType) throws IOException {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         Object result = null;
         if (entityTypeToken.isSubtypeOf(void.class) || entityTypeToken.isSubtypeOf(Void.class)) {
             result = null;
         } else if (httpMethod.equalsIgnoreCase("HEAD")
                 && (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class))) {
-            result = httpResponseStatusCode / 100 == 2;
+            result = httpResponse.statusCode() / 100 == 2;
         } else if (entityTypeToken.isSubtypeOf(InputStream.class)) {
             result = new ByteArrayInputStream(httpResponseBody.getBytes());
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
             result = httpResponseBody.getBytes();
         } else {
             if (httpResponseBody != null && !httpResponseBody.isEmpty()) {
-                result = serializer.deserialize(httpResponseBody, entityType);
+                result = serializer.deserialize(httpResponseBody, entityType, responseBodyEncoding(httpResponse));
             }
         }
         return result;

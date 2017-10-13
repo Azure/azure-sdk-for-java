@@ -102,6 +102,11 @@ public class RestClientTests {
                 }
 
                 @Override
+                public String serialize(Object object, Encoding encoding) throws IOException {
+                    return null;
+                }
+
+                @Override
                 public String serialize(Object object) throws IOException {
                     return null;
                 }
@@ -118,6 +123,11 @@ public class RestClientTests {
 
                 @Override
                 public <U> U deserialize(String value, Type type) throws IOException {
+                    return null;
+                }
+
+                @Override
+                public <U> U deserialize(String value, Type type, Encoding encoding) throws IOException {
                     return null;
                 }
             })
