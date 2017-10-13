@@ -23,6 +23,13 @@ import java.util.Map;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends HttpClient {
+    private static final HttpHeaders responseHeaders = new HttpHeaders()
+            .add("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
+            .add("Via", "1.1 vegur")
+            .add("Connection", "keep-alive")
+            .add("X-Processed-Time", "1.0")
+            .add("Access-Control-Allow-Credentials", "true");
+
     public MockHttpClient() {}
 
     public MockHttpClient(List<? extends RequestPolicy.Factory> policyFactories) {
@@ -54,7 +61,7 @@ public class MockHttpClient extends HttpClient {
                 else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
-                    response = new MockHttpResponse(200, new byte[byteCount]);
+                    response = new MockHttpResponse(200, new byte[byteCount], responseHeaders);
                 }
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
@@ -84,7 +91,7 @@ public class MockHttpClient extends HttpClient {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(200, json);
+                    response = new MockHttpResponse(200, json, responseHeaders);
                 }
                 else if (requestPathLower.startsWith("/status/")) {
                     final String statusCodeString = requestPathLower.substring("/status/".length());

@@ -8,19 +8,20 @@ package com.microsoft.rest;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.http.ContentType;
+import com.microsoft.rest.http.HttpHeaders;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeader;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import com.microsoft.rest.http.UrlBuilder;
+import org.json.JSONObject;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
 import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.Constructor;
@@ -79,10 +80,13 @@ public class RestProxy implements InvocationHandler {
      * @param resultType The Type of the object to return.
      * @param <T> The type of the object to return. This should be the same as the resultType parameter.
      * @return The deserialized version of the provided String value.
-     * @throws IOException if there is an error deserializing.
      */
-    public <T> T deserialize(String value, Type resultType) throws IOException {
-        return serializer.deserialize(value, resultType);
+    public <T> T deserialize(String value, Type resultType) {
+        try {
+            return serializer.deserialize(value, resultType);
+        } catch (IOException e) {
+            throw Exceptions.propagate(e);
+        }
     }
 
     /**
@@ -229,7 +233,7 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private Single<?> toProxyReturnValueAsync(HttpResponse response, final String httpMethod, final Type entityType) {
+    private Single<?> toProxyReturnValueAsync(final HttpResponse response, final String httpMethod, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final int responseStatusCode = response.statusCode();
         final Single<?> asyncResult;
@@ -247,41 +251,59 @@ public class RestProxy implements InvocationHandler {
             asyncResult = response.bodyAsInputStreamAsync();
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
             asyncResult = response.bodyAsByteArrayAsync();
+        } else if (entityTypeToken.isSubtypeOf(RestResponse.class)) {
+            if (!entityTypeToken.isSubtypeOf(RestResponseWithBody.class)) {
+                final Type deserializedHeadersType = ((ParameterizedType) entityType).getActualTypeArguments()[0];
+                final HttpHeaders responseHeaders = response.headers();
+                final Object deserializedHeaders = deserializeHeaders(responseHeaders, deserializedHeadersType);
+                asyncResult = Single.just(new RestResponse<>(responseStatusCode, deserializedHeaders));
+            }
+            else {
+                final Type[] deserializedTypes = ((ParameterizedType) entityType).getActualTypeArguments();
+
+                final Type deserializedHeadersType = deserializedTypes[0];
+                final HttpHeaders responseHeaders = response.headers();
+                final Object deserializedHeaders = deserializeHeaders(responseHeaders, deserializedHeadersType);
+
+                final Type deserializedBodyType = deserializedTypes[1];
+                final TypeToken deserializedBodyTypeToken = TypeToken.of(deserializedBodyType);
+                if (deserializedBodyTypeToken.isSubtypeOf(byte[].class)) {
+                    asyncResult = response.bodyAsByteArrayAsync()
+                            .map(new Func1<byte[], RestResponseWithBody<?,byte[]>>() {
+                                @Override
+                                public RestResponseWithBody<?,byte[]> call(byte[] responseBodyBytes) {
+                                    return new RestResponseWithBody<>(responseStatusCode, deserializedHeaders, responseBodyBytes);
+                                }
+                            });
+                }
+                else {
+                    asyncResult = response.bodyAsStringAsync()
+                            .map(new Func1<String, RestResponseWithBody<?,?>>() {
+                                @Override
+                                public RestResponseWithBody<?, ?> call(String responseBodyString) {
+                                    final Object deserializedBody = deserialize(responseBodyString, deserializedBodyType);
+                                    return new RestResponseWithBody<>(responseStatusCode, deserializedHeaders, deserializedBody);
+                                }
+                            });
+                }
+            }
         } else {
             asyncResult = response
                     .bodyAsStringAsync()
-                    .flatMap(new Func1<String, Single<Object>>() {
+                    .map(new Func1<String, Object>() {
                         @Override
-                        public Single<Object> call(String responseBodyString) {
-                                try {
-                                    return Single.just(toProxyReturnValue(responseStatusCode, responseBodyString, httpMethod, entityType));
-                                } catch (Throwable e) {
-                                    return Single.error(e);
-                                }
-                            }
-                        });
+                        public Object call(String responseBodyString) {
+                            return deserialize(responseBodyString, entityType);
+                        }
+                    });
         }
         return asyncResult;
     }
 
-    private Object toProxyReturnValue(int httpResponseStatusCode, String httpResponseBody, String httpMethod, Type entityType) throws IOException {
-        final TypeToken entityTypeToken = TypeToken.of(entityType);
-        Object result = null;
-        if (entityTypeToken.isSubtypeOf(void.class) || entityTypeToken.isSubtypeOf(Void.class)) {
-            result = null;
-        } else if (httpMethod.equalsIgnoreCase("HEAD")
-                && (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class))) {
-            result = httpResponseStatusCode / 100 == 2;
-        } else if (entityTypeToken.isSubtypeOf(InputStream.class)) {
-            result = new ByteArrayInputStream(httpResponseBody.getBytes());
-        } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
-            result = httpResponseBody.getBytes();
-        } else {
-            if (httpResponseBody != null && !httpResponseBody.isEmpty()) {
-                result = serializer.deserialize(httpResponseBody, entityType);
-            }
-        }
-        return result;
+    private Object deserializeHeaders(HttpHeaders headers, Type deserializedHeadersType) {
+        final JSONObject headersJson = headers.toJSON();
+        final String headersJsonString = headersJson.toString();
+        return deserialize(headersJsonString, deserializedHeadersType);
     }
 
     protected Object handleAsyncHttpResponse(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, SwaggerMethodParser methodParser, Type returnType) {

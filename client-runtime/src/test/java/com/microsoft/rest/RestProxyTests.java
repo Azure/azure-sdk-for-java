@@ -25,7 +25,6 @@ import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
@@ -1142,6 +1141,98 @@ public abstract class RestProxyTests {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithBodyParamApplicationOctetStreamContentTypeAndByteArrayBody(new byte[] { 0, 1, 2, 3, 4 });
         assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
+    }
+
+    @Host("http://httpbin.org")
+    private interface Service20 {
+        @GET("bytes/100")
+        RestResponse<HttpBinHeaders> getBytes100OnlyHeaders();
+
+        @GET("bytes/100")
+        RestResponseWithBody<HttpBinHeaders,byte[]> getBytes100BodyAndHeaders();
+
+        @PUT("put")
+        RestResponse<HttpBinHeaders> putOnlyHeaders(@BodyParam String body);
+
+        @PUT("put")
+        RestResponseWithBody<HttpBinHeaders,HttpBinJSON> putBodyAndHeaders(@BodyParam String body);
+    }
+
+    @Test
+    public void service20GetBytes100OnlyHeaders() {
+        final RestResponse<HttpBinHeaders> response = createService(Service20.class)
+                .getBytes100OnlyHeaders();
+        assertNotNull(response);
+
+        assertEquals(200, response.statusCode());
+
+        final HttpBinHeaders headers = response.headers();
+        assertNotNull(headers);
+        assertEquals(true, headers.accessControlAllowCredentials);
+        assertEquals("keep-alive", headers.connection);
+        assertNotNull(headers.date);
+        assertEquals("1.1 vegur", headers.via);
+        assertNotEquals(0, headers.xProcessedTime);
+    }
+
+    @Test
+    public void service20GetBytes100BodyAndHeaders() {
+        final RestResponseWithBody<HttpBinHeaders,byte[]> response = createService(Service20.class)
+                .getBytes100BodyAndHeaders();
+        assertNotNull(response);
+
+        assertEquals(200, response.statusCode());
+
+        final byte[] body = response.body();
+        assertNotNull(body);
+        assertEquals(100, body.length);
+
+        final HttpBinHeaders headers = response.headers();
+        assertNotNull(headers);
+        assertEquals(true, headers.accessControlAllowCredentials);
+        assertEquals("keep-alive", headers.connection);
+        assertNotNull(headers.date);
+        assertEquals("1.1 vegur", headers.via);
+        assertNotEquals(0, headers.xProcessedTime);
+    }
+
+    @Test
+    public void service20PutOnlyHeaders() {
+        final RestResponse<HttpBinHeaders> response = createService(Service20.class)
+                .putOnlyHeaders("body string");
+        assertNotNull(response);
+
+        assertEquals(200, response.statusCode());
+
+        final HttpBinHeaders headers = response.headers();
+        assertNotNull(headers);
+        assertEquals(true, headers.accessControlAllowCredentials);
+        assertEquals("keep-alive", headers.connection);
+        assertNotNull(headers.date);
+        assertEquals("1.1 vegur", headers.via);
+        assertNotEquals(0, headers.xProcessedTime);
+    }
+
+    @Test
+    public void service20PutBodyAndHeaders() {
+        final RestResponseWithBody<HttpBinHeaders,HttpBinJSON> response = createService(Service20.class)
+                .putBodyAndHeaders("body string");
+        assertNotNull(response);
+
+        assertEquals(200, response.statusCode());
+
+        final HttpBinJSON body = response.body();
+        assertNotNull(body);
+        assertEquals("http://httpbin.org/put", body.url);
+        assertEquals("body string", body.data);
+
+        final HttpBinHeaders headers = response.headers();
+        assertNotNull(headers);
+        assertEquals(true, headers.accessControlAllowCredentials);
+        assertEquals("keep-alive", headers.connection);
+        assertNotNull(headers.date);
+        assertEquals("1.1 vegur", headers.via);
+        assertNotEquals(0, headers.xProcessedTime);
     }
 
     // Helpers

@@ -6,6 +6,8 @@
 
 package com.microsoft.rest.http;
 
+import org.json.JSONObject;
+
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -105,6 +107,18 @@ public class HttpHeaders implements Iterable<HttpHeader> {
     private HttpHeader getHeader(String headerName) {
         final String headerKey = headerName.toLowerCase();
         return headers.get(headerKey);
+    }
+
+    /**
+     * Convert this HttpHeaders collection to JSON.
+     * @return The JSON object that contains this HttpHeaders collection's values.
+     */
+    public JSONObject toJSON() {
+        final JSONObject result = new JSONObject();
+        for (final HttpHeader header : headers.values()) {
+            result.put(header.name(), header.value());
+        }
+        return result;
     }
 
     @Override
