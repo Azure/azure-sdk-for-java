@@ -8,6 +8,7 @@ package com.microsoft.rest;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.http.ContentType;
+import com.microsoft.rest.http.HttpHeaders;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeader;
@@ -157,7 +158,7 @@ public class RestProxy implements InvocationHandler {
             }
 
             if (isJson) {
-                final String bodyContentString = serializer.serialize(bodyContentObject);
+                final String bodyContentString = serializer.serialize(bodyContentObject, bodyEncoding(request.headers()));
                 request.withBody(bodyContentString, contentType);
             }
             else if (bodyContentObject instanceof byte[]) {
@@ -170,7 +171,7 @@ public class RestProxy implements InvocationHandler {
                 }
             }
             else {
-                final String bodyContentString = serializer.serialize(bodyContentObject);
+                final String bodyContentString = serializer.serialize(bodyContentObject, bodyEncoding(request.headers()));
                 request.withBody(bodyContentString, contentType);
             }
         }
@@ -264,8 +265,8 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private SerializerAdapter.Encoding responseBodyEncoding(HttpResponse response) {
-        String mimeContentType = response.headerValue("Content-Type");
+    private SerializerAdapter.Encoding bodyEncoding(HttpHeaders headers) {
+        String mimeContentType = headers.value("Content-Type");
         if (mimeContentType != null) {
             String[] parts = mimeContentType.split(";");
             if (parts[0].equalsIgnoreCase("application/xml") || parts[0].equalsIgnoreCase("text/xml")) {
@@ -290,7 +291,7 @@ public class RestProxy implements InvocationHandler {
             result = httpResponseBody.getBytes();
         } else {
             if (httpResponseBody != null && !httpResponseBody.isEmpty()) {
-                result = serializer.deserialize(httpResponseBody, entityType, responseBodyEncoding(httpResponse));
+                result = serializer.deserialize(httpResponseBody, entityType, bodyEncoding(httpResponse.headers()));
             }
         }
         return result;
