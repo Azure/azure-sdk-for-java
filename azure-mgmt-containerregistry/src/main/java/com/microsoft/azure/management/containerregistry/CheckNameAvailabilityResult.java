@@ -26,7 +26,7 @@ public interface CheckNameAvailabilityResult extends HasInner<RegistryNameStatus
     String unavailabilityReason();
 
     /**
-     * @return the error message that provides more detail for the reason why the name is not available.
+     * @return the error message that provides more detail for the reason why the name is not available
      */
     String unavailabilityMessage();
 }
