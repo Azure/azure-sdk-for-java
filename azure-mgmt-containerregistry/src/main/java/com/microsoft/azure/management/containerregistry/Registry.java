@@ -215,21 +215,21 @@ public interface Registry extends
             WithStorageAccount withClassicSku();
 
             /**
-             * Creates a "managed' registry with a 'Basic' SKU type.
+             * Creates a 'managed' registry with a 'Basic' SKU type.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_4_0)
             WithCreate withBasicSku();
 
             /**
-             * Creates a "managed' registry with a 'Standard' SKU type.
+             * Creates a 'managed' registry with a 'Standard' SKU type.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_4_0)
             WithCreate withStandardSku();
 
             /**
-             * Creates a "managed' registry with a 'Premium' SKU type.
+             * Creates a 'managed' registry with a 'Premium' SKU type.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_4_0)
@@ -357,21 +357,21 @@ public interface Registry extends
          */
         interface WithSku {
             /**
-             * Updates the current container registry to a "managed' registry with a 'Basic' SKU type.
+             * Updates the current container registry to a 'managed' registry with a 'Basic' SKU type.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_4_0)
             Update withBasicSku();
 
             /**
-             * Updates the current container registry to a "managed' registry with a 'Standard' SKU type.
+             * Updates the current container registry to a 'managed' registry with a 'Standard' SKU type.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_4_0)
             Update withStandardSku();
 
             /**
-             * Updates the current container registry to a "managed' registry with a 'Premium' SKU type.
+             * Updates the current container registry to a 'managed' registry with a 'Premium' SKU type.
              * @return the next stage of the definition
              */
             @Beta(SinceVersion.V1_4_0)
