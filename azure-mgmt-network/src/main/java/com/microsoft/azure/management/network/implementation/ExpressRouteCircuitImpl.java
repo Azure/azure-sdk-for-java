@@ -38,13 +38,6 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
         return this;
     }
 
-    private ExpressRouteCircuitServiceProviderProperties ensureServiceProviderProperties() {
-        if (inner().serviceProviderProperties() == null) {
-            inner().withServiceProviderProperties(new ExpressRouteCircuitServiceProviderProperties());
-        }
-        return inner().serviceProviderProperties();
-    }
-
     @Override
     public ExpressRouteCircuitImpl withPeeringLocation(String location) {
         ensureServiceProviderProperties().withPeeringLocation(location);
@@ -63,6 +56,26 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
         return this;
     }
 
+
+    @Override
+    public ExpressRouteCircuitImpl enableClassicOperations() {
+        inner().withAllowClassicOperations(true);
+        return this;
+    }
+
+    @Override
+    public Update disableClassicOperations() {
+        inner().withAllowClassicOperations(false);
+        return this;
+    }
+
+    private ExpressRouteCircuitServiceProviderProperties ensureServiceProviderProperties() {
+        if (inner().serviceProviderProperties() == null) {
+            inner().withServiceProviderProperties(new ExpressRouteCircuitServiceProviderProperties());
+        }
+        return inner().serviceProviderProperties();
+    }
+
     private ExpressRouteCircuitSku ensureSku() {
         if (inner().sku() == null) {
             inner().withSku(new ExpressRouteCircuitSku());
@@ -76,7 +89,7 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public ExpressRouteCircuit.DefinitionStages.WithCreate withSkuFamily(ExpressRouteCircuitSkuFamily skuFamily) {
+    public ExpressRouteCircuitImpl withSkuFamily(ExpressRouteCircuitSkuFamily skuFamily) {
         ensureSku().withFamily(skuFamily);
         return this;
     }
@@ -97,7 +110,7 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
     // Getters
 
     @Override
-    public ExpressRouteCircuitSku getSku() {
+    public ExpressRouteCircuitSku sku() {
         return inner().sku();
     }
 
@@ -107,12 +120,12 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
     }
 
     @Override
-    public String getCircuitProvisioningState() {
+    public String circuitProvisioningState() {
         return inner().circuitProvisioningState();
     }
 
     @Override
-    public ServiceProviderProvisioningState getServiceProviderProvisioningState() {
+    public ServiceProviderProvisioningState serviceProviderProvisioningState() {
         return inner().serviceProviderProvisioningState();
     }
 

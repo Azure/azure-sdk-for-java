@@ -36,7 +36,7 @@ public class TestExpressRouteCircuit extends TestTemplate<ExpressRouteCircuit, E
                 .withNewResourceGroup()
                 .withServiceProvidet("Equinix")
                 .withPeeringLocation("Silicon Valley")
-                .withBandwidthInMbps(200)
+                .withBandwidthInMbps(50)
                 .withSkuTier(ExpressRouteCircuitSkuTier.STANDARD)
                 .withSkuFamily(ExpressRouteCircuitSkuFamily.METERED_DATA)
                 .withTag("tag1", "value1")
@@ -49,10 +49,16 @@ public class TestExpressRouteCircuit extends TestTemplate<ExpressRouteCircuit, E
         resource.update()
                 .withTag("tag2", "value2")
                 .withoutTag("tag1")
+                .withBandwidthInMbps(200)
+                .withSkuFamily(ExpressRouteCircuitSkuFamily.UNLIMITED_DATA)
+                .withSkuTier(ExpressRouteCircuitSkuTier.PREMIUM)
                 .apply();
         resource.refresh();
         Assert.assertTrue(resource.tags().containsKey("tag2"));
         Assert.assertTrue(!resource.tags().containsKey("tag1"));
+        Assert.assertEquals(Integer.valueOf(200), resource.serviceProviderProperties().bandwidthInMbps());
+        Assert.assertEquals(ExpressRouteCircuitSkuFamily.UNLIMITED_DATA, resource.sku().family());
+        Assert.assertEquals(ExpressRouteCircuitSkuTier.PREMIUM, resource.sku().tier());
         return resource;
     }
 

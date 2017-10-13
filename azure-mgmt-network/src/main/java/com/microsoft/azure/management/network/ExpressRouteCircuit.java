@@ -34,7 +34,7 @@ public interface ExpressRouteCircuit extends
     /**
      * @return the SKU
      */
-    ExpressRouteCircuitSku getSku();
+    ExpressRouteCircuitSku sku();
 
     /**
      * @return the flag indicating if classic operations allowed
@@ -44,14 +44,14 @@ public interface ExpressRouteCircuit extends
     /**
      * @return the CircuitProvisioningState state of the resource
      */
-    String getCircuitProvisioningState();
+    String circuitProvisioningState();
 
     /**
      * The ServiceProviderProvisioningState state of the resource. Possible values include: 'NotProvisioned',
      * 'Provisioning', 'Provisioned', 'Deprovisioning'.
      * @return serviceProviderProvisioningState
      */
-    ServiceProviderProvisioningState getServiceProviderProvisioningState();
+    ServiceProviderProvisioningState serviceProviderProvisioningState();
 
 //    /**
 //     * The list of authorizations.
@@ -164,13 +164,21 @@ public interface ExpressRouteCircuit extends
         }
 
         /**
+         * The stage of express route circuit definition allowing to enable/disable RDFE operations.
+         */
+        interface WithAllowClassicOperations {
+            WithCreate enableClassicOperations();
+        }
+
+        /**
          * The stage of the express route circuit definition which contains all the minimum required inputs for
          * the resource to be created, but also allows
          * for any other optional settings to be specified.
          */
         interface WithCreate extends
                 Creatable<ExpressRouteCircuit>,
-                Resource.DefinitionWithTags<WithCreate> {
+                Resource.DefinitionWithTags<WithCreate>,
+                WithAllowClassicOperations {
         }
     }
 
@@ -179,10 +187,33 @@ public interface ExpressRouteCircuit extends
      */
     interface UpdateStages {
         /**
-         * The stage of express route circuit update allowing to change SKU.
+         * The stage of express route circuit definition allowing to specify service provider bandwidth.
+         */
+        interface WithBandwidth {
+            Update withBandwidthInMbps(int bandwidthInMbps);
+        }
+
+        /**
+         * The stage of express route circuit definition allowing to specify SKU tier. Possible values include: 'Standard', 'Premium'.
          */
         interface WithSkuTier {
-            Update withSkuTier(ExpressRouteCircuitSkuTier skuName);
+            Update withSkuTier(ExpressRouteCircuitSkuTier skuTier);
+        }
+
+        /**
+         * The stage of express route circuit definition allowing to specify SKU family. Possible values include: 'UnlimitedData', 'MeteredData'.
+         */
+        interface WithSkuFamily {
+            Update withSkuFamily(ExpressRouteCircuitSkuFamily skuFamily);
+        }
+
+        /**
+         * The stage of express route circuit definition allowing to enable/disable RDFE operations.
+         */
+        interface WithAllowClassicOperations {
+            Update enableClassicOperations();
+
+            Update disableClassicOperations();
         }
     }
 
@@ -193,6 +224,9 @@ public interface ExpressRouteCircuit extends
     interface Update extends
             Appliable<ExpressRouteCircuit>,
             Resource.UpdateWithTags<Update>,
-            UpdateStages.WithSkuTier {
+            UpdateStages.WithBandwidth,
+            UpdateStages.WithSkuTier,
+            UpdateStages.WithSkuFamily,
+            UpdateStages.WithAllowClassicOperations {
     }
 }
