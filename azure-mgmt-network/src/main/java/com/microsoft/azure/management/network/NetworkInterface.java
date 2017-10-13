@@ -7,8 +7,6 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -264,7 +262,6 @@ public interface NetworkInterface extends
              * It can be enabled only during the creation of a network interface, not during an update.
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             WithCreate withAcceleratedNetworking();
         }
 
@@ -521,9 +518,8 @@ public interface NetworkInterface extends
         interface WithAcceleratedNetworking {
             /**
              * Disables accelerated networking.
-             * @return the next stage of the definition
+             * @return the next stage of the update
              */
-            @Beta(SinceVersion.V1_2_0)
             Update withoutAcceleratedNetworking();        }
 
         /**
