@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.compute;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachinesInner;
@@ -64,7 +63,6 @@ public interface VirtualMachines extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable deallocateAsync(String groupName, String name);
 
     /**
@@ -75,7 +73,6 @@ public interface VirtualMachines extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> deallocateAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -93,7 +90,6 @@ public interface VirtualMachines extends
      * @param name the virtual machine name
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable generalizeAsync(String groupName, String name);
 
     /**
@@ -104,7 +100,6 @@ public interface VirtualMachines extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> generalizeAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -122,7 +117,6 @@ public interface VirtualMachines extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable powerOffAsync(String groupName, String name);
 
     /**
@@ -133,7 +127,6 @@ public interface VirtualMachines extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> powerOffAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -151,7 +144,6 @@ public interface VirtualMachines extends
      * @param name the virtual machine name
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable restartAsync(String groupName, String name);
 
     /**
@@ -162,7 +154,6 @@ public interface VirtualMachines extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> restartAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -180,7 +171,6 @@ public interface VirtualMachines extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable startAsync(String groupName, String name);
 
     /**
@@ -191,7 +181,6 @@ public interface VirtualMachines extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> startAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -209,7 +198,6 @@ public interface VirtualMachines extends
      * @param name the virtual machine name
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable redeployAsync(String groupName, String name);
 
     /**
@@ -220,7 +208,6 @@ public interface VirtualMachines extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> redeployAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -246,7 +233,6 @@ public interface VirtualMachines extends
      * @param overwriteVhd whether to overwrites destination VHD if it exists
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Observable<String> captureAsync(String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd);
 
     /**
@@ -260,7 +246,6 @@ public interface VirtualMachines extends
      * @param callback the callback to call on success or failure
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<String> captureAsync(String groupName, String name, String containerName, String vhdPrefix, boolean overwriteVhd, ServiceCallback<String> callback);
 
     /**
@@ -278,7 +263,6 @@ public interface VirtualMachines extends
      * @param name the virtual machine name
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable migrateToManagedAsync(String groupName, String name);
 
     /**
@@ -289,6 +273,5 @@ public interface VirtualMachines extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> migrateToManagedAsync(String groupName, String name, ServiceCallback<Void> callback);
 }

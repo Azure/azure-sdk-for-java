@@ -178,7 +178,6 @@ public interface VirtualMachine extends
      *
      *  @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable convertToManagedAsync();
 
     /**
@@ -187,7 +186,6 @@ public interface VirtualMachine extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> convertToManagedAsync(ServiceCallback<Void> callback);
 
     /**
@@ -216,7 +214,6 @@ public interface VirtualMachine extends
      * @param overwriteVhd whether to overwrites destination VHD if it exists
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Observable<String> captureAsync(String containerName, String vhdPrefix, boolean overwriteVhd);
 
     /**
@@ -228,7 +225,6 @@ public interface VirtualMachine extends
      * @param callback the callback to call on success or failure
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<String> captureAsync(String containerName, String vhdPrefix, boolean overwriteVhd, ServiceCallback<String> callback);
 
     /**
@@ -396,13 +392,11 @@ public interface VirtualMachine extends
     /**
      * @return true if boot diagnostics is enabled for the virtual machine
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     boolean isBootDiagnosticsEnabled();
 
     /**
      * @return the storage blob endpoint uri if boot diagnostics is enabled for the virtual machine
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     String bootDiagnosticsStorageUri();
 
     /**
@@ -1147,7 +1141,9 @@ public interface VirtualMachine extends
              *
              * @param size the VHD size
              * @return the next stage of the definition
+             * @deprecated use {@link #withOSDiskSizeInGB(int)} instead
              */
+            @Deprecated
             WithCreate withOSDiskSizeInGB(Integer size);
 
             /**
@@ -1156,7 +1152,6 @@ public interface VirtualMachine extends
              * @param size the VHD size
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithCreate withOSDiskSizeInGB(int size);
 
             /**
@@ -1479,14 +1474,12 @@ public interface VirtualMachine extends
         /**
          * The stage of the virtual machine definition allowing to enable boot diagnostics.
          */
-        @Beta(Beta.SinceVersion.V1_2_0)
         interface WithBootDiagnostics {
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine.
              *
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithCreate withBootDiagnostics();
 
             /**
@@ -1495,7 +1488,6 @@ public interface VirtualMachine extends
              * @param creatable the storage account to be created and used for store the boot diagnostics
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithCreate withBootDiagnostics(Creatable<StorageAccount> creatable);
 
             /**
@@ -1504,7 +1496,6 @@ public interface VirtualMachine extends
              * @param storageAccount an existing storage account to be uses to store the boot diagnostics
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithCreate withBootDiagnostics(StorageAccount storageAccount);
 
             /**
@@ -1513,7 +1504,6 @@ public interface VirtualMachine extends
              * @param storageAccountBlobEndpointUri a storage account blob endpoint to store the boot diagnostics
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithCreate withBootDiagnostics(String storageAccountBlobEndpointUri);
         }
 
@@ -1941,14 +1931,12 @@ public interface VirtualMachine extends
         /**
          * The stage of the virtual machine definition allowing to enable boot diagnostics.
          */
-        @Beta(Beta.SinceVersion.V1_2_0)
         interface WithBootDiagnostics {
             /**
              * Specifies that boot diagnostics needs to be enabled in the virtual machine.
              *
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withBootDiagnostics();
 
             /**
@@ -1957,7 +1945,6 @@ public interface VirtualMachine extends
              * @param creatable the storage account to be created and used for store the boot diagnostics
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withBootDiagnostics(Creatable<StorageAccount> creatable);
 
             /**
@@ -1966,7 +1953,6 @@ public interface VirtualMachine extends
              * @param storageAccount an existing storage account to be uses to store the boot diagnostics
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withBootDiagnostics(StorageAccount storageAccount);
 
             /**
@@ -1975,7 +1961,6 @@ public interface VirtualMachine extends
              * @param storageAccountBlobEndpointUri a storage account blob endpoint to store the boot diagnostics
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withBootDiagnostics(String storageAccountBlobEndpointUri);
 
             /**
@@ -1983,7 +1968,6 @@ public interface VirtualMachine extends
              *
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutBootDiagnostics();
         }
 
@@ -2116,7 +2100,9 @@ public interface VirtualMachine extends
          *
          * @param size a disk size.
          * @return the next stage of the update
+         * @deprecated use {@link #withOSDiskSizeInGB(int)} instead.
          */
+        @Deprecated
         Update withOSDiskSizeInGB(Integer size);
 
         /**
@@ -2127,7 +2113,6 @@ public interface VirtualMachine extends
          * @param size a disk size.
          * @return the next stage of the update
          */
-        @Beta(Beta.SinceVersion.V1_2_0)
         Update withOSDiskSizeInGB(int size);
 
         /**
