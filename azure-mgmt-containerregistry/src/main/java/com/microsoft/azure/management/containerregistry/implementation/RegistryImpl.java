@@ -14,6 +14,7 @@ import com.microsoft.azure.management.containerregistry.RegistryUsage;
 import com.microsoft.azure.management.containerregistry.Sku;
 import com.microsoft.azure.management.containerregistry.SkuName;
 import com.microsoft.azure.management.containerregistry.StorageAccountProperties;
+import com.microsoft.azure.management.containerregistry.WebhookOperations;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceUtils;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
@@ -335,8 +336,8 @@ public class RegistryImpl
     }
 
     @Override
-    public WebhookOps webhooks() {
-        return new WebhookOpsImpl(this);
+    public WebhookOperations webhooks() {
+        return new WebhookOperationsImpl(this);
     }
 
     @Override

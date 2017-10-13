@@ -17,6 +17,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Settable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
+import rx.Completable;
 import rx.Observable;
 
 import java.util.Collection;
@@ -77,31 +78,27 @@ public interface Webhook extends
 
     /**
      * Changes the status of the webhook to "enabled".
-     *
-     * @return the webhook
      */
-    Webhook enable();
+    void enable();
 
     /**
      * Changes the status of the webhook to "enabled".
      *
-     * @return a representation of the future computation of this call, returning the webhook
+     * @return a representation of the future computation of this call
      */
-    Observable<Webhook> enableAsync();
+    Completable enableAsync();
+
+    /**
+     * Changes the status of the webhook to "disabled".
+     */
+    void disable();
 
     /**
      * Changes the status of the webhook to "disabled".
      *
-     * @return the webhook
+     * @return a representation of the future computation of this call
      */
-    Webhook disable();
-
-    /**
-     * Changes the status of the webhook to "disabled".
-     *
-     * @return a representation of the future computation of this call, returning the webhook
-     */
-    Observable<Webhook> disableAsync();
+    Completable disableAsync();
 
     /**
      * @return the id on an event info resource

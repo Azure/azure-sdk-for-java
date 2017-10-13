@@ -6,19 +6,19 @@
 package com.microsoft.azure.management.containerregistry.implementation;
 
 import com.microsoft.azure.PagedList;
-import com.microsoft.azure.management.containerregistry.Registry;
 import com.microsoft.azure.management.containerregistry.Webhook;
+import com.microsoft.azure.management.containerregistry.WebhookOperations;
 import rx.Completable;
 import rx.Observable;
 
 /**
  * Represents a webhook collection associated with a container registry.
  */
-public class WebhookOpsImpl implements Registry.WebhookOps {
+public class WebhookOperationsImpl implements WebhookOperations {
     private final RegistryImpl containerRegistry;
     private final WebhooksClientImpl webhooksClient;
 
-    WebhookOpsImpl(RegistryImpl containerRegistry) {
+    WebhookOperationsImpl(RegistryImpl containerRegistry) {
         this.containerRegistry = containerRegistry;
         if (containerRegistry != null) {
             this.webhooksClient = new WebhooksClientImpl(containerRegistry.manager(), containerRegistry);

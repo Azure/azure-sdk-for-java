@@ -20,6 +20,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.models.implementa
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
@@ -164,31 +165,31 @@ public class WebhookImpl
     }
 
     @Override
-    public Webhook enable() {
-        return this.update()
+    public void enable() {
+        this.update()
             .withDefaultStatus(WebhookStatus.ENABLED)
             .apply();
     }
 
     @Override
-    public Observable<Webhook> enableAsync() {
+    public Completable enableAsync() {
         return this.update()
             .withDefaultStatus(WebhookStatus.ENABLED)
-            .applyAsync();
+            .applyAsync().toCompletable();
     }
 
     @Override
-    public Webhook disable() {
-        return this.update()
+    public void disable() {
+        this.update()
             .withDefaultStatus(WebhookStatus.DISABLED)
             .apply();
     }
 
     @Override
-    public Observable<Webhook> disableAsync() {
+    public Completable disableAsync() {
         return this.update()
             .withDefaultStatus(WebhookStatus.DISABLED)
-            .applyAsync();
+            .applyAsync().toCompletable();
     }
 
     @Override
