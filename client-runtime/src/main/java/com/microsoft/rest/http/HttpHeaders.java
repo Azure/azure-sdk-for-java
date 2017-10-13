@@ -6,6 +6,12 @@
 
 package com.microsoft.rest.http;
 
+import com.fasterxml.jackson.core.JsonGenerator;
+import com.fasterxml.jackson.databind.JsonSerializable;
+import com.fasterxml.jackson.databind.SerializerProvider;
+import com.fasterxml.jackson.databind.jsontype.TypeSerializer;
+
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -13,7 +19,7 @@ import java.util.Map;
 /**
  * A collection of headers that will be applied to a HTTP request.
  */
-public class HttpHeaders implements Iterable<HttpHeader> {
+public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     private final Map<String, HttpHeader> headers = new HashMap<>();
 
     /**
@@ -107,8 +113,30 @@ public class HttpHeaders implements Iterable<HttpHeader> {
         return headers.get(headerKey);
     }
 
+    /**
+     * Convert this HttpHeaders collection to a Map.
+     * @return The Map representation of this HttpHeaders collection.
+     */
+    public Map<String, String> toMap() {
+        final Map<String, String> result = new HashMap<>();
+        for (final HttpHeader header : headers.values()) {
+            result.put(header.name(), header.value());
+        }
+        return result;
+    }
+
     @Override
     public Iterator<HttpHeader> iterator() {
         return headers.values().iterator();
+    }
+
+    @Override
+    public void serialize(JsonGenerator jsonGenerator, SerializerProvider serializerProvider) throws IOException {
+        jsonGenerator.writeObject(toMap());
+    }
+
+    @Override
+    public void serializeWithType(JsonGenerator jsonGenerator, SerializerProvider serializerProvider, TypeSerializer typeSerializer) throws IOException {
+        serialize(jsonGenerator, serializerProvider);
     }
 }
