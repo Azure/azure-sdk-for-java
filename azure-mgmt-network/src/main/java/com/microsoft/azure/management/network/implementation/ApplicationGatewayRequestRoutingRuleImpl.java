@@ -347,10 +347,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
     private ApplicationGatewayBackendImpl ensureBackend() {
         ApplicationGatewayBackendImpl backend = (ApplicationGatewayBackendImpl) this.backend();
         if (backend == null) {
-            String name = SdkContext.randomResourceName("backend", 12);
-            backend = this.parent().defineBackend(name);
-            backend.attach();
-            this.toBackend(name);
+            backend = this.parent().ensureUniqueBackend();
+            this.toBackend(backend.name());
         }
 
         return backend;
@@ -358,9 +356,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackend(String name) {
-        SubResource backendRef = new SubResource()
-                .withId(this.parent().futureResourceId() + "/backendAddressPools/" + name);
-        this.inner().withBackendAddressPool(backendRef);
+        this.inner().withBackendAddressPool(this.parent().ensureBackendRef(name));
         return this;
     }
 

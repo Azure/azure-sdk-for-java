@@ -217,8 +217,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
             /**
              * Associates the request routing rule with a backend on this application gateway.
              * <p>
-             * If the backend does not yet exist, it must be defined in the optional part of the application gateway definition.
-             * The request routing rule references it only by name.
+             * If the backend does not yet exist, it will be automatically created.
              * @param name the name of an existing backend
              * @return the next stage of the definition
              */
@@ -425,8 +424,10 @@ public interface ApplicationGatewayRequestRoutingRule extends
          */
         interface WithBackend {
             /**
-             * Associates the request routing rule with an existing backend on this application gateway.
-             * @param name the name of an existing backend
+             * Associates the request routing rule with a backend on this application gateway.
+             * <p>
+             * If the specified backend does not yet exist, it will be automatically created.
+             * @param name the name of a backend
              * @return the next stage of the update
              */
             Update toBackend(String name);
@@ -612,8 +613,7 @@ public interface ApplicationGatewayRequestRoutingRule extends
             /**
              * Associates the request routing rule with a backend on this application gateway.
              * <p>
-             * If the backend does not yet exist, it must be defined in the optional part of the application gateway definition.
-             * The request routing rule references it only by name.
+             * If the backend does not yet exist, it will be automatically created.
              * @param name the name of an existing backend
              * @return the next stage of the definition
              */

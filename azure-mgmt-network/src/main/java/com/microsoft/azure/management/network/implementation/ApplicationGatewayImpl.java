@@ -362,6 +362,28 @@ class ApplicationGatewayImpl
     protected void afterCreating() {
     }
 
+    protected SubResource ensureBackendRef(String name) {
+        // Ensure existence of backend, creating one if needed
+        ApplicationGatewayBackendImpl backend;
+        if (name == null) {
+            backend = this.ensureUniqueBackend();
+        } else {
+            backend = this.defineBackend(name);
+            backend.attach();
+        }
+
+        // Return backend reference
+        return new SubResource()
+                .withId(this.futureResourceId() + "/backendAddressPools/" + backend.name());
+    }
+
+    protected ApplicationGatewayBackendImpl ensureUniqueBackend() {
+        String name = SdkContext.randomResourceName("backend", 20);
+        ApplicationGatewayBackendImpl backend = this.defineBackend(name);
+        backend.attach();
+        return backend;
+    }
+
     private ApplicationGatewayIPConfigurationImpl ensureDefaultIPConfig() {
         ApplicationGatewayIPConfigurationImpl ipConfig = (ApplicationGatewayIPConfigurationImpl) defaultIPConfiguration();
         if (ipConfig == null) {
