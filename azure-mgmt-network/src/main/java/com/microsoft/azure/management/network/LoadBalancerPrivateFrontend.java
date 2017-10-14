@@ -19,7 +19,6 @@ import java.util.Set;
  * A client-side representation of a private frontend of an internal load balancer.
  */
 @Fluent()
-@Beta
 public interface LoadBalancerPrivateFrontend extends
     LoadBalancerFrontend,
     HasPrivateIPAddress,

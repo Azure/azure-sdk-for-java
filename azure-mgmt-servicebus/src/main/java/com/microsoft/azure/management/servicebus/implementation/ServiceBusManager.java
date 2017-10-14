@@ -26,7 +26,6 @@ import com.microsoft.rest.RestClient;
 public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceBusManagementClientImpl> {
     // Collections
     private ServiceBusNamespacesImpl namespaces;
-    private ServiceBusOperationsImpl operations;
     /**
      * Get a Configurable instance that can be used to create {@link ServiceBusManager}
      * with optional configuration.
@@ -107,16 +106,4 @@ public final class ServiceBusManager extends Manager<ServiceBusManager, ServiceB
         }
         return namespaces;
     }
-
-    /**
-     * @return the Service Bus operations management API entry point
-     */
-/// TODO: To be revisited in the future
-//    @Beta(Beta.SinceVersion.V1_1_0)
-//    public ServiceBusOperations operations() {
-//        if (operations == null) {
-//            operations = new ServiceBusOperationsImpl(this.inner().operations(), this);
-//        }
-//        return operations;
-//    }
 }

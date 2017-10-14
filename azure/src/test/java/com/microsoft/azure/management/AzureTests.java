@@ -444,13 +444,13 @@ public class AzureTests extends TestBase {
                     Assert.assertNotNull(backendConfigHealth.backendHttpConfiguration());
                     for (ApplicationGatewayBackendServerHealth serverHealth : backendConfigHealth.serverHealths().values()) {
                         NicIPConfiguration ipConfig = serverHealth.getNetworkInterfaceIPConfiguration();
-                        info.append("\n\t\t\t\t\tHealth status: ").append(serverHealth.status());
                         if (ipConfig != null) {
                             info.append("\n\t\t\t\tServer NIC ID: ").append(ipConfig.parent().id())
                                 .append("\n\t\t\t\tIP Config name: ").append(ipConfig.name());
                         } else {
                             info.append("\n\t\t\t\tServer IP: " + serverHealth.ipAddress());
                         }
+                        info.append("\n\t\t\t\tHealth status: ").append(serverHealth.status());
                     }
                 }
             }
