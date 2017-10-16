@@ -138,7 +138,9 @@ public final class LoggingPolicy implements RequestPolicy {
 
         if (logLevel.shouldLogBody()) {
             String contentTypeHeader = response.headerValue("Content-Type");
-            if ((contentTypeHeader == null || "application/json".equals(contentTypeHeader))) {
+            if ((contentTypeHeader == null
+                    || "application/json".equals(contentTypeHeader))
+                    || "application/xml".equals(contentTypeHeader)) {
                 final HttpResponse bufferedResponse = response.buffer();
                 return bufferedResponse.bodyAsStringAsync().map(new Func1<String, HttpResponse>() {
                     @Override

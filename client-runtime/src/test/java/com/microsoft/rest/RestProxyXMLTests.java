@@ -7,6 +7,8 @@
 
 package com.microsoft.rest;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonUnwrapped;
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonProcessingException;
@@ -50,7 +52,11 @@ import static org.junit.Assert.*;
 class SignedIdentifiersWrapper {
     @JacksonXmlProperty(localName = "SignedIdentifier")
     @JacksonXmlElementWrapper(useWrapping = false)
-    private List<SignedIdentifierInner> signedIdentifiers;
+    private final List<SignedIdentifierInner> signedIdentifiers;
+    @JsonCreator
+    public SignedIdentifiersWrapper(@JsonProperty("signedIdentifiers") List<SignedIdentifierInner> signedIdentifiers) {
+        this.signedIdentifiers = signedIdentifiers;
+    }
     /**
      * Get the SignedIdentifiers value.
      *
@@ -58,16 +64,6 @@ class SignedIdentifiersWrapper {
      */
     public List<SignedIdentifierInner> signedIdentifiers() {
         return signedIdentifiers;
-    }
-    /**
-     * Set the SignedIdentifiers value.
-     *
-     * @param signedIdentifiers the List<SignedIdentifierInner> value to set
-     * @return the SignedIdentifiers object itself.
-     */
-    public SignedIdentifiersWrapper withSignedIdentifiers(List<SignedIdentifierInner> signedIdentifiers) {
-        this.signedIdentifiers = signedIdentifiers;
-        return this;
     }
 }
 
@@ -150,8 +146,7 @@ public class RestProxyXMLTests {
         JacksonAdapter serializer = new JacksonAdapter();
         MockXMLReceiverClient httpClient = new MockXMLReceiverClient();
         MyXMLService myXMLService = RestProxy.create(MyXMLService.class, null, httpClient, serializer);
-        SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper();
-        wrapper.withSignedIdentifiers(expectedAcls);
+        SignedIdentifiersWrapper wrapper = new SignedIdentifiersWrapper(expectedAcls);
         myXMLService.setContainerACLs(wrapper);
 
         SignedIdentifiersWrapper actualAclsWrapped = serializer.deserialize(

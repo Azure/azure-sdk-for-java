@@ -14,6 +14,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
@@ -49,6 +50,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     public JacksonAdapter() {
         simpleMapper = initializeObjectMapper(new ObjectMapper());
         xmlMapper = initializeObjectMapper(new XmlMapper());
+        xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
         mapper = initializeObjectMapper(new ObjectMapper())
                 .registerModule(FlatteningSerializer.getModule(simpleMapper()))
                 .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
