@@ -9,12 +9,15 @@ package com.microsoft.rest.http;
 import com.google.common.io.CharStreams;
 import com.microsoft.rest.HttpBinJSON;
 import com.microsoft.rest.policy.RequestPolicy;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import rx.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
