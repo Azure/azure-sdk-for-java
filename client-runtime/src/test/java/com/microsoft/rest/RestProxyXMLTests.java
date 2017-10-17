@@ -47,7 +47,6 @@ import static org.junit.Assert.*;
 @JacksonXmlRootElement(localName = "SignedIdentifiers")
 class SignedIdentifiersWrapper {
     @JacksonXmlProperty(localName = "SignedIdentifier")
-    @JacksonXmlElementWrapper(useWrapping = false)
     private final List<SignedIdentifierInner> signedIdentifiers;
     @JsonCreator
     public SignedIdentifiersWrapper(@JsonProperty("signedIdentifiers") List<SignedIdentifierInner> signedIdentifiers) {
