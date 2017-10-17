@@ -305,7 +305,8 @@
   "subscriptions": {
     "dir": "azure-mgmt-resources",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.resources --tag=package-subscriptions-2016-06"
+    "package": "com.microsoft.azure.management.resources",
+    "args": "--tag=package-subscriptions-2016-06"
   },
   "trafficmanager": {
     "dir": "azure-mgmt-trafficmanager",

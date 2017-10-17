@@ -93,7 +93,6 @@ var handleInput = function(projects, cb) {
 }
 
 var codegen = function(project, cb) {
-
     if (!args['preserve']) {
         const sourcesToDelete = path.join(
             mappings[project].dir,
