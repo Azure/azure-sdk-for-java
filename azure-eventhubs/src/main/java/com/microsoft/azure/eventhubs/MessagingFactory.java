@@ -299,7 +299,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
                     this.startReactor(new ReactorHandler());
                 }
             } catch (IOException e) {
-                TRACE_LOGGER.error(ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error"));
+                TRACE_LOGGER.error("messagingFactory[%s], hostName[%s], error[%s]",
+                        this.getClientId(),
+                        this.getHostName(),
+                        ExceptionUtil.toStackTraceString(e, "Re-starting reactor failed with error"));
 
                 this.onReactorError(cause);
             }
@@ -357,32 +360,63 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
                             dispatcher,
                             new IOperationResult<Void, Exception>() {
 
-                                private void closeConnection() {
-
-                                    if (connection != null && connection.getRemoteState() != EndpointState.CLOSED) {
-
-                                        if (connection.getLocalState() != EndpointState.CLOSED) {
-                                            connection.close();
-                                        }
+                                @Override
+                                public void onComplete(Void result) {
+                                    if (TRACE_LOGGER.isInfoEnabled()) {
+                                        TRACE_LOGGER.info("messagingFactory[%s], hostName[%s], info[%s]",
+                                                getClientId(),
+                                                getHostName(),
+                                                "cbsChannel closed");
                                     }
                                 }
 
                                 @Override
+                                public void onError(Exception error) {
+
+                                    if (TRACE_LOGGER.isWarnEnabled()) {
+                                        TRACE_LOGGER.warn("messagingFactory[%s], hostName[%s], cbsChannelCloseError[%s]",
+                                                getClientId(),
+                                                getHostName(),
+                                                error.getMessage());
+                                    }
+                                }
+                            });
+                }
+            }
+
+            synchronized (mgmtChannelCreateLock) {
+
+                if (mgmtChannel != null) {
+                    mgmtChannel.close(
+                            dispatcher,
+                            new IOperationResult<Void, Exception>() {
+
+                                @Override
                                 public void onComplete(Void result) {
-                                    this.closeConnection();
+                                    if (TRACE_LOGGER.isInfoEnabled()) {
+                                        TRACE_LOGGER.info("messagingFactory[%s], hostName[%s], info[%s]",
+                                                getClientId(),
+                                                getHostName(),
+                                                "mgmtChannel closed");
+                                    }
                                 }
 
                                 @Override
                                 public void onError(Exception error) {
-                                    this.closeConnection();
+
+                                    if (TRACE_LOGGER.isWarnEnabled()) {
+                                        TRACE_LOGGER.warn("messagingFactory[%s], hostName[%s], mgmtChannelCloseError[%s]",
+                                                getClientId(),
+                                                getHostName(),
+                                                error.getMessage());
+                                    }
                                 }
                             });
-                } else {
-
-                    if (connection != null && connection.getRemoteState() != EndpointState.CLOSED && connection.getLocalState() != EndpointState.CLOSED)
-                        connection.close();
                 }
             }
+
+            if (connection != null && connection.getRemoteState() != EndpointState.CLOSED && connection.getLocalState() != EndpointState.CLOSED)
+                connection.close();
         }
     }
 
@@ -395,7 +429,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
 
         public void run() {
             if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info("starting reactor instance.");
+                TRACE_LOGGER.info("messagingFactory[%s], hostName[%s], info[%s]",
+                        getClientId(),
+                        getHostName(),
+                        "starting reactor instance.");
             }
 
             try {
@@ -411,7 +448,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection, I
                 }
 
                 if (TRACE_LOGGER.isWarnEnabled()) {
-                    TRACE_LOGGER.warn(
+                    TRACE_LOGGER.warn("messagingFactory[%s], hostName[%s], error[%s]",
+                            getClientId(),
+                            getHostName(),
                             ExceptionUtil.toStackTraceString(handlerException, "UnHandled exception while processing events in reactor:"));
                 }
 
