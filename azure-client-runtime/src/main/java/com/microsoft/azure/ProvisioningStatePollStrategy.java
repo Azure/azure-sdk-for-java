@@ -43,7 +43,7 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
                     @Override
                     public HttpResponse call(String responseBody) {
                         try {
-                            final ResourceWithProvisioningState resource = deserialize(responseBody, ResourceWithProvisioningState.class);
+                            final ResourceWithProvisioningState resource = (ResourceWithProvisioningState) deserialize(responseBody, ResourceWithProvisioningState.class);
                             if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
                                 setProvisioningState(ProvisioningState.FAILED);
                             }

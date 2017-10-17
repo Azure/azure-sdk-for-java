@@ -1,16 +1,27 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.rest.serializer;
 
 import com.fasterxml.jackson.databind.JavaType;
-import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.microsoft.rest.protocol.TypeFactory;
-import org.omg.Dynamic.Parameter;
 
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 
+/**
+ * A TypeFactory that creates Jackson-compatible JavaType types.
+ */
 public class JacksonTypeFactory implements TypeFactory {
     private final com.fasterxml.jackson.databind.type.TypeFactory typeFactory;
 
+    /**
+     * Create a new JacksonTypeFactory.
+     * @param typeFactory The internal Jackson-specific TypeFactory that will be used.
+     */
     public JacksonTypeFactory(com.fasterxml.jackson.databind.type.TypeFactory typeFactory) {
         this.typeFactory = typeFactory;
     }
@@ -22,13 +33,12 @@ public class JacksonTypeFactory implements TypeFactory {
             result = null;
         }
         else if (type instanceof JavaType) {
-            result = (JavaType)type;
+            result = (JavaType) type;
         }
         else if (type instanceof ParameterizedType) {
             final ParameterizedType parameterizedType = (ParameterizedType) type;
-            final Class<?> baseType = (Class<?>)parameterizedType.getRawType();
             final Type[] actualTypeArguments = parameterizedType.getActualTypeArguments();
-            result = create(baseType, actualTypeArguments);
+            result = create(parameterizedType, actualTypeArguments);
         }
         else {
             result = typeFactory.constructType(type);
@@ -37,17 +47,19 @@ public class JacksonTypeFactory implements TypeFactory {
     }
 
     @Override
-    public JavaType create(Class<?> baseType, Type genericType) {
-        return create(baseType, new Type[] { genericType });
+    public JavaType create(ParameterizedType baseType, Type genericType) {
+        return create(baseType, new Type[]{genericType});
     }
 
     @Override
-    public JavaType create(Class<?> baseType, Type[] genericTypes) {
+    public JavaType create(ParameterizedType baseType, Type[] genericTypes) {
+        final Class<?> rawType = (Class<?>) baseType.getRawType();
+
         final JavaType[] genericJavaTypes = new JavaType[genericTypes.length];
         for (int i = 0; i < genericJavaTypes.length; ++i) {
             genericJavaTypes[i] = create(genericTypes[i]);
         }
-        final TypeBindings typeBindings = TypeBindings.create(baseType, genericJavaTypes);
-        return typeFactory.constructType(baseType, typeBindings);
+
+        return typeFactory.constructParametricType(rawType, genericJavaTypes);
     }
 }

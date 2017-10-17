@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.rest;
 
 import org.joda.time.DateTime;
@@ -6,25 +12,25 @@ import org.joda.time.DateTimeZone;
 /**
  * Simple wrapper over joda.time.DateTime used for specifying unix seconds format during serialization/deserialization.
  */
-public final class UnixTime {
+public final class DateTimeUnix {
     /**
      * The actual datetime object.
      */
     private final DateTime dateTime;
 
     /**
-     * Creates a new UnixTime object with the specified DateTime.
+     * Creates a new DateTimeUnix object with the specified DateTime.
      * @param dateTime The DateTime object to wrap.
      */
-    public UnixTime(DateTime dateTime) {
+    public DateTimeUnix(DateTime dateTime) {
         this.dateTime = dateTime;
     }
 
     /**
-     * Creates a new UnixTime object with the specified DateTime.
+     * Creates a new DateTimeUnix object with the specified DateTime.
      * @param unixSeconds The Unix seconds value.
      */
-    public UnixTime(long unixSeconds) {
+    public DateTimeUnix(long unixSeconds) {
         this.dateTime = new DateTime(unixSeconds * 1000L, DateTimeZone.UTC);
     }
 
@@ -55,11 +61,11 @@ public final class UnixTime {
             return false;
         }
 
-        if (!(obj instanceof UnixTime)) {
+        if (!(obj instanceof DateTimeUnix)) {
             return false;
         }
 
-        UnixTime rhs = (UnixTime) obj;
+        DateTimeUnix rhs = (DateTimeUnix) obj;
         return this.dateTime.equals(rhs.dateTime());
     }
 }

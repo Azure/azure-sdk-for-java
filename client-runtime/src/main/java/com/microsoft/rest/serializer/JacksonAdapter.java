@@ -20,7 +20,6 @@ import com.microsoft.rest.protocol.SerializerAdapter;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;

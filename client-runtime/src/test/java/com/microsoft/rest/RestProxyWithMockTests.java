@@ -5,6 +5,7 @@ import com.microsoft.rest.annotations.Host;
 import com.microsoft.rest.annotations.ReturnValueWireType;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.MockHttpClient;
+import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.List;
@@ -19,17 +20,25 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Host("http://httpbin.org")
     private interface Service1 {
-        @GET("base64UrlBytes/10")
+        @GET("Base64UrlBytes/10")
         @ReturnValueWireType(Base64Url.class)
         byte[] getBase64UrlBytes10();
 
-        @GET("base64UrlListOfBytes")
+        @GET("Base64UrlListOfBytes")
         @ReturnValueWireType(Base64Url.class)
         List<byte[]> getBase64UrlListOfBytes();
 
-        @GET("base64UrlListOfListOfBytes")
+        @GET("Base64UrlListOfListOfBytes")
         @ReturnValueWireType(Base64Url.class)
         List<List<byte[]>> getBase64UrlListOfListOfBytes();
+
+        @GET("DateTimeRfc1123")
+        @ReturnValueWireType(DateTimeRfc1123.class)
+        DateTime getDateTimeRfc1123();
+
+        @GET("DateTimeUnix")
+        @ReturnValueWireType(DateTimeUnix.class)
+        DateTime getDateTimeUnix();
     }
 
     @Test
@@ -80,5 +89,21 @@ public class RestProxyWithMockTests extends RestProxyTests {
                 }
             }
         }
+    }
+
+    @Test
+    public void service1GetDateTimeRfc1123() {
+        final DateTime dateTime = createService(Service1.class)
+                .getDateTimeRfc1123();
+        assertNotNull(dateTime);
+        assertEquals(new DateTime(0).withZone(dateTime.getZone()), dateTime);
+    }
+
+    @Test
+    public void service1GetDateTimeUnix() {
+        final DateTime dateTime = createService(Service1.class)
+                .getDateTimeUnix();
+        assertNotNull(dateTime);
+        assertEquals(new DateTime(0).withZone(dateTime.getZone()), dateTime);
     }
 }

@@ -16,6 +16,7 @@ import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import com.microsoft.rest.http.UrlBuilder;
 import com.microsoft.rest.protocol.TypeFactory;
+import org.joda.time.DateTime;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -97,7 +98,7 @@ public class RestProxy implements InvocationHandler {
 
         final Object wireResponse = deserializeInternal(value, wireResponseType);
 
-        return convertToResultType(wireResponse, resultType, wireResponseType);
+        return convertToResultType(wireResponse, resultType, wireType);
     }
 
     private Type constructWireResponseType(Type resultType, Type wireType) {
@@ -105,20 +106,25 @@ public class RestProxy implements InvocationHandler {
 
         if (resultType == byte[].class) {
             if (wireType == Base64Url.class) {
-                final TypeFactory typeFactory = serializer.getTypeFactory();
-                wireResponseType = typeFactory.create(Base64Url.class);
+                wireResponseType = Base64Url.class;
+            }
+        }
+        else if (resultType == DateTime.class) {
+            if (wireType == DateTimeRfc1123.class) {
+                wireResponseType = DateTimeRfc1123.class;
+            }
+            else if (wireType == DateTimeUnix.class) {
+                wireResponseType = DateTimeUnix.class;
             }
         }
         else {
             final TypeToken resultTypeToken = TypeToken.of(resultType);
             if (resultTypeToken.isSubtypeOf(List.class)) {
-                final Class<?> rawType = (Class<?>)((ParameterizedType) resultType).getRawType();
-
                 final Type resultElementType = getTypeArgument(resultType);
                 final Type wireResponseElementType = constructWireResponseType(resultElementType, wireType);
 
                 final TypeFactory typeFactory = serializer.getTypeFactory();
-                wireResponseType = typeFactory.create(rawType, wireResponseElementType);
+                wireResponseType = typeFactory.create((ParameterizedType) resultType, wireResponseElementType);
             }
         }
         return wireResponseType;
@@ -130,6 +136,14 @@ public class RestProxy implements InvocationHandler {
         if (resultType == byte[].class) {
             if (wireType == Base64Url.class) {
                 result = ((Base64Url) wireResponse).decodedBytes();
+            }
+        }
+        else if (resultType == DateTime.class) {
+            if (wireType == DateTimeRfc1123.class) {
+                result = ((DateTimeRfc1123) wireResponse).dateTime();
+            }
+            else if (wireType == DateTimeUnix.class) {
+                result = ((DateTimeUnix) wireResponse).dateTime();
             }
         }
         else {

@@ -63,5 +63,9 @@ public interface SerializerAdapter<T> {
      */
     <U> U deserialize(String value, final Type type) throws IOException;
 
+    /**
+     * Get the TypeFactory for this SerializerAdapter.
+     * @return The TypeFactory for this SerializerAdapter.
+     */
     TypeFactory getTypeFactory();
 }

@@ -21,7 +21,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 public @interface ReturnValueWireType {
     /**
      * The type that the service interface method's return value will be converted from.
-     * @return
+     * @return The type that the service interface method's return value will be converted from.
      */
     Class<?> value();
 }

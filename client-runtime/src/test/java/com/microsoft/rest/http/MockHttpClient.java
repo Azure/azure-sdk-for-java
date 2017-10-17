@@ -9,8 +9,10 @@ package com.microsoft.rest.http;
 import com.google.common.io.CharStreams;
 import com.microsoft.rest.Base64Url;
 import com.microsoft.rest.Base64UrlTests;
+import com.microsoft.rest.DateTimeRfc1123;
 import com.microsoft.rest.HttpBinJSON;
 import com.microsoft.rest.policy.RequestPolicy;
+import org.joda.time.DateTime;
 import rx.Single;
 
 import java.io.IOException;
@@ -106,6 +108,14 @@ public class MockHttpClient extends HttpClient {
                         result.add(innerList);
                     }
                     response = new MockHttpResponse(200, result, responseHeaders);
+                }
+                else if (requestPathLower.equals("/datetimerfc1123")) {
+                    final DateTimeRfc1123 now = new DateTimeRfc1123(new DateTime(0));
+                    final String result = now.toString();
+                    response = new MockHttpResponse(200, result, responseHeaders);
+                }
+                else if (requestPathLower.equals("/datetimeunix")) {
+                    response = new MockHttpResponse(200, 0, responseHeaders);
                 }
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();

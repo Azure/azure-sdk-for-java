@@ -35,4 +35,24 @@ public class MockHttpClientTests {
         final String bodyString = response.bodyAsStringAsync().toBlocking().value();
         assertEquals("[[\"AAECAwQ\",\"AAECAwQFBgcICQ\"],[\"AAECAwQ\",\"AAECAwQFBgcICQ\",\"AAECAwQFBgcICQoLDA0O\",\"AAECAwQFBgcICQoLDA0ODxAREhM\"]]", bodyString);
     }
+
+    @Test
+    public void sendRequestInternalAsyncToDateTimeRfc1123() {
+        final MockHttpClient client = new MockHttpClient();
+        final HttpRequest request = new HttpRequest("fake_caller_method", "GET", "http://httpbin.org/DateTimeRfc1123");
+        final HttpResponse response = client.sendRequestInternalAsync(request).toBlocking().value();
+        assertNotNull(response);
+        final String bodyString = response.bodyAsStringAsync().toBlocking().value();
+        assertEquals("\"Thu, 01 Jan 1970 00:00:00 GMT\"", bodyString);
+    }
+
+    @Test
+    public void sendRequestInternalAsyncToDateTimeUnix() {
+        final MockHttpClient client = new MockHttpClient();
+        final HttpRequest request = new HttpRequest("fake_caller_method", "GET", "http://httpbin.org/DateTimeUnix");
+        final HttpResponse response = client.sendRequestInternalAsync(request).toBlocking().value();
+        assertNotNull(response);
+        final String bodyString = response.bodyAsStringAsync().toBlocking().value();
+        assertEquals("0", bodyString);
+    }
 }
