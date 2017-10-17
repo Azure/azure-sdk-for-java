@@ -1236,7 +1236,7 @@ public abstract class RestProxyTests {
     }
 
     // Helpers
-    private <T> T createService(Class<T> serviceClass) {
+    protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
         return RestProxy.create(serviceClass, null, httpClient, serializer);
     }

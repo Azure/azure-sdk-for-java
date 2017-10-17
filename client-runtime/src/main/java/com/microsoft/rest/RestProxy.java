@@ -15,6 +15,7 @@ import com.microsoft.rest.http.HttpHeader;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import com.microsoft.rest.http.UrlBuilder;
+import com.microsoft.rest.protocol.TypeFactory;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
@@ -30,6 +31,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.util.List;
 
 /**
  * This class can be used to create a proxy implementation for a provided Swagger generated
@@ -77,10 +79,83 @@ public class RestProxy implements InvocationHandler {
      * Use this RestProxy's serializer to deserialize the provided String into the provided Type.
      * @param value The String value to deserialize.
      * @param resultType The Type of the object to return.
-     * @param <T> The type of the object to return. This should be the same as the resultType parameter.
      * @return The deserialized version of the provided String value.
      */
-    public <T> T deserialize(String value, Type resultType) {
+    public Object deserialize(String value, Type resultType) {
+        return deserialize(value, resultType, null);
+    }
+
+    /**
+     * Use this RestProxy's serializer to deserialize the provided String into the provided Type.
+     * @param value The String value to deserialize.
+     * @param resultType The Type of the object to return.
+     * @param wireType The serialized type that is sent across the network.
+     * @return The deserialized version of the provided String value.
+     */
+    private Object deserialize(String value, Type resultType, Type wireType) {
+        final Type wireResponseType = constructWireResponseType(resultType, wireType);
+
+        final Object wireResponse = deserializeInternal(value, wireResponseType);
+
+        return convertToResultType(wireResponse, resultType, wireResponseType);
+    }
+
+    private Type constructWireResponseType(Type resultType, Type wireType) {
+        Type wireResponseType = resultType;
+
+        if (resultType == byte[].class) {
+            if (wireType == Base64Url.class) {
+                final TypeFactory typeFactory = serializer.getTypeFactory();
+                wireResponseType = typeFactory.create(Base64Url.class);
+            }
+        }
+        else {
+            final TypeToken resultTypeToken = TypeToken.of(resultType);
+            if (resultTypeToken.isSubtypeOf(List.class)) {
+                final Class<?> rawType = (Class<?>)((ParameterizedType) resultType).getRawType();
+
+                final Type resultElementType = getTypeArgument(resultType);
+                final Type wireResponseElementType = constructWireResponseType(resultElementType, wireType);
+
+                final TypeFactory typeFactory = serializer.getTypeFactory();
+                wireResponseType = typeFactory.create(rawType, wireResponseElementType);
+            }
+        }
+        return wireResponseType;
+    }
+
+    private Object convertToResultType(Object wireResponse, Type resultType, Type wireType) {
+        Object result = wireResponse;
+
+        if (resultType == byte[].class) {
+            if (wireType == Base64Url.class) {
+                result = ((Base64Url) wireResponse).decodedBytes();
+            }
+        }
+        else {
+            final TypeToken resultTypeToken = TypeToken.of(resultType);
+            if (resultTypeToken.isSubtypeOf(List.class)) {
+                final Type resultElementType = getTypeArgument(resultType);
+
+                final List<Object> wireResponseList = (List<Object>) wireResponse;
+
+                final int wireResponseListSize = wireResponseList.size();
+                for (int i = 0; i < wireResponseListSize; ++i) {
+                    final Object wireResponseElement = wireResponseList.get(i);
+                    final Object resultElement = convertToResultType(wireResponseElement, resultElementType, wireType);
+                    if (wireResponseElement != resultElement) {
+                        wireResponseList.set(i, resultElement);
+                    }
+                }
+
+                result = wireResponseList;
+            }
+        }
+
+        return result;
+    }
+
+    private <T> T deserializeInternal(String value, Type resultType) {
         try {
             return serializer.deserialize(value, resultType);
         } catch (IOException e) {
@@ -232,9 +307,12 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private Single<?> toProxyReturnValueAsync(final HttpResponse response, final String httpMethod, final Type entityType) {
+    private Single<?> toProxyReturnValueAsync(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final int responseStatusCode = response.statusCode();
+        final String httpMethod = methodParser.httpMethod();
+        final Type returnValueWireType = methodParser.returnValueWireType();
+
         final Single<?> asyncResult;
         if (entityTypeToken.isSubtypeOf(void.class) || entityTypeToken.isSubtypeOf(Void.class)) {
             asyncResult = Single.just(null);
@@ -249,16 +327,25 @@ public class RestProxy implements InvocationHandler {
         } else if (entityTypeToken.isSubtypeOf(InputStream.class)) {
             asyncResult = response.bodyAsInputStreamAsync();
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
-            asyncResult = response.bodyAsByteArrayAsync();
+            Single<byte[]> responseBodyBytesAsync = response.bodyAsByteArrayAsync();
+            if (returnValueWireType == Base64Url.class) {
+                responseBodyBytesAsync = responseBodyBytesAsync.map(new Func1<byte[], byte[]>() {
+                    @Override
+                    public byte[] call(byte[] base64UrlBytes) {
+                        return new Base64Url(base64UrlBytes).decodedBytes();
+                    }
+                });
+            }
+            asyncResult = responseBodyBytesAsync;
         } else if (entityTypeToken.isSubtypeOf(RestResponse.class)) {
             if (!entityTypeToken.isSubtypeOf(RestResponseWithBody.class)) {
-                final Type deserializedHeadersType = ((ParameterizedType) entityType).getActualTypeArguments()[0];
+                final Type deserializedHeadersType = getTypeArgument(entityType);
                 final HttpHeaders responseHeaders = response.headers();
                 final Object deserializedHeaders = deserializeHeaders(responseHeaders, deserializedHeadersType);
                 asyncResult = Single.just(new RestResponse<>(responseStatusCode, deserializedHeaders));
             }
             else {
-                final Type[] deserializedTypes = ((ParameterizedType) entityType).getActualTypeArguments();
+                final Type[] deserializedTypes = getTypeArguments(entityType);
 
                 final Type deserializedHeadersType = deserializedTypes[0];
                 final HttpHeaders responseHeaders = response.headers();
@@ -292,7 +379,7 @@ public class RestProxy implements InvocationHandler {
                     .map(new Func1<String, Object>() {
                         @Override
                         public Object call(String responseBodyString) {
-                            return deserialize(responseBodyString, entityType);
+                            return deserialize(responseBodyString, entityType, returnValueWireType);
                         }
                     });
         }
@@ -331,11 +418,11 @@ public class RestProxy implements InvocationHandler {
             result = Completable.fromSingle(asyncExpectedResponse);
         }
         else if (returnTypeToken.isSubtypeOf(Single.class)) {
-            final Type singleTypeParam = ((ParameterizedType) returnType).getActualTypeArguments()[0];
+            final Type singleTypeParam = getTypeArgument(returnType);
             result = asyncExpectedResponse.flatMap(new Func1<HttpResponse, Single<?>>() {
                 @Override
                 public Single<?> call(HttpResponse response) {
-                    return toProxyReturnValueAsync(response, methodParser.httpMethod(), singleTypeParam);
+                    return toProxyReturnValueAsync(response, methodParser, singleTypeParam);
                 }
             });
         }
@@ -349,13 +436,21 @@ public class RestProxy implements InvocationHandler {
                     .flatMap(new Func1<HttpResponse, Single<?>>() {
                         @Override
                         public Single<?> call(HttpResponse httpResponse) {
-                            return toProxyReturnValueAsync(httpResponse, methodParser.httpMethod(), returnType);
+                            return toProxyReturnValueAsync(httpResponse, methodParser, returnType);
                         }
                     })
                     .toBlocking().value();
         }
 
         return result;
+    }
+
+    private static Type[] getTypeArguments(Type type) {
+        return ((ParameterizedType) type).getActualTypeArguments();
+    }
+
+    private static Type getTypeArgument(Type type) {
+        return getTypeArguments(type)[0];
     }
 
     /**

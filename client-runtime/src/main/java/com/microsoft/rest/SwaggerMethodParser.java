@@ -8,9 +8,11 @@ package com.microsoft.rest;
 
 import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
+import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.annotations.BodyParam;
 import com.microsoft.rest.annotations.DELETE;
 import com.microsoft.rest.annotations.ExpectedResponses;
+import com.microsoft.rest.annotations.ReturnValueWireType;
 import com.microsoft.rest.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.annotations.GET;
 import com.microsoft.rest.annotations.HEAD;
@@ -27,6 +29,7 @@ import com.microsoft.rest.http.HttpHeaders;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -49,6 +52,7 @@ public class SwaggerMethodParser {
     private String bodyContentType;
     private int[] expectedStatusCodes;
     private Type returnType;
+    private Type returnValueWireType;
     private Class<? extends RestException> exceptionType;
     private Class<?> exceptionBodyType;
 
@@ -96,6 +100,20 @@ public class SwaggerMethodParser {
         }
 
         returnType = swaggerMethod.getGenericReturnType();
+
+        final ReturnValueWireType returnValueWireTypeAnnotation = swaggerMethod.getAnnotation(ReturnValueWireType.class);
+        if (returnValueWireTypeAnnotation != null) {
+            Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
+            if (returnValueWireType == Base64Url.class || returnValueWireType == UnixTime.class || returnValueWireType == DateTimeRfc1123.class) {
+                this.returnValueWireType = returnValueWireType;
+            }
+            else {
+                final TypeToken wireTypeToken = TypeToken.of(returnValueWireType);
+                if (wireTypeToken.isSubtypeOf(List.class)) {
+                    this.returnValueWireType = returnValueWireType.getGenericInterfaces()[0];
+                }
+            }
+        }
 
         if (swaggerMethod.isAnnotationPresent(Headers.class)) {
             final Headers headersAnnotation = swaggerMethod.getAnnotation(Headers.class);
@@ -329,6 +347,16 @@ public class SwaggerMethodParser {
      */
     public Type returnType() {
         return returnType;
+    }
+
+    /**
+     * Get the type that the return value will be send across the network as. If returnValueWireType
+     * is not null, then the raw HTTP response body will need to parsed to this type and then
+     * converted to the actual returnType.
+     * @return The type that the raw HTTP response body will be sent as.
+     */
+    public Type returnValueWireType() {
+        return returnValueWireType;
     }
 
     /**
