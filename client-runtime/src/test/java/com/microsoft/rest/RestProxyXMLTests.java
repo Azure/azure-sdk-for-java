@@ -7,11 +7,6 @@
 
 package com.microsoft.rest;
 
-import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlElementWrapper;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
-import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 import com.google.common.base.Charsets;
 import com.google.common.io.ByteStreams;
 import com.google.common.reflect.TypeToken;
@@ -21,6 +16,8 @@ import com.microsoft.rest.annotations.Host;
 import com.microsoft.rest.annotations.PUT;
 import com.microsoft.rest.entities.AccessPolicy;
 import com.microsoft.rest.entities.SignedIdentifierInner;
+import com.microsoft.rest.entities.SignedIdentifiersWrapper;
+import com.microsoft.rest.entities.Slideshow;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeaders;
 import com.microsoft.rest.http.HttpRequest;
@@ -43,24 +40,6 @@ import java.util.Collections;
 import java.util.List;
 
 import static org.junit.Assert.*;
-
-@JacksonXmlRootElement(localName = "SignedIdentifiers")
-class SignedIdentifiersWrapper {
-    @JacksonXmlProperty(localName = "SignedIdentifier")
-    private final List<SignedIdentifierInner> signedIdentifiers;
-    @JsonCreator
-    public SignedIdentifiersWrapper(@JsonProperty("signedIdentifiers") List<SignedIdentifierInner> signedIdentifiers) {
-        this.signedIdentifiers = signedIdentifiers;
-    }
-    /**
-     * Get the SignedIdentifiers value.
-     *
-     * @return the SignedIdentifiers value
-     */
-    public List<SignedIdentifierInner> signedIdentifiers() {
-        return signedIdentifiers;
-    }
-}
 
 
 public class RestProxyXMLTests {
@@ -164,31 +143,6 @@ public class RestProxyXMLTests {
         assertEquals(expectedAcls.get(0).accessPolicy().expiry(), actualAcls.get(0).accessPolicy().expiry());
         assertEquals(expectedAcls.get(0).accessPolicy().start(), actualAcls.get(0).accessPolicy().start());
         assertEquals(expectedAcls.get(0).accessPolicy().permission(), actualAcls.get(0).accessPolicy().permission());
-    }
-
-    public static class Slide {
-        @JacksonXmlProperty(localName = "type", isAttribute = true)
-        String type;
-
-        @JsonProperty("title")
-        String title;
-
-        @JsonProperty("item")
-        String[] items;
-    }
-
-    public static class Slideshow {
-        @JacksonXmlProperty(localName = "title", isAttribute = true)
-        String title;
-
-        @JacksonXmlProperty(localName = "date", isAttribute = true)
-        String date;
-
-        @JacksonXmlProperty(localName = "author", isAttribute = true)
-        String author;
-
-        @JsonProperty("slide")
-        Slide[] slides;
     }
 
     @Host("http://unused")
