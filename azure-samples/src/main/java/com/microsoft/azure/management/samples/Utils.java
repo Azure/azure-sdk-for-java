@@ -38,8 +38,9 @@ import com.microsoft.azure.management.containerinstance.ContainerPort;
 import com.microsoft.azure.management.containerinstance.EnvironmentVariable;
 import com.microsoft.azure.management.containerinstance.Volume;
 import com.microsoft.azure.management.containerinstance.VolumeMount;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.Registry;
-import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
+import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.cosmosdb.CosmosDBAccount;
 import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
@@ -73,6 +74,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayIPConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProbe;
+import com.microsoft.azure.management.network.ApplicationGatewayRedirectConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
 import com.microsoft.azure.management.network.EffectiveNetworkSecurityRule;
@@ -355,7 +357,6 @@ public final class Utils {
                 .append("\n\t\tRemote network ID: ").append(peering.remoteNetworkId())
                 .append("\n\t\tPeering state: ").append(peering.state())
                 .append("\n\t\tIs traffic forwarded from remote network allowed? ").append(peering.isTrafficForwardingFromRemoteNetworkAllowed())
-                //TODO .append("\n\t\tIs access from remote network allowed? ").append(peering.isAccessFromRemoteNetworkAllowed())
                 .append("\n\t\tGateway use: ").append(peering.gatewayUse());
         }
         System.out.println(info.toString());
@@ -1100,13 +1101,13 @@ public final class Utils {
     public static void print(Registry azureRegistry) {
         StringBuilder info = new StringBuilder();
 
-        RegistryListCredentials acrCredentials = azureRegistry.listCredentials();
+        RegistryCredentials acrCredentials = azureRegistry.getCredentials();
         info.append("Azure Container Registry: ").append(azureRegistry.id())
             .append("\n\tName: ").append(azureRegistry.name())
             .append("\n\tServer Url: ").append(azureRegistry.loginServerUrl())
             .append("\n\tUser: ").append(acrCredentials.username())
-            .append("\n\tFirst Password: ").append(acrCredentials.passwords().get(0).value())
-            .append("\n\tSecond Password: ").append(acrCredentials.passwords().get(1).value());
+            .append("\n\tFirst Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
+            .append("\n\tSecond Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.SECONDARY));
         System.out.println(info.toString());
     }
 
@@ -1514,12 +1515,17 @@ public final class Utils {
                 .append("\n\t\t\tCookie based affinity: ").append(httpConfig.cookieBasedAffinity())
                 .append("\n\t\t\tPort: ").append(httpConfig.port())
                 .append("\n\t\t\tRequest timeout in seconds: ").append(httpConfig.requestTimeout())
-                .append("\n\t\t\tProtocol: ").append(httpConfig.protocol());
-
+                .append("\n\t\t\tProtocol: ").append(httpConfig.protocol())
+                .append("\n\t\tHost header: ").append(httpConfig.hostHeader())
+                .append("\n\t\tHost header comes from backend? ").append(httpConfig.isHostHeaderFromBackend())
+                .append("\n\t\tConnection draining timeout in seconds: ").append(httpConfig.connectionDrainingTimeoutInSeconds())
+                .append("\n\t\tAffinity cookie name: ").append(httpConfig.affinityCookieName())
+                .append("\n\t\tPath: ").append(httpConfig.path());
             ApplicationGatewayProbe probe = httpConfig.probe();
             if (probe != null) {
                 info.append("\n\t\tProbe: " + probe.name());
             }
+            info.append("\n\t\tIs probe enabled? ").append(httpConfig.isProbeEnabled());
         }
 
         // Show SSL certificates
@@ -1528,6 +1534,19 @@ public final class Utils {
         for (ApplicationGatewaySslCertificate cert : sslCerts.values()) {
             info.append("\n\t\tName: ").append(cert.name())
                 .append("\n\t\t\tCert data: ").append(cert.publicData());
+        }
+
+        // Show redirect configurations
+        Map<String, ApplicationGatewayRedirectConfiguration> redirects = resource.redirectConfigurations();
+        info.append("\n\tRedirect configurations: ").append(redirects.size());
+        for (ApplicationGatewayRedirectConfiguration redirect : redirects.values()) {
+            info.append("\n\t\tName: ").append(redirect.name())
+                .append("\n\t\tTarget URL: ").append(redirect.type())
+                .append("\n\t\tTarget URL: ").append(redirect.targetUrl())
+                .append("\n\t\tTarget listener: ").append(redirect.targetListener() != null ? redirect.targetListener().name() : null)
+                .append("\n\t\tIs path included? ").append(redirect.isPathIncluded())
+                .append("\n\t\tIs query string included? ").append(redirect.isQueryStringIncluded())
+                .append("\n\t\tReferencing request routing rules: ").append(redirect.requestRoutingRules().values());
         }
 
         // Show HTTP listeners
@@ -1555,7 +1574,9 @@ public final class Utils {
                 .append("\n\t\tInterval in seconds: ").append(probe.timeBetweenProbesInSeconds())
                 .append("\n\t\tRetries: ").append(probe.retriesBeforeUnhealthy())
                 .append("\n\t\tTimeout: ").append(probe.timeoutInSeconds())
-                .append("\n\t\tHost: ").append(probe.host());
+                .append("\n\t\tHost: ").append(probe.host())
+                .append("\n\t\tHealthy HTTP response status code ranges: ").append(probe.healthyHttpResponseStatusCodeRanges())
+                .append("\n\t\tHealthy HTTP response body contents: ").append(probe.healthyHttpResponseBodyContents());
         }
 
         // Show request routing rules
@@ -1563,14 +1584,15 @@ public final class Utils {
         info.append("\n\tRequest routing rules: ").append(rules.size());
         for (ApplicationGatewayRequestRoutingRule rule : rules.values()) {
             info.append("\n\t\tName: ").append(rule.name())
-                .append("\n\t\t\tType: ").append(rule.ruleType())
-                .append("\n\t\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
-                .append("\n\t\t\tHost name: ").append(rule.hostName())
-                .append("\n\t\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
-                .append("\n\t\t\tFrontend port: ").append(rule.frontendPort())
-                .append("\n\t\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
-                .append("\n\t\t\tBackend port: ").append(rule.backendPort())
-                .append("\n\t\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity());
+                .append("\n\t\tType: ").append(rule.ruleType())
+                .append("\n\t\tPublic IP address ID: ").append(rule.publicIPAddressId())
+                .append("\n\t\tHost name: ").append(rule.hostName())
+                .append("\n\t\tServer name indication required? ").append(rule.requiresServerNameIndication())
+                .append("\n\t\tFrontend port: ").append(rule.frontendPort())
+                .append("\n\t\tFrontend protocol: ").append(rule.frontendProtocol().toString())
+                .append("\n\t\tBackend port: ").append(rule.backendPort())
+                .append("\n\t\tCookie based affinity enabled? ").append(rule.cookieBasedAffinity())
+                .append("\n\t\tRedirect configuration: ").append(rule.redirectConfiguration() != null ? rule.redirectConfiguration().name() : "(none)");
 
             // Show backend addresses
             Collection<ApplicationGatewayBackendAddress> addresses = rule.backendAddresses();

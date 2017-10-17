@@ -6,7 +6,6 @@
 package com.microsoft.azure.management.network;
 
 import java.util.Collection;
-
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.ApplicationGatewaysInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;

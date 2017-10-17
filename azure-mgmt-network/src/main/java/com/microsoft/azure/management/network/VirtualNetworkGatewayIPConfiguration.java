@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkGatewayIPConfigurationInner;
@@ -20,7 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Settable;
  * A client-side representation of an virtual network gateway IP configuration.
  */
 @Fluent
-@Beta
+@Beta(SinceVersion.V1_3_0)
 public interface VirtualNetworkGatewayIPConfiguration extends
         HasInner<VirtualNetworkGatewayIPConfigurationInner>,
         ChildResource<VirtualNetworkGateway> {

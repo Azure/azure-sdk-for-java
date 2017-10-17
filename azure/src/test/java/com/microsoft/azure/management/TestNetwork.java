@@ -49,12 +49,17 @@ public class TestNetwork {
                     .withRegion(region)
                     .withNewResourceGroup(groupName)
                     .withAddressSpace("10.0.0.0/28")
+                    .withAddressSpace("10.1.0.0/28")
                     .withSubnet("subnetA", "10.0.0.0/29")
                     .defineSubnet("subnetB")
                         .withAddressPrefix("10.0.0.8/29")
                         .withExistingNetworkSecurityGroup(nsg)
                         .attach()
                     .create();
+
+            // Verify address spaces
+            Assert.assertEquals(2, network.addressSpaces().size());
+            Assert.assertTrue(network.addressSpaces().contains("10.1.0.0/28"));
 
             // Verify subnets
             Assert.assertEquals(2, network.subnets().size());
@@ -90,6 +95,7 @@ public class TestNetwork {
                     .withTag("tag1", "value1")
                     .withTag("tag2", "value2")
                     .withAddressSpace("141.25.0.0/16")
+                    .withoutAddressSpace("10.1.0.0/28")
                     .withSubnet("subnetC", "141.25.0.0/29")
                     .withoutSubnet("subnetA")
                     .updateSubnet("subnetB")
@@ -102,6 +108,10 @@ public class TestNetwork {
                         .attach()
                     .apply();
             Assert.assertTrue(resource.tags().containsKey("tag1"));
+
+            // Verify address spaces
+            Assert.assertEquals(2, resource.addressSpaces().size());
+            Assert.assertFalse(resource.addressSpaces().contains("10.1.0.0/28"));
 
             // Verify subnets
             Assert.assertEquals(3, resource.subnets().size());

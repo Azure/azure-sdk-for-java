@@ -6,8 +6,6 @@
 
 package com.microsoft.azure.management.network;
 
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasSubnet;
@@ -58,6 +56,5 @@ public interface NicIPConfigurationBase extends HasSubnet, HasPrivateIPAddress {
     /**
      * @return the application gateway backends associated with this network IP configuration
      */
-    @Beta(SinceVersion.V1_2_0)
     Collection<ApplicationGatewayBackend> listAssociatedApplicationGatewayBackends();
 }

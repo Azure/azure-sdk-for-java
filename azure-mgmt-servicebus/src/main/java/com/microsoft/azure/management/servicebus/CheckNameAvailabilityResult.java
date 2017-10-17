@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.servicebus;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.servicebus.implementation.CheckNameAvailabilityResultInner;
@@ -15,7 +14,6 @@ import com.microsoft.azure.management.servicebus.implementation.CheckNameAvailab
  * The result of checking for Service Bus namespace name availability.
  */
 @Fluent
-@Beta
 public interface CheckNameAvailabilityResult extends HasInner<CheckNameAvailabilityResultInner> {
     /**
      * @return a boolean value that indicates whether the name is available for

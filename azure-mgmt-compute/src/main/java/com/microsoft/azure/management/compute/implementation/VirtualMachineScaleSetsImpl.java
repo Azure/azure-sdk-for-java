@@ -62,7 +62,7 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     public ServiceFuture<Void> deallocateAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deallocateAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deallocateAsync(groupName, name), callback);
     }
 
     @Override
@@ -77,7 +77,7 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     public ServiceFuture<Void> powerOffAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(powerOffAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(powerOffAsync(groupName, name), callback);
     }
 
     @Override
@@ -92,7 +92,7 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     public ServiceFuture<Void> restartAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(restartAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(restartAsync(groupName, name), callback);
     }
 
     @Override
@@ -107,7 +107,7 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     public ServiceFuture<Void> startAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(startAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(startAsync(groupName, name), callback);
     }
 
     @Override
@@ -122,7 +122,7 @@ public class VirtualMachineScaleSetsImpl
 
     @Override
     public ServiceFuture<Void> reimageAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(reimageAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(reimageAsync(groupName, name), callback);
     }
 
     @Override

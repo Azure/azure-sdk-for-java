@@ -403,7 +403,7 @@ public interface ApplicationGatewayListener extends
             Attachable.InUpdate<ParentT>,
             UpdateDefinitionStages.WithServerNameIndication<ParentT>,
             UpdateDefinitionStages.WithHostName<ParentT>,
-            WithProtocol<ParentT> {
+            UpdateDefinitionStages.WithProtocol<ParentT> {
         }
     }
 

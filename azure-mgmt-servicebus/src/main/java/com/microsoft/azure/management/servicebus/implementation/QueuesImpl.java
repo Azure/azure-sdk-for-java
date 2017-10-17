@@ -91,6 +91,9 @@ class QueuesImpl
 
     @Override
     protected QueueImpl wrapModel(QueueInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new QueueImpl(this.resourceGroupName,
                 this.namespaceName,
                 inner.name(),

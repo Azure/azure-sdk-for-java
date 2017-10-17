@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.TopologyInner;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
@@ -19,7 +20,7 @@ import java.util.Map;
  * An immutable client-side representation of an Azure Topology info object, associated with network watcher.
  */
 @Fluent
-@Beta
+@Beta(SinceVersion.V1_2_0)
 public interface Topology extends HasParent<NetworkWatcher>,
         HasInner<TopologyInner>,
         Refreshable<Topology> {

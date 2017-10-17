@@ -5,8 +5,6 @@
  */
 package com.microsoft.azure.management.network.model;
 
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.LoadBalancerFrontend;
 import com.microsoft.azure.management.network.Network;
@@ -38,7 +36,6 @@ public interface HasFrontend  {
              * @param frontendName an existing frontend name on this load balancer
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromFrontend(String frontendName);
 
             /**
@@ -50,7 +47,6 @@ public interface HasFrontend  {
              * @param leafDnsLabel a unique leaf DNS label to create the public IP address under
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromNewPublicIPAddress(String leafDnsLabel);
 
             /**
@@ -61,7 +57,6 @@ public interface HasFrontend  {
              * @param pipDefinition a definition for the new public IP
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromNewPublicIPAddress(Creatable<PublicIPAddress> pipDefinition);
 
             /**
@@ -71,7 +66,6 @@ public interface HasFrontend  {
              * A new automatically-named public frontend will be implicitly created on this load balancer for each such new public IP address.
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromNewPublicIPAddress();
 
             /**
@@ -82,7 +76,6 @@ public interface HasFrontend  {
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingPublicIPAddress(PublicIPAddress publicIPAddress);
 
             /**
@@ -93,7 +86,6 @@ public interface HasFrontend  {
              * @param resourceId the resource ID of an existing public IP address
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingPublicIPAddress(String resourceId);
 
             /**
@@ -105,7 +97,6 @@ public interface HasFrontend  {
              * @param subnetName the name of an existing subnet within the specified network
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingSubnet(Network network, String subnetName);
             /**
              * Specifies an existing private subnet to receive network traffic from.
@@ -116,7 +107,6 @@ public interface HasFrontend  {
              * @param subnetName the name of an existing subnet within the specified network
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingSubnet(String networkResourceId, String subnetName);
 
             /**
@@ -127,7 +117,6 @@ public interface HasFrontend  {
              * @param subnet an existing subnet
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingSubnet(Subnet subnet);
         }
     }
@@ -146,7 +135,6 @@ public interface HasFrontend  {
              * @param frontendName an existing frontend name from this load balancer
              * @return the next stage of the update
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromFrontend(String frontendName);
         }
     }
@@ -165,7 +153,6 @@ public interface HasFrontend  {
              * @param frontendName an existing frontend name
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromFrontend(String frontendName);
 
             /**
@@ -176,7 +163,6 @@ public interface HasFrontend  {
              * @param publicIPAddress an existing public IP address
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingPublicIPAddress(PublicIPAddress publicIPAddress);
 
             /**
@@ -187,7 +173,6 @@ public interface HasFrontend  {
              * @param resourceId the resource ID of an existing public IP address
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingPublicIPAddress(String resourceId);
 
             /**
@@ -199,7 +184,6 @@ public interface HasFrontend  {
              * @param subnetName the name of an existing subnet within the specified network
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingSubnet(Network network, String subnetName);
             /**
              * Specifies an existing private subnet to receive network traffic from.
@@ -210,7 +194,6 @@ public interface HasFrontend  {
              * @param subnetName the name of an existing subnet within the specified network
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingSubnet(String networkResourceId, String subnetName);
 
             /**
@@ -221,7 +204,6 @@ public interface HasFrontend  {
              * @param subnet an existing subnet
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             ReturnT fromExistingSubnet(Subnet subnet);
         }
     }

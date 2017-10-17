@@ -19,6 +19,7 @@ import com.microsoft.azure.management.network.ApplicationGatewayBackendAddress;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
 import com.microsoft.azure.management.network.ApplicationGatewayProtocol;
+import com.microsoft.azure.management.network.ApplicationGatewayRedirectConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRule;
 import com.microsoft.azure.management.network.ApplicationGatewayRequestRoutingRuleType;
 import com.microsoft.azure.management.network.ApplicationGatewaySslCertificate;
@@ -151,6 +152,16 @@ class ApplicationGatewayRequestRoutingRuleImpl
             return (ApplicationGatewayListenerImpl) this.parent().listeners().get(listenerName);
         } else {
             return null;
+        }
+    }
+
+    @Override
+    public ApplicationGatewayRedirectConfiguration redirectConfiguration() {
+        SubResource ref = this.inner().redirectConfiguration();
+        if (ref == null) {
+            return null;
+        } else {
+            return this.parent().redirectConfigurations().get(ResourceUtils.nameFromResourceId(ref.id()));
         }
     }
 
@@ -336,10 +347,8 @@ class ApplicationGatewayRequestRoutingRuleImpl
     private ApplicationGatewayBackendImpl ensureBackend() {
         ApplicationGatewayBackendImpl backend = (ApplicationGatewayBackendImpl) this.backend();
         if (backend == null) {
-            String name = SdkContext.randomResourceName("backend", 12);
-            backend = this.parent().defineBackend(name);
-            backend.attach();
-            this.toBackend(name);
+            backend = this.parent().ensureUniqueBackend();
+            this.toBackend(backend.name());
         }
 
         return backend;
@@ -347,9 +356,7 @@ class ApplicationGatewayRequestRoutingRuleImpl
 
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackend(String name) {
-        SubResource backendRef = new SubResource()
-                .withId(this.parent().futureResourceId() + "/backendAddressPools/" + name);
-        this.inner().withBackendAddressPool(backendRef);
+        this.inner().withBackendAddressPool(this.parent().ensureBackendRef(name));
         return this;
     }
 
@@ -359,9 +366,40 @@ class ApplicationGatewayRequestRoutingRuleImpl
         return this;
     }
 
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl toBackendIPAddresses(String... ipAddresses) {
+        if (ipAddresses != null) {
+            for (String ipAddress : ipAddresses) {
+                this.toBackendIPAddress(ipAddress);
+            }
+        }
+        return this;
+    }
+
     @Override
     public ApplicationGatewayRequestRoutingRuleImpl toBackendFqdn(String fqdn) {
         this.parent().updateBackend(ensureBackend().name()).withFqdn(fqdn);
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withRedirectConfiguration(String name) {
+        if (name == null) {
+            this.inner().withRedirectConfiguration(null);
+        } else {
+            SubResource ref = new SubResource().withId(this.parent().futureResourceId() + "/redirectConfigurations/" + name);
+            this.inner()
+                .withRedirectConfiguration(ref)
+                .withBackendAddressPool(null)
+                .withBackendHttpSettings(null);
+        }
+        return this;
+    }
+
+    @Override
+    public ApplicationGatewayRequestRoutingRuleImpl withoutRedirectConfiguration() {
+        this.inner().withRedirectConfiguration(null);
         return this;
     }
 }

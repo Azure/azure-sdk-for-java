@@ -10,7 +10,13 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.VirtualMachineScaleSetVMs;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
+import rx.Completable;
 import rx.Observable;
+
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.List;
 
 /**
  * Implementation for {@link VirtualMachineScaleSetVMs}.
@@ -55,5 +61,53 @@ class VirtualMachineScaleSetVMsImpl
     @Override
     public Observable<VirtualMachineScaleSetVM> listAsync() {
         return super.wrapPageAsync(this.client.listAsync(this.scaleSet.resourceGroupName(), this.scaleSet.name()));
+    }
+
+    @Override
+    public Completable deleteInstancesAsync(Collection<String> instanceIds) {
+        if (instanceIds == null || instanceIds.size() == 0) {
+            return Completable.complete();
+        }
+        List<String> instanceIdList = new ArrayList<>();
+        for (String instanceId : instanceIds) {
+            instanceIdList.add(instanceId);
+        }
+        VirtualMachineScaleSetsInner scaleSetInnerManager = this.scaleSet.manager().virtualMachineScaleSets().inner();
+        return scaleSetInnerManager.deleteInstancesAsync(this.scaleSet.resourceGroupName(),
+                this.scaleSet.name(), instanceIdList).toCompletable();
+    }
+
+    @Override
+    public Completable deleteInstancesAsync(String... instanceIds) {
+        return this.deleteInstancesAsync(new ArrayList<String>(Arrays.asList(instanceIds)));
+    }
+
+    @Override
+    public void deleteInstances(String... instanceIds) {
+        this.deleteInstancesAsync(instanceIds).await();
+    }
+
+    @Override
+    public Completable updateInstancesAsync(Collection<String> instanceIds) {
+        if (instanceIds == null || instanceIds.size() == 0) {
+            return Completable.complete();
+        }
+        List<String> instanceIdList = new ArrayList<>();
+        for (String instanceId : instanceIds) {
+            instanceIdList.add(instanceId);
+        }
+        VirtualMachineScaleSetsInner scaleSetInnerManager = this.scaleSet.manager().virtualMachineScaleSets().inner();
+        return scaleSetInnerManager.updateInstancesAsync(this.scaleSet.resourceGroupName(),
+                this.scaleSet.name(), instanceIdList).toCompletable();
+    }
+
+    @Override
+    public Completable updateInstancesAsync(String... instanceIds) {
+        return this.updateInstancesAsync(new ArrayList<String>(Arrays.asList(instanceIds)));
+    }
+
+    @Override
+    public void updateInstances(String... instanceIds) {
+        this.updateInstancesAsync(instanceIds).await();
     }
 }

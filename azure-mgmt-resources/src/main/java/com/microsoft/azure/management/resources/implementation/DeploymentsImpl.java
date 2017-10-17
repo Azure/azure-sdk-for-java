@@ -89,7 +89,7 @@ final class DeploymentsImpl
 
     @Override
     public ServiceFuture<Void> deleteByResourceGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByResourceGroupAsync(groupName, name).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deleteByResourceGroupAsync(groupName, name), callback);
     }
 
     @Override
@@ -131,7 +131,7 @@ final class DeploymentsImpl
 
     @Override
     public ServiceFuture<Void> deleteByIdAsync(String id, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByIdAsync(id).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deleteByIdAsync(id), callback);
     }
 
     @Override

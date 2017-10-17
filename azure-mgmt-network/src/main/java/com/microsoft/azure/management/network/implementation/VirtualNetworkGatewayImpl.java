@@ -167,7 +167,7 @@ class VirtualNetworkGatewayImpl
     }
 
     @Override
-    public VirtualNetworkGatewayImpl disableBgp() {
+    public VirtualNetworkGatewayImpl withoutBgp() {
         inner().withBgpSettings(null);
         inner().withEnableBgp(false);
         return this;

@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.servicebus;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
@@ -22,7 +21,6 @@ import org.joda.time.DateTime;
  * An immutable client-side representation of an Azure Service Bus namespace.
  */
 @Fluent
-@Beta
 public interface ServiceBusNamespace extends
         GroupableResource<ServiceBusManager, NamespaceInner>,
         Refreshable<ServiceBusNamespace>,

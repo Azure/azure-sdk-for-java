@@ -8,6 +8,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.IPAllocationMethod;
 import com.microsoft.azure.management.network.IPVersion;
 import com.microsoft.azure.management.network.LoadBalancer;
@@ -201,10 +202,26 @@ class NicIPConfigurationImpl
 
     @Override
     public NicIPConfigurationImpl withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName) {
-        for (BackendAddressPoolInner pool : loadBalancer.inner().backendAddressPools()) {
-            if (pool.name().equalsIgnoreCase(backendName)) {
-                ensureBackendAddressPools().add(pool);
-                return this;
+        if (loadBalancer != null) {
+            for (BackendAddressPoolInner pool : loadBalancer.inner().backendAddressPools()) {
+                if (pool.name().equalsIgnoreCase(backendName)) {
+                    ensureLoadBalancerBackendAddressPools().add(pool);
+                    return this;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    @Override
+    public NicIPConfigurationImpl withExistingApplicationGatewayBackend(ApplicationGateway appGateway, String backendName) {
+        if (appGateway != null) {
+            for (ApplicationGatewayBackendAddressPoolInner pool : appGateway.inner().backendAddressPools()) {
+                if (pool.name().equalsIgnoreCase(backendName)) {
+                    ensureAppGatewayBackendAddressPools().add(pool);
+                    return this;
+                }
             }
         }
 
@@ -213,17 +230,28 @@ class NicIPConfigurationImpl
 
     @Override
     public NicIPConfigurationImpl withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName) {
-        for (InboundNatRuleInner rule : loadBalancer.inner().inboundNatRules()) {
-            if (rule.name().equalsIgnoreCase(inboundNatRuleName)) {
-                ensureInboundNatRules().add(rule);
-                return this;
+        if (loadBalancer != null) {
+            for (InboundNatRuleInner rule : loadBalancer.inner().inboundNatRules()) {
+                if (rule.name().equalsIgnoreCase(inboundNatRuleName)) {
+                    ensureInboundNatRules().add(rule);
+                    return this;
+                }
             }
         }
 
         return null;
     }
 
-    private List<BackendAddressPoolInner> ensureBackendAddressPools() {
+    private List<ApplicationGatewayBackendAddressPoolInner> ensureAppGatewayBackendAddressPools() {
+        List<ApplicationGatewayBackendAddressPoolInner> poolRefs = this.inner().applicationGatewayBackendAddressPools();
+        if (poolRefs == null) {
+            poolRefs = new ArrayList<>();
+            this.inner().withApplicationGatewayBackendAddressPools(poolRefs);
+        }
+        return poolRefs;
+    }
+
+    private List<BackendAddressPoolInner> ensureLoadBalancerBackendAddressPools() {
         List<BackendAddressPoolInner> poolRefs = this.inner().loadBalancerBackendAddressPools();
         if (poolRefs == null) {
             poolRefs = new ArrayList<>();
@@ -310,7 +338,7 @@ class NicIPConfigurationImpl
      * null will be returned if withoutPublicIP() is specified in the update fluent chain or user did't
      * opt for public IP in create fluent chain. In case of update chain, if withoutPublicIP(..) is
      * not specified then existing associated (if any) public IP will be returned.
-     * @return public ip SubResource
+     * @return public IP SubResource
      */
     private SubResource publicIPToAssociate() {
         String pipId = null;
@@ -335,6 +363,12 @@ class NicIPConfigurationImpl
     @Override
     public NicIPConfigurationImpl withPrivateIPVersion(IPVersion ipVersion) {
         this.inner().withPrivateIPAddressVersion(ipVersion);
+        return this;
+    }
+
+    @Override
+    public NicIPConfigurationImpl withoutApplicationGatewayBackends() {
+        this.inner().withApplicationGatewayBackendAddressPools(null);
         return this;
     }
 

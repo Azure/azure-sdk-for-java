@@ -158,7 +158,7 @@ final class GenericResourcesImpl
 
     @Override
     public ServiceFuture<Void> moveResourcesAsync(String sourceResourceGroupName, ResourceGroup targetResourceGroup, List<String> resources, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(this.moveResourcesAsync(sourceResourceGroupName, targetResourceGroup, resources).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(this.moveResourcesAsync(sourceResourceGroupName, targetResourceGroup, resources), callback);
     }
 
     @Override
@@ -173,7 +173,7 @@ final class GenericResourcesImpl
 
     @Override
     public ServiceFuture<Void> deleteAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String apiVersion, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion).<Void>toObservable(), callback);
+        return ServiceFuture.fromBody(deleteAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, apiVersion), callback);
     }
 
     @Override

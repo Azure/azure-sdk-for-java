@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.dns;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.dns.implementation.DnsZoneManager;
 import com.microsoft.azure.management.dns.implementation.ZonesInner;
@@ -46,7 +45,6 @@ public interface DnsZones extends
      * @param eTagValue the ETag value to set on IfMatch header for concurrency protection
      * @return a representation of the deferred computation this delete call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable deleteByResourceGroupNameAsync(String resourceGroupName, String zoneName, String eTagValue);
     /**
      * Asynchronously delete the zone from Azure, identifying it by its resource ID.
@@ -55,7 +53,6 @@ public interface DnsZones extends
      * @param eTagValue the ETag value to set on IfMatch header for concurrency protection
      * @return a representation of the deferred computation this delete call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable deleteByIdAsync(String id, String eTagValue);
     /**
      * Deletes the zone from Azure, identifying it by its name and its resource group.
@@ -64,7 +61,6 @@ public interface DnsZones extends
      * @param zoneName the name of the zone
      * @param eTagValue the ETag value to set on IfMatch header for concurrency protection
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     void deleteByResourceGroupName(String resourceGroupName, String zoneName, String eTagValue);
     /**
      * Deletes a resource from Azure, identifying it by its resource ID.
@@ -72,6 +68,5 @@ public interface DnsZones extends
      * @param id the resource ID of the resource to delete
      * @param eTagValue the ETag value to set on IfMatch header for concurrency protection
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     void deleteById(String id, String eTagValue);
 }

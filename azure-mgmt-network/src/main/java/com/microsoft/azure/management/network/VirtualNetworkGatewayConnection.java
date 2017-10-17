@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.network.implementation.VirtualNetworkGatewayConnectionInner;
@@ -22,7 +23,7 @@ import java.util.Collection;
  * Client-side representation of Virtual Network Gateway Connection object, associated with Virtual Network Gateway.
  */
 @Fluent
-@Beta
+@Beta(SinceVersion.V1_3_0)
 public interface VirtualNetworkGatewayConnection extends
         IndependentChildResource<NetworkManager, VirtualNetworkGatewayConnectionInner>,
         Refreshable<VirtualNetworkGatewayConnection>,

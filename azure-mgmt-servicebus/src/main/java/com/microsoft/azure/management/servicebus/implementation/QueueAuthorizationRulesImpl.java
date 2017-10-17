@@ -106,6 +106,9 @@ class QueueAuthorizationRulesImpl
 
     @Override
     protected QueueAuthorizationRuleImpl wrapModel(SharedAccessAuthorizationRuleInner inner) {
+        if (inner == null) {
+            return null;
+        }
         return new QueueAuthorizationRuleImpl(this.resourceGroupName,
                 this.namespaceName,
                 this.queueName,

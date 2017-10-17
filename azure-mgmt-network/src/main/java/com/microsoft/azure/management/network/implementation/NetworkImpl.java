@@ -178,6 +178,20 @@ class NetworkImpl
         return new SubnetImpl(inner, this);
     }
 
+    @Override
+    public NetworkImpl withoutAddressSpace(String cidr) {
+        if (cidr == null) {
+            // Skip
+        } else if (this.inner().addressSpace() == null) {
+            // Skip
+        } else if (this.inner().addressSpace().addressPrefixes() == null) {
+            // Skip
+        } else {
+            this.inner().addressSpace().addressPrefixes().remove(cidr);
+        }
+        return this;
+    }
+
     // Getters
 
     @Override

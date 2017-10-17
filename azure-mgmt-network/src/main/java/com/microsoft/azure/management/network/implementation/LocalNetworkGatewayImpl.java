@@ -97,7 +97,7 @@ class LocalNetworkGatewayImpl
     }
 
     @Override
-    public LocalNetworkGatewayImpl disableBgp() {
+    public LocalNetworkGatewayImpl withoutBgp() {
         inner().withBgpSettings(null);
         return this;
     }
