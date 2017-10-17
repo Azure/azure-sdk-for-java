@@ -51,6 +51,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         simpleMapper = initializeObjectMapper(new ObjectMapper());
         xmlMapper = initializeObjectMapper(new XmlMapper());
         xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+        xmlMapper.setDefaultUseWrapper(false);
         mapper = initializeObjectMapper(new ObjectMapper())
                 .registerModule(FlatteningSerializer.getModule(simpleMapper()))
                 .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
