@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.compute;
 
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.compute.implementation.ComputeManager;
 import com.microsoft.azure.management.compute.implementation.VirtualMachineScaleSetsInner;
@@ -63,7 +62,6 @@ public interface VirtualMachineScaleSets extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable deallocateAsync(String groupName, String name);
 
     /**
@@ -74,7 +72,6 @@ public interface VirtualMachineScaleSets extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> deallocateAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -95,7 +92,6 @@ public interface VirtualMachineScaleSets extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable powerOffAsync(String groupName, String name);
 
     /**
@@ -106,7 +102,6 @@ public interface VirtualMachineScaleSets extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> powerOffAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -127,7 +122,6 @@ public interface VirtualMachineScaleSets extends
      * @param name the virtual machine scale set name
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable restartAsync(String groupName, String name);
 
     /**
@@ -138,7 +132,6 @@ public interface VirtualMachineScaleSets extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> restartAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -159,7 +152,6 @@ public interface VirtualMachineScaleSets extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable startAsync(String groupName, String name);
 
     /**
@@ -170,7 +162,6 @@ public interface VirtualMachineScaleSets extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> startAsync(String groupName, String name, ServiceCallback<Void> callback);
 
     /**
@@ -192,7 +183,6 @@ public interface VirtualMachineScaleSets extends
      *
      * @return a representation of the deferred computation of this call
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Completable reimageAsync(String groupName, String name);
 
     /**
@@ -203,6 +193,5 @@ public interface VirtualMachineScaleSets extends
      * @param callback the callback to call on success or failure
      * @return a handle to cancel the request
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     ServiceFuture<Void> reimageAsync(String groupName, String name, ServiceCallback<Void> callback);
 }

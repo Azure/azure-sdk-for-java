@@ -7,8 +7,6 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasManager;
@@ -25,9 +23,8 @@ public interface NetworkInterfaceBase extends
     HasInner<NetworkInterfaceInner> {
 
     /**
-     * @return true if accelerated networkin is enabled for this network interface
+     * @return true if accelerated networking is enabled for this network interface
      */
-    @Beta(SinceVersion.V1_2_0)
     boolean isAcceleratedNetworkingEnabled();
 
     /**

@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.trafficmanager;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.ExternalChildResource;
@@ -55,7 +54,6 @@ public interface TrafficManagerEndpoint extends
     /**
      * @return the geographic location codes indicating the locations to which traffic will be distributed.
      */
-    @Beta(Beta.SinceVersion.V1_2_0)
     Set<String> geographicLocationCodes();
 
     /**
@@ -240,7 +238,6 @@ public interface TrafficManagerEndpoint extends
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        @Beta(Beta.SinceVersion.V1_2_0)
         interface WithGeographicLocation<ParentT> {
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
@@ -249,7 +246,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocation the geographic location
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT>  withGeographicLocation(GeographicLocation geographicLocation);
 
             /**
@@ -259,7 +255,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocations the geographic locations
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
@@ -268,7 +263,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT>  withGeographicLocation(String geographicLocationCode);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
@@ -277,7 +271,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocationCodes the geographic location codes
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT> withGeographicLocations(Collection<String> geographicLocationCodes);
         }
 
@@ -493,7 +486,6 @@ public interface TrafficManagerEndpoint extends
          *
          * @param <ParentT> the return type of {@link WithAttach#attach()}
          */
-        @Beta(Beta.SinceVersion.V1_2_0)
         interface WithGeographicLocation<ParentT> {
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
@@ -502,7 +494,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocation the geographic location
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT>  withGeographicLocation(GeographicLocation geographicLocation);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
@@ -511,7 +502,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocations the geographic locations
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT> withGeographicLocations(List<GeographicLocation> geographicLocations);
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
@@ -520,7 +510,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT>  withGeographicLocation(String geographicLocationCode);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
@@ -529,7 +518,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocationCodes the geographic location codes
              * @return the next stage of the definition
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             WithAttach<ParentT> withGeographicLocations(Collection<String> geographicLocationCodes);
         }
 
@@ -699,7 +687,6 @@ public interface TrafficManagerEndpoint extends
         /**
          * The stage of the traffic manager update definition allowing to specify the geographic region.
          */
-        @Beta(Beta.SinceVersion.V1_2_0)
         interface WithGeographicLocation {
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
@@ -708,7 +695,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocation the geographic location
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withGeographicLocation(GeographicLocation geographicLocation);
             /**
              * Specifies the list of geographic location for the endpoint that will be used when the parent profile is
@@ -717,7 +703,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocations the geographic locations
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withGeographicLocations(List<GeographicLocation> geographicLocations);
             /**
              * Specifies the geographic location to be removed from the endpoint's geographic location entries.
@@ -725,7 +710,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocation the geographic location
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutGeographicLocation(GeographicLocation geographicLocation);
             /**
              * Specifies the geographic location for the endpoint that will be used when the parent profile is configured
@@ -734,7 +718,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withGeographicLocation(String geographicLocationCode);
 
             /**
@@ -744,7 +727,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocationCodes the geographic location codes
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withGeographicLocations(Collection<String> geographicLocationCodes);
             /**
              * Specifies the geographic location to be removed from the endpoint's geographic location entries.
@@ -752,7 +734,6 @@ public interface TrafficManagerEndpoint extends
              * @param geographicLocationCode the geographic location code
              * @return the next stage of the update
              */
-            @Beta(Beta.SinceVersion.V1_2_0)
             Update withoutGeographicLocation(String geographicLocationCode);
         }
 

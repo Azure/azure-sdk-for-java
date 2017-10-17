@@ -25,6 +25,7 @@ import java.util.List;
 @LangDefinition
 public class ConnectivityCheckImpl extends ExecutableImpl<ConnectivityCheck>
         implements ConnectivityCheck, ConnectivityCheck.Definition {
+
     private final NetworkWatcherImpl parent;
     private ConnectivityParametersInner parameters = new ConnectivityParametersInner();
     private ConnectivityInformationInner result;

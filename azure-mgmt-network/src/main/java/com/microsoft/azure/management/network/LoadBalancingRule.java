@@ -7,9 +7,7 @@ package com.microsoft.azure.management.network;
 
 import java.util.Collection;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.implementation.LoadBalancingRuleInner;
 import com.microsoft.azure.management.network.model.HasBackendPort;
 import com.microsoft.azure.management.network.model.HasFloatingIP;
@@ -26,7 +24,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * A client-side representation of an HTTP load balancing rule.
  */
 @Fluent()
-@Beta
 public interface LoadBalancingRule extends
     HasInner<LoadBalancingRuleInner>,
     ChildResource<LoadBalancer>,
@@ -137,7 +134,6 @@ public interface LoadBalancingRule extends
              * @param vms existing virtual machines
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             WithBackendPort<ReturnT> toExistingVirtualMachines(HasNetworkInterfaces...vms);
 
             /**
@@ -154,7 +150,6 @@ public interface LoadBalancingRule extends
              * @param vms existing virtual machines
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             WithBackendPort<ReturnT> toExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 
@@ -405,7 +400,6 @@ public interface LoadBalancingRule extends
              * @param vms existing virtual machines
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             WithBackendPort<ReturnT> toExistingVirtualMachines(HasNetworkInterfaces...vms);
 
             /**
@@ -422,7 +416,6 @@ public interface LoadBalancingRule extends
              * @param vms existing virtual machines
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             WithBackendPort<ReturnT> toExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 

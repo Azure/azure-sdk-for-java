@@ -7,7 +7,6 @@ package com.microsoft.azure.management.network;
 
 import java.util.Map;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.FrontendIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasLoadBalancingRules;
@@ -18,7 +17,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * An client-side representation of a load balancer frontend.
  */
 @Fluent()
-@Beta
 public interface LoadBalancerFrontend extends
     HasInner<FrontendIPConfigurationInner>,
     ChildResource<LoadBalancer>,

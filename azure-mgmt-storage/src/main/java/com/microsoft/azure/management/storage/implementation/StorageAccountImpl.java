@@ -223,16 +223,6 @@ class StorageAccountImpl
     }
 
     @Override
-    public StorageAccountImpl withEncryption(Encryption encryption) {
-        if (isInCreateMode()) {
-            createParameters.withEncryption(encryption);
-        } else {
-            updateParameters.withEncryption(encryption);
-        }
-        return this;
-    }
-
-    @Override
     public StorageAccountImpl withEncryption() {
         Encryption encryption;
         if (this.inner().encryption() != null) {
