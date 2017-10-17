@@ -10,6 +10,7 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Provides access to deleting a resource from Azure, identifying it by its resource ID.
@@ -43,5 +44,5 @@ public interface SupportsBeginDeletingByName {
      * @param name the name the resource to delete
      * @return a representation of the deferred computation of this call
      */
-    Observable<Void> beginDeleteByNameAsync(String name);
+    Single<Void> beginDeleteByNameAsync(String name);
 }

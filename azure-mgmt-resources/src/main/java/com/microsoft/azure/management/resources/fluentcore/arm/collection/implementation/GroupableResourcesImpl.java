@@ -19,6 +19,7 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -65,16 +66,12 @@ public abstract class GroupableResourcesImpl<
 
     @Override
     public T getById(String id) {
-        return getByIdAsync(id).toBlocking().last();
+        return getByIdAsync(id).toBlocking().value();
     }
 
     @Override
-    public final Observable<T> getByIdAsync(String id) {
+    public final Single<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
-
-        if (resourceId == null) {
-            return null;
-        }
 
         return getByResourceGroupAsync(resourceId.resourceGroupName(), resourceId.name());
     }
@@ -91,7 +88,7 @@ public abstract class GroupableResourcesImpl<
 
     @Override
     public final ServiceFuture<Void> deleteByResourceGroupAsync(String groupName, String name, ServiceCallback<Void> callback) {
-        return ServiceFuture.fromBody(deleteByResourceGroupAsync(groupName, name).andThen(Observable.<Void>just(null)), callback);
+        return ServiceFuture.fromBody(deleteByResourceGroupAsync(groupName, name), callback);
     }
 
     @Override
@@ -106,11 +103,11 @@ public abstract class GroupableResourcesImpl<
 
     @Override
     public T getByResourceGroup(String resourceGroupName, String name) {
-        return getByResourceGroupAsync(resourceGroupName, name).toBlocking().last();
+        return getByResourceGroupAsync(resourceGroupName, name).toBlocking().value();
     }
 
     @Override
-    public Observable<T> getByResourceGroupAsync(String resourceGroupName, String name) {
+    public Single<T> getByResourceGroupAsync(String resourceGroupName, String name) {
         return this.getInnerAsync(resourceGroupName, name).map(new Func1<InnerT, T>() {
             @Override
             public T call(InnerT innerT) {
@@ -124,7 +121,7 @@ public abstract class GroupableResourcesImpl<
         return ServiceFuture.fromBody(getByResourceGroupAsync(resourceGroupName, name), callback);
     }
 
-    protected abstract Observable<InnerT> getInnerAsync(String resourceGroupName, String name);
+    protected abstract Single<InnerT> getInnerAsync(String resourceGroupName, String name);
 
     protected abstract Completable deleteInnerAsync(String resourceGroupName, String name);
 }

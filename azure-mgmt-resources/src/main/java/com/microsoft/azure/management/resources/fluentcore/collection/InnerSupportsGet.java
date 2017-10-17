@@ -6,9 +6,10 @@
 
 package com.microsoft.azure.management.resources.fluentcore.collection;
 
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
-import rx.Observable;
+import rx.Single;
 
 
 /**
@@ -37,7 +38,7 @@ public interface InnerSupportsGet<InnerT> {
      *
      * @return Observable to specific resource.
      */
-    Observable<InnerT> getByResourceGroupAsync(String resourceGroupName, String resourceName);
+    Single<InnerT> getByResourceGroupAsync(String resourceGroupName, String resourceName);
 
     /**
      * Returns the specific resource asynchronously.

@@ -14,7 +14,7 @@ import com.microsoft.azure.management.storage.StorageAccount;
 import com.microsoft.azure.management.storage.StorageAccounts;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
-import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -36,11 +36,11 @@ class StorageAccountsImpl
 
     @Override
     public CheckNameAvailabilityResult checkNameAvailability(String name) {
-        return this.checkNameAvailabilityAsync(name).toBlocking().last();
+        return this.checkNameAvailabilityAsync(name).toBlocking().value();
     }
 
     @Override
-    public Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
+    public Single<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
         return this.inner().checkNameAvailabilityAsync(name).map(new Func1<CheckNameAvailabilityResultInner, CheckNameAvailabilityResult>() {
             @Override
             public CheckNameAvailabilityResult call(CheckNameAvailabilityResultInner checkNameAvailabilityResultInner) {

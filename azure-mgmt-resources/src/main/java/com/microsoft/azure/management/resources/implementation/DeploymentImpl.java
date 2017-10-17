@@ -27,6 +27,7 @@ import com.microsoft.rest.ServiceFuture;
 import org.joda.time.DateTime;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 import java.io.IOException;
@@ -179,11 +180,11 @@ public final class DeploymentImpl extends
 
     @Override
     public DeploymentExportResult exportTemplate() {
-        return this.exportTemplateAsync().toBlocking().last();
+        return this.exportTemplateAsync().toBlocking().value();
     }
 
     @Override
-    public Observable<DeploymentExportResult> exportTemplateAsync() {
+    public Single<DeploymentExportResult> exportTemplateAsync() {
         return this.manager().inner().deployments().exportTemplateAsync(resourceGroupName(), name()).map(new Func1<DeploymentExportResultInner, DeploymentExportResult>() {
             @Override
             public DeploymentExportResult call(DeploymentExportResultInner deploymentExportResultInner) {
@@ -314,7 +315,8 @@ public final class DeploymentImpl extends
         inner.properties().withParameters(parameters());
         inner.properties().withParametersLink(parametersLink());
         return this.manager().inner().deployments().createOrUpdateAsync(resourceGroupName(), name(), inner)
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                .toObservable();
     }
 
     @Override
@@ -338,7 +340,7 @@ public final class DeploymentImpl extends
     }
 
     @Override
-    protected Observable<DeploymentExtendedInner> getInnerAsync() {
+    protected Single<DeploymentExtendedInner> getInnerAsync() {
         return this.manager().inner().deployments().getByResourceGroupAsync(resourceGroupName(), name());
     }
 

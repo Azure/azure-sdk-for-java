@@ -19,7 +19,7 @@ import com.microsoft.rest.ServiceFuture;
 public abstract class SupportsGettingByIdImpl<T> implements SupportsGettingById<T> {
     @Override
     public T getById(String id) {
-        return getByIdAsync(id).toBlocking().last();
+        return getByIdAsync(id).toBlocking().value();
     }
 
     @Override

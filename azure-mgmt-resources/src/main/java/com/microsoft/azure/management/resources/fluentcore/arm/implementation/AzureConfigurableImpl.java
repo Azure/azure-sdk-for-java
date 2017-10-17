@@ -7,16 +7,13 @@
 package com.microsoft.azure.management.resources.fluentcore.arm.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingPolicy;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
-import okhttp3.Authenticator;
-import okhttp3.Interceptor;
+import com.microsoft.rest.policy.RequestPolicy;
 
 import java.net.Proxy;
 import java.util.concurrent.Executor;
@@ -34,8 +31,7 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
 
     protected AzureConfigurableImpl() {
         this.restClientBuilder = new RestClient.Builder()
-            .withSerializerAdapter(new AzureJacksonAdapter())
-            .withResponseBuilderFactory(new AzureResponseBuilder.Factory());
+            .withSerializerAdapter(new AzureJacksonAdapter());
     }
 
     @SuppressWarnings("unchecked")
@@ -47,8 +43,8 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
 
     @SuppressWarnings("unchecked")
     @Override
-    public T withInterceptor(Interceptor interceptor) {
-        this.restClientBuilder = this.restClientBuilder.withInterceptor(interceptor);
+    public T withInterceptor(RequestPolicy.Factory factory) {
+        this.restClientBuilder = this.restClientBuilder.addCustomPolicy(factory);
         return (T) this;
     }
 
@@ -83,7 +79,8 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
     @SuppressWarnings("unchecked")
     @Override
     public T withCallbackExecutor(Executor executor) {
-        this.restClientBuilder = restClientBuilder.withCallbackExecutor(executor);
+        // FIXME
+//        this.restClientBuilder = restClientBuilder.withCallbackExecutor(executor);
         return (T) this;
     }
 
@@ -96,8 +93,9 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
 
     @SuppressWarnings("unchecked")
     @Override
-    public T withProxyAuthenticator(Authenticator proxyAuthenticator) {
-        this.restClientBuilder = restClientBuilder.withProxyAuthenticator(proxyAuthenticator);
+    public T withProxyAuthenticator(Object proxyAuthenticator) {
+        // FIXME
+//        this.restClientBuilder = restClientBuilder.withProxyAuthenticator(proxyAuthenticator);
         return (T) this;
     }
 
@@ -105,11 +103,12 @@ public class AzureConfigurableImpl<T extends AzureConfigurable<T>>
         RestClient client =  restClientBuilder
                 .withBaseUrl(credentials.environment(), endpoint)
                 .withCredentials(credentials)
-                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                // FIXME
+//                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
+                .addCustomPolicy(new ResourceManagerThrottlingPolicy.Factory())
                 .build();
-        if (client.httpClient().proxy() != null) {
-            credentials.withProxy(client.httpClient().proxy());
+        if (client.proxy() != null) {
+            credentials.withProxy(client.proxy());
         }
         return client;
     }

@@ -16,6 +16,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -78,11 +79,11 @@ final class PolicyAssignmentsImpl
 
     @Override
     public PolicyAssignment getById(String id) {
-        return getByIdAsync(id).toBlocking().last();
+        return getByIdAsync(id).toBlocking().value();
     }
 
     @Override
-    public Observable<PolicyAssignment> getByIdAsync(String id) {
+    public Single<PolicyAssignment> getByIdAsync(String id) {
         return client.getByIdAsync(id).map(new Func1<PolicyAssignmentInner, PolicyAssignment>() {
             @Override
             public PolicyAssignment call(PolicyAssignmentInner policyAssignmentInner) {

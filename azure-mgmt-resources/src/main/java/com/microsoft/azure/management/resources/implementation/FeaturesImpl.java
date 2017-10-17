@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -34,11 +35,11 @@ final class FeaturesImpl
 
     @Override
     public Feature register(String resourceProviderName, String featureName) {
-        return this.registerAsync(resourceProviderName, featureName).toBlocking().last();
+        return this.registerAsync(resourceProviderName, featureName).toBlocking().value();
     }
 
     @Override
-    public Observable<Feature> registerAsync(String resourceProviderName, String featureName) {
+    public Single<Feature> registerAsync(String resourceProviderName, String featureName) {
         return client.registerAsync(resourceProviderName, featureName).map(new Func1<FeatureResultInner, Feature>() {
             @Override
             public Feature call(FeatureResultInner featureResultInner) {

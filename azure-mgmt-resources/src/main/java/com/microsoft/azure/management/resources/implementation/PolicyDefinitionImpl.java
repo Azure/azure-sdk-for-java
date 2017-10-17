@@ -11,6 +11,7 @@ import com.microsoft.azure.management.resources.PolicyDefinition;
 import com.microsoft.azure.management.resources.PolicyType;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import rx.Single;
 
 import java.io.IOException;
 
@@ -56,7 +57,7 @@ final class PolicyDefinitionImpl extends
     }
 
     @Override
-    protected Observable<PolicyDefinitionInner> getInnerAsync() {
+    protected Single<PolicyDefinitionInner> getInnerAsync() {
         return innerCollection.getAsync(name());
     }
 
@@ -97,7 +98,8 @@ final class PolicyDefinitionImpl extends
     @Override
     public Observable<PolicyDefinition> createResourceAsync() {
         return innerCollection.createOrUpdateAsync(name(), inner())
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                .toObservable();
     }
 
     @Override

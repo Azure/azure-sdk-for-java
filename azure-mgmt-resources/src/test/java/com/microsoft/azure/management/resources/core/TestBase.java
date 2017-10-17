@@ -7,15 +7,14 @@
 package com.microsoft.azure.management.resources.core;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.resources.core.InterceptorManager.PlaybackClient;
+import com.microsoft.azure.management.resources.core.InterceptorManager.PlaybackClientFactory;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingPolicy;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.LogLevel;
 import com.microsoft.rest.RestClient;
-import com.microsoft.rest.interceptors.LoggingInterceptor;
 import org.junit.*;
 import org.junit.rules.TestName;
 
@@ -150,12 +149,10 @@ public abstract class TestBase {
             restClient = buildRestClient(new RestClient.Builder()
                     .withBaseUrl(playbackUri + "/")
                     .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                     .withCredentials(credentials)
-                    .withLogLevel(LogLevel.NONE)
-                    .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
-                    .withNetworkInterceptor(interceptorManager.initInterceptor())
-                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
+                    .addCustomPolicy(new ResourceManagerThrottlingPolicy.Factory())
+                    .withHttpClientFactory(interceptorManager.initPlaybackFactory())
                     ,true);
 
             defaultSubscription = ZERO_SUBSCRIPTION;
@@ -173,14 +170,13 @@ public abstract class TestBase {
             restClient = buildRestClient(new RestClient.Builder()
                     .withBaseUrl(AzureEnvironment.AZURE, AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                     .withSerializerAdapter(new AzureJacksonAdapter())
-                    .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                    .withInterceptor(new ProviderRegistrationInterceptor(credentials))
+                    // FIXME
+//                    .withInterceptor(new ProviderRegistrationInterceptor(credentials))
                     .withCredentials(credentials)
-                    .withLogLevel(LogLevel.NONE)
+                    .withLogLevel(LogLevel.BODY_AND_HEADERS)
                     .withReadTimeout(3, TimeUnit.MINUTES)
-                    .withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
-                    .withNetworkInterceptor(interceptorManager.initInterceptor())
-                    .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                    .addCustomPolicy(interceptorManager.initRecordPolicy())
+                    .addCustomPolicy(new ResourceManagerThrottlingPolicy.Factory())
                     ,false);
 
             defaultSubscription = credentials.defaultSubscriptionId();

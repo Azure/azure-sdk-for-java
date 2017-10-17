@@ -17,6 +17,7 @@ import com.microsoft.rest.ServiceFuture;
 import org.junit.Assert;
 import org.junit.Test;
 import rx.Observable;
+import rx.Single;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -160,7 +161,7 @@ public class GroupPagedListTests {
             }
 
             @Override
-            public Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
+            public Single<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
                 return null;
             }
 
@@ -176,12 +177,12 @@ public class GroupPagedListTests {
 
             @Override
             public ResourceGroup refresh() {
-                return refreshAsync().toBlocking().last();
+                return refreshAsync().toBlocking().value();
             }
 
             @Override
-            public Observable<ResourceGroup> refreshAsync() {
-                return Observable.just(null);
+            public Single<ResourceGroup> refreshAsync() {
+                return Single.just(null);
             }
 
             @Override

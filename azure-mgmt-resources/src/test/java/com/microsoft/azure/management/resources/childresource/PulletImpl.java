@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.childresource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.ExternalChildResourceImpl;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.schedulers.Schedulers;
 
 class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, Object>
@@ -83,8 +84,8 @@ class PulletImpl extends ExternalChildResourceImpl<Pullet, Object, ChickenImpl, 
     }
 
     @Override
-    protected Observable<Object> getInnerAsync() {
-        return Observable.just(null);
+    protected Single<Object> getInnerAsync() {
+        return Single.just(null);
     }
 
     @Override

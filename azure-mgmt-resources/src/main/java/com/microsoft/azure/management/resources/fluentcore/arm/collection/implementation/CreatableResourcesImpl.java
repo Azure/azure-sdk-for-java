@@ -15,6 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceCallback;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 import java.util.ArrayList;
@@ -45,14 +46,14 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     public final CreatedResources<T> create(Creatable<T> ... creatables) {
         return createAsyncNonStream(creatables)
                 .toBlocking()
-                .single();
+                .value();
     }
 
     @Override
     public final CreatedResources<T> create(List<Creatable<T>> creatables) {
         return createAsyncNonStream(creatables)
                 .toBlocking()
-                .single();
+                .value();
     }
 
     @Override
@@ -82,7 +83,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     }
 
 
-    private Observable<CreatedResources<T>> createAsyncNonStream(List<Creatable<T>> creatables) {
+    private Single<CreatedResources<T>> createAsyncNonStream(List<Creatable<T>> creatables) {
         return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables))
                 .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
                     @Override
@@ -93,7 +94,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
     }
 
     @SuppressWarnings("unchecked")
-    private Observable<CreatedResources<T>> createAsyncNonStream(Creatable<T>... creatables) {
+    private Single<CreatedResources<T>> createAsyncNonStream(Creatable<T>... creatables) {
         return Utils.<CreatableUpdatableResourcesRoot<T>>rootResource(this.createAsync(creatables))
                 .map(new Func1<CreatableUpdatableResourcesRoot<T>, CreatedResources<T>>() {
                     @Override
@@ -224,7 +225,7 @@ public abstract class CreatableResourcesImpl<T extends Indexable, ImplT extends 
         // but a dummy resource representing parent of a batch of creatable Azure
         // resources.
         @Override
-        protected Observable<Object> getInnerAsync() {
+        protected Single<Object> getInnerAsync() {
             return null;
         }
     }

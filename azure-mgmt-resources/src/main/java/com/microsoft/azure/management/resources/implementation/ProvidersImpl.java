@@ -13,6 +13,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.implem
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 /**
@@ -34,11 +35,11 @@ final class ProvidersImpl
 
     @Override
     public Provider unregister(String resourceProviderNamespace) {
-        return this.unregisterAsync(resourceProviderNamespace).toBlocking().last();
+        return this.unregisterAsync(resourceProviderNamespace).toBlocking().value();
     }
 
     @Override
-    public Observable<Provider> unregisterAsync(String resourceProviderNamespace) {
+    public Single<Provider> unregisterAsync(String resourceProviderNamespace) {
         return client.unregisterAsync(resourceProviderNamespace).map(new Func1<ProviderInner, Provider>() {
             @Override
             public Provider call(ProviderInner providerInner) {
@@ -54,11 +55,11 @@ final class ProvidersImpl
 
     @Override
     public Provider register(String resourceProviderNamespace) {
-        return this.registerAsync(resourceProviderNamespace).toBlocking().last();
+        return this.registerAsync(resourceProviderNamespace).toBlocking().value();
     }
 
     @Override
-    public Observable<Provider> registerAsync(String resourceProviderNamespace) {
+    public Single<Provider> registerAsync(String resourceProviderNamespace) {
         return client.registerAsync(resourceProviderNamespace).map(new Func1<ProviderInner, Provider>() {
             @Override
             public Provider call(ProviderInner providerInner) {
@@ -73,7 +74,7 @@ final class ProvidersImpl
     }
 
     @Override
-    public Observable<Provider> getByNameAsync(String name) {
+    public Single<Provider> getByNameAsync(String name) {
         return client.getAsync(name)
                 .map(new Func1<ProviderInner, Provider>() {
                     @Override

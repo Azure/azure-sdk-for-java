@@ -7,7 +7,6 @@
 package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.AzureEnvironment;
-import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.resources.Deployments;
 import com.microsoft.azure.management.resources.Features;
@@ -22,8 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.ManagerBase;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingPolicy;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
@@ -55,9 +53,9 @@ public final class ResourceManager extends ManagerBase implements HasInner<Resou
                 .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
                 .withCredentials(credentials)
                 .withSerializerAdapter(new AzureJacksonAdapter())
-                .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                // FIXME: reimplement interceptors
+//                .withInterceptor(new ProviderRegistrationInterceptor(credentials))
+                .addCustomPolicy(new ResourceManagerThrottlingPolicy.Factory())
                 .build());
     }
 

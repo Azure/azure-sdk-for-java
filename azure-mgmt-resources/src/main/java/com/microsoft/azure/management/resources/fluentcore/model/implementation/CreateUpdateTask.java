@@ -9,6 +9,7 @@ package com.microsoft.azure.management.resources.fluentcore.model.implementation
 import com.microsoft.azure.management.resources.fluentcore.dag.TaskItem;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Action1;
 
 /**

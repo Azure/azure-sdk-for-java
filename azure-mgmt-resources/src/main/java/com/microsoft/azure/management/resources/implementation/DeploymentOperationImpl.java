@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.DeploymentOperation;
 import com.microsoft.azure.management.resources.TargetResource;
 import org.joda.time.DateTime;
 import rx.Observable;
+import rx.Single;
 
 /**
  * The implementation of {@link DeploymentOperation}.
@@ -78,7 +79,7 @@ final class DeploymentOperationImpl extends
     }
 
     @Override
-    protected Observable<DeploymentOperationInner> getInnerAsync() {
+    protected Single<DeploymentOperationInner> getInnerAsync() {
         return client.getAsync(resourceGroupName, deploymentName, operationId());
     }
 }

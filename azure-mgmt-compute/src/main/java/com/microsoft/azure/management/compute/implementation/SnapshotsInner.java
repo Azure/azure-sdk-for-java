@@ -11,6 +11,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -37,6 +38,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -499,7 +501,7 @@ public class SnapshotsInner implements InnerSupportsGet<SnapshotInner>, InnerSup
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SnapshotInner object
      */
-    public Observable<SnapshotInner> getByResourceGroupAsync(String resourceGroupName, String snapshotName) {
+    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String snapshotName) {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, snapshotName).map(new Func1<ServiceResponse<SnapshotInner>, SnapshotInner>() {
             @Override
             public SnapshotInner call(ServiceResponse<SnapshotInner> response) {
@@ -583,7 +585,7 @@ public class SnapshotsInner implements InnerSupportsGet<SnapshotInner>, InnerSup
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String snapshotName) {
+    public Single<Void> deleteAsync(String resourceGroupName, String snapshotName) {
         return deleteWithServiceResponseAsync(resourceGroupName, snapshotName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
             @Override
             public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {

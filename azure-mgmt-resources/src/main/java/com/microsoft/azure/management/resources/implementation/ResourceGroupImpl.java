@@ -14,6 +14,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 import java.util.Arrays;
@@ -79,11 +80,11 @@ class ResourceGroupImpl extends
 
     @Override
     public ResourceGroupExportResult exportTemplate(ResourceGroupExportTemplateOptions options) {
-        return this.exportTemplateAsync(options).toBlocking().last();
+        return this.exportTemplateAsync(options).toBlocking().value();
     }
 
     @Override
-    public Observable<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
+    public Single<ResourceGroupExportResult> exportTemplateAsync(ResourceGroupExportTemplateOptions options) {
         ExportTemplateRequestInner inner = new ExportTemplateRequestInner()
                 .withResources(Arrays.asList("*"))
                 .withOptions(options.toString());
@@ -138,7 +139,8 @@ class ResourceGroupImpl extends
         params.withLocation(this.inner().location());
         params.withTags(this.inner().tags());
         return client.createOrUpdateAsync(this.name(), params)
-                .map(innerToFluentMap(this));
+                .map(innerToFluentMap(this))
+                .toObservable();
     }
 
     @Override
@@ -152,7 +154,7 @@ class ResourceGroupImpl extends
     }
 
     @Override
-    protected Observable<ResourceGroupInner> getInnerAsync() {
+    protected Single<ResourceGroupInner> getInnerAsync() {
         return client.getAsync(this.key);
     }
 }

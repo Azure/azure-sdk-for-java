@@ -18,6 +18,7 @@ import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 
 import java.util.List;
@@ -81,7 +82,7 @@ final class GenericResourcesImpl
 
     @Override
     public boolean checkExistenceById(String id) {
-        String apiVersion = getApiVersionFromId(id).toBlocking().single();
+        String apiVersion = getApiVersionFromId(id).toBlocking().value();
         return this.inner().checkExistenceById(id, apiVersion);
     }
 
@@ -198,7 +199,7 @@ final class GenericResourcesImpl
     }
 
     @Override
-    public Observable<GenericResourceInner> getInnerAsync(String groupName, String name) {
+    public Single<GenericResourceInner> getInnerAsync(String groupName, String name) {
         // Not needed, can't be supported, provided only to satisfy GroupableResourceImpl's requirements
         throw new UnsupportedOperationException("Get just by resource group and name is not supported. Please use other overloads.");
     }
@@ -213,15 +214,15 @@ final class GenericResourcesImpl
     public Completable deleteByIdAsync(final String id) {
        final ResourcesInner inner = this.inner();
         return getApiVersionFromId(id)
-                .flatMap(new Func1<String, Observable<Void>>() {
+                .flatMap(new Func1<String, Single<Void>>() {
                     @Override
-                    public Observable<Void> call(String apiVersion) {
+                    public Single<Void> call(String apiVersion) {
                         return inner.deleteByIdAsync(id, apiVersion);
                     }
                 }).toCompletable();
     }
 
-    private Observable<String> getApiVersionFromId(final String id) {
+    private Single<String> getApiVersionFromId(final String id) {
         return this.manager().providers().getByNameAsync(ResourceUtils.resourceProviderFromResourceId(id))
                 .map(new Func1<Provider, String>() {
                     @Override

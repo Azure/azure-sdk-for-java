@@ -12,6 +12,7 @@ import com.microsoft.azure.management.compute.VirtualMachineInstanceView;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -38,6 +39,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -560,7 +562,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<OperationStatusResponseInner> deleteAsync(String resourceGroupName, String vmName) {
+    public Single<Void> deleteAsync(String resourceGroupName, String vmName) {
         return deleteWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<OperationStatusResponseInner>, OperationStatusResponseInner>() {
             @Override
             public OperationStatusResponseInner call(ServiceResponse<OperationStatusResponseInner> response) {
@@ -713,7 +715,7 @@ public class VirtualMachinesInner implements InnerSupportsGet<VirtualMachineInne
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VirtualMachineInner object
      */
-    public Observable<VirtualMachineInner> getByResourceGroupAsync(String resourceGroupName, String vmName) {
+    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String vmName) {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, vmName).map(new Func1<ServiceResponse<VirtualMachineInner>, VirtualMachineInner>() {
             @Override
             public VirtualMachineInner call(ServiceResponse<VirtualMachineInner> response) {

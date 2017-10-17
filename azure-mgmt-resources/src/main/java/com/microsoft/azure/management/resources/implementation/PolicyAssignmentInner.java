@@ -12,7 +12,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
 /**
- * The policy definition.
+ * The policy assignment.
  */
 @JsonFlatten
 public class PolicyAssignmentInner {

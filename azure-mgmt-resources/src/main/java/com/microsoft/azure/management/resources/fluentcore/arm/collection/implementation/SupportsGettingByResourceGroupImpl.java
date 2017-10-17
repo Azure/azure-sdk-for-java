@@ -12,6 +12,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.collection.Suppor
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import rx.Observable;
+import rx.Single;
 
 /**
  * Provides access to getting a specific Azure resource based on its name and resource group.
@@ -27,7 +28,7 @@ public abstract class SupportsGettingByResourceGroupImpl<T>
             SupportsGettingById<T> {
     @Override
     public T getByResourceGroup(String resourceGroupName, String name) {
-        return this.getByResourceGroupAsync(resourceGroupName, name).toBlocking().last();
+        return this.getByResourceGroupAsync(resourceGroupName, name).toBlocking().value();
     }
 
     @Override
@@ -36,7 +37,7 @@ public abstract class SupportsGettingByResourceGroupImpl<T>
     }
 
     @Override
-    public Observable<T> getByIdAsync(String id) {
+    public Single<T> getByIdAsync(String id) {
         ResourceId resourceId = ResourceId.fromString(id);
         if (resourceId == null) {
             return null;

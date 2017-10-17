@@ -10,39 +10,39 @@ package com.microsoft.azure.management.resources.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
-import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
 import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.rest.annotations.BodyParam;
+import com.microsoft.rest.annotations.DELETE;
+import com.microsoft.rest.annotations.ExpectedResponses;
+import com.microsoft.rest.annotations.GET;
+import com.microsoft.rest.annotations.HeaderParam;
+import com.microsoft.rest.annotations.Headers;
+import com.microsoft.rest.annotations.Host;
+import com.microsoft.rest.annotations.PathParam;
+import com.microsoft.rest.annotations.PUT;
+import com.microsoft.rest.annotations.QueryParam;
+import com.microsoft.rest.annotations.UnexpectedResponseExceptionType;
+import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
-import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import rx.Single;
+import com.microsoft.azure.AzureProxy;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in PolicyAssignments.
  */
 public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignmentInner>, InnerSupportsListing<PolicyAssignmentInner> {
-    /** The Retrofit service to perform REST calls. */
+    /** The RestProxy service to perform REST calls. */
     private PolicyAssignmentsService service;
     /** The service client containing this operation class. */
     private PolicyClientImpl client;
@@ -50,66 +50,90 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     /**
      * Initializes an instance of PolicyAssignmentsInner.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PolicyAssignmentsInner(Retrofit retrofit, PolicyClientImpl client) {
-        this.service = retrofit.create(PolicyAssignmentsService.class);
+    public PolicyAssignmentsInner(PolicyClientImpl client) {
+        this.service = AzureProxy.create(PolicyAssignmentsService.class, client.restClient().baseURL(), client.httpClient(), client.serializerAdapter());
         this.client = client;
     }
 
     /**
      * The interface defining all the services for PolicyAssignments to be
-     * used by Retrofit to perform actually REST calls.
+     * used by RestProxy to perform REST calls.
      */
+    @Host("https://management.azure.com")
     interface PolicyAssignmentsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments delete" })
-        @HTTP(path = "{scope}/providers/Microsoft.Authorization/policyassignments/{policyAssignmentName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path(value = "scope", encoded = true) String scope, @Path("policyAssignmentName") String policyAssignmentName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments delete" })
+        @DELETE("{scope}/providers/Microsoft.Authorization/policyassignments/{policyAssignmentName}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PolicyAssignmentInner> delete(@PathParam(value = "scope", encoded = true) String scope, @PathParam("policyAssignmentName") String policyAssignmentName, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments create" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments create" })
         @PUT("{scope}/providers/Microsoft.Authorization/policyassignments/{policyAssignmentName}")
-        Observable<Response<ResponseBody>> create(@Path(value = "scope", encoded = true) String scope, @Path("policyAssignmentName") String policyAssignmentName, @Body PolicyAssignmentInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PolicyAssignmentInner> create(@PathParam(value = "scope", encoded = true) String scope, @PathParam("policyAssignmentName") String policyAssignmentName, @BodyParam("application/json; charset=utf-8") PolicyAssignmentInner parameters, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments get" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments get" })
         @GET("{scope}/providers/Microsoft.Authorization/policyassignments/{policyAssignmentName}")
-        Observable<Response<ResponseBody>> get(@Path(value = "scope", encoded = true) String scope, @Path("policyAssignmentName") String policyAssignmentName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PolicyAssignmentInner> get(@PathParam(value = "scope", encoded = true) String scope, @PathParam("policyAssignmentName") String policyAssignmentName, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listByResourceGroup" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/policyAssignments")
-        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query(value = "$filter", encoded = true) String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<PolicyAssignmentInner>> listByResourceGroup(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam(value = "$filter", encoded = true) String filter, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listForResource" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listForResource" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/policyassignments")
-        Observable<Response<ResponseBody>> listForResource(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<PolicyAssignmentInner>> listForResource(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments list" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/policyassignments")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<PolicyAssignmentInner>> list(@PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments deleteById" })
-        @HTTP(path = "{policyAssignmentId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteById(@Path(value = "policyAssignmentId", encoded = true) String policyAssignmentId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments deleteById" })
+        @DELETE("{policyAssignmentId}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PolicyAssignmentInner> deleteById(@PathParam(value = "policyAssignmentId", encoded = true) String policyAssignmentId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments createById" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments createById" })
         @PUT("{policyAssignmentId}")
-        Observable<Response<ResponseBody>> createById(@Path(value = "policyAssignmentId", encoded = true) String policyAssignmentId, @Body PolicyAssignmentInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PolicyAssignmentInner> createById(@PathParam(value = "policyAssignmentId", encoded = true) String policyAssignmentId, @BodyParam("application/json; charset=utf-8") PolicyAssignmentInner parameters, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments getById" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments getById" })
         @GET("{policyAssignmentId}")
-        Observable<Response<ResponseBody>> getById(@Path(value = "policyAssignmentId", encoded = true) String policyAssignmentId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PolicyAssignmentInner> getById(@PathParam(value = "policyAssignmentId", encoded = true) String policyAssignmentId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listByResourceGroupNext" })
-        @GET
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listByResourceGroupNext" })
+        @GET("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<PolicyAssignmentInner>> listByResourceGroupNext(@PathParam(value = "nextUrl", encoded = true) String nextUrl, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listForResourceNext" })
-        @GET
-        Observable<Response<ResponseBody>> listForResourceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listForResourceNext" })
+        @GET("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<PolicyAssignmentInner>> listForResourceNext(@PathParam(value = "nextUrl", encoded = true) String nextUrl, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listNext" })
-        @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.resources.PolicyAssignments listNext" })
+        @GET("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<PolicyAssignmentInner>> listNext(@PathParam(value = "nextUrl", encoded = true) String nextUrl, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
     }
 
@@ -124,7 +148,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner delete(String scope, String policyAssignmentName) {
-        return deleteWithServiceResponseAsync(scope, policyAssignmentName).toBlocking().single().body();
+        return deleteAsync(scope, policyAssignmentName).toBlocking().value();
     }
 
     /**
@@ -137,7 +161,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(scope, policyAssignmentName), serviceCallback);
+        return ServiceFuture.fromBody(deleteAsync(scope, policyAssignmentName), serviceCallback);
     }
 
     /**
@@ -148,24 +172,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
-    public Observable<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName) {
-        return deleteWithServiceResponseAsync(scope, policyAssignmentName).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
-            @Override
-            public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes a policy assignment.
-     *
-     * @param scope The scope of the policy assignment.
-     * @param policyAssignmentName The name of the policy assignment to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyAssignmentInner object
-     */
-    public Observable<ServiceResponse<PolicyAssignmentInner>> deleteWithServiceResponseAsync(String scope, String policyAssignmentName) {
+    public Single<PolicyAssignmentInner> deleteAsync(String scope, String policyAssignmentName) {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -175,26 +182,9 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.delete(scope, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyAssignmentInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PolicyAssignmentInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PolicyAssignmentInner> clientResponse = deleteDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.delete(scope, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<PolicyAssignmentInner> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyAssignmentInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyAssignmentInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Creates a policy assignment.
@@ -209,7 +199,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner create(String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
-        return createWithServiceResponseAsync(scope, policyAssignmentName, parameters).toBlocking().single().body();
+        return createAsync(scope, policyAssignmentName, parameters).toBlocking().value();
     }
 
     /**
@@ -224,7 +214,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> createAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(scope, policyAssignmentName, parameters), serviceCallback);
+        return ServiceFuture.fromBody(createAsync(scope, policyAssignmentName, parameters), serviceCallback);
     }
 
     /**
@@ -237,26 +227,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
-    public Observable<PolicyAssignmentInner> createAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
-        return createWithServiceResponseAsync(scope, policyAssignmentName, parameters).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
-            @Override
-            public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a policy assignment.
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group.
-     *
-     * @param scope The scope of the policy assignment.
-     * @param policyAssignmentName The name of the policy assignment.
-     * @param parameters Parameters for the policy assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyAssignmentInner object
-     */
-    public Observable<ServiceResponse<PolicyAssignmentInner>> createWithServiceResponseAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
+    public Single<PolicyAssignmentInner> createAsync(String scope, String policyAssignmentName, PolicyAssignmentInner parameters) {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -270,26 +241,9 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.create(scope, policyAssignmentName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyAssignmentInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PolicyAssignmentInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PolicyAssignmentInner> clientResponse = createDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.create(scope, policyAssignmentName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<PolicyAssignmentInner> createDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyAssignmentInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<PolicyAssignmentInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets a policy assignment.
@@ -302,7 +256,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner get(String scope, String policyAssignmentName) {
-        return getWithServiceResponseAsync(scope, policyAssignmentName).toBlocking().single().body();
+        return getAsync(scope, policyAssignmentName).toBlocking().value();
     }
 
     /**
@@ -315,7 +269,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getWithServiceResponseAsync(scope, policyAssignmentName), serviceCallback);
+        return ServiceFuture.fromBody(getAsync(scope, policyAssignmentName), serviceCallback);
     }
 
     /**
@@ -326,24 +280,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
-    public Observable<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName) {
-        return getWithServiceResponseAsync(scope, policyAssignmentName).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
-            @Override
-            public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets a policy assignment.
-     *
-     * @param scope The scope of the policy assignment.
-     * @param policyAssignmentName The name of the policy assignment to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyAssignmentInner object
-     */
-    public Observable<ServiceResponse<PolicyAssignmentInner>> getWithServiceResponseAsync(String scope, String policyAssignmentName) {
+    public Single<PolicyAssignmentInner> getAsync(String scope, String policyAssignmentName) {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -353,26 +290,9 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.get(scope, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyAssignmentInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PolicyAssignmentInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PolicyAssignmentInner> clientResponse = getDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.get(scope, policyAssignmentName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<PolicyAssignmentInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyAssignmentInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyAssignmentInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets policy assignments for the resource group.
@@ -384,33 +304,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listByResourceGroup(final String resourceGroupName) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.body()) {
+        Page<PolicyAssignmentInner> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().value();
+        return new PagedList<PolicyAssignmentInner>(response) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
-    }
-
-    /**
-     * Gets policy assignments for the resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains policy assignments.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupSinglePageAsync(resourceGroupName),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
     }
 
     /**
@@ -421,32 +321,16 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
-            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
-                @Override
-                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets policy assignments for the resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains policy assignments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
         return listByResourceGroupSinglePageAsync(resourceGroupName)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextAsync(nextPageLink));
                 }
             });
     }
@@ -456,9 +340,9 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyAssignmentInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+    public Single<Page<PolicyAssignmentInner>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -469,16 +353,10 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyAssignmentInner>, Page<PolicyAssignmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyAssignmentInner> call(PageImpl<PolicyAssignmentInner> productPage) {
+                    return productPage;
                 }
             });
     }
@@ -494,11 +372,11 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listByResourceGroup(final String resourceGroupName, final String filter) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.body()) {
+        Page<PolicyAssignmentInner> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter).toBlocking().value();
+        return new PagedList<PolicyAssignmentInner>(response) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -508,58 +386,20 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      *
      * @param resourceGroupName The name of the resource group that contains policy assignments.
      * @param filter The filter to apply on the operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupSinglePageAsync(resourceGroupName, filter),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets policy assignments for the resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains policy assignments.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     * @return the observable to the PagedList<PolicyAssignmentInner> object
      */
     public Observable<Page<PolicyAssignmentInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter)
-            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
-                @Override
-                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets policy assignments for the resource group.
-     *
-     * @param resourceGroupName The name of the resource group that contains policy assignments.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter) {
         return listByResourceGroupSinglePageAsync(resourceGroupName, filter)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextAsync(nextPageLink));
                 }
             });
     }
@@ -567,12 +407,12 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     /**
      * Gets policy assignments for the resource group.
      *
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceGroupName The name of the resource group that contains policy assignments.
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation.
+    PageImpl<PolicyAssignmentInner> * @param resourceGroupName The name of the resource group that contains policy assignments.
+    PageImpl<PolicyAssignmentInner> * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyAssignmentInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter) {
+    public Single<Page<PolicyAssignmentInner>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -582,26 +422,14 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyAssignmentInner>, Page<PolicyAssignmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyAssignmentInner> call(PageImpl<PolicyAssignmentInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignmentInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<PolicyAssignmentInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets policy assignments for a resource.
@@ -617,37 +445,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.body()) {
+        Page<PolicyAssignmentInner> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName).toBlocking().value();
+        return new PagedList<PolicyAssignmentInner>(response) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
-    }
-
-    /**
-     * Gets policy assignments for a resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource path.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource with policy assignments.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
-                    return listForResourceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
     }
 
     /**
@@ -662,36 +466,16 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
-        return listForResourceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
-            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
-                @Override
-                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets policy assignments for a resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource path.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource with policy assignments.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
         return listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listForResourceNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listForResourceNextAsync(nextPageLink));
                 }
             });
     }
@@ -705,9 +489,9 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyAssignmentInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
+    public Single<Page<PolicyAssignmentInner>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -730,16 +514,10 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyAssignmentInner>, Page<PolicyAssignmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForResourceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyAssignmentInner> call(PageImpl<PolicyAssignmentInner> productPage) {
+                    return productPage;
                 }
             });
     }
@@ -759,11 +537,11 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listForResource(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.body()) {
+        Page<PolicyAssignmentInner> response = listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter).toBlocking().value();
+        return new PagedList<PolicyAssignmentInner>(response) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -777,66 +555,20 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @param resourceType The resource type.
      * @param resourceName The name of the resource with policy assignments.
      * @param filter The filter to apply on the operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
-                    return listForResourceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets policy assignments for a resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource path.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource with policy assignments.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     * @return the observable to the PagedList<PolicyAssignmentInner> object
      */
     public Observable<Page<PolicyAssignmentInner>> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
-        return listForResourceWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
-            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
-                @Override
-                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets policy assignments for a resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource path.
-     * @param resourceType The resource type.
-     * @param resourceName The name of the resource with policy assignments.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
         return listForResourceSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listForResourceNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listForResourceNextAsync(nextPageLink));
                 }
             });
     }
@@ -844,16 +576,16 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     /**
      * Gets policy assignments for a resource.
      *
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceProviderNamespace The namespace of the resource provider.
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param parentResourcePath The parent resource path.
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceType The resource type.
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param resourceName The name of the resource with policy assignments.
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation.
+    PageImpl<PolicyAssignmentInner> * @param resourceGroupName The name of the resource group containing the resource. The name is case insensitive.
+    PageImpl<PolicyAssignmentInner> * @param resourceProviderNamespace The namespace of the resource provider.
+    PageImpl<PolicyAssignmentInner> * @param parentResourcePath The parent resource path.
+    PageImpl<PolicyAssignmentInner> * @param resourceType The resource type.
+    PageImpl<PolicyAssignmentInner> * @param resourceName The name of the resource with policy assignments.
+    PageImpl<PolicyAssignmentInner> * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyAssignmentInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
+    public Single<Page<PolicyAssignmentInner>> listForResourceSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -875,26 +607,14 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+        return service.listForResource(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyAssignmentInner>, Page<PolicyAssignmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForResourceDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyAssignmentInner> call(PageImpl<PolicyAssignmentInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignmentInner>> listForResourceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<PolicyAssignmentInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the policy assignments for a subscription.
@@ -905,32 +625,13 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> list() {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.body()) {
+        Page<PolicyAssignmentInner> response = listSinglePageAsync().toBlocking().value();
+        return new PagedList<PolicyAssignmentInner>(response) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
-    }
-
-    /**
-     * Gets all the policy assignments for a subscription.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
     }
 
     /**
@@ -940,31 +641,16 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
      */
     public Observable<Page<PolicyAssignmentInner>> listAsync() {
-        return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
-                @Override
-                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the policy assignments for a subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listWithServiceResponseAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextAsync(nextPageLink));
                 }
             });
     }
@@ -973,9 +659,9 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Gets all the policy assignments for a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyAssignmentInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listSinglePageAsync() {
+    public Single<Page<PolicyAssignmentInner>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -983,16 +669,10 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyAssignmentInner>, Page<PolicyAssignmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyAssignmentInner> call(PageImpl<PolicyAssignmentInner> productPage) {
+                    return productPage;
                 }
             });
     }
@@ -1007,11 +687,11 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> list(final String filter) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listSinglePageAsync(filter).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.body()) {
+        Page<PolicyAssignmentInner> response = listSinglePageAsync(filter).toBlocking().value();
+        return new PagedList<PolicyAssignmentInner>(response) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -1020,56 +700,20 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Gets all the policy assignments for a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyAssignmentInner>> listAsync(final String filter, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(filter),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the policy assignments for a subscription.
-     *
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     * @return the observable to the PagedList<PolicyAssignmentInner> object
      */
     public Observable<Page<PolicyAssignmentInner>> listAsync(final String filter) {
-        return listWithServiceResponseAsync(filter)
-            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
-                @Override
-                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the policy assignments for a subscription.
-     *
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listWithServiceResponseAsync(final String filter) {
         return listSinglePageAsync(filter)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextAsync(nextPageLink));
                 }
             });
     }
@@ -1077,37 +721,25 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     /**
      * Gets all the policy assignments for a subscription.
      *
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param filter The filter to apply on the operation.
+    PageImpl<PolicyAssignmentInner> * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyAssignmentInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listSinglePageAsync(final String filter) {
+    public Single<Page<PolicyAssignmentInner>> listSinglePageAsync(final String filter) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyAssignmentInner>, Page<PolicyAssignmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyAssignmentInner> call(PageImpl<PolicyAssignmentInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignmentInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<PolicyAssignmentInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Deletes a policy assignment by ID.
@@ -1120,7 +752,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner deleteById(String policyAssignmentId) {
-        return deleteByIdWithServiceResponseAsync(policyAssignmentId).toBlocking().single().body();
+        return deleteByIdAsync(policyAssignmentId).toBlocking().value();
     }
 
     /**
@@ -1133,7 +765,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteByIdWithServiceResponseAsync(policyAssignmentId), serviceCallback);
+        return ServiceFuture.fromBody(deleteByIdAsync(policyAssignmentId), serviceCallback);
     }
 
     /**
@@ -1144,50 +776,16 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
-    public Observable<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId) {
-        return deleteByIdWithServiceResponseAsync(policyAssignmentId).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
-            @Override
-            public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes a policy assignment by ID.
-     * When providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     *
-     * @param policyAssignmentId The ID of the policy assignment to delete. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyAssignmentInner object
-     */
-    public Observable<ServiceResponse<PolicyAssignmentInner>> deleteByIdWithServiceResponseAsync(String policyAssignmentId) {
+    public Single<PolicyAssignmentInner> deleteByIdAsync(String policyAssignmentId) {
         if (policyAssignmentId == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.deleteById(policyAssignmentId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyAssignmentInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PolicyAssignmentInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PolicyAssignmentInner> clientResponse = deleteByIdDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deleteById(policyAssignmentId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<PolicyAssignmentInner> deleteByIdDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyAssignmentInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyAssignmentInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Creates a policy assignment by ID.
@@ -1201,7 +799,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner createById(String policyAssignmentId, PolicyAssignmentInner parameters) {
-        return createByIdWithServiceResponseAsync(policyAssignmentId, parameters).toBlocking().single().body();
+        return createByIdAsync(policyAssignmentId, parameters).toBlocking().value();
     }
 
     /**
@@ -1215,7 +813,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createByIdWithServiceResponseAsync(policyAssignmentId, parameters), serviceCallback);
+        return ServiceFuture.fromBody(createByIdAsync(policyAssignmentId, parameters), serviceCallback);
     }
 
     /**
@@ -1227,25 +825,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
-    public Observable<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters) {
-        return createByIdWithServiceResponseAsync(policyAssignmentId, parameters).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
-            @Override
-            public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates a policy assignment by ID.
-     * Policy assignments are inherited by child resources. For example, when you apply a policy to a resource group that policy is assigned to all resources in the group. When providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     *
-     * @param policyAssignmentId The ID of the policy assignment to create. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
-     * @param parameters Parameters for policy assignment.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyAssignmentInner object
-     */
-    public Observable<ServiceResponse<PolicyAssignmentInner>> createByIdWithServiceResponseAsync(String policyAssignmentId, PolicyAssignmentInner parameters) {
+    public Single<PolicyAssignmentInner> createByIdAsync(String policyAssignmentId, PolicyAssignmentInner parameters) {
         if (policyAssignmentId == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.");
         }
@@ -1256,26 +836,9 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createById(policyAssignmentId, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyAssignmentInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PolicyAssignmentInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PolicyAssignmentInner> clientResponse = createByIdDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.createById(policyAssignmentId, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<PolicyAssignmentInner> createByIdDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyAssignmentInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<PolicyAssignmentInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets a policy assignment by ID.
@@ -1288,7 +851,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PolicyAssignmentInner object if successful.
      */
     public PolicyAssignmentInner getById(String policyAssignmentId) {
-        return getByIdWithServiceResponseAsync(policyAssignmentId).toBlocking().single().body();
+        return getByIdAsync(policyAssignmentId).toBlocking().value();
     }
 
     /**
@@ -1301,7 +864,7 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId, final ServiceCallback<PolicyAssignmentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getByIdWithServiceResponseAsync(policyAssignmentId), serviceCallback);
+        return ServiceFuture.fromBody(getByIdAsync(policyAssignmentId), serviceCallback);
     }
 
     /**
@@ -1312,50 +875,16 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PolicyAssignmentInner object
      */
-    public Observable<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId) {
-        return getByIdWithServiceResponseAsync(policyAssignmentId).map(new Func1<ServiceResponse<PolicyAssignmentInner>, PolicyAssignmentInner>() {
-            @Override
-            public PolicyAssignmentInner call(ServiceResponse<PolicyAssignmentInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets a policy assignment by ID.
-     * When providing a scope for the assigment, use '/subscriptions/{subscription-id}/' for subscriptions, '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}' for resource groups, and '/subscriptions/{subscription-id}/resourceGroups/{resource-group-name}/providers/{resource-provider-namespace}/{resource-type}/{resource-name}' for resources.
-     *
-     * @param policyAssignmentId The ID of the policy assignment to get. Use the format '/{scope}/providers/Microsoft.Authorization/policyAssignments/{policy-assignment-name}'.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PolicyAssignmentInner object
-     */
-    public Observable<ServiceResponse<PolicyAssignmentInner>> getByIdWithServiceResponseAsync(String policyAssignmentId) {
+    public Single<PolicyAssignmentInner> getByIdAsync(String policyAssignmentId) {
         if (policyAssignmentId == null) {
             throw new IllegalArgumentException("Parameter policyAssignmentId is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getById(policyAssignmentId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PolicyAssignmentInner>>>() {
-                @Override
-                public Observable<ServiceResponse<PolicyAssignmentInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PolicyAssignmentInner> clientResponse = getByIdDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getById(policyAssignmentId, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<PolicyAssignmentInner> getByIdDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PolicyAssignmentInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PolicyAssignmentInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets policy assignments for the resource group.
@@ -1367,11 +896,11 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listByResourceGroupNext(final String nextPageLink) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.body()) {
+        Page<PolicyAssignmentInner> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().value();
+        return new PagedList<PolicyAssignmentInner>(response) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -1380,57 +909,20 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Gets policy assignments for the resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyAssignmentInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets policy assignments for the resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     * @return the observable to the PagedList<PolicyAssignmentInner> object
      */
     public Observable<Page<PolicyAssignmentInner>> listByResourceGroupNextAsync(final String nextPageLink) {
-        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
-                @Override
-                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets policy assignments for the resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
         return listByResourceGroupNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextAsync(nextPageLink));
                 }
             });
     }
@@ -1438,35 +930,23 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     /**
      * Gets policy assignments for the resource group.
      *
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    PageImpl<PolicyAssignmentInner> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyAssignmentInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+    public Single<Page<PolicyAssignmentInner>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyAssignmentInner>, Page<PolicyAssignmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyAssignmentInner> call(PageImpl<PolicyAssignmentInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignmentInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<PolicyAssignmentInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets policy assignments for a resource.
@@ -1478,11 +958,11 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listForResourceNext(final String nextPageLink) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.body()) {
+        Page<PolicyAssignmentInner> response = listForResourceNextSinglePageAsync(nextPageLink).toBlocking().value();
+        return new PagedList<PolicyAssignmentInner>(response) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listForResourceNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -1491,57 +971,20 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Gets policy assignments for a resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyAssignmentInner>> listForResourceNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listForResourceNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
-                    return listForResourceNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets policy assignments for a resource.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     * @return the observable to the PagedList<PolicyAssignmentInner> object
      */
     public Observable<Page<PolicyAssignmentInner>> listForResourceNextAsync(final String nextPageLink) {
-        return listForResourceNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
-                @Override
-                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets policy assignments for a resource.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceNextWithServiceResponseAsync(final String nextPageLink) {
         return listForResourceNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listForResourceNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listForResourceNextAsync(nextPageLink));
                 }
             });
     }
@@ -1549,35 +992,23 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     /**
      * Gets policy assignments for a resource.
      *
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    PageImpl<PolicyAssignmentInner> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyAssignmentInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listForResourceNextSinglePageAsync(final String nextPageLink) {
+    public Single<Page<PolicyAssignmentInner>> listForResourceNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listForResourceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+        return service.listForResourceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyAssignmentInner>, Page<PolicyAssignmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listForResourceNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyAssignmentInner> call(PageImpl<PolicyAssignmentInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignmentInner>> listForResourceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<PolicyAssignmentInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the policy assignments for a subscription.
@@ -1589,11 +1020,11 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * @return the PagedList&lt;PolicyAssignmentInner&gt; object if successful.
      */
     public PagedList<PolicyAssignmentInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<PolicyAssignmentInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<PolicyAssignmentInner>(response.body()) {
+        Page<PolicyAssignmentInner> response = listNextSinglePageAsync(nextPageLink).toBlocking().value();
+        return new PagedList<PolicyAssignmentInner>(response) {
             @Override
             public Page<PolicyAssignmentInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -1602,57 +1033,20 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
      * Gets all the policy assignments for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<PolicyAssignmentInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<PolicyAssignmentInner>> serviceFuture, final ListOperationCallback<PolicyAssignmentInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the policy assignments for a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
+     * @return the observable to the PagedList<PolicyAssignmentInner> object
      */
     public Observable<Page<PolicyAssignmentInner>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Page<PolicyAssignmentInner>>() {
-                @Override
-                public Page<PolicyAssignmentInner> call(ServiceResponse<Page<PolicyAssignmentInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the policy assignments for a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;PolicyAssignmentInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<PolicyAssignmentInner>>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(ServiceResponse<Page<PolicyAssignmentInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextAsync(nextPageLink));
                 }
             });
     }
@@ -1660,34 +1054,22 @@ public class PolicyAssignmentsInner implements InnerSupportsDelete<PolicyAssignm
     /**
      * Gets all the policy assignments for a subscription.
      *
-    ServiceResponse<PageImpl<PolicyAssignmentInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    PageImpl<PolicyAssignmentInner> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;PolicyAssignmentInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<PolicyAssignmentInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Single<Page<PolicyAssignmentInner>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<PolicyAssignmentInner>>>>() {
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<PolicyAssignmentInner>, Page<PolicyAssignmentInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<PolicyAssignmentInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<PolicyAssignmentInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<PolicyAssignmentInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<PolicyAssignmentInner> call(PageImpl<PolicyAssignmentInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<PolicyAssignmentInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<PolicyAssignmentInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<PolicyAssignmentInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
 }

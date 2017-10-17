@@ -24,6 +24,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.utils.RXMapper;
 import rx.Completable;
 import rx.Observable;
+import rx.Single;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -60,7 +61,7 @@ public abstract class TopLevelModifiableResourcesImpl<
     }
 
     @Override
-    protected final Observable<InnerT> getInnerAsync(String resourceGroupName, String name) {
+    protected final Single<InnerT> getInnerAsync(String resourceGroupName, String name) {
         return this.inner().getByResourceGroupAsync(resourceGroupName, name);
     }
 
@@ -84,8 +85,8 @@ public abstract class TopLevelModifiableResourcesImpl<
         for (String id : ids) {
             final String resourceGroupName = ResourceUtils.groupFromResourceId(id);
             final String name = ResourceUtils.nameFromResourceId(id);
-            Observable<String> o = RXMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
-            observables.add(o);
+            Single<String> o = RXMapper.map(this.inner().deleteAsync(resourceGroupName, name), id);
+            observables.add(o.toObservable());
         }
 
         return Observable.mergeDelayError(observables);

@@ -76,7 +76,7 @@ abstract class CreatableUpdatableLCAImpl<
     @Override
     @SuppressWarnings("unchecked")
     public FluentModelT create() {
-        return Utils.<FluentModelT>rootResource(createAsync()).toBlocking().single();
+        return Utils.<FluentModelT>rootResource(createAsync()).toBlocking().value();
     }
 
     @Override

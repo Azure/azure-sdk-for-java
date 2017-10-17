@@ -11,6 +11,7 @@ package com.microsoft.azure.management.cosmosdb.implementation;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
@@ -40,6 +41,7 @@ import retrofit2.http.POST;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -174,7 +176,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the DatabaseAccountInner object
      */
-    public Observable<DatabaseAccountInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
+    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String accountName) {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<DatabaseAccountInner>, DatabaseAccountInner>() {
             @Override
             public DatabaseAccountInner call(ServiceResponse<DatabaseAccountInner> response) {
@@ -605,7 +607,7 @@ public class DatabaseAccountsInner implements InnerSupportsGet<DatabaseAccountIn
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String accountName) {
+    public Single<Void> deleteAsync(String resourceGroupName, String accountName) {
         return deleteWithServiceResponseAsync(resourceGroupName, accountName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {

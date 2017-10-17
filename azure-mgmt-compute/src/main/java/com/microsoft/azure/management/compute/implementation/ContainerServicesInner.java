@@ -11,6 +11,7 @@ package com.microsoft.azure.management.compute.implementation;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureServiceFuture;
@@ -35,6 +36,7 @@ import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.http.Url;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -427,7 +429,7 @@ public class ContainerServicesInner implements InnerSupportsGet<ContainerService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ContainerServiceInner object
      */
-    public Observable<ContainerServiceInner> getByResourceGroupAsync(String resourceGroupName, String containerServiceName) {
+    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String containerServiceName) {
         return getByResourceGroupWithServiceResponseAsync(resourceGroupName, containerServiceName).map(new Func1<ServiceResponse<ContainerServiceInner>, ContainerServiceInner>() {
             @Override
             public ContainerServiceInner call(ServiceResponse<ContainerServiceInner> response) {
@@ -514,7 +516,7 @@ public class ContainerServicesInner implements InnerSupportsGet<ContainerService
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String containerServiceName) {
+    public Single<Void> deleteAsync(String resourceGroupName, String containerServiceName) {
         return deleteWithServiceResponseAsync(resourceGroupName, containerServiceName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {

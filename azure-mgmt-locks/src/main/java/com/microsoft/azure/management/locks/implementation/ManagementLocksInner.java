@@ -10,39 +10,35 @@ package com.microsoft.azure.management.locks.implementation;
 
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsGet;
 import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsListing;
-import retrofit2.Retrofit;
-import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.resources.implementation.DeploymentExtendedInner;
+import com.microsoft.rest.annotations.BodyParam;
+import com.microsoft.rest.annotations.DELETE;
+import com.microsoft.rest.annotations.ExpectedResponses;
+import com.microsoft.rest.annotations.GET;
+import com.microsoft.rest.annotations.HeaderParam;
+import com.microsoft.rest.annotations.Headers;
+import com.microsoft.rest.annotations.Host;
+import com.microsoft.rest.annotations.PathParam;
+import com.microsoft.rest.annotations.PUT;
+import com.microsoft.rest.annotations.QueryParam;
+import com.microsoft.rest.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
-import java.io.IOException;
-import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.http.Body;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.HTTP;
-import retrofit2.http.Path;
-import retrofit2.http.PUT;
-import retrofit2.http.Query;
-import retrofit2.http.Url;
-import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
+import rx.Single;
+import com.microsoft.azure.AzureProxy;
 
 /**
  * An instance of this class provides access to all the operations defined
  * in ManagementLocks.
  */
 public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObjectInner>, InnerSupportsListing<ManagementLockObjectInner> {
-    /** The Retrofit service to perform REST calls. */
+    /** The RestProxy service to perform REST calls. */
     private ManagementLocksService service;
     /** The service client containing this operation class. */
     private ManagementLockClientImpl client;
@@ -50,90 +46,126 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
     /**
      * Initializes an instance of ManagementLocksInner.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public ManagementLocksInner(Retrofit retrofit, ManagementLockClientImpl client) {
-        this.service = retrofit.create(ManagementLocksService.class);
+    public ManagementLocksInner(ManagementLockClientImpl client) {
+        this.service = AzureProxy.create(ManagementLocksService.class, client.restClient().baseURL(), client.httpClient(), client.serializerAdapter());
         this.client = client;
     }
 
     /**
      * The interface defining all the services for ManagementLocks to be
-     * used by Retrofit to perform actually REST calls.
+     * used by RestProxy to perform REST calls.
      */
+    @Host("https://management.azure.com")
     interface ManagementLocksService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks createOrUpdateAtResourceGroupLevel" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks createOrUpdateAtResourceGroupLevel" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}")
-        Observable<Response<ResponseBody>> createOrUpdateAtResourceGroupLevel(@Path("resourceGroupName") String resourceGroupName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Body ManagementLockObjectInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevel(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("lockName") String lockName, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json; charset=utf-8") ManagementLockObjectInner parameters, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks deleteAtResourceGroupLevel" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteAtResourceGroupLevel(@Path("resourceGroupName") String resourceGroupName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks deleteAtResourceGroupLevel" })
+        @DELETE("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<Void> deleteAtResourceGroupLevel(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("lockName") String lockName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks getByResourceGroup" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks getByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks/{lockName}")
-        Observable<Response<ResponseBody>> getByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<ManagementLockObjectInner> getByResourceGroup(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("lockName") String lockName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks createOrUpdateByScope" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks createOrUpdateByScope" })
         @PUT("{scope}/providers/Microsoft.Authorization/locks/{lockName}")
-        Observable<Response<ResponseBody>> createOrUpdateByScope(@Path("scope") String scope, @Path("lockName") String lockName, @Body ManagementLockObjectInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<ManagementLockObjectInner> createOrUpdateByScope(@PathParam("scope") String scope, @PathParam("lockName") String lockName, @BodyParam("application/json; charset=utf-8") ManagementLockObjectInner parameters, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks deleteByScope" })
-        @HTTP(path = "{scope}/providers/Microsoft.Authorization/locks/{lockName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteByScope(@Path("scope") String scope, @Path("lockName") String lockName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks deleteByScope" })
+        @DELETE("{scope}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<Void> deleteByScope(@PathParam("scope") String scope, @PathParam("lockName") String lockName, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks getByScope" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks getByScope" })
         @GET("{scope}/providers/Microsoft.Authorization/locks/{lockName}")
-        Observable<Response<ResponseBody>> getByScope(@Path("scope") String scope, @Path("lockName") String lockName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<ManagementLockObjectInner> getByScope(@PathParam("scope") String scope, @PathParam("lockName") String lockName, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks createOrUpdateAtResourceLevel" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks createOrUpdateAtResourceLevel" })
         @PUT("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}")
-        Observable<Response<ResponseBody>> createOrUpdateAtResourceLevel(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Body ManagementLockObjectInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<ManagementLockObjectInner> createOrUpdateAtResourceLevel(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @PathParam("lockName") String lockName, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json; charset=utf-8") ManagementLockObjectInner parameters, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks deleteAtResourceLevel" })
-        @HTTP(path = "subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteAtResourceLevel(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks deleteAtResourceLevel" })
+        @DELETE("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<Void> deleteAtResourceLevel(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @PathParam("lockName") String lockName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks getAtResourceLevel" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks getAtResourceLevel" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks/{lockName}")
-        Observable<Response<ResponseBody>> getAtResourceLevel(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<ManagementLockObjectInner> getAtResourceLevel(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @PathParam("lockName") String lockName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks createOrUpdateAtSubscriptionLevel" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks createOrUpdateAtSubscriptionLevel" })
         @PUT("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}")
-        Observable<Response<ResponseBody>> createOrUpdateAtSubscriptionLevel(@Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Body ManagementLockObjectInner parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200, 201})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevel(@PathParam("lockName") String lockName, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json; charset=utf-8") ManagementLockObjectInner parameters, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks deleteAtSubscriptionLevel" })
-        @HTTP(path = "subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteAtSubscriptionLevel(@Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks deleteAtSubscriptionLevel" })
+        @DELETE("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}")
+        @ExpectedResponses({200, 204})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<Void> deleteAtSubscriptionLevel(@PathParam("lockName") String lockName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks getAtSubscriptionLevel" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks getAtSubscriptionLevel" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks/{lockName}")
-        Observable<Response<ResponseBody>> getAtSubscriptionLevel(@Path("lockName") String lockName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<ManagementLockObjectInner> getAtSubscriptionLevel(@PathParam("lockName") String lockName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listByResourceGroup" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Authorization/locks")
-        Observable<Response<ResponseBody>> listByResourceGroup(@Path("resourceGroupName") String resourceGroupName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<ManagementLockObjectInner>> listByResourceGroup(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listAtResourceLevel" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listAtResourceLevel" })
         @GET("subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePath}/{resourceType}/{resourceName}/providers/Microsoft.Authorization/locks")
-        Observable<Response<ResponseBody>> listAtResourceLevel(@Path("resourceGroupName") String resourceGroupName, @Path("resourceProviderNamespace") String resourceProviderNamespace, @Path(value = "parentResourcePath", encoded = true) String parentResourcePath, @Path(value = "resourceType", encoded = true) String resourceType, @Path("resourceName") String resourceName, @Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<ManagementLockObjectInner>> listAtResourceLevel(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("resourceProviderNamespace") String resourceProviderNamespace, @PathParam(value = "parentResourcePath", encoded = true) String parentResourcePath, @PathParam(value = "resourceType", encoded = true) String resourceType, @PathParam("resourceName") String resourceName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks list" })
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Authorization/locks")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("$filter") String filter, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<ManagementLockObjectInner>> list(@PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listByResourceGroupNext" })
-        @GET
-        Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listByResourceGroupNext" })
+        @GET("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<ManagementLockObjectInner>> listByResourceGroupNext(@PathParam(value = "nextUrl", encoded = true) String nextUrl, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listAtResourceLevelNext" })
-        @GET
-        Observable<Response<ResponseBody>> listAtResourceLevelNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listAtResourceLevelNext" })
+        @GET("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<ManagementLockObjectInner>> listAtResourceLevelNext(@PathParam(value = "nextUrl", encoded = true) String nextUrl, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listNext" })
-        @GET
-        Observable<Response<ResponseBody>> listNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        @Headers({ "x-ms-logging-context: com.microsoft.azure.management.locks.ManagementLocks listNext" })
+        @GET("{nextUrl}")
+        @ExpectedResponses({200})
+        @UnexpectedResponseExceptionType(CloudException.class)
+        Single<PageImpl<ManagementLockObjectInner>> listNext(@PathParam(value = "nextUrl", encoded = true) String nextUrl, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
     }
 
@@ -150,7 +182,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the ManagementLockObjectInner object if successful.
      */
     public ManagementLockObjectInner createOrUpdateAtResourceGroupLevel(String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateAtResourceGroupLevelWithServiceResponseAsync(resourceGroupName, lockName, parameters).toBlocking().single().body();
+        return createOrUpdateAtResourceGroupLevelAsync(resourceGroupName, lockName, parameters).toBlocking().value();
     }
 
     /**
@@ -165,7 +197,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelAsync(String resourceGroupName, String lockName, ManagementLockObjectInner parameters, final ServiceCallback<ManagementLockObjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateAtResourceGroupLevelWithServiceResponseAsync(resourceGroupName, lockName, parameters), serviceCallback);
+        return ServiceFuture.fromBody(createOrUpdateAtResourceGroupLevelAsync(resourceGroupName, lockName, parameters), serviceCallback);
     }
 
     /**
@@ -178,26 +210,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ManagementLockObjectInner object
      */
-    public Observable<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelAsync(String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateAtResourceGroupLevelWithServiceResponseAsync(resourceGroupName, lockName, parameters).map(new Func1<ServiceResponse<ManagementLockObjectInner>, ManagementLockObjectInner>() {
-            @Override
-            public ManagementLockObjectInner call(ServiceResponse<ManagementLockObjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates a management lock at the resource group level.
-     * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param resourceGroupName The name of the resource group to lock.
-     * @param lockName The lock name. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The management lock parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagementLockObjectInner object
-     */
-    public Observable<ServiceResponse<ManagementLockObjectInner>> createOrUpdateAtResourceGroupLevelWithServiceResponseAsync(String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
+    public Single<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelAsync(String resourceGroupName, String lockName, ManagementLockObjectInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -214,27 +227,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createOrUpdateAtResourceGroupLevel(resourceGroupName, lockName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagementLockObjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ManagementLockObjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ManagementLockObjectInner> clientResponse = createOrUpdateAtResourceGroupLevelDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.createOrUpdateAtResourceGroupLevel(resourceGroupName, lockName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<ManagementLockObjectInner> createOrUpdateAtResourceGroupLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagementLockObjectInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .register(201, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Deletes a management lock at the resource group level.
@@ -247,7 +242,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteAtResourceGroupLevel(String resourceGroupName, String lockName) {
-        deleteAtResourceGroupLevelWithServiceResponseAsync(resourceGroupName, lockName).toBlocking().single().body();
+        deleteAtResourceGroupLevelAsync(resourceGroupName, lockName).toBlocking().value();
     }
 
     /**
@@ -261,7 +256,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAtResourceGroupLevelAsync(String resourceGroupName, String lockName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteAtResourceGroupLevelWithServiceResponseAsync(resourceGroupName, lockName), serviceCallback);
+        return ServiceFuture.fromBody(deleteAtResourceGroupLevelAsync(resourceGroupName, lockName), serviceCallback);
     }
 
     /**
@@ -271,27 +266,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @param resourceGroupName The name of the resource group containing the lock.
      * @param lockName The name of lock to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the {@link Single<Void>} object if successful.
      */
-    public Observable<Void> deleteAtResourceGroupLevelAsync(String resourceGroupName, String lockName) {
-        return deleteAtResourceGroupLevelWithServiceResponseAsync(resourceGroupName, lockName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes a management lock at the resource group level.
-     * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param resourceGroupName The name of the resource group containing the lock.
-     * @param lockName The name of lock to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteAtResourceGroupLevelWithServiceResponseAsync(String resourceGroupName, String lockName) {
+    public Single<Void> deleteAtResourceGroupLevelAsync(String resourceGroupName, String lockName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -304,27 +281,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.deleteAtResourceGroupLevel(resourceGroupName, lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteAtResourceGroupLevelDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deleteAtResourceGroupLevel(resourceGroupName, lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<Void> deleteAtResourceGroupLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets a management lock at the resource group level.
@@ -337,7 +296,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the ManagementLockObjectInner object if successful.
      */
     public ManagementLockObjectInner getByResourceGroup(String resourceGroupName, String lockName) {
-        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, lockName).toBlocking().single().body();
+        return getByResourceGroupAsync(resourceGroupName, lockName).toBlocking().value();
     }
 
     /**
@@ -350,7 +309,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ManagementLockObjectInner> getByResourceGroupAsync(String resourceGroupName, String lockName, final ServiceCallback<ManagementLockObjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getByResourceGroupWithServiceResponseAsync(resourceGroupName, lockName), serviceCallback);
+        return ServiceFuture.fromBody(getByResourceGroupAsync(resourceGroupName, lockName), serviceCallback);
     }
 
     /**
@@ -361,24 +320,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ManagementLockObjectInner object
      */
-    public Observable<ManagementLockObjectInner> getByResourceGroupAsync(String resourceGroupName, String lockName) {
-        return getByResourceGroupWithServiceResponseAsync(resourceGroupName, lockName).map(new Func1<ServiceResponse<ManagementLockObjectInner>, ManagementLockObjectInner>() {
-            @Override
-            public ManagementLockObjectInner call(ServiceResponse<ManagementLockObjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets a management lock at the resource group level.
-     *
-     * @param resourceGroupName The name of the locked resource group.
-     * @param lockName The name of the lock to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagementLockObjectInner object
-     */
-    public Observable<ServiceResponse<ManagementLockObjectInner>> getByResourceGroupWithServiceResponseAsync(String resourceGroupName, String lockName) {
+    public Single<DeploymentExtendedInner> getByResourceGroupAsync(String resourceGroupName, String lockName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -391,26 +333,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getByResourceGroup(resourceGroupName, lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagementLockObjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ManagementLockObjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ManagementLockObjectInner> clientResponse = getByResourceGroupDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getByResourceGroup(resourceGroupName, lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<ManagementLockObjectInner> getByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagementLockObjectInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Create or update a management lock by scope.
@@ -424,7 +349,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the ManagementLockObjectInner object if successful.
      */
     public ManagementLockObjectInner createOrUpdateByScope(String scope, String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateByScopeWithServiceResponseAsync(scope, lockName, parameters).toBlocking().single().body();
+        return createOrUpdateByScopeAsync(scope, lockName, parameters).toBlocking().value();
     }
 
     /**
@@ -438,7 +363,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ManagementLockObjectInner> createOrUpdateByScopeAsync(String scope, String lockName, ManagementLockObjectInner parameters, final ServiceCallback<ManagementLockObjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateByScopeWithServiceResponseAsync(scope, lockName, parameters), serviceCallback);
+        return ServiceFuture.fromBody(createOrUpdateByScopeAsync(scope, lockName, parameters), serviceCallback);
     }
 
     /**
@@ -450,25 +375,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ManagementLockObjectInner object
      */
-    public Observable<ManagementLockObjectInner> createOrUpdateByScopeAsync(String scope, String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateByScopeWithServiceResponseAsync(scope, lockName, parameters).map(new Func1<ServiceResponse<ManagementLockObjectInner>, ManagementLockObjectInner>() {
-            @Override
-            public ManagementLockObjectInner call(ServiceResponse<ManagementLockObjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Create or update a management lock by scope.
-     *
-     * @param scope The scope for the lock. When providing a scope for the assignment, use '/subscriptions/{subscriptionId}' for subscriptions, '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}' for resource groups, and '/subscriptions/{subscriptionId}/resourcegroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{parentResourcePathIfPresent}/{resourceType}/{resourceName}' for resources.
-     * @param lockName The name of lock.
-     * @param parameters Create or update management lock parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagementLockObjectInner object
-     */
-    public Observable<ServiceResponse<ManagementLockObjectInner>> createOrUpdateByScopeWithServiceResponseAsync(String scope, String lockName, ManagementLockObjectInner parameters) {
+    public Single<ManagementLockObjectInner> createOrUpdateByScopeAsync(String scope, String lockName, ManagementLockObjectInner parameters) {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -482,27 +389,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createOrUpdateByScope(scope, lockName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagementLockObjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ManagementLockObjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ManagementLockObjectInner> clientResponse = createOrUpdateByScopeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.createOrUpdateByScope(scope, lockName, parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<ManagementLockObjectInner> createOrUpdateByScopeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagementLockObjectInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .register(201, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Delete a management lock by scope.
@@ -514,7 +403,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteByScope(String scope, String lockName) {
-        deleteByScopeWithServiceResponseAsync(scope, lockName).toBlocking().single().body();
+        deleteByScopeAsync(scope, lockName).toBlocking().value();
     }
 
     /**
@@ -527,7 +416,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteByScopeAsync(String scope, String lockName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteByScopeWithServiceResponseAsync(scope, lockName), serviceCallback);
+        return ServiceFuture.fromBody(deleteByScopeAsync(scope, lockName), serviceCallback);
     }
 
     /**
@@ -536,26 +425,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @param scope The scope for the lock.
      * @param lockName The name of lock.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the {@link Single<Void>} object if successful.
      */
-    public Observable<Void> deleteByScopeAsync(String scope, String lockName) {
-        return deleteByScopeWithServiceResponseAsync(scope, lockName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Delete a management lock by scope.
-     *
-     * @param scope The scope for the lock.
-     * @param lockName The name of lock.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteByScopeWithServiceResponseAsync(String scope, String lockName) {
+    public Single<Void> deleteByScopeAsync(String scope, String lockName) {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -565,27 +437,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.deleteByScope(scope, lockName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteByScopeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deleteByScope(scope, lockName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<Void> deleteByScopeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Get a management lock by scope.
@@ -598,7 +452,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the ManagementLockObjectInner object if successful.
      */
     public ManagementLockObjectInner getByScope(String scope, String lockName) {
-        return getByScopeWithServiceResponseAsync(scope, lockName).toBlocking().single().body();
+        return getByScopeAsync(scope, lockName).toBlocking().value();
     }
 
     /**
@@ -611,7 +465,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ManagementLockObjectInner> getByScopeAsync(String scope, String lockName, final ServiceCallback<ManagementLockObjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getByScopeWithServiceResponseAsync(scope, lockName), serviceCallback);
+        return ServiceFuture.fromBody(getByScopeAsync(scope, lockName), serviceCallback);
     }
 
     /**
@@ -622,24 +476,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ManagementLockObjectInner object
      */
-    public Observable<ManagementLockObjectInner> getByScopeAsync(String scope, String lockName) {
-        return getByScopeWithServiceResponseAsync(scope, lockName).map(new Func1<ServiceResponse<ManagementLockObjectInner>, ManagementLockObjectInner>() {
-            @Override
-            public ManagementLockObjectInner call(ServiceResponse<ManagementLockObjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get a management lock by scope.
-     *
-     * @param scope The scope for the lock.
-     * @param lockName The name of lock.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagementLockObjectInner object
-     */
-    public Observable<ServiceResponse<ManagementLockObjectInner>> getByScopeWithServiceResponseAsync(String scope, String lockName) {
+    public Single<ManagementLockObjectInner> getByScopeAsync(String scope, String lockName) {
         if (scope == null) {
             throw new IllegalArgumentException("Parameter scope is required and cannot be null.");
         }
@@ -649,26 +486,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getByScope(scope, lockName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagementLockObjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ManagementLockObjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ManagementLockObjectInner> clientResponse = getByScopeDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getByScope(scope, lockName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<ManagementLockObjectInner> getByScopeDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagementLockObjectInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Creates or updates a management lock at the resource level or any level below the resource.
@@ -687,7 +507,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the ManagementLockObjectInner object if successful.
      */
     public ManagementLockObjectInner createOrUpdateAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, parameters).toBlocking().single().body();
+        return createOrUpdateAtResourceLevelAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, parameters).toBlocking().value();
     }
 
     /**
@@ -706,7 +526,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ManagementLockObjectInner> createOrUpdateAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObjectInner parameters, final ServiceCallback<ManagementLockObjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, parameters), serviceCallback);
+        return ServiceFuture.fromBody(createOrUpdateAtResourceLevelAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, parameters), serviceCallback);
     }
 
     /**
@@ -723,30 +543,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ManagementLockObjectInner object
      */
-    public Observable<ManagementLockObjectInner> createOrUpdateAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, parameters).map(new Func1<ServiceResponse<ManagementLockObjectInner>, ManagementLockObjectInner>() {
-            @Override
-            public ManagementLockObjectInner call(ServiceResponse<ManagementLockObjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates a management lock at the resource level or any level below the resource.
-     * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource to lock.
-     * @param resourceProviderNamespace The resource provider namespace of the resource to lock.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource to lock.
-     * @param resourceName The name of the resource to lock.
-     * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters Parameters for creating or updating a  management lock.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagementLockObjectInner object
-     */
-    public Observable<ServiceResponse<ManagementLockObjectInner>> createOrUpdateAtResourceLevelWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObjectInner parameters) {
+    public Single<ManagementLockObjectInner> createOrUpdateAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, ManagementLockObjectInner parameters) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -775,27 +572,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createOrUpdateAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagementLockObjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ManagementLockObjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ManagementLockObjectInner> clientResponse = createOrUpdateAtResourceLevelDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.createOrUpdateAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<ManagementLockObjectInner> createOrUpdateAtResourceLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagementLockObjectInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .register(201, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Deletes the management lock of a resource or any level below the resource.
@@ -812,7 +591,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) {
-        deleteAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName).toBlocking().single().body();
+        deleteAtResourceLevelAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName).toBlocking().value();
     }
 
     /**
@@ -830,7 +609,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName), serviceCallback);
+        return ServiceFuture.fromBody(deleteAtResourceLevelAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName), serviceCallback);
     }
 
     /**
@@ -844,31 +623,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @param resourceName The name of the resource with the lock to delete.
      * @param lockName The name of the lock to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the {@link Single<Void>} object if successful.
      */
-    public Observable<Void> deleteAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) {
-        return deleteAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes the management lock of a resource or any level below the resource.
-     * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param resourceGroupName The name of the resource group containing the resource with the lock to delete.
-     * @param resourceProviderNamespace The resource provider namespace of the resource with the lock to delete.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the resource with the lock to delete.
-     * @param resourceName The name of the resource with the lock to delete.
-     * @param lockName The name of the lock to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteAtResourceLevelWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) {
+    public Single<Void> deleteAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -893,27 +650,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.deleteAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteAtResourceLevelDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deleteAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<Void> deleteAtResourceLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Get the management lock of a resource or any level below resource.
@@ -930,7 +669,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the ManagementLockObjectInner object if successful.
      */
     public ManagementLockObjectInner getAtResourceLevel(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) {
-        return getAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName).toBlocking().single().body();
+        return getAtResourceLevelAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName).toBlocking().value();
     }
 
     /**
@@ -947,7 +686,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ManagementLockObjectInner> getAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName, final ServiceCallback<ManagementLockObjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName), serviceCallback);
+        return ServiceFuture.fromBody(getAtResourceLevelAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName), serviceCallback);
     }
 
     /**
@@ -962,28 +701,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ManagementLockObjectInner object
      */
-    public Observable<ManagementLockObjectInner> getAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) {
-        return getAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName).map(new Func1<ServiceResponse<ManagementLockObjectInner>, ManagementLockObjectInner>() {
-            @Override
-            public ManagementLockObjectInner call(ServiceResponse<ManagementLockObjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Get the management lock of a resource or any level below resource.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath An extra path parameter needed in some services, like SQL Databases.
-     * @param resourceType The type of the resource.
-     * @param resourceName The name of the resource.
-     * @param lockName The name of lock.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagementLockObjectInner object
-     */
-    public Observable<ServiceResponse<ManagementLockObjectInner>> getAtResourceLevelWithServiceResponseAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) {
+    public Single<ManagementLockObjectInner> getAtResourceLevelAsync(String resourceGroupName, String resourceProviderNamespace, String parentResourcePath, String resourceType, String resourceName, String lockName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1008,26 +726,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagementLockObjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ManagementLockObjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ManagementLockObjectInner> clientResponse = getAtResourceLevelDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<ManagementLockObjectInner> getAtResourceLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagementLockObjectInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Creates or updates a management lock at the subscription level.
@@ -1041,7 +742,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the ManagementLockObjectInner object if successful.
      */
     public ManagementLockObjectInner createOrUpdateAtSubscriptionLevel(String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateAtSubscriptionLevelWithServiceResponseAsync(lockName, parameters).toBlocking().single().body();
+        return createOrUpdateAtSubscriptionLevelAsync(lockName, parameters).toBlocking().value();
     }
 
     /**
@@ -1055,7 +756,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelAsync(String lockName, ManagementLockObjectInner parameters, final ServiceCallback<ManagementLockObjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createOrUpdateAtSubscriptionLevelWithServiceResponseAsync(lockName, parameters), serviceCallback);
+        return ServiceFuture.fromBody(createOrUpdateAtSubscriptionLevelAsync(lockName, parameters), serviceCallback);
     }
 
     /**
@@ -1067,25 +768,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ManagementLockObjectInner object
      */
-    public Observable<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelAsync(String lockName, ManagementLockObjectInner parameters) {
-        return createOrUpdateAtSubscriptionLevelWithServiceResponseAsync(lockName, parameters).map(new Func1<ServiceResponse<ManagementLockObjectInner>, ManagementLockObjectInner>() {
-            @Override
-            public ManagementLockObjectInner call(ServiceResponse<ManagementLockObjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Creates or updates a management lock at the subscription level.
-     * When you apply a lock at a parent scope, all child resources inherit the same lock. To create management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param lockName The name of lock. The lock name can be a maximum of 260 characters. It cannot contain &lt;, &gt; %, &amp;, :, \, ?, /, or any control characters.
-     * @param parameters The management lock parameters.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagementLockObjectInner object
-     */
-    public Observable<ServiceResponse<ManagementLockObjectInner>> createOrUpdateAtSubscriptionLevelWithServiceResponseAsync(String lockName, ManagementLockObjectInner parameters) {
+    public Single<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelAsync(String lockName, ManagementLockObjectInner parameters) {
         if (lockName == null) {
             throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
@@ -1099,27 +782,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         Validator.validate(parameters);
-        return service.createOrUpdateAtSubscriptionLevel(lockName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagementLockObjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ManagementLockObjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ManagementLockObjectInner> clientResponse = createOrUpdateAtSubscriptionLevelDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.createOrUpdateAtSubscriptionLevel(lockName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<ManagementLockObjectInner> createOrUpdateAtSubscriptionLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagementLockObjectInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(201, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .register(200, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Deletes the management lock at the subscription level.
@@ -1131,7 +796,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void deleteAtSubscriptionLevel(String lockName) {
-        deleteAtSubscriptionLevelWithServiceResponseAsync(lockName).toBlocking().single().body();
+        deleteAtSubscriptionLevelAsync(lockName).toBlocking().value();
     }
 
     /**
@@ -1144,7 +809,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<Void> deleteAtSubscriptionLevelAsync(String lockName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(deleteAtSubscriptionLevelWithServiceResponseAsync(lockName), serviceCallback);
+        return ServiceFuture.fromBody(deleteAtSubscriptionLevelAsync(lockName), serviceCallback);
     }
 
     /**
@@ -1153,26 +818,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      *
      * @param lockName The name of lock to delete.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the {@link Single<Void>} object if successful.
      */
-    public Observable<Void> deleteAtSubscriptionLevelAsync(String lockName) {
-        return deleteAtSubscriptionLevelWithServiceResponseAsync(lockName).map(new Func1<ServiceResponse<Void>, Void>() {
-            @Override
-            public Void call(ServiceResponse<Void> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Deletes the management lock at the subscription level.
-     * To delete management locks, you must have access to Microsoft.Authorization/* or Microsoft.Authorization/locks/* actions. Of the built-in roles, only Owner and User Access Administrator are granted those actions.
-     *
-     * @param lockName The name of lock to delete.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
-     */
-    public Observable<ServiceResponse<Void>> deleteAtSubscriptionLevelWithServiceResponseAsync(String lockName) {
+    public Single<Void> deleteAtSubscriptionLevelAsync(String lockName) {
         if (lockName == null) {
             throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
@@ -1182,27 +830,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.deleteAtSubscriptionLevel(lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
-                @Override
-                public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<Void> clientResponse = deleteAtSubscriptionLevelDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.deleteAtSubscriptionLevel(lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<Void> deleteAtSubscriptionLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
-                .register(204, new TypeToken<Void>() { }.getType())
-                .register(200, new TypeToken<Void>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets a management lock at the subscription level.
@@ -1214,7 +844,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the ManagementLockObjectInner object if successful.
      */
     public ManagementLockObjectInner getAtSubscriptionLevel(String lockName) {
-        return getAtSubscriptionLevelWithServiceResponseAsync(lockName).toBlocking().single().body();
+        return getAtSubscriptionLevelAsync(lockName).toBlocking().value();
     }
 
     /**
@@ -1226,7 +856,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<ManagementLockObjectInner> getAtSubscriptionLevelAsync(String lockName, final ServiceCallback<ManagementLockObjectInner> serviceCallback) {
-        return ServiceFuture.fromResponse(getAtSubscriptionLevelWithServiceResponseAsync(lockName), serviceCallback);
+        return ServiceFuture.fromBody(getAtSubscriptionLevelAsync(lockName), serviceCallback);
     }
 
     /**
@@ -1236,23 +866,7 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ManagementLockObjectInner object
      */
-    public Observable<ManagementLockObjectInner> getAtSubscriptionLevelAsync(String lockName) {
-        return getAtSubscriptionLevelWithServiceResponseAsync(lockName).map(new Func1<ServiceResponse<ManagementLockObjectInner>, ManagementLockObjectInner>() {
-            @Override
-            public ManagementLockObjectInner call(ServiceResponse<ManagementLockObjectInner> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * Gets a management lock at the subscription level.
-     *
-     * @param lockName The name of the lock to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ManagementLockObjectInner object
-     */
-    public Observable<ServiceResponse<ManagementLockObjectInner>> getAtSubscriptionLevelWithServiceResponseAsync(String lockName) {
+    public Single<ManagementLockObjectInner> getAtSubscriptionLevelAsync(String lockName) {
         if (lockName == null) {
             throw new IllegalArgumentException("Parameter lockName is required and cannot be null.");
         }
@@ -1262,26 +876,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.getAtSubscriptionLevel(lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ManagementLockObjectInner>>>() {
-                @Override
-                public Observable<ServiceResponse<ManagementLockObjectInner>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<ManagementLockObjectInner> clientResponse = getAtSubscriptionLevelDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
+        return service.getAtSubscriptionLevel(lockName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
     }
 
-    private ServiceResponse<ManagementLockObjectInner> getAtSubscriptionLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<ManagementLockObjectInner, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<ManagementLockObjectInner>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the management locks for a resource group.
@@ -1293,33 +890,13 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
      */
     public PagedList<ManagementLockObjectInner> listByResourceGroup(final String resourceGroupName) {
-        ServiceResponse<Page<ManagementLockObjectInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().single();
-        return new PagedList<ManagementLockObjectInner>(response.body()) {
+        Page<ManagementLockObjectInner> response = listByResourceGroupSinglePageAsync(resourceGroupName).toBlocking().value();
+        return new PagedList<ManagementLockObjectInner>(response) {
             @Override
             public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
-    }
-
-    /**
-     * Gets all the management locks for a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the locks to get.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagementLockObjectInner>> listByResourceGroupAsync(final String resourceGroupName, final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupSinglePageAsync(resourceGroupName),
-            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
     }
 
     /**
@@ -1330,32 +907,16 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
      */
     public Observable<Page<ManagementLockObjectInner>> listByResourceGroupAsync(final String resourceGroupName) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName)
-            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
-                @Override
-                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the management locks for a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the locks to get.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName) {
         return listByResourceGroupSinglePageAsync(resourceGroupName)
-            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextAsync(nextPageLink));
                 }
             });
     }
@@ -1365,9 +926,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      *
      * @param resourceGroupName The name of the resource group containing the locks to get.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<ManagementLockObjectInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
+    public Single<Page<ManagementLockObjectInner>> listByResourceGroupSinglePageAsync(final String resourceGroupName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1378,16 +939,10 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<ManagementLockObjectInner>, Page<ManagementLockObjectInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<ManagementLockObjectInner> call(PageImpl<ManagementLockObjectInner> productPage) {
+                    return productPage;
                 }
             });
     }
@@ -1403,11 +958,11 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
      */
     public PagedList<ManagementLockObjectInner> listByResourceGroup(final String resourceGroupName, final String filter) {
-        ServiceResponse<Page<ManagementLockObjectInner>> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter).toBlocking().single();
-        return new PagedList<ManagementLockObjectInner>(response.body()) {
+        Page<ManagementLockObjectInner> response = listByResourceGroupSinglePageAsync(resourceGroupName, filter).toBlocking().value();
+        return new PagedList<ManagementLockObjectInner>(response) {
             @Override
             public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -1417,58 +972,20 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      *
      * @param resourceGroupName The name of the resource group containing the locks to get.
      * @param filter The filter to apply on the operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagementLockObjectInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter, final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupSinglePageAsync(resourceGroupName, filter),
-            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the management locks for a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the locks to get.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
+     * @return the observable to the PagedList<ManagementLockObjectInner> object
      */
     public Observable<Page<ManagementLockObjectInner>> listByResourceGroupAsync(final String resourceGroupName, final String filter) {
-        return listByResourceGroupWithServiceResponseAsync(resourceGroupName, filter)
-            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
-                @Override
-                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the management locks for a resource group.
-     *
-     * @param resourceGroupName The name of the resource group containing the locks to get.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listByResourceGroupWithServiceResponseAsync(final String resourceGroupName, final String filter) {
         return listByResourceGroupSinglePageAsync(resourceGroupName, filter)
-            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextAsync(nextPageLink));
                 }
             });
     }
@@ -1476,12 +993,12 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
     /**
      * Gets all the management locks for a resource group.
      *
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param resourceGroupName The name of the resource group containing the locks to get.
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param filter The filter to apply on the operation.
+    PageImpl<ManagementLockObjectInner> * @param resourceGroupName The name of the resource group containing the locks to get.
+    PageImpl<ManagementLockObjectInner> * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<ManagementLockObjectInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter) {
+    public Single<Page<ManagementLockObjectInner>> listByResourceGroupSinglePageAsync(final String resourceGroupName, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1491,26 +1008,14 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+        return service.listByResourceGroup(resourceGroupName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<ManagementLockObjectInner>, Page<ManagementLockObjectInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listByResourceGroupDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<ManagementLockObjectInner> call(PageImpl<ManagementLockObjectInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObjectInner>> listByResourceGroupDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagementLockObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ManagementLockObjectInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the management locks for a resource or any level below resource.
@@ -1526,37 +1031,13 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
      */
     public PagedList<ManagementLockObjectInner> listAtResourceLevel(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
-        ServiceResponse<Page<ManagementLockObjectInner>> response = listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName).toBlocking().single();
-        return new PagedList<ManagementLockObjectInner>(response.body()) {
+        Page<ManagementLockObjectInner> response = listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName).toBlocking().value();
+        return new PagedList<ManagementLockObjectInner>(response) {
             @Override
             public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
-                return listAtResourceLevelNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listAtResourceLevelNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
-    }
-
-    /**
-     * Gets all the management locks for a resource or any level below resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the locked resource. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the locked resource.
-     * @param resourceName The name of the locked resource.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagementLockObjectInner>> listAtResourceLevelAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName),
-            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
-                    return listAtResourceLevelNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
     }
 
     /**
@@ -1571,36 +1052,16 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
      */
     public Observable<Page<ManagementLockObjectInner>> listAtResourceLevelAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
-        return listAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
-            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
-                @Override
-                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the management locks for a resource or any level below resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the locked resource. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the locked resource.
-     * @param resourceName The name of the locked resource.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listAtResourceLevelWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
         return listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
-            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listAtResourceLevelNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listAtResourceLevelNextAsync(nextPageLink));
                 }
             });
     }
@@ -1614,9 +1075,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @param resourceType The resource type of the locked resource.
      * @param resourceName The name of the locked resource.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<ManagementLockObjectInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listAtResourceLevelSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
+    public Single<Page<ManagementLockObjectInner>> listAtResourceLevelSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1639,16 +1100,10 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+        return service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<ManagementLockObjectInner>, Page<ManagementLockObjectInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listAtResourceLevelDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<ManagementLockObjectInner> call(PageImpl<ManagementLockObjectInner> productPage) {
+                    return productPage;
                 }
             });
     }
@@ -1668,11 +1123,11 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
      */
     public PagedList<ManagementLockObjectInner> listAtResourceLevel(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
-        ServiceResponse<Page<ManagementLockObjectInner>> response = listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter).toBlocking().single();
-        return new PagedList<ManagementLockObjectInner>(response.body()) {
+        Page<ManagementLockObjectInner> response = listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter).toBlocking().value();
+        return new PagedList<ManagementLockObjectInner>(response) {
             @Override
             public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
-                return listAtResourceLevelNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listAtResourceLevelNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -1686,66 +1141,20 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @param resourceType The resource type of the locked resource.
      * @param resourceName The name of the locked resource.
      * @param filter The filter to apply on the operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagementLockObjectInner>> listAtResourceLevelAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter, final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter),
-            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
-                    return listAtResourceLevelNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the management locks for a resource or any level below resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the locked resource. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the locked resource.
-     * @param resourceName The name of the locked resource.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
+     * @return the observable to the PagedList<ManagementLockObjectInner> object
      */
     public Observable<Page<ManagementLockObjectInner>> listAtResourceLevelAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
-        return listAtResourceLevelWithServiceResponseAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
-            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
-                @Override
-                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the management locks for a resource or any level below resource.
-     *
-     * @param resourceGroupName The name of the resource group containing the locked resource. The name is case insensitive.
-     * @param resourceProviderNamespace The namespace of the resource provider.
-     * @param parentResourcePath The parent resource identity.
-     * @param resourceType The resource type of the locked resource.
-     * @param resourceName The name of the locked resource.
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listAtResourceLevelWithServiceResponseAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
         return listAtResourceLevelSinglePageAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, filter)
-            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listAtResourceLevelNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listAtResourceLevelNextAsync(nextPageLink));
                 }
             });
     }
@@ -1753,16 +1162,16 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
     /**
      * Gets all the management locks for a resource or any level below resource.
      *
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param resourceGroupName The name of the resource group containing the locked resource. The name is case insensitive.
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param resourceProviderNamespace The namespace of the resource provider.
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param parentResourcePath The parent resource identity.
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param resourceType The resource type of the locked resource.
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param resourceName The name of the locked resource.
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param filter The filter to apply on the operation.
+    PageImpl<ManagementLockObjectInner> * @param resourceGroupName The name of the resource group containing the locked resource. The name is case insensitive.
+    PageImpl<ManagementLockObjectInner> * @param resourceProviderNamespace The namespace of the resource provider.
+    PageImpl<ManagementLockObjectInner> * @param parentResourcePath The parent resource identity.
+    PageImpl<ManagementLockObjectInner> * @param resourceType The resource type of the locked resource.
+    PageImpl<ManagementLockObjectInner> * @param resourceName The name of the locked resource.
+    PageImpl<ManagementLockObjectInner> * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<ManagementLockObjectInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listAtResourceLevelSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
+    public Single<Page<ManagementLockObjectInner>> listAtResourceLevelSinglePageAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName, final String filter) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -1784,26 +1193,14 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+        return service.listAtResourceLevel(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName, this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<ManagementLockObjectInner>, Page<ManagementLockObjectInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listAtResourceLevelDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<ManagementLockObjectInner> call(PageImpl<ManagementLockObjectInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObjectInner>> listAtResourceLevelDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagementLockObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ManagementLockObjectInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the management locks for a subscription.
@@ -1814,32 +1211,13 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
      */
     public PagedList<ManagementLockObjectInner> list() {
-        ServiceResponse<Page<ManagementLockObjectInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<ManagementLockObjectInner>(response.body()) {
+        Page<ManagementLockObjectInner> response = listSinglePageAsync().toBlocking().value();
+        return new PagedList<ManagementLockObjectInner>(response) {
             @Override
             public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
-    }
-
-    /**
-     * Gets all the management locks for a subscription.
-     *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagementLockObjectInner>> listAsync(final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
     }
 
     /**
@@ -1849,31 +1227,16 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
      */
     public Observable<Page<ManagementLockObjectInner>> listAsync() {
-        return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
-                @Override
-                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the management locks for a subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listWithServiceResponseAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextAsync(nextPageLink));
                 }
             });
     }
@@ -1882,9 +1245,9 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * Gets all the management locks for a subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<ManagementLockObjectInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listSinglePageAsync() {
+    public Single<Page<ManagementLockObjectInner>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1892,16 +1255,10 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         final String filter = null;
-        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<ManagementLockObjectInner>, Page<ManagementLockObjectInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<ManagementLockObjectInner> call(PageImpl<ManagementLockObjectInner> productPage) {
+                    return productPage;
                 }
             });
     }
@@ -1916,11 +1273,11 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
      */
     public PagedList<ManagementLockObjectInner> list(final String filter) {
-        ServiceResponse<Page<ManagementLockObjectInner>> response = listSinglePageAsync(filter).toBlocking().single();
-        return new PagedList<ManagementLockObjectInner>(response.body()) {
+        Page<ManagementLockObjectInner> response = listSinglePageAsync(filter).toBlocking().value();
+        return new PagedList<ManagementLockObjectInner>(response) {
             @Override
             public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -1929,56 +1286,20 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * Gets all the management locks for a subscription.
      *
      * @param filter The filter to apply on the operation.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagementLockObjectInner>> listAsync(final String filter, final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listSinglePageAsync(filter),
-            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the management locks for a subscription.
-     *
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
+     * @return the observable to the PagedList<ManagementLockObjectInner> object
      */
     public Observable<Page<ManagementLockObjectInner>> listAsync(final String filter) {
-        return listWithServiceResponseAsync(filter)
-            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
-                @Override
-                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the management locks for a subscription.
-     *
-     * @param filter The filter to apply on the operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listWithServiceResponseAsync(final String filter) {
         return listSinglePageAsync(filter)
-            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextAsync(nextPageLink));
                 }
             });
     }
@@ -1986,37 +1307,25 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
     /**
      * Gets all the management locks for a subscription.
      *
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param filter The filter to apply on the operation.
+    PageImpl<ManagementLockObjectInner> * @param filter The filter to apply on the operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<ManagementLockObjectInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listSinglePageAsync(final String filter) {
+    public Single<Page<ManagementLockObjectInner>> listSinglePageAsync(final String filter) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+        return service.list(this.client.subscriptionId(), filter, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<ManagementLockObjectInner>, Page<ManagementLockObjectInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<ManagementLockObjectInner> call(PageImpl<ManagementLockObjectInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObjectInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagementLockObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ManagementLockObjectInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the management locks for a resource group.
@@ -2028,11 +1337,11 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
      */
     public PagedList<ManagementLockObjectInner> listByResourceGroupNext(final String nextPageLink) {
-        ServiceResponse<Page<ManagementLockObjectInner>> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ManagementLockObjectInner>(response.body()) {
+        Page<ManagementLockObjectInner> response = listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().value();
+        return new PagedList<ManagementLockObjectInner>(response) {
             @Override
             public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
-                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listByResourceGroupNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -2041,57 +1350,20 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * Gets all the management locks for a resource group.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagementLockObjectInner>> listByResourceGroupNextAsync(final String nextPageLink, final ServiceFuture<List<ManagementLockObjectInner>> serviceFuture, final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listByResourceGroupNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
-                    return listByResourceGroupNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the management locks for a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
+     * @return the observable to the PagedList<ManagementLockObjectInner> object
      */
     public Observable<Page<ManagementLockObjectInner>> listByResourceGroupNextAsync(final String nextPageLink) {
-        return listByResourceGroupNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
-                @Override
-                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the management locks for a resource group.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listByResourceGroupNextWithServiceResponseAsync(final String nextPageLink) {
         return listByResourceGroupNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listByResourceGroupNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listByResourceGroupNextAsync(nextPageLink));
                 }
             });
     }
@@ -2099,35 +1371,23 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
     /**
      * Gets all the management locks for a resource group.
      *
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    PageImpl<ManagementLockObjectInner> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<ManagementLockObjectInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
+    public Single<Page<ManagementLockObjectInner>> listByResourceGroupNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+        return service.listByResourceGroupNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<ManagementLockObjectInner>, Page<ManagementLockObjectInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listByResourceGroupNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<ManagementLockObjectInner> call(PageImpl<ManagementLockObjectInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObjectInner>> listByResourceGroupNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagementLockObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ManagementLockObjectInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the management locks for a resource or any level below resource.
@@ -2139,11 +1399,11 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
      */
     public PagedList<ManagementLockObjectInner> listAtResourceLevelNext(final String nextPageLink) {
-        ServiceResponse<Page<ManagementLockObjectInner>> response = listAtResourceLevelNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ManagementLockObjectInner>(response.body()) {
+        Page<ManagementLockObjectInner> response = listAtResourceLevelNextSinglePageAsync(nextPageLink).toBlocking().value();
+        return new PagedList<ManagementLockObjectInner>(response) {
             @Override
             public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
-                return listAtResourceLevelNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listAtResourceLevelNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -2152,57 +1412,20 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * Gets all the management locks for a resource or any level below resource.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagementLockObjectInner>> listAtResourceLevelNextAsync(final String nextPageLink, final ServiceFuture<List<ManagementLockObjectInner>> serviceFuture, final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listAtResourceLevelNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
-                    return listAtResourceLevelNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the management locks for a resource or any level below resource.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
+     * @return the observable to the PagedList<ManagementLockObjectInner> object
      */
     public Observable<Page<ManagementLockObjectInner>> listAtResourceLevelNextAsync(final String nextPageLink) {
-        return listAtResourceLevelNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
-                @Override
-                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the management locks for a resource or any level below resource.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listAtResourceLevelNextWithServiceResponseAsync(final String nextPageLink) {
         return listAtResourceLevelNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listAtResourceLevelNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listAtResourceLevelNextAsync(nextPageLink));
                 }
             });
     }
@@ -2210,35 +1433,23 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
     /**
      * Gets all the management locks for a resource or any level below resource.
      *
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    PageImpl<ManagementLockObjectInner> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<ManagementLockObjectInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listAtResourceLevelNextSinglePageAsync(final String nextPageLink) {
+    public Single<Page<ManagementLockObjectInner>> listAtResourceLevelNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listAtResourceLevelNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+        return service.listAtResourceLevelNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<ManagementLockObjectInner>, Page<ManagementLockObjectInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listAtResourceLevelNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<ManagementLockObjectInner> call(PageImpl<ManagementLockObjectInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObjectInner>> listAtResourceLevelNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagementLockObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ManagementLockObjectInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
     /**
      * Gets all the management locks for a subscription.
@@ -2250,11 +1461,11 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * @return the PagedList&lt;ManagementLockObjectInner&gt; object if successful.
      */
     public PagedList<ManagementLockObjectInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<ManagementLockObjectInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<ManagementLockObjectInner>(response.body()) {
+        Page<ManagementLockObjectInner> response = listNextSinglePageAsync(nextPageLink).toBlocking().value();
+        return new PagedList<ManagementLockObjectInner>(response) {
             @Override
             public Page<ManagementLockObjectInner> nextPage(String nextPageLink) {
-                return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+                return listNextSinglePageAsync(nextPageLink).toBlocking().value();
             }
         };
     }
@@ -2263,57 +1474,20 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
      * Gets all the management locks for a subscription.
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<List<ManagementLockObjectInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<ManagementLockObjectInner>> serviceFuture, final ListOperationCallback<ManagementLockObjectInner> serviceCallback) {
-        return AzureServiceFuture.fromPageResponse(
-            listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(String nextPageLink) {
-                    return listNextSinglePageAsync(nextPageLink);
-                }
-            },
-            serviceCallback);
-    }
-
-    /**
-     * Gets all the management locks for a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
+     * @return the observable to the PagedList<ManagementLockObjectInner> object
      */
     public Observable<Page<ManagementLockObjectInner>> listNextAsync(final String nextPageLink) {
-        return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Page<ManagementLockObjectInner>>() {
-                @Override
-                public Page<ManagementLockObjectInner> call(ServiceResponse<Page<ManagementLockObjectInner>> response) {
-                    return response.body();
-                }
-            });
-    }
-
-    /**
-     * Gets all the management locks for a subscription.
-     *
-     * @param nextPageLink The NextLink from the previous successful call to List operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;ManagementLockObjectInner&gt; object
-     */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<ManagementLockObjectInner>>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+            .toObservable()
+            .concatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(ServiceResponse<Page<ManagementLockObjectInner>> page) {
-                    String nextPageLink = page.body().nextPageLink();
+                public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
+                    String nextPageLink = page.nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
                     }
-                    return Observable.just(page).concatWith(listNextWithServiceResponseAsync(nextPageLink));
+                    return Observable.just(page).concatWith(listNextAsync(nextPageLink));
                 }
             });
     }
@@ -2321,34 +1495,22 @@ public class ManagementLocksInner implements InnerSupportsGet<ManagementLockObje
     /**
      * Gets all the management locks for a subscription.
      *
-    ServiceResponse<PageImpl<ManagementLockObjectInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    PageImpl<ManagementLockObjectInner> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;ManagementLockObjectInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList<ManagementLockObjectInner> object if successful.
      */
-    public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Single<Page<ManagementLockObjectInner>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
-        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<ManagementLockObjectInner>>>>() {
+        return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent()).map(new Func1<PageImpl<ManagementLockObjectInner>, Page<ManagementLockObjectInner>>() {
                 @Override
-                public Observable<ServiceResponse<Page<ManagementLockObjectInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<ManagementLockObjectInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<ManagementLockObjectInner>>(result.body(), result.response()));
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
+                public Page<ManagementLockObjectInner> call(PageImpl<ManagementLockObjectInner> productPage) {
+                    return productPage;
                 }
             });
     }
 
-    private ServiceResponse<PageImpl<ManagementLockObjectInner>> listNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<ManagementLockObjectInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<ManagementLockObjectInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
-    }
 
 }

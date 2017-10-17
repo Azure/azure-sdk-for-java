@@ -28,6 +28,7 @@ import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
 import retrofit2.Response;
+import rx.Single;
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -202,7 +203,7 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteAsync(String resourceGroupName, String name) {
+    public Single<Void> deleteAsync(String resourceGroupName, String name) {
         return deleteWithServiceResponseAsync(resourceGroupName, name).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {

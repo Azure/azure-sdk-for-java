@@ -8,25 +8,17 @@
 
 package com.microsoft.azure.management.resources.implementation;
 
-import com.microsoft.azure.AzureClient;
+import com.microsoft.azure.AzureProxy;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
+import rx.Single;
 
 /**
  * Initializes a new instance of the SubscriptionClientImpl class.
  */
 public class SubscriptionClientImpl extends AzureServiceClient {
-    /** the {@link AzureClient} used for long running operations. */
-    private AzureClient azureClient;
 
-    /**
-     * Gets the {@link AzureClient} used for long running operations.
-     * @return the azure client;
-     */
-    public AzureClient getAzureClient() {
-        return this.azureClient;
-    }
 
     /** The API version to use for the operation. */
     private String apiVersion;
@@ -170,9 +162,8 @@ public class SubscriptionClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.subscriptions = new SubscriptionsInner(restClient().retrofit(), this);
-        this.tenants = new TenantsInner(restClient().retrofit(), this);
-        this.azureClient = new AzureClient(this);
+        this.subscriptions = new SubscriptionsInner(this);
+        this.tenants = new TenantsInner(this);
     }
 
     /**

@@ -15,7 +15,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.Manager;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingPolicy;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 
@@ -46,7 +46,7 @@ public final class CustomerInsightsManager extends Manager<CustomerInsightsManag
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                .withInterceptor(new ResourceManagerThrottlingPolicy())
                 .build(), subscriptionId);
     }
     /**

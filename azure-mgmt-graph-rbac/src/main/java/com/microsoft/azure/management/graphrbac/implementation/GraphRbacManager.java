@@ -21,7 +21,7 @@ import com.microsoft.azure.management.resources.fluentcore.arm.AzureConfigurable
 import com.microsoft.azure.management.resources.fluentcore.arm.implementation.AzureConfigurableImpl;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingPolicy;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.interceptors.RequestIdHeaderInterceptor;
@@ -62,7 +62,7 @@ public final class GraphRbacManager implements HasInner<GraphRbacManagementClien
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
                 .withInterceptor(new ProviderRegistrationInterceptor(credentials))
-                .withInterceptor(new ResourceManagerThrottlingInterceptor())
+                .withInterceptor(new ResourceManagerThrottlingPolicy())
                 .build(), credentials.domain());
     }
 

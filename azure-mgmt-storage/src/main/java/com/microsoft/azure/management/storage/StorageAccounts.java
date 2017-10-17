@@ -22,7 +22,7 @@ import com.microsoft.azure.management.storage.implementation.StorageAccountsInne
 import com.microsoft.azure.management.storage.implementation.StorageManager;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
-import rx.Observable;
+import rx.Single;
 
 /**
  * Entry point for storage accounts management API.
@@ -54,7 +54,7 @@ public interface StorageAccounts extends
      * @param name the account name to check
      * @return a representation of the deferred computation of this call, returning whether the name is available and other info if not
      */
-    Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
+    Single<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name);
 
     /**
      * Checks that account name is valid and is not in use asynchronously.

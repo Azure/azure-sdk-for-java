@@ -7,8 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.arm;
 
 import com.microsoft.rest.LogLevel;
-import okhttp3.Authenticator;
-import okhttp3.Interceptor;
+import com.microsoft.rest.policy.RequestPolicy;
 
 import java.net.Proxy;
 import java.util.concurrent.Executor;
@@ -34,7 +33,7 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * @param interceptor the interceptor to plug in
      * @return the configurable object itself
      */
-    T withInterceptor(Interceptor interceptor);
+    T withInterceptor(RequestPolicy.Factory interceptor);
 
     /**
      * Specify the user agent header.
@@ -92,5 +91,6 @@ public interface AzureConfigurable<T extends AzureConfigurable<T>> {
      * @param proxyAuthenticator the proxy authenticator to use
      * @return the configurable object itself for chaining
      */
-    T withProxyAuthenticator(Authenticator proxyAuthenticator);
+    // FIXME: replace Authenticator
+    T withProxyAuthenticator(Object proxyAuthenticator);
 }

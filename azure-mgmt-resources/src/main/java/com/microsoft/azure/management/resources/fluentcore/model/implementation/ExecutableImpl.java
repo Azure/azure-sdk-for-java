@@ -96,7 +96,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
 
     @Override
     public ServiceFuture<FluentModelT> executeAsync(ServiceCallback<FluentModelT> callback) {
-        return ServiceFuture.fromBody(executeAsync(), callback);
+        return ServiceFuture.fromBody(executeAsync().last().toSingle(), callback);
     }
 
     protected Observable<FluentModelT> executeTaskGroupAsync() {

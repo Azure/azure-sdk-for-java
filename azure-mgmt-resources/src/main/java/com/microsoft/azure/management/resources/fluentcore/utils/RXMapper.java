@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.utils;
 
 import rx.Observable;
+import rx.Single;
 import rx.functions.Func1;
 import rx.schedulers.Schedulers;
 
@@ -31,6 +32,22 @@ public final class RXMapper<T> implements Func1<Object, T> {
                     .map(new RXMapper<T>(toValue));
         } else {
             return Observable.empty();
+        }
+    }
+
+    /**
+     * Shortcut for mapping the output of an arbitrary Single to one returning an instance of a specific type, using the IO scheduler.
+     * @param fromSingle the source observable
+     * @param toValue the value to emit to the observer
+     * @param <T> the type of the value to emit
+     * @return an Single emitting the specified value
+     */
+    public static <T> Single<T> map(Single<?> fromSingle, final T toValue) {
+        if (fromSingle != null) {
+            return fromSingle.subscribeOn(Schedulers.io())
+                    .map(new RXMapper<T>(toValue));
+        } else {
+            return Single.just(toValue);
         }
     }
 
