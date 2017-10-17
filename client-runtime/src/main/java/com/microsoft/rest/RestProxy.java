@@ -81,6 +81,7 @@ public class RestProxy implements InvocationHandler {
      * Use this RestProxy's serializer to deserialize the provided String into the provided Type.
      * @param value The String value to deserialize.
      * @param resultType The Type of the object to return.
+     * @param encoding The encoding used in the serialized value.
      * @return The deserialized version of the provided String value.
      */
     public Object deserialize(String value, Type resultType, SerializerAdapter.Encoding encoding) {
@@ -92,6 +93,7 @@ public class RestProxy implements InvocationHandler {
      * @param value The String value to deserialize.
      * @param resultType The Type of the object to return.
      * @param wireType The serialized type that is sent across the network.
+     * @param encoding The encoding used in the serialized value.
      * @return The deserialized version of the provided String value.
      */
     private Object deserialize(String value, Type resultType, Type wireType, SerializerAdapter.Encoding encoding) {
