@@ -11,6 +11,7 @@ package com.microsoft.azure.management.containerregistry.implementation;
 import com.microsoft.azure.management.containerregistry.Sku;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.containerregistry.ProvisioningState;
+import com.microsoft.azure.management.containerregistry.Status;
 import com.microsoft.azure.management.containerregistry.StorageAccountProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
@@ -40,21 +41,29 @@ public class RegistryInner extends Resource {
     private DateTime creationDate;
 
     /**
-     * The status of the container registry at the time the operation was
-     * called. Possible values include: 'Creating', 'Succeeded'.
+     * The provisioning state of the container registry at the time the
+     * operation was called. Possible values include: 'Creating', 'Updating',
+     * 'Deleting', 'Succeeded', 'Failed', 'Canceled'.
      */
     @JsonProperty(value = "properties.provisioningState", access = JsonProperty.Access.WRITE_ONLY)
     private ProvisioningState provisioningState;
 
     /**
-     * The value that indicates whether the admin user is enabled. This value
-     * is false by default.
+     * The status of the container registry at the time the operation was
+     * called.
+     */
+    @JsonProperty(value = "properties.status", access = JsonProperty.Access.WRITE_ONLY)
+    private Status status;
+
+    /**
+     * The value that indicates whether the admin user is enabled.
      */
     @JsonProperty(value = "properties.adminUserEnabled")
     private Boolean adminUserEnabled;
 
     /**
-     * The properties of the storage account for the container registry.
+     * The properties of the storage account for the container registry. Only
+     * applicable to Classic SKU.
      */
     @JsonProperty(value = "properties.storageAccount")
     private StorageAccountProperties storageAccount;
@@ -104,6 +113,15 @@ public class RegistryInner extends Resource {
      */
     public ProvisioningState provisioningState() {
         return this.provisioningState;
+    }
+
+    /**
+     * Get the status value.
+     *
+     * @return the status value
+     */
+    public Status status() {
+        return this.status;
     }
 
     /**

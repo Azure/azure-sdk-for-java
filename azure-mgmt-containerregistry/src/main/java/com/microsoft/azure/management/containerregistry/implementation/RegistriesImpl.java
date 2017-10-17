@@ -8,9 +8,13 @@ package com.microsoft.azure.management.containerregistry.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.PagedList;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
+import com.microsoft.azure.management.containerregistry.CheckNameAvailabilityResult;
 import com.microsoft.azure.management.containerregistry.PasswordName;
 import com.microsoft.azure.management.containerregistry.Registries;
 import com.microsoft.azure.management.containerregistry.Registry;
+import com.microsoft.azure.management.containerregistry.RegistryCredentials;
+import com.microsoft.azure.management.containerregistry.RegistryUsage;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.GroupableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupPagedList;
@@ -19,6 +23,9 @@ import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -116,23 +123,72 @@ public class RegistriesImpl
     }
 
     @Override
-    public RegistryListCredentials listCredentials(String resourceGroupName, String registryName) {
-        return this.listCredentialsAsync(resourceGroupName, registryName).toBlocking().last();
+    public RegistryCredentials getCredentials(String resourceGroupName, String registryName) {
+        return new RegistryCredentialsImpl(this.inner().listCredentials(resourceGroupName, registryName));
     }
 
     @Override
-    public Observable<RegistryListCredentials> listCredentialsAsync(String resourceGroupName, String registryName) {
-        return this.inner().listCredentialsAsync(resourceGroupName, registryName);
+    public Observable<RegistryCredentials> getCredentialsAsync(String resourceGroupName, String registryName) {
+        return this.inner().listCredentialsAsync(resourceGroupName, registryName)
+            .map(new Func1<RegistryListCredentialsResultInner, RegistryCredentials>() {
+                @Override
+                public RegistryCredentials call(RegistryListCredentialsResultInner registryListCredentialsResultInner) {
+                    return new RegistryCredentialsImpl(registryListCredentialsResultInner);
+                }
+            });
     }
 
     @Override
-    public RegistryListCredentials regenerateCredential(String resourceGroupName, String registryName, PasswordName passwordName) {
-        return this.regenerateCredentialAsync(resourceGroupName, registryName, passwordName).toBlocking().last();
+    public RegistryCredentials regenerateCredential(String resourceGroupName, String registryName, AccessKeyType accessKeyType) {
+        return new RegistryCredentialsImpl(this.inner().regenerateCredential(resourceGroupName, registryName, PasswordName.fromString(accessKeyType.toString())));
     }
 
     @Override
-    public Observable<RegistryListCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName passwordName) {
-        return this.inner().regenerateCredentialAsync(resourceGroupName, registryName, passwordName);
+    public Observable<RegistryCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, AccessKeyType accessKeyType) {
+        return this.inner().regenerateCredentialAsync(resourceGroupName, registryName, PasswordName.fromString(accessKeyType.toString()))
+            .map(new Func1<RegistryListCredentialsResultInner, RegistryCredentials>() {
+                @Override
+                public RegistryCredentials call(RegistryListCredentialsResultInner registryListCredentialsResultInner) {
+                    return new RegistryCredentialsImpl(registryListCredentialsResultInner);
+                }
+            });
     }
 
+    @Override
+    public Collection<RegistryUsage> listQuotaUsages(String resourceGroupName, String registryName) {
+        RegistryUsageListResultInner resultInner = this.inner().listUsages(resourceGroupName, registryName);
+
+        return Collections.unmodifiableList(resultInner != null && resultInner.value() != null ? resultInner.value() : new ArrayList<RegistryUsage>());
+    }
+
+    @Override
+    public Observable<RegistryUsage> listQuotaUsagesAsync(String resourceGroupName, String registryName) {
+        return this.inner().listUsagesAsync(resourceGroupName, registryName)
+            .flatMap(new Func1<RegistryUsageListResultInner, Observable<RegistryUsage>>() {
+                @Override
+                public Observable<RegistryUsage> call(RegistryUsageListResultInner registryUsageListResultInner) {
+                    return registryUsageListResultInner.value() != null ? Observable.from(registryUsageListResultInner.value()) : null;
+                }
+            });
+    }
+
+    @Override
+    public CheckNameAvailabilityResult checkNameAvailability(String name) {
+        return new CheckNameAvailabilityResultImpl(this.inner().checkNameAvailability(name));
+    }
+
+    @Override
+    public Observable<CheckNameAvailabilityResult> checkNameAvailabilityAsync(String name) {
+        return this.inner().checkNameAvailabilityAsync(name).map(new Func1<RegistryNameStatusInner, CheckNameAvailabilityResult>() {
+            @Override
+            public CheckNameAvailabilityResult call(RegistryNameStatusInner registryNameStatusInner) {
+                return new CheckNameAvailabilityResultImpl(registryNameStatusInner);
+            }
+        });
+    }
+
+    @Override
+    public WebhooksClient webhooks() {
+        return new WebhooksClientImpl(this.manager(), null);
+    }
 }

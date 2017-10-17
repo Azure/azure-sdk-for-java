@@ -159,6 +159,32 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ReplicationsInner object to access its operations.
+     */
+    private ReplicationsInner replications;
+
+    /**
+     * Gets the ReplicationsInner object to access its operations.
+     * @return the ReplicationsInner object.
+     */
+    public ReplicationsInner replications() {
+        return this.replications;
+    }
+
+    /**
+     * The WebhooksInner object to access its operations.
+     */
+    private WebhooksInner webhooks;
+
+    /**
+     * Gets the WebhooksInner object to access its operations.
+     * @return the WebhooksInner object.
+     */
+    public WebhooksInner webhooks() {
+        return this.webhooks;
+    }
+
+    /**
      * Initializes an instance of ContainerRegistryManagementClient client.
      *
      * @param credentials the management credentials for Azure
@@ -189,12 +215,14 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
     }
 
     protected void initialize() {
-        this.apiVersion = "2017-03-01";
+        this.apiVersion = "2017-10-01";
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.registries = new RegistriesInner(restClient().retrofit(), this);
         this.operations = new OperationsInner(restClient().retrofit(), this);
+        this.replications = new ReplicationsInner(restClient().retrofit(), this);
+        this.webhooks = new WebhooksInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -205,6 +233,6 @@ public class ContainerRegistryManagementClientImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "ContainerRegistryManagementClient", "2017-03-01");
+        return String.format("%s (%s, %s)", super.userAgent(), "ContainerRegistryManagementClient", "2017-10-01");
     }
 }

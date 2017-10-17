@@ -79,19 +79,27 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.Registries create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}")
-        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body RegistryCreateParametersInner registryCreateParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body RegistryInner registry, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.Registries beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}")
-        Observable<Response<ResponseBody>> beginCreate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body RegistryCreateParametersInner registryCreateParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body RegistryInner registry, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.Registries delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}", method = "DELETE", hasBody = true)
         Observable<Response<ResponseBody>> delete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.Registries beginDelete" })
+        @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}", method = "DELETE", hasBody = true)
+        Observable<Response<ResponseBody>> beginDelete(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.Registries update" })
         @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}")
         Observable<Response<ResponseBody>> update(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body RegistryUpdateParametersInner registryUpdateParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.Registries beginUpdate" })
+        @PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}")
+        Observable<Response<ResponseBody>> beginUpdate(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Body RegistryUpdateParametersInner registryUpdateParameters, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.Registries listByResourceGroup" })
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries")
@@ -109,6 +117,10 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
         @POST("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/regenerateCredential")
         Observable<Response<ResponseBody>> regenerateCredential(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RegenerateCredentialParameters regenerateCredentialParameters, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.Registries listUsages" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ContainerRegistry/registries/{registryName}/listUsages")
+        Observable<Response<ResponseBody>> listUsages(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("registryName") String registryName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.containerregistry.Registries listByResourceGroupNext" })
         @GET
         Observable<Response<ResponseBody>> listByResourceGroupNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
@@ -120,7 +132,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
     }
 
     /**
-     * Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 60 characters in length.
+     * Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 50 characters in length.
      *
      * @param name The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -133,7 +145,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
     }
 
     /**
-     * Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 60 characters in length.
+     * Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 50 characters in length.
      *
      * @param name The name of the container registry.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -145,7 +157,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
     }
 
     /**
-     * Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 60 characters in length.
+     * Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 50 characters in length.
      *
      * @param name The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -161,7 +173,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
     }
 
     /**
-     * Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 60 characters in length.
+     * Checks whether the container registry name is available for use. The name must contain only alphanumeric characters, be globally unique, and between 5 and 50 characters in length.
      *
      * @param name The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -291,14 +303,14 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
-     * @param registryCreateParameters The parameters for creating a container registry.
+     * @param registry The parameters for creating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RegistryInner object if successful.
      */
-    public RegistryInner create(String resourceGroupName, String registryName, RegistryCreateParametersInner registryCreateParameters) {
-        return createWithServiceResponseAsync(resourceGroupName, registryName, registryCreateParameters).toBlocking().last().body();
+    public RegistryInner create(String resourceGroupName, String registryName, RegistryInner registry) {
+        return createWithServiceResponseAsync(resourceGroupName, registryName, registry).toBlocking().last().body();
     }
 
     /**
@@ -306,13 +318,13 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
-     * @param registryCreateParameters The parameters for creating a container registry.
+     * @param registry The parameters for creating a container registry.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RegistryInner> createAsync(String resourceGroupName, String registryName, RegistryCreateParametersInner registryCreateParameters, final ServiceCallback<RegistryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, registryName, registryCreateParameters), serviceCallback);
+    public ServiceFuture<RegistryInner> createAsync(String resourceGroupName, String registryName, RegistryInner registry, final ServiceCallback<RegistryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, registryName, registry), serviceCallback);
     }
 
     /**
@@ -320,12 +332,12 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
-     * @param registryCreateParameters The parameters for creating a container registry.
+     * @param registry The parameters for creating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<RegistryInner> createAsync(String resourceGroupName, String registryName, RegistryCreateParametersInner registryCreateParameters) {
-        return createWithServiceResponseAsync(resourceGroupName, registryName, registryCreateParameters).map(new Func1<ServiceResponse<RegistryInner>, RegistryInner>() {
+    public Observable<RegistryInner> createAsync(String resourceGroupName, String registryName, RegistryInner registry) {
+        return createWithServiceResponseAsync(resourceGroupName, registryName, registry).map(new Func1<ServiceResponse<RegistryInner>, RegistryInner>() {
             @Override
             public RegistryInner call(ServiceResponse<RegistryInner> response) {
                 return response.body();
@@ -338,11 +350,11 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
-     * @param registryCreateParameters The parameters for creating a container registry.
+     * @param registry The parameters for creating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<RegistryInner>> createWithServiceResponseAsync(String resourceGroupName, String registryName, RegistryCreateParametersInner registryCreateParameters) {
+    public Observable<ServiceResponse<RegistryInner>> createWithServiceResponseAsync(String resourceGroupName, String registryName, RegistryInner registry) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -355,11 +367,11 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (registryCreateParameters == null) {
-            throw new IllegalArgumentException("Parameter registryCreateParameters is required and cannot be null.");
+        if (registry == null) {
+            throw new IllegalArgumentException("Parameter registry is required and cannot be null.");
         }
-        Validator.validate(registryCreateParameters);
-        Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), registryCreateParameters, this.client.acceptLanguage(), this.client.userAgent());
+        Validator.validate(registry);
+        Observable<Response<ResponseBody>> observable = service.create(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), registry, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<RegistryInner>() { }.getType());
     }
 
@@ -368,14 +380,14 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
-     * @param registryCreateParameters The parameters for creating a container registry.
+     * @param registry The parameters for creating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the RegistryInner object if successful.
      */
-    public RegistryInner beginCreate(String resourceGroupName, String registryName, RegistryCreateParametersInner registryCreateParameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, registryName, registryCreateParameters).toBlocking().single().body();
+    public RegistryInner beginCreate(String resourceGroupName, String registryName, RegistryInner registry) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, registryName, registry).toBlocking().single().body();
     }
 
     /**
@@ -383,13 +395,13 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
-     * @param registryCreateParameters The parameters for creating a container registry.
+     * @param registry The parameters for creating a container registry.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RegistryInner> beginCreateAsync(String resourceGroupName, String registryName, RegistryCreateParametersInner registryCreateParameters, final ServiceCallback<RegistryInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, registryName, registryCreateParameters), serviceCallback);
+    public ServiceFuture<RegistryInner> beginCreateAsync(String resourceGroupName, String registryName, RegistryInner registry, final ServiceCallback<RegistryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, registryName, registry), serviceCallback);
     }
 
     /**
@@ -397,12 +409,12 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
-     * @param registryCreateParameters The parameters for creating a container registry.
+     * @param registry The parameters for creating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RegistryInner object
      */
-    public Observable<RegistryInner> beginCreateAsync(String resourceGroupName, String registryName, RegistryCreateParametersInner registryCreateParameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, registryName, registryCreateParameters).map(new Func1<ServiceResponse<RegistryInner>, RegistryInner>() {
+    public Observable<RegistryInner> beginCreateAsync(String resourceGroupName, String registryName, RegistryInner registry) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, registryName, registry).map(new Func1<ServiceResponse<RegistryInner>, RegistryInner>() {
             @Override
             public RegistryInner call(ServiceResponse<RegistryInner> response) {
                 return response.body();
@@ -415,11 +427,11 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      *
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
-     * @param registryCreateParameters The parameters for creating a container registry.
+     * @param registry The parameters for creating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RegistryInner object
      */
-    public Observable<ServiceResponse<RegistryInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String registryName, RegistryCreateParametersInner registryCreateParameters) {
+    public Observable<ServiceResponse<RegistryInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String registryName, RegistryInner registry) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -432,11 +444,11 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        if (registryCreateParameters == null) {
-            throw new IllegalArgumentException("Parameter registryCreateParameters is required and cannot be null.");
+        if (registry == null) {
+            throw new IllegalArgumentException("Parameter registry is required and cannot be null.");
         }
-        Validator.validate(registryCreateParameters);
-        return service.beginCreate(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), registryCreateParameters, this.client.acceptLanguage(), this.client.userAgent())
+        Validator.validate(registry);
+        return service.beginCreate(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), registry, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RegistryInner>> call(Response<ResponseBody> response) {
@@ -453,7 +465,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
     private ServiceResponse<RegistryInner> beginCreateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RegistryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RegistryInner>() { }.getType())
-                .register(202, new TypeToken<Void>() { }.getType())
+                .register(201, new TypeToken<RegistryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -468,7 +480,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
     public void delete(String resourceGroupName, String registryName) {
-        deleteWithServiceResponseAsync(resourceGroupName, registryName).toBlocking().single().body();
+        deleteWithServiceResponseAsync(resourceGroupName, registryName).toBlocking().last().body();
     }
 
     /**
@@ -490,7 +502,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<Void> deleteAsync(String resourceGroupName, String registryName) {
         return deleteWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<Void>, Void>() {
@@ -507,7 +519,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceResponse} object if successful.
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String resourceGroupName, String registryName) {
         if (this.client.subscriptionId() == null) {
@@ -522,12 +534,80 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.delete(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.delete(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
+    }
+
+    /**
+     * Deletes a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     */
+    public void beginDelete(String resourceGroupName, String registryName) {
+        beginDeleteWithServiceResponseAsync(resourceGroupName, registryName).toBlocking().single().body();
+    }
+
+    /**
+     * Deletes a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<Void> beginDeleteAsync(String resourceGroupName, String registryName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(beginDeleteWithServiceResponseAsync(resourceGroupName, registryName), serviceCallback);
+    }
+
+    /**
+     * Deletes a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<Void> beginDeleteAsync(String resourceGroupName, String registryName) {
+        return beginDeleteWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<Void>, Void>() {
+            @Override
+            public Void call(ServiceResponse<Void> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Deletes a container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceResponse} object if successful.
+     */
+    public Observable<ServiceResponse<Void>> beginDeleteWithServiceResponseAsync(String resourceGroupName, String registryName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (registryName == null) {
+            throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.beginDelete(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = deleteDelegate(response);
+                        ServiceResponse<Void> clientResponse = beginDeleteDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -536,9 +616,10 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             });
     }
 
-    private ServiceResponse<Void> deleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> beginDeleteDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<Void, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<Void>() { }.getType())
+                .register(202, new TypeToken<Void>() { }.getType())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
@@ -556,7 +637,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @return the RegistryInner object if successful.
      */
     public RegistryInner update(String resourceGroupName, String registryName, RegistryUpdateParametersInner registryUpdateParameters) {
-        return updateWithServiceResponseAsync(resourceGroupName, registryName, registryUpdateParameters).toBlocking().single().body();
+        return updateWithServiceResponseAsync(resourceGroupName, registryName, registryUpdateParameters).toBlocking().last().body();
     }
 
     /**
@@ -580,7 +661,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param registryName The name of the container registry.
      * @param registryUpdateParameters The parameters for updating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryInner object
+     * @return the observable for the request
      */
     public Observable<RegistryInner> updateAsync(String resourceGroupName, String registryName, RegistryUpdateParametersInner registryUpdateParameters) {
         return updateWithServiceResponseAsync(resourceGroupName, registryName, registryUpdateParameters).map(new Func1<ServiceResponse<RegistryInner>, RegistryInner>() {
@@ -598,7 +679,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param registryName The name of the container registry.
      * @param registryUpdateParameters The parameters for updating a container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryInner object
+     * @return the observable for the request
      */
     public Observable<ServiceResponse<RegistryInner>> updateWithServiceResponseAsync(String resourceGroupName, String registryName, RegistryUpdateParametersInner registryUpdateParameters) {
         if (this.client.subscriptionId() == null) {
@@ -617,12 +698,89 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             throw new IllegalArgumentException("Parameter registryUpdateParameters is required and cannot be null.");
         }
         Validator.validate(registryUpdateParameters);
-        return service.update(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), registryUpdateParameters, this.client.acceptLanguage(), this.client.userAgent())
+        Observable<Response<ResponseBody>> observable = service.update(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), registryUpdateParameters, this.client.acceptLanguage(), this.client.userAgent());
+        return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<RegistryInner>() { }.getType());
+    }
+
+    /**
+     * Updates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryUpdateParameters The parameters for updating a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RegistryInner object if successful.
+     */
+    public RegistryInner beginUpdate(String resourceGroupName, String registryName, RegistryUpdateParametersInner registryUpdateParameters) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, registryName, registryUpdateParameters).toBlocking().single().body();
+    }
+
+    /**
+     * Updates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryUpdateParameters The parameters for updating a container registry.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<RegistryInner> beginUpdateAsync(String resourceGroupName, String registryName, RegistryUpdateParametersInner registryUpdateParameters, final ServiceCallback<RegistryInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginUpdateWithServiceResponseAsync(resourceGroupName, registryName, registryUpdateParameters), serviceCallback);
+    }
+
+    /**
+     * Updates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryUpdateParameters The parameters for updating a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RegistryInner object
+     */
+    public Observable<RegistryInner> beginUpdateAsync(String resourceGroupName, String registryName, RegistryUpdateParametersInner registryUpdateParameters) {
+        return beginUpdateWithServiceResponseAsync(resourceGroupName, registryName, registryUpdateParameters).map(new Func1<ServiceResponse<RegistryInner>, RegistryInner>() {
+            @Override
+            public RegistryInner call(ServiceResponse<RegistryInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Updates a container registry with the specified parameters.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param registryUpdateParameters The parameters for updating a container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RegistryInner object
+     */
+    public Observable<ServiceResponse<RegistryInner>> beginUpdateWithServiceResponseAsync(String resourceGroupName, String registryName, RegistryUpdateParametersInner registryUpdateParameters) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (registryName == null) {
+            throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        if (registryUpdateParameters == null) {
+            throw new IllegalArgumentException("Parameter registryUpdateParameters is required and cannot be null.");
+        }
+        Validator.validate(registryUpdateParameters);
+        return service.beginUpdate(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), registryUpdateParameters, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryInner>>>() {
                 @Override
                 public Observable<ServiceResponse<RegistryInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RegistryInner> clientResponse = updateDelegate(response);
+                        ServiceResponse<RegistryInner> clientResponse = beginUpdateDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -631,9 +789,10 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             });
     }
 
-    private ServiceResponse<RegistryInner> updateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+    private ServiceResponse<RegistryInner> beginUpdateDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RegistryInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RegistryInner>() { }.getType())
+                .register(201, new TypeToken<RegistryInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -868,9 +1027,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the RegistryListCredentials object if successful.
+     * @return the RegistryListCredentialsResultInner object if successful.
      */
-    public RegistryListCredentials listCredentials(String resourceGroupName, String registryName) {
+    public RegistryListCredentialsResultInner listCredentials(String resourceGroupName, String registryName) {
         return listCredentialsWithServiceResponseAsync(resourceGroupName, registryName).toBlocking().single().body();
     }
 
@@ -883,7 +1042,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RegistryListCredentials> listCredentialsAsync(String resourceGroupName, String registryName, final ServiceCallback<RegistryListCredentials> serviceCallback) {
+    public ServiceFuture<RegistryListCredentialsResultInner> listCredentialsAsync(String resourceGroupName, String registryName, final ServiceCallback<RegistryListCredentialsResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(listCredentialsWithServiceResponseAsync(resourceGroupName, registryName), serviceCallback);
     }
 
@@ -893,12 +1052,12 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryListCredentials object
+     * @return the observable to the RegistryListCredentialsResultInner object
      */
-    public Observable<RegistryListCredentials> listCredentialsAsync(String resourceGroupName, String registryName) {
-        return listCredentialsWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<RegistryListCredentials>, RegistryListCredentials>() {
+    public Observable<RegistryListCredentialsResultInner> listCredentialsAsync(String resourceGroupName, String registryName) {
+        return listCredentialsWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<RegistryListCredentialsResultInner>, RegistryListCredentialsResultInner>() {
             @Override
-            public RegistryListCredentials call(ServiceResponse<RegistryListCredentials> response) {
+            public RegistryListCredentialsResultInner call(ServiceResponse<RegistryListCredentialsResultInner> response) {
                 return response.body();
             }
         });
@@ -910,9 +1069,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param resourceGroupName The name of the resource group to which the container registry belongs.
      * @param registryName The name of the container registry.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryListCredentials object
+     * @return the observable to the RegistryListCredentialsResultInner object
      */
-    public Observable<ServiceResponse<RegistryListCredentials>> listCredentialsWithServiceResponseAsync(String resourceGroupName, String registryName) {
+    public Observable<ServiceResponse<RegistryListCredentialsResultInner>> listCredentialsWithServiceResponseAsync(String resourceGroupName, String registryName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -926,11 +1085,11 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.listCredentials(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryListCredentials>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryListCredentialsResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<RegistryListCredentials>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<RegistryListCredentialsResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RegistryListCredentials> clientResponse = listCredentialsDelegate(response);
+                        ServiceResponse<RegistryListCredentialsResultInner> clientResponse = listCredentialsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -939,9 +1098,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             });
     }
 
-    private ServiceResponse<RegistryListCredentials> listCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RegistryListCredentials, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RegistryListCredentials>() { }.getType())
+    private ServiceResponse<RegistryListCredentialsResultInner> listCredentialsDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RegistryListCredentialsResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RegistryListCredentialsResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }
@@ -955,9 +1114,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the RegistryListCredentials object if successful.
+     * @return the RegistryListCredentialsResultInner object if successful.
      */
-    public RegistryListCredentials regenerateCredential(String resourceGroupName, String registryName, PasswordName name) {
+    public RegistryListCredentialsResultInner regenerateCredential(String resourceGroupName, String registryName, PasswordName name) {
         return regenerateCredentialWithServiceResponseAsync(resourceGroupName, registryName, name).toBlocking().single().body();
     }
 
@@ -971,7 +1130,7 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<RegistryListCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName name, final ServiceCallback<RegistryListCredentials> serviceCallback) {
+    public ServiceFuture<RegistryListCredentialsResultInner> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName name, final ServiceCallback<RegistryListCredentialsResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(regenerateCredentialWithServiceResponseAsync(resourceGroupName, registryName, name), serviceCallback);
     }
 
@@ -982,12 +1141,12 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param registryName The name of the container registry.
      * @param name Specifies name of the password which should be regenerated -- password or password2. Possible values include: 'password', 'password2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryListCredentials object
+     * @return the observable to the RegistryListCredentialsResultInner object
      */
-    public Observable<RegistryListCredentials> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName name) {
-        return regenerateCredentialWithServiceResponseAsync(resourceGroupName, registryName, name).map(new Func1<ServiceResponse<RegistryListCredentials>, RegistryListCredentials>() {
+    public Observable<RegistryListCredentialsResultInner> regenerateCredentialAsync(String resourceGroupName, String registryName, PasswordName name) {
+        return regenerateCredentialWithServiceResponseAsync(resourceGroupName, registryName, name).map(new Func1<ServiceResponse<RegistryListCredentialsResultInner>, RegistryListCredentialsResultInner>() {
             @Override
-            public RegistryListCredentials call(ServiceResponse<RegistryListCredentials> response) {
+            public RegistryListCredentialsResultInner call(ServiceResponse<RegistryListCredentialsResultInner> response) {
                 return response.body();
             }
         });
@@ -1000,9 +1159,9 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
      * @param registryName The name of the container registry.
      * @param name Specifies name of the password which should be regenerated -- password or password2. Possible values include: 'password', 'password2'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RegistryListCredentials object
+     * @return the observable to the RegistryListCredentialsResultInner object
      */
-    public Observable<ServiceResponse<RegistryListCredentials>> regenerateCredentialWithServiceResponseAsync(String resourceGroupName, String registryName, PasswordName name) {
+    public Observable<ServiceResponse<RegistryListCredentialsResultInner>> regenerateCredentialWithServiceResponseAsync(String resourceGroupName, String registryName, PasswordName name) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -1021,11 +1180,11 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
         RegenerateCredentialParameters regenerateCredentialParameters = new RegenerateCredentialParameters();
         regenerateCredentialParameters.withName(name);
         return service.regenerateCredential(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), this.client.acceptLanguage(), regenerateCredentialParameters, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryListCredentials>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryListCredentialsResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<RegistryListCredentials>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<RegistryListCredentialsResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<RegistryListCredentials> clientResponse = regenerateCredentialDelegate(response);
+                        ServiceResponse<RegistryListCredentialsResultInner> clientResponse = regenerateCredentialDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1034,9 +1193,95 @@ public class RegistriesInner implements InnerSupportsGet<RegistryInner>, InnerSu
             });
     }
 
-    private ServiceResponse<RegistryListCredentials> regenerateCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<RegistryListCredentials, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<RegistryListCredentials>() { }.getType())
+    private ServiceResponse<RegistryListCredentialsResultInner> regenerateCredentialDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RegistryListCredentialsResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RegistryListCredentialsResultInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the RegistryUsageListResultInner object if successful.
+     */
+    public RegistryUsageListResultInner listUsages(String resourceGroupName, String registryName) {
+        return listUsagesWithServiceResponseAsync(resourceGroupName, registryName).toBlocking().single().body();
+    }
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<RegistryUsageListResultInner> listUsagesAsync(String resourceGroupName, String registryName, final ServiceCallback<RegistryUsageListResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(listUsagesWithServiceResponseAsync(resourceGroupName, registryName), serviceCallback);
+    }
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RegistryUsageListResultInner object
+     */
+    public Observable<RegistryUsageListResultInner> listUsagesAsync(String resourceGroupName, String registryName) {
+        return listUsagesWithServiceResponseAsync(resourceGroupName, registryName).map(new Func1<ServiceResponse<RegistryUsageListResultInner>, RegistryUsageListResultInner>() {
+            @Override
+            public RegistryUsageListResultInner call(ServiceResponse<RegistryUsageListResultInner> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * Gets the quota usages for the specified container registry.
+     *
+     * @param resourceGroupName The name of the resource group to which the container registry belongs.
+     * @param registryName The name of the container registry.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the RegistryUsageListResultInner object
+     */
+    public Observable<ServiceResponse<RegistryUsageListResultInner>> listUsagesWithServiceResponseAsync(String resourceGroupName, String registryName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (registryName == null) {
+            throw new IllegalArgumentException("Parameter registryName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listUsages(this.client.subscriptionId(), resourceGroupName, registryName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<RegistryUsageListResultInner>>>() {
+                @Override
+                public Observable<ServiceResponse<RegistryUsageListResultInner>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<RegistryUsageListResultInner> clientResponse = listUsagesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<RegistryUsageListResultInner> listUsagesDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<RegistryUsageListResultInner, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<RegistryUsageListResultInner>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

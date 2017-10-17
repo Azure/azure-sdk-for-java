@@ -76,7 +76,7 @@
     "dir": "azure-mgmt-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.microsoft.azure.management.containerregistry",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-03"
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-10"
   },
   "cosmosdb": {
     "dir": "azure-mgmt-cosmosdb",
