@@ -7,17 +7,19 @@
 package com.microsoft.rest.http;
 
 import com.google.common.io.CharStreams;
+import com.microsoft.rest.Base64Url;
+import com.microsoft.rest.Base64UrlTests;
+import com.microsoft.rest.DateTimeRfc1123;
 import com.microsoft.rest.HttpBinJSON;
 import com.microsoft.rest.policy.RequestPolicy;
-import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
+import org.joda.time.DateTime;
 import rx.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
-import java.nio.charset.Charset;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -65,6 +67,55 @@ public class MockHttpClient extends HttpClient {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
                     response = new MockHttpResponse(200, new byte[byteCount], responseHeaders);
+                }
+                else if (requestPathLower.startsWith("/base64urlbytes/")) {
+                    final String byteCountString = requestPath.substring("/base64urlbytes/".length());
+                    final int byteCount = Integer.parseInt(byteCountString);
+                    final byte[] bytes = new byte[byteCount];
+                    for (int i = 0; i < byteCount; ++i) {
+                        bytes[i] = (byte)i;
+                    }
+                    final Base64Url base64EncodedBytes = Base64Url.encode(bytes);
+                    response = new MockHttpResponse(200, base64EncodedBytes, responseHeaders);
+                }
+                else if (requestPathLower.equals("/base64urllistofbytes")) {
+                    final List<String> base64EncodedBytesList = new ArrayList<>();
+                    for (int i = 0; i < 3; ++i) {
+                        final int byteCount = (i + 1) * 10;
+                        final byte[] bytes = new byte[byteCount];
+                        for (int j = 0; j < byteCount; ++j) {
+                            bytes[j] = (byte)j;
+                        }
+                        final Base64Url base64UrlEncodedBytes = Base64Url.encode(bytes);
+                        base64EncodedBytesList.add(base64UrlEncodedBytes.toString());
+                    }
+                    response = new MockHttpResponse(200, base64EncodedBytesList, responseHeaders);
+                }
+                else if (requestPathLower.equals("/base64urllistoflistofbytes")) {
+                    final List<List<String>> result = new ArrayList<>();
+                    for (int i = 0; i < 2; ++i) {
+                        final List<String> innerList = new ArrayList<>();
+                        for (int j = 0; j < (i + 1) * 2; ++j) {
+                            final int byteCount = (j + 1) * 5;
+                            final byte[] bytes = new byte[byteCount];
+                            for (int k = 0; k < byteCount; ++k) {
+                                bytes[k] = (byte)k;
+                            }
+
+                            final Base64Url base64UrlEncodedBytes = Base64Url.encode(bytes);
+                            innerList.add(base64UrlEncodedBytes.toString());
+                        }
+                        result.add(innerList);
+                    }
+                    response = new MockHttpResponse(200, result, responseHeaders);
+                }
+                else if (requestPathLower.equals("/datetimerfc1123")) {
+                    final DateTimeRfc1123 now = new DateTimeRfc1123(new DateTime(0));
+                    final String result = now.toString();
+                    response = new MockHttpResponse(200, result, responseHeaders);
+                }
+                else if (requestPathLower.equals("/datetimeunix")) {
+                    response = new MockHttpResponse(200, 0, responseHeaders);
                 }
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();

@@ -12,7 +12,6 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
-import com.fasterxml.jackson.databind.type.TypeBindings;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
@@ -21,7 +20,6 @@ import com.microsoft.rest.protocol.SerializerAdapter;
 
 import java.io.IOException;
 import java.io.StringWriter;
-import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -99,17 +97,9 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         return Joiner.on(format.getDelimiter()).join(serialized);
     }
 
-    private JavaType constructJavaType(final Type type) {
-        if (type instanceof ParameterizedType) {
-            JavaType[] javaTypeArgs = new JavaType[((ParameterizedType) type).getActualTypeArguments().length];
-            for (int i = 0; i != ((ParameterizedType) type).getActualTypeArguments().length; ++i) {
-                javaTypeArgs[i] = constructJavaType(((ParameterizedType) type).getActualTypeArguments()[i]);
-            }
-            return mapper.getTypeFactory().constructType(type,
-                TypeBindings.create((Class<?>) ((ParameterizedType) type).getRawType(), javaTypeArgs));
-        } else {
-            return mapper.getTypeFactory().constructType(type);
-        }
+    @Override
+    public JacksonTypeFactory getTypeFactory() {
+        return new JacksonTypeFactory(mapper.getTypeFactory());
     }
 
     @Override
@@ -118,7 +108,9 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
         if (value == null || value.isEmpty()) {
             return null;
         }
-        return (T) serializer().readValue(value, constructJavaType(type));
+        final JacksonTypeFactory typeFactory = getTypeFactory();
+        final JavaType javaType = typeFactory.create(type);
+        return (T) serializer().readValue(value, javaType);
     }
 
     /**

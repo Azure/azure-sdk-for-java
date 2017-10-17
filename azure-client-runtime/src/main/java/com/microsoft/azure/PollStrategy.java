@@ -35,7 +35,7 @@ abstract class PollStrategy {
         this.delayInMilliseconds = delayInMilliseconds;
     }
 
-    protected <T> T deserialize(String value, Type returnType) throws IOException {
+    protected Object deserialize(String value, Type returnType) throws IOException {
         return restProxy.deserialize(value, returnType);
     }
 
