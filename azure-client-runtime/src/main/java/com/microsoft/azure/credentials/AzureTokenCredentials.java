@@ -56,6 +56,9 @@ public abstract class AzureTokenCredentials extends TokenCredentials {
                     break;
                 } else if (endpoint.getKey().equals(Endpoint.GRAPH.identifier())) {
                     resource = environment().graphEndpoint();
+                } else if (endpoint.getKey().equals(Endpoint.DATA_LAKE_STORE.identifier())
+                               || endpoint.getKey().equals(Endpoint.DATA_LAKE_ANALYTICS.identifier())) {
+                    resource = environment().dataLakeEndpointResourceId();
                 }
             }
         }

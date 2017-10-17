@@ -1,8 +1,5 @@
 package com.microsoft.rest;
 
-import com.microsoft.rest.http.ContentType;
-import com.microsoft.rest.protocol.SerializerAdapter;
-import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.annotations.BodyParam;
 import com.microsoft.rest.annotations.DELETE;
 import com.microsoft.rest.annotations.ExpectedResponses;
@@ -18,19 +15,27 @@ import com.microsoft.rest.annotations.PUT;
 import com.microsoft.rest.annotations.PathParam;
 import com.microsoft.rest.annotations.QueryParam;
 import com.microsoft.rest.annotations.UnexpectedResponseExceptionType;
+import com.microsoft.rest.http.ContentType;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeaders;
+import com.microsoft.rest.protocol.SerializerAdapter;
+import com.microsoft.rest.serializer.JacksonAdapter;
+import org.junit.Assert;
 import org.junit.Test;
 import rx.Completable;
 import rx.Observable;
 import rx.Single;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public abstract class RestProxyTests {
 
@@ -59,7 +64,7 @@ public abstract class RestProxyTests {
         final byte[] result = createService(Service1.class)
                 .getByteArray();
         assertNotNull(result);
-        assertEquals(result.length, 100);
+        assertEquals(100, result.length);
     }
 
     @Test
@@ -68,7 +73,7 @@ public abstract class RestProxyTests {
                 .getByteArrayAsync()
                 .toBlocking().value();
         assertNotNull(result);
-        assertEquals(result.length, 100);
+        assertEquals(100, result.length);
     }
 
     @Test
@@ -106,6 +111,14 @@ public abstract class RestProxyTests {
                 .toBlocking().value();
         assertNotNull(result);
         assertEquals(result.length, 50);
+    }
+
+    @Test
+    public void SyncRequestWithEmptyByteArrayReturnTypeAndParameterizedHostAndPath() {
+        final byte[] result = createService(Service2.class)
+                .getByteArray("httpbin", 0);
+        assertNotNull(result);
+        assertEquals(result.length, 0);
     }
 
     @Host("http://httpbin.org")
@@ -1144,8 +1157,100 @@ public abstract class RestProxyTests {
         assertEquals(new String(new byte[] { 0, 1, 2, 3, 4 }), result.data);
     }
 
+    @Host("http://httpbin.org")
+    private interface Service20 {
+        @GET("bytes/100")
+        RestResponse<HttpBinHeaders> getBytes100OnlyHeaders();
+
+        @GET("bytes/100")
+        RestResponseWithBody<HttpBinHeaders,byte[]> getBytes100BodyAndHeaders();
+
+        @PUT("put")
+        RestResponse<HttpBinHeaders> putOnlyHeaders(@BodyParam String body);
+
+        @PUT("put")
+        RestResponseWithBody<HttpBinHeaders,HttpBinJSON> putBodyAndHeaders(@BodyParam String body);
+    }
+
+    @Test
+    public void service20GetBytes100OnlyHeaders() {
+        final RestResponse<HttpBinHeaders> response = createService(Service20.class)
+                .getBytes100OnlyHeaders();
+        assertNotNull(response);
+
+        assertEquals(200, response.statusCode());
+
+        final HttpBinHeaders headers = response.headers();
+        assertNotNull(headers);
+        assertEquals(true, headers.accessControlAllowCredentials);
+        assertEquals("keep-alive", headers.connection);
+        assertNotNull(headers.date);
+        assertEquals("1.1 vegur", headers.via);
+        Assert.assertNotEquals(0, headers.xProcessedTime);
+    }
+
+    @Test
+    public void service20GetBytes100BodyAndHeaders() {
+        final RestResponseWithBody<HttpBinHeaders,byte[]> response = createService(Service20.class)
+                .getBytes100BodyAndHeaders();
+        assertNotNull(response);
+
+        assertEquals(200, response.statusCode());
+
+        final byte[] body = response.body();
+        assertNotNull(body);
+        assertEquals(100, body.length);
+
+        final HttpBinHeaders headers = response.headers();
+        assertNotNull(headers);
+        assertEquals(true, headers.accessControlAllowCredentials);
+        assertEquals("keep-alive", headers.connection);
+        assertNotNull(headers.date);
+        assertEquals("1.1 vegur", headers.via);
+        Assert.assertNotEquals(0, headers.xProcessedTime);
+    }
+
+    @Test
+    public void service20PutOnlyHeaders() {
+        final RestResponse<HttpBinHeaders> response = createService(Service20.class)
+                .putOnlyHeaders("body string");
+        assertNotNull(response);
+
+        assertEquals(200, response.statusCode());
+
+        final HttpBinHeaders headers = response.headers();
+        assertNotNull(headers);
+        assertEquals(true, headers.accessControlAllowCredentials);
+        assertEquals("keep-alive", headers.connection);
+        assertNotNull(headers.date);
+        assertEquals("1.1 vegur", headers.via);
+        Assert.assertNotEquals(0, headers.xProcessedTime);
+    }
+
+    @Test
+    public void service20PutBodyAndHeaders() {
+        final RestResponseWithBody<HttpBinHeaders,HttpBinJSON> response = createService(Service20.class)
+                .putBodyAndHeaders("body string");
+        assertNotNull(response);
+
+        assertEquals(200, response.statusCode());
+
+        final HttpBinJSON body = response.body();
+        assertNotNull(body);
+        assertEquals("http://httpbin.org/put", body.url);
+        assertEquals("body string", body.data);
+
+        final HttpBinHeaders headers = response.headers();
+        assertNotNull(headers);
+        assertEquals(true, headers.accessControlAllowCredentials);
+        assertEquals("keep-alive", headers.connection);
+        assertNotNull(headers.date);
+        assertEquals("1.1 vegur", headers.via);
+        Assert.assertNotEquals(0, headers.xProcessedTime);
+    }
+
     // Helpers
-    private <T> T createService(Class<T> serviceClass) {
+    protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
         return RestProxy.create(serviceClass, null, httpClient, serializer);
     }

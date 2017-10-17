@@ -11,6 +11,7 @@ import com.microsoft.rest.RestException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.ConcurrentModificationException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
@@ -57,7 +58,7 @@ public abstract class PagedList<E> implements List<E> {
 
     private void cachePage(String nextPageLink) {
         try {
-            while (nextPageLink != null) {
+            while (nextPageLink != null && nextPageLink != "") {
                 cachedPage = nextPage(nextPageLink);
                 if (cachedPage == null) {
                     break;
@@ -139,8 +140,14 @@ public abstract class PagedList<E> implements List<E> {
      * The implementation of {@link ListIterator} for PagedList.
      */
     private class ListItr implements ListIterator<E> {
-        /** The list iterator for the actual list of items. */
-        private ListIterator<E> itemsListItr;
+        /**
+         * index of next element to return.
+         */
+        private int nextIndex;
+        /**
+         * index of last element returned; -1 if no such action happened.
+         */
+        private int lastRetIndex = -1;
 
         /**
          * Creates an instance of the ListIterator.
@@ -148,61 +155,108 @@ public abstract class PagedList<E> implements List<E> {
          * @param index the position in the list to start.
          */
         ListItr(int index) {
-            itemsListItr = items.listIterator(index);
+            this.nextIndex = index;
         }
 
         @Override
         public boolean hasNext() {
-            return itemsListItr.hasNext() || hasNextPage();
+            return this.nextIndex != items.size() || hasNextPage();
         }
 
         @Override
         public E next() {
-            if (!itemsListItr.hasNext()) {
+            if (this.nextIndex >= items.size()) {
                 if (!hasNextPage()) {
                     throw new NoSuchElementException();
                 } else {
-                    int size = items.size();
                     loadNextPage();
-                    itemsListItr = items.listIterator(size);
+                }
+                // Recurse until we load a page with non-zero items.
+                return next();
+            } else {
+                try {
+                    E nextItem = items.get(this.nextIndex);
+                    this.lastRetIndex = this.nextIndex;
+                    this.nextIndex = this.nextIndex + 1;
+                    return nextItem;
+                } catch (IndexOutOfBoundsException ex) {
+                    // The nextIndex got invalid means a different instance of iterator
+                    // removed item from this index.
+                    throw new ConcurrentModificationException();
                 }
             }
-            return itemsListItr.next();
         }
 
         @Override
         public void remove() {
-            itemsListItr.remove();
+            if (this.lastRetIndex < 0) {
+                throw new IllegalStateException();
+            } else {
+                try {
+                    items.remove(this.lastRetIndex);
+                    this.nextIndex = this.lastRetIndex;
+                    this.lastRetIndex = -1;
+                } catch (IndexOutOfBoundsException ex) {
+                    throw new ConcurrentModificationException();
+                }
+            }
         }
 
         @Override
         public boolean hasPrevious() {
-            return itemsListItr.hasPrevious();
+            return this.nextIndex != 0;
         }
 
         @Override
         public E previous() {
-            return itemsListItr.previous();
+            int i = this.nextIndex - 1;
+            if (i < 0) {
+                throw new NoSuchElementException();
+            } else if (i >= items.size()) {
+                    throw new ConcurrentModificationException();
+            } else {
+                try {
+                    this.nextIndex = i;
+                    this.lastRetIndex = i;
+                    return items.get(this.lastRetIndex);
+                } catch (IndexOutOfBoundsException ex) {
+                    throw new ConcurrentModificationException();
+                }
+            }
         }
 
         @Override
         public int nextIndex() {
-            return itemsListItr.nextIndex();
+            return this.nextIndex;
         }
 
         @Override
         public int previousIndex() {
-            return itemsListItr.previousIndex();
+            return this.nextIndex - 1;
         }
 
         @Override
         public void set(E e) {
-            itemsListItr.set(e);
+            if (this.lastRetIndex < 0) {
+                throw new IllegalStateException();
+            } else {
+                try {
+                    items.set(this.lastRetIndex, e);
+                } catch (IndexOutOfBoundsException ex) {
+                    throw new ConcurrentModificationException();
+                }
+            }
         }
 
         @Override
         public void add(E e) {
-            itemsListItr.add(e);
+            try {
+                items.add(this.nextIndex, e);
+                this.nextIndex = this.nextIndex + 1;
+                this.lastRetIndex = -1;
+            } catch (IndexOutOfBoundsException ex) {
+                throw new ConcurrentModificationException();
+            }
         }
     }
 

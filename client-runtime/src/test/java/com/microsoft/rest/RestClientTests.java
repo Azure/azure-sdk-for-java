@@ -10,6 +10,7 @@ package com.microsoft.rest;
 import com.microsoft.rest.credentials.BasicAuthenticationCredentials;
 import com.microsoft.rest.credentials.TokenCredentials;
 import com.microsoft.rest.protocol.SerializerAdapter;
+import com.microsoft.rest.protocol.TypeFactory;
 import com.microsoft.rest.serializer.JacksonAdapter;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
@@ -128,6 +129,10 @@ public class RestClientTests {
 
                 @Override
                 public <U> U deserialize(String value, Type type, Encoding encoding) throws IOException {
+                    return null;
+                }
+                
+                public TypeFactory getTypeFactory() {
                     return null;
                 }
             })

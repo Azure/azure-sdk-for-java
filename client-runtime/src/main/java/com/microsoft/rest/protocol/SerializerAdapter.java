@@ -50,12 +50,15 @@ public interface SerializerAdapter<T> {
     String serialize(Object object, Encoding encoding) throws IOException;
 
     /**
+     * @deprecated Use serialize(Object, Encoding) instead.
+     *
      * Serializes an object into a JSON string.
      *
      * @param object the object to serialize.
      * @return the serialized string. Null if the object to serialize is null.
      * @throws IOException exception from serialization.
      */
+    @Deprecated
     String serialize(Object object) throws IOException;
 
     /**
@@ -78,6 +81,8 @@ public interface SerializerAdapter<T> {
     String serializeList(List<?> list, CollectionFormat format);
 
     /**
+     * @deprecated Use deserialize(String, Type, Encoding) instead.
+     *
      * Deserializes a JSON string into a {@link U} object using the current {@link T}.
      *
      * @param value the string value to deserialize.
@@ -86,6 +91,7 @@ public interface SerializerAdapter<T> {
      * @return the deserialized object.
      * @throws IOException exception in deserialization
      */
+    @Deprecated
     <U> U deserialize(String value, Type type) throws IOException;
 
     /**
@@ -99,4 +105,10 @@ public interface SerializerAdapter<T> {
      * @throws IOException exception in deserialization
      */
     <U> U deserialize(String value, Type type, Encoding encoding) throws IOException;
+
+    /**
+     * Get the TypeFactory for this SerializerAdapter.
+     * @return The TypeFactory for this SerializerAdapter.
+     */
+    TypeFactory getTypeFactory();
 }

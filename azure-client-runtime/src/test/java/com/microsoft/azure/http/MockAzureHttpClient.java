@@ -13,17 +13,23 @@ import com.microsoft.azure.LocationPollStrategy;
 import com.microsoft.azure.MockResource;
 import com.microsoft.azure.ResourceWithProvisioningState;
 import com.microsoft.azure.ProvisioningState;
+import com.microsoft.rest.http.ByteArrayHttpRequestBody;
+import com.microsoft.rest.http.FileRequestBody;
+import com.microsoft.rest.http.FileSegment;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeader;
 import com.microsoft.rest.http.HttpHeaders;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.ByteBufAllocator;
 import rx.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
 
