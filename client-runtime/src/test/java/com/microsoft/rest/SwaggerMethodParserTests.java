@@ -3,6 +3,7 @@ package com.microsoft.rest;
 import com.microsoft.rest.annotations.ExpectedResponses;
 import com.microsoft.rest.annotations.PATCH;
 import com.microsoft.rest.annotations.UnexpectedResponseExceptionType;
+import com.microsoft.rest.entities.HttpBinJSON;
 import org.junit.Test;
 
 import java.lang.reflect.Method;

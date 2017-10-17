@@ -1,5 +1,6 @@
 package com.microsoft.rest;
 
+import com.microsoft.rest.entities.HttpBinJSON;
 import com.microsoft.rest.http.HttpResponse;
 
 public class MyRestException extends RestException {

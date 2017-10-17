@@ -1,4 +1,4 @@
-package com.microsoft.rest;
+package com.microsoft.rest.entities;
 
 import java.util.Map;
 

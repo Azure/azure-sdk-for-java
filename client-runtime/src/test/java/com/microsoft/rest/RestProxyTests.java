@@ -15,6 +15,8 @@ import com.microsoft.rest.annotations.PUT;
 import com.microsoft.rest.annotations.PathParam;
 import com.microsoft.rest.annotations.QueryParam;
 import com.microsoft.rest.annotations.UnexpectedResponseExceptionType;
+import com.microsoft.rest.entities.HttpBinHeaders;
+import com.microsoft.rest.entities.HttpBinJSON;
 import com.microsoft.rest.http.ContentType;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeaders;
@@ -723,7 +725,7 @@ public abstract class RestProxyTests {
             fail("Expected exception.");
         }
         catch (InvalidReturnTypeException e) {
-            assertContains(e.getMessage(), "rx.Observable<com.microsoft.rest.HttpBinJSON>");
+            assertContains(e.getMessage(), "rx.Observable<com.microsoft.rest.entities.HttpBinJSON>");
             assertContains(e.getMessage(), "RestProxyTests$Service15.get()");
         }
     }

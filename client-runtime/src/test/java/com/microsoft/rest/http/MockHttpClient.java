@@ -9,7 +9,7 @@ package com.microsoft.rest.http;
 import com.google.common.io.CharStreams;
 import com.microsoft.rest.Base64Url;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.HttpBinJSON;
+import com.microsoft.rest.entities.HttpBinJSON;
 import com.microsoft.rest.policy.RequestPolicy;
 import org.joda.time.DateTime;
 import rx.Single;
