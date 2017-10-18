@@ -8,23 +8,16 @@
 
 package com.microsoft.azure.management.storage.implementation;
 
-import retrofit2.Retrofit;
-import com.google.common.reflect.TypeToken;
-import com.microsoft.azure.CloudException;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.v2.RestProxy;
+import com.microsoft.rest.v2.annotations.*;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
+
 import java.util.List;
-import okhttp3.ResponseBody;
-import retrofit2.http.GET;
-import retrofit2.http.Header;
-import retrofit2.http.Headers;
-import retrofit2.http.Path;
-import retrofit2.http.Query;
-import retrofit2.Response;
+
 import rx.functions.Func1;
 import rx.Observable;
 
@@ -33,7 +26,7 @@ import rx.Observable;
  * in Usages.
  */
 public class UsagesInner {
-    /** The Retrofit service to perform REST calls. */
+    /** The RestProxy service to perform REST calls. */
     private UsagesService service;
     /** The service client containing this operation class. */
     private StorageManagementClientImpl client;
@@ -41,11 +34,10 @@ public class UsagesInner {
     /**
      * Initializes an instance of UsagesInner.
      *
-     * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public UsagesInner(Retrofit retrofit, StorageManagementClientImpl client) {
-        this.service = retrofit.create(UsagesService.class);
+    public UsagesInner(StorageManagementClientImpl client) {
+        this.service = RestProxy.create(UsagesService.class, client.httpClient(), new AzureJacksonAdapter());
         this.client = client;
     }
 
@@ -53,11 +45,15 @@ public class UsagesInner {
      * The interface defining all the services for Usages to be
      * used by Retrofit to perform actually REST calls.
      */
+    @Host("https://management.azure.com")
     interface UsagesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.Usages list" })
         @GET("subscriptions/{subscriptionId}/providers/Microsoft.Storage/usages")
-        Observable<Response<ResponseBody>> list(@Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<PageImpl<UsageInner>> listAsync(@PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.storage.Usages list" })
+        @GET("subscriptions/{subscriptionId}/providers/Microsoft.Storage/usages")
+        PageImpl<UsageInner> list(@PathParam("subscriptionId") String subscriptionId, @QueryParam("api-version") String apiVersion, @HeaderParam("accept-language") String acceptLanguage, @HeaderParam("User-Agent") String userAgent);
     }
 
     /**
@@ -66,9 +62,7 @@ public class UsagesInner {
      * @return the PagedList<UsageInner> object if successful.
      */
     public PagedList<UsageInner> list() {
-        PageImpl<UsageInner> page = new PageImpl<>();
-        page.setItems(listWithServiceResponseAsync().toBlocking().single().body());
-        page.setNextPageLink(null);
+        PageImpl<UsageInner> page = service.list(client.subscriptionId(), client.apiVersion(), client.acceptLanguage(), client.userAgent());
         return new PagedList<UsageInner>(page) {
             @Override
             public Page<UsageInner> nextPage(String nextPageLink) {
@@ -84,7 +78,12 @@ public class UsagesInner {
      * @return the {@link ServiceFuture} object
      */
     public ServiceFuture<List<UsageInner>> listAsync(final ServiceCallback<List<UsageInner>> serviceCallback) {
-        return ServiceFuture.fromResponse(listWithServiceResponseAsync(), serviceCallback);
+        return ServiceFuture.fromBody(listAsync().map(new Func1<Page<UsageInner>, List<UsageInner>>() {
+            @Override
+            public List<UsageInner> call(Page<UsageInner> usageInnerPage) {
+                return usageInnerPage.items();
+            }
+        }), serviceCallback);
     }
 
     /**
@@ -93,48 +92,13 @@ public class UsagesInner {
      * @return the observable to the List&lt;UsageInner&gt; object
      */
     public Observable<Page<UsageInner>> listAsync() {
-        return listWithServiceResponseAsync().map(new Func1<ServiceResponse<List<UsageInner>>, Page<UsageInner>>() {
+        Observable<PageImpl<UsageInner>> res = service.listAsync(client.subscriptionId(), client.apiVersion(), client.acceptLanguage(), client.userAgent());
+        return res.map(new Func1<PageImpl<UsageInner>, Page<UsageInner>>() {
             @Override
-            public Page<UsageInner> call(ServiceResponse<List<UsageInner>> response) {
-                PageImpl<UsageInner> page = new PageImpl<>();
-                page.setItems(response.body());
-                return page;
+            public Page<UsageInner> call(PageImpl<UsageInner> usageInnerPage) {
+                return usageInnerPage;
             }
         });
-    }
-
-    /**
-     * Gets the current usage count and the limit for the resources under the subscription.
-     *
-     * @return the observable to the List&lt;UsageInner&gt; object
-     */
-    public Observable<ServiceResponse<List<UsageInner>>> listWithServiceResponseAsync() {
-        if (this.client.subscriptionId() == null) {
-            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
-        }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<UsageInner>>>>() {
-                @Override
-                public Observable<ServiceResponse<List<UsageInner>>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<PageImpl<UsageInner>> result = listDelegate(response);
-                        ServiceResponse<List<UsageInner>> clientResponse = new ServiceResponse<List<UsageInner>>(result.body().items(), result.response());
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<PageImpl<UsageInner>> listDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<UsageInner>, CloudException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<UsageInner>>() { }.getType())
-                .registerError(CloudException.class)
-                .build(response);
     }
 
 }

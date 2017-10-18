@@ -194,7 +194,7 @@ public class StorageManagementClientImpl extends AzureServiceClient {
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
         this.storageAccounts = new StorageAccountsInner(restClient().retrofit(), this);
-        this.usages = new UsagesInner(restClient().retrofit(), this);
+        this.usages = new UsagesInner(this);
         this.azureClient = new AzureClient(this);
     }
 
