@@ -11,6 +11,7 @@ import com.microsoft.rest.RestProxy;
 import com.microsoft.rest.SwaggerMethodParser;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
+import com.microsoft.rest.protocol.SerializerAdapter.Encoding;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func0;
@@ -36,7 +37,7 @@ abstract class PollStrategy {
     }
 
     protected Object deserialize(String value, Type returnType) throws IOException {
-        return restProxy.deserialize(value, returnType);
+        return restProxy.deserialize(value, returnType, Encoding.JSON);
     }
 
     /**

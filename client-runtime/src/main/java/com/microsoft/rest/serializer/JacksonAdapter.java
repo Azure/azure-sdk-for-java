@@ -12,6 +12,8 @@ import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.JavaType;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
+import com.fasterxml.jackson.dataformat.xml.XmlMapper;
+import com.fasterxml.jackson.dataformat.xml.ser.ToXmlGenerator;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
 import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
@@ -38,11 +40,16 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
      */
     private final ObjectMapper simpleMapper;
 
+    private final XmlMapper xmlMapper;
+
     /**
      * Creates a new JacksonAdapter instance with default mapper settings.
      */
     public JacksonAdapter() {
         simpleMapper = initializeObjectMapper(new ObjectMapper());
+        xmlMapper = initializeObjectMapper(new XmlMapper());
+        xmlMapper.configure(ToXmlGenerator.Feature.WRITE_XML_DECLARATION, true);
+        xmlMapper.setDefaultUseWrapper(false);
         mapper = initializeObjectMapper(new ObjectMapper())
                 .registerModule(FlatteningSerializer.getModule(simpleMapper()))
                 .registerModule(FlatteningDeserializer.getModule(simpleMapper()));
@@ -63,13 +70,23 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     }
 
     @Override
-    public String serialize(Object object) throws IOException {
+    public String serialize(Object object, Encoding encoding) throws IOException {
         if (object == null) {
             return null;
         }
         StringWriter writer = new StringWriter();
-        serializer().writeValue(writer, object);
+        if (encoding == Encoding.XML) {
+            xmlMapper.writeValue(writer, object);
+        } else {
+            serializer().writeValue(writer, object);
+        }
+
         return writer.toString();
+    }
+
+    @Override
+    public String serialize(Object object) throws IOException {
+        return serialize(object, Encoding.JSON);
     }
 
     @Override
@@ -104,13 +121,24 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(String value, final Type type) throws IOException {
+    public <T> T deserialize(String value, final Type type, Encoding encoding) throws IOException {
         if (value == null || value.isEmpty()) {
             return null;
         }
+
         final JacksonTypeFactory typeFactory = getTypeFactory();
         final JavaType javaType = typeFactory.create(type);
-        return (T) serializer().readValue(value, javaType);
+        if (encoding == Encoding.XML) {
+            return (T) xmlMapper.readValue(value, javaType);
+        } else {
+            return (T) serializer().readValue(value, javaType);
+        }
+    }
+
+    @Override
+    @SuppressWarnings("unchecked")
+    public <T> T deserialize(String value, final Type type) throws IOException {
+        return deserialize(value, type, Encoding.JSON);
     }
 
     /**
@@ -119,7 +147,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
      *
      * @param mapper the object mapper to use.
      */
-    private static ObjectMapper initializeObjectMapper(ObjectMapper mapper) {
+    private static <T extends ObjectMapper> T initializeObjectMapper(T mapper) {
         mapper.configure(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS, false)
                 .configure(SerializationFeature.WRITE_EMPTY_JSON_ARRAYS, true)
                 .configure(DeserializationFeature.ACCEPT_EMPTY_STRING_AS_NULL_OBJECT, true)

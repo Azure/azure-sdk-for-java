@@ -20,17 +20,45 @@ import java.util.List;
  */
 public interface SerializerAdapter<T> {
     /**
+     * Represents which encoding to use for serialization.
+     */
+    enum Encoding {
+        /**
+         * JavaScript Object Notation.
+         */
+        JSON,
+
+        /**
+         * Extensible Markup Language.
+         */
+        XML
+    }
+
+    /**
      * @return the adapted original serializer
      */
     T serializer();
 
     /**
+     * Serializes an object into a string.
+     *
+     * @param object the object to serialize.
+     * @param encoding the encoding to use for serialization.
+     * @return the serialized string. Null if the object to serialize is null.
+     * @throws IOException exception from serialization.
+     */
+    String serialize(Object object, Encoding encoding) throws IOException;
+
+    /**
+     * @deprecated Use serialize(Object, Encoding) instead.
+     *
      * Serializes an object into a JSON string.
      *
      * @param object the object to serialize.
      * @return the serialized string. Null if the object to serialize is null.
      * @throws IOException exception from serialization.
      */
+    @Deprecated
     String serialize(Object object) throws IOException;
 
     /**
@@ -53,7 +81,9 @@ public interface SerializerAdapter<T> {
     String serializeList(List<?> list, CollectionFormat format);
 
     /**
-     * Deserializes a string into a {@link U} object using the current {@link T}.
+     * @deprecated Use deserialize(String, Type, Encoding) instead.
+     *
+     * Deserializes a JSON string into a {@link U} object using the current {@link T}.
      *
      * @param value the string value to deserialize.
      * @param <U> the type of the deserialized object.
@@ -61,7 +91,20 @@ public interface SerializerAdapter<T> {
      * @return the deserialized object.
      * @throws IOException exception in deserialization
      */
-    <U> U deserialize(String value, final Type type) throws IOException;
+    @Deprecated
+    <U> U deserialize(String value, Type type) throws IOException;
+
+    /**
+     * Deserializes a string into a {@link U} object using the current {@link T}.
+     *
+     * @param value the string value to deserialize.
+     * @param <U> the type of the deserialized object.
+     * @param type the type to deserialize.
+     * @param encoding the encoding used in the serialized value.
+     * @return the deserialized object.
+     * @throws IOException exception in deserialization
+     */
+    <U> U deserialize(String value, Type type, Encoding encoding) throws IOException;
 
     /**
      * Get the TypeFactory for this SerializerAdapter.

@@ -15,6 +15,7 @@ import com.microsoft.rest.http.HttpHeader;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import com.microsoft.rest.http.UrlBuilder;
+import com.microsoft.rest.protocol.SerializerAdapter.Encoding;
 import com.microsoft.rest.protocol.TypeFactory;
 import org.joda.time.DateTime;
 import rx.Completable;
@@ -80,10 +81,11 @@ public class RestProxy implements InvocationHandler {
      * Use this RestProxy's serializer to deserialize the provided String into the provided Type.
      * @param value The String value to deserialize.
      * @param resultType The Type of the object to return.
+     * @param encoding The encoding used in the serialized value.
      * @return The deserialized version of the provided String value.
      */
-    public Object deserialize(String value, Type resultType) {
-        return deserialize(value, resultType, null);
+    public Object deserialize(String value, Type resultType, SerializerAdapter.Encoding encoding) {
+        return deserialize(value, resultType, null, encoding);
     }
 
     /**
@@ -91,12 +93,13 @@ public class RestProxy implements InvocationHandler {
      * @param value The String value to deserialize.
      * @param resultType The Type of the object to return.
      * @param wireType The serialized type that is sent across the network.
+     * @param encoding The encoding used in the serialized value.
      * @return The deserialized version of the provided String value.
      */
-    private Object deserialize(String value, Type resultType, Type wireType) {
+    private Object deserialize(String value, Type resultType, Type wireType, SerializerAdapter.Encoding encoding) {
         final Type wireResponseType = constructWireResponseType(resultType, wireType);
 
-        final Object wireResponse = deserializeInternal(value, wireResponseType);
+        final Object wireResponse = deserializeInternal(value, wireResponseType, encoding);
 
         return convertToResultType(wireResponse, resultType, wireType);
     }
@@ -169,9 +172,9 @@ public class RestProxy implements InvocationHandler {
         return result;
     }
 
-    private <T> T deserializeInternal(String value, Type resultType) {
+    private <T> T deserializeInternal(String value, Type resultType, SerializerAdapter.Encoding encoding) {
         try {
-            return serializer.deserialize(value, resultType);
+            return serializer.deserialize(value, resultType, encoding);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
         }
@@ -249,7 +252,7 @@ public class RestProxy implements InvocationHandler {
             }
 
             if (isJson) {
-                final String bodyContentString = serializer.serialize(bodyContentObject);
+                final String bodyContentString = serializer.serialize(bodyContentObject, bodyEncoding(request.headers()));
                 request.withBody(bodyContentString, contentType);
             }
             else if (bodyContentObject instanceof byte[]) {
@@ -262,7 +265,7 @@ public class RestProxy implements InvocationHandler {
                 }
             }
             else {
-                final String bodyContentString = serializer.serialize(bodyContentObject);
+                final String bodyContentString = serializer.serialize(bodyContentObject, bodyEncoding(request.headers()));
                 request.withBody(bodyContentString, contentType);
             }
         }
@@ -278,7 +281,7 @@ public class RestProxy implements InvocationHandler {
         Exception result;
         try {
             final Constructor<? extends RestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
-            final Object exceptionBody = responseContent == null || responseContent.isEmpty() ? null : serializer.deserialize(responseContent, exceptionBodyType);
+            final Object exceptionBody = responseContent == null || responseContent.isEmpty() ? null : serializer.deserialize(responseContent, exceptionBodyType, bodyEncoding(response.headers()));
 
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + responseContent, response, exceptionBody);
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
@@ -381,7 +384,7 @@ public class RestProxy implements InvocationHandler {
                             .map(new Func1<String, RestResponseWithBody<?, ?>>() {
                                 @Override
                                 public RestResponseWithBody<?, ?> call(String responseBodyString) {
-                                    final Object deserializedBody = deserialize(responseBodyString, deserializedBodyType);
+                                    final Object deserializedBody = deserialize(responseBodyString, deserializedBodyType, bodyEncoding(response.headers()));
                                     return new RestResponseWithBody<>(responseStatusCode, deserializedHeaders, deserializedBody);
                                 }
                             });
@@ -393,17 +396,29 @@ public class RestProxy implements InvocationHandler {
                     .map(new Func1<String, Object>() {
                         @Override
                         public Object call(String responseBodyString) {
-                            return deserialize(responseBodyString, entityType, returnValueWireType);
+                            return deserialize(responseBodyString, entityType, returnValueWireType, bodyEncoding(response.headers()));
                         }
                     });
         }
         return asyncResult;
     }
 
+    private SerializerAdapter.Encoding bodyEncoding(HttpHeaders headers) {
+        String mimeContentType = headers.value("Content-Type");
+        if (mimeContentType != null) {
+            String[] parts = mimeContentType.split(";");
+            if (parts[0].equalsIgnoreCase("application/xml") || parts[0].equalsIgnoreCase("text/xml")) {
+                return SerializerAdapter.Encoding.XML;
+            }
+        }
+
+        return SerializerAdapter.Encoding.JSON;
+    }
+    
     private Object deserializeHeaders(HttpHeaders headers, Type deserializedHeadersType) {
         try {
-            final String headersJsonString = serializer.serialize(headers);
-            return deserialize(headersJsonString, deserializedHeadersType);
+            final String headersJsonString = serializer.serialize(headers, Encoding.JSON);
+            return deserialize(headersJsonString, deserializedHeadersType, Encoding.JSON);
         } catch (IOException e) {
             throw Exceptions.propagate(e);
         }

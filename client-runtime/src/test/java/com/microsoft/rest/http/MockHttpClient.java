@@ -8,9 +8,8 @@ package com.microsoft.rest.http;
 
 import com.google.common.io.CharStreams;
 import com.microsoft.rest.Base64Url;
-import com.microsoft.rest.Base64UrlTests;
 import com.microsoft.rest.DateTimeRfc1123;
-import com.microsoft.rest.HttpBinJSON;
+import com.microsoft.rest.entities.HttpBinJSON;
 import com.microsoft.rest.policy.RequestPolicy;
 import org.joda.time.DateTime;
 import rx.Single;
@@ -66,7 +65,7 @@ public class MockHttpClient extends HttpClient {
                 else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
-                    response = new MockHttpResponse(200, new byte[byteCount], responseHeaders);
+                    response = new MockHttpResponse(200, responseHeaders, new byte[byteCount]);
                 }
                 else if (requestPathLower.startsWith("/base64urlbytes/")) {
                     final String byteCountString = requestPath.substring("/base64urlbytes/".length());
@@ -76,7 +75,7 @@ public class MockHttpClient extends HttpClient {
                         bytes[i] = (byte)i;
                     }
                     final Base64Url base64EncodedBytes = Base64Url.encode(bytes);
-                    response = new MockHttpResponse(200, base64EncodedBytes, responseHeaders);
+                    response = new MockHttpResponse(200, responseHeaders, base64EncodedBytes);
                 }
                 else if (requestPathLower.equals("/base64urllistofbytes")) {
                     final List<String> base64EncodedBytesList = new ArrayList<>();
@@ -89,7 +88,7 @@ public class MockHttpClient extends HttpClient {
                         final Base64Url base64UrlEncodedBytes = Base64Url.encode(bytes);
                         base64EncodedBytesList.add(base64UrlEncodedBytes.toString());
                     }
-                    response = new MockHttpResponse(200, base64EncodedBytesList, responseHeaders);
+                    response = new MockHttpResponse(200, responseHeaders, base64EncodedBytesList);
                 }
                 else if (requestPathLower.equals("/base64urllistoflistofbytes")) {
                     final List<List<String>> result = new ArrayList<>();
@@ -107,15 +106,15 @@ public class MockHttpClient extends HttpClient {
                         }
                         result.add(innerList);
                     }
-                    response = new MockHttpResponse(200, result, responseHeaders);
+                    response = new MockHttpResponse(200, responseHeaders, result);
                 }
                 else if (requestPathLower.equals("/datetimerfc1123")) {
                     final DateTimeRfc1123 now = new DateTimeRfc1123(new DateTime(0));
                     final String result = now.toString();
-                    response = new MockHttpResponse(200, result, responseHeaders);
+                    response = new MockHttpResponse(200, responseHeaders, result);
                 }
                 else if (requestPathLower.equals("/datetimeunix")) {
-                    response = new MockHttpResponse(200, 0, responseHeaders);
+                    response = new MockHttpResponse(200, responseHeaders, 0);
                 }
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
@@ -145,7 +144,7 @@ public class MockHttpClient extends HttpClient {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url();
                     json.data = bodyToString(request);
-                    response = new MockHttpResponse(200, json, responseHeaders);
+                    response = new MockHttpResponse(200, responseHeaders, json);
                 }
                 else if (requestPathLower.startsWith("/status/")) {
                     final String statusCodeString = requestPathLower.substring("/status/".length());
