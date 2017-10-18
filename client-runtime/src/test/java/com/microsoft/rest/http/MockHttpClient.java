@@ -108,6 +108,22 @@ public class MockHttpClient extends HttpClient {
                     }
                     response = new MockHttpResponse(200, responseHeaders, result);
                 }
+                else if (requestPathLower.equals("/base64urlmapofbytes")) {
+                    final Map<String,String> result = new HashMap<>();
+                    for (int i = 0; i < 2; ++i) {
+                        final String key = Integer.toString(i);
+
+                        final int byteCount = (i + 1) * 10;
+                        final byte[] bytes = new byte[byteCount];
+                        for (int j = 0; j < byteCount; ++j) {
+                            bytes[j] = (byte)j;
+                        }
+
+                        final Base64Url base64UrlEncodedBytes = Base64Url.encode(bytes);
+                        result.put(key, base64UrlEncodedBytes.toString());
+                    }
+                    response = new MockHttpResponse(200, responseHeaders, result);
+                }
                 else if (requestPathLower.equals("/datetimerfc1123")) {
                     final DateTimeRfc1123 now = new DateTimeRfc1123(new DateTime(0));
                     final String result = now.toString();

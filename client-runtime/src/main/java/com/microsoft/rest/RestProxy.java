@@ -34,6 +34,8 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
 /**
  * This class can be used to create a proxy implementation for a provided Swagger generated
@@ -97,11 +99,18 @@ public class RestProxy implements InvocationHandler {
      * @return The deserialized version of the provided String value.
      */
     private Object deserialize(String value, Type resultType, Type wireType, SerializerAdapter.Encoding encoding) {
-        final Type wireResponseType = constructWireResponseType(resultType, wireType);
+        Object result;
 
-        final Object wireResponse = deserializeInternal(value, wireResponseType, encoding);
+        if (wireType == null) {
+            result = deserializeInternal(value, resultType, encoding);
+        }
+        else {
+            final Type wireResponseType = constructWireResponseType(resultType, wireType);
+            final Object wireResponse = deserializeInternal(value, wireResponseType, encoding);
+            result = convertToResultType(wireResponse, resultType, wireType);
+        }
 
-        return convertToResultType(wireResponse, resultType, wireType);
+        return result;
     }
 
     private Type constructWireResponseType(Type resultType, Type wireType) {
@@ -129,6 +138,13 @@ public class RestProxy implements InvocationHandler {
                 final TypeFactory typeFactory = serializer.getTypeFactory();
                 wireResponseType = typeFactory.create((ParameterizedType) resultType, wireResponseElementType);
             }
+            else if (resultTypeToken.isSubtypeOf(Map.class)) {
+                final Type resultValueType = getTypeArguments(resultType)[1];
+                final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
+
+                final TypeFactory typeFactory = serializer.getTypeFactory();
+                wireResponseType = typeFactory.create((ParameterizedType) resultType, new Type[] { String.class, wireResponseValueType });
+            }
         }
         return wireResponseType;
     }
@@ -136,36 +152,49 @@ public class RestProxy implements InvocationHandler {
     private Object convertToResultType(Object wireResponse, Type resultType, Type wireType) {
         Object result = wireResponse;
 
-        if (resultType == byte[].class) {
-            if (wireType == Base64Url.class) {
-                result = ((Base64Url) wireResponse).decodedBytes();
-            }
-        }
-        else if (resultType == DateTime.class) {
-            if (wireType == DateTimeRfc1123.class) {
-                result = ((DateTimeRfc1123) wireResponse).dateTime();
-            }
-            else if (wireType == DateTimeUnix.class) {
-                result = ((DateTimeUnix) wireResponse).dateTime();
-            }
-        }
-        else {
-            final TypeToken resultTypeToken = TypeToken.of(resultType);
-            if (resultTypeToken.isSubtypeOf(List.class)) {
-                final Type resultElementType = getTypeArgument(resultType);
+        if (wireResponse != null) {
+            if (resultType == byte[].class) {
+                if (wireType == Base64Url.class) {
+                    result = ((Base64Url) wireResponse).decodedBytes();
+                }
+            } else if (resultType == DateTime.class) {
+                if (wireType == DateTimeRfc1123.class) {
+                    result = ((DateTimeRfc1123) wireResponse).dateTime();
+                } else if (wireType == DateTimeUnix.class) {
+                    result = ((DateTimeUnix) wireResponse).dateTime();
+                }
+            } else {
+                final TypeToken resultTypeToken = TypeToken.of(resultType);
+                if (resultTypeToken.isSubtypeOf(List.class)) {
+                    final Type resultElementType = getTypeArgument(resultType);
 
-                final List<Object> wireResponseList = (List<Object>) wireResponse;
+                    final List<Object> wireResponseList = (List<Object>) wireResponse;
 
-                final int wireResponseListSize = wireResponseList.size();
-                for (int i = 0; i < wireResponseListSize; ++i) {
-                    final Object wireResponseElement = wireResponseList.get(i);
-                    final Object resultElement = convertToResultType(wireResponseElement, resultElementType, wireType);
-                    if (wireResponseElement != resultElement) {
-                        wireResponseList.set(i, resultElement);
+                    final int wireResponseListSize = wireResponseList.size();
+                    for (int i = 0; i < wireResponseListSize; ++i) {
+                        final Object wireResponseElement = wireResponseList.get(i);
+                        final Object resultElement = convertToResultType(wireResponseElement, resultElementType, wireType);
+                        if (wireResponseElement != resultElement) {
+                            wireResponseList.set(i, resultElement);
+                        }
+                    }
+
+                    result = wireResponseList;
+                }
+                else if (resultTypeToken.isSubtypeOf(Map.class)) {
+                    final Type resultValueType = getTypeArguments(resultType)[1];
+
+                    final Map<String,Object> wireResponseMap = (Map<String,Object>) wireResponse;
+
+                    final Set<String> wireResponseKeys = wireResponseMap.keySet();
+                    for (String wireResponseKey : wireResponseKeys) {
+                        final Object wireResponseValue = wireResponseMap.get(wireResponseKey);
+                        final Object resultValue = convertToResultType(wireResponseValue, resultValueType, wireType);
+                        if (wireResponseValue != resultValue) {
+                            wireResponseMap.put(wireResponseKey, resultValue);
+                        }
                     }
                 }
-
-                result = wireResponseList;
             }
         }
 
