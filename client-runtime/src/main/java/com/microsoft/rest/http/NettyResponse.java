@@ -15,7 +15,6 @@ import rx.functions.Func1;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
-import java.text.NumberFormat;
 import java.util.List;
 import java.util.Map.Entry;
 
