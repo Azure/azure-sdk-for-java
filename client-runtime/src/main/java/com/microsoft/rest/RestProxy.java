@@ -143,7 +143,7 @@ public class RestProxy implements InvocationHandler {
                 final Type wireResponseValueType = constructWireResponseType(resultValueType, wireType);
 
                 final TypeFactory typeFactory = serializer.getTypeFactory();
-                wireResponseType = typeFactory.create((ParameterizedType) resultType, new Type[] { String.class, wireResponseValueType });
+                wireResponseType = typeFactory.create((ParameterizedType) resultType, new Type[] {String.class, wireResponseValueType});
             }
         }
         return wireResponseType;
@@ -184,7 +184,7 @@ public class RestProxy implements InvocationHandler {
                 else if (resultTypeToken.isSubtypeOf(Map.class)) {
                     final Type resultValueType = getTypeArguments(resultType)[1];
 
-                    final Map<String,Object> wireResponseMap = (Map<String,Object>) wireResponse;
+                    final Map<String, Object> wireResponseMap = (Map<String, Object>) wireResponse;
 
                     final Set<String> wireResponseKeys = wireResponseMap.keySet();
                     for (String wireResponseKey : wireResponseKeys) {
