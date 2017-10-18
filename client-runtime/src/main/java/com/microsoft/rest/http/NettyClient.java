@@ -165,7 +165,7 @@ public final class NettyClient extends HttpClient {
                             for (HttpHeader header : request.headers()) {
                                 raw.headers().add(header.name(), header.value());
                             }
-                            raw.headers().add(HEADER_CONTENT_LENGTH, raw.content().readableBytes());
+                            raw.headers().set(HEADER_CONTENT_LENGTH, raw.content().readableBytes());
                             channel.writeAndFlush(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
                                 @Override
                                 public void operationComplete(Future<? super Void> v) throws Exception {
