@@ -353,7 +353,7 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private Single<?> handleRestResponseReturnTypeAsync(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
+    private Single<?> handleRestResponseReturnTypeAsync(HttpResponse response, SwaggerMethodParser methodParser, Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final int responseStatusCode = response.statusCode();
 
