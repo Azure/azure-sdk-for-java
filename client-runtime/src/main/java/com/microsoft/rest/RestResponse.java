@@ -9,19 +9,23 @@ package com.microsoft.rest;
 /**
  * The response object that is a result of making a REST request.
  * @param <THeaders> The deserialized type of the response headers.
+ * @param <TBody> The deserialized type of the response body.
  */
-public class RestResponse<THeaders> {
+public class RestResponse<THeaders, TBody> {
     private final int statusCode;
     private final THeaders headers;
+    private final TBody body;
 
     /**
      * Create a new RestResponse object.
      * @param statusCode The status code of the HTTP response.
      * @param headers The deserialized headers of the HTTP response.
+     * @param body The deserialized body.
      */
-    public RestResponse(int statusCode, THeaders headers) {
+    public RestResponse(int statusCode, THeaders headers, TBody body) {
         this.statusCode = statusCode;
         this.headers = headers;
+        this.body = body;
     }
 
     /**
@@ -38,5 +42,13 @@ public class RestResponse<THeaders> {
      */
     public THeaders headers() {
         return headers;
+    }
+
+    /**
+     * The deserialized body of the HTTP response.
+     * @return The deserialized body of the HTTP response.
+     */
+    public TBody body() {
+        return body;
     }
 }

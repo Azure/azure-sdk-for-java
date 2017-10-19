@@ -355,40 +355,35 @@ public class RestProxy implements InvocationHandler {
             }
             asyncResult = responseBodyBytesAsync;
         } else if (entityTypeToken.isSubtypeOf(RestResponse.class)) {
-            if (!entityTypeToken.isSubtypeOf(RestResponseWithBody.class)) {
-                final Type deserializedHeadersType = getTypeArgument(entityType);
-                final HttpHeaders responseHeaders = response.headers();
-                final Object deserializedHeaders = deserializeHeaders(responseHeaders, deserializedHeadersType);
-                asyncResult = Single.just(new RestResponse<>(responseStatusCode, deserializedHeaders));
-            }
-            else {
-                final Type[] deserializedTypes = getTypeArguments(entityType);
+            final Type[] deserializedTypes = getTypeArguments(entityType);
 
-                final Type deserializedHeadersType = deserializedTypes[0];
-                final HttpHeaders responseHeaders = response.headers();
-                final Object deserializedHeaders = deserializeHeaders(responseHeaders, deserializedHeadersType);
+            final Type deserializedHeadersType = deserializedTypes[0];
+            final HttpHeaders responseHeaders = response.headers();
+            final Object deserializedHeaders = TypeToken.of(deserializedHeadersType).isSubtypeOf(Void.class)
+                    ? null
+                    : deserializeHeaders(responseHeaders, deserializedHeadersType);
 
-                final Type deserializedBodyType = deserializedTypes[1];
-                final TypeToken deserializedBodyTypeToken = TypeToken.of(deserializedBodyType);
-                if (deserializedBodyTypeToken.isSubtypeOf(byte[].class)) {
-                    asyncResult = response.bodyAsByteArrayAsync()
-                            .map(new Func1<byte[], RestResponseWithBody<?, byte[]>>() {
-                                @Override
-                                public RestResponseWithBody<?, byte[]> call(byte[] responseBodyBytes) {
-                                    return new RestResponseWithBody<>(responseStatusCode, deserializedHeaders, responseBodyBytes);
-                                }
-                            });
-                }
-                else {
-                    asyncResult = response.bodyAsStringAsync()
-                            .map(new Func1<String, RestResponseWithBody<?, ?>>() {
-                                @Override
-                                public RestResponseWithBody<?, ?> call(String responseBodyString) {
-                                    final Object deserializedBody = deserialize(responseBodyString, deserializedBodyType, bodyEncoding(response.headers()));
-                                    return new RestResponseWithBody<>(responseStatusCode, deserializedHeaders, deserializedBody);
-                                }
-                            });
-                }
+            final Type deserializedBodyType = deserializedTypes[1];
+            final TypeToken deserializedBodyTypeToken = TypeToken.of(deserializedBodyType);
+            if (deserializedBodyTypeToken.isSubtypeOf(byte[].class)) {
+                asyncResult = response.bodyAsByteArrayAsync()
+                        .map(new Func1<byte[], RestResponse<?, byte[]>>() {
+                            @Override
+                            public RestResponse<?, byte[]> call(byte[] responseBodyBytes) {
+                                return new RestResponse<>(responseStatusCode, deserializedHeaders, responseBodyBytes);
+                            }
+                        });
+            } else if (deserializedBodyTypeToken.isSubtypeOf(Void.class)) {
+                asyncResult = Single.just(new RestResponse<>(responseStatusCode, deserializedHeaders, null));
+            } else {
+                asyncResult = response.bodyAsStringAsync()
+                        .map(new Func1<String, RestResponse<?, ?>>() {
+                            @Override
+                            public RestResponse<?, ?> call(String responseBodyString) {
+                                final Object deserializedBody = deserialize(responseBodyString, deserializedBodyType, bodyEncoding(response.headers()));
+                                return new RestResponse<>(responseStatusCode, deserializedHeaders, deserializedBody);
+                            }
+                        });
             }
         } else {
             asyncResult = response

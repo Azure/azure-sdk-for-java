@@ -22,7 +22,6 @@ import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeaders;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.serializer.JacksonAdapter;
-import org.junit.Assert;
 import org.junit.Test;
 import rx.Completable;
 import rx.Observable;
@@ -31,9 +30,11 @@ import rx.Single;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
+import java.util.Map;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
@@ -1162,21 +1163,27 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service20 {
         @GET("bytes/100")
-        RestResponse<HttpBinHeaders> getBytes100OnlyHeaders();
+        RestResponse<HttpBinHeaders,Void> getBytes100OnlyHeaders();
 
         @GET("bytes/100")
-        RestResponseWithBody<HttpBinHeaders,byte[]> getBytes100BodyAndHeaders();
+        RestResponse<Map<String, String>,Void> getBytes100OnlyRawHeaders();
+
+        @GET("bytes/100")
+        RestResponse<HttpBinHeaders,byte[]> getBytes100BodyAndHeaders();
 
         @PUT("put")
-        RestResponse<HttpBinHeaders> putOnlyHeaders(@BodyParam String body);
+        RestResponse<HttpBinHeaders,Void> putOnlyHeaders(@BodyParam String body);
 
         @PUT("put")
-        RestResponseWithBody<HttpBinHeaders,HttpBinJSON> putBodyAndHeaders(@BodyParam String body);
+        RestResponse<HttpBinHeaders,HttpBinJSON> putBodyAndHeaders(@BodyParam String body);
+
+        @GET("bytes/100")
+        RestResponse<Void, Void> getBytesOnlyStatus();
     }
 
     @Test
     public void service20GetBytes100OnlyHeaders() {
-        final RestResponse<HttpBinHeaders> response = createService(Service20.class)
+        final RestResponse<HttpBinHeaders,Void> response = createService(Service20.class)
                 .getBytes100OnlyHeaders();
         assertNotNull(response);
 
@@ -1188,12 +1195,12 @@ public abstract class RestProxyTests {
         assertEquals("keep-alive", headers.connection);
         assertNotNull(headers.date);
         assertEquals("1.1 vegur", headers.via);
-        Assert.assertNotEquals(0, headers.xProcessedTime);
+        assertNotEquals(0, headers.xProcessedTime);
     }
 
     @Test
     public void service20GetBytes100BodyAndHeaders() {
-        final RestResponseWithBody<HttpBinHeaders,byte[]> response = createService(Service20.class)
+        final RestResponse<HttpBinHeaders,byte[]> response = createService(Service20.class)
                 .getBytes100BodyAndHeaders();
         assertNotNull(response);
 
@@ -1209,12 +1216,31 @@ public abstract class RestProxyTests {
         assertEquals("keep-alive", headers.connection);
         assertNotNull(headers.date);
         assertEquals("1.1 vegur", headers.via);
-        Assert.assertNotEquals(0, headers.xProcessedTime);
+        assertNotEquals(0, headers.xProcessedTime);
+    }
+
+    @Test
+    public void service20GetBytesOnlyStatus() {
+        final RestResponse<Void,Void> response = createService(Service20.class)
+                .getBytesOnlyStatus();
+        assertNotNull(response);
+        assertEquals(200, response.statusCode());
+    }
+
+    @Test
+    public void service20GetBytesOnlyHeaders() {
+        final RestResponse<Map<String, String>, Void> response = createService(Service20.class)
+                .getBytes100OnlyRawHeaders();
+
+        assertNotNull(response);
+        assertEquals(200, response.statusCode());
+        assertNotNull(response.headers());
+        assertNotEquals(0, response.headers().size());
     }
 
     @Test
     public void service20PutOnlyHeaders() {
-        final RestResponse<HttpBinHeaders> response = createService(Service20.class)
+        final RestResponse<HttpBinHeaders,Void> response = createService(Service20.class)
                 .putOnlyHeaders("body string");
         assertNotNull(response);
 
@@ -1226,12 +1252,12 @@ public abstract class RestProxyTests {
         assertEquals("keep-alive", headers.connection);
         assertNotNull(headers.date);
         assertEquals("1.1 vegur", headers.via);
-        Assert.assertNotEquals(0, headers.xProcessedTime);
+        assertNotEquals(0, headers.xProcessedTime);
     }
 
     @Test
     public void service20PutBodyAndHeaders() {
-        final RestResponseWithBody<HttpBinHeaders,HttpBinJSON> response = createService(Service20.class)
+        final RestResponse<HttpBinHeaders,HttpBinJSON> response = createService(Service20.class)
                 .putBodyAndHeaders("body string");
         assertNotNull(response);
 
@@ -1248,7 +1274,7 @@ public abstract class RestProxyTests {
         assertEquals("keep-alive", headers.connection);
         assertNotNull(headers.date);
         assertEquals("1.1 vegur", headers.via);
-        Assert.assertNotEquals(0, headers.xProcessedTime);
+        assertNotEquals(0, headers.xProcessedTime);
     }
 
     // Helpers
