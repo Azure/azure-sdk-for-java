@@ -48,9 +48,9 @@ abstract class CreatableUpdatableLCAImpl<
 
     @SuppressWarnings("unchecked")
     protected void addCreatableDependency(Creatable<? extends Indexable> creatable) {
-        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>) creatable;
-        childModel.taskGroup().merge(this.taskGroup);
+        dependency.taskGroup().addDependentTaskGroup(this.taskGroup);
     }
 
     @Override

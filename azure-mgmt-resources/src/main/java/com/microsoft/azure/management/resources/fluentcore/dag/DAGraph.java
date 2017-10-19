@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
 
@@ -23,13 +25,15 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      */
     private ConcurrentLinkedQueue<String> queue;
     /**
-     * indicates this graph has a parent graph.
-     */
-    private boolean hasParent;
-    /**
      * the root node in the graph.
+     * {@link this#nodeTable} contains all the nodes in this graph with this as the root.
      */
     private NodeT rootNode;
+    /**
+     * the parent graphs of this graph. A parent graph is the one with it's root depends
+     * on this graph's root.
+     */
+    private List<DAGraph<DataT, NodeT>> parentDAGs;
 
     /**
      * Creates a new DAG.
@@ -37,6 +41,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      * @param rootNode the root node of this DAG
      */
     public DAGraph(NodeT rootNode) {
+        this.parentDAGs = new ArrayList<>();
         this.rootNode = rootNode;
         this.queue = new ConcurrentLinkedQueue<>();
         this.rootNode.setPreparer(true);
@@ -44,10 +49,10 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     }
 
     /**
-     * @return <tt>true</tt> if this DAG is merged with another DAG and hence has a parent
+     * @return <tt>true</tt> if this DAG is merged with one or more DAG and hence has parents
      */
-    public boolean hasParent() {
-        return hasParent;
+    public boolean hasParents() {
+        return this.parentDAGs.size() > 0;
     }
 
     /**
@@ -69,50 +74,37 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     }
 
     /**
-     * Merge this DAG with another DAG.
-     * <p>
-     * This will mark this DAG as a child DAG, the dependencies of nodes in this DAG will be merged
-     * with (copied to) the parent DAG
+     * Mark root of this DAG depends on given DAG's root.
      *
-     * @param parent the parent DAG
+     * @param dependencyGraph the dependency DAG
      */
-    public void merge(DAGraph<DataT, NodeT> parent) {
-        this.hasParent = true;
-        parent.rootNode.addDependency(this.rootNode.key());
-        for (Map.Entry<String, NodeT> entry: graph.entrySet()) {
-            String key = entry.getKey();
-            if (!parent.graph.containsKey(key)) {
-                parent.graph.put(key, entry.getValue());
-            }
+    public void addDependencyGraph(DAGraph<DataT, NodeT> dependencyGraph) {
+        dependencyGraph.addDependentGraph(this);
+    }
+
+    /**
+     * Mark root of the given DAG depends on this DAG's root.
+     *
+     * @param dependentGraph the dependent DAG
+     */
+    public void addDependentGraph(DAGraph<DataT, NodeT> dependentGraph) {
+        dependentGraph.rootNode.addDependency(this.rootNode.key());
+        Map<String, NodeT> sourceNodeTable = this.nodeTable;
+        Map<String, NodeT> targetNodeTable = dependentGraph.nodeTable;
+        this.merge(sourceNodeTable, targetNodeTable);
+        this.parentDAGs.add(dependentGraph);
+        if (dependentGraph.hasParents()) {
+            this.propagateNodeTable(dependentGraph);
         }
     }
 
     /**
-     * Merges DAG associated with childNode to DAG associated with a parent node
-     * of given key.
-     *
-     * @param parentKey the key of the parent node
-     * @param childNode the child node
-     */
-    public void mergeChildToParent(String parentKey, NodeT childNode) {
-        NodeT parentNode = this.graph.get(parentKey);
-        Map<String, NodeT> parentGraph = parentNode.owner().graph;
-        Map<String, NodeT> childGraph = childNode.owner().graph;
-        for (Map.Entry<String, NodeT> entry : childGraph.entrySet()) {
-            String key = entry.getKey();
-            if (!parentGraph.containsKey(key)) {
-                parentGraph.put(key, entry.getValue());
-            }
-        }
-    }
-
-    /**
-     * Prepares this DAG for traversal using getNext method, each call to getNext returns next node
+     * Prepares this DAG for node enumeration using getNext method, each call to getNext returns next node
      * in the DAG with no dependencies.
      */
-    public void prepare() {
+    public void prepareForEnumeration() {
         if (isPreparer()) {
-            for (NodeT node : graph.values()) {
+            for (NodeT node : nodeTable.values()) {
                 // Prepare each node for traversal
                 node.initialize();
                 if (!this.isRootNode(node)) {
@@ -136,7 +128,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
         if (nextItemKey == null) {
             return null;
         }
-        return graph.get(nextItemKey);
+        return nodeTable.get(nextItemKey);
     }
 
     /**
@@ -145,7 +137,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      * @return the node
      */
     public NodeT getNode(String key) {
-        return graph.get(key);
+        return nodeTable.get(key);
     }
 
     /**
@@ -156,8 +148,8 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     public void reportCompletion(NodeT completed) {
         completed.setPreparer(true);
         String dependency = completed.key();
-        for (String dependentKey : graph.get(dependency).dependentKeys()) {
-            DAGNode<DataT, NodeT> dependent = graph.get(dependentKey);
+        for (String dependentKey : nodeTable.get(dependency).dependentKeys()) {
+            DAGNode<DataT, NodeT> dependent = nodeTable.get(dependentKey);
             dependent.lock().lock();
             try {
                 dependent.onSuccessfulResolution(dependency);
@@ -179,8 +171,8 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     public void reportError(NodeT faulted, Throwable throwable) {
         faulted.setPreparer(true);
         String dependency = faulted.key();
-        for (String dependentKey : graph.get(dependency).dependentKeys()) {
-            DAGNode<DataT, NodeT> dependent = graph.get(dependentKey);
+        for (String dependentKey : nodeTable.get(dependency).dependentKeys()) {
+            DAGNode<DataT, NodeT> dependent = nodeTable.get(dependentKey);
             dependent.lock().lock();
             try {
                 dependent.onFaultedResolution(dependency, throwable);
@@ -210,7 +202,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
 
                 String dependentKey = node.key();
                 for (String dependencyKey : node.dependencyKeys()) {
-                    graph.get(dependencyKey)
+                    nodeTable.get(dependencyKey)
                             .addDependent(dependentKey);
                 }
             }
@@ -230,13 +222,38 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      */
     private void initializeQueue() {
         this.queue.clear();
-        for (Map.Entry<String, NodeT> entry: graph.entrySet()) {
+        for (Map.Entry<String, NodeT> entry: nodeTable.entrySet()) {
             if (!entry.getValue().hasDependencies()) {
                 this.queue.add(entry.getKey());
             }
         }
         if (queue.isEmpty()) {
             throw new IllegalStateException("Detected circular dependency");
+        }
+    }
+
+    /**
+     * Propagates node table of given DAG to all of it ancestors.
+     */
+    private void propagateNodeTable(DAGraph<DataT, NodeT> from) {
+        for (DAGraph<DataT, NodeT> to : from.parentDAGs) {
+            this.merge(from.nodeTable, to.nodeTable);
+            propagateNodeTable(to);
+        }
+    }
+
+    /**
+     * Copies entries in the source map to target map.
+     *
+     * @param source source map
+     * @param target target map
+     */
+    private void merge(Map<String, NodeT> source, Map<String, NodeT> target) {
+        for (Map.Entry<String, NodeT> entry : source.entrySet()) {
+            String key = entry.getKey();
+            if (!target.containsKey(key)) {
+                target.put(key, entry.getValue());
+            }
         }
     }
 }

@@ -70,7 +70,7 @@ public class DAGraphTest {
         dag.addNode(nodeH);
         dag.addNode(nodeI);
 
-        dag.prepare();
+        dag.prepareForEnumeration();
         ItemHolder nextNode = dag.getNext();
         int i = 0;
         while (nextNode != null) {
@@ -86,7 +86,7 @@ public class DAGraphTest {
     @Test
     public void testGraphMerge() {
         /**
-         *   |-------->[D]------>[B]-----------[A]
+         *   |-------->[D]------>[B]---------->[A]
          *   |                   ^              ^
          *   |                   |              |
          *  [F]------->[E]-------|              |
@@ -106,31 +106,31 @@ public class DAGraphTest {
         DAGraph<String, ItemHolder> graphI = createGraph("I");
 
         DAGraph<String, ItemHolder> graphB = createGraph("B");
-        graphA.merge(graphB);
+        graphA.addDependentGraph(graphB);
 
         DAGraph<String, ItemHolder> graphC = createGraph("C");
-        graphA.merge(graphC);
+        graphA.addDependentGraph(graphC);
 
         DAGraph<String, ItemHolder> graphH = createGraph("H");
-        graphI.merge(graphH);
+        graphI.addDependentGraph(graphH);
 
         DAGraph<String, ItemHolder> graphG = createGraph("G");
-        graphC.merge(graphG);
+        graphC.addDependentGraph(graphG);
 
         DAGraph<String, ItemHolder> graphE = createGraph("E");
-        graphB.merge(graphE);
-        graphG.merge(graphE);
+        graphB.addDependentGraph(graphE);
+        graphG.addDependentGraph(graphE);
 
         DAGraph<String, ItemHolder> graphD = createGraph("D");
-        graphB.merge(graphD);
+        graphB.addDependentGraph(graphD);
 
         DAGraph<String, ItemHolder> graphF = createGraph("F");
-        graphD.merge(graphF);
-        graphE.merge(graphF);
-        graphH.merge(graphF);
+        graphD.addDependentGraph(graphF);
+        graphE.addDependentGraph(graphF);
+        graphH.addDependentGraph(graphF);
 
         DAGraph<String, ItemHolder> dag = graphF;
-        dag.prepare();
+        dag.prepareForEnumeration();
 
         ItemHolder nextNode = dag.getNext();
         int i = 0;

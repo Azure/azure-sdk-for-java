@@ -24,6 +24,11 @@ import java.util.List;
 public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         extends DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> {
     /**
+     * The proxy task group for this task group.
+     */
+    private TaskGroup<ResultT, TaskT> proxyTaskGroup;
+
+    /**
      * Task group termination strategy to be used once any task in the group error-ed.
      */
     private final TaskGroupTerminateOnErrorStrategy taskGroupTerminateOnErrorStrategy;
@@ -81,12 +86,29 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
-     * Merge this group with the given group containing root task depends on this group.
+     * Mark root of this task task group depends on the given task group's root.
+     * <p>
+     * This means this task group's root can be executed only after the completion of all
+     * tasks in the given group.
      *
-     * @param parentTaskGroup the parent task group
+     * @param dependencyTaskGroup the task group that this task group depends on
      */
-    public void merge(TaskGroup<ResultT, TaskT> parentTaskGroup) {
-        super.merge(parentTaskGroup);
+    public void addDependencyTaskGroup(TaskGroup<ResultT, TaskT> dependencyTaskGroup) {
+        DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> dependencyGraph = dependencyTaskGroup;
+        this.addDependencyGraph(dependencyGraph);
+    }
+
+    /**
+     * Mark root of the given task group depends on this task group's root.
+     * <p>
+     * This means given task group's root can be executed only after the completion of all
+     * tasks in this group.
+     *
+     * @param dependentTaskGroup the task group depends on this task group
+     */
+    public void addDependentTaskGroup(TaskGroup<ResultT, TaskT> dependentTaskGroup) {
+        DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> dependentGraph = dependentTaskGroup;
+        this.addDependentGraph(dependentGraph);
     }
 
     /**
@@ -109,7 +131,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
-     * Prepares the tasks stored in the group entries, preparation allows tasks to define additional
+     * Run the prepare stage of the tasks in the group, preparation allows tasks to define additional
      * task dependencies.
      */
     private void prepareTasks() {
@@ -117,40 +139,35 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         HashSet<String> preparedTasksKeys = new HashSet<>();
         // Invokes 'prepare' on a subset of non-prepared tasks in the group. Initially preparation
         // is pending on all task items.
-        //
+        List<TaskGroupEntry<ResultT, TaskT>> entries = this.entriesSnapshot();
         do {
             isPreparePending = false;
-            super.prepare();
-            TaskGroupEntry<ResultT, TaskT> entry = super.getNext();
-            // Enumerate group entries, an entry holds one task item, in topological sorted order
-            //
-            // A. For each non-prepared task item -
-            //     1. Invoke 'prepare'
-            //     2. If new task dependencies added in 'prepare' then set a flag (isPreparePending)
-            //        which indicates another pass is required to 'prepare' new task items
-            //     3. Add the prepared task item to the set to skip it in the next pass
-            //
-            // B. For each prepared & non-prepared task item -
-            //     1. Refresh the dependent underlying collection with any newly added dependencies
-            //
-            while (entry != null) {
+            for (TaskGroupEntry<ResultT, TaskT> entry : entries) {
                 if (!preparedTasksKeys.contains(entry.key())) {
-                    int dependencyCountBefore = entry.dependencyKeys().size();
                     entry.data().prepare();
-                    int dependencyCountAfter = entry.dependencyKeys().size();
-                    if ((dependencyCountAfter - dependencyCountBefore) > 0) {
-                        isPreparePending = true;
-                    }
                     preparedTasksKeys.add(entry.key());
                 }
-                for (String parentKey : entry.dependentKeys()) {
-                    super.mergeChildToParent(parentKey, entry);
-                }
-                super.reportCompletion(entry);
-                entry = super.getNext();
             }
-        } while (isPreparePending); // Run another pass if new dependencies were added in this pass
-        super.prepare();
+            int prevSize = entries.size();
+            entries = this.entriesSnapshot();
+            if (entries.size() > prevSize) {
+                // If new task dependencies/dependents added in 'prepare' then set the
+                // flag which indicates another pass is required to 'prepare' new task
+                // items
+                isPreparePending = true;
+            }
+        } while (isPreparePending);  // Run another pass if new dependencies were added in this pass
+        super.prepareForEnumeration();
+    }
+
+    private List<TaskGroupEntry<ResultT, TaskT>> entriesSnapshot() {
+        List<TaskGroupEntry<ResultT, TaskT>> entries = new ArrayList<>();
+        super.prepareForEnumeration();
+        for (TaskGroupEntry<ResultT, TaskT> current = super.getNext(); current != null; current = super.getNext()) {
+            entries.add(current);
+            super.reportCompletion(current);
+        }
+        return entries;
     }
 
     /**

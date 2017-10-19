@@ -22,9 +22,9 @@ import java.util.Set;
  */
 public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
-     * the underlying graph.
+     * the nodes in the graph.
      */
-    protected Map<String, NodeT> graph;
+    protected Map<String, NodeT> nodeTable;
     /**
      * to track the already visited node while performing DFS.
      */
@@ -54,7 +54,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      * Creates a directed graph.
      */
     public Graph() {
-        this.graph = new HashMap<>();
+        this.nodeTable = new HashMap<>();
         this.visited = new HashSet<>();
         this.time = 0;
         this.entryTime = new HashMap<>();
@@ -70,14 +70,14 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      */
     public void addNode(NodeT node) {
         node.setOwner(this);
-        graph.put(node.key(), node);
+        nodeTable.put(node.key(), node);
     }
 
     /**
      * @return all nodes in the graph.
      */
     public Collection<NodeT> getNodes() {
-        return graph.values();
+        return nodeTable.values();
     }
 
     /**
@@ -89,7 +89,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      * @param visitor the graph visitor
      */
     public void visit(Visitor visitor) {
-        for (Map.Entry<String, NodeT> item : graph.entrySet()) {
+        for (Map.Entry<String, NodeT> item : nodeTable.entrySet()) {
             if (!visited.contains(item.getKey())) {
                 this.dfs(visitor, item.getValue());
             }
@@ -113,7 +113,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
             if (!visited.contains(toKey)) {
                 parent.put(toKey, fromKey);
                 visitor.visitEdge(fromKey, toKey, edgeType(fromKey, toKey));
-                this.dfs(visitor, this.graph.get(toKey));
+                this.dfs(visitor, this.nodeTable.get(toKey));
             } else {
                 visitor.visitEdge(fromKey, toKey, edgeType(fromKey, toKey));
             }

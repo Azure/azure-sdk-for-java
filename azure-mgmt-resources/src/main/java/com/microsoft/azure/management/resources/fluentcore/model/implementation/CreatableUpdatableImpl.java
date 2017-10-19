@@ -77,9 +77,9 @@ public abstract class CreatableUpdatableImpl<
      */
     @SuppressWarnings("unchecked")
     protected void addCreatableDependency(Creatable<? extends Indexable> creatable) {
-        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>) creatable;
-        childModel.taskGroup().merge(this.taskGroup);
+        this.taskGroup.addDependencyTaskGroup(dependency.taskGroup());
     }
 
     /**
@@ -89,9 +89,9 @@ public abstract class CreatableUpdatableImpl<
      */
     @SuppressWarnings("unchecked")
     protected void addAppliableDependency(Appliable<? extends Indexable> appliable) {
-        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>) appliable;
-        childModel.taskGroup().merge(this.taskGroup);
+        this.taskGroup.addDependencyTaskGroup(dependency.taskGroup());
     }
 
     /**
@@ -101,14 +101,14 @@ public abstract class CreatableUpdatableImpl<
      */
     @SuppressWarnings("unchecked")
     protected void addExecutableDependency(Executable<? extends Indexable> executable) {
-        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>>) executable;
 
         Creatable<FluentModelT> that = this;
-        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> parentModel =
+        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> thisDependent =
                 (TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>>) that;
 
-        childModel.taskGroup().merge(parentModel.taskGroup());
+        thisDependent.taskGroup().addDependencyTaskGroup(dependency.taskGroup());
     }
 
     @Override

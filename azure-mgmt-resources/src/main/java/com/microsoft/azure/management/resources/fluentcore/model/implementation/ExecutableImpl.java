@@ -60,7 +60,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
         TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> parentModel =
                 (TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>>) that;
 
-        childModel.taskGroup().merge(parentModel.taskGroup());
+        childModel.taskGroup().addDependentTaskGroup(parentModel.taskGroup());
     }
 
     /**
@@ -72,7 +72,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
     protected void addExecutableDependency(Executable<? extends Indexable> executable) {
         TaskGroup.HasTaskGroup<FluentModelT, ExecuteTask<FluentModelT>> childModel =
                 (TaskGroup.HasTaskGroup<FluentModelT, ExecuteTask<FluentModelT>>) executable;
-        childModel.taskGroup().merge(this.taskGroup);
+        childModel.taskGroup().addDependentTaskGroup(this.taskGroup);
     }
 
     @Override
