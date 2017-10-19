@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ExpressRouteCircuit;
+import com.microsoft.azure.management.network.ExpressRouteCircuitPeerings;
 import com.microsoft.azure.management.network.ExpressRouteCircuitServiceProviderProperties;
 import com.microsoft.azure.management.network.ExpressRouteCircuitSku;
 import com.microsoft.azure.management.network.ExpressRouteCircuitSkuFamily;
@@ -27,8 +28,9 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
         ExpressRouteCircuit.Definition,
         ExpressRouteCircuit.Update {
     private static final String SKU_DELIMITER = "_";
+    private ExpressRouteCircuitPeeringsImpl peerings;
 
-    protected ExpressRouteCircuitImpl(String name, ExpressRouteCircuitInner innerObject, NetworkManager manager) {
+    ExpressRouteCircuitImpl(String name, ExpressRouteCircuitInner innerObject, NetworkManager manager) {
         super(name, innerObject, manager);
     }
 
@@ -108,6 +110,14 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
     }
 
     // Getters
+
+    @Override
+    public ExpressRouteCircuitPeerings peerings() {
+        if (peerings == null) {
+            peerings = new ExpressRouteCircuitPeeringsImpl(manager().inner().expressRouteCircuitPeerings(), this);
+        }
+        return peerings;
+    }
 
     @Override
     public ExpressRouteCircuitSku sku() {

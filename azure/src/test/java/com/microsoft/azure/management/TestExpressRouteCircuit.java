@@ -16,61 +16,112 @@ import org.junit.Assert;
 /**
  * Tests Express Route Circuit.
  */
-public class TestExpressRouteCircuit extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
+public class TestExpressRouteCircuit {
     private static String TEST_ID = "";
     private static Region REGION = Region.US_NORTH_CENTRAL;
-    private String circuitName;
+    private static String CIRCUIT_NAME;
 
-    private void initializeResourceNames() {
+    private static void initializeResourceNames() {
         TEST_ID = SdkContext.randomResourceName("", 8);
-        circuitName = "erc" + TEST_ID;
+        CIRCUIT_NAME = "erc" + TEST_ID;
     }
 
-    @Override
-    public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
-        initializeResourceNames();
+    /**
+     * Test Virtual Network Gateway Create and Update.
+     */
+    public static class Basic extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
+        @Override
+        public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
+            initializeResourceNames();
 
-        // create Express Route Circuit
-        ExpressRouteCircuit erc = expressRouteCircuits.define(circuitName)
-                .withRegion(REGION)
-                .withNewResourceGroup()
-                .withServiceProvidet("Equinix")
-                .withPeeringLocation("Silicon Valley")
-                .withBandwidthInMbps(50)
-                .withSkuTier(ExpressRouteCircuitSkuTier.STANDARD)
-                .withSkuFamily(ExpressRouteCircuitSkuFamily.METERED_DATA)
-                .withTag("tag1", "value1")
-                .create();
-        return erc;
+            // create Express Route Circuit
+            ExpressRouteCircuit erc = expressRouteCircuits.define(CIRCUIT_NAME)
+                    .withRegion(REGION)
+                    .withNewResourceGroup()
+                    .withServiceProvidet("Equinix")
+                    .withPeeringLocation("Silicon Valley")
+                    .withBandwidthInMbps(50)
+                    .withSkuTier(ExpressRouteCircuitSkuTier.STANDARD)
+                    .withSkuFamily(ExpressRouteCircuitSkuFamily.METERED_DATA)
+                    .withTag("tag1", "value1")
+                    .create();
+            return erc;
+        }
+
+        @Override
+        public ExpressRouteCircuit updateResource(ExpressRouteCircuit resource) throws Exception {
+            resource.update()
+                    .withTag("tag2", "value2")
+                    .withoutTag("tag1")
+                    .withBandwidthInMbps(200)
+                    .withSkuFamily(ExpressRouteCircuitSkuFamily.UNLIMITED_DATA)
+                    .withSkuTier(ExpressRouteCircuitSkuTier.PREMIUM)
+                    .apply();
+            resource.refresh();
+            Assert.assertTrue(resource.tags().containsKey("tag2"));
+            Assert.assertTrue(!resource.tags().containsKey("tag1"));
+            Assert.assertEquals(Integer.valueOf(200), resource.serviceProviderProperties().bandwidthInMbps());
+            Assert.assertEquals(ExpressRouteCircuitSkuFamily.UNLIMITED_DATA, resource.sku().family());
+            Assert.assertEquals(ExpressRouteCircuitSkuTier.PREMIUM, resource.sku().tier());
+            return resource;
+        }
+
+        @Override
+        public void print(ExpressRouteCircuit resource) {
+            StringBuilder info = new StringBuilder();
+            info.append("Express Route Circuit: ").append(resource.id())
+                    .append("\n\tName: ").append(resource.name())
+                    .append("\n\tResource group: ").append(resource.resourceGroupName())
+                    .append("\n\tRegion: ").append(resource.regionName())
+                    .append("\n\tTags: ").append(resource.tags());
+            System.out.println(info.toString());
+        }
     }
 
-    @Override
-    public ExpressRouteCircuit updateResource(ExpressRouteCircuit resource) throws Exception {
-        resource.update()
-                .withTag("tag2", "value2")
-                .withoutTag("tag1")
-                .withBandwidthInMbps(200)
-                .withSkuFamily(ExpressRouteCircuitSkuFamily.UNLIMITED_DATA)
-                .withSkuTier(ExpressRouteCircuitSkuTier.PREMIUM)
-                .apply();
-        resource.refresh();
-        Assert.assertTrue(resource.tags().containsKey("tag2"));
-        Assert.assertTrue(!resource.tags().containsKey("tag1"));
-        Assert.assertEquals(Integer.valueOf(200), resource.serviceProviderProperties().bandwidthInMbps());
-        Assert.assertEquals(ExpressRouteCircuitSkuFamily.UNLIMITED_DATA, resource.sku().family());
-        Assert.assertEquals(ExpressRouteCircuitSkuTier.PREMIUM, resource.sku().tier());
-        return resource;
-    }
+    /**
+     * Test Virtual Network Gateway Create and Update.
+     */
+    public static class ExpressRouteCircuitPeering extends TestTemplate<ExpressRouteCircuit, ExpressRouteCircuits> {
+        @Override
+        public ExpressRouteCircuit createResource(ExpressRouteCircuits expressRouteCircuits) throws Exception {
+            initializeResourceNames();
 
-    @Override
-    public void print(ExpressRouteCircuit resource) {
-        StringBuilder info = new StringBuilder();
-        info.append("Network Watcher: ").append(resource.id())
-                .append("\n\tName: ").append(resource.name())
-                .append("\n\tResource group: ").append(resource.resourceGroupName())
-                .append("\n\tRegion: ").append(resource.regionName())
-                .append("\n\tTags: ").append(resource.tags());
-        System.out.println(info.toString());
+            // create Express Route Circuit
+            ExpressRouteCircuit erc = expressRouteCircuits.define(CIRCUIT_NAME)
+                    .withRegion(REGION)
+                    .withNewResourceGroup()
+                    .withServiceProvidet("Equinix")
+                    .withPeeringLocation("Silicon Valley")
+                    .withBandwidthInMbps(50)
+                    .withSkuTier(ExpressRouteCircuitSkuTier.PREMIUM)
+                    .withSkuFamily(ExpressRouteCircuitSkuFamily.METERED_DATA)
+                    .withTag("tag1", "value1")
+                    .create();
+            erc.peerings().defineMicrosoftPeering()
+                    .withAdvertisedPublicPrefixes("123.1.0.0/24")
+                    .withPrimaryPeerAddressPrefix("123.0.0.0/30")
+                    .withSecondaryPeerAddressPrefix("123.0.0.4/30")
+                    .withVlanId(200)
+                    .withPeerAsn(100)
+                    .create();
+            return erc;
+        }
+
+        @Override
+        public ExpressRouteCircuit updateResource(ExpressRouteCircuit resource) throws Exception {
+            return resource;
+        }
+
+        @Override
+        public void print(ExpressRouteCircuit resource) {
+            StringBuilder info = new StringBuilder();
+            info.append("Express Route Circuit: ").append(resource.id())
+                    .append("\n\tName: ").append(resource.name())
+                    .append("\n\tResource group: ").append(resource.resourceGroupName())
+                    .append("\n\tRegion: ").append(resource.regionName())
+                    .append("\n\tTags: ").append(resource.tags());
+            System.out.println(info.toString());
+        }
     }
 }
 

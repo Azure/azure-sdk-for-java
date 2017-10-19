@@ -720,7 +720,16 @@ public class AzureTests extends TestBase {
      */
     @Test
     public void testExpressRouteCircuits() throws Exception {
-        new TestExpressRouteCircuit().runTest(azure.expressRouteCircuits(), azure.resourceGroups());
+        new TestExpressRouteCircuit.Basic().runTest(azure.expressRouteCircuits(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the express route circuit peerings implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testExpressRouteCircuitPeering() throws Exception {
+        new TestExpressRouteCircuit.ExpressRouteCircuitPeering().runTest(azure.expressRouteCircuits(), azure.resourceGroups());
     }
 
     /**

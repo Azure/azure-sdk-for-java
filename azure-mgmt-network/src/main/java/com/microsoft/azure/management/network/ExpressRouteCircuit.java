@@ -7,6 +7,7 @@ package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
+import com.microsoft.azure.management.apigeneration.Method;
 import com.microsoft.azure.management.network.implementation.ExpressRouteCircuitInner;
 import com.microsoft.azure.management.network.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.GroupableResource;
@@ -28,6 +29,11 @@ public interface ExpressRouteCircuit extends
 
     // Actions
 
+    /**
+     * @return entry point to manage express route peerings associated with express route circuit
+     */
+    @Method
+    ExpressRouteCircuitPeerings peerings();
 
     // Getters
 
