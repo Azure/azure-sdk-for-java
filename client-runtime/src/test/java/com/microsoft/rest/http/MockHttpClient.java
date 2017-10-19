@@ -129,7 +129,7 @@ public class MockHttpClient extends HttpClient {
                     final String result = now.toString();
                     response = new MockHttpResponse(200, responseHeaders, result);
                 }
-                else if (requestPathLower.equals("/datetimeunix")) {
+                else if (requestPathLower.equals("/unixtime")) {
                     response = new MockHttpResponse(200, responseHeaders, 0);
                 }
                 else if (requestPathLower.equals("/delete")) {

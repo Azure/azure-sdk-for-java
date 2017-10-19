@@ -125,8 +125,8 @@ public class RestProxy implements InvocationHandler {
             if (wireType == DateTimeRfc1123.class) {
                 wireResponseType = DateTimeRfc1123.class;
             }
-            else if (wireType == DateTimeUnix.class) {
-                wireResponseType = DateTimeUnix.class;
+            else if (wireType == UnixTime.class) {
+                wireResponseType = UnixTime.class;
             }
         }
         else {
@@ -160,8 +160,8 @@ public class RestProxy implements InvocationHandler {
             } else if (resultType == DateTime.class) {
                 if (wireType == DateTimeRfc1123.class) {
                     result = ((DateTimeRfc1123) wireResponse).dateTime();
-                } else if (wireType == DateTimeUnix.class) {
-                    result = ((DateTimeUnix) wireResponse).dateTime();
+                } else if (wireType == UnixTime.class) {
+                    result = ((UnixTime) wireResponse).dateTime();
                 }
             } else {
                 final TypeToken resultTypeToken = TypeToken.of(resultType);

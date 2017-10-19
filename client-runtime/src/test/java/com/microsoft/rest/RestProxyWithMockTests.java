@@ -41,8 +41,8 @@ public class RestProxyWithMockTests extends RestProxyTests {
         @ReturnValueWireType(DateTimeRfc1123.class)
         DateTime getDateTimeRfc1123();
 
-        @GET("DateTimeUnix")
-        @ReturnValueWireType(DateTimeUnix.class)
+        @GET("UnixTime")
+        @ReturnValueWireType(UnixTime.class)
         DateTime getDateTimeUnix();
     }
 
