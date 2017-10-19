@@ -6,17 +6,18 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.model.HasProtocol;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.model.Executable;
 
 /**
- * A client-side reperesentation allowing to verify IP packet flow from specific vm
+ * A client-side representation allowing to verify IP packet flow from specific VM
  * based on direction, protocol, local IP, remote IP, local port and remote port.
  */
 @Fluent
-@Beta
+@Beta(SinceVersion.V1_2_0)
 public interface VerificationIPFlow extends Executable<VerificationIPFlow>,
         HasParent<NetworkWatcher> {
     /**

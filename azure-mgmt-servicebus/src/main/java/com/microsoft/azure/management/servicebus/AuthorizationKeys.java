@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.management.servicebus;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
 import com.microsoft.azure.management.servicebus.implementation.ResourceListKeysInner;
@@ -15,7 +14,6 @@ import com.microsoft.azure.management.servicebus.implementation.ResourceListKeys
  * Authorization key and connection string of authorization rule associated with Service Bus entities.
  */
 @Fluent
-@Beta
 public interface AuthorizationKeys extends HasInner<ResourceListKeysInner> {
     /**
      * @return primary key associated with the rule

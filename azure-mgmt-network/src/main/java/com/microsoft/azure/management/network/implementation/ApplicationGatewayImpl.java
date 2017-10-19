@@ -8,6 +8,8 @@ package com.microsoft.azure.management.network.implementation;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayAuthenticationCertificate;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealth;
+import com.microsoft.azure.management.network.ApplicationGatewayBackendHealthPool;
 import com.microsoft.azure.management.network.ApplicationGatewayBackendHttpConfiguration;
 import com.microsoft.azure.management.network.ApplicationGatewayFrontend;
 import com.microsoft.azure.management.network.ApplicationGatewayListener;
@@ -358,6 +360,28 @@ class ApplicationGatewayImpl
 
     @Override
     protected void afterCreating() {
+    }
+
+    protected SubResource ensureBackendRef(String name) {
+        // Ensure existence of backend, creating one if needed
+        ApplicationGatewayBackendImpl backend;
+        if (name == null) {
+            backend = this.ensureUniqueBackend();
+        } else {
+            backend = this.defineBackend(name);
+            backend.attach();
+        }
+
+        // Return backend reference
+        return new SubResource()
+                .withId(this.futureResourceId() + "/backendAddressPools/" + backend.name());
+    }
+
+    protected ApplicationGatewayBackendImpl ensureUniqueBackend() {
+        String name = SdkContext.randomResourceName("backend", 20);
+        ApplicationGatewayBackendImpl backend = this.defineBackend(name);
+        backend.attach();
+        return backend;
     }
 
     private ApplicationGatewayIPConfigurationImpl ensureDefaultIPConfig() {
@@ -1458,5 +1482,29 @@ class ApplicationGatewayImpl
         }
 
         return policy;
+    }
+
+    @Override
+    public Map<String, ApplicationGatewayBackendHealth> checkBackendHealth() {
+        return this.checkBackendHealthAsync().toBlocking().last();
+    }
+
+    @Override
+    public Observable<Map<String, ApplicationGatewayBackendHealth>> checkBackendHealthAsync() {
+        return this.manager().inner().applicationGateways()
+                .backendHealthAsync(this.resourceGroupName(), this.name())
+                .map(new Func1<ApplicationGatewayBackendHealthInner, Map<String, ApplicationGatewayBackendHealth>>() {
+                    @Override
+                    public Map<String, ApplicationGatewayBackendHealth> call(ApplicationGatewayBackendHealthInner inner) {
+                        Map<String, ApplicationGatewayBackendHealth> backendHealths = new TreeMap<>();
+                        if (inner != null) {
+                            for (ApplicationGatewayBackendHealthPool healthInner : inner.backendAddressPools()) {
+                                ApplicationGatewayBackendHealth backendHealth = new ApplicationGatewayBackendHealthImpl(healthInner, ApplicationGatewayImpl.this);
+                                backendHealths.put(backendHealth.name(), backendHealth);
+                            }
+                        }
+                        return Collections.unmodifiableMap(backendHealths);
+                    }
+                });
     }
 }

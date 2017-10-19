@@ -6,6 +6,7 @@
 package com.microsoft.azure.management.network;
 
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.model.HasNetworkInterfaces;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
@@ -18,8 +19,9 @@ import java.util.List;
  * from a virtual machine to a given endpoint including another VM or an arbitrary remote server.
  */
 @Fluent
-@Beta
-public interface ConnectivityCheck extends Executable<ConnectivityCheck>,
+@Beta(SinceVersion.V1_3_0)
+public interface ConnectivityCheck extends
+        Executable<ConnectivityCheck>,
         HasParent<NetworkWatcher> {
     /**
      * @return list of hops between the source and the destination
@@ -57,7 +59,7 @@ public interface ConnectivityCheck extends Executable<ConnectivityCheck>,
     int probesFailed();
 
     /**
-     * The entirety of next hop parameters definition.
+     * The entirety of connectivity check parameters definition.
      */
     interface Definition extends
             DefinitionStages.ToDestination,

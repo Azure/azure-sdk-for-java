@@ -11,32 +11,33 @@ package com.microsoft.azure.management.containerregistry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The properties of a storage account for a container registry.
+ * The properties of a storage account for a container registry. Only
+ * applicable to Classic SKU.
  */
 public class StorageAccountProperties {
     /**
-     * The name of the storage account.
+     * The resource ID of the storage account.
      */
-    @JsonProperty(value = "name")
-    private String name;
+    @JsonProperty(value = "id", required = true)
+    private String id;
 
     /**
-     * Get the name value.
+     * Get the id value.
      *
-     * @return the name value
+     * @return the id value
      */
-    public String name() {
-        return this.name;
+    public String id() {
+        return this.id;
     }
 
     /**
-     * Set the name value.
+     * Set the id value.
      *
-     * @param name the name value to set
+     * @param id the id value to set
      * @return the StorageAccountProperties object itself.
      */
-    public StorageAccountProperties withName(String name) {
-        this.name = name;
+    public StorageAccountProperties withId(String id) {
+        this.id = id;
         return this;
     }
 

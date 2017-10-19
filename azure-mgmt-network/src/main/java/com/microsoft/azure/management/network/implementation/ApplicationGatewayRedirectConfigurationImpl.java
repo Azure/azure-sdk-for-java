@@ -5,6 +5,7 @@
  */
 package com.microsoft.azure.management.network.implementation;
 
+import java.util.Collections;
 import java.util.Map;
 import java.util.TreeMap;
 
@@ -75,7 +76,7 @@ class ApplicationGatewayRedirectConfigurationImpl
             }
         }
 
-        return rules;
+        return Collections.unmodifiableMap(rules);
     }
 
     @Override
@@ -92,8 +93,7 @@ class ApplicationGatewayRedirectConfigurationImpl
 
     @Override
     public ApplicationGatewayImpl attach() {
-        this.parent().withRedirectConfiguration(this);
-        return this.parent();
+        return this.parent().withRedirectConfiguration(this);
     }
 
     // Helpers

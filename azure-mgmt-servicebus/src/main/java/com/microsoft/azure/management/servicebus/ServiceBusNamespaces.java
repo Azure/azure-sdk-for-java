@@ -5,7 +5,6 @@
  */
 package com.microsoft.azure.management.servicebus;
 
-import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsBatchDeletion;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.SupportsDeletingByResourceGroup;
@@ -28,7 +27,6 @@ import rx.Observable;
  * Entry point to Service Bus namespace API in Azure.
  */
 @Fluent
-@Beta
 public interface ServiceBusNamespaces extends
         SupportsCreating<ServiceBusNamespace.DefinitionStages.Blank>,
         SupportsBatchCreation<ServiceBusNamespace>,

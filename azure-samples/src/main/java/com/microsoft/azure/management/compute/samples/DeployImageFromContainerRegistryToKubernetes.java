@@ -17,8 +17,9 @@ import com.microsoft.azure.management.Azure;
 import com.microsoft.azure.management.compute.ContainerService;
 import com.microsoft.azure.management.compute.ContainerServiceMasterProfileCount;
 import com.microsoft.azure.management.compute.ContainerServiceVMSizeTypes;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.Registry;
-import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
+import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.resources.fluentcore.arm.Region;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import com.microsoft.azure.management.samples.DockerUtils;
@@ -79,7 +80,6 @@ public class DeployImageFromContainerRegistryToKubernetes {
     public static boolean runSample(Azure azure, String clientId, String secret) {
         final String rgName = SdkContext.randomResourceName("rgACR", 15);
         final String acrName = SdkContext.randomResourceName("acrsample", 20);
-        final String saName = SdkContext.randomResourceName("sa", 20);
         final String acsName = SdkContext.randomResourceName("acssample", 30);
         final String rootUserName = "acsuser";
         final Region region = Region.US_EAST;
@@ -162,7 +162,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
             Registry azureRegistry = azure.containerRegistries().define(acrName)
                     .withRegion(region)
                     .withNewResourceGroup(rgName)
-                    .withNewStorageAccount(saName)
+                    .withBasicSku()
                     .withRegistryNameAsAdminUser()
                     .create();
 
@@ -174,9 +174,9 @@ public class DeployImageFromContainerRegistryToKubernetes {
             //=============================================================
             // Create a Docker client that will be used to push/pull images to/from the Azure Container Registry
 
-            RegistryListCredentials acrCredentials = azureRegistry.listCredentials();
+            RegistryCredentials acrCredentials = azureRegistry.getCredentials();
             DockerClient dockerClient = DockerUtils.createDockerClient(azure, rgName, region,
-                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.passwords().get(0).value());
+                    azureRegistry.loginServerUrl(), acrCredentials.username(), acrCredentials.accessKeys().get(AccessKeyType.PRIMARY));
 
             //=============================================================
             // Pull a temp image from public Docker repo and create a temporary container from that image
@@ -314,7 +314,7 @@ public class DeployImageFromContainerRegistryToKubernetes {
             // Create a secret of type "docker-repository" that will be used for downloading the container image from
             //     our Azure private container repo
 
-            String basicAuth = new String(Base64.encodeBase64((acrCredentials.username() + ":" + acrCredentials.passwords().get(0).value()).getBytes()));
+            String basicAuth = new String(Base64.encodeBase64((acrCredentials.username() + ":" + acrCredentials.accessKeys().get(AccessKeyType.PRIMARY)).getBytes()));
             HashMap<String, String> secretData = new HashMap<>(1);
             String dockerCfg = String.format("{ \"%s\": { \"auth\": \"%s\", \"email\": \"%s\" } }",
                     azureRegistry.loginServerUrl(),

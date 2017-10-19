@@ -6,6 +6,8 @@
 
 package com.microsoft.azure.management.network;
 
+import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.NetworkInterfaceIPConfigurationInner;
 import com.microsoft.azure.management.network.model.HasPrivateIPAddress;
@@ -28,7 +30,7 @@ public interface NicIPConfiguration extends
 
     /**
      * The entirety of the network interface IP configuration definition.
-     * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this definition
      */
     interface Definition<ParentT> extends
         DefinitionStages.Blank<ParentT>,
@@ -46,7 +48,7 @@ public interface NicIPConfiguration extends
         /**
          * The first stage of network interface IP configuration definition.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithNetwork<ParentT> {
         }
@@ -54,7 +56,7 @@ public interface NicIPConfiguration extends
         /**
          * The stage of the network interface IP configuration definition allowing to specify the virtual network.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this definition
          */
         interface WithNetwork<ParentT> {
             /**
@@ -104,7 +106,7 @@ public interface NicIPConfiguration extends
          * The stage of the network interface IP configuration definition allowing to specify private IP address
          * within a virtual network subnet.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this definition
          */
         interface WithPrivateIP<ParentT> extends HasPrivateIPAddress.DefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
             /**
@@ -134,7 +136,7 @@ public interface NicIPConfiguration extends
          * The stage of the network interface IP configuration definition allowing to associate it with
          * a public IP address.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this definition
          */
         interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.DefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
@@ -143,14 +145,14 @@ public interface NicIPConfiguration extends
          * The stage of the network interface IP configuration definition allowing to specify the load balancer
          * to associate this IP configuration with.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this definition
          */
         interface WithLoadBalancer<ParentT> {
             /**
              * Specifies the load balancer backend to associate this IP configuration with.
              * @param loadBalancer an existing load balancer
              * @param backendName the name of an existing backend on that load balancer
-             * @return the next stage of the update
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withExistingLoadBalancerBackend(LoadBalancer loadBalancer, String backendName);
 
@@ -158,24 +160,42 @@ public interface NicIPConfiguration extends
              * Specifies the load balancer inbound NAT rule to associate this IP configuration with.
              * @param loadBalancer an existing load balancer
              * @param inboundNatRuleName the name of an existing inbound NAT rule on the selected load balancer
-             * @return the next stage of the update
+             * @return the next stage of the definition
              */
             WithAttach<ParentT> withExistingLoadBalancerInboundNatRule(LoadBalancer loadBalancer, String inboundNatRuleName);
+        }
+
+        /**
+         * The stage of the network interface IP configuration definition allowing to specify the load balancer
+         * to associate this IP configuration with.
+         *
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this definition
+         */
+        interface WithApplicationGateway<ParentT> {
+            /**
+             * Specifies the application gateway backend to associate this IP configuration with.
+             * @param appGateway an existing application gateway
+             * @param backendName the name of an existing backend on the application gateway
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withExistingApplicationGatewayBackend(ApplicationGateway appGateway, String backendName);
         }
 
         /**
          * The final stage of network interface IP configuration.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the network interface IP configuration
-         * definition can be attached to the parent network interface definition using {@link WithAttach#attach()}.
+         * definition can be attached to the parent network interface definition.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface definition to return to after attaching this definition
          */
         interface WithAttach<ParentT>
                 extends
                 Attachable.InDefinition<ParentT>,
                 WithPublicIPAddress<ParentT>,
-                WithLoadBalancer<ParentT> {
+                WithLoadBalancer<ParentT>,
+                WithApplicationGateway<ParentT> {
         }
     }
 
@@ -198,7 +218,7 @@ public interface NicIPConfiguration extends
         /**
          * The first stage of network interface IP configuration definition.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this definition
          */
         interface Blank<ParentT> extends WithNetwork<ParentT> {
         }
@@ -206,7 +226,7 @@ public interface NicIPConfiguration extends
         /**
          * The stage of the network interface IP configuration definition allowing to specify the virtual network.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this definition
          */
         interface WithNetwork<ParentT> {
             /**
@@ -256,7 +276,7 @@ public interface NicIPConfiguration extends
          * The stage of the network interface IP configuration definition allowing to specify private IP address
          * within a virtual network subnet.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this definition
          */
         interface WithPrivateIP<ParentT> extends HasPrivateIPAddress.UpdateDefinitionStages.WithPrivateIPAddress<WithAttach<ParentT>> {
             /**
@@ -270,7 +290,7 @@ public interface NicIPConfiguration extends
         /**
          * The stage of the network interface IP configuration definition allowing to specify subnet.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this definition
          */
         interface WithSubnet<ParentT> {
             /**
@@ -286,7 +306,7 @@ public interface NicIPConfiguration extends
          * The stage of the network interface IP configuration definition allowing to associate it with
          * a public IP address.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this definition
          */
         interface WithPublicIPAddress<ParentT> extends HasPublicIPAddress.UpdateDefinitionStages.WithPublicIPAddress<WithAttach<ParentT>> {
         }
@@ -295,7 +315,7 @@ public interface NicIPConfiguration extends
          * The stage of the network interface IP configuration definition allowing to specify the load balancer
          * to associate this IP configuration with.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this definition
          */
         interface WithLoadBalancer<ParentT> {
             /**
@@ -316,17 +336,36 @@ public interface NicIPConfiguration extends
         }
 
         /**
+         * The stage of the network interface IP configuration definition allowing to specify the load balancer
+         * to associate this IP configuration with.
+         *
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this definition
+         */
+        interface WithApplicationGateway<ParentT> {
+            /**
+             * Specifies the application gateway backend to associate this IP configuration with.
+             * @param appGateway an existing application gateway
+             * @param backendName the name of an existing backend on the application gateway
+             * @return the next stage of the definition
+             */
+            @Beta(SinceVersion.V1_4_0)
+            WithAttach<ParentT> withExistingApplicationGatewayBackend(ApplicationGateway appGateway, String backendName);
+        }
+
+        /**
          * The final stage of network interface IP configuration.
          * <p>
          * At this stage, any remaining optional settings can be specified, or the network interface IP configuration
          * definition can be attached to the parent network interface definition using {@link WithAttach#attach()}.
          *
-         * @param <ParentT> the return type of the final {@link Attachable#attach()}
+         * @param <ParentT> the stage of the parent network interface update to return to after attaching this definition
          */
         interface WithAttach<ParentT>
                 extends
                 Attachable.InUpdate<ParentT>,
-                WithPublicIPAddress<ParentT> {
+                WithPublicIPAddress<ParentT>,
+                WithLoadBalancer<ParentT>,
+                WithApplicationGateway<ParentT> {
         }
     }
 
@@ -338,7 +377,8 @@ public interface NicIPConfiguration extends
         UpdateStages.WithSubnet,
         UpdateStages.WithPrivateIP,
         UpdateStages.WithPublicIPAddress,
-        UpdateStages.WithLoadBalancer {
+        UpdateStages.WithLoadBalancer,
+        UpdateStages.WithApplicationGateway {
     }
 
     /**
@@ -408,6 +448,28 @@ public interface NicIPConfiguration extends
              * @return the next stage of the update
              */
             Update withoutLoadBalancerInboundNatRules();
+        }
+
+        /**
+         * The stage of the network interface IP configuration update allowing to specify the load balancer
+         * to associate this IP configuration with.
+         */
+        interface WithApplicationGateway {
+            /**
+             * Specifies the application gateway backend to associate this IP configuration with.
+             * @param appGateway an existing application gateway
+             * @param backendName the name of an existing backend on the application gateway
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withExistingApplicationGatewayBackend(ApplicationGateway appGateway, String backendName);
+
+            /**
+             * Removes all existing associations with application gateway backends.
+             * @return the next stage of the update
+             */
+            @Beta(SinceVersion.V1_4_0)
+            Update withoutApplicationGatewayBackends();
         }
     }
 }

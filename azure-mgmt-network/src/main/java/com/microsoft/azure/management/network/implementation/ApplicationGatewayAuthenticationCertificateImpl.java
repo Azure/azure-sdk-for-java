@@ -52,8 +52,7 @@ class ApplicationGatewayAuthenticationCertificateImpl
 
     @Override
     public ApplicationGatewayImpl attach() {
-        this.parent().withAuthenticationCertificate(this);
-        return this.parent();
+        return this.parent().withAuthenticationCertificate(this);
     }
 
     // Withers

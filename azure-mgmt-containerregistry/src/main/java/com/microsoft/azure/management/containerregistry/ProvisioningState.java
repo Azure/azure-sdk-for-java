@@ -8,46 +8,46 @@
 
 package com.microsoft.azure.management.containerregistry;
 
+import java.util.Collection;
 import com.fasterxml.jackson.annotation.JsonCreator;
-import com.fasterxml.jackson.annotation.JsonValue;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for ProvisioningState.
  */
-public enum ProvisioningState {
-    /** Enum value Creating. */
-    CREATING("Creating"),
+public final class ProvisioningState extends ExpandableStringEnum<ProvisioningState> {
+    /** Static value Creating for ProvisioningState. */
+    public static final ProvisioningState CREATING = fromString("Creating");
 
-    /** Enum value Succeeded. */
-    SUCCEEDED("Succeeded");
+    /** Static value Updating for ProvisioningState. */
+    public static final ProvisioningState UPDATING = fromString("Updating");
 
-    /** The actual serialized value for a ProvisioningState instance. */
-    private String value;
+    /** Static value Deleting for ProvisioningState. */
+    public static final ProvisioningState DELETING = fromString("Deleting");
 
-    ProvisioningState(String value) {
-        this.value = value;
+    /** Static value Succeeded for ProvisioningState. */
+    public static final ProvisioningState SUCCEEDED = fromString("Succeeded");
+
+    /** Static value Failed for ProvisioningState. */
+    public static final ProvisioningState FAILED = fromString("Failed");
+
+    /** Static value Canceled for ProvisioningState. */
+    public static final ProvisioningState CANCELED = fromString("Canceled");
+
+    /**
+     * Creates or finds a ProvisioningState from its string representation.
+     * @param name a name to look for
+     * @return the corresponding ProvisioningState
+     */
+    @JsonCreator
+    public static ProvisioningState fromString(String name) {
+        return fromString(name, ProvisioningState.class);
     }
 
     /**
-     * Parses a serialized value to a ProvisioningState instance.
-     *
-     * @param value the serialized value to parse.
-     * @return the parsed ProvisioningState object, or null if unable to parse.
+     * @return known ProvisioningState values
      */
-    @JsonCreator
-    public static ProvisioningState fromString(String value) {
-        ProvisioningState[] items = ProvisioningState.values();
-        for (ProvisioningState item : items) {
-            if (item.toString().equalsIgnoreCase(value)) {
-                return item;
-            }
-        }
-        return null;
-    }
-
-    @JsonValue
-    @Override
-    public String toString() {
-        return this.value;
+    public static Collection<ProvisioningState> values() {
+        return values(ProvisioningState.class);
     }
 }

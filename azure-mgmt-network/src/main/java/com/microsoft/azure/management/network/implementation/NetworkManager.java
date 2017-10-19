@@ -10,6 +10,7 @@ import com.microsoft.azure.AzureResponseBuilder;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
+import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGateways;
@@ -196,7 +197,6 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * @return entry point to load balancer management
      */
-    @Beta
     public LoadBalancers loadBalancers() {
         if (this.loadBalancers == null) {
             this.loadBalancers = new LoadBalancersImpl(this);
@@ -217,6 +217,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * @return entry point to network watchers management API entry point
      */
+    @Beta(SinceVersion.V1_2_0)
     public NetworkWatchers networkWatchers() {
         if (this.networkWatchers == null) {
             this.networkWatchers = new NetworkWatchersImpl(this);
@@ -227,6 +228,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * @return entry point to virtual network gateways management
      */
+    @Beta(SinceVersion.V1_3_0)
     public VirtualNetworkGateways virtualNetworkGateways() {
         if (this.virtualNetworkGateways == null) {
             this.virtualNetworkGateways = new VirtualNetworkGatewaysImpl(this);
@@ -237,6 +239,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     /**
      * @return entry point to local network gateway management
      */
+    @Beta(SinceVersion.V1_3_0)
     public LocalNetworkGateways localNetworkGateways() {
         if (this.localNetworkGateways == null) {
             this.localNetworkGateways = new LocalNetworkGatewaysImpl(this);

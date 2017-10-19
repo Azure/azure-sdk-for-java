@@ -8,8 +8,6 @@ package com.microsoft.azure.management.network;
 import java.util.Collection;
 import java.util.Set;
 
-import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.apigeneration.Fluent;
 import com.microsoft.azure.management.network.implementation.BackendAddressPoolInner;
 import com.microsoft.azure.management.network.model.HasBackendNics;
@@ -24,7 +22,6 @@ import com.microsoft.azure.management.resources.fluentcore.model.HasInner;
  * A client-side representation of a load balancer backend address pool.
  */
 @Fluent()
-@Beta
 public interface LoadBalancerBackend extends
     HasInner<BackendAddressPoolInner>,
     ChildResource<LoadBalancer>,
@@ -67,7 +64,6 @@ public interface LoadBalancerBackend extends
              * @param vms existing virtual machines
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             WithAttach<ReturnT> withExistingVirtualMachines(HasNetworkInterfaces...vms);
 
             /**
@@ -84,7 +80,6 @@ public interface LoadBalancerBackend extends
              * @param vms existing virtual machines
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             WithAttach<ReturnT> withExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 
@@ -152,7 +147,6 @@ public interface LoadBalancerBackend extends
              * @param vms existing virtual machines
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             WithAttach<ReturnT> withExistingVirtualMachines(HasNetworkInterfaces...vms);
 
             /**
@@ -169,7 +163,6 @@ public interface LoadBalancerBackend extends
              * @param vms existing virtual machines
              * @return the next stage of the definition
              */
-            @Beta(SinceVersion.V1_2_0)
             WithAttach<ReturnT> withExistingVirtualMachines(Collection<HasNetworkInterfaces> vms);
         }
 
