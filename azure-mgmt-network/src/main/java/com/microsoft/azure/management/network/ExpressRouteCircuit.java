@@ -92,17 +92,6 @@ public interface ExpressRouteCircuit extends
      */
     String provisioningState();
 
-//    /**
-//     * The GatewayManager Etag.
-//     */
-//    String gatewayManagerEtag();
-
-//    /**
-//     * Gets a unique read-only string that changes whenever the resource is
-//     * updated.
-//     */
-//    String etag;
-
     /**
      * The entirety of the express route circuit definition.
      */

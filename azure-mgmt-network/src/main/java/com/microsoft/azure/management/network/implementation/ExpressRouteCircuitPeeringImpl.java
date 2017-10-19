@@ -9,9 +9,13 @@ import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ExpressRouteCircuit;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeering;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringConfig;
+import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringState;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringType;
+import com.microsoft.azure.management.network.Ipv6ExpressRouteCircuitPeeringConfig;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
+import rx.functions.Func1;
 
 import java.util.Arrays;
 
@@ -24,12 +28,14 @@ class ExpressRouteCircuitPeeringImpl extends
         ExpressRouteCircuitPeering.Update {
     private final ExpressRouteCircuitPeeringsInner client;
     private final ExpressRouteCircuit parent;
+    private ExpressRouteCircuitStatsImpl stats;
 
     ExpressRouteCircuitPeeringImpl(ExpressRouteCircuitImpl parent, ExpressRouteCircuitPeeringInner innerObject,
                                    ExpressRouteCircuitPeeringsInner client, ExpressRouteCircuitPeeringType type) {
         super(type.toString(), innerObject);
         this.client = client;
         this.parent = parent;
+        this.stats = new ExpressRouteCircuitStatsImpl(innerObject.stats());
         inner().withPeeringType(type);
     }
 
@@ -83,8 +89,17 @@ class ExpressRouteCircuitPeeringImpl extends
     @Override
     public Observable<ExpressRouteCircuitPeering> createResourceAsync() {
         return this.client.createOrUpdateAsync(parent.resourceGroupName(), parent.name(), this.name(), inner())
-                .map(innerToFluentMap(this));
+                .map(new Func1<ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeering>() {
+                    @Override
+                    public ExpressRouteCircuitPeering call(ExpressRouteCircuitPeeringInner innerModel) {
+                        ExpressRouteCircuitPeeringImpl.this.setInner(innerModel);
+                        stats = new ExpressRouteCircuitStatsImpl(innerModel.stats());
+                        return ExpressRouteCircuitPeeringImpl.this;
+                    }
+                });
     }
+
+    // Getters
 
     @Override
     public String id() {
@@ -94,5 +109,80 @@ class ExpressRouteCircuitPeeringImpl extends
     @Override
     public ExpressRouteCircuit parent() {
         return parent;
+    }
+
+    @Override
+    public ExpressRouteCircuitPeeringType peeringType() {
+        return inner().peeringType();
+    }
+
+    @Override
+    public ExpressRouteCircuitPeeringState state() {
+        return inner().state();
+    }
+
+    @Override
+    public int azureASN() {
+        return Utils.toPrimitiveInt(inner().azureASN());
+    }
+
+    @Override
+    public int peerASN() {
+        return Utils.toPrimitiveInt(inner().peerASN());
+    }
+
+    @Override
+    public String primaryPeerAddressPrefix() {
+        return inner().primaryPeerAddressPrefix();
+    }
+
+    @Override
+    public String secondaryPeerAddressPrefix() {
+        return inner().secondaryPeerAddressPrefix();
+    }
+
+    @Override
+    public String primaryAzurePort() {
+        return inner().primaryAzurePort();
+    }
+
+    @Override
+    public String secondaryAzurePort() {
+        return inner().secondaryAzurePort();
+    }
+
+    @Override
+    public String sharedKey() {
+        return inner().sharedKey();
+    }
+
+    @Override
+    public int vlanId() {
+        return Utils.toPrimitiveInt(inner().vlanId());
+    }
+
+    @Override
+    public ExpressRouteCircuitPeeringConfig microsoftPeeringConfig() {
+        return inner().microsoftPeeringConfig();
+    }
+
+    @Override
+    public ExpressRouteCircuitStatsImpl stats() {
+        return stats;
+    }
+
+    @Override
+    public String provisioningState() {
+        return inner().provisioningState();
+    }
+
+    @Override
+    public String lastModifiedBy() {
+        return inner().lastModifiedBy();
+    }
+
+    @Override
+    public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
+        return inner().ipv6PeeringConfig();
     }
 }

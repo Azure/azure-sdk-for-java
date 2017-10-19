@@ -32,6 +32,87 @@ public interface ExpressRouteCircuitPeering extends
         Updatable<ExpressRouteCircuitPeering.Update>,
         HasParent<ExpressRouteCircuit> {
 
+    // Getters
+    /**
+     * Gets the PeeringType. Possible values include:
+     * 'AzurePublicPeering', 'AzurePrivatePeering', 'MicrosoftPeering'.
+     * @return peeringType
+     */
+    ExpressRouteCircuitPeeringType peeringType();
+
+    /**
+     * Gets the state of peering. Possible values include: 'Disabled', 'Enabled'.
+     * @return peering state
+     */
+    ExpressRouteCircuitPeeringState state();
+
+    /**
+     * @return the Azure ASN
+     */
+    int azureASN();
+
+    /**
+     * @return the peer ASN
+     */
+    int peerASN();
+
+    /**
+     * @return the primary address prefix
+     */
+    String primaryPeerAddressPrefix();
+
+    /**
+     * @return the secondary address prefix.
+     */
+    String secondaryPeerAddressPrefix();
+
+    /**
+     * @return the primary port
+     */
+    String primaryAzurePort();
+
+    /**
+     * @return the secondary port
+     */
+    String secondaryAzurePort();
+
+    /**
+     * @return the shared key
+     */
+    String sharedKey();
+
+    /**
+     * @return the VLAN ID
+     */
+    int vlanId();
+
+    /**
+     * @return The Microsoft peering configuration.
+     */
+    ExpressRouteCircuitPeeringConfig microsoftPeeringConfig();
+
+    /**
+     * @return peering stats
+     */
+    ExpressRouteCircuitStats stats();
+
+    /**
+     * Gets the provisioning state of the resource. Possible values
+     * are: 'Updating', 'Deleting', and 'Failed'.
+     * @return provisioningState
+     */
+    String provisioningState();
+
+    /**
+     * @return whether the provider or the customer last modified the peering
+     */
+    String lastModifiedBy();
+
+    /**
+     * @return the IPv6 peering configuration
+     */
+    Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig();
+
     /**
      * The entirety of the express route circuit peering definition.
      */
