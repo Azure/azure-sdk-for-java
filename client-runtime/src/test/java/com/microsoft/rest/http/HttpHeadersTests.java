@@ -6,23 +6,23 @@ import static org.junit.Assert.*;
 
 public class HttpHeadersTests {
     @Test
-    public void add()
+    public void testSet()
     {
         final HttpHeaders headers = new HttpHeaders();
 
-        headers.add("a", "b");
+        headers.set("a", "b");
         assertEquals("b", headers.value("a"));
 
-        headers.add("a", "c");
-        assertEquals("b,c", headers.value("a"));
+        headers.set("a", "c");
+        assertEquals("c", headers.value("a"));
 
-        headers.add("a", null);
-        assertEquals("b,c", headers.value("a"));
+        headers.set("a", null);
+        assertNull(headers.value("a"));
 
         headers.set("A", "");
         assertNull(headers.value("a"));
 
-        headers.add("A", "b");
+        headers.set("A", "b");
         assertEquals("b", headers.value("A"));
 
         headers.set("a", null);
