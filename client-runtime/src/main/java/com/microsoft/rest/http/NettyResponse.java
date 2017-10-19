@@ -29,8 +29,18 @@ class NettyResponse extends HttpResponse {
 
     NettyResponse(io.netty.handler.codec.http.HttpResponse rxnRes, Observable<ByteBuf> emitter) {
         this.rxnRes = rxnRes;
-        this.contentLength = Long.parseLong(rxnRes.headers().get(HEADER_CONTENT_LENGTH));
+        this.contentLength = getContentLength(rxnRes);
         this.emitter = emitter;
+    }
+
+    private static long getContentLength(io.netty.handler.codec.http.HttpResponse rxnRes) {
+        long result;
+        try {
+            result = Long.parseLong(rxnRes.headers().get(HEADER_CONTENT_LENGTH));
+        } catch (NullPointerException | NumberFormatException e) {
+            result = 0;
+        }
+        return result;
     }
 
     @Override
