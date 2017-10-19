@@ -190,7 +190,7 @@ public class RestProxy implements InvocationHandler {
 
                     Object resultBody = convertToResultType(wireResponseBody, getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
-                        result = new RestResponse<>(restResponse.statusCode(), restResponse.headers(), resultBody);
+                        result = new RestResponse<>(restResponse.statusCode(), restResponse.headers(), restResponse.rawHeaders(), resultBody);
                     } else {
                         result = restResponse;
                     }
@@ -371,7 +371,7 @@ public class RestProxy implements InvocationHandler {
                     .map(new Func1<Object, RestResponse<?, ?>>() {
                         @Override
                         public RestResponse<?, ?> call(Object body) {
-                            return new RestResponse<>(responseStatusCode, deserializedHeaders, body);
+                            return new RestResponse<>(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), body);
                         }
                     });
         } else {
