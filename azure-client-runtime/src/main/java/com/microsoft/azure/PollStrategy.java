@@ -37,7 +37,7 @@ abstract class PollStrategy {
     }
 
     protected Object deserialize(String value, Type returnType) throws IOException {
-        return restProxy.deserialize(value, returnType, Encoding.JSON);
+        return restProxy.deserialize(value, returnType, null, Encoding.JSON);
     }
 
     /**
@@ -142,7 +142,7 @@ abstract class PollStrategy {
         }
         else {
             try {
-                final Object resultObject = restProxy.handleAsyncHttpResponseInner(httpRequest, Single.just(httpResponse), methodParser, operationStatusResultType);
+                final Object resultObject = restProxy.handleAsyncReturnType(httpRequest, Single.just(httpResponse), methodParser, operationStatusResultType);
                 operationStatus = new OperationStatus<>(resultObject, provisioningState());
             } catch (RestException e) {
                 operationStatus = new OperationStatus<>(e, ProvisioningState.FAILED);
