@@ -12,25 +12,25 @@ import org.joda.time.DateTimeZone;
 /**
  * Simple wrapper over joda.time.DateTime used for specifying unix seconds format during serialization/deserialization.
  */
-public final class DateTimeUnix {
+public final class UnixTime {
     /**
      * The actual datetime object.
      */
     private final DateTime dateTime;
 
     /**
-     * Creates a new DateTimeUnix object with the specified DateTime.
+     * Creates a new UnixTime object with the specified DateTime.
      * @param dateTime The DateTime object to wrap.
      */
-    public DateTimeUnix(DateTime dateTime) {
+    public UnixTime(DateTime dateTime) {
         this.dateTime = dateTime;
     }
 
     /**
-     * Creates a new DateTimeUnix object with the specified DateTime.
+     * Creates a new UnixTime object with the specified DateTime.
      * @param unixSeconds The Unix seconds value.
      */
-    public DateTimeUnix(long unixSeconds) {
+    public UnixTime(long unixSeconds) {
         this.dateTime = new DateTime(unixSeconds * 1000L, DateTimeZone.UTC);
     }
 
@@ -61,11 +61,11 @@ public final class DateTimeUnix {
             return false;
         }
 
-        if (!(obj instanceof DateTimeUnix)) {
+        if (!(obj instanceof UnixTime)) {
             return false;
         }
 
-        DateTimeUnix rhs = (DateTimeUnix) obj;
+        UnixTime rhs = (UnixTime) obj;
         return this.dateTime.equals(rhs.dateTime());
     }
 }

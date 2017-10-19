@@ -9,6 +9,7 @@ import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.util.List;
+import java.util.Map;
 
 import static org.junit.Assert.*;
 
@@ -32,12 +33,16 @@ public class RestProxyWithMockTests extends RestProxyTests {
         @ReturnValueWireType(Base64Url.class)
         List<List<byte[]>> getBase64UrlListOfListOfBytes();
 
+        @GET("Base64UrlMapOfBytes")
+        @ReturnValueWireType(Base64Url.class)
+        Map<String,byte[]> getBase64UrlMapOfBytes();
+
         @GET("DateTimeRfc1123")
         @ReturnValueWireType(DateTimeRfc1123.class)
         DateTime getDateTimeRfc1123();
 
-        @GET("DateTimeUnix")
-        @ReturnValueWireType(DateTimeUnix.class)
+        @GET("UnixTime")
+        @ReturnValueWireType(UnixTime.class)
         DateTime getDateTimeUnix();
     }
 
@@ -87,6 +92,24 @@ public class RestProxyWithMockTests extends RestProxyTests {
                 for (int k = 0; k < bytes.length; ++k) {
                     assertEquals(k, bytes[k]);
                 }
+            }
+        }
+    }
+
+    @Test
+    public void service1GetBase64UrlMapOfBytes() {
+        final Map<String,byte[]> bytesMap = createService(Service1.class)
+                .getBase64UrlMapOfBytes();
+        assertNotNull(bytesMap);
+        assertEquals(2, bytesMap.size());
+
+        for (int i = 0; i < bytesMap.size(); ++i) {
+            final byte[] bytes = bytesMap.get(Integer.toString(i));
+
+            final int expectedArrayLength = (i + 1) * 10;
+            assertEquals(expectedArrayLength, bytes.length);
+            for (int j = 0; j < expectedArrayLength; ++j) {
+                assertEquals((byte)j, bytes[j]);
             }
         }
     }

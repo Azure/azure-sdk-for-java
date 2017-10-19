@@ -103,7 +103,7 @@ public class SwaggerMethodParser {
         final ReturnValueWireType returnValueWireTypeAnnotation = swaggerMethod.getAnnotation(ReturnValueWireType.class);
         if (returnValueWireTypeAnnotation != null) {
             Class<?> returnValueWireType = returnValueWireTypeAnnotation.value();
-            if (returnValueWireType == Base64Url.class || returnValueWireType == DateTimeUnix.class || returnValueWireType == DateTimeRfc1123.class) {
+            if (returnValueWireType == Base64Url.class || returnValueWireType == UnixTime.class || returnValueWireType == DateTimeRfc1123.class) {
                 this.returnValueWireType = returnValueWireType;
             }
             else {
