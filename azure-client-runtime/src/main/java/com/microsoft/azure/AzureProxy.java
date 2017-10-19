@@ -18,6 +18,7 @@ import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import rx.Observable;
 import rx.Single;
+import rx.exceptions.Exceptions;
 import rx.functions.Func1;
 
 import java.io.IOException;
@@ -149,10 +150,10 @@ public final class AzureProxy extends RestProxy {
                         final long delayInMilliseconds = defaultDelayInMilliseconds();
 
                         final int httpStatusCode = originalHttpResponse.statusCode();
-                        if (httpStatusCode != 200) {
+                        final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
+                        if (httpStatusCode == 201 || httpStatusCode == 202) {
                             PollStrategy pollStrategy = null;
                             final String fullyQualifiedMethodName = originalHttpRequest.callerMethod();
-                            final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
                             final String originalHttpRequestUrl = originalHttpRequest.url();
 
                             if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
@@ -174,34 +175,45 @@ public final class AzureProxy extends RestProxy {
                                 }
                             }
 
-                            if (pollStrategy != null) {
+                            if (pollStrategy == null) {
+                                throw new CloudException("Could not determine a long running operation polling strategy.", originalHttpResponse);
+                            }
+                            else {
                                 result = Single.just(pollStrategy);
                             }
                         }
 
                         if (result == null) {
-                            final HttpResponse bufferedOriginalHttpRespose = originalHttpResponse.buffer();
-                            result = bufferedOriginalHttpRespose.bodyAsStringAsync()
-                                .map(new Func1<String, PollStrategy>() {
-                                    @Override
-                                    public PollStrategy call(String originalHttpResponseBody) {
-                                        PollStrategy result = null;
+                            if (originalHttpRequestMethod.equalsIgnoreCase("DELETE") ||
+                                    originalHttpRequestMethod.equalsIgnoreCase("GET") ||
+                                    originalHttpRequestMethod.equalsIgnoreCase("HEAD")) {
+                                result = Single.<PollStrategy>just(new CompletedPollStrategy(AzureProxy.this, originalHttpResponse));
+                            } else {
+                                final HttpResponse bufferedOriginalHttpResponse = originalHttpResponse.buffer();
+                                result = bufferedOriginalHttpResponse.bodyAsStringAsync()
+                                        .map(new Func1<String, PollStrategy>() {
+                                            @Override
+                                            public PollStrategy call(String originalHttpResponseBody) {
+                                                if (originalHttpResponseBody == null || originalHttpResponseBody.isEmpty()) {
+                                                    throw new CloudException("The HTTP response does not contain a body.", bufferedOriginalHttpResponse);
+                                                }
 
-                                        try {
-                                            final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class);
-                                            if (resource != null && resource.properties() != null && !ProvisioningState.isCompleted(resource.properties().provisioningState())) {
-                                                result = new ProvisioningStatePollStrategy(AzureProxy.this, originalHttpRequest, resource.properties().provisioningState(), delayInMilliseconds);
+                                                PollStrategy result;
+                                                try {
+                                                    final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class, SerializerAdapter.Encoding.JSON);
+                                                    if (resource != null && resource.properties() != null && !ProvisioningState.isCompleted(resource.properties().provisioningState())) {
+                                                        result = new ProvisioningStatePollStrategy(AzureProxy.this, originalHttpRequest, resource.properties().provisioningState(), delayInMilliseconds);
+                                                    } else {
+                                                        result = new CompletedPollStrategy(AzureProxy.this, bufferedOriginalHttpResponse);
+                                                    }
+                                                } catch (IOException e) {
+                                                    throw Exceptions.propagate(e);
+                                                }
+
+                                                return result;
                                             }
-                                        } catch (IOException e) {
-                                        }
-
-                                        if (result == null) {
-                                            result = new CompletedPollStrategy(AzureProxy.this, bufferedOriginalHttpRespose);
-                                        }
-
-                                        return result;
-                                    }
-                                });
+                                        });
+                            }
                         }
 
                         return result;

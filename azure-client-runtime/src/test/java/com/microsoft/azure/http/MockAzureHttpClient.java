@@ -159,6 +159,8 @@ public class MockAzureHttpClient extends HttpClient {
                             if (pollsRemaining <= 1) {
                                 final MockResource mockResource = new MockResource();
                                 mockResource.name = "c";
+                                mockResource.properties = new MockResource.Properties();
+                                mockResource.properties.provisioningState = ProvisioningState.SUCCEEDED;
                                 response = new MockAzureHttpResponse(200, mockResource);
                             }
                             else {
@@ -180,6 +182,8 @@ public class MockAzureHttpClient extends HttpClient {
                     if (pollType == null || "0".equals(pollsRemainingString)) {
                         final MockResource resource = new MockResource();
                         resource.name = "c";
+                        resource.properties = new MockResource.Properties();
+                        resource.properties.provisioningState = ProvisioningState.SUCCEEDED;
                         response = new MockAzureHttpResponse(200, resource);
                     }
                     else if (pollType.equalsIgnoreCase("ProvisioningState")) {
