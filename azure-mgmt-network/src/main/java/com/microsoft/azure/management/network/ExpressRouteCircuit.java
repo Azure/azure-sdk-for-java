@@ -17,6 +17,8 @@ import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
 
+import java.util.Map;
+
 /**
  * Entry point for Express Route Circuit management API in Azure.
  */
@@ -59,16 +61,10 @@ public interface ExpressRouteCircuit extends
      */
     ServiceProviderProvisioningState serviceProviderProvisioningState();
 
-//    /**
-//     * The list of authorizations.
-//     */
-//    List<ExpressRouteCircuitAuthorizationInner> authorizations;
-
-//    /**
-//     * The list of peerings.
-//     */
-//    @JsonProperty(value = "properties.peerings")
-//    private List<ExpressRouteCircuitPeeringInner> peerings;
+    /**
+     * @return the peerings associated with this express route circuit, indexed by name
+     */
+    Map<String, ExpressRouteCircuitPeering> peeringsMap();
 
     /**
      * @return the ServiceKey

@@ -6,6 +6,7 @@
 package com.microsoft.azure.management;
 
 import com.microsoft.azure.management.network.ExpressRouteCircuit;
+import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringType;
 import com.microsoft.azure.management.network.ExpressRouteCircuitSkuFamily;
 import com.microsoft.azure.management.network.ExpressRouteCircuitSkuTier;
 import com.microsoft.azure.management.network.ExpressRouteCircuits;
@@ -109,6 +110,9 @@ public class TestExpressRouteCircuit {
 
         @Override
         public ExpressRouteCircuit updateResource(ExpressRouteCircuit resource) throws Exception {
+            resource.refresh();
+            Assert.assertEquals(resource.peeringsMap().size(), 1);
+            Assert.assertTrue(resource.peeringsMap().containsKey(ExpressRouteCircuitPeeringType.MICROSOFT_PEERING.toString()));
             return resource;
         }
 

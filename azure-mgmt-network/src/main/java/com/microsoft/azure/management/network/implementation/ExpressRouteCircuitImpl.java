@@ -7,18 +7,22 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.management.apigeneration.LangDefinition;
 import com.microsoft.azure.management.network.ExpressRouteCircuit;
+import com.microsoft.azure.management.network.ExpressRouteCircuitPeering;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeerings;
 import com.microsoft.azure.management.network.ExpressRouteCircuitServiceProviderProperties;
 import com.microsoft.azure.management.network.ExpressRouteCircuitSku;
 import com.microsoft.azure.management.network.ExpressRouteCircuitSkuFamily;
 import com.microsoft.azure.management.network.ExpressRouteCircuitSkuTier;
 import com.microsoft.azure.management.network.ServiceProviderProvisioningState;
-import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableResourceImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.models.implementation.GroupableParentResourceImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.Utils;
 import rx.Observable;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @LangDefinition
-class ExpressRouteCircuitImpl extends GroupableResourceImpl<
+class ExpressRouteCircuitImpl extends GroupableParentResourceImpl<
         ExpressRouteCircuit,
         ExpressRouteCircuitInner,
         ExpressRouteCircuitImpl,
@@ -29,9 +33,11 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
         ExpressRouteCircuit.Update {
     private static final String SKU_DELIMITER = "_";
     private ExpressRouteCircuitPeeringsImpl peerings;
+    private Map<String, ExpressRouteCircuitPeering> expressRouteCircuitPeerings;
 
     ExpressRouteCircuitImpl(String name, ExpressRouteCircuitInner innerObject, NetworkManager manager) {
         super(name, innerObject, manager);
+        initializeChildrenFromInner();
     }
 
     @Override
@@ -85,23 +91,36 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
         return inner().sku();
     }
 
-    private void beforeCreating() {
-        ExpressRouteCircuitSku sku = inner().sku();
-        ensureSku().withName((sku.tier() == null ? "" : sku.tier().toString()) + SKU_DELIMITER + (sku.family() == null ? "" : sku.family().toString()));
-    }
-
     @Override
     public ExpressRouteCircuitImpl withSkuFamily(ExpressRouteCircuitSkuFamily skuFamily) {
         ensureSku().withFamily(skuFamily);
         return this;
     }
 
+    protected void beforeCreating() {
+        ExpressRouteCircuitSku sku = inner().sku();
+        ensureSku().withName((sku.tier() == null ? "" : sku.tier().toString()) + SKU_DELIMITER + (sku.family() == null ? "" : sku.family().toString()));
+    }
+
     @Override
-    public Observable<ExpressRouteCircuit> createResourceAsync() {
-        beforeCreating();
+    protected void afterCreating() {
+    }
+
+    @Override
+    protected Observable<ExpressRouteCircuitInner> createInner() {
         return this.manager().inner().expressRouteCircuits().createOrUpdateAsync(
-                this.resourceGroupName(), this.name(), this.inner())
-                .map(innerToFluentMap(this));
+                this.resourceGroupName(), this.name(), this.inner());
+    }
+
+    @Override
+    protected void initializeChildrenFromInner() {
+        expressRouteCircuitPeerings = new HashMap<>();
+        if (inner().peerings() != null) {
+            for (ExpressRouteCircuitPeeringInner peering : inner().peerings()) {
+                expressRouteCircuitPeerings.put(peering.name(),
+                        new ExpressRouteCircuitPeeringImpl(this, peering, manager().inner().expressRouteCircuitPeerings(), peering.peeringType()));
+            }
+        }
     }
 
     @Override
@@ -157,5 +176,10 @@ class ExpressRouteCircuitImpl extends GroupableResourceImpl<
     @Override
     public String provisioningState() {
         return inner().provisioningState();
+    }
+
+    @Override
+    public Map<String, ExpressRouteCircuitPeering> peeringsMap() {
+        return expressRouteCircuitPeerings;
     }
 }
