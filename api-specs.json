@@ -76,7 +76,7 @@
     "dir": "azure-mgmt-containerregistry",
     "source": "specification/containerregistry/resource-manager/readme.md",
     "package": "com.microsoft.azure.management.containerregistry",
-    "args": "--payload-flattening-threshold=1 --tag=package-2017-03"
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-10"
   },
   "cosmosdb": {
     "dir": "azure-mgmt-cosmosdb",
@@ -305,7 +305,8 @@
   "subscriptions": {
     "dir": "azure-mgmt-resources",
     "source": "specification/resources/resource-manager/readme.md",
-    "package": "com.microsoft.azure.management.resources --tag=package-subscriptions-2016-06"
+    "package": "com.microsoft.azure.management.resources",
+    "args": "--tag=package-subscriptions-2016-06"
   },
   "trafficmanager": {
     "dir": "azure-mgmt-trafficmanager",

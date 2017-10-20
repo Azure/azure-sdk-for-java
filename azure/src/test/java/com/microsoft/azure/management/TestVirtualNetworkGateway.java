@@ -106,12 +106,14 @@ public class TestVirtualNetworkGateway {
                     .withNewNetwork("10.0.0.0/25", "10.0.0.0/27")
                     .withRouteBasedVpn()
                     .withSku(VirtualNetworkGatewaySkuName.VPN_GW1)
+                    .withBgp(65010, "10.12.255.30")
                     .create();
             LocalNetworkGateway lngw = gateways.manager().localNetworkGateways().define("lngw" + TEST_ID)
                     .withRegion(vngw.region())
                     .withExistingResourceGroup(vngw.resourceGroupName())
                     .withIPAddress("40.71.184.214")
                     .withAddressSpace("192.168.3.0/24")
+                    .withBgp(65050, "10.51.255.254")
                     .create();
             vngw.connections()
                     .define(CONNECTION_NAME)
@@ -123,10 +125,14 @@ public class TestVirtualNetworkGateway {
             Assert.assertEquals(1, vngw.ipConfigurations().size());
             Subnet subnet = vngw.ipConfigurations().iterator().next().getSubnet();
             Assert.assertEquals("10.0.0.0/27", subnet.addressPrefix());
+            Assert.assertTrue(vngw.isBgpEnabled());
+            Assert.assertEquals("10.12.255.30", vngw.bgpSettings().bgpPeeringAddress());
 
             Assert.assertEquals("40.71.184.214", lngw.ipAddress());
             Assert.assertEquals(1, lngw.addressSpaces().size());
             Assert.assertEquals("192.168.3.0/24", lngw.addressSpaces().iterator().next());
+            Assert.assertNotNull(lngw.bgpSettings());
+            Assert.assertEquals("10.51.255.254", lngw.bgpSettings().bgpPeeringAddress());
 
             List<VirtualNetworkGatewayConnection> connections = vngw.listConnections();
             Assert.assertEquals(1, connections.size());
@@ -137,6 +143,13 @@ public class TestVirtualNetworkGateway {
 
         @Override
         public VirtualNetworkGateway updateResource(VirtualNetworkGateway resource) throws Exception {
+            VirtualNetworkGatewayConnection connection = resource.connections().getByName(CONNECTION_NAME);
+            Assert.assertFalse(connection.isBgpEnabled());
+            connection.update()
+                    .withBgp()
+                    .apply();
+            Assert.assertTrue(connection.isBgpEnabled());
+
             resource.connections().deleteByName(CONNECTION_NAME);
             List<VirtualNetworkGatewayConnection> connections = resource.listConnections();
             Assert.assertEquals(0, connections.size());

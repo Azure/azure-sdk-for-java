@@ -13,6 +13,7 @@ import com.microsoft.azure.management.network.implementation.VirtualNetworkGatew
 import com.microsoft.azure.management.resources.fluentcore.arm.models.HasParent;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.IndependentChildResource;
 import com.microsoft.azure.management.resources.fluentcore.arm.models.Resource;
+import com.microsoft.azure.management.resources.fluentcore.model.Appliable;
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.Refreshable;
 import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
@@ -27,7 +28,7 @@ import java.util.Collection;
 public interface VirtualNetworkGatewayConnection extends
         IndependentChildResource<NetworkManager, VirtualNetworkGatewayConnectionInner>,
         Refreshable<VirtualNetworkGatewayConnection>,
-        Updatable<VirtualNetworkGatewayConnection>,
+        Updatable<VirtualNetworkGatewayConnection.Update>,
         HasParent<VirtualNetworkGateway> {
 
     /**
@@ -179,6 +180,8 @@ public interface VirtualNetworkGatewayConnection extends
      * Grouping of virtual network gateway connection update stages.
      */
     interface Update extends
+            Appliable<VirtualNetworkGatewayConnection>,
+            Resource.UpdateWithTags<Update>,
             UpdateStages.WithBgp,
             UpdateStages.WithSharedKey {
     }

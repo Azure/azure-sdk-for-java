@@ -9,7 +9,8 @@
 package com.microsoft.azure.management.containerregistry.implementation;
 
 import java.util.Map;
-import com.microsoft.azure.management.containerregistry.StorageAccountParameters;
+import com.microsoft.azure.management.containerregistry.Sku;
+import com.microsoft.azure.management.containerregistry.StorageAccountProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -25,19 +26,24 @@ public class RegistryUpdateParametersInner {
     private Map<String, String> tags;
 
     /**
-     * The value that indicates whether the admin user is enabled. This value
-     * is false by default.
+     * The SKU of the container registry.
+     */
+    @JsonProperty(value = "sku")
+    private Sku sku;
+
+    /**
+     * The value that indicates whether the admin user is enabled.
      */
     @JsonProperty(value = "properties.adminUserEnabled")
     private Boolean adminUserEnabled;
 
     /**
-     * The parameters of a storage account for the container registry. If
-     * specified, the storage account must be in the same physical location as
-     * the container registry.
+     * The parameters of a storage account for the container registry. Only
+     * applicable to Classic SKU. If specified, the storage account must be in
+     * the same physical location as the container registry.
      */
     @JsonProperty(value = "properties.storageAccount")
-    private StorageAccountParameters storageAccount;
+    private StorageAccountProperties storageAccount;
 
     /**
      * Get the tags value.
@@ -56,6 +62,26 @@ public class RegistryUpdateParametersInner {
      */
     public RegistryUpdateParametersInner withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public Sku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     * @return the RegistryUpdateParametersInner object itself.
+     */
+    public RegistryUpdateParametersInner withSku(Sku sku) {
+        this.sku = sku;
         return this;
     }
 
@@ -84,7 +110,7 @@ public class RegistryUpdateParametersInner {
      *
      * @return the storageAccount value
      */
-    public StorageAccountParameters storageAccount() {
+    public StorageAccountProperties storageAccount() {
         return this.storageAccount;
     }
 
@@ -94,7 +120,7 @@ public class RegistryUpdateParametersInner {
      * @param storageAccount the storageAccount value to set
      * @return the RegistryUpdateParametersInner object itself.
      */
-    public RegistryUpdateParametersInner withStorageAccount(StorageAccountParameters storageAccount) {
+    public RegistryUpdateParametersInner withStorageAccount(StorageAccountProperties storageAccount) {
         this.storageAccount = storageAccount;
         return this;
     }

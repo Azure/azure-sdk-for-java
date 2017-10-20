@@ -38,8 +38,9 @@ import com.microsoft.azure.management.containerinstance.ContainerPort;
 import com.microsoft.azure.management.containerinstance.EnvironmentVariable;
 import com.microsoft.azure.management.containerinstance.Volume;
 import com.microsoft.azure.management.containerinstance.VolumeMount;
+import com.microsoft.azure.management.containerregistry.AccessKeyType;
 import com.microsoft.azure.management.containerregistry.Registry;
-import com.microsoft.azure.management.containerregistry.implementation.RegistryListCredentials;
+import com.microsoft.azure.management.containerregistry.RegistryCredentials;
 import com.microsoft.azure.management.cosmosdb.CosmosDBAccount;
 import com.microsoft.azure.management.dns.ARecordSet;
 import com.microsoft.azure.management.dns.AaaaRecordSet;
@@ -1100,13 +1101,13 @@ public final class Utils {
     public static void print(Registry azureRegistry) {
         StringBuilder info = new StringBuilder();
 
-        RegistryListCredentials acrCredentials = azureRegistry.listCredentials();
+        RegistryCredentials acrCredentials = azureRegistry.getCredentials();
         info.append("Azure Container Registry: ").append(azureRegistry.id())
             .append("\n\tName: ").append(azureRegistry.name())
             .append("\n\tServer Url: ").append(azureRegistry.loginServerUrl())
             .append("\n\tUser: ").append(acrCredentials.username())
-            .append("\n\tFirst Password: ").append(acrCredentials.passwords().get(0).value())
-            .append("\n\tSecond Password: ").append(acrCredentials.passwords().get(1).value());
+            .append("\n\tFirst Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.PRIMARY))
+            .append("\n\tSecond Password: ").append(acrCredentials.accessKeys().get(AccessKeyType.SECONDARY));
         System.out.println(info.toString());
     }
 

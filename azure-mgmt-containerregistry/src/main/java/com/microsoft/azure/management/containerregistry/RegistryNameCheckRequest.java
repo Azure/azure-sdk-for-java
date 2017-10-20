@@ -22,7 +22,7 @@ public class RegistryNameCheckRequest {
 
     /**
      * The resource type of the container registry. This field must be set to
-     * "Microsoft.ContainerRegistry/registries".
+     * 'Microsoft.ContainerRegistry/registries'.
      */
     @JsonProperty(value = "type", required = true)
     private String type;

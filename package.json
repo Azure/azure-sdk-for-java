@@ -16,9 +16,12 @@
   },
   "homepage": "https://github.com/Azure/azure-sdk-for-java#readme",
   "devDependencies": {
+    "autorest": "^2.0.4147",
     "colors": "1.1.2",
+    "execa": "^0.8.0",
     "gulp": "^3.9.0",
     "gulp-exec": "2.1.2",
+    "p-all": "^1.0.0",
     "yargs": "3.29.0"
   }
 }
