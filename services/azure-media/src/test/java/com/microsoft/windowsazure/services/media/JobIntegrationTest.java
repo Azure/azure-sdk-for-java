@@ -516,7 +516,7 @@ public class JobIntegrationTest extends IntegrationTestBase {
         TaskHistoricalEvent historicalEvent = historicalEvents.get(0);
 
         // Assert
-        assertTrue(historicalEvents.size() >= 5);
+        assertTrue(historicalEvents.size() >= 4);
         assertNotNull(historicalEvent.getCode());
         assertNotNull(historicalEvent.getTimeStamp());
         assertNull(historicalEvent.getMessage());

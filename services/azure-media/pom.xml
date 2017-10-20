@@ -62,7 +62,12 @@
       <groupId>${project.groupId}</groupId>
       <artifactId>azure-core</artifactId>
       <version>${project.version}</version>
-    </dependency>
+    </dependency>    
+	<dependency>
+	    <groupId>com.microsoft.azure</groupId>
+	    <artifactId>adal4j</artifactId>
+	    <version>1.2.0</version>
+	</dependency>
     <dependency>
       <groupId>org.apache.httpcomponents</groupId>
       <artifactId>httpclient</artifactId>

@@ -26,7 +26,7 @@ import com.microsoft.windowsazure.services.media.MediaConfiguration;
 public class ResourceLocationManager {
     private URI baseURI;
 
-    public ResourceLocationManager(@Named(MediaConfiguration.URI) String baseUri)
+    public ResourceLocationManager(@Named(MediaConfiguration.AZURE_AD_API_SERVER) String baseUri)
             throws URISyntaxException {
         this.baseURI = new URI(baseUri);
     }

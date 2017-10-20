@@ -1,11 +1,11 @@
 /**
  * Copyright Microsoft Corporation
- * 
+ *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
  * You may obtain a copy of the License at
  * http://www.apache.org/licenses/LICENSE-2.0
- * 
+ *
  * Unless required by applicable law or agreed to in writing, software
  * distributed under the License is distributed on an "AS IS" BASIS,
  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
@@ -14,11 +14,14 @@
  */
 package com.microsoft.windowsazure.services.media;
 
+import java.net.URI;
+
 import com.microsoft.windowsazure.Configuration;
+import com.microsoft.windowsazure.services.media.authentication.TokenProvider;
 
 /**
  * Provides functionality to create a media services configuration.
- * 
+ *
  */
 public final class MediaConfiguration {
 
@@ -26,152 +29,42 @@ public final class MediaConfiguration {
     }
 
     /**
-     * Defines the media service configuration URI constant.
-     * 
+     * The token provider object
      */
-    public static final String URI = "media.uri";
+    public static final String AZURE_AD_TOKEN_PROVIDER = "media.azuread.tokenprovider";
 
     /**
-     * Defines the OAUTH configuration URI constant.
-     * 
+     * The azure media services account uri
      */
-    public static final String OAUTH_URI = "media.oauth.uri";
+    public static final String AZURE_AD_API_SERVER = "media.azuread.account_api_uri";
 
     /**
-     * Defines the OAUTH configuration client ID constant.
-     * 
+     * Returns the default Configuration provisioned for the specified AMS account and token provider.
+     * @param apiServer the AMS account uri
+     * @param azureAdTokenProvider the token provider
+     * @return a Configuration
      */
-    public static final String OAUTH_CLIENT_ID = "media.oauth.client.id";
+    public static Configuration configureWithAzureAdTokenProvider(
+            URI apiServer,
+            TokenProvider azureAdTokenProvider) {
 
-    /**
-     * Defines the OAUTH configuration client secret constant.
-     * 
-     */
-    public static final String OAUTH_CLIENT_SECRET = "media.oauth.client.secret";
-
-    /**
-     * Defines the SCOPE of the media service sent to OAUTH.
-     */
-    public static final String OAUTH_SCOPE = "media.oauth.scope";
-
-    /**
-     * Creates a media service configuration using the specified media service
-     * base URI, OAUTH URI, client ID, and client secret.
-     * 
-     * @param mediaServiceUri
-     *            A <code>String</code> object that represents the media service
-     *            URI.
-     * 
-     * @param oAuthUri
-     *            A <code>String</code> object that represents the OAUTH URI.
-     * 
-     * @param clientId
-     *            A <code>String</code> object that represents the client ID.
-     * 
-     * @param clientSecret
-     *            A <code>String</code> object that represents the client
-     *            secret.
-     * 
-     * @param scope
-     *            A <code>String</code> object that represents the scope.
-     * 
-     * @return A <code>Configuration</code> object that can be used when
-     *         creating an instance of the <code>MediaService</code> class.
-     * 
-     */
-    public static Configuration configureWithOAuthAuthentication(
-            String mediaServiceUri, String oAuthUri, String clientId,
-            String clientSecret, String scope) {
-        return configureWithOAuthAuthentication(null,
-                Configuration.getInstance(), mediaServiceUri, oAuthUri,
-                clientId, clientSecret, scope);
+        return configureWithAzureAdTokenProvider(Configuration.getInstance(), apiServer, azureAdTokenProvider);
     }
 
     /**
-     * Creates a media service configuration using the specified configuration,
-     * media service base URI, OAuth URI, client ID, and client secret.
-     * 
-     * @param configuration
-     *            A previously instantiated <code>Configuration</code> object.
-     * 
-     * @param mediaServiceUri
-     *            A <code>String</code> object that represents the URI of media
-     *            service.
-     * 
-     * @param oAuthUri
-     *            A <code>String</code> object that represents the URI of OAuth
-     *            service.
-     * 
-     * @param clientId
-     *            A <code>String</code> object that represents the client ID.
-     * 
-     * @param clientSecret
-     *            A <code>String</code> object that represents the client
-     *            secret.
-     * 
-     * @param scope
-     *            A <code>String</code> object that represents the scope.
-     * 
-     * @return A <code>Configuration</code> object that can be used when
-     *         creating an instance of the <code>MediaService</code> class.
-     * 
+     * Setup a Configuration with specified Configuration, AMS account and token provider
+     * @param configuration The target configuration
+     * @param apiServer the AMS account uri
+     * @param azureAdTokenProvider the token provider
+     * @return the target Configuration
      */
-    public static Configuration configureWithOAuthAuthentication(
-            Configuration configuration, String mediaServiceUri,
-            String oAuthUri, String clientId, String clientSecret, String scope) {
-        return configureWithOAuthAuthentication(null, configuration,
-                mediaServiceUri, oAuthUri, clientId, clientSecret, scope);
-    }
+    public static Configuration configureWithAzureAdTokenProvider(
+            Configuration configuration,
+            URI apiServer,
+            TokenProvider azureAdTokenProvider) {
 
-    /**
-     * Creates a media service configuration using the specified profile,
-     * configuration, media service base URI, OAuth URI, client ID, and client
-     * secret.
-     * 
-     * @param profile
-     *            A <code>String</code> object that represents the profile.
-     * 
-     * @param configuration
-     *            A previously instantiated <code>Configuration</code> object.
-     * 
-     * @param mediaServiceUri
-     *            A <code>String</code> object that represents the URI of media
-     *            service.
-     * 
-     * @param oAuthUri
-     *            A <code>String</code> object that represents the URI of OAUTH
-     *            service.
-     * 
-     * @param clientId
-     *            A <code>String</code> object that represents the client ID.
-     * 
-     * @param clientSecret
-     *            A <code>String</code> object that represents the client
-     *            secret.
-     * 
-     * @param scope
-     *            A <code>String</code> object that represents the scope.
-     * 
-     * @return A <code>Configuration</code> object that can be used when
-     *         creating an instance of the <code>MediaService</code> class.
-     * 
-     */
-    public static Configuration configureWithOAuthAuthentication(
-            String profile, Configuration configuration,
-            String mediaServiceUri, String oAuthUri, String clientId,
-            String clientSecret, String scope) {
-
-        if (profile == null) {
-            profile = "";
-        } else if (profile.length() != 0 && !profile.endsWith(".")) {
-            profile = profile + ".";
-        }
-
-        configuration.setProperty(profile + URI, mediaServiceUri);
-        configuration.setProperty(profile + OAUTH_URI, oAuthUri);
-        configuration.setProperty(profile + OAUTH_CLIENT_ID, clientId);
-        configuration.setProperty(profile + OAUTH_CLIENT_SECRET, clientSecret);
-        configuration.setProperty(profile + OAUTH_SCOPE, scope);
+        configuration.setProperty(AZURE_AD_API_SERVER, apiServer.toString());
+        configuration.setProperty(AZURE_AD_TOKEN_PROVIDER, azureAdTokenProvider);
 
         return configuration;
     }

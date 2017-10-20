@@ -16,8 +16,10 @@
 package com.microsoft.windowsazure.services.media;
 
 import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.EnumSet;
+import java.util.Random;
 
 import org.junit.BeforeClass;
 import org.junit.Test;
@@ -68,6 +70,50 @@ public class UploadingIntegrationTest extends IntegrationTestBase {
     public void canUploadBlockBlob() throws Exception {
         InputStream blobContent = new ByteArrayInputStream(firstPrimes);
         blobWriter.createBlockBlob("uploadBlockBlobTest", blobContent);
+    }
+    
+    @Test
+   public void canUploadLargeBlockBlob() throws Exception {
+    	
+    	InputStream blobContent = new InputStream() {
+    		private int count = 0;
+    		private int _mark = 0;
+    		private int invalidate = 0;
+
+    		private Random rand = new Random();
+    		
+			@Override
+			public int read() throws IOException {
+				if ((this.count++) > 1024*1024*66) {
+					return -1;
+				}
+				if (invalidate > 0) {
+					this.invalidate--;
+					if (this.invalidate == 0) {
+						this._mark = 0;
+					}
+				}
+				return rand.nextInt(256);
+			}
+			
+			@Override
+			public void mark(int mark) {
+				this._mark = this.count;
+			}
+			
+			@Override
+			public void reset() {
+				this.count = this._mark;
+				this._mark = 0;
+			}
+			
+			@Override 
+			public boolean markSupported() {
+				return true;
+			}
+    	};
+
+        blobWriter.createBlockBlob("uploadLargeBlockBlobTest", blobContent);
     }
 
     @Test

@@ -22,12 +22,15 @@ import static org.junit.Assert.assertTrue;
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.lang.reflect.Method;
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -36,6 +39,11 @@ import org.junit.rules.ExpectedException;
 
 import com.microsoft.windowsazure.Configuration;
 import com.microsoft.windowsazure.exception.ServiceException;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdClientSymmetricKey;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenCredentials;
+import com.microsoft.windowsazure.services.media.authentication.AzureAdTokenProvider;
+import com.microsoft.windowsazure.services.media.authentication.AzureEnvironments;
+import com.microsoft.windowsazure.services.media.authentication.TokenProvider;
 import com.microsoft.windowsazure.services.media.models.AccessPolicy;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyInfo;
 import com.microsoft.windowsazure.services.media.models.AccessPolicyPermission;
@@ -68,7 +76,9 @@ public abstract class IntegrationTestBase {
     protected static MediaContract service;
     protected static QueueContract queueService;
     protected static Configuration config;
-
+    protected static ExecutorService executorService;
+    protected static TokenProvider tokenProvider;
+    
     protected static final String testAssetPrefix = "testAsset";
     protected static final String testPolicyPrefix = "testPolicy";
     protected static final String testContentKeyPrefix = "testContentKey";
@@ -83,7 +93,7 @@ public abstract class IntegrationTestBase {
     protected static final String validButNonexistAccessPolicyId = "nb:pid:UUID:38dcb3a0-ef64-4ad0-bbb5-67a14c6df2f7";
     protected static final String validButNonexistLocatorId = "nb:lid:UUID:92a70402-fca9-4aa3-80d7-d4de3792a27a";
 
-    protected static String MEDIA_ENCODER_MEDIA_PROCESSOR_ID = "nb:mpid:UUID:2e7aa8f3-4961-4e0c-b4db-0e0439e524f5";
+    protected static String MEDIA_ENCODER_MEDIA_PROCESSOR_ID = "nb:mpid:UUID:ff4df607-d419-42f0-bc17-a481b1331e56";
     protected static final String invalidId = "notAValidId";
 
     @Rule
@@ -91,13 +101,26 @@ public abstract class IntegrationTestBase {
 
     @BeforeClass
     public static void setup() throws Exception {
-        config = Configuration.getInstance();
-        overrideWithEnv(config, MediaConfiguration.URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_URI);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_ID);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_CLIENT_SECRET);
-        overrideWithEnv(config, MediaConfiguration.OAUTH_SCOPE);
-
+    	executorService = Executors.newFixedThreadPool(5);    	
+    	config = Configuration.getInstance();
+        
+    	String tenant = config.getProperty("media.azuread.test.tenant").toString();
+    	String clientId = config.getProperty("media.azuread.test.clientid").toString();
+    	String clientKey = config.getProperty("media.azuread.test.clientkey").toString();
+    	String apiserver = config.getProperty("media.azuread.test.account_api_uri").toString();
+    	
+    	// Setup Azure AD Credentials (in this case using username and password)
+    	AzureAdTokenCredentials credentials = new AzureAdTokenCredentials(
+    			tenant,
+    			new AzureAdClientSymmetricKey(clientId, clientKey), 
+    			AzureEnvironments.AZURE_CLOUD_ENVIRONMENT);
+    	
+    	tokenProvider = new AzureAdTokenProvider(credentials, executorService);
+    	
+    	// configure the account endpoint and the token provider for injection
+    	config.setProperty(MediaConfiguration.AZURE_AD_API_SERVER, apiserver);
+    	config.setProperty(MediaConfiguration.AZURE_AD_TOKEN_PROVIDER, tokenProvider);
+    	
         overrideWithEnv(config, QueueConfiguration.ACCOUNT_KEY,
                 "media.queue.account.key");
         overrideWithEnv(config, QueueConfiguration.ACCOUNT_NAME,
@@ -150,6 +173,9 @@ public abstract class IntegrationTestBase {
     @AfterClass
     public static void cleanup() throws Exception {
         cleanupEnvironment();
+        
+        // shutdown the executor service required by ADAL4J
+        executorService.shutdown();
     }
 
     protected static void cleanupEnvironment() {

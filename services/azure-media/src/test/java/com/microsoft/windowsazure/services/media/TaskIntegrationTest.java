@@ -244,8 +244,6 @@ public class TaskIntegrationTest extends IntegrationTestBase {
                 initializationVector, actual.getInitializationVector());
 
         // Read-only fields
-        assertDateApproxEquals(message + " getEndTime", endTime,
-                actual.getEndTime());
         assertNotNull(message + " getErrorDetails", actual.getErrorDetails());
         assertEquals(message + " getErrorDetails.size", 0, actual
                 .getErrorDetails().size());
@@ -303,7 +301,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
             String configuration, String name, int priority, TaskInfo actual)
             throws ServiceException {
         String encryptionKeyId = null;
-        String encryptionScheme = null;
+        String encryptionScheme = "None";
         String encryptionVersion = null;
         String initializationVector = null;
 
@@ -320,7 +318,7 @@ public class TaskIntegrationTest extends IntegrationTestBase {
             Date startTime, TaskState state, TaskInfo actual)
             throws ServiceException {
         String encryptionKeyId = null;
-        String encryptionScheme = null;
+        String encryptionScheme = "None";
         String encryptionVersion = null;
         String initializationVector = null;
 

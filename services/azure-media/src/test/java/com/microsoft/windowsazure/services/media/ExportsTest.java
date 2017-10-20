@@ -37,7 +37,7 @@ public class ExportsTest extends IntegrationTestBase {
         ResourceLocationManager rlm = config
                 .create(ResourceLocationManager.class);
         URI rootUri = new URI(
-                (String) config.getProperty(MediaConfiguration.URI));
+                (String) config.getProperty(MediaConfiguration.AZURE_AD_API_SERVER));
 
         assertEquals(rootUri, rlm.getBaseURI());
     }
