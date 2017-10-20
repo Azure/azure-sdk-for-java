@@ -9,6 +9,7 @@ public class SubscriptionDescription extends ResourceDescripton {
                       + "<LockDuration>%s</LockDuration>"
                       + "<RequiresSession>%b</RequiresSession>"
                       + "<DefaultMessageTimeToLive>%s</DefaultMessageTimeToLive>"
+                      + "<MaxDeliveryCount>%s</MaxDeliveryCount>"
                  + "</SubscriptionDescription>"
             + "</content>"
           + "</entry>";
@@ -69,11 +70,19 @@ public class SubscriptionDescription extends ResourceDescripton {
     public String getPath()
     {
         return this.topicPath + "/subscriptions/" + this.name;
-    }
+    }    
     
+    public int getMaxDeliveryCount() {
+        return maxDeliveryCount;
+    }
+
+    public void setMaxDeliveryCount(int maxDeliveryCount) {
+        this.maxDeliveryCount = maxDeliveryCount;
+    }
+
     @Override
     String getAtomXml()
     {
-        return String.format(ATOM_XML_FORMAT, SerializerUtil.serializeDuration(this.lockDuration), this.requiresSession, SerializerUtil.serializeDuration(this.defaultMessageTimeToLive));
+        return String.format(ATOM_XML_FORMAT, SerializerUtil.serializeDuration(this.lockDuration), this.requiresSession, SerializerUtil.serializeDuration(this.defaultMessageTimeToLive), this.maxDeliveryCount);
     }
 }

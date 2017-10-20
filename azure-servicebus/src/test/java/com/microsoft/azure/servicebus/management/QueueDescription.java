@@ -11,6 +11,7 @@ public class QueueDescription extends ResourceDescripton{
                  + "<MaxSizeInMegabytes>%d</MaxSizeInMegabytes>"
                  + "<RequiresSession>%b</RequiresSession>"
                  + "<DefaultMessageTimeToLive>%s</DefaultMessageTimeToLive>"
+                 + "<MaxDeliveryCount>%s</MaxDeliveryCount>"
                  + "<EnablePartitioning>%b</EnablePartitioning>"
             + "</QueueDescription>"
        + "</content>"
@@ -86,12 +87,20 @@ public class QueueDescription extends ResourceDescripton{
 
     public void setDefaultMessageTimeToLive(Duration defaultMessageTimeToLive) {
         this.defaultMessageTimeToLive = defaultMessageTimeToLive;
+    }    
+
+    public int getMaxDeliveryCount() {
+        return maxDeliveryCount;
+    }
+
+    public void setMaxDeliveryCount(int maxDeliveryCount) {
+        this.maxDeliveryCount = maxDeliveryCount;
     }
 
     @Override
     String getAtomXml()
     {
         //return String.format(ATOM_XML_FORMAT, SerializerUtil.serializeDuration(this.lockDuration), this.maxSizeInMegaBytes, this.requiresSession, SerializerUtil.serializeDuration(this.defaultMessageTimeToLive), SerializerUtil.serializeEnablePartitioning(this.enablePartitioning));
-        return String.format(ATOM_XML_FORMAT, SerializerUtil.serializeDuration(this.lockDuration), this.maxSizeInMegaBytes, this.requiresSession, SerializerUtil.serializeDuration(this.defaultMessageTimeToLive), this.enablePartitioning);
+        return String.format(ATOM_XML_FORMAT, SerializerUtil.serializeDuration(this.lockDuration), this.maxSizeInMegaBytes, this.requiresSession, SerializerUtil.serializeDuration(this.defaultMessageTimeToLive), this.maxDeliveryCount, this.enablePartitioning);
     }
 }
