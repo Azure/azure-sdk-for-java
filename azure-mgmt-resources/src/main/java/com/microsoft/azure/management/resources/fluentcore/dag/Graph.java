@@ -64,6 +64,13 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * @return all nodes in the graph.
+     */
+    public Collection<NodeT> getNodes() {
+        return nodeTable.values();
+    }
+
+    /**
      * Adds a node to this graph.
      *
      * @param node the node
@@ -71,13 +78,6 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     public void addNode(NodeT node) {
         node.setOwner(this);
         nodeTable.put(node.key(), node);
-    }
-
-    /**
-     * @return all nodes in the graph.
-     */
-    public Collection<NodeT> getNodes() {
-        return nodeTable.values();
     }
 
     /**
@@ -145,6 +145,13 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
         throw new IllegalStateException("Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}");
     }
 
+    /**
+     * Find the path.
+     *
+     * @param start key of first node in the path
+     * @param end key of last node in the path
+     * @return string containing the nodes keys in the path separated by "->" symbol
+     */
     protected String findPath(String start, String end) {
         if (start.equals(end)) {
             return start;

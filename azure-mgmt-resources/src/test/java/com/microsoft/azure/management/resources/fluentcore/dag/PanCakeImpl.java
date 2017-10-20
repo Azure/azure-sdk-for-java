@@ -8,6 +8,7 @@ package com.microsoft.azure.management.resources.fluentcore.dag;
 
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
 import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreatableUpdatableImpl;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreateUpdateTask;
 import org.junit.Assert;
 import rx.Observable;
 import rx.functions.Func1;
@@ -56,7 +57,7 @@ class PancakeImpl
 
     /**
      * a pancake specified via this wither will not be added immediately as a dependency, will be added only
-     * inside prepare {@link com.microsoft.azure.management.resources.fluentcore.model.implementation.CreateUpdateTask.ResourceCreatorUpdator#prepare()}
+     * inside prepare {@link CreateUpdateTask.ResourceCreatorUpdater#prepare()}
      *
      * @param pancake the pancake
      * @return the next stage of pancake

@@ -160,6 +160,9 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         super.prepareForEnumeration();
     }
 
+    /**
+     * @return list with nodes in the graph.
+     */
     private List<TaskGroupEntry<ResultT, TaskT>> entriesSnapshot() {
         List<TaskGroupEntry<ResultT, TaskT>> entries = new ArrayList<>();
         super.prepareForEnumeration();

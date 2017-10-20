@@ -10,6 +10,9 @@ import com.microsoft.azure.management.resources.fluentcore.model.implementation.
 import org.junit.Assert;
 import org.junit.Test;
 
+/**
+ * The tests for prepare stage of the graph (i.e. adding sub-graph in prepare stage).
+ */
 public class DAGFinalizeTests {
     @Test
     public void testWithoutFinalize() {

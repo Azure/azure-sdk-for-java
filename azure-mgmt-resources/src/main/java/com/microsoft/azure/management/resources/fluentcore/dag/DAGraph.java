@@ -6,7 +6,10 @@
 
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
+import org.apache.commons.lang3.StringUtils;
+
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -79,7 +82,14 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      * @param dependencyGraph the dependency DAG
      */
     public void addDependencyGraph(DAGraph<DataT, NodeT> dependencyGraph) {
-        dependencyGraph.addDependentGraph(this);
+        this.rootNode.addDependency(dependencyGraph.rootNode.key());
+        Map<String, NodeT> sourceNodeTable = dependencyGraph.nodeTable;
+        Map<String, NodeT> targetNodeTable = this.nodeTable;
+        this.merge(sourceNodeTable, targetNodeTable);
+        dependencyGraph.parentDAGs.add(this);
+        if (this.hasParents()) {
+            this.bubbleUpNodeTable(this, new LinkedList<String>());
+        }
     }
 
     /**
@@ -88,14 +98,7 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
      * @param dependentGraph the dependent DAG
      */
     public void addDependentGraph(DAGraph<DataT, NodeT> dependentGraph) {
-        dependentGraph.rootNode.addDependency(this.rootNode.key());
-        Map<String, NodeT> sourceNodeTable = this.nodeTable;
-        Map<String, NodeT> targetNodeTable = dependentGraph.nodeTable;
-        this.merge(sourceNodeTable, targetNodeTable);
-        this.parentDAGs.add(dependentGraph);
-        if (dependentGraph.hasParents()) {
-            this.propagateNodeTable(dependentGraph);
-        }
+        dependentGraph.addDependencyGraph(this);
     }
 
     /**
@@ -233,16 +236,6 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
     }
 
     /**
-     * Propagates node table of given DAG to all of it ancestors.
-     */
-    private void propagateNodeTable(DAGraph<DataT, NodeT> from) {
-        for (DAGraph<DataT, NodeT> to : from.parentDAGs) {
-            this.merge(from.nodeTable, to.nodeTable);
-            propagateNodeTable(to);
-        }
-    }
-
-    /**
      * Copies entries in the source map to target map.
      *
      * @param source source map
@@ -255,5 +248,21 @@ public class DAGraph<DataT, NodeT extends DAGNode<DataT, NodeT>> extends Graph<D
                 target.put(key, entry.getValue());
             }
         }
+    }
+
+    /**
+     * Propagates node table of given DAG to all of it ancestors.
+     */
+    private void bubbleUpNodeTable(DAGraph<DataT, NodeT> from, LinkedList<String> path) {
+        if (path.contains(from.rootNode.key())) {
+            path.push(from.rootNode.key()); // For better error message
+            throw new IllegalStateException("Detected circular dependency: " + StringUtils.join(path, " -> "));
+        }
+        path.push(from.rootNode.key());
+        for (DAGraph<DataT, NodeT> to : from.parentDAGs) {
+            this.merge(from.nodeTable, to.nodeTable);
+            this.bubbleUpNodeTable(to, path);
+        }
+        path.pop();
     }
 }
