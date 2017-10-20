@@ -60,7 +60,7 @@ public class HttpRequest {
      * @return This HttpRequest so that multiple operations can be chained together.
      */
     public HttpRequest withHeader(String headerName, String headerValue) {
-        headers.add(headerName, headerValue);
+        headers.set(headerName, headerValue);
         return this;
     }
 
