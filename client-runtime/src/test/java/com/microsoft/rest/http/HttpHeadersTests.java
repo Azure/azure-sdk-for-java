@@ -20,7 +20,7 @@ public class HttpHeadersTests {
         assertNull(headers.value("a"));
 
         headers.set("A", "");
-        assertNull(headers.value("a"));
+        assertEquals("", headers.value("a"));
 
         headers.set("A", "b");
         assertEquals("b", headers.value("A"));
