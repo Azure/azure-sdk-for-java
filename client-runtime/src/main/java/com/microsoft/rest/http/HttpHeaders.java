@@ -59,7 +59,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      */
     public HttpHeaders set(String headerName, String headerValue) {
         final String headerKey = headerName.toLowerCase();
-        if (headerValue == null || headerValue.isEmpty()) {
+        if (headerValue == null) {
             headers.remove(headerKey);
         }
         else {
