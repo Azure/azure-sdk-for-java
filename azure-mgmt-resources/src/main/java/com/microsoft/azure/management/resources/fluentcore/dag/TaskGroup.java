@@ -15,8 +15,27 @@ import java.util.HashSet;
 import java.util.List;
 
 /**
- * Type representing a group of task entries, each entry holds a {@link TaskItem} and associated
- * dependency information.
+ * Type representing a group of task entries with dependencies between them. Initially a task
+ * group will have only one task entry known as root task entry, then more entries can be
+ * added by taking dependency on multiple task group.
+ *
+ * The method {@link TaskGroup#executeAsync()} kick-off execution of tasks in the group,
+ * task are executed in topological sorted order.
+ *
+ * {@link TaskGroup#addDependencyTaskGroup(TaskGroup)}: A task group "A" can take dependency on
+ * another task group "B" through this method e.g. `A.addDependencyTaskGroup(B)` indicates that
+ * completion of tasks in the dependency task group "B" is required before the execution of root
+ * task in group "A". A.executeAsync() will ensure this order.
+ *
+ * {@link TaskGroup#addDependentTaskGroup(TaskGroup)}: Through this method it is possible to
+ * express that a task group "M" has a dependent task group "N" e.g. `N.addDependentTaskGroup(M)`
+ * In this case M.executeAsync() will not execute tasks in the group "N". on the other hand
+ * N.executeAsync() will group "M" followed by "N".
+ *
+ * {@link TaskGroup#addPostRunDependentTaskGroup(TaskGroup)}: there are scenarios where a subset
+ * of dependent task groups say "H", "I" may required to run after the execution of a task group "K"
+ * when K.executeAsync() is called. Such special dependents can be added via
+ * K.addPostRunDependentTaskGroup(H) and K.addPostRunDependentTaskGroup(I).
  *
  * @param <ResultT> type of the result returned by the tasks in the group
  * @param <TaskT> type of the tasks in the group that can return a value
@@ -24,9 +43,9 @@ import java.util.List;
 public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         extends DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> {
     /**
-     * The proxy task group for this task group.
+     * The root task in this task group.
      */
-    private TaskGroup<ResultT, TaskT> proxyTaskGroup;
+    private final TaskGroupEntry<ResultT, TaskT> rootTaskEntry;
 
     /**
      * Task group termination strategy to be used once any task in the group error-ed.
@@ -45,6 +64,11 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      * is marked as cancelled i.e. {@link this#isGroupCancelled} is set.
      */
     private final TaskCancelledException taskCancelledException = new TaskCancelledException();
+    /**
+     * The helper to operate on proxy TaskGroup of this TaskGroup for supporting dependents marked
+     * for post run.
+     */
+    private ProxyTaskGroupWrapper<ResultT> proxyTaskGroupWrapper;
 
     /**
      * Creates TaskGroup.
@@ -55,7 +79,9 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     private TaskGroup(TaskGroupEntry<ResultT, TaskT> rootTaskEntry,
                       TaskGroupTerminateOnErrorStrategy taskGroupTerminateOnErrorStrategy) {
         super(rootTaskEntry);
+        this.rootTaskEntry = rootTaskEntry;
         this.taskGroupTerminateOnErrorStrategy = taskGroupTerminateOnErrorStrategy;
+        this.proxyTaskGroupWrapper = new ProxyTaskGroupWrapper<>(this.that(), taskGroupTerminateOnErrorStrategy);
     }
 
     /**
@@ -86,6 +112,13 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
+     * @return the root task entry in the group.
+     */
+    private TaskGroupEntry<ResultT, TaskT> root() {
+        return this.rootTaskEntry;
+    }
+
+    /**
      * Mark root of this task task group depends on the given task group's root.
      * <p>
      * This means this task group's root can be executed only after the completion of all
@@ -94,8 +127,12 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      * @param dependencyTaskGroup the task group that this task group depends on
      */
     public void addDependencyTaskGroup(TaskGroup<ResultT, TaskT> dependencyTaskGroup) {
-        DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> dependencyGraph = dependencyTaskGroup;
-        this.addDependencyGraph(dependencyGraph);
+        if (dependencyTaskGroup.proxyTaskGroupWrapper.isActive()) {
+            dependencyTaskGroup.proxyTaskGroupWrapper.addDependentTaskGroup(this.that());
+        } else {
+            DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> dependencyGraph = dependencyTaskGroup;
+            super.addDependencyGraph(dependencyGraph);
+        }
     }
 
     /**
@@ -103,12 +140,32 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      * <p>
      * This means given task group's root can be executed only after the completion of all
      * tasks in this group.
+     * <p>
+     * Invoking {@link this#executeAsync()} will not run the tasks in the given dependent
+     * task group.
      *
      * @param dependentTaskGroup the task group depends on this task group
      */
     public void addDependentTaskGroup(TaskGroup<ResultT, TaskT> dependentTaskGroup) {
         DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> dependentGraph = dependentTaskGroup;
-        this.addDependentGraph(dependentGraph);
+        super.addDependentGraph(dependentGraph);
+    }
+
+    /**
+     * Mark root of the given task group depends on this task group's root.
+     * <p>
+     * This means given task group's root can be executed only after the completion of all
+     * tasks in this group.
+     * <p>
+     * Invoking {@link this#executeAsync()} will run the tasks in the given dependent
+     * task group as well.
+     *
+     * @param dependentTaskGroup the task group depends on this task group
+     */
+    public void addPostRunDependentTaskGroup(TaskGroup<ResultT, TaskT> dependentTaskGroup) {
+        DAGraph<TaskT, TaskGroupEntry<ResultT, TaskT>> dependentGraph = dependentTaskGroup;
+        super.addDependentGraph(dependentGraph);
+        this.proxyTaskGroupWrapper.addDependencyTaskGroup(dependentTaskGroup.that());
     }
 
     /**
@@ -117,17 +174,20 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      * @return an observable that emits the result of tasks in the order they finishes.
      */
     public Observable<ResultT> executeAsync() {
-        if (!isPreparer()) {
-            return Observable.error(new IllegalStateException("executeAsync can be called"
-                    + " only from root TaskGroup"));
+        if (this.proxyTaskGroupWrapper.isActive()) {
+            return this.proxyTaskGroupWrapper.executeAsync();
+        } else {
+            if (!isPreparer()) {
+                return Observable.error(new IllegalStateException("executeAsync can be called only from root TaskGroup"));
+            }
+            this.isGroupCancelled = false;
+            // Prepare tasks and queue the ready tasks (terminal tasks with no dependencies)
+            //
+            prepareTasks();
+            // Runs the ready tasks concurrently
+            //
+            return executeReadyTasksAsync();
         }
-        this.isGroupCancelled = false;
-        // Prepare tasks and queue the ready tasks (terminal tasks with no dependencies)
-        //
-        prepareTasks();
-        // Runs the ready tasks concurrently
-        //
-        return executeReadyTasksAsync();
     }
 
     /**
@@ -286,7 +346,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      * @return true if the throwable needs to be included in the {@link rx.exceptions.CompositeException}
      * emitted by the final stream.
      */
-    private boolean shouldPropagateException(Throwable throwable) {
+    private static boolean shouldPropagateException(Throwable throwable) {
         return (!(throwable instanceof ErroredDependencyTaskException)
                 && !(throwable instanceof TaskCancelledException));
     }
@@ -301,6 +361,15 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         return Observable.error(throwable);
     }
 
+
+    /**
+     * @return this instance with TaskItem param down casted.
+     */
+    @SuppressWarnings("unchecked")
+    private TaskGroup<ResultT, TaskItem<ResultT>> that() {
+        return (TaskGroup<ResultT, TaskItem<ResultT>>) this;
+    }
+
     /**
      * An interface representing a type that is a part of TaskGroup.
      *
@@ -312,5 +381,116 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
          * @return Gets the task group.
          */
         TaskGroup<T, U> taskGroup();
+    }
+
+    /**
+     * Wrapper type to simplify operations on proxy TaskGroup.
+     * <p>
+     * A proxy TaskGroup will be activated for a task group, as soon as one adds "post-run" dependents
+     * on the actual task group via {@link TaskGroup#addPostRunDependentTaskGroup(TaskGroup)}.
+     * "post run" dependents are those task group which need to be executed as part of execution
+     * of actual task group.
+     *
+     * @param <R> type of the result returned by the tasks in the proxy TaskGroup.
+     */
+    private static final class ProxyTaskGroupWrapper<R> {
+        // The proxy TaskGroup
+        private TaskGroup<R, TaskItem<R>> proxyTaskGroup;
+        // The actual TaskGroup for which above TaskGroup act as proxy
+        private final TaskGroup<R, TaskItem<R>> taskGroup;
+        // The actual TaskGroup's termination strategy
+        private final TaskGroupTerminateOnErrorStrategy terminationStrategy;
+
+        /**
+         * Creates ProxyTaskGroupWrapper.
+         *
+         * @param taskGroup the actual TaskGroup for which proxy TaskGroup will be enabled
+         * @param terminationStrategy the actual TaskGroup's termination strategy
+         */
+        ProxyTaskGroupWrapper(TaskGroup<R, TaskItem<R>> taskGroup,
+                              TaskGroupTerminateOnErrorStrategy terminationStrategy) {
+            this.taskGroup = taskGroup;
+            this.terminationStrategy = terminationStrategy;
+        }
+
+        /**
+         * @return true if the proxy TaskGroup is enabled for original TaskGroup.
+         */
+        boolean isActive() {
+            return this.proxyTaskGroup != null;
+        }
+
+        /**
+         * Add a dependency for the proxy TaskGroup.
+         *
+         * @param dependencyTaskGroup the dependency TaskGroup.
+         */
+        void addDependencyTaskGroup(TaskGroup<R, TaskItem<R>> dependencyTaskGroup) {
+            if (this.proxyTaskGroup == null) {
+                ProxyTaskItem<R> proxyTaskItem = new ProxyTaskItem<>(this.taskGroup.root().data());
+                this.proxyTaskGroup = new TaskGroup<R, TaskItem<R>>("proxy-" + this.taskGroup.root().key(),
+                        proxyTaskItem,
+                        this.terminationStrategy);
+                this.proxyTaskGroup.addDependencyGraph(this.taskGroup);
+            }
+            this.proxyTaskGroup.addDependencyGraph(dependencyTaskGroup);
+        }
+
+        /**
+         * Add a dependent for the proxy TaskGroup.
+         *
+         * @param dependentTaskGroup the dependent TaskGroup
+         */
+        void addDependentTaskGroup(TaskGroup<R, TaskItem<R>> dependentTaskGroup) {
+            if (this.proxyTaskGroup == null) {
+                throw new IllegalStateException("addDependentTaskGroup() cannot be called in a non-active ProxyTaskGroup");
+            }
+            dependentTaskGroup.addDependencyGraph(this.proxyTaskGroup);
+        }
+
+        /**
+         * Executes the tasks grouped under the proxy TaskGroup.
+         *
+         * @return an observable that emits the execution result of tasks in the TaskGroup.
+         */
+        Observable<R> executeAsync() {
+            if (this.proxyTaskGroup == null) {
+                throw new IllegalStateException("executeAsync() cannot be called in a non-active ProxyTaskGroup");
+            }
+            return this.proxyTaskGroup.executeAsync();
+        }
+    }
+
+    /**
+     * A {@link TaskItem} type that act as proxy for another {@link TaskItem}.
+     *
+     * @param <R> the type of the result produced the task this proxy wraps.
+     */
+    private static final class ProxyTaskItem<R> implements TaskItem<R> {
+        private final TaskItem<R> taskItem;
+
+        private ProxyTaskItem(final TaskItem<R> taskItem) {
+            this.taskItem = taskItem;
+        }
+
+        @Override
+        public R result() {
+            return taskItem.result();
+        }
+
+        @Override
+        public void prepare() {
+            // NOP
+        }
+
+        @Override
+        public boolean isHot() {
+            return taskItem.isHot();
+        }
+
+        @Override
+        public Observable<R> executeAsync() {
+            return Observable.just(taskItem.result());
+        }
     }
 }
