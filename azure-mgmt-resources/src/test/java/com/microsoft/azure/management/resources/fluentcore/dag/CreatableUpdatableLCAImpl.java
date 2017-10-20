@@ -24,7 +24,7 @@ abstract class CreatableUpdatableLCAImpl<
         implements
         Creatable<FluentModelT>,
         TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>,
-        CreateUpdateTask.ResourceCreatorUpdator<FluentModelT> {
+        CreateUpdateTask.ResourceCreatorUpdater<FluentModelT> {
     private final String name;
     private final TaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> taskGroup;
 
@@ -74,6 +74,11 @@ abstract class CreatableUpdatableLCAImpl<
     }
 
     @Override
+    public ServiceFuture<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
+        throw new NotImplementedException();
+    }
+
+    @Override
     @SuppressWarnings("unchecked")
     public FluentModelT create() {
         return Utils.<FluentModelT>rootResource(createAsync()).toBlocking().single();
@@ -86,9 +91,4 @@ abstract class CreatableUpdatableLCAImpl<
 
     @Override
     public abstract Observable<FluentModelT> createResourceAsync();
-
-    @Override
-    public ServiceFuture<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
-        throw new NotImplementedException();
-    }
 }

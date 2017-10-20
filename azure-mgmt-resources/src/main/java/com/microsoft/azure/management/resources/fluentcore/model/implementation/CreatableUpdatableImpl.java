@@ -36,7 +36,7 @@ public abstract class CreatableUpdatableImpl<
         Appliable<FluentModelT>,
         Creatable<FluentModelT>,
         TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>,
-        CreateUpdateTask.ResourceCreatorUpdator<FluentModelT> {
+        CreateUpdateTask.ResourceCreatorUpdater<FluentModelT> {
     /**
      * The name of the creatable updatable model.
      */
@@ -124,7 +124,18 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public Observable<Indexable> createAsync() {
-        return this.executeTaskGroupAsyncStreaming();
+        return taskGroup.executeAsync()
+                .map(new Func1<FluentModelT, Indexable>() {
+                    @Override
+                    public Indexable call(FluentModelT fluentModel) {
+                        return fluentModel;
+                    }
+                });
+    }
+
+    @Override
+    public Observable<FluentModelT> applyAsync() {
+        return taskGroup.executeAsync().last();
     }
 
     @Override
@@ -133,8 +144,18 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
+    public ServiceFuture<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
+        return ServiceFuture.fromBody(applyAsync(), callback);
+    }
+
+    @Override
     public FluentModelT create() {
         return Utils.<FluentModelT>rootResource(createAsync()).toBlocking().single();
+    }
+
+    @Override
+    public FluentModelT apply() {
+        return applyAsync().toBlocking().last();
     }
 
     /**
@@ -147,39 +168,9 @@ public abstract class CreatableUpdatableImpl<
         return (FluentModelImplT) this;
     }
 
-
-    @Override
-    public Observable<FluentModelT> applyAsync() {
-        return this.executeTaskGroupAsync();
-    }
-
-    @Override
-    public ServiceFuture<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
-        return ServiceFuture.fromBody(applyAsync(), callback);
-    }
-
-    @Override
-    public FluentModelT apply() {
-        return applyAsync().toBlocking().last();
-    }
-
     @Override
     public Observable<FluentModelT> updateResourceAsync() {
         return this.createResourceAsync();
-    }
-
-    protected Observable<FluentModelT> executeTaskGroupAsync() {
-        return taskGroup.executeAsync().last();
-    }
-
-    protected Observable<Indexable> executeTaskGroupAsyncStreaming() {
-        return taskGroup.executeAsync()
-                .map(new Func1<FluentModelT, Indexable>() {
-                    @Override
-                    public Indexable call(FluentModelT fluentModel) {
-                        return fluentModel;
-                    }
-                });
     }
 
     protected FluentModelT createdModel(String key) {
@@ -196,5 +187,4 @@ public abstract class CreatableUpdatableImpl<
             }
         };
     }
-
 }
