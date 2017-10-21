@@ -64,7 +64,7 @@ abstract class CreatableUpdatableLCAImpl<
 
     @Override
     public Observable<Indexable> createAsync() {
-        return taskGroup.executeAsync()
+        return taskGroup.executeAsync(taskGroup.newExecutionContext())
                 .map(new Func1<FluentModelT, Indexable>() {
                     @Override
                     public Indexable call(FluentModelT fluentModel) {

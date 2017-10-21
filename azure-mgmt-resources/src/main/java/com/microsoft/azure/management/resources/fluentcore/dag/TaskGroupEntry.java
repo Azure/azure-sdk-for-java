@@ -55,9 +55,13 @@ final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
      *
      * @param ignoreCachedResult indicate that whether the cached result can be returned without
      *                           re-running the task
+     * @param context the context object shared across all the entries in the group that this entry belongs to,
+     *                this will be passed to {@link TaskItem#executeAsync(TaskGroup.ExecutionContext)}
+     *                method of the task item
+     *
      * @return the handle to the asynchronous execution of the task this entry holds.
      */
-    public Observable<ResultT> executeTaskAsync(boolean ignoreCachedResult) {
+    public Observable<ResultT> executeTaskAsync(boolean ignoreCachedResult, final TaskGroup.ExecutionContext context) {
         if (hasFaultedDescentDependencyTask) {
             return Observable.error(new ErroredDependencyTaskException());
         }
@@ -70,11 +74,11 @@ final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
             return Observable.defer(new Func0<Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call() {
-                    return taskItem.executeAsync();
+                    return taskItem.executeAsync(context);
                 }
             });
         } else {
-            return taskItem.executeAsync();
+            return taskItem.executeAsync(context);
         }
     }
 

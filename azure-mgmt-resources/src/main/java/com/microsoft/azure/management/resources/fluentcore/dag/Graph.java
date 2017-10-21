@@ -150,7 +150,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      *
      * @param start key of first node in the path
      * @param end key of last node in the path
-     * @return string containing the nodes keys in the path separated by "->" symbol
+     * @return string containing the nodes keys in the path separated by arrow symbol
      */
     protected String findPath(String start, String end) {
         if (start.equals(end)) {

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.microsoft.azure.management.resources.fluentcore.dag.TaskItem;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
@@ -51,7 +52,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
-    public Observable<ResourceT> executeAsync() {
+    public Observable<ResourceT> executeAsync(TaskGroup.ExecutionContext context) {
         if (this.resourceCreatorUpdater.isInCreateMode()) {
             return this.resourceCreatorUpdater.createResourceAsync()
                     .subscribeOn(SdkContext.getRxScheduler())

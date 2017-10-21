@@ -13,13 +13,15 @@ import rx.functions.Func1;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 
 /**
  * Type representing a group of task entries with dependencies between them. Initially a task
  * group will have only one task entry known as root task entry, then more entries can be
  * added by taking dependency on multiple task group.
  *
- * The method {@link TaskGroup#executeAsync()} kick-off execution of tasks in the group,
+ * The method {@link TaskGroup#executeAsync(ExecutionContext)} ()} kick-off execution of tasks in the group,
  * task are executed in topological sorted order.
  *
  * {@link TaskGroup#addDependencyTaskGroup(TaskGroup)}: A task group "A" can take dependency on
@@ -137,12 +139,12 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
 
     /**
      * Mark root of the given task group depends on this task group's root.
-     * <p>
+     * <p/>
      * This means given task group's root can be executed only after the completion of all
      * tasks in this group.
-     * <p>
-     * Invoking {@link this#executeAsync()} will not run the tasks in the given dependent
-     * task group.
+     * <p/>
+     * Invoking {@link this#executeAsync(ExecutionContext)} ()} will not run the tasks in the given
+     * dependent task group.
      *
      * @param dependentTaskGroup the task group depends on this task group
      */
@@ -153,11 +155,11 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
 
     /**
      * Mark root of the given task group depends on this task group's root.
-     * <p>
+     * <p/>
      * This means given task group's root can be executed only after the completion of all
      * tasks in this group.
-     * <p>
-     * Invoking {@link this#executeAsync()} will run the tasks in the given dependent
+     * <p/>
+     * Invoking {@link this#executeAsync(ExecutionContext)} ()} will run the tasks in the given dependent
      * task group as well.
      *
      * @param dependentTaskGroup the task group depends on this task group
@@ -171,14 +173,17 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
     /**
      * Executes tasks in the group.
      *
+     * @param context group level shared context that need be passed to {@link TaskItem#executeAsync(ExecutionContext)}
+     *                  method of each task item in the group when it is selected for execution.
+     *
      * @return an observable that emits the result of tasks in the order they finishes.
      */
-    public Observable<ResultT> executeAsync() {
+    public Observable<ResultT> executeAsync(final ExecutionContext context) {
         if (this.proxyTaskGroupWrapper.isActive()) {
-            return this.proxyTaskGroupWrapper.executeAsync();
+            return this.proxyTaskGroupWrapper.executeAsync(context);
         } else {
             if (!isPreparer()) {
-                return Observable.error(new IllegalStateException("executeAsync can be called only from root TaskGroup"));
+                return Observable.error(new IllegalStateException("executeAsync(cxt) can be called only from root TaskGroup"));
             }
             this.isGroupCancelled = false;
             // Prepare tasks and queue the ready tasks (terminal tasks with no dependencies)
@@ -186,7 +191,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
             prepareTasks();
             // Runs the ready tasks concurrently
             //
-            return executeReadyTasksAsync();
+            return executeReadyTasksAsync(context);
         }
     }
 
@@ -235,17 +240,20 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
 
     /**
      * Executes the ready tasks.
+     * @param context group level shared context that need be passed to
+     *                {@link TaskGroupEntry#executeTaskAsync(boolean, ExecutionContext)}
+     *                method of each entry in the group when it is selected for execution
      *
      * @return an observable that emits the result of tasks in the order they finishes.
      */
-    private Observable<ResultT> executeReadyTasksAsync() {
+    private Observable<ResultT> executeReadyTasksAsync(final ExecutionContext context) {
         TaskGroupEntry<ResultT, TaskT> entry = super.getNext();
         final List<Observable<ResultT>> observables = new ArrayList<>();
         // Enumerate the ready tasks (those with dependencies resolved) and kickoff them concurrently
         //
         while (entry != null) {
             final TaskGroupEntry<ResultT, TaskT> currentEntry = entry;
-            Observable<ResultT> currentTaskObservable = executeTaskAsync(currentEntry);
+            Observable<ResultT> currentTaskObservable = executeTaskAsync(currentEntry, context);
             Func1<ResultT, Observable<ResultT>> onNext = new Func1<ResultT, Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call(ResultT taskResult) {
@@ -256,14 +264,14 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
                 @Override
                 public Observable<ResultT> call(Throwable throwable) {
                     // Append next observable on error terminate event of this observable
-                    return processFaultedTaskAsync(currentEntry, throwable);
+                    return processFaultedTaskAsync(currentEntry, throwable, context);
                 }
             };
             Func0<Observable<ResultT>> onComplete = new Func0<Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call() {
                     // Append next observable on successful terminate event of this observable
-                    return processCompletedTaskAsync(currentEntry);
+                    return processCompletedTaskAsync(currentEntry, context);
                 }
             };
             observables.add(currentTaskObservable.flatMap(onNext, onError, onComplete));
@@ -279,13 +287,16 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      * that emit {@link TaskCancelledException} will be returned.
      *
      * @param entry the entry holding task
+     * @param context a group level shared context that is passed to {@link TaskItem#executeAsync(ExecutionContext)}
+     *                method of the task item this entry wraps.
+     *
      * @return an observable represents result of task in the given entry.
      */
-    private Observable<ResultT> executeTaskAsync(final TaskGroupEntry<ResultT, TaskT> entry) {
+    private Observable<ResultT> executeTaskAsync(final TaskGroupEntry<ResultT, TaskT> entry, final ExecutionContext context) {
         if (this.isGroupCancelled) {
             return toErrorObservable(taskCancelledException);
         }
-        return entry.executeTaskAsync(isRootEntry(entry));
+        return entry.executeTaskAsync(isRootEntry(entry), context);
     }
 
     /**
@@ -294,14 +305,17 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      * If the task is not root (terminal) task then this kickoff execution of next set of ready tasks
      *
      * @param completedEntry the entry holding completed task
+     * @param context the context object shared across all the task entries in this group during execution
+     *
      * @return an observable represents asynchronous operation in the next stage
      */
-    private Observable<ResultT> processCompletedTaskAsync(final TaskGroupEntry<ResultT, TaskT> completedEntry) {
+    private Observable<ResultT> processCompletedTaskAsync(final TaskGroupEntry<ResultT, TaskT> completedEntry,
+                                                          final ExecutionContext context) {
         reportCompletion(completedEntry);
         if (isRootEntry(completedEntry)) {
             return Observable.empty();
         }
-        return executeReadyTasksAsync();
+        return executeReadyTasksAsync(context);
     }
 
     /**
@@ -309,10 +323,13 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
      *
      * @param faultedEntry the entry holding faulted task
      * @param throwable the reason for fault
+     * @param context the context object shared across all the task entries in this group during execution
+     *
      * @return an observable represents asynchronous operation in the next stage
      */
     private Observable<ResultT> processFaultedTaskAsync(final TaskGroupEntry<ResultT, TaskT> faultedEntry,
-                                                        Throwable throwable) {
+                                                        final Throwable throwable,
+                                                        final ExecutionContext context) {
         this.isGroupCancelled = this.taskGroupTerminateOnErrorStrategy
                 == TaskGroupTerminateOnErrorStrategy.TERMINATE_ON_INPROGRESS_TASKS_COMPLETION;
         reportError(faultedEntry, throwable);
@@ -323,9 +340,9 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
             return Observable.empty();
         }
         if (shouldPropagateException(throwable)) {
-            return Observable.concatDelayError(executeReadyTasksAsync(), toErrorObservable(throwable));
+            return Observable.concatDelayError(executeReadyTasksAsync(context), toErrorObservable(throwable));
         }
-        return executeReadyTasksAsync();
+        return executeReadyTasksAsync(context);
     }
 
     /**
@@ -340,7 +357,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
 
     /**
      * Checks the given throwable needs to be propagated to final stream returned by
-     * {@link this#executeAsync()} method.
+     * {@link this#executeAsync(ExecutionContext)} ()} method.
      *
      * @param throwable the exception to check
      * @return true if the throwable needs to be included in the {@link rx.exceptions.CompositeException}
@@ -361,13 +378,19 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         return Observable.error(throwable);
     }
 
-
     /**
      * @return this instance with TaskItem param down casted.
      */
     @SuppressWarnings("unchecked")
     private TaskGroup<ResultT, TaskItem<ResultT>> that() {
         return (TaskGroup<ResultT, TaskItem<ResultT>>) this;
+    }
+
+    /**
+     * @return a new clean context instance.
+     */
+    public ExecutionContext newExecutionContext() {
+        return new ExecutionContext(this);
     }
 
     /**
@@ -381,6 +404,55 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
          * @return Gets the task group.
          */
         TaskGroup<T, U> taskGroup();
+    }
+
+    /**
+     * A mutable type that can be used to pass data around task items during the execution
+     * of the TaskGroup.
+     */
+    public static final class ExecutionContext {
+        private final Map<String, Object> properties;
+        private final TaskGroup<?, ?> taskGroup;
+
+        /**
+         * Creates ExecutionContext instance.
+         *
+         * @param taskGroup the task group that uses this context instance.
+         */
+        private ExecutionContext(final TaskGroup<?, ?> taskGroup) {
+            this.properties = new ConcurrentHashMap<>();
+            this.taskGroup = taskGroup;
+        }
+
+        /**
+         * Put a key-value in the context.
+         *
+         * @param key the key
+         * @param value the value
+         */
+        public void put(String key, Object value) {
+            this.properties.put(key, value);
+        }
+
+        /**
+         * Get a value in the context with the given key.
+         *
+         * @param key the key
+         * @return value with the given key if exists, null otherwise.
+         */
+        public Object get(String key) {
+            return this.properties.get(key);
+        }
+
+        /**
+         * Check existence of a key in the context.
+         *
+         * @param key the key
+         * @return true if the key exists, false otherwise.
+         */
+        public boolean hasKey(String key) {
+            return this.get(key) != null;
+        }
     }
 
     /**
@@ -451,13 +523,14 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         /**
          * Executes the tasks grouped under the proxy TaskGroup.
          *
+         * @param context the context shared across the the all task items in the group this task item belongs to.
          * @return an observable that emits the execution result of tasks in the TaskGroup.
          */
-        Observable<R> executeAsync() {
+        Observable<R> executeAsync(TaskGroup.ExecutionContext context) {
             if (this.proxyTaskGroup == null) {
-                throw new IllegalStateException("executeAsync() cannot be called in a non-active ProxyTaskGroup");
+                throw new IllegalStateException("executeAsync(cxt) cannot be called in a non-active ProxyTaskGroup");
             }
-            return this.proxyTaskGroup.executeAsync();
+            return this.proxyTaskGroup.executeAsync(context);
         }
     }
 
@@ -489,7 +562,7 @@ public class TaskGroup<ResultT, TaskT extends TaskItem<ResultT>>
         }
 
         @Override
-        public Observable<R> executeAsync() {
+        public Observable<R> executeAsync(TaskGroup.ExecutionContext context) {
             return Observable.just(taskItem.result());
         }
     }
