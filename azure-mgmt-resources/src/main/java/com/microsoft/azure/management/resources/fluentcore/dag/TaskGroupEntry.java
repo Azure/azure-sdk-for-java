@@ -24,7 +24,6 @@ final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
      * indicates that one or more decedent dependency tasks are faulted.
      */
     private boolean hasFaultedDescentDependencyTask;
-
     /**
      * Creates TaskGroupEntry.
      *
@@ -49,15 +48,19 @@ final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
     }
 
     /**
-     * Executes the task this entry holds.
-     * if the task cannot be executed due to faulted dependencies then an observable that emit
+     * Invokes the task this entry holds.
+     * if the task cannot be invoked due to faulted dependencies then an observable that emit
      * {@link ErroredDependencyTaskException} will be returned.
      *
      * @param ignoreCachedResult indicate that whether the cached result can be returned without
-     *                           re-running the task
+     *                           invoking the task again
+     * @param context the context object shared across all the entries in the group that this entry belongs to,
+     *                this will be passed to {@link TaskItem#invokeAsync(TaskGroup.InvocationContext)}
+     *                method of the task item
+     *
      * @return the handle to the asynchronous execution of the task this entry holds.
      */
-    public Observable<ResultT> executeTaskAsync(boolean ignoreCachedResult) {
+    public Observable<ResultT> invokeTaskAsync(boolean ignoreCachedResult, final TaskGroup.InvocationContext context) {
         if (hasFaultedDescentDependencyTask) {
             return Observable.error(new ErroredDependencyTaskException());
         }
@@ -70,11 +73,11 @@ final class TaskGroupEntry<ResultT, TaskT extends TaskItem<ResultT>>
             return Observable.defer(new Func0<Observable<ResultT>>() {
                 @Override
                 public Observable<ResultT> call() {
-                    return taskItem.executeAsync();
+                    return taskItem.invokeAsync(context);
                 }
             });
         } else {
-            return taskItem.executeAsync();
+            return taskItem.invokeAsync(context);
         }
     }
 

@@ -53,14 +53,14 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
      */
     @SuppressWarnings("unchecked")
     protected void addCreatableDependency(Creatable<? extends Indexable> creatable) {
-        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>>) creatable;
 
         Executable<FluentModelT> that = this;
-        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> parentModel =
+        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> thisDependent =
                 (TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>>) that;
 
-        childModel.taskGroup().merge(parentModel.taskGroup());
+        dependency.taskGroup().addDependentTaskGroup(thisDependent.taskGroup());
     }
 
     /**
@@ -70,9 +70,9 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
      */
     @SuppressWarnings("unchecked")
     protected void addExecutableDependency(Executable<? extends Indexable> executable) {
-        TaskGroup.HasTaskGroup<FluentModelT, ExecuteTask<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, ExecuteTask<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, ExecuteTask<FluentModelT>>) executable;
-        childModel.taskGroup().merge(this.taskGroup);
+        dependency.taskGroup().addDependentTaskGroup(this.taskGroup);
     }
 
     @Override
@@ -86,7 +86,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
 
     @Override
     public Observable<FluentModelT> executeAsync() {
-        return this.executeTaskGroupAsync();
+        return taskGroup.invokeAsync(taskGroup.newInvocationContext()).last();
     }
 
     @Override
@@ -97,9 +97,5 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
     @Override
     public ServiceFuture<FluentModelT> executeAsync(ServiceCallback<FluentModelT> callback) {
         return ServiceFuture.fromBody(executeAsync(), callback);
-    }
-
-    protected Observable<FluentModelT> executeTaskGroupAsync() {
-        return taskGroup.executeAsync().last();
     }
 }

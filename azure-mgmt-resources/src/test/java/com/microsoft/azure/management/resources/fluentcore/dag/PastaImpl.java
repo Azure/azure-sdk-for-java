@@ -7,6 +7,7 @@
 package com.microsoft.azure.management.resources.fluentcore.dag;
 
 import com.microsoft.azure.management.resources.fluentcore.model.Creatable;
+import com.microsoft.azure.management.resources.fluentcore.model.implementation.CreateUpdateTask;
 import org.junit.Assert;
 import rx.Observable;
 import rx.functions.Func1;
@@ -55,7 +56,7 @@ class PastaImpl
 
     /**
      * a pancake specified via this wither will not be added immediately as a dependency, will be added only
-     * inside prepare {@link com.microsoft.azure.management.resources.fluentcore.model.implementation.CreateUpdateTask.ResourceCreatorUpdator#prepare()}
+     * inside prepare {@link CreateUpdateTask.ResourceCreatorUpdater#prepare()}
      *
      * @param pasta the pasta
      * @return the next stage of pasta

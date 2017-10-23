@@ -36,7 +36,7 @@ public abstract class CreatableUpdatableImpl<
         Appliable<FluentModelT>,
         Creatable<FluentModelT>,
         TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>,
-        CreateUpdateTask.ResourceCreatorUpdator<FluentModelT> {
+        CreateUpdateTask.ResourceCreatorUpdater<FluentModelT> {
     /**
      * The name of the creatable updatable model.
      */
@@ -77,9 +77,9 @@ public abstract class CreatableUpdatableImpl<
      */
     @SuppressWarnings("unchecked")
     protected void addCreatableDependency(Creatable<? extends Indexable> creatable) {
-        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>) creatable;
-        childModel.taskGroup().merge(this.taskGroup);
+        this.taskGroup.addDependencyTaskGroup(dependency.taskGroup());
     }
 
     /**
@@ -89,9 +89,9 @@ public abstract class CreatableUpdatableImpl<
      */
     @SuppressWarnings("unchecked")
     protected void addAppliableDependency(Appliable<? extends Indexable> appliable) {
-        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>) appliable;
-        childModel.taskGroup().merge(this.taskGroup);
+        this.taskGroup.addDependencyTaskGroup(dependency.taskGroup());
     }
 
     /**
@@ -101,14 +101,14 @@ public abstract class CreatableUpdatableImpl<
      */
     @SuppressWarnings("unchecked")
     protected void addExecutableDependency(Executable<? extends Indexable> executable) {
-        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>>) executable;
 
         Creatable<FluentModelT> that = this;
-        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> parentModel =
+        TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>> thisDependent =
                 (TaskGroup.HasTaskGroup<FluentModelT, TaskItem<FluentModelT>>) that;
 
-        childModel.taskGroup().merge(parentModel.taskGroup());
+        thisDependent.taskGroup().addDependencyTaskGroup(dependency.taskGroup());
     }
 
     @Override
@@ -124,7 +124,18 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public Observable<Indexable> createAsync() {
-        return this.executeTaskGroupAsyncStreaming();
+        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext())
+                .map(new Func1<FluentModelT, Indexable>() {
+                    @Override
+                    public Indexable call(FluentModelT fluentModel) {
+                        return fluentModel;
+                    }
+                });
+    }
+
+    @Override
+    public Observable<FluentModelT> applyAsync() {
+        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext()).last();
     }
 
     @Override
@@ -133,8 +144,18 @@ public abstract class CreatableUpdatableImpl<
     }
 
     @Override
+    public ServiceFuture<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
+        return ServiceFuture.fromBody(applyAsync(), callback);
+    }
+
+    @Override
     public FluentModelT create() {
         return Utils.<FluentModelT>rootResource(createAsync()).toBlocking().single();
+    }
+
+    @Override
+    public FluentModelT apply() {
+        return applyAsync().toBlocking().last();
     }
 
     /**
@@ -147,39 +168,9 @@ public abstract class CreatableUpdatableImpl<
         return (FluentModelImplT) this;
     }
 
-
-    @Override
-    public Observable<FluentModelT> applyAsync() {
-        return this.executeTaskGroupAsync();
-    }
-
-    @Override
-    public ServiceFuture<FluentModelT> applyAsync(ServiceCallback<FluentModelT> callback) {
-        return ServiceFuture.fromBody(applyAsync(), callback);
-    }
-
-    @Override
-    public FluentModelT apply() {
-        return applyAsync().toBlocking().last();
-    }
-
     @Override
     public Observable<FluentModelT> updateResourceAsync() {
         return this.createResourceAsync();
-    }
-
-    protected Observable<FluentModelT> executeTaskGroupAsync() {
-        return taskGroup.executeAsync().last();
-    }
-
-    protected Observable<Indexable> executeTaskGroupAsyncStreaming() {
-        return taskGroup.executeAsync()
-                .map(new Func1<FluentModelT, Indexable>() {
-                    @Override
-                    public Indexable call(FluentModelT fluentModel) {
-                        return fluentModel;
-                    }
-                });
     }
 
     protected FluentModelT createdModel(String key) {
@@ -196,5 +187,4 @@ public abstract class CreatableUpdatableImpl<
             }
         };
     }
-
 }

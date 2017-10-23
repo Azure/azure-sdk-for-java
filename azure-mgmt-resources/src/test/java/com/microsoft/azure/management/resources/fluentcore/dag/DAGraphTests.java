@@ -10,7 +10,10 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 public class DAGraphTests {
     @Test
@@ -70,7 +73,7 @@ public class DAGraphTests {
         dag.addNode(nodeH);
         dag.addNode(nodeI);
 
-        dag.prepare();
+        dag.prepareForEnumeration();
         ItemHolder nextNode = dag.getNext();
         int i = 0;
         while (nextNode != null) {
@@ -84,9 +87,9 @@ public class DAGraphTests {
     }
 
     @Test
-    public void testGraphMerge() {
+    public void testGraphDependency() {
         /**
-         *   |-------->[D]------>[B]-----------[A]
+         *   |-------->[D]------>[B]---------->[A]
          *   |                   ^              ^
          *   |                   |              |
          *  [F]------->[E]-------|              |
@@ -106,31 +109,31 @@ public class DAGraphTests {
         DAGraph<String, ItemHolder> graphI = createGraph("I");
 
         DAGraph<String, ItemHolder> graphB = createGraph("B");
-        graphA.merge(graphB);
+        graphB.addDependencyGraph(graphA);
 
         DAGraph<String, ItemHolder> graphC = createGraph("C");
-        graphA.merge(graphC);
+        graphC.addDependencyGraph(graphA);
 
         DAGraph<String, ItemHolder> graphH = createGraph("H");
-        graphI.merge(graphH);
+        graphH.addDependencyGraph(graphI);
 
         DAGraph<String, ItemHolder> graphG = createGraph("G");
-        graphC.merge(graphG);
+        graphG.addDependencyGraph(graphC);
 
         DAGraph<String, ItemHolder> graphE = createGraph("E");
-        graphB.merge(graphE);
-        graphG.merge(graphE);
+        graphE.addDependencyGraph(graphB);
+        graphE.addDependencyGraph(graphG);
 
         DAGraph<String, ItemHolder> graphD = createGraph("D");
-        graphB.merge(graphD);
+        graphD.addDependencyGraph(graphB);
 
         DAGraph<String, ItemHolder> graphF = createGraph("F");
-        graphD.merge(graphF);
-        graphE.merge(graphF);
-        graphH.merge(graphF);
+        graphF.addDependencyGraph(graphD);
+        graphF.addDependencyGraph(graphE);
+        graphF.addDependencyGraph(graphH);
 
         DAGraph<String, ItemHolder> dag = graphF;
-        dag.prepare();
+        dag.prepareForEnumeration();
 
         ItemHolder nextNode = dag.getNext();
         int i = 0;
@@ -143,9 +146,336 @@ public class DAGraphTests {
         }
     }
 
+    @Test
+    public void testGraphDeadLockDetection() {
+        boolean dlDetected;
+
+        // ----------------------------------------------------
+        /**
+         * [A] <-----------> [A]
+         */
+        dlDetected = false;
+        DAGraph<String, ItemHolder> graphX = createGraph("X");
+        try {
+            graphX.addDependencyGraph(graphX);
+        } catch (IllegalStateException exception) {
+            dlDetected = exception.getMessage().contains("X -> ") && exception.getMessage().contains(" -> X");
+        }
+        Assert.assertTrue("Expected exception is not thrown",  dlDetected);
+
+        // ----------------------------------------------------
+        /**
+         * [A] -----------> [B]
+         *  ^                 ^
+         *  |                 |
+         *  |                 |
+         *                    |
+         *  [C]<--------------
+         */
+        dlDetected = false;
+        DAGraph<String, ItemHolder> graphA = createGraph("A");
+        DAGraph<String, ItemHolder> graphB = createGraph("B");
+        DAGraph<String, ItemHolder> graphC = createGraph("C");
+
+        graphA.addDependencyGraph(graphB);
+        graphC.addDependencyGraph(graphA);
+        try {
+            graphB.addDependencyGraph(graphC);
+        } catch (IllegalStateException exception) {
+            dlDetected = exception.getMessage().contains("B -> ") && exception.getMessage().contains(" -> B");
+        }
+        Assert.assertTrue("Expected exception is not thrown",  dlDetected);
+
+        // ----------------------------------------------------
+        /**
+         * [2] ------------> [1]
+         *                  ^  |
+         *  ----------------|  |
+         *  |                  |
+         *  [3]<----------------
+         */
+        dlDetected = false;
+        DAGraph<String, ItemHolder> graph1 = createGraph("1");
+        DAGraph<String, ItemHolder> graph2 = createGraph("2");
+        DAGraph<String, ItemHolder> graph3 = createGraph("3");
+
+        graph2.addDependencyGraph(graph1);
+        graph1.addDependencyGraph(graph3);
+        try {
+            graph3.addDependencyGraph(graph1);
+        } catch (IllegalStateException exception) {
+            dlDetected = exception.getMessage().contains("3 -> ") && exception.getMessage().contains(" -> 3");
+        }
+        Assert.assertTrue("Expected exception is not thrown",  dlDetected);
+    }
+
+    @Test
+    public void testGraphNodeTableBubblingUp() {
+        // ----------------------------------------------------
+        // Graph-1
+
+        /**
+         * [B] -----------> [A]
+         *  ^                 ^
+         *  |                 |
+         *  |                 |
+         *                    |
+         *  [C]----------------
+         */
+        DAGraph<String, ItemHolder> graphA = createGraph("A");
+        DAGraph<String, ItemHolder> graphB = createGraph("B");
+        DAGraph<String, ItemHolder> graphC = createGraph("C");
+
+        graphB.addDependencyGraph(graphA);
+        graphC.addDependencyGraph(graphA);
+        graphC.addDependencyGraph(graphB);
+
+        DAGraph<String, ItemHolder> graph1Root = graphC;
+
+        // ----------------------------------------------------
+        // Graph-2
+
+        /**
+         * [E] ---> [D] ---> G
+         *  ^
+         *  |
+         *  |
+         *  [F]
+         */
+        DAGraph<String, ItemHolder> graphD = createGraph("D");
+        DAGraph<String, ItemHolder> graphE = createGraph("E");
+        DAGraph<String, ItemHolder> graphF = createGraph("F");
+        DAGraph<String, ItemHolder> graphG = createGraph("G");
+
+        graphE.addDependencyGraph(graphD);
+        graphD.addDependencyGraph(graphG);
+        graphF.addDependencyGraph(graphE);
+
+        DAGraph<String, ItemHolder> graph2Root = graphF;
+
+        // ----------------------------------------------------
+        // Graph-3
+        /**
+         * [J] ---> [H] ---> I
+         */
+
+        DAGraph<String, ItemHolder> graphJ = createGraph("J");
+        DAGraph<String, ItemHolder> graphH = createGraph("H");
+        DAGraph<String, ItemHolder> graphI = createGraph("I");
+
+        graphJ.addDependencyGraph(graphH);
+        graphH.addDependencyGraph(graphI);
+
+        DAGraph<String, ItemHolder> graph3Root = graphJ;
+
+        // ----------------------------------------------------
+        // Graph-4
+
+        // Combine 3 graphs using their roots
+        // graph1Root == graphC
+        graph1Root.addDependentGraph(graph3Root); // graph3Root == graphJ
+        graph1Root.addDependentGraph(graph2Root); // graph2Root == graphF
+
+        DAGraph<String, ItemHolder> graph4Root1 = graph2Root;   // graphF
+        DAGraph<String, ItemHolder> graph4Root2 = graph3Root;   // graphJ
+
+        /**
+         * [B] -----------> [A]
+         *  ^                 ^
+         *  |                 |
+         *  |                 |
+         *                    |
+         *  [C]----------------
+         *  ^ ^              (graph4Root2)
+         *  | |
+         *  |  ---------------[J] ---> [H] ---> I
+         *  |
+         *  |                 [E] ---> [D] ---> G
+         *  |                  ^
+         *  |                  |
+         *  |                  |
+         *  |-----------------[F]  (graph4Root1)
+         */
+
+
+        //======================================================
+        // Validate nodeTables (graph1Root)
+
+        ItemHolder nodeA_G1 = graph1Root.getNode("A");
+        Assert.assertEquals(1, nodeA_G1.owner().nodeTable.size());
+        assertExactMatch(nodeA_G1.owner().nodeTable.keySet(), new String[] {"A"});
+
+        ItemHolder nodeB_G1 = graph1Root.getNode("B");
+        Assert.assertEquals(2, nodeB_G1.owner().nodeTable.size());
+        assertExactMatch(nodeB_G1.owner().nodeTable.keySet(), new String[] {"A", "B"});
+
+        ItemHolder nodeC_G1 = graph1Root.getNode("C");
+        Assert.assertEquals(3, nodeC_G1.owner().nodeTable.size());
+        assertExactMatch(nodeC_G1.owner().nodeTable.keySet(), new String[] {"A", "B", "C"});
+
+        //======================================================
+        // Validate nodeTables (graph4Root1)
+
+        ItemHolder nodeA_G41 = graph4Root1.getNode("A");
+        Assert.assertEquals(1, nodeA_G41.owner().nodeTable.size());
+        assertExactMatch(nodeA_G41.owner().nodeTable.keySet(), new String[] {"A"});
+
+        ItemHolder nodeB_G41 = graph4Root1.getNode("B");
+        Assert.assertEquals(2, nodeB_G41.owner().nodeTable.size());
+        assertExactMatch(nodeB_G41.owner().nodeTable.keySet(), new String[] {"A", "B"});
+
+        ItemHolder nodeC_G41 = graph4Root1.getNode("C");
+        Assert.assertEquals(3, nodeC_G41.owner().nodeTable.size());
+        assertExactMatch(nodeC_G41.owner().nodeTable.keySet(), new String[] {"A", "B", "C"});
+
+        ItemHolder nodeG_G41 = graph4Root1.getNode("G");
+        Assert.assertEquals(1, nodeG_G41.owner().nodeTable.size());
+        assertExactMatch(nodeG_G41.owner().nodeTable.keySet(), new String[] {"G"});
+
+        ItemHolder nodeD_G41 = graph4Root1.getNode("D");
+        Assert.assertEquals(2, nodeD_G41.owner().nodeTable.size());
+        assertExactMatch(nodeD_G41.owner().nodeTable.keySet(), new String[] {"D", "G"});
+
+        ItemHolder nodeE_G41 = graph4Root1.getNode("E");
+        Assert.assertEquals(3, nodeE_G41.owner().nodeTable.size());
+        assertExactMatch(nodeE_G41.owner().nodeTable.keySet(), new String[] {"E", "D", "G"});
+
+        ItemHolder nodeF_G41 = graph4Root1.getNode("F");
+        Assert.assertEquals(7, nodeF_G41.owner().nodeTable.size());
+        assertExactMatch(nodeF_G41.owner().nodeTable.keySet(), new String[] {"E", "F", "D", "G", "A", "B", "C"});
+
+        //======================================================
+        // Validate nodeTables (graph4Root2)
+
+        ItemHolder nodeA_G42 = graph4Root2.getNode("A");
+        Assert.assertEquals(1, nodeA_G42.owner().nodeTable.size());
+        assertExactMatch(nodeA_G42.owner().nodeTable.keySet(), new String[] {"A"});
+
+        ItemHolder nodeB_G42 = graph4Root2.getNode("B");
+        Assert.assertEquals(2, nodeB_G42.owner().nodeTable.size());
+        assertExactMatch(nodeB_G42.owner().nodeTable.keySet(), new String[] {"A", "B"});
+
+        ItemHolder nodeC_G42 = graph4Root2.getNode("C");
+        Assert.assertEquals(3, nodeC_G42.owner().nodeTable.size());
+        assertExactMatch(nodeC_G42.owner().nodeTable.keySet(), new String[] {"A", "B", "C"});
+
+        ItemHolder nodeI_G42 = graph4Root2.getNode("I");
+        Assert.assertEquals(1, nodeI_G42.owner().nodeTable.size());
+        assertExactMatch(nodeI_G42.owner().nodeTable.keySet(), new String[] {"I"});
+
+        ItemHolder nodeH_G42 = graph4Root2.getNode("H");
+        Assert.assertEquals(2, nodeH_G42.owner().nodeTable.size());
+        assertExactMatch(nodeH_G42.owner().nodeTable.keySet(), new String[] {"I", "H"});
+
+        ItemHolder nodeJ_G42 = graph4Root2.getNode("J");
+        Assert.assertEquals(6, nodeJ_G42.owner().nodeTable.size());
+        assertExactMatch(nodeJ_G42.owner().nodeTable.keySet(), new String[] {"I", "H", "J", "A", "B", "C"});
+
+        // System.out.println(combinedGraphRoot.nodeTable.keySet());
+
+        // ----------------------------------------------------
+        // Graph-1
+
+        /**
+         * [L] -----------> [K]
+         *  ^                 ^
+         *  |                 |
+         *  |                 |
+         *                    |
+         *  [M]----------------
+         */
+        DAGraph<String, ItemHolder> graphK = createGraph("K");
+        DAGraph<String, ItemHolder> graphL = createGraph("L");
+        DAGraph<String, ItemHolder> graphM = createGraph("M");
+
+
+        graphL.addDependencyGraph(graphK);
+        graphM.addDependencyGraph(graphL);
+        graphM.addDependencyGraph(graphK);
+
+
+        // Add a non-root node in this graph as dependency of a non-root node in the first graph.
+        //
+        graphA.addDependencyGraph(graphL);
+
+        /**
+         *                   |---------> [L] -----------> [K]
+         *                   |           ^                 ^
+         *                   |           |                 |
+         *                   |           |                 |
+         *                   |                             |
+         *                   |           [M]----------------
+         *                   |
+         * [B] -----------> [A]
+         *  ^                 ^
+         *  |                 |
+         *  |                 |
+         *                    |
+         *  [C]----------------
+         *  ^ ^
+         *  | |
+         *  |  ---------------[J] ---> [H] ---> I
+         *  |
+         *  |                 [E] ---> [D] ---> G
+         *  |                  ^
+         *  |                  |
+         *  |                  |
+         *  |-----------------[F]   (graph4Root1)
+         */
+
+        //======================================================
+        // Validate nodeTables (graph4Root1)
+
+        ItemHolder nodeK_G41 = graph4Root1.getNode("K");
+        Assert.assertEquals(1, nodeK_G41.owner().nodeTable.size());
+        assertExactMatch(nodeK_G41.owner().nodeTable.keySet(), new String[] {"K"});
+
+        ItemHolder nodeL_G41 = graph4Root1.getNode("L");
+        Assert.assertEquals(2, nodeL_G41.owner().nodeTable.size());
+        assertExactMatch(nodeL_G41.owner().nodeTable.keySet(), new String[] {"K", "L"});
+
+        ItemHolder nodeA_G41_updated = graph4Root1.getNode("A");
+        Assert.assertEquals(3, nodeA_G41_updated.owner().nodeTable.size());
+        assertExactMatch(nodeA_G41_updated.owner().nodeTable.keySet(), new String[] {"K", "L", "A"});
+
+        ItemHolder nodeB_G41_updated = graph4Root1.getNode("B");
+        Assert.assertEquals(4, nodeB_G41_updated.owner().nodeTable.size());
+        assertExactMatch(nodeB_G41_updated.owner().nodeTable.keySet(), new String[] {"K", "L", "A", "B"});
+
+        ItemHolder nodeC_G41_updated = graph4Root1.getNode("C");
+        Assert.assertEquals(5, nodeC_G41_updated.owner().nodeTable.size());
+        assertExactMatch(nodeC_G41_updated.owner().nodeTable.keySet(), new String[] {"K", "L", "A", "B", "C"});
+
+        ItemHolder nodeF_G41_updated = graph4Root1.getNode("F");
+        Assert.assertEquals(9, nodeF_G41_updated.owner().nodeTable.size());
+        assertExactMatch(nodeF_G41_updated.owner().nodeTable.keySet(), new String[] {"K", "L", "A", "B", "C", "F", "E", "D", "G"});
+
+        ItemHolder nodeG_G41_noUpdate = graph4Root1.getNode("G");
+        Assert.assertEquals(1, nodeG_G41_noUpdate.owner().nodeTable.size());
+        assertExactMatch(nodeG_G41_noUpdate.owner().nodeTable.keySet(), new String[] {"G"});
+
+        ItemHolder nodeD_G41_noUpdate = graph4Root1.getNode("D");
+        Assert.assertEquals(2, nodeD_G41_noUpdate.owner().nodeTable.size());
+        assertExactMatch(nodeD_G41_noUpdate.owner().nodeTable.keySet(), new String[] {"D", "G"});
+
+        ItemHolder nodeE_G41_noUpdate = graph4Root1.getNode("E");
+        Assert.assertEquals(3, nodeE_G41_noUpdate.owner().nodeTable.size());
+        assertExactMatch(nodeE_G41_noUpdate.owner().nodeTable.keySet(), new String[] {"E", "D", "G"});
+    }
+
     private DAGraph<String, ItemHolder> createGraph(String resourceName) {
         ItemHolder node = new ItemHolder(resourceName, "data" + resourceName);
         DAGraph<String, ItemHolder> graph = new DAGraph<>(node);
         return graph;
+    }
+
+    private void assertExactMatch(Set<String> set, String [] values) {
+        HashSet<String> s = new HashSet<>();
+        s.addAll(set);
+
+        s.removeAll(Arrays.asList(values));
+        if (s.size() != 0) {
+            Assert.assertTrue("Content of set " + set + " does not match with provided array " + Arrays.asList(values), false);
+        }
     }
 }

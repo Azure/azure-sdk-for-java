@@ -6,13 +6,14 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.microsoft.azure.management.resources.fluentcore.dag.TaskItem;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
 import rx.functions.Action1;
 
 /**
- * Represents a task that creates or updates a resource when executed.
+ * Represents a task that creates or updates a resource when invoked.
  *
  * @param <ResourceT> the type of the resource that this task creates or update
  */
@@ -20,7 +21,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
     /**
      * the underlying instance that can create and update the resource.
      */
-    private ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator;
+    private ResourceCreatorUpdater<ResourceT> resourceCreatorUpdater;
     /**
      * created or updated resource.
      */
@@ -29,10 +30,10 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
     /**
      * Creates CreateUpdateTask.
      *
-     * @param resourceCreatorUpdator the resource creator and updator
+     * @param resourceCreatorUpdater the resource creator and updator
      */
-    public CreateUpdateTask(ResourceCreatorUpdator<ResourceT> resourceCreatorUpdator) {
-        this.resourceCreatorUpdator = resourceCreatorUpdator;
+    public CreateUpdateTask(ResourceCreatorUpdater<ResourceT> resourceCreatorUpdater) {
+        this.resourceCreatorUpdater = resourceCreatorUpdater;
     }
 
     @Override
@@ -42,18 +43,18 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
 
     @Override
     public void prepare() {
-        this.resourceCreatorUpdator.prepare();
+        this.resourceCreatorUpdater.prepare();
     }
 
     @Override
     public boolean isHot() {
-        return this.resourceCreatorUpdator.isHot();
+        return this.resourceCreatorUpdater.isHot();
     }
 
     @Override
-    public Observable<ResourceT> executeAsync() {
-        if (this.resourceCreatorUpdator.isInCreateMode()) {
-            return this.resourceCreatorUpdator.createResourceAsync()
+    public Observable<ResourceT> invokeAsync(TaskGroup.InvocationContext context) {
+        if (this.resourceCreatorUpdater.isInCreateMode()) {
+            return this.resourceCreatorUpdater.createResourceAsync()
                     .subscribeOn(SdkContext.getRxScheduler())
                     .doOnNext(new Action1<ResourceT>() {
                         @Override
@@ -62,7 +63,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
                         }
                     });
         } else {
-            return this.resourceCreatorUpdator.updateResourceAsync()
+            return this.resourceCreatorUpdater.updateResourceAsync()
                     .subscribeOn(SdkContext.getRxScheduler())
                     .doOnNext(new Action1<ResourceT>() {
                         @Override
@@ -78,7 +79,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
      *
      * @param <ResultT> the resource type
      */
-    public interface ResourceCreatorUpdator<ResultT> {
+    public interface ResourceCreatorUpdater<ResultT> {
         /**
          * @return true if this creatorUpdator is in create mode.
          */

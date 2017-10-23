@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.management.resources.fluentcore.model.implementation;
 
+import com.microsoft.azure.management.resources.fluentcore.dag.TaskGroup;
 import com.microsoft.azure.management.resources.fluentcore.dag.TaskItem;
 import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
 import rx.Observable;
@@ -52,7 +53,7 @@ public class ExecuteTask<ResultT> implements TaskItem<ResultT> {
     }
 
     @Override
-    public Observable<ResultT> executeAsync() {
+    public Observable<ResultT> invokeAsync(TaskGroup.InvocationContext context) {
         return this.executor.executeWorkAsync()
                 .subscribeOn(SdkContext.getRxScheduler())
                 .doOnNext(new Action1<ResultT>() {
@@ -75,8 +76,9 @@ public class ExecuteTask<ResultT> implements TaskItem<ResultT> {
         void prepare();
 
         /**
-         * @return true if the observable returned by {@link this#executeAsync()} and
-         * {@link this#executeAsync()} are hot observables, false if they are cold observables.
+         * @return true if the observable returned by {@link this#invokeAsync(TaskGroup.InvocationContext)} ()} and
+         * {@link this#invokeAsync(TaskGroup.InvocationContext)} ()} are hot observables,
+         * false if they are cold observables.
          */
         boolean isHot();
 

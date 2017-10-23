@@ -24,7 +24,7 @@ abstract class CreatableUpdatableLCAImpl<
         implements
         Creatable<FluentModelT>,
         TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>,
-        CreateUpdateTask.ResourceCreatorUpdator<FluentModelT> {
+        CreateUpdateTask.ResourceCreatorUpdater<FluentModelT> {
     private final String name;
     private final TaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> taskGroup;
 
@@ -48,9 +48,9 @@ abstract class CreatableUpdatableLCAImpl<
 
     @SuppressWarnings("unchecked")
     protected void addCreatableDependency(Creatable<? extends Indexable> creatable) {
-        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> childModel =
+        TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>> dependency =
                 (TaskGroup.HasTaskGroup<FluentModelT, CreateUpdateTask<FluentModelT>>) creatable;
-        childModel.taskGroup().merge(this.taskGroup);
+        dependency.taskGroup().addDependentTaskGroup(this.taskGroup);
     }
 
     @Override
@@ -64,13 +64,18 @@ abstract class CreatableUpdatableLCAImpl<
 
     @Override
     public Observable<Indexable> createAsync() {
-        return taskGroup.executeAsync()
+        return taskGroup.invokeAsync(taskGroup.newInvocationContext())
                 .map(new Func1<FluentModelT, Indexable>() {
                     @Override
                     public Indexable call(FluentModelT fluentModel) {
                         return fluentModel;
                     }
                 });
+    }
+
+    @Override
+    public ServiceFuture<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
+        throw new NotImplementedException();
     }
 
     @Override
@@ -86,9 +91,4 @@ abstract class CreatableUpdatableLCAImpl<
 
     @Override
     public abstract Observable<FluentModelT> createResourceAsync();
-
-    @Override
-    public ServiceFuture<FluentModelT> createAsync(final ServiceCallback<FluentModelT> callback) {
-        throw new NotImplementedException();
-    }
 }

@@ -11,6 +11,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.TreeMap;
 
 /**
  * Type representing a directed graph data structure.
@@ -22,9 +23,9 @@ import java.util.Set;
  */
 public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     /**
-     * the underlying graph.
+     * the nodes in the graph.
      */
-    protected Map<String, NodeT> graph;
+    protected Map<String, NodeT> nodeTable;
     /**
      * to track the already visited node while performing DFS.
      */
@@ -54,7 +55,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      * Creates a directed graph.
      */
     public Graph() {
-        this.graph = new HashMap<>();
+        this.nodeTable = new TreeMap<>();
         this.visited = new HashSet<>();
         this.time = 0;
         this.entryTime = new HashMap<>();
@@ -64,20 +65,20 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
     }
 
     /**
+     * @return all nodes in the graph.
+     */
+    public Collection<NodeT> getNodes() {
+        return nodeTable.values();
+    }
+
+    /**
      * Adds a node to this graph.
      *
      * @param node the node
      */
     public void addNode(NodeT node) {
         node.setOwner(this);
-        graph.put(node.key(), node);
-    }
-
-    /**
-     * @return all nodes in the graph.
-     */
-    public Collection<NodeT> getNodes() {
-        return graph.values();
+        nodeTable.put(node.key(), node);
     }
 
     /**
@@ -89,7 +90,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
      * @param visitor the graph visitor
      */
     public void visit(Visitor visitor) {
-        for (Map.Entry<String, NodeT> item : graph.entrySet()) {
+        for (Map.Entry<String, NodeT> item : nodeTable.entrySet()) {
             if (!visited.contains(item.getKey())) {
                 this.dfs(visitor, item.getValue());
             }
@@ -113,7 +114,7 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
             if (!visited.contains(toKey)) {
                 parent.put(toKey, fromKey);
                 visitor.visitEdge(fromKey, toKey, edgeType(fromKey, toKey));
-                this.dfs(visitor, this.graph.get(toKey));
+                this.dfs(visitor, this.nodeTable.get(toKey));
             } else {
                 visitor.visitEdge(fromKey, toKey, edgeType(fromKey, toKey));
             }
@@ -145,6 +146,13 @@ public class Graph<DataT, NodeT extends Node<DataT, NodeT>> {
         throw new IllegalStateException("Internal Error: Unable to locate the edge type {" + fromKey + ", " + toKey + "}");
     }
 
+    /**
+     * Find the path.
+     *
+     * @param start key of first node in the path
+     * @param end key of last node in the path
+     * @return string containing the nodes keys in the path separated by arrow symbol
+     */
     protected String findPath(String start, String end) {
         if (start.equals(end)) {
             return start;
