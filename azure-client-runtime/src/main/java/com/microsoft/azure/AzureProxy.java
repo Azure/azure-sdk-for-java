@@ -147,7 +147,8 @@ public final class AzureProxy extends RestProxy {
                     @Override
                     public Single<PollStrategy> call(final HttpResponse originalHttpResponse) {
                         Single<PollStrategy> result = null;
-                        final long delayInMilliseconds = defaultDelayInMilliseconds();
+                        final Long parsedDelayInMilliseconds = PollStrategy.delayInMillisecondsFrom(originalHttpResponse);
+                        final long delayInMilliseconds = parsedDelayInMilliseconds != null ? parsedDelayInMilliseconds : AzureProxy.defaultDelayInMilliseconds();
 
                         final int httpStatusCode = originalHttpResponse.statusCode();
                         final String originalHttpRequestMethod = originalHttpRequest.httpMethod();

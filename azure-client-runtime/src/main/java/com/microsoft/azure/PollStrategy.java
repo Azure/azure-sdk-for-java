@@ -52,14 +52,21 @@ abstract class PollStrategy {
      * @param httpPollResponse The HTTP poll response to update the delay in milliseconds from.
      */
     final void updateDelayInMillisecondsFrom(HttpResponse httpPollResponse) {
-        final String retryAfterSecondsString = httpPollResponse.headerValue("Retry-After");
-        if (retryAfterSecondsString != null && !retryAfterSecondsString.isEmpty()) {
-            try {
-                delayInMilliseconds = Long.valueOf(retryAfterSecondsString) * 1000;
-            }
-            catch (NumberFormatException ignored) {
-            }
+        final Long parsedDelayInMilliseconds = delayInMillisecondsFrom(httpPollResponse);
+        if (parsedDelayInMilliseconds != null) {
+            delayInMilliseconds = parsedDelayInMilliseconds;
         }
+    }
+
+    static Long delayInMillisecondsFrom(HttpResponse httpResponse) {
+        Long result = null;
+
+        final String retryAfterSecondsString = httpResponse.headerValue("Retry-After");
+        if (retryAfterSecondsString != null && !retryAfterSecondsString.isEmpty()) {
+            result = Long.valueOf(retryAfterSecondsString) * 1000;
+        }
+
+        return result;
     }
 
     /**
