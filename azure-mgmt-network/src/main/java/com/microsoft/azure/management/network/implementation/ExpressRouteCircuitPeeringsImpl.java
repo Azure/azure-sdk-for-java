@@ -11,8 +11,6 @@ import com.microsoft.azure.management.network.ExpressRouteCircuit;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeering;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringType;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeerings;
-import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
-import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
