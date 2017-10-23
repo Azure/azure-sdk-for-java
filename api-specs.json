@@ -29,6 +29,12 @@
     "package": "com.microsoft.azure.management.batch",
     "args": "--payload-flattening-threshold=1 --tag=package-2017-05"
   },
+  "batchai": {
+    "dir": "azure-mgmt-batchai",
+    "source": "specification/batchai/resource-manager/readme.md",
+    "package": "com.microsoft.azure.management.batchai",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-09-preview"    
+  },
   "batchService": {
     "dir": "azure-batch",
     "source": "specification/batch/data-plane/readme.md",
