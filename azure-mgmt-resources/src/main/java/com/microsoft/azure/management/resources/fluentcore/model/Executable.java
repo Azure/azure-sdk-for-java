@@ -41,5 +41,5 @@ public interface Executable<T> extends Indexable {
      * @param callback the callback for success and failure
      * @return the handle to the REST call
      */
-    ServiceFuture<T> executeAsync(final ServiceCallback<T> callback);
+    ServiceFuture<T> executeAsync(ServiceCallback<T> callback);
 }

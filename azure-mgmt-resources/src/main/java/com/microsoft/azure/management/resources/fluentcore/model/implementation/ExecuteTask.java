@@ -53,7 +53,7 @@ public class ExecuteTask<ResultT> implements TaskItem<ResultT> {
     }
 
     @Override
-    public Observable<ResultT> executeAsync(TaskGroup.ExecutionContext context) {
+    public Observable<ResultT> invokeAsync(TaskGroup.InvocationContext context) {
         return this.executor.executeWorkAsync()
                 .subscribeOn(SdkContext.getRxScheduler())
                 .doOnNext(new Action1<ResultT>() {
@@ -76,8 +76,8 @@ public class ExecuteTask<ResultT> implements TaskItem<ResultT> {
         void prepare();
 
         /**
-         * @return true if the observable returned by {@link this#executeAsync(TaskGroup.ExecutionContext)} ()} and
-         * {@link this#executeAsync(TaskGroup.ExecutionContext)} ()} are hot observables,
+         * @return true if the observable returned by {@link this#invokeAsync(TaskGroup.InvocationContext)} ()} and
+         * {@link this#invokeAsync(TaskGroup.InvocationContext)} ()} are hot observables,
          * false if they are cold observables.
          */
         boolean isHot();

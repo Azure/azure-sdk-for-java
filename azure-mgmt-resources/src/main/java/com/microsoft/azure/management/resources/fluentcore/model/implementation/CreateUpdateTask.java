@@ -13,7 +13,7 @@ import rx.Observable;
 import rx.functions.Action1;
 
 /**
- * Represents a task that creates or updates a resource when executed.
+ * Represents a task that creates or updates a resource when invoked.
  *
  * @param <ResourceT> the type of the resource that this task creates or update
  */
@@ -52,7 +52,7 @@ public class CreateUpdateTask<ResourceT> implements TaskItem<ResourceT> {
     }
 
     @Override
-    public Observable<ResourceT> executeAsync(TaskGroup.ExecutionContext context) {
+    public Observable<ResourceT> invokeAsync(TaskGroup.InvocationContext context) {
         if (this.resourceCreatorUpdater.isInCreateMode()) {
             return this.resourceCreatorUpdater.createResourceAsync()
                     .subscribeOn(SdkContext.getRxScheduler())

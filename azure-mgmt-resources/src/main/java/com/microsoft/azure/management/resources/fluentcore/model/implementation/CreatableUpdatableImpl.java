@@ -124,7 +124,7 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public Observable<Indexable> createAsync() {
-        return taskGroup.executeAsync(this.taskGroup.newExecutionContext())
+        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext())
                 .map(new Func1<FluentModelT, Indexable>() {
                     @Override
                     public Indexable call(FluentModelT fluentModel) {
@@ -135,7 +135,7 @@ public abstract class CreatableUpdatableImpl<
 
     @Override
     public Observable<FluentModelT> applyAsync() {
-        return taskGroup.executeAsync(this.taskGroup.newExecutionContext()).last();
+        return taskGroup.invokeAsync(this.taskGroup.newInvocationContext()).last();
     }
 
     @Override

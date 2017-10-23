@@ -86,7 +86,7 @@ public abstract class ExecutableImpl<FluentModelT extends Indexable>
 
     @Override
     public Observable<FluentModelT> executeAsync() {
-        return taskGroup.executeAsync(taskGroup.newExecutionContext()).last();
+        return taskGroup.invokeAsync(taskGroup.newInvocationContext()).last();
     }
 
     @Override
