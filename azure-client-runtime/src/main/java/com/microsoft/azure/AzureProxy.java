@@ -135,7 +135,7 @@ public final class AzureProxy extends RestProxy {
                             return pollStrategy.pollUntilDone();
                         }
                     });
-            result = handleAsyncHttpResponseInner(httpRequest, lastAsyncHttpResponse, methodParser, returnType);
+            result = handleAsyncReturnType(httpRequest, lastAsyncHttpResponse, methodParser, returnType);
         }
 
         return result;

@@ -310,10 +310,10 @@ public class MockAzureHttpClient extends HttpClient {
 
     private static HttpHeaders responseHeaders() {
         return new HttpHeaders()
-                .add("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
-                .add("Via", "1.1 vegur")
-                .add("Connection", "keep-alive")
-                .add("X-Processed-Time", "1.0")
-                .add("Access-Control-Allow-Credentials", "true");
+                .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
+                .set("Via", "1.1 vegur")
+                .set("Connection", "keep-alive")
+                .set("X-Processed-Time", "1.0")
+                .set("Access-Control-Allow-Credentials", "true");
     }
 }

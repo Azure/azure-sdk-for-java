@@ -57,7 +57,7 @@ class NettyResponse extends HttpResponse {
     public HttpHeaders headers() {
         HttpHeaders headers = new HttpHeaders();
         for (Entry<String, String> header : rxnRes.headers()) {
-            headers.add(header.getKey(), header.getValue());
+            headers.set(header.getKey(), header.getValue());
         }
         return headers;
     }

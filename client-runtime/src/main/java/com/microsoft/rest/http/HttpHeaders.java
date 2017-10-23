@@ -34,7 +34,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      */
     public HttpHeaders(Map<String, String> headers) {
         for (final Map.Entry<String, String> header : headers.entrySet()) {
-            this.add(header.getKey(), header.getValue());
+            this.set(header.getKey(), header.getValue());
         }
     }
 
@@ -46,26 +46,8 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
         this();
 
         for (final HttpHeader header : headers) {
-            this.add(header.name(), header.value());
+            this.set(header.name(), header.value());
         }
-    }
-
-    /**
-     * Add the provided headerName and headerValue to the list of headers for this request.
-     * @param headerName The name of the header.
-     * @param headerValue The value of the header.
-     * @return This HttpHeaders so that multiple operations can be chained together.
-     */
-    public HttpHeaders add(String headerName, String headerValue) {
-        if (headerValue != null && !headerValue.isEmpty()) {
-            final String headerKey = headerName.toLowerCase();
-            if (!headers.containsKey(headerKey)) {
-                headers.put(headerKey, new HttpHeader(headerName, headerValue));
-            } else {
-                headers.get(headerKey).addValue(headerValue);
-            }
-        }
-        return this;
     }
 
     /**
@@ -77,7 +59,7 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
      */
     public HttpHeaders set(String headerName, String headerValue) {
         final String headerKey = headerName.toLowerCase();
-        if (headerValue == null || headerValue.isEmpty()) {
+        if (headerValue == null) {
             headers.remove(headerKey);
         }
         else {

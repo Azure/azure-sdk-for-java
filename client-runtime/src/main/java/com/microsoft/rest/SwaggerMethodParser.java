@@ -128,7 +128,7 @@ public class SwaggerMethodParser {
                     if (!headerName.isEmpty()) {
                         final String headerValue = header.substring(colonIndex + 1).trim();
                         if (!headerValue.isEmpty()) {
-                            this.headers.add(headerName, headerValue);
+                            this.headers.set(headerName, headerValue);
                         }
                     }
                 }
@@ -263,7 +263,7 @@ public class SwaggerMethodParser {
 
         final Iterable<EncodedParameter> substitutedHeaders = getEncodedParameters(headerSubstitutions, swaggerMethodArguments, null);
         for (final EncodedParameter substitutedHeader : substitutedHeaders) {
-            result.add(substitutedHeader.name(), substitutedHeader.encodedValue());
+            result.set(substitutedHeader.name(), substitutedHeader.encodedValue());
         }
 
         return result;

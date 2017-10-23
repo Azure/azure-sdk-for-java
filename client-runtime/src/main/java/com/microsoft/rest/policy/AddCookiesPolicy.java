@@ -49,7 +49,7 @@ public final class AddCookiesPolicy implements RequestPolicy {
             Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
             for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
                 for (String headerValue : entry.getValue()) {
-                    request.headers().add(entry.getKey(), headerValue);
+                    request.headers().set(entry.getKey(), headerValue);
                 }
             }
 
