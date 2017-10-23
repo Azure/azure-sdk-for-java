@@ -27,7 +27,7 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
         super(restProxy, delayInMilliseconds);
 
         this.originalRequest = originalRequest;
-        setProvisioningState(provisioningState);
+        setStatus(provisioningState);
     }
 
     @Override
@@ -45,10 +45,10 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
                         try {
                             final ResourceWithProvisioningState resource = (ResourceWithProvisioningState) deserialize(responseBody, ResourceWithProvisioningState.class);
                             if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
-                                setProvisioningState(ProvisioningState.FAILED);
+                                setStatus(OperationState.FAILED);
                             }
                             else {
-                                setProvisioningState(resource.properties().provisioningState());
+                                setStatus(resource.properties().provisioningState());
                             }
                         } catch (IOException e) {
                             throw Exceptions.propagate(e);
@@ -60,6 +60,6 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
 
     @Override
     boolean isDone() {
-        return ProvisioningState.isCompleted(provisioningState());
+        return OperationState.isCompleted(status());
     }
 }

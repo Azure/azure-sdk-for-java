@@ -29,7 +29,7 @@ abstract class PollStrategy {
     private final RestProxy restProxy;
 
     private long delayInMilliseconds;
-    private String provisioningState;
+    private String status;
 
     PollStrategy(RestProxy restProxy, long delayInMilliseconds) {
         this.restProxy = restProxy;
@@ -86,18 +86,18 @@ abstract class PollStrategy {
     }
 
     /**
-     * @return the current provisioning state of the long running operation.
+     * @return the current status of the long running operation.
      */
-    String provisioningState() {
-        return provisioningState;
+    String status() {
+        return status;
     }
 
     /**
-     * Set the current provisioning state of the long running operation.
-     * @param provisioningState The current provisioning state of the long running operation.
+     * Set the current status of the long running operation.
+     * @param status The current status of the long running operation.
      */
-    void setProvisioningState(String provisioningState) {
-        this.provisioningState = provisioningState;
+    void setStatus(String status) {
+        this.status = status;
     }
 
     /**
@@ -150,9 +150,9 @@ abstract class PollStrategy {
         else {
             try {
                 final Object resultObject = restProxy.handleAsyncHttpResponseInner(httpRequest, Single.just(httpResponse), methodParser, operationStatusResultType);
-                operationStatus = new OperationStatus<>(resultObject, provisioningState());
+                operationStatus = new OperationStatus<>(resultObject, status());
             } catch (RestException e) {
-                operationStatus = new OperationStatus<>(e, ProvisioningState.FAILED);
+                operationStatus = new OperationStatus<>(e, OperationState.FAILED);
             }
         }
         return Observable.just(operationStatus);

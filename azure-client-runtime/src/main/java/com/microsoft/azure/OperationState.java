@@ -7,9 +7,9 @@
 package com.microsoft.azure;
 
 /**
- * The different provisioning states that a long running operation can be in.
+ * The different states that a long running operation can be in.
  */
-public final class ProvisioningState {
+public final class OperationState {
     /**
      * The provisioning state of the operation resource if the operation is still in progress.
      */
@@ -31,14 +31,13 @@ public final class ProvisioningState {
     public static final String CANCELED = "Canceled";
 
     /**
-     * Get whether or not the provided provisioning state represents a completed state.
-     * @param provisioningState The provisioning state to check.
-     * @return Whether or not the provided provisioning state represents a completed state.
+     * Get whether or not the provided operation state represents a completed state.
+     * @param operationState The operation state to check.
+     * @return Whether or not the provided operation state represents a completed state.
      */
-    public static boolean isCompleted(String provisioningState) {
-        return SUCCEEDED.equalsIgnoreCase(provisioningState)
-                || FAILED.equalsIgnoreCase(provisioningState)
-                || CANCELED.equalsIgnoreCase(provisioningState);
+    public static boolean isCompleted(String operationState) {
+        return SUCCEEDED.equalsIgnoreCase(operationState)
+                || FAILED.equalsIgnoreCase(operationState)
+                || CANCELED.equalsIgnoreCase(operationState);
     }
-
 }

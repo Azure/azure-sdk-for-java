@@ -149,6 +149,7 @@ public final class AzureProxy extends RestProxy {
                         Single<PollStrategy> result = null;
                         final Long parsedDelayInMilliseconds = PollStrategy.delayInMillisecondsFrom(originalHttpResponse);
                         final long delayInMilliseconds = parsedDelayInMilliseconds != null ? parsedDelayInMilliseconds : AzureProxy.defaultDelayInMilliseconds();
+                        final boolean expectsResourceResponse = methodParser.expectsResponseBody();
 
                         final int httpStatusCode = originalHttpResponse.statusCode();
                         final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
@@ -159,12 +160,12 @@ public final class AzureProxy extends RestProxy {
                             PollStrategy pollStrategy = null;
                             if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
                                 if (httpStatusCode == 201) {
-                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, serializer, delayInMilliseconds);
+                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
                                     if (pollStrategy == null) {
                                         result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
                                     }
                                 } else if (httpStatusCode == 202) {
-                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, serializer, delayInMilliseconds);
+                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
                                     if (pollStrategy == null) {
                                         pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                     }
@@ -172,7 +173,7 @@ public final class AzureProxy extends RestProxy {
                             }
                             else {
                                 if (httpStatusCode == 202) {
-                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, serializer, delayInMilliseconds);
+                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
                                     if (pollStrategy == null) {
                                         pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                     }
@@ -220,7 +221,7 @@ public final class AzureProxy extends RestProxy {
                             try {
                                 final SerializerAdapter<?> serializer = serializer();
                                 final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class, SerializerAdapter.Encoding.JSON);
-                                if (resource != null && resource.properties() != null && !ProvisioningState.isCompleted(resource.properties().provisioningState())) {
+                                if (resource != null && resource.properties() != null && !OperationState.isCompleted(resource.properties().provisioningState())) {
                                     result = new ProvisioningStatePollStrategy(AzureProxy.this, httpRequest, resource.properties().provisioningState(), delayInMilliseconds);
                                 } else {
                                     result = new CompletedPollStrategy(AzureProxy.this, bufferedOriginalHttpResponse);

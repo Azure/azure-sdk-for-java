@@ -26,6 +26,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     private final SerializerAdapter<?> serializer;
     private boolean pollingCompleted;
     private boolean pollingSucceeded;
+    private boolean expectsResourceResponse;
     private boolean gotResourceResponse;
 
     /**
@@ -47,12 +48,13 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * @param delayInMilliseconds The delay (in milliseconds) that the pollStrategy will use when
      *                            polling.
      */
-    private AzureAsyncOperationPollStrategy(RestProxy restProxy, String fullyQualifiedMethodName, String operationResourceUrl, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
+    private AzureAsyncOperationPollStrategy(RestProxy restProxy, String fullyQualifiedMethodName, String operationResourceUrl, String originalResourceUrl, boolean expectsResourceResponse, SerializerAdapter<?> serializer, long delayInMilliseconds) {
         super(restProxy, delayInMilliseconds);
 
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.operationResourceUrl = operationResourceUrl;
         this.originalResourceUrl = originalResourceUrl;
+        this.expectsResourceResponse = expectsResourceResponse;
         this.serializer = serializer;
     }
 
@@ -81,24 +83,24 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                     .map(new Func1<String, HttpResponse>() {
                         @Override
                         public HttpResponse call(String bodyString) {
-                            ResourceWithProvisioningState operationResource = null;
+                            AsyncOperationResource operationResource = null;
 
                             try {
-                                operationResource = serializer.deserialize(bodyString, ResourceWithProvisioningState.class, SerializerAdapter.Encoding.JSON);
+                                operationResource = serializer.deserialize(bodyString, AsyncOperationResource.class, SerializerAdapter.Encoding.JSON);
                             }
                             catch (IOException ignored) {
                             }
 
-                            if (operationResource == null) {
+                            if (operationResource == null || operationResource.status() == null) {
                                 throw new CloudException("The polling response does not contain a valid body", httpPollResponse, null);
                             }
                             else {
-                                final String resourceProvisioningState = provisioningState(operationResource);
-                                setProvisioningState(resourceProvisioningState);
+                                final String status = operationResource.status();
+                                setStatus(status);
 
-                                pollingCompleted = !ProvisioningState.IN_PROGRESS.equalsIgnoreCase(resourceProvisioningState);
+                                pollingCompleted = !OperationState.IN_PROGRESS.equalsIgnoreCase(status);
                                 if (pollingCompleted) {
-                                    pollingSucceeded = ProvisioningState.SUCCEEDED.equalsIgnoreCase(resourceProvisioningState);
+                                    pollingSucceeded = OperationState.SUCCEEDED.equalsIgnoreCase(status);
                                     clearDelayInMilliseconds();
                                 }
                             }
@@ -131,7 +133,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
 
     @Override
     public boolean isDone() {
-        return pollingCompleted && (!pollingSucceeded || gotResourceResponse);
+        return pollingCompleted && (!pollingSucceeded || !expectsResourceResponse || gotResourceResponse);
     }
 
     /**
@@ -145,10 +147,10 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
      *                            use when polling.
      */
-    static PollStrategy tryToCreate(RestProxy restProxy, HttpRequest originalHttpRequest, HttpResponse httpResponse, SerializerAdapter<?> serializer, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(RestProxy restProxy, HttpRequest originalHttpRequest, HttpResponse httpResponse, boolean expectsResourceResponse, SerializerAdapter<?> serializer, long delayInMilliseconds) {
         final String azureAsyncOperationUrl = httpResponse.headerValue(HEADER_NAME);
         return azureAsyncOperationUrl != null && !azureAsyncOperationUrl.isEmpty()
-                ? new AzureAsyncOperationPollStrategy(restProxy, originalHttpRequest.callerMethod(), azureAsyncOperationUrl, originalHttpRequest.url(), serializer, delayInMilliseconds)
+                ? new AzureAsyncOperationPollStrategy(restProxy, originalHttpRequest.callerMethod(), azureAsyncOperationUrl, originalHttpRequest.url(), expectsResourceResponse, serializer, delayInMilliseconds)
                 : null;
     }
 }
