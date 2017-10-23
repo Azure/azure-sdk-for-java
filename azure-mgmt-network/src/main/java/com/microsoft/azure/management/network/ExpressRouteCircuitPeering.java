@@ -133,23 +133,54 @@ public interface ExpressRouteCircuitPeering extends
         interface Blank extends WithPrimaryPeerAddressPrefix {
         }
 
+        /**
+         * The stage of Express Route Circuit Peering definition allowing to specify advertised address prefixes.
+         */
         interface WithAdvertisedPublicPrefixes {
+            /**
+             * Specify advertised prefixes: sets a list of all prefixes that are planned to advertise over the BGP session.
+             * Only public IP address prefixes are accepted. A set of prefixes can be sent as a comma-separated list.
+             * These prefixes must be registered to you in an RIR / IRR.
+             * @param publicPrefixes advertised prefixes
+             * @return next stage of definition
+             */
             WithPrimaryPeerAddressPrefix withAdvertisedPublicPrefixes(String publicPrefixes);
         }
 
+        /**
+         * The stage of Express Route Circuit Peering definition allowing to specify primary address prefix.
+         */
         interface WithPrimaryPeerAddressPrefix {
             WithSecondaryPeerAddressPrefix withPrimaryPeerAddressPrefix(String addressPrefix);
         }
 
+        /**
+         * The stage of Express Route Circuit Peering definition allowing to specify secondary address prefix.
+         */
         interface WithSecondaryPeerAddressPrefix {
             WithVlanId withSecondaryPeerAddressPrefix(String addressPrefix);
         }
 
+        /**
+         * The stage of Express Route Circuit Peering definition allowing to specify VLAN ID.
+         */
         interface WithVlanId {
+            /**
+             *
+             * @param vlanId a valid VLAN ID to establish this peering on. No other peering in the circuit can use the same VLAN ID
+             * @return next stage of definition
+             */
             WithPeerAsn withVlanId(int vlanId);
         }
 
+        /**
+         * The stage of Express Route Circuit Peering definition allowing to specify AS number for peering.
+         */
         interface WithPeerAsn {
+            /**
+             * @param peerAsn AS number for peering. Both 2-byte and 4-byte AS numbers can be used
+             * @return next stage of definition
+             */
             WithCreate withPeerAsn(int peerAsn);
         }
 
@@ -161,7 +192,12 @@ public interface ExpressRouteCircuitPeering extends
     /**
      * Grouping of express route circuit peering update stages.
      */
-    interface Update extends Appliable<ExpressRouteCircuitPeering> {
+    interface Update extends Appliable<ExpressRouteCircuitPeering>,
+        UpdateStages.WithAdvertisedPublicPrefixes,
+        UpdateStages.WithPrimaryPeerAddressPrefix,
+        UpdateStages.WithSecondaryPeerAddressPrefix,
+        UpdateStages.WithVlanId,
+        UpdateStages.WithPeerAsn {
     }
 
     /**
@@ -169,5 +205,39 @@ public interface ExpressRouteCircuitPeering extends
      * can be modified.
      */
     interface UpdateStages {
+        /**
+         * The stage of Express Route Circuit Peering update allowing to specify advertised address prefixes.
+         */
+        interface WithAdvertisedPublicPrefixes {
+            Update withAdvertisedPublicPrefixes(String publicPrefixes);
+        }
+
+        /**
+         * The stage of Express Route Circuit Peering update allowing to specify primary address prefix.
+         */
+        interface WithPrimaryPeerAddressPrefix {
+            Update withPrimaryPeerAddressPrefix(String addressPrefix);
+        }
+
+        /**
+         * The stage of Express Route Circuit Peering update allowing to specify secondary address prefix.
+         */
+        interface WithSecondaryPeerAddressPrefix {
+            Update withSecondaryPeerAddressPrefix(String addressPrefix);
+        }
+
+        /**
+         * The stage of Express Route Circuit Peering update allowing to specify VLAN ID.
+         */
+        interface WithVlanId {
+            Update withVlanId(int vlanId);
+        }
+
+        /**
+         * The stage of Express Route Circuit Peering update allowing to specify AS number for peering.
+         */
+        interface WithPeerAsn {
+            Update withPeerAsn(int peerAsn);
+        }
     }
 }

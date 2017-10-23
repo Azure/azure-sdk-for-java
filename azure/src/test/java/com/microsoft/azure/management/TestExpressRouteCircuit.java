@@ -113,6 +113,16 @@ public class TestExpressRouteCircuit {
             resource.refresh();
             Assert.assertEquals(resource.peeringsMap().size(), 1);
             Assert.assertTrue(resource.peeringsMap().containsKey(ExpressRouteCircuitPeeringType.MICROSOFT_PEERING.toString()));
+            com.microsoft.azure.management.network.ExpressRouteCircuitPeering peering =
+                    resource.peeringsMap().get(ExpressRouteCircuitPeeringType.MICROSOFT_PEERING.toString())
+                    .update()
+                    .withVlanId(300)
+                    .withPeerAsn(101)
+                    .withSecondaryPeerAddressPrefix("123.0.0.8/30")
+                    .apply();
+            Assert.assertEquals(300, peering.vlanId());
+            Assert.assertEquals(101, peering.peerASN());
+            Assert.assertEquals("123.0.0.8/30", peering.secondaryPeerAddressPrefix());
             return resource;
         }
 

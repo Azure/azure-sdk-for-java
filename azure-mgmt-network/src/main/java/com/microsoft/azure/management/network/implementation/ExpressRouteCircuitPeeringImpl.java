@@ -71,7 +71,7 @@ class ExpressRouteCircuitPeeringImpl extends
     }
 
     @Override
-    public DefinitionStages.WithCreate withPeerAsn(int peerAsn) {
+    public ExpressRouteCircuitPeeringImpl withPeerAsn(int peerAsn) {
         inner().withPeerASN(peerAsn);
         return this;
     }
