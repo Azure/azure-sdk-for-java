@@ -14,6 +14,7 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.management.network.ApplicationGateway;
 import com.microsoft.azure.management.network.ApplicationGatewayBackend;
 import com.microsoft.azure.management.network.ApplicationGateways;
+import com.microsoft.azure.management.network.ExpressRouteCircuits;
 import com.microsoft.azure.management.network.LoadBalancers;
 import com.microsoft.azure.management.network.LocalNetworkGateways;
 import com.microsoft.azure.management.network.Network;
@@ -59,6 +60,7 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
     private NetworkWatchers networkWatchers;
     private VirtualNetworkGateways virtualNetworkGateways;
     private LocalNetworkGateways localNetworkGateways;
+    private ExpressRouteCircuits expressRouteCircuits;
 
     /**
      * Get a Configurable instance that can be used to create {@link NetworkManager}
@@ -243,6 +245,16 @@ public final class NetworkManager extends Manager<NetworkManager, NetworkManagem
             this.localNetworkGateways = new LocalNetworkGatewaysImpl(this);
         }
         return this.localNetworkGateways;
+    }
+
+    /**
+     * @return entry point to express route circuit management
+     */
+    public ExpressRouteCircuits expressRouteCircuits() {
+        if (this.expressRouteCircuits == null) {
+            this.expressRouteCircuits = new ExpressRouteCircuitsImpl(this);
+        }
+        return this.expressRouteCircuits;
     }
 
     // Internal utility function

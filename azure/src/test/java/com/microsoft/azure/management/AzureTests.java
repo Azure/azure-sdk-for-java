@@ -868,6 +868,24 @@ public class AzureTests extends TestBase {
     }
 
     /**
+     * Tests the express route circuit implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testExpressRouteCircuits() throws Exception {
+        new TestExpressRouteCircuit.Basic().runTest(azure.expressRouteCircuits(), azure.resourceGroups());
+    }
+
+    /**
+     * Tests the express route circuit peerings implementation.
+     * @throws Exception
+     */
+    @Test
+    public void testExpressRouteCircuitPeering() throws Exception {
+        new TestExpressRouteCircuit.ExpressRouteCircuitPeering().runTest(azure.expressRouteCircuits(), azure.resourceGroups());
+    }
+
+    /**
      * Tests virtual machines.
      * @throws Exception
      */
