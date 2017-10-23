@@ -377,6 +377,7 @@
     <module>./azure-samples</module>
     <module>./azure-mgmt-appservice</module>
     <module>./azure-mgmt-batch</module>
+    <module>./azure-mgmt-batchai</module>
     <module>./azure-mgmt-billing</module>
     <module>./azure-mgmt-cdn</module>
     <module>./azure-mgmt-cognitiveservices</module>
