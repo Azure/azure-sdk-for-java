@@ -22,7 +22,7 @@ import com.microsoft.azure.management.resources.fluentcore.model.Updatable;
  * Client-side representation of express route circuit peering object, associated with express route circuit.
  */
 @Fluent
-@Beta
+@Beta(Beta.SinceVersion.V1_4_0)
 public interface ExpressRouteCircuitPeering extends
         HasInner<ExpressRouteCircuitPeeringInner>,
         HasName,
