@@ -153,40 +153,48 @@ public final class AzureProxy extends RestProxy {
 
                         final int httpStatusCode = originalHttpResponse.statusCode();
                         final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
+
+                        PollStrategy pollStrategy = null;
                         if (httpStatusCode == 200) {
-                            result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
-                        }
-                        else {
-                            PollStrategy pollStrategy = null;
-                            if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
-                                if (httpStatusCode == 201) {
-                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
-                                    if (pollStrategy == null) {
-                                        result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
-                                    }
-                                } else if (httpStatusCode == 202) {
-                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
-                                    if (pollStrategy == null) {
-                                        pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                    }
-                                }
-                            }
-                            else {
-                                if (httpStatusCode == 202) {
-                                    pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
-                                    if (pollStrategy == null) {
-                                        pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                    }
-                                }
-                            }
-
-                            if (pollStrategy == null && result == null && methodParser.isExpectedResponseStatusCode(httpStatusCode)) {
-                                pollStrategy = new CompletedPollStrategy(AzureProxy.this, originalHttpResponse);
-                            }
-
+                            pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
                             if (pollStrategy != null) {
                                 result = Single.just(pollStrategy);
                             }
+                            else {
+                                result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
+                            }
+                        }
+                        else if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
+                            if (httpStatusCode == 201) {
+                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                if (pollStrategy == null) {
+                                    result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
+                                }
+                            } else if (httpStatusCode == 202) {
+                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                if (pollStrategy == null) {
+                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                }
+                            }
+                        }
+                        else {
+                            if (httpStatusCode == 202) {
+                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                if (pollStrategy == null) {
+                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                    if (pollStrategy == null) {
+                                        throw new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse);
+                                    }
+                                }
+                            }
+                        }
+
+                        if (pollStrategy == null && result == null && methodParser.isExpectedResponseStatusCode(httpStatusCode)) {
+                            pollStrategy = new CompletedPollStrategy(AzureProxy.this, originalHttpResponse);
+                        }
+
+                        if (pollStrategy != null) {
+                            result = Single.just(pollStrategy);
                         }
 
                         if (result == null) {

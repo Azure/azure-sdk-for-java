@@ -37,7 +37,16 @@ public final class OperationState {
      */
     public static boolean isCompleted(String operationState) {
         return SUCCEEDED.equalsIgnoreCase(operationState)
-                || FAILED.equalsIgnoreCase(operationState)
+                || isFailedOrCanceled(operationState);
+    }
+
+    /**
+     * Get whether or not the provided operation state represents a failed or canceled state.
+     * @param operationState The operation state to check.
+     * @return Whether or not the provided operation state represents a failed or canceled state.
+     */
+    public static boolean isFailedOrCanceled(String operationState) {
+        return FAILED.equalsIgnoreCase(operationState)
                 || CANCELED.equalsIgnoreCase(operationState);
     }
 }

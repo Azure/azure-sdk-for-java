@@ -30,4 +30,22 @@ public class AsyncOperationResource {
     public void status(String status) {
         this.status = status;
     }
+
+    @JsonProperty(value = "id")
+    private String id;
+
+    /**
+     * @return The resource's id.
+     */
+    public String id() {
+        return id;
+    }
+
+    /**
+     * Set the id of this resource.
+     * @param id The id of this resource.
+     */
+    public void setId(String id) {
+        this.id = id;
+    }
 }

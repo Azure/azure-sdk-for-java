@@ -75,11 +75,16 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
 
     @Override
     public Single<HttpResponse> updateFromAsync(final HttpResponse httpPollResponse) {
+        if (400 <= httpPollResponse.statusCode()) {
+            throw new CloudException("Failed to poll the Azure-AsyncOperation.", httpPollResponse);
+        }
+
         updateDelayInMillisecondsFrom(httpPollResponse);
 
         Single<HttpResponse> result;
         if (!pollingCompleted) {
-            result = httpPollResponse.bodyAsStringAsync()
+            final HttpResponse bufferedHttpPollResponse = httpPollResponse.buffer();
+            result = bufferedHttpPollResponse.bodyAsStringAsync()
                     .map(new Func1<String, HttpResponse>() {
                         @Override
                         public HttpResponse call(String bodyString) {
@@ -98,14 +103,22 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                                 final String status = operationResource.status();
                                 setStatus(status);
 
-                                pollingCompleted = !OperationState.IN_PROGRESS.equalsIgnoreCase(status);
+                                pollingCompleted = OperationState.isCompleted(status);
                                 if (pollingCompleted) {
                                     pollingSucceeded = OperationState.SUCCEEDED.equalsIgnoreCase(status);
                                     clearDelayInMilliseconds();
+
+                                    if (!pollingSucceeded) {
+                                        throw new CloudException("Async operation failed with provisioning state: " + status, httpPollResponse);
+                                    }
+
+                                    if (operationResource.id() != null) {
+                                        gotResourceResponse = true;
+                                    }
                                 }
                             }
 
-                            return httpPollResponse;
+                            return bufferedHttpPollResponse;
                         }
                     });
         }
@@ -118,17 +131,6 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         }
 
         return result;
-    }
-
-    private static String provisioningState(ResourceWithProvisioningState operationResource) {
-        String provisioningState = null;
-
-        final ResourceWithProvisioningState.Properties properties = operationResource.properties();
-        if (properties != null) {
-            provisioningState = properties.provisioningState();
-        }
-
-        return provisioningState;
     }
 
     @Override
