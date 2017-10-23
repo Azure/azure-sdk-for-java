@@ -133,7 +133,7 @@ class ExpressRouteCircuitImpl extends GroupableParentResourceImpl<
     @Override
     public ExpressRouteCircuitPeerings peerings() {
         if (peerings == null) {
-            peerings = new ExpressRouteCircuitPeeringsImpl(manager().inner().expressRouteCircuitPeerings(), this);
+            peerings = new ExpressRouteCircuitPeeringsImpl(this);
         }
         return peerings;
     }

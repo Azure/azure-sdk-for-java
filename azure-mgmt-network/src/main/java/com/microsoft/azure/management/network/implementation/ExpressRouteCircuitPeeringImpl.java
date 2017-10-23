@@ -107,11 +107,6 @@ class ExpressRouteCircuitPeeringImpl extends
     }
 
     @Override
-    public ExpressRouteCircuit parent() {
-        return parent;
-    }
-
-    @Override
     public ExpressRouteCircuitPeeringType peeringType() {
         return inner().peeringType();
     }
@@ -184,5 +179,15 @@ class ExpressRouteCircuitPeeringImpl extends
     @Override
     public Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig() {
         return inner().ipv6PeeringConfig();
+    }
+
+    @Override
+    public NetworkManager manager() {
+        return parent.manager();
+    }
+
+    @Override
+    public String resourceGroupName() {
+        return parent.resourceGroupName();
     }
 }

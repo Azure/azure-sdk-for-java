@@ -7,11 +7,13 @@ package com.microsoft.azure.management.network.implementation;
 
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.management.apigeneration.LangDefinition;
+import com.microsoft.azure.management.network.ExpressRouteCircuit;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeering;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeeringType;
 import com.microsoft.azure.management.network.ExpressRouteCircuitPeerings;
 import com.microsoft.azure.management.resources.fluentcore.arm.ResourceId;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.CreatableResourcesImpl;
+import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.IndependentChildrenImpl;
 import com.microsoft.azure.management.resources.fluentcore.arm.collection.implementation.ReadableWrappersImpl;
 import com.microsoft.azure.management.resources.fluentcore.utils.PagedListConverter;
 import com.microsoft.rest.ServiceCallback;
@@ -24,22 +26,24 @@ import rx.functions.Func1;
  * Represents Express Route Circuit Peerings collection associated with Network Watcher.
  */
 @LangDefinition
-class ExpressRouteCircuitPeeringsImpl extends
-        CreatableResourcesImpl<ExpressRouteCircuitPeering,
-                        ExpressRouteCircuitPeeringImpl,
-                        ExpressRouteCircuitPeeringInner>
+class ExpressRouteCircuitPeeringsImpl extends IndependentChildrenImpl<
+        ExpressRouteCircuitPeering,
+        ExpressRouteCircuitPeeringImpl,
+        ExpressRouteCircuitPeeringInner,
+        ExpressRouteCircuitPeeringsInner,
+        NetworkManager,
+        ExpressRouteCircuit>
         implements ExpressRouteCircuitPeerings {
     private final ExpressRouteCircuitImpl parent;
-    private final ExpressRouteCircuitPeeringsInner innerCollection;
 
     /**
      * Creates a new ExpressRouteCircuitPeeringsImpl.
      *
-     * @param parent the Network Watcher associated with ExpressRouteCircuitPeering
+     * @param parent the Express Route Circuit associated with ExpressRouteCircuitPeering
      */
-    ExpressRouteCircuitPeeringsImpl(ExpressRouteCircuitPeeringsInner innerCollection, ExpressRouteCircuitImpl parent) {
+    ExpressRouteCircuitPeeringsImpl(ExpressRouteCircuitImpl parent) {
+        super(parent.manager().inner().expressRouteCircuitPeerings(), parent.manager());
         this.parent = parent;
-        this.innerCollection = innerCollection;
     }
 
     @Override
@@ -121,33 +125,28 @@ class ExpressRouteCircuitPeeringsImpl extends
     }
 
     @Override
-    public ExpressRouteCircuitPeeringsInner inner() {
-        return innerCollection;
+    public ExpressRouteCircuit parent() {
+        return parent;
     }
 
     @Override
-    public Completable deleteByIdAsync(String id) {
-        ResourceId resourceId = ResourceId.fromString(id);
-        return this.inner().deleteAsync(resourceId.resourceGroupName(), resourceId.parent().name(), resourceId.name()).toCompletable();
+    public Completable deleteByParentAsync(String groupName, String parentName, String name) {
+        return this.inner().deleteAsync(groupName, parentName, name).toCompletable();
     }
 
     @Override
-    public ExpressRouteCircuitPeering getById(String id) {
-        return null;
+    public Observable<ExpressRouteCircuitPeering> getByParentAsync(String resourceGroup, String parentName, String name) {
+        return inner().getAsync(resourceGroup, parentName, name)
+                .map(new Func1<ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeering>() {
+                    @Override
+                    public ExpressRouteCircuitPeering call(ExpressRouteCircuitPeeringInner inner) {
+                        return wrapModel(inner);
+                    }
+                });
     }
 
     @Override
-    public Observable<ExpressRouteCircuitPeering> getByIdAsync(String id) {
-        return null;
-    }
-
-    @Override
-    public ServiceFuture<ExpressRouteCircuitPeering> getByIdAsync(String id, ServiceCallback<ExpressRouteCircuitPeering> callback) {
-        return null;
-    }
-
-    @Override
-    public ExpressRouteCircuitPeering parent() {
-        return null;
+    public PagedList<ExpressRouteCircuitPeering> listByParent(String resourceGroupName, String parentName) {
+        return wrapList(this.inner().list(resourceGroupName, parentName));
     }
 }
