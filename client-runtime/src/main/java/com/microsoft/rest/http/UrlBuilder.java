@@ -12,6 +12,7 @@ package com.microsoft.rest.http;
 public class UrlBuilder {
     private String scheme;
     private String host;
+    private Integer port;
     private String path;
     private String query;
 
@@ -35,6 +36,11 @@ public class UrlBuilder {
             host = host.substring(0, host.length() - 1);
         }
         this.host = host;
+        return this;
+    }
+
+    public UrlBuilder withPort(int port) {
+        this.port = port;
         return this;
     }
 
@@ -100,6 +106,11 @@ public class UrlBuilder {
             if (host != null) {
                 result.append(host);
             }
+        }
+
+        if (port != null) {
+            result.append(":");
+            result.append(port);
         }
 
         if (path != null) {

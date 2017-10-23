@@ -464,7 +464,7 @@ public class AzureProxyTests {
                             @Override
                             public void call(Throwable throwable) {
                                 assertEquals(CloudException.class, throwable.getClass());
-                                assertEquals("The HTTP response does not contain a body.", throwable.getMessage());
+                                assertEquals("Could not determine a long running operation polling strategy.", throwable.getMessage());
                             }
                         });
 

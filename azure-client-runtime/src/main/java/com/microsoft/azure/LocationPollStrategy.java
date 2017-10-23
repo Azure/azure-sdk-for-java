@@ -9,7 +9,11 @@ package com.microsoft.azure;
 import com.microsoft.rest.RestProxy;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
+import com.microsoft.rest.http.UrlBuilder;
 import rx.Single;
+
+import java.net.MalformedURLException;
+import java.net.URL;
 
 /**
  * A PollStrategy type that uses the Location header value to check the status of a long running
@@ -41,13 +45,14 @@ public final class LocationPollStrategy extends PollStrategy {
     @Override
     public Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
         final int httpStatusCode = httpPollResponse.statusCode();
+
+        updateDelayInMillisecondsFrom(httpPollResponse);
+
         if (httpStatusCode == 202) {
             String newLocationUrl = httpPollResponse.headerValue(HEADER_NAME);
             if (newLocationUrl != null) {
                 locationUrl = newLocationUrl;
             }
-            
-            updateDelayInMillisecondsFrom(httpPollResponse);
         }
         else {
             done = true;
@@ -64,17 +69,41 @@ public final class LocationPollStrategy extends PollStrategy {
      * Try to create a new LocationOperationPollStrategy object that will poll the provided location
      * URL. If the provided HttpResponse doesn't have a Location header or the header is empty,
      * then null will be returned.
-     * @param fullyQualifiedMethodName The fully qualified name of the method that initiated the
-     *                                 long running operation.
+     * @param originalHttpRequest The original HTTP request.
      * @param httpResponse The HTTP response that the required header values for this pollStrategy
      *                     will be read from.
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
      *                            use when polling.
      */
-    static PollStrategy tryToCreate(RestProxy restProxy, String fullyQualifiedMethodName, HttpResponse httpResponse, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(RestProxy restProxy, HttpRequest originalHttpRequest, HttpResponse httpResponse, long delayInMilliseconds) {
         final String locationUrl = httpResponse.headerValue(HEADER_NAME);
-        return locationUrl != null && !locationUrl.isEmpty()
-                ? new LocationPollStrategy(restProxy, fullyQualifiedMethodName, locationUrl, delayInMilliseconds)
-                : null;
+
+        String pollUrl = null;
+        if (locationUrl != null && !locationUrl.isEmpty()) {
+            if (locationUrl.startsWith("/")) {
+                URL originalRequestUrl = null;
+                try {
+                    originalRequestUrl = new URL(originalHttpRequest.url());
+
+                    final UrlBuilder urlBuilder = new UrlBuilder()
+                            .withScheme(originalRequestUrl.getProtocol())
+                            .withHost(originalRequestUrl.getHost())
+                            .withPort(originalRequestUrl.getPort());
+
+                    pollUrl = urlBuilder.toString() + locationUrl;
+                } catch (MalformedURLException ignored) {
+                }
+            }
+            else {
+                final String locationUrlLower = locationUrl.toLowerCase();
+                if (locationUrlLower.startsWith("http://") || locationUrlLower.startsWith("https://")) {
+                    pollUrl = locationUrl;
+                }
+            }
+        }
+
+        return pollUrl == null
+                ? null
+                : new LocationPollStrategy(restProxy, originalHttpRequest.callerMethod(), pollUrl, delayInMilliseconds);
     }
 }

@@ -78,32 +78,32 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         Single<HttpResponse> result;
         if (!pollingCompleted) {
             result = httpPollResponse.bodyAsStringAsync()
-                    .flatMap(new Func1<String, Single<HttpResponse>>() {
+                    .map(new Func1<String, HttpResponse>() {
                         @Override
-                        public Single<HttpResponse> call(String bodyString) {
-                            Single<HttpResponse> result;
+                        public HttpResponse call(String bodyString) {
+                            ResourceWithProvisioningState operationResource = null;
+
                             try {
-                                final ResourceWithProvisioningState operationResource = serializer.deserialize(bodyString, ResourceWithProvisioningState.class);
-                                if (operationResource != null) {
-                                    final String resourceProvisioningState = provisioningState(operationResource);
-                                    setProvisioningState(resourceProvisioningState);
-
-                                    pollingCompleted = !ProvisioningState.IN_PROGRESS.equalsIgnoreCase(resourceProvisioningState);
-                                    if (pollingCompleted) {
-                                        pollingSucceeded = ProvisioningState.SUCCEEDED.equalsIgnoreCase(resourceProvisioningState);
-                                        clearDelayInMilliseconds();
-                                    }
-                                }
-
-                                if (httpPollResponse.statusCode() == 200 && operationResource == null) {
-                                    result = Single.error(new CloudException("Response does not contain a valid body", httpPollResponse, null));
-                                } else {
-                                    result = Single.just(httpPollResponse);
-                                }
-                            } catch (IOException e) {
-                                result = Single.error(e);
+                                operationResource = serializer.deserialize(bodyString, ResourceWithProvisioningState.class, SerializerAdapter.Encoding.JSON);
                             }
-                            return result;
+                            catch (IOException ignored) {
+                            }
+
+                            if (operationResource == null) {
+                                throw new CloudException("The polling response does not contain a valid body", httpPollResponse, null);
+                            }
+                            else {
+                                final String resourceProvisioningState = provisioningState(operationResource);
+                                setProvisioningState(resourceProvisioningState);
+
+                                pollingCompleted = !ProvisioningState.IN_PROGRESS.equalsIgnoreCase(resourceProvisioningState);
+                                if (pollingCompleted) {
+                                    pollingSucceeded = ProvisioningState.SUCCEEDED.equalsIgnoreCase(resourceProvisioningState);
+                                    clearDelayInMilliseconds();
+                                }
+                            }
+
+                            return httpPollResponse;
                         }
                     });
         }
@@ -138,17 +138,17 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * Try to create a new AzureAsyncOperationPollStrategy object that will poll the provided
      * operation resource URL. If the provided HttpResponse doesn't have an Azure-AsyncOperation
      * header or if the header is empty, then null will be returned.
-     * @param fullyQualifiedMethodName The fully qualified name of the method that initiated the
-     *                                 long running operation.
+     * @param originalHttpRequest The original HTTP request that initiated the long running
+     *                            operation.
      * @param httpResponse The HTTP response that the required header values for this pollStrategy
      *                     will be read from.
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
      *                            use when polling.
      */
-    static PollStrategy tryToCreate(RestProxy restProxy, String fullyQualifiedMethodName, HttpResponse httpResponse, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(RestProxy restProxy, HttpRequest originalHttpRequest, HttpResponse httpResponse, SerializerAdapter<?> serializer, long delayInMilliseconds) {
         final String azureAsyncOperationUrl = httpResponse.headerValue(HEADER_NAME);
         return azureAsyncOperationUrl != null && !azureAsyncOperationUrl.isEmpty()
-                ? new AzureAsyncOperationPollStrategy(restProxy, fullyQualifiedMethodName, azureAsyncOperationUrl, originalResourceUrl, serializer, delayInMilliseconds)
+                ? new AzureAsyncOperationPollStrategy(restProxy, originalHttpRequest.callerMethod(), azureAsyncOperationUrl, originalHttpRequest.url(), serializer, delayInMilliseconds)
                 : null;
     }
 }
