@@ -210,10 +210,10 @@ public final class AzureProxy extends RestProxy {
         Single<PollStrategy> result;
 
         final String httpRequestMethod = httpRequest.httpMethod();
-        if (httpRequestMethod.equalsIgnoreCase("DELETE") ||
-                httpRequestMethod.equalsIgnoreCase("GET") ||
-                httpRequestMethod.equalsIgnoreCase("HEAD") ||
-                !methodParser.expectsResponseBody()) {
+        if (httpRequestMethod.equalsIgnoreCase("DELETE")
+                || httpRequestMethod.equalsIgnoreCase("GET")
+                || httpRequestMethod.equalsIgnoreCase("HEAD")
+                || !methodParser.expectsResponseBody()) {
             result = Single.<PollStrategy>just(new CompletedPollStrategy(AzureProxy.this, httpResponse));
         } else {
             final HttpResponse bufferedOriginalHttpResponse = httpResponse.buffer();
