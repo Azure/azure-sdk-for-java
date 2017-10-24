@@ -146,7 +146,7 @@ public class MockAzureHttpClient extends HttpClient {
                                 operationStatus = OperationState.IN_PROGRESS;
                             }
                             final AsyncOperationResource operationResource = new AsyncOperationResource();
-                            operationResource.status(operationStatus);
+                            operationResource.setStatus(operationStatus);
                             response = new MockAzureHttpResponse(200, responseHeaders(), operationResource);
                         }
                         else if (pollType.equalsIgnoreCase(LocationPollStrategy.HEADER_NAME)) {

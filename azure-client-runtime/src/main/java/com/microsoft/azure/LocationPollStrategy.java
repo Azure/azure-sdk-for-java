@@ -9,7 +9,6 @@ package com.microsoft.azure;
 import com.microsoft.rest.RestProxy;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
-import com.microsoft.rest.http.UrlBuilder;
 import rx.Single;
 
 import java.net.MalformedURLException;
@@ -81,16 +80,9 @@ public final class LocationPollStrategy extends PollStrategy {
         String pollUrl = null;
         if (locationUrl != null && !locationUrl.isEmpty()) {
             if (locationUrl.startsWith("/")) {
-                URL originalRequestUrl = null;
                 try {
-                    originalRequestUrl = new URL(originalHttpRequest.url());
-
-                    final UrlBuilder urlBuilder = new UrlBuilder()
-                            .withScheme(originalRequestUrl.getProtocol())
-                            .withHost(originalRequestUrl.getHost())
-                            .withPort(originalRequestUrl.getPort());
-
-                    pollUrl = urlBuilder.toString() + locationUrl;
+                    final URL originalRequestUrl = new URL(originalHttpRequest.url());
+                    pollUrl = new URL(originalRequestUrl, locationUrl).toString();
                 } catch (MalformedURLException ignored) {
                 }
             }

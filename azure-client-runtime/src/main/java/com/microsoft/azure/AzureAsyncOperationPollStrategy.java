@@ -75,7 +75,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
 
     @Override
     public Single<HttpResponse> updateFromAsync(final HttpResponse httpPollResponse) {
-        if (400 <= httpPollResponse.statusCode()) {
+        if (httpPollResponse.statusCode() >= 400) {
             throw new CloudException("Failed to poll the Azure-AsyncOperation.", httpPollResponse);
         }
 

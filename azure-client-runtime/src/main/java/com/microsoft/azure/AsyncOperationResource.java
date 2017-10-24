@@ -27,7 +27,7 @@ public class AsyncOperationResource {
      * Set the status of the asynchronous operation.
      * @param status The status of the asynchronous operation.
      */
-    public void status(String status) {
+    public void setStatus(String status) {
         this.status = status;
     }
 
