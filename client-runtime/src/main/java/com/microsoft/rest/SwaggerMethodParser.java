@@ -26,9 +26,12 @@ import com.microsoft.rest.annotations.PathParam;
 import com.microsoft.rest.annotations.QueryParam;
 import com.microsoft.rest.http.HttpHeader;
 import com.microsoft.rest.http.HttpHeaders;
+import rx.Observable;
+import rx.Single;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.Method;
+import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
@@ -356,6 +359,44 @@ public class SwaggerMethodParser {
      */
     public Type returnValueWireType() {
         return returnValueWireType;
+    }
+
+    /**
+     * @return Whether or not the Swagger method expects the response to contain a body.
+     */
+    public boolean expectsResponseBody() {
+        boolean result = true;
+
+        final TypeToken returnTypeToken = TypeToken.of(returnType);
+        if (returnTypeToken.isSubtypeOf(Void.class)) {
+            result = false;
+        }
+        else if (returnTypeToken.isSubtypeOf(Single.class) || returnTypeToken.isSubtypeOf(Observable.class)) {
+            final ParameterizedType asyncReturnType = (ParameterizedType) returnType;
+            final Type syncReturnType = asyncReturnType.getActualTypeArguments()[0];
+            final TypeToken syncReturnTypeToken = TypeToken.of(syncReturnType);
+            if (syncReturnTypeToken.isSubtypeOf(Void.class)) {
+                result = false;
+            } else if (syncReturnTypeToken.isSubtypeOf(RestResponse.class)) {
+                result = restResponseTypeExpectsBody((ParameterizedType) syncReturnType);
+            }
+        } else if (returnTypeToken.isSubtypeOf(RestResponse.class)) {
+            result = restResponseTypeExpectsBody((ParameterizedType) returnType);
+        }
+
+        return result;
+    }
+
+    private static boolean restResponseTypeExpectsBody(ParameterizedType restResponseReturnType) {
+        boolean result = true;
+
+        final Type[] restResponseTypeArguments = restResponseReturnType.getActualTypeArguments();
+        final Type restResponseBodyType = restResponseTypeArguments[1];
+        if (restResponseBodyType == Void.class) {
+            result = false;
+        }
+
+        return result;
     }
 
     /**

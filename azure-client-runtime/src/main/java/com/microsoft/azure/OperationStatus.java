@@ -16,7 +16,7 @@ public class OperationStatus<T> {
     private final PollStrategy pollStrategy;
     private final T result;
     private final RestException error;
-    private final String provisioningState;
+    private final String status;
 
     /**
      * Create a new OperationStatus with the provided PollStrategy.
@@ -27,7 +27,7 @@ public class OperationStatus<T> {
         this.pollStrategy = pollStrategy;
         this.result = null;
         this.error = null;
-        this.provisioningState = pollStrategy.provisioningState();
+        this.status = pollStrategy.status();
     }
 
     /**
@@ -38,14 +38,14 @@ public class OperationStatus<T> {
         this.pollStrategy = null;
         this.result = result;
         this.error = null;
-        this.provisioningState = provisioningState;
+        this.status = provisioningState;
     }
 
     OperationStatus(RestException error, String provisioningState) {
         this.pollStrategy = null;
         this.result = null;
         this.error = error;
-        this.provisioningState = provisioningState;
+        this.status = provisioningState;
     }
 
     /**
@@ -56,10 +56,10 @@ public class OperationStatus<T> {
     }
 
     /**
-     * @return the current provisioning state of the long running operation.
+     * @return the current status of the long running operation.
      */
-    public String provisioningState() {
-        return provisioningState;
+    public String status() {
+        return status;
     }
 
     /**

@@ -25,23 +25,23 @@ public class MockAzureHttpResponse extends HttpResponse {
 
     private final byte[] bodyBytes;
 
-    public MockAzureHttpResponse(int statusCode, byte[] bodyBytes) {
-        this.headers = new HttpHeaders();
+    public MockAzureHttpResponse(int statusCode, HttpHeaders headers, byte[] bodyBytes) {
+        this.headers = headers;
 
         this.statusCode = statusCode;
         this.bodyBytes = bodyBytes;
     }
 
-    public MockAzureHttpResponse(int statusCode) {
-        this(statusCode, (byte[])null);
+    public MockAzureHttpResponse(int statusCode, HttpHeaders headers) {
+        this(statusCode, headers, (byte[])null);
     }
 
-    public MockAzureHttpResponse(int statusCode, String string) {
-        this(statusCode, string == null ? null : string.getBytes());
+    public MockAzureHttpResponse(int statusCode, HttpHeaders headers, String string) {
+        this(statusCode, headers, string == null ? null : string.getBytes());
     }
 
-    public MockAzureHttpResponse(int statusCode, Object serializable) {
-        this(statusCode, serialize(serializable));
+    public MockAzureHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
+        this(statusCode, headers, serialize(serializable));
     }
 
     private static byte[] serialize(Object serializable) {

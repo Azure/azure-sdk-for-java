@@ -21,13 +21,12 @@ import java.io.IOException;
  */
 public class ProvisioningStatePollStrategy extends PollStrategy {
     private final HttpRequest originalRequest;
-    private HttpResponse latestHttpResponse;
 
     ProvisioningStatePollStrategy(RestProxy restProxy, HttpRequest originalRequest, String provisioningState, long delayInMilliseconds) {
         super(restProxy, delayInMilliseconds);
 
         this.originalRequest = originalRequest;
-        setProvisioningState(provisioningState);
+        setStatus(provisioningState);
     }
 
     @Override
@@ -36,30 +35,33 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
     }
 
     @Override
-    Single<HttpResponse> updateFromAsync(final HttpResponse httpPollResponse) {
-        latestHttpResponse = httpPollResponse.buffer();
-        return latestHttpResponse.bodyAsStringAsync()
+    Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
+        final HttpResponse bufferedHttpPollResponse = httpPollResponse.buffer();
+        return bufferedHttpPollResponse.bodyAsStringAsync()
                 .map(new Func1<String, HttpResponse>() {
                     @Override
                     public HttpResponse call(String responseBody) {
                         try {
                             final ResourceWithProvisioningState resource = (ResourceWithProvisioningState) deserialize(responseBody, ResourceWithProvisioningState.class);
                             if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
-                                setProvisioningState(ProvisioningState.FAILED);
+                                throw new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null);
+                            }
+                            else if (OperationState.isFailedOrCanceled(resource.properties().provisioningState())) {
+                                throw new CloudException("Async operation failed with provisioning state: " + resource.properties().provisioningState(), bufferedHttpPollResponse);
                             }
                             else {
-                                setProvisioningState(resource.properties().provisioningState());
+                                setStatus(resource.properties().provisioningState());
                             }
                         } catch (IOException e) {
                             throw Exceptions.propagate(e);
                         }
-                        return latestHttpResponse;
+                        return bufferedHttpPollResponse;
                     }
                 });
     }
 
     @Override
     boolean isDone() {
-        return ProvisioningState.isCompleted(provisioningState());
+        return OperationState.isCompleted(status());
     }
 }

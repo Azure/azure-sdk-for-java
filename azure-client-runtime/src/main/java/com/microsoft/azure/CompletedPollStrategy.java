@@ -31,7 +31,7 @@ public class CompletedPollStrategy extends PollStrategy {
         super(restProxy, 0);
 
         this.bufferedOriginalHttpResponse = originalHttpResponse.buffer();
-        setProvisioningState(ProvisioningState.SUCCEEDED);
+        setStatus(OperationState.SUCCEEDED);
     }
 
     @Override

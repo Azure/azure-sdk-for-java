@@ -26,6 +26,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     private final SerializerAdapter<?> serializer;
     private boolean pollingCompleted;
     private boolean pollingSucceeded;
+    private boolean expectsResourceResponse;
     private boolean gotResourceResponse;
 
     /**
@@ -47,12 +48,13 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * @param delayInMilliseconds The delay (in milliseconds) that the pollStrategy will use when
      *                            polling.
      */
-    private AzureAsyncOperationPollStrategy(RestProxy restProxy, String fullyQualifiedMethodName, String operationResourceUrl, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
+    private AzureAsyncOperationPollStrategy(RestProxy restProxy, String fullyQualifiedMethodName, String operationResourceUrl, String originalResourceUrl, boolean expectsResourceResponse, SerializerAdapter<?> serializer, long delayInMilliseconds) {
         super(restProxy, delayInMilliseconds);
 
         this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.operationResourceUrl = operationResourceUrl;
         this.originalResourceUrl = originalResourceUrl;
+        this.expectsResourceResponse = expectsResourceResponse;
         this.serializer = serializer;
     }
 
@@ -73,37 +75,50 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
 
     @Override
     public Single<HttpResponse> updateFromAsync(final HttpResponse httpPollResponse) {
+        if (httpPollResponse.statusCode() >= 400) {
+            throw new CloudException("Failed to poll the Azure-AsyncOperation.", httpPollResponse);
+        }
+
         updateDelayInMillisecondsFrom(httpPollResponse);
 
         Single<HttpResponse> result;
         if (!pollingCompleted) {
-            result = httpPollResponse.bodyAsStringAsync()
-                    .flatMap(new Func1<String, Single<HttpResponse>>() {
+            final HttpResponse bufferedHttpPollResponse = httpPollResponse.buffer();
+            result = bufferedHttpPollResponse.bodyAsStringAsync()
+                    .map(new Func1<String, HttpResponse>() {
                         @Override
-                        public Single<HttpResponse> call(String bodyString) {
-                            Single<HttpResponse> result;
-                            try {
-                                final ResourceWithProvisioningState operationResource = serializer.deserialize(bodyString, ResourceWithProvisioningState.class);
-                                if (operationResource != null) {
-                                    final String resourceProvisioningState = provisioningState(operationResource);
-                                    setProvisioningState(resourceProvisioningState);
+                        public HttpResponse call(String bodyString) {
+                            AsyncOperationResource operationResource = null;
 
-                                    pollingCompleted = !ProvisioningState.IN_PROGRESS.equalsIgnoreCase(resourceProvisioningState);
-                                    if (pollingCompleted) {
-                                        pollingSucceeded = ProvisioningState.SUCCEEDED.equalsIgnoreCase(resourceProvisioningState);
-                                        clearDelayInMilliseconds();
+                            try {
+                                operationResource = serializer.deserialize(bodyString, AsyncOperationResource.class, SerializerAdapter.Encoding.JSON);
+                            }
+                            catch (IOException ignored) {
+                            }
+
+                            if (operationResource == null || operationResource.status() == null) {
+                                throw new CloudException("The polling response does not contain a valid body", httpPollResponse, null);
+                            }
+                            else {
+                                final String status = operationResource.status();
+                                setStatus(status);
+
+                                pollingCompleted = OperationState.isCompleted(status);
+                                if (pollingCompleted) {
+                                    pollingSucceeded = OperationState.SUCCEEDED.equalsIgnoreCase(status);
+                                    clearDelayInMilliseconds();
+
+                                    if (!pollingSucceeded) {
+                                        throw new CloudException("Async operation failed with provisioning state: " + status, httpPollResponse);
+                                    }
+
+                                    if (operationResource.id() != null) {
+                                        gotResourceResponse = true;
                                     }
                                 }
-
-                                if (httpPollResponse.statusCode() == 200 && operationResource == null) {
-                                    result = Single.error(new CloudException("Response does not contain a valid body", httpPollResponse, null));
-                                } else {
-                                    result = Single.just(httpPollResponse);
-                                }
-                            } catch (IOException e) {
-                                result = Single.error(e);
                             }
-                            return result;
+
+                            return bufferedHttpPollResponse;
                         }
                     });
         }
@@ -118,37 +133,26 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         return result;
     }
 
-    private static String provisioningState(ResourceWithProvisioningState operationResource) {
-        String provisioningState = null;
-
-        final ResourceWithProvisioningState.Properties properties = operationResource.properties();
-        if (properties != null) {
-            provisioningState = properties.provisioningState();
-        }
-
-        return provisioningState;
-    }
-
     @Override
     public boolean isDone() {
-        return pollingCompleted && (!pollingSucceeded || gotResourceResponse);
+        return pollingCompleted && (!pollingSucceeded || !expectsResourceResponse || gotResourceResponse);
     }
 
     /**
      * Try to create a new AzureAsyncOperationPollStrategy object that will poll the provided
      * operation resource URL. If the provided HttpResponse doesn't have an Azure-AsyncOperation
      * header or if the header is empty, then null will be returned.
-     * @param fullyQualifiedMethodName The fully qualified name of the method that initiated the
-     *                                 long running operation.
+     * @param originalHttpRequest The original HTTP request that initiated the long running
+     *                            operation.
      * @param httpResponse The HTTP response that the required header values for this pollStrategy
      *                     will be read from.
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
      *                            use when polling.
      */
-    static PollStrategy tryToCreate(RestProxy restProxy, String fullyQualifiedMethodName, HttpResponse httpResponse, String originalResourceUrl, SerializerAdapter<?> serializer, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(RestProxy restProxy, HttpRequest originalHttpRequest, HttpResponse httpResponse, boolean expectsResourceResponse, SerializerAdapter<?> serializer, long delayInMilliseconds) {
         final String azureAsyncOperationUrl = httpResponse.headerValue(HEADER_NAME);
         return azureAsyncOperationUrl != null && !azureAsyncOperationUrl.isEmpty()
-                ? new AzureAsyncOperationPollStrategy(restProxy, fullyQualifiedMethodName, azureAsyncOperationUrl, originalResourceUrl, serializer, delayInMilliseconds)
+                ? new AzureAsyncOperationPollStrategy(restProxy, originalHttpRequest.callerMethod(), azureAsyncOperationUrl, originalHttpRequest.url(), expectsResourceResponse, serializer, delayInMilliseconds)
                 : null;
     }
 }

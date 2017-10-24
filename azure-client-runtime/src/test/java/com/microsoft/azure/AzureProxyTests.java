@@ -453,16 +453,20 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .beginCreateAsyncWithLocationAndPollsAndUnexpectedStatusCode("1", "mine", "c")
-                .subscribe(new Action1<OperationStatus<MockResource>>() {
-                    @Override
-                    public void call(OperationStatus<MockResource> operationStatus) {
-                        assertTrue(operationStatus.isDone());
-                        assertNull(operationStatus.result());
-                        assertNotNull(operationStatus.error());
-                        assertEquals("Status code 294, null", operationStatus.error().getMessage());
-                        assertEquals(ProvisioningState.FAILED, operationStatus.provisioningState());
-                    }
-                });
+                .subscribe(
+                        new Action1<OperationStatus<MockResource>>() {
+                           @Override
+                           public void call(OperationStatus<MockResource> mockResourceOperationStatus) {
+                                fail();
+                           }
+                       },
+                        new Action1<Throwable>() {
+                            @Override
+                            public void call(Throwable throwable) {
+                                assertEquals(CloudException.class, throwable.getClass());
+                                assertEquals("Could not determine a long running operation polling strategy.", throwable.getMessage());
+                            }
+                        });
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(1, httpClient.createRequests());
