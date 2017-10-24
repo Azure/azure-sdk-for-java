@@ -39,6 +39,11 @@ public class UrlBuilder {
         return this;
     }
 
+    /**
+     * Set the port that will be used to build the final URL.
+     * @param port The port that will be used to build the final URL.
+     * @return This UrlBuilder so that multiple setters can be chained together.
+     */
     public UrlBuilder withPort(int port) {
         this.port = port;
         return this;

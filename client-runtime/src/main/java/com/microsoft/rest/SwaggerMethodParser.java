@@ -35,7 +35,6 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Stack;
 
 /**
  * This class parses details of a specific Swagger REST API call from a provided Swagger interface
