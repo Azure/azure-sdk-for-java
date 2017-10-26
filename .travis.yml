@@ -11,6 +11,7 @@ script:
 -    LOG_PARAMS='-Dorg.slf4j.simpleLogger.defaultLogLevel=error -Dorg.slf4j.simpleLogger.log.org.apache.maven.cli.transfer.Slf4jMavenTransferListener=warn --batch-mode' ;
 - mvn jetty:run & echo "==> Starting a Jetty server on the background ==" ;
 - mvn install -DskipTests=true $LOG_PARAMS || travis_terminate 1 ;
+
 - echo '==> Starting mvn test ===' ;
 - mvn test -Dsurefire.rerunFailingTestsCount=3 $LOG_PARAMS -Dparallel=classes -DthreadCount=2 -DforkCount=1C || travis_terminate 1 ;
 
