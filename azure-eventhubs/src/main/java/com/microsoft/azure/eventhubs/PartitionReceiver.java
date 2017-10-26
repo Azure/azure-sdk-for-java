@@ -406,7 +406,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                 totalMilliSeconds = Long.MAX_VALUE;
                 if (TRACE_LOGGER.isWarnEnabled()) {
                     TRACE_LOGGER.warn(
-                            String.format("receiverPath[%s], action[createReceiveLink], warning[starting receiver from epoch+Long.Max]", this.internalReceiver.getReceivePath()));
+                            "receiver not yet created, action[createReceiveLink], warning[starting receiver from epoch+Long.Max]");
                 }
             }
 
