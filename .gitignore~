@@ -37,19 +37,11 @@ local.properties
 .classpath
 .settings/
 .loadpath
-bin/
 
 # Other Tooling #
 .classpath
 .project
-**/target/classes/**
-**/target/generated-sources/**
-**/target/generate-test-sources/**
-**/target/maven-status/**
-**/target/test-classes/com/**
-**/target/surefire-reports/**
-**/target/maven-archiver/**
-!**/target/test-classes/session-records/**
+target
 .idea
 *.iml
 
