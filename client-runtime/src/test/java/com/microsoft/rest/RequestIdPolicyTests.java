@@ -16,6 +16,7 @@ import com.microsoft.rest.policy.RequestPolicy;
 import com.microsoft.rest.policy.RetryPolicy;
 import org.junit.Assert;
 import org.junit.Test;
+import rx.Observable;
 import rx.Single;
 
 import java.io.IOException;
@@ -54,6 +55,11 @@ public class RequestIdPolicyTests {
         @Override
         public Single<byte[]> bodyAsByteArrayAsync() {
             return Single.just(new byte[0]);
+        }
+
+        @Override
+        public Observable<byte[]> streamBodyAsync() {
+            return Observable.just(new byte[0]);
         }
 
         @Override

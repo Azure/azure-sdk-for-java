@@ -87,14 +87,28 @@ class NettyResponse extends HttpResponse {
         return collectContent().map(new Func1<ByteBuf, byte[]>() {
             @Override
             public byte[] call(ByteBuf byteBuf) {
-                if (byteBuf.hasArray()) {
-                    return byteBuf.array();
-                } else {
-                    byte[] res = new byte[byteBuf.readableBytes()];
-                    byteBuf.readBytes(res);
-                    byteBuf.release();
-                    return res;
-                }
+                return toByteArray(byteBuf);
+            }
+        });
+    }
+
+    static byte[] toByteArray(ByteBuf byteBuf) {
+        if (byteBuf.hasArray()) {
+            return byteBuf.array();
+        } else {
+            byte[] res = new byte[byteBuf.readableBytes()];
+            byteBuf.readBytes(res);
+            byteBuf.release();
+            return res;
+        }
+    }
+
+    @Override
+    public Observable<byte[]> streamBodyAsync() {
+        return emitter.map(new Func1<ByteBuf, byte[]>() {
+            @Override
+            public byte[] call(ByteBuf byteBuf) {
+                return toByteArray(byteBuf);
             }
         });
     }

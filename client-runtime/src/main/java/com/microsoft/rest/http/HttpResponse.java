@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.http;
 
+import rx.Observable;
 import rx.Single;
 
 import java.io.InputStream;
@@ -50,6 +51,12 @@ public abstract class HttpResponse {
      * then null will be returned.
      */
     public abstract Single<byte[]> bodyAsByteArrayAsync();
+
+    /**
+     * Stream this response's body content.
+     * @return This response's body as an asynchronous sequence of byte[].
+     */
+    public abstract Observable<byte[]> streamBodyAsync();
 
     /**
      * Get this response object's body as a string. If this response object doesn't have a body,

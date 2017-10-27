@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.http;
 
+import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
 
@@ -67,6 +68,12 @@ public final class BufferedHttpResponse extends HttpResponse {
                     });
         }
         return body;
+    }
+
+    @Override
+    public Observable<byte[]> streamBodyAsync() {
+        // FIXME: maybe need to enable streaming/collecting in here
+        return bodyAsByteArrayAsync().toObservable();
     }
 
     @Override

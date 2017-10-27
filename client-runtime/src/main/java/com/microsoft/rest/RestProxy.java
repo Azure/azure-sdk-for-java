@@ -8,13 +8,15 @@ package com.microsoft.rest;
 
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.http.ContentType;
-import com.microsoft.rest.http.HttpHeaders;
-import com.microsoft.rest.protocol.SerializerAdapter;
+import com.microsoft.rest.http.FileRequestBody;
+import com.microsoft.rest.http.FileSegment;
 import com.microsoft.rest.http.HttpClient;
 import com.microsoft.rest.http.HttpHeader;
+import com.microsoft.rest.http.HttpHeaders;
 import com.microsoft.rest.http.HttpRequest;
 import com.microsoft.rest.http.HttpResponse;
 import com.microsoft.rest.http.UrlBuilder;
+import com.microsoft.rest.protocol.SerializerAdapter;
 import com.microsoft.rest.protocol.SerializerAdapter.Encoding;
 import com.microsoft.rest.protocol.TypeFactory;
 import org.joda.time.DateTime;
@@ -287,6 +289,9 @@ public class RestProxy implements InvocationHandler {
             else if (bodyContentObject instanceof byte[]) {
                 request.withBody((byte[]) bodyContentObject, contentType);
             }
+            else if (bodyContentObject instanceof FileSegment) {
+                request.withBody(new FileRequestBody((FileSegment) bodyContentObject));
+            }
             else if (bodyContentObject instanceof String) {
                 final String bodyContentString = (String) bodyContentObject;
                 if (!bodyContentString.isEmpty()) {
@@ -380,6 +385,17 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
+    private boolean isObservableByteArray(TypeToken entityTypeToken) {
+        if (entityTypeToken.isSubtypeOf(Observable.class)) {
+            final Type innerType = ((ParameterizedType) entityTypeToken.getType()).getActualTypeArguments()[0];
+            final TypeToken innerTypeToken = TypeToken.of(innerType);
+            if (innerTypeToken.isSubtypeOf(byte[].class)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     private Single<?> handleBodyReturnTypeAsync(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final int responseStatusCode = response.statusCode();
@@ -406,6 +422,8 @@ public class RestProxy implements InvocationHandler {
                 });
             }
             asyncResult = responseBodyBytesAsync;
+        } else if (isObservableByteArray(entityTypeToken)) {
+            asyncResult = Single.just(response.streamBodyAsync());
         } else {
             asyncResult = response
                     .bodyAsStringAsync()

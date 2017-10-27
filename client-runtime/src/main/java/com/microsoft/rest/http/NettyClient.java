@@ -31,6 +31,8 @@ import rx.Emitter;
 import rx.Emitter.BackpressureMode;
 import rx.Observable;
 import rx.Single;
+import rx.SingleEmitter;
+import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.subjects.ReplaySubject;
 
@@ -110,9 +112,9 @@ public final class NettyClient extends HttpClient {
             }
 
             // Creates cold observable from an emitter
-            return Observable.fromEmitter(new Action1<Emitter<HttpResponse>>() {
+            return Single.fromEmitter(new Action1<SingleEmitter<HttpResponse>>() {
                 @Override
-                public void call(final Emitter<HttpResponse> emitter) {
+                public void call(final SingleEmitter<HttpResponse> emitter) {
                     channelPool.acquire(uri).addListener(new GenericFutureListener<Future<? super Channel>>() {
                         @Override
                         public void operationComplete(Future<? super Channel> cf) throws Exception {
@@ -162,6 +164,7 @@ public final class NettyClient extends HttpClient {
                                         request.url(),
                                         requestContent);
                             }
+
                             for (HttpHeader header : request.headers()) {
                                 raw.headers().add(header.name(), header.value());
                             }
@@ -179,14 +182,19 @@ public final class NettyClient extends HttpClient {
                         }
                     });
                 }
-            }, BackpressureMode.BUFFER).toSingle();
+            }).doOnUnsubscribe(new Action0() {
+                        @Override
+                        public void call() {
+                            // close the connection, release resources
+                        }
+                    });
         }
     }
 
     private static final class HttpClientInboundHandler extends ChannelInboundHandlerAdapter {
 
         private ReplaySubject<ByteBuf> contentEmitter;
-        private Emitter<HttpResponse> responseEmitter;
+        private SingleEmitter<HttpResponse> responseEmitter;
         private NettyAdapter adapter;
         private long contentLength;
         private boolean contentExpected;
@@ -216,7 +224,7 @@ public final class NettyClient extends HttpClient {
                 }
 
                 contentEmitter = ReplaySubject.create();
-                responseEmitter.onNext(new NettyResponse(response, contentEmitter));
+                responseEmitter.onSuccess(new NettyResponse(response, contentEmitter));
             }
             if (msg instanceof HttpContent) {
                 HttpContent content = (HttpContent) msg;
@@ -225,7 +233,6 @@ public final class NettyClient extends HttpClient {
                 if (contentLength == 0 || !contentExpected) {
                     contentEmitter.onNext(buf);
                     contentEmitter.onCompleted();
-                    responseEmitter.onCompleted();
                     adapter.channelPool.release(ctx.channel());
                     return;
                 }
@@ -238,7 +245,6 @@ public final class NettyClient extends HttpClient {
 
                 if (contentLength == 0) {
                     contentEmitter.onCompleted();
-                    responseEmitter.onCompleted();
                     adapter.channelPool.release(ctx.channel());
                 }
             }
