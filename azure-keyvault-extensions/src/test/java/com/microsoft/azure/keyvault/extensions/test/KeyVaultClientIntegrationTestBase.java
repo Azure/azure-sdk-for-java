@@ -167,7 +167,7 @@ public class KeyVaultClientIntegrationTestBase {
 					.withBaseUrl("https://{vaultBaseUrl}").withSerializerAdapter(new AzureJacksonAdapter())
 					.withResponseBuilderFactory(new AzureResponseBuilder.Factory())
 					.withCredentials(createTestCredentials()).withLogLevel(LogLevel.BODY_AND_HEADERS)
-					.withNetworkInterceptor(interceptorManager.initInterceptor()), true);
+					.withNetworkInterceptor(interceptorManager.initInterceptor()));
 			createTestCredentials();
 			keyVaultClient = new KeyVaultClient(restClientWithTimeout);
 
@@ -281,7 +281,7 @@ public class KeyVaultClientIntegrationTestBase {
 					.withLogLevel(LogLevel.NONE)
 					.withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
 					.withNetworkInterceptor(interceptorManager.initInterceptor())
-					.withInterceptor(new ResourceManagerThrottlingInterceptor()), true);
+					.withInterceptor(new ResourceManagerThrottlingInterceptor()));
 
 			interceptorManager.addTextReplacementRule("https://management.azure.com/", playbackUri + "/");
 			interceptorManager.addTextReplacementRule("https://graph.windows.net/", playbackUri + "/");
@@ -295,7 +295,7 @@ public class KeyVaultClientIntegrationTestBase {
 					.withLogLevel(LogLevel.NONE)
 					.withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
 					.withNetworkInterceptor(interceptorManager.initInterceptor())
-					.withInterceptor(new ResourceManagerThrottlingInterceptor()), true);
+					.withInterceptor(new ResourceManagerThrottlingInterceptor()));
 			defaultSubscription = ZERO_SUBSCRIPTION;
 
 			out = System.out;
@@ -319,7 +319,7 @@ public class KeyVaultClientIntegrationTestBase {
 		interceptorManager.finalizeInterceptor();
 	}
 
-	protected RestClient buildRestClient(RestClient.Builder builder, boolean isMocked) {
+	protected RestClient buildRestClient(RestClient.Builder builder) {
 		return builder.build();
 	}
 }
