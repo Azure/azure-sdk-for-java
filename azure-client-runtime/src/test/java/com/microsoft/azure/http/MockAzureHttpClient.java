@@ -7,17 +7,17 @@
 package com.microsoft.azure.http;
 
 import com.google.common.io.CharStreams;
-import com.microsoft.azure.AsyncOperationResource;
-import com.microsoft.azure.AzureAsyncOperationPollStrategy;
+import com.microsoft.v2.AsyncOperationResource;
+import com.microsoft.v2.AzureAsyncOperationPollStrategy;
 import com.microsoft.azure.HttpBinJSON;
-import com.microsoft.azure.LocationPollStrategy;
+import com.microsoft.v2.LocationPollStrategy;
 import com.microsoft.azure.MockResource;
-import com.microsoft.azure.OperationState;
-import com.microsoft.rest.http.HttpClient;
-import com.microsoft.rest.http.HttpHeader;
-import com.microsoft.rest.http.HttpHeaders;
-import com.microsoft.rest.http.HttpRequest;
-import com.microsoft.rest.http.HttpResponse;
+import com.microsoft.v2.OperationState;
+import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpHeader;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Single;
 
 import java.io.IOException;

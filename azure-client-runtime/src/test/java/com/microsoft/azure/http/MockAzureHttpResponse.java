@@ -6,10 +6,10 @@
 
 package com.microsoft.azure.http;
 
-import com.microsoft.rest.http.HttpHeaders;
-import com.microsoft.rest.http.HttpResponse;
-import com.microsoft.rest.protocol.SerializerAdapter;
-import com.microsoft.rest.serializer.JacksonAdapter;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.protocol.SerializerAdapter;
+import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import rx.Observable;
 import rx.Single;
 

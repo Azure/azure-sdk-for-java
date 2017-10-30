@@ -6,10 +6,10 @@
 
 package com.microsoft.azure;
 
-import com.microsoft.azure.annotations.AzureHost;
-import com.microsoft.rest.annotations.GET;
-import com.microsoft.rest.annotations.HostParam;
-import com.microsoft.rest.annotations.PathParam;
+import com.microsoft.v2.annotations.AzureHost;
+import com.microsoft.rest.v2.annotations.GET;
+import com.microsoft.rest.v2.annotations.HostParam;
+import com.microsoft.rest.v2.annotations.PathParam;
 
 public class AzureTests {
 

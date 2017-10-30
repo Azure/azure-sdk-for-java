@@ -6,6 +6,8 @@
 
 package com.microsoft.azure;
 
+import com.microsoft.v2.Page;
+import com.microsoft.v2.PagedList;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;

@@ -1,7 +1,7 @@
 package com.microsoft.azure;
 
-import com.microsoft.rest.RestException;
-import com.microsoft.rest.http.HttpResponse;
+import com.microsoft.rest.v2.RestException;
+import com.microsoft.rest.v2.http.HttpResponse;
 
 public class MyAzureException extends RestException {
     public MyAzureException(String message, HttpResponse response, HttpBinJSON body) {

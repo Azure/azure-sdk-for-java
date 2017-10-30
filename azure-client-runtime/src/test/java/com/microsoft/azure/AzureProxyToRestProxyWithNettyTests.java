@@ -1,9 +1,9 @@
 package com.microsoft.azure;
 
-import com.microsoft.rest.http.HttpClient;
-import com.microsoft.rest.http.HttpClient.Configuration;
-import com.microsoft.rest.http.NettyClient;
-import com.microsoft.rest.policy.RequestPolicy;
+import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpClient.Configuration;
+import com.microsoft.rest.v2.http.NettyClient;
+import com.microsoft.rest.v2.policy.RequestPolicy;
 
 import java.util.Collections;
 
