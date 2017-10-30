@@ -150,9 +150,13 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      *                            use when polling.
      */
     static PollStrategy tryToCreate(RestProxy restProxy, HttpRequest originalHttpRequest, HttpResponse httpResponse, boolean expectsResourceResponse, SerializerAdapter<?> serializer, long delayInMilliseconds) {
-        final String azureAsyncOperationUrl = httpResponse.headerValue(HEADER_NAME);
+        final String azureAsyncOperationUrl = getHeader(httpResponse);
         return azureAsyncOperationUrl != null && !azureAsyncOperationUrl.isEmpty()
                 ? new AzureAsyncOperationPollStrategy(restProxy, originalHttpRequest.callerMethod(), azureAsyncOperationUrl, originalHttpRequest.url(), expectsResourceResponse, serializer, delayInMilliseconds)
                 : null;
+    }
+
+    static String getHeader(HttpResponse httpResponse) {
+        return httpResponse.headerValue(HEADER_NAME);
     }
 }

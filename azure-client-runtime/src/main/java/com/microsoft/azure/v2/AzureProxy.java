@@ -198,7 +198,11 @@ public final class AzureProxy extends RestProxy {
                         }
 
                         if (result == null) {
-                            throw new CloudException("Could not determine a long running operation polling strategy.", originalHttpResponse);
+                            String errorMessage = "Could not determine a long running operation polling strategy "
+                                    + "(Status code: " + httpStatusCode + ", "
+                                    + "Azure-AsyncOperation Header: " + AzureAsyncOperationPollStrategy.getHeader(originalHttpResponse) + ", "
+                                    + "Location Header: " + LocationPollStrategy.getHeader(originalHttpResponse);
+                            throw new CloudException(errorMessage, originalHttpResponse);
                         }
 
                         return result;

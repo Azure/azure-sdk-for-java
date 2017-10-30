@@ -464,7 +464,7 @@ public class AzureProxyTests {
                             @Override
                             public void call(Throwable throwable) {
                                 assertEquals(CloudException.class, throwable.getClass());
-                                assertEquals("Could not determine a long running operation polling strategy.", throwable.getMessage());
+                                assertContains(throwable.getMessage(), "Could not determine a long running operation polling strategy");
                             }
                         });
 
