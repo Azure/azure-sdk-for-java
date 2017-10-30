@@ -28,8 +28,8 @@ import java.lang.annotation.Target;
  *  {@literal @}GET({nextLink})
  *  {@literal List<VirtualMachine>} listNext(@PathParam("nextLink") String nextLink);
  */
-@Target({ElementType.METHOD})            // The context in which annotation is applicable i.e. this annotation (GET) can be applied only to methods
-@Retention(RetentionPolicy.RUNTIME)      // Record this annotation in the class file and make it available during runtime.
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
 public @interface GET {
     /**
      * Get the relative path of the annotated method's GET URL.

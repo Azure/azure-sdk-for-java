@@ -28,8 +28,8 @@ import java.lang.annotation.Target;
  *  {@literal @}PUT({vaultBaseUrl}/secrets/{secretName})
  *  Secret createOrUpdate(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String secretName, @BodyParam SecretCreateParameters secret);
  */
-@Target({ElementType.METHOD})            // The context in which annotation is applicable i.e. this annotation (PUT) can be applied only to methods
-@Retention(RetentionPolicy.RUNTIME)      // Record this annotation in the class file and make it available during runtime.
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
 public @interface PUT {
     /**
      * Get the relative path of the annotated method's PUT URL.

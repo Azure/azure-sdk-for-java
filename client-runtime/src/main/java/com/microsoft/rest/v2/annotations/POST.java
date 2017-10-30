@@ -28,8 +28,8 @@ import java.lang.annotation.Target;
  *  {@literal @}POST(https://{functionApp}.azurewebsites.net/admin/functions/{name}/keys/{keyName})
  *  NameValuePair generateFunctionKey(@PathParam("functionApp") String functionApp, @PathParam("name") String function, @PathParam("keyName") String keyName);
  */
-@Target({ElementType.METHOD})            // The context in which annotation is applicable i.e. this annotation (POST) can be applied only to methods
-@Retention(RetentionPolicy.RUNTIME)      // Record this annotation in the class file and make it available during runtime.
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
 public @interface POST {
     /**
      * Get the relative path of the annotated method's POST URL.
