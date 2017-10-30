@@ -7,10 +7,9 @@
 package com.microsoft.azure.v2.credentials;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.v2.AzureEnvironment;
+import com.microsoft.azure.v2.AzureEnvironment;
 import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.v2.credentials.AzureTokenCredentials;
-import com.microsoft.v2.serializer.AzureJacksonAdapter;
+import com.microsoft.azure.v2.serializer.AzureJacksonAdapter;
 
 import java.io.BufferedReader;
 import java.io.IOException;

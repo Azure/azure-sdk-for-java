@@ -12,8 +12,7 @@ import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
-import com.microsoft.v2.AzureEnvironment;
-import com.microsoft.v2.credentials.AzureTokenCredentials;
+import com.microsoft.azure.v2.AzureEnvironment;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;

@@ -8,10 +8,9 @@ package com.microsoft.azure.v2.credentials;
 
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.microsoft.v2.AzureEnvironment;
+import com.microsoft.azure.v2.AzureEnvironment;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
-import com.microsoft.v2.credentials.AzureTokenCredentials;
 
 import java.io.File;
 import java.io.IOException;

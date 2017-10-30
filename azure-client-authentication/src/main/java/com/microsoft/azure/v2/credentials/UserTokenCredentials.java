@@ -8,8 +8,7 @@ package com.microsoft.azure.v2.credentials;
 
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.v2.AzureEnvironment;
-import com.microsoft.v2.credentials.AzureTokenCredentials;
+import com.microsoft.azure.v2.AzureEnvironment;
 
 import java.io.IOException;
 import java.util.ArrayList;
