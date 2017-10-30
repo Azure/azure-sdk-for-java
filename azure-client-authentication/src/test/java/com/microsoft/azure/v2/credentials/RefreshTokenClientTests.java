@@ -22,7 +22,7 @@ public class RefreshTokenClientTests {
         assertEquals(1, httpClient.requests().size());
         final HttpRequest request = httpClient.requests().get(0);
         assertEquals("POST", request.httpMethod());
-        assertEquals("RefreshTokenClient$RefreshTokenService.refreshToken", request.callerMethod());
+        assertEquals("com.microsoft.azure.v2.credentials.RefreshTokenClient$RefreshTokenService.refreshToken", request.callerMethod());
         assertEquals("http://my.base.url/mockTenant/oauth2/token", request.url());
         assertEquals("client_id=mockClientId&grant_type=refresh_token&resource=mockResource&refresh_token=mockRefreshToken", CharStreams.toString(new InputStreamReader(request.body().createInputStream(), Charsets.UTF_8)));
     }
