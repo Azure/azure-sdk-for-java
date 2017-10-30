@@ -438,7 +438,7 @@ public class AzureProxyTests {
         }
         catch (InvalidReturnTypeException e) {
             assertContains(e.getMessage(), "AzureProxyTests$MockResourceService.beginCreateAsyncWithBadReturnType()");
-            assertContains(e.getMessage(), "rx.Observable<MockResource>");
+            assertContains(e.getMessage(), "rx.Observable<com.microsoft.azure.v2.MockResource>");
         }
 
         assertEquals(0, httpClient.getRequests());

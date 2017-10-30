@@ -727,7 +727,7 @@ public abstract class RestProxyTests {
             fail("Expected exception.");
         }
         catch (InvalidReturnTypeException e) {
-            assertContains(e.getMessage(), "rx.Observable<HttpBinJSON>");
+            assertContains(e.getMessage(), "rx.Observable<com.microsoft.rest.v2.entities.HttpBinJSON>");
             assertContains(e.getMessage(), "RestProxyTests$Service15.get()");
         }
     }

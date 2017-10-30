@@ -626,7 +626,7 @@ public abstract class AzureProxyToRestProxyTests {
             fail("Expected exception.");
         }
         catch (InvalidReturnTypeException e) {
-            assertContains(e.getMessage(), "rx.Observable<HttpBinJSON>");
+            assertContains(e.getMessage(), "rx.Observable<com.microsoft.azure.v2.HttpBinJSON>");
             assertContains(e.getMessage(), "AzureProxyToRestProxyTests$Service15.get()");
         }
     }

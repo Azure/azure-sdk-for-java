@@ -51,7 +51,7 @@ public class SwaggerInterfaceParserTests {
 
         final SwaggerMethodParser methodParser = interfaceParser.methodParser(testMethod3);
         assertNotNull(methodParser);
-        assertEquals("SwaggerInterfaceParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
+        assertEquals("com.microsoft.rest.v2.SwaggerInterfaceParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
 
         final SwaggerMethodParser methodDetails2 = interfaceParser.methodParser(testMethod3);
         assertSame(methodParser, methodDetails2);

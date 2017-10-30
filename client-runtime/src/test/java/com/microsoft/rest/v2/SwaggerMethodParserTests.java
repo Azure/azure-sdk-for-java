@@ -36,7 +36,7 @@ public class SwaggerMethodParserTests {
         assertEquals("testMethod2", testMethod2.getName());
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, "https://raw.host.com");
-        assertEquals("SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.fullyQualifiedMethodName());
+        assertEquals("com.microsoft.rest.v2.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.fullyQualifiedMethodName());
         assertEquals("PATCH", methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
         assertEquals(RestException.class, methodParser.exceptionType());
@@ -59,7 +59,7 @@ public class SwaggerMethodParserTests {
         assertEquals("testMethod3", testMethod3.getName());
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, "https://raw.host.com");
-        assertEquals("SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
+        assertEquals("com.microsoft.rest.v2.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
         assertEquals("PATCH", methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
         assertEquals(MyRestException.class, methodParser.exceptionType());
