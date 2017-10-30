@@ -15,7 +15,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 /**
  * Named replacement in a URL path segment.
  *
- * A parameter that is annotated with PathParam will be ignored if the "uri template" (see {@link com.microsoft.rest.annotations.Doc_Http_Verb_Annotation_Value_URI_Template})
+ * A parameter that is annotated with PathParam will be ignored if the "uri template"
  * does not contain a path segment variable with name {@link PathParam#value()}.
  *
  * Example#1:

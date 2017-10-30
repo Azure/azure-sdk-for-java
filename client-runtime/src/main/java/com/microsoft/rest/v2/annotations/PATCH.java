@@ -18,8 +18,6 @@ import java.lang.annotation.Target;
  * an absolute path, it must start with a protocol or a parametrized segment.
  * (Otherwise the parse cannot tell if it's absolute or relative)
  *
- * For more details on format of "value" field and associated rules refer {@link com.microsoft.rest.annotations.Doc_Http_Verb_Annotation_Value_URI_Template}.
- *
  * Example 1: relative path segments
  *
  *  {@literal @}PATCH("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
@@ -30,8 +28,8 @@ import java.lang.annotation.Target;
  *  {@literal @}PATCH({vaultBaseUrl}/secrets/{secretName})
  *  Secret patch(@PathParam("vaultBaseUrl" encoded = true) String vaultBaseUrl, @PathParam("secretName") String secretName, @BodyParam SecretUpdateParameters updateParameters);
  */
-@Target({ElementType.METHOD})            // The context in which annotation is applicable i.e. this annotation (PATCH) can be applied only to methods
-@Retention(RetentionPolicy.RUNTIME)      // Record this annotation in the class file and make it available during runtime.
+@Target({ElementType.METHOD})
+@Retention(RetentionPolicy.RUNTIME)
 public @interface PATCH {
     /**
      * Get the relative path of the annotated method's PATCH URL.

@@ -18,7 +18,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Example#1:
  *
  *   {@literal @}GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/resources")
- *   Observable<Response<ResponseBody>> listByResourceGroup(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);
+ *   {@literal Single<RestResponse<Headers, Body>>} listByResourceGroup(@PathParam("resourceGroupName") String resourceGroupName, @PathParam("subscriptionId") String subscriptionId, @QueryParam("$filter") String filter, @QueryParam("$expand") String expand, @QueryParam("$top") Integer top, @QueryParam("api-version") String apiVersion);
  *
  *   The value of parameters filter, expand, top, apiVersion will be encoded and encoded value will be used to replace the corresponding path segment {$filter},
  *   {$expand}, {$top}, {api-version} respectively.
