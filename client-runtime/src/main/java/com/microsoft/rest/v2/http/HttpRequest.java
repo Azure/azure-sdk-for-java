@@ -6,14 +6,16 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.google.common.base.Charsets;
+
 /**
  * This class contains all of the details necessary for sending a HTTP request through a HttpClient.
  */
 public class HttpRequest {
-    private final String callerMethod;
-    private final String httpMethod;
-    private final String url;
-    private final HttpHeaders headers = new HttpHeaders();
+    private String callerMethod;
+    private String httpMethod;
+    private String url;
+    private HttpHeaders headers;
     private HttpRequestBody body;
 
     /**
@@ -27,6 +29,24 @@ public class HttpRequest {
         this.callerMethod = callerMethod;
         this.httpMethod = httpMethod;
         this.url = url;
+        this.headers = new HttpHeaders();
+        this.body = null;
+    }
+
+    /**
+     * Create a new HttpRequest object.
+     * @param callerMethod The fully qualified method that was called to invoke this HTTP request.
+     * @param httpMethod The HTTP method to use with this request.
+     * @param url The URL where this HTTP request should be sent to.
+     * @param headers The HTTP headers to use with this request.
+     * @param body The body of this HTTP request.
+     */
+    public HttpRequest(String callerMethod, String httpMethod, String url, HttpHeaders headers, HttpRequestBody body) {
+        this.callerMethod = callerMethod;
+        this.httpMethod = httpMethod;
+        this.url = url;
+        this.headers = headers;
+        this.body = body;
     }
 
     /**
@@ -38,6 +58,16 @@ public class HttpRequest {
     }
 
     /**
+     * Set the caller method for this request.
+     * @param callerMethod The fully qualified method that was called to invoke this HTTP request.
+     * @return This HttpRequest instance for chaining.
+     */
+    public HttpRequest withCallerMethod(String callerMethod) {
+        this.callerMethod = callerMethod;
+        return this;
+    }
+
+    /**
      * Get the HTTP method that this request will use.
      * @return The HTTP method that this request will use.
      */
@@ -46,11 +76,49 @@ public class HttpRequest {
     }
 
     /**
+     * Set the HTTP method that this request will use.
+     * @param httpMethod The HTTP method to use, e.g. "GET".
+     * @return This HttpRequest so that multiple operations can be chained together.
+     */
+    public HttpRequest withHttpMethod(String httpMethod) {
+        this.httpMethod = httpMethod;
+        return this;
+    }
+
+    /**
      * Get the URL that this request will be sent to.
      * @return The URL that this request will be sent to.
      */
     public String url() {
         return url;
+    }
+
+    /**
+     * Set the URL that this request will be sent to.
+     * @param url The new URL that this request will be sent to.
+     * @return This HttpRequest so that multiple operations can be chained together.
+     */
+    public HttpRequest withUrl(String url) {
+        this.url = url;
+        return this;
+    }
+
+    /**
+     * Get the headers for this request.
+     * @return The headers for this request.
+     */
+    public HttpHeaders headers() {
+        return headers;
+    }
+
+    /**
+     * Set the headers for this request.
+     * @param headers The set of headers to send for this request.
+     * @return This HttpRequest so that multiple operations can be chained together.
+     */
+    public HttpRequest withHeaders(HttpHeaders headers) {
+        this.headers = headers;
+        return this;
     }
 
     /**
@@ -65,11 +133,11 @@ public class HttpRequest {
     }
 
     /**
-     * Get the headers for this request.
-     * @return The headers for this request.
+     * Get the body for this HttpRequest.
+     * @return The body for this HttpRequest.
      */
-    public HttpHeaders headers() {
-        return headers;
+    public HttpRequestBody body() {
+        return body;
     }
 
     /**
@@ -79,7 +147,7 @@ public class HttpRequest {
      * @return This HttpRequest so that multiple operations can be chained together.
      */
     public HttpRequest withBody(String body, String mimeContentType) {
-        final byte[] bodyBytes = body.getBytes();
+        final byte[] bodyBytes = body.getBytes(Charsets.UTF_8);
         return withBody(bodyBytes, mimeContentType);
     }
 
@@ -105,18 +173,10 @@ public class HttpRequest {
     }
 
     /**
-     * Get the body for this HttpRequest.
-     * @return The body for this HttpRequest.
+     * Performs a deep clone of this HTTP request.
+     * @return A new HTTP request instance with cloned instances of all mutable properties.
      */
-    public HttpRequestBody body() {
-        return body;
-    }
-
-    /**
-     * Get the assigned MIME type for this HttpRequest's body.
-     * @return The assigned MIME type for this HttpRequest's body.
-     */
-    public String mimeContentType() {
-        return body == null ? null : body.contentType();
+    public HttpRequest clone() {
+        return new HttpRequest(callerMethod, httpMethod, url, new HttpHeaders(headers), body);
     }
 }

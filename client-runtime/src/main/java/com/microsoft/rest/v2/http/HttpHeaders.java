@@ -17,7 +17,7 @@ import java.util.Iterator;
 import java.util.Map;
 
 /**
- * A collection of headers that will be applied to a HTTP request.
+ * A collection of headers on an HTTP request or response.
  */
 public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     private final Map<String, HttpHeader> headers = new HashMap<>();
