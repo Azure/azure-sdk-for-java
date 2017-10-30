@@ -18,8 +18,6 @@ import java.lang.annotation.Target;
  * an absolute path, it must start with a protocol or a parametrized segment.
  * (Otherwise the parse cannot tell if it's absolute or relative)
  *
- * For more details on format of "value" field and associated rules refer {@link com.microsoft.rest.annotations.Doc_Http_Verb_Annotation_Value_URI_Template}.
- *
  * Example 1: relative path segments
  *
  *  {@literal @}HEAD("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
