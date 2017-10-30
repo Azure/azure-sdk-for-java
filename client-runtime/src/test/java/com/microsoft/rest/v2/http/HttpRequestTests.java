@@ -31,24 +31,22 @@ public class HttpRequestTests {
 
         final HttpRequest clonedRequest = request.clone();
 
-        assertNotEquals(request, clonedRequest);
-        assertNotEquals(request.headers(), clonedRequest.headers());
+        assertNotSame(request, clonedRequest);
 
         assertEquals(request.callerMethod(), clonedRequest.callerMethod());
         assertEquals(request.httpMethod(), clonedRequest.httpMethod());
         assertEquals(request.url(), clonedRequest.url());
 
+        assertNotSame(request.headers(), clonedRequest.headers());
         assertEquals(request.headers().toMap().size(), clonedRequest.headers().toMap().size());
         for (HttpHeader clonedHeader : clonedRequest.headers()) {
             for (HttpHeader originalHeader : request.headers()) {
-                if (clonedHeader == originalHeader) {
-                    fail("Failed to clone HttpHeader instance");
-                }
+                assertNotSame(clonedHeader, originalHeader);
             }
 
             assertEquals(clonedHeader.value(), request.headers().value(clonedHeader.name()));
         }
 
-        assertEquals(request.body(), clonedRequest.body());
+        assertSame(request.body(), clonedRequest.body());
     }
 }
