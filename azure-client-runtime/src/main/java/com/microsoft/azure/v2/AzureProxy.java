@@ -146,66 +146,74 @@ public final class AzureProxy extends RestProxy {
                 .flatMap(new Func1<HttpResponse, Single<PollStrategy>>() {
                     @Override
                     public Single<PollStrategy> call(final HttpResponse originalHttpResponse) {
-                        Single<PollStrategy> result = null;
-                        final Long parsedDelayInMilliseconds = PollStrategy.delayInMillisecondsFrom(originalHttpResponse);
-                        final long delayInMilliseconds = parsedDelayInMilliseconds != null ? parsedDelayInMilliseconds : AzureProxy.defaultDelayInMilliseconds();
-                        final boolean expectsResourceResponse = methodParser.expectsResponseBody();
-
                         final int httpStatusCode = originalHttpResponse.statusCode();
-                        final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
+                        final int[] longRunningOperationStatusCodes = new int[] {200, 201, 202};
+                        return ensureExpectedStatus(originalHttpResponse, methodParser, longRunningOperationStatusCodes)
+                                .flatMap(new Func1<HttpResponse, Single<? extends PollStrategy>>() {
+                                    @Override
+                                    public Single<? extends PollStrategy> call(HttpResponse response) {
+                                        Single<PollStrategy> result = null;
 
-                        PollStrategy pollStrategy = null;
-                        if (httpStatusCode == 200) {
-                            pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
-                            if (pollStrategy != null) {
-                                result = Single.just(pollStrategy);
-                            }
-                            else {
-                                result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
-                            }
-                        }
-                        else if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
-                            if (httpStatusCode == 201) {
-                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
-                                if (pollStrategy == null) {
-                                    result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
-                                }
-                            } else if (httpStatusCode == 202) {
-                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
-                                if (pollStrategy == null) {
-                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                }
-                            }
-                        }
-                        else {
-                            if (httpStatusCode == 202) {
-                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
-                                if (pollStrategy == null) {
-                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
-                                    if (pollStrategy == null) {
-                                        throw new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse);
+                                        final Long parsedDelayInMilliseconds = PollStrategy.delayInMillisecondsFrom(originalHttpResponse);
+                                        final long delayInMilliseconds = parsedDelayInMilliseconds != null ? parsedDelayInMilliseconds : AzureProxy.defaultDelayInMilliseconds();
+                                        final boolean expectsResourceResponse = methodParser.expectsResponseBody();
+
+                                        final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
+
+                                        PollStrategy pollStrategy = null;
+                                        if (httpStatusCode == 200) {
+                                            pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                            if (pollStrategy != null) {
+                                                result = Single.just(pollStrategy);
+                                            }
+                                            else {
+                                                result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
+                                            }
+                                        }
+                                        else if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
+                                            if (httpStatusCode == 201) {
+                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                                if (pollStrategy == null) {
+                                                    result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
+                                                }
+                                            } else if (httpStatusCode == 202) {
+                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                                if (pollStrategy == null) {
+                                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                                }
+                                            }
+                                        }
+                                        else {
+                                            if (httpStatusCode == 202) {
+                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                                if (pollStrategy == null) {
+                                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                                    if (pollStrategy == null) {
+                                                        throw new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse);
+                                                    }
+                                                }
+                                            }
+                                        }
+
+                                        if (pollStrategy == null && result == null) {
+                                            pollStrategy = new CompletedPollStrategy(AzureProxy.this, originalHttpResponse);
+                                        }
+
+                                        if (pollStrategy != null) {
+                                            result = Single.just(pollStrategy);
+                                        }
+
+                                        if (result == null) {
+                                            String errorMessage = "Could not determine a long running operation polling strategy "
+                                                    + "(Status code: " + httpStatusCode + ", "
+                                                    + "Azure-AsyncOperation Header: " + AzureAsyncOperationPollStrategy.getHeader(originalHttpResponse) + ", "
+                                                    + "Location Header: " + LocationPollStrategy.getHeader(originalHttpResponse);
+                                            throw new CloudException(errorMessage, originalHttpResponse);
+                                        }
+
+                                        return result;
                                     }
-                                }
-                            }
-                        }
-
-                        if (pollStrategy == null && result == null && methodParser.isExpectedResponseStatusCode(httpStatusCode)) {
-                            pollStrategy = new CompletedPollStrategy(AzureProxy.this, originalHttpResponse);
-                        }
-
-                        if (pollStrategy != null) {
-                            result = Single.just(pollStrategy);
-                        }
-
-                        if (result == null) {
-                            String errorMessage = "Could not determine a long running operation polling strategy "
-                                    + "(Status code: " + httpStatusCode + ", "
-                                    + "Azure-AsyncOperation Header: " + AzureAsyncOperationPollStrategy.getHeader(originalHttpResponse) + ", "
-                                    + "Location Header: " + LocationPollStrategy.getHeader(originalHttpResponse);
-                            throw new CloudException(errorMessage, originalHttpResponse);
-                        }
-
-                        return result;
+                                });
                     }
                 });
     }

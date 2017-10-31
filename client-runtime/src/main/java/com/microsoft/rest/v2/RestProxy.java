@@ -342,9 +342,13 @@ public class RestProxy implements InvocationHandler {
     }
 
     Single<HttpResponse> ensureExpectedStatus(final HttpResponse response, final SwaggerMethodParser methodParser) {
+        return ensureExpectedStatus(response, methodParser, null);
+    }
+
+    protected Single<HttpResponse> ensureExpectedStatus(final HttpResponse response, final SwaggerMethodParser methodParser, int[] additionalAllowedStatusCodes) {
         final int responseStatusCode = response.statusCode();
         final Single<HttpResponse> asyncResult;
-        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
+        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode, additionalAllowedStatusCodes)) {
             asyncResult = response.bodyAsStringAsync().map(new Func1<String, HttpResponse>() {
                 @Override
                 public HttpResponse call(String responseBody) {

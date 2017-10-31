@@ -276,16 +276,39 @@ public class SwaggerMethodParser {
      * for this Swagger method.
      */
     public boolean isExpectedResponseStatusCode(int responseStatusCode) {
+        return isExpectedResponseStatusCode(responseStatusCode, null);
+    }
+
+    /**
+     * Get whether or not the provided response status code is one of the expected status codes for
+     * this Swagger method.
+     * @param responseStatusCode The status code that was returned in the HTTP response.
+     * @param additionalAllowedStatusCodes An additional set of allowed status codes that will be
+     *                                     merged with the existing set of allowed status codes for
+     *                                     this query.
+     * @return whether or not the provided response status code is one of the expected status codes
+     * for this Swagger method.
+     */
+    public boolean isExpectedResponseStatusCode(int responseStatusCode, int[] additionalAllowedStatusCodes) {
         boolean result;
 
         if (expectedStatusCodes == null) {
             result = (responseStatusCode < 400);
         }
         else {
-            result = false;
+            result = contains(expectedStatusCodes, responseStatusCode)
+                    || contains(additionalAllowedStatusCodes, responseStatusCode);
+        }
 
-            for (int expectedStatusCode : expectedStatusCodes) {
-                if (expectedStatusCode == responseStatusCode) {
+        return result;
+    }
+
+    private static boolean contains(int[] values, int searchValue) {
+        boolean result = false;
+
+        if (values != null && values.length > 0) {
+            for (int value : values) {
+                if (searchValue == value) {
                     result = true;
                     break;
                 }
