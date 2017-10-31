@@ -58,7 +58,7 @@ final class ServicePropertiesHandler extends DefaultHandler {
             IOException, ParserConfigurationException {
         SAXParser saxParser = Utility.getSAXParser();
         ServicePropertiesHandler handler = new ServicePropertiesHandler();
-        handler.props.setCors(null);
+        handler.props.setLogging(null);
         handler.props.setHourMetrics(null);
         handler.props.setMinuteMetrics(null);
         handler.props.setCors(null);
