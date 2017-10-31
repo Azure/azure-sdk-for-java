@@ -1,3 +1,6 @@
+2017.11.01 Version 6.1.0
+ * Added support for the last time the tier was modified.
+
 2017.10.06 Version 6.0.0
  * Added support for taking a snapshot of a share.
  * IOExceptions wrapping StorageExceptions will now contain the StorageException message in the outer exception.

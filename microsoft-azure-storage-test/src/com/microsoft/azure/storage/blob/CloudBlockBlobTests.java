@@ -1946,22 +1946,38 @@ public class CloudBlockBlobTests {
             final String blobName = BlobTestHelper.generateRandomBlobNameWithPrefix("testBlob");
             final CloudBlockBlob blob = this.container.getBlockBlobReference(blobName);
             blob.uploadText("text");
+            blob.downloadAttributes();
+            assertNotNull(blob.getProperties().getStandardBlobTier());
+            assertNull(blob.getProperties().getPremiumPageBlobTier());
+            assertTrue(blob.getProperties().isBlobTierInferred());
+
+            CloudBlockBlob listBlob = (CloudBlockBlob)this.container.listBlobs().iterator().next();
+            assertNotNull(listBlob.getProperties().getStandardBlobTier());
+            assertNull(listBlob.getProperties().getPremiumPageBlobTier());
+            assertTrue(listBlob.getProperties().isBlobTierInferred());
 
             blob.uploadStandardBlobTier(standardBlobTier);
             assertEquals(standardBlobTier, blob.getProperties().getStandardBlobTier());
             assertNull(blob.getProperties().getPremiumPageBlobTier());
             assertNull(blob.getProperties().getRehydrationStatus());
+            assertFalse(blob.getProperties().isBlobTierInferred());
+            assertNull(blob.getProperties().getTierChangeTime());
 
             CloudBlockBlob blob2 = this.container.getBlockBlobReference(blobName);
             blob2.downloadAttributes();
             assertEquals(standardBlobTier, blob2.getProperties().getStandardBlobTier());
             assertNull(blob2.getProperties().getPremiumPageBlobTier());
             assertNull(blob2.getProperties().getRehydrationStatus());
+            assertFalse(blob2.getProperties().isBlobTierInferred());
+            assertNotNull(blob2.getProperties().getTierChangeTime());
 
             CloudBlockBlob blob3 = (CloudBlockBlob)this.container.listBlobs().iterator().next();
             assertEquals(standardBlobTier, blob3.getProperties().getStandardBlobTier());
             assertNull(blob3.getProperties().getPremiumPageBlobTier());
             assertNull(blob3.getProperties().getRehydrationStatus());
+            assertNull(blob3.getProperties().isBlobTierInferred());
+            assertNotNull(blob3.getProperties().getTierChangeTime());
+            assertEquals(blob2.getProperties().getTierChangeTime(), blob3.getProperties().getTierChangeTime());
 
             blob.deleteIfExists();
         }
@@ -1984,32 +2000,38 @@ public class CloudBlockBlobTests {
         assertNull(blobRef1.getProperties().getRehydrationStatus());
         assertEquals(StandardBlobTier.ARCHIVE, blobRef1.getProperties().getStandardBlobTier());
         assertNull(blobRef1.getProperties().getPremiumPageBlobTier());
+        assertNull(blobRef1.getProperties().getTierChangeTime());
 
         blob.downloadAttributes();
         assertEquals(RehydrationStatus.PENDING_TO_COOL, blob.getProperties().getRehydrationStatus());
         assertEquals(StandardBlobTier.ARCHIVE, blob.getProperties().getStandardBlobTier());
         assertNull(blob.getProperties().getPremiumPageBlobTier());
+        assertNotNull(blob.getProperties().getTierChangeTime());
 
         CloudBlockBlob blobRef2 = this.container.getBlockBlobReference(blobName2);
         blobRef2.uploadStandardBlobTier(StandardBlobTier.HOT);
         assertNull(blobRef2.getProperties().getRehydrationStatus());
         assertEquals(StandardBlobTier.ARCHIVE, blobRef2.getProperties().getStandardBlobTier());
         assertNull(blobRef2.getProperties().getPremiumPageBlobTier());
+        assertNull(blobRef2.getProperties().getTierChangeTime());
 
         blob2.downloadAttributes();
         assertEquals(RehydrationStatus.PENDING_TO_HOT, blob2.getProperties().getRehydrationStatus());
         assertEquals(StandardBlobTier.ARCHIVE, blob2.getProperties().getStandardBlobTier());
         assertNull(blob2.getProperties().getPremiumPageBlobTier());
+        assertNotNull(blob2.getProperties().getTierChangeTime());
 
         Iterator it = this.container.listBlobs().iterator();
         CloudBlockBlob listBlob = (CloudBlockBlob)it.next();
         assertEquals(RehydrationStatus.PENDING_TO_COOL, listBlob.getProperties().getRehydrationStatus());
         assertEquals(StandardBlobTier.ARCHIVE, listBlob.getProperties().getStandardBlobTier());
         assertNull(listBlob.getProperties().getPremiumPageBlobTier());
+        assertNotNull(listBlob.getProperties().getTierChangeTime());
 
         CloudBlockBlob listBlob2 = (CloudBlockBlob)it.next();
         assertEquals(RehydrationStatus.PENDING_TO_HOT, listBlob2.getProperties().getRehydrationStatus());
         assertEquals(StandardBlobTier.ARCHIVE, listBlob2.getProperties().getStandardBlobTier());
         assertNull(listBlob2.getProperties().getPremiumPageBlobTier());
+        assertNotNull(listBlob2.getProperties().getTierChangeTime());
     }
 }
