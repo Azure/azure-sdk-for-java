@@ -137,14 +137,6 @@ public class SasTests {
         }
         catch (StorageException ex) {
             assertEquals(HttpURLConnection.HTTP_FORBIDDEN, ex.getHttpStatusCode());
-            
-            final String[] words = ex.getMessage().split(" ");
-            // final word
-            String lastWord = words[words.length - 1];
-            // strip trailing period
-            lastWord = lastWord.substring(0, lastWord.length() - 1);
-            
-            sourceIP = new IPRange(lastWord);
         }
         
         // Ensure access attempt from the single allowed IP succeeds
