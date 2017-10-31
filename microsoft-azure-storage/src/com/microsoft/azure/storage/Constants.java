@@ -900,6 +900,16 @@ public final class Constants {
     public static final String ACCESS_TIER = "AccessTier";
 
     /**
+     * XML element for the access tier change time.
+     */
+    public static final String ACCESS_TIER_CHANGE_TIME = "AccessTierChangeTime";
+
+    /**
+     * XML element for access if the access tier is inferred.
+     */
+    public static final String ACCESS_TIER_INFERRED = "AccessTierInferred";
+
+    /**
      * XML element for the archive status.
      */
     public static final String ARCHIVE_STATUS = "ArchiveStatus";

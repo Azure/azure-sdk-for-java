@@ -154,6 +154,9 @@ final class BlobResponse extends BaseResponse {
         if (!Utility.isNullOrEmpty(tierInferredString)) {
             properties.setBlobTierInferred(Boolean.parseBoolean(tierInferredString));
         }
+        else if (properties.getPremiumPageBlobTier() != null  || properties.getStandardBlobTier() != null) {
+            properties.setBlobTierInferred(false);
+        }
 
         final String rehydrationStatusString = request.getHeaderField(BlobConstants.ARCHIVE_STATUS_HEADER);
         if (!Utility.isNullOrEmpty(rehydrationStatusString)) {
@@ -162,6 +165,11 @@ final class BlobResponse extends BaseResponse {
         }
         else {
             properties.setRehydrationStatus(null);
+        }
+
+        final long tierChangeTime = request.getHeaderFieldDate(BlobConstants.ACCESS_TIER_CHANGE_TIME_HEADER, 0);
+        if (tierChangeTime != 0) {
+            properties.setTierChangeTime(new Date(tierChangeTime));
         }
 
         final String incrementalCopyHeaderString =

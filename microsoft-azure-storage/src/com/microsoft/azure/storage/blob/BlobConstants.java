@@ -20,6 +20,10 @@ import com.microsoft.azure.storage.Constants;
  * Holds the Constants used for the Blob Service.
  */
 final class BlobConstants {
+    /**
+     * The header that specifies the last time the tier was modified.
+     */
+    public static final String ACCESS_TIER_CHANGE_TIME_HEADER = Constants.PREFIX_FOR_STORAGE_HEADER + "access-tier-change-time";
 
     /**
      * The header that specifies the access tier header.
