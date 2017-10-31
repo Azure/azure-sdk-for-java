@@ -75,7 +75,7 @@ public final class LocationPollStrategy extends PollStrategy {
      *                            use when polling.
      */
     static PollStrategy tryToCreate(RestProxy restProxy, HttpRequest originalHttpRequest, HttpResponse httpResponse, long delayInMilliseconds) {
-        final String locationUrl = httpResponse.headerValue(HEADER_NAME);
+        final String locationUrl = getHeader(httpResponse);
 
         String pollUrl = null;
         if (locationUrl != null && !locationUrl.isEmpty()) {
@@ -97,5 +97,9 @@ public final class LocationPollStrategy extends PollStrategy {
         return pollUrl == null
                 ? null
                 : new LocationPollStrategy(restProxy, originalHttpRequest.callerMethod(), pollUrl, delayInMilliseconds);
+    }
+
+    static String getHeader(HttpResponse httpResponse) {
+        return httpResponse.headerValue(HEADER_NAME);
     }
 }
