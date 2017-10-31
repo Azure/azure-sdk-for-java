@@ -6,6 +6,8 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.google.common.base.Charsets;
+
 /**
  * This class contains all of the details necessary for sending a HTTP request through a HttpClient.
  */
@@ -79,7 +81,7 @@ public class HttpRequest {
      * @return This HttpRequest so that multiple operations can be chained together.
      */
     public HttpRequest withBody(String body, String mimeContentType) {
-        final byte[] bodyBytes = body.getBytes();
+        final byte[] bodyBytes = body.getBytes(Charsets.UTF_8);
         return withBody(bodyBytes, mimeContentType);
     }
 
