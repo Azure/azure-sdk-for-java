@@ -14,7 +14,7 @@ import rx.Single;
 import java.io.IOException;
 
 /**
- * Adds credentialsPolicyFactory from ServiceClientCredentials to a request.
+ * Adds credentials from ServiceClientCredentials to a request.
  */
 public final class CredentialsPolicy implements RequestPolicy {
     /**
@@ -25,7 +25,7 @@ public final class CredentialsPolicy implements RequestPolicy {
 
         /**
          * Creates a Factory which produces CredentialsPolicy.
-         * @param credentials The credentialsPolicyFactory to use for authentication.
+         * @param credentials The credentials to use for authentication.
          */
         public Factory(ServiceClientCredentials credentials) {
             this.credentials = credentials;
