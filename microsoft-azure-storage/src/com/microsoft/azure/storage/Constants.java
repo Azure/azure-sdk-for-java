@@ -661,7 +661,7 @@ public final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        public static final String USER_AGENT_VERSION = "6.0.0";
+        public static final String USER_AGENT_VERSION = "6.1.0";
 
         /**
          * The default type for content-type and accept
@@ -898,6 +898,16 @@ public final class Constants {
      * XML element for access tier.
      */
     public static final String ACCESS_TIER = "AccessTier";
+
+    /**
+     * XML element for the access tier change time.
+     */
+    public static final String ACCESS_TIER_CHANGE_TIME = "AccessTierChangeTime";
+
+    /**
+     * XML element for access if the access tier is inferred.
+     */
+    public static final String ACCESS_TIER_INFERRED = "AccessTierInferred";
 
     /**
      * XML element for the archive status.

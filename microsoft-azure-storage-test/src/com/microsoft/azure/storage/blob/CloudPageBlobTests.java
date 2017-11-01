@@ -1252,7 +1252,7 @@ public class CloudPageBlobTests {
             CloudPageBlob blob2 = container.getPageBlobReference(blobName);
             blob2.downloadAttributes();
             assertEquals(PremiumPageBlobTier.P4, blob2.getProperties().getPremiumPageBlobTier());
-            assertNull(blob2.getProperties().isBlobTierInferred());
+            assertFalse(blob2.getProperties().isBlobTierInferred());
             assertNull(blob2.getProperties().getStandardBlobTier());
             assertNull(blob2.getProperties().getRehydrationStatus());
 
@@ -1268,7 +1268,7 @@ public class CloudPageBlobTests {
             CloudPageBlob blob3Ref = container.getPageBlobReference("blob3");
             blob3Ref.downloadAttributes();
             assertEquals(PremiumPageBlobTier.P6, blob3Ref.getProperties().getPremiumPageBlobTier());
-            assertNull(blob3Ref.getProperties().isBlobTierInferred());
+            assertFalse(blob3Ref.getProperties().isBlobTierInferred());
 
             // Test upload from stream API
             ByteArrayInputStream srcStream = new ByteArrayInputStream(buffer);
@@ -1282,7 +1282,7 @@ public class CloudPageBlobTests {
             CloudPageBlob blob4Ref = container.getPageBlobReference("blob4");
             blob4Ref.downloadAttributes();
             assertEquals(PremiumPageBlobTier.P10, blob4Ref.getProperties().getPremiumPageBlobTier());
-            assertNull(blob4Ref.getProperties().isBlobTierInferred());
+            assertFalse(blob4Ref.getProperties().isBlobTierInferred());
 
             // Test upload from file API
             File sourceFile = File.createTempFile("sourceFile", ".tmp");
@@ -1301,7 +1301,7 @@ public class CloudPageBlobTests {
             CloudPageBlob blob5Ref = container.getPageBlobReference("blob5");
             blob5Ref.downloadAttributes();
             assertEquals(PremiumPageBlobTier.P20, blob5Ref.getProperties().getPremiumPageBlobTier());
-            assertNull(blob5Ref.getProperties().isBlobTierInferred());
+            assertFalse(blob5Ref.getProperties().isBlobTierInferred());
         }
         finally {
             container.deleteIfExists();
@@ -1318,6 +1318,10 @@ public class CloudPageBlobTests {
             CloudPageBlob blob = container.getPageBlobReference(blobName);
             blob.create(1024);
             assertNull(blob.getProperties().isBlobTierInferred());
+            CloudPageBlob listBlob = (CloudPageBlob)container.listBlobs().iterator().next();
+            assertNull(listBlob.getProperties().getStandardBlobTier());
+            assertNotNull(listBlob.getProperties().getPremiumPageBlobTier());
+
             blob.downloadAttributes();
             assertTrue(blob.getProperties().isBlobTierInferred());
             assertEquals(PremiumPageBlobTier.P10, blob.getProperties().getPremiumPageBlobTier());
@@ -1331,7 +1335,7 @@ public class CloudPageBlobTests {
             CloudPageBlob blob2 = container.getPageBlobReference(blobName);
             blob2.downloadAttributes();
             assertEquals(PremiumPageBlobTier.P40, blob2.properties.getPremiumPageBlobTier());
-            assertNull(blob2.getProperties().isBlobTierInferred());
+            assertFalse(blob2.getProperties().isBlobTierInferred());
 
             boolean pageBlobWithTierFound = false;
             for (ListBlobItem blobItem : container.listBlobs()) {
@@ -1404,7 +1408,7 @@ public class CloudPageBlobTests {
             CloudPageBlob copyRef = container.getPageBlobReference("copy");
             copyRef.downloadAttributes();
             assertEquals(PremiumPageBlobTier.P30, copyRef.getProperties().getPremiumPageBlobTier());
-            assertNull(copyRef.getProperties().isBlobTierInferred());
+            assertFalse(copyRef.getProperties().isBlobTierInferred());
 
             // copy where source does not have a tier
             CloudPageBlob source2 = container.getPageBlobReference("source2");
