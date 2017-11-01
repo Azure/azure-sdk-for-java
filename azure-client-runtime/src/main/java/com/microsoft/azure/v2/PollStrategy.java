@@ -39,7 +39,7 @@ abstract class PollStrategy {
     }
 
     protected <T> T deserialize(String value, Type returnType) throws IOException {
-        return (T)restProxy.deserialize(value, returnType, null, Encoding.JSON);
+        return (T) restProxy.deserialize(value, returnType, null, Encoding.JSON);
     }
 
     protected Single<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse) {

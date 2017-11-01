@@ -25,6 +25,8 @@ public class CompletedPollStrategy extends PollStrategy {
     /**
      * Create a new CompletedPollStrategy.
      * @param restProxy The RestProxy that created this PollStrategy.
+     * @param methodParser The method parser that describes the service interface method that
+     *                     initiated the long running operation.
      * @param originalHttpResponse The HTTP response to the original HTTP request.
      */
     public CompletedPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, HttpResponse originalHttpResponse) {

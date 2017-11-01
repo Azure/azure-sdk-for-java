@@ -43,7 +43,7 @@ public final class LocationPollStrategy extends PollStrategy {
 
     @Override
     public Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
-        return ensureExpectedStatus(httpPollResponse, new int[] { 202 })
+        return ensureExpectedStatus(httpPollResponse, new int[] {202})
                 .map(new Func1<HttpResponse, HttpResponse>() {
                     @Override
                     public HttpResponse call(HttpResponse response) {
@@ -75,6 +75,8 @@ public final class LocationPollStrategy extends PollStrategy {
      * URL. If the provided HttpResponse doesn't have a Location header or the header is empty,
      * then null will be returned.
      * @param originalHttpRequest The original HTTP request.
+     * @param methodParser The method parser that describes the service interface method that
+     *                     initiated the long running operation.
      * @param httpResponse The HTTP response that the required header values for this pollStrategy
      *                     will be read from.
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will

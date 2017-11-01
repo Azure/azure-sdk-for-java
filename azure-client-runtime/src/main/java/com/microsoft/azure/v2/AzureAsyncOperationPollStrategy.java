@@ -135,6 +135,9 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
      * Try to create a new AzureAsyncOperationPollStrategy object that will poll the provided
      * operation resource URL. If the provided HttpResponse doesn't have an Azure-AsyncOperation
      * header or if the header is empty, then null will be returned.
+     * @param restProxy The proxy object that is attempting to create a PollStrategy.
+     * @param methodParser The method parser that describes the service interface method that
+     *                     initiated the long running operation.
      * @param originalHttpRequest The original HTTP request that initiated the long running
      *                            operation.
      * @param httpResponse The HTTP response that the required header values for this pollStrategy
