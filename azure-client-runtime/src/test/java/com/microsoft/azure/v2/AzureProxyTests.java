@@ -1,6 +1,10 @@
 package com.microsoft.azure.v2;
 
 import com.microsoft.azure.v2.http.MockAzureHttpClient;
+import com.microsoft.azure.v2.http.MockAzureHttpResponse;
+import com.microsoft.rest.v2.RestException;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.InvalidReturnTypeException;
@@ -149,6 +153,10 @@ public class AzureProxyTests {
         @DELETE("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Location&PollsRemaining={pollsRemaining}")
         @ExpectedResponses({200})
         Observable<OperationStatus<Void>> beginDeleteAsyncWithLocationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
+
+        @DELETE("errors/403")
+        @ExpectedResponses({200})
+        Completable deleteAsyncWithForbiddenResponse();
     }
 
     @Test
@@ -463,8 +471,8 @@ public class AzureProxyTests {
                         new Action1<Throwable>() {
                             @Override
                             public void call(Throwable throwable) {
-                                assertEquals(CloudException.class, throwable.getClass());
-                                assertContains(throwable.getMessage(), "Could not determine a long running operation polling strategy");
+                                assertEquals(RestException.class, throwable.getClass());
+                                assertEquals("Status code 294, null", throwable.getMessage());
                             }
                         });
 
@@ -739,6 +747,26 @@ public class AzureProxyTests {
         assertEquals(0, httpClient.createRequests());
         assertEquals(1, httpClient.deleteRequests());
         assertEquals(0, httpClient.pollRequests());
+    }
+
+    @Test
+    public void deleteAsyncWithForbiddenResponse() {
+        final MockAzureHttpClient httpClient = new MockAzureHttpClient() {
+            @Override
+            protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+                return Single.<HttpResponse>just(new MockAzureHttpResponse(403, MockAzureHttpClient.responseHeaders()));
+            }
+        };
+
+        final MockResourceService service = createMockService(MockResourceService.class, httpClient);
+        try {
+            service.deleteAsyncWithForbiddenResponse().await();
+            fail("Expected RestException to be thrown.");
+        }
+        catch (RestException e) {
+            assertEquals(403, e.response().statusCode());
+            assertEquals("Status code 403, null", e.getMessage());
+        }
     }
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {

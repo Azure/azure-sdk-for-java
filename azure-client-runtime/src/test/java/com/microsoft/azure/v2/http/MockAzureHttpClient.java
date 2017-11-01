@@ -308,7 +308,7 @@ public class MockAzureHttpClient extends HttpClient {
         return result;
     }
 
-    private static HttpHeaders responseHeaders() {
+    public static HttpHeaders responseHeaders() {
         return new HttpHeaders()
                 .set("Date", "Fri, 13 Oct 2017 20:33:09 GMT")
                 .set("Via", "1.1 vegur")

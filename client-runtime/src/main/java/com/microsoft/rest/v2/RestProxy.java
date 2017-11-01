@@ -342,9 +342,24 @@ public class RestProxy implements InvocationHandler {
     }
 
     Single<HttpResponse> ensureExpectedStatus(final HttpResponse response, final SwaggerMethodParser methodParser) {
+        return ensureExpectedStatus(response, methodParser, null);
+    }
+
+    /**
+     * Ensure that the provided HttpResponse has a status code that is defined in the provided
+     * SwaggerMethodParser or is in the int[] of additional allowed status codes. If the
+     * HttpResponse's status code is not allowed, then an exception will be thrown.
+     * @param response The HttpResponse to check.
+     * @param methodParser The method parser that contains information about the service interface
+     *                     method that initiated the HTTP request.
+     * @param additionalAllowedStatusCodes Additional allowed status codes that are permitted based
+     *                                     on the context of the HTTP request.
+     * @return An async-version of the provided HttpResponse.
+     */
+    public Single<HttpResponse> ensureExpectedStatus(final HttpResponse response, final SwaggerMethodParser methodParser, int[] additionalAllowedStatusCodes) {
         final int responseStatusCode = response.statusCode();
         final Single<HttpResponse> asyncResult;
-        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode)) {
+        if (!methodParser.isExpectedResponseStatusCode(responseStatusCode, additionalAllowedStatusCodes)) {
             asyncResult = response.bodyAsStringAsync().map(new Func1<String, HttpResponse>() {
                 @Override
                 public HttpResponse call(String responseBody) {
