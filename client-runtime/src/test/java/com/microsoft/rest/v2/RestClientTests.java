@@ -35,7 +35,7 @@ public class RestClientTests {
         Assert.assertEquals("https://management.azure.com/", restClient.baseURL());
         Assert.assertEquals(LogLevel.NONE, restClient.logLevel());
         Assert.assertTrue(restClient.serializerAdapter() instanceof JacksonAdapter);
-        Assert.assertNull(restClient.credentials());
+        Assert.assertNull(restClient.credentialsPolicyFactory());
     }
 
     @Test
@@ -64,7 +64,7 @@ public class RestClientTests {
         Assert.assertEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
-        Assert.assertEquals(restClient.credentials(), newClient.credentials());
+        Assert.assertEquals(restClient.credentialsPolicyFactory(), newClient.credentialsPolicyFactory());
         Assert.assertEquals(restClient.userAgent(), newClient.userAgent());
         Assert.assertEquals(restClient.customRequestPolicyFactories().size(), newClient.customRequestPolicyFactories().size());
         Assert.assertEquals(TimeUnit.MINUTES.toMillis(100), newClient.connectionTimeoutMillis());
@@ -142,7 +142,7 @@ public class RestClientTests {
         Assert.assertNotEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertNotEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertNotEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
-        Assert.assertNotEquals(restClient.credentials(), newClient.credentials());
+        Assert.assertNotEquals(restClient.credentialsPolicyFactory(), newClient.credentialsPolicyFactory());
         Assert.assertEquals("user", restClient.userAgent());
         Assert.assertEquals("anotheruser", newClient.userAgent());
         Assert.assertNotEquals(restClient.connectionTimeoutMillis(), newClient.connectionTimeoutMillis());

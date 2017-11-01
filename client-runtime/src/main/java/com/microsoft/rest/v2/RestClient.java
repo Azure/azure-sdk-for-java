@@ -36,7 +36,7 @@ public final class RestClient {
     private final long readTimeoutMillis;
     private final long connectionTimeoutMillis;
     private final SerializerAdapter<?> serializerAdapter;
-    private final ServiceClientCredentials credentials;
+    private final RequestPolicy.Factory credentialsPolicyFactory;
     private final LogLevel logLevel;
 
     private final List<RequestPolicy.Factory> customRequestPolicyFactories;
@@ -48,7 +48,7 @@ public final class RestClient {
         this.readTimeoutMillis = builder.readTimeoutMillis;
         this.connectionTimeoutMillis = builder.connectionTimeoutMillis;
         this.serializerAdapter = builder.serializerAdapter;
-        this.credentials = builder.credentials;
+        this.credentialsPolicyFactory = builder.credentialsPolicyFactory;
         this.logLevel = builder.logLevel;
         this.customRequestPolicyFactories = builder.customRequestPolicyFactories;
 
@@ -58,8 +58,8 @@ public final class RestClient {
         policyFactories.add(new UserAgentPolicy.Factory(userAgent));
         policyFactories.add(new RetryPolicy.Factory());
         policyFactories.add(new AddCookiesPolicy.Factory());
-        if (credentials != null) {
-            policyFactories.add(new CredentialsPolicy.Factory(credentials));
+        if (credentialsPolicyFactory != null) {
+            policyFactories.add(credentialsPolicyFactory);
         }
         policyFactories.addAll(customRequestPolicyFactories);
         policyFactories.add(new LoggingPolicy.Factory(logLevel));
@@ -111,10 +111,10 @@ public final class RestClient {
     }
 
     /**
-     * @return the credentials attached to this REST client
+     * @return the RequestPolicy.Factory used to add credentials to HTTP requests
      */
-    public ServiceClientCredentials credentials() {
-        return credentials;
+    public RequestPolicy.Factory credentialsPolicyFactory() {
+        return credentialsPolicyFactory;
     }
 
     /**
@@ -157,8 +157,8 @@ public final class RestClient {
         private Proxy proxy;
         /** The dynamic base URL with variables wrapped in "{" and "}". */
         private String baseUrl;
-        /** The credentials to authenticate. */
-        private ServiceClientCredentials credentials;
+        /** The RequestPolicy.Factory used to add credentials to requests. */
+        private RequestPolicy.Factory credentialsPolicyFactory;
 
         private List<RequestPolicy.Factory> customRequestPolicyFactories = new ArrayList<>();
 
@@ -179,7 +179,7 @@ public final class RestClient {
             this.connectionTimeoutMillis = restClient.connectionTimeoutMillis;
             this.readTimeoutMillis = restClient.readTimeoutMillis;
             this.serializerAdapter = restClient.serializerAdapter;
-            this.credentials = restClient.credentials;
+            this.credentialsPolicyFactory = restClient.credentialsPolicyFactory;
             this.customRequestPolicyFactories = new ArrayList<>(restClient.customRequestPolicyFactories);
             this.logLevel = restClient.logLevel;
         }
@@ -248,14 +248,11 @@ public final class RestClient {
         /**
          * Sets the RequestPolicy.Factory for adding credentials to HTTP requests.
          *
-         * @param credentialsPolicyFactory The factory which produces a RequestPolicy that adds credentials.
+         * @param credentialsPolicyFactory The RequestPolicy.Factory for adding credentials to HTTP requests.
          * @return the builder itself for chaining.
          */
         public Builder withCredentialsPolicy(RequestPolicy.Factory credentialsPolicyFactory) {
-            if (credentials == null) {
-                throw new NullPointerException("credentials == null");
-            }
-            this.credentials = credentials;
+            this.credentialsPolicyFactory = credentialsPolicyFactory;
             return this;
         }
 
