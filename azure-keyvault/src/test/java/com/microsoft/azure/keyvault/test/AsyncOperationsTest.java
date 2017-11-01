@@ -13,6 +13,7 @@ import java.util.Map;
 import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
+import com.microsoft.rest.ServiceCallback;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -52,7 +53,7 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     
     @Test
-    public void keyAsync() throws Exception {
+    public void keyAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         String keyname = "mykey";
@@ -124,7 +125,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
     
     @Test
-    public void secretAsync() throws Exception {
+    public void secretAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         String secretname = "mySecret";
@@ -164,7 +165,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
     
     @Test
-    public void certificateAsync() throws Exception {
+    public void certificateAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         String certificateName = "myCertificate";
@@ -202,7 +203,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
         certificateOperation = keyVaultClient.getCertificateOperationAsync(vault, certificateName, null).get(); 
         Assert.assertNotNull(certificateOperation);
 
-        certificateBundle = keyVaultClient.getCertificateAsync(vault, certificateName, null).get(); 
+        certificateBundle = keyVaultClient.getCertificateAsync(vault, certificateName, (ServiceCallback<CertificateBundle>) null).get();
         Assert.assertNotNull(certificateBundle);
         
         String cert = keyVaultClient.getPendingCertificateSigningRequestAsync(vault, certificateName, null).get();
@@ -232,7 +233,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     }
     
     @Test
-    public void issuerAsync() throws Exception {
+    public void issuerAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         String issuerName = "myIssuer";
@@ -256,7 +257,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
     
 
     @Test
-    public void certificateContactsAsync() throws Exception {
+    public void certificateContactsAsyncForAsyncOperationsTest() throws Exception {
 
         String vault = getVaultUri();
         

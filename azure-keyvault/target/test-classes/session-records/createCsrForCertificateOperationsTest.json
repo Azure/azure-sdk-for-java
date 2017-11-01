@@ -1,0 +1,135 @@
+{
+  "networkCallRecords" : [ {
+    "Method" : "POST",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava/create?api-version=2016-10-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 25 Oct 2017 20:50:31 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "0",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "www-authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
+      "retry-after" : "0",
+      "StatusCode" : "401",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "x-ms-keyvault-region" : "West US",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "4b4ee988-7d15-4564-b475-a5b41f6deb23",
+      "x-ms-keyvault-service-version" : "1.0.0.825",
+      "Body" : ""
+    }
+  }, {
+    "Method" : "POST",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava/create?api-version=2016-10-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 25 Oct 2017 20:50:32 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "1259",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "202",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "location" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava/pending?api-version=2016-10-01&request_id=dc400cd0c23049a38b0c778d08c826ca",
+      "x-ms-keyvault-region" : "West US",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "67a4c808-53c6-4bef-8dd2-fd5ba67b8603",
+      "x-ms-keyvault-service-version" : "1.0.0.825",
+      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava/pending\",\"issuer\":{\"name\":\"Unknown\"},\"csr\":\"MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUTWFudWFsRW5yb2xsbWVudEphdmEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDaG6/RP4O30UcZtQJNdn0OhOsThUH+VqOb+QlKHSDnDSZ2vqdh7PiTu75iqcbPj8qZ3KzHdhByp630ZFxAtkXRmUmwI8000kujS2EEGd3xspyzESSeyw2wQdApKVPuTkcGiaVzu+PkDsLBDjzwOg6LsDRWH9B7h+YiO0ASbfV0dB16ragjcjPfRJyoVSIO33rki9RFAY7ujETX3pgdcskX5VTbBls2rPRuE+qeB/JIobNuaGmiVdlPxwfHpQiuxiR5UsPSNDNdTDOZvnJ2ALVpTCBTgSEHXTS4h1MOTF8S0sWJpfhyWK9pBlF4UiaDXoEqmcdsjSYptJOKT6XqDVf/AgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAeBUSn+yB0dwvizG0Bv80XcsAQ3dHFi80mzCL3j5lCD0tOeEB8GZNx6KjokRRTUlNcRX62I7T3F4UCaMhS/e1/NUrRNc4eVq41i3haiuSSof4Xn5fNdhQG4jjeGfFoeZfwODygYiZ30bhbo3IgR2EfXz4vpmzr9NVUVzY8dSmD5esBYtzb+nCZoBOyYhQ7TkQPqEwuxVTWmU9JXoFjE83fxoGOtNg3OwRPnHNNy6rZ7b7Cfeb2VaqccdPIJ3euJJaDJ6dFVsQJ+4q58RI5HfDCZ6cgk9b/RKSSQdo0/0sVvFNyQWuwzJfZJgWVzp34n0FKu7qogVXkb21986F4G/EyA==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Please Perform Merge to complete the request.\",\"request_id\":\"dc400cd0c23049a38b0c778d08c826ca\"}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava/pending?api-version=2016-10-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 25 Oct 2017 20:50:32 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "924",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/pkcs10; charset=utf-8",
+      "x-ms-keyvault-region" : "West US",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "42aee5c0-040e-4c53-9b6b-9b0fb360682c",
+      "x-ms-keyvault-service-version" : "1.0.0.825",
+      "Body" : "MIICrzCCAZcCAQAwHzEdMBsGA1UEAxMUTWFudWFsRW5yb2xsbWVudEphdmEwggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQDaG6/RP4O30UcZtQJNdn0OhOsThUH+VqOb+QlKHSDnDSZ2vqdh7PiTu75iqcbPj8qZ3KzHdhByp630ZFxAtkXRmUmwI8000kujS2EEGd3xspyzESSeyw2wQdApKVPuTkcGiaVzu+PkDsLBDjzwOg6LsDRWH9B7h+YiO0ASbfV0dB16ragjcjPfRJyoVSIO33rki9RFAY7ujETX3pgdcskX5VTbBls2rPRuE+qeB/JIobNuaGmiVdlPxwfHpQiuxiR5UsPSNDNdTDOZvnJ2ALVpTCBTgSEHXTS4h1MOTF8S0sWJpfhyWK9pBlF4UiaDXoEqmcdsjSYptJOKT6XqDVf/AgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAeBUSn+yB0dwvizG0Bv80XcsAQ3dHFi80mzCL3j5lCD0tOeEB8GZNx6KjokRRTUlNcRX62I7T3F4UCaMhS/e1/NUrRNc4eVq41i3haiuSSof4Xn5fNdhQG4jjeGfFoeZfwODygYiZ30bhbo3IgR2EfXz4vpmzr9NVUVzY8dSmD5esBYtzb+nCZoBOyYhQ7TkQPqEwuxVTWmU9JXoFjE83fxoGOtNg3OwRPnHNNy6rZ7b7Cfeb2VaqccdPIJ3euJJaDJ6dFVsQJ+4q58RI5HfDCZ6cgk9b/RKSSQdo0/0sVvFNyQWuwzJfZJgWVzp34n0FKu7qogVXkb21986F4G/EyA=="
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava?api-version=2016-10-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 25 Oct 2017 20:50:33 GMT",
+      "server" : "Microsoft-IIS/8.5",
+      "content-length" : "1027",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "West US",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "f1ab527d-d415-4646-9771-fb51aadc20fc",
+      "x-ms-keyvault-service-version" : "1.0.0.825",
+      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava/f48c7aa4f6604f28acf7f5e1e6624a54\",\"attributes\":{\"enabled\":false,\"nbf\":1508964032,\"exp\":1540500632,\"created\":1508964632,\"updated\":1508964632,\"recoveryLevel\":\"Purgeable\"},\"policy\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pkcs12\"},\"x509_props\":{\"subject\":\"CN=ManualEnrollmentJava\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"EmailContacts\"}}],\"issuer\":{\"name\":\"Unknown\"},\"attributes\":{\"enabled\":true,\"created\":1508964632,\"updated\":1508964632}},\"pending\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava/pending\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createManualEnrollmentJava/?api-version=2016-10-01",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 25 Oct 2017 20:50:33 GMT",
+      "content-length" : "102",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "West US",
+      "cache-control" : "no-cache",
+      "x-ms-request-id" : "01a6a639-f328-4682-82a5-b8d6530891f1",
+      "x-ms-keyvault-service-version" : "1.0.0.825",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Certificate not found: createManualEnrollmentJava\"}}"
+    }
+  } ],
+  "variables" : [ ]
+}
