@@ -19,6 +19,7 @@ import java.io.InputStream;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.text.ParseException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -347,6 +348,12 @@ final class BlobListHandler extends DefaultHandler {
                     properties.setStandardBlobTier(StandardBlobTier.UNKNOWN);
                 }
             }
+        }
+        else if (Constants.ACCESS_TIER_INFERRED.equals(currentNode)) {
+            this.properties.setBlobTierInferred(Boolean.parseBoolean(value));
+        }
+        else if (Constants.ACCESS_TIER_CHANGE_TIME.equals(currentNode)) {
+            this.properties.setTierChangeTime(Utility.parseRFC1123DateFromStringInGMT(value));
         }
         else if (Constants.ARCHIVE_STATUS.equals(currentNode)) {
             this.properties.setRehydrationStatus(RehydrationStatus.parse(value));
