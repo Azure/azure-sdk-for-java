@@ -9,6 +9,7 @@ package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.credentials.BasicAuthenticationCredentials;
 import com.microsoft.rest.v2.credentials.TokenCredentials;
+import com.microsoft.rest.v2.policy.CredentialsPolicy;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.TypeFactory;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
@@ -34,7 +35,7 @@ public class RestClientTests {
         Assert.assertEquals("https://management.azure.com/", restClient.baseURL());
         Assert.assertEquals(LogLevel.NONE, restClient.logLevel());
         Assert.assertTrue(restClient.serializerAdapter() instanceof JacksonAdapter);
-        Assert.assertNull(restClient.credentials());
+        Assert.assertNull(restClient.credentialsPolicyFactory());
     }
 
     @Test
@@ -42,9 +43,9 @@ public class RestClientTests {
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
-            .withCredentials(new TokenCredentials("Bearer", "token"))
+            .withCredentialsPolicy(new CredentialsPolicy.Factory(new TokenCredentials("Bearer", "token")))
             .withLogLevel(LogLevel.BASIC)
-            .addCustomPolicy(new RequestPolicy.Factory() {
+            .addRequestPolicy(new RequestPolicy.Factory() {
                 @Override
                 public RequestPolicy create(final RequestPolicy next) {
                     return new RequestPolicy() {
@@ -63,9 +64,9 @@ public class RestClientTests {
         Assert.assertEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
-        Assert.assertEquals(restClient.credentials(), newClient.credentials());
+        Assert.assertEquals(restClient.credentialsPolicyFactory(), newClient.credentialsPolicyFactory());
         Assert.assertEquals(restClient.userAgent(), newClient.userAgent());
-        Assert.assertEquals(restClient.customPolicyFactories().size(), newClient.customPolicyFactories().size());
+        Assert.assertEquals(restClient.customRequestPolicyFactories().size(), newClient.customRequestPolicyFactories().size());
         Assert.assertEquals(TimeUnit.MINUTES.toMillis(100), newClient.connectionTimeoutMillis());
     }
 
@@ -74,9 +75,9 @@ public class RestClientTests {
         RestClient restClient = new RestClient.Builder()
             .withBaseUrl("http://localhost")
             .withSerializerAdapter(new JacksonAdapter())
-            .withCredentials(new TokenCredentials("Bearer", "token"))
+            .withCredentialsPolicy(new CredentialsPolicy.Factory(new TokenCredentials("Bearer", "token")))
             .withLogLevel(LogLevel.BASIC.withPrettyJson(true))
-            .addCustomPolicy(new RequestPolicy.Factory() {
+            .addRequestPolicy(new RequestPolicy.Factory() {
                 @Override
                 public RequestPolicy create(final RequestPolicy next) {
                     return new RequestPolicy() {
@@ -92,7 +93,7 @@ public class RestClientTests {
             .build();
         RestClient newClient = restClient.newBuilder()
             .withBaseUrl("https://contoso.com")
-            .withCredentials(new BasicAuthenticationCredentials("user", "pass"))
+            .withCredentialsPolicy(new CredentialsPolicy.Factory(new BasicAuthenticationCredentials("user", "pass")))
             .withLogLevel(LogLevel.BODY_AND_HEADERS)
             .withUserAgent("anotheruser")
             .withConnectionTimeout(200, TimeUnit.SECONDS)
@@ -141,7 +142,7 @@ public class RestClientTests {
         Assert.assertNotEquals(restClient.logLevel(), newClient.logLevel());
         Assert.assertNotEquals(restClient.logLevel().isPrettyJson(), newClient.logLevel().isPrettyJson());
         Assert.assertNotEquals(restClient.serializerAdapter(), newClient.serializerAdapter());
-        Assert.assertNotEquals(restClient.credentials(), newClient.credentials());
+        Assert.assertNotEquals(restClient.credentialsPolicyFactory(), newClient.credentialsPolicyFactory());
         Assert.assertEquals("user", restClient.userAgent());
         Assert.assertEquals("anotheruser", newClient.userAgent());
         Assert.assertNotEquals(restClient.connectionTimeoutMillis(), newClient.connectionTimeoutMillis());

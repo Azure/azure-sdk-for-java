@@ -6,11 +6,9 @@
 
 package com.microsoft.rest.v2;
 
-import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.NettyClient;
 import com.microsoft.rest.v2.policy.AddCookiesPolicy;
-import com.microsoft.rest.v2.policy.CredentialsPolicy;
 import com.microsoft.rest.v2.policy.LoggingPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RetryPolicy;
@@ -36,10 +34,10 @@ public final class RestClient {
     private final long readTimeoutMillis;
     private final long connectionTimeoutMillis;
     private final SerializerAdapter<?> serializerAdapter;
-    private final ServiceClientCredentials credentials;
+    private final RequestPolicy.Factory credentialsPolicyFactory;
     private final LogLevel logLevel;
 
-    private final List<RequestPolicy.Factory> customPolicyFactories;
+    private final List<RequestPolicy.Factory> customRequestPolicyFactories;
 
     private RestClient(RestClient.Builder builder) {
         this.proxy = builder.proxy;
@@ -48,9 +46,9 @@ public final class RestClient {
         this.readTimeoutMillis = builder.readTimeoutMillis;
         this.connectionTimeoutMillis = builder.connectionTimeoutMillis;
         this.serializerAdapter = builder.serializerAdapter;
-        this.credentials = builder.credentials;
+        this.credentialsPolicyFactory = builder.credentialsPolicyFactory;
         this.logLevel = builder.logLevel;
-        this.customPolicyFactories = builder.customPolicyFactories;
+        this.customRequestPolicyFactories = builder.customRequestPolicyFactories;
 
         this.httpClientFactory = builder.httpClientFactory;
 
@@ -58,10 +56,10 @@ public final class RestClient {
         policyFactories.add(new UserAgentPolicy.Factory(userAgent));
         policyFactories.add(new RetryPolicy.Factory());
         policyFactories.add(new AddCookiesPolicy.Factory());
-        if (credentials != null) {
-            policyFactories.add(new CredentialsPolicy.Factory(credentials));
+        if (credentialsPolicyFactory != null) {
+            policyFactories.add(credentialsPolicyFactory);
         }
-        policyFactories.addAll(customPolicyFactories);
+        policyFactories.addAll(customRequestPolicyFactories);
         policyFactories.add(new LoggingPolicy.Factory(logLevel));
 
         HttpClient.Configuration configuration = new HttpClient.Configuration(policyFactories, proxy);
@@ -71,8 +69,8 @@ public final class RestClient {
     /**
      * @return the user-defined request policy factories.
      */
-    public List<RequestPolicy.Factory> customPolicyFactories() {
-        return customPolicyFactories;
+    public List<RequestPolicy.Factory> customRequestPolicyFactories() {
+        return customRequestPolicyFactories;
     }
 
     /**
@@ -111,10 +109,10 @@ public final class RestClient {
     }
 
     /**
-     * @return the credentials attached to this REST client
+     * @return the RequestPolicy.Factory used to add credentials to HTTP requests
      */
-    public ServiceClientCredentials credentials() {
-        return credentials;
+    public RequestPolicy.Factory credentialsPolicyFactory() {
+        return credentialsPolicyFactory;
     }
 
     /**
@@ -157,10 +155,10 @@ public final class RestClient {
         private Proxy proxy;
         /** The dynamic base URL with variables wrapped in "{" and "}". */
         private String baseUrl;
-        /** The credentials to authenticate. */
-        private ServiceClientCredentials credentials;
+        /** The RequestPolicy.Factory used to add credentials to requests. */
+        private RequestPolicy.Factory credentialsPolicyFactory;
 
-        private List<RequestPolicy.Factory> customPolicyFactories = new ArrayList<>();
+        private List<RequestPolicy.Factory> customRequestPolicyFactories = new ArrayList<>();
 
         /** The value for 'User-Agent' header. */
         private String userAgent;
@@ -179,8 +177,8 @@ public final class RestClient {
             this.connectionTimeoutMillis = restClient.connectionTimeoutMillis;
             this.readTimeoutMillis = restClient.readTimeoutMillis;
             this.serializerAdapter = restClient.serializerAdapter;
-            this.credentials = restClient.credentials;
-            this.customPolicyFactories = new ArrayList<>(restClient.customPolicyFactories);
+            this.credentialsPolicyFactory = restClient.credentialsPolicyFactory;
+            this.customRequestPolicyFactories = new ArrayList<>(restClient.customRequestPolicyFactories);
             this.logLevel = restClient.logLevel;
         }
 
@@ -246,16 +244,13 @@ public final class RestClient {
         }
 
         /**
-         * Sets the credentials.
+         * Sets the RequestPolicy.Factory for adding credentials to HTTP requests.
          *
-         * @param credentials the credentials object.
+         * @param credentialsPolicyFactory The RequestPolicy.Factory for adding credentials to HTTP requests.
          * @return the builder itself for chaining.
          */
-        public Builder withCredentials(ServiceClientCredentials credentials) {
-            if (credentials == null) {
-                throw new NullPointerException("credentials == null");
-            }
-            this.credentials = credentials;
+        public Builder withCredentialsPolicy(RequestPolicy.Factory credentialsPolicyFactory) {
+            this.credentialsPolicyFactory = credentialsPolicyFactory;
             return this;
         }
 
@@ -309,25 +304,25 @@ public final class RestClient {
         }
 
         /**
-         * Set the maximum idle connections for the HTTP client. Default is 5.
+         * Adds a custom RequestPolicy.Factory to the request pipeline in addition to the standard policies.
          *
-         * @param maxIdleConnections the maximum idle connections
+         * @param factory The Factory producing a custom user-defined RequestPolicy.
          * @return the builder itself for chaining
          */
-        public Builder withMaxIdleConnections(int maxIdleConnections) {
-            // FIXME -- maybe by deleting this method?
-            // Seems like a configuration on a concrete HTTP client
-            throw new RuntimeException();
-//            httpClientBuilder.connectionPool(new ConnectionPool(maxIdleConnections, 5, TimeUnit.MINUTES));
+        public Builder addRequestPolicy(RequestPolicy.Factory factory) {
+            customRequestPolicyFactories.add(factory);
+            return this;
         }
 
         /**
-         * Adds a custom RequestPolicyFactory to the request pipeline.
-         * @param factory The Factory producing a custom user-defined RequestPolicy.
-         * @return The builder.
+         * Sets the list of custom RequestPolicy.Factory objects.
+         * Does not affect creation of standard policies e.g. AddCookiesPolicy, LoggingPolicy, ...
+         *
+         * @param factories The list of factories producing custom user-defined RequestPolicies.
+         * @return the builder itself for chaining
          */
-        public Builder addCustomPolicy(RequestPolicy.Factory factory) {
-            customPolicyFactories.add(factory);
+        public Builder setRequestPolicies(List<RequestPolicy.Factory> factories) {
+            this.customRequestPolicyFactories = factories;
             return this;
         }
 

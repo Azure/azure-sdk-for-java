@@ -11,6 +11,7 @@ import com.microsoft.azure.v2.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.v2.RestClient;
 import com.microsoft.rest.v2.ServiceClient;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
+import com.microsoft.rest.v2.policy.CredentialsPolicy;
 
 import java.net.NetworkInterface;
 import java.util.Enumeration;
@@ -28,7 +29,7 @@ public abstract class AzureServiceClient extends ServiceClient {
     protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials) {
         this(new RestClient.Builder()
                 .withBaseUrl(baseUrl)
-                .withCredentials(credentials)
+                .withCredentialsPolicy(new CredentialsPolicy.Factory(credentials))
                 .withSerializerAdapter(new AzureJacksonAdapter())
                 .build());
     }
