@@ -27,8 +27,8 @@ public class CompletedPollStrategy extends PollStrategy {
      * @param restProxy The RestProxy that created this PollStrategy.
      * @param originalHttpResponse The HTTP response to the original HTTP request.
      */
-    public CompletedPollStrategy(RestProxy restProxy, HttpResponse originalHttpResponse) {
-        super(restProxy, 0);
+    public CompletedPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, HttpResponse originalHttpResponse) {
+        super(restProxy, methodParser, 0);
 
         this.bufferedOriginalHttpResponse = originalHttpResponse.buffer();
         setStatus(OperationState.SUCCEEDED);

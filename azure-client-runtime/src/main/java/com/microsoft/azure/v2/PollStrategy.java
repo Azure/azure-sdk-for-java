@@ -27,17 +27,35 @@ import java.util.concurrent.TimeUnit;
  */
 abstract class PollStrategy {
     private final RestProxy restProxy;
+    private final SwaggerMethodParser methodParser;
 
     private long delayInMilliseconds;
     private String status;
 
-    PollStrategy(RestProxy restProxy, long delayInMilliseconds) {
+    PollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, long delayInMilliseconds) {
         this.restProxy = restProxy;
+        this.methodParser = methodParser;
         this.delayInMilliseconds = delayInMilliseconds;
     }
 
-    protected Object deserialize(String value, Type returnType) throws IOException {
-        return restProxy.deserialize(value, returnType, null, Encoding.JSON);
+    protected <T> T deserialize(String value, Type returnType) throws IOException {
+        return (T)restProxy.deserialize(value, returnType, null, Encoding.JSON);
+    }
+
+    protected Single<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse) {
+        return ensureExpectedStatus(httpResponse, null);
+    }
+
+    protected Single<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse, int[] additionalAllowedStatusCodes) {
+        return restProxy.ensureExpectedStatus(httpResponse, methodParser, additionalAllowedStatusCodes);
+    }
+
+    protected String fullyQualifiedMethodName() {
+        return methodParser.fullyQualifiedMethodName();
+    }
+
+    protected boolean expectsResourceResponse() {
+        return methodParser.expectsResponseBody();
     }
 
     /**

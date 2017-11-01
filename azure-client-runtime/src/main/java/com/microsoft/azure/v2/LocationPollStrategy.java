@@ -7,9 +7,11 @@
 package com.microsoft.azure.v2;
 
 import com.microsoft.rest.v2.RestProxy;
+import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Single;
+import rx.functions.Func1;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -19,7 +21,6 @@ import java.net.URL;
  * operation.
  */
 public final class LocationPollStrategy extends PollStrategy {
-    private final String fullyQualifiedMethodName;
     private String locationUrl;
     private boolean done;
 
@@ -29,34 +30,39 @@ public final class LocationPollStrategy extends PollStrategy {
      */
     public static final String HEADER_NAME = "Location";
 
-    private LocationPollStrategy(RestProxy restProxy, String fullyQualifiedMethodName, String locationUrl, long delayInMilliseconds) {
-        super(restProxy, delayInMilliseconds);
+    private LocationPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, String locationUrl, long delayInMilliseconds) {
+        super(restProxy, methodParser, delayInMilliseconds);
 
-        this.fullyQualifiedMethodName = fullyQualifiedMethodName;
         this.locationUrl = locationUrl;
     }
 
     @Override
     public HttpRequest createPollRequest() {
-        return new HttpRequest(fullyQualifiedMethodName, "GET", locationUrl);
+        return new HttpRequest(fullyQualifiedMethodName(), "GET", locationUrl);
     }
 
     @Override
     public Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
-        final int httpStatusCode = httpPollResponse.statusCode();
+        return ensureExpectedStatus(httpPollResponse, new int[] { 202 })
+                .map(new Func1<HttpResponse, HttpResponse>() {
+                    @Override
+                    public HttpResponse call(HttpResponse response) {
+                        final int httpStatusCode = response.statusCode();
 
-        updateDelayInMillisecondsFrom(httpPollResponse);
+                        updateDelayInMillisecondsFrom(response);
 
-        if (httpStatusCode == 202) {
-            String newLocationUrl = httpPollResponse.headerValue(HEADER_NAME);
-            if (newLocationUrl != null) {
-                locationUrl = newLocationUrl;
-            }
-        }
-        else {
-            done = true;
-        }
-        return Single.just(httpPollResponse);
+                        if (httpStatusCode == 202) {
+                            String newLocationUrl = response.headerValue(HEADER_NAME);
+                            if (newLocationUrl != null) {
+                                locationUrl = newLocationUrl;
+                            }
+                        }
+                        else {
+                            done = true;
+                        }
+                        return response;
+                    }
+                });
     }
 
     @Override
@@ -74,7 +80,7 @@ public final class LocationPollStrategy extends PollStrategy {
      * @param delayInMilliseconds The delay (in milliseconds) that the resulting pollStrategy will
      *                            use when polling.
      */
-    static PollStrategy tryToCreate(RestProxy restProxy, HttpRequest originalHttpRequest, HttpResponse httpResponse, long delayInMilliseconds) {
+    static PollStrategy tryToCreate(RestProxy restProxy, SwaggerMethodParser methodParser, HttpRequest originalHttpRequest, HttpResponse httpResponse, long delayInMilliseconds) {
         final String locationUrl = getHeader(httpResponse);
 
         String pollUrl = null;
@@ -96,7 +102,7 @@ public final class LocationPollStrategy extends PollStrategy {
 
         return pollUrl == null
                 ? null
-                : new LocationPollStrategy(restProxy, originalHttpRequest.callerMethod(), pollUrl, delayInMilliseconds);
+                : new LocationPollStrategy(restProxy, methodParser, pollUrl, delayInMilliseconds);
     }
 
     static String getHeader(HttpResponse httpResponse) {

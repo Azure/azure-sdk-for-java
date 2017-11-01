@@ -103,8 +103,6 @@ public final class AzureProxy extends RestProxy {
 
     @Override
     protected Object handleAsyncHttpResponse(final HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, Type returnType) {
-        final SerializerAdapter<?> serializer = serializer();
-
         Object result;
 
         final TypeToken returnTypeToken = TypeToken.of(returnType);
@@ -117,7 +115,7 @@ public final class AzureProxy extends RestProxy {
             }
             else {
                 final Type operationStatusResultType = ((ParameterizedType) operationStatusType).getActualTypeArguments()[0];
-                result = createPollStrategy(httpRequest, asyncHttpResponse, methodParser, serializer)
+                result = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
                             .toObservable()
                             .flatMap(new Func1<PollStrategy, Observable<OperationStatus<Object>>>() {
                                 @Override
@@ -128,7 +126,7 @@ public final class AzureProxy extends RestProxy {
             }
         }
         else {
-            final Single<HttpResponse> lastAsyncHttpResponse = createPollStrategy(httpRequest, asyncHttpResponse, methodParser, serializer)
+            final Single<HttpResponse> lastAsyncHttpResponse = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
                     .flatMap(new Func1<PollStrategy, Single<HttpResponse>>() {
                         @Override
                         public Single<HttpResponse> call(PollStrategy pollStrategy) {
@@ -141,7 +139,7 @@ public final class AzureProxy extends RestProxy {
         return result;
     }
 
-    private Single<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Single<HttpResponse> asyncOriginalHttpResponse, final SwaggerMethodParser methodParser, final SerializerAdapter<?> serializer) {
+    private Single<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Single<HttpResponse> asyncOriginalHttpResponse, final SwaggerMethodParser methodParser) {
         return asyncOriginalHttpResponse
                 .flatMap(new Func1<HttpResponse, Single<PollStrategy>>() {
                     @Override
@@ -156,13 +154,12 @@ public final class AzureProxy extends RestProxy {
 
                                         final Long parsedDelayInMilliseconds = PollStrategy.delayInMillisecondsFrom(originalHttpResponse);
                                         final long delayInMilliseconds = parsedDelayInMilliseconds != null ? parsedDelayInMilliseconds : AzureProxy.defaultDelayInMilliseconds();
-                                        final boolean expectsResourceResponse = methodParser.expectsResponseBody();
 
                                         final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
 
                                         PollStrategy pollStrategy = null;
                                         if (httpStatusCode == 200) {
-                                            pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                            pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                             if (pollStrategy != null) {
                                                 result = Single.just(pollStrategy);
                                             }
@@ -172,22 +169,22 @@ public final class AzureProxy extends RestProxy {
                                         }
                                         else if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
                                             if (httpStatusCode == 201) {
-                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                                 if (pollStrategy == null) {
                                                     result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
                                                 }
                                             } else if (httpStatusCode == 202) {
-                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                                 if (pollStrategy == null) {
-                                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                                 }
                                             }
                                         }
                                         else {
                                             if (httpStatusCode == 202) {
-                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, expectsResourceResponse, serializer, delayInMilliseconds);
+                                                pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                                 if (pollStrategy == null) {
-                                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
+                                                    pollStrategy = LocationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                                     if (pollStrategy == null) {
                                                         throw new CloudException("Response does not contain an Azure-AsyncOperation or Location header.", originalHttpResponse);
                                                     }
@@ -196,19 +193,11 @@ public final class AzureProxy extends RestProxy {
                                         }
 
                                         if (pollStrategy == null && result == null) {
-                                            pollStrategy = new CompletedPollStrategy(AzureProxy.this, originalHttpResponse);
+                                            pollStrategy = new CompletedPollStrategy(AzureProxy.this, methodParser, originalHttpResponse);
                                         }
 
                                         if (pollStrategy != null) {
                                             result = Single.just(pollStrategy);
-                                        }
-
-                                        if (result == null) {
-                                            String errorMessage = "Could not determine a long running operation polling strategy "
-                                                    + "(Status code: " + httpStatusCode + ", "
-                                                    + "Azure-AsyncOperation Header: " + AzureAsyncOperationPollStrategy.getHeader(originalHttpResponse) + ", "
-                                                    + "Location Header: " + LocationPollStrategy.getHeader(originalHttpResponse);
-                                            throw new CloudException(errorMessage, originalHttpResponse);
                                         }
 
                                         return result;
@@ -218,7 +207,7 @@ public final class AzureProxy extends RestProxy {
                 });
     }
 
-    private Single<PollStrategy> createProvisioningStateOrCompletedPollStrategy(final HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, final long delayInMilliseconds) {
+    private Single<PollStrategy> createProvisioningStateOrCompletedPollStrategy(final HttpRequest httpRequest, HttpResponse httpResponse, final SwaggerMethodParser methodParser, final long delayInMilliseconds) {
         Single<PollStrategy> result;
 
         final String httpRequestMethod = httpRequest.httpMethod();
@@ -226,7 +215,7 @@ public final class AzureProxy extends RestProxy {
                 || httpRequestMethod.equalsIgnoreCase("GET")
                 || httpRequestMethod.equalsIgnoreCase("HEAD")
                 || !methodParser.expectsResponseBody()) {
-            result = Single.<PollStrategy>just(new CompletedPollStrategy(AzureProxy.this, httpResponse));
+            result = Single.<PollStrategy>just(new CompletedPollStrategy(AzureProxy.this, methodParser, httpResponse));
         } else {
             final HttpResponse bufferedOriginalHttpResponse = httpResponse.buffer();
             result = bufferedOriginalHttpResponse.bodyAsStringAsync()
@@ -242,9 +231,9 @@ public final class AzureProxy extends RestProxy {
                                 final SerializerAdapter<?> serializer = serializer();
                                 final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class, SerializerAdapter.Encoding.JSON);
                                 if (resource != null && resource.properties() != null && !OperationState.isCompleted(resource.properties().provisioningState())) {
-                                    result = new ProvisioningStatePollStrategy(AzureProxy.this, httpRequest, resource.properties().provisioningState(), delayInMilliseconds);
+                                    result = new ProvisioningStatePollStrategy(AzureProxy.this, methodParser, httpRequest, resource.properties().provisioningState(), delayInMilliseconds);
                                 } else {
-                                    result = new CompletedPollStrategy(AzureProxy.this, bufferedOriginalHttpResponse);
+                                    result = new CompletedPollStrategy(AzureProxy.this, methodParser, bufferedOriginalHttpResponse);
                                 }
                             } catch (IOException e) {
                                 throw Exceptions.propagate(e);
