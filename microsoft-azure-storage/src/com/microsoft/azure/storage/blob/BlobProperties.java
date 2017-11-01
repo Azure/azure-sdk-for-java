@@ -133,6 +133,11 @@ public final class BlobProperties {
     private Boolean isBlobTierInferredTier;
 
     /**
+     * Represents the last time the tier was changed.
+     */
+    private Date tierChangeTime;
+
+    /**
      * Represents the rehydration status if the blob is being rehydrated.
      */
     private RehydrationStatus rehydrationStatus;
@@ -174,6 +179,7 @@ public final class BlobProperties {
         this.serverEncrypted = other.serverEncrypted;
         this.standardBlobTier = other.standardBlobTier;
         this.rehydrationStatus = other.rehydrationStatus;
+        this.tierChangeTime = other.tierChangeTime;
     }
 
     /**
@@ -296,11 +302,18 @@ public final class BlobProperties {
     }
 
     /**
-     * Gets a value indicating if the tier of the premium page blob has been inferred.
+     * Gets a value indicating if the tier of the blob has been inferred.
      *
      * @return A {@Link java.lang.Boolean} object which represents if the blob tier was inferred.
      */
     public Boolean isBlobTierInferred() { return this.isBlobTierInferredTier; }
+
+    /**
+     * Gets a value indicating the last time the tier was changed on the blob.
+     *
+     * @return A {@link java.util.Date} object which represents the last time the tier was changed.
+     */
+    public Date getTierChangeTime() { return this.tierChangeTime; }
 
     /**
      * Gets the lease status for the blob.
@@ -594,6 +607,15 @@ public final class BlobProperties {
      */
     protected void setBlobTierInferred(Boolean isBlobTierInferredTier) {
         this.isBlobTierInferredTier = isBlobTierInferredTier;
+    }
+
+    /**
+     * Sets the last time the tier was modified on the blob.
+     * @param tierChangeTime
+     *      A {@link java.util.Date} which specifies the last time the tier was modified.
+     */
+    protected void setTierChangeTime(Date tierChangeTime) {
+        this.tierChangeTime = tierChangeTime;
     }
 
     /**

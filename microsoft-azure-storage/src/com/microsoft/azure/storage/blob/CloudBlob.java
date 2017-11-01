@@ -2626,7 +2626,9 @@ public abstract class CloudBlob implements ListBlobItem {
 
                 blob.updateEtagAndLastModifiedFromResponse(this.getConnection());
                 this.getResult().setRequestServiceEncrypted(BaseResponse.isServerRequestEncrypted(this.getConnection()));
+
                 blob.getProperties().setBlobTierInferred(false);
+
                 if (blob.getProperties().getBlobType() == BlobType.BLOCK_BLOB) {
                     // For standard accounts when rehydrating a blob from archive, the status code will be 202 instead of 200.
                     StandardBlobTier standardBlobTier = StandardBlobTier.parse(blobTierString);
