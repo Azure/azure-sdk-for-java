@@ -34,7 +34,6 @@ import rx.subjects.ReplaySubject;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
-import java.net.SocketAddress;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.concurrent.TimeUnit;
@@ -113,8 +112,8 @@ public final class NettyClient extends HttpClient {
                             : "http";
 
                     String urlString = scheme + "://"
-                            + ((InetSocketAddress)proxy.address()).getHostString() +
-                            ":" + address.getPort();
+                            + ((InetSocketAddress) proxy.address()).getHostString()
+                            + ":" + address.getPort();
                     uri = new URI(urlString);
                 } else {
                     throw new IllegalArgumentException("SocketAddress on java.net.Proxy must be an InetSocketAddress");
