@@ -9,7 +9,7 @@ package com.microsoft.azure.v2.credentials.http;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.util.ArrayList;
 import java.util.List;

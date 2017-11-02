@@ -9,9 +9,9 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
-import rx.exceptions.Exceptions;
-import rx.functions.Func1;
+import io.reactivex.Single;
+import io.reactivex.exceptions.Exceptions;
+import io.reactivex.functions.Function;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -53,9 +53,9 @@ public final class AddCookiesPolicy implements RequestPolicy {
                 }
             }
 
-            return next.sendAsync(request).map(new Func1<HttpResponse, HttpResponse>() {
+            return next.sendAsync(request).map(new Function<HttpResponse, HttpResponse>() {
                 @Override
-                public HttpResponse call(HttpResponse httpResponse) {
+                public HttpResponse apply(HttpResponse httpResponse) {
                     Map<String, List<String>> responseHeaders = new HashMap<>();
                     for (HttpHeader header : httpResponse.headers()) {
                         responseHeaders.put(header.name(), Collections.singletonList(header.value()));

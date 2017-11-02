@@ -18,7 +18,7 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.junit.Assert;
 import org.junit.Test;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.io.IOException;
 import java.lang.reflect.Type;

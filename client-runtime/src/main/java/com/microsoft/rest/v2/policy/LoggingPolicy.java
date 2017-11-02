@@ -14,9 +14,9 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import io.netty.handler.codec.http.HttpResponseStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import rx.Single;
-import rx.functions.Action1;
-import rx.functions.Func1;
+import io.reactivex.Single;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 
 import java.util.concurrent.TimeUnit;
 
@@ -95,15 +95,15 @@ public final class LoggingPolicy implements RequestPolicy {
         }
 
         final long startNs = System.nanoTime();
-        return next.sendAsync(request).flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
+        return next.sendAsync(request).flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
             @Override
-            public Single<HttpResponse> call(HttpResponse httpResponse) {
+            public Single<HttpResponse> apply(HttpResponse httpResponse) {
                 long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
                 return logResponse(logger, httpResponse, request.url(), tookMs);
             }
-        }).doOnError(new Action1<Throwable>() {
+        }).doOnError(new Consumer<Throwable>() {
             @Override
-            public void call(Throwable throwable) {
+            public void accept(Throwable throwable) {
                 log(logger, "<-- HTTP FAILED: " + throwable);
             }
         });
@@ -135,9 +135,9 @@ public final class LoggingPolicy implements RequestPolicy {
                     || "application/json".equals(contentTypeHeader))
                     || "application/xml".equals(contentTypeHeader)) {
                 final HttpResponse bufferedResponse = response.buffer();
-                return bufferedResponse.bodyAsStringAsync().map(new Func1<String, HttpResponse>() {
+                return bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
                     @Override
-                    public HttpResponse call(String s) {
+                    public HttpResponse apply(String s) {
                         log(logger, s);
                         log(logger, "<-- END HTTP");
                         return bufferedResponse;

@@ -12,13 +12,14 @@ import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.protocol.SerializerAdapter.Encoding;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func0;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
+import io.reactivex.functions.Predicate;
 
 import java.io.IOException;
 import java.lang.reflect.Type;
+import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -138,20 +139,20 @@ abstract class PollStrategy {
     abstract boolean isDone();
 
     Observable<HttpResponse> sendPollRequestWithDelay() {
-        return Observable.defer(new Func0<Observable<HttpResponse>>() {
+        return Observable.defer(new Callable<Observable<HttpResponse>>() {
             @Override
             public Observable<HttpResponse> call() {
                 return delayAsync()
-                        .flatMap(new Func1<Void, Single<HttpResponse>>() {
+                        .flatMap(new Function<Void, Single<HttpResponse>>() {
                             @Override
-                            public Single<HttpResponse> call(Void ignored) {
+                            public Single<HttpResponse> apply(Void ignored) {
                                 final HttpRequest pollRequest = createPollRequest();
                                 return restProxy.sendHttpRequestAsync(pollRequest);
                             }
                         })
-                        .flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
+                        .flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
                             @Override
-                            public Single<HttpResponse> call(HttpResponse response) {
+                            public Single<HttpResponse> apply(HttpResponse response) {
                                 return updateFromAsync(response);
                             }
                         })
@@ -178,16 +179,16 @@ abstract class PollStrategy {
 
     Observable<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
         return sendPollRequestWithDelay()
-                    .flatMap(new Func1<HttpResponse, Observable<OperationStatus<Object>>>() {
+                    .flatMap(new Function<HttpResponse, Observable<OperationStatus<Object>>>() {
                         @Override
-                        public Observable<OperationStatus<Object>> call(HttpResponse httpResponse) {
+                        public Observable<OperationStatus<Object>> apply(HttpResponse httpResponse) {
                             return createOperationStatusObservable(originalHttpRequest, httpResponse, methodParser, operationStatusResultType);
                         }
                     })
                     .repeat()
-                    .takeUntil(new Func1<OperationStatus<Object>, Boolean>() {
+                    .takeUntil(new Predicate<OperationStatus<Object>>() {
                         @Override
-                        public Boolean call(OperationStatus<Object> operationStatus) {
+                        public boolean test(OperationStatus<Object> operationStatus) {
                             return isDone();
                         }
                     });
@@ -196,13 +197,12 @@ abstract class PollStrategy {
     Single<HttpResponse> pollUntilDone() {
         return sendPollRequestWithDelay()
                 .repeat()
-                .takeUntil(new Func1<HttpResponse, Boolean>() {
+                .takeUntil(new Predicate<HttpResponse>() {
                     @Override
-                    public Boolean call(HttpResponse ignored) {
+                    public boolean test(HttpResponse ignored) {
                         return isDone();
                     }
                 })
-                .last()
-                .toSingle();
+                .lastOrError();
     }
 }

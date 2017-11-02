@@ -7,7 +7,7 @@
 package com.microsoft.rest.v2.http;
 
 import com.microsoft.rest.v2.policy.RequestPolicy;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.net.Proxy;
 import java.util.ArrayList;

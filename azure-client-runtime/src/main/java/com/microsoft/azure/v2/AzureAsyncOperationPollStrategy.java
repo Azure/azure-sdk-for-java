@@ -10,8 +10,8 @@ import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
-import rx.functions.Func1;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 import java.io.IOException;
 
@@ -67,18 +67,18 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     @Override
     public Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
         return ensureExpectedStatus(httpPollResponse)
-                .flatMap(new Func1<HttpResponse, Single<HttpResponse>>() {
+                .flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
                     @Override
-                    public Single<HttpResponse> call(HttpResponse response) {
+                    public Single<HttpResponse> apply(HttpResponse response) {
                         updateDelayInMillisecondsFrom(response);
 
                         Single<HttpResponse> result;
                         if (!pollingCompleted) {
                             final HttpResponse bufferedHttpPollResponse = response.buffer();
                             result = bufferedHttpPollResponse.bodyAsStringAsync()
-                                    .map(new Func1<String, HttpResponse>() {
+                                    .map(new Function<String, HttpResponse>() {
                                         @Override
-                                        public HttpResponse call(String bodyString) {
+                                        public HttpResponse apply(String bodyString) {
                                             AsyncOperationResource operationResource = null;
 
                                             try {

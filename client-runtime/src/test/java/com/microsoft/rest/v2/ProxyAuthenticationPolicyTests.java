@@ -7,7 +7,7 @@ import com.microsoft.rest.v2.http.MockHttpClient;
 import com.microsoft.rest.v2.policy.ProxyAuthenticationPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.junit.Test;
-import rx.Single;
+import io.reactivex.Single;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
@@ -39,7 +39,7 @@ public class ProxyAuthenticationPolicyTests {
                 auditorFactory);
 
         client.sendRequestAsync(new HttpRequest("test", "GET", "localhost"))
-                .toBlocking().value();
+                .blockingGet();
 
         if (!auditorVisited) {
             fail();

@@ -24,9 +24,9 @@ import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import org.junit.Assert;
 import org.junit.Test;
-import rx.Completable;
-import rx.Observable;
-import rx.Single;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -75,7 +75,7 @@ public abstract class RestProxyTests {
     public void AsyncRequestWithByteArrayReturnType() {
         final byte[] result = createService(Service1.class)
                 .getByteArrayAsync()
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(result);
         assertEquals(100, result.length);
     }
@@ -84,7 +84,7 @@ public abstract class RestProxyTests {
     public void getByteArrayAsyncWithNoExpectedResponses() {
         final byte[] result = createService(Service1.class)
                 .getByteArrayAsyncWithNoExpectedResponses()
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(result);
         assertEquals(result.length, 100);
     }
@@ -112,7 +112,7 @@ public abstract class RestProxyTests {
     public void AsyncRequestWithByteArrayReturnTypeAndParameterizedHostAndPath() {
         final byte[] result = createService(Service2.class)
                 .getByteArrayAsync("httpbin", 50)
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(result);
         assertEquals(result.length, 50);
     }
@@ -145,7 +145,7 @@ public abstract class RestProxyTests {
     public void AsyncGetRequestWithNoReturn() {
         createService(Service3.class)
                 .getNothingAsync()
-                .await();
+                .blockingAwait();
     }
 
     @Host("http://httpbin.org")
@@ -172,7 +172,7 @@ public abstract class RestProxyTests {
     public void AsyncGetRequestWithInputStreamReturn() throws IOException {
         final InputStream byteStream = createService(Service4.class)
                 .getByteStreamAsync()
-                .toBlocking().value();
+                .blockingGet();
         final byte[] buffer = new byte[10];
         assertEquals(2, byteStream.read(buffer));
         assertEquals(-1, byteStream.read(buffer));
@@ -269,7 +269,7 @@ public abstract class RestProxyTests {
     public void AsyncGetRequestWithAnything() {
         final HttpBinJSON json = createService(Service5.class)
                 .getAnythingAsync()
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
     }
@@ -317,7 +317,7 @@ public abstract class RestProxyTests {
     public void AsyncGetRequestWithQueryParametersAndAnything() {
         final HttpBinJSON json = createService(Service6.class)
                 .getAnythingAsync("A", 15)
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything?a=A&b=15", json.url);
     }
@@ -359,7 +359,7 @@ public abstract class RestProxyTests {
     public void AsyncGetRequestWithHeaderParametersAndAnything() {
         final HttpBinJSON json = createService(Service7.class)
                 .getAnythingAsync("A", 15)
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
@@ -406,7 +406,7 @@ public abstract class RestProxyTests {
     public void AsyncPostRequestWithStringBody() {
         final HttpBinJSON json = createService(Service8.class)
                 .postAsync("I'm a post body!")
-                .toBlocking().value();
+                .blockingGet();
         assertEquals(String.class, json.data.getClass());
         assertEquals("I'm a post body!", (String)json.data);
     }
@@ -457,7 +457,7 @@ public abstract class RestProxyTests {
     public void AsyncPutRequestWithIntBody() {
         final HttpBinJSON json = createService(Service9.class)
                 .putAsync(42)
-                .toBlocking().value();
+                .blockingGet();
         assertEquals(String.class, json.data.getClass());
         assertEquals("42", (String)json.data);
     }
@@ -482,8 +482,7 @@ public abstract class RestProxyTests {
         try {
             createService(Service9.class)
                     .putWithUnexpectedResponseAsync("I'm the body!")
-                    .toBlocking()
-                    .value();
+                    .blockingGet();
             fail("Expected RestException would be thrown.");
         } catch (RestException e) {
             assertNotNull(e.body());
@@ -513,8 +512,7 @@ public abstract class RestProxyTests {
         try {
             createService(Service9.class)
                     .putWithUnexpectedResponseAndExceptionTypeAsync("I'm the body!")
-                    .toBlocking()
-                    .value();
+                    .blockingGet();
             fail("Expected RestException would be thrown.");
         } catch (MyRestException e) {
             assertNotNull(e.body());
@@ -540,7 +538,7 @@ public abstract class RestProxyTests {
 
         @HEAD("anything")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> headAsync();
+        Single<RestResponse<Void, Void>> headAsync();
 
         @HEAD("anything")
         @ExpectedResponses({200})
@@ -572,15 +570,17 @@ public abstract class RestProxyTests {
 
     @Test
     public void AsyncHeadRequest() {
-        final HttpBinJSON json = createService(Service10.class)
+        final Void body = createService(Service10.class)
                 .headAsync()
-                .toBlocking().value();
-        assertNull(json);
+                .blockingGet()
+                .body();
+
+        assertNull(body);
     }
 
     @Test
     public void AsyncHeadBooleanRequest() {
-        final boolean result = createService(Service10.class).headBooleanAsync().toBlocking().value();
+        final boolean result = createService(Service10.class).headBooleanAsync().blockingGet();
         assertTrue(result);
     }
 
@@ -588,7 +588,7 @@ public abstract class RestProxyTests {
     public void AsyncCompletableHeadRequest() {
         createService(Service10.class)
                 .completableHeadAsync()
-                .await();
+                .blockingAwait();
     }
 
     @Host("http://httpbin.org")
@@ -614,7 +614,7 @@ public abstract class RestProxyTests {
     public void AsyncDeleteRequest() {
         final HttpBinJSON json = createService(Service11.class)
                 .deleteAsync(false)
-                .toBlocking().value();
+                .blockingGet();
         assertEquals(String.class, json.data.getClass());
         assertEquals("false", (String)json.data);
     }
@@ -642,7 +642,7 @@ public abstract class RestProxyTests {
     public void AsyncPatchRequest() {
         final HttpBinJSON json = createService(Service12.class)
                 .patchAsync("body-contents")
-                .toBlocking().value();
+                .blockingGet();
         assertEquals(String.class, json.data.getClass());
         assertEquals("body-contents", (String)json.data);
     }
@@ -678,7 +678,7 @@ public abstract class RestProxyTests {
     public void AsyncHeadersRequest() {
         final HttpBinJSON json = createService(Service13.class)
                 .getAsync()
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(json);
         assertEquals("http://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
@@ -704,7 +704,7 @@ public abstract class RestProxyTests {
     public void AsyncHttpsHeadersRequest() {
         final HttpBinJSON json = createService(Service14.class)
                 .getAsync()
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(json);
         assertEquals("https://httpbin.org/anything", json.url);
         assertNotNull(json.headers);
@@ -727,7 +727,7 @@ public abstract class RestProxyTests {
             fail("Expected exception.");
         }
         catch (InvalidReturnTypeException e) {
-            assertContains(e.getMessage(), "rx.Observable<com.microsoft.rest.v2.entities.HttpBinJSON>");
+            assertContains(e.getMessage(), "io.reactivex.Observable<com.microsoft.rest.v2.entities.HttpBinJSON>");
             assertContains(e.getMessage(), "RestProxyTests$Service15.get()");
         }
     }
@@ -762,8 +762,7 @@ public abstract class RestProxyTests {
         final Service16 service16 = createService(Service16.class);
         final byte[] expectedBytes = new byte[] { 1, 2, 3, 4 };
         final HttpBinJSON httpBinJSON = service16.putByteArrayAsync(expectedBytes)
-                .toBlocking()
-                .value();
+                .blockingGet();
         assertTrue(httpBinJSON.data instanceof String);
 
         final String base64String = (String) httpBinJSON.data;
@@ -793,7 +792,7 @@ public abstract class RestProxyTests {
     @Test
     public void AsyncRequestWithMultipleHostParams() {
         final Service17 service17 = createService(Service17.class);
-        final HttpBinJSON result = service17.getAsync("http", "bin").toBlocking().value();
+        final HttpBinJSON result = service17.getAsync("http", "bin").blockingGet();
         assertNotNull(result);
         assertEquals("http://httpbin.org/get", result.url);
     }

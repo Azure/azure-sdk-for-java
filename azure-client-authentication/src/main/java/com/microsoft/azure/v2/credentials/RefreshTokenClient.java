@@ -21,8 +21,8 @@ import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.NettyClient;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
-import rx.Single;
-import rx.functions.Func1;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 import java.net.Proxy;
 import java.util.Collections;
@@ -52,7 +52,7 @@ final class RefreshTokenClient {
     AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResoureRefreshToken) {
         AuthenticationResult result;
         try {
-            result = refreshTokenAsync(tenant, clientId, resource, refreshToken, isMultipleResoureRefreshToken).toBlocking().value();
+            result = refreshTokenAsync(tenant, clientId, resource, refreshToken, isMultipleResoureRefreshToken).blockingGet();
         }
         catch (Exception ignored) {
             result = null;
@@ -70,9 +70,9 @@ final class RefreshTokenClient {
                 escaper.escape(refreshToken));
 
         return service.refreshToken(tenant, bodyString)
-                .map(new Func1<RefreshTokenResponse, AuthenticationResult>() {
+                .map(new Function<RefreshTokenResponse, AuthenticationResult>() {
                     @Override
-                    public AuthenticationResult call(RefreshTokenResponse refreshTokenResponse) {
+                    public AuthenticationResult apply(RefreshTokenResponse refreshTokenResponse) {
                         AuthenticationResult result = null;
                         if (refreshTokenResponse != null) {
                             result = new AuthenticationResult(

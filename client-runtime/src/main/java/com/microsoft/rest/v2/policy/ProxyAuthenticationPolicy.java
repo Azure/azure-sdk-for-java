@@ -10,7 +10,7 @@ import com.google.common.base.Charsets;
 import com.google.common.io.BaseEncoding;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
+import io.reactivex.Single;
 
 /**
  * Adds basic proxy authentication to outgoing HTTP requests.

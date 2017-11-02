@@ -9,9 +9,9 @@ package com.microsoft.azure.v2.util;
 import com.microsoft.azure.v2.OperationStatus;
 import com.microsoft.rest.v2.ServiceCallback;
 import com.microsoft.rest.v2.ServiceFuture;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 /**
  * Azure-specific helper methods for creating ServiceFuture instances.
@@ -25,9 +25,9 @@ public class ServiceFutureUtil {
      * @return A ServiceFuture representing the long-running operation.
      */
     public static <T> ServiceFuture<T> fromLRO(Observable<OperationStatus<T>> observable, ServiceCallback<T> callback) {
-        Single<T> single = observable.last().toSingle().map(new Func1<OperationStatus<T>, T>() {
+        Single<T> single = observable.lastOrError().map(new Function<OperationStatus<T>, T>() {
             @Override
-            public T call(OperationStatus<T> operationStatus) {
+            public T apply(OperationStatus<T> operationStatus) {
                 return operationStatus.result();
             }
         });

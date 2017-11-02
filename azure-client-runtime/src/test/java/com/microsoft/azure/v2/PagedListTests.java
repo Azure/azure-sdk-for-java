@@ -9,14 +9,14 @@ package com.microsoft.azure.v2;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
-import rx.Observable;
-import rx.functions.Action1;
-import rx.functions.Func0;
+import io.reactivex.Observable;
+import io.reactivex.functions.Consumer;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.concurrent.Callable;
 
 public class PagedListTests {
     private PagedList<Integer> list;
@@ -279,30 +279,30 @@ public class PagedListTests {
                 return firstObservable().concatWith(nextObservable());
             }
 
-            rx.Observable<Integer> firstObservable() {
-                return rx.Observable.defer(new Func0<rx.Observable<Integer>>() {
+            io.reactivex.Observable<Integer> firstObservable() {
+                return io.reactivex.Observable.defer(new Callable<Observable<Integer>>() {
                     @Override
-                    public rx.Observable<Integer> call() {
-                        return rx.Observable.from(list.currentPage().items());
+                    public io.reactivex.Observable<Integer> call() {
+                        return io.reactivex.Observable.fromIterable(list.currentPage().items());
                     }
                 });
             }
 
             Observable<Integer> nextObservable() {
-                return Observable.defer(new Func0<Observable<Integer>>() {
+                return Observable.defer(new Callable<Observable<Integer>>() {
                     @Override
                     public Observable<Integer> call() {
                         if (list.hasNextPage()) {
                             list.loadNextPage();
                             loadNextPageCallCount++;
-                            return rx.Observable.from(list.currentPage().items()).concatWith(Observable.defer(new Func0<Observable<Integer>>() {
+                            return io.reactivex.Observable.fromIterable(list.currentPage().items()).concatWith(Observable.defer(new Callable<Observable<Integer>>() {
                                 @Override
                                 public Observable<Integer> call() {
                                     return nextObservable();
                                 }
                             }));
                         } else {
-                            return rx.Observable.empty();
+                            return io.reactivex.Observable.empty();
                         }
                     }
                 });
@@ -312,9 +312,9 @@ public class PagedListTests {
         ObservableFromPagedList obpl = new ObservableFromPagedList();
 
         final Integer[] cnt = new Integer[] { 0 };
-        obpl.toObservable().subscribe(new Action1<Integer>() {
+        obpl.toObservable().subscribe(new Consumer<Integer>() {
             @Override
-            public void call(Integer integer) {
+            public void accept(Integer integer) {
                 Assert.assertEquals(cnt[0], integer);
                 cnt[0]++;
             }

@@ -7,11 +7,12 @@
 package com.microsoft.rest.v2;
 
 import com.google.common.util.concurrent.AbstractFuture;
-import rx.Single;
-import rx.Completable;
-import rx.Subscription;
-import rx.functions.Action0;
-import rx.functions.Action1;
+import io.reactivex.Single;
+import io.reactivex.Completable;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.Action;
+import io.reactivex.functions.Consumer;
+import org.reactivestreams.Subscription;
 
 /**
  * An instance of this class provides access to the underlying REST call invocation.
@@ -24,7 +25,7 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
     /**
      * The Retrofit method invocation.
      */
-    private Subscription subscription;
+    private Disposable subscription;
 
     protected ServiceFuture() {
     }
@@ -40,17 +41,17 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
     public static <T> ServiceFuture<T> fromBody(final Single<T> single, final ServiceCallback<T> callback) {
         final ServiceFuture<T> serviceFuture = new ServiceFuture<>();
         serviceFuture.subscription = single
-                .subscribe(new Action1<T>() {
+                .subscribe(new Consumer<T>() {
                     @Override
-                    public void call(T t) {
+                    public void accept(T t) {
                         if (callback != null) {
                             callback.success(t);
                         }
                         serviceFuture.set(t);
                     }
-                }, new Action1<Throwable>() {
+                }, new Consumer<Throwable>() {
                     @Override
-                    public void call(Throwable throwable) {
+                    public void accept(Throwable throwable) {
                         if (callback != null) {
                             callback.failure(throwable);
                         }
@@ -69,18 +70,18 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
      */
     public static ServiceFuture<Void> fromBody(final Completable completable, final ServiceCallback<Void> callback) {
         final ServiceFuture<Void> serviceFuture = new ServiceFuture<>();
-        completable.subscribe(new Action0() {
+        completable.subscribe(new Action() {
             Void value = null;
             @Override
-            public void call() {
+            public void run() {
                 if (callback != null) {
                     callback.success(value);
                 }
                 serviceFuture.set(value);
             }
-        }, new Action1<Throwable>() {
+        }, new Consumer<Throwable>() {
             @Override
-            public void call(Throwable throwable) {
+            public void accept(Throwable throwable) {
                 if (callback != null) {
                     callback.failure(throwable);
                 }
@@ -93,11 +94,11 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
     /**
      * @return the current Rx subscription associated with the ServiceCall.
      */
-    public Subscription getSubscription() {
+    public Disposable getSubscription() {
         return subscription;
     }
 
-    protected void setSubscription(Subscription subscription) {
+    protected void setSubscription(Disposable subscription) {
         this.subscription = subscription;
     }
 
@@ -114,12 +115,12 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
 
     @Override
     public boolean cancel(boolean mayInterruptIfRunning) {
-        subscription.unsubscribe();
+        subscription.dispose();
         return super.cancel(mayInterruptIfRunning);
     }
 
     @Override
     public boolean isCancelled() {
-        return subscription.isUnsubscribed();
+        return subscription.isDisposed();
     }
 }

@@ -9,7 +9,7 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.io.IOException;
 
@@ -48,7 +48,7 @@ public final class CredentialsPolicy implements RequestPolicy {
     /**
      * Adds a token header to the request, making another request to get the token if necessary.
      * @param request The HTTP request message to send.
-     * @return An rx.Single representing the pending response.
+     * @return An io.reactivex.Single representing the pending response.
      */
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {

@@ -16,8 +16,8 @@ import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RetryPolicy;
 import org.junit.Assert;
 import org.junit.Test;
-import rx.Observable;
-import rx.Single;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -91,8 +91,8 @@ public class RequestIdPolicyTests {
             }
         };
 
-        client.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).toBlocking().value();
-        client.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).toBlocking().value();
+        client.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).blockingGet();
+        client.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).blockingGet();
     }
 
     @Test
@@ -120,6 +120,6 @@ public class RequestIdPolicyTests {
                     }
                 };
 
-        client.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", "GET", "http://localhost/")).toBlocking().value();
+        client.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", "GET", "http://localhost/")).blockingGet();
     }
 }

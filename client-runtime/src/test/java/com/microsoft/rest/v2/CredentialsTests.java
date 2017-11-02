@@ -17,7 +17,7 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
 import org.junit.Assert;
 import org.junit.Test;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.util.Arrays;
 
@@ -44,7 +44,7 @@ public class CredentialsTests {
         HttpClient client = new MockHttpClient(new CredentialsPolicy.Factory(credentials), auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
-        client.sendRequestAsync(request).toBlocking().value();
+        client.sendRequestAsync(request).blockingGet();
     }
 
     @Test
@@ -68,6 +68,6 @@ public class CredentialsTests {
         HttpClient client = new MockHttpClient(new CredentialsPolicy.Factory(credentials), auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
-        client.sendRequestAsync(request).toBlocking().value();
+        client.sendRequestAsync(request).blockingGet();
     }
 }
