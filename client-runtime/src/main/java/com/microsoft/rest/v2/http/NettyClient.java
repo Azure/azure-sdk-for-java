@@ -116,7 +116,9 @@ public final class NettyClient extends HttpClient {
                             + ":" + address.getPort();
                     uri = new URI(urlString);
                 } else {
-                    throw new IllegalArgumentException("SocketAddress on java.net.Proxy must be an InetSocketAddress");
+                    throw new IllegalArgumentException(
+                            "SocketAddress on java.net.Proxy must be an InetSocketAddress. Instead found "
+                                    + proxy.address());
                 }
 
                 request.withHeader(io.netty.handler.codec.http.HttpHeaders.Names.HOST, uri.getHost());
