@@ -111,14 +111,11 @@ public final class NettyClient extends HttpClient {
                             ? "https"
                             : "http";
 
-                    String urlString = scheme + "://"
-                            + ((InetSocketAddress) proxy.address()).getHostString()
-                            + ":" + address.getPort();
+                    String urlString = scheme + "://" + address.getHostString() + ":" + address.getPort();
                     uri = new URI(urlString);
                 } else {
                     throw new IllegalArgumentException(
-                            "SocketAddress on java.net.Proxy must be an InetSocketAddress. Instead found "
-                                    + proxy.address());
+                            "SocketAddress on java.net.Proxy must be an InetSocketAddress. Found proxy: " + proxy);
                 }
 
                 request.withHeader(io.netty.handler.codec.http.HttpHeaders.Names.HOST, uri.getHost());
