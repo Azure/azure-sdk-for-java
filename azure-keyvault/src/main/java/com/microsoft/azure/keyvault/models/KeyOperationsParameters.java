@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class KeyOperationsParameters {
     /**
-     * algorithm identifier. Possible values include: 'RSA-OAEP', 'RSA1_5'.
+     * algorithm identifier. Possible values include: 'RSA-OAEP',
+     * 'RSA-OAEP-256', 'RSA1_5'.
      */
     @JsonProperty(value = "alg", required = true)
     private JsonWebKeyEncryptionAlgorithm algorithm;

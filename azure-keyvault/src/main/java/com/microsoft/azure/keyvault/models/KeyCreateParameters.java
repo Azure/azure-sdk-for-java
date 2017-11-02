@@ -17,9 +17,8 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
  */
 public class KeyCreateParameters {
     /**
-     * The type of key to create. For valid key types, see JsonWebKeyType.
-     * Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM,
-     * Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'.
+     * The type of key to create. For valid values, see JsonWebKeyType.
+     * Possible values include: 'EC', 'EC-HSM', 'RSA', 'RSA-HSM', 'oct'.
      */
     @JsonProperty(value = "kty", required = true)
     private JsonWebKeyType kty;
@@ -47,6 +46,13 @@ public class KeyCreateParameters {
      */
     @JsonProperty(value = "tags")
     private Map<String, String> tags;
+
+    /**
+     * Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible
+     * values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'.
+     */
+    @JsonProperty(value = "crv")
+    private JsonWebKeyCurveName curve;
 
     /**
      * Get the kty value.
@@ -145,6 +151,26 @@ public class KeyCreateParameters {
      */
     public KeyCreateParameters withTags(Map<String, String> tags) {
         this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the curve value.
+     *
+     * @return the curve value
+     */
+    public JsonWebKeyCurveName curve() {
+        return this.curve;
+    }
+
+    /**
+     * Set the curve value.
+     *
+     * @param curve the curve value to set
+     * @return the KeyCreateParameters object itself.
+     */
+    public KeyCreateParameters withCurve(JsonWebKeyCurveName curve) {
+        this.curve = curve;
         return this;
     }
 

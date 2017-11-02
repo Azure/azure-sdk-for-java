@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.microsoft.azure.keyvault.models.Attributes;
+import com.microsoft.azure.keyvault.models.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
@@ -22,6 +23,7 @@ public final class CreateKeyRequest {
     private final List<JsonWebKeyOperation> keyOperations;
     private final KeyAttributes keyAttributes;
     private final Map<String, String> tags;
+    private final JsonWebKeyCurveName curve;
 
     /**
      * The {@link CreateKeyRequest} builder.
@@ -38,6 +40,7 @@ public final class CreateKeyRequest {
         private List<JsonWebKeyOperation> keyOperations;
         private KeyAttributes attributes;
         private Map<String, String> tags;
+        private JsonWebKeyCurveName curve;
 
         /**
          * The builder for constructing {@link CreateKeyRequest} object.
@@ -107,6 +110,18 @@ public final class CreateKeyRequest {
         }
 
         /**
+         * Set the curve value.
+         *
+         * @param curve Defines values for JsonWebKeyCurveName;
+         *
+         * @return the Builder object itself.
+         */
+        public Builder withCurve(JsonWebKeyCurveName curve) {
+            this.curve = curve;
+            return this;
+        }
+
+        /**
          * builds the {@link CreateKeyRequest} object.
          * 
          * @return the {@link CreateKeyRequest} object.
@@ -137,8 +152,15 @@ public final class CreateKeyRequest {
 
         if (builder.tags != null) {
             tags = Collections.unmodifiableMap(builder.tags);
-        } else {
+        }
+        else {
             tags = null;
+        }
+
+        if (builder.curve != null) {
+            curve = builder.curve;
+        } else {
+            curve = null;
         }
     }
 
@@ -190,4 +212,9 @@ public final class CreateKeyRequest {
     public Map<String, String> tags() {
         return tags;
     }
+
+    /**
+     * @return the curve
+     */
+    public JsonWebKeyCurveName curve() {return curve; }
 }
