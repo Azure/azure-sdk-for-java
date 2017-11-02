@@ -101,35 +101,34 @@ public final class NettyClient extends HttpClient {
         }
 
         private Single<HttpResponse> sendRequestInternalAsync(final HttpRequest request, Proxy proxy) {
-            final URI uri;
+            final URI channelAddress;
             try {
                 if (proxy == null) {
-                    uri = new URI(request.url());
+                    channelAddress = new URI(request.url());
                 } else if (proxy.address() instanceof InetSocketAddress) {
                     InetSocketAddress address = (InetSocketAddress) proxy.address();
                     String scheme = address.getPort() == 443
                             ? "https"
                             : "http";
 
-                    String urlString = scheme + "://" + address.getHostString() + ":" + address.getPort();
-                    uri = new URI(urlString);
+                    String channelAddressString = scheme + "://" + address.getHostString() + ":" + address.getPort();
+                    channelAddress = new URI(channelAddressString);
                 } else {
                     throw new IllegalArgumentException(
                             "SocketAddress on java.net.Proxy must be an InetSocketAddress. Found proxy: " + proxy);
                 }
 
-                request.withHeader(io.netty.handler.codec.http.HttpHeaders.Names.HOST, uri.getHost());
+                request.withHeader(io.netty.handler.codec.http.HttpHeaders.Names.HOST, channelAddress.getHost());
                 request.withHeader(io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION, io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE);
             } catch (URISyntaxException e) {
                 return Single.error(e);
             }
 
-
             // Creates cold observable from an emitter
             return Single.fromEmitter(new Action1<SingleEmitter<HttpResponse>>() {
                 @Override
                 public void call(final SingleEmitter<HttpResponse> emitter) {
-                    channelPool.acquire(uri).addListener(new GenericFutureListener<Future<? super Channel>>() {
+                    channelPool.acquire(channelAddress).addListener(new GenericFutureListener<Future<? super Channel>>() {
                         @Override
                         public void operationComplete(Future<? super Channel> cf) throws Exception {
                             if (!cf.isSuccess()) {
