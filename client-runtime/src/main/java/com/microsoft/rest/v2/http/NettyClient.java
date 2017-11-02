@@ -24,6 +24,7 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.proxy.HttpProxyHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import rx.Single;
@@ -32,6 +33,7 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.subjects.ReplaySubject;
 
+import java.net.Inet4Address;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;

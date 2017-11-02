@@ -9,7 +9,7 @@ import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.Collections;
 
-@Ignore("Should only be run manually when a local proxy server is present")
+@Ignore("Should only be run manually when a local proxy server (e.g. Fiddler) is running")
 public class RestProxyWithHttpProxyNettyTests extends RestProxyTests {
     private static NettyClient.Factory nettyClientFactory = new NettyClient.Factory();
 
