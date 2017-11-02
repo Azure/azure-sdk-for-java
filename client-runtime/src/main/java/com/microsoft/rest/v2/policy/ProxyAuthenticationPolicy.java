@@ -21,7 +21,7 @@ public class ProxyAuthenticationPolicy implements RequestPolicy {
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         String auth = username + ":" + password;
         String encodedAuth = BaseEncoding.base64().encode(auth.getBytes(Charsets.UTF_8));
-        request.withHeader("Proxy-Authentication", encodedAuth);
+        request.withHeader("Proxy-Authentication", "Basic " + encodedAuth);
         return next.sendAsync(request);
     }
 

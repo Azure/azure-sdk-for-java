@@ -13,7 +13,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class ProxyAuthenticationPolicyTests {
-    boolean auditorVisited = false;
+    private boolean auditorVisited = false;
 
     @Test
     public void test() {
@@ -26,7 +26,7 @@ public class ProxyAuthenticationPolicyTests {
                 return new RequestPolicy() {
                     @Override
                     public Single<HttpResponse> sendAsync(HttpRequest request) {
-                        assertEquals("dGVzdHVzZXI6dGVzdHBhc3M=", request.headers().value("Proxy-Authentication"));
+                        assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", request.headers().value("Proxy-Authentication"));
                         auditorVisited = true;
                         return next.sendAsync(request);
                     }
