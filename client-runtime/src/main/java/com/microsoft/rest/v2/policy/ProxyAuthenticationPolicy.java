@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.rest.v2.policy;
 
 import com.google.common.base.Charsets;
@@ -6,7 +12,10 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Single;
 
-public class ProxyAuthenticationPolicy implements RequestPolicy {
+/**
+ * Adds basic proxy authentication to outgoing HTTP requests.
+ */
+public final class ProxyAuthenticationPolicy implements RequestPolicy {
     private final String username;
     private final String password;
     private final RequestPolicy next;
@@ -25,10 +34,18 @@ public class ProxyAuthenticationPolicy implements RequestPolicy {
         return next.sendAsync(request);
     }
 
+    /**
+     * Factory for creating ProxyAuthenticationPolicy.
+     */
     public static class Factory implements RequestPolicy.Factory {
         private final String username;
         private final String password;
 
+        /**
+         * Creates a ProxyAuthenticationPolicy.Factory.
+         * @param username The username for authentication.
+         * @param password The password for authentication.
+         */
         public Factory(String username, String password) {
             this.username = username;
             this.password = password;
