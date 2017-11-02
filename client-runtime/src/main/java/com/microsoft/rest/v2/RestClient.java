@@ -201,6 +201,9 @@ public final class RestClient {
 
         /**
          * Sets the proxy.
+         * If the proxy requires authentication, also add a ProxyAuthenticationPolicy.Factory
+         * with {@link #addRequestPolicy(RequestPolicy.Factory)}.
+         *
          * @param proxy the proxy to use.
          * @return the builder itself for chaining.
          */
