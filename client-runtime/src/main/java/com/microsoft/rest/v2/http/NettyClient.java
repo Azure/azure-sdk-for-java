@@ -6,7 +6,6 @@
 
 package com.microsoft.rest.v2.http;
 
-import com.microsoft.rest.v2.policy.RequestPolicy;
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.ByteBufAllocator;
@@ -33,9 +32,10 @@ import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.subjects.ReplaySubject;
 
+import java.net.InetSocketAddress;
+import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
-import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -44,20 +44,22 @@ import java.util.concurrent.TimeUnit;
 public final class NettyClient extends HttpClient {
     private static final String HEADER_CONTENT_LENGTH = "Content-Length";
     private final NettyAdapter adapter;
+    private final Proxy proxy;
 
     /**
      * Creates NettyClient.
-     * @param policyFactories the sequence of RequestPolicies to apply when sending HTTP requests.
+     * @param configuration the HTTP client configuration.
      * @param adapter the adapter to Netty
      */
-    private NettyClient(List<RequestPolicy.Factory> policyFactories, NettyAdapter adapter) {
-        super(policyFactories);
+    private NettyClient(HttpClient.Configuration configuration, NettyAdapter adapter) {
+        super(configuration);
         this.adapter = adapter;
+        this.proxy = configuration.proxy();
     }
 
     @Override
     protected Single<HttpResponse> sendRequestInternalAsync(final HttpRequest request) {
-        return adapter.sendRequestInternalAsync(request);
+        return adapter.sendRequestInternalAsync(request, proxy);
     }
 
     private static final class NettyAdapter {
@@ -98,11 +100,25 @@ public final class NettyClient extends HttpClient {
             }, channelPoolSize);
         }
 
-        private Single<HttpResponse> sendRequestInternalAsync(final HttpRequest request) {
-            final URI uri;
+        private Single<HttpResponse> sendRequestInternalAsync(final HttpRequest request, Proxy proxy) {
+            final URI channelAddress;
             try {
-                uri = new URI(request.url());
-                request.withHeader(io.netty.handler.codec.http.HttpHeaders.Names.HOST, uri.getHost());
+                if (proxy == null) {
+                    channelAddress = new URI(request.url());
+                } else if (proxy.address() instanceof InetSocketAddress) {
+                    InetSocketAddress address = (InetSocketAddress) proxy.address();
+                    String scheme = address.getPort() == 443
+                            ? "https"
+                            : "http";
+
+                    String channelAddressString = scheme + "://" + address.getHostString() + ":" + address.getPort();
+                    channelAddress = new URI(channelAddressString);
+                } else {
+                    throw new IllegalArgumentException(
+                            "SocketAddress on java.net.Proxy must be an InetSocketAddress. Found proxy: " + proxy);
+                }
+
+                request.withHeader(io.netty.handler.codec.http.HttpHeaders.Names.HOST, channelAddress.getHost());
                 request.withHeader(io.netty.handler.codec.http.HttpHeaders.Names.CONNECTION, io.netty.handler.codec.http.HttpHeaders.Values.KEEP_ALIVE);
             } catch (URISyntaxException e) {
                 return Single.error(e);
@@ -112,7 +128,7 @@ public final class NettyClient extends HttpClient {
             return Single.fromEmitter(new Action1<SingleEmitter<HttpResponse>>() {
                 @Override
                 public void call(final SingleEmitter<HttpResponse> emitter) {
-                    channelPool.acquire(uri).addListener(new GenericFutureListener<Future<? super Channel>>() {
+                    channelPool.acquire(channelAddress).addListener(new GenericFutureListener<Future<? super Channel>>() {
                         @Override
                         public void operationComplete(Future<? super Channel> cf) throws Exception {
                             if (!cf.isSuccess()) {
@@ -273,7 +289,7 @@ public final class NettyClient extends HttpClient {
 
         @Override
         public HttpClient create(final Configuration configuration) {
-            return new NettyClient(configuration.policyFactories(), adapter);
+            return new NettyClient(configuration, adapter);
         }
     }
 }

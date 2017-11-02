@@ -72,7 +72,7 @@ public class RequestIdPolicyTests {
 
     @Test
     public void newRequestIdForEachCall() throws Exception {
-        HttpClient client = new MockHttpClient(Collections.singletonList(new RequestIdPolicy.Factory())) {
+        HttpClient client = new MockHttpClient(new RequestIdPolicy.Factory()) {
             String firstRequestId = null;
             @Override
             public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
@@ -97,7 +97,10 @@ public class RequestIdPolicyTests {
 
     @Test
     public void sameRequestIdForRetry() throws Exception {
-        List<RequestPolicy.Factory> policies = Arrays.asList(new RequestIdPolicy.Factory(), new RetryPolicy.Factory(1));
+        RequestPolicy.Factory[] policies = new RequestPolicy.Factory[] {
+                new RequestIdPolicy.Factory(),
+                new RetryPolicy.Factory(1)
+        };
         HttpClient client = new MockHttpClient(policies) {
                     String firstRequestId = null;
                     @Override

@@ -22,7 +22,7 @@ import java.util.Collections;
 public class UserAgentTests {
     @Test
     public void defaultUserAgentTests() throws Exception {
-        HttpClient client = new MockHttpClient(Collections.singletonList(new UserAgentPolicy.Factory("AutoRest-Java"))) {
+        HttpClient client = new MockHttpClient(new UserAgentPolicy.Factory("AutoRest-Java")) {
             @Override
             public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                 Assert.assertEquals(
@@ -41,7 +41,7 @@ public class UserAgentTests {
 
     @Test
     public void customUserAgentTests() throws Exception {
-        HttpClient client = new MockHttpClient(Collections.singletonList(new UserAgentPolicy.Factory("Awesome"))) {
+        HttpClient client = new MockHttpClient(new UserAgentPolicy.Factory("Awesome")) {
             @Override
             public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
                 String header = request.headers().value("User-Agent");

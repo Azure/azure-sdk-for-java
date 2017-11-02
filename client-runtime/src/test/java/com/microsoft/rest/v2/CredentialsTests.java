@@ -41,7 +41,7 @@ public class CredentialsTests {
             }
         };
 
-        HttpClient client = new MockHttpClient(Arrays.asList(new CredentialsPolicy.Factory(credentials), auditorFactory));
+        HttpClient client = new MockHttpClient(new CredentialsPolicy.Factory(credentials), auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
         client.sendRequestAsync(request).toBlocking().value();
@@ -65,7 +65,7 @@ public class CredentialsTests {
             }
         };
 
-        HttpClient client = new MockHttpClient(Arrays.asList(new CredentialsPolicy.Factory(credentials), auditorFactory));
+        HttpClient client = new MockHttpClient(new CredentialsPolicy.Factory(credentials), auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
         client.sendRequestAsync(request).toBlocking().value();
