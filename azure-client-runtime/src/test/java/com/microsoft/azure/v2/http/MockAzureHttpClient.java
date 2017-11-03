@@ -314,6 +314,7 @@ public class MockAzureHttpClient extends HttpClient {
                 .set("Via", "1.1 vegur")
                 .set("Connection", "keep-alive")
                 .set("X-Processed-Time", "1.0")
-                .set("Access-Control-Allow-Credentials", "true");
+                .set("Access-Control-Allow-Credentials", "true")
+                .set("Content-Type", "application/json");
     }
 }

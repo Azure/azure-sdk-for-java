@@ -2,6 +2,7 @@ package com.microsoft.azure.v2;
 
 import com.microsoft.rest.v2.InvalidReturnTypeException;
 import com.microsoft.rest.v2.RestException;
+import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.annotations.BodyParam;
@@ -447,7 +448,16 @@ public abstract class AzureProxyToRestProxyTests {
     private interface Service10 {
         @HEAD("anything")
         @ExpectedResponses({200})
+        RestResponse<Void, Void> restResponseHead();
+
+
+        @HEAD("anything")
+        @ExpectedResponses({200})
         void voidHead();
+
+        @HEAD("anything")
+        @ExpectedResponses({200})
+        Single<RestResponse<Void, Void>> restResponseHeadAsync();
 
         @HEAD("anything")
         @ExpectedResponses({200})
@@ -455,9 +465,25 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Test
+    public void SyncRestResponseHeadRequest() {
+        RestResponse<?, ?> res = createService(Service10.class)
+                .restResponseHead();
+        assertNull(res.body());
+    }
+
+    @Test
     public void SyncVoidHeadRequest() {
         createService(Service10.class)
                 .voidHead();
+    }
+
+    @Test
+    public void AsyncRestResponseHeadRequest() {
+        RestResponse<?, ?> res = createService(Service10.class)
+                .restResponseHeadAsync()
+                .blockingGet();
+
+        assertNull(res.body());
     }
 
     @Test

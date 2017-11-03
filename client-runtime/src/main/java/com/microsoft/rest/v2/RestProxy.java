@@ -312,17 +312,34 @@ public class RestProxy implements InvocationHandler {
         final Class<? extends RestException> exceptionType = methodParser.exceptionType();
         final Class<?> exceptionBodyType = methodParser.exceptionBodyType();
 
+        String bodyRepresentation;
+        if ("octet-stream".equalsIgnoreCase(response.headerValue("Content-Type"))) {
+            bodyRepresentation = "(" + response.headerValue("Content-Length") + "-byte body)";
+        } else {
+            bodyRepresentation = responseContent.isEmpty() ? "(empty body)" : "\"" + responseContent + "\"";
+        }
+
         Exception result;
         try {
             final Constructor<? extends RestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
-            final Object exceptionBody = responseContent == null || responseContent.isEmpty() ? null : serializer.deserialize(responseContent, exceptionBodyType, bodyEncoding(response.headers()));
 
-            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + (exceptionBody == null ? null : responseContent), response, exceptionBody);
+            String contentType = response.headerValue("Content-Type");
+            boolean isSerializableContentType = contentType == null || contentType.isEmpty()
+                    || "application/json".equalsIgnoreCase(contentType)
+                    || "text/json".equalsIgnoreCase(contentType)
+                    || "application/xml".equalsIgnoreCase(contentType)
+                    || "text/xml".equalsIgnoreCase(contentType);
+
+            final Object exceptionBody = responseContent.isEmpty() || !isSerializableContentType
+                    ? null
+                    : serializer.deserialize(responseContent, exceptionBodyType, bodyEncoding(response.headers()));
+
+            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation, response, exceptionBody);
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
-            String message = "Status code " + responseStatusCode + ", but an instance of " + exceptionType.getCanonicalName() + " cannot be created.";
-            if (responseContent != null && !responseContent.isEmpty()) {
-                message += " Response content: \"" + responseContent + "\"";
-            }
+            String message = "Status code " + responseStatusCode + ", but an instance of "
+                    + exceptionType.getCanonicalName() + " cannot be created."
+                    + " Response body: " + bodyRepresentation;
+
             result = new IOException(message, e);
         } catch (IOException e) {
             result = e;
