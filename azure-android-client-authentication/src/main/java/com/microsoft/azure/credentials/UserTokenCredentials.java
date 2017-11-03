@@ -183,7 +183,7 @@ public class UserTokenCredentials extends TokenCredentials {
                     }
                 });
         try {
-            signal.blockingAwait();
+            signal.await();
         } catch (InterruptedException e) { /* Ignore */ }
     }
 }
