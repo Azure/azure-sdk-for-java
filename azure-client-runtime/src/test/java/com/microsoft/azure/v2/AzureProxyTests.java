@@ -472,7 +472,7 @@ public class AzureProxyTests {
                             @Override
                             public void accept(Throwable throwable) {
                                 assertEquals(RestException.class, throwable.getClass());
-                                assertEquals("Status code 294, null", throwable.getMessage());
+                                assertEquals("Status code 294, (empty body)", throwable.getMessage());
                             }
                         });
 
@@ -765,7 +765,7 @@ public class AzureProxyTests {
         }
         catch (RestException e) {
             assertEquals(403, e.response().statusCode());
-            assertEquals("Status code 403, null", e.getMessage());
+            assertEquals("Status code 403, (empty body)", e.getMessage());
         }
     }
 

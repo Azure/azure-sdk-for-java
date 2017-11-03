@@ -279,11 +279,11 @@ public class PagedListTests {
                 return firstObservable().concatWith(nextObservable());
             }
 
-            io.reactivex.Observable<Integer> firstObservable() {
-                return io.reactivex.Observable.defer(new Callable<Observable<Integer>>() {
+            Observable<Integer> firstObservable() {
+                return Observable.defer(new Callable<Observable<Integer>>() {
                     @Override
-                    public io.reactivex.Observable<Integer> call() {
-                        return io.reactivex.Observable.fromIterable(list.currentPage().items());
+                    public Observable<Integer> call() {
+                        return Observable.fromIterable(list.currentPage().items());
                     }
                 });
             }
@@ -295,14 +295,14 @@ public class PagedListTests {
                         if (list.hasNextPage()) {
                             list.loadNextPage();
                             loadNextPageCallCount++;
-                            return io.reactivex.Observable.fromIterable(list.currentPage().items()).concatWith(Observable.defer(new Callable<Observable<Integer>>() {
+                            return Observable.fromIterable(list.currentPage().items()).concatWith(Observable.defer(new Callable<Observable<Integer>>() {
                                 @Override
                                 public Observable<Integer> call() {
                                     return nextObservable();
                                 }
                             }));
                         } else {
-                            return io.reactivex.Observable.empty();
+                            return Observable.empty();
                         }
                     }
                 });
