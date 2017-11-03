@@ -8,6 +8,8 @@ android:
   - extra-google-m2repository
   - extra-android-m2repository
 sudo: false
+env:
+- TERM=dumb # Makes Gradle use plain console output
 script:
 - mvn clean install
 - mvn checkstyle:check
