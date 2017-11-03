@@ -12,6 +12,7 @@ import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.protocol.SerializerAdapter.Encoding;
+import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
@@ -94,8 +95,8 @@ abstract class PollStrategy {
      * a retryAfterSeconds value, then return an Single with no delay.
      * @return A Single with delay if this OperationStatus has a retryAfterSeconds value.
      */
-    Single<Void> delayAsync() {
-        Single<Void> result = Single.just(null);
+    Completable delayAsync() {
+        Completable result = Completable.complete();
 
         if (delayInMilliseconds > 0) {
             result = result.delay(delayInMilliseconds, TimeUnit.MILLISECONDS);
@@ -143,13 +144,13 @@ abstract class PollStrategy {
             @Override
             public Observable<HttpResponse> call() {
                 return delayAsync()
-                        .flatMap(new Function<Void, Single<HttpResponse>>() {
+                        .andThen(Single.defer(new Callable<Single<HttpResponse>>() {
                             @Override
-                            public Single<HttpResponse> apply(Void ignored) {
+                            public Single<HttpResponse> call() throws Exception {
                                 final HttpRequest pollRequest = createPollRequest();
                                 return restProxy.sendHttpRequestAsync(pollRequest);
                             }
-                        })
+                        }))
                         .flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
                             @Override
                             public Single<HttpResponse> apply(HttpResponse response) {
@@ -168,7 +169,7 @@ abstract class PollStrategy {
         }
         else {
             try {
-                final Object resultObject = restProxy.handleAsyncReturnType(httpRequest, Single.just(httpResponse), methodParser, operationStatusResultType);
+                final Object resultObject = restProxy.handleRestReturnType(httpRequest, Single.just(httpResponse), methodParser, operationStatusResultType);
                 operationStatus = new OperationStatus<>(resultObject, status());
             } catch (RestException e) {
                 operationStatus = new OperationStatus<>(e, OperationState.FAILED);

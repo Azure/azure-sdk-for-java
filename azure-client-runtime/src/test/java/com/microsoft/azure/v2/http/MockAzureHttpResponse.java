@@ -34,11 +34,11 @@ public class MockAzureHttpResponse extends HttpResponse {
     }
 
     public MockAzureHttpResponse(int statusCode, HttpHeaders headers) {
-        this(statusCode, headers, (byte[])null);
+        this(statusCode, headers, new byte[0]);
     }
 
     public MockAzureHttpResponse(int statusCode, HttpHeaders headers, String string) {
-        this(statusCode, headers, string == null ? null : string.getBytes());
+        this(statusCode, headers, string == null ? new byte[0] : string.getBytes());
     }
 
     public MockAzureHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
@@ -88,7 +88,7 @@ public class MockAzureHttpResponse extends HttpResponse {
 
     @Override
     public Single<String> bodyAsStringAsync() {
-        return Single.just(bodyBytes == null ? null : new String(bodyBytes));
+        return Single.just(new String(bodyBytes));
     }
 
     public MockAzureHttpResponse withHeader(String headerName, String headerValue) {

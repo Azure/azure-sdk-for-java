@@ -18,6 +18,7 @@ import java.util.List;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends HttpClient {
+    private static final HttpResponse mockResponse = new MockHttpResponse(200);
     private final List<HttpRequest> requests;
 
     public MockHttpClient() {
@@ -32,6 +33,6 @@ public class MockHttpClient extends HttpClient {
     protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
         requests.add(request);
 
-        return Single.just(null);
+        return Single.just(mockResponse);
     }
 }

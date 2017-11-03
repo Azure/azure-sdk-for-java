@@ -12,7 +12,6 @@ import io.reactivex.Completable;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
-import org.reactivestreams.Subscription;
 
 /**
  * An instance of this class provides access to the underlying REST call invocation.

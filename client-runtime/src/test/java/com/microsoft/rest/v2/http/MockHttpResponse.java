@@ -93,6 +93,6 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public Single<String> bodyAsStringAsync() {
-        return Single.just(bodyBytes == null ? null : new String(bodyBytes));
+        return Single.just(bodyBytes == null ? "" : new String(bodyBytes));
     }
 }

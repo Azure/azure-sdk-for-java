@@ -317,7 +317,7 @@ public class RestProxy implements InvocationHandler {
             final Constructor<? extends RestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
             final Object exceptionBody = responseContent == null || responseContent.isEmpty() ? null : serializer.deserialize(responseContent, exceptionBodyType, bodyEncoding(response.headers()));
 
-            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + responseContent, response, exceptionBody);
+            result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + (exceptionBody == null ? null : responseContent), response, exceptionBody);
         } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
             String message = "Status code " + responseStatusCode + ", but an instance of " + exceptionType.getCanonicalName() + " cannot be created.";
             if (responseContent != null && !responseContent.isEmpty()) {
@@ -387,13 +387,18 @@ public class RestProxy implements InvocationHandler {
                     ? null
                     : deserializeHeaders(responseHeaders, deserializedHeadersType);
 
-            asyncResult = handleBodyReturnTypeAsync(response, methodParser, bodyType)
-                    .map(new Function<Object, RestResponse<?, ?>>() {
-                        @Override
-                        public RestResponse<?, ?> apply(Object body) {
-                            return new RestResponse<>(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), body);
-                        }
-                    });
+            final TypeToken bodyTypeToken = TypeToken.of(bodyType);
+            if (bodyTypeToken.isSubtypeOf(Void.class)) {
+                asyncResult = Single.just(new RestResponse<>(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), (Void) null));
+            } else {
+                asyncResult = handleBodyReturnTypeAsync(response, methodParser, bodyType)
+                        .map(new Function<Object, RestResponse<?, ?>>() {
+                            @Override
+                            public RestResponse<?, ?> apply(Object body) {
+                                return new RestResponse<>(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), body);
+                            }
+                        });
+            }
         } else {
             asyncResult = handleBodyReturnTypeAsync(response, methodParser, entityType);
         }
@@ -418,9 +423,7 @@ public class RestProxy implements InvocationHandler {
         final Type returnValueWireType = methodParser.returnValueWireType();
 
         final Single<?> asyncResult;
-        if (entityTypeToken.isSubtypeOf(void.class) || entityTypeToken.isSubtypeOf(Void.class)) {
-            asyncResult = Single.just(null);
-        } else if (httpMethod.equalsIgnoreCase("HEAD")
+        if (httpMethod.equalsIgnoreCase("HEAD")
                 && (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class))) {
             boolean isSuccess = (responseStatusCode / 100) == 2;
             asyncResult = Single.just(isSuccess);
@@ -474,7 +477,7 @@ public class RestProxy implements InvocationHandler {
     }
 
     protected Object handleAsyncHttpResponse(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, SwaggerMethodParser methodParser, Type returnType) {
-        return handleAsyncReturnType(httpRequest, asyncHttpResponse, methodParser, returnType);
+        return handleRestReturnType(httpRequest, asyncHttpResponse, methodParser, returnType);
     }
 
     /**
@@ -485,7 +488,7 @@ public class RestProxy implements InvocationHandler {
      * @param returnType The type of value that will be returned.
      * @return The deserialized result.
      */
-    public final Object handleAsyncReturnType(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
+    public final Object handleRestReturnType(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, final SwaggerMethodParser methodParser, final Type returnType) {
         Object result;
 
         final TypeToken returnTypeToken = TypeToken.of(returnType);
@@ -507,7 +510,10 @@ public class RestProxy implements InvocationHandler {
         else if (returnTypeToken.isSubtypeOf(Observable.class)) {
             throw new InvalidReturnTypeException("RestProxy does not support swagger interface methods (such as " + methodParser.fullyQualifiedMethodName() + "()) with a return type of " + returnType.toString());
         }
-        else {
+        else if (returnTypeToken.isSubtypeOf(void.class) || returnTypeToken.isSubtypeOf(Void.class)) {
+            asyncExpectedResponse.blockingGet();
+            result = null;
+        } else {
             // The return value is not an asynchronous type (Completable, Single, or Observable), so
             // block the deserialization until a value is received.
             result = asyncExpectedResponse

@@ -447,15 +447,7 @@ public abstract class AzureProxyToRestProxyTests {
     private interface Service10 {
         @HEAD("anything")
         @ExpectedResponses({200})
-        HttpBinJSON head();
-
-        @HEAD("anything")
-        @ExpectedResponses({200})
         void voidHead();
-
-        @HEAD("anything")
-        @ExpectedResponses({200})
-        Single<HttpBinJSON> headAsync();
 
         @HEAD("anything")
         @ExpectedResponses({200})
@@ -463,24 +455,9 @@ public abstract class AzureProxyToRestProxyTests {
     }
 
     @Test
-    public void SyncHeadRequest() {
-        final HttpBinJSON json = createService(Service10.class)
-                .head();
-        assertNull(json);
-    }
-
-    @Test
     public void SyncVoidHeadRequest() {
         createService(Service10.class)
                 .voidHead();
-    }
-
-    @Test
-    public void AsyncHeadRequest() {
-        final HttpBinJSON json = createService(Service10.class)
-                .headAsync()
-                .blockingGet();
-        assertNull(json);
     }
 
     @Test

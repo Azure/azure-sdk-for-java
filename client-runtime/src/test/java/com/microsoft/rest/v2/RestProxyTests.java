@@ -526,7 +526,7 @@ public abstract class RestProxyTests {
     private interface Service10 {
         @HEAD("anything")
         @ExpectedResponses({200})
-        HttpBinJSON head();
+        RestResponse<Void, Void> head();
 
         @HEAD("anything")
         @ExpectedResponses({200})
@@ -551,9 +551,10 @@ public abstract class RestProxyTests {
 
     @Test
     public void SyncHeadRequest() {
-        final HttpBinJSON json = createService(Service10.class)
-                .head();
-        assertNull(json);
+        final Void body = createService(Service10.class)
+                .head()
+                .body();
+        assertNull(body);
     }
 
     @Test

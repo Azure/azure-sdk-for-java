@@ -173,6 +173,10 @@ public class MockHttpClient extends HttpClient {
         catch (Exception ignored) {
         }
 
+        if (response == null) {
+            response = new MockHttpResponse(500);
+        }
+
         return Single.just(response);
     }
 
