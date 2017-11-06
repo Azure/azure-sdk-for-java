@@ -38,6 +38,7 @@ abstract class PollStrategy {
         this.delayInMilliseconds = delayInMilliseconds;
     }
 
+    @SuppressWarnings("unchecked")
     protected <T> T deserialize(String value, Type returnType) throws IOException {
         return (T) restProxy.deserialize(value, returnType, null, Encoding.JSON);
     }
