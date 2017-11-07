@@ -30,7 +30,6 @@ public class RestClientTests {
     public void defaultConfigs() {
         RestClient restClient = RestClient.newDefaultBuilder()
                 .withBaseUrl("https://management.azure.com/")
-                .withSerializerAdapter(new JacksonAdapter())
                 .build();
         Assert.assertEquals("https://management.azure.com/", restClient.baseURL());
         Assert.assertEquals(LogLevel.NONE, restClient.logLevel());
@@ -42,7 +41,6 @@ public class RestClientTests {
     public void newBuilderKeepsConfigs() {
         RestClient restClient = RestClient.newDefaultBuilder()
             .withBaseUrl("http://localhost")
-            .withSerializerAdapter(new JacksonAdapter())
             .withCredentialsPolicy(new CredentialsPolicy.Factory(new TokenCredentials("Bearer", "token")))
             .withLogLevel(LogLevel.BASIC)
             .addRequestPolicy(new RequestPolicy.Factory() {
