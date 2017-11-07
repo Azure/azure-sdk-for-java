@@ -23,9 +23,22 @@ import java.util.List;
 import java.util.concurrent.TimeUnit;
 
 /**
- * An instance of this class stores configuration for setting up specific service clients.
+ * An immutable configuration object for setting up specific service clients.
  */
 public final class RestClient {
+    /**
+     * A RestClient which provides default values for vanilla clients.
+     * Users can modify the default values by calling {@link #newBuilder()}.
+     */
+    public static final RestClient DEFAULT = new RestClient.Builder(new JacksonAdapter()).build();
+
+    /**
+     * @return A new {@link RestClient.Builder} instance with default settings for vanilla clients.
+     */
+    public static RestClient.Builder newDefaultBuilder() {
+        return DEFAULT.newBuilder();
+    }
+
     private final HttpClient.Factory httpClientFactory;
     private final HttpClient httpClient;
     private final Proxy proxy;
@@ -74,6 +87,7 @@ public final class RestClient {
     }
 
     /**
+     * The adapter for serialization and deserialization.
      * @return the current serializer adapter.
      */
     public SerializerAdapter<?> serializerAdapter() {
@@ -95,6 +109,7 @@ public final class RestClient {
     }
 
     /**
+     * The dynamic base URL with variables wrapped in "{" and "}".
      * @return the base URL to make requests to.
      */
     public String baseURL() {
@@ -126,7 +141,7 @@ public final class RestClient {
      * Create a new builder for a new Rest Client with the same configurations on this one.
      * @return a RestClient builder
      */
-    RestClient.Builder newBuilder() {
+    public RestClient.Builder newBuilder() {
         return new Builder(this);
     }
 
@@ -147,27 +162,22 @@ public final class RestClient {
     /**
      * The builder class for building a REST client.
      */
-    public static class Builder {
-        private final long defaultReadTimeoutMillis = 10000;
-        private final long defaultConnectionTimeoutMillis = 10000;
+    public static final class Builder {
+        private static final long DEFAULT_READ_TIMEOUT_MILLIS = 10000;
+        private static final long DEFAULT_CONNECTION_TIMEOUT_MILLIS = 10000;
 
         private HttpClient.Factory httpClientFactory;
         private Proxy proxy;
-        /** The dynamic base URL with variables wrapped in "{" and "}". */
         private String baseUrl;
-        /** The RequestPolicy.Factory used to add credentials to requests. */
         private RequestPolicy.Factory credentialsPolicyFactory;
 
-        private List<RequestPolicy.Factory> customRequestPolicyFactories = new ArrayList<>();
+        private List<RequestPolicy.Factory> customRequestPolicyFactories;
 
-        /** The value for 'User-Agent' header. */
         private String userAgent;
-        private long readTimeoutMillis = defaultReadTimeoutMillis;
-        private long connectionTimeoutMillis = defaultConnectionTimeoutMillis;
-        /** The adapter for serializations and deserializations. */
+        private long readTimeoutMillis;
+        private long connectionTimeoutMillis;
         private SerializerAdapter<?> serializerAdapter;
-        /** The logging level to use. */
-        private LogLevel logLevel = LogLevel.NONE;
+        private LogLevel logLevel;
 
         private Builder(final RestClient restClient) {
             this.httpClientFactory = restClient.httpClientFactory;
@@ -183,10 +193,16 @@ public final class RestClient {
         }
 
         /**
-         * Creates an instance of the builder.
+         * Creates an instance of the builder with required parameters.
+         * @param serializerAdapter The serializer adapter to use.
          */
-        public Builder() {
-            this.httpClientFactory = new NettyClient.Factory();
+        public Builder(SerializerAdapter<?> serializerAdapter) {
+            this.serializerAdapter = serializerAdapter;
+            httpClientFactory = new NettyClient.Factory();
+            connectionTimeoutMillis = DEFAULT_CONNECTION_TIMEOUT_MILLIS;
+            readTimeoutMillis = DEFAULT_READ_TIMEOUT_MILLIS;
+            customRequestPolicyFactories = new ArrayList<>();
+            logLevel = LogLevel.NONE;
         }
 
         /**
@@ -335,11 +351,8 @@ public final class RestClient {
          * @return a {@link RestClient}.
          */
         public RestClient build() {
-            if (baseUrl == null) {
-                throw new IllegalArgumentException("Please set base URL.");
-            }
             if (serializerAdapter == null) {
-                throw new IllegalArgumentException("Please set serializer adapter.");
+                throw new NullPointerException("Please set serializer adapter.");
             }
 
             return new RestClient(this);

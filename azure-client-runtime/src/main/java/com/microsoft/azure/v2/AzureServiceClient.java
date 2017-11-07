@@ -27,7 +27,7 @@ public abstract class AzureServiceClient extends ServiceClient {
      * @param credentials the credentials
      */
     protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials) {
-        this(new RestClient.Builder()
+        this(RestClient.newDefaultBuilder()
                 .withBaseUrl(baseUrl)
                 .withCredentialsPolicy(new CredentialsPolicy.Factory(credentials))
                 .withSerializerAdapter(new AzureJacksonAdapter())

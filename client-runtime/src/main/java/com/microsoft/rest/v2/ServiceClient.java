@@ -7,7 +7,6 @@
 package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
-import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.http.HttpClient;
 
 /**
@@ -25,10 +24,9 @@ public abstract class ServiceClient {
      * @param baseUrl the service base uri
      */
     protected ServiceClient(String baseUrl) {
-        this(new RestClient.Builder()
+        this(RestClient.newDefaultBuilder()
                 .withBaseUrl(baseUrl)
                 .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                .withSerializerAdapter(new JacksonAdapter())
                 .build());
     }
 
