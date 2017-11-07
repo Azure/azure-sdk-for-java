@@ -28,9 +28,8 @@ import java.util.concurrent.TimeUnit;
 public class RestClientTests {
     @Test
     public void defaultConfigs() {
-        RestClient restClient = new RestClient.Builder()
+        RestClient restClient = RestClient.newDefaultBuilder()
                 .withBaseUrl("https://management.azure.com/")
-                .withSerializerAdapter(new JacksonAdapter())
                 .build();
         Assert.assertEquals("https://management.azure.com/", restClient.baseURL());
         Assert.assertEquals(LogLevel.NONE, restClient.logLevel());
@@ -40,9 +39,8 @@ public class RestClientTests {
 
     @Test
     public void newBuilderKeepsConfigs() {
-        RestClient restClient = new RestClient.Builder()
+        RestClient restClient = RestClient.newDefaultBuilder()
             .withBaseUrl("http://localhost")
-            .withSerializerAdapter(new JacksonAdapter())
             .withCredentialsPolicy(new CredentialsPolicy.Factory(new TokenCredentials("Bearer", "token")))
             .withLogLevel(LogLevel.BASIC)
             .addRequestPolicy(new RequestPolicy.Factory() {
@@ -72,9 +70,8 @@ public class RestClientTests {
 
     @Test
     public void newBuilderClonesProperties() {
-        RestClient restClient = new RestClient.Builder()
+        RestClient restClient = RestClient.newDefaultBuilder()
             .withBaseUrl("http://localhost")
-            .withSerializerAdapter(new JacksonAdapter())
             .withCredentialsPolicy(new CredentialsPolicy.Factory(new TokenCredentials("Bearer", "token")))
             .withLogLevel(LogLevel.BASIC.withPrettyJson(true))
             .addRequestPolicy(new RequestPolicy.Factory() {
