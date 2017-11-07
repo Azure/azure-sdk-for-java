@@ -87,17 +87,18 @@ public class RestProxy implements InvocationHandler {
      * @param resultType The Type of the object to return.
      * @param wireType The serialized type that is sent across the network.
      * @param encoding The encoding used in the serialized value.
+     * @throws IOException when serialization fails
      * @return The deserialized version of the provided String value.
      */
-    public Object deserialize(String value, Type resultType, Type wireType, SerializerAdapter.Encoding encoding) {
+    public Object deserialize(String value, Type resultType, Type wireType, SerializerAdapter.Encoding encoding) throws IOException {
         Object result;
 
         if (wireType == null) {
-            result = deserializeInternal(value, resultType, encoding);
+            result = serializer.deserialize(value, resultType, encoding);
         }
         else {
             final Type wireResponseType = constructWireResponseType(resultType, wireType);
-            final Object wireResponse = deserializeInternal(value, wireResponseType, encoding);
+            final Object wireResponse = serializer.deserialize(value, wireResponseType, encoding);
             result = convertToResultType(wireResponse, resultType, wireType);
         }
 
@@ -201,14 +202,6 @@ public class RestProxy implements InvocationHandler {
         }
 
         return result;
-    }
-
-    private <T> T deserializeInternal(String value, Type resultType, SerializerAdapter.Encoding encoding) {
-        try {
-            return serializer.deserialize(value, resultType, encoding);
-        } catch (IOException e) {
-            throw Exceptions.propagate(e);
-        }
     }
 
     /**
@@ -402,7 +395,7 @@ public class RestProxy implements InvocationHandler {
             final HttpHeaders responseHeaders = response.headers();
             final Object deserializedHeaders = TypeToken.of(deserializedHeadersType).isSubtypeOf(Void.class)
                     ? null
-                    : deserializeHeaders(responseHeaders, deserializedHeadersType);
+                    : deserializeHeadersUnchecked(responseHeaders, deserializedHeadersType);
 
             final TypeToken bodyTypeToken = TypeToken.of(bodyType);
             if (bodyTypeToken.isSubtypeOf(Void.class)) {
@@ -464,11 +457,12 @@ public class RestProxy implements InvocationHandler {
                     .bodyAsStringAsync()
                     .map(new Function<String, Object>() {
                         @Override
-                        public Object apply(String responseBodyString) {
+                        public Object apply(String responseBodyString) throws IOException {
                             return deserialize(responseBodyString, entityType, returnValueWireType, bodyEncoding(response.headers()));
                         }
                     });
         }
+
         return asyncResult;
     }
 
@@ -483,8 +477,8 @@ public class RestProxy implements InvocationHandler {
 
         return SerializerAdapter.Encoding.JSON;
     }
-    
-    private Object deserializeHeaders(HttpHeaders headers, Type deserializedHeadersType) {
+
+    private Object deserializeHeadersUnchecked(HttpHeaders headers, Type deserializedHeadersType) {
         try {
             final String headersJsonString = serializer.serialize(headers, Encoding.JSON);
             return deserialize(headersJsonString, deserializedHeadersType, null, Encoding.JSON);

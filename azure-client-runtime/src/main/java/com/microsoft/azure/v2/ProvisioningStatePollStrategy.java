@@ -11,7 +11,6 @@ import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Single;
-import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
 
 import java.io.IOException;
@@ -46,8 +45,12 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
                                 .map(new Function<String, HttpResponse>() {
                                     @Override
                                     public HttpResponse apply(String responseBody) {
-                                        try {
-                                            final ResourceWithProvisioningState resource = deserialize(responseBody, ResourceWithProvisioningState.class);
+                                            ResourceWithProvisioningState resource = null;
+                                            try {
+                                                resource = deserialize(responseBody, ResourceWithProvisioningState.class);
+                                            } catch (IOException ignored) {
+                                            }
+
                                             if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
                                                 throw new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null);
                                             }
@@ -57,9 +60,6 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
                                             else {
                                                 setStatus(resource.properties().provisioningState());
                                             }
-                                        } catch (IOException e) {
-                                            throw Exceptions.propagate(e);
-                                        }
                                         return bufferedHttpPollResponse;
                                     }
                                 });
