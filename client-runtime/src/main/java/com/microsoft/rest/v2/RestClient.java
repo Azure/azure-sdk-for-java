@@ -193,6 +193,15 @@ public final class RestClient {
         }
 
         /**
+         * Creates an instance of the builder.
+         * @deprecated Use {@link RestClient#newDefaultBuilder} or AzureRestClient.newDefaultBuilder if using the Azure runtime.
+         */
+        @Deprecated
+        public Builder() {
+            this(RestClient.DEFAULT);
+        }
+
+        /**
          * Creates an instance of the builder with required parameters.
          * @param serializerAdapter The serializer adapter to use.
          */
