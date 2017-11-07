@@ -28,7 +28,7 @@ import java.util.concurrent.TimeUnit;
 public final class RestClient {
     /**
      * A RestClient which provides default values for vanilla clients.
-     * Users can modify the default values by calling {@link #newBuilder()}.
+     * Users can modify the default values by calling {@link RestClient#newDefaultBuilder()}.
      */
     public static final RestClient DEFAULT = new RestClient.Builder(new JacksonAdapter()).build();
 

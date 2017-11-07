@@ -7,7 +7,6 @@
 package com.microsoft.azure.v2;
 
 import com.google.common.hash.Hashing;
-import com.microsoft.azure.v2.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.v2.RestClient;
 import com.microsoft.rest.v2.ServiceClient;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
@@ -27,10 +26,9 @@ public abstract class AzureServiceClient extends ServiceClient {
      * @param credentials the credentials
      */
     protected AzureServiceClient(String baseUrl, ServiceClientCredentials credentials) {
-        this(RestClient.newDefaultBuilder()
+        this(AzureRestClient.newDefaultBuilder()
                 .withBaseUrl(baseUrl)
                 .withCredentialsPolicy(new CredentialsPolicy.Factory(credentials))
-                .withSerializerAdapter(new AzureJacksonAdapter())
                 .build());
     }
 

@@ -17,7 +17,7 @@ public final class AzureRestClient {
 
     /**
      * A RestClient which provides default values for Azure clients.
-     * Users can modify the default values by calling {@link RestClient#newBuilder()}.
+     * Users can modify the default values by calling {@link RestClient#newDefaultBuilder()}.
      */
     public static final RestClient DEFAULT = new RestClient.Builder(new AzureJacksonAdapter()).build();
 
