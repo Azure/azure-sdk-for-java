@@ -442,7 +442,6 @@ public class BlobTestHelper extends TestHelper {
         ServiceProperties serviceProperties = new ServiceProperties();
         serviceProperties.getDeleteRetentionPolicy().setEnabled(true);
         serviceProperties.getDeleteRetentionPolicy().setRetentionIntervalInDays(3);
-        serviceProperties.getDeleteRetentionPolicy().setRetainedVersionsPerBlob(3);
 
         CloudBlobClient bClient = TestHelper.createCloudBlobClient();
         bClient.uploadServiceProperties(serviceProperties);

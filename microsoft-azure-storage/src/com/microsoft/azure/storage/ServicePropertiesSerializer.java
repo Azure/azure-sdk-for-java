@@ -118,10 +118,6 @@ final class ServicePropertiesSerializer {
             xmlw.writeStartElement(Constants.AnalyticsConstants.DAYS_ELEMENT);
             xmlw.writeCharacters(deleteRetentionPolicy.getRetentionIntervalInDays().toString());
             xmlw.writeEndElement();
-
-            xmlw.writeStartElement(Constants.AnalyticsConstants.RETAINED_VERSIONS_PER_BLOB);
-            xmlw.writeCharacters(deleteRetentionPolicy.getRetainedVersionsPerBlob().toString());
-            xmlw.writeEndElement();
         }
 
         // end deleteRetentionPolicy

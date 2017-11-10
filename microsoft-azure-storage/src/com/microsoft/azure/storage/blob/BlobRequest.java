@@ -313,8 +313,6 @@ final class BlobRequest {
      * 
      * @param uri
      *            The absolute URI to the container.
-     * @param timeout
-     *            The server timeout interval.
      * @param query
      *            The query builder to use.
      * @param blobOptions
@@ -351,8 +349,6 @@ final class BlobRequest {
      *            The snapshot version, if the blob is a snapshot.
      * @param deleteSnapshotsOption
      *            A set of options indicating whether to delete only blobs, only snapshots, or both.
-     * @param deleteType
-     *            The option to indicate whether the delete is permanent or not.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection
@@ -364,7 +360,7 @@ final class BlobRequest {
      */
     public static HttpURLConnection deleteBlob(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final AccessCondition accessCondition, final String snapshotVersion,
-            final DeleteSnapshotsOption deleteSnapshotsOption, final DeleteType deleteType)
+            final DeleteSnapshotsOption deleteSnapshotsOption)
             throws IOException, URISyntaxException, StorageException {
 
         if (snapshotVersion != null && deleteSnapshotsOption != DeleteSnapshotsOption.NONE) {
@@ -374,15 +370,6 @@ final class BlobRequest {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         BlobRequest.addSnapshot(builder, snapshotVersion);
-
-        switch (deleteType) {
-            case NONE: // the delete type should be ignored if it's none
-                break;
-            case PERMANENT:
-                builder.add(Constants.QueryConstants.DELETE_TYPE, Constants.QueryConstants.PERMANENT_DELETE);
-            default:
-                break;
-        }
 
         final HttpURLConnection request = BaseRequest.delete(uri, blobOptions, builder, opContext);
 
@@ -474,8 +461,6 @@ final class BlobRequest {
      * 
      * @param uri
      *            The absolute URI to the container.
-     * @param timeout
-     *            The server timeout interval.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the container.
      * @param opContext
@@ -872,9 +857,6 @@ final class BlobRequest {
      * @param breakPeriodInSeconds
      *            Specifies the amount of time to allow the lease to remain, in seconds.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
-     * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection
@@ -947,9 +929,6 @@ final class BlobRequest {
      * @param breakPeriodInSeconds
      *            Specifies the amount of time to allow the lease to remain, in seconds.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
-     * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection
@@ -993,9 +972,6 @@ final class BlobRequest {
      * @param breakPeriodInSeconds
      *            Specifies the amount of time to allow the lease to remain, in seconds.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
-     * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection

@@ -232,11 +232,6 @@ final class ServicePropertiesHandler extends DefaultHandler {
                     this.props.getDeleteRetentionPolicy().setRetentionIntervalInDays(Integer.parseInt(value));
                 }
             }
-            else if (Constants.AnalyticsConstants.RETAINED_VERSIONS_PER_BLOB.equals(currentNode)) {
-                if (value != null) {
-                    this.props.getDeleteRetentionPolicy().setRetainedVersionsPerBlob(Integer.parseInt(value));
-                }
-            }
         }
 
         this.bld = new StringBuilder();

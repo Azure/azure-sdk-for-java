@@ -227,12 +227,6 @@ public final class Constants {
          * The XML element for the delete retention policy.
          */
         public static final String DELETE_RETENTION_POLICY_ELEMENT = "DeleteRetentionPolicy";
-
-        /**
-         * The XML element for the retained versions per blob.
-         */
-        public static final String RETAINED_VERSIONS_PER_BLOB = "RetainedVersionsPerBlob";
-
     }
 
     /**
@@ -832,16 +826,6 @@ public final class Constants {
          * The query component for un-delete operation.
          */
         public static final String UNDELETE = "undelete";
-
-        /**
-         * The query component for delete type.
-         */
-        public static final String DELETE_TYPE = "deletetype";
-
-        /**
-         * The query component for permanent delete type.
-         */
-        public static final String PERMANENT_DELETE = "permanent";
 
         /**
          * The query component for the SAS start partition key.

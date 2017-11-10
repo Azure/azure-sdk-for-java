@@ -408,20 +408,20 @@ public class ServicePropertiesTests {
         ServiceClient client = TestHelper.createCloudBlobClient();
 
         // average setting
-        testValidDeleteRetentionPolicy(client, true, 5, 3);
+        testValidDeleteRetentionPolicy(client, true, 5);
 
         // minimum setting
-        testValidDeleteRetentionPolicy(client, true, 1, 1);
+        testValidDeleteRetentionPolicy(client, true, 1);
 
         // maximum setting
-        testValidDeleteRetentionPolicy(client, true, 365, 10);
+        testValidDeleteRetentionPolicy(client, true, 365);
 
         // disable setting
-        testValidDeleteRetentionPolicy(client, false, 5, 3);
+        testValidDeleteRetentionPolicy(client, false, 5);
     }
 
     private void testValidDeleteRetentionPolicy(ServiceClient client, boolean enabled,
-                                                Integer interval, Integer retainedVersionsPerBlob)
+                                                Integer interval)
             throws StorageException, InterruptedException {
 
         try {
@@ -431,14 +431,12 @@ public class ServicePropertiesTests {
             if (enabled) {
                 expectedServiceProperties.getDeleteRetentionPolicy().setEnabled(true);
                 expectedServiceProperties.getDeleteRetentionPolicy().setRetentionIntervalInDays(interval);
-                expectedServiceProperties.getDeleteRetentionPolicy().setRetainedVersionsPerBlob(retainedVersionsPerBlob);
                 callUploadServiceProps(client, expectedServiceProperties, null);
             } else {
                 // interval and retained versions per blob would both be ignored by the service in case the policy is not enabled
                 ServiceProperties propertiesToUpload = new ServiceProperties();
                 propertiesToUpload.getDeleteRetentionPolicy().setEnabled(false);
                 propertiesToUpload.getDeleteRetentionPolicy().setRetentionIntervalInDays(interval);
-                propertiesToUpload.getDeleteRetentionPolicy().setRetainedVersionsPerBlob(retainedVersionsPerBlob);
 
                 expectedServiceProperties.getDeleteRetentionPolicy().setEnabled(false);
                 callUploadServiceProps(client, propertiesToUpload, null);
@@ -466,32 +464,21 @@ public class ServicePropertiesTests {
         ServiceClient client = TestHelper.createCloudBlobClient();
 
         // Should not work with 0 days
-        testInvalidDeleteRetentionPolicy(client, true, 0, 1);
+        testInvalidDeleteRetentionPolicy(client, true, 0);
 
         // Should not work with <0 days
-        testInvalidDeleteRetentionPolicy(client, true, 0, -1);
-
-        // Should not work with 0 retained versions per blob
-        testInvalidDeleteRetentionPolicy(client, true, 1, 0);
-
-        // Should not work with <0 retained versions per blob
-        testInvalidDeleteRetentionPolicy(client, true, -1, 0);
+        testInvalidDeleteRetentionPolicy(client, true, -1);
 
         // Should not work with 366 days
-        testInvalidDeleteRetentionPolicy(client, true, 366, 1);
+        testInvalidDeleteRetentionPolicy(client, true, 366);
 
-        // Should not work with 11 retained_versions_per_blob
-        testInvalidDeleteRetentionPolicy(client, true, 1, 11);
 
         // Should not work with interval as null
-        testInvalidDeleteRetentionPolicy(client, true, null, 1);
-
-        // Should not work with retained versions per blob as null
-        testInvalidDeleteRetentionPolicy(client, true, 1, null);
+        testInvalidDeleteRetentionPolicy(client, true, null);
     }
 
     private void testInvalidDeleteRetentionPolicy(ServiceClient client, boolean enabled,
-                                                Integer interval, Integer retainedVersionsPerBlob)
+                                                Integer interval)
             throws StorageException, InterruptedException {
 
         // Arrange
@@ -505,7 +492,6 @@ public class ServicePropertiesTests {
             serviceProperties.getDeleteRetentionPolicy().setEnabled(false);
         }
         serviceProperties.getDeleteRetentionPolicy().setRetentionIntervalInDays(interval);
-        serviceProperties.getDeleteRetentionPolicy().setRetainedVersionsPerBlob(retainedVersionsPerBlob);
 
         // Failure is expected since the retention policy is invalid
         try {
@@ -539,7 +525,6 @@ public class ServicePropertiesTests {
             currentServiceProperties.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
             currentServiceProperties.getDeleteRetentionPolicy().setEnabled(true);
             currentServiceProperties.getDeleteRetentionPolicy().setRetentionIntervalInDays(5);
-            currentServiceProperties.getDeleteRetentionPolicy().setRetainedVersionsPerBlob(3);
             callUploadServiceProps(client, currentServiceProperties, null);
 
             // verify
@@ -1141,7 +1126,6 @@ public class ServicePropertiesTests {
         if (propsA.getDeleteRetentionPolicy() != null && propsB.getDeleteRetentionPolicy() != null) {
             assertEquals(propsA.getDeleteRetentionPolicy().getEnabled(), propsB.getDeleteRetentionPolicy().getEnabled());
             assertEquals(propsA.getDeleteRetentionPolicy().getRetentionIntervalInDays(), propsB.getDeleteRetentionPolicy().getRetentionIntervalInDays());
-            assertEquals(propsA.getDeleteRetentionPolicy().getRetainedVersionsPerBlob(), propsB.getDeleteRetentionPolicy().getRetainedVersionsPerBlob());
         }
         else {
             assertNull(propsA.getDeleteRetentionPolicy());

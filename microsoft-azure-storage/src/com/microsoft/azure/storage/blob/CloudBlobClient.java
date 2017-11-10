@@ -562,7 +562,6 @@ public final class CloudBlobClient extends ServiceClient {
         Utility.assertNotNull("properties", properties);
         if (properties.getDeleteRetentionPolicy() != null && properties.getDeleteRetentionPolicy().getEnabled() != null
                 && properties.getDeleteRetentionPolicy().getEnabled()) {
-            Utility.assertNotNull("RetainedVersionsPerBlob", properties.getDeleteRetentionPolicy().getRetainedVersionsPerBlob());
             Utility.assertNotNull("RetentionIntervalInDays", properties.getDeleteRetentionPolicy().getRetentionIntervalInDays());
         }
 

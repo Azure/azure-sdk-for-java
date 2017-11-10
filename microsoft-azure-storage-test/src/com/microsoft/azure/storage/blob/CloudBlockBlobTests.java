@@ -213,15 +213,6 @@ public class CloudBlockBlobTests {
                 count++;
             }
             assertEquals(count, 1);
-
-            // permanently delete the blob after soft-deleting it first
-            blob.delete();
-            blob.deletePermanently();
-            assertTrue(blob.deleted);
-
-            // the list call should return nothing now
-            assertFalse(this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
-                    null).iterator().hasNext());
         }
         finally {
             BlobTestHelper.disableSoftDelete();
@@ -283,22 +274,6 @@ public class CloudBlockBlobTests {
                 count++;
             }
             assertEquals(count, 2);
-
-            // permanently delete the snapshot after soft-deleting it first
-            snapshot.delete();
-            snapshot.deletePermanently();
-            assertTrue(snapshot.deleted);
-
-            // the list call should return just the blob now
-            count = 0;
-            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
-                    null)) {
-                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
-                assertEquals(blobItem.getName(), blob.getName());
-                assertBlobNotDeleted(blobItem);
-                count++;
-            }
-            assertEquals(count, 1);
         }
         finally {
             BlobTestHelper.disableSoftDelete();
@@ -363,21 +338,6 @@ public class CloudBlockBlobTests {
                 count++;
             }
             assertEquals(count, 3);
-
-            // permanently delete the snapshots after soft-deleting them first
-            blob.delete(DeleteSnapshotsOption.DELETE_SNAPSHOTS_ONLY, null, null, null);
-            blob.deletePermanently(DeleteSnapshotsOption.DELETE_SNAPSHOTS_ONLY, null, null, null);
-
-            // the list call should return just the blob now
-            count = 0;
-            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
-                    null)) {
-                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
-                assertEquals(blobItem.getName(), blob.getName());
-                assertBlobNotDeleted(blobItem);
-                count++;
-            }
-            assertEquals(count, 1);
         }
         finally {
             BlobTestHelper.disableSoftDelete();
@@ -438,15 +398,6 @@ public class CloudBlockBlobTests {
                 count++;
             }
             assertEquals(count, 3);
-
-            // permanently delete the blob and snapshots after soft-deleting them first
-            blob.delete(DeleteSnapshotsOption.INCLUDE_SNAPSHOTS, null, null, null);
-            blob.deletePermanently(DeleteSnapshotsOption.INCLUDE_SNAPSHOTS, null, null, null);
-            assertTrue(blob.deleted);
-
-            // the list call should return nothing now
-            assertFalse(this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
-                    null).iterator().hasNext());
         }
         finally {
             BlobTestHelper.disableSoftDelete();
@@ -514,15 +465,6 @@ public class CloudBlockBlobTests {
                 count++;
             }
             assertEquals(count, 1);
-
-            // permanently delete the blob after soft-deleting it first
-            blob.delete();
-            blob.deletePermanently();
-            assertTrue(blob.deleted);
-
-            // the list call should return nothing now
-            assertFalse(this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
-                    null).iterator().hasNext());
         }
         finally {
             BlobTestHelper.disableSoftDelete();

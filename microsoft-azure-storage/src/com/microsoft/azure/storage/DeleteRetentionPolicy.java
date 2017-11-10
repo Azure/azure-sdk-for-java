@@ -32,13 +32,6 @@ public class DeleteRetentionPolicy {
     private Integer retentionIntervalInDays;
 
     /**
-     * Required only if Enabled is true. Indicates the number of deleted version of each blob should be retained.
-     * After reaching this limit blob service permanently deletes the oldest deleted version of blob.
-     * The minimum value you can specify is 1; the largest value is 10.
-     */
-    private Integer retainedVersionsPerBlob;
-
-    /**
      * Return a Boolean indicating whether the DeleteRetentionPolicy is enabled.
      *
      * @return A <code>Boolean</code> indicating whether a deleted blob or snapshot is retained or immediately removed by a delete operation.
@@ -57,15 +50,6 @@ public class DeleteRetentionPolicy {
     }
 
     /**
-     * Get the number of versions retained for each deleted blob.
-     *
-     * @return An <code>Integer</code> which contains the number of versions retained for each deleted blob.
-     */
-    public Integer getRetainedVersionsPerBlob() {
-        return this.retainedVersionsPerBlob;
-    }
-
-    /**
      * Set the Boolean indicating whether the DeleteRetentionPolicy is enabled.
      * @param enabled indicates whether the DeleteRetentionPolicy is enabled.
      */
@@ -79,13 +63,5 @@ public class DeleteRetentionPolicy {
      */
     public void setRetentionIntervalInDays(final Integer retentionIntervalInDays) {
         this.retentionIntervalInDays = retentionIntervalInDays;
-    }
-
-    /**
-     * Set the number of versions of a deleted blob to keep.
-     * @param retainedVersionsPerBlob represents the number of versions to retain for a deleted blob.
-     */
-    public void setRetainedVersionsPerBlob(final Integer retainedVersionsPerBlob) {
-        this.retainedVersionsPerBlob = retainedVersionsPerBlob;
     }
 }
