@@ -7,6 +7,7 @@ import java.io.Serializable;
 import java.nio.charset.Charset;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -99,6 +100,7 @@ final public class Message implements Serializable, IMessage {
 		this.messageId = messageId;
 		this.content = content;
 		this.contentType = contentType;
+		this.properties = new HashMap<>();
 	}
 
 	@Override
