@@ -6,10 +6,9 @@
 
 :+1: [Try Azure for FREE](http://go.microsoft.com/fwlink/?LinkId=330212)
 
-This repository contains auto-generated, non-fluent Azure SDKs enabling the programmatic *consumption* of miscellaneous Azure services (i.e. *not management* - for that see http://github.com/azure/azure-libraries-for-java)
+This repository contains Azure SDKs enabling the programmatic *consumption* of miscellaneous Azure services (i.e. *not management* - for that see http://github.com/azure/azure-libraries-for-java)
 
-
-Currently, this repository contains the following Azure SDKs, at varying stages of stability:
+Currently, this repository contains the following Azure SDKs:
 
 * [Cognitive Services](#cognitive-services)
   * [Entity Search](#entity-search)
@@ -25,6 +24,7 @@ These other Azure Java SDKs, that are not currently in this repository, can be f
 * [Azure Batch SDK for Java]
 * [Azure DocumentDB SDK for Java]
 * [Azure Key Vault SDK for Java]
+* [Azure Management Libraries for Java](https://github.com/azure/azure-libraries-for-java)
 * [Azure Service Bus SDK for Java]
 * [Azure Storage SDK for Java]
 
