@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Azure/azure-libraries-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-libraries-for-java)
 
-> :triangular_flag_on_post: NOTE: The **Azure Libraries for Java** project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in the new rerpo. This repository is now dedicated to all the other, auto-generated, non-fluent Azure SDKs only.
+> :triangular_flag_on_post: *NOTE: The **Azure Libraries for Java** project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in the new rerpo. This repository is now dedicated to all the other, auto-generated, non-fluent Azure SDKs only.*
 
 # Azure SDKs for Java
 
@@ -19,7 +19,7 @@ Currently, this repository contains the following Azure SDKs:
 
 ## Other Azure SDKs
 
-These other Azure Java SDKs, that are not currently in this repository, can be found as follows:
+These other Azure SDKs for Java, that are not currently in this repository, can be found as follows:
 
 * [Azure Batch SDK for Java](https://github.com/azure/azure-batch-sdk-for-java)
 * [Azure Data Lake Store Client for Java](https://github.com/Azure/azure-data-lake-store-java)
@@ -40,7 +40,7 @@ These other Azure Java SDKs, that are not currently in this repository, can be f
 
 The following projects provide Java APIs for [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/):
 
-<table><tr><th>Project</th><th>Status</th><th>Download</th><th>Issue Label</th></tr></table>
+<table><tr><th>Project</th><th>Status</th><th>Download</th><th>Issue Label</th></tr>
 <tr>
 	<td><a name="entity-search"></a>[Entity Search](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch)</td>
 	<td>Under construction</td>
@@ -61,6 +61,7 @@ The following projects provide Java APIs for [Azure Cognitive Services](https://
 <td>TBD</td>
 <td>[*Vision*](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3AVision)</td>
 </tr>
+</table>
 
 ## Media Services
 
