@@ -4,9 +4,10 @@
 
 # Azure SDKs for Java
 
+:+1: [Try Azure for FREE](http://go.microsoft.com/fwlink/?LinkId=330212)
+
 This repository contains auto-generated, non-fluent Azure SDKs which enabling the programmatic *consumption* of miscellaneous Azure services (i.e. *not management* - for that see http://github.com/azure/azure-libraries-for-java)
 
-:+1: [Try Azure for FREE](http://go.microsoft.com/fwlink/?LinkId=330212)
 
 Currently, this repository contains the following Azure SDKs, at varying stages of stability:
 
@@ -16,6 +17,16 @@ Currently, this repository contains the following Azure SDKs, at varying stages 
   * [Vision](#vision)
 
 * [Media Services](#media-services)
+
+## Other Azure SDKs
+
+These other Azure Java SDKs, that are not currently in this repository, can be found as follows:
+
+* [Azure Batch SDK for Java]
+* [Azure DocumentDB SDK for Java]
+* [Azure Key Vault SDK for Java]
+* [Azure Service Bus SDK for Java]
+* [Azure Storage SDK for Java]
 
 ## General Information
 * [Prerequisites](#prerequisites)
@@ -27,15 +38,25 @@ Currently, this repository contains the following Azure SDKs, at varying stages 
 
 The following projects provide Java APIs for [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/):
 
-| Project | Status | Issue Label |
-| ------- | ------ | ----------- |
-| <a name="entity-search"></a>[Entity Search](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch) | Under construction | EntitySearch | [**EntitySearch**](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch) |
-| <a name="language"></a>[Language](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language) | Under construction | [**Language**](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3ALanguage) |
-| <a name="vision"></a>[Vision](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision) | Under construction | [**Vision**](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3AVision) |
+| Project | Status | Download | Issue Label |
+| ------- | ------ | -------- | ----------- |
+| <a name="entity-search"></a>[Entity Search](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch) | Under construction | TBD | [*EntitySearch*](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch) |
+
+| <a name="language"></a>[Language](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language) | Under construction | TBD | [*Language*](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3ALanguage) |
+
+| <a name="vision"></a>[Vision](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision) | Under construction | TBD | [*Vision*](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3AVision) |
 
 ## Media Services
 
-The project that provides Java APIs for [Azure Media Services](https://azure.microsoft.com/en-us/services/media-services/) is here: https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media.
+### Download
+
+Maven artifact ID: [**azure-media**](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-media%22)
+
+### Sources
+
+The project that provides Java APIs for [Azure Media Services](https://azure.microsoft.com/en-us/services/media-services/) is [here](https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media).
+
+###Issues
 
 When logging [issues related to the Media SDK](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AMediaServices), please use the **MediaServices** label.
 
