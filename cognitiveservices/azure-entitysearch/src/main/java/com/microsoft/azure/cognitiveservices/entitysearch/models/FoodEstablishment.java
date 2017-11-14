@@ -6,11 +6,15 @@ package com.microsoft.azure.cognitiveservices.entitysearch.models;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
+import com.fasterxml.jackson.annotation.JsonSubTypes;
 
 /**
- * Defines an organization.
+ * The FoodEstablishment model.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
-@JsonTypeName("Organization")
-public class Organization extends Thing {
+@JsonTypeName("FoodEstablishment")
+@JsonSubTypes({
+    @JsonSubTypes.Type(name = "Restaurant", value = Restaurant.class)
+})
+public class FoodEstablishment extends LocalBusiness {
 }

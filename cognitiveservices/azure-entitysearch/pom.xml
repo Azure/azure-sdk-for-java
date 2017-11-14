@@ -41,7 +41,6 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-client-runtime</artifactId>
-            <version>1.0.3</version>
         </dependency>
     </dependencies>
     <build>

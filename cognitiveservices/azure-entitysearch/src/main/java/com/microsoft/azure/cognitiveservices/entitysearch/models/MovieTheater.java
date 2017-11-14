@@ -9,24 +9,24 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Defines an image.
+ * The MovieTheater model.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
-@JsonTypeName("ImageObject")
-public class ImageObject extends MediaObject {
+@JsonTypeName("MovieTheater")
+public class MovieTheater extends EntertainmentBusiness {
     /**
-     * The URL to a thumbnail of the image.
+     * The screenCount property.
      */
-    @JsonProperty(value = "thumbnail", access = JsonProperty.Access.WRITE_ONLY)
-    private ImageObject thumbnail;
+    @JsonProperty(value = "screenCount", access = JsonProperty.Access.WRITE_ONLY)
+    private Integer screenCount;
 
     /**
-     * Get the thumbnail value.
+     * Get the screenCount value.
      *
-     * @return the thumbnail value
+     * @return the screenCount value
      */
-    public ImageObject thumbnail() {
-        return this.thumbnail;
+    public Integer screenCount() {
+        return this.screenCount;
     }
 
 }

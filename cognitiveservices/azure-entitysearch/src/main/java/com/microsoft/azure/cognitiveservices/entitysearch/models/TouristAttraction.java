@@ -8,9 +8,9 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 
 /**
- * Defines an organization.
+ * The TouristAttraction model.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
-@JsonTypeName("Organization")
-public class Organization extends Thing {
+@JsonTypeName("TouristAttraction")
+public class TouristAttraction extends Place {
 }
