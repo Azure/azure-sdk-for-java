@@ -65,13 +65,13 @@ The following projects provide Java APIs for [Azure Cognitive Services](https://
 
 ## Media Services
 
-	:arrow_down: **Download**: Maven artifact ID: [**azure-media**](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-media%22)
+:arrow_down: **Download**: Maven artifact ID: [**azure-media**](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-media%22)
 
-	:page_facing_up: [**Sources...**](https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media)
+:page_facing_up: [**Sources...**](https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media)
 
-	:triangular_flag_on_post: **Issues**: When logging [issues related to the Media SDK](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AMediaServices), please use the **MediaServices** label.
+:triangular_flag_on_post: **Issues**: When logging [issues related to the Media SDK](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AMediaServices), please use the **MediaServices** label.
 
-	:link: [**Learn more...**](https://azure.microsoft.com/en-us/services/media-services/)
+:link: [**Learn more...**](https://azure.microsoft.com/en-us/services/media-services/)
 
 ## Prerequisites
 
