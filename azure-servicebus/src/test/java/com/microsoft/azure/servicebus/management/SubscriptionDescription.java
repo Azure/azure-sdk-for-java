@@ -32,6 +32,7 @@ public class SubscriptionDescription extends ResourceDescripton {
         this.name = subscriptionName;
         this.defaultMessageTimeToLive = Duration.ofDays(7);
         this.lockDuration = Duration.ofMinutes(1);
+        this.maxDeliveryCount = 10;
     }
 
     public String getTopicPath() {
