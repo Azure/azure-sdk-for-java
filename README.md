@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Azure/azure-libraries-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-libraries-for-java)
 
-> :triangular_flag_on_post: *NOTE: The **Azure Libraries for Java** project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in the new rerpo. This repository is now dedicated to all the other, auto-generated, non-fluent Azure SDKs only.*
+> :triangular_flag_on_post: *NOTE: The **Azure Libraries for Java** project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in that new repository. This repository is now dedicated to all the other, auto-generated, non-management Azure SDKs only.*
 
 # Azure SDKs for Java
 
@@ -42,24 +42,24 @@ The following projects provide Java APIs for [Azure Cognitive Services](https://
 
 <table><tr><th>Project</th><th>Status</th><th>Download</th><th>Issue Label</th></tr>
 <tr>
-	<td><a name="entity-search"></a>[Entity Search](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch)</td>
+	<td><a name="entity-search" href="https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch">Entity Search</a></td>
 	<td>Under construction</td>
 	<td>TBD</td>
-	<td>[*EntitySearch*](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch)</td>
+	<td><a href="https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch">EntitySearch</a></td>
 </tr>
 
 <tr>
-	<td><a name="language"></a>[Language](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language)</td>
+	<td><a name="language" href="https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language">Language</a></td>
 	<td>Under construction</td>
 	<td>TBD</td>
-	<td>[*Language*](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3ALanguage)</td>
+	<td><a href="https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3ALanguage">Language</a></td>
 </tr>
 
 <tr>
-<td><a name="vision"></a>[Vision](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision)</td>
-<td>Under construction</td>
-<td>TBD</td>
-<td>[*Vision*](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3AVision)</td>
+	<td><a name="vision" href="https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision">Vision</a></td>
+	<td>Under construction</td>
+	<td>TBD</td>
+	<td><a href="https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3AVision">Vision</a></td>
 </tr>
 </table>
 
