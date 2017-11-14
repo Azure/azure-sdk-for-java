@@ -1,12 +1,12 @@
 [![Build Status](https://travis-ci.org/Azure/azure-libraries-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-libraries-for-java)
 
-> :triangular_flag_on_post: NOTE: the Azure Libraries for Java project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in the new rerpo. This repository is now dedicated to all the other, auto-generated, non-fluent Azure SDKs only.
+> :triangular_flag_on_post: NOTE: The **Azure Libraries for Java** project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in the new rerpo. This repository is now dedicated to all the other, auto-generated, non-fluent Azure SDKs only.
 
 # Azure SDKs for Java
 
 :+1: [Try Azure for FREE](http://go.microsoft.com/fwlink/?LinkId=330212)
 
-This repository contains auto-generated, non-fluent Azure SDKs which enabling the programmatic *consumption* of miscellaneous Azure services (i.e. *not management* - for that see http://github.com/azure/azure-libraries-for-java)
+This repository contains auto-generated, non-fluent Azure SDKs enabling the programmatic *consumption* of miscellaneous Azure services (i.e. *not management* - for that see http://github.com/azure/azure-libraries-for-java)
 
 
 Currently, this repository contains the following Azure SDKs, at varying stages of stability:
@@ -40,11 +40,20 @@ The following projects provide Java APIs for [Azure Cognitive Services](https://
 
 | Project | Status | Download | Issue Label |
 | ------- | ------ | -------- | ----------- |
-| <a name="entity-search"></a>[Entity Search](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch) | Under construction | TBD | [*EntitySearch*](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch) |
+| <a name="entity-search"></a>[Entity Search](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch)
+| Under construction
+| TBD
+| [*EntitySearch*](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch) |
 
-| <a name="language"></a>[Language](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language) | Under construction | TBD | [*Language*](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3ALanguage) |
+| <a name="language"></a>[Language](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language)
+| Under construction
+| TBD
+| [*Language*](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3ALanguage) |
 
-| <a name="vision"></a>[Vision](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision) | Under construction | TBD | [*Vision*](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3AVision) |
+| <a name="vision"></a>[Vision](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision)
+| Under construction
+| TBD
+| [*Vision*](https://github.com/azure/azure-sdk-for-java/issues?utf8=%E2%9C%93&q=is%3Aopen%20is%3Aissue%20label%3AVision) |
 
 ## Media Services
 
