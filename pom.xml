@@ -414,5 +414,8 @@
     <module>./azure-mgmt-storage</module>
     <module>./azure-mgmt-streamanalytics</module>
     <module>./azure-mgmt-trafficmanager</module>
+    <module>./cognitiveservices/azure-entitysearch</module>
+    <module>./cognitiveservices/azure-language</module>
+    <module>./cognitiveservices/azure-vision</module>
   </modules>
 </project>
