@@ -1,6 +1,6 @@
 [![Build Status](https://travis-ci.org/Azure/azure-libraries-for-java.svg?style=flat-square&label=build)](https://travis-ci.org/Azure/azure-libraries-for-java)
 
-> :triangular_flag_on_post: *NOTE: The **Azure Libraries for Java** project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in that new repository. This repository is now dedicated to all the other, auto-generated, non-management Azure SDKs only.*
+> :warning: *NOTE: The **Azure Libraries for Java** project (resource management APIs with fluent interface design pattern) has moved to http://github.com/azure/azure-libraries-for-java, so please log issues for that project in that new repository. This repository is now dedicated to all the other, auto-generated, non-management Azure SDKs only.*
 
 # Azure SDKs for Java
 
@@ -40,7 +40,7 @@ These other Azure SDKs for Java, that are not currently in this repository, can 
 
 The following projects provide Java APIs for [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/):
 
-<table><tr><th>Project</th><th>Status</th><th>Download</th><th>Issue Label</th></tr>
+<table><tr><th>Sources</th><th>Status</th><th>Download</th><th>Issue Label</th></tr>
 <tr>
 	<td><a name="entity-search" href="https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch">Entity Search</a></td>
 	<td>Under construction</td>
@@ -65,10 +65,10 @@ The following projects provide Java APIs for [Azure Cognitive Services](https://
 
 ## Media Services
 
-* **Download**: Maven artifact ID: [**azure-media**](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-media%22)
-* [**Sources...**](https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media)
-* **Issues**: When logging [issues related to the Media SDK](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AMediaServices), please use the **MediaServices** label.
-* [**Learn more...**](https://azure.microsoft.com/en-us/services/media-services/)
+:arrow_down: **Download**: Maven artifact ID: [**azure-media**](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-media%22)
+:page_facing_up: [**Sources...**](https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media)
+:triangular_flag_on_post: **Issues**: When logging [issues related to the Media SDK](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AMediaServices), please use the **MediaServices** label.
+:link: [**Learn more...**](https://azure.microsoft.com/en-us/services/media-services/)
 
 ## Prerequisites
 
