@@ -61,7 +61,7 @@ The following projects provide Java APIs for [Azure Cognitive Services](https://
 
 ## Media Services
 
-The following project provides Java APIs for Azure Media Services, enabling you to share media content through premium video workflows:
+This project provides Java APIs for Azure Media Services, enabling you to share media content through premium video workflows:
 
 | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media) | [:arrow_down: Download](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-media%22) | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AMediaServices) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/media-services/) |
 | --- | --- | --- | --- |
