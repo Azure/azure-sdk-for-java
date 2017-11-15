@@ -48,13 +48,14 @@ The following projects provide Java APIs for [Azure Cognitive Services](https://
     | --- | --- | --- | --- |
 
 * <a name="language"></a>*Language*
-
   * <a name="text-analytics"></a>**Text Analytics**
+  
       | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language) | :arrow_down: Download - not yet released | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3ATextAnalytics) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) |
     | --- | --- | --- | --- |
 
 * <a name="vision"></a>*Vision*
   * <a name="face-api"></a>**Face API**
+
       | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision) | :arrow_down: Download - not yet released | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AFaceAPI) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/face/) |
     | --- | --- | --- | --- |
 
