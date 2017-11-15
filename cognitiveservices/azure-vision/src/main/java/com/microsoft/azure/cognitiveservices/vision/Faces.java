@@ -7,7 +7,6 @@
 package com.microsoft.azure.cognitiveservices.vision;
 
 import com.microsoft.azure.cognitiveservices.vision.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.vision.models.DetectedFace;
 import com.microsoft.azure.cognitiveservices.vision.models.GroupResponse;
 import com.microsoft.azure.cognitiveservices.vision.models.IdentifyResultItem;
