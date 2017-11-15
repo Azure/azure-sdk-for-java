@@ -41,32 +41,27 @@ These other Azure SDKs for Java, that are not currently in this repository, can 
 
 The following projects provide Java APIs for [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/):
 
-* <a name="search"></a>**Search**
-  * <a name="entity-search"></a>Entity Search
+* <a name="search"></a>*Search*
+  * <a name="entity-search"></a>**Entity Search**
   
     | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch) | :arrow_down: Download - not yet released | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/bing-entity-search-api/) |
     | --- | --- | --- | --- |
 
-* <a name="language"></a>**Language**
-  * <a name="text-analytics"></a>Text Analytics
-    * [*Sources...*](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language)
-    * *Download* - not yet released
-    * [*Issues*](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3ALanguage): When logging issues related to Language, please use the **Language** label.
-    * [*Learn more...*](https://azure.microsoft.com/en-us/services/cognitive-services/directory/lang/)
+* <a name="language"></a>*Language*
 
-* <a name="vision"></a>**Vision**
-  * <a name="face-api"></a>Face API
-    * [*Sources...*](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision)
-    * *Download* - not yet released
-    * [*Issues*](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AVision): When logging issues related to Vision, please use the **Vision** label.
-    * [*Learn more...*](https://azure.microsoft.com/en-us/services/cognitive-services/face/)
+  * <a name="text-analytics"></a>**Text Analytics**
+      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language) | :arrow_down: Download - not yet released | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3ATextAnalytics) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) |
+    | --- | --- | --- | --- |
+
+* <a name="vision"></a>*Vision*
+  * <a name="face-api"></a>**Face API**
+      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision) | :arrow_down: Download - not yet released | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AFaceAPI) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/face/) |
+    | --- | --- | --- | --- |
 
 ## Media Services
 
-* [*Sources...*](https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media)
-* *Issues*: When logging [issues related to the Media SDK](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AMediaServices), please use the **MediaServices** label.
-* *Download*: Maven artifact ID: [**azure-media**](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-media%22)
-* [*Learn more...*](https://azure.microsoft.com/en-us/services/media-services/)
+      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media) | [:arrow_down: Download](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-media%22) | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AMediaServices) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/media-services/) |
+    | --- | --- | --- | --- |
 
 ## Prerequisites
 
