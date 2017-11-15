@@ -38,7 +38,6 @@ These other Azure SDKs for Java, that are not currently in this repository, can 
 * [Help and issues](#help-and-issues)
 * [Contribute code](#contribute-code)
 
-
 ## Cognitive Services
 
 The following projects provide Java APIs for [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/):
