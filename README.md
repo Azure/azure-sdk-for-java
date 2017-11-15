@@ -10,12 +10,15 @@ This repository contains Azure SDKs enabling the programmatic *consumption* of m
 
 Currently, this repository contains the following Azure SDKs:
 
-* [Cognitive Services](#cognitive-services)
-  * [Entity Search](#entity-search)
-  * [Language](#language)
-  * [Vision](#vision)
-
 * [Media Services](#media-services)
+
+* [Cognitive Services](#cognitive-services)
+  * [Search](#search)
+  	* [Entity Search](#entity-search)
+  * [Language](#language)
+    * [Text Analytics](#text-analytics)
+  * [Vision](#vision)
+    * [Face API](#face-api)
 
 ## Other Azure SDKs
 
@@ -40,21 +43,21 @@ These other Azure SDKs for Java, that are not currently in this repository, can 
 
 The following projects provide Java APIs for [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/):
 
-* Search
+* <a name="search"></a>Search
   * <a name="entity-search"></a>Entity Search
     * [**Sources...**](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch)
     * **Download** - not yet released
     * [**Issues**](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch): When logging issues related to Entity Search, please use the **EntitySearch** label.
     * [**Learn more...**](https://azure.microsoft.com/en-us/services/cognitive-services/bing-entity-search-api/)
 
-* Language
+* <a name="language"></a>Language
   * <a name="text-analytics"></a>Text Analytics
     * [**Sources...**](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language)
     * **Download** - not yet released
     * [**Issues**](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3ALanguage): When logging issues related to Language, please use the **Language** label.
     * [**Learn more...**](https://azure.microsoft.com/en-us/services/cognitive-services/directory/lang/)
 
-* Vision
+* <a name="vision"></a>Vision
   * <a name="face-api"></a>Face API
     * [**Sources...**](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision)
     * **Download** - not yet released
