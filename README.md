@@ -11,7 +11,6 @@ This repository contains Azure SDKs enabling the programmatic *consumption* of m
 Currently, this repository contains the following Azure SDKs:
 
 * [Media Services](#media-services)
-
 * [Cognitive Services](#cognitive-services)
   * [Search](#search)
   	* [Entity Search](#entity-search)
@@ -44,6 +43,8 @@ The following projects provide Java APIs for [Azure Cognitive Services](https://
 
 * <a name="search"></a>**Search**
   * <a name="entity-search"></a>Entity Search
+    | [*Sources...*](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch) | *Download* - not yet released | [*Issues*](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch) | [*Learn more...*](https://azure.microsoft.com/en-us/services/cognitive-services/bing-entity-search-api/) |
+
     * [*Sources...*](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch)
     * *Download* - not yet released
     * [*Issues*](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch): When logging issues related to Entity Search, please use the **EntitySearch** label.
