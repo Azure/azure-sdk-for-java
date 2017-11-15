@@ -1,6 +1,7 @@
 /**
- * Copyright (c) Microsoft Corporation. All rights reserved. Licensed under the
- * MIT License. See License.txt in the project root for license information.
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
  */
 
 package com.microsoft.azure.cognitiveservices.entitysearch;
@@ -13,7 +14,6 @@ import com.microsoft.azure.cognitiveservices.entitysearch.models.SearchResponse;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 
