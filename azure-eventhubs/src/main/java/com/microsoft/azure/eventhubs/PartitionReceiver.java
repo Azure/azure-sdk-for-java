@@ -42,8 +42,7 @@ import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
  */
 public final class PartitionReceiver extends ClientEntity implements IReceiverSettingsProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionReceiver.class);
-    private static final int MINIMUM_PREFETCH_COUNT = 10;
-    private static final int MAXIMUM_PREFETCH_COUNT = 999;
+    static final int MINIMUM_PREFETCH_COUNT = 10;
 
     static final int DEFAULT_PREFETCH_COUNT = 999;
     static final long NULL_EPOCH = 0;
@@ -190,9 +189,9 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      * @throws EventHubException if setting prefetchCount encounters error
      */
     public final void setPrefetchCount(final int prefetchCount) throws EventHubException {
-        if (prefetchCount < PartitionReceiver.MINIMUM_PREFETCH_COUNT || prefetchCount > PartitionReceiver.MAXIMUM_PREFETCH_COUNT) {
+        if (prefetchCount < PartitionReceiver.MINIMUM_PREFETCH_COUNT) {
             throw new IllegalArgumentException(String.format(Locale.US,
-                    "PrefetchCount has to be between %s and %s", PartitionReceiver.MINIMUM_PREFETCH_COUNT, PartitionReceiver.MAXIMUM_PREFETCH_COUNT));
+                    "PrefetchCount has to be above %s", PartitionReceiver.MINIMUM_PREFETCH_COUNT));
         }
 
         this.internalReceiver.setPrefetchCount(prefetchCount);
