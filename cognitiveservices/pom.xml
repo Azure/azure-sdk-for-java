@@ -9,6 +9,7 @@
     <groupId>com.microsoft.azure</groupId>
     <version>0.0.1-SNAPSHOT</version>
     <artifactId>azure-sdk-parent</artifactId>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <groupId>com.microsoft.azure.cognitiveservices</groupId>
   <artifactId>azure-cognitiveservices-parent</artifactId>
@@ -38,7 +39,6 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
-    <azure.runtime.version>1.2.0</azure.runtime.version>
   </properties>
 
   <developers>
@@ -95,7 +95,7 @@
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>
-        <version>4.12</version>
+        <version>${junit.version}</version>
         <scope>test</scope>
       </dependency>
     </dependencies>

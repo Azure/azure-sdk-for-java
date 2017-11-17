@@ -11,6 +11,7 @@
     <groupId>com.microsoft.azure.cognitiveservices</groupId>
     <artifactId>azure-cognitiveservices-parent</artifactId>
     <version>0.0.1-beta-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
   <artifactId>azure-cognitiveservices-vision</artifactId>
   <packaging>jar</packaging>

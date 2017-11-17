@@ -19,6 +19,7 @@
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-sdk-parent</artifactId>
     <version>0.0.1-SNAPSHOT</version>
+    <relativePath>../pom.xml</relativePath>
   </parent>
 
   <artifactId>azure-media</artifactId>
