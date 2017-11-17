@@ -1,0 +1,163 @@
+2016.3.3 Version 1.0.0-beta1
+* Use AutoRest generated clients
+* Add ARM clients for compute, network, resource, storage, and web apps, generated from latest specs in azure-rest-api-specs
+* Easier paging operations
+* Cancellation on async operations,
+* Allow changes to base URL
+* Support flattening on nested properties
+* Easier authentication with azure-client-authentication
+* Support Android natively
+
+2016.2.18 Version 0.9.3
+* Fix enum bugs in azure-svc-mgmt-websites
+
+2016.1.26 Version 0.9.2
+* Fix HTTP Proxy for Apache HTTP Client in Service Clients
+* Key Vault: Fix KeyVaultKey to not attempt to load RSA Private Key
+
+2016.1.8 Version 0.9.1
+* Support HTTP Proxy
+* Fix token expiration issue #557
+* Service Bus: Add missing attributes: partitionKey, viaPartitionKey
+* Traffic Manager: Update API version, add MinChildEndpoints for NestedEndpoints
+* Media: Add support for Widevine (DRM) dynamic encryption
+
+2015.10.21 Version 0.9.0
+* New Azure Resource Manager Storage Management library
+* Fix a few bugs
+
+2015.9.22 Version 0.8.3
+* Fix unexpected exceptions thrown in some long running operations
+
+2015.9.22 Version 0.8.2
+* Revert a previous breaking change on enum casing
+* Fix string comparison on long running operation status
+
+2015.9.15 Version 0.8.1
+* Use commons library for Base64 encoding
+
+2015.8.21 Version 0.8.0
+ * Support token based credentials
+ * Support Azure Resource Management
+
+2014.12.09 Version 0.7.0
+ * Refresh client wrappers to latest specifications
+
+2014.08.4 Version 0.6.0
+ * Multiple fixes
+
+2014.04.2 Version 0.5.0
+ * Add multiple service management modules
+ * Split the SDK into multiple sub-modules
+
+2013.09.30 Version 0.4.6
+ * Allow users to set the client-request-id for better tracking/debugging of storage requests. This is set on the OperationContext.
+ * Prevent a potential arithmetic overflow while calculating the exponential retry back-off interval in storage.
+ * Retry on IOException even when it is wrapped within an XMLStreamException in storage.
+ * Throw a more meaningful exception when connection is reset while parsing a request response in storage.
+
+2013.08.26 Version 0.4.5
+ * Added support for managing affinity groups
+ * Added support for Media Services job notification
+
+2013.07.03 Version 0.4.4
+ * Windows Azure China environment support
+ * Service Bus metadata support updated to the latest version
+ * Rich Odata entity query support for Service Bus Queue/Topic/Subscription
+ * Added support for Service Bus message forwarding
+ * Added support for Service Bus message count details
+ * Made sure the response stream is drained to prevent socket exhaustion in Storage
+ * Added support for all flavors of SharedKey and SharedKeyLite message signing through AuthenticationScheme property on client classes in Storage
+
+2013.05.27 Version 0.4.3
+* Added support for updating existing Queue/Topic/Subscription for Service Bus
+* Added support for message lock renewal to support long running message processing for Service Bus
+* Added new properties to Queue/Topic/Subscription/Rule for Service Bus
+* Added support for rebinding content key for Media Services
+
+2013.04.16 Version 0.4.2
+* Fixed a bunch of GB18030 encoding issues
+* Fixed a service bus issue when the locale is not UTC
+
+2013.03.12 Version 0.4.1
+ * Added "Azure-SDK-For-Java/<version>" To User-Agent HTTP header
+ * Added connection string support for Service Bus
+ * Added new methods to break lease for Storage Blob which doesn't require a lease id and returns the result as an object. Deprecated the old breakLease() methods.
+ * Added a new method to get the historical events for Media Services
+ * Fixed Storage Table encoding issue for special characters
+ * BlobOutputStream now commits block list using LATEST instead of UNCOMMITTED
+ * Added RequestResult to StorageEvents
+ * Fixed issue when accessing OperationContext RequestResults
+ * Fixed the return value of BlobInputStream.read
+ * Fixed CloudPageBlob.downloadPageRanges to retrieve the blob length
+ * Fixed MD5 validation in BlobInputStream
+ * Return ETag in TableResult not only for Insert but also for other operations
+
+2013.01.18 Version 0.4.0
+ * Added support for Windows Azure Media Services
+ * Updated dependencies to non-beta stable versions
+ * Added a Sending Request Event to OperationContext in Storage Client code
+ * Fixed a bug in the Storage client in blob download resume for blobs greater than 2GB
+
+2012.10.29 Version 0.3.3
+ * In the blob client, fixed a bug which allows users to call write APIs on a blob snapshot reference
+ * Updated the URL parse method in storage client libraries, to allow users to pass a URL ending with "/"
+ * Updated the parsing response header code in blob client APIs
+ * Updated the storage client library user agent version from 0.1.2 to 0.1.3
+ * Added more test cases in storage client tests
+
+2012.10.16 Version 0.3.2
+ * Implemented a more graceful timeout Exception
+ * Implemented a better Exception for an empty header returned by the Azure Storage Service
+ * Added Fluent setters for Blob Models
+
+2012.09.11 Version 0.3.1
+ * Added Javadocs to 1.7 Storage Support from 0.3.0 release
+ * Fixed bug where getqueue for an invalid queue returns 200 and the exception is not wrapped in a ServiceException
+ * Fixed the error when deleting a blob snapshot in the Service Layer
+ * Changed the PageBlob length parameter from an int to a long
+ * Return an Etag for create and copy Blob in Service Layer
+ * Updated the BlobRestProxy.copyBlob to correctly honor source access conditions
+ * Updated the BlobRestProxy.getBlob to correctly honor setComputeRangeMD5 option
+ * Added international support for ServiceBus URIs
+ * Added encoding for special characters when serializing entity to XML in Table Service Layer
+
+2012.06.02 Version 0.3.0
+ * Added 1.7 Storage Support
+ * Added Javadocs for com.microsoft.windowsazure.services.table
+
+2012.05.02 Version 0.2.2
+ * Added Javadoc comments to Azure Blob Service Layer
+ * Fixed a URL encoding issue in Table Client Layer
+ * Made CloudTableClient use Iterator instead of Iterable
+
+2012.04.11 Version 0.2.1
+ * Added Service Layer support for Azure Table
+ * Added Javadoc comments to Azure Queue Service Layer
+
+2012.02.28 Version 0.2.0
+ * Added Support for Azure Table in com.microsoft.windowsazure.services.table
+ * Added Client Tests for Table
+ * Added a dependency on apache commons-lang3 3.1
+ * ResultsSegment exposes an ArrayList instead of an Iterable
+ * UserAgent updated to v1.1.2
+
+2012.01.31 Version 0.1.3
+ * Updated User Agent to v0.1.1
+ * Updated License Headers
+ * Blob Client Mark update
+ * Retry Logic updated in Blob and Queue Client to not retry
+ * Error Response parsing updated for Table compatibility
+ * MD5 is delay calculated on copy streams
+ * Date parsing support for various number of fractional decimals
+ * StorageErrorResponse updated to support lower case xml for tables
+
+2011.12.22 Version 0.1.2
+ * Fixed CloudBlob.download to lock to ETag during a resume
+ * Ensured that Client Side Exceptions are not resumed
+
+2011.12.14 Version 0.1.1
+ * Commenting/documentation changes
+
+2011.12.09 Version 0.1.0
+ * Initial Release
