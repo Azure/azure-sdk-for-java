@@ -413,7 +413,10 @@
     <module>./azure-mgmt-streamanalytics</module>
     <module>./azure-mgmt-trafficmanager</module>
     <module>./cognitiveservices/azure-entitysearch</module>
-    <module>./cognitiveservices/azure-language</module>
-    <module>./cognitiveservices/azure-vision</module>
+    <module>./cognitiveservices/azure-faceapi</module>
+    <module>./cognitiveservices/azure-textanalytics</module>
+    <module>./cognitiveservices/azure-computervision</module>
+    <module>./cognitiveservices/azure-videosearch</module>
+    <module>./cognitiveservices/azure-websearch</module>
   </modules>
 </project>
