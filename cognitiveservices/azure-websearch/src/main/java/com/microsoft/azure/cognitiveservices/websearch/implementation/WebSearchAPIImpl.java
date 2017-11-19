@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.cognitiveservices.entitysearch.implementation;
+package com.microsoft.azure.cognitiveservices.websearch.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
@@ -12,9 +12,9 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
 /**
- * Initializes a new instance of the EntitySearchAPIImpl class.
+ * Initializes a new instance of the WebSearchAPIImpl class.
  */
-public class EntitySearchAPIImpl extends AzureServiceClient {
+public class WebSearchAPIImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -44,7 +44,7 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
      */
-    public EntitySearchAPIImpl withAcceptLanguage(String acceptLanguage) {
+    public WebSearchAPIImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }
@@ -67,7 +67,7 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
      */
-    public EntitySearchAPIImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public WebSearchAPIImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
         return this;
     }
@@ -90,50 +90,50 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
      */
-    public EntitySearchAPIImpl withGenerateClientRequestId(boolean generateClientRequestId) {
+    public WebSearchAPIImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
     }
 
     /**
-     * The EntitiesInner object to access its operations.
+     * The WebsInner object to access its operations.
      */
-    private EntitiesInner entities;
+    private WebsInner webs;
 
     /**
-     * Gets the EntitiesInner object to access its operations.
-     * @return the EntitiesInner object.
+     * Gets the WebsInner object to access its operations.
+     * @return the WebsInner object.
      */
-    public EntitiesInner entities() {
-        return this.entities;
+    public WebsInner webs() {
+        return this.webs;
     }
 
     /**
-     * Initializes an instance of EntitySearchAPI client.
+     * Initializes an instance of WebSearchAPI client.
      *
      * @param credentials the management credentials for Azure
      */
-    public EntitySearchAPIImpl(ServiceClientCredentials credentials) {
+    public WebSearchAPIImpl(ServiceClientCredentials credentials) {
         this("https://api.cognitive.microsoft.com/bing/v7.0", credentials);
     }
 
     /**
-     * Initializes an instance of EntitySearchAPI client.
+     * Initializes an instance of WebSearchAPI client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public EntitySearchAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public WebSearchAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
 
     /**
-     * Initializes an instance of EntitySearchAPI client.
+     * Initializes an instance of WebSearchAPI client.
      *
      * @param restClient the REST client to connect to Azure.
      */
-    public EntitySearchAPIImpl(RestClient restClient) {
+    public WebSearchAPIImpl(RestClient restClient) {
         super(restClient);
         initialize();
     }
@@ -142,7 +142,7 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.entities = new EntitiesInner(restClient().retrofit(), this);
+        this.webs = new WebsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -153,6 +153,6 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "EntitySearchAPI", "1.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "WebSearchAPI", "1.0");
     }
 }

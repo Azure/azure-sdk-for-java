@@ -225,8 +225,10 @@
     </pluginManagement>
   </build>
   <modules>
+    <module>./azure-computervision</module>
     <module>./azure-entitysearch</module>
-    <module>./azure-language</module>
-    <module>./azure-vision</module>
+    <module>./azure-faceapi</module>
+    <module>./azure-videosearch</module>
+    <module>./azure-websearch</module>
   </modules>
 </project>

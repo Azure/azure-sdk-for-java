@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.cognitiveservices.entitysearch.implementation;
+package com.microsoft.azure.cognitiveservices.videosearch.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
@@ -12,9 +12,9 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 
 /**
- * Initializes a new instance of the EntitySearchAPIImpl class.
+ * Initializes a new instance of the VideoSearchAPIImpl class.
  */
-public class EntitySearchAPIImpl extends AzureServiceClient {
+public class VideoSearchAPIImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -44,7 +44,7 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
      */
-    public EntitySearchAPIImpl withAcceptLanguage(String acceptLanguage) {
+    public VideoSearchAPIImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }
@@ -67,7 +67,7 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
      */
-    public EntitySearchAPIImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public VideoSearchAPIImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
         return this;
     }
@@ -90,50 +90,76 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
      */
-    public EntitySearchAPIImpl withGenerateClientRequestId(boolean generateClientRequestId) {
+    public VideoSearchAPIImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
     }
 
     /**
-     * The EntitiesInner object to access its operations.
+     * The SearchsInner object to access its operations.
      */
-    private EntitiesInner entities;
+    private SearchsInner searchs;
 
     /**
-     * Gets the EntitiesInner object to access its operations.
-     * @return the EntitiesInner object.
+     * Gets the SearchsInner object to access its operations.
+     * @return the SearchsInner object.
      */
-    public EntitiesInner entities() {
-        return this.entities;
+    public SearchsInner searchs() {
+        return this.searchs;
     }
 
     /**
-     * Initializes an instance of EntitySearchAPI client.
+     * The DetailsInner object to access its operations.
+     */
+    private DetailsInner details;
+
+    /**
+     * Gets the DetailsInner object to access its operations.
+     * @return the DetailsInner object.
+     */
+    public DetailsInner details() {
+        return this.details;
+    }
+
+    /**
+     * The TrendingsInner object to access its operations.
+     */
+    private TrendingsInner trendings;
+
+    /**
+     * Gets the TrendingsInner object to access its operations.
+     * @return the TrendingsInner object.
+     */
+    public TrendingsInner trendings() {
+        return this.trendings;
+    }
+
+    /**
+     * Initializes an instance of VideoSearchAPI client.
      *
      * @param credentials the management credentials for Azure
      */
-    public EntitySearchAPIImpl(ServiceClientCredentials credentials) {
+    public VideoSearchAPIImpl(ServiceClientCredentials credentials) {
         this("https://api.cognitive.microsoft.com/bing/v7.0", credentials);
     }
 
     /**
-     * Initializes an instance of EntitySearchAPI client.
+     * Initializes an instance of VideoSearchAPI client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    public EntitySearchAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public VideoSearchAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
 
     /**
-     * Initializes an instance of EntitySearchAPI client.
+     * Initializes an instance of VideoSearchAPI client.
      *
      * @param restClient the REST client to connect to Azure.
      */
-    public EntitySearchAPIImpl(RestClient restClient) {
+    public VideoSearchAPIImpl(RestClient restClient) {
         super(restClient);
         initialize();
     }
@@ -142,7 +168,9 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.entities = new EntitiesInner(restClient().retrofit(), this);
+        this.searchs = new SearchsInner(restClient().retrofit(), this);
+        this.details = new DetailsInner(restClient().retrofit(), this);
+        this.trendings = new TrendingsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -153,6 +181,6 @@ public class EntitySearchAPIImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "EntitySearchAPI", "1.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "VideoSearchAPI", "1.0");
     }
 }
