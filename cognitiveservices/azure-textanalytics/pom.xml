@@ -15,8 +15,8 @@
   </parent>
     <artifactId>azure-cognitiveservices-language</artifactId>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Language Cognitive Service</name>
-    <description>This package contains Microsoft Language Cognitive Service SDK.</description>
+    <name>Microsoft Azure SDK for Cognitive Service Text Analytics</name>
+    <description>This package contains Microsoft Cognitive Service Text Analytics SDK.</description>
     <url>https://github.com/Azure/azure-sdk-cognitiveservices-java</url>
     <licenses>
         <license>

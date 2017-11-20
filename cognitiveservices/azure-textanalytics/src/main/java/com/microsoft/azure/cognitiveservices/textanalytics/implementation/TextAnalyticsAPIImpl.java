@@ -10,8 +10,14 @@ import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
-import com.microsoft.azure.cognitiveservices.textanalytics.AzureRegions;
-import com.microsoft.azure.cognitiveservices.textanalytics.ErrorResponseException;
+import com.microsoft.azure.cognitiveservices.textanalytics.models.AzureRegions;
+import com.microsoft.azure.cognitiveservices.textanalytics.models.BatchInput;
+import com.microsoft.azure.cognitiveservices.textanalytics.models.ErrorResponseException;
+import com.microsoft.azure.cognitiveservices.textanalytics.models.KeyPhraseBatchResult;
+import com.microsoft.azure.cognitiveservices.textanalytics.models.LanguageBatchResult;
+import com.microsoft.azure.cognitiveservices.textanalytics.models.MultiLanguageBatchInput;
+import com.microsoft.azure.cognitiveservices.textanalytics.models.SentimentBatchResult;
+import com.microsoft.azure.cognitiveservices.textanalytics.TextAnalyticsAPI;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
@@ -31,7 +37,7 @@ import rx.Observable;
 /**
  * Initializes a new instance of the TextAnalyticsAPIImpl class.
  */
-public class TextAnalyticsAPIImpl extends AzureServiceClient {
+public class TextAnalyticsAPIImpl extends AzureServiceClient implements TextAnalyticsAPI {
     /** The Retrofit service to perform REST calls. */
     private TextAnalyticsAPIService service;
     /** the {@link AzureClient} used for long running operations. */
@@ -196,15 +202,15 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
     interface TextAnalyticsAPIService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.textanalytics.TextAnalyticsAPI keyPhrases" })
         @POST("v2.0/keyPhrases")
-        Observable<Response<ResponseBody>> keyPhrases(@Body MultiLanguageBatchInputInner input, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> keyPhrases(@Body MultiLanguageBatchInput input, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.textanalytics.TextAnalyticsAPI detectLanguage" })
         @POST("v2.0/languages")
-        Observable<Response<ResponseBody>> detectLanguage(@Body BatchInputInner input, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> detectLanguage(@Body BatchInput input, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.textanalytics.TextAnalyticsAPI sentiment" })
         @POST("v2.0/sentiment")
-        Observable<Response<ResponseBody>> sentiment(@Body MultiLanguageBatchInputInner input, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> sentiment(@Body MultiLanguageBatchInput input, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -216,9 +222,9 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the KeyPhraseBatchResultInner object if successful.
+     * @return the KeyPhraseBatchResult object if successful.
      */
-    public KeyPhraseBatchResultInner keyPhrases(MultiLanguageBatchInputInner input) {
+    public KeyPhraseBatchResult keyPhrases(MultiLanguageBatchInput input) {
         return keyPhrasesWithServiceResponseAsync(input).toBlocking().single().body();
     }
 
@@ -231,7 +237,7 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<KeyPhraseBatchResultInner> keyPhrasesAsync(MultiLanguageBatchInputInner input, final ServiceCallback<KeyPhraseBatchResultInner> serviceCallback) {
+    public ServiceFuture<KeyPhraseBatchResult> keyPhrasesAsync(MultiLanguageBatchInput input, final ServiceCallback<KeyPhraseBatchResult> serviceCallback) {
         return ServiceFuture.fromResponse(keyPhrasesWithServiceResponseAsync(input), serviceCallback);
     }
 
@@ -241,12 +247,12 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      *
      * @param input Collection of documents to analyze. Documents can now contain a language field to indicate the text language
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the KeyPhraseBatchResultInner object
+     * @return the observable to the KeyPhraseBatchResult object
      */
-    public Observable<KeyPhraseBatchResultInner> keyPhrasesAsync(MultiLanguageBatchInputInner input) {
-        return keyPhrasesWithServiceResponseAsync(input).map(new Func1<ServiceResponse<KeyPhraseBatchResultInner>, KeyPhraseBatchResultInner>() {
+    public Observable<KeyPhraseBatchResult> keyPhrasesAsync(MultiLanguageBatchInput input) {
+        return keyPhrasesWithServiceResponseAsync(input).map(new Func1<ServiceResponse<KeyPhraseBatchResult>, KeyPhraseBatchResult>() {
             @Override
-            public KeyPhraseBatchResultInner call(ServiceResponse<KeyPhraseBatchResultInner> response) {
+            public KeyPhraseBatchResult call(ServiceResponse<KeyPhraseBatchResult> response) {
                 return response.body();
             }
         });
@@ -258,9 +264,9 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      *
      * @param input Collection of documents to analyze. Documents can now contain a language field to indicate the text language
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the KeyPhraseBatchResultInner object
+     * @return the observable to the KeyPhraseBatchResult object
      */
-    public Observable<ServiceResponse<KeyPhraseBatchResultInner>> keyPhrasesWithServiceResponseAsync(MultiLanguageBatchInputInner input) {
+    public Observable<ServiceResponse<KeyPhraseBatchResult>> keyPhrasesWithServiceResponseAsync(MultiLanguageBatchInput input) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -270,11 +276,11 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
         Validator.validate(input);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.keyPhrases(input, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyPhraseBatchResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyPhraseBatchResult>>>() {
                 @Override
-                public Observable<ServiceResponse<KeyPhraseBatchResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<KeyPhraseBatchResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<KeyPhraseBatchResultInner> clientResponse = keyPhrasesDelegate(response);
+                        ServiceResponse<KeyPhraseBatchResult> clientResponse = keyPhrasesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -283,9 +289,9 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
             });
     }
 
-    private ServiceResponse<KeyPhraseBatchResultInner> keyPhrasesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<KeyPhraseBatchResultInner, ErrorResponseException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<KeyPhraseBatchResultInner>() { }.getType())
+    private ServiceResponse<KeyPhraseBatchResult> keyPhrasesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<KeyPhraseBatchResult, ErrorResponseException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<KeyPhraseBatchResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -298,9 +304,9 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the LanguageBatchResultInner object if successful.
+     * @return the LanguageBatchResult object if successful.
      */
-    public LanguageBatchResultInner detectLanguage(BatchInputInner input) {
+    public LanguageBatchResult detectLanguage(BatchInput input) {
         return detectLanguageWithServiceResponseAsync(input).toBlocking().single().body();
     }
 
@@ -313,7 +319,7 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<LanguageBatchResultInner> detectLanguageAsync(BatchInputInner input, final ServiceCallback<LanguageBatchResultInner> serviceCallback) {
+    public ServiceFuture<LanguageBatchResult> detectLanguageAsync(BatchInput input, final ServiceCallback<LanguageBatchResult> serviceCallback) {
         return ServiceFuture.fromResponse(detectLanguageWithServiceResponseAsync(input), serviceCallback);
     }
 
@@ -323,12 +329,12 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      *
      * @param input Collection of documents to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LanguageBatchResultInner object
+     * @return the observable to the LanguageBatchResult object
      */
-    public Observable<LanguageBatchResultInner> detectLanguageAsync(BatchInputInner input) {
-        return detectLanguageWithServiceResponseAsync(input).map(new Func1<ServiceResponse<LanguageBatchResultInner>, LanguageBatchResultInner>() {
+    public Observable<LanguageBatchResult> detectLanguageAsync(BatchInput input) {
+        return detectLanguageWithServiceResponseAsync(input).map(new Func1<ServiceResponse<LanguageBatchResult>, LanguageBatchResult>() {
             @Override
-            public LanguageBatchResultInner call(ServiceResponse<LanguageBatchResultInner> response) {
+            public LanguageBatchResult call(ServiceResponse<LanguageBatchResult> response) {
                 return response.body();
             }
         });
@@ -340,9 +346,9 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      *
      * @param input Collection of documents to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LanguageBatchResultInner object
+     * @return the observable to the LanguageBatchResult object
      */
-    public Observable<ServiceResponse<LanguageBatchResultInner>> detectLanguageWithServiceResponseAsync(BatchInputInner input) {
+    public Observable<ServiceResponse<LanguageBatchResult>> detectLanguageWithServiceResponseAsync(BatchInput input) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -352,11 +358,11 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
         Validator.validate(input);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.detectLanguage(input, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LanguageBatchResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LanguageBatchResult>>>() {
                 @Override
-                public Observable<ServiceResponse<LanguageBatchResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<LanguageBatchResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<LanguageBatchResultInner> clientResponse = detectLanguageDelegate(response);
+                        ServiceResponse<LanguageBatchResult> clientResponse = detectLanguageDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -365,9 +371,9 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
             });
     }
 
-    private ServiceResponse<LanguageBatchResultInner> detectLanguageDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<LanguageBatchResultInner, ErrorResponseException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<LanguageBatchResultInner>() { }.getType())
+    private ServiceResponse<LanguageBatchResult> detectLanguageDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<LanguageBatchResult, ErrorResponseException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<LanguageBatchResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -380,9 +386,9 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the SentimentBatchResultInner object if successful.
+     * @return the SentimentBatchResult object if successful.
      */
-    public SentimentBatchResultInner sentiment(MultiLanguageBatchInputInner input) {
+    public SentimentBatchResult sentiment(MultiLanguageBatchInput input) {
         return sentimentWithServiceResponseAsync(input).toBlocking().single().body();
     }
 
@@ -395,7 +401,7 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SentimentBatchResultInner> sentimentAsync(MultiLanguageBatchInputInner input, final ServiceCallback<SentimentBatchResultInner> serviceCallback) {
+    public ServiceFuture<SentimentBatchResult> sentimentAsync(MultiLanguageBatchInput input, final ServiceCallback<SentimentBatchResult> serviceCallback) {
         return ServiceFuture.fromResponse(sentimentWithServiceResponseAsync(input), serviceCallback);
     }
 
@@ -405,12 +411,12 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      *
      * @param input Collection of documents to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SentimentBatchResultInner object
+     * @return the observable to the SentimentBatchResult object
      */
-    public Observable<SentimentBatchResultInner> sentimentAsync(MultiLanguageBatchInputInner input) {
-        return sentimentWithServiceResponseAsync(input).map(new Func1<ServiceResponse<SentimentBatchResultInner>, SentimentBatchResultInner>() {
+    public Observable<SentimentBatchResult> sentimentAsync(MultiLanguageBatchInput input) {
+        return sentimentWithServiceResponseAsync(input).map(new Func1<ServiceResponse<SentimentBatchResult>, SentimentBatchResult>() {
             @Override
-            public SentimentBatchResultInner call(ServiceResponse<SentimentBatchResultInner> response) {
+            public SentimentBatchResult call(ServiceResponse<SentimentBatchResult> response) {
                 return response.body();
             }
         });
@@ -422,9 +428,9 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      *
      * @param input Collection of documents to analyze.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the SentimentBatchResultInner object
+     * @return the observable to the SentimentBatchResult object
      */
-    public Observable<ServiceResponse<SentimentBatchResultInner>> sentimentWithServiceResponseAsync(MultiLanguageBatchInputInner input) {
+    public Observable<ServiceResponse<SentimentBatchResult>> sentimentWithServiceResponseAsync(MultiLanguageBatchInput input) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -434,11 +440,11 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
         Validator.validate(input);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.sentiment(input, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SentimentBatchResultInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SentimentBatchResult>>>() {
                 @Override
-                public Observable<ServiceResponse<SentimentBatchResultInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SentimentBatchResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SentimentBatchResultInner> clientResponse = sentimentDelegate(response);
+                        ServiceResponse<SentimentBatchResult> clientResponse = sentimentDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -447,9 +453,9 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
             });
     }
 
-    private ServiceResponse<SentimentBatchResultInner> sentimentDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<SentimentBatchResultInner, ErrorResponseException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<SentimentBatchResultInner>() { }.getType())
+    private ServiceResponse<SentimentBatchResult> sentimentDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<SentimentBatchResult, ErrorResponseException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<SentimentBatchResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

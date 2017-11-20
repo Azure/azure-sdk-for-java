@@ -13,7 +13,7 @@
     <version>0.0.1-beta-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-    <artifactId>azure-websearch</artifactId>
+    <artifactId>azure-cognitiveservices-websearch</artifactId>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Web Search</name>
     <description>This package contains Microsoft Cognitive Service Web Search SDK.</description>
