@@ -80,7 +80,9 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		keyVaultClient.deleteKeyAsync(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name(), null).get();
 		pollOnKeyDeletion(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
 		keyVaultClient.purgeDeletedKey(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
-		Thread.sleep(20000);
+		if (isRecordMode()) {
+			Thread.sleep(20000);
+		}
 
 		KeyBundle restoreResult = keyVaultClient.restoreKeyAsync(vault, backupResult.value(), null).get();
 		Assert.assertNotNull(restoreResult);
@@ -119,8 +121,9 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		Assert.assertNotNull(keyBundle);
 		pollOnKeyDeletion(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
 		keyVaultClient.purgeDeletedKey(keyBundle.keyIdentifier().vault(), keyBundle.keyIdentifier().name());
-		Thread.sleep(20000);
-
+		if (isRecordMode()) {
+			Thread.sleep(20000);
+		}
 		// Get the unavailable key to throw exception -> it gets stuck
 
 		try {

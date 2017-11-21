@@ -93,7 +93,9 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 
 		keyVaultClient.deleteSecret(getVaultUri(), secretName);
 		// Polling on secret is disabled.
-		Thread.sleep(40000);
+		if (isRecordMode()) {
+			Thread.sleep(40000);
+		}
 		keyVaultClient.purgeDeletedSecret(getVaultUri(), secretName);
 	}
 
@@ -211,7 +213,9 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 					++failureCount;
 					if (e.body().error().code().equals("Throttled")) {
 						System.out.println("Waiting to avoid throttling");
-						Thread.sleep(failureCount * 1500);
+						if (isRecordMode()) {
+							Thread.sleep(failureCount * 1500);
+						}
 						continue;
 					}
 					throw e;
@@ -242,7 +246,9 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 				DeletedSecretBundle deletedSecretBundle = pollOnSecretDeletion(getVaultUri(), secretName);
 				Assert.assertNotNull(deletedSecretBundle);
 				keyVaultClient.purgeDeletedSecret(getVaultUri(), secretName);
-				Thread.sleep(20000);
+				if (isRecordMode()) {
+					Thread.sleep(20000);
+				}
 			} catch (KeyVaultErrorException e) {
 				// Ignore forbidden exception for certificate secrets that cannot be deleted
 				if (!e.body().error().code().equals("Forbidden"))
@@ -267,7 +273,9 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 					++failureCount;
 					if (e.body().error().code().equals("Throttled")) {
 						System.out.println("Throttled!");
-						Thread.sleep(failureCount * 1500);
+						if (isRecordMode()) {
+							Thread.sleep(failureCount * 1500);
+						}
 						continue;
 					}
 					throw e;

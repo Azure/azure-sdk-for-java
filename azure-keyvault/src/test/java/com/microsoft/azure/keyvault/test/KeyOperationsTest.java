@@ -281,7 +281,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
         
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
-        Thread.sleep(40000);
+        if (isRecordMode()) {
+        	Thread.sleep(40000);
+        }
     }
 
     @Test
@@ -301,7 +303,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         byte[] keyBackup;
         {
             keyBackup = keyVaultClient.backupKey(getVaultUri(), KEY_NAME).value();
-            Thread.sleep(20000);
+            if (isRecordMode()) {
+            	Thread.sleep(20000);
+            }
         }
 
         // Deletes the key.
@@ -311,7 +315,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         }
         
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
-        Thread.sleep(40000);
+        if (isRecordMode()) {
+        	Thread.sleep(40000);
+        }
 
         // Restores the key.
         {
@@ -337,7 +343,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        Thread.sleep(failureCount * 1500);
+                        if (isRecordMode()) {
+                        	Thread.sleep(failureCount * 1500);
+                        }
                         continue;
                     }
                     throw e;
@@ -379,7 +387,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         		KeyIdentifier id = new KeyIdentifier(item.kid());
         		Assert.assertTrue(toDelete.contains(id.name()));
         		keyVaultClient.purgeDeletedKey(getVaultUri(), id.name());
-        		Thread.sleep(40000);
+        		if (isRecordMode()) {
+        			Thread.sleep(40000);
+        		}
         	}
         }
 
@@ -400,7 +410,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        Thread.sleep(failureCount * 1500);
+                        if (isRecordMode()) {
+                        	Thread.sleep(failureCount * 1500);
+                        }
                         continue;
                     }
                     throw e;
@@ -425,7 +437,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         pollOnKeyDeletion(getVaultUri(), KEY_NAME);
         
         keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
-        Thread.sleep(40000);        
+        if (isRecordMode()) {
+        	Thread.sleep(40000);        
+        }
     }
 
     @Test
