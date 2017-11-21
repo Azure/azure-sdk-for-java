@@ -82,7 +82,7 @@ public final class AddCookiesPolicy implements RequestPolicy {
         private final CookieHandler cookies = new CookieManager();
 
         @Override
-        public RequestPolicy create(RequestPolicy next) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
             return new AddCookiesPolicy(cookies, next);
         }
     }

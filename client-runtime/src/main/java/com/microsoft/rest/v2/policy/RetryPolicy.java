@@ -43,7 +43,7 @@ public final class RetryPolicy implements RequestPolicy {
         }
 
         @Override
-        public RequestPolicy create(RequestPolicy next) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
             return new RetryPolicy(maxRetries, next);
         }
     }

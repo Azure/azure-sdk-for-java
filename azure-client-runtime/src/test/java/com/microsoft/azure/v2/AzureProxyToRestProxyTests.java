@@ -1,6 +1,7 @@
 package com.microsoft.azure.v2;
 
 import com.microsoft.rest.v2.InvalidReturnTypeException;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
@@ -771,7 +772,7 @@ public abstract class AzureProxyToRestProxyTests {
 
     private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
-        return AzureProxy.create(serviceClass, (AzureEnvironment) null, httpClient, serializer);
+        return AzureProxy.create(serviceClass, (AzureEnvironment) null, HttpPipeline.build(httpClient), serializer);
     }
 
     private static void assertContains(String value, String expectedSubstring) {

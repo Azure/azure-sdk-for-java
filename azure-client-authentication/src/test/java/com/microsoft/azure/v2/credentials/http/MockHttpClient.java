@@ -29,9 +29,9 @@ public class MockHttpClient extends HttpClient {
     }
 
     @Override
-    protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
         requests.add(request);
 
-        return Single.just(null);
+        return Single.<HttpResponse>just(new MockHttpResponse(200));
     }
 }

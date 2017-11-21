@@ -52,7 +52,7 @@ public final class ProxyAuthenticationPolicy implements RequestPolicy {
         }
 
         @Override
-        public RequestPolicy create(RequestPolicy next) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
             return new ProxyAuthenticationPolicy(username, password, next);
         }
     }

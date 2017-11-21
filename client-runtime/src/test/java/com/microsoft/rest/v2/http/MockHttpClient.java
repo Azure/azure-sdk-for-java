@@ -10,7 +10,6 @@ import com.google.common.io.CharStreams;
 import com.microsoft.rest.v2.Base64Url;
 import com.microsoft.rest.v2.DateTimeRfc1123;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
-import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.joda.time.DateTime;
 import rx.Single;
 
@@ -19,7 +18,6 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -35,14 +33,8 @@ public class MockHttpClient extends HttpClient {
             .set("X-Processed-Time", "1.0")
             .set("Access-Control-Allow-Credentials", "true");
 
-    public MockHttpClient() {}
-
-    public MockHttpClient(RequestPolicy.Factory... policyFactories) {
-        super(new HttpClient.Configuration(Arrays.asList(policyFactories), null));
-    }
-
     @Override
-    protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
         HttpResponse response = null;
 
         try {

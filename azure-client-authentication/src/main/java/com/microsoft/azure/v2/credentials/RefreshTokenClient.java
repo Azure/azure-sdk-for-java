@@ -11,7 +11,9 @@ import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.rest.v2.RestClient;
+import com.microsoft.rest.v2.annotations.Host;
+import com.microsoft.rest.v2.annotations.HostParam;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
@@ -19,13 +21,10 @@ import com.microsoft.rest.v2.annotations.POST;
 import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.NettyClient;
-import com.microsoft.rest.v2.policy.RequestPolicy;
-import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import rx.Single;
 import rx.functions.Func1;
 
 import java.net.Proxy;
-import java.util.Collections;
 import java.util.Date;
 
 /**
@@ -34,19 +33,20 @@ import java.util.Date;
 @Beta
 final class RefreshTokenClient {
     private final RefreshTokenService service;
+    private final String baseUrl;
 
     RefreshTokenClient(String baseUrl, Proxy proxy) {
         this(baseUrl, createHttpClient(proxy));
     }
 
     RefreshTokenClient(String baseUrl, HttpClient httpClient) {
-        final SerializerAdapter<?> serializer = RestClient.createDefaultSerializer();
-        service = RestProxy.create(RefreshTokenService.class, baseUrl, httpClient, serializer);
+        service = RestProxy.create(RefreshTokenService.class, HttpPipeline.build(httpClient));
+        this.baseUrl = baseUrl;
     }
 
     private static HttpClient createHttpClient(Proxy proxy) {
         return new NettyClient.Factory()
-                .create(new HttpClient.Configuration(Collections.<RequestPolicy.Factory>emptyList(), proxy));
+                .create(new HttpClient.Configuration(proxy));
     }
 
     AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResoureRefreshToken) {
@@ -69,7 +69,7 @@ final class RefreshTokenClient {
                 escaper.escape(resource),
                 escaper.escape(refreshToken));
 
-        return service.refreshToken(tenant, bodyString)
+        return service.refreshToken(baseUrl, tenant, bodyString)
                 .map(new Func1<RefreshTokenResponse, AuthenticationResult>() {
                     @Override
                     public AuthenticationResult call(RefreshTokenResponse refreshTokenResponse) {
@@ -89,10 +89,11 @@ final class RefreshTokenClient {
                 });
     }
 
+    @Host("{baseUrl}")
     private interface RefreshTokenService {
         @POST("{tenant}/oauth2/token")
         @ExpectedResponses(200)
-        Single<RefreshTokenResponse> refreshToken(@PathParam("tenant") String tenant, @BodyParam String requestBody);
+        Single<RefreshTokenResponse> refreshToken(@HostParam("baseUrl") String baseUrl, @PathParam("tenant") String tenant, @BodyParam String requestBody);
     }
 
     private static class RefreshTokenResponse {

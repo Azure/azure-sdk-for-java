@@ -219,7 +219,8 @@ public class SwaggerMethodParser {
      */
     public String scheme(Object[] swaggerMethodArguments) {
         final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.urlPathSegmentEscaper());
-        return substitutedHost.split("://")[0];
+        final String[] substitutedHostParts = substitutedHost.split("://");
+        return substitutedHostParts.length < 1 ? "https" : substitutedHostParts[0];
     }
 
     /**
@@ -229,7 +230,8 @@ public class SwaggerMethodParser {
      */
     public String host(Object[] swaggerMethodArguments) {
         final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.urlPathSegmentEscaper());
-        return substitutedHost.split("://")[1];
+        final String[] substitutedHostParts = substitutedHost.split("://");
+        return substitutedHostParts.length < 2 ? substitutedHost : substitutedHost.split("://")[1];
     }
 
     /**

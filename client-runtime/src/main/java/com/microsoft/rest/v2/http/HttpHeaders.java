@@ -51,6 +51,14 @@ public class HttpHeaders implements Iterable<HttpHeader>, JsonSerializable {
     }
 
     /**
+     * Get the number of HTTP headers in this collection.
+     * @return The number of HTTP headers in this collection.
+     */
+    public int size() {
+        return headers.size();
+    }
+
+    /**
      * Set the value for the header named headerName,
      * discarding any value previously added for that header.
      * @param headerName The name of the header.

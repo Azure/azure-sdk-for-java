@@ -8,6 +8,7 @@ package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
@@ -21,9 +22,6 @@ import rx.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.List;
 
 public class RequestIdPolicyTests {
     private final HttpResponse mockResponse = new HttpResponse() {
@@ -72,54 +70,56 @@ public class RequestIdPolicyTests {
 
     @Test
     public void newRequestIdForEachCall() throws Exception {
-        HttpClient client = new MockHttpClient(new RequestIdPolicy.Factory()) {
-            String firstRequestId = null;
-            @Override
-            public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
-                if (firstRequestId != null) {
-                    String newRequestId = request.headers().value(REQUEST_ID_HEADER);
-                    Assert.assertNotNull(newRequestId);
-                    Assert.assertNotEquals(newRequestId, firstRequestId);
+        HttpPipeline pipeline = new HttpPipeline.Builder()
+            .withRequestPolicy(new RequestIdPolicy.Factory())
+            .withHttpClient(new MockHttpClient() {
+                String firstRequestId = null;
+                @Override
+                public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                    if (firstRequestId != null) {
+                        String newRequestId = request.headers().value(REQUEST_ID_HEADER);
+                        Assert.assertNotNull(newRequestId);
+                        Assert.assertNotEquals(newRequestId, firstRequestId);
+                    }
+
+                    firstRequestId = request.headers().value(REQUEST_ID_HEADER);
+                    if (firstRequestId == null) {
+                        Assert.fail();
+                    }
+
+                    return Single.just(mockResponse);
                 }
+            })
+            .build();
 
-                firstRequestId = request.headers().value(REQUEST_ID_HEADER);
-                if (firstRequestId == null) {
-                    Assert.fail();
-                }
-
-                return Single.just(mockResponse);
-            }
-        };
-
-        client.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).toBlocking().value();
-        client.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).toBlocking().value();
+        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).toBlocking().value();
+        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).toBlocking().value();
     }
 
     @Test
     public void sameRequestIdForRetry() throws Exception {
-        RequestPolicy.Factory[] policies = new RequestPolicy.Factory[] {
-                new RequestIdPolicy.Factory(),
-                new RetryPolicy.Factory(1)
-        };
-        HttpClient client = new MockHttpClient(policies) {
-                    String firstRequestId = null;
-                    @Override
-                    public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
-                        if (firstRequestId != null) {
-                            String newRequestId = request.headers().value(REQUEST_ID_HEADER);
-                            Assert.assertNotNull(newRequestId);
-                            Assert.assertEquals(newRequestId, firstRequestId);
-                        }
-
-                        firstRequestId = request.headers().value(REQUEST_ID_HEADER);
-                        if (firstRequestId == null) {
-                            Assert.fail();
-                        }
-
-                        return Single.just(mockResponse);
+        HttpPipeline pipeline = HttpPipeline.build(
+            new MockHttpClient() {
+                String firstRequestId = null;
+                @Override
+                public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                    if (firstRequestId != null) {
+                        String newRequestId = request.headers().value(REQUEST_ID_HEADER);
+                        Assert.assertNotNull(newRequestId);
+                        Assert.assertEquals(newRequestId, firstRequestId);
                     }
-                };
 
-        client.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", "GET", "http://localhost/")).toBlocking().value();
+                    firstRequestId = request.headers().value(REQUEST_ID_HEADER);
+                    if (firstRequestId == null) {
+                        Assert.fail();
+                    }
+
+                    return Single.just(mockResponse);
+                }
+            },
+            new RequestIdPolicy.Factory(),
+            new RetryPolicy.Factory(1));
+
+        pipeline.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", "GET", "http://localhost/")).toBlocking().value();
     }
 }

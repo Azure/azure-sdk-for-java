@@ -7,18 +7,23 @@
 package com.microsoft.rest.v2;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.ContentType;
 import com.microsoft.rest.v2.http.FileRequestBody;
 import com.microsoft.rest.v2.http.FileSegment;
-import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
+import com.microsoft.rest.v2.policy.CredentialsPolicy;
+import com.microsoft.rest.v2.policy.LoggingPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerAdapter.Encoding;
 import com.microsoft.rest.v2.protocol.TypeFactory;
+import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import org.joda.time.DateTime;
 import rx.Completable;
 import rx.Observable;
@@ -46,19 +51,20 @@ import java.util.Set;
  * Java object.
  */
 public class RestProxy implements InvocationHandler {
-    private final HttpClient httpClient;
+    private final HttpPipeline httpPipeline;
     private final SerializerAdapter<?> serializer;
     private final SwaggerInterfaceParser interfaceParser;
 
     /**
      * Create a new instance of RestProxy.
-     * @param httpClient The HttpClient that will be used by this RestProxy to send HttpRequests.
+     * @param httpPipeline The RequestPolicy and HttpClient httpPipeline that will be used to send HTTP
+     *                 requests.
      * @param serializer The serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser The parser that contains information about the swagger interface that
      *                        this RestProxy "implements".
      */
-    public RestProxy(HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
-        this.httpClient = httpClient;
+    public RestProxy(HttpPipeline httpPipeline, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
+        this.httpPipeline = httpPipeline;
         this.serializer = serializer;
         this.interfaceParser = interfaceParser;
     }
@@ -210,7 +216,7 @@ public class RestProxy implements InvocationHandler {
      * @return A {@link Single} representing the HTTP response that will arrive asynchronously.
      */
     public Single<HttpResponse> sendHttpRequestAsync(HttpRequest request) {
-        return httpClient.sendRequestAsync(request);
+        return httpPipeline.sendRequestAsync(request);
     }
 
     @Override
@@ -530,19 +536,99 @@ public class RestProxy implements InvocationHandler {
     }
 
     /**
+     * Create an instance of the default serializer.
+     * @return the default serializer.
+     */
+    public static SerializerAdapter<?> createDefaultSerializer() {
+        return new JacksonAdapter();
+    }
+
+    /**
+     * Create the default HttpPipeline.
+     * @return the default HttpPipeline.
+     */
+    public static HttpPipeline createDefaultPipeline() {
+        return createDefaultPipeline((RequestPolicy.Factory) null);
+    }
+
+    /**
+     * Create the default HttpPipeline.
+     * @param credentials The credentials to use to apply authentication to the pipeline.
+     * @return the default HttpPipeline.
+     */
+    public static HttpPipeline createDefaultPipeline(ServiceClientCredentials credentials) {
+        return createDefaultPipeline(new CredentialsPolicy.Factory(credentials));
+    }
+
+    /**
+     * Create the default HttpPipeline.
+     * @param credentialsPolicy The credentials policy factory to use to apply authentication to the
+     *                          pipeline.
+     * @return the default HttpPipeline.
+     */
+    public static HttpPipeline createDefaultPipeline(RequestPolicy.Factory credentialsPolicy) {
+        final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+        if (credentialsPolicy != null) {
+            builder.withRequestPolicy(credentialsPolicy);
+        }
+        builder.withRequestPolicy(new LoggingPolicy.Factory(LogLevel.BODY_AND_HEADERS));
+        return builder.build();
+    }
+
+    /**
      * Create a proxy implementation of the provided Swagger interface.
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
-     * @param baseURL The base URL for the service.
-     * @param httpClient The internal HTTP client that will be used to make REST calls.
+     * @param <A> The type of the Swagger interface.
+     * @return A proxy implementation of the provided Swagger interface.
+     */
+    @SuppressWarnings("unchecked")
+    public static <A> A create(Class<A> swaggerInterface) {
+        return create(swaggerInterface, createDefaultPipeline(), createDefaultSerializer());
+    }
+
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
+     * @param httpPipeline The RequestPolicy and HttpClient pipline that will be used to send Http
+     *                 requests.
+     * @param <A> The type of the Swagger interface.
+     * @return A proxy implementation of the provided Swagger interface.
+     */
+    @SuppressWarnings("unchecked")
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline) {
+        return create(swaggerInterface, httpPipeline, createDefaultSerializer());
+    }
+
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
+     * @param httpPipeline The RequestPolicy and HttpClient pipline that will be used to send Http
+     *                 requests.
      * @param serializer The serializer that will be used to convert POJOs to and from request and
      *                   response bodies.
      * @param <A> The type of the Swagger interface.
      * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, String baseURL, HttpClient httpClient, SerializerAdapter<?> serializer) {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, baseURL);
-        final RestProxy restProxy = new RestProxy(httpClient, serializer, interfaceParser);
+    public static <A> A create(Class<A> swaggerInterface, HttpPipeline httpPipeline, SerializerAdapter<?> serializer) {
+        return create(swaggerInterface, null, httpPipeline, serializer);
+    }
+
+    /**
+     * Create a proxy implementation of the provided Swagger interface.
+     * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
+     * @param baseUrl The base URL for the service.
+     * @param httpPipeline The RequestPolicy and HttpClient pipline that will be used to send Http
+     *                 requests.
+     * @param serializer The serializer that will be used to convert POJOs to and from request and
+     *                   response bodies.
+     * @param <A> The type of the Swagger interface.
+     * @return A proxy implementation of the provided Swagger interface.
+     */
+    @SuppressWarnings("unchecked")
+    public static <A> A create(Class<A> swaggerInterface, String baseUrl, HttpPipeline httpPipeline, SerializerAdapter<?> serializer) {
+        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, baseUrl);
+        final RestProxy restProxy = new RestProxy(httpPipeline, serializer, interfaceParser);
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, restProxy);
     }
 }

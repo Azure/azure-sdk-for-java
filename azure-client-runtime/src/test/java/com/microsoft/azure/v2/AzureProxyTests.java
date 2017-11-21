@@ -2,6 +2,7 @@ package com.microsoft.azure.v2;
 
 import com.microsoft.azure.v2.http.MockAzureHttpClient;
 import com.microsoft.azure.v2.http.MockAzureHttpResponse;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
@@ -32,12 +33,12 @@ public class AzureProxyTests {
     @Before
     public void beforeTest() {
         delayInMillisecondsBackup = AzureProxy.defaultDelayInMilliseconds();
-        AzureProxy.setDefaultDelayInMilliseconds(0);
+        AzureProxy.setDefaultPollingDelayInMilliseconds(0);
     }
 
     @After
     public void afterTest() {
-        AzureProxy.setDefaultDelayInMilliseconds(delayInMillisecondsBackup);
+        AzureProxy.setDefaultPollingDelayInMilliseconds(delayInMillisecondsBackup);
     }
 
     @Host("https://mock.azure.com")
@@ -378,7 +379,7 @@ public class AzureProxyTests {
     @Test
     public void createAsyncWithAzureAsyncOperationAndPollsWithDelay() throws InterruptedException {
         final long delayInMilliseconds = 100;
-        AzureProxy.setDefaultDelayInMilliseconds(delayInMilliseconds);
+        AzureProxy.setDefaultPollingDelayInMilliseconds(delayInMilliseconds);
 
         final MockAzureHttpClient httpClient = new MockAzureHttpClient();
         final int pollsUntilResource = 3;
@@ -753,7 +754,7 @@ public class AzureProxyTests {
     public void deleteAsyncWithForbiddenResponse() {
         final MockAzureHttpClient httpClient = new MockAzureHttpClient() {
             @Override
-            protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+            public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
                 return Single.<HttpResponse>just(new MockAzureHttpResponse(403, MockAzureHttpClient.responseHeaders()));
             }
         };
@@ -770,7 +771,7 @@ public class AzureProxyTests {
     }
 
     private static <T> T createMockService(Class<T> serviceClass, MockAzureHttpClient httpClient) {
-        return AzureProxy.create(serviceClass, (AzureEnvironment) null, httpClient, serializer);
+        return AzureProxy.create(serviceClass, (AzureEnvironment) null, HttpPipeline.build(httpClient), serializer);
     }
 
     private static void assertContains(String value, String expectedSubstring) {
