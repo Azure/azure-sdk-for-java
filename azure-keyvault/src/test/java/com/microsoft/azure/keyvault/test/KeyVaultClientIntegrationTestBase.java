@@ -1,28 +1,5 @@
 package com.microsoft.azure.keyvault.test;
 
-import com.microsoft.aad.adal4j.AuthenticationContext;
-import com.microsoft.aad.adal4j.AuthenticationResult;
-import com.microsoft.aad.adal4j.ClientCredential;
-import com.microsoft.azure.AzureResponseBuilder;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.keyvault.KeyVaultClient;
-import com.microsoft.azure.keyvault.authentication.KeyVaultCredentials;
-import com.microsoft.azure.keyvault.models.Attributes;
-import com.microsoft.azure.management.resources.core.AzureTestCredentials;
-import com.microsoft.azure.management.resources.core.InterceptorManager;
-import com.microsoft.azure.management.resources.core.TestBase;
-import com.microsoft.azure.management.resources.fluentcore.utils.ProviderRegistrationInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
-import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
-import com.microsoft.azure.serializer.AzureJacksonAdapter;
-import com.microsoft.rest.LogLevel;
-import com.microsoft.rest.RestClient;
-import com.microsoft.rest.ServiceClient;
-import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.rest.interceptors.LoggingInterceptor;
-import org.junit.*;
-import org.junit.rules.TestName;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
@@ -31,10 +8,37 @@ import java.util.Properties;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
+
+import org.junit.After;
+import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Rule;
+import org.junit.rules.TestName;
+
+import com.microsoft.aad.adal4j.AuthenticationContext;
+import com.microsoft.aad.adal4j.AuthenticationResult;
+import com.microsoft.aad.adal4j.ClientCredential;
+import com.microsoft.azure.AzureResponseBuilder;
+import com.microsoft.azure.keyvault.KeyVaultClient;
+import com.microsoft.azure.keyvault.authentication.KeyVaultCredentials;
+import com.microsoft.azure.keyvault.models.Attributes;
+import com.microsoft.azure.keyvault.models.DeletedCertificateBundle;
+import com.microsoft.azure.keyvault.models.DeletedKeyBundle;
+import com.microsoft.azure.keyvault.models.DeletedSecretBundle;
+import com.microsoft.azure.management.resources.core.InterceptorManager;
+import com.microsoft.azure.management.resources.core.TestBase;
+import com.microsoft.azure.management.resources.fluentcore.utils.ResourceManagerThrottlingInterceptor;
+import com.microsoft.azure.management.resources.fluentcore.utils.SdkContext;
+import com.microsoft.azure.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.LogLevel;
+import com.microsoft.rest.RestClient;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.rest.interceptors.LoggingInterceptor;
 
 public class KeyVaultClientIntegrationTestBase {
-	
+
 	private static TestBase.TestMode testMode = null;
 	private PrintStream out;
 
@@ -43,7 +47,7 @@ public class KeyVaultClientIntegrationTestBase {
 	}
 
 	protected static KeyVaultClient keyVaultClient;
-	
+
 	protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
 	protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
 	private static final String PLAYBACK_URI_BASE = "http://localhost:";
@@ -181,7 +185,6 @@ public class KeyVaultClientIntegrationTestBase {
 		return SdkContext.randomResourceName(prefix, maxLen);
 	}
 
-
 	private String shouldCancelTest(boolean isPlaybackMode) {
 		// Determine whether to run the test based on the condition the test has been
 		// configured with
@@ -310,8 +313,57 @@ public class KeyVaultClientIntegrationTestBase {
 
 	}
 
+	protected static DeletedCertificateBundle pollOnCertificateDeletion(String vaultBaseUrl, String certificateName)
+			throws Exception {
+		int pendingPollCount = 0;
+		while (pendingPollCount < 21) {
+			DeletedCertificateBundle certificateBundle = keyVaultClient.getDeletedCertificate(vaultBaseUrl,
+					certificateName);
+			if (certificateBundle == null) {
+				System.out.println("looking for that certificate");
+				Thread.sleep(10000);
+				pendingPollCount += 1;
+				continue;
+			} else {
+				return certificateBundle;
+			}
+		}
+		throw new Exception("Deleting certificate delayed");
+	}
+
+	protected static DeletedKeyBundle pollOnKeyDeletion(String vaultBaseUrl, String certificateName) throws Exception {
+		int pendingPollCount = 0;
+		while (pendingPollCount < 21) {
+			DeletedKeyBundle deletedKeyBundle = keyVaultClient.getDeletedKey(vaultBaseUrl, certificateName);
+			if (deletedKeyBundle == null) {
+				Thread.sleep(10000);
+				pendingPollCount += 1;
+				continue;
+			} else {
+				return deletedKeyBundle;
+			}
+		}
+		throw new Exception("Deleting key delayed");
+	}
+
+	protected static DeletedSecretBundle pollOnSecretDeletion(String vaultBaseUrl, String secretName) throws Exception {
+		int pendingPollCount = 0;
+		while (pendingPollCount < 50) {
+			DeletedSecretBundle deletedSecretBundle = keyVaultClient.getDeletedSecret(vaultBaseUrl, secretName);
+			if (deletedSecretBundle == null) {
+				Thread.sleep(10000);
+				pendingPollCount += 1;
+				continue;
+			} else {
+				return deletedSecretBundle;
+			}
+		}
+		throw new Exception("Deleting secret delayed");
+	}
+
 	@After
 	public void afterTest() throws IOException {
+
 		if (shouldCancelTest(isPlaybackMode()) != null) {
 			return;
 		}
