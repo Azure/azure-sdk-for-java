@@ -6,14 +6,25 @@
 
 package com.microsoft.azure.v2;
 
+import com.google.common.hash.Hashing;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.v2.annotations.AzureHost;
+import com.microsoft.azure.v2.serializer.AzureJacksonAdapter;
+import com.microsoft.rest.v2.LogLevel;
+import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
+import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.NettyClient;
+import com.microsoft.rest.v2.policy.AddCookiesPolicy;
+import com.microsoft.rest.v2.policy.CredentialsPolicy;
+import com.microsoft.rest.v2.policy.LoggingPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicy;
+import com.microsoft.rest.v2.policy.RetryPolicy;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.InvalidReturnTypeException;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerInterfaceParser;
 import com.microsoft.rest.v2.SwaggerMethodParser;
-import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Observable;
@@ -25,53 +36,161 @@ import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.net.NetworkInterface;
+import java.util.Enumeration;
 
 /**
  * This class can be used to create an Azure specific proxy implementation for a provided Swagger
  * generated interface.
  */
 public final class AzureProxy extends RestProxy {
-    private static long defaultDelayInMilliseconds = 30 * 1000;
+    private static long defaultPollingDelayInMilliseconds = 30 * 1000;
 
     /**
      * Create a new instance of RestProxy.
-     * @param httpClient The HttpClient that will be used by this RestProxy to send HttpRequests.
+     * @param httpPipeline The HttpPipeline that will be used by this AzureProxy to send HttpRequests.
      * @param serializer The serializer that will be used to convert response bodies to POJOs.
      * @param interfaceParser The parser that contains information about the swagger interface that
      *                        this RestProxy "implements".
      */
-    private AzureProxy(HttpClient httpClient, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
-        super(httpClient, serializer, interfaceParser);
+    private AzureProxy(HttpPipeline httpPipeline, SerializerAdapter<?> serializer, SwaggerInterfaceParser interfaceParser) {
+        super(httpPipeline, serializer, interfaceParser);
     }
 
     /**
      * @return The millisecond delay that will occur by default between long running operation polls.
      */
     public static long defaultDelayInMilliseconds() {
-        return AzureProxy.defaultDelayInMilliseconds;
+        return AzureProxy.defaultPollingDelayInMilliseconds;
     }
 
     /**
      * Set the millisecond delay that will occur by default between long running operation polls.
-     * @param defaultDelayInMilliseconds The number of milliseconds to delay before sending the next
+     * @param defaultPollingDelayInMilliseconds The number of milliseconds to delay before sending the next
      *                                   long running operation status poll.
      */
-    public static void setDefaultDelayInMilliseconds(long defaultDelayInMilliseconds) {
-        AzureProxy.defaultDelayInMilliseconds = defaultDelayInMilliseconds;
+    public static void setDefaultPollingDelayInMilliseconds(long defaultPollingDelayInMilliseconds) {
+        AzureProxy.defaultPollingDelayInMilliseconds = defaultPollingDelayInMilliseconds;
+    }
+
+    /**
+     * Get the default serializer.
+     * @return the default serializer.
+     */
+    public static SerializerAdapter<?> createDefaultSerializer() {
+        return new AzureJacksonAdapter();
+    }
+
+    private static String operatingSystem;
+    private static String operatingSystem() {
+        if (operatingSystem == null) {
+            operatingSystem = System.getProperty("os.name") + "/" + System.getProperty("os.version");
+        }
+        return operatingSystem;
+    }
+
+    private static String macAddressHash;
+    private static String macAddressHash() {
+        if (macAddressHash == null) {
+            byte[] macBytes = null;
+            try {
+                Enumeration<NetworkInterface> networks = NetworkInterface.getNetworkInterfaces();
+                while (networks.hasMoreElements()) {
+                    NetworkInterface network = networks.nextElement();
+                    macBytes = network.getHardwareAddress();
+
+                    if (macBytes != null) {
+                        break;
+                    }
+                }
+            } catch (Throwable t) {
+                // It's okay ignore mac address hash telemetry
+            }
+
+            if (macBytes == null) {
+                macBytes = "Unknown".getBytes();
+            }
+
+            macAddressHash = Hashing.sha256().hashBytes(macBytes).toString();
+        }
+        return macAddressHash;
+    }
+
+    private static String javaVersion;
+    private static String javaVersion() {
+        if (javaVersion == null) {
+            final String versionProperty = System.getProperty("java.version");
+            javaVersion = versionProperty != null ? versionProperty : "Unknown";
+        }
+        return javaVersion;
+    }
+
+    private static <T> String getDefaultUserAgentString(Class<?> swaggerInterface) {
+        final String packageImplementationVersion = swaggerInterface == null ? "" : "/" + swaggerInterface.getPackage().getImplementationVersion();
+        final String operatingSystem = operatingSystem();
+        final String macAddressHash = macAddressHash();
+        final String javaVersion = javaVersion();
+        return String.format("Azure-SDK-For-Java%s OS:%s MacAddressHash:%s Java:%s",
+                packageImplementationVersion,
+                operatingSystem,
+                macAddressHash,
+                javaVersion);
+    }
+
+    /**
+     * Create the default HttpPipeline.
+     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent
+     *                         string.
+     * @return the default HttpPipeline.
+     */
+    public static HttpPipeline defaultPipeline(Class<?> swaggerInterface) {
+        return defaultPipeline(swaggerInterface, (RequestPolicy.Factory) null);
+    }
+
+    /**
+     * Create the default HttpPipeline.
+     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent
+     *                         string.
+     * @param credentials The credentials to use to apply authentication to the pipeline.
+     * @return the default HttpPipeline.
+     */
+    public static HttpPipeline defaultPipeline(Class<?> swaggerInterface, ServiceClientCredentials credentials) {
+        return defaultPipeline(swaggerInterface, new CredentialsPolicy.Factory(credentials));
+    }
+
+    /**
+     * Create the default HttpPipeline.
+     * @param swaggerInterface The interface that the pipeline will use to generate a user-agent
+     *                         string.
+     * @param credentialsPolicy The credentials policy factory to use to apply authentication to the
+     *                          pipeline.
+     * @return the default HttpPipeline.
+     */
+    public static HttpPipeline defaultPipeline(Class<?> swaggerInterface, RequestPolicy.Factory credentialsPolicy) {
+        final HttpClient httpClient = new NettyClient.Factory().create(null);
+        final HttpPipeline.Builder builder = new HttpPipeline.Builder().withHttpClient(httpClient);
+        builder.withUserAgent(getDefaultUserAgentString(swaggerInterface));
+        builder.withRequestPolicy(new RetryPolicy.Factory());
+        builder.withRequestPolicy(new AddCookiesPolicy.Factory());
+        if (credentialsPolicy != null) {
+            builder.withRequestPolicy(credentialsPolicy);
+        }
+        builder.withRequestPolicy(new LoggingPolicy.Factory(LogLevel.HEADERS));
+        return builder.build();
     }
 
     /**
      * Create a proxy implementation of the provided Swagger interface.
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
      * @param azureEnvironment The azure environment that the proxy implementation will target.
-     * @param httpClient The internal HTTP client that will be used to make REST calls.
+     * @param httpPipeline The HTTP httpPipeline will be used to make REST calls.
      * @param serializer The serializer that will be used to convert POJOs to and from request and
      *                   response bodies.
      * @param <A> The type of the Swagger interface.
      * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, AzureEnvironment azureEnvironment, final HttpClient httpClient, SerializerAdapter<?> serializer) {
+    public static <A> A create(Class<A> swaggerInterface, AzureEnvironment azureEnvironment, HttpPipeline httpPipeline, SerializerAdapter<?> serializer) {
         String baseUrl = null;
 
         if (azureEnvironment != null) {
@@ -81,23 +200,23 @@ public final class AzureProxy extends RestProxy {
             }
         }
 
-        return AzureProxy.create(swaggerInterface, baseUrl, httpClient, serializer);
+        return AzureProxy.create(swaggerInterface, baseUrl, httpPipeline, serializer);
     }
 
     /**
      * Create a proxy implementation of the provided Swagger interface.
      * @param swaggerInterface The Swagger interface to provide a proxy implementation for.
      * @param baseUrl The base URL (protocol and host) that the proxy implementation will target.
-     * @param httpClient The internal HTTP client that will be used to make REST calls.
+     * @param httpPipeline The internal HTTP httpPipeline that will be used to make REST calls.
      * @param serializer The serializer that will be used to convert POJOs to and from request and
      *                   response bodies.
      * @param <A> The type of the Swagger interface.
      * @return A proxy implementation of the provided Swagger interface.
      */
     @SuppressWarnings("unchecked")
-    public static <A> A create(Class<A> swaggerInterface, String baseUrl, final HttpClient httpClient, SerializerAdapter<?> serializer) {
+    public static <A> A create(Class<A> swaggerInterface, String baseUrl, HttpPipeline httpPipeline, SerializerAdapter<?> serializer) {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(swaggerInterface, baseUrl);
-        final AzureProxy azureProxy = new AzureProxy(httpClient, serializer, interfaceParser);
+        final AzureProxy azureProxy = new AzureProxy(httpPipeline, serializer, interfaceParser);
         return (A) Proxy.newProxyInstance(swaggerInterface.getClassLoader(), new Class[]{swaggerInterface}, azureProxy);
     }
 

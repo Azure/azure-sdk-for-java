@@ -7,6 +7,7 @@
 package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
@@ -22,17 +23,19 @@ import java.util.Collections;
 public class UserAgentTests {
     @Test
     public void defaultUserAgentTests() throws Exception {
-        HttpClient client = new MockHttpClient(new UserAgentPolicy.Factory("AutoRest-Java")) {
-            @Override
-            public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
-                Assert.assertEquals(
-                        request.headers().value("User-Agent"),
-                        "AutoRest-Java");
-                return Single.<HttpResponse>just(new MockHttpResponse(200));
-            }
-        };
+        HttpPipeline pipeline = HttpPipeline.build(
+            new MockHttpClient() {
+                @Override
+                public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                    Assert.assertEquals(
+                            request.headers().value("User-Agent"),
+                            "AutoRest-Java");
+                    return Single.<HttpResponse>just(new MockHttpResponse(200));
+                }
+            },
+            new UserAgentPolicy.Factory("AutoRest-Java"));
 
-        HttpResponse response = client.sendRequestAsync(new HttpRequest(
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(
                 "defaultUserAgentTests",
                 "GET", "http://localhost")).blockingGet();
 
@@ -41,16 +44,18 @@ public class UserAgentTests {
 
     @Test
     public void customUserAgentTests() throws Exception {
-        HttpClient client = new MockHttpClient(new UserAgentPolicy.Factory("Awesome")) {
-            @Override
-            public Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
-                String header = request.headers().value("User-Agent");
-                Assert.assertEquals("Awesome", header);
-                return Single.<HttpResponse>just(new MockHttpResponse(200));
-            }
-        };
+        HttpPipeline pipeline = HttpPipeline.build(
+            new MockHttpClient() {
+                @Override
+                public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                    String header = request.headers().value("User-Agent");
+                    Assert.assertEquals("Awesome", header);
+                    return Single.<HttpResponse>just(new MockHttpResponse(200));
+                }
+            },
+            new UserAgentPolicy.Factory("Awesome"));
 
-        HttpResponse response = client.sendRequestAsync(new HttpRequest("customUserAgentTests", "GET", "http://localhost")).blockingGet();
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", "GET", "http://localhost")).blockingGet();
         Assert.assertEquals(200, response.statusCode());
     }
 }

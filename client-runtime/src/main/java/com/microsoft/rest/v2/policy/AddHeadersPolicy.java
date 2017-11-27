@@ -44,7 +44,7 @@ public final class AddHeadersPolicy implements RequestPolicy {
         }
 
         @Override
-        public RequestPolicy create(RequestPolicy next) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
             return new AddHeadersPolicy(headers, next);
         }
     }

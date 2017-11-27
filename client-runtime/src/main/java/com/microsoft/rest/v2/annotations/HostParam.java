@@ -52,5 +52,5 @@ public @interface HostParam {
      * encoded hence engine should not encode it, by default value will be encoded.
      * @return Whether or not this argument is already encoded.
      */
-    boolean encoded() default false;
+    boolean encoded() default true;
 }

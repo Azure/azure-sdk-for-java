@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2.policy;
 
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Single;
@@ -36,6 +37,32 @@ public interface RequestPolicy {
          * @param next the next RequestPolicy in the request-response pipeline.
          * @return the RequestPolicy
          */
-        RequestPolicy create(RequestPolicy next);
+        RequestPolicy create(RequestPolicy next, Options options);
+    }
+
+    /**
+     * Optional properties that can be used when creating a RequestPolicy.
+     */
+    class Options {
+        /**
+         * The Logger that has been assigned to the HttpPipeline.
+         */
+        private final HttpPipeline.Logger logger;
+
+        /**
+         * Create a new RequestPolicy.Options object.
+         * @param logger The logger that has been assigned to the HttpPipeline.
+         */
+        public Options(HttpPipeline.Logger logger) {
+            this.logger = logger;
+        }
+
+        /**
+         * Get the Logger that has been assigned to the HttpPipeline.
+         * @return The Logger that has been assigned to the HttpPipeline.
+         */
+        public HttpPipeline.Logger getLogger() {
+            return logger;
+        }
     }
 }

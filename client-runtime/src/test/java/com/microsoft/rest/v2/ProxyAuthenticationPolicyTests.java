@@ -1,6 +1,6 @@
 package com.microsoft.rest.v2;
 
-import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
@@ -9,39 +9,39 @@ import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.junit.Test;
 import io.reactivex.Single;
 
+import java.util.concurrent.atomic.AtomicBoolean;
+
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.fail;
 
 public class ProxyAuthenticationPolicyTests {
-    private boolean auditorVisited = false;
-
     @Test
     public void test() {
+        final AtomicBoolean auditorVisited = new AtomicBoolean(false);
         final String username = "testuser";
         final String password = "testpass";
 
-        RequestPolicy.Factory auditorFactory = new RequestPolicy.Factory() {
-            @Override
-            public RequestPolicy create(final RequestPolicy next) {
-                return new RequestPolicy() {
-                    @Override
-                    public Single<HttpResponse> sendAsync(HttpRequest request) {
-                        assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", request.headers().value("Proxy-Authentication"));
-                        auditorVisited = true;
-                        return next.sendAsync(request);
-                    }
-                };
-            }
-        };
-
-        HttpClient client = new MockHttpClient(
+        final HttpPipeline pipeline = HttpPipeline.build(
+                new MockHttpClient(),
                 new ProxyAuthenticationPolicy.Factory(username, password),
-                auditorFactory);
+                new RequestPolicy.Factory() {
+                    @Override
+                    public RequestPolicy create(final RequestPolicy next, RequestPolicy.Options options) {
+                        return new RequestPolicy() {
+                            @Override
+                            public Single<HttpResponse> sendAsync(HttpRequest request) {
+                                assertEquals("Basic dGVzdHVzZXI6dGVzdHBhc3M=", request.headers().value("Proxy-Authentication"));
+                                auditorVisited.set(true);
+                                return next.sendAsync(request);
+                            }
+                        };
+                    }
+                });
 
-        client.sendRequestAsync(new HttpRequest("test", "GET", "localhost"))
+        pipeline.sendRequestAsync(new HttpRequest("test", "GET", "localhost"))
                 .blockingGet();
 
-        if (!auditorVisited) {
+        if (!auditorVisited.get()) {
             fail();
         }
     }

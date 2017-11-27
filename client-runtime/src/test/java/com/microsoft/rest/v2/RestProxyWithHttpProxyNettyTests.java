@@ -17,6 +17,6 @@ public class RestProxyWithHttpProxyNettyTests extends RestProxyTests {
     protected HttpClient createHttpClient() {
         InetSocketAddress address = new InetSocketAddress("127.0.0.1", 8888);
         Proxy proxy = new Proxy(Proxy.Type.HTTP, address);
-        return nettyClientFactory.create(new HttpClient.Configuration(Collections.<RequestPolicy.Factory>emptyList(), proxy));
+        return nettyClientFactory.create(new HttpClient.Configuration(proxy));
     }
 }

@@ -9,17 +9,15 @@ package com.microsoft.rest.v2;
 import com.microsoft.rest.v2.credentials.BasicAuthenticationCredentials;
 import com.microsoft.rest.v2.credentials.TokenCredentials;
 
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.policy.CredentialsPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicy;
-import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
+import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.junit.Assert;
 import org.junit.Test;
 import io.reactivex.Single;
-
-import java.util.Arrays;
 
 public class CredentialsTests {
 
@@ -29,7 +27,7 @@ public class CredentialsTests {
 
         RequestPolicy.Factory auditorFactory = new RequestPolicy.Factory() {
             @Override
-            public RequestPolicy create(final RequestPolicy next) {
+            public RequestPolicy create(final RequestPolicy next, RequestPolicy.Options options) {
                 return new RequestPolicy() {
                     @Override
                     public Single<HttpResponse> sendAsync(HttpRequest request) {
@@ -41,10 +39,13 @@ public class CredentialsTests {
             }
         };
 
-        HttpClient client = new MockHttpClient(new CredentialsPolicy.Factory(credentials), auditorFactory);
+        final HttpPipeline pipeline = HttpPipeline.build(
+                new MockHttpClient(),
+                new CredentialsPolicy.Factory(credentials),
+                auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
-        client.sendRequestAsync(request).blockingGet();
+        pipeline.sendRequestAsync(request).blockingGet();
     }
 
     @Test
@@ -53,7 +54,7 @@ public class CredentialsTests {
 
         RequestPolicy.Factory auditorFactory = new RequestPolicy.Factory() {
             @Override
-            public RequestPolicy create(final RequestPolicy next) {
+            public RequestPolicy create(final RequestPolicy next, RequestPolicy.Options options) {
                 return new RequestPolicy() {
                     @Override
                     public Single<HttpResponse> sendAsync(HttpRequest request) {
@@ -65,9 +66,12 @@ public class CredentialsTests {
             }
         };
 
-        HttpClient client = new MockHttpClient(new CredentialsPolicy.Factory(credentials), auditorFactory);
+        HttpPipeline pipeline = HttpPipeline.build(
+                new MockHttpClient(),
+                new CredentialsPolicy.Factory(credentials),
+                auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
-        client.sendRequestAsync(request).blockingGet();
+        pipeline.sendRequestAsync(request).blockingGet();
     }
 }

@@ -22,9 +22,8 @@ public class AzureTests {
 // @AzureHost not yet supported.
 //    @Test
 //    public void getBytes() throws Exception {
-//        RestClient client = new RestClient.Builder()
+//        RestClient client = RestClient.newDefaultBuilder()
 //                .withBaseUrl("http://localhost")
-//                .withSerializerAdapter(new JacksonAdapter())
 //                .withResponseBuilderFactory(new ServiceResponseBuilder.Factory())
 //                .build();
 //        HttpBinService service = RestProxy.create(HttpBinService.class, client);

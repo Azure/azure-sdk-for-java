@@ -52,13 +52,12 @@ public final class NettyClient extends HttpClient {
      * @param adapter the adapter to Netty
      */
     private NettyClient(HttpClient.Configuration configuration, NettyAdapter adapter) {
-        super(configuration);
         this.adapter = adapter;
-        this.proxy = configuration.proxy();
+        this.proxy = configuration == null ? null : configuration.proxy();
     }
 
     @Override
-    protected Single<HttpResponse> sendRequestInternalAsync(final HttpRequest request) {
+    public Single<HttpResponse> sendRequestAsync(final HttpRequest request) {
         return adapter.sendRequestInternalAsync(request, proxy);
     }
 

@@ -38,12 +38,6 @@ public class SwaggerInterfaceParserTests {
     }
 
     @Test
-    public void hostWithHostAnnotationAndArgument() {
-        final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface2.class, "https://otherhost.com");
-        assertEquals("https://otherhost.com", interfaceParser.host());
-    }
-
-    @Test
     public void methodParser() {
         final SwaggerInterfaceParser interfaceParser = new SwaggerInterfaceParser(TestInterface3.class, null);
         final Method testMethod3 = TestInterface3.class.getDeclaredMethods()[0];

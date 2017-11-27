@@ -55,7 +55,7 @@ public class MockAzureHttpClient extends HttpClient {
     }
 
     @Override
-    protected Single<HttpResponse> sendRequestInternalAsync(HttpRequest request) {
+    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
         MockAzureHttpResponse response = null;
 
         try {

@@ -6,59 +6,50 @@
 
 package com.microsoft.rest.v2;
 
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
-import com.microsoft.rest.v2.serializer.JacksonAdapter;
-import com.microsoft.rest.v2.http.HttpClient;
 
 /**
  * The base class for generated service clients.
  */
 public abstract class ServiceClient {
     /**
-     * The RestClient instance storing configuration for service clients.
+     * The HTTP pipeline to send requests through.
      */
-    private RestClient restClient;
+    private HttpPipeline httpPipeline;
+
+    /**
+     * The lazily-created serializer for this ServiceClient.
+     */
+    private SerializerAdapter<?> serializerAdapter;
 
     /**
      * Initializes a new instance of the ServiceClient class.
      *
-     * @param baseUrl the service base uri
+     * @param httpPipeline The HTTP pipeline to send requests through
      */
-    protected ServiceClient(String baseUrl) {
-        this(new RestClient.Builder()
-                .withBaseUrl(baseUrl)
-                .withLogLevel(LogLevel.BODY_AND_HEADERS)
-                .withSerializerAdapter(new JacksonAdapter())
-                .build());
+    protected ServiceClient(HttpPipeline httpPipeline) {
+        this.httpPipeline = httpPipeline;
     }
 
     /**
-     * Initializes a new instance of the ServiceClient class.
-     *
-     * @param restClient the REST client
+     * @return the HTTP pipeline to send requests through.
      */
-    protected ServiceClient(RestClient restClient) {
-        this.restClient = restClient;
+    public HttpPipeline httpPipeline() {
+        return this.httpPipeline;
     }
 
     /**
-     * @return the {@link RestClient} instance.
-     */
-    public RestClient restClient() {
-        return restClient;
-    }
-
-    /**
-     * @return the {@link HttpClient} instance.
-     */
-    public HttpClient httpClient() {
-        return this.restClient.httpClient();
-    }
-
-    /**
-     * @return the adapter to a Jackson {@link com.fasterxml.jackson.databind.ObjectMapper}.
+     * @return the serializer for this ServiceClient.
      */
     public SerializerAdapter<?> serializerAdapter() {
-        return this.restClient.serializerAdapter();
+        if (this.serializerAdapter == null) {
+            this.serializerAdapter = createSerializerAdapter();
+        }
+        return this.serializerAdapter;
+    }
+
+    protected SerializerAdapter<?> createSerializerAdapter() {
+        return RestProxy.createDefaultSerializer();
     }
 }

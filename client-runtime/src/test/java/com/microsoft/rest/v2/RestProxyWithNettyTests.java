@@ -12,6 +12,6 @@ public class RestProxyWithNettyTests extends RestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return nettyClientFactory.create(new Configuration(Collections.<Factory>emptyList(), null));
+        return nettyClientFactory.create(new Configuration(null));
     }
 }
