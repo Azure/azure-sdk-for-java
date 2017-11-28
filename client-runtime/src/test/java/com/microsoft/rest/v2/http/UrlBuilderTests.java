@@ -192,4 +192,164 @@ public class UrlBuilderTests {
                 .withQueryParameter("otherthing", "otherstuff");
         assertEquals("http://www.othersite.com/mypath?thing=stuff&otherthing=otherstuff", builder.toString());
     }
+
+    @Test
+    public void parseWithNull() {
+        assertNull(UrlBuilder.parse(null));
+    }
+
+    @Test
+    public void parseWithEmpty() {
+        assertNull(UrlBuilder.parse(""));
+    }
+
+    @Test
+    public void parseWithHost() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com");
+        assertEquals("www.bing.com", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHost() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com");
+        assertEquals("https://www.bing.com", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndPort() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com:8080");
+        assertEquals("www.bing.com:8080", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndPort() {
+        final UrlBuilder builder = UrlBuilder.parse("ftp://www.bing.com:8080");
+        assertEquals("ftp://www.bing.com:8080", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndPath() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com/my/path");
+        assertEquals("www.bing.com/my/path", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndPath() {
+        final UrlBuilder builder = UrlBuilder.parse("ftp://www.bing.com/my/path");
+        assertEquals("ftp://www.bing.com/my/path", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndPortAndPath() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com:1234/my/path");
+        assertEquals("www.bing.com:1234/my/path", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndPortAndPath() {
+        final UrlBuilder builder = UrlBuilder.parse("ftp://www.bing.com:2345/my/path");
+        assertEquals("ftp://www.bing.com:2345/my/path", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndOneQueryParameter() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com?a=1");
+        assertEquals("www.bing.com?a=1", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndOneQueryParameter() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com?a=1");
+        assertEquals("https://www.bing.com?a=1", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndPortAndOneQueryParameter() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com:123?a=1");
+        assertEquals("www.bing.com:123?a=1", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndPortAndOneQueryParameter() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com:987?a=1");
+        assertEquals("https://www.bing.com:987?a=1", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndPathAndOneQueryParameter() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com/folder/index.html?a=1");
+        assertEquals("www.bing.com/folder/index.html?a=1", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndPathAndOneQueryParameter() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com/image.gif?a=1");
+        assertEquals("https://www.bing.com/image.gif?a=1", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndPortAndPathAndOneQueryParameter() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com:123/index.html?a=1");
+        assertEquals("www.bing.com:123/index.html?a=1", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndPortAndPathAndOneQueryParameter() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com:987/my/path/again?a=1");
+        assertEquals("https://www.bing.com:987/my/path/again?a=1", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndTwoQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com?a=1&b=2");
+        assertEquals("www.bing.com?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndTwoQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com?a=1&b=2");
+        assertEquals("https://www.bing.com?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndPortAndTwoQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com:123?a=1&b=2");
+        assertEquals("www.bing.com:123?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndPortAndTwoQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com:987?a=1&b=2");
+        assertEquals("https://www.bing.com:987?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndPathAndTwoQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com/folder/index.html?a=1&b=2");
+        assertEquals("www.bing.com/folder/index.html?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndPathAndTwoQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com/image.gif?a=1&b=2");
+        assertEquals("https://www.bing.com/image.gif?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseWithHostAndPortAndPathAndTwoQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("www.bing.com:123/index.html?a=1&b=2");
+        assertEquals("www.bing.com:123/index.html?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseWithProtocolAndHostAndPortAndPathAndTwoQueryParameters() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com:987/my/path/again?a=1&b=2");
+        assertEquals("https://www.bing.com:987/my/path/again?a=1&b=2", builder.toString());
+    }
+
+    @Test
+    public void parseWithColonInPath() {
+        final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com/my:/path");
+        assertEquals("https://www.bing.com/my:/path", builder.toString());
+    }
 }

@@ -61,7 +61,7 @@ public interface RequestPolicy {
          * Get the Logger that has been assigned to the HttpPipeline.
          * @return The Logger that has been assigned to the HttpPipeline.
          */
-        public HttpPipeline.Logger getLogger() {
+        public HttpPipeline.Logger logger() {
             return logger;
         }
     }
