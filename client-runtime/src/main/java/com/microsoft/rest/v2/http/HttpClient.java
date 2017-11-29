@@ -21,12 +21,8 @@ public abstract class HttpClient {
      */
     public abstract Single<HttpResponse> sendRequestAsync(HttpRequest request);
 
-    private static HttpClient.Factory defaultFactory;
     private static HttpClient.Factory defaultHttpClientFactory() {
-        if (defaultFactory == null) {
-            defaultFactory = new NettyClient.Factory();
-        }
-        return defaultFactory;
+        return new NettyClient.Factory();
     }
 
     /**
