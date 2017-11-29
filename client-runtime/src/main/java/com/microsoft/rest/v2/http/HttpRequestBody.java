@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
+import java.io.IOException;
 import java.io.InputStream;
 
 /**
@@ -28,4 +29,13 @@ public interface HttpRequestBody {
      * @return An InputStream that contains the contents of this request body.
      */
     InputStream createInputStream();
+
+    /**
+     * Get a buffered version of this HttpRequestBody. If this HttpRequestBody
+     * can only be read once, then calling this method will consume this
+     * HttpRequestBody and the resulting object should be used instead.
+     * @return A buffered version of this HttpRequestBody.
+     * @throws IOException if there is a problem buffering.
+     */
+    HttpRequestBody buffer() throws IOException;
 }

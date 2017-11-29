@@ -1,4 +1,4 @@
-package com.microsoft.rest.v2;
+package com.microsoft.rest.v2.http;
 
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpPipeline;

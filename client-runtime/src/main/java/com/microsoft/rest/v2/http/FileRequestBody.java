@@ -49,6 +49,11 @@ public class FileRequestBody implements HttpRequestBody {
         return new ByteBufInputStream(content);
     }
 
+    @Override
+    public HttpRequestBody buffer() {
+        return this;
+    }
+
     /**
      * @return the lazy loaded content of the request, in the format of a file segment.
      */

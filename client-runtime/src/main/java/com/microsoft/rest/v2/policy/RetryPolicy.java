@@ -11,10 +11,8 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import rx.Single;
 import rx.functions.Func1;
 
-import static java.net.HttpURLConnection.HTTP_CLIENT_TIMEOUT;
-import static java.net.HttpURLConnection.HTTP_INTERNAL_ERROR;
-import static java.net.HttpURLConnection.HTTP_NOT_IMPLEMENTED;
-import static java.net.HttpURLConnection.HTTP_VERSION;
+import java.io.IOException;
+import java.net.HttpURLConnection;
 
 /**
  * An instance of this interceptor placed in the request pipeline handles retriable errors.
@@ -60,25 +58,38 @@ public final class RetryPolicy implements RequestPolicy {
     private boolean shouldRetry(HttpResponse response) {
         int code = response.statusCode();
         return tryCount < maxRetries
-                && (code == HTTP_CLIENT_TIMEOUT
-                    || (code >= HTTP_INTERNAL_ERROR
-                        && code != HTTP_NOT_IMPLEMENTED
-                        && code != HTTP_VERSION));
+                && (code == HttpURLConnection.HTTP_CLIENT_TIMEOUT
+                    || (code >= HttpURLConnection.HTTP_INTERNAL_ERROR
+                        && code != HttpURLConnection.HTTP_NOT_IMPLEMENTED
+                        && code != HttpURLConnection.HTTP_VERSION));
     }
 
     @Override
     public Single<HttpResponse> sendAsync(final HttpRequest request) {
-        Single<? extends HttpResponse> asyncResponse = next.sendAsync(request);
-        return asyncResponse.flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
-            @Override
-            public Single<? extends HttpResponse> call(HttpResponse httpResponse) {
-                if (shouldRetry(httpResponse)) {
-                    tryCount++;
-                    return sendAsync(request);
-                } else {
-                    return Single.just(httpResponse);
-                }
-            }
-        });
+        Single<HttpResponse> result;
+        try {
+            final HttpRequest bufferedRequest = request.buffer();
+            result = next.sendAsync(request)
+                    .flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
+                        @Override
+                        public Single<HttpResponse> call(HttpResponse httpResponse) {
+                            Single<HttpResponse> result;
+                            if (shouldRetry(httpResponse)) {
+                                tryCount++;
+                                try {
+                                    result = sendAsync(bufferedRequest.buffer());
+                                } catch (IOException e) {
+                                    result = Single.error(e);
+                                }
+                            } else {
+                                result = Single.just(httpResponse);
+                            }
+                            return result;
+                        }
+                    });
+        } catch (IOException e) {
+            result = Single.error(e);
+        }
+        return result;
     }
 }

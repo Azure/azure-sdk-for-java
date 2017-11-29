@@ -8,6 +8,9 @@ package com.microsoft.rest.v2.http;
 
 import com.google.common.base.Charsets;
 
+import java.io.IOException;
+import java.io.InputStream;
+
 /**
  * This class contains all of the details necessary for sending a HTTP request through a HttpClient.
  */
@@ -163,6 +166,17 @@ public class HttpRequest {
 
     /**
      * Set the body of this HTTP request.
+     * @param body The stream of bytes to use for the body of this HTTP request.
+     * @param contentLength The number of bytes in the body.
+     * @param mimeContentType The MIME Content-Type of the body's contents.
+     * @return This HttpRequest so that multiple operations can be chained together.
+     */
+    public HttpRequest withBody(InputStream body, int contentLength, String mimeContentType) {
+        return withBody(new InputStreamHttpRequestBody(contentLength, mimeContentType, body));
+    }
+
+    /**
+     * Set the body of this HTTP request.
      * @param body The body of this HTTP request.
      * @return This HttpRequest so that multiple operations can be chained together.
      */
@@ -173,10 +187,18 @@ public class HttpRequest {
     }
 
     /**
-     * Performs a deep clone of this HTTP request.
+     * Performs a deep clone of this HTTP request. The main purpose of this is so that this
+     * HttpRequest can be changed and the resulting HttpRequest can be a backup. This means
+     * that the buffered HttpHeaders and body must not be able to change from side effects of
+     * this HttpRequest.
      * @return A new HTTP request instance with cloned instances of all mutable properties.
+     * @throws IOException if the request body fails to buffer.
      */
-    public HttpRequest clone() {
-        return new HttpRequest(callerMethod, httpMethod, url, new HttpHeaders(headers), body);
+    public HttpRequest buffer() throws IOException {
+        final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
+        // If calling buffer() will consume the body, then we need to set this
+        // HttpRequest's body to be the buffered body too.
+        body = (body == null ? null : body.buffer());
+        return new HttpRequest(callerMethod, httpMethod, url, bufferedHeaders, body);
     }
 }

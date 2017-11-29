@@ -1,4 +1,4 @@
-package com.microsoft.rest.v2;
+package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
