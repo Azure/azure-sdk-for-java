@@ -54,6 +54,30 @@ public final class HttpPipeline {
     }
 
     /**
+     * Get the HttpClient.
+     * @return the HttpClient.
+     */
+    HttpClient httpClient() {
+        return httpClientRequestPolicyAdapter.httpClient();
+    }
+
+    /**
+     * Get the Logger that will be passed to each RequestPolicy.
+     * @return the Logger that will be passed to each RequestPolicy.
+     */
+    Logger logger() {
+        return requestPolicyOptions.logger();
+    }
+
+    /**
+     * Get the RequestPolicy factories that this pipeline contains.
+     * @return the RequestPolicy factories that this pipeline contains.
+     */
+    RequestPolicy.Factory[] requestPolicyFactories() {
+        return requestPolicyFactories;
+    }
+
+    /**
      * Send the provided HTTP request using this HttpPipeline's HttpClient after it has passed through
      * each of the RequestPolicies that have been configured on this HttpPipeline.
      * @param httpRequest The HttpRequest to send.
@@ -122,7 +146,7 @@ public final class HttpPipeline {
          * Create a new HttpPipeline builder.
          */
         public Builder() {
-            this(null);
+            this((Options) null);
         }
 
         /**
@@ -133,6 +157,37 @@ public final class HttpPipeline {
         public Builder(Options options) {
             this.options = options;
             this.requestPolicyFactories = new ArrayList<>();
+        }
+
+        /**
+         * Create a new HttpPipeline builder that is initialized with the
+         * properties of the provided pipeline.
+         * @param pipeline the HttpPipeline to base this Builder on.
+         */
+        public Builder(HttpPipeline pipeline) {
+            this(new Options()
+                .withHttpClient(pipeline.httpClient())
+                .withLogger(pipeline.logger()));
+
+            for (final RequestPolicy.Factory requestPolicyFactory : pipeline.requestPolicyFactories()) {
+                withRequestPolicy(requestPolicyFactory);
+            }
+        }
+
+        /**
+         * Get the RequestPolicy factories in this HttpPipeline builder.
+         * @return the RequestPolicy factories in this HttpPipeline builder.
+         */
+        List<RequestPolicy.Factory> requestPolicyFactories() {
+            return requestPolicyFactories;
+        }
+
+        /**
+         * Get the options for this HttpPipeline builder.
+         * @return the options for this HttpPipeline builder.
+         */
+        Options options() {
+            return options;
         }
 
         /**
@@ -167,7 +222,89 @@ public final class HttpPipeline {
          * @return This HttpPipeline builder.
          */
         public Builder withRequestPolicy(RequestPolicy.Factory requestPolicyFactory) {
-            requestPolicyFactories.add(0, requestPolicyFactory);
+            return withRequestPolicy(requestPolicyFactories.size(), requestPolicyFactory);
+        }
+
+        /**
+         * Add the provided RequestPolicy factory to this HttpPipeline builder
+         * at the provided index in the pipeline.
+         * @param index The index to insert the provided RequestPolicy factory.
+         * @param requestPolicyFactory The RequestPolicy factory to add to this
+         *                             HttpPipeline builder.
+         * @return This HttpPipeline builder.
+         */
+        public Builder withRequestPolicy(int index, RequestPolicy.Factory requestPolicyFactory) {
+            // The requestPolicyFactories list is in reverse order that the
+            // policies will be in. The caller of this method should be
+            // providing the index based on the policy list, not the factory
+            // list.
+            final int insertIndex = requestPolicyFactories.size() - index;
+            requestPolicyFactories.add(insertIndex, requestPolicyFactory);
+            return this;
+        }
+
+        /**
+         * Add the provided RequestPolicy factory to this HttpPipeline builder
+         * directly before the first instance of the provided RequestPolicy
+         * factory type. If the provided RequestPolicy factory type is not
+         * found, then the RequestPolicy factory will be added to the end of the
+         * pipeline.
+         * @param requestPolicyFactoryType The RequestPolicy factory type to
+         *                                 search for.
+         * @param requestPolicyFactory The RequestPolicy factory to add.
+         * @return This HttpPipeline builder.
+         */
+        public Builder withRequestPolicyBefore(Class<? extends RequestPolicy.Factory> requestPolicyFactoryType, RequestPolicy.Factory requestPolicyFactory) {
+            int searchIndex = 0;
+            for (final RequestPolicy.Factory factory : requestPolicyFactories) {
+                if (requestPolicyFactoryType.equals(factory.getClass())) {
+                    break;
+                }
+                else {
+                    ++searchIndex;
+                }
+            }
+            final int factoryCount = requestPolicyFactories.size();
+
+            if (searchIndex == factoryCount) {
+                withRequestPolicy(requestPolicyFactory);
+            } else {
+                final int insertIndex = searchIndex + 1;
+                requestPolicyFactories.add(insertIndex, requestPolicyFactory);
+            }
+
+            return this;
+        }
+
+        /**
+         * Add the provided RequestPolicy factory to this HttpPipeline builder
+         * directly after the first instance of the provided RequestPolicy
+         * factory type. If the provided RequestPolicy factory type is not
+         * found, then the RequestPolicy factory will be added to the end of the
+         * pipeline.
+         * @param requestPolicyFactoryType The RequestPolicy factory type to
+         *                                 search for.
+         * @param requestPolicyFactory The RequestPolicy factory to add.
+         * @return This HttpPipeline builder.
+         */
+        public Builder withRequestPolicyAfter(Class<? extends RequestPolicy.Factory> requestPolicyFactoryType, RequestPolicy.Factory requestPolicyFactory) {
+            int searchIndex = 0;
+            for (final RequestPolicy.Factory factory : requestPolicyFactories) {
+                if (requestPolicyFactoryType.equals(factory.getClass())) {
+                    break;
+                }
+                else {
+                    ++searchIndex;
+                }
+            }
+            final int factoryCount = requestPolicyFactories.size();
+
+            if (searchIndex == factoryCount) {
+                withRequestPolicy(requestPolicyFactory);
+            } else {
+                requestPolicyFactories.add(searchIndex, requestPolicyFactory);
+            }
+
             return this;
         }
 

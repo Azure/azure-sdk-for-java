@@ -17,9 +17,11 @@ import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
+import com.microsoft.rest.v2.policy.AddCookiesPolicy;
 import com.microsoft.rest.v2.policy.CredentialsPolicy;
-import com.microsoft.rest.v2.policy.LoggingPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicy;
+import com.microsoft.rest.v2.policy.RetryPolicy;
+import com.microsoft.rest.v2.policy.UserAgentPolicy;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerAdapter.Encoding;
 import com.microsoft.rest.v2.protocol.TypeFactory;
@@ -586,10 +588,12 @@ public class RestProxy implements InvocationHandler {
      */
     public static HttpPipeline createDefaultPipeline(RequestPolicy.Factory credentialsPolicy) {
         final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+        builder.withRequestPolicy(new UserAgentPolicy.Factory());
+        builder.withRequestPolicy(new RetryPolicy.Factory());
+        builder.withRequestPolicy(new AddCookiesPolicy.Factory());
         if (credentialsPolicy != null) {
             builder.withRequestPolicy(credentialsPolicy);
         }
-        builder.withRequestPolicy(new LoggingPolicy.Factory(LogLevel.BODY_AND_HEADERS));
         return builder.build();
     }
 

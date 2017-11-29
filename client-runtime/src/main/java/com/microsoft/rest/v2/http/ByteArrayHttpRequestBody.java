@@ -47,4 +47,9 @@ public class ByteArrayHttpRequestBody implements HttpRequestBody {
     public InputStream createInputStream() {
         return new ByteArrayInputStream(contents);
     }
+
+    @Override
+    public HttpRequestBody buffer() {
+        return this;
+    }
 }

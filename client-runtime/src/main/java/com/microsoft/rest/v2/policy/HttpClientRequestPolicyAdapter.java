@@ -26,6 +26,14 @@ public class HttpClientRequestPolicyAdapter implements RequestPolicy {
         this.httpClient = httpClient;
     }
 
+    /**
+     * Get the HttpClient that this RequestPolicy uses to send HttpRequests.
+     * @return the HttpClient that this RequestPolicy uses to send HttpRequests.
+     */
+    public HttpClient httpClient() {
+        return httpClient;
+    }
+
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         return httpClient.sendRequestAsync(request);

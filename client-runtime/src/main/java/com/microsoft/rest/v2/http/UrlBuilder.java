@@ -6,6 +6,8 @@
 
 package com.microsoft.rest.v2.http;
 
+import java.net.URL;
+
 /**
  * A builder class that is used to create URLs.
  */
@@ -27,6 +29,14 @@ public class UrlBuilder {
     }
 
     /**
+     * Get the scheme/protocol that has been assigned to this UrlBuilder.
+     * @return the scheme/protocol that has been assigned to this UrlBuilder.
+     */
+    public String scheme() {
+        return scheme;
+    }
+
+    /**
      * Set the host that will be used to build the final URL.
      * @param host The host that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
@@ -40,6 +50,14 @@ public class UrlBuilder {
     }
 
     /**
+     * Get the host that has been assigned to this UrlBuilder.
+     * @return the host that has been assigned to this UrlBuilder.
+     */
+    public String host() {
+        return host;
+    }
+
+    /**
      * Set the port that will be used to build the final URL.
      * @param port The port that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
@@ -47,6 +65,14 @@ public class UrlBuilder {
     public UrlBuilder withPort(int port) {
         this.port = port;
         return this;
+    }
+
+    /**
+     * Get the port that has been assigned to this UrlBuilder.
+     * @return the port that has been assigned to this UrlBuilder.
+     */
+    public Integer port() {
+        return port;
     }
 
     /**
@@ -74,6 +100,14 @@ public class UrlBuilder {
     }
 
     /**
+     * Get the path that has been assigned to this UrlBuilder.
+     * @return the path that has been assigned to this UrlBuilder.
+     */
+    public String path() {
+        return path;
+    }
+
+    /**
      * Add the provided query parameter name and encoded value to query string for the final URL.
      * @param queryParameterName The name of the query parameter.
      * @param queryParameterEncodedValue The encoded value of the query parameter.
@@ -89,6 +123,27 @@ public class UrlBuilder {
         }
         query += queryParameterName + "=" + queryParameterEncodedValue;
         return this;
+    }
+
+    /**
+     * Set the query that will be used to build the final URL.
+     * @param query The query that will be used to build the final URL.
+     * @return This UrlBuilder so that multiple setters can be chained together.
+     */
+    public UrlBuilder withQuery(String query) {
+        if (query != null && !query.startsWith("/")) {
+            query = "?" + query;
+        }
+        this.query = query;
+        return this;
+    }
+
+    /**
+     * Get the query that has been assigned to this UrlBuilder.
+     * @return the query that has been assigned to this UrlBuilder.
+     */
+    public String query() {
+        return query;
     }
 
     /**
@@ -130,5 +185,53 @@ public class UrlBuilder {
         }
 
         return result.toString();
+    }
+
+    /**
+     * Parse a UrlBuilder from the provided URL string.
+     * @param url The string to parse.
+     * @return The UrlBuilder that was parsed from the string.
+     */
+    public static UrlBuilder parse(String url) {
+        UrlBuilder result = null;
+
+        if (url != null && !url.isEmpty()) {
+            boolean addedProtocol = false;
+            if (!url.contains("://")) {
+                url = "http://" + url;
+                addedProtocol = true;
+            }
+
+            URL javaUrl = null;
+            try {
+                javaUrl = new URL(url);
+            }
+            catch (Exception ignored) {
+            }
+
+            if (javaUrl != null) {
+                result = new UrlBuilder();
+
+                if (!addedProtocol) {
+                    result.withScheme(javaUrl.getProtocol());
+                }
+
+                result.withHost(javaUrl.getHost());
+
+                final int port = javaUrl.getPort();
+                if (port != -1) {
+                    result.withPort(port);
+                }
+
+                final String path = javaUrl.getPath();
+                if (path != null && !path.isEmpty()) {
+                    result.withPath(path);
+                }
+
+                result.withQuery(javaUrl.getQuery());
+            }
+        }
+
+        return result;
     }
 }

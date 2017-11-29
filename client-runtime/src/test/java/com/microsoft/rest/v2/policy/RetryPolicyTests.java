@@ -4,15 +4,10 @@
  * license information.
  */
 
-package com.microsoft.rest.v2;
+package com.microsoft.rest.v2.policy;
 
 
-import com.microsoft.rest.v2.http.HttpPipeline;
-import com.microsoft.rest.v2.http.MockHttpResponse;
-import com.microsoft.rest.v2.policy.RetryPolicy;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.MockHttpClient;
+import com.microsoft.rest.v2.http.*;
 import org.junit.Assert;
 import org.junit.Test;
 
