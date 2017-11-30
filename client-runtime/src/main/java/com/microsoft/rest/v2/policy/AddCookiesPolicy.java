@@ -10,7 +10,6 @@ import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Single;
-import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
 
 import java.io.IOException;
@@ -55,18 +54,13 @@ public final class AddCookiesPolicy implements RequestPolicy {
 
             return next.sendAsync(request).map(new Function<HttpResponse, HttpResponse>() {
                 @Override
-                public HttpResponse apply(HttpResponse httpResponse) {
+                public HttpResponse apply(HttpResponse httpResponse) throws Exception {
                     Map<String, List<String>> responseHeaders = new HashMap<>();
                     for (HttpHeader header : httpResponse.headers()) {
                         responseHeaders.put(header.name(), Collections.singletonList(header.value()));
                     }
 
-                    try {
-                        cookies.put(uri, responseHeaders);
-                    } catch (IOException e) {
-                        throw Exceptions.propagate(e);
-                    }
-
+                    cookies.put(uri, responseHeaders);
                     return httpResponse;
                 }
             });
