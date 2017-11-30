@@ -28,6 +28,7 @@ import com.microsoft.rest.v2.protocol.TypeFactory;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import org.joda.time.DateTime;
 import io.reactivex.Completable;
+import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.exceptions.Exceptions;
@@ -380,8 +381,8 @@ public class RestProxy implements InvocationHandler {
         if (!methodParser.isExpectedResponseStatusCode(responseStatusCode, additionalAllowedStatusCodes)) {
             asyncResult = response.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
                 @Override
-                public HttpResponse apply(String responseBody) {
-                    throw Exceptions.propagate(instantiateUnexpectedException(methodParser, response, responseBody));
+                public HttpResponse apply(String responseBody) throws Exception {
+                    throw instantiateUnexpectedException(methodParser, response, responseBody);
                 }
             });
         } else {
@@ -409,16 +410,19 @@ public class RestProxy implements InvocationHandler {
             if (bodyTypeToken.isSubtypeOf(Void.class)) {
                 asyncResult = Single.just(new RestResponse<>(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), (Void) null));
             } else {
+                final Map<String, String> rawHeaders = responseHeaders.toMap();
+
                 asyncResult = handleBodyReturnTypeAsync(response, methodParser, bodyType)
                         .map(new Function<Object, RestResponse<?, ?>>() {
                             @Override
                             public RestResponse<?, ?> apply(Object body) {
-                                return new RestResponse<>(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), body);
+                                return new RestResponse<>(responseStatusCode, deserializedHeaders, rawHeaders, body);
                             }
-                        });
+                        }).toSingle(new RestResponse<>(responseStatusCode, deserializedHeaders, rawHeaders, null));
             }
         } else {
-            asyncResult = handleBodyReturnTypeAsync(response, methodParser, entityType);
+            // For now we're just throwing if the Maybe didn't emit a value.
+            asyncResult = handleBodyReturnTypeAsync(response, methodParser, entityType).toSingle();
         }
         return asyncResult;
     }
@@ -434,21 +438,21 @@ public class RestProxy implements InvocationHandler {
         return false;
     }
 
-    private Single<?> handleBodyReturnTypeAsync(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
+    private Maybe<?> handleBodyReturnTypeAsync(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final int responseStatusCode = response.statusCode();
         final String httpMethod = methodParser.httpMethod();
         final Type returnValueWireType = methodParser.returnValueWireType();
 
-        final Single<?> asyncResult;
+        final Maybe<?> asyncResult;
         if (httpMethod.equalsIgnoreCase("HEAD")
                 && (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class))) {
             boolean isSuccess = (responseStatusCode / 100) == 2;
-            asyncResult = Single.just(isSuccess);
+            asyncResult = Maybe.just(isSuccess);
         } else if (entityTypeToken.isSubtypeOf(InputStream.class)) {
-            asyncResult = response.bodyAsInputStreamAsync();
+            asyncResult = response.bodyAsInputStreamAsync().toMaybe();
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
-            Single<byte[]> responseBodyBytesAsync = response.bodyAsByteArrayAsync();
+            Maybe<byte[]> responseBodyBytesAsync = response.bodyAsByteArrayAsync().toMaybe();
             if (returnValueWireType == Base64Url.class) {
                 responseBodyBytesAsync = responseBodyBytesAsync.map(new Function<byte[], byte[]>() {
                     @Override
@@ -459,14 +463,19 @@ public class RestProxy implements InvocationHandler {
             }
             asyncResult = responseBodyBytesAsync;
         } else if (isObservableByteArray(entityTypeToken)) {
-            asyncResult = Single.just(response.streamBodyAsync());
+            asyncResult = Maybe.just(response.streamBodyAsync());
         } else {
             asyncResult = response
                     .bodyAsStringAsync()
-                    .map(new Function<String, Object>() {
+                    .flatMapMaybe(new Function<String, Maybe<Object>>() {
                         @Override
-                        public Object apply(String responseBodyString) throws IOException {
-                            return deserialize(responseBodyString, entityType, returnValueWireType, bodyEncoding(response.headers()));
+                        public Maybe<Object> apply(String responseBodyString) throws IOException {
+                            Object result = deserialize(responseBodyString, entityType, returnValueWireType, bodyEncoding(response.headers()));
+                            if (result == null) {
+                                return Maybe.empty();
+                            } else {
+                                return Maybe.just(result);
+                            }
                         }
                     });
         }
