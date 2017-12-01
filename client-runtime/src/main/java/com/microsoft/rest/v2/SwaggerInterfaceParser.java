@@ -25,6 +25,15 @@ public class SwaggerInterfaceParser {
      * Create a new SwaggerInterfaceParser object with the provided fully qualified interface
      * name.
      * @param swaggerInterface The interface that will be parsed.
+     */
+    public SwaggerInterfaceParser(Class<?> swaggerInterface) {
+        this(swaggerInterface, null);
+    }
+
+    /**
+     * Create a new SwaggerInterfaceParser object with the provided fully qualified interface
+     * name.
+     * @param swaggerInterface The interface that will be parsed.
      * @param host The host of URLs that this Swagger interface targets.
      */
     public SwaggerInterfaceParser(Class<?> swaggerInterface, String host) {
