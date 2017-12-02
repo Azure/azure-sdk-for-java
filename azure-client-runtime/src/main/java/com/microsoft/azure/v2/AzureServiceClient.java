@@ -15,16 +15,32 @@ import com.microsoft.rest.v2.protocol.SerializerAdapter;
  */
 public abstract class AzureServiceClient extends ServiceClient {
     /**
+     * The environment that this AzureServiceClient targets.
+     */
+    private final AzureEnvironment azureEnvironment;
+
+    /**
      * Initializes a new instance of the AzureServiceClient class.
      *
      * @param httpPipeline The HTTP pipeline to send requests through
+     * @param azureEnvironment The environment that this AzureServiceClient targets.
      */
-    protected AzureServiceClient(HttpPipeline httpPipeline) {
+    protected AzureServiceClient(HttpPipeline httpPipeline, AzureEnvironment azureEnvironment) {
         super(httpPipeline);
+
+        this.azureEnvironment = azureEnvironment;
     }
 
     @Override
     protected SerializerAdapter<?> createSerializerAdapter() {
         return AzureProxy.createDefaultSerializer();
+    }
+
+    /**
+     * Get the environment that this AzureServiceClient targets.
+     * @return the environment that this AzureServiceClient targets.
+     */
+    public AzureEnvironment azureEnvironment() {
+        return azureEnvironment;
     }
 }

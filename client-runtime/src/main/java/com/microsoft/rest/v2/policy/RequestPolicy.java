@@ -43,7 +43,7 @@ public interface RequestPolicy {
     /**
      * Optional properties that can be used when creating a RequestPolicy.
      */
-    class Options {
+    final class Options {
         /**
          * The Logger that has been assigned to the HttpPipeline.
          */
