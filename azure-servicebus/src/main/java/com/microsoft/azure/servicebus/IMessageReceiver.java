@@ -341,7 +341,7 @@ public interface IMessageReceiver extends IMessageEntityClient, IMessageBrowser 
     /**
      * Set the prefetch count of the receiver. Prefetch speeds up the message flow by aiming to have a message readily available for local retrieval when and before the application asks for one using Receive.
      * Setting a non-zero value prefetches PrefetchCount number of messages.
-     * Setting the value to zero turns prefetch off. For RECEIVEANDDELETE mode, the default value is 0. For PEEKLOCK mode, the default value is 100.
+     * Setting the value to zero turns prefetch off. For both PEEKLOCK mode and RECEIVEANDDELETE mode, the default value is 0.
      * <p>
      * The value cannot be set until the receiver is created.
      *
