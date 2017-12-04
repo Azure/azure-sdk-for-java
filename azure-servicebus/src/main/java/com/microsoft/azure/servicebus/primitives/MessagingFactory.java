@@ -277,9 +277,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 
 	private void onReactorError(Exception cause)
 	{
-	    TRACE_LOGGER.error("Reactor error occured", cause);
 		if (!this.factoryOpenFuture.isDone())
 		{
+		    TRACE_LOGGER.error("Reactor error occured", cause);
 		    AsyncUtil.completeFutureExceptionally(this.factoryOpenFuture, cause);
 		    this.setClosed();
 		}
@@ -289,6 +289,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
             {
                 return;
             }
+		    
+		    TRACE_LOGGER.warn("Reactor error occured", cause);
 			
 			try
 			{
@@ -460,7 +462,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 					cause = handlerException;
 				}
 				
-				TRACE_LOGGER.error("UnHandled exception while processing events in reactor:", handlerException);
+				TRACE_LOGGER.warn("UnHandled exception while processing events in reactor:", handlerException);
 
 				String message = !StringUtil.isNullOrEmpty(cause.getMessage()) ? 
 						cause.getMessage():
@@ -551,10 +553,10 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
                 }
                 else
                 {
-                    TRACE_LOGGER.error("Sending CBS Token for {} failed.", sasTokenAudienceURI, sendTokenEx);
+                    TRACE_LOGGER.warn("Sending CBS Token for {} failed.", sasTokenAudienceURI, sendTokenEx);
                     TRACE_LOGGER.info("Will retry sending CBS Token for {} after {} seconds.", sasTokenAudienceURI, ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS);
                     return Timer.schedule(validityRenewer, Duration.ofSeconds(ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS), TimerType.OneTimeRun);                
-                }            
+                }
             });
         }
         else
@@ -614,13 +616,13 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	                            if(ex == null)
 	                            {
 	                                TRACE_LOGGER.info("Created CBS link to {}", requestResponseLinkPath);
-	                                this.cbsLink = cbsLink;	                                
+	                                this.cbsLink = cbsLink;	
 	                                this.cbsLinkCreationFuture.complete(null);
 	                            }
 	                            else
-	                            {	                                
+	                            {
 	                                this.lastCBSLinkCreationException = ExceptionUtil.extractAsyncCompletionCause(ex);
-	                                TRACE_LOGGER.error("Creating CBS link to {} failed. Attempts '{}'", requestResponseLinkPath, this.cbsLinkCreationAttempts);
+	                                TRACE_LOGGER.warn("Creating CBS link to {} failed. Attempts '{}'", requestResponseLinkPath, this.cbsLinkCreationAttempts);
 	                                this.createCBSLinkAsync();
 	                            }
 	                            return null;

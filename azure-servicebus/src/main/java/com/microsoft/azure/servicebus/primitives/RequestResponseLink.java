@@ -237,7 +237,7 @@ class RequestResponseLink extends ClientEntity{
                     {
                         Exception operationTimedout = new TimeoutException(
                                 String.format(Locale.US, "Recreating internal links of requestresponselink to %s.", RequestResponseLink.this.linkPath));
-                        TRACE_LOGGER.error("Recreating internal links of requestresponselink timed out.", operationTimedout);
+                        TRACE_LOGGER.warn("Recreating internal links of requestresponselink timed out.", operationTimedout);
                         recreateInternalLinksFuture.completeExceptionally(operationTimedout);
                     }
                 }
@@ -275,7 +275,7 @@ class RequestResponseLink extends ClientEntity{
                     {
                         if(recreationEx != null)
                         {
-                            TRACE_LOGGER.error("Recreating internal links of reqestresponselink '{}' failed.", this.linkPath, ExceptionUtil.extractAsyncCompletionCause(recreationEx));
+                            TRACE_LOGGER.warn("Recreating internal links of reqestresponselink '{}' failed.", this.linkPath, ExceptionUtil.extractAsyncCompletionCause(recreationEx));
                         }
                         
                         synchronized (this.recreateLinksLock)
@@ -306,7 +306,7 @@ class RequestResponseLink extends ClientEntity{
 		return Timer.schedule(new Runnable() {
 				public void run()
 				{
-				    TRACE_LOGGER.error("Request with id:{} timed out", requestId);
+				    TRACE_LOGGER.warn("Request with id:{} timed out", requestId);
 					RequestResponseWorkItem completedWorkItem = RequestResponseLink.this.exceptionallyCompleteRequest(requestId, new TimeoutException("Request timed out."), true);
 					boolean isRetriedWorkItem = completedWorkItem.getLastKnownException() != null;
 					RequestResponseLink.this.amqpSender.removeEnqueuedRequest(completedWorkItem.request, isRetriedWorkItem);
@@ -407,7 +407,7 @@ class RequestResponseLink extends ClientEntity{
 						if (!closeFuture.isDone())
 						{
 							Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Link(%s) timed out at %s", "Close", linkName, ZonedDateTime.now()));
-							TRACE_LOGGER.error("Closing link timed out", operationTimedout);
+							TRACE_LOGGER.warn("Closing link timed out", operationTimedout);
 							
 							closeFuture.completeExceptionally(operationTimedout);
 						}
@@ -510,7 +510,7 @@ class RequestResponseLink extends ClientEntity{
 				}
 			}
 			
-			TRACE_LOGGER.error("Internal receive link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
+			TRACE_LOGGER.warn("Internal receive link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
 			this.parent.amqpSender.closeInternals(false);
             this.parent.amqpSender.setClosed();
 			this.parent.completeAllPendingRequestsWithException(exception);
@@ -546,7 +546,7 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
-					    TRACE_LOGGER.error("Internal receive link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
+					    TRACE_LOGGER.warn("Internal receive link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
 					    this.parent.amqpSender.closeInternals(false);
 					    this.parent.amqpSender.setClosed();
 					    this.parent.completeAllPendingRequestsWithException(exception);
@@ -567,7 +567,7 @@ class RequestResponseLink extends ClientEntity{
 		    }
 			catch(Exception e)
 		    {			    
-			    TRACE_LOGGER.error("Reading message from delivery failed with unexpected exception.", e);
+			    TRACE_LOGGER.warn("Reading message from delivery failed with unexpected exception.", e);
 			    
 			    // release the delivery ??
 			    delivery.disposition(Released.getInstance());
@@ -713,7 +713,7 @@ class RequestResponseLink extends ClientEntity{
 				}
 			}
 			
-			TRACE_LOGGER.error("Internal send link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
+			TRACE_LOGGER.warn("Internal send link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
 			this.parent.amqpReceiver.closeInternals(false);
             this.parent.amqpReceiver.setClosed();
 			this.parent.completeAllPendingRequestsWithException(exception);
@@ -749,7 +749,7 @@ class RequestResponseLink extends ClientEntity{
 					}
 					else
 					{
-					    TRACE_LOGGER.error("Internal send link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
+					    TRACE_LOGGER.warn("Internal send link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
 					    this.parent.amqpReceiver.closeInternals(false);
                         this.parent.amqpReceiver.setClosed();
 					    this.parent.completeAllPendingRequestsWithException(exception);
@@ -892,7 +892,7 @@ class RequestResponseLink extends ClientEntity{
                     }
                     catch(Exception e)
                     {
-                        TRACE_LOGGER.error("RequestResonseLink {} failed to request with request id:{}.", this.parent.linkPath, requestToBeSent.getMessageId(), e);
+                        TRACE_LOGGER.error("RequestResonseLink {} failed to send request with request id:{}.", this.parent.linkPath, requestToBeSent.getMessageId(), e);
                         this.parent.exceptionallyCompleteRequest((String)requestToBeSent.getMessageId(), e, false);
                     }
                 }
