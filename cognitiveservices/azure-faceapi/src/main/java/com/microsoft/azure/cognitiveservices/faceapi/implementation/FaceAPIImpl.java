@@ -6,21 +6,25 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
-import com.microsoft.azure.cognitiveservices.faceapi.FaceAPI;
-import com.microsoft.azure.cognitiveservices.faceapi.Faces;
-import com.microsoft.azure.cognitiveservices.faceapi.Persons;
-import com.microsoft.azure.cognitiveservices.faceapi.PersonGroups;
-import com.microsoft.azure.cognitiveservices.faceapi.FaceLists;
-import com.microsoft.azure.cognitiveservices.faceapi.models.AzureRegions;
-import com.microsoft.rest.ServiceClient;
+import com.microsoft.azure.AzureClient;
+import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.azure.cognitiveservices.faceapi.AzureRegions;
 import com.microsoft.rest.RestClient;
-import okhttp3.OkHttpClient;
-import retrofit2.Retrofit;
-
 /**
- * Initializes a new instance of the FaceAPI class.
+ * Initializes a new instance of the FaceAPIImpl class.
  */
-public class FaceAPIImpl extends ServiceClient implements FaceAPI {
+public class FaceAPIImpl extends AzureServiceClient {
+    /** the {@link AzureClient} used for long running operations. */
+    private AzureClient azureClient;
+
+    /**
+     * Gets the {@link AzureClient} used for long running operations.
+     * @return the azure client;
+     */
+    public AzureClient getAzureClient() {
+        return this.azureClient;
+    }
 
     /** Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'. */
     private AzureRegions azureRegion;
@@ -45,112 +49,175 @@ public class FaceAPIImpl extends ServiceClient implements FaceAPI {
         return this;
     }
 
-    /**
-     * The Faces object to access its operations.
-     */
-    private Faces faces;
+    /** Gets or sets the preferred language for the response. */
+    private String acceptLanguage;
 
     /**
-     * Gets the Faces object to access its operations.
-     * @return the Faces object.
+     * Gets Gets or sets the preferred language for the response.
+     *
+     * @return the acceptLanguage value.
      */
-    public Faces faces() {
+    public String acceptLanguage() {
+        return this.acceptLanguage;
+    }
+
+    /**
+     * Sets Gets or sets the preferred language for the response.
+     *
+     * @param acceptLanguage the acceptLanguage value.
+     * @return the service client itself
+     */
+    public FaceAPIImpl withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+    /** Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30. */
+    private int longRunningOperationRetryTimeout;
+
+    /**
+     * Gets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     *
+     * @return the longRunningOperationRetryTimeout value.
+     */
+    public int longRunningOperationRetryTimeout() {
+        return this.longRunningOperationRetryTimeout;
+    }
+
+    /**
+     * Sets Gets or sets the retry timeout in seconds for Long Running Operations. Default value is 30.
+     *
+     * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
+     * @return the service client itself
+     */
+    public FaceAPIImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+        this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
+        return this;
+    }
+
+    /** When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true. */
+    private boolean generateClientRequestId;
+
+    /**
+     * Gets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     *
+     * @return the generateClientRequestId value.
+     */
+    public boolean generateClientRequestId() {
+        return this.generateClientRequestId;
+    }
+
+    /**
+     * Sets When set to true a unique x-ms-client-request-id value is generated and included in each request. Default is true.
+     *
+     * @param generateClientRequestId the generateClientRequestId value.
+     * @return the service client itself
+     */
+    public FaceAPIImpl withGenerateClientRequestId(boolean generateClientRequestId) {
+        this.generateClientRequestId = generateClientRequestId;
+        return this;
+    }
+
+    /**
+     * The FacesInner object to access its operations.
+     */
+    private FacesInner faces;
+
+    /**
+     * Gets the FacesInner object to access its operations.
+     * @return the FacesInner object.
+     */
+    public FacesInner faces() {
         return this.faces;
     }
 
     /**
-     * The Persons object to access its operations.
+     * The PersonsInner object to access its operations.
      */
-    private Persons persons;
+    private PersonsInner persons;
 
     /**
-     * Gets the Persons object to access its operations.
-     * @return the Persons object.
+     * Gets the PersonsInner object to access its operations.
+     * @return the PersonsInner object.
      */
-    public Persons persons() {
+    public PersonsInner persons() {
         return this.persons;
     }
 
     /**
-     * The PersonGroups object to access its operations.
+     * The PersonGroupsInner object to access its operations.
      */
-    private PersonGroups personGroups;
+    private PersonGroupsInner personGroups;
 
     /**
-     * Gets the PersonGroups object to access its operations.
-     * @return the PersonGroups object.
+     * Gets the PersonGroupsInner object to access its operations.
+     * @return the PersonGroupsInner object.
      */
-    public PersonGroups personGroups() {
+    public PersonGroupsInner personGroups() {
         return this.personGroups;
     }
 
     /**
-     * The FaceLists object to access its operations.
+     * The FaceListsInner object to access its operations.
      */
-    private FaceLists faceLists;
+    private FaceListsInner faceLists;
 
     /**
-     * Gets the FaceLists object to access its operations.
-     * @return the FaceLists object.
+     * Gets the FaceListsInner object to access its operations.
+     * @return the FaceListsInner object.
      */
-    public FaceLists faceLists() {
+    public FaceListsInner faceLists() {
         return this.faceLists;
     }
 
     /**
      * Initializes an instance of FaceAPI client.
+     *
+     * @param credentials the management credentials for Azure
      */
-    public FaceAPIImpl() {
-        this("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0");
+    public FaceAPIImpl(ServiceClientCredentials credentials) {
+        this("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", credentials);
     }
 
     /**
      * Initializes an instance of FaceAPI client.
      *
      * @param baseUrl the base URL of the host
+     * @param credentials the management credentials for Azure
      */
-    private FaceAPIImpl(String baseUrl) {
-        super(baseUrl);
+    private FaceAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+        super(baseUrl, credentials);
         initialize();
     }
 
     /**
      * Initializes an instance of FaceAPI client.
      *
-     * @param clientBuilder the builder for building an OkHttp client, bundled with user configurations
-     * @param restBuilder the builder for building an Retrofit client, bundled with user configurations
-     */
-    public FaceAPIImpl(OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
-        this("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", clientBuilder, restBuilder);
-        initialize();
-    }
-
-    /**
-     * Initializes an instance of FaceAPI client.
-     *
-     * @param baseUrl the base URL of the host
-     * @param clientBuilder the builder for building an OkHttp client, bundled with user configurations
-     * @param restBuilder the builder for building an Retrofit client, bundled with user configurations
-     */
-    private FaceAPIImpl(String baseUrl, OkHttpClient.Builder clientBuilder, Retrofit.Builder restBuilder) {
-        super(baseUrl, clientBuilder, restBuilder);
-        initialize();
-    }
-
-    /**
-     * Initializes an instance of FaceAPI client.
-     *
-     * @param restClient the REST client containing pre-configured settings
+     * @param restClient the REST client to connect to Azure.
      */
     public FaceAPIImpl(RestClient restClient) {
         super(restClient);
         initialize();
     }
 
-    private void initialize() {
-        this.faces = new FacesImpl(retrofit(), this);
-        this.persons = new PersonsImpl(retrofit(), this);
-        this.personGroups = new PersonGroupsImpl(retrofit(), this);
-        this.faceLists = new FaceListsImpl(retrofit(), this);
+    protected void initialize() {
+        this.acceptLanguage = "en-US";
+        this.longRunningOperationRetryTimeout = 30;
+        this.generateClientRequestId = true;
+        this.faces = new FacesInner(restClient().retrofit(), this);
+        this.persons = new PersonsInner(restClient().retrofit(), this);
+        this.personGroups = new PersonGroupsInner(restClient().retrofit(), this);
+        this.faceLists = new FaceListsInner(restClient().retrofit(), this);
+        this.azureClient = new AzureClient(this);
+    }
+
+    /**
+     * Gets the User-Agent header for the client.
+     *
+     * @return the user agent string.
+     */
+    @Override
+    public String userAgent() {
+        return String.format("%s (%s, %s)", super.userAgent(), "FaceAPI", "1.0");
     }
 }
