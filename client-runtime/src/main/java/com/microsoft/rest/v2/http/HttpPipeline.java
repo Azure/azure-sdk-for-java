@@ -244,6 +244,19 @@ public final class HttpPipeline {
         }
 
         /**
+         * Add the provided RequestPolicy factories to this HttpPipeline builder.
+         * @param requestPolicyFactories The RequestPolicy factories to add to this
+         *                               HttpPipeline builder.
+         * @return This HttpPipeline builder.
+         */
+        public Builder withRequestPolicies(RequestPolicy.Factory... requestPolicyFactories) {
+            for (RequestPolicy.Factory factory : requestPolicyFactories) {
+                withRequestPolicy(factory);
+            }
+            return this;
+        }
+
+        /**
          * Add the provided RequestPolicy factory to this HttpPipeline builder
          * directly before the first instance of the provided RequestPolicy
          * factory type. If the provided RequestPolicy factory type is not
