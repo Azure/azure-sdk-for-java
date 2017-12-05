@@ -7,6 +7,7 @@
 package com.microsoft.rest.v2.policy;
 
 
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
@@ -15,20 +16,20 @@ import io.reactivex.Single;
 /**
  * A RequestPolicy that adds the provided host to each HttpRequest.
  */
-public class HostPolicy implements RequestPolicy {
-    private final RequestPolicy nextPolicy;
+public class HostPolicy extends AbstractRequestPolicy {
     private final String host;
 
-    HostPolicy(RequestPolicy nextPolicy, String host) {
-        this.nextPolicy = nextPolicy;
+    HostPolicy(RequestPolicy nextPolicy, Options options, String host) {
+        super(nextPolicy, options);
         this.host = host;
     }
 
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
+        log(HttpPipeline.LogLevel.INFO, "Setting host to {0}", host);
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
         request.withUrl(urlBuilder.withHost(host).toString());
-        return nextPolicy.sendAsync(request);
+        return nextPolicy().sendAsync(request);
     }
 
     /**
@@ -47,7 +48,7 @@ public class HostPolicy implements RequestPolicy {
 
         @Override
         public HostPolicy create(RequestPolicy next, Options options) {
-            return new HostPolicy(next, host);
+            return new HostPolicy(next, options, host);
         }
     }
 }

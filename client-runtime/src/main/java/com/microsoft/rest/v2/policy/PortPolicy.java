@@ -7,6 +7,7 @@
 package com.microsoft.rest.v2.policy;
 
 
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
@@ -15,13 +16,12 @@ import io.reactivex.Single;
 /**
  * A RequestPolicy that adds the provided port to each HttpRequest.
  */
-public class PortPolicy implements RequestPolicy {
-    private final RequestPolicy nextPolicy;
+public class PortPolicy extends AbstractRequestPolicy {
     private final int port;
     private final boolean overwrite;
 
-    PortPolicy(RequestPolicy nextPolicy, int port, boolean overwrite) {
-        this.nextPolicy = nextPolicy;
+    PortPolicy(RequestPolicy nextPolicy, Options options, int port, boolean overwrite) {
+        super(nextPolicy, options);
         this.port = port;
         this.overwrite = overwrite;
     }
@@ -30,9 +30,10 @@ public class PortPolicy implements RequestPolicy {
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
         if (overwrite || urlBuilder.port() == null) {
+            log(HttpPipeline.LogLevel.INFO, "Changing port to {0}", port);
             request.withUrl(urlBuilder.withPort(port).toString());
         }
-        return nextPolicy.sendAsync(request);
+        return nextPolicy().sendAsync(request);
     }
 
     /**
@@ -62,7 +63,7 @@ public class PortPolicy implements RequestPolicy {
 
         @Override
         public RequestPolicy create(RequestPolicy next, Options options) {
-            return new PortPolicy(next, port, overwrite);
+            return new PortPolicy(next, options, port, overwrite);
         }
     }
 }

@@ -32,6 +32,6 @@ public class ServiceFutureUtil {
             }
         });
 
-        return ServiceFuture.fromBody(single, callback);
+        return ServiceFuture.fromBody(single.toMaybe(), callback);
     }
 }

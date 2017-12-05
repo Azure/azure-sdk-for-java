@@ -7,6 +7,7 @@
 package com.microsoft.rest.v2.policy;
 
 
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
@@ -15,13 +16,12 @@ import io.reactivex.Single;
 /**
  * A RequestPolicy that adds the provided protocol/scheme to each HttpRequest.
  */
-public class ProtocolPolicy implements RequestPolicy {
-    private final RequestPolicy nextPolicy;
+public class ProtocolPolicy extends AbstractRequestPolicy {
     private final String protocol;
     private final boolean overwrite;
 
-    ProtocolPolicy(RequestPolicy nextPolicy, String protocol, boolean overwrite) {
-        this.nextPolicy = nextPolicy;
+    ProtocolPolicy(RequestPolicy nextPolicy, Options options, String protocol, boolean overwrite) {
+        super(nextPolicy, options);
         this.protocol = protocol;
         this.overwrite = overwrite;
     }
@@ -30,9 +30,10 @@ public class ProtocolPolicy implements RequestPolicy {
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
         if (overwrite || urlBuilder.scheme() == null) {
+            log(HttpPipeline.LogLevel.INFO, "Setting protocol to {0}", protocol);
             request.withUrl(urlBuilder.withScheme(protocol).toString());
         }
-        return nextPolicy.sendAsync(request);
+        return nextPolicy().sendAsync(request);
     }
 
     /**
@@ -62,7 +63,7 @@ public class ProtocolPolicy implements RequestPolicy {
 
         @Override
         public ProtocolPolicy create(RequestPolicy next, Options options) {
-            return new ProtocolPolicy(next, protocol, overwrite);
+            return new ProtocolPolicy(next, options, protocol, overwrite);
         }
     }
 }
