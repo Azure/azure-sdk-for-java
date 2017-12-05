@@ -53,6 +53,13 @@ public class SharedChannelPool implements ChannelPool {
         return bootstrap.config().group();
     }
 
+    private static boolean isChannelHealthy(Channel channel) {
+        if (!channel.isActive()) {
+            return false;
+        }
+        return channel.pipeline().get("HttpResponseDecoder") != null || channel.pipeline().get("HttpClientCodec") != null;
+    }
+
     /**
      * Creates an instance of the shared channel pool.
      * @param bootstrap the bootstrap to create channels
@@ -104,43 +111,45 @@ public class SharedChannelPool implements ChannelPool {
                         synchronized (sync) {
                             if (available.containsKey(request.uri)) {
                                 Channel channel = available.poll(request.uri);
-                                handler.channelAcquired(channel);
-                                request.promise.setSuccess(channel);
-                                leased.put(request.uri, channel);
-                            } else {
-                                // Create a new channel - remove an available one if size overflows
-                                if (available.size() > 0 && available.size() + leased.size() >= poolSize) {
-                                    available.poll().close();
+                                if (isChannelHealthy(channel)) {
+                                    handler.channelAcquired(channel);
+                                    request.promise.setSuccess(channel);
+                                    leased.put(request.uri, channel);
+                                    continue;
                                 }
-                                int port;
-                                if (request.uri.getPort() < 0) {
-                                    port = "https".equals(request.uri.getScheme()) ? 443 : 80;
-                                } else {
-                                    port = request.uri.getPort();
-                                }
-                                channelFuture = SharedChannelPool.this.bootstrap.clone().connect(request.uri.getHost(), port);
-
-                                channelFuture.channel().attr(CHANNEL_URI).set(request.uri);
-
-                                // Apply SSL handler for https connections
-                                if ("https".equalsIgnoreCase(request.uri.getScheme())) {
-                                    channelFuture.channel().pipeline().addFirst(sslContext.newHandler(channelFuture.channel().alloc(), request.uri.getHost(), port));
-                                }
-
-                                channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
-                                    @Override
-                                    public void operationComplete(Future<? super Void> future) throws Exception {
-                                        if (channelFuture.isSuccess()) {
-                                            handler.channelAcquired(channelFuture.channel());
-                                            leased.put(request.uri, channelFuture.channel());
-                                            request.promise.setSuccess(channelFuture.channel());
-                                        } else {
-                                            request.promise.setFailure(channelFuture.cause());
-                                            throw new RuntimeException(channelFuture.cause());
-                                        }
-                                    }
-                                });
                             }
+                            // Create a new channel - remove an available one if size overflows
+                            if (available.size() > 0 && available.size() + leased.size() >= poolSize) {
+                                available.poll().close();
+                            }
+                            int port;
+                            if (request.uri.getPort() < 0) {
+                                port = "https".equals(request.uri.getScheme()) ? 443 : 80;
+                            } else {
+                                port = request.uri.getPort();
+                            }
+                            channelFuture = SharedChannelPool.this.bootstrap.clone().connect(request.uri.getHost(), port);
+
+                            channelFuture.channel().attr(CHANNEL_URI).set(request.uri);
+
+                            // Apply SSL handler for https connections
+                            if ("https".equalsIgnoreCase(request.uri.getScheme())) {
+                                channelFuture.channel().pipeline().addFirst(sslContext.newHandler(channelFuture.channel().alloc(), request.uri.getHost(), port));
+                            }
+
+                            channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
+                                @Override
+                                public void operationComplete(Future<? super Void> future) throws Exception {
+                                    if (channelFuture.isSuccess()) {
+                                        handler.channelAcquired(channelFuture.channel());
+                                        leased.put(request.uri, channelFuture.channel());
+                                        request.promise.setSuccess(channelFuture.channel());
+                                    } else {
+                                        request.promise.setFailure(channelFuture.cause());
+                                        throw new RuntimeException(channelFuture.cause());
+                                    }
+                                }
+                            });
                         }
                     } catch (Exception e) {
                         throw new RuntimeException(e);

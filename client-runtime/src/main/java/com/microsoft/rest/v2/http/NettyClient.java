@@ -28,7 +28,6 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import rx.Single;
 import rx.SingleEmitter;
-import rx.functions.Action0;
 import rx.functions.Action1;
 import rx.subjects.ReplaySubject;
 
@@ -129,77 +128,76 @@ public final class NettyClient extends HttpClient {
                 public void call(final SingleEmitter<HttpResponse> emitter) {
                     channelPool.acquire(channelAddress).addListener(new GenericFutureListener<Future<? super Channel>>() {
                         @Override
-                        public void operationComplete(Future<? super Channel> cf) throws Exception {
+                        public void operationComplete(Future<? super Channel> cf) {
                             if (!cf.isSuccess()) {
                                 emitter.onError(cf.cause());
                                 return;
                             }
 
-                            final Channel channel = (Channel) cf.getNow();
+                            try {
+                                final Channel channel = (Channel) cf.getNow();
 
-                            HttpClientInboundHandler inboundHandler = channel.pipeline().get(HttpClientInboundHandler.class);
-                            if (request.httpMethod().equalsIgnoreCase("HEAD")) {
-                                // Use HttpClientCodec for HEAD operations
-                                if (channel.pipeline().get("HttpClientCodec") == null) {
-                                    channel.pipeline().remove(HttpRequestEncoder.class);
-                                    channel.pipeline().replace(HttpResponseDecoder.class, "HttpClientCodec", new HttpClientCodec());
-                                }
-                                inboundHandler.contentExpected = false;
-                            } else {
-                                // Use HttpResponseDecoder for other operations
-                                if (channel.pipeline().get("HttpResponseDecoder") == null) {
-                                    channel.pipeline().replace(HttpClientCodec.class, "HttpResponseDecoder", new HttpResponseDecoder());
-                                    channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
-                                }
-                                inboundHandler.contentExpected = true;
-                            }
-                            inboundHandler.responseEmitter = emitter;
-
-                            final DefaultFullHttpRequest raw;
-                            if (request.body() == null || request.body().contentLength() == 0) {
-                                raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
-                                        HttpMethod.valueOf(request.httpMethod()),
-                                        request.url());
-                            } else {
-                                ByteBuf requestContent;
-                                if (request.body() instanceof ByteArrayHttpRequestBody) {
-                                    requestContent = Unpooled.wrappedBuffer(((ByteArrayHttpRequestBody) request.body()).content());
-                                } else if (request.body() instanceof FileRequestBody) {
-                                    FileSegment segment = ((FileRequestBody) request.body()).content();
-                                    requestContent = ByteBufAllocator.DEFAULT.buffer(segment.length());
-                                    requestContent.writeBytes(segment.fileChannel(), segment.offset(), segment.length());
-                                } else {
-                                    throw new IllegalArgumentException("Only ByteArrayRequestBody or FileRequestBody are supported");
-                                }
-                                raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
-                                        HttpMethod.valueOf(request.httpMethod()),
-                                        request.url(),
-                                        requestContent);
-                            }
-
-                            for (HttpHeader header : request.headers()) {
-                                raw.headers().add(header.name(), header.value());
-                            }
-                            raw.headers().set(HEADER_CONTENT_LENGTH, raw.content().readableBytes());
-                            channel.writeAndFlush(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
-                                @Override
-                                public void operationComplete(Future<? super Void> v) throws Exception {
-                                    if (v.isSuccess()) {
-                                        channel.read();
-                                    } else {
-                                        emitter.onError(v.cause());
+                                HttpClientInboundHandler inboundHandler = channel.pipeline().get(HttpClientInboundHandler.class);
+                                if (request.httpMethod().equalsIgnoreCase("HEAD")) {
+                                    // Use HttpClientCodec for HEAD operations
+                                    if (channel.pipeline().get("HttpClientCodec") == null) {
+                                        channel.pipeline().remove(HttpRequestEncoder.class);
+                                        channel.pipeline().replace(HttpResponseDecoder.class, "HttpClientCodec", new HttpClientCodec());
                                     }
+                                    inboundHandler.contentExpected = false;
+                                } else {
+                                    // Use HttpResponseDecoder for other operations
+                                    if (channel.pipeline().get("HttpResponseDecoder") == null) {
+                                        channel.pipeline().replace(HttpClientCodec.class, "HttpResponseDecoder", new HttpResponseDecoder());
+                                        channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
+                                    }
+                                    inboundHandler.contentExpected = true;
                                 }
-                            });
+                                inboundHandler.responseEmitter = emitter;
+
+                                final DefaultFullHttpRequest raw;
+                                if (request.body() == null || request.body().contentLength() == 0) {
+                                    raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
+                                            HttpMethod.valueOf(request.httpMethod()),
+                                            request.url());
+                                } else {
+                                    ByteBuf requestContent;
+                                    if (request.body() instanceof ByteArrayHttpRequestBody) {
+                                        requestContent = Unpooled.wrappedBuffer(((ByteArrayHttpRequestBody) request.body()).content());
+                                    } else if (request.body() instanceof FileRequestBody) {
+                                        FileSegment segment = ((FileRequestBody) request.body()).content();
+                                        requestContent = ByteBufAllocator.DEFAULT.buffer(segment.length());
+                                        requestContent.writeBytes(segment.fileChannel(), segment.offset(), segment.length());
+                                    } else {
+                                        throw new IllegalArgumentException("Only ByteArrayRequestBody or FileRequestBody are supported");
+                                    }
+                                    raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
+                                            HttpMethod.valueOf(request.httpMethod()),
+                                            request.url(),
+                                            requestContent);
+                                }
+
+                                for (HttpHeader header : request.headers()) {
+                                    raw.headers().add(header.name(), header.value());
+                                }
+                                raw.headers().set(HEADER_CONTENT_LENGTH, raw.content().readableBytes());
+                                channel.writeAndFlush(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
+                                    @Override
+                                    public void operationComplete(Future<? super Void> v) throws Exception {
+                                        if (v.isSuccess()) {
+                                            channel.read();
+                                        } else {
+                                            emitter.onError(v.cause());
+                                        }
+                                    }
+                                });
+                            } catch (Throwable t) {
+                                emitter.onError(t);
+                            }
                         }
                     });
                 }
-            }).doOnUnsubscribe(new Action0() {
-                        @Override
-                        public void call() {
-                            // close the connection, release resources
-                        }
-                    });
+            });
         }
     }
 
