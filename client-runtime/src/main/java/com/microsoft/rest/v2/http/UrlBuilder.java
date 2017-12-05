@@ -42,8 +42,16 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withHost(String host) {
-        if (host != null && host.endsWith("/")) {
-            host = host.substring(0, host.length() - 1);
+        if (host != null) {
+            if (host.endsWith("/")) {
+                host = host.substring(0, host.length() - 1);
+            }
+
+            if (host.contains("://")) {
+                final String[] hostParts = host.split("://");
+                withScheme(hostParts[0]);
+                host = hostParts[1];
+            }
         }
         this.host = host;
         return this;

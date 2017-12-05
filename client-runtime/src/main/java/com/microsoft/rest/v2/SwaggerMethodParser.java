@@ -220,7 +220,7 @@ public class SwaggerMethodParser {
     public String scheme(Object[] swaggerMethodArguments) {
         final String substitutedHost = applySubstitutions(rawHost, hostSubstitutions, swaggerMethodArguments, UrlEscapers.urlPathSegmentEscaper());
         final String[] substitutedHostParts = substitutedHost.split("://");
-        return substitutedHostParts.length < 1 ? "https" : substitutedHostParts[0];
+        return substitutedHostParts.length < 1 ? null : substitutedHostParts[0];
     }
 
     /**

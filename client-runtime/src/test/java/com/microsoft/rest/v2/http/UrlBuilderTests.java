@@ -194,6 +194,15 @@ public class UrlBuilderTests {
     }
 
     @Test
+    public void withHostWhenHostContainsProtocol() {
+        final UrlBuilder builder = new UrlBuilder()
+                .withHost("https://www.bing.com");
+        assertEquals("https", builder.scheme());
+        assertEquals("www.bing.com", builder.host());
+        assertEquals("https://www.bing.com", builder.toString());
+    }
+
+    @Test
     public void parseWithNull() {
         assertNull(UrlBuilder.parse(null));
     }
