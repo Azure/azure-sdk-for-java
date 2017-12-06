@@ -27,7 +27,11 @@ import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerAdapter.Encoding;
 import com.microsoft.rest.v2.protocol.TypeFactory;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
-import io.reactivex.*;
+import io.reactivex.Completable;
+import io.reactivex.Flowable;
+import io.reactivex.Maybe;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 import org.joda.time.DateTime;
 import io.reactivex.functions.Function;
 

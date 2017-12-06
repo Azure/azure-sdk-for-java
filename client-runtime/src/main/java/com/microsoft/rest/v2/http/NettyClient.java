@@ -17,11 +17,20 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.AbstractChannelPoolHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.*;
+import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.HttpClientCodec;
+import io.netty.handler.codec.http.HttpContent;
+import io.netty.handler.codec.http.HttpMethod;
+import io.netty.handler.codec.http.HttpRequestEncoder;
+import io.netty.handler.codec.http.HttpResponseDecoder;
+import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import io.reactivex.*;
-import io.reactivex.functions.LongConsumer;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
@@ -206,7 +215,9 @@ public final class NettyClient extends HttpClient {
             handlerSubscription = subscription;
         }
 
-        long chunksRequested() { return chunksRequested; }
+        long chunksRequested() {
+            return chunksRequested;
+        }
 
         @Override
         protected void subscribeActual(Subscriber<? super ByteBuf> s) {

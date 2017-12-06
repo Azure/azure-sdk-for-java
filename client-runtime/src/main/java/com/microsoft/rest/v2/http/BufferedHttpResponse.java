@@ -7,7 +7,6 @@
 package com.microsoft.rest.v2.http;
 
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
