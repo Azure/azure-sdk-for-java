@@ -6,15 +6,13 @@
 
 package com.microsoft.rest.v2.http;
 
-import java.net.URL;
-
 /**
  * A builder class that is used to create URLs.
  */
 public class UrlBuilder {
     private String scheme;
     private String host;
-    private Integer port;
+    private String port;
     private String path;
     private String query;
 
@@ -24,8 +22,7 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withScheme(String scheme) {
-        this.scheme = scheme;
-        return this;
+        return with(scheme, UrlTokenizer.State.SCHEME);
     }
 
     /**
@@ -42,19 +39,7 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withHost(String host) {
-        if (host != null) {
-            if (host.endsWith("/")) {
-                host = host.substring(0, host.length() - 1);
-            }
-
-            if (host.contains("://")) {
-                final String[] hostParts = host.split("://");
-                withScheme(hostParts[0]);
-                host = hostParts[1];
-            }
-        }
-        this.host = host;
-        return this;
+        return with(host, UrlTokenizer.State.SCHEME_OR_HOST);
     }
 
     /**
@@ -70,9 +55,17 @@ public class UrlBuilder {
      * @param port The port that will be used to build the final URL.
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
+    public UrlBuilder withPort(String port) {
+        return with(port, UrlTokenizer.State.PORT);
+    }
+
+    /**
+     * Set the port that will be used to build the final URL.
+     * @param port The port that will be used to build the final URL.
+     * @return This UrlBuilder so that multiple setters can be chained together.
+     */
     public UrlBuilder withPort(int port) {
-        this.port = port;
-        return this;
+        return withPort(Integer.toString(port));
     }
 
     /**
@@ -80,7 +73,7 @@ public class UrlBuilder {
      * @return the port that has been assigned to this UrlBuilder.
      */
     public Integer port() {
-        return port;
+        return port == null ? null : Integer.valueOf(port);
     }
 
     /**
@@ -89,22 +82,7 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPath(String path) {
-        if (path != null) {
-            String[] parts = path.split("\\?");
-            this.path = parts[0];
-            if (parts.length > 1) {
-                String[] queryPairs = parts[1].split("&");
-                for (String queryPair : queryPairs) {
-                    String[] nameAndValue = queryPair.split("=");
-                    if (nameAndValue.length != 2) {
-                        throw new IllegalArgumentException("Path contained malformed query: " + path);
-                    }
-
-                    withQueryParameter(nameAndValue[0], nameAndValue[1]);
-                }
-            }
-        }
-        return this;
+        return with(path, UrlTokenizer.State.PATH);
     }
 
     /**
@@ -122,9 +100,9 @@ public class UrlBuilder {
      * @return The provided query parameter name and encoded value to query string for the final
      * URL.
      */
-    public UrlBuilder withQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+    public UrlBuilder addQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
         if (query == null) {
-            query = "?";
+            query = "";
         }
         else {
             query += "&";
@@ -139,11 +117,7 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withQuery(String query) {
-        if (query != null && !query.startsWith("/")) {
-            query = "?" + query;
-        }
-        this.query = query;
-        return this;
+        return with(query, UrlTokenizer.State.QUERY);
     }
 
     /**
@@ -152,6 +126,40 @@ public class UrlBuilder {
      */
     public String query() {
         return query;
+    }
+
+    private UrlBuilder with(String text, UrlTokenizer.State startState) {
+        final UrlTokenizer tokenizer = new UrlTokenizer(text, startState);
+        while (tokenizer.next()) {
+            final UrlToken token = tokenizer.current();
+            final String tokenText = token.text();
+            final UrlToken.Type tokenType = token.type();
+            switch (tokenType) {
+                case SCHEME:
+                    scheme = emptyToNull(tokenText);
+                    break;
+
+                case HOST:
+                    host = emptyToNull(tokenText);
+                    break;
+
+                case PORT:
+                    port = emptyToNull(tokenText);
+                    break;
+
+                case PATH:
+                    path = emptyToNull(tokenText);
+                    break;
+
+                case QUERY:
+                    query = emptyToNull(tokenText);
+                    break;
+
+                default:
+                    break;
+            }
+        }
+        return this;
     }
 
     /**
@@ -189,6 +197,9 @@ public class UrlBuilder {
         }
 
         if (query != null) {
+            if (!query.startsWith("?")) {
+                result.append('?');
+            }
             result.append(query);
         }
 
@@ -201,45 +212,12 @@ public class UrlBuilder {
      * @return The UrlBuilder that was parsed from the string.
      */
     public static UrlBuilder parse(String url) {
-        UrlBuilder result = null;
-
-        if (url != null && !url.isEmpty()) {
-            boolean addedProtocol = false;
-            if (!url.contains("://")) {
-                url = "http://" + url;
-                addedProtocol = true;
-            }
-
-            URL javaUrl = null;
-            try {
-                javaUrl = new URL(url);
-            }
-            catch (Exception ignored) {
-            }
-
-            if (javaUrl != null) {
-                result = new UrlBuilder();
-
-                if (!addedProtocol) {
-                    result.withScheme(javaUrl.getProtocol());
-                }
-
-                result.withHost(javaUrl.getHost());
-
-                final int port = javaUrl.getPort();
-                if (port != -1) {
-                    result.withPort(port);
-                }
-
-                final String path = javaUrl.getPath();
-                if (path != null && !path.isEmpty()) {
-                    result.withPath(path);
-                }
-
-                result.withQuery(javaUrl.getQuery());
-            }
-        }
-
+        final UrlBuilder result = new UrlBuilder();
+        result.with(url, UrlTokenizer.State.SCHEME_OR_HOST);
         return result;
+    }
+
+    private static String emptyToNull(String value) {
+        return value == null || value.isEmpty() ? null : value;
     }
 }
