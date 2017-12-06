@@ -21,6 +21,7 @@ import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
+import io.reactivex.functions.BiFunction;
 import org.junit.Assert;
 import org.junit.Test;
 import io.reactivex.Completable;
@@ -31,6 +32,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
@@ -1281,10 +1284,6 @@ public abstract class RestProxyTests {
     interface UnexpectedOKService {
         @GET("/bytes/1024")
         @ExpectedResponses({400})
-        RestResponse<Void, Flowable<byte[]>> getBytes();
-    }
-
-    @Test
     public void UnexpectedHTTPOK() {
         try {
             createService(UnexpectedOKService.class).getBytes();
@@ -1307,6 +1306,28 @@ public abstract class RestProxyTests {
             .getBytes100();
         assertNotNull(bytes);
         assertEquals(100, bytes.length);
+        
+    @Host("http://httpbin.org")
+    interface DownloadService {
+        @GET("/bytes/30720")
+        RestResponse<Void, Flowable<byte[]>> getBytes();
+    }
+
+    public void largeDownloadTest() {
+        RestResponse<Void, Flowable<byte[]>> response = createService(DownloadService.class).getBytes();
+        final AtomicInteger count = new AtomicInteger();
+        for (byte[] bytes : response.body()
+                .zipWith(Flowable.interval(500, TimeUnit.MILLISECONDS).onBackpressureLatest(),
+                    new BiFunction<byte[], Long, byte[]>() {
+                        @Override
+                        public byte[] apply(byte[] bytes, Long aLong) throws Exception {
+                            System.out.println("Got bytes of size " + bytes.length);
+                            count.addAndGet(bytes.length);
+                            return bytes;
+                        }
+                    })
+                .blockingIterable()) { }
+        assertEquals(30720, count.intValue());
     }
 
     // Helpers

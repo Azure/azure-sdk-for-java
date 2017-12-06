@@ -27,11 +27,8 @@ import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerAdapter.Encoding;
 import com.microsoft.rest.v2.protocol.TypeFactory;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
+import io.reactivex.*;
 import org.joda.time.DateTime;
-import io.reactivex.Completable;
-import io.reactivex.Maybe;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
 import java.io.IOException;
@@ -444,8 +441,8 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private boolean isObservableByteArray(TypeToken entityTypeToken) {
-        if (entityTypeToken.isSubtypeOf(Observable.class)) {
+    private boolean isFlowableByteArray(TypeToken entityTypeToken) {
+        if (entityTypeToken.isSubtypeOf(Flowable.class)) {
             final Type innerType = ((ParameterizedType) entityTypeToken.getType()).getActualTypeArguments()[0];
             final TypeToken innerTypeToken = TypeToken.of(innerType);
             if (innerTypeToken.isSubtypeOf(byte[].class)) {
@@ -479,7 +476,7 @@ public class RestProxy implements InvocationHandler {
                 });
             }
             asyncResult = responseBodyBytesAsync;
-        } else if (isObservableByteArray(entityTypeToken)) {
+        } else if (isFlowableByteArray(entityTypeToken)) {
             asyncResult = Maybe.just(response.streamBodyAsync());
         } else {
             asyncResult = response

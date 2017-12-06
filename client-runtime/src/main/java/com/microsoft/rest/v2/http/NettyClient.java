@@ -17,24 +17,19 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.AbstractChannelPoolHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.DefaultFullHttpRequest;
-import io.netty.handler.codec.http.HttpClientCodec;
-import io.netty.handler.codec.http.HttpContent;
-import io.netty.handler.codec.http.HttpMethod;
-import io.netty.handler.codec.http.HttpRequestEncoder;
-import io.netty.handler.codec.http.HttpResponseDecoder;
-import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.*;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import io.reactivex.Single;
-import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
-import io.reactivex.subjects.ReplaySubject;
+import io.reactivex.*;
+import io.reactivex.functions.LongConsumer;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayDeque;
+import java.util.List;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -69,6 +64,7 @@ public final class NettyClient extends HttpClient {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(eventLoopGroup);
             bootstrap.channel(NioSocketChannel.class);
+            bootstrap.option(ChannelOption.AUTO_READ, false);
             bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
             bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) TimeUnit.MINUTES.toMillis(3L));
             this.channelPool = new SharedChannelPool(bootstrap, new AbstractChannelPoolHandler() {
@@ -144,14 +140,12 @@ public final class NettyClient extends HttpClient {
                                         channel.pipeline().remove(HttpRequestEncoder.class);
                                         channel.pipeline().replace(HttpResponseDecoder.class, "HttpClientCodec", new HttpClientCodec());
                                     }
-                                    inboundHandler.contentExpected = false;
                                 } else {
                                     // Use HttpResponseDecoder for other operations
                                     if (channel.pipeline().get("HttpResponseDecoder") == null) {
                                         channel.pipeline().replace(HttpClientCodec.class, "HttpResponseDecoder", new HttpResponseDecoder());
                                         channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
                                     }
-                                    inboundHandler.contentExpected = true;
                                 }
                                 inboundHandler.responseEmitter = emitter;
 
@@ -202,12 +196,11 @@ public final class NettyClient extends HttpClient {
     }
 
     private static final class HttpClientInboundHandler extends ChannelInboundHandlerAdapter {
-
-        private ReplaySubject<ByteBuf> contentEmitter;
+        private FlowableEmitter<ByteBuf> contentEmitter;
         private SingleEmitter<HttpResponse> responseEmitter;
         private NettyAdapter adapter;
-        private long contentLength;
-        private boolean contentExpected;
+
+        private Queue<HttpContent> queuedContent = new ArrayDeque<>();
 
         private HttpClientInboundHandler(NettyAdapter adapter) {
             this.adapter = adapter;
@@ -220,7 +213,17 @@ public final class NettyClient extends HttpClient {
         }
 
         @Override
+        public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+//            System.out.println("channelReadComplete");
+            if (contentEmitter != null && contentEmitter.requested() != 0) {
+                System.out.println("ctx.channel().read()");
+                ctx.channel().read();
+            }
+        }
+
+        @Override
         public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
+//            System.out.println("channelRead");
             if (msg instanceof io.netty.handler.codec.http.HttpResponse) {
                 io.netty.handler.codec.http.HttpResponse response = (io.netty.handler.codec.http.HttpResponse) msg;
 
@@ -229,34 +232,53 @@ public final class NettyClient extends HttpClient {
                     return;
                 }
 
-                if (response.headers().contains(HEADER_CONTENT_LENGTH)) {
-                    contentLength = Long.parseLong(response.headers().get(HEADER_CONTENT_LENGTH));
-                }
+                Flowable<ByteBuf> contentStream = Flowable.create(new FlowableOnSubscribe<ByteBuf>() {
+                    @Override
+                    public void subscribe(FlowableEmitter<ByteBuf> emitter) throws Exception {
+                        contentEmitter = emitter;
+                    }
+                }, BackpressureStrategy.BUFFER)
+                        .doOnRequest(new LongConsumer() {
+                            @Override
+                            public void accept(long t) throws Exception {
+                                if (contentEmitter != null) {
+                                    for (; t != 0 && !queuedContent.isEmpty(); t--) {
+                                        HttpContent content = queuedContent.remove();
+                                        contentEmitter.onNext(content.content());
+                                        if (content instanceof LastHttpContent) {
+                                            contentEmitter.onComplete();
+                                        }
+                                    }
 
-                contentEmitter = ReplaySubject.create();
-                responseEmitter.onSuccess(new NettyResponse(response, contentEmitter));
+                                    if (t != 0) {
+                                        System.out.println("t != 0; ctx.channel().read()");
+                                        ctx.channel().read();
+                                    }
+                                }
+                            }
+                        });
+                responseEmitter.onSuccess(new NettyResponse(response, contentStream));
             }
+
             if (msg instanceof HttpContent) {
                 HttpContent content = (HttpContent) msg;
                 ByteBuf buf = content.content();
 
-                if (contentLength == 0 || !contentExpected) {
-                    contentEmitter.onNext(buf);
-                    contentEmitter.onComplete();
-                    adapter.channelPool.release(ctx.channel());
-                    return;
+                if (buf != null && buf.readableBytes() > 0) {
+                    if (contentEmitter == null) {
+                        queuedContent.add(content);
+                    } else {
+                        contentEmitter.onNext(buf);
+                    }
                 }
+            }
 
-                if (contentLength > 0 && buf != null && buf.readableBytes() > 0) {
-                    int readable = buf.readableBytes();
-                    contentLength -= readable;
-                    contentEmitter.onNext(buf);
-                }
-
-                if (contentLength == 0) {
+            if (msg instanceof LastHttpContent) {
+                if (contentEmitter != null) {
                     contentEmitter.onComplete();
-                    adapter.channelPool.release(ctx.channel());
+                    contentEmitter = null;
                 }
+                adapter.channelPool.release(ctx.channel());
             }
         }
     }

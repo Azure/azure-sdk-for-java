@@ -9,7 +9,7 @@ package com.microsoft.rest.v2.http;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
@@ -25,12 +25,12 @@ class NettyResponse extends HttpResponse {
     private static final String HEADER_CONTENT_LENGTH = "Content-Length";
     private final io.netty.handler.codec.http.HttpResponse rxnRes;
     private final long contentLength;
-    private final Observable<ByteBuf> emitter;
+    private final Flowable<ByteBuf> contentStream;
 
-    NettyResponse(io.netty.handler.codec.http.HttpResponse rxnRes, Observable<ByteBuf> emitter) {
+    NettyResponse(io.netty.handler.codec.http.HttpResponse rxnRes, Flowable<ByteBuf> emitter) {
         this.rxnRes = rxnRes;
         this.contentLength = getContentLength(rxnRes);
-        this.emitter = emitter;
+        this.contentStream = emitter;
     }
 
     private static long getContentLength(io.netty.handler.codec.http.HttpResponse rxnRes) {
@@ -63,7 +63,7 @@ class NettyResponse extends HttpResponse {
     }
 
     private Single<ByteBuf> collectContent() {
-        return emitter.toList().map(new Function<List<ByteBuf>, ByteBuf>() {
+        return contentStream.toList().map(new Function<List<ByteBuf>, ByteBuf>() {
             @Override
             public ByteBuf apply(List<ByteBuf> l) {
                 ByteBuf[] bufs = new ByteBuf[l.size()];
@@ -104,8 +104,8 @@ class NettyResponse extends HttpResponse {
     }
 
     @Override
-    public Observable<byte[]> streamBodyAsync() {
-        return emitter.map(new Function<ByteBuf, byte[]>() {
+    public Flowable<byte[]> streamBodyAsync() {
+        return contentStream.map(new Function<ByteBuf, byte[]>() {
             @Override
             public byte[] apply(ByteBuf byteBuf) {
                 return toByteArray(byteBuf);
