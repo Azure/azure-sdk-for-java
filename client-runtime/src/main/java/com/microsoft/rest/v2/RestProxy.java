@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2;
 
+import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.ContentType;
@@ -313,8 +314,9 @@ public class RestProxy implements InvocationHandler {
         final Class<? extends RestException> exceptionType = methodParser.exceptionType();
         final Class<?> exceptionBodyType = methodParser.exceptionBodyType();
 
+        String contentType = response.headerValue("Content-Type");
         String bodyRepresentation;
-        if ("octet-stream".equalsIgnoreCase(response.headerValue("Content-Type"))) {
+        if ("application/octet-stream".equalsIgnoreCase(contentType)) {
             bodyRepresentation = "(" + response.headerValue("Content-Length") + "-byte body)";
         } else {
             bodyRepresentation = responseContent.isEmpty() ? "(empty body)" : "\"" + responseContent + "\"";
@@ -324,19 +326,18 @@ public class RestProxy implements InvocationHandler {
         try {
             final Constructor<? extends RestException> exceptionConstructor = exceptionType.getConstructor(String.class, HttpResponse.class, exceptionBodyType);
 
-            String contentType = response.headerValue("Content-Type");
             boolean isSerializableContentType = contentType == null || contentType.isEmpty()
-                    || "application/json".equalsIgnoreCase(contentType)
-                    || "text/json".equalsIgnoreCase(contentType)
-                    || "application/xml".equalsIgnoreCase(contentType)
-                    || "text/xml".equalsIgnoreCase(contentType);
+                    || contentType.startsWith("application/json")
+                    || contentType.startsWith("text/json")
+                    || contentType.startsWith("application/xml")
+                    || contentType.startsWith("text/xml");
 
             final Object exceptionBody = responseContent.isEmpty() || !isSerializableContentType
                     ? null
                     : serializer.deserialize(responseContent, exceptionBodyType, bodyEncoding(response.headers()));
 
             result = exceptionConstructor.newInstance("Status code " + responseStatusCode + ", " + bodyRepresentation, response, exceptionBody);
-        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException e) {
+        } catch (IllegalAccessException | InstantiationException | InvocationTargetException | NoSuchMethodException | JsonParseException e) {
             String message = "Status code " + responseStatusCode + ", but an instance of "
                     + exceptionType.getCanonicalName() + " cannot be created."
                     + " Response body: " + bodyRepresentation;

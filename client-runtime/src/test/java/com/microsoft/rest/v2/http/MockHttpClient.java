@@ -59,7 +59,10 @@ public class MockHttpClient extends HttpClient {
                 else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
-                    response = new MockHttpResponse(200, responseHeaders, new byte[byteCount]);
+                    HttpHeaders newHeaders = new HttpHeaders(responseHeaders)
+                            .set("Content-Type", "application/octet-stream")
+                            .set("Content-Length", Integer.toString(byteCount));
+                    response = new MockHttpResponse(200, newHeaders, new byte[byteCount]);
                 }
                 else if (requestPathLower.startsWith("/base64urlbytes/")) {
                     final String byteCountString = requestPath.substring("/base64urlbytes/".length());
