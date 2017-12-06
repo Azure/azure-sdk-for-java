@@ -241,10 +241,27 @@ public class RestProxy implements InvocationHandler {
      * @throws IOException Thrown if the body contents cannot be serialized.
      */
     private HttpRequest createHttpRequest(SwaggerMethodParser methodParser, Object[] args) throws IOException {
-        final UrlBuilder urlBuilder = new UrlBuilder()
-                .withScheme(methodParser.scheme(args))
-                .withHost(methodParser.host(args))
-                .withPath(methodParser.path(args));
+        UrlBuilder urlBuilder;
+
+        // Sometimes people pass in a full URL for the value of their PathParam annotated argument.
+        // This definitely happens in paging scenarios. In that case, just use the full URL and
+        // ignore the Host annotation.
+        final String path = methodParser.path(args);
+        final UrlBuilder pathUrlBuilder = UrlBuilder.parse(path);
+        if (pathUrlBuilder.scheme() != null) {
+            urlBuilder = pathUrlBuilder;
+        }
+        else {
+            urlBuilder = new UrlBuilder();
+
+            final String scheme = methodParser.scheme(args);
+            urlBuilder.withScheme(scheme);
+
+            final String host = methodParser.host(args);
+            urlBuilder.withHost(host);
+
+            urlBuilder.withPath(path);
+        }
 
         for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
             urlBuilder.addQueryParameter(queryParameter.name(), queryParameter.encodedValue());
