@@ -22,13 +22,14 @@ import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.reactivex.*;
 import io.reactivex.functions.LongConsumer;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.util.ArrayDeque;
-import java.util.List;
 import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
@@ -195,12 +196,69 @@ public final class NettyClient extends HttpClient {
         }
     }
 
+    private static final class HttpContentFlowable extends Flowable<ByteBuf> {
+        final Queue<HttpContent> queuedContent = new ArrayDeque<>();
+        final Subscription handlerSubscription;
+        long chunksRequested = 0;
+        Subscriber<? super ByteBuf> subscriber;
+
+        HttpContentFlowable(Subscription subscription) {
+            handlerSubscription = subscription;
+        }
+
+        long chunksRequested() { return chunksRequested; }
+
+        @Override
+        protected void subscribeActual(Subscriber<? super ByteBuf> s) {
+            if (subscriber != null) {
+                throw new IllegalStateException("Multiple subscription not allowed for response content.");
+            }
+
+            subscriber = s;
+
+            s.onSubscribe(new Subscription() {
+                @Override
+                public void request(long l) {
+                    // TODO: does this need a lock?
+                    chunksRequested += l;
+
+                    while (!queuedContent.isEmpty() && chunksRequested > 0) {
+                        emitContent(queuedContent.remove());
+                    }
+
+                    handlerSubscription.request(l);
+                }
+
+                @Override
+                public void cancel() {
+                    handlerSubscription.cancel();
+                }
+            });
+        }
+
+        private void emitContent(HttpContent data) {
+            subscriber.onNext(data.content());
+            if (data instanceof LastHttpContent) {
+                subscriber.onComplete();
+            }
+            chunksRequested--;
+        }
+
+        void onReceivedContent(HttpContent data) {
+            if (subscriber != null && chunksRequested > 0) {
+                emitContent(data);
+            } else {
+                queuedContent.add(data);
+            }
+        }
+
+        // TODO: onError
+    }
+
     private static final class HttpClientInboundHandler extends ChannelInboundHandlerAdapter {
-        private FlowableEmitter<ByteBuf> contentEmitter;
+        private HttpContentFlowable contentEmitter;
         private SingleEmitter<HttpResponse> responseEmitter;
         private NettyAdapter adapter;
-
-        private Queue<HttpContent> queuedContent = new ArrayDeque<>();
 
         private HttpClientInboundHandler(NettyAdapter adapter) {
             this.adapter = adapter;
@@ -209,13 +267,14 @@ public final class NettyClient extends HttpClient {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             adapter.channelPool.release(ctx.channel());
+            // TODO: need to emit error using the appropriate emitter depending on whether a response has been given yet
             responseEmitter.onError(cause);
         }
 
         @Override
         public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
 //            System.out.println("channelReadComplete");
-            if (contentEmitter != null && contentEmitter.requested() != 0) {
+            if (contentEmitter != null && contentEmitter.chunksRequested() != 0) {
                 System.out.println("ctx.channel().read()");
                 ctx.channel().read();
             }
@@ -232,52 +291,29 @@ public final class NettyClient extends HttpClient {
                     return;
                 }
 
-                Flowable<ByteBuf> contentStream = Flowable.create(new FlowableOnSubscribe<ByteBuf>() {
+                contentEmitter = new HttpContentFlowable(new Subscription() {
                     @Override
-                    public void subscribe(FlowableEmitter<ByteBuf> emitter) throws Exception {
-                        contentEmitter = emitter;
+                    public void request(long n) {
+                        System.out.println("channelRead.Subscription.request()");
+                        ctx.channel().read();
                     }
-                }, BackpressureStrategy.BUFFER)
-                        .doOnRequest(new LongConsumer() {
-                            @Override
-                            public void accept(long t) throws Exception {
-                                if (contentEmitter != null) {
-                                    for (; t != 0 && !queuedContent.isEmpty(); t--) {
-                                        HttpContent content = queuedContent.remove();
-                                        contentEmitter.onNext(content.content());
-                                        if (content instanceof LastHttpContent) {
-                                            contentEmitter.onComplete();
-                                        }
-                                    }
 
-                                    if (t != 0) {
-                                        System.out.println("t != 0; ctx.channel().read()");
-                                        ctx.channel().read();
-                                    }
-                                }
-                            }
-                        });
-                responseEmitter.onSuccess(new NettyResponse(response, contentStream));
+                    @Override
+                    public void cancel() {
+                        System.out.println("channelRead.Subscription.cancel()");
+                        ctx.channel().close();
+                    }
+                });
+
+                responseEmitter.onSuccess(new NettyResponse(response, contentEmitter));
             }
 
             if (msg instanceof HttpContent) {
                 HttpContent content = (HttpContent) msg;
-                ByteBuf buf = content.content();
-
-                if (buf != null && buf.readableBytes() > 0) {
-                    if (contentEmitter == null) {
-                        queuedContent.add(content);
-                    } else {
-                        contentEmitter.onNext(buf);
-                    }
-                }
+                contentEmitter.onReceivedContent(content);
             }
 
             if (msg instanceof LastHttpContent) {
-                if (contentEmitter != null) {
-                    contentEmitter.onComplete();
-                    contentEmitter = null;
-                }
                 adapter.channelPool.release(ctx.channel());
             }
         }

@@ -1317,16 +1317,15 @@ public abstract class RestProxyTests {
         RestResponse<Void, Flowable<byte[]>> response = createService(DownloadService.class).getBytes();
         final AtomicInteger count = new AtomicInteger();
         for (byte[] bytes : response.body()
-                .zipWith(Flowable.interval(500, TimeUnit.MILLISECONDS).onBackpressureLatest(),
+                .zipWith(Flowable.interval(20, TimeUnit.MILLISECONDS).onBackpressureLatest(),
                     new BiFunction<byte[], Long, byte[]>() {
                         @Override
                         public byte[] apply(byte[] bytes, Long aLong) throws Exception {
                             System.out.println("Got bytes of size " + bytes.length);
-                            count.addAndGet(bytes.length);
                             return bytes;
                         }
                     })
-                .blockingIterable()) { }
+                .blockingIterable()) { count.addAndGet(bytes.length); }
         assertEquals(30720, count.intValue());
     }
 
