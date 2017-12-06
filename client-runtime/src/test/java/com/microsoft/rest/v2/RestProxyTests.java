@@ -1293,6 +1293,21 @@ public abstract class RestProxyTests {
             assertEquals("Status code 200, (1024-byte body)", e.getMessage());
         }
     }
+    
+    @Host("https://www.example.com")
+    private interface Service21 {
+        @GET("http://httpbin.org/bytes/100")
+        @ExpectedResponses({200})
+        byte[] getBytes100();
+    }
+
+    @Test
+    public void service21GetBytes100() {
+        final byte[] bytes = createService(Service21.class)
+            .getBytes100();
+        assertNotNull(bytes);
+        assertEquals(100, bytes.length);
+    }
 
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {

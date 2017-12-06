@@ -178,6 +178,20 @@ public class UrlTokenizerTests {
             UrlToken.query(""));
     }
 
+    @Test
+    public void nextWithPath() {
+        nextTest("folder/index.html",
+            UrlToken.host("folder"),
+            UrlToken.path("/index.html"));
+    }
+
+    @Test
+    public void nextWithForwardSlashAndPath() {
+        nextTest("/folder/index.html",
+            UrlToken.host(""),
+            UrlToken.path("/folder/index.html"));
+    }
+
     private static void nextTest(String text, UrlToken... expectedTokens) {
         final UrlTokenizer tokenizer = new UrlTokenizer(text);
         final List<UrlToken> tokenList = new ArrayList<>();
