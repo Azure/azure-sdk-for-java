@@ -1,6 +1,5 @@
 package com.microsoft.rest.v2;
 
-import com.google.common.base.Charsets;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
@@ -22,7 +21,6 @@ import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
-import io.reactivex.functions.BiFunction;
 import org.junit.Assert;
 import org.junit.Test;
 import io.reactivex.Completable;
@@ -33,8 +31,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
