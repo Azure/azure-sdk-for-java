@@ -248,7 +248,7 @@ public class RestProxy implements InvocationHandler {
                 .withPath(methodParser.path(args));
 
         for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
-            urlBuilder.withQueryParameter(queryParameter.name(), queryParameter.encodedValue());
+            urlBuilder.addQueryParameter(queryParameter.name(), queryParameter.encodedValue());
         }
 
         final String url = urlBuilder.toString();
