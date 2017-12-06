@@ -26,10 +26,10 @@ import com.microsoft.rest.v2.SwaggerInterfaceParser;
 import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Observable;
-import rx.Single;
-import rx.exceptions.Exceptions;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.exceptions.Exceptions;
+import io.reactivex.functions.Function;
 
 import java.io.IOException;
 import java.lang.reflect.ParameterizedType;
@@ -247,9 +247,9 @@ public final class AzureProxy extends RestProxy {
                 final Type operationStatusResultType = ((ParameterizedType) operationStatusType).getActualTypeArguments()[0];
                 result = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
                             .toObservable()
-                            .flatMap(new Func1<PollStrategy, Observable<OperationStatus<Object>>>() {
+                            .flatMap(new Function<PollStrategy, Observable<OperationStatus<Object>>>() {
                                 @Override
-                                public Observable<OperationStatus<Object>> call(final PollStrategy pollStrategy) {
+                                public Observable<OperationStatus<Object>> apply(final PollStrategy pollStrategy) {
                                     return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);
                                 }
                             });
@@ -257,13 +257,13 @@ public final class AzureProxy extends RestProxy {
         }
         else {
             final Single<HttpResponse> lastAsyncHttpResponse = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
-                    .flatMap(new Func1<PollStrategy, Single<HttpResponse>>() {
+                    .flatMap(new Function<PollStrategy, Single<HttpResponse>>() {
                         @Override
-                        public Single<HttpResponse> call(PollStrategy pollStrategy) {
+                        public Single<HttpResponse> apply(PollStrategy pollStrategy) {
                             return pollStrategy.pollUntilDone();
                         }
                     });
-            result = handleAsyncReturnType(httpRequest, lastAsyncHttpResponse, methodParser, returnType);
+            result = handleRestReturnType(httpRequest, lastAsyncHttpResponse, methodParser, returnType);
         }
 
         return result;
@@ -271,15 +271,15 @@ public final class AzureProxy extends RestProxy {
 
     private Single<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Single<HttpResponse> asyncOriginalHttpResponse, final SwaggerMethodParser methodParser) {
         return asyncOriginalHttpResponse
-                .flatMap(new Func1<HttpResponse, Single<PollStrategy>>() {
+                .flatMap(new Function<HttpResponse, Single<PollStrategy>>() {
                     @Override
-                    public Single<PollStrategy> call(final HttpResponse originalHttpResponse) {
+                    public Single<PollStrategy> apply(final HttpResponse originalHttpResponse) {
                         final int httpStatusCode = originalHttpResponse.statusCode();
                         final int[] longRunningOperationStatusCodes = new int[] {200, 201, 202};
                         return ensureExpectedStatus(originalHttpResponse, methodParser, longRunningOperationStatusCodes)
-                                .flatMap(new Func1<HttpResponse, Single<? extends PollStrategy>>() {
+                                .flatMap(new Function<HttpResponse, Single<? extends PollStrategy>>() {
                                     @Override
-                                    public Single<? extends PollStrategy> call(HttpResponse response) {
+                                    public Single<? extends PollStrategy> apply(HttpResponse response) {
                                         Single<PollStrategy> result = null;
 
                                         final Long parsedDelayInMilliseconds = PollStrategy.delayInMillisecondsFrom(originalHttpResponse);
@@ -349,9 +349,9 @@ public final class AzureProxy extends RestProxy {
         } else {
             final HttpResponse bufferedOriginalHttpResponse = httpResponse.buffer();
             result = bufferedOriginalHttpResponse.bodyAsStringAsync()
-                    .map(new Func1<String, PollStrategy>() {
+                    .map(new Function<String, PollStrategy>() {
                         @Override
-                        public PollStrategy call(String originalHttpResponseBody) {
+                        public PollStrategy apply(String originalHttpResponseBody) {
                             if (originalHttpResponseBody == null || originalHttpResponseBody.isEmpty()) {
                                 throw new CloudException("The HTTP response does not contain a body.", bufferedOriginalHttpResponse);
                             }

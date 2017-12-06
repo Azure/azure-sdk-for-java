@@ -9,7 +9,7 @@ package com.microsoft.azure.v2.credentials.http;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -18,6 +18,7 @@ import java.util.List;
  * This HttpClient attempts to mimic the behavior of http://httpbin.org without ever making a network call.
  */
 public class MockHttpClient extends HttpClient {
+    private static final HttpResponse mockResponse = new MockHttpResponse(200);
     private final List<HttpRequest> requests;
 
     public MockHttpClient() {
@@ -32,6 +33,6 @@ public class MockHttpClient extends HttpClient {
     public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
         requests.add(request);
 
-        return Single.<HttpResponse>just(new MockHttpResponse(200));
+        return Single.just(mockResponse);
     }
 }

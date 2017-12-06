@@ -11,7 +11,7 @@ import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
-import rx.Single;
+import io.reactivex.Single;
 
 /**
  * A RequestPolicy that adds the provided port to each HttpRequest.

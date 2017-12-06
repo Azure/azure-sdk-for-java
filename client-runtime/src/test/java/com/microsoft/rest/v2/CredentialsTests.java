@@ -17,7 +17,7 @@ import com.microsoft.rest.v2.http.MockHttpClient;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.junit.Assert;
 import org.junit.Test;
-import rx.Single;
+import io.reactivex.Single;
 
 public class CredentialsTests {
 
@@ -45,7 +45,7 @@ public class CredentialsTests {
                 auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
-        pipeline.sendRequestAsync(request).toBlocking().value();
+        pipeline.sendRequestAsync(request).blockingGet();
     }
 
     @Test
@@ -72,6 +72,6 @@ public class CredentialsTests {
                 auditorFactory);
 
         HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
-        pipeline.sendRequestAsync(request).toBlocking().value();
+        pipeline.sendRequestAsync(request).blockingGet();
     }
 }

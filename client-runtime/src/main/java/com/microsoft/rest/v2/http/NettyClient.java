@@ -26,10 +26,10 @@ import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
-import rx.Single;
-import rx.SingleEmitter;
-import rx.functions.Action1;
-import rx.subjects.ReplaySubject;
+import io.reactivex.Single;
+import io.reactivex.SingleEmitter;
+import io.reactivex.SingleOnSubscribe;
+import io.reactivex.subjects.ReplaySubject;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -123,9 +123,9 @@ public final class NettyClient extends HttpClient {
             }
 
             // Creates cold observable from an emitter
-            return Single.fromEmitter(new Action1<SingleEmitter<HttpResponse>>() {
+            return Single.create(new SingleOnSubscribe<HttpResponse>() {
                 @Override
-                public void call(final SingleEmitter<HttpResponse> emitter) {
+                public void subscribe(final SingleEmitter<HttpResponse> emitter) {
                     channelPool.acquire(channelAddress).addListener(new GenericFutureListener<Future<? super Channel>>() {
                         @Override
                         public void operationComplete(Future<? super Channel> cf) {
@@ -242,7 +242,7 @@ public final class NettyClient extends HttpClient {
 
                 if (contentLength == 0 || !contentExpected) {
                     contentEmitter.onNext(buf);
-                    contentEmitter.onCompleted();
+                    contentEmitter.onComplete();
                     adapter.channelPool.release(ctx.channel());
                     return;
                 }
@@ -254,7 +254,7 @@ public final class NettyClient extends HttpClient {
                 }
 
                 if (contentLength == 0) {
-                    contentEmitter.onCompleted();
+                    contentEmitter.onComplete();
                     adapter.channelPool.release(ctx.channel());
                 }
             }

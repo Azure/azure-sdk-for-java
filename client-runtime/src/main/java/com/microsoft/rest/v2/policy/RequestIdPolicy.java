@@ -8,7 +8,7 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.util.UUID;
 

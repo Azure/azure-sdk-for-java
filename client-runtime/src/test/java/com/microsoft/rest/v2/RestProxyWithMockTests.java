@@ -1,10 +1,13 @@
 package com.microsoft.rest.v2;
 
+import com.google.common.base.Charsets;
+import com.microsoft.rest.v2.annotations.ExpectedResponses;
 import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.Host;
 import com.microsoft.rest.v2.annotations.ReturnValueWireType;
-import com.microsoft.rest.v2.http.HttpClient;
-import com.microsoft.rest.v2.http.MockHttpClient;
+import com.microsoft.rest.v2.entities.HttpBinJSON;
+import com.microsoft.rest.v2.http.*;
+import io.reactivex.Single;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
@@ -128,5 +131,113 @@ public class RestProxyWithMockTests extends RestProxyTests {
                 .getDateTimeUnix();
         assertNotNull(dateTime);
         assertEquals(new DateTime(0).withZone(dateTime.getZone()), dateTime);
+    }
+
+
+    @Host("http://httpbin.org")
+    interface ServiceErrorWithCharsetService {
+        @GET("/get")
+        @ExpectedResponses({400})
+        HttpBinJSON get();
+    }
+
+    @Test
+    public void ServiceErrorWithResponseContentType() {
+        ServiceErrorWithCharsetService service = RestProxy.create(
+                ServiceErrorWithCharsetService.class,
+                HttpPipeline.build(new HttpClient() {
+                    @Override
+                    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.set("Content-Type", "application/json");
+
+                        HttpResponse response = new MockHttpResponse(200, headers,
+                                "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(Charsets.UTF_8));
+                        return Single.just(response);
+                    }
+                }));
+
+        try {
+            service.get();
+            fail();
+        } catch (RuntimeException ex) {
+            assertEquals(ex.getMessage(), "Status code 200, \"{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}\"");
+        }
+    }
+
+    @Test
+    public void ServiceErrorWithResponseContentTypeBadJSON() {
+        ServiceErrorWithCharsetService service = RestProxy.create(
+                ServiceErrorWithCharsetService.class,
+                HttpPipeline.build(new HttpClient() {
+                    @Override
+                    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.set("Content-Type", "application/json");
+
+                        HttpResponse response = new MockHttpResponse(200, headers, "BAD JSON".getBytes(Charsets.UTF_8));
+                        return Single.just(response);
+                    }
+                }));
+
+        try {
+            service.get();
+            fail();
+        } catch (RuntimeException ex) {
+            assertContains(ex.getMessage(), "Status code 200");
+            assertContains(ex.getMessage(), "Response body: \"BAD JSON\"");
+        }
+    }
+
+    @Test
+    public void ServiceErrorWithResponseContentTypeCharset() {
+        ServiceErrorWithCharsetService service = RestProxy.create(
+                ServiceErrorWithCharsetService.class,
+                HttpPipeline.build(new HttpClient() {
+                    @Override
+                    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.set("Content-Type", "application/json; charset=UTF-8");
+
+                        HttpResponse response = new MockHttpResponse(200, headers,
+                                "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(Charsets.UTF_8));
+                        return Single.just(response);
+                    }
+                }));
+
+        try {
+            service.get();
+            fail();
+        } catch (RuntimeException ex) {
+            assertEquals(ex.getMessage(), "Status code 200, \"{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}\"");
+        }
+    }
+
+    @Test
+    public void ServiceErrorWithResponseContentTypeCharsetBadJSON() {
+        ServiceErrorWithCharsetService service = RestProxy.create(
+                ServiceErrorWithCharsetService.class,
+                HttpPipeline.build(new HttpClient() {
+                    @Override
+                    public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+                        HttpHeaders headers = new HttpHeaders();
+                        headers.set("Content-Type", "application/json; charset=UTF-8");
+
+                        HttpResponse response = new MockHttpResponse(200, headers, "BAD JSON".getBytes(Charsets.UTF_8));
+                        return Single.just(response);
+                    }
+                }));
+
+        try {
+            service.get();
+            fail();
+        } catch (RuntimeException ex) {
+            assertContains(ex.getMessage(), "Status code 200");
+            assertContains(ex.getMessage(), "Response body: \"BAD JSON\"");
+        }
+    }
+
+    private static void assertContains(String value, String expectedSubstring) {
+        assertTrue("Expected \"" + value + "\" to contain \"" + expectedSubstring + "\".", value.contains(expectedSubstring));
     }
 }

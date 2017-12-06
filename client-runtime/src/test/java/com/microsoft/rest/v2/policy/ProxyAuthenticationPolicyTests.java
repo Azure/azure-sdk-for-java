@@ -7,7 +7,7 @@ import com.microsoft.rest.v2.http.MockHttpClient;
 import com.microsoft.rest.v2.policy.ProxyAuthenticationPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.junit.Test;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 
@@ -39,7 +39,7 @@ public class ProxyAuthenticationPolicyTests {
                 });
 
         pipeline.sendRequestAsync(new HttpRequest("test", "GET", "localhost"))
-                .toBlocking().value();
+                .blockingGet();
 
         if (!auditorVisited.get()) {
             fail();

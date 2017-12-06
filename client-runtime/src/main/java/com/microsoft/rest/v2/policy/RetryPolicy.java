@@ -8,8 +8,8 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
-import rx.functions.Func1;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 import java.io.IOException;
 import java.net.HttpURLConnection;
@@ -70,9 +70,9 @@ public final class RetryPolicy implements RequestPolicy {
         try {
             final HttpRequest bufferedRequest = request.buffer();
             result = next.sendAsync(request)
-                    .flatMap(new Func1<HttpResponse, Single<? extends HttpResponse>>() {
+                    .flatMap(new Function<HttpResponse, Single<? extends HttpResponse>>() {
                         @Override
-                        public Single<HttpResponse> call(HttpResponse httpResponse) {
+                        public Single<HttpResponse> apply(HttpResponse httpResponse) {
                             Single<HttpResponse> result;
                             if (shouldRetry(httpResponse)) {
                                 tryCount++;

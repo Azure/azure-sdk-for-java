@@ -28,7 +28,7 @@ import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import org.joda.time.DateTime;
 import org.junit.Test;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.io.IOException;
 import java.io.InputStream;

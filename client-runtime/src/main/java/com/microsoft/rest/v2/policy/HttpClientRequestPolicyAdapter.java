@@ -9,7 +9,7 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
+import io.reactivex.Single;
 
 /**
  * An adapter that converts an HttpClient to a RequestPolicy.

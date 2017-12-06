@@ -9,9 +9,9 @@ package com.microsoft.rest.v2.http;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.netty.util.ReferenceCountUtil;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 import java.io.InputStream;
 import java.nio.charset.Charset;
@@ -63,20 +63,20 @@ class NettyResponse extends HttpResponse {
     }
 
     private Single<ByteBuf> collectContent() {
-        return emitter.toList().map(new Func1<List<ByteBuf>, ByteBuf>() {
+        return emitter.toList().map(new Function<List<ByteBuf>, ByteBuf>() {
             @Override
-            public ByteBuf call(List<ByteBuf> l) {
+            public ByteBuf apply(List<ByteBuf> l) {
                 ByteBuf[] bufs = new ByteBuf[l.size()];
                 return Unpooled.wrappedBuffer(l.toArray(bufs));
             }
-        }).toSingle();
+        });
     }
 
     @Override
     public Single<? extends InputStream> bodyAsInputStreamAsync() {
-        return collectContent().map(new Func1<ByteBuf, InputStream>() {
+        return collectContent().map(new Function<ByteBuf, InputStream>() {
             @Override
-            public InputStream call(ByteBuf byteBuf) {
+            public InputStream apply(ByteBuf byteBuf) {
                 return new ClosableByteBufInputStream(byteBuf);
             }
         });
@@ -84,9 +84,9 @@ class NettyResponse extends HttpResponse {
 
     @Override
     public Single<byte[]> bodyAsByteArrayAsync() {
-        return collectContent().map(new Func1<ByteBuf, byte[]>() {
+        return collectContent().map(new Function<ByteBuf, byte[]>() {
             @Override
-            public byte[] call(ByteBuf byteBuf) {
+            public byte[] apply(ByteBuf byteBuf) {
                 return toByteArray(byteBuf);
             }
         });
@@ -105,9 +105,9 @@ class NettyResponse extends HttpResponse {
 
     @Override
     public Observable<byte[]> streamBodyAsync() {
-        return emitter.map(new Func1<ByteBuf, byte[]>() {
+        return emitter.map(new Function<ByteBuf, byte[]>() {
             @Override
-            public byte[] call(ByteBuf byteBuf) {
+            public byte[] apply(ByteBuf byteBuf) {
                 return toByteArray(byteBuf);
             }
         });
@@ -115,9 +115,9 @@ class NettyResponse extends HttpResponse {
 
     @Override
     public Single<String> bodyAsStringAsync() {
-        return collectContent().map(new Func1<ByteBuf, String>() {
+        return collectContent().map(new Function<ByteBuf, String>() {
             @Override
-            public String call(ByteBuf byteBuf) {
+            public String apply(ByteBuf byteBuf) {
                 return byteBuf.toString(Charset.defaultCharset());
             }
         });

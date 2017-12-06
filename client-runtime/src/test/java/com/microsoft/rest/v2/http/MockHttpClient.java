@@ -11,7 +11,7 @@ import com.microsoft.rest.v2.Base64Url;
 import com.microsoft.rest.v2.DateTimeRfc1123;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
 import org.joda.time.DateTime;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -31,7 +31,8 @@ public class MockHttpClient extends HttpClient {
             .set("Via", "1.1 vegur")
             .set("Connection", "keep-alive")
             .set("X-Processed-Time", "1.0")
-            .set("Access-Control-Allow-Credentials", "true");
+            .set("Access-Control-Allow-Credentials", "true")
+            .set("Content-Type", "application/json");
 
     @Override
     public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
@@ -58,7 +59,10 @@ public class MockHttpClient extends HttpClient {
                 else if (requestPathLower.startsWith("/bytes/")) {
                     final String byteCountString = requestPath.substring("/bytes/".length());
                     final int byteCount = Integer.parseInt(byteCountString);
-                    response = new MockHttpResponse(200, responseHeaders, new byte[byteCount]);
+                    HttpHeaders newHeaders = new HttpHeaders(responseHeaders)
+                            .set("Content-Type", "application/octet-stream")
+                            .set("Content-Length", Integer.toString(byteCount));
+                    response = new MockHttpResponse(200, newHeaders, new byte[byteCount]);
                 }
                 else if (requestPathLower.startsWith("/base64urlbytes/")) {
                     final String byteCountString = requestPath.substring("/base64urlbytes/".length());
@@ -163,6 +167,10 @@ public class MockHttpClient extends HttpClient {
             }
         }
         catch (Exception ignored) {
+        }
+
+        if (response == null) {
+            response = new MockHttpResponse(500);
         }
 
         return Single.just(response);

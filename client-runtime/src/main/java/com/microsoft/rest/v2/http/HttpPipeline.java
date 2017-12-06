@@ -9,7 +9,7 @@ package com.microsoft.rest.v2.http;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.HttpClientRequestPolicyAdapter;
 import com.microsoft.rest.v2.policy.UserAgentPolicy;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -8,8 +8,8 @@ package com.microsoft.rest.v2.http;
 
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
-import rx.Observable;
-import rx.Single;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -93,6 +93,6 @@ public class MockHttpResponse extends HttpResponse {
 
     @Override
     public Single<String> bodyAsStringAsync() {
-        return Single.just(bodyBytes == null ? null : new String(bodyBytes));
+        return Single.just(bodyBytes == null ? "" : new String(bodyBytes));
     }
 }

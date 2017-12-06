@@ -10,7 +10,8 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.http.*;
 import org.junit.Assert;
 import org.junit.Test;
-import rx.Single;
+
+import io.reactivex.Single;
 
 public class RetryPolicyTests {
     @Test
@@ -31,7 +32,7 @@ public class RetryPolicyTests {
                 new HttpRequest(
                         "exponentialRetryEndOn501",
                         "GET",
-                        "http://localhost/")).toBlocking().value();
+                        "http://localhost/")).blockingGet();
 
         Assert.assertEquals(501, response.statusCode());
     }
@@ -55,7 +56,7 @@ public class RetryPolicyTests {
                 new HttpRequest(
                         "exponentialRetryMax",
                         "GET",
-                        "http://localhost/")).toBlocking().value();
+                        "http://localhost/")).blockingGet();
 
         Assert.assertEquals(500, response.statusCode());
     }

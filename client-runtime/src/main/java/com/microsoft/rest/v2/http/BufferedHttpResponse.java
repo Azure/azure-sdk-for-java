@@ -6,9 +6,9 @@
 
 package com.microsoft.rest.v2.http;
 
-import rx.Observable;
-import rx.Single;
-import rx.functions.Func1;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 import java.io.ByteArrayInputStream;
 import java.io.InputStream;
@@ -47,9 +47,9 @@ public final class BufferedHttpResponse extends HttpResponse {
     @Override
     public Single<? extends InputStream> bodyAsInputStreamAsync() {
         return bodyAsByteArrayAsync()
-            .map(new Func1<byte[], InputStream>() {
+            .map(new Function<byte[], InputStream>() {
                 @Override
-                public InputStream call(byte[] bytes) {
+                public InputStream apply(byte[] bytes) {
                     return new ByteArrayInputStream(bytes);
                 }
             });
@@ -59,9 +59,9 @@ public final class BufferedHttpResponse extends HttpResponse {
     public Single<byte[]> bodyAsByteArrayAsync() {
         if (body == null) {
             body = innerHttpResponse.bodyAsByteArrayAsync()
-                    .map(new Func1<byte[], byte[]>() {
+                    .map(new Function<byte[], byte[]>() {
                         @Override
-                        public byte[] call(byte[] bytes) {
+                        public byte[] apply(byte[] bytes) {
                             body = Single.just(bytes);
                             return bytes;
                         }
@@ -79,9 +79,9 @@ public final class BufferedHttpResponse extends HttpResponse {
     @Override
     public Single<String> bodyAsStringAsync() {
         return bodyAsByteArrayAsync()
-                .map(new Func1<byte[], String>() {
+                .map(new Function<byte[], String>() {
                     @Override
-                    public String call(byte[] bytes) {
+                    public String apply(byte[] bytes) {
                         return bytes == null ? null : new String(bytes);
                     }
                 });

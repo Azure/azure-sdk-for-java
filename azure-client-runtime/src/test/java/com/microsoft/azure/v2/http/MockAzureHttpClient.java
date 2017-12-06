@@ -18,7 +18,7 @@ import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
+import io.reactivex.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -314,6 +314,7 @@ public class MockAzureHttpClient extends HttpClient {
                 .set("Via", "1.1 vegur")
                 .set("Connection", "keep-alive")
                 .set("X-Processed-Time", "1.0")
-                .set("Access-Control-Allow-Credentials", "true");
+                .set("Access-Control-Allow-Credentials", "true")
+                .set("Content-Type", "application/json");
     }
 }

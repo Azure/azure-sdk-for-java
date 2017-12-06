@@ -10,8 +10,8 @@ import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
-import rx.functions.Func1;
+import io.reactivex.Single;
+import io.reactivex.functions.Function;
 
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -44,9 +44,9 @@ public final class LocationPollStrategy extends PollStrategy {
     @Override
     public Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
         return ensureExpectedStatus(httpPollResponse, new int[] {202})
-                .map(new Func1<HttpResponse, HttpResponse>() {
+                .map(new Function<HttpResponse, HttpResponse>() {
                     @Override
-                    public HttpResponse call(HttpResponse response) {
+                    public HttpResponse apply(HttpResponse response) {
                         final int httpStatusCode = response.statusCode();
 
                         updateDelayInMillisecondsFrom(response);

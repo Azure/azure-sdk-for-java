@@ -3,7 +3,7 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import org.junit.Test;
-import rx.Single;
+import io.reactivex.Single;
 
 import static org.junit.Assert.assertEquals;
 

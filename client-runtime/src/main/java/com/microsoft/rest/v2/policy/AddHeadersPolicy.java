@@ -10,7 +10,7 @@ import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import rx.Single;
+import io.reactivex.Single;
 
 /**
  * Adds a particular set of headers to HTTP requests.

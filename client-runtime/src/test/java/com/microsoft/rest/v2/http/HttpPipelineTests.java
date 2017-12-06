@@ -7,7 +7,7 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpResponse;
 import com.microsoft.rest.v2.policy.RequestIdPolicy;
 import org.junit.Test;
-import rx.Single;
+import io.reactivex.Single;
 
 import static org.junit.Assert.*;
 
@@ -26,7 +26,7 @@ public class HttpPipelineTests {
             }
         });
 
-        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).toBlocking().value();
+        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).blockingGet();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }
@@ -50,7 +50,7 @@ public class HttpPipelineTests {
                 .withHttpClient(httpClient)
                 .withUserAgent(expectedUserAgent)
                 .build();
-        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).toBlocking().value();
+        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).blockingGet();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }
@@ -74,7 +74,7 @@ public class HttpPipelineTests {
                     }
                 },
                 new RequestIdPolicy.Factory());
-        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).toBlocking().value();
+        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).blockingGet();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }

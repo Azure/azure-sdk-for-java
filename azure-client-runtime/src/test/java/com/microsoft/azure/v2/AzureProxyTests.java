@@ -18,10 +18,10 @@ import com.microsoft.rest.v2.annotations.PathParam;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
-import rx.Completable;
-import rx.Observable;
-import rx.Single;
-import rx.functions.Action1;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
+import io.reactivex.functions.Consumer;
 
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -181,7 +181,7 @@ public class AzureProxyTests {
 
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .getAsync("1", "mine", "b")
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(resource);
         assertEquals("b", resource.name);
 
@@ -302,7 +302,7 @@ public class AzureProxyTests {
 
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createAsync("1", "mine", "c")
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(resource);
         assertEquals("c", resource.name);
 
@@ -318,7 +318,7 @@ public class AzureProxyTests {
 
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createAsyncWithLocation("1", "mine", "c")
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(resource);
         assertEquals("c", resource.name);
 
@@ -334,7 +334,7 @@ public class AzureProxyTests {
 
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createAsyncWithLocationAndPolls("1", "mine", "c", 3)
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(resource);
         assertEquals("c", resource.name);
 
@@ -350,7 +350,7 @@ public class AzureProxyTests {
 
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createAsyncWithAzureAsyncOperation("1", "mine", "c")
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(resource);
         assertEquals("c", resource.name);
 
@@ -366,7 +366,7 @@ public class AzureProxyTests {
 
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createAsyncWithAzureAsyncOperationAndPolls("1", "mine", "c", 3)
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(resource);
         assertEquals("c", resource.name);
 
@@ -410,7 +410,7 @@ public class AzureProxyTests {
 
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createAsyncWithProvisioningState("1", "mine", "c")
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(resource);
         assertEquals("c", resource.name);
 
@@ -426,7 +426,7 @@ public class AzureProxyTests {
 
         final MockResource resource = createMockService(MockResourceService.class, httpClient)
                 .createAsyncWithProvisioningStateAndPolls("1", "mine", "c", 5)
-                .toBlocking().value();
+                .blockingGet();
         assertNotNull(resource);
         assertEquals("c", resource.name);
 
@@ -447,7 +447,7 @@ public class AzureProxyTests {
         }
         catch (InvalidReturnTypeException e) {
             assertContains(e.getMessage(), "AzureProxyTests$MockResourceService.beginCreateAsyncWithBadReturnType()");
-            assertContains(e.getMessage(), "rx.Observable<com.microsoft.azure.v2.MockResource>");
+            assertContains(e.getMessage(), "io.reactivex.Observable<com.microsoft.azure.v2.MockResource>");
         }
 
         assertEquals(0, httpClient.getRequests());
@@ -463,17 +463,17 @@ public class AzureProxyTests {
         createMockService(MockResourceService.class, httpClient)
                 .beginCreateAsyncWithLocationAndPollsAndUnexpectedStatusCode("1", "mine", "c")
                 .subscribe(
-                        new Action1<OperationStatus<MockResource>>() {
+                        new Consumer<OperationStatus<MockResource>>() {
                            @Override
-                           public void call(OperationStatus<MockResource> mockResourceOperationStatus) {
+                           public void accept(OperationStatus<MockResource> mockResourceOperationStatus) {
                                 fail();
                            }
                        },
-                        new Action1<Throwable>() {
+                        new Consumer<Throwable>() {
                             @Override
-                            public void call(Throwable throwable) {
+                            public void accept(Throwable throwable) {
                                 assertEquals(RestException.class, throwable.getClass());
-                                assertEquals("Status code 294, null", throwable.getMessage());
+                                assertEquals("Status code 294, (empty body)", throwable.getMessage());
                             }
                         });
 
@@ -492,9 +492,9 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .beginCreateAsyncWithLocationAndPolls("1", "mine", "c", 3)
-                .subscribe(new Action1<OperationStatus<MockResource>>() {
+                .subscribe(new Consumer<OperationStatus<MockResource>>() {
                     @Override
-                    public void call(OperationStatus<MockResource> operationStatus) {
+                    public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         }
@@ -523,9 +523,9 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .beginCreateAsyncWithAzureAsyncOperationAndPolls("1", "mine", "c", 3)
-                .subscribe(new Action1<OperationStatus<MockResource>>() {
+                .subscribe(new Consumer<OperationStatus<MockResource>>() {
                     @Override
-                    public void call(OperationStatus<MockResource> operationStatus) {
+                    public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         }
@@ -554,9 +554,9 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .beginCreateAsyncWithProvisioningStateAndPolls("1", "mine", "c", 4)
-                .subscribe(new Action1<OperationStatus<MockResource>>() {
+                .subscribe(new Consumer<OperationStatus<MockResource>>() {
                     @Override
-                    public void call(OperationStatus<MockResource> operationStatus) {
+                    public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         }
@@ -585,9 +585,9 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .beginCreateAsyncWithLocationAndPolls("1", "mine", "c", 0)
-                .subscribe(new Action1<OperationStatus<MockResource>>() {
+                .subscribe(new Consumer<OperationStatus<MockResource>>() {
                     @Override
-                    public void call(OperationStatus<MockResource> operationStatus) {
+                    public void accept(OperationStatus<MockResource> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         }
@@ -652,7 +652,7 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .deleteAsync("1", "mine", "c")
-                .await();
+                .blockingAwait();
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(0, httpClient.createRequests());
@@ -666,7 +666,7 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .deleteAsyncWithLocation("1", "mine", "c")
-                .await();
+                .blockingAwait();
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(0, httpClient.createRequests());
@@ -680,7 +680,7 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .deleteAsyncWithLocationAndPolls("1", "mine", "c", 10)
-                .await();
+                .blockingAwait();
 
         assertEquals(0, httpClient.getRequests());
         assertEquals(0, httpClient.createRequests());
@@ -697,9 +697,9 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .beginDeleteAsyncWithLocationAndPolls("1", "mine", "c", 3)
-                .subscribe(new Action1<OperationStatus<Void>>() {
+                .subscribe(new Consumer<OperationStatus<Void>>() {
                     @Override
-                    public void call(OperationStatus<Void> operationStatus) {
+                    public void accept(OperationStatus<Void> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         }
@@ -728,9 +728,9 @@ public class AzureProxyTests {
 
         createMockService(MockResourceService.class, httpClient)
                 .beginDeleteAsyncWithLocationAndPolls("1", "mine", "c", 0)
-                .subscribe(new Action1<OperationStatus<Void>>() {
+                .subscribe(new Consumer<OperationStatus<Void>>() {
                     @Override
-                    public void call(OperationStatus<Void> operationStatus) {
+                    public void accept(OperationStatus<Void> operationStatus) {
                         if (!operationStatus.isDone()) {
                             inProgressCount.incrementAndGet();
                         }
@@ -761,12 +761,12 @@ public class AzureProxyTests {
 
         final MockResourceService service = createMockService(MockResourceService.class, httpClient);
         try {
-            service.deleteAsyncWithForbiddenResponse().await();
+            service.deleteAsyncWithForbiddenResponse().blockingAwait();
             fail("Expected RestException to be thrown.");
         }
         catch (RestException e) {
             assertEquals(403, e.response().statusCode());
-            assertEquals("Status code 403, null", e.getMessage());
+            assertEquals("Status code 403, (empty body)", e.getMessage());
         }
     }
 

@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
-import rx.Single;
+import io.reactivex.Single;
 
 import java.net.Proxy;
 

@@ -6,8 +6,8 @@
 
 package com.microsoft.rest.v2.http;
 
-import rx.Observable;
-import rx.Single;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
 import java.io.InputStream;
 

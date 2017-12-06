@@ -16,7 +16,7 @@ import com.microsoft.rest.v2.policy.UserAgentPolicy;
 import org.junit.Assert;
 import org.junit.Test;
 
-import rx.Single;
+import io.reactivex.Single;
 
 import java.util.Collections;
 
@@ -37,7 +37,7 @@ public class UserAgentTests {
 
         HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(
                 "defaultUserAgentTests",
-                "GET", "http://localhost")).toBlocking().value();
+                "GET", "http://localhost")).blockingGet();
 
         Assert.assertEquals(200, response.statusCode());
     }
@@ -55,7 +55,7 @@ public class UserAgentTests {
             },
             new UserAgentPolicy.Factory("Awesome"));
 
-        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", "GET", "http://localhost")).toBlocking().value();
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", "GET", "http://localhost")).blockingGet();
         Assert.assertEquals(200, response.statusCode());
     }
 }
