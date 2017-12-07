@@ -290,7 +290,6 @@ public final class NettyClient extends HttpClient {
         @Override
         public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
             if (contentEmitter != null && contentEmitter.chunksRequested() != 0) {
-                System.out.println("ctx.channel().read()");
                 ctx.channel().read();
             }
         }
