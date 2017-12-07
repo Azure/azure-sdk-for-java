@@ -1284,6 +1284,10 @@ public abstract class RestProxyTests {
     interface UnexpectedOKService {
         @GET("/bytes/1024")
         @ExpectedResponses({400})
+        RestResponse<Void, Flowable<byte[]>> getBytes();
+    }
+
+    @Test
     public void UnexpectedHTTPOK() {
         try {
             createService(UnexpectedOKService.class).getBytes();
@@ -1306,7 +1310,8 @@ public abstract class RestProxyTests {
             .getBytes100();
         assertNotNull(bytes);
         assertEquals(100, bytes.length);
-        
+    }
+
     @Host("http://httpbin.org")
     interface DownloadService {
         @GET("/bytes/30720")
