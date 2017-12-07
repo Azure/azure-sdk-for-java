@@ -1318,6 +1318,7 @@ public abstract class RestProxyTests {
         RestResponse<Void, Flowable<byte[]>> getBytes();
     }
 
+    @Test
     public void largeDownloadTest() {
         RestResponse<Void, Flowable<byte[]>> response = createService(DownloadService.class).getBytes();
         final AtomicInteger count = new AtomicInteger();
