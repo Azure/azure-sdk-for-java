@@ -263,7 +263,9 @@ public final class NettyClient extends HttpClient {
             }
         }
 
-        // TODO: onError
+        void onError(Throwable cause) {
+            subscriber.onError(cause);
+        }
     }
 
     private static final class HttpClientInboundHandler extends ChannelInboundHandlerAdapter {
@@ -278,13 +280,15 @@ public final class NettyClient extends HttpClient {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             adapter.channelPool.release(ctx.channel());
-            // TODO: need to emit error using the appropriate emitter depending on whether a response has been given yet
-            responseEmitter.onError(cause);
+            if (responseEmitter != null) {
+                responseEmitter.onError(cause);
+            } else if (contentEmitter != null) {
+                contentEmitter.onError(cause);
+            } // TODO: otherwise, what? Pipeline logger?
         }
 
         @Override
         public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
-//            System.out.println("channelReadComplete");
             if (contentEmitter != null && contentEmitter.chunksRequested() != 0) {
                 System.out.println("ctx.channel().read()");
                 ctx.channel().read();
@@ -293,7 +297,6 @@ public final class NettyClient extends HttpClient {
 
         @Override
         public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
-//            System.out.println("channelRead");
             if (msg instanceof io.netty.handler.codec.http.HttpResponse) {
                 io.netty.handler.codec.http.HttpResponse response = (io.netty.handler.codec.http.HttpResponse) msg;
 
@@ -305,14 +308,18 @@ public final class NettyClient extends HttpClient {
                 contentEmitter = new HttpContentFlowable(new Subscription() {
                     @Override
                     public void request(long n) {
-                        System.out.println("channelRead.Subscription.request()");
+                        System.out.println("channelRead.Subscription.request(" + n + ")");
                         ctx.channel().read();
                     }
 
                     @Override
                     public void cancel() {
                         System.out.println("channelRead.Subscription.cancel()");
-                        ctx.channel().close();
+                        if (contentEmitter != null) {
+                            System.out.println("contentEmitter != null");
+                            ctx.channel().close();
+                            contentEmitter = null;
+                        }
                     }
                 });
 
@@ -325,6 +332,7 @@ public final class NettyClient extends HttpClient {
             }
 
             if (msg instanceof LastHttpContent) {
+                contentEmitter = null;
                 adapter.channelPool.release(ctx.channel());
             }
         }

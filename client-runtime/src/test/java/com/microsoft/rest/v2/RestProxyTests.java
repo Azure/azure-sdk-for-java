@@ -22,6 +22,7 @@ import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
 import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Function;
 import org.junit.Assert;
 import org.junit.Test;
 import io.reactivex.Completable;
@@ -1327,11 +1328,12 @@ public abstract class RestProxyTests {
                     new BiFunction<byte[], Long, byte[]>() {
                         @Override
                         public byte[] apply(byte[] bytes, Long aLong) throws Exception {
-                            System.out.println("Got bytes of size " + bytes.length);
                             return bytes;
                         }
                     })
-                .blockingIterable()) { count.addAndGet(bytes.length); }
+                .blockingIterable()) {
+            System.out.println("Got bytes of size " + bytes.length); count.addAndGet(bytes.length);
+        }
         assertEquals(30720, count.intValue());
     }
 
