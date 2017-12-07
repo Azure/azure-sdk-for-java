@@ -36,6 +36,9 @@ public class PlayReadyLicenseResponseTemplate {
     }
 
     /**
+     * List of licenses to be returned to the client upon a license request.
+     * Typcially this just has one license template configured.
+     *
      * @return the licenseTemplates
      */
     public List<PlayReadyLicenseTemplate> getLicenseTemplates() {
@@ -43,6 +46,9 @@ public class PlayReadyLicenseResponseTemplate {
     }
 
     /**
+     * List of licenses to be returned to the client upon a license request.
+     * Typcially this just has one license template configured.
+     *
      * @param licenseTemplates the licenseTemplates to set
      */
     private void setLicenseTemplates(List<PlayReadyLicenseTemplate> licenseTemplates) {
@@ -50,6 +56,9 @@ public class PlayReadyLicenseResponseTemplate {
     }
     
     /**
+     * A string returned to the client in the license response. The client may or may not examine this data
+     * but it can be used for sending data to custom client implementations or adding data for diagnostic purposes.
+     *
      * @return the responseCustomData
      */
     public String getResponseCustomData() {
@@ -57,6 +66,9 @@ public class PlayReadyLicenseResponseTemplate {
     }
 
     /**
+     * A string returned to the client in the license response. The client may or may not examine this data
+     * but it can be used for sending data to custom client implementations or adding data for diagnostic purposes.
+     *
      * @param responseCustomData the responseCustomData to set
      */
     public void setResponseCustomData(String responseCustomData) {

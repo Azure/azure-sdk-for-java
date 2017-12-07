@@ -5,6 +5,10 @@ import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 
+/**
+ * Configures the Serial Copy Management System (SCMS) in the license. SCMS is a form of audio output protection.
+ * For further details see the PlayReady Compliance Rules.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "ScmsRestriction")
 public class ScmsRestriction {
@@ -22,6 +26,9 @@ public class ScmsRestriction {
     }
 
     /**
+     * Configures the Serial Copy Management System (SCMS) control bits.
+     * For further details see the PlayReady Compliance Rules.
+     *
      * @return the configurationData
      */
     public byte getConfigurationData() {

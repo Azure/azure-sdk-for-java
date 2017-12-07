@@ -10,6 +10,10 @@ import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlType;
 import javax.xml.datatype.Duration;
 
+/**
+ * Configures the Play Right in the PlayReady license.  This right allows the client to play back the content
+ * and is required in license templates.
+ */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "PlayRight")
 public class PlayReadyPlayRight {
@@ -58,6 +62,8 @@ public class PlayReadyPlayRight {
     private List<Element> extensionData;
 
     /**
+     * Specifies the amount of time that the license is valid after the license is first used to play content.
+     *
      * @return the firstPlayExpiration
      */
     public Duration getFirstPlayExpiration() {
@@ -65,6 +71,8 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the amount of time that the license is valid after the license is first used to play content.
+     *
      * @param firstPlayExpiration the firstPlayExpiration to set
      */
     public void setFirstPlayExpiration(Duration firstPlayExpiration) {
@@ -72,6 +80,9 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Configures the Serial Copy Management System (SCMS) in the license.  SCMS is a form of audio output protection.
+     * For further details see the PlayReady Compliance Rules.
+     *
      * @return the scmsRestriction
      */
     public ScmsRestriction getScmsRestriction() {
@@ -79,6 +90,9 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Configures the Serial Copy Management System (SCMS) in the license.  SCMS is a form of audio output protection.
+     * For further details see the PlayReady Compliance Rules.
+     * 
      * @param scmsRestriction the scmsRestriction to set
      */
     public void setScmsRestriction(ScmsRestriction scmsRestriction) {
@@ -86,6 +100,9 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Configures Automatic Gain Control (AGC) and Color Stripe in the license. These are a form of video output
+     * protection. For further details see the PlayReady Compliance Rules.
+     *
      * @return the agcAndColorStripeRestriction
      */
     public AgcAndColorStripeRestriction getAgcAndColorStripeRestriction() {
@@ -93,6 +110,9 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Configures Automatic Gain Control (AGC) and Color Stripe in the license. These are a form of video output
+     * protection. For further details see the PlayReady Compliance Rules.
+     *
      * @param agcAndColorStripeRestriction the agcAndColorStripeRestriction to set
      */
     public void setAgcAndColorStripeRestriction(AgcAndColorStripeRestriction agcAndColorStripeRestriction) {
@@ -100,6 +120,9 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Configures the Explicit Analog Television Output Restriction in the license. This is a form of video output
+     * protection. For further details see the PlayReady Compliance Rules.
+     *
      * @return the explicitAnalogTelevisionOutputRestriction
      */
     public ExplicitAnalogTelevisionRestriction getExplicitAnalogTelevisionOutputRestriction() {
@@ -107,6 +130,9 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Configures the Explicit Analog Television Output Restriction in the license. This is a form of video output
+     * protection. For further details see the PlayReady Compliance Rules.
+     *
      * @param explicitAnalogTelevisionOutputRestriction the explicitAnalogTelevisionOutputRestriction to set
      */
     public void setExplicitAnalogTelevisionOutputRestriction(ExplicitAnalogTelevisionRestriction explicitAnalogTelevisionOutputRestriction) {
@@ -114,6 +140,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Enables the Digital Video Only Content Restriction in the license.  This is a form of video output protection
+     * which requires the player to output the video portion of the content over Digital Video Outputs.  For further
+     * details see the PlayReady Compliance Rules.
+     *
      * @return the digitalVideoOnlyContentRestriction
      */
     public boolean isDigitalVideoOnlyContentRestriction() {
@@ -121,6 +151,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Enables the Digital Video Only Content Restriction in the license.  This is a form of video output protection
+     * which requires the player to output the video portion of the content over Digital Video Outputs.  For further
+     * details see the PlayReady Compliance Rules.
+     *
      * @param digitalVideoOnlyContentRestriction the digitalVideoOnlyContentRestriction to set
      */
     public void setDigitalVideoOnlyContentRestriction(boolean digitalVideoOnlyContentRestriction) {
@@ -128,6 +162,11 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Enables the Image Constraint For Analog Component Video Restriction in the license.
+     * This is a form of video output protection which requires the player constrain the resolution of the video portion
+     * of the content when outputting it over an Analog Component Video Output.
+     * For further details see the PlayReady Compliance Rules.
+     *
      * @return the imageConstraintForAnalogComponentVideoRestriction
      */
     public boolean isImageConstraintForAnalogComponentVideoRestriction() {
@@ -135,6 +174,11 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Enables the Image Constraint For Analog Component Video Restriction in the license.
+     * This is a form of video output protection which requires the player constrain the resolution of the video portion
+     * of the content when outputting it over an Analog Component Video Output.
+     * For further details see the PlayReady Compliance Rules.
+     *
      * @param imageConstraintForAnalogComponentVideoRestriction the imageConstraintForAnalogComponentVideoRestriction to set
      */
     public void setImageConstraintForAnalogComponentVideoRestriction(
@@ -143,6 +187,9 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * This property configures Unknown output handling settings of the license. These settings tell the PlayReady DRM
+     * runtime how it should handle unknown video outputs. For further details see the PlayReady Compliance Rules.
+     *
      * @return the allowPassingVideoContentToUnknownOutput
      */
     public UnknownOutputPassingOption getAllowPassingVideoContentToUnknownOutput() {
@@ -150,6 +197,9 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * This property configures Unknown output handling settings of the license. These settings tell the PlayReady DRM
+     * runtime how it should handle unknown video outputs. For further details see the PlayReady Compliance Rules.
+     *
      * @param allowPassingVideoContentToUnknownOutput the allowPassingVideoContentToUnknownOutput to set
      */
     public void setAllowPassingVideoContentToUnknownOutput(UnknownOutputPassingOption allowPassingVideoContentToUnknownOutput) {
@@ -157,6 +207,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for uncompressed digital video.  Valid values are null, 100, 250, 270, and
+     * 300. When the property is set to null, the output protection level is not set in the license. For further details
+     * on the meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @return the uncompressedDigitalVideoOpl
      */
     public Integer getUncompressedDigitalVideoOpl() {
@@ -164,6 +218,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for uncompressed digital video.  Valid values are null, 100, 250, 270, and
+     * 300. When the property is set to null, the output protection level is not set in the license. For further details
+     * on the meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @param uncompressedDigitalVideoOpl the uncompressedDigitalVideoOpl to set
      */
     public void setUncompressedDigitalVideoOpl(Integer uncompressedDigitalVideoOpl) {
@@ -175,6 +233,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for compressed digital video. Valid values are null, 400, and 500. When the
+     * property is set to null, the output protection level is not set in the license. For further details on the
+     * meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @return the compressedDigitalVideoOpl
      */
     public Integer getCompressedDigitalVideoOpl() {
@@ -182,6 +244,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for compressed digital video. Valid values are null, 400, and 500. When the
+     * property is set to null, the output protection level is not set in the license. For further details on the
+     * meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @param compressedDigitalVideoOpl the compressedDigitalVideoOpl to set
      */
     public void setCompressedDigitalVideoOpl(Integer compressedDigitalVideoOpl) {
@@ -193,6 +259,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for analog video. Valid values are null, 100, 150, and 200. When the
+     * property is set to null, the output protection level is not set in the license.  For further details on the
+     * meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @return the analogVideoOpl
      */
     public Integer getAnalogVideoOpl() {
@@ -200,6 +270,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for analog video. Valid values are null, 100, 150, and 200. When the
+     * property is set to null, the output protection level is not set in the license.  For further details on the
+     * meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @param analogVideoOpl the analogVideoOpl to set
      */
     public void setAnalogVideoOpl(Integer analogVideoOpl) {
@@ -211,6 +285,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for compressed digital audio. Valid values are null, 100, 150, 200, 250,
+     * and 300. When the property is set to null, the output protection level is not set in the license. For further
+     * details on the meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @return the compressedDigitalAudioOpl
      */
     public Integer getCompressedDigitalAudioOpl() {
@@ -218,6 +296,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for compressed digital audio. Valid values are null, 100, 150, 200, 250,
+     * and 300. When the property is set to null, the output protection level is not set in the license. For further
+     * details on the meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @param compressedDigitalAudioOpl the compressedDigitalAudioOpl to set
      */
     public void setCompressedDigitalAudioOpl(Integer compressedDigitalAudioOpl) {
@@ -229,6 +311,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for uncompressed digital audio. Valid values are 100, 150, 200, 250, and
+     * 300. When the property is set to null, the output protection level is not set in the license. For further details
+     * on the meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @return the uncompressedDigitalAudioOpl
      */
     public Integer getUncompressedDigitalAudioOpl() {
@@ -236,6 +322,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Specifies the output protection level for uncompressed digital audio. Valid values are 100, 150, 200, 250, and
+     * 300. When the property is set to null, the output protection level is not set in the license. For further details
+     * on the meaning of the specific value see the PlayReady Compliance Rules.
+     *
      * @param uncompressedDigitalAudioOpl the uncompressedDigitalAudioOpl to set
      */
     public void setUncompressedDigitalAudioOpl(Integer uncompressedDigitalAudioOpl) {
@@ -254,6 +344,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Enables the Image Constraint For Analog Computer Monitor Restriction in the license. This is a form of video
+     * output protection which requires the player constrain the resolution of the video portion of the content when
+     * outputting it over an Analog Computer Monitor Output. For further details see the PlayReady Compliance Rules.
+     *
      * @param imageConstraintForAnalogComputerMonitorRestriction the imageConstraintForAnalogComputerMonitorRestriction to set
      */
     public void setImageConstraintForAnalogComputerMonitorRestriction(
@@ -262,6 +356,10 @@ public class PlayReadyPlayRight {
     }
 
     /**
+     * Enables the Image Constraint For Analog Computer Monitor Restriction in the license. This is a form of video
+     * output protection which requires the player constrain the resolution of the video portion of the content when
+     * outputting it over an Analog Computer Monitor Output. For further details see the PlayReady Compliance Rules.
+     *
      * @return the extensionData
      */
     public List<Element> getExtensionData() {

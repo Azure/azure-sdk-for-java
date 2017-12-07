@@ -9,9 +9,21 @@ import javax.xml.bind.annotation.XmlType;
 @XmlType
 @XmlEnum
 public enum UnknownOutputPassingOption {
-    
+
+    /**
+     * Passing the video portion of protected content to an Unknown Output is not allowed.
+     */
     @XmlEnumValue("NotAllowed") NotAllowed(0),
+
+    /**
+     * Passing the video portion of protected content to an Unknown Output is allowed.
+     */
     @XmlEnumValue("Allowed") Allowed(1),
+
+    /**
+     * Passing the video portion of protected content to an Unknown Output is allowed
+     * but the client must constrain the resolution of the video content.
+     */
     @XmlEnumValue("AllowedWithVideoConstriction") AllowedWithVideoConstriction(2);
     
     private int unknownOutputPassingOption;
