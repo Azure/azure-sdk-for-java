@@ -280,11 +280,11 @@ public final class NettyClient extends HttpClient {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             adapter.channelPool.release(ctx.channel());
-            if (responseEmitter != null) {
-                responseEmitter.onError(cause);
-            } else if (contentEmitter != null) {
+            if (contentEmitter != null) {
                 contentEmitter.onError(cause);
-            } // TODO: otherwise, what? Pipeline logger?
+            } else if (responseEmitter != null) {
+                responseEmitter.onError(cause);
+            }
         }
 
         @Override
@@ -307,16 +307,15 @@ public final class NettyClient extends HttpClient {
                 contentEmitter = new HttpContentFlowable(new Subscription() {
                     @Override
                     public void request(long n) {
-                        System.out.println("channelRead.Subscription.request(" + n + ")");
                         ctx.channel().read();
                     }
 
                     @Override
                     public void cancel() {
-                        System.out.println("channelRead.Subscription.cancel()");
                         if (contentEmitter != null) {
-                            System.out.println("contentEmitter != null");
-                            ctx.channel().close();
+                            // FIXME: still seem to be getting when disconnecting channel this way:
+                            // "An existing connection was forcibly closed by the remote host"
+                            ctx.channel().disconnect();
                             contentEmitter = null;
                         }
                     }
@@ -327,7 +326,11 @@ public final class NettyClient extends HttpClient {
 
             if (msg instanceof HttpContent) {
                 HttpContent content = (HttpContent) msg;
-                contentEmitter.onReceivedContent(content);
+
+                // channelRead can still come through even after a Subscription.cancel event
+                if (contentEmitter != null) {
+                    contentEmitter.onReceivedContent(content);
+                }
             }
 
             if (msg instanceof LastHttpContent) {

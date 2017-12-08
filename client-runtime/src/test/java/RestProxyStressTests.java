@@ -13,7 +13,9 @@ import com.microsoft.rest.v2.policy.LoggingPolicy.LogLevel;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -26,10 +28,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
-import static junit.framework.TestCase.fail;
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.fail;
 
 @Ignore("Should only be run manually")
 public class RestProxyStressTests {
@@ -116,6 +119,7 @@ public class RestProxyStressTests {
         executor.submit(downloadVerify1GB);
 
         for (int i = 0; i < 8; i++) {
+            // Download 1 MB
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
@@ -139,6 +143,27 @@ public class RestProxyStressTests {
                 }
             });
 
+            // Start downloading 1 GB and cancel
+            executor.submit(new Runnable() {
+                @Override
+                public void run() {
+                    RestResponse<Void, Flowable<byte[]>> response = service.download1GB(sas).blockingGet();
+                    final AtomicInteger count = new AtomicInteger();
+
+                    response.body().map(new Function<byte[], byte[]>() {
+                        @Override
+                        public byte[] apply(byte[] bytes) throws Exception {
+                            count.incrementAndGet();
+                            if (count.intValue() == 3) {
+                                throw new IllegalStateException("Oops, cancel the download.");
+                            }
+                            return bytes;
+                        }
+                    }).subscribe();
+                }
+            });
+
+            // Download 1 KB
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
