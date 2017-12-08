@@ -269,9 +269,9 @@ public final class NettyClient extends HttpClient {
     }
 
     private static final class HttpClientInboundHandler extends ChannelInboundHandlerAdapter {
-        private HttpContentFlowable contentEmitter;
         private SingleEmitter<HttpResponse> responseEmitter;
-        private NettyAdapter adapter;
+        private HttpContentFlowable contentEmitter;
+        private final NettyAdapter adapter;
 
         private HttpClientInboundHandler(NettyAdapter adapter) {
             this.adapter = adapter;

@@ -1,19 +1,14 @@
+import com.google.common.io.BaseEncoding;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.RestResponse;
-import com.microsoft.rest.v2.annotations.GET;
-import com.microsoft.rest.v2.annotations.Host;
-import com.microsoft.rest.v2.annotations.PathParam;
-import com.microsoft.rest.v2.http.HttpHeaders;
-import com.microsoft.rest.v2.http.HttpPipeline;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.annotations.*;
+import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.AddHeadersPolicy;
 import com.microsoft.rest.v2.policy.LoggingPolicy;
 import com.microsoft.rest.v2.policy.LoggingPolicy.LogLevel;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import io.reactivex.exceptions.OnErrorNotImplementedException;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
@@ -32,7 +27,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.fail;
 
 @Ignore("Should only be run manually")
 public class RestProxyStressTests {
@@ -71,6 +65,10 @@ public class RestProxyStressTests {
 
         @GET("/javasdktest/download/1g.dat?{sas}")
         Single<RestResponse<Void, Flowable<byte[]>>> download1GB(@PathParam(value = "sas", encoded = true) String sas);
+
+        @ExpectedResponses({ 201 })
+        @PUT("/javasdktest/upload/1m.dat?{sas}")
+        Single<RestResponse<Void, Void>> upload1MB(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam byte[] bytes);
     }
 
     private static final byte[] MD5_1KB = { 70, -110, 110, -84, -35, 116, 118, 2, -22, 8, 117, -65, -106, 61, -36, 58 };
@@ -107,7 +105,6 @@ public class RestProxyStressTests {
 
                     byte[] actualMD5 = md.digest();
                     assertArrayEquals(MD5_1GB, actualMD5);
-
                 } catch (RuntimeException | NoSuchAlgorithmException e) {
                     synchronized (threadExceptions) {
                         threadExceptions.add(e);
@@ -119,22 +116,33 @@ public class RestProxyStressTests {
         executor.submit(downloadVerify1GB);
 
         for (int i = 0; i < 8; i++) {
-            // Download 1 MB
+            // Download, upload 1 MB
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
                     try {
                         RestResponse<Void, Flowable<byte[]>> response = service.download1MB(sas).blockingGet();
+                        int contentLength = Integer.parseInt(response.rawHeaders().get("Content-Length"));
+                        final byte[] fileContent = new byte[contentLength];
+                        final int[] position = { 0 };
+
                         final MessageDigest md = MessageDigest.getInstance("MD5");
                         response.body().blockingSubscribe(new Consumer<byte[]>() {
                             @Override
                             public void accept(byte[] bytes) throws Exception {
                                 md.update(bytes);
+                                System.arraycopy(bytes, 0, fileContent, position[0], bytes.length);
+                                position[0] += bytes.length;
                             }
                         });
 
                         byte[] actualMD5 = md.digest();
                         assertArrayEquals(MD5_1MB, actualMD5);
+
+                        RestResponse<Void, Void> uploadResponse = service.upload1MB(sas, "BlockBlob", fileContent).blockingGet();
+                        String base64MD5 = uploadResponse.rawHeaders().get("Content-MD5");
+                        byte[] uploadedMD5 = BaseEncoding.base64().decode(base64MD5);
+                        assertArrayEquals(MD5_1MB, uploadedMD5);
                     } catch (RuntimeException | NoSuchAlgorithmException e) {
                         synchronized (threadExceptions) {
                             threadExceptions.add(e);
@@ -189,8 +197,6 @@ public class RestProxyStressTests {
         }
 
         executor.submit(downloadVerify1GB);
-
-        // TODO: file and byte[] upload
 
         executor.shutdown();
         executor.awaitTermination(15, TimeUnit.MINUTES);
