@@ -10,7 +10,7 @@ import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 import java.io.ByteArrayInputStream;
@@ -81,8 +81,8 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Observable<byte[]> streamBodyAsync() {
-        return Observable.just(byteArray);
+    public Flowable<byte[]> streamBodyAsync() {
+        return Flowable.just(byteArray);
     }
 
     @Override

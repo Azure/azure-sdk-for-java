@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
@@ -71,9 +71,9 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Observable<byte[]> streamBodyAsync() {
+    public Flowable<byte[]> streamBodyAsync() {
         // FIXME: maybe need to enable streaming/collecting in here
-        return bodyAsByteArrayAsync().toObservable();
+        return bodyAsByteArrayAsync().toFlowable();
     }
 
     @Override

@@ -15,6 +15,7 @@ import com.microsoft.rest.v2.http.MockHttpClient;
 import com.microsoft.rest.v2.policy.RequestIdPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RetryPolicy;
+import io.reactivex.Flowable;
 import org.junit.Assert;
 import org.junit.Test;
 import io.reactivex.Observable;
@@ -56,8 +57,8 @@ public class RequestIdPolicyTests {
         }
 
         @Override
-        public Observable<byte[]> streamBodyAsync() {
-            return Observable.just(new byte[0]);
+        public Flowable<byte[]> streamBodyAsync() {
+            return Flowable.just(new byte[0]);
         }
 
         @Override

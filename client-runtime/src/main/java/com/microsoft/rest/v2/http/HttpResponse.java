@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
-import io.reactivex.Observable;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 import java.io.InputStream;
@@ -56,7 +56,7 @@ public abstract class HttpResponse {
      * Stream this response's body content.
      * @return This response's body as an asynchronous sequence of byte[].
      */
-    public abstract Observable<byte[]> streamBodyAsync();
+    public abstract Flowable<byte[]> streamBodyAsync();
 
     /**
      * Get this response object's body as a string. If this response object doesn't have a body,

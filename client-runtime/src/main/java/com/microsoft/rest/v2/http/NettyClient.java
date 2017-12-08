@@ -24,17 +24,22 @@ import io.netty.handler.codec.http.HttpMethod;
 import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
+import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
+import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
-import io.reactivex.subjects.ReplaySubject;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.net.URI;
 import java.net.URISyntaxException;
+import java.util.ArrayDeque;
+import java.util.Queue;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -69,6 +74,7 @@ public final class NettyClient extends HttpClient {
             Bootstrap bootstrap = new Bootstrap();
             bootstrap.group(eventLoopGroup);
             bootstrap.channel(NioSocketChannel.class);
+            bootstrap.option(ChannelOption.AUTO_READ, false);
             bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
             bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) TimeUnit.MINUTES.toMillis(3L));
             this.channelPool = new SharedChannelPool(bootstrap, new AbstractChannelPoolHandler() {
@@ -144,14 +150,12 @@ public final class NettyClient extends HttpClient {
                                         channel.pipeline().remove(HttpRequestEncoder.class);
                                         channel.pipeline().replace(HttpResponseDecoder.class, "HttpClientCodec", new HttpClientCodec());
                                     }
-                                    inboundHandler.contentExpected = false;
                                 } else {
                                     // Use HttpResponseDecoder for other operations
                                     if (channel.pipeline().get("HttpResponseDecoder") == null) {
                                         channel.pipeline().replace(HttpClientCodec.class, "HttpResponseDecoder", new HttpResponseDecoder());
                                         channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
                                     }
-                                    inboundHandler.contentExpected = true;
                                 }
                                 inboundHandler.responseEmitter = emitter;
 
@@ -201,13 +205,73 @@ public final class NettyClient extends HttpClient {
         }
     }
 
-    private static final class HttpClientInboundHandler extends ChannelInboundHandlerAdapter {
+    private static final class HttpContentFlowable extends Flowable<ByteBuf> {
+        final Queue<HttpContent> queuedContent = new ArrayDeque<>();
+        final Subscription handlerSubscription;
+        long chunksRequested = 0;
+        Subscriber<? super ByteBuf> subscriber;
 
-        private ReplaySubject<ByteBuf> contentEmitter;
+        HttpContentFlowable(Subscription subscription) {
+            handlerSubscription = subscription;
+        }
+
+        long chunksRequested() {
+            return chunksRequested;
+        }
+
+        @Override
+        protected void subscribeActual(Subscriber<? super ByteBuf> s) {
+            if (subscriber != null) {
+                throw new IllegalStateException("Multiple subscription not allowed for response content.");
+            }
+
+            subscriber = s;
+
+            s.onSubscribe(new Subscription() {
+                @Override
+                public void request(long l) {
+                    // TODO: does this need a lock?
+                    chunksRequested += l;
+
+                    while (!queuedContent.isEmpty() && chunksRequested > 0) {
+                        emitContent(queuedContent.remove());
+                    }
+
+                    handlerSubscription.request(l);
+                }
+
+                @Override
+                public void cancel() {
+                    handlerSubscription.cancel();
+                }
+            });
+        }
+
+        private void emitContent(HttpContent data) {
+            subscriber.onNext(data.content());
+            if (data instanceof LastHttpContent) {
+                subscriber.onComplete();
+            }
+            chunksRequested--;
+        }
+
+        void onReceivedContent(HttpContent data) {
+            if (subscriber != null && chunksRequested > 0) {
+                emitContent(data);
+            } else {
+                queuedContent.add(data);
+            }
+        }
+
+        void onError(Throwable cause) {
+            subscriber.onError(cause);
+        }
+    }
+
+    private static final class HttpClientInboundHandler extends ChannelInboundHandlerAdapter {
         private SingleEmitter<HttpResponse> responseEmitter;
-        private NettyAdapter adapter;
-        private long contentLength;
-        private boolean contentExpected;
+        private HttpContentFlowable contentEmitter;
+        private final NettyAdapter adapter;
 
         private HttpClientInboundHandler(NettyAdapter adapter) {
             this.adapter = adapter;
@@ -216,7 +280,18 @@ public final class NettyClient extends HttpClient {
         @Override
         public void exceptionCaught(ChannelHandlerContext ctx, Throwable cause) {
             adapter.channelPool.release(ctx.channel());
-            responseEmitter.onError(cause);
+            if (contentEmitter != null) {
+                contentEmitter.onError(cause);
+            } else if (responseEmitter != null) {
+                responseEmitter.onError(cause);
+            }
+        }
+
+        @Override
+        public void channelReadComplete(ChannelHandlerContext ctx) throws Exception {
+            if (contentEmitter != null && contentEmitter.chunksRequested() != 0) {
+                ctx.channel().read();
+            }
         }
 
         @Override
@@ -229,34 +304,38 @@ public final class NettyClient extends HttpClient {
                     return;
                 }
 
-                if (response.headers().contains(HEADER_CONTENT_LENGTH)) {
-                    contentLength = Long.parseLong(response.headers().get(HEADER_CONTENT_LENGTH));
-                }
+                contentEmitter = new HttpContentFlowable(new Subscription() {
+                    @Override
+                    public void request(long n) {
+                        ctx.channel().read();
+                    }
 
-                contentEmitter = ReplaySubject.create();
+                    @Override
+                    public void cancel() {
+                        if (contentEmitter != null) {
+                            // FIXME: still seem to be getting when disconnecting channel this way:
+                            // "An existing connection was forcibly closed by the remote host"
+                            ctx.channel().disconnect();
+                            contentEmitter = null;
+                        }
+                    }
+                });
+
                 responseEmitter.onSuccess(new NettyResponse(response, contentEmitter));
             }
+
             if (msg instanceof HttpContent) {
                 HttpContent content = (HttpContent) msg;
-                ByteBuf buf = content.content();
 
-                if (contentLength == 0 || !contentExpected) {
-                    contentEmitter.onNext(buf);
-                    contentEmitter.onComplete();
-                    adapter.channelPool.release(ctx.channel());
-                    return;
+                // channelRead can still come through even after a Subscription.cancel event
+                if (contentEmitter != null) {
+                    contentEmitter.onReceivedContent(content);
                 }
+            }
 
-                if (contentLength > 0 && buf != null && buf.readableBytes() > 0) {
-                    int readable = buf.readableBytes();
-                    contentLength -= readable;
-                    contentEmitter.onNext(buf);
-                }
-
-                if (contentLength == 0) {
-                    contentEmitter.onComplete();
-                    adapter.channelPool.release(ctx.channel());
-                }
+            if (msg instanceof LastHttpContent) {
+                contentEmitter = null;
+                adapter.channelPool.release(ctx.channel());
             }
         }
     }
