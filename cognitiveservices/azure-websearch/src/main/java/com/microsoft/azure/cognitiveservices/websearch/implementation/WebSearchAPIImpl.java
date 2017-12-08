@@ -4,17 +4,17 @@
  * license information.
  */
 
-package com.microsoft.azure.cognitiveservices.faceapi.implementation;
+package com.microsoft.azure.cognitiveservices.websearch.implementation;
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
-import com.microsoft.azure.cognitiveservices.faceapi.AzureRegions;
 import com.microsoft.rest.RestClient;
+
 /**
- * Initializes a new instance of the FaceAPIImpl class.
+ * Initializes a new instance of the WebSearchAPIImpl class.
  */
-public class FaceAPIImpl extends AzureServiceClient {
+public class WebSearchAPIImpl extends AzureServiceClient {
     /** the {@link AzureClient} used for long running operations. */
     private AzureClient azureClient;
 
@@ -24,29 +24,6 @@ public class FaceAPIImpl extends AzureServiceClient {
      */
     public AzureClient getAzureClient() {
         return this.azureClient;
-    }
-
-    /** Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'. */
-    private AzureRegions azureRegion;
-
-    /**
-     * Gets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @return the azureRegion value.
-     */
-    public AzureRegions azureRegion() {
-        return this.azureRegion;
-    }
-
-    /**
-     * Sets Supported Azure regions for Cognitive Services endpoints. Possible values include: 'westus', 'westeurope', 'southeastasia', 'eastus2', 'westcentralus', 'westus2', 'eastus', 'southcentralus', 'northeurope', 'eastasia', 'australiaeast', 'brazilsouth'.
-     *
-     * @param azureRegion the azureRegion value.
-     * @return the service client itself
-     */
-    public FaceAPIImpl withAzureRegion(AzureRegions azureRegion) {
-        this.azureRegion = azureRegion;
-        return this;
     }
 
     /** Gets or sets the preferred language for the response. */
@@ -67,7 +44,7 @@ public class FaceAPIImpl extends AzureServiceClient {
      * @param acceptLanguage the acceptLanguage value.
      * @return the service client itself
      */
-    public FaceAPIImpl withAcceptLanguage(String acceptLanguage) {
+    public WebSearchAPIImpl withAcceptLanguage(String acceptLanguage) {
         this.acceptLanguage = acceptLanguage;
         return this;
     }
@@ -90,7 +67,7 @@ public class FaceAPIImpl extends AzureServiceClient {
      * @param longRunningOperationRetryTimeout the longRunningOperationRetryTimeout value.
      * @return the service client itself
      */
-    public FaceAPIImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
+    public WebSearchAPIImpl withLongRunningOperationRetryTimeout(int longRunningOperationRetryTimeout) {
         this.longRunningOperationRetryTimeout = longRunningOperationRetryTimeout;
         return this;
     }
@@ -113,89 +90,50 @@ public class FaceAPIImpl extends AzureServiceClient {
      * @param generateClientRequestId the generateClientRequestId value.
      * @return the service client itself
      */
-    public FaceAPIImpl withGenerateClientRequestId(boolean generateClientRequestId) {
+    public WebSearchAPIImpl withGenerateClientRequestId(boolean generateClientRequestId) {
         this.generateClientRequestId = generateClientRequestId;
         return this;
     }
 
     /**
-     * The FacesInner object to access its operations.
+     * The WebsInner object to access its operations.
      */
-    private FacesInner faces;
+    private WebsInner webs;
 
     /**
-     * Gets the FacesInner object to access its operations.
-     * @return the FacesInner object.
+     * Gets the WebsInner object to access its operations.
+     * @return the WebsInner object.
      */
-    public FacesInner faces() {
-        return this.faces;
+    public WebsInner webs() {
+        return this.webs;
     }
 
     /**
-     * The PersonsInner object to access its operations.
-     */
-    private PersonsInner persons;
-
-    /**
-     * Gets the PersonsInner object to access its operations.
-     * @return the PersonsInner object.
-     */
-    public PersonsInner persons() {
-        return this.persons;
-    }
-
-    /**
-     * The PersonGroupsInner object to access its operations.
-     */
-    private PersonGroupsInner personGroups;
-
-    /**
-     * Gets the PersonGroupsInner object to access its operations.
-     * @return the PersonGroupsInner object.
-     */
-    public PersonGroupsInner personGroups() {
-        return this.personGroups;
-    }
-
-    /**
-     * The FaceListsInner object to access its operations.
-     */
-    private FaceListsInner faceLists;
-
-    /**
-     * Gets the FaceListsInner object to access its operations.
-     * @return the FaceListsInner object.
-     */
-    public FaceListsInner faceLists() {
-        return this.faceLists;
-    }
-
-    /**
-     * Initializes an instance of FaceAPI client.
+     * Initializes an instance of WebSearchAPI client.
      *
      * @param credentials the management credentials for Azure
      */
-    public FaceAPIImpl(ServiceClientCredentials credentials) {
-        this("https://{AzureRegion}.api.cognitive.microsoft.com/face/v1.0", credentials);
+    public WebSearchAPIImpl(ServiceClientCredentials credentials) {
+        this("https://api.cognitive.microsoft.com/bing/v7.0", credentials);
     }
 
     /**
-     * Initializes an instance of FaceAPI client.
+     * Initializes an instance of WebSearchAPI client.
      *
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    private FaceAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public WebSearchAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
 
     /**
-     * Initializes an instance of FaceAPI client.
+     * Initializes an instance of WebSearchAPI client.
      *
      * @param restClient the REST client to connect to Azure.
      */
-    public FaceAPIImpl(RestClient restClient) {
+    public WebSearchAPIImpl(RestClient restClient) {
         super(restClient);
         initialize();
     }
@@ -204,10 +142,7 @@ public class FaceAPIImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.faces = new FacesInner(restClient().retrofit(), this);
-        this.persons = new PersonsInner(restClient().retrofit(), this);
-        this.personGroups = new PersonGroupsInner(restClient().retrofit(), this);
-        this.faceLists = new FaceListsInner(restClient().retrofit(), this);
+        this.webs = new WebsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 
@@ -218,6 +153,6 @@ public class FaceAPIImpl extends AzureServiceClient {
      */
     @Override
     public String userAgent() {
-        return String.format("%s (%s, %s)", super.userAgent(), "FaceAPI", "1.0");
+        return String.format("%s (%s, %s)", super.userAgent(), "WebSearchAPI", "1.0");
     }
 }

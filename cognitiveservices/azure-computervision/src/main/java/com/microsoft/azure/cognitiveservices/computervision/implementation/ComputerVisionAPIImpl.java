@@ -11,24 +11,14 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.cognitiveservices.computervision.ComputerVisionAPI;
-import com.microsoft.azure.cognitiveservices.computervision.models.AzureRegions;
-import com.microsoft.azure.cognitiveservices.computervision.models.ComputerVisionErrorException;
-import com.microsoft.azure.cognitiveservices.computervision.models.Details;
-import com.microsoft.azure.cognitiveservices.computervision.models.DomainModelResults;
-import com.microsoft.azure.cognitiveservices.computervision.models.DomainModels;
-import com.microsoft.azure.cognitiveservices.computervision.models.ImageAnalysis;
-import com.microsoft.azure.cognitiveservices.computervision.models.ImageDescription;
-import com.microsoft.azure.cognitiveservices.computervision.models.ImageUrl;
-import com.microsoft.azure.cognitiveservices.computervision.models.Language1;
-import com.microsoft.azure.cognitiveservices.computervision.models.ListModelsResult;
-import com.microsoft.azure.cognitiveservices.computervision.models.OcrLanguages;
-import com.microsoft.azure.cognitiveservices.computervision.models.OcrResult;
-import com.microsoft.azure.cognitiveservices.computervision.models.RecognizeTextHeaders;
-import com.microsoft.azure.cognitiveservices.computervision.models.RecognizeTextInStreamHeaders;
-import com.microsoft.azure.cognitiveservices.computervision.models.TagResult;
-import com.microsoft.azure.cognitiveservices.computervision.models.TextOperationResult;
-import com.microsoft.azure.cognitiveservices.computervision.models.VisualFeatureTypes;
+import com.microsoft.azure.cognitiveservices.computervision.AzureRegions;
+import com.microsoft.azure.cognitiveservices.computervision.ComputerVisionErrorException;
+import com.microsoft.azure.cognitiveservices.computervision.Details;
+import com.microsoft.azure.cognitiveservices.computervision.DomainModels;
+import com.microsoft.azure.cognitiveservices.computervision.ImageUrl;
+import com.microsoft.azure.cognitiveservices.computervision.Language1;
+import com.microsoft.azure.cognitiveservices.computervision.OcrLanguages;
+import com.microsoft.azure.cognitiveservices.computervision.VisualFeatureTypes;
 import com.microsoft.rest.CollectionFormat;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
@@ -58,7 +48,7 @@ import rx.Observable;
 /**
  * Initializes a new instance of the ComputerVisionAPIImpl class.
  */
-public class ComputerVisionAPIImpl extends AzureServiceClient implements ComputerVisionAPI {
+public class ComputerVisionAPIImpl extends AzureServiceClient {
     /** The Retrofit service to perform REST calls. */
     private ComputerVisionAPIService service;
     /** the {@link AzureClient} used for long running operations. */
@@ -295,9 +285,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ListModelsResult object if successful.
+     * @return the ListModelsResultInner object if successful.
      */
-    public ListModelsResult listModels() {
+    public ListModelsResultInner listModels() {
         return listModelsWithServiceResponseAsync().toBlocking().single().body();
     }
 
@@ -308,7 +298,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ListModelsResult> listModelsAsync(final ServiceCallback<ListModelsResult> serviceCallback) {
+    public ServiceFuture<ListModelsResultInner> listModelsAsync(final ServiceCallback<ListModelsResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(listModelsWithServiceResponseAsync(), serviceCallback);
     }
 
@@ -316,12 +306,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * This operation returns the list of domain-specific models that are supported by the Computer Vision API.  Currently, the API only supports one domain-specific model: a celebrity recognizer. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ListModelsResult object
+     * @return the observable to the ListModelsResultInner object
      */
-    public Observable<ListModelsResult> listModelsAsync() {
-        return listModelsWithServiceResponseAsync().map(new Func1<ServiceResponse<ListModelsResult>, ListModelsResult>() {
+    public Observable<ListModelsResultInner> listModelsAsync() {
+        return listModelsWithServiceResponseAsync().map(new Func1<ServiceResponse<ListModelsResultInner>, ListModelsResultInner>() {
             @Override
-            public ListModelsResult call(ServiceResponse<ListModelsResult> response) {
+            public ListModelsResultInner call(ServiceResponse<ListModelsResultInner> response) {
                 return response.body();
             }
         });
@@ -331,19 +321,19 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * This operation returns the list of domain-specific models that are supported by the Computer Vision API.  Currently, the API only supports one domain-specific model: a celebrity recognizer. A successful response will be returned in JSON.  If the request failed, the response will contain an error code and a message to help understand what went wrong.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ListModelsResult object
+     * @return the observable to the ListModelsResultInner object
      */
-    public Observable<ServiceResponse<ListModelsResult>> listModelsWithServiceResponseAsync() {
+    public Observable<ServiceResponse<ListModelsResultInner>> listModelsWithServiceResponseAsync() {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.listModels(this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListModelsResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ListModelsResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ListModelsResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ListModelsResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ListModelsResult> clientResponse = listModelsDelegate(response);
+                        ServiceResponse<ListModelsResultInner> clientResponse = listModelsDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -352,9 +342,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<ListModelsResult> listModelsDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<ListModelsResult, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<ListModelsResult>() { }.getType())
+    private ServiceResponse<ListModelsResultInner> listModelsDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<ListModelsResultInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<ListModelsResultInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -366,9 +356,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageAnalysis object if successful.
+     * @return the ImageAnalysisInner object if successful.
      */
-    public ImageAnalysis analyzeImage(String url) {
+    public ImageAnalysisInner analyzeImage(String url) {
         return analyzeImageWithServiceResponseAsync(url).toBlocking().single().body();
     }
 
@@ -380,7 +370,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageAnalysis> analyzeImageAsync(String url, final ServiceCallback<ImageAnalysis> serviceCallback) {
+    public ServiceFuture<ImageAnalysisInner> analyzeImageAsync(String url, final ServiceCallback<ImageAnalysisInner> serviceCallback) {
         return ServiceFuture.fromResponse(analyzeImageWithServiceResponseAsync(url), serviceCallback);
     }
 
@@ -389,12 +379,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageAnalysis object
+     * @return the observable to the ImageAnalysisInner object
      */
-    public Observable<ImageAnalysis> analyzeImageAsync(String url) {
-        return analyzeImageWithServiceResponseAsync(url).map(new Func1<ServiceResponse<ImageAnalysis>, ImageAnalysis>() {
+    public Observable<ImageAnalysisInner> analyzeImageAsync(String url) {
+        return analyzeImageWithServiceResponseAsync(url).map(new Func1<ServiceResponse<ImageAnalysisInner>, ImageAnalysisInner>() {
             @Override
-            public ImageAnalysis call(ServiceResponse<ImageAnalysis> response) {
+            public ImageAnalysisInner call(ServiceResponse<ImageAnalysisInner> response) {
                 return response.body();
             }
         });
@@ -405,9 +395,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageAnalysis object
+     * @return the observable to the ImageAnalysisInner object
      */
-    public Observable<ServiceResponse<ImageAnalysis>> analyzeImageWithServiceResponseAsync(String url) {
+    public Observable<ServiceResponse<ImageAnalysisInner>> analyzeImageWithServiceResponseAsync(String url) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -423,11 +413,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String visualFeaturesConverted = this.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
         String detailsConverted = this.serializerAdapter().serializeList(details, CollectionFormat.CSV);
         return service.analyzeImage(visualFeaturesConverted, detailsConverted, language, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysis>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysisInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ImageAnalysis>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ImageAnalysisInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageAnalysis> clientResponse = analyzeImageDelegate(response);
+                        ServiceResponse<ImageAnalysisInner> clientResponse = analyzeImageDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -446,9 +436,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageAnalysis object if successful.
+     * @return the ImageAnalysisInner object if successful.
      */
-    public ImageAnalysis analyzeImage(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, Language1 language) {
+    public ImageAnalysisInner analyzeImage(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, Language1 language) {
         return analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language).toBlocking().single().body();
     }
 
@@ -463,7 +453,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageAnalysis> analyzeImageAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, Language1 language, final ServiceCallback<ImageAnalysis> serviceCallback) {
+    public ServiceFuture<ImageAnalysisInner> analyzeImageAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, Language1 language, final ServiceCallback<ImageAnalysisInner> serviceCallback) {
         return ServiceFuture.fromResponse(analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language), serviceCallback);
     }
 
@@ -475,12 +465,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
      * @param language A string indicating which language to return. The service will return recognition results in specified language. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageAnalysis object
+     * @return the observable to the ImageAnalysisInner object
      */
-    public Observable<ImageAnalysis> analyzeImageAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, Language1 language) {
-        return analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language).map(new Func1<ServiceResponse<ImageAnalysis>, ImageAnalysis>() {
+    public Observable<ImageAnalysisInner> analyzeImageAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, Language1 language) {
+        return analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language).map(new Func1<ServiceResponse<ImageAnalysisInner>, ImageAnalysisInner>() {
             @Override
-            public ImageAnalysis call(ServiceResponse<ImageAnalysis> response) {
+            public ImageAnalysisInner call(ServiceResponse<ImageAnalysisInner> response) {
                 return response.body();
             }
         });
@@ -494,9 +484,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
      * @param language A string indicating which language to return. The service will return recognition results in specified language. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageAnalysis object
+     * @return the observable to the ImageAnalysisInner object
      */
-    public Observable<ServiceResponse<ImageAnalysis>> analyzeImageWithServiceResponseAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, Language1 language) {
+    public Observable<ServiceResponse<ImageAnalysisInner>> analyzeImageWithServiceResponseAsync(String url, List<VisualFeatureTypes> visualFeatures, List<Details> details, Language1 language) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -511,11 +501,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String visualFeaturesConverted = this.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
         String detailsConverted = this.serializerAdapter().serializeList(details, CollectionFormat.CSV);
         return service.analyzeImage(visualFeaturesConverted, detailsConverted, language, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysis>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysisInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ImageAnalysis>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ImageAnalysisInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageAnalysis> clientResponse = analyzeImageDelegate(response);
+                        ServiceResponse<ImageAnalysisInner> clientResponse = analyzeImageDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -524,9 +514,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<ImageAnalysis> analyzeImageDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<ImageAnalysis, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<ImageAnalysis>() { }.getType())
+    private ServiceResponse<ImageAnalysisInner> analyzeImageDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<ImageAnalysisInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<ImageAnalysisInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -711,9 +701,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OcrResult object if successful.
+     * @return the OcrResultInner object if successful.
      */
-    public OcrResult recognizePrintedText(boolean detectOrientation, String url) {
+    public OcrResultInner recognizePrintedText(boolean detectOrientation, String url) {
         return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url).toBlocking().single().body();
     }
 
@@ -726,7 +716,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, final ServiceCallback<OcrResult> serviceCallback) {
+    public ServiceFuture<OcrResultInner> recognizePrintedTextAsync(boolean detectOrientation, String url, final ServiceCallback<OcrResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(recognizePrintedTextWithServiceResponseAsync(detectOrientation, url), serviceCallback);
     }
 
@@ -736,12 +726,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the OcrResultInner object
      */
-    public Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url) {
-        return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url).map(new Func1<ServiceResponse<OcrResult>, OcrResult>() {
+    public Observable<OcrResultInner> recognizePrintedTextAsync(boolean detectOrientation, String url) {
+        return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url).map(new Func1<ServiceResponse<OcrResultInner>, OcrResultInner>() {
             @Override
-            public OcrResult call(ServiceResponse<OcrResult> response) {
+            public OcrResultInner call(ServiceResponse<OcrResultInner> response) {
                 return response.body();
             }
         });
@@ -753,9 +743,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the OcrResultInner object
      */
-    public Observable<ServiceResponse<OcrResult>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url) {
+    public Observable<ServiceResponse<OcrResultInner>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -767,11 +757,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.recognizePrintedText(detectOrientation, language, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<OcrResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<OcrResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OcrResult> clientResponse = recognizePrintedTextDelegate(response);
+                        ServiceResponse<OcrResultInner> clientResponse = recognizePrintedTextDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -789,9 +779,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OcrResult object if successful.
+     * @return the OcrResultInner object if successful.
      */
-    public OcrResult recognizePrintedText(boolean detectOrientation, String url, OcrLanguages language) {
+    public OcrResultInner recognizePrintedText(boolean detectOrientation, String url, OcrLanguages language) {
         return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url, language).toBlocking().single().body();
     }
 
@@ -805,7 +795,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, OcrLanguages language, final ServiceCallback<OcrResult> serviceCallback) {
+    public ServiceFuture<OcrResultInner> recognizePrintedTextAsync(boolean detectOrientation, String url, OcrLanguages language, final ServiceCallback<OcrResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(recognizePrintedTextWithServiceResponseAsync(detectOrientation, url, language), serviceCallback);
     }
 
@@ -816,12 +806,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param url the String value
      * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the OcrResultInner object
      */
-    public Observable<OcrResult> recognizePrintedTextAsync(boolean detectOrientation, String url, OcrLanguages language) {
-        return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url, language).map(new Func1<ServiceResponse<OcrResult>, OcrResult>() {
+    public Observable<OcrResultInner> recognizePrintedTextAsync(boolean detectOrientation, String url, OcrLanguages language) {
+        return recognizePrintedTextWithServiceResponseAsync(detectOrientation, url, language).map(new Func1<ServiceResponse<OcrResultInner>, OcrResultInner>() {
             @Override
-            public OcrResult call(ServiceResponse<OcrResult> response) {
+            public OcrResultInner call(ServiceResponse<OcrResultInner> response) {
                 return response.body();
             }
         });
@@ -834,9 +824,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param url the String value
      * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the OcrResultInner object
      */
-    public Observable<ServiceResponse<OcrResult>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url, OcrLanguages language) {
+    public Observable<ServiceResponse<OcrResultInner>> recognizePrintedTextWithServiceResponseAsync(boolean detectOrientation, String url, OcrLanguages language) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -847,11 +837,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.recognizePrintedText(detectOrientation, language, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<OcrResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<OcrResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OcrResult> clientResponse = recognizePrintedTextDelegate(response);
+                        ServiceResponse<OcrResultInner> clientResponse = recognizePrintedTextDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -860,9 +850,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<OcrResult> recognizePrintedTextDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<OcrResult, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<OcrResult>() { }.getType())
+    private ServiceResponse<OcrResultInner> recognizePrintedTextDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<OcrResultInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<OcrResultInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -874,9 +864,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageDescription object if successful.
+     * @return the ImageDescriptionInner object if successful.
      */
-    public ImageDescription describeImage(String url) {
+    public ImageDescriptionInner describeImage(String url) {
         return describeImageWithServiceResponseAsync(url).toBlocking().single().body();
     }
 
@@ -888,7 +878,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageDescription> describeImageAsync(String url, final ServiceCallback<ImageDescription> serviceCallback) {
+    public ServiceFuture<ImageDescriptionInner> describeImageAsync(String url, final ServiceCallback<ImageDescriptionInner> serviceCallback) {
         return ServiceFuture.fromResponse(describeImageWithServiceResponseAsync(url), serviceCallback);
     }
 
@@ -897,12 +887,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
+     * @return the observable to the ImageDescriptionInner object
      */
-    public Observable<ImageDescription> describeImageAsync(String url) {
-        return describeImageWithServiceResponseAsync(url).map(new Func1<ServiceResponse<ImageDescription>, ImageDescription>() {
+    public Observable<ImageDescriptionInner> describeImageAsync(String url) {
+        return describeImageWithServiceResponseAsync(url).map(new Func1<ServiceResponse<ImageDescriptionInner>, ImageDescriptionInner>() {
             @Override
-            public ImageDescription call(ServiceResponse<ImageDescription> response) {
+            public ImageDescriptionInner call(ServiceResponse<ImageDescriptionInner> response) {
                 return response.body();
             }
         });
@@ -913,9 +903,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
+     * @return the observable to the ImageDescriptionInner object
      */
-    public Observable<ServiceResponse<ImageDescription>> describeImageWithServiceResponseAsync(String url) {
+    public Observable<ServiceResponse<ImageDescriptionInner>> describeImageWithServiceResponseAsync(String url) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -927,11 +917,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.describeImage(maxCandidates, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescription>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescriptionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ImageDescription>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ImageDescriptionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageDescription> clientResponse = describeImageDelegate(response);
+                        ServiceResponse<ImageDescriptionInner> clientResponse = describeImageDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -948,9 +938,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageDescription object if successful.
+     * @return the ImageDescriptionInner object if successful.
      */
-    public ImageDescription describeImage(String url, String maxCandidates) {
+    public ImageDescriptionInner describeImage(String url, String maxCandidates) {
         return describeImageWithServiceResponseAsync(url, maxCandidates).toBlocking().single().body();
     }
 
@@ -963,7 +953,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageDescription> describeImageAsync(String url, String maxCandidates, final ServiceCallback<ImageDescription> serviceCallback) {
+    public ServiceFuture<ImageDescriptionInner> describeImageAsync(String url, String maxCandidates, final ServiceCallback<ImageDescriptionInner> serviceCallback) {
         return ServiceFuture.fromResponse(describeImageWithServiceResponseAsync(url, maxCandidates), serviceCallback);
     }
 
@@ -973,12 +963,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param url the String value
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
+     * @return the observable to the ImageDescriptionInner object
      */
-    public Observable<ImageDescription> describeImageAsync(String url, String maxCandidates) {
-        return describeImageWithServiceResponseAsync(url, maxCandidates).map(new Func1<ServiceResponse<ImageDescription>, ImageDescription>() {
+    public Observable<ImageDescriptionInner> describeImageAsync(String url, String maxCandidates) {
+        return describeImageWithServiceResponseAsync(url, maxCandidates).map(new Func1<ServiceResponse<ImageDescriptionInner>, ImageDescriptionInner>() {
             @Override
-            public ImageDescription call(ServiceResponse<ImageDescription> response) {
+            public ImageDescriptionInner call(ServiceResponse<ImageDescriptionInner> response) {
                 return response.body();
             }
         });
@@ -990,9 +980,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param url the String value
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
+     * @return the observable to the ImageDescriptionInner object
      */
-    public Observable<ServiceResponse<ImageDescription>> describeImageWithServiceResponseAsync(String url, String maxCandidates) {
+    public Observable<ServiceResponse<ImageDescriptionInner>> describeImageWithServiceResponseAsync(String url, String maxCandidates) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1003,11 +993,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.describeImage(maxCandidates, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescription>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescriptionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ImageDescription>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ImageDescriptionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageDescription> clientResponse = describeImageDelegate(response);
+                        ServiceResponse<ImageDescriptionInner> clientResponse = describeImageDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1016,9 +1006,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<ImageDescription> describeImageDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<ImageDescription, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<ImageDescription>() { }.getType())
+    private ServiceResponse<ImageDescriptionInner> describeImageDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<ImageDescriptionInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<ImageDescriptionInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -1030,9 +1020,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TagResult object if successful.
+     * @return the TagResultInner object if successful.
      */
-    public TagResult tagImage(String url) {
+    public TagResultInner tagImage(String url) {
         return tagImageWithServiceResponseAsync(url).toBlocking().single().body();
     }
 
@@ -1044,7 +1034,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TagResult> tagImageAsync(String url, final ServiceCallback<TagResult> serviceCallback) {
+    public ServiceFuture<TagResultInner> tagImageAsync(String url, final ServiceCallback<TagResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(tagImageWithServiceResponseAsync(url), serviceCallback);
     }
 
@@ -1053,12 +1043,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the TagResultInner object
      */
-    public Observable<TagResult> tagImageAsync(String url) {
-        return tagImageWithServiceResponseAsync(url).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
+    public Observable<TagResultInner> tagImageAsync(String url) {
+        return tagImageWithServiceResponseAsync(url).map(new Func1<ServiceResponse<TagResultInner>, TagResultInner>() {
             @Override
-            public TagResult call(ServiceResponse<TagResult> response) {
+            public TagResultInner call(ServiceResponse<TagResultInner> response) {
                 return response.body();
             }
         });
@@ -1069,9 +1059,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the TagResultInner object
      */
-    public Observable<ServiceResponse<TagResult>> tagImageWithServiceResponseAsync(String url) {
+    public Observable<ServiceResponse<TagResultInner>> tagImageWithServiceResponseAsync(String url) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1082,11 +1072,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.tagImage(this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<TagResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<TagResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TagResult> clientResponse = tagImageDelegate(response);
+                        ServiceResponse<TagResultInner> clientResponse = tagImageDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1095,9 +1085,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<TagResult> tagImageDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<TagResult, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<TagResult>() { }.getType())
+    private ServiceResponse<TagResultInner> tagImageDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<TagResultInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<TagResultInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -1110,9 +1100,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DomainModelResults object if successful.
+     * @return the DomainModelResultsInner object if successful.
      */
-    public DomainModelResults analyzeImageByDomain(DomainModels model, String url) {
+    public DomainModelResultsInner analyzeImageByDomain(DomainModels model, String url) {
         return analyzeImageByDomainWithServiceResponseAsync(model, url).toBlocking().single().body();
     }
 
@@ -1125,7 +1115,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DomainModelResults> analyzeImageByDomainAsync(DomainModels model, String url, final ServiceCallback<DomainModelResults> serviceCallback) {
+    public ServiceFuture<DomainModelResultsInner> analyzeImageByDomainAsync(DomainModels model, String url, final ServiceCallback<DomainModelResultsInner> serviceCallback) {
         return ServiceFuture.fromResponse(analyzeImageByDomainWithServiceResponseAsync(model, url), serviceCallback);
     }
 
@@ -1135,12 +1125,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param model The domain-specific content to recognize. Possible values include: 'Celebrities', 'Landmarks'
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DomainModelResults object
+     * @return the observable to the DomainModelResultsInner object
      */
-    public Observable<DomainModelResults> analyzeImageByDomainAsync(DomainModels model, String url) {
-        return analyzeImageByDomainWithServiceResponseAsync(model, url).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
+    public Observable<DomainModelResultsInner> analyzeImageByDomainAsync(DomainModels model, String url) {
+        return analyzeImageByDomainWithServiceResponseAsync(model, url).map(new Func1<ServiceResponse<DomainModelResultsInner>, DomainModelResultsInner>() {
             @Override
-            public DomainModelResults call(ServiceResponse<DomainModelResults> response) {
+            public DomainModelResultsInner call(ServiceResponse<DomainModelResultsInner> response) {
                 return response.body();
             }
         });
@@ -1152,9 +1142,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param model The domain-specific content to recognize. Possible values include: 'Celebrities', 'Landmarks'
      * @param url the String value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DomainModelResults object
+     * @return the observable to the DomainModelResultsInner object
      */
-    public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainWithServiceResponseAsync(DomainModels model, String url) {
+    public Observable<ServiceResponse<DomainModelResultsInner>> analyzeImageByDomainWithServiceResponseAsync(DomainModels model, String url) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1168,11 +1158,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.analyzeImageByDomain(model, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainModelResults>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainModelResultsInner>>>() {
                 @Override
-                public Observable<ServiceResponse<DomainModelResults>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<DomainModelResultsInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DomainModelResults> clientResponse = analyzeImageByDomainDelegate(response);
+                        ServiceResponse<DomainModelResultsInner> clientResponse = analyzeImageByDomainDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1181,9 +1171,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<DomainModelResults> analyzeImageByDomainDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<DomainModelResults, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<DomainModelResults>() { }.getType())
+    private ServiceResponse<DomainModelResultsInner> analyzeImageByDomainDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<DomainModelResultsInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<DomainModelResultsInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -1220,9 +1210,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> recognizeTextAsync(String url) {
-        return recognizeTextWithServiceResponseAsync(url).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>, Void>() {
+        return recognizeTextWithServiceResponseAsync(url).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner>, Void>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextHeaders> response) {
+            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner> response) {
                 return response.body();
             }
         });
@@ -1235,7 +1225,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> recognizeTextWithServiceResponseAsync(String url) {
+    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner>> recognizeTextWithServiceResponseAsync(String url) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1247,11 +1237,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.recognizeText(detectHandwriting, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<Void, RecognizeTextHeaders> clientResponse = recognizeTextDelegate(response);
+                        ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner> clientResponse = recognizeTextDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1295,9 +1285,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> recognizeTextAsync(String url, Boolean detectHandwriting) {
-        return recognizeTextWithServiceResponseAsync(url, detectHandwriting).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>, Void>() {
+        return recognizeTextWithServiceResponseAsync(url, detectHandwriting).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner>, Void>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextHeaders> response) {
+            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner> response) {
                 return response.body();
             }
         });
@@ -1311,7 +1301,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> recognizeTextWithServiceResponseAsync(String url, Boolean detectHandwriting) {
+    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner>> recognizeTextWithServiceResponseAsync(String url, Boolean detectHandwriting) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1322,11 +1312,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.recognizeText(detectHandwriting, this.acceptLanguage(), imageUrl, parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<Void, RecognizeTextHeaders> clientResponse = recognizeTextDelegate(response);
+                        ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner> clientResponse = recognizeTextDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1335,11 +1325,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponseWithHeaders<Void, RecognizeTextHeaders> recognizeTextDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+    private ServiceResponseWithHeaders<Void, RecognizeTextHeadersInner> recognizeTextDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<Void, ComputerVisionErrorException>newInstance(this.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
-                .buildWithHeaders(response, RecognizeTextHeaders.class);
+                .buildWithHeaders(response, RecognizeTextHeadersInner.class);
     }
 
     /**
@@ -1349,9 +1339,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TextOperationResult object if successful.
+     * @return the TextOperationResultInner object if successful.
      */
-    public TextOperationResult getTextOperationResult(String operationId) {
+    public TextOperationResultInner getTextOperationResult(String operationId) {
         return getTextOperationResultWithServiceResponseAsync(operationId).toBlocking().single().body();
     }
 
@@ -1363,7 +1353,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TextOperationResult> getTextOperationResultAsync(String operationId, final ServiceCallback<TextOperationResult> serviceCallback) {
+    public ServiceFuture<TextOperationResultInner> getTextOperationResultAsync(String operationId, final ServiceCallback<TextOperationResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(getTextOperationResultWithServiceResponseAsync(operationId), serviceCallback);
     }
 
@@ -1372,12 +1362,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param operationId Id of the text operation returned in the response of the 'Recognize Handwritten Text'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TextOperationResult object
+     * @return the observable to the TextOperationResultInner object
      */
-    public Observable<TextOperationResult> getTextOperationResultAsync(String operationId) {
-        return getTextOperationResultWithServiceResponseAsync(operationId).map(new Func1<ServiceResponse<TextOperationResult>, TextOperationResult>() {
+    public Observable<TextOperationResultInner> getTextOperationResultAsync(String operationId) {
+        return getTextOperationResultWithServiceResponseAsync(operationId).map(new Func1<ServiceResponse<TextOperationResultInner>, TextOperationResultInner>() {
             @Override
-            public TextOperationResult call(ServiceResponse<TextOperationResult> response) {
+            public TextOperationResultInner call(ServiceResponse<TextOperationResultInner> response) {
                 return response.body();
             }
         });
@@ -1388,9 +1378,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param operationId Id of the text operation returned in the response of the 'Recognize Handwritten Text'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TextOperationResult object
+     * @return the observable to the TextOperationResultInner object
      */
-    public Observable<ServiceResponse<TextOperationResult>> getTextOperationResultWithServiceResponseAsync(String operationId) {
+    public Observable<ServiceResponse<TextOperationResultInner>> getTextOperationResultWithServiceResponseAsync(String operationId) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1399,11 +1389,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         }
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         return service.getTextOperationResult(operationId, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TextOperationResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TextOperationResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<TextOperationResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<TextOperationResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TextOperationResult> clientResponse = getTextOperationResultDelegate(response);
+                        ServiceResponse<TextOperationResultInner> clientResponse = getTextOperationResultDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1412,9 +1402,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<TextOperationResult> getTextOperationResultDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<TextOperationResult, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<TextOperationResult>() { }.getType())
+    private ServiceResponse<TextOperationResultInner> getTextOperationResultDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<TextOperationResultInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<TextOperationResultInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -1426,9 +1416,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageAnalysis object if successful.
+     * @return the ImageAnalysisInner object if successful.
      */
-    public ImageAnalysis analyzeImageInStream(byte[] image) {
+    public ImageAnalysisInner analyzeImageInStream(byte[] image) {
         return analyzeImageInStreamWithServiceResponseAsync(image).toBlocking().single().body();
     }
 
@@ -1440,7 +1430,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageAnalysis> analyzeImageInStreamAsync(byte[] image, final ServiceCallback<ImageAnalysis> serviceCallback) {
+    public ServiceFuture<ImageAnalysisInner> analyzeImageInStreamAsync(byte[] image, final ServiceCallback<ImageAnalysisInner> serviceCallback) {
         return ServiceFuture.fromResponse(analyzeImageInStreamWithServiceResponseAsync(image), serviceCallback);
     }
 
@@ -1449,12 +1439,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageAnalysis object
+     * @return the observable to the ImageAnalysisInner object
      */
-    public Observable<ImageAnalysis> analyzeImageInStreamAsync(byte[] image) {
-        return analyzeImageInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponse<ImageAnalysis>, ImageAnalysis>() {
+    public Observable<ImageAnalysisInner> analyzeImageInStreamAsync(byte[] image) {
+        return analyzeImageInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponse<ImageAnalysisInner>, ImageAnalysisInner>() {
             @Override
-            public ImageAnalysis call(ServiceResponse<ImageAnalysis> response) {
+            public ImageAnalysisInner call(ServiceResponse<ImageAnalysisInner> response) {
                 return response.body();
             }
         });
@@ -1465,9 +1455,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageAnalysis object
+     * @return the observable to the ImageAnalysisInner object
      */
-    public Observable<ServiceResponse<ImageAnalysis>> analyzeImageInStreamWithServiceResponseAsync(byte[] image) {
+    public Observable<ServiceResponse<ImageAnalysisInner>> analyzeImageInStreamWithServiceResponseAsync(byte[] image) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1481,11 +1471,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String visualFeaturesConverted = this.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.analyzeImageInStream(visualFeaturesConverted, details, language, imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysis>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysisInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ImageAnalysis>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ImageAnalysisInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageAnalysis> clientResponse = analyzeImageInStreamDelegate(response);
+                        ServiceResponse<ImageAnalysisInner> clientResponse = analyzeImageInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1504,9 +1494,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageAnalysis object if successful.
+     * @return the ImageAnalysisInner object if successful.
      */
-    public ImageAnalysis analyzeImageInStream(byte[] image, List<VisualFeatureTypes> visualFeatures, String details, String language) {
+    public ImageAnalysisInner analyzeImageInStream(byte[] image, List<VisualFeatureTypes> visualFeatures, String details, String language) {
         return analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language).toBlocking().single().body();
     }
 
@@ -1521,7 +1511,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageAnalysis> analyzeImageInStreamAsync(byte[] image, List<VisualFeatureTypes> visualFeatures, String details, String language, final ServiceCallback<ImageAnalysis> serviceCallback) {
+    public ServiceFuture<ImageAnalysisInner> analyzeImageInStreamAsync(byte[] image, List<VisualFeatureTypes> visualFeatures, String details, String language, final ServiceCallback<ImageAnalysisInner> serviceCallback) {
         return ServiceFuture.fromResponse(analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language), serviceCallback);
     }
 
@@ -1533,12 +1523,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image. Possible values include: 'Celebrities', 'Landmarks'
      * @param language A string indicating which language to return. The service will return recognition results in specified language. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageAnalysis object
+     * @return the observable to the ImageAnalysisInner object
      */
-    public Observable<ImageAnalysis> analyzeImageInStreamAsync(byte[] image, List<VisualFeatureTypes> visualFeatures, String details, String language) {
-        return analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language).map(new Func1<ServiceResponse<ImageAnalysis>, ImageAnalysis>() {
+    public Observable<ImageAnalysisInner> analyzeImageInStreamAsync(byte[] image, List<VisualFeatureTypes> visualFeatures, String details, String language) {
+        return analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language).map(new Func1<ServiceResponse<ImageAnalysisInner>, ImageAnalysisInner>() {
             @Override
-            public ImageAnalysis call(ServiceResponse<ImageAnalysis> response) {
+            public ImageAnalysisInner call(ServiceResponse<ImageAnalysisInner> response) {
                 return response.body();
             }
         });
@@ -1552,9 +1542,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param details A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image. Possible values include: 'Celebrities', 'Landmarks'
      * @param language A string indicating which language to return. The service will return recognition results in specified language. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageAnalysis object
+     * @return the observable to the ImageAnalysisInner object
      */
-    public Observable<ServiceResponse<ImageAnalysis>> analyzeImageInStreamWithServiceResponseAsync(byte[] image, List<VisualFeatureTypes> visualFeatures, String details, String language) {
+    public Observable<ServiceResponse<ImageAnalysisInner>> analyzeImageInStreamWithServiceResponseAsync(byte[] image, List<VisualFeatureTypes> visualFeatures, String details, String language) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1566,11 +1556,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String visualFeaturesConverted = this.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.analyzeImageInStream(visualFeaturesConverted, details, language, imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysis>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysisInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ImageAnalysis>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ImageAnalysisInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageAnalysis> clientResponse = analyzeImageInStreamDelegate(response);
+                        ServiceResponse<ImageAnalysisInner> clientResponse = analyzeImageInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1579,9 +1569,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<ImageAnalysis> analyzeImageInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<ImageAnalysis, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<ImageAnalysis>() { }.getType())
+    private ServiceResponse<ImageAnalysisInner> analyzeImageInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<ImageAnalysisInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<ImageAnalysisInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -1764,9 +1754,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OcrResult object if successful.
+     * @return the OcrResultInner object if successful.
      */
-    public OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image) {
+    public OcrResultInner recognizePrintedTextInStream(boolean detectOrientation, byte[] image) {
         return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image).toBlocking().single().body();
     }
 
@@ -1779,7 +1769,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, final ServiceCallback<OcrResult> serviceCallback) {
+    public ServiceFuture<OcrResultInner> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, final ServiceCallback<OcrResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image), serviceCallback);
     }
 
@@ -1789,12 +1779,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the OcrResultInner object
      */
-    public Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image) {
-        return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image).map(new Func1<ServiceResponse<OcrResult>, OcrResult>() {
+    public Observable<OcrResultInner> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image) {
+        return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image).map(new Func1<ServiceResponse<OcrResultInner>, OcrResultInner>() {
             @Override
-            public OcrResult call(ServiceResponse<OcrResult> response) {
+            public OcrResultInner call(ServiceResponse<OcrResultInner> response) {
                 return response.body();
             }
         });
@@ -1806,9 +1796,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param detectOrientation Whether detect the text orientation in the image. With detectOrientation=true the OCR service tries to detect the image orientation and correct it before further processing (e.g. if it's upside-down).
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the OcrResultInner object
      */
-    public Observable<ServiceResponse<OcrResult>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image) {
+    public Observable<ServiceResponse<OcrResultInner>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1819,11 +1809,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.recognizePrintedTextInStream(language, detectOrientation, imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<OcrResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<OcrResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OcrResult> clientResponse = recognizePrintedTextInStreamDelegate(response);
+                        ServiceResponse<OcrResultInner> clientResponse = recognizePrintedTextInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1841,9 +1831,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the OcrResult object if successful.
+     * @return the OcrResultInner object if successful.
      */
-    public OcrResult recognizePrintedTextInStream(boolean detectOrientation, byte[] image, OcrLanguages language) {
+    public OcrResultInner recognizePrintedTextInStream(boolean detectOrientation, byte[] image, OcrLanguages language) {
         return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image, language).toBlocking().single().body();
     }
 
@@ -1857,7 +1847,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, OcrLanguages language, final ServiceCallback<OcrResult> serviceCallback) {
+    public ServiceFuture<OcrResultInner> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, OcrLanguages language, final ServiceCallback<OcrResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image, language), serviceCallback);
     }
 
@@ -1868,12 +1858,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param image An image stream.
      * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the OcrResultInner object
      */
-    public Observable<OcrResult> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, OcrLanguages language) {
-        return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image, language).map(new Func1<ServiceResponse<OcrResult>, OcrResult>() {
+    public Observable<OcrResultInner> recognizePrintedTextInStreamAsync(boolean detectOrientation, byte[] image, OcrLanguages language) {
+        return recognizePrintedTextInStreamWithServiceResponseAsync(detectOrientation, image, language).map(new Func1<ServiceResponse<OcrResultInner>, OcrResultInner>() {
             @Override
-            public OcrResult call(ServiceResponse<OcrResult> response) {
+            public OcrResultInner call(ServiceResponse<OcrResultInner> response) {
                 return response.body();
             }
         });
@@ -1886,9 +1876,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param image An image stream.
      * @param language The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include: 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt', 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OcrResult object
+     * @return the observable to the OcrResultInner object
      */
-    public Observable<ServiceResponse<OcrResult>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image, OcrLanguages language) {
+    public Observable<ServiceResponse<OcrResultInner>> recognizePrintedTextInStreamWithServiceResponseAsync(boolean detectOrientation, byte[] image, OcrLanguages language) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1898,11 +1888,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.recognizePrintedTextInStream(language, detectOrientation, imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<OcrResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<OcrResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<OcrResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<OcrResult> clientResponse = recognizePrintedTextInStreamDelegate(response);
+                        ServiceResponse<OcrResultInner> clientResponse = recognizePrintedTextInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1911,9 +1901,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<OcrResult> recognizePrintedTextInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<OcrResult, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<OcrResult>() { }.getType())
+    private ServiceResponse<OcrResultInner> recognizePrintedTextInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<OcrResultInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<OcrResultInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -1925,9 +1915,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageDescription object if successful.
+     * @return the ImageDescriptionInner object if successful.
      */
-    public ImageDescription describeImageInStream(byte[] image) {
+    public ImageDescriptionInner describeImageInStream(byte[] image) {
         return describeImageInStreamWithServiceResponseAsync(image).toBlocking().single().body();
     }
 
@@ -1939,7 +1929,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageDescription> describeImageInStreamAsync(byte[] image, final ServiceCallback<ImageDescription> serviceCallback) {
+    public ServiceFuture<ImageDescriptionInner> describeImageInStreamAsync(byte[] image, final ServiceCallback<ImageDescriptionInner> serviceCallback) {
         return ServiceFuture.fromResponse(describeImageInStreamWithServiceResponseAsync(image), serviceCallback);
     }
 
@@ -1948,12 +1938,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
+     * @return the observable to the ImageDescriptionInner object
      */
-    public Observable<ImageDescription> describeImageInStreamAsync(byte[] image) {
-        return describeImageInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponse<ImageDescription>, ImageDescription>() {
+    public Observable<ImageDescriptionInner> describeImageInStreamAsync(byte[] image) {
+        return describeImageInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponse<ImageDescriptionInner>, ImageDescriptionInner>() {
             @Override
-            public ImageDescription call(ServiceResponse<ImageDescription> response) {
+            public ImageDescriptionInner call(ServiceResponse<ImageDescriptionInner> response) {
                 return response.body();
             }
         });
@@ -1964,9 +1954,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
+     * @return the observable to the ImageDescriptionInner object
      */
-    public Observable<ServiceResponse<ImageDescription>> describeImageInStreamWithServiceResponseAsync(byte[] image) {
+    public Observable<ServiceResponse<ImageDescriptionInner>> describeImageInStreamWithServiceResponseAsync(byte[] image) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -1977,11 +1967,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.describeImageInStream(maxCandidates, imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescription>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescriptionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ImageDescription>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ImageDescriptionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageDescription> clientResponse = describeImageInStreamDelegate(response);
+                        ServiceResponse<ImageDescriptionInner> clientResponse = describeImageInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -1998,9 +1988,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the ImageDescription object if successful.
+     * @return the ImageDescriptionInner object if successful.
      */
-    public ImageDescription describeImageInStream(byte[] image, String maxCandidates) {
+    public ImageDescriptionInner describeImageInStream(byte[] image, String maxCandidates) {
         return describeImageInStreamWithServiceResponseAsync(image, maxCandidates).toBlocking().single().body();
     }
 
@@ -2013,7 +2003,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ImageDescription> describeImageInStreamAsync(byte[] image, String maxCandidates, final ServiceCallback<ImageDescription> serviceCallback) {
+    public ServiceFuture<ImageDescriptionInner> describeImageInStreamAsync(byte[] image, String maxCandidates, final ServiceCallback<ImageDescriptionInner> serviceCallback) {
         return ServiceFuture.fromResponse(describeImageInStreamWithServiceResponseAsync(image, maxCandidates), serviceCallback);
     }
 
@@ -2023,12 +2013,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param image An image stream.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
+     * @return the observable to the ImageDescriptionInner object
      */
-    public Observable<ImageDescription> describeImageInStreamAsync(byte[] image, String maxCandidates) {
-        return describeImageInStreamWithServiceResponseAsync(image, maxCandidates).map(new Func1<ServiceResponse<ImageDescription>, ImageDescription>() {
+    public Observable<ImageDescriptionInner> describeImageInStreamAsync(byte[] image, String maxCandidates) {
+        return describeImageInStreamWithServiceResponseAsync(image, maxCandidates).map(new Func1<ServiceResponse<ImageDescriptionInner>, ImageDescriptionInner>() {
             @Override
-            public ImageDescription call(ServiceResponse<ImageDescription> response) {
+            public ImageDescriptionInner call(ServiceResponse<ImageDescriptionInner> response) {
                 return response.body();
             }
         });
@@ -2040,9 +2030,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param image An image stream.
      * @param maxCandidates Maximum number of candidate descriptions to be returned.  The default is 1.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageDescription object
+     * @return the observable to the ImageDescriptionInner object
      */
-    public Observable<ServiceResponse<ImageDescription>> describeImageInStreamWithServiceResponseAsync(byte[] image, String maxCandidates) {
+    public Observable<ServiceResponse<ImageDescriptionInner>> describeImageInStreamWithServiceResponseAsync(byte[] image, String maxCandidates) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -2052,11 +2042,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.describeImageInStream(maxCandidates, imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescription>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageDescriptionInner>>>() {
                 @Override
-                public Observable<ServiceResponse<ImageDescription>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<ImageDescriptionInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<ImageDescription> clientResponse = describeImageInStreamDelegate(response);
+                        ServiceResponse<ImageDescriptionInner> clientResponse = describeImageInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2065,9 +2055,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<ImageDescription> describeImageInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<ImageDescription, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<ImageDescription>() { }.getType())
+    private ServiceResponse<ImageDescriptionInner> describeImageInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<ImageDescriptionInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<ImageDescriptionInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -2079,9 +2069,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TagResult object if successful.
+     * @return the TagResultInner object if successful.
      */
-    public TagResult tagImageInStream(byte[] image) {
+    public TagResultInner tagImageInStream(byte[] image) {
         return tagImageInStreamWithServiceResponseAsync(image).toBlocking().single().body();
     }
 
@@ -2093,7 +2083,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TagResult> tagImageInStreamAsync(byte[] image, final ServiceCallback<TagResult> serviceCallback) {
+    public ServiceFuture<TagResultInner> tagImageInStreamAsync(byte[] image, final ServiceCallback<TagResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(tagImageInStreamWithServiceResponseAsync(image), serviceCallback);
     }
 
@@ -2102,12 +2092,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the TagResultInner object
      */
-    public Observable<TagResult> tagImageInStreamAsync(byte[] image) {
-        return tagImageInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponse<TagResult>, TagResult>() {
+    public Observable<TagResultInner> tagImageInStreamAsync(byte[] image) {
+        return tagImageInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponse<TagResultInner>, TagResultInner>() {
             @Override
-            public TagResult call(ServiceResponse<TagResult> response) {
+            public TagResultInner call(ServiceResponse<TagResultInner> response) {
                 return response.body();
             }
         });
@@ -2118,9 +2108,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      *
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TagResult object
+     * @return the observable to the TagResultInner object
      */
-    public Observable<ServiceResponse<TagResult>> tagImageInStreamWithServiceResponseAsync(byte[] image) {
+    public Observable<ServiceResponse<TagResultInner>> tagImageInStreamWithServiceResponseAsync(byte[] image) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -2130,11 +2120,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.tagImageInStream(imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagResult>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TagResultInner>>>() {
                 @Override
-                public Observable<ServiceResponse<TagResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<TagResultInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TagResult> clientResponse = tagImageInStreamDelegate(response);
+                        ServiceResponse<TagResultInner> clientResponse = tagImageInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2143,9 +2133,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<TagResult> tagImageInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<TagResult, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<TagResult>() { }.getType())
+    private ServiceResponse<TagResultInner> tagImageInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<TagResultInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<TagResultInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -2158,9 +2148,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ComputerVisionErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the DomainModelResults object if successful.
+     * @return the DomainModelResultsInner object if successful.
      */
-    public DomainModelResults analyzeImageByDomainInStream(String model, byte[] image) {
+    public DomainModelResultsInner analyzeImageByDomainInStream(String model, byte[] image) {
         return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image).toBlocking().single().body();
     }
 
@@ -2173,7 +2163,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image, final ServiceCallback<DomainModelResults> serviceCallback) {
+    public ServiceFuture<DomainModelResultsInner> analyzeImageByDomainInStreamAsync(String model, byte[] image, final ServiceCallback<DomainModelResultsInner> serviceCallback) {
         return ServiceFuture.fromResponse(analyzeImageByDomainInStreamWithServiceResponseAsync(model, image), serviceCallback);
     }
 
@@ -2183,12 +2173,12 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DomainModelResults object
+     * @return the observable to the DomainModelResultsInner object
      */
-    public Observable<DomainModelResults> analyzeImageByDomainInStreamAsync(String model, byte[] image) {
-        return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image).map(new Func1<ServiceResponse<DomainModelResults>, DomainModelResults>() {
+    public Observable<DomainModelResultsInner> analyzeImageByDomainInStreamAsync(String model, byte[] image) {
+        return analyzeImageByDomainInStreamWithServiceResponseAsync(model, image).map(new Func1<ServiceResponse<DomainModelResultsInner>, DomainModelResultsInner>() {
             @Override
-            public DomainModelResults call(ServiceResponse<DomainModelResults> response) {
+            public DomainModelResultsInner call(ServiceResponse<DomainModelResultsInner> response) {
                 return response.body();
             }
         });
@@ -2200,9 +2190,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param model The domain-specific content to recognize.
      * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the DomainModelResults object
+     * @return the observable to the DomainModelResultsInner object
      */
-    public Observable<ServiceResponse<DomainModelResults>> analyzeImageByDomainInStreamWithServiceResponseAsync(String model, byte[] image) {
+    public Observable<ServiceResponse<DomainModelResultsInner>> analyzeImageByDomainInStreamWithServiceResponseAsync(String model, byte[] image) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -2215,11 +2205,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.analyzeImageByDomainInStream(model, imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainModelResults>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<DomainModelResultsInner>>>() {
                 @Override
-                public Observable<ServiceResponse<DomainModelResults>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<DomainModelResultsInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<DomainModelResults> clientResponse = analyzeImageByDomainInStreamDelegate(response);
+                        ServiceResponse<DomainModelResultsInner> clientResponse = analyzeImageByDomainInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2228,9 +2218,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponse<DomainModelResults> analyzeImageByDomainInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
-        return this.restClient().responseBuilderFactory().<DomainModelResults, ComputerVisionErrorException>newInstance(this.serializerAdapter())
-                .register(200, new TypeToken<DomainModelResults>() { }.getType())
+    private ServiceResponse<DomainModelResultsInner> analyzeImageByDomainInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<DomainModelResultsInner, ComputerVisionErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<DomainModelResultsInner>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
                 .build(response);
     }
@@ -2267,9 +2257,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> recognizeTextInStreamAsync(byte[] image) {
-        return recognizeTextInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>, Void>() {
+        return recognizeTextInStreamWithServiceResponseAsync(image).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner>, Void>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> response) {
+            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner> response) {
                 return response.body();
             }
         });
@@ -2282,7 +2272,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> recognizeTextInStreamWithServiceResponseAsync(byte[] image) {
+    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner>> recognizeTextInStreamWithServiceResponseAsync(byte[] image) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -2293,11 +2283,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.recognizeTextInStream(detectHandwriting, imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> clientResponse = recognizeTextInStreamDelegate(response);
+                        ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner> clientResponse = recognizeTextInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2341,9 +2331,9 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
     public Observable<Void> recognizeTextInStreamAsync(byte[] image, Boolean detectHandwriting) {
-        return recognizeTextInStreamWithServiceResponseAsync(image, detectHandwriting).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>, Void>() {
+        return recognizeTextInStreamWithServiceResponseAsync(image, detectHandwriting).map(new Func1<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner>, Void>() {
             @Override
-            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> response) {
+            public Void call(ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner> response) {
                 return response.body();
             }
         });
@@ -2357,7 +2347,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponseWithHeaders} object if successful.
      */
-    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> recognizeTextInStreamWithServiceResponseAsync(byte[] image, Boolean detectHandwriting) {
+    public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner>> recognizeTextInStreamWithServiceResponseAsync(byte[] image, Boolean detectHandwriting) {
         if (this.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.azureRegion() is required and cannot be null.");
         }
@@ -2367,11 +2357,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.azureRegion());
         RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.recognizeTextInStream(detectHandwriting, imageConverted, this.acceptLanguage(), parameterizedHost, this.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner>>>() {
                 @Override
-                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> clientResponse = recognizeTextInStreamDelegate(response);
+                        ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner> clientResponse = recognizeTextInStreamDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -2380,11 +2370,11 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
             });
     }
 
-    private ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeaders> recognizeTextInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
+    private ServiceResponseWithHeaders<Void, RecognizeTextInStreamHeadersInner> recognizeTextInStreamDelegate(Response<ResponseBody> response) throws ComputerVisionErrorException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<Void, ComputerVisionErrorException>newInstance(this.serializerAdapter())
                 .register(202, new TypeToken<Void>() { }.getType())
                 .registerError(ComputerVisionErrorException.class)
-                .buildWithHeaders(response, RecognizeTextInStreamHeaders.class);
+                .buildWithHeaders(response, RecognizeTextInStreamHeadersInner.class);
     }
 
 }
