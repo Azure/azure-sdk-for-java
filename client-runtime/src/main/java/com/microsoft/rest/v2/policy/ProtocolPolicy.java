@@ -30,7 +30,9 @@ public class ProtocolPolicy extends AbstractRequestPolicy {
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
         if (overwrite || urlBuilder.scheme() == null) {
-            log(HttpPipeline.LogLevel.INFO, "Setting protocol to {0}", protocol);
+            if (shouldLog(HttpPipeline.LogLevel.INFO)) {
+                log(HttpPipeline.LogLevel.INFO, "Setting protocol to {0}", protocol);
+            }
             request.withUrl(urlBuilder.withScheme(protocol).toString());
         }
         return nextPolicy().sendAsync(request);

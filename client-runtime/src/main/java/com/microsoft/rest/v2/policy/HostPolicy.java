@@ -26,7 +26,9 @@ public class HostPolicy extends AbstractRequestPolicy {
 
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
-        log(HttpPipeline.LogLevel.INFO, "Setting host to {0}", host);
+        if (shouldLog(HttpPipeline.LogLevel.INFO)) {
+            log(HttpPipeline.LogLevel.INFO, "Setting host to {0}", host);
+        }
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
         request.withUrl(urlBuilder.withHost(host).toString());
         return nextPolicy().sendAsync(request);

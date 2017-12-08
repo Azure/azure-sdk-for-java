@@ -68,7 +68,7 @@ public class RestProxyStressTests {
 
         @ExpectedResponses({ 201 })
         @PUT("/javasdktest/upload/1m.dat?{sas}")
-        Single<RestResponse<Void, Void>> upload1MB(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam byte[] bytes);
+        Single<RestResponse<Void, Void>> upload1MB(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
     }
 
     private static final byte[] MD5_1KB = { 70, -110, 110, -84, -35, 116, 118, 2, -22, 8, 117, -65, -106, 61, -36, 58 };

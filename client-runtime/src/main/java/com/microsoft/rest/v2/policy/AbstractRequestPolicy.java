@@ -44,11 +44,21 @@ public abstract class AbstractRequestPolicy implements RequestPolicy {
     }
 
     /**
-     * Get the logger that was provided to this AbstractRequestPolicy.
-     * @return The logger that was provided to this AbstractRequestPolicy.
+     * Get whether or not a log with the provided log level should be logged.
+     * @param logLevel The log level of the log that will be logged.
+     * @return Whether or not a log with the provided log level should be logged.
      */
-    protected HttpPipeline.Logger logger() {
-        return logger;
+    protected boolean shouldLog(HttpPipeline.LogLevel logLevel) {
+        boolean result = false;
+
+        if (logger != null && logLevel != null && logLevel != HttpPipeline.LogLevel.OFF) {
+            final HttpPipeline.LogLevel minimumLogLevel = logger.minimumLogLevel();
+            if (minimumLogLevel != null) {
+                result = logLevel.ordinal() <= minimumLogLevel.ordinal();
+            }
+        }
+
+        return result;
     }
 
     /**
@@ -59,8 +69,6 @@ public abstract class AbstractRequestPolicy implements RequestPolicy {
      * @param formattedMessageArguments The formatted arguments to apply to the message.
      */
     protected void log(HttpPipeline.LogLevel logLevel, String message, Object... formattedMessageArguments) {
-        if (logger != null && logLevel.ordinal() < logger.minimumLogLevel().ordinal()) {
-            logger.log(logLevel, message, formattedMessageArguments);
-        }
+        logger.log(logLevel, message, formattedMessageArguments);
     }
 }

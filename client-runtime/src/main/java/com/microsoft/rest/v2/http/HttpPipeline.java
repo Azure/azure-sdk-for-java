@@ -400,6 +400,11 @@ public final class HttpPipeline {
      */
     public enum LogLevel {
         /**
+         * A log level that indicates that no logs will be logged.
+         */
+        OFF,
+
+        /**
          * An error log.
          */
         ERROR,

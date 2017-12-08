@@ -22,12 +22,12 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  * Example 1: put JSON
  *
  *   {@literal @}PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Compute/virtualMachines/{vmName}")
- *   VirtualMachine createOrUpdate(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId, @BodyParam VirtualMachine vm);
+ *   VirtualMachine createOrUpdate(@PathParam("resourceGroupName") String rgName, @PathParam("vmName") String vmName, @PathParam("subscriptionId") String subscriptionId, @BodyParam("application/json") VirtualMachine vm);
  *
  * Example 2: stream
  *
  *   {@literal @}POST("formdata/stream/uploadfile")
- *   void uploadFileViaBody(@BodyParam FileInputStream fileContent);
+ *   void uploadFileViaBody(@BodyParam("application/octet-stream") FileInputStream fileContent);
  *
  */
 @Retention(RUNTIME)
@@ -36,5 +36,5 @@ public @interface BodyParam {
     /**
      * @return the Content-Type that the body should be treated as.
      */
-    String value() default "";
+    String value();
 }

@@ -1,6 +1,7 @@
 package com.microsoft.azure.v2;
 
 import com.microsoft.rest.v2.InvalidReturnTypeException;
+import com.microsoft.rest.v2.http.ContentType;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.RestResponse;
@@ -355,11 +356,11 @@ public abstract class AzureProxyToRestProxyTests {
     private interface Service8 {
         @POST("post")
         @ExpectedResponses({200})
-        HttpBinJSON post(@BodyParam String postBody);
+        HttpBinJSON post(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
 
         @POST("post")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> postAsync(@BodyParam String postBody);
+        Single<HttpBinJSON> postAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
     }
 
     @Test
@@ -383,20 +384,20 @@ public abstract class AzureProxyToRestProxyTests {
     private interface Service9 {
         @PUT("put")
         @ExpectedResponses({200})
-        HttpBinJSON put(@BodyParam int putBody);
+        HttpBinJSON put(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @PUT("put")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> putAsync(@BodyParam int putBody);
+        Single<HttpBinJSON> putAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @PUT("put")
         @ExpectedResponses({201})
-        HttpBinJSON putWithUnexpectedResponse(@BodyParam String putBody);
+        HttpBinJSON putWithUnexpectedResponse(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @PUT("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MyAzureException.class)
-        HttpBinJSON putWithUnexpectedResponseAndExceptionType(@BodyParam String putBody);
+        HttpBinJSON putWithUnexpectedResponseAndExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
     }
 
     @Test
@@ -498,11 +499,11 @@ public abstract class AzureProxyToRestProxyTests {
     private interface Service11 {
         @DELETE("delete")
         @ExpectedResponses({200})
-        HttpBinJSON delete(@BodyParam boolean bodyBoolean);
+        HttpBinJSON delete(@BodyParam(ContentType.APPLICATION_JSON) boolean bodyBoolean);
 
         @DELETE("delete")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> deleteAsync(@BodyParam boolean bodyBoolean);
+        Single<HttpBinJSON> deleteAsync(@BodyParam(ContentType.APPLICATION_JSON) boolean bodyBoolean);
     }
 
     @Test
@@ -526,11 +527,11 @@ public abstract class AzureProxyToRestProxyTests {
     private interface Service12 {
         @PATCH("patch")
         @ExpectedResponses({200})
-        HttpBinJSON patch(@BodyParam String bodyString);
+        HttpBinJSON patch(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
 
         @PATCH("patch")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> patchAsync(@BodyParam String bodyString);
+        Single<HttpBinJSON> patchAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
     }
 
     @Test
@@ -639,11 +640,11 @@ public abstract class AzureProxyToRestProxyTests {
     private interface Service16 {
         @PUT("put")
         @ExpectedResponses({200})
-        HttpBinJSON put(@BodyParam byte[] putBody);
+        HttpBinJSON put(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] putBody);
 
         @PUT("put")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> putAsync(@BodyParam byte[] putBody);
+        Single<HttpBinJSON> putAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] putBody);
     }
 
     @Test

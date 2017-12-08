@@ -13,6 +13,7 @@ import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.rest.v2.annotations.Host;
 import com.microsoft.rest.v2.annotations.HostParam;
+import com.microsoft.rest.v2.http.ContentType;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.annotations.BodyParam;
@@ -93,7 +94,7 @@ final class RefreshTokenClient {
     private interface RefreshTokenService {
         @POST("{tenant}/oauth2/token")
         @ExpectedResponses(200)
-        Single<RefreshTokenResponse> refreshToken(@HostParam("baseUrl") String baseUrl, @PathParam("tenant") String tenant, @BodyParam String requestBody);
+        Single<RefreshTokenResponse> refreshToken(@HostParam("baseUrl") String baseUrl, @PathParam("tenant") String tenant, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) String requestBody);
     }
 
     private static class RefreshTokenResponse {

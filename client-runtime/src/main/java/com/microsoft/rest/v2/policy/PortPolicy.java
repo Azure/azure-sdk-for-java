@@ -30,7 +30,9 @@ public class PortPolicy extends AbstractRequestPolicy {
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
         if (overwrite || urlBuilder.port() == null) {
-            log(HttpPipeline.LogLevel.INFO, "Changing port to {0}", port);
+            if (shouldLog(HttpPipeline.LogLevel.INFO)) {
+                log(HttpPipeline.LogLevel.INFO, "Changing port to {0}", port);
+            }
             request.withUrl(urlBuilder.withPort(port).toString());
         }
         return nextPolicy().sendAsync(request);

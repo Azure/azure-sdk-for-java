@@ -390,11 +390,11 @@ public abstract class RestProxyTests {
     private interface Service8 {
         @POST("post")
         @ExpectedResponses({200})
-        HttpBinJSON post(@BodyParam String postBody);
+        HttpBinJSON post(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
 
         @POST("post")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> postAsync(@BodyParam String postBody);
+        Single<HttpBinJSON> postAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String postBody);
     }
 
     @Test
@@ -423,29 +423,29 @@ public abstract class RestProxyTests {
     private interface Service9 {
         @PUT("put")
         @ExpectedResponses({200})
-        HttpBinJSON put(@BodyParam int putBody);
+        HttpBinJSON put(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @PUT("put")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> putAsync(@BodyParam int putBody);
+        Single<HttpBinJSON> putAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) int putBody);
 
         @PUT("put")
         @ExpectedResponses({201})
-        HttpBinJSON putWithUnexpectedResponse(@BodyParam String putBody);
+        HttpBinJSON putWithUnexpectedResponse(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @PUT("put")
         @ExpectedResponses({201})
-        Single<HttpBinJSON> putWithUnexpectedResponseAsync(@BodyParam String putBody);
-
-        @PUT("put")
-        @ExpectedResponses({201})
-        @UnexpectedResponseExceptionType(MyRestException.class)
-        HttpBinJSON putWithUnexpectedResponseAndExceptionType(@BodyParam String putBody);
+        Single<HttpBinJSON> putWithUnexpectedResponseAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
 
         @PUT("put")
         @ExpectedResponses({201})
         @UnexpectedResponseExceptionType(MyRestException.class)
-        Single<HttpBinJSON> putWithUnexpectedResponseAndExceptionTypeAsync(@BodyParam String putBody);
+        HttpBinJSON putWithUnexpectedResponseAndExceptionType(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
+
+        @PUT("put")
+        @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(MyRestException.class)
+        Single<HttpBinJSON> putWithUnexpectedResponseAndExceptionTypeAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String putBody);
     }
 
     @Test
@@ -599,11 +599,11 @@ public abstract class RestProxyTests {
     private interface Service11 {
         @DELETE("delete")
         @ExpectedResponses({200})
-        HttpBinJSON delete(@BodyParam boolean bodyBoolean);
+        HttpBinJSON delete(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
 
         @DELETE("delete")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> deleteAsync(@BodyParam boolean bodyBoolean);
+        Single<HttpBinJSON> deleteAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) boolean bodyBoolean);
     }
 
     @Test
@@ -627,11 +627,11 @@ public abstract class RestProxyTests {
     private interface Service12 {
         @PATCH("patch")
         @ExpectedResponses({200})
-        HttpBinJSON patch(@BodyParam String bodyString);
+        HttpBinJSON patch(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
 
         @PATCH("patch")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> patchAsync(@BodyParam String bodyString);
+        Single<HttpBinJSON> patchAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String bodyString);
     }
 
     @Test
@@ -740,11 +740,11 @@ public abstract class RestProxyTests {
     private interface Service16 {
         @PUT("put")
         @ExpectedResponses({200})
-        HttpBinJSON putByteArray(@BodyParam byte[] bytes);
+        HttpBinJSON putByteArray(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
 
         @PUT("put")
         @ExpectedResponses({200})
-        Single<HttpBinJSON> putByteArrayAsync(@BodyParam byte[] bytes);
+        Single<HttpBinJSON> putByteArrayAsync(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
     }
 
     @Test
@@ -883,30 +883,29 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     private interface Service19 {
         @PUT("put")
-        HttpBinJSON putWithNoContentTypeAndStringBody(@BodyParam String body);
+        HttpBinJSON putWithNoContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @PUT("put")
-        HttpBinJSON putWithNoContentTypeAndByteArrayBody(@BodyParam byte[] body);
+        HttpBinJSON putWithNoContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
+
+        @PUT("put")
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_JSON) String body);
 
         @PUT("put")
         @Headers({ "Content-Type: application/json" })
-        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndStringBody(@BodyParam String body);
-
-        @PUT("put")
-        @Headers({ "Content-Type: application/json" })
-        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@BodyParam byte[] body);
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_JSON) byte[] body);
 
         @PUT("put")
         @Headers({ "Content-Type: application/json; charset=utf-8" })
-        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@BodyParam String body);
+        HttpBinJSON putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @PUT("put")
         @Headers({ "Content-Type: application/octet-stream" })
-        HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@BodyParam String body);
+        HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @PUT("put")
         @Headers({ "Content-Type: application/octet-stream" })
-        HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@BodyParam byte[] body);
+        HttpBinJSON putWithHeaderApplicationOctetStreamContentTypeAndByteArrayBody(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] body);
 
         @PUT("put")
         HttpBinJSON putWithBodyParamApplicationJsonContentTypeAndStringBody(@BodyParam(ContentType.APPLICATION_JSON) String body);
@@ -1014,14 +1013,14 @@ public abstract class RestProxyTests {
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody("");
-        assertEquals("\"\"", result.data);
+        assertEquals("", result.data);
     }
 
     @Test
     public void service19PutWithHeaderApplicationJsonContentTypeAndCharsetAndStringBodyWithNonEmptyBody() {
         final HttpBinJSON result = createService(Service19.class)
                 .putWithHeaderApplicationJsonContentTypeAndCharsetAndStringBody("soups and stuff");
-        assertEquals("\"soups and stuff\"", result.data);
+        assertEquals("soups and stuff", result.data);
     }
 
     @Test(expected = IllegalArgumentException.class)
@@ -1176,10 +1175,10 @@ public abstract class RestProxyTests {
         RestResponse<HttpBinHeaders,byte[]> getBytes100BodyAndHeaders();
 
         @PUT("put")
-        RestResponse<HttpBinHeaders,Void> putOnlyHeaders(@BodyParam String body);
+        RestResponse<HttpBinHeaders,Void> putOnlyHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @PUT("put")
-        RestResponse<HttpBinHeaders,HttpBinJSON> putBodyAndHeaders(@BodyParam String body);
+        RestResponse<HttpBinHeaders,HttpBinJSON> putBodyAndHeaders(@BodyParam(ContentType.APPLICATION_OCTET_STREAM) String body);
 
         @GET("bytes/100")
         RestResponse<Void, Void> getBytesOnlyStatus();
