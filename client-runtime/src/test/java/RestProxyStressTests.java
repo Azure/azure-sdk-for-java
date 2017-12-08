@@ -13,7 +13,6 @@ import com.microsoft.rest.v2.policy.LoggingPolicy.LogLevel;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
-import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Consumer;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
@@ -21,19 +20,15 @@ import org.joda.time.format.DateTimeFormatter;
 import org.junit.Ignore;
 import org.junit.Test;
 
-import java.io.IOException;
-import java.nio.ByteBuffer;
-import java.nio.channels.FileChannel;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.StandardOpenOption;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.*;
 
 import static junit.framework.TestCase.fail;
+import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
 
 @Ignore("Should only be run manually")
@@ -75,53 +70,103 @@ public class RestProxyStressTests {
         Single<RestResponse<Void, Flowable<byte[]>>> download1GB(@PathParam(value = "sas", encoded = true) String sas);
     }
 
+    private static final byte[] MD5_1KB = { 70, -110, 110, -84, -35, 116, 118, 2, -22, 8, 117, -65, -106, 61, -36, 58 };
+    private static final byte[] MD5_1MB = { -128, 96, 94, 57, -95, -42, 40, 124, -5, 10, 124, -5, 59, -81, 122, 38 };
+    private static final byte[] MD5_1GB = { 43, -104, -23, 103, 42, 34, -49, 42, 57, -127, -128, 89, -36, -81, 67, 5 };
+
     @Test
     public void stressTest() throws Exception {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS");
-
         HttpHeaders headers = new HttpHeaders()
                 .set("x-ms-version", "2017-04-17");
-//                .set("range", "bytes=0-16383");
+
         HttpPipeline pipeline = HttpPipeline.build(
                 new AddDatePolicy.Factory(),
                 new AddHeadersPolicy.Factory(headers),
-                new LoggingPolicy.Factory(LogLevel.HEADERS));
+                new LoggingPolicy.Factory(LogLevel.BASIC));
         final DownloadService service = RestProxy.create(DownloadService.class, pipeline);
 
         ExecutorService executor = Executors.newCachedThreadPool();
         final List<Exception> threadExceptions = new ArrayList<>();
-        for (int i = 0; i < 1; i++) {
-            final int id = i;
+
+        Runnable downloadVerify1GB = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    RestResponse<Void, Flowable<byte[]>> response = service.download1GB(sas).blockingGet();
+                    final MessageDigest md = MessageDigest.getInstance("MD5");
+                    response.body().blockingSubscribe(new Consumer<byte[]>() {
+                        @Override
+                        public void accept(byte[] bytes) throws Exception {
+                            md.update(bytes);
+                        }
+                    });
+
+                    byte[] actualMD5 = md.digest();
+                    assertArrayEquals(MD5_1GB, actualMD5);
+
+                } catch (RuntimeException | NoSuchAlgorithmException e) {
+                    synchronized (threadExceptions) {
+                        threadExceptions.add(e);
+                    }
+                }
+            }
+        };
+
+        executor.submit(downloadVerify1GB);
+
+        for (int i = 0; i < 8; i++) {
             executor.submit(new Runnable() {
                 @Override
                 public void run() {
-                    Path path = Paths.get("out" + id + ".dat");
                     try {
-                        RestResponse<Void, Flowable<byte[]>> response = service.download1GB(sas).blockingGet();
-                        Files.deleteIfExists(path);
-                        Files.createFile(path);
-                        final FileChannel file = FileChannel.open(path, StandardOpenOption.WRITE);
+                        RestResponse<Void, Flowable<byte[]>> response = service.download1MB(sas).blockingGet();
+                        final MessageDigest md = MessageDigest.getInstance("MD5");
                         response.body().blockingSubscribe(new Consumer<byte[]>() {
                             @Override
                             public void accept(byte[] bytes) throws Exception {
-                                file.write(ByteBuffer.wrap(bytes));
+                                md.update(bytes);
                             }
                         });
-                        assertEquals(1024*1024*1024, Files.size(path));
-                    } catch (IOException | RuntimeException e) {
+
+                        byte[] actualMD5 = md.digest();
+                        assertArrayEquals(MD5_1MB, actualMD5);
+                    } catch (RuntimeException | NoSuchAlgorithmException e) {
                         synchronized (threadExceptions) {
                             threadExceptions.add(e);
                         }
-                    } finally {
-                        try {
-                            Files.delete(path);
-                        } catch (IOException e) {
-                            e.printStackTrace();
+                    }
+                }
+            });
+
+            executor.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        RestResponse<Void, Flowable<byte[]>> response = service.download1KB(sas).blockingGet();
+                        final MessageDigest md = MessageDigest.getInstance("MD5");
+                        response.body().blockingSubscribe(new Consumer<byte[]>() {
+                            @Override
+                            public void accept(byte[] bytes) throws Exception {
+                                md.update(bytes);
+                            }
+                        });
+
+                        byte[] actualMD5 = md.digest();
+                        assertArrayEquals(MD5_1KB, actualMD5);
+                    } catch (RuntimeException | NoSuchAlgorithmException e) {
+                        synchronized (threadExceptions) {
+                            threadExceptions.add(e);
                         }
                     }
                 }
             });
         }
+
+        executor.submit(downloadVerify1GB);
+
+        // TODO: file and byte[] upload
+
         executor.shutdown();
         executor.awaitTermination(15, TimeUnit.MINUTES);
 
@@ -129,8 +174,6 @@ public class RestProxyStressTests {
             e.printStackTrace();
         }
 
-        if (threadExceptions.size() != 0) {
-            fail();
-        }
+        assertEquals(0, threadExceptions.size());
     }
 }
