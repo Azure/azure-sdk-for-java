@@ -13,10 +13,10 @@
     <version>0.0.1-beta-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
-    <artifactId>azure-cognitiveservices-videosearch</artifactId>
+    <artifactId>azure-cognitiveservices-imagesearch</artifactId>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Cognitive Service Video Search</name>
-    <description>This package contains Microsoft Cognitive Service Video Search SDK.</description>
+    <name>Microsoft Azure SDK for Cognitive Service Image Search</name>
+    <description>This package contains Microsoft Cognitive Service Image Search SDK.</description>
     <url>https://github.com/Azure/azure-sdk-cognitiveservices-java</url>
     <licenses>
         <license>

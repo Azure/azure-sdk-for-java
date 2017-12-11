@@ -232,5 +232,6 @@
     <module>./azure-videosearch</module>
     <module>./azure-websearch</module>
     <module>./azure-textanalytics</module>
+    <module>./azure-imagesearch</module>
   </modules>
 </project>
