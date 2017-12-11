@@ -14,7 +14,6 @@ import com.microsoft.rest.v2.http.HttpPipeline;
 public abstract class AbstractRequestPolicy implements RequestPolicy {
     private final RequestPolicy nextPolicy;
     private final Options options;
-    private final HttpPipeline.Logger logger;
 
     /**
      * Initialize the fields for this AbstractRequestPolicy.
@@ -24,7 +23,6 @@ public abstract class AbstractRequestPolicy implements RequestPolicy {
     protected AbstractRequestPolicy(RequestPolicy nextPolicy, Options options) {
         this.nextPolicy = nextPolicy;
         this.options = options;
-        this.logger = options == null ? null : options.logger();
     }
 
     /**
@@ -48,17 +46,8 @@ public abstract class AbstractRequestPolicy implements RequestPolicy {
      * @param logLevel The log level of the log that will be logged.
      * @return Whether or not a log with the provided log level should be logged.
      */
-    protected boolean shouldLog(HttpPipeline.LogLevel logLevel) {
-        boolean result = false;
-
-        if (logger != null && logLevel != null && logLevel != HttpPipeline.LogLevel.OFF) {
-            final HttpPipeline.LogLevel minimumLogLevel = logger.minimumLogLevel();
-            if (minimumLogLevel != null) {
-                result = logLevel.ordinal() <= minimumLogLevel.ordinal();
-            }
-        }
-
-        return result;
+    public boolean shouldLog(HttpPipeline.LogLevel logLevel) {
+        return options != null && options.shouldLog(logLevel);
     }
 
     /**
@@ -69,6 +58,8 @@ public abstract class AbstractRequestPolicy implements RequestPolicy {
      * @param formattedMessageArguments The formatted arguments to apply to the message.
      */
     protected void log(HttpPipeline.LogLevel logLevel, String message, Object... formattedMessageArguments) {
-        logger.log(logLevel, message, formattedMessageArguments);
+        if (options != null) {
+            options.log(logLevel, message, formattedMessageArguments);
+        }
     }
 }

@@ -62,14 +62,6 @@ public final class HttpPipeline {
     }
 
     /**
-     * Get the Logger that will be passed to each RequestPolicy.
-     * @return the Logger that will be passed to each RequestPolicy.
-     */
-    Logger logger() {
-        return requestPolicyOptions.logger();
-    }
-
-    /**
      * Get the RequestPolicy factories that this pipeline contains.
      * @return the RequestPolicy factories that this pipeline contains.
      */
@@ -146,7 +138,7 @@ public final class HttpPipeline {
          * Create a new HttpPipeline builder.
          */
         public Builder() {
-            this((Options) null);
+            this(null);
         }
 
         /**
@@ -157,21 +149,6 @@ public final class HttpPipeline {
         public Builder(Options options) {
             this.options = options;
             this.requestPolicyFactories = new ArrayList<>();
-        }
-
-        /**
-         * Create a new HttpPipeline builder that is initialized with the
-         * properties of the provided pipeline.
-         * @param pipeline the HttpPipeline to base this Builder on.
-         */
-        public Builder(HttpPipeline pipeline) {
-            this(new Options()
-                .withHttpClient(pipeline.httpClient())
-                .withLogger(pipeline.logger()));
-
-            for (final RequestPolicy.Factory requestPolicyFactory : pipeline.requestPolicyFactories()) {
-                withRequestPolicy(requestPolicyFactory);
-            }
         }
 
         /**
