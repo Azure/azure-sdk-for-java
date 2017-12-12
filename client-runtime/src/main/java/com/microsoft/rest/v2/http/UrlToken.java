@@ -8,9 +8,9 @@ package com.microsoft.rest.v2.http;
 
 class UrlToken {
     private final String text;
-    private final Type type;
+    private final UrlTokenType type;
 
-    UrlToken(String text, Type type) {
+    UrlToken(String text, UrlTokenType type) {
         this.text = text;
         this.type = type;
     }
@@ -19,7 +19,7 @@ class UrlToken {
         return text;
     }
 
-    Type type() {
+    UrlTokenType type() {
         return type;
     }
 
@@ -43,34 +43,22 @@ class UrlToken {
     }
 
     static UrlToken scheme(String text) {
-        return new UrlToken(text, Type.SCHEME);
+        return new UrlToken(text, UrlTokenType.SCHEME);
     }
 
     static UrlToken host(String text) {
-        return new UrlToken(text, Type.HOST);
+        return new UrlToken(text, UrlTokenType.HOST);
     }
 
     static UrlToken port(String text) {
-        return new UrlToken(text, Type.PORT);
+        return new UrlToken(text, UrlTokenType.PORT);
     }
 
     static UrlToken path(String text) {
-        return new UrlToken(text, Type.PATH);
+        return new UrlToken(text, UrlTokenType.PATH);
     }
 
     static UrlToken query(String text) {
-        return new UrlToken(text, Type.QUERY);
-    }
-
-    enum Type {
-        SCHEME,
-
-        HOST,
-
-        PORT,
-
-        PATH,
-
-        QUERY,
+        return new UrlToken(text, UrlTokenType.QUERY);
     }
 }

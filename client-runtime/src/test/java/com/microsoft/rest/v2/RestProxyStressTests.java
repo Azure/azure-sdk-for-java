@@ -13,7 +13,10 @@ import com.microsoft.rest.v2.policy.AddHeadersPolicy;
 import com.microsoft.rest.v2.policy.LoggingPolicy;
 import com.microsoft.rest.v2.policy.LoggingPolicy.LogLevel;
 import com.microsoft.rest.v2.policy.RequestPolicy;
-import io.reactivex.*;
+import com.microsoft.rest.v2.policy.RequestPolicyFactory;
+import com.microsoft.rest.v2.policy.RequestPolicyOptions;
+import io.reactivex.Flowable;
+import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
@@ -60,9 +63,9 @@ public class RestProxyStressTests {
             return next.sendAsync(request);
         }
 
-        static class Factory implements RequestPolicy.Factory {
+        static class Factory implements RequestPolicyFactory {
             @Override
-            public RequestPolicy create(RequestPolicy next, Options options) {
+            public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
                 return new AddDatePolicy(next);
             }
         }

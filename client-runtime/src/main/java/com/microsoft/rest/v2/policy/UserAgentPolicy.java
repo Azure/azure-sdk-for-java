@@ -19,7 +19,7 @@ public final class UserAgentPolicy implements RequestPolicy {
     /**
      * Creates {@link UserAgentPolicy}.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         private final String userAgent;
 
         /**
@@ -42,7 +42,7 @@ public final class UserAgentPolicy implements RequestPolicy {
         }
 
         @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new UserAgentPolicy(userAgent, next);
         }
     }

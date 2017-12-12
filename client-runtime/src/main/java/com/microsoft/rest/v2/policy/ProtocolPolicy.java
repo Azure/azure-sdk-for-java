@@ -6,8 +6,7 @@
 
 package com.microsoft.rest.v2.policy;
 
-
-import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
@@ -20,7 +19,7 @@ public class ProtocolPolicy extends AbstractRequestPolicy {
     private final String protocol;
     private final boolean overwrite;
 
-    ProtocolPolicy(RequestPolicy nextPolicy, Options options, String protocol, boolean overwrite) {
+    ProtocolPolicy(RequestPolicy nextPolicy, RequestPolicyOptions options, String protocol, boolean overwrite) {
         super(nextPolicy, options);
         this.protocol = protocol;
         this.overwrite = overwrite;
@@ -30,8 +29,8 @@ public class ProtocolPolicy extends AbstractRequestPolicy {
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
         if (overwrite || urlBuilder.scheme() == null) {
-            if (shouldLog(HttpPipeline.LogLevel.INFO)) {
-                log(HttpPipeline.LogLevel.INFO, "Setting protocol to {0}", protocol);
+            if (shouldLog(HttpPipelineLogLevel.INFO)) {
+                log(HttpPipelineLogLevel.INFO, "Setting protocol to {0}", protocol);
             }
             request.withUrl(urlBuilder.withScheme(protocol).toString());
         }
@@ -41,7 +40,7 @@ public class ProtocolPolicy extends AbstractRequestPolicy {
     /**
      * A RequestPolicy.Factory class that creates ProtocolPolicy objects.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         private final String protocol;
         private final boolean overwrite;
 
@@ -64,7 +63,7 @@ public class ProtocolPolicy extends AbstractRequestPolicy {
         }
 
         @Override
-        public ProtocolPolicy create(RequestPolicy next, Options options) {
+        public ProtocolPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new ProtocolPolicy(next, options, protocol, overwrite);
         }
     }

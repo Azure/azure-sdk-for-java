@@ -6,8 +6,7 @@
 
 package com.microsoft.rest.v2.policy;
 
-
-import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
@@ -19,15 +18,15 @@ import io.reactivex.Single;
 public class HostPolicy extends AbstractRequestPolicy {
     private final String host;
 
-    HostPolicy(RequestPolicy nextPolicy, Options options, String host) {
+    HostPolicy(RequestPolicy nextPolicy, RequestPolicyOptions options, String host) {
         super(nextPolicy, options);
         this.host = host;
     }
 
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
-        if (shouldLog(HttpPipeline.LogLevel.INFO)) {
-            log(HttpPipeline.LogLevel.INFO, "Setting host to {0}", host);
+        if (shouldLog(HttpPipelineLogLevel.INFO)) {
+            log(HttpPipelineLogLevel.INFO, "Setting host to {0}", host);
         }
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
         request.withUrl(urlBuilder.withHost(host).toString());
@@ -37,7 +36,7 @@ public class HostPolicy extends AbstractRequestPolicy {
     /**
      * A RequestPolicy.Factory class that creates HostPolicy objects.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         private final String host;
 
         /**
@@ -49,7 +48,7 @@ public class HostPolicy extends AbstractRequestPolicy {
         }
 
         @Override
-        public HostPolicy create(RequestPolicy next, Options options) {
+        public HostPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new HostPolicy(next, options, host);
         }
     }

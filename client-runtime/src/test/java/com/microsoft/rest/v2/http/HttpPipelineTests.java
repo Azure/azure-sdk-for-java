@@ -46,7 +46,7 @@ public class HttpPipelineTests {
                 return Single.<HttpResponse>just(new MockHttpResponse(200));
             }
         };
-        final HttpPipeline httpPipeline = new HttpPipeline.Builder()
+        final HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .withHttpClient(httpClient)
                 .withUserAgent(expectedUserAgent)
                 .build();

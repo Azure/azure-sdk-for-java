@@ -9,9 +9,9 @@ package com.microsoft.rest.v2.http;
 /**
  * A HttpPipeline RequestPolicy logger that logs to the StdOut/System.out stream.
  */
-public class SystemOutLogger extends HttpPipeline.AbstractLogger {
+public class SystemOutLogger extends AbstractHttpPipelineLogger {
     @Override
-    public void log(HttpPipeline.LogLevel logLevel, String message, Object... formattedArguments) {
+    public void log(HttpPipelineLogLevel logLevel, String message, Object... formattedArguments) {
         System.out.println(logLevel + ") " + format(message, formattedArguments));
     }
 }

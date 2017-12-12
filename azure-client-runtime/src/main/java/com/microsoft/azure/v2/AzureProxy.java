@@ -13,11 +13,12 @@ import com.microsoft.azure.v2.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.NettyClient;
 import com.microsoft.rest.v2.policy.AddCookiesPolicy;
 import com.microsoft.rest.v2.policy.CredentialsPolicy;
 import com.microsoft.rest.v2.policy.LoggingPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RetryPolicy;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.InvalidReturnTypeException;
@@ -143,7 +144,7 @@ public final class AzureProxy extends RestProxy {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline defaultPipeline(Class<?> swaggerInterface) {
-        return defaultPipeline(swaggerInterface, (RequestPolicy.Factory) null);
+        return defaultPipeline(swaggerInterface, (RequestPolicyFactory) null);
     }
 
     /**
@@ -165,9 +166,9 @@ public final class AzureProxy extends RestProxy {
      *                          pipeline.
      * @return the default HttpPipeline.
      */
-    public static HttpPipeline defaultPipeline(Class<?> swaggerInterface, RequestPolicy.Factory credentialsPolicy) {
+    public static HttpPipeline defaultPipeline(Class<?> swaggerInterface, RequestPolicyFactory credentialsPolicy) {
         final HttpClient httpClient = new NettyClient.Factory().create(null);
-        final HttpPipeline.Builder builder = new HttpPipeline.Builder().withHttpClient(httpClient);
+        final HttpPipelineBuilder builder = new HttpPipelineBuilder().withHttpClient(httpClient);
         builder.withUserAgent(getDefaultUserAgentString(swaggerInterface));
         builder.withRequestPolicy(new RetryPolicy.Factory());
         builder.withRequestPolicy(new AddCookiesPolicy.Factory());

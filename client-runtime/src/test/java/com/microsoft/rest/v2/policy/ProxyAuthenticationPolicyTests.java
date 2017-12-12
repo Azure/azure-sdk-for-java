@@ -24,9 +24,9 @@ public class ProxyAuthenticationPolicyTests {
         final HttpPipeline pipeline = HttpPipeline.build(
                 new MockHttpClient(),
                 new ProxyAuthenticationPolicy.Factory(username, password),
-                new RequestPolicy.Factory() {
+                new RequestPolicyFactory() {
                     @Override
-                    public RequestPolicy create(final RequestPolicy next, RequestPolicy.Options options) {
+                    public RequestPolicy create(final RequestPolicy next, RequestPolicyOptions options) {
                         return new RequestPolicy() {
                             @Override
                             public Single<HttpResponse> sendAsync(HttpRequest request) {

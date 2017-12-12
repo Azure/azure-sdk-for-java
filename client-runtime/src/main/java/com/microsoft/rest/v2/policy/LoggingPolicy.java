@@ -33,7 +33,7 @@ public final class LoggingPolicy implements RequestPolicy {
     /**
      * Factory for creating LoggingPolicy instances in a chain.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         private final LogLevel logLevel;
 
         /**
@@ -45,7 +45,7 @@ public final class LoggingPolicy implements RequestPolicy {
         }
 
         @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new LoggingPolicy(logLevel, next);
         }
     }

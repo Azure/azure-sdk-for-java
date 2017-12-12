@@ -37,7 +37,7 @@ public final class ProxyAuthenticationPolicy implements RequestPolicy {
     /**
      * Factory for creating ProxyAuthenticationPolicy.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         private final String username;
         private final String password;
 
@@ -52,7 +52,7 @@ public final class ProxyAuthenticationPolicy implements RequestPolicy {
         }
 
         @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new ProxyAuthenticationPolicy(username, password, next);
         }
     }

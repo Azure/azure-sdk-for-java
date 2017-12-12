@@ -16,12 +16,13 @@ import com.microsoft.rest.v2.http.FlowableHttpRequestBody;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import com.microsoft.rest.v2.policy.AddCookiesPolicy;
 import com.microsoft.rest.v2.policy.CredentialsPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RetryPolicy;
 import com.microsoft.rest.v2.policy.UserAgentPolicy;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
@@ -33,8 +34,8 @@ import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
-import org.joda.time.DateTime;
 import io.reactivex.functions.Function;
+import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -596,7 +597,7 @@ public class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline() {
-        return createDefaultPipeline((RequestPolicy.Factory) null);
+        return createDefaultPipeline((RequestPolicyFactory) null);
     }
 
     /**
@@ -614,8 +615,8 @@ public class RestProxy implements InvocationHandler {
      *                          pipeline.
      * @return the default HttpPipeline.
      */
-    public static HttpPipeline createDefaultPipeline(RequestPolicy.Factory credentialsPolicy) {
-        final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+    public static HttpPipeline createDefaultPipeline(RequestPolicyFactory credentialsPolicy) {
+        final HttpPipelineBuilder builder = new HttpPipelineBuilder();
         builder.withRequestPolicy(new UserAgentPolicy.Factory());
         builder.withRequestPolicy(new RetryPolicy.Factory());
         builder.withRequestPolicy(new AddCookiesPolicy.Factory());

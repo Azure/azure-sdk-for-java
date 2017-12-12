@@ -72,11 +72,11 @@ public final class AddCookiesPolicy implements RequestPolicy {
     /**
      * Factory for creating AddCookiesPolicy.
      */
-    public static final class Factory implements RequestPolicy.Factory {
+    public static final class Factory implements RequestPolicyFactory {
         private final CookieHandler cookies = new CookieManager();
 
         @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new AddCookiesPolicy(cookies, next);
         }
     }

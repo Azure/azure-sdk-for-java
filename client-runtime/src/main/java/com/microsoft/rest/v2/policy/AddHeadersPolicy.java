@@ -32,7 +32,7 @@ public final class AddHeadersPolicy implements RequestPolicy {
     /**
      * Factory to create AddHeadersPolicy.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         private final HttpHeaders headers;
 
         /**
@@ -44,7 +44,7 @@ public final class AddHeadersPolicy implements RequestPolicy {
         }
 
         @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new AddHeadersPolicy(headers, next);
         }
     }

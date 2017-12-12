@@ -22,7 +22,7 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withScheme(String scheme) {
-        return with(scheme, UrlTokenizer.State.SCHEME);
+        return with(scheme, UrlTokenizerState.SCHEME);
     }
 
     /**
@@ -39,7 +39,7 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withHost(String host) {
-        return with(host, UrlTokenizer.State.SCHEME_OR_HOST);
+        return with(host, UrlTokenizerState.SCHEME_OR_HOST);
     }
 
     /**
@@ -56,7 +56,7 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPort(String port) {
-        return with(port, UrlTokenizer.State.PORT);
+        return with(port, UrlTokenizerState.PORT);
     }
 
     /**
@@ -82,7 +82,7 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPath(String path) {
-        return with(path, UrlTokenizer.State.PATH);
+        return with(path, UrlTokenizerState.PATH);
     }
 
     /**
@@ -117,7 +117,7 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withQuery(String query) {
-        return with(query, UrlTokenizer.State.QUERY);
+        return with(query, UrlTokenizerState.QUERY);
     }
 
     /**
@@ -128,12 +128,12 @@ public class UrlBuilder {
         return query;
     }
 
-    private UrlBuilder with(String text, UrlTokenizer.State startState) {
+    private UrlBuilder with(String text, UrlTokenizerState startState) {
         final UrlTokenizer tokenizer = new UrlTokenizer(text, startState);
         while (tokenizer.next()) {
             final UrlToken token = tokenizer.current();
             final String tokenText = token.text();
-            final UrlToken.Type tokenType = token.type();
+            final UrlTokenType tokenType = token.type();
             switch (tokenType) {
                 case SCHEME:
                     scheme = emptyToNull(tokenText);
@@ -213,7 +213,7 @@ public class UrlBuilder {
      */
     public static UrlBuilder parse(String url) {
         final UrlBuilder result = new UrlBuilder();
-        result.with(url, UrlTokenizer.State.SCHEME_OR_HOST);
+        result.with(url, UrlTokenizerState.SCHEME_OR_HOST);
         return result;
     }
 

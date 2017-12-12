@@ -6,8 +6,7 @@
 
 package com.microsoft.rest.v2.policy;
 
-
-import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
@@ -20,7 +19,7 @@ public class PortPolicy extends AbstractRequestPolicy {
     private final int port;
     private final boolean overwrite;
 
-    PortPolicy(RequestPolicy nextPolicy, Options options, int port, boolean overwrite) {
+    PortPolicy(RequestPolicy nextPolicy, RequestPolicyOptions options, int port, boolean overwrite) {
         super(nextPolicy, options);
         this.port = port;
         this.overwrite = overwrite;
@@ -30,8 +29,8 @@ public class PortPolicy extends AbstractRequestPolicy {
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
         if (overwrite || urlBuilder.port() == null) {
-            if (shouldLog(HttpPipeline.LogLevel.INFO)) {
-                log(HttpPipeline.LogLevel.INFO, "Changing port to {0}", port);
+            if (shouldLog(HttpPipelineLogLevel.INFO)) {
+                log(HttpPipelineLogLevel.INFO, "Changing port to {0}", port);
             }
             request.withUrl(urlBuilder.withPort(port).toString());
         }
@@ -41,7 +40,7 @@ public class PortPolicy extends AbstractRequestPolicy {
     /**
      * A RequestPolicy.Factory class that creates PortPolicy objects.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         private final int port;
         private final boolean overwrite;
 
@@ -64,7 +63,7 @@ public class PortPolicy extends AbstractRequestPolicy {
         }
 
         @Override
-        public RequestPolicy create(RequestPolicy next, Options options) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new PortPolicy(next, options, port, overwrite);
         }
     }
