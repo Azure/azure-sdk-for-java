@@ -135,8 +135,13 @@ public final class LoggingPolicy implements RequestPolicy {
     }
 
     private Single<HttpResponse> logResponse(final Logger logger, final HttpResponse response, String url, long tookMs) {
-        long contentLength = Long.parseLong(response.headerValue("Content-Length"));
-        String bodySize = contentLength + "-byte";
+        String contentLengthString = response.headerValue("Content-Type");
+        String bodySize;
+        if (contentLengthString == null || contentLengthString.isEmpty()) {
+            bodySize = "unknown-length";
+        } else {
+            bodySize = contentLengthString + "-byte";
+        }
 
         HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
         if (logLevel.shouldLogURL()) {
@@ -150,6 +155,8 @@ public final class LoggingPolicy implements RequestPolicy {
         }
 
         if (logLevel.shouldLogBody()) {
+            // FIXME: content length can be null
+            long contentLength = Long.parseLong(contentLengthString);
             String contentTypeHeader = response.headerValue("Content-Type");
             if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
                     && contentLength < MAX_BODY_LOG_SIZE) {

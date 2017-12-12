@@ -1349,7 +1349,7 @@ public abstract class RestProxyTests {
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
-        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new LoggingPolicy.Factory(LogLevel.HEADERS));
+        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient);
         return RestProxy.create(serviceClass, httpPipeline, serializer);
     }
 

@@ -63,30 +63,32 @@ public class FlowableFileStream extends Flowable<byte[]> {
             }
 
             void readSegmentsAsync() {
-                fileChannel.read(innerBuf, position, null, new CompletionHandler<Integer, Object>() {
-                    @Override
-                    public void completed(Integer bytesRead, Object attachment) {
-                        if (!canceled) {
-                            if (bytesRead == -1) {
-                                subscriber.onComplete();
-                            } else {
-                                subscriber.onNext(Arrays.copyOf(innerBuf.array(), bytesRead));
+                fileChannel.read(innerBuf, position, null, onReadComplete);
+            }
 
-                                position += bytesRead;
-                                chunksRequested--;
-                                if (chunksRequested > 0 && position < offset + length) {
-                                    readSegmentsAsync();
-                                }
+            final CompletionHandler<Integer, Object> onReadComplete = new CompletionHandler<Integer, Object>() {
+                @Override
+                public void completed(Integer bytesRead, Object attachment) {
+                    if (!canceled) {
+                        if (bytesRead == -1) {
+                            subscriber.onComplete();
+                        } else {
+                            subscriber.onNext(Arrays.copyOf(innerBuf.array(), bytesRead));
+
+                            position += bytesRead;
+                            chunksRequested--;
+                            if (chunksRequested > 0 && position < offset + length) {
+                                readSegmentsAsync();
                             }
                         }
                     }
+                }
 
-                    @Override
-                    public void failed(Throwable exc, Object attachment) {
-                        subscriber.onError(exc);
-                    }
-                });
-            }
+                @Override
+                public void failed(Throwable exc, Object attachment) {
+                    subscriber.onError(exc);
+                }
+            };
 
             @Override
             public void cancel() {
