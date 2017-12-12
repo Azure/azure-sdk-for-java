@@ -20,9 +20,9 @@ public final class UseOtherHostPolicy implements RequestPolicy {
     /**
      * Factory to create UseOtherHostPolicy.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new UseOtherHostPolicy(next);
         }
     }

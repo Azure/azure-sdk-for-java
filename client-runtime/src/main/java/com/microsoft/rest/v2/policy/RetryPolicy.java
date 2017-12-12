@@ -21,7 +21,7 @@ public final class RetryPolicy implements RequestPolicy {
     /**
      * Factory which instantiates RetryPolicy.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         private static final int DEFAULT_NUMBER_OF_ATTEMPTS = 3;
         final int maxRetries;
 
@@ -41,7 +41,7 @@ public final class RetryPolicy implements RequestPolicy {
         }
 
         @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new RetryPolicy(maxRetries, next);
         }
     }

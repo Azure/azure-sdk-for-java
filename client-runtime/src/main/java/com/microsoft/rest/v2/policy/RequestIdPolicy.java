@@ -22,9 +22,9 @@ public final class RequestIdPolicy implements RequestPolicy {
     /**
      * Factory which instantiates RequestIdPolicy.
      */
-    public static class Factory implements RequestPolicy.Factory {
+    public static class Factory implements RequestPolicyFactory {
         @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicy.Options options) {
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
             return new RequestIdPolicy(next);
         }
     }

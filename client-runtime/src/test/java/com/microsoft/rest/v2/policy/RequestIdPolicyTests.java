@@ -9,6 +9,7 @@ package com.microsoft.rest.v2.policy;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
@@ -71,7 +72,7 @@ public class RequestIdPolicyTests {
 
     @Test
     public void newRequestIdForEachCall() throws Exception {
-        HttpPipeline pipeline = new HttpPipeline.Builder()
+        HttpPipeline pipeline = new HttpPipelineBuilder()
             .withRequestPolicy(new RequestIdPolicy.Factory())
             .withHttpClient(new MockHttpClient() {
                 String firstRequestId = null;

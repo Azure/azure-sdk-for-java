@@ -12,14 +12,14 @@ import static org.junit.Assert.assertNull;
 public class HttpPipelineBuilderTests {
     @Test
     public void constructorWithNoArguments() {
-        final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+        final HttpPipelineBuilder builder = new HttpPipelineBuilder();
         assertEquals(0, builder.requestPolicyFactories().size());
         assertNull(builder.options());
     }
 
     @Test
     public void withRequestPolicy() {
-        final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+        final HttpPipelineBuilder builder = new HttpPipelineBuilder();
 
         builder.withRequestPolicy(new PortPolicy.Factory(80));
         assertEquals(1, builder.requestPolicyFactories().size());
@@ -39,7 +39,7 @@ public class HttpPipelineBuilderTests {
 
     @Test
     public void withRequestPolicyWithIndex() {
-        final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+        final HttpPipelineBuilder builder = new HttpPipelineBuilder();
 
         builder.withRequestPolicy(0, new PortPolicy.Factory(80));
         assertEquals(1, builder.requestPolicyFactories().size());
@@ -59,7 +59,7 @@ public class HttpPipelineBuilderTests {
 
     @Test
     public void withRequestPolicyBefore() {
-        final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+        final HttpPipelineBuilder builder = new HttpPipelineBuilder();
 
         builder.withRequestPolicyBefore(RetryPolicy.Factory.class, new PortPolicy.Factory(80));
         assertEquals(1, builder.requestPolicyFactories().size());
@@ -86,7 +86,7 @@ public class HttpPipelineBuilderTests {
 
     @Test
     public void withRequestPolicyAfter() {
-        final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+        final HttpPipelineBuilder builder = new HttpPipelineBuilder();
 
         builder.withRequestPolicyAfter(RetryPolicy.Factory.class, new PortPolicy.Factory(80));
         assertEquals(1, builder.requestPolicyFactories().size());
@@ -113,7 +113,7 @@ public class HttpPipelineBuilderTests {
 
     @Test
     public void withRequestPolicyArray() {
-        final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+        final HttpPipelineBuilder builder = new HttpPipelineBuilder();
 
         builder.withRequestPolicies(
                 new ProtocolPolicy.Factory("http"),
@@ -128,7 +128,7 @@ public class HttpPipelineBuilderTests {
 
     @Test
     public void appendingRequestPolicyArray() {
-        final HttpPipeline.Builder builder = new HttpPipeline.Builder();
+        final HttpPipelineBuilder builder = new HttpPipelineBuilder();
 
         builder.withRequestPolicy(new RetryPolicy.Factory());
         builder.withRequestPolicies(

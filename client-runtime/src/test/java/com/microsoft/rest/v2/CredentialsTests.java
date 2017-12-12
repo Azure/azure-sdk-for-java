@@ -15,6 +15,8 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
 import com.microsoft.rest.v2.policy.RequestPolicy;
+import com.microsoft.rest.v2.policy.RequestPolicyFactory;
+import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import org.junit.Assert;
 import org.junit.Test;
 import io.reactivex.Single;
@@ -25,9 +27,9 @@ public class CredentialsTests {
     public void basicCredentialsTest() throws Exception {
         BasicAuthenticationCredentials credentials = new BasicAuthenticationCredentials("user", "pass");
 
-        RequestPolicy.Factory auditorFactory = new RequestPolicy.Factory() {
+        RequestPolicyFactory auditorFactory = new RequestPolicyFactory() {
             @Override
-            public RequestPolicy create(final RequestPolicy next, RequestPolicy.Options options) {
+            public RequestPolicy create(final RequestPolicy next, RequestPolicyOptions options) {
                 return new RequestPolicy() {
                     @Override
                     public Single<HttpResponse> sendAsync(HttpRequest request) {
@@ -52,9 +54,9 @@ public class CredentialsTests {
     public void tokenCredentialsTest() throws Exception {
         TokenCredentials credentials = new TokenCredentials(null, "this_is_a_token");
 
-        RequestPolicy.Factory auditorFactory = new RequestPolicy.Factory() {
+        RequestPolicyFactory auditorFactory = new RequestPolicyFactory() {
             @Override
-            public RequestPolicy create(final RequestPolicy next, RequestPolicy.Options options) {
+            public RequestPolicy create(final RequestPolicy next, RequestPolicyOptions options) {
                 return new RequestPolicy() {
                     @Override
                     public Single<HttpResponse> sendAsync(HttpRequest request) {

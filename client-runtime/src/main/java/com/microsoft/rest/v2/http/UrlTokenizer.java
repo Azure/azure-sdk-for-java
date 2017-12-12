@@ -9,15 +9,15 @@ package com.microsoft.rest.v2.http;
 class UrlTokenizer {
     private final String text;
     private final int textLength;
-    private State state;
+    private UrlTokenizerState state;
     private int currentIndex;
     private UrlToken currentToken;
 
     UrlTokenizer(String text) {
-        this(text, State.SCHEME_OR_HOST);
+        this(text, UrlTokenizerState.SCHEME_OR_HOST);
     }
 
-    UrlTokenizer(String text, State state) {
+    UrlTokenizer(String text, UrlTokenizerState state) {
         this.text = text;
         this.textLength = (text == null ? 0 : text.length());
         this.state = state;
@@ -65,10 +65,10 @@ class UrlTokenizer {
                     final String scheme = readUntilNotLetterOrDigit();
                     currentToken = UrlToken.scheme(scheme);
                     if (!hasCurrentCharacter()) {
-                        state = State.DONE;
+                        state = UrlTokenizerState.DONE;
                     }
                     else {
-                        state = State.HOST;
+                        state = UrlTokenizerState.HOST;
                     }
                     break;
 
@@ -76,25 +76,25 @@ class UrlTokenizer {
                     final String schemeOrHost = readUntilCharacter(':', '/', '?');
                     if (!hasCurrentCharacter()) {
                         currentToken = UrlToken.host(schemeOrHost);
-                        state = State.DONE;
+                        state = UrlTokenizerState.DONE;
                     }
                     else if (currentCharacter() == ':') {
                         if (peekCharacters(3).equals("://")) {
                             currentToken = UrlToken.scheme(schemeOrHost);
-                            state = State.HOST;
+                            state = UrlTokenizerState.HOST;
                         }
                         else {
                             currentToken = UrlToken.host(schemeOrHost);
-                            state = State.PORT;
+                            state = UrlTokenizerState.PORT;
                         }
                     }
                     else if (currentCharacter() == '/') {
                         currentToken = UrlToken.host(schemeOrHost);
-                        state = State.PATH;
+                        state = UrlTokenizerState.PATH;
                     }
                     else if (currentCharacter() == '?') {
                         currentToken = UrlToken.host(schemeOrHost);
-                        state = State.QUERY;
+                        state = UrlTokenizerState.QUERY;
                     }
                     break;
 
@@ -107,16 +107,16 @@ class UrlTokenizer {
                     currentToken = UrlToken.host(host);
 
                     if (!hasCurrentCharacter()) {
-                        state = State.DONE;
+                        state = UrlTokenizerState.DONE;
                     }
                     else if (currentCharacter() == ':') {
-                        state = State.PORT;
+                        state = UrlTokenizerState.PORT;
                     }
                     else if (currentCharacter() == '/') {
-                        state = State.PATH;
+                        state = UrlTokenizerState.PATH;
                     }
                     else {
-                        state = State.QUERY;
+                        state = UrlTokenizerState.QUERY;
                     }
                     break;
 
@@ -129,13 +129,13 @@ class UrlTokenizer {
                     currentToken = UrlToken.port(port);
 
                     if (!hasCurrentCharacter()) {
-                        state = State.DONE;
+                        state = UrlTokenizerState.DONE;
                     }
                     else if (currentCharacter() == '/') {
-                        state = State.PATH;
+                        state = UrlTokenizerState.PATH;
                     }
                     else {
-                        state = State.QUERY;
+                        state = UrlTokenizerState.QUERY;
                     }
                     break;
 
@@ -144,10 +144,10 @@ class UrlTokenizer {
                     currentToken = UrlToken.path(path);
 
                     if (!hasCurrentCharacter()) {
-                        state = State.DONE;
+                        state = UrlTokenizerState.DONE;
                     }
                     else {
-                        state = State.QUERY;
+                        state = UrlTokenizerState.QUERY;
                     }
                     break;
 
@@ -158,7 +158,7 @@ class UrlTokenizer {
 
                     final String query = readRemaining();
                     currentToken = UrlToken.query(query);
-                    state = State.DONE;
+                    state = UrlTokenizerState.DONE;
                     break;
 
                 default:
@@ -227,21 +227,5 @@ class UrlTokenizer {
             currentIndex = textLength;
         }
         return result;
-    }
-
-    enum State {
-        SCHEME,
-
-        SCHEME_OR_HOST,
-
-        HOST,
-
-        PORT,
-
-        PATH,
-
-        QUERY,
-
-        DONE
     }
 }

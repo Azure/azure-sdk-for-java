@@ -9,7 +9,7 @@ package com.microsoft.rest.v2.http;
 /**
  * An adapter that connects an HttpPipeline.Logger to an slf4j.Logger.
  */
-public class Slf4jLogger extends HttpPipeline.AbstractLogger {
+public class Slf4jLogger extends AbstractHttpPipelineLogger {
     private final org.slf4j.Logger slf4jLogger;
 
     /**
@@ -21,7 +21,7 @@ public class Slf4jLogger extends HttpPipeline.AbstractLogger {
     }
 
     @Override
-    public void log(HttpPipeline.LogLevel logLevel, String message, Object... formattedArguments) {
+    public void log(HttpPipelineLogLevel logLevel, String message, Object... formattedArguments) {
         message = format(message, formattedArguments);
         switch (logLevel) {
             case ERROR:
