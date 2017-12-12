@@ -1,5 +1,6 @@
 package com.microsoft.rest.v2;
 
+import com.google.common.base.Charsets;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
@@ -1326,6 +1327,21 @@ public abstract class RestProxyTests {
             count.addAndGet(bytes.length);
         }
         assertEquals(30720, count.intValue());
+    }
+
+    @Host("http://httpbin.org")
+    interface FlowableUploadService {
+        @PUT("/put")
+        RestResponse<Void, HttpBinJSON> put(@BodyParam("text/plain") AsyncInputStream content);
+    }
+
+    @Test
+    public void FlowableUploadTest() {
+        byte[] data = "This is my data.".getBytes(Charsets.UTF_8);
+        RestResponse<Void, HttpBinJSON> response = createService(FlowableUploadService.class)
+                .put(new AsyncInputStream(Flowable.just(data), data.length));
+
+        assertEquals("This is my data.", response.body().data);
     }
 
     // Helpers

@@ -18,6 +18,9 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.AbstractChannelPoolHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
 import io.netty.handler.codec.http.DefaultFullHttpRequest;
+import io.netty.handler.codec.http.DefaultHttpContent;
+import io.netty.handler.codec.http.DefaultHttpRequest;
+import io.netty.handler.codec.http.DefaultLastHttpContent;
 import io.netty.handler.codec.http.HttpClientCodec;
 import io.netty.handler.codec.http.HttpContent;
 import io.netty.handler.codec.http.HttpMethod;
@@ -28,6 +31,7 @@ import io.netty.handler.codec.http.LastHttpContent;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
@@ -159,42 +163,111 @@ public final class NettyClient extends HttpClient {
                                 }
                                 inboundHandler.responseEmitter = emitter;
 
-                                final DefaultFullHttpRequest raw;
-                                if (request.body() == null || request.body().contentLength() == 0) {
-                                    raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
+                                if (request.body() instanceof FlowableHttpRequestBody) {
+                                    final Flowable<byte[]> bodyContent = ((FlowableHttpRequestBody) request.body()).content();
+                                    final DefaultHttpRequest raw = new DefaultHttpRequest(HttpVersion.HTTP_1_1,
                                             HttpMethod.valueOf(request.httpMethod()),
                                             request.url());
-                                } else {
-                                    ByteBuf requestContent;
-                                    if (request.body() instanceof ByteArrayHttpRequestBody) {
-                                        requestContent = Unpooled.wrappedBuffer(((ByteArrayHttpRequestBody) request.body()).content());
-                                    } else if (request.body() instanceof FileRequestBody) {
-                                        FileSegment segment = ((FileRequestBody) request.body()).content();
-                                        requestContent = ByteBufAllocator.DEFAULT.buffer(segment.length());
-                                        requestContent.writeBytes(segment.fileChannel(), segment.offset(), segment.length());
-                                    } else {
-                                        throw new IllegalArgumentException("Only ByteArrayRequestBody or FileRequestBody are supported");
+                                    // TODO: consider pulling this out, because changing headers after logging can be confusing
+                                    raw.headers().set(HEADER_CONTENT_LENGTH, request.body().contentLength());
+                                    for (HttpHeader header : request.headers()) {
+                                        raw.headers().add(header.name(), header.value());
                                     }
-                                    raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
-                                            HttpMethod.valueOf(request.httpMethod()),
-                                            request.url(),
-                                            requestContent);
-                                }
-
-                                for (HttpHeader header : request.headers()) {
-                                    raw.headers().add(header.name(), header.value());
-                                }
-                                raw.headers().set(HEADER_CONTENT_LENGTH, raw.content().readableBytes());
-                                channel.writeAndFlush(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
-                                    @Override
-                                    public void operationComplete(Future<? super Void> v) throws Exception {
-                                        if (v.isSuccess()) {
-                                            channel.read();
-                                        } else {
-                                            emitter.onError(v.cause());
+                                    channel.write(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
+                                        @Override
+                                        public void operationComplete(Future<? super Void> future) throws Exception {
+                                            if (!future.isSuccess()) {
+                                                emitter.onError(future.cause());
+                                            }
                                         }
+                                    });
+
+                                    bodyContent.subscribe(new FlowableSubscriber<byte[]>() {
+                                        Subscription subscription;
+
+                                        @Override
+                                        public void onSubscribe(Subscription s) {
+                                            subscription = s;
+                                            s.request(Long.MAX_VALUE);
+                                        }
+
+                                        GenericFutureListener<Future<? super Void>> onChannelWriteComplete =
+                                            new GenericFutureListener<Future<? super Void>>() {
+                                                @Override
+                                                public void operationComplete(Future<? super Void> future) throws Exception {
+                                                    if (!future.isSuccess()) {
+                                                        subscription.cancel();
+                                                        emitter.onError(future.cause());
+                                                    }
+                                                }
+                                            };
+
+                                        @Override
+                                        public void onNext(byte[] bytes) {
+                                            channel.write(new DefaultHttpContent(Unpooled.wrappedBuffer(bytes)))
+                                                    .addListener(onChannelWriteComplete);
+                                        }
+
+                                        @Override
+                                        public void onError(Throwable t) {
+                                            emitter.onError(t);
+                                        }
+
+                                        @Override
+                                        public void onComplete() {
+                                            channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
+                                                    .addListener(new GenericFutureListener<Future<? super Void>>() {
+                                                        @Override
+                                                        public void operationComplete(Future<? super Void> future) throws Exception {
+                                                            if (!future.isSuccess()) {
+                                                                subscription.cancel();
+                                                                emitter.onError(future.cause());
+                                                            } else {
+                                                                channel.read();
+                                                            }
+                                                        }
+                                                    });
+                                        }
+                                    });
+                                }
+                                else {
+                                    final DefaultFullHttpRequest raw;
+                                    if (request.body() == null || request.body().contentLength() == 0) {
+                                        raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
+                                                HttpMethod.valueOf(request.httpMethod()),
+                                                request.url());
+                                    } else {
+                                        ByteBuf requestContent;
+                                        if (request.body() instanceof ByteArrayHttpRequestBody) {
+                                            requestContent = Unpooled.wrappedBuffer(((ByteArrayHttpRequestBody) request.body()).content());
+                                        } else if (request.body() instanceof FileRequestBody) {
+                                            FileSegment segment = ((FileRequestBody) request.body()).content();
+                                            requestContent = ByteBufAllocator.DEFAULT.buffer(segment.length());
+                                            requestContent.writeBytes(segment.fileChannel(), segment.offset(), segment.length());
+                                        } else {
+                                            throw new IllegalArgumentException("Only ByteArrayRequestBody or FileRequestBody are supported");
+                                        }
+                                        raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
+                                                HttpMethod.valueOf(request.httpMethod()),
+                                                request.url(),
+                                                requestContent);
                                     }
-                                });
+
+                                    for (HttpHeader header : request.headers()) {
+                                        raw.headers().add(header.name(), header.value());
+                                    }
+                                    raw.headers().set(HEADER_CONTENT_LENGTH, raw.content().readableBytes());
+                                    channel.writeAndFlush(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
+                                        @Override
+                                        public void operationComplete(Future<? super Void> v) throws Exception {
+                                            if (v.isSuccess()) {
+                                                channel.read();
+                                            } else {
+                                                emitter.onError(v.cause());
+                                            }
+                                        }
+                                    });
+                                }
                             } catch (Throwable t) {
                                 emitter.onError(t);
                             }

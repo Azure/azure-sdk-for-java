@@ -1,3 +1,5 @@
+package com.microsoft.rest.v2;
+
 import com.google.common.io.BaseEncoding;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.RestResponse;
@@ -7,8 +9,7 @@ import com.microsoft.rest.v2.policy.AddHeadersPolicy;
 import com.microsoft.rest.v2.policy.LoggingPolicy;
 import com.microsoft.rest.v2.policy.LoggingPolicy.LogLevel;
 import com.microsoft.rest.v2.policy.RequestPolicy;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
+import io.reactivex.*;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
@@ -17,11 +18,19 @@ import org.joda.time.format.DateTimeFormatter;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+import java.util.Random;
 import java.util.concurrent.*;
 import java.util.concurrent.atomic.AtomicInteger;
 
@@ -37,7 +46,7 @@ public class RestProxyStressTests {
                 .withLocale(Locale.US);
 
         private final RequestPolicy next;
-        public AddDatePolicy(RequestPolicy next) {
+        AddDatePolicy(RequestPolicy next) {
             this.next = next;
         }
 
@@ -56,7 +65,7 @@ public class RestProxyStressTests {
     }
 
     @Host("https://javasdktest.blob.core.windows.net")
-    interface DownloadService {
+    interface IOService {
         @GET("/javasdktest/download/1k.dat?{sas}")
         Single<RestResponse<Void, Flowable<byte[]>>> download1KB(@PathParam(value = "sas", encoded = true) String sas);
 
@@ -69,6 +78,10 @@ public class RestProxyStressTests {
         @ExpectedResponses({ 201 })
         @PUT("/javasdktest/upload/1m.dat?{sas}")
         Single<RestResponse<Void, Void>> upload1MB(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
+
+        @ExpectedResponses({ 201 })
+        @PUT("/javasdktest/upload/100m.dat?{sas}")
+        Single<RestResponse<Void, Void>> upload100MB(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) AsyncInputStream stream);
     }
 
     private static final byte[] MD5_1KB = { 70, -110, 110, -84, -35, 116, 118, 2, -22, 8, 117, -65, -106, 61, -36, 58 };
@@ -76,7 +89,7 @@ public class RestProxyStressTests {
     private static final byte[] MD5_1GB = { 43, -104, -23, 103, 42, 34, -49, 42, 57, -127, -128, 89, -36, -81, 67, 5 };
 
     @Test
-    public void stressTest() throws Exception {
+    public void upload100MTest() throws Exception {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS");
         HttpHeaders headers = new HttpHeaders()
                 .set("x-ms-version", "2017-04-17");
@@ -84,8 +97,48 @@ public class RestProxyStressTests {
         HttpPipeline pipeline = HttpPipeline.build(
                 new AddDatePolicy.Factory(),
                 new AddHeadersPolicy.Factory(headers),
+                new LoggingPolicy.Factory(LogLevel.HEADERS));
+
+        final IOService service = RestProxy.create(IOService.class, pipeline);
+
+        final Path filePath = Paths.get("100m.dat");
+        try {
+            Files.deleteIfExists(filePath);
+            Files.createFile(filePath);
+            FileChannel file = FileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
+
+            byte[] buf = new byte[1024 * 1024 * 100];
+            Random random = new Random();
+            random.nextBytes(buf);
+
+            byte[] md5 = MessageDigest.getInstance("MD5").digest(buf);
+            file.write(ByteBuffer.wrap(buf));
+            file.close();
+
+            AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
+            RestResponse<Void, Void> response = service.upload100MB(sas, "BlockBlob", fileStream).blockingGet();
+            String base64MD5 = response.rawHeaders().get("Content-MD5");
+            byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
+
+            assertArrayEquals(md5, receivedMD5);
+        } finally {
+            Files.deleteIfExists(filePath);
+        }
+    }
+
+    @Test
+    public void stressTest() throws Exception {
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
+
+        HttpHeaders headers = new HttpHeaders()
+                .set("x-ms-version", "2017-04-17");
+
+        HttpPipeline pipeline = HttpPipeline.build(
+                new AddDatePolicy.Factory(),
+                new AddHeadersPolicy.Factory(headers),
                 new LoggingPolicy.Factory(LogLevel.BASIC));
-        final DownloadService service = RestProxy.create(DownloadService.class, pipeline);
+
+        final IOService service = RestProxy.create(IOService.class, pipeline);
 
         ExecutorService executor = Executors.newCachedThreadPool();
         final List<Exception> threadExceptions = new ArrayList<>();

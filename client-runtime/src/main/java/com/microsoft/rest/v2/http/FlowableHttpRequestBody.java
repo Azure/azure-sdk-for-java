@@ -1,23 +1,14 @@
-/**
- * Copyright (c) Microsoft Corporation. All rights reserved.
- * Licensed under the MIT License. See License.txt in the project root for
- * license information.
- */
-
 package com.microsoft.rest.v2.http;
 
-import com.google.common.io.ByteStreams;
+import io.reactivex.Flowable;
 
 import java.io.IOException;
 import java.io.InputStream;
 
-/**
- * A HttpRequestBody that uses an InputStream as its content.
- */
-public class InputStreamHttpRequestBody implements HttpRequestBody {
-    private final int contentLength;
+public final class FlowableHttpRequestBody implements HttpRequestBody {
+    private final long contentLength;
     private final String contentType;
-    private final InputStream content;
+    private final Flowable<byte[]> content;
 
     /**
      * Create a new InputStreamHttpRequest body.
@@ -25,7 +16,7 @@ public class InputStreamHttpRequestBody implements HttpRequestBody {
      * @param contentType The MIME type of the content.
      * @param content The InputStream content.
      */
-    public InputStreamHttpRequestBody(int contentLength, String contentType, InputStream content) {
+    public FlowableHttpRequestBody(long contentLength, String contentType, Flowable<byte[]> content) {
         this.contentLength = contentLength;
         this.contentType = contentType;
         this.content = content;
@@ -41,14 +32,20 @@ public class InputStreamHttpRequestBody implements HttpRequestBody {
         return contentType;
     }
 
-    @Override
-    public InputStream createInputStream() {
+    /**
+     * @return A Flowable which emits request content.
+     */
+    public Flowable<byte[]> content() {
         return content;
     }
 
     @Override
+    public InputStream createInputStream() {
+        throw new UnsupportedOperationException("Not implemented");
+    }
+
+    @Override
     public HttpRequestBody buffer() throws IOException {
-        final byte[] bytes = ByteStreams.toByteArray(content);
-        return new ByteArrayHttpRequestBody(bytes, contentType);
+        throw new UnsupportedOperationException("Not implemented");
     }
 }

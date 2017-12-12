@@ -27,7 +27,7 @@ public class ByteArrayHttpRequestBody implements HttpRequestBody {
     }
 
     @Override
-    public int contentLength() {
+    public long contentLength() {
         return contents.length;
     }
 

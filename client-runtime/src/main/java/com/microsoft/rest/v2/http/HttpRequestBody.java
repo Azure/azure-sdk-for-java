@@ -17,7 +17,7 @@ public interface HttpRequestBody {
      * The length of this request body in bytes.
      * @return The length of this request body in bytes.
      */
-    int contentLength();
+    long contentLength();
 
     /**
      * @return the MIME Content-Type of this request body.

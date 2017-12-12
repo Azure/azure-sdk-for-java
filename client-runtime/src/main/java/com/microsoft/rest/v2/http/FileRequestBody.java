@@ -29,7 +29,7 @@ public class FileRequestBody implements HttpRequestBody {
     }
 
     @Override
-    public int contentLength() {
+    public long contentLength() {
         return fileSegment.length();
     }
 

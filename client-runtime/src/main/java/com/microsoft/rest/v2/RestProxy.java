@@ -9,9 +9,11 @@ package com.microsoft.rest.v2;
 import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
+import com.microsoft.rest.v2.http.AsyncInputStream;
 import com.microsoft.rest.v2.http.ContentType;
 import com.microsoft.rest.v2.http.FileRequestBody;
 import com.microsoft.rest.v2.http.FileSegment;
+import com.microsoft.rest.v2.http.FlowableHttpRequestBody;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipeline;
@@ -305,6 +307,10 @@ public class RestProxy implements InvocationHandler {
             if (isJson) {
                 final String bodyContentString = serializer.serialize(bodyContentObject, bodyEncoding(request.headers()));
                 request.withBody(bodyContentString, contentType);
+            }
+            else if (bodyContentObject instanceof AsyncInputStream) {
+                AsyncInputStream stream = (AsyncInputStream) bodyContentObject;
+                request.withBody(new FlowableHttpRequestBody(stream.contentLength(), contentType, stream.content()));
             }
             else if (bodyContentObject instanceof byte[]) {
                 request.withBody((byte[]) bodyContentObject, contentType);
