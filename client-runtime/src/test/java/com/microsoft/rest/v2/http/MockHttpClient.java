@@ -6,10 +6,17 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.microsoft.rest.v2.Base64Url;
 import com.microsoft.rest.v2.DateTimeRfc1123;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
+import com.microsoft.rest.v2.util.FlowableUtil;
+import io.reactivex.exceptions.Exceptions;
+import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
 import io.reactivex.Single;
 
@@ -41,7 +48,7 @@ public class MockHttpClient extends HttpClient {
         try {
             final URI requestUrl = new URI(request.url());
             final String requestHost = requestUrl.getHost();
-            if (requestHost.equalsIgnoreCase("httpbin.org")) {
+            if ("httpbin.org".equalsIgnoreCase(requestHost)) {
                 final String requestPath = requestUrl.getPath();
                 final String requestPathLower = requestPath.toLowerCase();
                 if (requestPathLower.equals("/anything") || requestPathLower.startsWith("/anything/")) {
@@ -167,6 +174,7 @@ public class MockHttpClient extends HttpClient {
             }
         }
         catch (Exception ignored) {
+            throw Exceptions.propagate(ignored);
         }
 
         if (response == null) {
@@ -177,16 +185,19 @@ public class MockHttpClient extends HttpClient {
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
-        String result = "";
-
-        final HttpRequestBody body = request.body();
-        if (body != null) {
-            try (final InputStream bodyStream = body.createInputStream()) {
-                result = CharStreams.toString(new InputStreamReader(bodyStream));
-            }
+        String body = "";
+        if (request.body() != null) {
+            Single<String> asyncString = FlowableUtil.collectBytes(request.body().content())
+                    .map(new Function<byte[], String>() {
+                @Override
+                public String apply(byte[] bytes) throws Exception {
+                    return new String(bytes, Charsets.UTF_8);
+                }
+            });
+            body = asyncString.blockingGet();
         }
 
-        return result;
+        return body;
     }
 
     private static Map<String, String> toMap(HttpHeaders headers) {

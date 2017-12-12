@@ -7,9 +7,9 @@
 package com.microsoft.rest.v2.http;
 
 import com.google.common.base.Charsets;
+import io.reactivex.Flowable;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * This class contains all of the details necessary for sending a HTTP request through a HttpClient.
@@ -161,18 +161,7 @@ public class HttpRequest {
      * @return This HttpRequest so that multiple operations can be chained together.
      */
     public HttpRequest withBody(byte[] body, String mimeContentType) {
-        return withBody(new ByteArrayHttpRequestBody(body, mimeContentType));
-    }
-
-    /**
-     * Set the body of this HTTP request.
-     * @param body The stream of bytes to use for the body of this HTTP request.
-     * @param contentLength The number of bytes in the body.
-     * @param mimeContentType The MIME Content-Type of the body's contents.
-     * @return This HttpRequest so that multiple operations can be chained together.
-     */
-    public HttpRequest withBody(InputStream body, int contentLength, String mimeContentType) {
-        return withBody(new InputStreamHttpRequestBody(contentLength, mimeContentType, body));
+        return withBody(new FlowableHttpRequestBody(body.length, mimeContentType, Flowable.just(body)));
     }
 
     /**

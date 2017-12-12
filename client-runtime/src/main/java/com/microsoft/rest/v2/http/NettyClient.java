@@ -8,7 +8,6 @@ package com.microsoft.rest.v2.http;
 
 import io.netty.bootstrap.Bootstrap;
 import io.netty.buffer.ByteBuf;
-import io.netty.buffer.ByteBufAllocator;
 import io.netty.buffer.Unpooled;
 import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
@@ -17,7 +16,6 @@ import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.AbstractChannelPoolHandler;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.http.DefaultFullHttpRequest;
 import io.netty.handler.codec.http.DefaultHttpContent;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultLastHttpContent;
@@ -50,7 +48,6 @@ import java.util.concurrent.TimeUnit;
  * An HttpClient that is implemented using Netty.
  */
 public final class NettyClient extends HttpClient {
-    private static final String HEADER_CONTENT_LENGTH = "Content-Length";
     private final NettyAdapter adapter;
     private final Proxy proxy;
 
@@ -135,141 +132,111 @@ public final class NettyClient extends HttpClient {
             // Creates cold observable from an emitter
             return Single.create(new SingleOnSubscribe<HttpResponse>() {
                 @Override
-                public void subscribe(final SingleEmitter<HttpResponse> emitter) {
+                public void subscribe(final SingleEmitter<HttpResponse> responseEmitter) {
                     channelPool.acquire(channelAddress).addListener(new GenericFutureListener<Future<? super Channel>>() {
                         @Override
                         public void operationComplete(Future<? super Channel> cf) {
                             if (!cf.isSuccess()) {
-                                emitter.onError(cf.cause());
+                                responseEmitter.onError(cf.cause());
                                 return;
                             }
 
-                            try {
-                                final Channel channel = (Channel) cf.getNow();
+                            final Channel channel = (Channel) cf.getNow();
 
-                                HttpClientInboundHandler inboundHandler = channel.pipeline().get(HttpClientInboundHandler.class);
-                                if (request.httpMethod().equalsIgnoreCase("HEAD")) {
-                                    // Use HttpClientCodec for HEAD operations
-                                    if (channel.pipeline().get("HttpClientCodec") == null) {
-                                        channel.pipeline().remove(HttpRequestEncoder.class);
-                                        channel.pipeline().replace(HttpResponseDecoder.class, "HttpClientCodec", new HttpClientCodec());
-                                    }
-                                } else {
-                                    // Use HttpResponseDecoder for other operations
-                                    if (channel.pipeline().get("HttpResponseDecoder") == null) {
-                                        channel.pipeline().replace(HttpClientCodec.class, "HttpResponseDecoder", new HttpResponseDecoder());
-                                        channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
+                            HttpClientInboundHandler inboundHandler = channel.pipeline().get(HttpClientInboundHandler.class);
+                            if (request.httpMethod().equalsIgnoreCase("HEAD")) {
+                                // Use HttpClientCodec for HEAD operations
+                                if (channel.pipeline().get("HttpClientCodec") == null) {
+                                    channel.pipeline().remove(HttpRequestEncoder.class);
+                                    channel.pipeline().replace(HttpResponseDecoder.class, "HttpClientCodec", new HttpClientCodec());
+                                }
+                            } else {
+                                // Use HttpResponseDecoder for other operations
+                                if (channel.pipeline().get("HttpResponseDecoder") == null) {
+                                    channel.pipeline().replace(HttpClientCodec.class, "HttpResponseDecoder", new HttpResponseDecoder());
+                                    channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
+                                }
+                            }
+                            inboundHandler.responseEmitter = responseEmitter;
+
+                            final DefaultHttpRequest raw = new DefaultHttpRequest(HttpVersion.HTTP_1_1,
+                                    HttpMethod.valueOf(request.httpMethod()),
+                                    request.url());
+
+                            for (HttpHeader header : request.headers()) {
+                                raw.headers().add(header.name(), header.value());
+                            }
+
+                            channel.write(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
+                                @Override
+                                public void operationComplete(Future<? super Void> future) throws Exception {
+                                    if (!future.isSuccess()) {
+                                        responseEmitter.onError(future.cause());
                                     }
                                 }
-                                inboundHandler.responseEmitter = emitter;
+                            });
 
-                                if (request.body() instanceof FlowableHttpRequestBody) {
-                                    final Flowable<byte[]> bodyContent = ((FlowableHttpRequestBody) request.body()).content();
-                                    final DefaultHttpRequest raw = new DefaultHttpRequest(HttpVersion.HTTP_1_1,
-                                            HttpMethod.valueOf(request.httpMethod()),
-                                            request.url());
-                                    // TODO: consider pulling this out, because changing headers after logging can be confusing
-                                    raw.headers().set(HEADER_CONTENT_LENGTH, request.body().contentLength());
-                                    for (HttpHeader header : request.headers()) {
-                                        raw.headers().add(header.name(), header.value());
-                                    }
-                                    channel.write(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
-                                        @Override
-                                        public void operationComplete(Future<? super Void> future) throws Exception {
-                                            if (!future.isSuccess()) {
-                                                emitter.onError(future.cause());
+                            if (request.body() == null) {
+                                channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
+                                        .addListener(new GenericFutureListener<Future<? super Void>>() {
+                                            @Override
+                                            public void operationComplete(Future<? super Void> future) throws Exception {
+                                                if (future.isSuccess()) {
+                                                    channel.read();
+                                                } else {
+                                                    responseEmitter.onError(future.cause());
+                                                }
                                             }
-                                        }
-                                    });
+                                        });
+                            } else {
+                                final Flowable<byte[]> bodyContent = request.body().content();
+                                bodyContent.subscribe(new FlowableSubscriber<byte[]>() {
+                                    Subscription subscription;
 
-                                    bodyContent.subscribe(new FlowableSubscriber<byte[]>() {
-                                        Subscription subscription;
+                                    @Override
+                                    public void onSubscribe(Subscription s) {
+                                        subscription = s;
+                                        s.request(Long.MAX_VALUE);
+                                    }
 
-                                        @Override
-                                        public void onSubscribe(Subscription s) {
-                                            subscription = s;
-                                            s.request(Long.MAX_VALUE);
-                                        }
-
-                                        GenericFutureListener<Future<? super Void>> onChannelWriteComplete =
+                                    GenericFutureListener<Future<? super Void>> onChannelWriteComplete =
                                             new GenericFutureListener<Future<? super Void>>() {
                                                 @Override
                                                 public void operationComplete(Future<? super Void> future) throws Exception {
                                                     if (!future.isSuccess()) {
                                                         subscription.cancel();
-                                                        emitter.onError(future.cause());
+                                                        responseEmitter.onError(future.cause());
                                                     }
                                                 }
                                             };
 
-                                        @Override
-                                        public void onNext(byte[] bytes) {
-                                            channel.write(new DefaultHttpContent(Unpooled.wrappedBuffer(bytes)))
-                                                    .addListener(onChannelWriteComplete);
-                                        }
+                                    @Override
+                                    public void onNext(byte[] bytes) {
+                                        channel.write(new DefaultHttpContent(Unpooled.wrappedBuffer(bytes)))
+                                                .addListener(onChannelWriteComplete);
+                                    }
 
-                                        @Override
-                                        public void onError(Throwable t) {
-                                            emitter.onError(t);
-                                        }
+                                    @Override
+                                    public void onError(Throwable t) {
+                                        responseEmitter.onError(t);
+                                    }
 
-                                        @Override
-                                        public void onComplete() {
-                                            channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
-                                                    .addListener(new GenericFutureListener<Future<? super Void>>() {
-                                                        @Override
-                                                        public void operationComplete(Future<? super Void> future) throws Exception {
-                                                            if (!future.isSuccess()) {
-                                                                subscription.cancel();
-                                                                emitter.onError(future.cause());
-                                                            } else {
-                                                                channel.read();
-                                                            }
+                                    @Override
+                                    public void onComplete() {
+                                        channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
+                                                .addListener(new GenericFutureListener<Future<? super Void>>() {
+                                                    @Override
+                                                    public void operationComplete(Future<? super Void> future) throws Exception {
+                                                        if (!future.isSuccess()) {
+                                                            subscription.cancel();
+                                                            responseEmitter.onError(future.cause());
+                                                        } else {
+                                                            channel.read();
                                                         }
-                                                    });
-                                        }
-                                    });
-                                }
-                                else {
-                                    final DefaultFullHttpRequest raw;
-                                    if (request.body() == null || request.body().contentLength() == 0) {
-                                        raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
-                                                HttpMethod.valueOf(request.httpMethod()),
-                                                request.url());
-                                    } else {
-                                        ByteBuf requestContent;
-                                        if (request.body() instanceof ByteArrayHttpRequestBody) {
-                                            requestContent = Unpooled.wrappedBuffer(((ByteArrayHttpRequestBody) request.body()).content());
-                                        } else if (request.body() instanceof FileRequestBody) {
-                                            FileSegment segment = ((FileRequestBody) request.body()).content();
-                                            requestContent = ByteBufAllocator.DEFAULT.buffer(segment.length());
-                                            requestContent.writeBytes(segment.fileChannel(), segment.offset(), segment.length());
-                                        } else {
-                                            throw new IllegalArgumentException("Only ByteArrayRequestBody or FileRequestBody are supported");
-                                        }
-                                        raw = new DefaultFullHttpRequest(HttpVersion.HTTP_1_1,
-                                                HttpMethod.valueOf(request.httpMethod()),
-                                                request.url(),
-                                                requestContent);
+                                                    }
+                                                });
                                     }
-
-                                    for (HttpHeader header : request.headers()) {
-                                        raw.headers().add(header.name(), header.value());
-                                    }
-                                    raw.headers().set(HEADER_CONTENT_LENGTH, raw.content().readableBytes());
-                                    channel.writeAndFlush(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
-                                        @Override
-                                        public void operationComplete(Future<? super Void> v) throws Exception {
-                                            if (v.isSuccess()) {
-                                                channel.read();
-                                            } else {
-                                                emitter.onError(v.cause());
-                                            }
-                                        }
-                                    });
-                                }
-                            } catch (Throwable t) {
-                                emitter.onError(t);
+                                });
                             }
                         }
                     });

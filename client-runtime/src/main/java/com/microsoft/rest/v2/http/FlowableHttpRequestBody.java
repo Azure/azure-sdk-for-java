@@ -9,7 +9,6 @@ package com.microsoft.rest.v2.http;
 import io.reactivex.Flowable;
 
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * An HTTP request body which is given by subscribing to a Flowable.
@@ -17,10 +16,12 @@ import java.io.InputStream;
 public final class FlowableHttpRequestBody implements HttpRequestBody {
     private final long contentLength;
     private final String contentType;
-    private final Flowable<byte[]> content;
+
+    private boolean isBuffered = false;
+    private Flowable<byte[]> content;
 
     /**
-     * Create a new InputStreamHttpRequest body.
+     * Create a new FlowableHttpRequestBody.
      * @param contentLength The number of bytes in the content within the provided InputStream.
      * @param contentType The MIME type of the content.
      * @param content The InputStream content.
@@ -41,20 +42,17 @@ public final class FlowableHttpRequestBody implements HttpRequestBody {
         return contentType;
     }
 
-    /**
-     * @return A Flowable which emits request content.
-     */
+    @Override
     public Flowable<byte[]> content() {
         return content;
     }
 
     @Override
-    public InputStream createInputStream() {
-        throw new UnsupportedOperationException("Not implemented");
-    }
-
-    @Override
     public HttpRequestBody buffer() throws IOException {
-        throw new UnsupportedOperationException("Not implemented");
+        if (!isBuffered) {
+            content = content.replay();
+            isBuffered = true;
+        }
+        return this;
     }
 }

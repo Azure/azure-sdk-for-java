@@ -6,6 +6,9 @@
 
 package com.microsoft.azure.v2.http;
 
+import com.google.common.base.Charsets;
+import com.google.common.io.ByteArrayDataOutput;
+import com.google.common.io.ByteStreams;
 import com.google.common.io.CharStreams;
 import com.microsoft.azure.v2.AsyncOperationResource;
 import com.microsoft.azure.v2.AzureAsyncOperationPollStrategy;
@@ -18,7 +21,10 @@ import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Single;
+import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Function;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -295,9 +301,14 @@ public class MockAzureHttpClient extends HttpClient {
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
-        try (final InputStream bodyStream = request.body().createInputStream()) {
-            return CharStreams.toString(new InputStreamReader(bodyStream));
-        }
+        Single<String> asyncString = FlowableUtil.collectBytes(request.body().content()).map(new Function<byte[], String>() {
+            @Override
+            public String apply(byte[] bytes) throws Exception {
+                return new String(bytes, Charsets.UTF_8);
+            }
+        });
+
+        return asyncString.blockingGet();
     }
 
     private static Map<String, String> toMap(HttpHeaders headers) {

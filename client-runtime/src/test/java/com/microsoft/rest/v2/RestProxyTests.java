@@ -19,6 +19,8 @@ import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v2.entities.HttpBinHeaders;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
 import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.policy.LoggingPolicy;
+import com.microsoft.rest.v2.policy.LoggingPolicy.LogLevel;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
@@ -1347,7 +1349,7 @@ public abstract class RestProxyTests {
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
-        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient);
+        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new LoggingPolicy.Factory(LogLevel.HEADERS));
         return RestProxy.create(serviceClass, httpPipeline, serializer);
     }
 
