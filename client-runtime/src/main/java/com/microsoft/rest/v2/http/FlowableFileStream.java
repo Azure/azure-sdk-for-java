@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.rest.v2.http;
 
 import io.reactivex.Flowable;
@@ -15,7 +21,7 @@ import java.util.Arrays;
  * Does not close the AsynchronousFileChannel after completion.
  */
 public class FlowableFileStream extends Flowable<byte[]> {
-    private final int CHUNK_SIZE = 8192;
+    private static final int CHUNK_SIZE = 8192;
     private final AsynchronousFileChannel fileChannel;
 
     /**

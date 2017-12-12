@@ -1,8 +1,12 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.rest.v2;
 
 import com.google.common.io.BaseEncoding;
-import com.microsoft.rest.v2.RestProxy;
-import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.annotations.*;
 import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.policy.AddHeadersPolicy;

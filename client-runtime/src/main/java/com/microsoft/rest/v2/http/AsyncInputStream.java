@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.rest.v2.http;
 
 import io.reactivex.Flowable;
@@ -40,6 +46,7 @@ public final class AsyncInputStream {
      * Creates an AsyncInputStream from an AsynchronousFileChannel.
      *
      * @param fileChannel The file channel.
+     * @throws IOException thrown if an error occurs when determining file size
      * @return The AsyncInputStream.
      */
     public static AsyncInputStream create(AsynchronousFileChannel fileChannel) throws IOException {

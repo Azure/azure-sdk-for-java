@@ -1,3 +1,9 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
 package com.microsoft.rest.v2.http;
 
 import io.reactivex.Flowable;
@@ -5,6 +11,9 @@ import io.reactivex.Flowable;
 import java.io.IOException;
 import java.io.InputStream;
 
+/**
+ * An HTTP request body which is given by subscribing to a Flowable.
+ */
 public final class FlowableHttpRequestBody implements HttpRequestBody {
     private final long contentLength;
     private final String contentType;
