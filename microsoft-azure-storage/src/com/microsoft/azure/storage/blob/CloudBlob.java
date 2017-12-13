@@ -1765,7 +1765,7 @@ public abstract class CloudBlob implements ListBlobItem {
             OperationContext opContext) throws StorageException, IOException {
         File file = new File(path);
         long fileLength = file.length();
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+        InputStream inputStream = new FileInputStream(file); // The call to upload supports FileInputStream efficiently.
         this.upload(inputStream, fileLength, accessCondition, options, opContext);
         inputStream.close();
     }
