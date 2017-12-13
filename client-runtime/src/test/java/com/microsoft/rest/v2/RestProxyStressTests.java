@@ -161,7 +161,7 @@ public class RestProxyStressTests {
                     }
                 });
 
-        assertEquals(MD5_90MB, md5.digest());
+        assertArrayEquals(MD5_90MB, md5.digest());
     }
 
     @Test
