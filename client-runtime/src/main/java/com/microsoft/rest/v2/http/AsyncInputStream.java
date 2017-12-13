@@ -9,9 +9,11 @@ package com.microsoft.rest.v2.http;
 import io.reactivex.Emitter;
 import io.reactivex.Flowable;
 import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Function;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
@@ -20,6 +22,7 @@ import java.util.concurrent.Callable;
  * Represents an asynchronous input stream with a content length.
  */
 public final class AsyncInputStream {
+    private static final int CHUNK_SIZE = 8192;
     private final Flowable<byte[]> content;
     private final long contentLength;
 
@@ -55,8 +58,26 @@ public final class AsyncInputStream {
      * @param length The number of bytes of data to read from the file.
      * @return The AsyncInputStream.
      */
-    public static AsyncInputStream create(AsynchronousFileChannel fileChannel, long offset, long length) {
-        return new AsyncInputStream(new FlowableFileStream(fileChannel, offset, length), length);
+    public static AsyncInputStream create(final AsynchronousFileChannel fileChannel, final long offset, long length) {
+        int numChunks = (int) length / CHUNK_SIZE + (length % CHUNK_SIZE == 0 ? 0 : 1);
+        Flowable<byte[]> fileStream = Flowable.range(0, numChunks).concatMap(new Function<Integer, Flowable<byte[]>>() {
+            ByteBuffer innerBuf = ByteBuffer.wrap(new byte[CHUNK_SIZE]);
+
+            @Override
+            public Flowable<byte[]> apply(Integer chunkNo) throws Exception {
+                long position = offset + (chunkNo * CHUNK_SIZE);
+                innerBuf.clear();
+                return Flowable.fromFuture(fileChannel.read(innerBuf, position))
+                        .map(new Function<Integer, byte[]>() {
+                            @Override
+                            public byte[] apply(Integer bytesRead) throws Exception {
+                                return Arrays.copyOf(innerBuf.array(), bytesRead);
+                            }
+                        });
+            }
+        });
+
+        return new AsyncInputStream(fileStream, length);
     }
 
     /**
@@ -67,7 +88,7 @@ public final class AsyncInputStream {
      */
     public static AsyncInputStream create(AsynchronousFileChannel fileChannel) throws IOException {
         long size = fileChannel.size();
-        return new AsyncInputStream(new FlowableFileStream(fileChannel, 0, size), size);
+        return create(fileChannel, 0, size);
     }
 
     /**

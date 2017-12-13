@@ -143,7 +143,7 @@ public final class NettyClient extends HttpClient {
 
                             final Channel channel = (Channel) cf.getNow();
 
-                            HttpClientInboundHandler inboundHandler = channel.pipeline().get(HttpClientInboundHandler.class);
+                            final HttpClientInboundHandler inboundHandler = channel.pipeline().get(HttpClientInboundHandler.class);
                             if (request.httpMethod().equalsIgnoreCase("HEAD")) {
                                 // Use HttpClientCodec for HEAD operations
                                 if (channel.pipeline().get("HttpClientCodec") == null) {
@@ -189,14 +189,17 @@ public final class NettyClient extends HttpClient {
                                             }
                                         });
                             } else {
+                                // TODO: maybe HttpInboundHandler should itself be a FlowableSubscriber..?
                                 final Flowable<byte[]> bodyContent = request.body().content();
                                 bodyContent.subscribe(new FlowableSubscriber<byte[]>() {
                                     Subscription subscription;
+                                    long chunksRequested = 0;
 
                                     @Override
                                     public void onSubscribe(Subscription s) {
                                         subscription = s;
-                                        s.request(Long.MAX_VALUE);
+                                        inboundHandler.requestContentSubscription = subscription;
+                                        subscription.request(128);
                                     }
 
                                     GenericFutureListener<Future<? super Void>> onChannelWriteComplete =
@@ -212,8 +215,14 @@ public final class NettyClient extends HttpClient {
 
                                     @Override
                                     public void onNext(byte[] bytes) {
+                                        chunksRequested--;
                                         channel.write(new DefaultHttpContent(Unpooled.wrappedBuffer(bytes)))
                                                 .addListener(onChannelWriteComplete);
+
+                                        if (channel.isWritable() && chunksRequested <= 0) {
+                                            chunksRequested += 128;
+                                            subscription.request(128);
+                                        }
                                     }
 
                                     @Override
@@ -245,13 +254,13 @@ public final class NettyClient extends HttpClient {
         }
     }
 
-    private static final class HttpContentFlowable extends Flowable<ByteBuf> {
+    private static final class ResponseContentFlowable extends Flowable<ByteBuf> {
         final Queue<HttpContent> queuedContent = new ArrayDeque<>();
         final Subscription handlerSubscription;
         long chunksRequested = 0;
         Subscriber<? super ByteBuf> subscriber;
 
-        HttpContentFlowable(Subscription subscription) {
+        ResponseContentFlowable(Subscription subscription) {
             handlerSubscription = subscription;
         }
 
@@ -310,7 +319,8 @@ public final class NettyClient extends HttpClient {
 
     private static final class HttpClientInboundHandler extends ChannelInboundHandlerAdapter {
         private SingleEmitter<HttpResponse> responseEmitter;
-        private HttpContentFlowable contentEmitter;
+        private ResponseContentFlowable contentEmitter;
+        private Subscription requestContentSubscription;
         private final NettyAdapter adapter;
 
         private HttpClientInboundHandler(NettyAdapter adapter) {
@@ -335,6 +345,18 @@ public final class NettyClient extends HttpClient {
         }
 
         @Override
+        public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
+            if (ctx.channel().isWritable() && requestContentSubscription != null) {
+                requestContentSubscription.request(128);
+            } else {
+                // TODO: why is this needed?
+                ctx.channel().flush();
+            }
+
+            super.channelWritabilityChanged(ctx);
+        }
+
+        @Override
         public void channelRead(final ChannelHandlerContext ctx, Object msg) throws Exception {
             if (msg instanceof io.netty.handler.codec.http.HttpResponse) {
                 io.netty.handler.codec.http.HttpResponse response = (io.netty.handler.codec.http.HttpResponse) msg;
@@ -344,7 +366,7 @@ public final class NettyClient extends HttpClient {
                     return;
                 }
 
-                contentEmitter = new HttpContentFlowable(new Subscription() {
+                contentEmitter = new ResponseContentFlowable(new Subscription() {
                     @Override
                     public void request(long n) {
                         ctx.channel().read();
