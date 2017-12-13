@@ -9,7 +9,6 @@ package com.microsoft.rest.v2.http;
 import io.reactivex.Emitter;
 import io.reactivex.Flowable;
 import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.Consumer;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -73,7 +72,6 @@ public final class AsyncInputStream {
 
     /**
      * Creates an AsyncInputStream which emits the content of a given InputStream with a known length.
-     * Will close the InputStream when subscription completes.
      *
      * @param inputStream The input stream.
      * @param contentLength The length of the stream content.
@@ -104,12 +102,6 @@ public final class AsyncInputStream {
                         } catch (IOException e) {
                             emitter.onError(e);
                         }
-                    }
-                },
-                new Consumer<InputStream>() {
-                    @Override
-                    public void accept(InputStream inputStream) throws Exception {
-                        inputStream.close();
                     }
                 });
 

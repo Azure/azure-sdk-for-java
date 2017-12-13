@@ -20,7 +20,6 @@ import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
-import java.io.IOException;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -88,7 +87,7 @@ public final class LoggingPolicy implements RequestPolicy {
             }
         }
 
-        Completable bodyLoggingOrNothing = Completable.complete();
+        Completable bodyLoggingTask = Completable.complete();
         if (logLevel.shouldLogBody()) {
             if (request.body() == null) {
                 log(logger, "(empty body)");
@@ -98,9 +97,7 @@ public final class LoggingPolicy implements RequestPolicy {
                 if (request.body().contentLength() < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                     try {
                         Single<byte[]> collectedBytes = FlowableUtil.collectBytes(request.body().buffer().content());
-
-                        // FIXME: stalls out
-                        bodyLoggingOrNothing = collectedBytes.flatMapCompletable(new Function<byte[], CompletableSource>() {
+                        bodyLoggingTask = collectedBytes.flatMapCompletable(new Function<byte[], CompletableSource>() {
                             @Override
                             public CompletableSource apply(byte[] bytes) throws Exception {
                                 String bodyString = new String(bytes, Charsets.UTF_8);
@@ -109,8 +106,8 @@ public final class LoggingPolicy implements RequestPolicy {
                                 return Completable.complete();
                             }
                         });
-                    } catch (IOException e) {
-                        bodyLoggingOrNothing = Completable.error(e);
+                    } catch (Exception e) {
+                        bodyLoggingTask = Completable.error(e);
                     }
                 } else {
                     log(logger, request.body().contentLength() + "-byte body: (content not logged)");
@@ -120,7 +117,7 @@ public final class LoggingPolicy implements RequestPolicy {
         }
 
         final long startNs = System.nanoTime();
-        return bodyLoggingOrNothing.andThen(next.sendAsync(request)).flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
+        return bodyLoggingTask.andThen(next.sendAsync(request)).flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
             @Override
             public Single<HttpResponse> apply(HttpResponse httpResponse) {
                 long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
@@ -135,7 +132,7 @@ public final class LoggingPolicy implements RequestPolicy {
     }
 
     private Single<HttpResponse> logResponse(final Logger logger, final HttpResponse response, String url, long tookMs) {
-        String contentLengthString = response.headerValue("Content-Type");
+        String contentLengthString = response.headerValue("Content-Length");
         String bodySize;
         if (contentLengthString == null || contentLengthString.isEmpty()) {
             bodySize = "unknown-length";
@@ -155,22 +152,28 @@ public final class LoggingPolicy implements RequestPolicy {
         }
 
         if (logLevel.shouldLogBody()) {
-            // FIXME: content length can be null
-            long contentLength = Long.parseLong(contentLengthString);
+            long contentLength = -1;
+            try {
+                if (contentLengthString != null) {
+                    contentLength = Long.parseLong(contentLengthString);
+                }
+            } catch (NumberFormatException ignored) {
+            }
+
             String contentTypeHeader = response.headerValue("Content-Type");
             if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
-                    && contentLength < MAX_BODY_LOG_SIZE) {
+                    && contentLength != -1 && contentLength < MAX_BODY_LOG_SIZE) {
                 final HttpResponse bufferedResponse = response.buffer();
                 return bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
                     @Override
                     public HttpResponse apply(String s) {
-                        log(logger, s);
+                        log(logger, "Response body:\n" + s);
                         log(logger, "<-- END HTTP");
                         return bufferedResponse;
                     }
                 });
             } else {
-                log(logger, "Not logging response body because the Content-Type is " + contentTypeHeader);
+                log(logger, "(body content not logged)");
                 log(logger, "<-- END HTTP");
             }
         } else {

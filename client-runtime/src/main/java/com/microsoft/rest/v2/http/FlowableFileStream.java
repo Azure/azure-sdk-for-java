@@ -18,8 +18,6 @@ import java.util.Arrays;
 
 /**
  * Exposes an AsynchronousFileChannel as a Flowable.
- *
- * Does not close the AsynchronousFileChannel after completion.
  */
 public class FlowableFileStream extends Flowable<byte[]> {
     private static final int CHUNK_SIZE = 8192;
@@ -51,10 +49,10 @@ public class FlowableFileStream extends Flowable<byte[]> {
     @Override
     protected void subscribeActual(final Subscriber<? super byte[]> subscriber) {
         subscriber.onSubscribe(new Subscription() {
-            final ByteBuffer innerBuf = ByteBuffer.wrap(new byte[CHUNK_SIZE]);
-            boolean canceled = false;
-            long chunksRequested = 0;
-            long position = offset;
+            private final ByteBuffer innerBuf = ByteBuffer.wrap(new byte[CHUNK_SIZE]);
+            private boolean canceled = false;
+            private long chunksRequested = 0;
+            private long position = offset;
 
             @Override
             public void request(long n) {
@@ -62,22 +60,27 @@ public class FlowableFileStream extends Flowable<byte[]> {
                 readSegmentsAsync();
             }
 
-            void readSegmentsAsync() {
+            private void readSegmentsAsync() {
+                //noinspection Since15 -- IntelliJ is warning on this for no reason
+                innerBuf.clear();
                 fileChannel.read(innerBuf, position, null, onReadComplete);
             }
 
-            final CompletionHandler<Integer, Object> onReadComplete = new CompletionHandler<Integer, Object>() {
+            private final CompletionHandler<Integer, Object> onReadComplete = new CompletionHandler<Integer, Object>() {
                 @Override
                 public void completed(Integer bytesRead, Object attachment) {
                     if (!canceled) {
-                        if (bytesRead == -1) {
+                        if (bytesRead <= 0) {
                             subscriber.onComplete();
                         } else {
-                            subscriber.onNext(Arrays.copyOf(innerBuf.array(), bytesRead));
+                            int bytesWanted = (int) Math.min(offset + length - position, bytesRead);
+                            subscriber.onNext(Arrays.copyOf(innerBuf.array(), bytesWanted));
 
                             position += bytesRead;
                             chunksRequested--;
-                            if (chunksRequested > 0 && position < offset + length) {
+                            if (position >= offset + length) {
+                                subscriber.onComplete();
+                            } else if (chunksRequested > 0) {
                                 readSegmentsAsync();
                             }
                         }

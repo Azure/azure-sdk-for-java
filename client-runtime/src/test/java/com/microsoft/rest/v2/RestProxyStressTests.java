@@ -79,6 +79,9 @@ public class RestProxyStressTests {
         @GET("/javasdktest/download/1m.dat?{sas}")
         Single<RestResponse<Void, Flowable<byte[]>>> download1MB(@PathParam(value = "sas", encoded = true) String sas);
 
+        @GET("/javasdktest/download/90m.dat?{sas}")
+        Single<RestResponse<Void, Flowable<byte[]>>> download90MB(@PathParam(value = "sas", encoded = true) String sas);
+
         @GET("/javasdktest/download/1g.dat?{sas}")
         Single<RestResponse<Void, Flowable<byte[]>>> download1GB(@PathParam(value = "sas", encoded = true) String sas);
 
@@ -93,6 +96,7 @@ public class RestProxyStressTests {
 
     private static final byte[] MD5_1KB = { 70, -110, 110, -84, -35, 116, 118, 2, -22, 8, 117, -65, -106, 61, -36, 58 };
     private static final byte[] MD5_1MB = { -128, 96, 94, 57, -95, -42, 40, 124, -5, 10, 124, -5, 59, -81, 122, 38 };
+    private static final byte[] MD5_90MB = { 44, 39, 103, 103, -88, 8, -94, 85, 53, 79, -115, -70, 14, 82, -68, -63 };
     private static final byte[] MD5_1GB = { 43, -104, -23, 103, 42, 34, -49, 42, 57, -127, -128, 89, -36, -81, 67, 5 };
 
     @Test
@@ -131,6 +135,33 @@ public class RestProxyStressTests {
         } finally {
             Files.deleteIfExists(filePath);
         }
+    }
+
+    @Test
+    public void download90MTest() throws Exception {
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
+        assert !sas.isEmpty();
+        HttpHeaders headers = new HttpHeaders()
+                .set("x-ms-version", "2017-04-17");
+
+        HttpPipeline pipeline = HttpPipeline.build(
+                new AddDatePolicy.Factory(),
+                new AddHeadersPolicy.Factory(headers),
+                new LoggingPolicy.Factory(LogLevel.HEADERS));
+
+        final IOService service = RestProxy.create(IOService.class, pipeline);
+        RestResponse<Void, Flowable<byte[]>> response = service.download90MB(sas).blockingGet();
+
+        final MessageDigest md5 = MessageDigest.getInstance("MD5");
+        response.body()
+                .blockingSubscribe(new Consumer<byte[]>() {
+                    @Override
+                    public void accept(byte[] bytes) throws Exception {
+                        md5.update(bytes);
+                    }
+                });
+
+        assertEquals(MD5_90MB, md5.digest());
     }
 
     @Test

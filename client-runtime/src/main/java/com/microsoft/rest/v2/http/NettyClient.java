@@ -270,8 +270,8 @@ public final class NettyClient extends HttpClient {
             s.onSubscribe(new Subscription() {
                 @Override
                 public void request(long l) {
-                    // TODO: does this need a lock?
                     chunksRequested += l;
+
 
                     while (!queuedContent.isEmpty() && chunksRequested > 0) {
                         emitContent(queuedContent.remove());

@@ -11,7 +11,6 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.AsyncInputStream;
 import com.microsoft.rest.v2.http.ContentType;
-import com.microsoft.rest.v2.http.FileSegment;
 import com.microsoft.rest.v2.http.FlowableHttpRequestBody;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
@@ -315,13 +314,10 @@ public class RestProxy implements InvocationHandler {
             else if (bodyContentObject instanceof byte[]) {
                 request.withBody((byte[]) bodyContentObject, contentType);
             }
-            else if (bodyContentObject instanceof FileSegment) {
-                throw new UnsupportedOperationException("FileSegment/zero-copy I/O is not currently supported.");
-            }
             else if (bodyContentObject instanceof String) {
                 final String bodyContentString = (String) bodyContentObject;
                 if (!bodyContentString.isEmpty()) {
-                    request.withBody((String) bodyContentObject, contentType);
+                    request.withBody(bodyContentString, contentType);
                 }
             }
             else {

@@ -19,13 +19,9 @@ import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v2.entities.HttpBinHeaders;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
 import com.microsoft.rest.v2.http.*;
-import com.microsoft.rest.v2.policy.LoggingPolicy;
-import com.microsoft.rest.v2.policy.LoggingPolicy.LogLevel;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Function;
 import org.junit.Assert;
 import org.junit.Test;
 import io.reactivex.Completable;
@@ -34,9 +30,12 @@ import io.reactivex.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.assertArrayEquals;
@@ -1344,6 +1343,16 @@ public abstract class RestProxyTests {
                 .put(new AsyncInputStream(Flowable.just(data), data.length));
 
         assertEquals("This is my data.", response.body().data);
+    }
+
+    @Test
+    public void SegmentUploadTest() throws Exception {
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
+        RestResponse<Void, HttpBinJSON> response = createService(FlowableUploadService.class)
+                .put(AsyncInputStream.create(fileChannel, 4, 15));
+
+        assertEquals("quick brown fox", response.body().data);
     }
 
     // Helpers

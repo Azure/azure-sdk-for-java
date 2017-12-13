@@ -50,7 +50,7 @@ public final class FlowableHttpRequestBody implements HttpRequestBody {
     @Override
     public HttpRequestBody buffer() throws IOException {
         if (!isBuffered) {
-            content = content.replay();
+            content = content.replay().autoConnect();
             isBuffered = true;
         }
         return this;
