@@ -257,13 +257,16 @@ public class RestProxy implements InvocationHandler {
         else {
             urlBuilder = new UrlBuilder();
 
+            // We add path to the UrlBuilder first because this is what is
+            // provided to the HTTP Method annotation. Any path substitutions
+            // from other substitution annotations will overwrite this.
+            urlBuilder.withPath(path);
+
             final String scheme = methodParser.scheme(args);
             urlBuilder.withScheme(scheme);
 
             final String host = methodParser.host(args);
             urlBuilder.withHost(host);
-
-            urlBuilder.withPath(path);
         }
 
         for (final EncodedParameter queryParameter : methodParser.encodedQueryParameters(args)) {
