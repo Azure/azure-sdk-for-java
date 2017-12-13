@@ -25,13 +25,16 @@ import org.joda.time.format.DateTimeFormatter;
 import org.junit.Ignore;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
+import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.FileAttribute;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -90,8 +93,8 @@ public class RestProxyStressTests {
         Single<RestResponse<Void, Void>> upload1MB(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
 
         @ExpectedResponses({ 201 })
-        @PUT("/javasdktest/upload/100m.dat?{sas}")
-        Single<RestResponse<Void, Void>> upload100MB(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) AsyncInputStream stream);
+        @PUT("/javasdktest/upload/100m-{id}.dat?{sas}")
+        Single<RestResponse<Void, Void>> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) AsyncInputStream stream);
     }
 
     private static final byte[] MD5_1KB = { 70, -110, 110, -84, -35, 116, 118, 2, -22, 8, 117, -65, -106, 61, -36, 58 };
@@ -127,7 +130,7 @@ public class RestProxyStressTests {
             file.close();
 
             AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
-            RestResponse<Void, Void> response = service.upload100MB(sas, "BlockBlob", fileStream).blockingGet();
+            RestResponse<Void, Void> response = service.upload100MB("single", sas, "BlockBlob", fileStream).blockingGet();
             String base64MD5 = response.rawHeaders().get("Content-MD5");
             byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
 
@@ -135,6 +138,85 @@ public class RestProxyStressTests {
         } finally {
             Files.deleteIfExists(filePath);
         }
+    }
+
+    @Test
+    public void upload100MParallelTest() throws Exception {
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
+        HttpHeaders headers = new HttpHeaders()
+                .set("x-ms-version", "2017-04-17");
+
+        HttpPipeline pipeline = HttpPipeline.build(
+                new AddDatePolicy.Factory(),
+                new AddHeadersPolicy.Factory(headers),
+                new LoggingPolicy.Factory(LogLevel.HEADERS));
+
+        final IOService service = RestProxy.create(IOService.class, pipeline);
+
+        ExecutorService executor = Executors.newCachedThreadPool();
+        final List<Throwable> threadExceptions = new ArrayList<>();
+        final Path tempFolderPath = Paths.get("temp");
+        try {
+            Files.deleteIfExists(tempFolderPath);
+            Files.createDirectory(tempFolderPath);
+        } catch (FileAlreadyExistsException ignored) {
+
+        }
+
+        byte[] buf = new byte[1024 * 1024 * 100];
+        for (int i = 0; i < 30; i++) {
+            final int id = i;
+            final Path filePath = tempFolderPath.resolve("100m-" + id + ".dat");
+
+            Files.deleteIfExists(filePath);
+            Files.createFile(filePath);
+            FileChannel file = FileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
+
+            Random random = new Random();
+            random.nextBytes(buf);
+
+            final byte[] md5 = MessageDigest.getInstance("MD5").digest(buf);
+            file.write(ByteBuffer.wrap(buf));
+            file.close();
+
+            executor.submit(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
+                        RestResponse<Void, Void> response = service.upload100MB(String.valueOf(id), sas, "BlockBlob", fileStream).blockingGet();
+                        String base64MD5 = response.rawHeaders().get("Content-MD5");
+                        byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
+
+                        assertArrayEquals(md5, receivedMD5);
+                    } catch (Throwable t) {
+                        synchronized (threadExceptions) {
+                            threadExceptions.add(t);
+                        }
+                    } finally {
+                        try {
+                            Files.deleteIfExists(filePath);
+                        } catch (IOException e) {
+                            synchronized (threadExceptions) {
+                                threadExceptions.add(e);
+                            }
+                        }
+                    }
+                }
+            });
+        }
+
+        for (Throwable threadException :
+                threadExceptions) {
+            threadException.printStackTrace();
+        }
+
+        executor.shutdown();
+        executor.awaitTermination(10000, TimeUnit.MILLISECONDS);
+
+        assertEquals(0, threadExceptions.size());
+
+        Files.deleteIfExists(tempFolderPath);
     }
 
     @Test
