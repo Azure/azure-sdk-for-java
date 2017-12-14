@@ -22,9 +22,11 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.schedulers.Schedulers;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
@@ -82,6 +84,11 @@ public class RestProxyStressTests {
                 return new AddDatePolicy(next);
             }
         }
+    }
+
+    @AfterClass
+    public static void teardown() throws IOException {
+        deleteRecursive(Paths.get("temp"));
     }
 
     @Host("https://javasdktest.blob.core.windows.net")
@@ -207,8 +214,6 @@ public class RestProxyStressTests {
                         });
                     }
                     }, false, 10).blockingAwait();
-
-        deleteRecursive(tempFolderPath);
     }
 
     private static void deleteRecursive(Path tempFolderPath) throws IOException {
@@ -271,7 +276,7 @@ public class RestProxyStressTests {
                         file.close();
 
                         AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
-                        return service.upload10MB(String.valueOf(id), sas, "BlockBlob", fileStream).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                        return service.upload10MB(String.valueOf(id), sas, "BlockBlob", fileStream).timeout(20, TimeUnit.SECONDS).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
                             @Override
                             public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
                                 String base64MD5 = response.rawHeaders().get("Content-MD5");
@@ -284,8 +289,6 @@ public class RestProxyStressTests {
 
                     }
                 }, false, 10).blockingAwait();
-
-        deleteRecursive(tempFolderPath);
     }
 
     @Test
@@ -324,7 +327,7 @@ public class RestProxyStressTests {
                         file.close();
 
                         AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
-                        return service.upload100MB(String.valueOf(id), sas, "BlockBlob", fileStream).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                        return service.upload100MB(String.valueOf(id), sas, "BlockBlob", fileStream).timeout(60, TimeUnit.SECONDS).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
                             @Override
                             public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
                                 String base64MD5 = response.rawHeaders().get("Content-MD5");
@@ -337,8 +340,6 @@ public class RestProxyStressTests {
 
                     }
                 }, false, 10).blockingAwait();
-
-        deleteRecursive(tempFolderPath);
     }
 
     @Test
