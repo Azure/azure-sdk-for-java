@@ -58,20 +58,21 @@ public final class AsyncInputStream {
      * @param length The number of bytes of data to read from the file.
      * @return The AsyncInputStream.
      */
-    public static AsyncInputStream create(final AsynchronousFileChannel fileChannel, final long offset, long length) {
+    public static AsyncInputStream create(final AsynchronousFileChannel fileChannel, final long offset, final long length) {
         int numChunks = (int) length / CHUNK_SIZE + (length % CHUNK_SIZE == 0 ? 0 : 1);
         Flowable<byte[]> fileStream = Flowable.range(0, numChunks).concatMap(new Function<Integer, Flowable<byte[]>>() {
             ByteBuffer innerBuf = ByteBuffer.wrap(new byte[CHUNK_SIZE]);
 
             @Override
             public Flowable<byte[]> apply(Integer chunkNo) throws Exception {
-                long position = offset + (chunkNo * CHUNK_SIZE);
+                final long position = offset + (chunkNo * CHUNK_SIZE);
                 innerBuf.clear();
                 return Flowable.fromFuture(fileChannel.read(innerBuf, position))
                         .map(new Function<Integer, byte[]>() {
                             @Override
                             public byte[] apply(Integer bytesRead) throws Exception {
-                                return Arrays.copyOf(innerBuf.array(), bytesRead);
+                                int bytesWanted = (int) Math.min(offset + length - position, bytesRead);
+                                return Arrays.copyOf(innerBuf.array(), bytesWanted);
                             }
                         });
             }
