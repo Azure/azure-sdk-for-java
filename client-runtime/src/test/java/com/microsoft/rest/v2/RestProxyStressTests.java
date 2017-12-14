@@ -109,12 +109,24 @@ public class RestProxyStressTests {
         Single<RestResponse<Void, Void>> upload1MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) AsyncInputStream stream);
 
         @ExpectedResponses({ 201 })
+        @PUT("/javasdktest/upload/1m-{id}.dat?{sas}")
+        Single<RestResponse<Void, Void>> upload1MBFile(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) FileSegment segment);
+
+        @ExpectedResponses({ 201 })
         @PUT("/javasdktest/upload/10m-{id}.dat?{sas}")
         Single<RestResponse<Void, Void>> upload10MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) AsyncInputStream stream);
 
         @ExpectedResponses({ 201 })
+        @PUT("/javasdktest/upload/10m-{id}.dat?{sas}")
+        Single<RestResponse<Void, Void>> upload10MBFile(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) FileSegment segment);
+
+        @ExpectedResponses({ 201 })
         @PUT("/javasdktest/upload/100m-{id}.dat?{sas}")
         Single<RestResponse<Void, Void>> upload100MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) AsyncInputStream stream);
+
+        @ExpectedResponses({ 201 })
+        @PUT("/javasdktest/upload/100m-{id}.dat?{sas}")
+        Single<RestResponse<Void, Void>> upload100MBFile(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) FileSegment segment);
     }
 
     private static final byte[] MD5_1KB = { 70, -110, 110, -84, -35, 116, 118, 2, -22, 8, 117, -65, -106, 61, -36, 58 };
@@ -210,7 +222,167 @@ public class RestProxyStressTests {
                             }
                         });
                     }
-                    }).blockingAwait();
+                }).blockingAwait();
+    }
+
+    @Test
+    public void upload1MPooledParallelTest() throws Exception {
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
+        HttpHeaders headers = new HttpHeaders()
+                .set("x-ms-version", "2017-04-17");
+
+        HttpPipeline pipeline = HttpPipeline.build(
+                new AddHeadersPolicy.Factory(headers),
+                new RetryPolicy.Factory(2),
+                new AddDatePolicy.Factory(),
+                new LoggingPolicy.Factory(LogLevel.BASIC));
+
+        final IOService service = RestProxy.create(IOService.class, pipeline);
+        final Path tempFolderPath = Paths.get("temp");
+        deleteRecursive(tempFolderPath);
+        Files.createDirectory(tempFolderPath);
+
+        final byte[] buf = new byte[1024 * 1024];
+        Flowable.range(0, 1)
+                .flatMapCompletable(new Function<Integer, Completable>() {
+                    @Override
+                    public Completable apply(Integer i) throws Exception {
+                        final int id = i;
+                        final Path filePath = tempFolderPath.resolve("1m-" + id + ".dat");
+
+                        Files.deleteIfExists(filePath);
+                        Files.createFile(filePath);
+                        FileChannel file = FileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
+
+                        Random random = new Random();
+                        random.nextBytes(buf);
+
+                        final byte[] md5 = MessageDigest.getInstance("MD5").digest(buf);
+                        file.write(ByteBuffer.wrap(buf));
+                        file.close();
+
+                        final FileChannel fileChannel = FileChannel.open(filePath);
+                        FileSegment fileSegment = new FileSegment(fileChannel, 0, fileChannel.size());
+                        return service.upload1MBFile(String.valueOf(id), sas, "BlockBlob", fileSegment).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                            @Override
+                            public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
+                                fileChannel.close();
+                                String base64MD5 = response.rawHeaders().get("Content-MD5");
+                                byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
+                                assertArrayEquals(md5, receivedMD5);
+                                LoggerFactory.getLogger(getClass()).info("Finished upload for id " + id);
+                                return Completable.complete();
+                            }
+                        });
+                    }
+                }).blockingAwait();
+    }
+
+    @Test
+    public void upload10MParallelPooledTest() throws Exception {
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
+        HttpHeaders headers = new HttpHeaders()
+                .set("x-ms-version", "2017-04-17");
+
+        HttpPipeline pipeline = HttpPipeline.build(
+                new AddHeadersPolicy.Factory(headers),
+                new RetryPolicy.Factory(2),
+                new AddDatePolicy.Factory(),
+                new LoggingPolicy.Factory(LogLevel.BASIC));
+
+        final IOService service = RestProxy.create(IOService.class, pipeline);
+        final Path tempFolderPath = Paths.get("temp");
+        deleteRecursive(tempFolderPath);
+        Files.createDirectory(tempFolderPath);
+
+        final byte[] buf = new byte[1024 * 1024 * 10];
+        Flowable.range(0, 50)
+                .flatMapCompletable(new Function<Integer, Completable>() {
+                    @Override
+                    public Completable apply(Integer i) throws Exception {
+                        final int id = i;
+                        final Path filePath = tempFolderPath.resolve("10m-" + id + ".dat");
+
+                        Files.deleteIfExists(filePath);
+                        Files.createFile(filePath);
+                        FileChannel file = FileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
+
+                        Random random = new Random();
+                        random.nextBytes(buf);
+
+                        final byte[] md5 = MessageDigest.getInstance("MD5").digest(buf);
+                        file.write(ByteBuffer.wrap(buf));
+                        file.close();
+
+                        final FileChannel fileChannel = FileChannel.open(filePath);
+                        FileSegment fileSegment = new FileSegment(fileChannel, 0, fileChannel.size());
+                        return service.upload10MBFile(String.valueOf(id), sas, "BlockBlob", fileSegment).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                            @Override
+                            public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
+                                fileChannel.close();
+                                String base64MD5 = response.rawHeaders().get("Content-MD5");
+                                byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
+                                assertArrayEquals(md5, receivedMD5);
+                                LoggerFactory.getLogger(getClass()).info("Finished upload for id " + id);
+                                return Completable.complete();
+                            }
+                        });
+
+                    }
+                }).blockingAwait();
+    }
+
+    @Test
+    public void upload100MParallelPooledTest() throws Exception {
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
+        HttpHeaders headers = new HttpHeaders()
+                .set("x-ms-version", "2017-04-17");
+
+        HttpPipeline pipeline = HttpPipeline.build(
+                new AddDatePolicy.Factory(),
+                new AddHeadersPolicy.Factory(headers),
+                new LoggingPolicy.Factory(LogLevel.BASIC));
+
+        final IOService service = RestProxy.create(IOService.class, pipeline);
+        final Path tempFolderPath = Paths.get("temp");
+        deleteRecursive(tempFolderPath);
+        Files.createDirectory(tempFolderPath);
+
+        final byte[] buf = new byte[1024 * 1024 * 100];
+        Flowable.range(0, 100)
+                .flatMapCompletable(new Function<Integer, Completable>() {
+                    @Override
+                    public Completable apply(Integer i) throws Exception {
+                        final int id = i;
+                        final Path filePath = tempFolderPath.resolve("100m-" + id + ".dat");
+
+                        Files.deleteIfExists(filePath);
+                        Files.createFile(filePath);
+                        FileChannel file = FileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
+
+                        Random random = new Random();
+                        random.nextBytes(buf);
+
+                        final byte[] md5 = MessageDigest.getInstance("MD5").digest(buf);
+                        file.write(ByteBuffer.wrap(buf));
+                        file.close();
+
+                        final FileChannel fileChannel = FileChannel.open(filePath);
+                        FileSegment fileSegment = new FileSegment(fileChannel, 0, fileChannel.size());
+                        return service.upload100MBFile(String.valueOf(id), sas, "BlockBlob", fileSegment).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                            @Override
+                            public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
+                                fileChannel.close();
+                                String base64MD5 = response.rawHeaders().get("Content-MD5");
+                                byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
+                                assertArrayEquals(md5, receivedMD5);
+                                LoggerFactory.getLogger(getClass()).info("Finished upload for id " + id);
+                                return Completable.complete();
+                            }
+                        });
+
+                    }
+                }).blockingAwait();
     }
 
     private static void deleteRecursive(Path tempFolderPath) throws IOException {

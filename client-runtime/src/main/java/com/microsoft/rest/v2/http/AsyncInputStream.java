@@ -107,7 +107,6 @@ public final class AsyncInputStream {
                     }
                 },
                 new BiConsumer<InputStream, Emitter<byte[]>>() {
-                    private static final int CHUNK_SIZE = 8192;
                     private final byte[] innerBuf = new byte[CHUNK_SIZE];
 
                     @Override

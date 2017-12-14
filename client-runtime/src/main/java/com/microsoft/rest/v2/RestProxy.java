@@ -11,6 +11,8 @@ import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.AsyncInputStream;
 import com.microsoft.rest.v2.http.ContentType;
+import com.microsoft.rest.v2.http.FileRequestBody;
+import com.microsoft.rest.v2.http.FileSegment;
 import com.microsoft.rest.v2.http.FlowableHttpRequestBody;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
@@ -310,6 +312,9 @@ public class RestProxy implements InvocationHandler {
             else if (bodyContentObject instanceof AsyncInputStream) {
                 AsyncInputStream stream = (AsyncInputStream) bodyContentObject;
                 request.withBody(new FlowableHttpRequestBody(stream.contentLength(), contentType, stream.content()));
+            }
+            else if (bodyContentObject instanceof FileSegment) {
+                request.withBody(new FileRequestBody((FileSegment) bodyContentObject));
             }
             else if (bodyContentObject instanceof byte[]) {
                 request.withBody((byte[]) bodyContentObject, contentType);
