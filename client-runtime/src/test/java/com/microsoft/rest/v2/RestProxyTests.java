@@ -18,7 +18,11 @@ import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v2.entities.HttpBinHeaders;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
-import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.http.AsyncInputStream;
+import com.microsoft.rest.v2.http.ContentType;
+import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
@@ -38,13 +42,7 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static org.junit.Assert.assertArrayEquals;
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertNull;
-import static org.junit.Assert.assertTrue;
-import static org.junit.Assert.fail;
+import static org.junit.Assert.*;
 
 public abstract class RestProxyTests {
 
@@ -1298,7 +1296,7 @@ public abstract class RestProxyTests {
             assertEquals("Status code 200, (1024-byte body)", e.getMessage());
         }
     }
-    
+
     @Host("https://www.example.com")
     private interface Service21 {
         @GET("http://httpbin.org/bytes/100")
@@ -1353,6 +1351,19 @@ public abstract class RestProxyTests {
                 .put(AsyncInputStream.create(fileChannel, 4, 15));
 
         assertEquals("quick brown fox", response.body().data);
+    }
+
+    @Host("{url}")
+    interface Service22 {
+        @GET("{container}/{blob}")
+        byte[] getBytes(@HostParam("url") String url);
+    }
+
+    @Test
+    public void service22GetBytes() {
+        final byte[] bytes = createService(Service22.class).getBytes("http://httpbin.org/bytes/27");
+        assertNotNull(bytes);
+        assertEquals(27, bytes.length);
     }
 
     // Helpers
