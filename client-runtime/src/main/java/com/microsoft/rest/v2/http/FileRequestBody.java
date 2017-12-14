@@ -63,8 +63,8 @@ public class FileRequestBody implements HttpRequestBody {
                     @Override
                     public void accept(FileChannel fileChannel, Emitter<byte[]> emitter) throws Exception {
                         try {
-                            int size = (int) Math.min(offset + length - position, CHUNK_SIZE);
-                            if (size <= 0) {
+                            final long remaining = offset + length - position;
+                            if (remaining <= 0) {
                                 emitter.onComplete();
                             } else {
                                 int bytesRead = fileChannel.read(innerBuf, position);
@@ -72,7 +72,7 @@ public class FileRequestBody implements HttpRequestBody {
                                     emitter.onComplete();
                                 } else {
                                     position += bytesRead;
-                                    emitter.onNext(Arrays.copyOf(innerBuf.array(), bytesRead));
+                                    emitter.onNext(Arrays.copyOf(innerBuf.array(), (int) Math.min(remaining, bytesRead)));
                                 }
                             }
                         } catch (IOException e) {
