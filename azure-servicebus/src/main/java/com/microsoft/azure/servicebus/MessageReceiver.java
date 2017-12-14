@@ -3,6 +3,7 @@
 
 package com.microsoft.azure.servicebus;
 
+import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.ArrayList;
@@ -43,7 +44,8 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 
     private final ReceiveMode receiveMode;
     private boolean ownsMessagingFactory;
-    private ConnectionStringBuilder amqpConnectionStringBuilder = null;
+    private URI namespaceEndpointURI;
+    private ClientSettings clientSettings;
     private String entityPath = null;
     private MessagingFactory messagingFactory = null;
     private CoreMessageReceiver internalReceiver = null;
@@ -71,12 +73,13 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
         this.entityPath = entityPath;
         this.ownsMessagingFactory = ownsMessagingFactory;
     }
-
-    MessageReceiver(ConnectionStringBuilder amqpConnectionStringBuilder, ReceiveMode receiveMode) {
+    
+    MessageReceiver(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) {
         this(receiveMode);
 
-        this.amqpConnectionStringBuilder = amqpConnectionStringBuilder;
-        this.entityPath = this.amqpConnectionStringBuilder.getEntityPath();
+        this.namespaceEndpointURI = namespaceEndpointURI;
+        this.clientSettings = clientSettings;
+        this.entityPath = entityPath;
         this.ownsMessagingFactory = true;
     }
 
@@ -92,13 +95,13 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
             CompletableFuture<Void> factoryFuture;
             if (this.messagingFactory == null) {
                 if (TRACE_LOGGER.isInfoEnabled()) {
-                    TRACE_LOGGER.info("Creating MessagingFactory from connection string '{}'", this.amqpConnectionStringBuilder.toLoggableString());
+                    TRACE_LOGGER.info("Creating MessagingFactory to namespace '{}'", this.namespaceEndpointURI.toString());
                 }
-                factoryFuture = MessagingFactory.createFromConnectionStringBuilderAsync(amqpConnectionStringBuilder).thenAcceptAsync((f) ->
+                factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsyc(this.namespaceEndpointURI, this.clientSettings).thenAcceptAsync((f) ->
                 {
                     this.messagingFactory = f;
                     if (TRACE_LOGGER.isInfoEnabled()) {
-                        TRACE_LOGGER.info("Created MessagingFactory from connection string '{}'", this.amqpConnectionStringBuilder.toLoggableString());
+                        TRACE_LOGGER.info("Created MessagingFactory to namespace '{}'", this.namespaceEndpointURI.toString());
                     }
                 });
             } else {
@@ -430,7 +433,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
                 }
                 if (MessageReceiver.this.ownsMessagingFactory) {
                     if (TRACE_LOGGER.isInfoEnabled()) {
-                        TRACE_LOGGER.info("Closing MessagingFactory associated with connection string '{}'", this.amqpConnectionStringBuilder.toLoggableString());
+                        TRACE_LOGGER.info("Closing MessagingFactory associated with namespace '{}'", this.namespaceEndpointURI.toString());
                     }
                     return MessageReceiver.this.messagingFactory.closeAsync();
                 } else {

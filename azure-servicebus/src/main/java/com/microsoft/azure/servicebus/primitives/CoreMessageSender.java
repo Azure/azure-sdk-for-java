@@ -95,7 +95,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		TimeoutTracker openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
 		msgSender.initializeLinkOpen(openLinkTracker);
 		
-		msgSender.sendSASTokenAndSetRenewTimer(false).handleAsync((v, sasTokenEx) -> {
+		msgSender.sendTokenAndSetRenewTimer(false).handleAsync((v, sasTokenEx) -> {
 		    if(sasTokenEx != null)
 		    {
 		        Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sasTokenEx);
@@ -606,7 +606,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		this.sendLink = sender;
 	}
 	
-	CompletableFuture<Void> sendSASTokenAndSetRenewTimer(boolean retryOnFailure)
+	CompletableFuture<Void> sendTokenAndSetRenewTimer(boolean retryOnFailure)
 	{
 	    if(this.getIsClosingOrClosed())
         {
@@ -614,7 +614,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
         }
         else
         {            
-            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendSASTokenAndSetRenewTimer(true));
+            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendTokenAndSetRenewTimer(true));
             return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Sent SAS Token and set renew timer");});
         }
 	}
@@ -714,7 +714,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
                         , CoreMessageSender.LINK_REOPEN_TIMEOUT
                         , TimerType.OneTimeRun);
                 this.cancelSASTokenRenewTimer();
-                this.sendSASTokenAndSetRenewTimer(false).handleAsync((v, sendTokenEx) -> {
+                this.sendTokenAndSetRenewTimer(false).handleAsync((v, sendTokenEx) -> {
                     if(sendTokenEx != null)
                     {
                         this.sendLinkReopenFuture.completeExceptionally(sendTokenEx);

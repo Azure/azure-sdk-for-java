@@ -15,7 +15,6 @@ import java.util.concurrent.ExecutionException;
 
 import org.junit.Assert;
 
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.MessageNotFoundException;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
@@ -604,25 +603,25 @@ public class TestCommons {
 		}		
 	}
 	
-	public static void drainAllMessages(ConnectionStringBuilder connectionStringBuilder) throws InterruptedException, ServiceBusException
+	public static void drainAllMessages(String receivePath) throws InterruptedException, ServiceBusException
 	{
-		IMessageReceiver receiver = ClientFactory.createMessageReceiverFromConnectionStringBuilder(connectionStringBuilder, ReceiveMode.RECEIVEANDDELETE);
+		IMessageReceiver receiver = ClientFactory.createMessageReceiverFromEntityPath(TestUtils.getNamespaceEndpointURI(), receivePath, TestUtils.getClientSettings(), ReceiveMode.RECEIVEANDDELETE);
 		TestCommons.drainAllMessagesFromReceiver(receiver);
 		receiver.close();
 	}
 	
-	public static void drainAllSessions(ConnectionStringBuilder connectionStringBuilder, boolean isQueue) throws InterruptedException, ServiceBusException
+	public static void drainAllSessions(String receivePath, boolean isQueue) throws InterruptedException, ServiceBusException
 	{
 		int numParallelSessionDrains = 5;
 		Collection<IMessageSession> browsableSessions;
 		if(isQueue)
 		{
-			QueueClient qc = new QueueClient(connectionStringBuilder, ReceiveMode.RECEIVEANDDELETE);
+			QueueClient qc = new QueueClient(TestUtils.getNamespaceEndpointURI(), receivePath, TestUtils.getClientSettings(), ReceiveMode.RECEIVEANDDELETE);
 			browsableSessions = qc.getMessageSessions();
 		}
 		else
 		{
-			SubscriptionClient sc = new SubscriptionClient(connectionStringBuilder, ReceiveMode.RECEIVEANDDELETE);
+			SubscriptionClient sc = new SubscriptionClient(TestUtils.getNamespaceEndpointURI(), receivePath, TestUtils.getClientSettings(), ReceiveMode.RECEIVEANDDELETE);
 			browsableSessions = sc.getMessageSessions();
 		}		
 		
@@ -632,8 +631,8 @@ public class TestCommons {
 			int drainFutureIndex = 0;
 			for(IMessageSession browsableSession : browsableSessions)
 			{				
-				CompletableFuture<Void> drainFuture = ClientFactory.acceptSessionFromConnectionStringBuilderAsync
-						(connectionStringBuilder, browsableSession.getSessionId(), ReceiveMode.RECEIVEANDDELETE).thenAcceptAsync((session) -> {
+				CompletableFuture<Void> drainFuture = ClientFactory.acceptSessionFromEntityPathAsync
+						(TestUtils.getNamespaceEndpointURI(), receivePath, browsableSession.getSessionId(), TestUtils.getClientSettings(), ReceiveMode.RECEIVEANDDELETE).thenAcceptAsync((session) -> {
 							try {
 								TestCommons.drainAllMessagesFromReceiver(session, false);
 								session.setState(null);

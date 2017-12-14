@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See LICENSE file in the project root for full license information.
 package com.microsoft.azure.servicebus;
 
+import java.net.URI;
 import java.sql.Date;
 import java.time.Instant;
 import java.util.Collection;
@@ -18,6 +19,7 @@ import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.MiscRequestResponseOperationHandler;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 import com.microsoft.azure.servicebus.primitives.StringUtil;
+import com.microsoft.azure.servicebus.primitives.Util;
 import com.microsoft.azure.servicebus.rules.Filter;
 import com.microsoft.azure.servicebus.rules.RuleDescription;
 
@@ -51,6 +53,21 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
             TRACE_LOGGER.info("Created subscription client to connection string '{}'", amqpConnectionStringBuilder.toLoggableString());
         }
 	}
+	
+	public SubscriptionClient(String namespace, String subscriptionPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
+    {
+        this(Util.convertNamespaceToEndPointURI(namespace), subscriptionPath, clientSettings, receiveMode);
+    }
+    
+    public SubscriptionClient(URI namespaceEndpointURI, String subscriptionPath, ClientSettings clientSettings, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
+    {
+        this(receiveMode, subscriptionPath);
+        CompletableFuture<MessagingFactory> factoryFuture = MessagingFactory.createFromNamespaceEndpointURIAsyc(namespaceEndpointURI, clientSettings);
+        Utils.completeFuture(factoryFuture.thenComposeAsync((f) -> this.createPumpAndBrowserAsync(f)));
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info("Created subscription client to subscription '{}/{}'", namespaceEndpointURI.toString(), subscriptionPath);
+        }
+    }
 	
 	SubscriptionClient(MessagingFactory factory, String subscriptionPath, ReceiveMode receiveMode) throws InterruptedException, ServiceBusException
 	{

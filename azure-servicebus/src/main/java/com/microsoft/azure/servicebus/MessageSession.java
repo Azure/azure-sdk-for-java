@@ -3,22 +3,18 @@
 
 package com.microsoft.azure.servicebus;
 
-import java.io.InputStream;
+import java.net.URI;
 import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
 
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.primitives.CoreMessageReceiver;
 import com.microsoft.azure.servicebus.primitives.MessagingFactory;
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
-import com.microsoft.azure.servicebus.primitives.StringUtil;
 
 public class MessageSession extends MessageReceiver implements IMessageSession {
     private String requestedSessionId;
-
-    MessageSession(ConnectionStringBuilder amqpConnectionStringBuilder, String requestedSessionId, ReceiveMode receiveMode) {
-        super(amqpConnectionStringBuilder, receiveMode);
+    
+    MessageSession(URI namespaceEndpointURI, String entityPath, String requestedSessionId, ClientSettings clientSettings, ReceiveMode receiveMode) {
+        super(namespaceEndpointURI, entityPath, clientSettings, receiveMode);
         this.requestedSessionId = requestedSessionId;
     }
 

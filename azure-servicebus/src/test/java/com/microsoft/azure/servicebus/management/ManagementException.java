@@ -1,6 +1,8 @@
 package com.microsoft.azure.servicebus.management;
 
 public class ManagementException extends Exception{
+    
+    private static final long serialVersionUID = -2884923885075130724L;
 
     public ManagementException() {
         super();

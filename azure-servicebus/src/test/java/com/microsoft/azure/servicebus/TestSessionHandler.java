@@ -1,7 +1,6 @@
 package com.microsoft.azure.servicebus;
 
 import java.time.Instant;
-import java.util.concurrent.CompletableFuture;
 
 public abstract class TestSessionHandler implements ISessionHandler
 {

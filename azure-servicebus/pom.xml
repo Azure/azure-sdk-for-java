@@ -9,7 +9,7 @@
 	<parent>
 		<groupId>com.microsoft.azure</groupId>
 		<artifactId>azure-servicebus-parent</artifactId>
-		<version>1.2.0-SNAPSHOT</version>
+		<version>1.2.0-PREVIEW</version>
 	</parent>
 
 	<build>
@@ -51,6 +51,11 @@
 	 	    <artifactId>bcpkix-jdk15on</artifactId> 
 	 	    <version>1.53</version> 
 	  	</dependency>
+	  	<dependency>
+			 <groupId>com.microsoft.azure</groupId>
+			 <artifactId>adal4j</artifactId>
+			 <version>1.3.0</version>
+		 </dependency>
 		<dependency>
 	 	    <groupId>junit</groupId>
 	 	    <artifactId>junit</artifactId>
@@ -62,15 +67,15 @@
 	 	    <artifactId>slf4j-api</artifactId> 
 	 	    <version>${slf4j-version}</version>
 	  	</dependency>
-		<dependency>
+		<!--<dependency>
 	 	    <groupId>org.slf4j</groupId> 
 	 	    <artifactId>slf4j-jdk14</artifactId>
 	 	    <version>${slf4j-version}</version>
-	  	</dependency>
-	  	<!--<dependency>
+	  	</dependency>-->
+	  	<dependency>
 	 	    <groupId>org.slf4j</groupId> 
 	 	    <artifactId>slf4j-log4j12</artifactId> 
 	 	    <version>${slf4j-version}</version>
-	  	</dependency>-->
-	</dependencies>	 
+	  	</dependency>
+	</dependencies>
 </project>

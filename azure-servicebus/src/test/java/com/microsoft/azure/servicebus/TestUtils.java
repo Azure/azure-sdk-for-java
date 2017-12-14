@@ -1,12 +1,17 @@
 package com.microsoft.azure.servicebus;
 
+import java.net.URI;
 import java.util.UUID;
+
+import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
+import com.microsoft.azure.servicebus.primitives.Util;
 
 public class TestUtils {
 	
 	private static final String NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME = "AZURE_SERVICEBUS_JAVA_CLIENT_TEST_CONNECTION_STRING";	
 	public static final String FIRST_SUBSCRIPTION_NAME = "subscription1";	
 	private static String namespaceConnectionString;
+	private static ConnectionStringBuilder namespaceConnectionStringBuilder;
 	
 	static
 	{
@@ -16,11 +21,22 @@ public class TestUtils {
 		{			
 			System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connecto to any service bus entity.");
 		}
+		namespaceConnectionStringBuilder = new ConnectionStringBuilder(namespaceConnectionString);
 	}
 	
 	public static String getNamespaceConnectionString()
 	{
 	    return namespaceConnectionString;
+	}
+	
+	public static URI getNamespaceEndpointURI()
+	{
+	    return namespaceConnectionStringBuilder.getEndpoint();
+	}
+	
+	public static ClientSettings getClientSettings()
+	{
+	    return Util.getClientSettingsFromConnectionStringBuilder(namespaceConnectionStringBuilder);
 	}
 	
 	public static String randomizeEntityName(String entityName)

@@ -17,6 +17,12 @@ import org.slf4j.LoggerFactory;
 import org.slf4j.Marker;
 import org.slf4j.MarkerFactory;
 
+/**
+ * 
+ * @deprecated Use {@link com.microsoft.azure.sevicebus.security.SharedAccessSignatureTokenProvider}
+ *
+ */
+@Deprecated
 public class SASUtil {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SASUtil.class);
     private static final String SAS_FORMAT = "SharedAccessSignature sr=%s&sig=%s&se=%s&skn=%s";
@@ -64,21 +70,5 @@ public class SASUtil {
             TRACE_LOGGER.error(fatalMarker, errorMessage, e);
             throw new RuntimeException(errorMessage);
         }   
-    } 
-
-    static int getCBSTokenRenewIntervalInSeconds(int tokenValidityInSeconds)
-    {
-        if(tokenValidityInSeconds >= 300)
-        {
-            return tokenValidityInSeconds - 30;
-        }
-        else if(tokenValidityInSeconds >= 60)
-        {
-            return tokenValidityInSeconds - 10;
-        }
-        else
-        {            
-            return (tokenValidityInSeconds - 1) > 0 ? tokenValidityInSeconds - 1 : 0;
-        }
     }    
 }

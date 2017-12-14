@@ -1,6 +1,5 @@
 package com.microsoft.azure.servicebus.management;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.IOException;
 import java.net.MalformedURLException;
@@ -8,17 +7,18 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
-import java.security.InvalidKeyException;
 import java.security.KeyManagementException;
 import java.security.KeyStoreException;
 import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
+import java.util.concurrent.ExecutionException;
 
 import javax.net.ssl.HttpsURLConnection;
 
+import com.microsoft.azure.servicebus.ClientSettings;
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
-import com.microsoft.azure.servicebus.primitives.SASUtil;
+import com.microsoft.azure.sevicebus.security.SecurityToken;
+import com.microsoft.azure.sevicebus.security.TokenProvider;
 
 public class EntityManager {
     private static final int ONE_BOX_HTTPS_PORT = 4446;
@@ -31,15 +31,14 @@ public class EntityManager {
     private static final String CONTENT_TYPE = "application/atom+xml";
     private static final Duration CONNECTION_TIMEOUT = Duration.ofMinutes(1);
     private static final Duration READ_TIMEOUT = Duration.ofMinutes(2);
-    private static final int SAS_TOKEN_VALIDITY_IN_MINUTES = 5;
     private static final String USER_AGENT = String.format("%s/%s(%s)", ClientConstants.PRODUCT_NAME, ClientConstants.CURRENT_JAVACLIENT_VERSION, ClientConstants.PLATFORM_INFO);
     
-    public static void createEntity(ConnectionStringBuilder namespaceConnectionStringBuilder, ResourceDescripton resourceDescription) throws ManagementException
+    public static void createEntity(URI namespaceEndpointURI, ClientSettings clientSettings, ResourceDescripton resourceDescription) throws ManagementException
     {
         try
         {
-            URL entityURL = getManagementURL(namespaceConnectionStringBuilder, resourceDescription.getPath());
-            String sasToken = getSASToken(namespaceConnectionStringBuilder, entityURL);
+            URL entityURL = getManagementURL(namespaceEndpointURI, resourceDescription.getPath());
+            String sasToken = getSASToken(clientSettings.getTokenProvider(), entityURL);
             sendManagementHttpRequest(PUT_METHOD, entityURL, sasToken, resourceDescription.getAtomXml());
         }
         catch(ManagementException me)
@@ -52,12 +51,12 @@ public class EntityManager {
         }
     }
     
-    public static void deleteEntity(ConnectionStringBuilder namespaceConnectionStringBuilder, String entityPath) throws ManagementException
+    public static void deleteEntity(URI namespaceEndpointURI, ClientSettings clientSettings, String entityPath) throws ManagementException
     {
         try
         {
-            URL entityURL = getManagementURL(namespaceConnectionStringBuilder, entityPath);
-            String sasToken = getSASToken(namespaceConnectionStringBuilder, entityURL);
+            URL entityURL = getManagementURL(namespaceEndpointURI, entityPath);
+            String sasToken = getSASToken(clientSettings.getTokenProvider(), entityURL);
             sendManagementHttpRequest(DELETE_METHOD, entityURL, sasToken, null);
         }
         catch(ManagementException me)
@@ -70,10 +69,9 @@ public class EntityManager {
         }
     }
     
-    private static URL getManagementURL(ConnectionStringBuilder namespaceConnectionStringBuilder, String entityPath) throws URISyntaxException, MalformedURLException
+    private static URL getManagementURL(URI namespaceEndpontURI, String entityPath) throws URISyntaxException, MalformedURLException
     {
-        URI endPointURI = namespaceConnectionStringBuilder.getEndpoint();
-        URI httpURI = new URI("https", null, endPointURI.getHost(), getPortNumberFromHost(endPointURI.getHost()), "/"+entityPath, API_VERSION_QUERY, null);
+        URI httpURI = new URI("https", null, namespaceEndpontURI.getHost(), getPortNumberFromHost(namespaceEndpontURI.getHost()), "/"+entityPath, API_VERSION_QUERY, null);
         return httpURI.toURL();
     }
     
@@ -121,15 +119,10 @@ public class EntityManager {
         }
     }
     
-    private static String getSASToken(ConnectionStringBuilder namespaceConnectionStringBuilder, URL url ) throws InvalidKeyException
+    private static String getSASToken(TokenProvider tokenProvider, URL url ) throws InterruptedException, ExecutionException
     {
-        String sasToken = namespaceConnectionStringBuilder.getSharedAccessSignatureToken();
-        if(sasToken == null)
-        {
-            sasToken = SASUtil.generateSharedAccessSignatureToken(namespaceConnectionStringBuilder.getSasKeyName(), namespaceConnectionStringBuilder.getSasKey(), url.toString(), SAS_TOKEN_VALIDITY_IN_MINUTES * 60);
-        }
-        
-        return sasToken;
+        SecurityToken token = tokenProvider.getSecurityTokenAsync(url.toString()).get();
+        return token.getTokenValue();
     }
     
     private static int getPortNumberFromHost(String host)

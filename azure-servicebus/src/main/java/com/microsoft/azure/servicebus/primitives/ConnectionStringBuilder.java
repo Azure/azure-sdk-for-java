@@ -10,6 +10,8 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.*;
 
+import com.microsoft.azure.sevicebus.security.SharedAccessSignatureTokenProvider;
+
 /**
  * This class can be used to construct a connection string which can establish communication with ServiceBus entities.
  * It can also be used to perform basic validation on an existing connection string.
@@ -37,9 +39,9 @@ import java.util.regex.*;
  * </ul>
  * @since 1.0
  */
+
 public class ConnectionStringBuilder
-{	
-	private final static String END_POINT_FORMAT = "amqps://%s.servicebus.windows.net";
+{
 	private final static String END_POINT_RAW_FORMAT = "amqps://%s";
 
 	private final static String HOSTNAME_CONFIG_NAME = "Hostname";
@@ -71,7 +73,7 @@ public class ConnectionStringBuilder
 	/**
 	 * Default operation timeout if timeout is not specified in the connection string. 30 seconds.
 	 */
-    public static final Duration DefaultOperationTimeout = Duration.ofSeconds(30);
+    public static final Duration DefaultOperationTimeout = Duration.ofSeconds(ClientConstants.DEFAULT_OPERATION_TIMEOUT_IN_SECONDS);
 
 	private ConnectionStringBuilder(
             final URI endpointAddress,
@@ -117,7 +119,7 @@ public class ConnectionStringBuilder
 			final Duration operationTimeout,
 			final RetryPolicy retryPolicy)
 	{
-		this(convertNamespaceToEndPointURI(namespaceName), entityPath, sharedAccessKeyName, sharedAccessKey, operationTimeout, retryPolicy);		
+		this(Util.convertNamespaceToEndPointURI(namespaceName), entityPath, sharedAccessKeyName, sharedAccessKey, operationTimeout, retryPolicy);		
 	}
 	
 	private ConnectionStringBuilder(
@@ -127,7 +129,7 @@ public class ConnectionStringBuilder
             final Duration operationTimeout,
             final RetryPolicy retryPolicy)
     {
-        this(convertNamespaceToEndPointURI(namespaceName), entityPath, sharedAccessSingatureToken, operationTimeout, retryPolicy);        
+        this(Util.convertNamespaceToEndPointURI(namespaceName), entityPath, sharedAccessSingatureToken, operationTimeout, retryPolicy);        
     }
 
 	/**
@@ -360,20 +362,6 @@ public class ConnectionStringBuilder
 		return this.connectionString;
 	}
 	
-	private static URI convertNamespaceToEndPointURI(String namespaceName)
-	{
-	    try
-        {
-            return new URI(String.format(Locale.US, END_POINT_FORMAT, namespaceName));
-        }
-        catch(URISyntaxException exception)
-        {
-            throw new IllegalConnectionStringFormatException(
-                    String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
-                    exception);
-        }
-	}
-
 	private void parseConnectionString(String connectionString)
 	{
 		// TODO: Trace and throw

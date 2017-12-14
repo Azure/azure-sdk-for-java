@@ -6,6 +6,8 @@
 package com.microsoft.azure.servicebus.primitives;
 
 import java.lang.reflect.Array;
+import java.net.URI;
+import java.net.URISyntaxException;
 import java.nio.BufferOverflowException;
 import java.nio.ByteBuffer;
 import java.time.Duration;
@@ -34,6 +36,11 @@ import org.apache.qpid.proton.amqp.messaging.Section;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
+
+import com.microsoft.azure.servicebus.ClientSettings;
+import com.microsoft.azure.sevicebus.security.SecurityConstants;
+import com.microsoft.azure.sevicebus.security.SharedAccessSignatureTokenProvider;
+import com.microsoft.azure.sevicebus.security.TokenProvider;
 
 public class Util
 {
@@ -392,4 +399,50 @@ public class Util
         message.decode(buffer, 0, read);
         return message;	    
 	}
+
+    public static URI convertNamespaceToEndPointURI(String namespaceName)
+    {
+        try
+        {
+            return new URI(String.format(Locale.US, ClientConstants.END_POINT_FORMAT, namespaceName));
+        }
+        catch(URISyntaxException exception)
+        {
+            throw new IllegalConnectionStringFormatException(
+                    String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
+                    exception);
+        }
+    }
+
+    @SuppressWarnings("deprecation")
+    public static ClientSettings getClientSettingsFromConnectionStringBuilder(ConnectionStringBuilder builder)
+    {
+        TokenProvider tokenProvider;
+        if(builder.getSharedAccessSignatureToken() == null)
+        {
+            tokenProvider = new SharedAccessSignatureTokenProvider(builder.getSasKeyName(), builder.getSasKey(), SecurityConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS);
+        }
+        else
+        {
+            tokenProvider = new SharedAccessSignatureTokenProvider(builder.getSharedAccessSignatureToken(), Instant.now().plus(Duration.ofSeconds(SecurityConstants.DEFAULT_SAS_TOKEN_VALIDITY_IN_SECONDS)));
+        }
+        
+        return new ClientSettings(tokenProvider, builder.getRetryPolicy(), builder.getOperationTimeout());
+    }
+
+    static int getTokenRenewIntervalInSeconds(int tokenValidityInSeconds)
+    {
+        if(tokenValidityInSeconds >= 300)
+        {
+            return tokenValidityInSeconds - 30;
+        }
+        else if(tokenValidityInSeconds >= 60)
+        {
+            return tokenValidityInSeconds - 10;
+        }
+        else
+        {            
+            return (tokenValidityInSeconds - 1) > 0 ? tokenValidityInSeconds - 1 : 0;
+        }
+    }
 }

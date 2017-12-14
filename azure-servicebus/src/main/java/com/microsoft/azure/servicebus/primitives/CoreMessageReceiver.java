@@ -259,7 +259,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	{
 		this.linkOpen = new WorkItem<CoreMessageReceiver>(new CompletableFuture<CoreMessageReceiver>(), this.operationTimeout);
 		this.scheduleLinkOpenTimeout(this.linkOpen.getTimeoutTracker());
-		this.sendSASTokenAndSetRenewTimer(false).handleAsync((v, sasTokenEx) -> {
+		this.sendTokenAndSetRenewTimer(false).handleAsync((v, sasTokenEx) -> {
             if(sasTokenEx != null)
             {
                 Throwable cause = ExceptionUtil.extractAsyncCompletionCause(sasTokenEx);
@@ -393,7 +393,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		this.receiveLink = receiver;
 	}
 	
-	CompletableFuture<Void> sendSASTokenAndSetRenewTimer(boolean retryOnFailure)
+	CompletableFuture<Void> sendTokenAndSetRenewTimer(boolean retryOnFailure)
     {
         if(this.getIsClosingOrClosed())
         {
@@ -401,7 +401,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         }
         else
         {            
-            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendSASTokenAndSetRenewTimer(true));
+            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSASTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendTokenAndSetRenewTimer(true));
             return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f;TRACE_LOGGER.debug("Sent SAS Token and set renew timer");});
         }
     }
@@ -1150,7 +1150,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	                    , CoreMessageReceiver.LINK_REOPEN_TIMEOUT
 	                    , TimerType.OneTimeRun);
 	            this.cancelSASTokenRenewTimer();
-	            this.sendSASTokenAndSetRenewTimer(false).handleAsync((v, sendTokenEx) -> {
+	            this.sendTokenAndSetRenewTimer(false).handleAsync((v, sendTokenEx) -> {
 	                if(sendTokenEx != null)
 	                {
 	                    this.receiveLinkReopenFuture.completeExceptionally(sendTokenEx);
