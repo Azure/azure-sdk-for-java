@@ -189,17 +189,14 @@ public final class NettyClient extends HttpClient {
                                             }
                                         });
                             } else {
-                                // TODO: maybe HttpInboundHandler should itself be a FlowableSubscriber..?
                                 final Flowable<byte[]> bodyContent = request.body().content();
                                 bodyContent.subscribe(new FlowableSubscriber<byte[]>() {
                                     Subscription subscription;
-                                    long chunksRequested = 0;
-
                                     @Override
                                     public void onSubscribe(Subscription s) {
                                         subscription = s;
                                         inboundHandler.requestContentSubscription = subscription;
-                                        subscription.request(128);
+                                        subscription.request(1);
                                     }
 
                                     GenericFutureListener<Future<? super Void>> onChannelWriteComplete =
@@ -215,13 +212,12 @@ public final class NettyClient extends HttpClient {
 
                                     @Override
                                     public void onNext(byte[] bytes) {
-                                        chunksRequested--;
-                                        channel.write(new DefaultHttpContent(Unpooled.wrappedBuffer(bytes)))
+
+                                        channel.writeAndFlush(new DefaultHttpContent(Unpooled.wrappedBuffer(bytes)))
                                                 .addListener(onChannelWriteComplete);
 
-                                        if (channel.isWritable() && chunksRequested <= 0) {
-                                            chunksRequested += 128;
-                                            subscription.request(128);
+                                        if (channel.isWritable()) {
+                                            subscription.request(1);
                                         }
                                     }
 
@@ -346,11 +342,8 @@ public final class NettyClient extends HttpClient {
 
         @Override
         public void channelWritabilityChanged(ChannelHandlerContext ctx) throws Exception {
-            if (ctx.channel().isWritable() && requestContentSubscription != null) {
-                requestContentSubscription.request(128);
-            } else {
-                // TODO: why is this needed?
-                ctx.channel().flush();
+            if (ctx.channel().isWritable()) {
+                requestContentSubscription.request(1);
             }
 
             super.channelWritabilityChanged(ctx);

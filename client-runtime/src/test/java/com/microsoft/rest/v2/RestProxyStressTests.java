@@ -22,7 +22,6 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
-import io.reactivex.schedulers.Schedulers;
 import org.joda.time.DateTime;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
@@ -31,13 +30,10 @@ import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
-import java.nio.file.FileAlreadyExistsException;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -46,7 +42,6 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileAttribute;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
@@ -106,7 +101,7 @@ public class RestProxyStressTests {
         Single<RestResponse<Void, Flowable<byte[]>>> download1GB(@PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({ 201 })
-        @PUT("/javasdktest/upload/1m-{id}.dat?{sas}")
+        @PUT("/javasdktest/upload/1m.dat?{sas}")
         Single<RestResponse<Void, Void>> upload1MBBytes(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
 
         @ExpectedResponses({ 201 })
@@ -154,8 +149,10 @@ public class RestProxyStressTests {
             file.write(ByteBuffer.wrap(buf));
             file.close();
 
-            AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
+            final AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath);
+            AsyncInputStream fileStream = AsyncInputStream.create(fileChannel);
             RestResponse<Void, Void> response = service.upload100MB("single", sas, "BlockBlob", fileStream).blockingGet();
+            fileChannel.close();
             String base64MD5 = response.rawHeaders().get("Content-MD5");
             byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
 
@@ -213,7 +210,7 @@ public class RestProxyStressTests {
                             }
                         });
                     }
-                    }, false, 10).blockingAwait();
+                    }).blockingAwait();
     }
 
     private static void deleteRecursive(Path tempFolderPath) throws IOException {
@@ -275,10 +272,12 @@ public class RestProxyStressTests {
                         file.write(ByteBuffer.wrap(buf));
                         file.close();
 
-                        AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
-                        return service.upload10MB(String.valueOf(id), sas, "BlockBlob", fileStream).timeout(20, TimeUnit.SECONDS).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                        final AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath);
+                        AsyncInputStream fileStream = AsyncInputStream.create(fileChannel);
+                        return service.upload10MB(String.valueOf(id), sas, "BlockBlob", fileStream).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
                             @Override
                             public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
+                                fileChannel.close();
                                 String base64MD5 = response.rawHeaders().get("Content-MD5");
                                 byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
                                 assertArrayEquals(md5, receivedMD5);
@@ -288,7 +287,7 @@ public class RestProxyStressTests {
                         });
 
                     }
-                }, false, 10).blockingAwait();
+                }).blockingAwait();
     }
 
     @Test
@@ -326,10 +325,12 @@ public class RestProxyStressTests {
                         file.write(ByteBuffer.wrap(buf));
                         file.close();
 
-                        AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
-                        return service.upload100MB(String.valueOf(id), sas, "BlockBlob", fileStream).timeout(60, TimeUnit.SECONDS).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                        final AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath);
+                        AsyncInputStream fileStream = AsyncInputStream.create(fileChannel);
+                        return service.upload100MB(String.valueOf(id), sas, "BlockBlob", fileStream).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
                             @Override
                             public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
+                                fileChannel.close();
                                 String base64MD5 = response.rawHeaders().get("Content-MD5");
                                 byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
                                 assertArrayEquals(md5, receivedMD5);
@@ -339,7 +340,7 @@ public class RestProxyStressTests {
                         });
 
                     }
-                }, false, 10).blockingAwait();
+                }).blockingAwait();
     }
 
     @Test
