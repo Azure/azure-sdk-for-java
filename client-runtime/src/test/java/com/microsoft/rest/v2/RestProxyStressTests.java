@@ -15,6 +15,7 @@ import com.microsoft.rest.v2.policy.LoggingPolicy.LogLevel;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
+import com.microsoft.rest.v2.policy.RetryPolicy;
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
@@ -35,10 +36,14 @@ import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
 import java.nio.file.FileAlreadyExistsException;
+import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
+import java.nio.file.NoSuchFileException;
 import java.nio.file.Path;
 import java.nio.file.Paths;
+import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
+import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileAttribute;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
@@ -94,8 +99,16 @@ public class RestProxyStressTests {
         Single<RestResponse<Void, Flowable<byte[]>>> download1GB(@PathParam(value = "sas", encoded = true) String sas);
 
         @ExpectedResponses({ 201 })
-        @PUT("/javasdktest/upload/1m.dat?{sas}")
-        Single<RestResponse<Void, Void>> upload1MB(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
+        @PUT("/javasdktest/upload/1m-{id}.dat?{sas}")
+        Single<RestResponse<Void, Void>> upload1MBBytes(@PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) byte[] bytes);
+
+        @ExpectedResponses({ 201 })
+        @PUT("/javasdktest/upload/1m-{id}.dat?{sas}")
+        Single<RestResponse<Void, Void>> upload1MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) AsyncInputStream stream);
+
+        @ExpectedResponses({ 201 })
+        @PUT("/javasdktest/upload/10m-{id}.dat?{sas}")
+        Single<RestResponse<Void, Void>> upload10MB(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) AsyncInputStream stream);
 
         @ExpectedResponses({ 201 })
         @PUT("/javasdktest/upload/100m-{id}.dat?{sas}")
@@ -152,17 +165,15 @@ public class RestProxyStressTests {
                 .set("x-ms-version", "2017-04-17");
 
         HttpPipeline pipeline = HttpPipeline.build(
-                new AddDatePolicy.Factory(),
                 new AddHeadersPolicy.Factory(headers),
+                new RetryPolicy.Factory(2),
+                new AddDatePolicy.Factory(),
                 new LoggingPolicy.Factory(LogLevel.BASIC));
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
         final Path tempFolderPath = Paths.get("temp");
-        try {
-            Files.deleteIfExists(tempFolderPath);
-            Files.createDirectory(tempFolderPath);
-        } catch (FileAlreadyExistsException ignored) {
-        }
+        deleteRecursive(tempFolderPath);
+        Files.createDirectory(tempFolderPath);
 
         final byte[] buf = new byte[1024 * 1024];
         Flowable.range(0, 100)
@@ -184,7 +195,7 @@ public class RestProxyStressTests {
                         file.close();
 
                         AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
-                        return service.upload100MB(String.valueOf(id), sas, "BlockBlob", fileStream).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                        return service.upload1MB(String.valueOf(id), sas, "BlockBlob", fileStream).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
                             @Override
                             public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
                                 String base64MD5 = response.rawHeaders().get("Content-MD5");
@@ -194,9 +205,33 @@ public class RestProxyStressTests {
                                 return Completable.complete();
                             }
                         });
-
                     }
-                }).blockingAwait();
+                    }, false, 10).blockingAwait();
+
+        deleteRecursive(tempFolderPath);
+    }
+
+    private static void deleteRecursive(Path tempFolderPath) throws IOException {
+        try {
+            Files.walkFileTree(tempFolderPath, new SimpleFileVisitor<Path>() {
+                @Override
+                public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+                    Files.delete(file);
+                    return FileVisitResult.CONTINUE;
+                }
+
+                @Override
+                public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+                    if (exc != null) {
+                        throw exc;
+                    }
+
+                    Files.delete(dir);
+                    return FileVisitResult.CONTINUE;
+                }
+            });
+        } catch (NoSuchFileException ignored) {
+        }
     }
 
     @Test
@@ -206,20 +241,18 @@ public class RestProxyStressTests {
                 .set("x-ms-version", "2017-04-17");
 
         HttpPipeline pipeline = HttpPipeline.build(
-                new AddDatePolicy.Factory(),
                 new AddHeadersPolicy.Factory(headers),
+                new RetryPolicy.Factory(2),
+                new AddDatePolicy.Factory(),
                 new LoggingPolicy.Factory(LogLevel.BASIC));
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
         final Path tempFolderPath = Paths.get("temp");
-        try {
-            Files.deleteIfExists(tempFolderPath);
-            Files.createDirectory(tempFolderPath);
-        } catch (FileAlreadyExistsException ignored) {
-        }
+        deleteRecursive(tempFolderPath);
+        Files.createDirectory(tempFolderPath);
 
         final byte[] buf = new byte[1024 * 1024 * 10];
-        Flowable.range(0, 100)
+        Flowable.range(0, 50)
                 .flatMapCompletable(new Function<Integer, Completable>() {
                     @Override
                     public Completable apply(Integer i) throws Exception {
@@ -238,7 +271,7 @@ public class RestProxyStressTests {
                         file.close();
 
                         AsyncInputStream fileStream = AsyncInputStream.create(AsynchronousFileChannel.open(filePath));
-                        return service.upload100MB(String.valueOf(id), sas, "BlockBlob", fileStream).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                        return service.upload10MB(String.valueOf(id), sas, "BlockBlob", fileStream).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
                             @Override
                             public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
                                 String base64MD5 = response.rawHeaders().get("Content-MD5");
@@ -250,7 +283,9 @@ public class RestProxyStressTests {
                         });
 
                     }
-                }).blockingAwait();
+                }, false, 10).blockingAwait();
+
+        deleteRecursive(tempFolderPath);
     }
 
     @Test
@@ -266,11 +301,8 @@ public class RestProxyStressTests {
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
         final Path tempFolderPath = Paths.get("temp");
-        try {
-            Files.deleteIfExists(tempFolderPath);
-            Files.createDirectory(tempFolderPath);
-        } catch (FileAlreadyExistsException ignored) {
-        }
+        deleteRecursive(tempFolderPath);
+        Files.createDirectory(tempFolderPath);
 
         final byte[] buf = new byte[1024 * 1024 * 100];
         Flowable.range(0, 100)
@@ -304,7 +336,9 @@ public class RestProxyStressTests {
                         });
 
                     }
-                }).blockingAwait();
+                }, false, 10).blockingAwait();
+
+        deleteRecursive(tempFolderPath);
     }
 
     @Test
@@ -400,7 +434,7 @@ public class RestProxyStressTests {
                         byte[] actualMD5 = md.digest();
                         assertArrayEquals(MD5_1MB, actualMD5);
 
-                        RestResponse<Void, Void> uploadResponse = service.upload1MB(sas, "BlockBlob", fileContent).blockingGet();
+                        RestResponse<Void, Void> uploadResponse = service.upload1MBBytes(sas, "BlockBlob", fileContent).blockingGet();
                         String base64MD5 = uploadResponse.rawHeaders().get("Content-MD5");
                         byte[] uploadedMD5 = BaseEncoding.base64().decode(base64MD5);
                         assertArrayEquals(MD5_1MB, uploadedMD5);
