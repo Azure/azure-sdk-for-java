@@ -150,7 +150,6 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	}
 
 	/**
-	 * @deprecated use {@link #getClientSetttings()} and get operation timeout from client settings.
 	 * Gets the operation timeout from the connections string.
 	 * @return operation timeout specified in the connection string
 	 */
@@ -160,11 +159,9 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	}
 
 	/**
-	 * @deprecated use {@link #getClientSetttings()} and get retry policy from client settings.
 	 * Gets the retry policy from the connection string.
 	 * @return retry policy specified in the connection string
 	 */
-	@Deprecated
 	public RetryPolicy getRetryPolicy()
 	{
 		return this.clientSettings.getRetryPolicy();
@@ -552,7 +549,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		this.getReactorScheduler().invoke(delay, handler);
 	}
 	
-	CompletableFuture<ScheduledFuture<?>> sendSASTokenAndSetRenewTimer(String sasTokenAudienceURI, boolean retryOnFailure, Runnable validityRenewer)
+	CompletableFuture<ScheduledFuture<?>> sendSecurityTokenAndSetRenewTimer(String sasTokenAudienceURI, boolean retryOnFailure, Runnable validityRenewer)
     {
 	    TRACE_LOGGER.debug("Sending token for {}", sasTokenAudienceURI);
 	    CompletableFuture<SecurityToken> tokenFuture = this.clientSettings.getTokenProvider().getSecurityTokenAsync(sasTokenAudienceURI);
@@ -575,7 +572,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
     	                {
     	                    TRACE_LOGGER.warn("Sending CBS Token for {} failed.", sasTokenAudienceURI, sendTokenEx);
     	                    TRACE_LOGGER.info("Will retry sending CBS Token for {} after {} seconds.", sasTokenAudienceURI, ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS);
-    	                    return Timer.schedule(validityRenewer, Duration.ofSeconds(ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS), TimerType.OneTimeRun);                
+    	                    return Timer.schedule(validityRenewer, Duration.ofSeconds(ClientConstants.DEFAULT_SAS_TOKEN_SEND_RETRY_INTERVAL_IN_SECONDS), TimerType.OneTimeRun);
     	                }
     	            });
     	        }

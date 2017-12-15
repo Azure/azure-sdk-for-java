@@ -37,7 +37,8 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
         ForkJoinPool.commonPool().execute(() -> {
             try
             {
-                SecurityToken generatedToken = getMSIToken(addAudienceForSB);
+                MSIToken msiToken = getMSIToken(addAudienceForSB);
+                SecurityToken generatedToken = new SecurityToken(SecurityTokenType.JWT, audience, msiToken.getAccessToken(), Instant.EPOCH.plus(Duration.ofSeconds(msiToken.getNotBefore())), Instant.now().plus(Duration.ofSeconds(msiToken.getExpiresIn())));
                 tokenGeneratingFuture.complete(generatedToken);
             }
             catch(IOException ioe)
@@ -50,7 +51,7 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
         return tokenGeneratingFuture;
     }
     
-    private static SecurityToken getMSIToken(String audience) throws IOException
+    private static MSIToken getMSIToken(String audience) throws IOException
     {
         boolean useStaticHttpUrl;
         String localMsiEndPointURL = System.getenv(MSI_ENDPOINT_ENV_VARIABLE);
@@ -96,7 +97,7 @@ public class ManagedServiceIdentityTokenProvider extends TokenProvider
         
         Gson gson = new Gson();
         MSIToken msiToken = gson.fromJson(responseBuilder.toString(), MSIToken.class);
-        return new SecurityToken(SecurityTokenType.JWT, msiToken.getResource(), msiToken.getAccessToken(), Instant.EPOCH.plus(Duration.ofSeconds(msiToken.getNotBefore())), Instant.now().plus(Duration.ofSeconds(msiToken.getExpiresIn())));
+        return msiToken;
     }
     
     private static class MSIToken

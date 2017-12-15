@@ -39,7 +39,7 @@ public abstract class SendReceiveTests extends Tests {
 	public void setup() throws InterruptedException, ExecutionException, ServiceBusException, ManagementException
 	{
 	    URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
-        ClientSettings clientSettings = TestUtils.getClientSettings();
+        ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
         
 	    if(this.shouldCreateEntityForEveryTest() || SendReceiveTests.entityNameCreatedForAllTests == null)
 	    {
@@ -50,7 +50,7 @@ public abstract class SendReceiveTests extends Tests {
 	            this.receiveEntityPath = this.entityName;
 	            QueueDescription queueDescription = new QueueDescription(this.entityName);
 	            queueDescription.setEnablePartitioning(this.isEntityPartitioned());
-	            EntityManager.createEntity(namespaceEndpointURI, clientSettings, queueDescription);
+	            EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
 	            if(!this.shouldCreateEntityForEveryTest())
 	            {
 	                SendReceiveTests.entityNameCreatedForAllTests = entityName;
@@ -61,9 +61,9 @@ public abstract class SendReceiveTests extends Tests {
 	        {
 	            TopicDescription topicDescription = new TopicDescription(this.entityName);
                 topicDescription.setEnablePartitioning(this.isEntityPartitioned());
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, topicDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, topicDescription);
                 SubscriptionDescription subDescription = new SubscriptionDescription(this.entityName, TestUtils.FIRST_SUBSCRIPTION_NAME);
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, subDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, subDescription);
                 this.receiveEntityPath = subDescription.getPath();
                 if(!this.shouldCreateEntityForEveryTest())
                 {
@@ -78,8 +78,8 @@ public abstract class SendReceiveTests extends Tests {
             this.receiveEntityPath = SendReceiveTests.receiveEntityPathForAllTest;
 	    }
 	    
-	    this.factory = MessagingFactory.createFromNamespaceEndpointURI(namespaceEndpointURI, clientSettings);
-        this.sender = ClientFactory.createMessageSenderFromEntityPath(namespaceEndpointURI, this.entityName, clientSettings);
+	    this.factory = MessagingFactory.createFromNamespaceEndpointURI(namespaceEndpointURI, TestUtils.getClientSettings());
+        this.sender = ClientFactory.createMessageSenderFromEntityPath(namespaceEndpointURI, this.entityName, TestUtils.getClientSettings());
 	}
 	
 	@After
@@ -97,7 +97,7 @@ public abstract class SendReceiveTests extends Tests {
 		
 		if(this.shouldCreateEntityForEveryTest())
         {
-		    EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings(), this.entityName);
+		    EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getManagementClientSettings(), this.entityName);
         }
 	}
 	
@@ -106,7 +106,7 @@ public abstract class SendReceiveTests extends Tests {
 	{
 	    if(SendReceiveTests.entityNameCreatedForAllTests != null)
 	    {
-	        EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings(), SendReceiveTests.entityNameCreatedForAllTests);
+	        EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getManagementClientSettings(), SendReceiveTests.entityNameCreatedForAllTests);
 	    }
 	}
 	

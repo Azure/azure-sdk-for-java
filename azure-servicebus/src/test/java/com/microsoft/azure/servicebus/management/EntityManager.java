@@ -38,8 +38,8 @@ public class EntityManager {
         try
         {
             URL entityURL = getManagementURL(namespaceEndpointURI, resourceDescription.getPath());
-            String sasToken = getSASToken(clientSettings.getTokenProvider(), entityURL);
-            sendManagementHttpRequest(PUT_METHOD, entityURL, sasToken, resourceDescription.getAtomXml());
+            String securityToken = getSecurityToken(clientSettings.getTokenProvider(), entityURL);
+            sendManagementHttpRequest(PUT_METHOD, entityURL, securityToken, resourceDescription.getAtomXml());
         }
         catch(ManagementException me)
         {
@@ -56,8 +56,8 @@ public class EntityManager {
         try
         {
             URL entityURL = getManagementURL(namespaceEndpointURI, entityPath);
-            String sasToken = getSASToken(clientSettings.getTokenProvider(), entityURL);
-            sendManagementHttpRequest(DELETE_METHOD, entityURL, sasToken, null);
+            String securityToken = getSecurityToken(clientSettings.getTokenProvider(), entityURL);
+            sendManagementHttpRequest(DELETE_METHOD, entityURL, securityToken, null);
         }
         catch(ManagementException me)
         {
@@ -119,7 +119,7 @@ public class EntityManager {
         }
     }
     
-    private static String getSASToken(TokenProvider tokenProvider, URL url ) throws InterruptedException, ExecutionException
+    private static String getSecurityToken(TokenProvider tokenProvider, URL url ) throws InterruptedException, ExecutionException
     {
         SecurityToken token = tokenProvider.getSecurityTokenAsync(url.toString()).get();
         return token.getTokenValue();

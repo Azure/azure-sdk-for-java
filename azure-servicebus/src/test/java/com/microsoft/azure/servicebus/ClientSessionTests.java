@@ -37,7 +37,7 @@ public abstract class ClientSessionTests extends Tests
     public void setup() throws InterruptedException, ExecutionException, ServiceBusException, ManagementException
     {
         URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
-        ClientSettings clientSettings = TestUtils.getClientSettings();
+        ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
         
         if(this.shouldCreateEntityForEveryTest() || ClientSessionTests.entityNameCreatedForAllTests == null)
         {
@@ -49,7 +49,7 @@ public abstract class ClientSessionTests extends Tests
                 QueueDescription queueDescription = new QueueDescription(this.entityName);
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
                 queueDescription.setRequiresSession(true);
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, queueDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
                 if(!this.shouldCreateEntityForEveryTest())
                 {
                     ClientSessionTests.entityNameCreatedForAllTests = entityName;
@@ -60,10 +60,10 @@ public abstract class ClientSessionTests extends Tests
             {
                 TopicDescription topicDescription = new TopicDescription(this.entityName);
                 topicDescription.setEnablePartitioning(this.isEntityPartitioned());
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, topicDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, topicDescription);
                 SubscriptionDescription subDescription = new SubscriptionDescription(this.entityName, TestUtils.FIRST_SUBSCRIPTION_NAME);
                 subDescription.setRequiresSession(true);
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, subDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, subDescription);
                 this.receiveEntityPath = subDescription.getPath();
                 if(!this.shouldCreateEntityForEveryTest())
                 {
@@ -100,7 +100,7 @@ public abstract class ClientSessionTests extends Tests
         
         if(this.shouldCreateEntityForEveryTest())
         {
-            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings(), this.entityName);
+            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getManagementClientSettings(), this.entityName);
         }
         else
         {
@@ -113,7 +113,7 @@ public abstract class ClientSessionTests extends Tests
     {
         if(ClientSessionTests.entityNameCreatedForAllTests != null)
         {
-            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings(), ClientSessionTests.entityNameCreatedForAllTests);
+            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getManagementClientSettings(), ClientSessionTests.entityNameCreatedForAllTests);
         }
     }
     

@@ -36,7 +36,7 @@ public abstract class ClientTests extends Tests{
     public void setup() throws InterruptedException, ExecutionException, ServiceBusException, ManagementException
     {
         URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
-        ClientSettings clientSettings = TestUtils.getClientSettings();
+        ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
         
         if(this.shouldCreateEntityForEveryTest() || ClientTests.entityNameCreatedForAllTests == null)
         {
@@ -47,7 +47,7 @@ public abstract class ClientTests extends Tests{
                 this.receiveEntityPath = this.entityName;
                 QueueDescription queueDescription = new QueueDescription(this.entityName);
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, queueDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
                 if(!this.shouldCreateEntityForEveryTest())
                 {
                     ClientTests.entityNameCreatedForAllTests = entityName;
@@ -58,9 +58,9 @@ public abstract class ClientTests extends Tests{
             {
                 TopicDescription topicDescription = new TopicDescription(this.entityName);
                 topicDescription.setEnablePartitioning(this.isEntityPartitioned());
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, topicDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, topicDescription);
                 SubscriptionDescription subDescription = new SubscriptionDescription(this.entityName, TestUtils.FIRST_SUBSCRIPTION_NAME);
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, subDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, subDescription);
                 this.receiveEntityPath = subDescription.getPath();
                 if(!this.shouldCreateEntityForEveryTest())
                 {
@@ -97,7 +97,7 @@ public abstract class ClientTests extends Tests{
         
         if(this.shouldCreateEntityForEveryTest())
         {
-            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings(), this.entityName);
+            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getManagementClientSettings(), this.entityName);
         }
         else
         {
@@ -110,7 +110,7 @@ public abstract class ClientTests extends Tests{
     {
         if(ClientTests.entityNameCreatedForAllTests != null)
         {
-            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings(), ClientTests.entityNameCreatedForAllTests);
+            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getManagementClientSettings(), ClientTests.entityNameCreatedForAllTests);
         }
     }
     

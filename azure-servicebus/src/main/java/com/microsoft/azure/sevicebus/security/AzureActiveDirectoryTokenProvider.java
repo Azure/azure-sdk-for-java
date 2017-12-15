@@ -62,13 +62,13 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider
         switch(this.authenticationMode)
         {
             case CLIENT_CREDENTIAL:
-                this.authenticationContext.acquireToken(addAudienceForSB, this.clientCredential, new FutureCompletingAuthenticationCallback(tokenGeneratingFuture, addAudienceForSB));
+                this.authenticationContext.acquireToken(addAudienceForSB, this.clientCredential, new FutureCompletingAuthenticationCallback(tokenGeneratingFuture, audience));
                 break;
             case USER_PASSWORD_CREDENTIAL:
-                this.authenticationContext.acquireToken(addAudienceForSB, this.clientId, this.userName, this.password, new FutureCompletingAuthenticationCallback(tokenGeneratingFuture, addAudienceForSB));
+                this.authenticationContext.acquireToken(addAudienceForSB, this.clientId, this.userName, this.password, new FutureCompletingAuthenticationCallback(tokenGeneratingFuture, audience));
                 break;
             case CERTIFICATE:
-                this.authenticationContext.acquireToken(addAudienceForSB, this.asymmetricKeyCredential, new FutureCompletingAuthenticationCallback(tokenGeneratingFuture, addAudienceForSB));
+                this.authenticationContext.acquireToken(addAudienceForSB, this.asymmetricKeyCredential, new FutureCompletingAuthenticationCallback(tokenGeneratingFuture, audience));
                 break;
         }
         return tokenGeneratingFuture;

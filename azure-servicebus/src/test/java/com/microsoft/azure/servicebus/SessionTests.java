@@ -4,8 +4,6 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.AfterClass;
@@ -36,7 +34,6 @@ public abstract class SessionTests extends Tests {
 	@BeforeClass
 	public static void init()
 	{
-	    Logger.getLogger("com.microsoft.azure.servicebus").setLevel(Level.OFF);
 	    SessionTests.entityNameCreatedForAllTests = null;
 	    SessionTests.receiveEntityPathForAllTest = null;
 	}
@@ -45,7 +42,7 @@ public abstract class SessionTests extends Tests {
 	public void setup() throws InterruptedException, ExecutionException, ServiceBusException, ManagementException
 	{
 	    URI namespaceEndpointURI = TestUtils.getNamespaceEndpointURI();
-        ClientSettings clientSettings = TestUtils.getClientSettings();
+        ClientSettings managementClientSettings = TestUtils.getManagementClientSettings();
         
 	    if(this.shouldCreateEntityForEveryTest() || SessionTests.entityNameCreatedForAllTests == null)
         {
@@ -57,7 +54,7 @@ public abstract class SessionTests extends Tests {
                 QueueDescription queueDescription = new QueueDescription(this.entityName);
                 queueDescription.setEnablePartitioning(this.isEntityPartitioned());
                 queueDescription.setRequiresSession(true);
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, queueDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, queueDescription);
                 if(!this.shouldCreateEntityForEveryTest())
                 {
                     SessionTests.entityNameCreatedForAllTests = entityName;
@@ -68,10 +65,10 @@ public abstract class SessionTests extends Tests {
             {
                 TopicDescription topicDescription = new TopicDescription(this.entityName);
                 topicDescription.setEnablePartitioning(this.isEntityPartitioned());
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, topicDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, topicDescription);
                 SubscriptionDescription subDescription = new SubscriptionDescription(this.entityName, TestUtils.FIRST_SUBSCRIPTION_NAME);
                 subDescription.setRequiresSession(true);
-                EntityManager.createEntity(namespaceEndpointURI, clientSettings, subDescription);
+                EntityManager.createEntity(namespaceEndpointURI, managementClientSettings, subDescription);
                 this.receiveEntityPath = subDescription.getPath();
                 if(!this.shouldCreateEntityForEveryTest())
                 {
@@ -86,8 +83,8 @@ public abstract class SessionTests extends Tests {
             this.receiveEntityPath = SessionTests.receiveEntityPathForAllTest;
         }
         
-        this.factory = MessagingFactory.createFromNamespaceEndpointURI(namespaceEndpointURI, clientSettings);
-        this.sender = ClientFactory.createMessageSenderFromEntityPath(namespaceEndpointURI, this.entityName, clientSettings);
+        this.factory = MessagingFactory.createFromNamespaceEndpointURI(namespaceEndpointURI, TestUtils.getClientSettings());
+        this.sender = ClientFactory.createMessageSenderFromEntityPath(namespaceEndpointURI, this.entityName, TestUtils.getClientSettings());
 	}
 	
 	@After
@@ -105,7 +102,7 @@ public abstract class SessionTests extends Tests {
         
         if(this.shouldCreateEntityForEveryTest())
         {
-            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings(), this.entityName);
+            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getManagementClientSettings(), this.entityName);
         }
 	}
 	
@@ -114,7 +111,7 @@ public abstract class SessionTests extends Tests {
     {
         if(SessionTests.entityNameCreatedForAllTests != null)
         {
-            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getClientSettings(), SessionTests.entityNameCreatedForAllTests);
+            EntityManager.deleteEntity(TestUtils.getNamespaceEndpointURI(), TestUtils.getManagementClientSettings(), SessionTests.entityNameCreatedForAllTests);
         }
     }
     
