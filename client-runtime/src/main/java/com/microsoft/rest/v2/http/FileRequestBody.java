@@ -13,13 +13,16 @@ import io.reactivex.Flowable;
 import io.reactivex.functions.BiConsumer;
 
 import java.io.IOException;
+import java.nio.ByteBuffer;
 import java.nio.channels.FileChannel;
+import java.util.Arrays;
 import java.util.concurrent.Callable;
 
 /**
  * A HTTP request body that contains a chunk of a file.
  */
 public class FileRequestBody implements HttpRequestBody {
+    private static final int CHUNK_SIZE = 8192;
     private final FileSegment fileSegment;
 
     /**
@@ -43,7 +46,42 @@ public class FileRequestBody implements HttpRequestBody {
 
     @Override
     public Flowable<byte[]> content() {
-        throw new UnsupportedOperationException();
+        final long offset = fileSegment.offset();
+        final long length = fileSegment.length();
+
+        Flowable<byte[]> stream = Flowable.generate(
+                new Callable<FileChannel>() {
+                    @Override
+                    public FileChannel call() throws Exception {
+                        return fileSegment.fileChannel();
+                    }
+                },
+                new BiConsumer<FileChannel, Emitter<byte[]>>() {
+                    private final ByteBuffer innerBuf = ByteBuffer.wrap(new byte[CHUNK_SIZE]);
+                    private long position = offset;
+
+                    @Override
+                    public void accept(FileChannel fileChannel, Emitter<byte[]> emitter) throws Exception {
+                        try {
+                            final long remaining = offset + length - position;
+                            if (remaining <= 0) {
+                                emitter.onComplete();
+                            } else {
+                                int bytesRead = fileChannel.read(innerBuf, position);
+                                if (bytesRead == -1) {
+                                    emitter.onComplete();
+                                } else {
+                                    position += bytesRead;
+                                    emitter.onNext(Arrays.copyOf(innerBuf.array(), (int) Math.min(remaining, bytesRead)));
+                                }
+                            }
+                        } catch (IOException e) {
+                            emitter.onError(e);
+                        }
+                    }
+                });
+
+        return stream;
     }
 
     /**
@@ -63,7 +101,6 @@ public class FileRequestBody implements HttpRequestBody {
                     }
                 },
                 new BiConsumer<FileChannel, Emitter<ByteBuf>>() {
-                    private static final int CHUNK_SIZE = 8192;
                     private long position = offset;
 
                     @Override
@@ -97,7 +134,7 @@ public class FileRequestBody implements HttpRequestBody {
     }
 
     /**
-     * @return the lazy loaded fileSegment of the request, in the format of a file segment.
+     * @return the lazy loaded content of the request, in the format of a file segment.
      */
     public FileSegment fileSegment() {
         return fileSegment;
