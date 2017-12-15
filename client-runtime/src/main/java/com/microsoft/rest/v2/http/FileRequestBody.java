@@ -134,7 +134,7 @@ public class FileRequestBody implements HttpRequestBody {
     }
 
     /**
-     * @return the lazy loaded fileSegment of the request, in the format of a file segment.
+     * @return the lazy loaded content of the request, in the format of a file segment.
      */
     public FileSegment fileSegment() {
         return fileSegment;
