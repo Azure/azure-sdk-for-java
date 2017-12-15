@@ -20,11 +20,16 @@ import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
+import io.reactivex.internal.functions.Functions;
 import org.joda.time.DateTime;
+import org.joda.time.Duration;
+import org.joda.time.Instant;
 import org.joda.time.format.DateTimeFormat;
 import org.joda.time.format.DateTimeFormatter;
+import org.joda.time.format.PeriodFormat;
 import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
@@ -134,6 +139,8 @@ public class RestProxyStressTests {
     private static final byte[] MD5_90MB = { 44, 39, 103, 103, -88, 8, -94, 85, 53, 79, -115, -70, 14, 82, -68, -63 };
     private static final byte[] MD5_1GB = { 43, -104, -23, 103, 42, 34, -49, 42, 57, -127, -128, 89, -36, -81, 67, 5 };
 
+    private static final Path tempFolderPath = Paths.get("temp");
+
     @Test
     public void upload100MTest() throws Exception {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS");
@@ -187,7 +194,6 @@ public class RestProxyStressTests {
                 new LoggingPolicy.Factory(LogLevel.BASIC));
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
-        final Path tempFolderPath = Paths.get("temp");
         deleteRecursive(tempFolderPath);
         Files.createDirectory(tempFolderPath);
 
@@ -238,7 +244,6 @@ public class RestProxyStressTests {
                 new LoggingPolicy.Factory(LogLevel.BASIC));
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
-        final Path tempFolderPath = Paths.get("temp");
         deleteRecursive(tempFolderPath);
         Files.createDirectory(tempFolderPath);
 
@@ -291,7 +296,6 @@ public class RestProxyStressTests {
                 new LoggingPolicy.Factory(LogLevel.BASIC));
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
-        final Path tempFolderPath = Paths.get("temp");
         deleteRecursive(tempFolderPath);
         Files.createDirectory(tempFolderPath);
 
@@ -344,7 +348,6 @@ public class RestProxyStressTests {
                 new LoggingPolicy.Factory(LogLevel.BASIC));
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
-        final Path tempFolderPath = Paths.get("temp");
         deleteRecursive(tempFolderPath);
         Files.createDirectory(tempFolderPath);
 
@@ -474,7 +477,6 @@ public class RestProxyStressTests {
                 new LoggingPolicy.Factory(LogLevel.BASIC));
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
-        final Path tempFolderPath = Paths.get("temp");
         deleteRecursive(tempFolderPath);
         Files.createDirectory(tempFolderPath);
 
@@ -513,6 +515,70 @@ public class RestProxyStressTests {
 
                     }
                 }).blockingAwait();
+    }
+
+    @Test
+    public void upload100MParallelPooledPrewrittenFilesTest() throws Exception {
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
+        HttpHeaders headers = new HttpHeaders()
+                .set("x-ms-version", "2017-04-17");
+
+        HttpPipeline pipeline = HttpPipeline.build(
+                new AddDatePolicy.Factory(),
+                new AddHeadersPolicy.Factory(headers),
+                new LoggingPolicy.Factory(LogLevel.BASIC));
+
+        final IOService service = RestProxy.create(IOService.class, pipeline);
+        deleteRecursive(tempFolderPath);
+        Files.createDirectory(tempFolderPath);
+
+        final int numFiles = 100;
+        List<byte[]> md5s = new ArrayList<>(numFiles);
+        final byte[] buf = new byte[1024 * 1024 * 100];
+        for (int i = 0; i < numFiles; i++) {
+
+            final Path filePath = tempFolderPath.resolve("100m-" + i + ".dat");
+
+            Files.deleteIfExists(filePath);
+            Files.createFile(filePath);
+            FileChannel file = FileChannel.open(filePath, StandardOpenOption.READ, StandardOpenOption.WRITE);
+
+            Random random = new Random();
+            random.nextBytes(buf);
+
+            final byte[] md5 = MessageDigest.getInstance("MD5").digest(buf);
+            file.write(ByteBuffer.wrap(buf));
+            file.close();
+
+            LoggerFactory.getLogger(getClass()).info("Wrote file id " + i + " to disk");
+            md5s.add(md5);
+        }
+
+        Instant start = Instant.now();
+        Flowable.range(0, numFiles)
+                .zipWith(md5s, new BiFunction<Integer, byte[], Completable>() {
+                    @Override
+                    public Completable apply(Integer integer, final byte[] md5) throws Exception {
+                        final int id = integer;
+                        final Path filePath = tempFolderPath.resolve("100m-" + id + ".dat");
+                        final FileChannel fileChannel = FileChannel.open(filePath);
+                        FileSegment fileSegment = new FileSegment(fileChannel, 0, fileChannel.size());
+                        return service.upload100MBFile(String.valueOf(id), sas, "BlockBlob", fileSegment).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
+                            @Override
+                            public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
+                                fileChannel.close();
+                                String base64MD5 = response.rawHeaders().get("Content-MD5");
+                                byte[] receivedMD5 = BaseEncoding.base64().decode(base64MD5);
+                                assertArrayEquals(md5, receivedMD5);
+                                LoggerFactory.getLogger(getClass()).info("Finished upload for id " + id);
+                                return Completable.complete();
+                            }
+                        });
+                    }
+                }).flatMapCompletable(Functions.<Completable>identity()).blockingAwait();
+
+        String timeTakenString = PeriodFormat.getDefault().print(new Duration(start, Instant.now()).toPeriod());
+        LoggerFactory.getLogger(getClass()).info("Upload took " + timeTakenString);
     }
 
     @Test
