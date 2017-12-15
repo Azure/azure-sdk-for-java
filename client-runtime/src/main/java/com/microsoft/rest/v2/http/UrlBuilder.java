@@ -22,7 +22,13 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withScheme(String scheme) {
-        return with(scheme, UrlTokenizerState.SCHEME);
+        if (scheme == null || scheme.isEmpty()) {
+            this.scheme = null;
+        }
+        else {
+            with(scheme, UrlTokenizerState.SCHEME);
+        }
+        return this;
     }
 
     /**
@@ -39,7 +45,13 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withHost(String host) {
-        return with(host, UrlTokenizerState.SCHEME_OR_HOST);
+        if (host == null || host.isEmpty()) {
+            this.host = null;
+        }
+        else {
+            with(host, UrlTokenizerState.SCHEME_OR_HOST);
+        }
+        return this;
     }
 
     /**
@@ -56,7 +68,13 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPort(String port) {
-        return with(port, UrlTokenizerState.PORT);
+        if (port == null || port.isEmpty()) {
+            this.port = null;
+        }
+        else {
+            with(port, UrlTokenizerState.PORT);
+        }
+        return this;
     }
 
     /**
@@ -82,7 +100,13 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withPath(String path) {
-        return with(path, UrlTokenizerState.PATH);
+        if (path == null || path.isEmpty()) {
+            this.path = null;
+        }
+        else {
+            with(path, UrlTokenizerState.PATH);
+        }
+        return this;
     }
 
     /**
@@ -117,7 +141,13 @@ public class UrlBuilder {
      * @return This UrlBuilder so that multiple setters can be chained together.
      */
     public UrlBuilder withQuery(String query) {
-        return with(query, UrlTokenizerState.QUERY);
+        if (query == null || query.isEmpty()) {
+            this.query = null;
+        }
+        else {
+            with(query, UrlTokenizerState.QUERY);
+        }
+        return this;
     }
 
     /**
@@ -130,6 +160,7 @@ public class UrlBuilder {
 
     private UrlBuilder with(String text, UrlTokenizerState startState) {
         final UrlTokenizer tokenizer = new UrlTokenizer(text, startState);
+
         while (tokenizer.next()) {
             final UrlToken token = tokenizer.current();
             final String tokenText = token.text();
@@ -148,7 +179,10 @@ public class UrlBuilder {
                     break;
 
                 case PATH:
-                    path = emptyToNull(tokenText);
+                    final String tokenPath = emptyToNull(tokenText);
+                    if (path == null || path.equals("/") || !tokenPath.equals("/")) {
+                        path = tokenPath;
+                    }
                     break;
 
                 case QUERY:

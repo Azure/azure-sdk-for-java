@@ -13,6 +13,30 @@ public class UrlBuilderTests {
     }
 
     @Test
+    public void withSchemeWhenSchemeIsNull() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withScheme("http");
+        builder.withScheme(null);
+        assertNull(builder.scheme());
+    }
+
+    @Test
+    public void withSchemeWhenSchemeIsEmpty() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withScheme("http");
+        builder.withScheme("");
+        assertNull(builder.scheme());
+    }
+
+    @Test
+    public void withSchemeWhenSchemeIsNotEmpty() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withScheme("http");
+        builder.withScheme("https");
+        assertEquals("https", builder.scheme());
+    }
+
+    @Test
     public void withSchemeWhenSchemeContainsTerminator() {
         final UrlBuilder builder = new UrlBuilder()
                 .withScheme("http://");
@@ -51,6 +75,30 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withHost("www.example.com");
         assertEquals("www.example.com", builder.toString());
+    }
+
+    @Test
+    public void withHostWhenHostIsNull() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withHost("www.example.com");
+        builder.withHost(null);
+        assertNull(builder.host());
+    }
+
+    @Test
+    public void withHostWhenHostIsEmpty() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withHost("www.example.com");
+        builder.withHost("");
+        assertNull(builder.host());
+    }
+
+    @Test
+    public void withHostWhenHostIsNotEmpty() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withHost("www.example.com");
+        builder.withHost("www.bing.com");
+        assertEquals("www.bing.com", builder.host());
     }
 
     @Test
@@ -257,6 +305,30 @@ public class UrlBuilderTests {
     }
 
     @Test
+    public void withPortStringWhenPortIsNull() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withPort(8080);
+        builder.withPort(null);
+        assertNull(builder.port());
+    }
+
+    @Test
+    public void withPortStringWhenPortIsEmpty() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withPort(8080);
+        builder.withPort("");
+        assertNull(builder.port());
+    }
+
+    @Test
+    public void withPortStringWhenPortIsNotEmpty() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withPort(8080);
+        builder.withPort("123");
+        assertEquals(123, builder.port().intValue());
+    }
+
+    @Test
     public void withSchemeAndHostAndOneQueryParameter() {
         final UrlBuilder builder = new UrlBuilder()
                 .withScheme("http")
@@ -320,6 +392,66 @@ public class UrlBuilderTests {
                 .addQueryParameter("C", "D")
                 .withPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&C=D", builder.toString());
+    }
+
+    @Test
+    public void withPathWhenBuilderPathIsNullAndPathIsNull() {
+        final UrlBuilder builder = new UrlBuilder();
+        builder.withPath(null);
+        assertNull(builder.path());
+    }
+
+    @Test
+    public void withPathWhenBuilderPathIsNullAndPathIsEmptyString() {
+        final UrlBuilder builder = new UrlBuilder();
+        builder.withPath("");
+        assertNull(builder.path());
+    }
+
+    @Test
+    public void withPathWhenBuilderPathIsNullAndPathIsForwardSlash() {
+        final UrlBuilder builder = new UrlBuilder();
+        builder.withPath("/");
+        assertEquals("/", builder.path());
+    }
+
+    @Test
+    public void withPathWhenBuilderPathIsNullAndPath() {
+        final UrlBuilder builder = new UrlBuilder();
+        builder.withPath("test/path.html");
+        assertEquals("test/path.html", builder.path());
+    }
+
+    @Test
+    public void withPathWhenBuilderPathIsForwardSlashAndPathIsNull() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withPath("/");
+        builder.withPath(null);
+        assertNull(builder.path());
+    }
+
+    @Test
+    public void withPathWhenBuilderPathIsForwardSlashAndPathIsEmptyString() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withPath("/");
+        builder.withPath("");
+        assertNull(builder.path());
+    }
+
+    @Test
+    public void withPathWhenBuilderPathIsForwardSlashAndPathIsForwardSlash() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withPath("/");
+        builder.withPath("/");
+        assertEquals("/", builder.path());
+    }
+
+    @Test
+    public void withPathWhenBuilderPathIsForwardSlashAndPath() {
+        final UrlBuilder builder = new UrlBuilder()
+            .withPath("/");
+        builder.withPath("test/path.html");
+        assertEquals("test/path.html", builder.path());
     }
 
     @Test

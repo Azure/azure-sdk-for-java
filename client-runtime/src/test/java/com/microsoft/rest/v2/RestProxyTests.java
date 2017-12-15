@@ -1321,6 +1321,21 @@ public abstract class RestProxyTests {
         assertEquals(27, bytes.length);
     }
 
+    @Host("http://httpbin.org/")
+    interface Service23 {
+        @GET("bytes/28")
+        byte[] getBytes();
+    }
+
+    @Test
+    public void service23GetBytes() {
+        final byte[] bytes = createService(Service23.class)
+            .getBytes();
+        assertNotNull(bytes);
+        assertEquals(28, bytes.length);
+    }
+
+
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
