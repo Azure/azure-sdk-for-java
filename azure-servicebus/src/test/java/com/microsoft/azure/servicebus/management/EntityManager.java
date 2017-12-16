@@ -65,7 +65,7 @@ public class EntityManager {
         }
         catch(Exception e)
         {
-            throw new ManagementException("EntityCreation failed.", e);
+            throw new ManagementException("Entity deletion failed.", e);
         }
     }
     

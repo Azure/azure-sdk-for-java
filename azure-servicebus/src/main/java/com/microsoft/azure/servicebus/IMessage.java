@@ -110,7 +110,7 @@ public interface IMessage {
      * is incremented and the message is again available for retrieval. This property is read-only.
             
      * @return the instant at which the lock of this message expires if the message is received using PEEKLOCK mode. Otherwise it returns null.
-     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement>Message transfers, locks, and settlement</a>
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/message-transfers-locks-settlement">Message transfers, locks, and settlement</a>
      */
     public Instant getLockedUntilUtc();
 
