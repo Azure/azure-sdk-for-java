@@ -161,7 +161,7 @@ public class HttpRequest {
      * @return This HttpRequest so that multiple operations can be chained together.
      */
     public HttpRequest withBody(byte[] body, String mimeContentType) {
-        return withBody(new FlowableHttpRequestBody(body.length, mimeContentType, Flowable.just(body)));
+        return withBody(new FlowableHttpRequestBody(body.length, mimeContentType, Flowable.just(body), true));
     }
 
     /**

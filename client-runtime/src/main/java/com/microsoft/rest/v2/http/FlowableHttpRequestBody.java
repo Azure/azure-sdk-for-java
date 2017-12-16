@@ -17,19 +17,21 @@ public final class FlowableHttpRequestBody implements HttpRequestBody {
     private final long contentLength;
     private final String contentType;
 
-    private boolean isBuffered = false;
+    private boolean isReplayable;
     private Flowable<byte[]> content;
 
     /**
      * Create a new FlowableHttpRequestBody.
-     * @param contentLength The number of bytes in the content within the provided InputStream.
-     * @param contentType The MIME type of the content.
-     * @param content The InputStream content.
+     * @param contentLength the number of bytes in the content emitted by the provided Flowable
+     * @param contentType the MIME type of the content
+     * @param content the Flowable content
+     * @param isReplayable indicates whether the content Flowable allows multiple subscription
      */
-    public FlowableHttpRequestBody(long contentLength, String contentType, Flowable<byte[]> content) {
+    public FlowableHttpRequestBody(long contentLength, String contentType, Flowable<byte[]> content, boolean isReplayable) {
         this.contentLength = contentLength;
         this.contentType = contentType;
         this.content = content;
+        this.isReplayable = isReplayable;
     }
 
     @Override
@@ -49,9 +51,9 @@ public final class FlowableHttpRequestBody implements HttpRequestBody {
 
     @Override
     public HttpRequestBody buffer() throws IOException {
-        if (!isBuffered) {
+        if (!isReplayable) {
             content = content.replay().autoConnect();
-            isBuffered = true;
+            isReplayable = true;
         }
         return this;
     }

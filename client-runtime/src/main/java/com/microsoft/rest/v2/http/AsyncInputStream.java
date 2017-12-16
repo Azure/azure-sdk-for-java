@@ -25,15 +25,19 @@ public final class AsyncInputStream {
     private static final int CHUNK_SIZE = 8192;
     private final Flowable<byte[]> content;
     private final long contentLength;
+    private final boolean isReplayable;
 
     /**
      * Creates an AsyncInputStream.
      * @param flowable The flowable which emits the stream content.
      * @param contentLength The total length of the stream content.
+     * @param isReplayable indicates whether the flowable allows multiple subscription.
+     *                     Used as a hint for whether to buffer flowable content when retrying.
      */
-    public AsyncInputStream(Flowable<byte[]> flowable, long contentLength) {
+    public AsyncInputStream(Flowable<byte[]> flowable, long contentLength, boolean isReplayable) {
         this.content = flowable;
         this.contentLength = contentLength;
+        this.isReplayable = isReplayable;
     }
 
     /**
@@ -48,6 +52,14 @@ public final class AsyncInputStream {
      */
     public long contentLength() {
         return contentLength;
+    }
+
+    /**
+     * @return a value indicating whether the content Flowable contained
+     *         in this AsyncInputStream supports multiple subscription
+     */
+    public boolean isReplayable() {
+        return isReplayable;
     }
 
     /**
@@ -78,7 +90,7 @@ public final class AsyncInputStream {
             }
         });
 
-        return new AsyncInputStream(fileStream, length);
+        return new AsyncInputStream(fileStream, length, true);
     }
 
     /**
@@ -126,6 +138,6 @@ public final class AsyncInputStream {
                     }
                 });
 
-        return new AsyncInputStream(content, contentLength);
+        return new AsyncInputStream(content, contentLength, false);
     }
 }

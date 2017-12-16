@@ -24,6 +24,7 @@ import com.microsoft.rest.v2.http.FileSegment;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.policy.LoggingPolicy;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
@@ -33,10 +34,12 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
@@ -1340,12 +1343,16 @@ public abstract class RestProxyTests {
     }
 
     @Test
-    public void FlowableUploadTest() {
-        byte[] data = "This is my data.".getBytes(Charsets.UTF_8);
-        RestResponse<Void, HttpBinJSON> response = createService(FlowableUploadService.class)
-                .put(new AsyncInputStream(Flowable.just(data), data.length));
+    public void FlowableUploadTest() throws Exception {
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        AsyncInputStream stream = AsyncInputStream.create(new FileInputStream(filePath.toFile()), Files.size(filePath));
 
-        assertEquals("This is my data.", response.body().data);
+        final HttpClient httpClient = createHttpClient();
+        // Log the body so that body buffering/replay behavior is exercised.
+        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new LoggingPolicy.Factory(LoggingPolicy.LogLevel.BODY));
+        RestResponse<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream);
+
+        assertEquals("The quick brown fox jumps over the lazy dog", response.body().data);
     }
 
     @Test

@@ -27,7 +27,7 @@ public class HttpRequestTests {
                 "request http method",
                 "request url",
                 headers,
-                new FlowableHttpRequestBody(0, "application/octet-stream", Flowable.just(new byte[0])));
+                new FlowableHttpRequestBody(0, "application/octet-stream", Flowable.just(new byte[0]), true));
 
         final HttpRequest bufferedRequest = request.buffer();
 

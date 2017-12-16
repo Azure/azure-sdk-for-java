@@ -314,7 +314,7 @@ public class RestProxy implements InvocationHandler {
             }
             else if (bodyContentObject instanceof AsyncInputStream) {
                 AsyncInputStream stream = (AsyncInputStream) bodyContentObject;
-                request.withBody(new FlowableHttpRequestBody(stream.contentLength(), contentType, stream.content()));
+                request.withBody(new FlowableHttpRequestBody(stream.contentLength(), contentType, stream.content(), stream.isReplayable()));
             }
             else if (bodyContentObject instanceof FileSegment) {
                 request.withBody(new FileRequestBody((FileSegment) bodyContentObject));
