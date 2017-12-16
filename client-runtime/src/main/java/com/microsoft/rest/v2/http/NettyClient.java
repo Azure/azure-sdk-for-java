@@ -266,7 +266,6 @@ public final class NettyClient extends HttpClient {
 
                                     @Override
                                     public void onNext(byte[] bytes) {
-
                                         channel.writeAndFlush(new DefaultHttpContent(Unpooled.wrappedBuffer(bytes)))
                                                 .addListener(onChannelWriteComplete);
 

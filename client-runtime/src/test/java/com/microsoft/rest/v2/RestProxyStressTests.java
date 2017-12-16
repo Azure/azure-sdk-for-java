@@ -20,6 +20,7 @@ import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.BiFunction;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -33,6 +34,7 @@ import org.joda.time.format.PeriodFormat;
 import org.junit.AfterClass;
 import org.junit.Ignore;
 import org.junit.Test;
+import org.reactivestreams.Publisher;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
@@ -167,6 +169,9 @@ public class RestProxyStressTests {
         @ExpectedResponses({ 201 })
         @PUT("/javasdktest/upload/100m-{id}.dat?{sas}")
         Single<RestResponse<Void, Void>> upload100MBFile(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas, @HeaderParam("x-ms-blob-type") String blobType, @BodyParam(ContentType.APPLICATION_OCTET_STREAM) FileSegment segment);
+
+        @GET("/javasdktest/upload/100m-{id}.dat?{sas}")
+        Single<RestResponse<Void, Flowable<byte[]>>> downloadPreviouslyUploaded100MFile(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
     }
 
     private static final byte[] MD5_1KB = { 70, -110, 110, -84, -35, 116, 118, 2, -22, 8, 117, -65, -106, 61, -36, 58 };
@@ -553,7 +558,7 @@ public class RestProxyStressTests {
     }
 
     @Test
-    public void upload100MParallelPooledPrewrittenFilesTest() throws Exception {
+    public void uploadDownload100MParallelPooledTest() throws Exception {
         final String sas = System.getenv("JAVA_SDK_TEST_SAS");
         HttpHeaders headers = new HttpHeaders()
                 .set("x-ms-version", "2017-04-17");
@@ -561,8 +566,8 @@ public class RestProxyStressTests {
         HttpPipeline pipeline = HttpPipeline.build(
                 new AddDatePolicy.Factory(),
                 new AddHeadersPolicy.Factory(headers),
-                new LoggingPolicy.Factory(LogLevel.BASIC),
-                new ThrottlingRetryPolicyFactory());
+                new ThrottlingRetryPolicyFactory(),
+                new LoggingPolicy.Factory(LogLevel.BASIC));
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
         deleteRecursive(tempFolderPath);
@@ -615,6 +620,32 @@ public class RestProxyStressTests {
 
         String timeTakenString = PeriodFormat.getDefault().print(new Duration(start, Instant.now()).toPeriod());
         LoggerFactory.getLogger(getClass()).info("Upload took " + timeTakenString);
+
+        Flowable.range(0, numFiles)
+                .zipWith(md5s, new BiFunction<Integer, byte[], Completable>() {
+                    @Override
+                    public Completable apply(Integer integer, final byte[] md5) throws Exception {
+                        final int id = integer;
+                        return service.downloadPreviouslyUploaded100MFile(String.valueOf(id), sas).flatMapCompletable(new Function<RestResponse<Void, Flowable<byte[]>>, CompletableSource>() {
+                            @Override
+                            public CompletableSource apply(RestResponse<Void, Flowable<byte[]>> response) throws Exception {
+                                return response.body().collectInto(MessageDigest.getInstance("MD5"), new BiConsumer<MessageDigest, byte[]>() {
+                                    @Override
+                                    public void accept(MessageDigest messageDigest, byte[] bytes) throws Exception {
+                                        messageDigest.update(bytes);
+                                    }
+                                }).flatMapCompletable(new Function<MessageDigest, CompletableSource>() {
+                                    @Override
+                                    public CompletableSource apply(MessageDigest messageDigest) throws Exception {
+                                        assertArrayEquals(md5, messageDigest.digest());
+                                        LoggerFactory.getLogger(getClass()).info("Finished downloading and MD5 validated for " + id);
+                                        return Completable.complete();
+                                    }
+                                });
+                            }
+                        });
+                    }
+                }).flatMapCompletable(Functions.<Completable>identity()).blockingAwait();
     }
 
     @Test
