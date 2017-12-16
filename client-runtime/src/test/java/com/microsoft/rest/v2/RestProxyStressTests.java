@@ -621,6 +621,7 @@ public class RestProxyStressTests {
         String timeTakenString = PeriodFormat.getDefault().print(new Duration(start, Instant.now()).toPeriod());
         LoggerFactory.getLogger(getClass()).info("Upload took " + timeTakenString);
 
+        Instant downloadStart = Instant.now();
         Flowable.range(0, numFiles)
                 .zipWith(md5s, new BiFunction<Integer, byte[], Completable>() {
                     @Override
@@ -646,6 +647,8 @@ public class RestProxyStressTests {
                         });
                     }
                 }).flatMapCompletable(Functions.<Completable>identity()).blockingAwait();
+        String downloadTimeTakenString = PeriodFormat.getDefault().print(new Duration(downloadStart, Instant.now()).toPeriod());
+        LoggerFactory.getLogger(getClass()).info("Download took " + downloadTimeTakenString);
     }
 
     @Test
