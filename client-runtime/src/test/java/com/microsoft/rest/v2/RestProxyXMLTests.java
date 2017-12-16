@@ -8,6 +8,7 @@
 package com.microsoft.rest.v2;
 
 import com.google.common.base.Charsets;
+import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.annotations.BodyParam;
@@ -26,6 +27,9 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpResponse;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
+import com.microsoft.rest.v2.util.FlowableUtil;
+import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import io.reactivex.Single;
@@ -91,16 +95,17 @@ public class RestProxyXMLTests {
 
         @Override
         public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
-            try {
-                if (request.url().endsWith("SetContainerACLs")) {
-                    InputStream is = request.body().createInputStream();
-                    receivedBytes = ByteStreams.toByteArray(is);
-                    return Single.<HttpResponse>just(new MockHttpResponse(200));
-                } else {
-                    return Single.<HttpResponse>just(new MockHttpResponse(404));
-                }
-            } catch (IOException e) {
-                return Single.error(e);
+            if (request.url().endsWith("SetContainerACLs")) {
+                return FlowableUtil.collectBytes(request.body().content())
+                        .map(new Function<byte[], HttpResponse>() {
+                            @Override
+                            public HttpResponse apply(byte[] bytes) throws Exception {
+                                receivedBytes = bytes;
+                                return new MockHttpResponse(200);
+                            }
+                        });
+            } else {
+                return Single.<HttpResponse>just(new MockHttpResponse(404));
             }
         }
     }

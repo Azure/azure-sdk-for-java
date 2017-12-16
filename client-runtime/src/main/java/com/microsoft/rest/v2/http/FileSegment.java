@@ -6,7 +6,6 @@
 
 package com.microsoft.rest.v2.http;
 
-import java.io.IOException;
 import java.nio.channels.FileChannel;
 
 /**
@@ -15,7 +14,7 @@ import java.nio.channels.FileChannel;
 public class FileSegment {
     private final FileChannel fileChannel;
     private final long offset;
-    private final int length;
+    private final long length;
 
     /**
      * Create a new FileSegment with the provided file.
@@ -24,18 +23,12 @@ public class FileSegment {
      * @param offset the starting byte index in the file
      * @param length the length of the bytes to send
      */
-    public FileSegment(FileChannel fileChannel, long offset, int length) {
-        if (fileChannel == null || !fileChannel.isOpen()) {
-            throw new IllegalArgumentException("File channel is null or closed.");
+    public FileSegment(FileChannel fileChannel, long offset, long length) {
+        if (fileChannel == null) {
+            throw new IllegalArgumentException("file cannot be null");
         }
-        try {
-            if (offset + length > fileChannel.size()) {
-                throw new IndexOutOfBoundsException("Position " + offset + " + length " + length + " but file size " + fileChannel.size());
-            }
-            this.fileChannel = fileChannel;
-        } catch (IOException e) {
-            throw new IllegalArgumentException("Unable to read from file.", e);
-        }
+
+        this.fileChannel = fileChannel;
         this.offset = offset;
         this.length = length;
     }
@@ -43,7 +36,7 @@ public class FileSegment {
     /**
      * @return the length of the data to read from the file.
      */
-    public int length() {
+    public long length() {
         return length;
     }
 
@@ -55,7 +48,7 @@ public class FileSegment {
     }
 
     /**
-     * @return the channel to the file.
+     * @return the file channel.
      */
     public FileChannel fileChannel() {
         return fileChannel;

@@ -1,5 +1,6 @@
 package com.microsoft.rest.v2.http;
 
+import io.reactivex.Flowable;
 import org.junit.Test;
 
 import java.io.IOException;
@@ -26,7 +27,7 @@ public class HttpRequestTests {
                 "request http method",
                 "request url",
                 headers,
-                new ByteArrayHttpRequestBody(new byte[0], "application/octet-stream"));
+                new FlowableHttpRequestBody(0, "application/octet-stream", Flowable.just(new byte[0]), true));
 
         final HttpRequest bufferedRequest = request.buffer();
 

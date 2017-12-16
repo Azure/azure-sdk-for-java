@@ -6,11 +6,14 @@
 
 package com.microsoft.rest.v2.policy;
 
-import com.microsoft.rest.v2.http.ByteArrayHttpRequestBody;
+import com.google.common.base.Charsets;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.util.FlowableUtil;
 import io.netty.handler.codec.http.HttpResponseStatus;
+import io.reactivex.Completable;
+import io.reactivex.CompletableSource;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import io.reactivex.Single;
@@ -23,6 +26,7 @@ import java.util.concurrent.TimeUnit;
  * An OkHttp interceptor that handles logging of HTTP requests and responses.
  */
 public final class LoggingPolicy implements RequestPolicy {
+    private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
     private final RequestPolicy next;
 
     /**
@@ -83,18 +87,37 @@ public final class LoggingPolicy implements RequestPolicy {
             }
         }
 
-        if (logLevel.shouldLogBody() && request.body() != null) {
-            // TODO: maximum content-length?
-            // TODO: check MIME type?
-            if (request.body() instanceof ByteArrayHttpRequestBody) {
-                String bodyString = new String(((ByteArrayHttpRequestBody) request.body()).content());
-                log(logger, String.format("%s-byte body:\n%s", request.body().contentLength(), bodyString));
+        Completable bodyLoggingTask = Completable.complete();
+        if (logLevel.shouldLogBody()) {
+            if (request.body() == null) {
+                log(logger, "(empty body)");
                 log(logger, "--> END " + request.httpMethod());
+            } else {
+                boolean isHumanReadableContentType = !"application/octet-stream".equalsIgnoreCase(request.body().contentType());
+                if (request.body().contentLength() < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
+                    try {
+                        Single<byte[]> collectedBytes = FlowableUtil.collectBytes(request.body().buffer().content());
+                        bodyLoggingTask = collectedBytes.flatMapCompletable(new Function<byte[], CompletableSource>() {
+                            @Override
+                            public CompletableSource apply(byte[] bytes) throws Exception {
+                                String bodyString = new String(bytes, Charsets.UTF_8);
+                                log(logger, String.format("%s-byte body:\n%s", request.body().contentLength(), bodyString));
+                                log(logger, "--> END " + request.httpMethod());
+                                return Completable.complete();
+                            }
+                        });
+                    } catch (Exception e) {
+                        bodyLoggingTask = Completable.error(e);
+                    }
+                } else {
+                    log(logger, request.body().contentLength() + "-byte body: (content not logged)");
+                    log(logger, "--> END " + request.httpMethod());
+                }
             }
         }
 
         final long startNs = System.nanoTime();
-        return next.sendAsync(request).flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
+        return bodyLoggingTask.andThen(next.sendAsync(request)).flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
             @Override
             public Single<HttpResponse> apply(HttpResponse httpResponse) {
                 long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
@@ -109,12 +132,12 @@ public final class LoggingPolicy implements RequestPolicy {
     }
 
     private Single<HttpResponse> logResponse(final Logger logger, final HttpResponse response, String url, long tookMs) {
+        String contentLengthString = response.headerValue("Content-Length");
         String bodySize;
-        try {
-            long contentLength = Long.parseLong(response.headerValue("Content-Length"));
-            bodySize = contentLength != -1 ? contentLength + "-byte" : "unknown-length";
-        } catch (NumberFormatException e) {
+        if (contentLengthString == null || contentLengthString.isEmpty()) {
             bodySize = "unknown-length";
+        } else {
+            bodySize = contentLengthString + "-byte";
         }
 
         HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
@@ -129,21 +152,28 @@ public final class LoggingPolicy implements RequestPolicy {
         }
 
         if (logLevel.shouldLogBody()) {
+            long contentLength = -1;
+            try {
+                if (contentLengthString != null) {
+                    contentLength = Long.parseLong(contentLengthString);
+                }
+            } catch (NumberFormatException ignored) {
+            }
+
             String contentTypeHeader = response.headerValue("Content-Type");
-            if ((contentTypeHeader == null
-                    || "application/json".equals(contentTypeHeader))
-                    || "application/xml".equals(contentTypeHeader)) {
+            if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
+                    && contentLength != -1 && contentLength < MAX_BODY_LOG_SIZE) {
                 final HttpResponse bufferedResponse = response.buffer();
                 return bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
                     @Override
                     public HttpResponse apply(String s) {
-                        log(logger, s);
+                        log(logger, "Response body:\n" + s);
                         log(logger, "<-- END HTTP");
                         return bufferedResponse;
                     }
                 });
             } else {
-                log(logger, "Not logging response body because the Content-Type is " + contentTypeHeader);
+                log(logger, "(body content not logged)");
                 log(logger, "<-- END HTTP");
             }
         } else {
@@ -184,6 +214,7 @@ public final class LoggingPolicy implements RequestPolicy {
          */
         BODY_AND_HEADERS;
 
+        // FIXME: this flag is not currently honored
         private boolean prettyJson = false;
 
         /**

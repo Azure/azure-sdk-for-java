@@ -6,8 +6,9 @@
 
 package com.microsoft.rest.v2.http;
 
+import io.reactivex.Flowable;
+
 import java.io.IOException;
-import java.io.InputStream;
 
 /**
  * The body of an HTTP request.
@@ -17,7 +18,7 @@ public interface HttpRequestBody {
      * The length of this request body in bytes.
      * @return The length of this request body in bytes.
      */
-    int contentLength();
+    long contentLength();
 
     /**
      * @return the MIME Content-Type of this request body.
@@ -25,10 +26,9 @@ public interface HttpRequestBody {
     String contentType();
 
     /**
-     * Create an InputStream that contains the contents of this request body.
-     * @return An InputStream that contains the contents of this request body.
+     * @return A Flowable which provides this request body's content upon subscription.
      */
-    InputStream createInputStream();
+    Flowable<byte[]> content();
 
     /**
      * Get a buffered version of this HttpRequestBody. If this HttpRequestBody

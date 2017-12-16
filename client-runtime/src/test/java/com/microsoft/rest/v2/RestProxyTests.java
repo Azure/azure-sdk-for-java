@@ -1,23 +1,48 @@
 package com.microsoft.rest.v2;
 
-import com.microsoft.rest.v2.annotations.*;
+import com.google.common.base.Charsets;
+import com.microsoft.rest.v2.annotations.BodyParam;
+import com.microsoft.rest.v2.annotations.DELETE;
+import com.microsoft.rest.v2.annotations.ExpectedResponses;
+import com.microsoft.rest.v2.annotations.GET;
+import com.microsoft.rest.v2.annotations.HEAD;
+import com.microsoft.rest.v2.annotations.HeaderParam;
+import com.microsoft.rest.v2.annotations.Headers;
+import com.microsoft.rest.v2.annotations.Host;
+import com.microsoft.rest.v2.annotations.HostParam;
+import com.microsoft.rest.v2.annotations.PATCH;
+import com.microsoft.rest.v2.annotations.POST;
+import com.microsoft.rest.v2.annotations.PUT;
+import com.microsoft.rest.v2.annotations.PathParam;
+import com.microsoft.rest.v2.annotations.QueryParam;
+import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v2.entities.HttpBinHeaders;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
+import com.microsoft.rest.v2.http.AsyncInputStream;
 import com.microsoft.rest.v2.http.ContentType;
+import com.microsoft.rest.v2.http.FileSegment;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.policy.LoggingPolicy;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
-import io.reactivex.Completable;
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
-import io.reactivex.Single;
 import org.junit.Assert;
 import org.junit.Test;
+import io.reactivex.Completable;
+import io.reactivex.Observable;
+import io.reactivex.Single;
 
+import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -1276,7 +1301,7 @@ public abstract class RestProxyTests {
             assertEquals("Status code 200, (1024-byte body)", e.getMessage());
         }
     }
-    
+
     @Host("https://www.example.com")
     private interface Service21 {
         @GET("http://httpbin.org/bytes/100")
@@ -1306,6 +1331,48 @@ public abstract class RestProxyTests {
             count.addAndGet(bytes.length);
         }
         assertEquals(30720, count.intValue());
+    }
+
+    @Host("http://httpbin.org")
+    interface FlowableUploadService {
+        @PUT("/put")
+        RestResponse<Void, HttpBinJSON> put(@BodyParam("text/plain") AsyncInputStream content);
+
+        @PUT("/put")
+        RestResponse<Void, HttpBinJSON> put(@BodyParam("text/plain") FileSegment content);
+    }
+
+    @Test
+    public void FlowableUploadTest() throws Exception {
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        AsyncInputStream stream = AsyncInputStream.create(new FileInputStream(filePath.toFile()), Files.size(filePath));
+
+        final HttpClient httpClient = createHttpClient();
+        // Log the body so that body buffering/replay behavior is exercised.
+        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new LoggingPolicy.Factory(LoggingPolicy.LogLevel.BODY));
+        RestResponse<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream);
+
+        assertEquals("The quick brown fox jumps over the lazy dog", response.body().data);
+    }
+
+    @Test
+    public void SegmentUploadTest() throws Exception {
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
+        RestResponse<Void, HttpBinJSON> response = createService(FlowableUploadService.class)
+                .put(AsyncInputStream.create(fileChannel, 4, 15));
+
+        assertEquals("quick brown fox", response.body().data);
+    }
+
+    @Test
+    public void FileSegmentUploadTest() throws Exception {
+        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
+        FileChannel fileChannel = FileChannel.open(filePath, StandardOpenOption.READ);
+        RestResponse<Void, HttpBinJSON> response = createService(FlowableUploadService.class)
+                .put(new FileSegment(fileChannel, 4, 15));
+
+        assertEquals("quick brown fox", response.body().data);
     }
 
     @Host("{url}")
