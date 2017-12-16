@@ -86,6 +86,41 @@ public class RestProxyStressTests {
         }
     }
 
+    static class ThrottlingRetryPolicyFactory implements RequestPolicyFactory {
+        @Override
+        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
+            return new ThrottlingRetryPolicy(next);
+        }
+
+        static class ThrottlingRetryPolicy implements RequestPolicy {
+            private final RequestPolicy next;
+
+            ThrottlingRetryPolicy(RequestPolicy next) {
+                this.next = next;
+            }
+
+            @Override
+            public Single<HttpResponse> sendAsync(HttpRequest request) {
+                return sendAsync(request, 1);
+            }
+
+            Single<HttpResponse> sendAsync(final HttpRequest request, final int waitTimeSeconds) {
+                return next.sendAsync(request).flatMap(new Function<HttpResponse, Single<? extends HttpResponse>>() {
+                    @Override
+                    public Single<? extends HttpResponse> apply(HttpResponse httpResponse) throws Exception {
+                        if (httpResponse.statusCode() != 503 && httpResponse.statusCode() != 500) {
+                            return Single.just(httpResponse);
+                        } else {
+                            LoggerFactory.getLogger(getClass()).warn("Received " + httpResponse.statusCode() + " for request. Waiting " + waitTimeSeconds + " seconds before retry.");
+                            return Completable.complete().delay(waitTimeSeconds, TimeUnit.SECONDS)
+                                    .andThen(sendAsync(request, waitTimeSeconds * 2));
+                        }
+                    }
+                });
+            }
+        }
+    }
+
     @AfterClass
     public static void teardown() throws IOException {
         deleteRecursive(Paths.get("temp"));
@@ -526,7 +561,8 @@ public class RestProxyStressTests {
         HttpPipeline pipeline = HttpPipeline.build(
                 new AddDatePolicy.Factory(),
                 new AddHeadersPolicy.Factory(headers),
-                new LoggingPolicy.Factory(LogLevel.BASIC));
+                new LoggingPolicy.Factory(LogLevel.BASIC),
+                new ThrottlingRetryPolicyFactory());
 
         final IOService service = RestProxy.create(IOService.class, pipeline);
         deleteRecursive(tempFolderPath);
