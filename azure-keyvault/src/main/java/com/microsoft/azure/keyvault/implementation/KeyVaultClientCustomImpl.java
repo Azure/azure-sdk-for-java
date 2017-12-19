@@ -276,7 +276,8 @@ public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements 
                 createKeyRequest.keySize(),
                 createKeyRequest.keyOperations(),
                 createKeyRequest.keyAttributes(),
-                createKeyRequest.tags());
+                createKeyRequest.tags(),
+                createKeyRequest.curve());
     }
 
     /**
@@ -296,6 +297,7 @@ public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements 
                 createKeyRequest.keyOperations(),
                 createKeyRequest.keyAttributes(),
                 createKeyRequest.tags(),
+                createKeyRequest.curve(),
                 serviceCallback);
     }
 

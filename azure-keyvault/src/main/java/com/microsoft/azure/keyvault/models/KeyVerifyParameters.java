@@ -17,7 +17,8 @@ public class KeyVerifyParameters {
     /**
      * The signing/verification algorithm. For more information on possible
      * algorithm types, see JsonWebKeySignatureAlgorithm. Possible values
-     * include: 'RS256', 'RS384', 'RS512', 'RSNULL'.
+     * include: 'PS256', 'PS384', 'PS512', 'RS256', 'RS384', 'RS512', 'RSNULL',
+     * 'ES256', 'ES384', 'ES512', 'ECDSA256'.
      */
     @JsonProperty(value = "alg", required = true)
     private JsonWebKeySignatureAlgorithm algorithm;

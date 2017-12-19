@@ -37,6 +37,9 @@ import com.microsoft.azure.keyvault.requests.CreateKeyRequest;
 import com.microsoft.azure.keyvault.requests.ImportKeyRequest;
 import com.microsoft.azure.keyvault.requests.UpdateKeyRequest;
 import com.microsoft.azure.keyvault.models.Attributes;
+import com.microsoft.azure.keyvault.models.DeletedCertificateBundle;
+import com.microsoft.azure.keyvault.models.DeletedKeyBundle;
+import com.microsoft.azure.keyvault.models.DeletedKeyItem;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
@@ -262,8 +265,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         {
             // Delete key
-            KeyBundle deleteBundle = keyVaultClient.deleteKey(getVaultUri(), KEY_NAME);
+            DeletedKeyBundle deleteBundle = keyVaultClient.deleteKey(getVaultUri(), KEY_NAME);
             compareKeyBundles(createdBundle, deleteBundle);
+            pollOnKeyDeletion(getVaultUri(), KEY_NAME);
         }
 
         {
@@ -275,7 +279,11 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                 Assert.assertEquals("KeyNotFound", e.body().error().code());
             }
         }
-
+        
+        keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
+        if (isRecordMode()) {
+        	Thread.sleep(40000);
+        }
     }
 
     @Test
@@ -295,11 +303,20 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         byte[] keyBackup;
         {
             keyBackup = keyVaultClient.backupKey(getVaultUri(), KEY_NAME).value();
+            if (isRecordMode()) {
+            	Thread.sleep(20000);
+            }
         }
 
         // Deletes the key.
         {
             keyVaultClient.deleteKey(getVaultUri(), KEY_NAME);
+            pollOnKeyDeletion(getVaultUri(), KEY_NAME);
+        }
+        
+        keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
+        if (isRecordMode()) {
+        	Thread.sleep(40000);
         }
 
         // Restores the key.
@@ -307,7 +324,7 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
             KeyBundle restoredBundle = keyVaultClient.restoreKey(getVaultUri(), keyBackup);
             compareKeyBundles(createdBundle, restoredBundle);
         }
-
+        
     }
 
     @Test
@@ -326,7 +343,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        Thread.sleep(failureCount * 1500);
+                        if (isRecordMode()) {
+                        	Thread.sleep(failureCount * 1500);
+                        }
                         continue;
                     }
                     throw e;
@@ -351,7 +370,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
 
         for (String name : toDelete) {
             try{
-                keyVaultClient.deleteKey(getVaultUri(), name);
+                DeletedKeyBundle deletedKey = keyVaultClient.deleteKey(getVaultUri(), name);
+                Assert.assertNotNull(deletedKey);
+                pollOnKeyDeletion(getVaultUri(), name);
             }
             catch(KeyVaultErrorException e){
                 // Ignore forbidden exception for certificate keys that cannot be deleted
@@ -359,6 +380,19 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     throw e;
             }
         }
+        
+        PagedList<DeletedKeyItem> deletedListResult = keyVaultClient.getDeletedKeys(getVaultUri());
+        for (DeletedKeyItem item : deletedListResult) {
+        	if (item != null) {
+        		KeyIdentifier id = new KeyIdentifier(item.kid());
+        		Assert.assertTrue(toDelete.contains(id.name()));
+        		keyVaultClient.purgeDeletedKey(getVaultUri(), id.name());
+        		if (isRecordMode()) {
+        			Thread.sleep(40000);
+        		}
+        	}
+        }
+
     }
 
     @Test
@@ -376,7 +410,9 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        Thread.sleep(failureCount * 1500);
+                        if (isRecordMode()) {
+                        	Thread.sleep(failureCount * 1500);
+                        }
                         continue;
                     }
                     throw e;
@@ -398,6 +434,12 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertEquals(0, keys.size());
 
         keyVaultClient.deleteKey(getVaultUri(), KEY_NAME);
+        pollOnKeyDeletion(getVaultUri(), KEY_NAME);
+        
+        keyVaultClient.purgeDeletedKey(getVaultUri(), KEY_NAME);
+        if (isRecordMode()) {
+        	Thread.sleep(40000);        
+        }
     }
 
     @Test
@@ -560,12 +602,11 @@ public class KeyOperationsTest extends KeyVaultClientIntegrationTestBase {
         Assert.assertTrue(bundle.key().isValid());
     }
 
-
-
     private void compareKeyBundles(KeyBundle expected, KeyBundle actual) {
         Assert.assertTrue(expected.key().toString().equals(actual.key().toString()));
         Assert.assertEquals(expected.attributes().enabled(), actual.attributes().enabled());
         if(expected.tags() != null || actual.tags() != null)
             Assert.assertTrue(expected.tags().equals(actual.tags()));
     }
+
 }

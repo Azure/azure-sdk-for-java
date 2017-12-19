@@ -310,6 +310,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         Assert.assertNotNull(certificateOperation);
         Assert.assertTrue(certificateOperation.status().equalsIgnoreCase(STATUS_IN_PROGRESS));
 
+        
         CertificateBundle certificateBundle = pollOnCertificateOperation(certificateOperation);
         validateCertificateBundle(certificateBundle, certificatePolicy);
 
@@ -663,7 +664,9 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        Thread.sleep(failureCount * 1500);
+                        if (isRecordMode()) {
+                        	Thread.sleep(failureCount * 1500);
+                        }
                         continue;
                     }
                     throw e;
@@ -724,7 +727,9 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
                     ++failureCount;
                     if (e.body().error().code().equals("Throttled")) {
                         System.out.println("Waiting to avoid throttling");
-                        Thread.sleep(failureCount * 1500);
+                        if (isRecordMode()) {
+                        	Thread.sleep(failureCount * 1500);
+                        }
                         continue;
                     }
                     throw e;
@@ -892,7 +897,9 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             CertificateOperation pendingCertificateOperation = keyVaultClient
                     .getCertificateOperation(getVaultUri(), certificateName);
             if (pendingCertificateOperation.status().equalsIgnoreCase(STATUS_IN_PROGRESS)) {
-                Thread.sleep(10000);
+            	if (isRecordMode()) {
+            		Thread.sleep(10000);
+            	}
                 pendingPollCount += 1;
                 continue;
             }
