@@ -26,7 +26,7 @@ public enum AssetDeliveryPolicyConfigurationKey {
     None(0),
     /** Exact Envelope key URL. */
     EnvelopeKeyAcquisitionUrl(1),
-    /** Base key url that will have KID=<Guid> appended for Envelope. */
+    /** Base key url that will have KID=&lt;Guid&gt; appended for Envelope. */
     EnvelopeBaseKeyAcquisitionUrl(2),
     /** The initialization vector to use for envelope encryption in Base64 format. */
     EnvelopeEncryptionIVAsBase64(3),
@@ -38,11 +38,11 @@ public enum AssetDeliveryPolicyConfigurationKey {
     EnvelopeEncryptionIV(6),
     /** Widevine DRM Acquisition Url to use for common encryption. */
     WidevineLicenseAcquisitionUrl(7),
-    /** Base Widevine url that will have KID=<Guid> appended */
+    /** Base Widevine url that will have KID=&lt;Guid&gt; appended */
     WidevineBaseLicenseAcquisitionUrl(8),
     /** FairPlay license acquisition URL. */
     FairPlayLicenseAcquisitionUrl(9),
-    /** Base FairPlay license acquisition URL that will have KID=<Guid> appended. */
+    /** Base FairPlay license acquisition URL that will have KID=&lt;Guid&gt; appended. */
     FairPlayBaseLicenseAcquisitionUrl(10),
     /** Initialization Vector that will be used for encrypting the content. Must match 
         IV in the AssetDeliveryPolicy. */

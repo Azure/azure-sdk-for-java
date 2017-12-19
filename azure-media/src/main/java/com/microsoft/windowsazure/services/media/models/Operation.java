@@ -37,7 +37,7 @@ public final class Operation {
     /**
      * Create an operation object that will get the state of the given asset.
      * 
-     * @param assetId
+     * @param operationId
      *            id of asset to retrieve
      * @return the get operation
      */

@@ -188,7 +188,7 @@ public final class ContentKeyAuthorizationPolicyOption {
         /**
          * Set the protocol of the Asset Delivery Policy to be created.
          * 
-         * @param assetDeliveryProtocol
+         * @param keyDeliveryType
          *          The protocol
          * @return The creator object (for call chaining)
          */
@@ -200,7 +200,7 @@ public final class ContentKeyAuthorizationPolicyOption {
         /**
          * Set the type of the Asset Delivery Policy to be created.
          * 
-         * @param assetDeliveryPolicyType
+         * @param keyDeliveryConfiguration
          *          The type
          * @return The creator object (for call chaining)
          */
@@ -212,7 +212,7 @@ public final class ContentKeyAuthorizationPolicyOption {
         /**
          * Set the configuration of the Asset Delivery Policy to be created.
          * 
-         * @param assetDeliveryPolicyConfiguration
+         * @param restrictions
          *          The configuration
          * @return The creator object (for call chaining)
          */

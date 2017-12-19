@@ -237,7 +237,7 @@ public final class StreamingEndpoint {
     /**
      * Create an operation object that will get the state of the given asset.
      *
-     * @param assetId
+     * @param streamingEndpointId
      *            id of asset to retrieve
      * @return the get operation
      */
@@ -260,7 +260,7 @@ public final class StreamingEndpoint {
     /**
      * Create an operation that will update the given asset.
      *
-     * @param assetId
+     * @param streamingEndpointId
      *            id of the asset to update
      * @return the update operation
      */
@@ -287,7 +287,7 @@ public final class StreamingEndpoint {
         /**
          * Instantiates a new updater.
          *
-         * @param assetId
+         * @param streamingEndpointId
          *            the asset id
          */
         protected Updater(String streamingEndpointId) {
@@ -416,7 +416,7 @@ public final class StreamingEndpoint {
     /**
      * Create an operation to delete the given streaming endpoint
      *
-     * @param assetId
+     * @param streamingEndpointId
      *            id of asset to delete
      * @return the delete operation
      */

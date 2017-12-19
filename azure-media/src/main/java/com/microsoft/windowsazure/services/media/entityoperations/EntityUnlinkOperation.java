@@ -45,7 +45,7 @@ public class EntityUnlinkOperation extends DefaultDeleteOperation {
      *            the primary entity id
      * @param secondaryEntitySet
      *            the secondary entity set
-     * @param secondaryEntityUri
+     * @param secondaryEntityId
      *            the secondary entity id
      */
     public EntityUnlinkOperation(String primaryEntitySet, String primaryEntityId,

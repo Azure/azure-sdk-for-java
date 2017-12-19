@@ -54,7 +54,7 @@ public enum EncodingReservedUnitType {
     /**
      * Create an EncodingReservedUnitType instance from the corresponding int.
      * 
-     * @param type
+     * @param state
      *            type as integer
      * @return new EncodingReservedUnitType instance
      */

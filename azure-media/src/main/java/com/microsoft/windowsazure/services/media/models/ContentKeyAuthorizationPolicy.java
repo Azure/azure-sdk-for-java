@@ -150,11 +150,11 @@ public final class ContentKeyAuthorizationPolicy {
     
     /**
      * Unlink content key authorization policy options.
-     * 
-     * @param assetId
-     *            the asset id
-     * @param adpId
-     *            the Asset Delivery Policy id
+     *
+     * @param contentKeyAuthorizationPolicyId
+     *            the content key authorization policy id
+     * @param contentKeyAuthorizationPolicyOptionId
+     *            the content key authorization policy option id
      * @return the entity action operation
      */
     public static EntityUnlinkOperation unlinkOptions(String contentKeyAuthorizationPolicyId,

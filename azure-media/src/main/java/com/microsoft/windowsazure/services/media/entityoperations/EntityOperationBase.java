@@ -24,7 +24,7 @@ import javax.ws.rs.core.MediaType;
 import com.microsoft.windowsazure.exception.ServiceException;
 
 /**
- * Default implementation of EntityOperation<T> to provide default values for
+ * Default implementation of {@link EntityOperation} to provide default values for
  * common methods.
  * 
  */
