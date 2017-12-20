@@ -416,12 +416,12 @@ public final class StreamingEndpoint {
     /**
      * Create an operation to delete the given streaming endpoint
      *
-     * @param streamingEndpointId
+     * @param assetId
      *            id of asset to delete
      * @return the delete operation
      */
-    public static EntityDeleteOperation delete(String streamingEndpointId) {
-        return new DefaultDeleteOperation(ENTITY_SET, streamingEndpointId);
+    public static EntityDeleteOperation delete(String assetId) {
+        return new DefaultDeleteOperation(ENTITY_SET, assetId);
     }
 
     public static EntityActionOperation start(String streamingEndpointId) {

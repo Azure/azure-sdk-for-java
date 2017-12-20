@@ -37,12 +37,12 @@ public final class Operation {
     /**
      * Create an operation object that will get the state of the given asset.
      * 
-     * @param operationId
+     * @param assetId
      *            id of asset to retrieve
      * @return the get operation
      */
-    public static EntityGetOperation<OperationInfo> get(String operationId) {
-        return new DefaultGetOperation<OperationInfo>(ENTITY_SET, operationId,
+    public static EntityGetOperation<OperationInfo> get(String assetId) {
+        return new DefaultGetOperation<OperationInfo>(ENTITY_SET, assetId,
                 OperationInfo.class);
     }    
 }
