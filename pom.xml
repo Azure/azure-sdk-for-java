@@ -43,6 +43,7 @@
     <guava.version>20.0</guava.version>
     <rxjava.version>1.2.4</rxjava.version>
     <junit.version>4.12</junit.version>
+    <maven-javadoc-plugin.version>3.0.0</maven-javadoc-plugin.version>
   </properties>
 
   <developers>
@@ -297,7 +298,7 @@
       <plugin>
         <groupId>org.apache.maven.plugins</groupId>
         <artifactId>maven-javadoc-plugin</artifactId>
-        <version>2.8</version>
+        <version>${maven-javadoc-plugin.version}</version>
         <configuration>
           <excludePackageNames>*.implementation.*;*.utils.*;com.microsoft.schemas._2003._10.serialization;*.blob.core.storage</excludePackageNames>
           <bottom><![CDATA[<code>/**
