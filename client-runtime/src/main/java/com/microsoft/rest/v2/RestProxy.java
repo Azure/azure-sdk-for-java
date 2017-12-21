@@ -490,6 +490,12 @@ public class RestProxy implements InvocationHandler {
                 });
             }
             asyncResult = responseBodyBytesAsync;
+        } else if (entityTypeToken.isSubtypeOf(AsyncInputStream.class)) {
+            AsyncInputStream stream = new AsyncInputStream(
+                    response.streamBodyAsync(),
+                    Integer.parseInt(response.headerValue("Content-Length")),
+                    false);
+            asyncResult = Maybe.just(stream);
         } else if (isFlowableByteArray(entityTypeToken)) {
             asyncResult = Maybe.just(response.streamBodyAsync());
         } else {
