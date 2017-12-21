@@ -140,4 +140,13 @@ public final class AsyncInputStream {
 
         return new AsyncInputStream(content, contentLength, false);
     }
+
+    /**
+     * Creates an AsyncInputStream which emits the given byte array.
+     * @param bytes the bytes to emit in the stream
+     * @return the AsyncInputStream
+     */
+    public static AsyncInputStream create(byte[] bytes) {
+        return new AsyncInputStream(Flowable.just(bytes), bytes.length, true);
+    }
 }
