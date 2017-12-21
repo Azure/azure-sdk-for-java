@@ -283,7 +283,9 @@ public class RestProxy implements InvocationHandler {
         }
 
         final Object bodyContentObject = methodParser.body(args);
-        if (bodyContentObject != null) {
+        if (bodyContentObject == null) {
+            request.headers().set("Content-Length", "0");
+        } else {
             String contentType = methodParser.bodyContentType();
             if (contentType == null || contentType.isEmpty()) {
                 contentType = request.headers().value("Content-Type");
