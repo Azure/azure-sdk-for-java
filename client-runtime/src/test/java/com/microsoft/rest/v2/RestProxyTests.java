@@ -1321,6 +1321,9 @@ public abstract class RestProxyTests {
     interface DownloadService {
         @GET("/bytes/30720")
         RestResponse<Void, Flowable<byte[]>> getBytes();
+
+        @GET("/bytes/30720")
+        RestResponse<Void, AsyncInputStream> getBytesAsyncInputStream();
     }
 
     @Test
@@ -1328,6 +1331,16 @@ public abstract class RestProxyTests {
         RestResponse<Void, Flowable<byte[]>> response = createService(DownloadService.class).getBytes();
         final AtomicInteger count = new AtomicInteger();
         for (byte[] bytes : response.body().blockingIterable()) {
+            count.addAndGet(bytes.length);
+        }
+        assertEquals(30720, count.intValue());
+    }
+
+    @Test
+    public void SimpleDownloadAsyncInputStreamTest() {
+        RestResponse<Void, AsyncInputStream> response = createService(DownloadService.class).getBytesAsyncInputStream();
+        final AtomicInteger count = new AtomicInteger();
+        for (byte[] bytes : response.body().content().blockingIterable()) {
             count.addAndGet(bytes.length);
         }
         assertEquals(30720, count.intValue());
