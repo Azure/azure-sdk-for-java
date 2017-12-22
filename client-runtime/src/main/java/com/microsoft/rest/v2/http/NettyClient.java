@@ -152,6 +152,7 @@ public final class NettyClient extends HttpClient {
 
                             if (responseEmitter.isDisposed()) {
                                 channel.close();
+                                channelPool.release(channel);
                                 return;
                             }
 
@@ -164,6 +165,7 @@ public final class NettyClient extends HttpClient {
                                     isDisposed = true;
                                     if (!inboundHandler.didEmitHttpResponse) {
                                         channel.close();
+                                        channelPool.release(channel);
                                     }
                                 }
 
