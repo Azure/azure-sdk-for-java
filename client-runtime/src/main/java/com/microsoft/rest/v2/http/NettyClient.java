@@ -33,6 +33,7 @@ import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
+import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Subscriber;
@@ -139,13 +140,39 @@ public final class NettyClient extends HttpClient {
                         @Override
                         public void operationComplete(Future<? super Channel> cf) {
                             if (!cf.isSuccess()) {
-                                responseEmitter.onError(cf.cause());
+                                if (!responseEmitter.isDisposed()) {
+                                    responseEmitter.onError(cf.cause());
+                                }
+
                                 return;
                             }
 
                             final Channel channel = (Channel) cf.getNow();
-
                             final HttpClientInboundHandler inboundHandler = channel.pipeline().get(HttpClientInboundHandler.class);
+
+                            if (responseEmitter.isDisposed()) {
+                                channel.close();
+                                return;
+                            }
+
+                            inboundHandler.didEmitHttpResponse = false;
+                            inboundHandler.responseEmitter = responseEmitter;
+                            responseEmitter.setDisposable(new Disposable() {
+                                boolean isDisposed = false;
+                                @Override
+                                public void dispose() {
+                                    isDisposed = true;
+                                    if (!inboundHandler.didEmitHttpResponse) {
+                                        channel.close();
+                                    }
+                                }
+
+                                @Override
+                                public boolean isDisposed() {
+                                    return isDisposed;
+                                }
+                            });
+
                             if (request.httpMethod().equalsIgnoreCase("HEAD")) {
                                 // Use HttpClientCodec for HEAD operations
                                 if (channel.pipeline().get("HttpClientCodec") == null) {
@@ -159,7 +186,6 @@ public final class NettyClient extends HttpClient {
                                     channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
                                 }
                             }
-                            inboundHandler.responseEmitter = responseEmitter;
 
                             final DefaultHttpRequest raw = new DefaultHttpRequest(HttpVersion.HTTP_1_1,
                                     HttpMethod.valueOf(request.httpMethod()),
@@ -172,7 +198,7 @@ public final class NettyClient extends HttpClient {
                             channel.write(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
                                 @Override
                                 public void operationComplete(Future<? super Void> future) throws Exception {
-                                    if (!future.isSuccess()) {
+                                    if (!future.isSuccess() && !responseEmitter.isDisposed()) {
                                         responseEmitter.onError(future.cause());
                                     }
                                 }
@@ -217,7 +243,9 @@ public final class NettyClient extends HttpClient {
                                                 public void operationComplete(Future<? super Void> future) throws Exception {
                                                     if (!future.isSuccess()) {
                                                         subscription.cancel();
-                                                        responseEmitter.onError(future.cause());
+                                                        if (!responseEmitter.isDisposed()) {
+                                                            responseEmitter.onError(future.cause());
+                                                        }
                                                     }
                                                 }
                                             };
@@ -234,7 +262,9 @@ public final class NettyClient extends HttpClient {
 
                                     @Override
                                     public void onError(Throwable t) {
-                                        responseEmitter.onError(t);
+                                        if (!responseEmitter.isDisposed()) {
+                                            responseEmitter.onError(t);
+                                        }
                                     }
 
                                     @Override
@@ -245,7 +275,9 @@ public final class NettyClient extends HttpClient {
                                                     public void operationComplete(Future<? super Void> future) throws Exception {
                                                         if (!future.isSuccess()) {
                                                             subscription.cancel();
-                                                            responseEmitter.onError(future.cause());
+                                                            if (!responseEmitter.isDisposed()) {
+                                                                responseEmitter.onError(future.cause());
+                                                            }
                                                         } else {
                                                             channel.read();
                                                         }
@@ -329,6 +361,7 @@ public final class NettyClient extends HttpClient {
         private ResponseContentFlowable contentEmitter;
         private Subscription requestContentSubscription;
         private final NettyAdapter adapter;
+        private boolean didEmitHttpResponse;
 
         private HttpClientInboundHandler(NettyAdapter adapter) {
             this.adapter = adapter;
@@ -339,7 +372,7 @@ public final class NettyClient extends HttpClient {
             adapter.channelPool.release(ctx.channel());
             if (contentEmitter != null) {
                 contentEmitter.onError(cause);
-            } else if (responseEmitter != null) {
+            } else if (responseEmitter != null && !responseEmitter.isDisposed()) {
                 responseEmitter.onError(cause);
             }
         }
@@ -387,6 +420,8 @@ public final class NettyClient extends HttpClient {
                     }
                 });
 
+                // Prevents channel from being closed when the Single<HttpResponse> is disposed
+                didEmitHttpResponse = true;
                 responseEmitter.onSuccess(new NettyResponse(response, contentEmitter));
             }
 
