@@ -143,8 +143,8 @@ public final class AzureProxy extends RestProxy {
      *                         string.
      * @return the default HttpPipeline.
      */
-    public static HttpPipeline defaultPipeline(Class<?> swaggerInterface) {
-        return defaultPipeline(swaggerInterface, (RequestPolicyFactory) null);
+    public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface) {
+        return createDefaultPipeline(swaggerInterface, (RequestPolicyFactory) null);
     }
 
     /**
@@ -154,8 +154,8 @@ public final class AzureProxy extends RestProxy {
      * @param credentials The credentials to use to apply authentication to the pipeline.
      * @return the default HttpPipeline.
      */
-    public static HttpPipeline defaultPipeline(Class<?> swaggerInterface, ServiceClientCredentials credentials) {
-        return defaultPipeline(swaggerInterface, new CredentialsPolicy.Factory(credentials));
+    public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, ServiceClientCredentials credentials) {
+        return createDefaultPipeline(swaggerInterface, new CredentialsPolicy.Factory(credentials));
     }
 
     /**
@@ -166,7 +166,7 @@ public final class AzureProxy extends RestProxy {
      *                          pipeline.
      * @return the default HttpPipeline.
      */
-    public static HttpPipeline defaultPipeline(Class<?> swaggerInterface, RequestPolicyFactory credentialsPolicy) {
+    public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, RequestPolicyFactory credentialsPolicy) {
         final HttpClient httpClient = new NettyClient.Factory().create(null);
         final HttpPipelineBuilder builder = new HttpPipelineBuilder().withHttpClient(httpClient);
         builder.withUserAgent(getDefaultUserAgentString(swaggerInterface));
