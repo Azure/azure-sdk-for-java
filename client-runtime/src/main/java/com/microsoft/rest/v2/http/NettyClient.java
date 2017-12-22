@@ -33,6 +33,7 @@ import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -189,8 +190,18 @@ public final class NettyClient extends HttpClient {
                                                 }
                                             }
                                         });
-                            } else if (request.body() instanceof FileRequestBody) {
-                                final Flowable<ByteBuf> bodyContent = ((FileRequestBody) request.body()).pooledContent();
+                            } else {
+                                Flowable<ByteBuf> bodyContent;
+                                if (request.body() instanceof FileRequestBody) {
+                                    bodyContent = ((FileRequestBody) request.body()).pooledContent();
+                                } else {
+                                    bodyContent = request.body().content().map(new Function<byte[], ByteBuf>() {
+                                        @Override
+                                        public ByteBuf apply(byte[] bytes) throws Exception {
+                                            return Unpooled.wrappedBuffer(bytes);
+                                        }
+                                    });
+                                }
                                 bodyContent.subscribeOn(Schedulers.io()).subscribe(new FlowableSubscriber<ByteBuf>() {
                                     Subscription subscription;
                                     @Override
@@ -214,59 +225,6 @@ public final class NettyClient extends HttpClient {
                                     @Override
                                     public void onNext(ByteBuf buf) {
                                         channel.writeAndFlush(new DefaultHttpContent(buf))
-                                                .addListener(onChannelWriteComplete);
-
-                                        if (channel.isWritable()) {
-                                            subscription.request(1);
-                                        }
-                                    }
-
-                                    @Override
-                                    public void onError(Throwable t) {
-                                        responseEmitter.onError(t);
-                                    }
-
-                                    @Override
-                                    public void onComplete() {
-                                        channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
-                                                .addListener(new GenericFutureListener<Future<? super Void>>() {
-                                                    @Override
-                                                    public void operationComplete(Future<? super Void> future) throws Exception {
-                                                        if (!future.isSuccess()) {
-                                                            subscription.cancel();
-                                                            responseEmitter.onError(future.cause());
-                                                        } else {
-                                                            channel.read();
-                                                        }
-                                                    }
-                                                });
-                                    }
-                                });
-                            } else {
-                                final Flowable<byte[]> bodyContent = request.body().content();
-                                bodyContent.subscribeOn(Schedulers.io()).subscribe(new FlowableSubscriber<byte[]>() {
-                                    Subscription subscription;
-                                    @Override
-                                    public void onSubscribe(Subscription s) {
-                                        subscription = s;
-                                        inboundHandler.requestContentSubscription = subscription;
-                                        subscription.request(1);
-                                    }
-
-                                    GenericFutureListener<Future<? super Void>> onChannelWriteComplete =
-                                            new GenericFutureListener<Future<? super Void>>() {
-                                                @Override
-                                                public void operationComplete(Future<? super Void> future) throws Exception {
-                                                    if (!future.isSuccess()) {
-                                                        subscription.cancel();
-                                                        responseEmitter.onError(future.cause());
-                                                    }
-                                                }
-                                            };
-
-                                    @Override
-                                    public void onNext(byte[] bytes) {
-                                        channel.writeAndFlush(new DefaultHttpContent(Unpooled.wrappedBuffer(bytes)))
                                                 .addListener(onChannelWriteComplete);
 
                                         if (channel.isWritable()) {
