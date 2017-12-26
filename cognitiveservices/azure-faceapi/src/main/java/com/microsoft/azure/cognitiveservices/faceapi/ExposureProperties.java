@@ -25,7 +25,7 @@ public class ExposureProperties {
      * over exposure.
      */
     @JsonProperty(value = "value")
-    private Double value;
+    private double value;
 
     /**
      * Get the exposureLevel value.
@@ -52,7 +52,7 @@ public class ExposureProperties {
      *
      * @return the value value
      */
-    public Double value() {
+    public double value() {
         return this.value;
     }
 
@@ -62,7 +62,7 @@ public class ExposureProperties {
      * @param value the value value to set
      * @return the ExposureProperties object itself.
      */
-    public ExposureProperties withValue(Double value) {
+    public ExposureProperties withValue(double value) {
         this.value = value;
         return this;
     }

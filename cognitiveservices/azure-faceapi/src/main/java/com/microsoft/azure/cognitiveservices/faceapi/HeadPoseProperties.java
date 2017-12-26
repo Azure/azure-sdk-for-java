@@ -16,26 +16,26 @@ public class HeadPoseProperties {
      * The roll property.
      */
     @JsonProperty(value = "roll")
-    private Double roll;
+    private double roll;
 
     /**
      * The yaw property.
      */
     @JsonProperty(value = "yaw")
-    private Double yaw;
+    private double yaw;
 
     /**
      * The pitch property.
      */
     @JsonProperty(value = "pitch")
-    private Double pitch;
+    private double pitch;
 
     /**
      * Get the roll value.
      *
      * @return the roll value
      */
-    public Double roll() {
+    public double roll() {
         return this.roll;
     }
 
@@ -45,7 +45,7 @@ public class HeadPoseProperties {
      * @param roll the roll value to set
      * @return the HeadPoseProperties object itself.
      */
-    public HeadPoseProperties withRoll(Double roll) {
+    public HeadPoseProperties withRoll(double roll) {
         this.roll = roll;
         return this;
     }
@@ -55,7 +55,7 @@ public class HeadPoseProperties {
      *
      * @return the yaw value
      */
-    public Double yaw() {
+    public double yaw() {
         return this.yaw;
     }
 
@@ -65,7 +65,7 @@ public class HeadPoseProperties {
      * @param yaw the yaw value to set
      * @return the HeadPoseProperties object itself.
      */
-    public HeadPoseProperties withYaw(Double yaw) {
+    public HeadPoseProperties withYaw(double yaw) {
         this.yaw = yaw;
         return this;
     }
@@ -75,7 +75,7 @@ public class HeadPoseProperties {
      *
      * @return the pitch value
      */
-    public Double pitch() {
+    public double pitch() {
         return this.pitch;
     }
 
@@ -85,7 +85,7 @@ public class HeadPoseProperties {
      * @param pitch the pitch value to set
      * @return the HeadPoseProperties object itself.
      */
-    public HeadPoseProperties withPitch(Double pitch) {
+    public HeadPoseProperties withPitch(double pitch) {
         this.pitch = pitch;
         return this;
     }

@@ -16,20 +16,20 @@ public class MakeupProperties {
      * A boolean value describing whether eye makeup is present on a face.
      */
     @JsonProperty(value = "eyeMakeup")
-    private Boolean eyeMakeup;
+    private boolean eyeMakeup;
 
     /**
      * A boolean value describing whether lip makeup is present on a face.
      */
     @JsonProperty(value = "lipMakeup")
-    private Boolean lipMakeup;
+    private boolean lipMakeup;
 
     /**
      * Get the eyeMakeup value.
      *
      * @return the eyeMakeup value
      */
-    public Boolean eyeMakeup() {
+    public boolean eyeMakeup() {
         return this.eyeMakeup;
     }
 
@@ -39,7 +39,7 @@ public class MakeupProperties {
      * @param eyeMakeup the eyeMakeup value to set
      * @return the MakeupProperties object itself.
      */
-    public MakeupProperties withEyeMakeup(Boolean eyeMakeup) {
+    public MakeupProperties withEyeMakeup(boolean eyeMakeup) {
         this.eyeMakeup = eyeMakeup;
         return this;
     }
@@ -49,7 +49,7 @@ public class MakeupProperties {
      *
      * @return the lipMakeup value
      */
-    public Boolean lipMakeup() {
+    public boolean lipMakeup() {
         return this.lipMakeup;
     }
 
@@ -59,7 +59,7 @@ public class MakeupProperties {
      * @param lipMakeup the lipMakeup value to set
      * @return the MakeupProperties object itself.
      */
-    public MakeupProperties withLipMakeup(Boolean lipMakeup) {
+    public MakeupProperties withLipMakeup(boolean lipMakeup) {
         this.lipMakeup = lipMakeup;
         return this;
     }

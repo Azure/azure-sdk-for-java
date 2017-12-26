@@ -19,6 +19,9 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
+import okhttp3.MediaType;
+import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
 import retrofit2.http.Body;
 import retrofit2.http.GET;
@@ -82,15 +85,15 @@ public class FaceListsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.FaceLists deleteFace" })
         @HTTP(path = "facelists/{faceListId}/persistedFaces/{persistedFaceId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteFace(@Path("faceListId") String faceListId, @Path("persistedFaceId") String persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteFace(@Path("faceListId") String faceListId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.FaceLists addFace" })
         @POST("facelists/{faceListId}/persistedFaces")
         Observable<Response<ResponseBody>> addFace(@Path("faceListId") String faceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.FaceLists addFaceFromStream" })
+        @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.FaceLists addFaceFromStream" })
         @POST("facelists/{faceListId}/persistedFaces")
-        Observable<Response<ResponseBody>> addFaceFromStream(@Path("faceListId") String faceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addFaceFromStream(@Path("faceListId") String faceListId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -648,7 +651,7 @@ public class FaceListsInner {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteFace(String faceListId, String persistedFaceId) {
+    public void deleteFace(String faceListId, UUID persistedFaceId) {
         deleteFaceWithServiceResponseAsync(faceListId, persistedFaceId).toBlocking().single().body();
     }
 
@@ -661,7 +664,7 @@ public class FaceListsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteFaceAsync(String faceListId, String persistedFaceId, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> deleteFaceAsync(String faceListId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteFaceWithServiceResponseAsync(faceListId, persistedFaceId), serviceCallback);
     }
 
@@ -673,7 +676,7 @@ public class FaceListsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteFaceAsync(String faceListId, String persistedFaceId) {
+    public Observable<Void> deleteFaceAsync(String faceListId, UUID persistedFaceId) {
         return deleteFaceWithServiceResponseAsync(faceListId, persistedFaceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -690,7 +693,7 @@ public class FaceListsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String faceListId, String persistedFaceId) {
+    public Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String faceListId, UUID persistedFaceId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -809,7 +812,7 @@ public class FaceListsInner {
      *
      * @param faceListId Id referencing a Face List.
      * @param url the String value
-     * @param userData User-specified data about the face list for any purpose. The  maximum length is 1KB.
+     * @param userData User-specified data about the face list for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -825,7 +828,7 @@ public class FaceListsInner {
      *
      * @param faceListId Id referencing a Face List.
      * @param url the String value
-     * @param userData User-specified data about the face list for any purpose. The  maximum length is 1KB.
+     * @param userData User-specified data about the face list for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -840,7 +843,7 @@ public class FaceListsInner {
      *
      * @param faceListId Id referencing a Face List.
      * @param url the String value
-     * @param userData User-specified data about the face list for any purpose. The  maximum length is 1KB.
+     * @param userData User-specified data about the face list for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
@@ -859,7 +862,7 @@ public class FaceListsInner {
      *
      * @param faceListId Id referencing a Face List.
      * @param url the String value
-     * @param userData User-specified data about the face list for any purpose. The  maximum length is 1KB.
+     * @param userData User-specified data about the face list for any purpose. The maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
@@ -904,36 +907,39 @@ public class FaceListsInner {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a Face List.
+     * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFaceResultInner object if successful.
      */
-    public PersistedFaceResultInner addFaceFromStream(String faceListId) {
-        return addFaceFromStreamWithServiceResponseAsync(faceListId).toBlocking().single().body();
+    public PersistedFaceResultInner addFaceFromStream(String faceListId, byte[] image) {
+        return addFaceFromStreamWithServiceResponseAsync(faceListId, image).toBlocking().single().body();
     }
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a Face List.
+     * @param image An image stream.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFaceResultInner> addFaceFromStreamAsync(String faceListId, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(faceListId), serviceCallback);
+    public ServiceFuture<PersistedFaceResultInner> addFaceFromStreamAsync(String faceListId, byte[] image, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(faceListId, image), serviceCallback);
     }
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a Face List.
+     * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<PersistedFaceResultInner> addFaceFromStreamAsync(String faceListId) {
-        return addFaceFromStreamWithServiceResponseAsync(faceListId).map(new Func1<ServiceResponse<PersistedFaceResultInner>, PersistedFaceResultInner>() {
+    public Observable<PersistedFaceResultInner> addFaceFromStreamAsync(String faceListId, byte[] image) {
+        return addFaceFromStreamWithServiceResponseAsync(faceListId, image).map(new Func1<ServiceResponse<PersistedFaceResultInner>, PersistedFaceResultInner>() {
             @Override
             public PersistedFaceResultInner call(ServiceResponse<PersistedFaceResultInner> response) {
                 return response.body();
@@ -945,21 +951,26 @@ public class FaceListsInner {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a Face List.
+     * @param image An image stream.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<ServiceResponse<PersistedFaceResultInner>> addFaceFromStreamWithServiceResponseAsync(String faceListId) {
+    public Observable<ServiceResponse<PersistedFaceResultInner>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
+        if (image == null) {
+            throw new IllegalArgumentException("Parameter image is required and cannot be null.");
+        }
         final String userData = null;
         final List<Integer> targetFace = null;
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        return service.addFaceFromStream(faceListId, userData, targetFaceConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
+        return service.addFaceFromStream(faceListId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFaceResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFaceResultInner>> call(Response<ResponseBody> response) {
@@ -977,6 +988,7 @@ public class FaceListsInner {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a Face List.
+     * @param image An image stream.
      * @param userData User-specified data about the face list for any purpose. The  maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -984,35 +996,37 @@ public class FaceListsInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFaceResultInner object if successful.
      */
-    public PersistedFaceResultInner addFaceFromStream(String faceListId, String userData, List<Integer> targetFace) {
-        return addFaceFromStreamWithServiceResponseAsync(faceListId, userData, targetFace).toBlocking().single().body();
+    public PersistedFaceResultInner addFaceFromStream(String faceListId, byte[] image, String userData, List<Integer> targetFace) {
+        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).toBlocking().single().body();
     }
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a Face List.
+     * @param image An image stream.
      * @param userData User-specified data about the face list for any purpose. The  maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFaceResultInner> addFaceFromStreamAsync(String faceListId, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
-        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(faceListId, userData, targetFace), serviceCallback);
+    public ServiceFuture<PersistedFaceResultInner> addFaceFromStreamAsync(String faceListId, byte[] image, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
+        return ServiceFuture.fromResponse(addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace), serviceCallback);
     }
 
     /**
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a Face List.
+     * @param image An image stream.
      * @param userData User-specified data about the face list for any purpose. The  maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<PersistedFaceResultInner> addFaceFromStreamAsync(String faceListId, String userData, List<Integer> targetFace) {
-        return addFaceFromStreamWithServiceResponseAsync(faceListId, userData, targetFace).map(new Func1<ServiceResponse<PersistedFaceResultInner>, PersistedFaceResultInner>() {
+    public Observable<PersistedFaceResultInner> addFaceFromStreamAsync(String faceListId, byte[] image, String userData, List<Integer> targetFace) {
+        return addFaceFromStreamWithServiceResponseAsync(faceListId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFaceResultInner>, PersistedFaceResultInner>() {
             @Override
             public PersistedFaceResultInner call(ServiceResponse<PersistedFaceResultInner> response) {
                 return response.body();
@@ -1024,22 +1038,27 @@ public class FaceListsInner {
      * Add a face to a face list. The input face is specified as an image with a targetFace rectangle. It returns a persistedFaceId representing the added face, and persistedFaceId will not expire.
      *
      * @param faceListId Id referencing a Face List.
+     * @param image An image stream.
      * @param userData User-specified data about the face list for any purpose. The  maximum length is 1KB.
      * @param targetFace A face rectangle to specify the target face to be added to a person in the format of "targetFace=left,top,width,height". E.g. "targetFace=10,10,100,100". If there is more than one face in the image, targetFace is required to specify which face to add. No targetFace means there is only one face detected in the entire image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<ServiceResponse<PersistedFaceResultInner>> addFaceFromStreamWithServiceResponseAsync(String faceListId, String userData, List<Integer> targetFace) {
+    public Observable<ServiceResponse<PersistedFaceResultInner>> addFaceFromStreamWithServiceResponseAsync(String faceListId, byte[] image, String userData, List<Integer> targetFace) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         if (faceListId == null) {
             throw new IllegalArgumentException("Parameter faceListId is required and cannot be null.");
         }
+        if (image == null) {
+            throw new IllegalArgumentException("Parameter image is required and cannot be null.");
+        }
         Validator.validate(targetFace);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         String targetFaceConverted = this.client.serializerAdapter().serializeList(targetFace, CollectionFormat.CSV);
-        return service.addFaceFromStream(faceListId, userData, targetFaceConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
+        return service.addFaceFromStream(faceListId, userData, targetFaceConverted, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<PersistedFaceResultInner>>>() {
                 @Override
                 public Observable<ServiceResponse<PersistedFaceResultInner>> call(Response<ResponseBody> response) {

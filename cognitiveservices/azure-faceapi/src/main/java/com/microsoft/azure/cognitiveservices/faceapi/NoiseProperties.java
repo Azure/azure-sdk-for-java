@@ -26,7 +26,7 @@ public class NoiseProperties {
      * [0.7, 1] is high noise level.
      */
     @JsonProperty(value = "value")
-    private Double value;
+    private double value;
 
     /**
      * Get the noiseLevel value.
@@ -53,7 +53,7 @@ public class NoiseProperties {
      *
      * @return the value value
      */
-    public Double value() {
+    public double value() {
         return this.value;
     }
 
@@ -63,7 +63,7 @@ public class NoiseProperties {
      * @param value the value value to set
      * @return the NoiseProperties object itself.
      */
-    public NoiseProperties withValue(Double value) {
+    public NoiseProperties withValue(double value) {
         this.value = value;
         return this;
     }

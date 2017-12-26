@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi;
 
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,14 +17,14 @@ public class VerifyPersonGroupRequest {
      * faceId the face, comes from Face - Detect.
      */
     @JsonProperty(value = "faceId", required = true)
-    private String faceId;
+    private UUID faceId;
 
     /**
      * Specify a certain person in a person group. personId is created in
      * Persons.Create.
      */
     @JsonProperty(value = "personId", required = true)
-    private String personId;
+    private UUID personId;
 
     /**
      * Using existing personGroupId and personId for fast loading a specified
@@ -37,7 +38,7 @@ public class VerifyPersonGroupRequest {
      *
      * @return the faceId value
      */
-    public String faceId() {
+    public UUID faceId() {
         return this.faceId;
     }
 
@@ -47,7 +48,7 @@ public class VerifyPersonGroupRequest {
      * @param faceId the faceId value to set
      * @return the VerifyPersonGroupRequest object itself.
      */
-    public VerifyPersonGroupRequest withFaceId(String faceId) {
+    public VerifyPersonGroupRequest withFaceId(UUID faceId) {
         this.faceId = faceId;
         return this;
     }
@@ -57,7 +58,7 @@ public class VerifyPersonGroupRequest {
      *
      * @return the personId value
      */
-    public String personId() {
+    public UUID personId() {
         return this.personId;
     }
 
@@ -67,7 +68,7 @@ public class VerifyPersonGroupRequest {
      * @param personId the personId value to set
      * @return the VerifyPersonGroupRequest object itself.
      */
-    public VerifyPersonGroupRequest withPersonId(String personId) {
+    public VerifyPersonGroupRequest withPersonId(UUID personId) {
         this.personId = personId;
         return this;
     }

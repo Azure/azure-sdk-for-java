@@ -7,6 +7,7 @@
 package com.microsoft.azure.cognitiveservices.faceapi;
 
 import java.util.List;
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,14 +19,14 @@ public class GroupRequest {
      * faces.
      */
     @JsonProperty(value = "faceIds", required = true)
-    private List<String> faceIds;
+    private List<UUID> faceIds;
 
     /**
      * Get the faceIds value.
      *
      * @return the faceIds value
      */
-    public List<String> faceIds() {
+    public List<UUID> faceIds() {
         return this.faceIds;
     }
 
@@ -35,7 +36,7 @@ public class GroupRequest {
      * @param faceIds the faceIds value to set
      * @return the GroupRequest object itself.
      */
-    public GroupRequest withFaceIds(List<String> faceIds) {
+    public GroupRequest withFaceIds(List<UUID> faceIds) {
         this.faceIds = faceIds;
         return this;
     }

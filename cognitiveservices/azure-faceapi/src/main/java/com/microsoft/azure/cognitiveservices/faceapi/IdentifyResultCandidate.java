@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi;
 
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,7 +17,7 @@ public class IdentifyResultCandidate {
      * Id of candidate.
      */
     @JsonProperty(value = "personId", required = true)
-    private String personId;
+    private UUID personId;
 
     /**
      * The confidence property.
@@ -29,7 +30,7 @@ public class IdentifyResultCandidate {
      *
      * @return the personId value
      */
-    public String personId() {
+    public UUID personId() {
         return this.personId;
     }
 
@@ -39,7 +40,7 @@ public class IdentifyResultCandidate {
      * @param personId the personId value to set
      * @return the IdentifyResultCandidate object itself.
      */
-    public IdentifyResultCandidate withPersonId(String personId) {
+    public IdentifyResultCandidate withPersonId(UUID personId) {
         this.personId = personId;
         return this;
     }

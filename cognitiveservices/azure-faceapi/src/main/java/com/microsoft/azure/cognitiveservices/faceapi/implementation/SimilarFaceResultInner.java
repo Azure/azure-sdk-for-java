@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -17,7 +18,7 @@ public class SimilarFaceResultInner {
      * - Detect and will expire 24 hours after the detection call.
      */
     @JsonProperty(value = "faceId")
-    private String faceId;
+    private UUID faceId;
 
     /**
      * persistedFaceId of candidate face when find by faceListId.
@@ -25,7 +26,7 @@ public class SimilarFaceResultInner {
      * in below response.
      */
     @JsonProperty(value = "persistedFaceId")
-    private String persistedFaceId;
+    private UUID persistedFaceId;
 
     /**
      * The confidence property.
@@ -38,7 +39,7 @@ public class SimilarFaceResultInner {
      *
      * @return the faceId value
      */
-    public String faceId() {
+    public UUID faceId() {
         return this.faceId;
     }
 
@@ -48,7 +49,7 @@ public class SimilarFaceResultInner {
      * @param faceId the faceId value to set
      * @return the SimilarFaceResultInner object itself.
      */
-    public SimilarFaceResultInner withFaceId(String faceId) {
+    public SimilarFaceResultInner withFaceId(UUID faceId) {
         this.faceId = faceId;
         return this;
     }
@@ -58,7 +59,7 @@ public class SimilarFaceResultInner {
      *
      * @return the persistedFaceId value
      */
-    public String persistedFaceId() {
+    public UUID persistedFaceId() {
         return this.persistedFaceId;
     }
 
@@ -68,7 +69,7 @@ public class SimilarFaceResultInner {
      * @param persistedFaceId the persistedFaceId value to set
      * @return the SimilarFaceResultInner object itself.
      */
-    public SimilarFaceResultInner withPersistedFaceId(String persistedFaceId) {
+    public SimilarFaceResultInner withPersistedFaceId(UUID persistedFaceId) {
         this.persistedFaceId = persistedFaceId;
         return this;
     }

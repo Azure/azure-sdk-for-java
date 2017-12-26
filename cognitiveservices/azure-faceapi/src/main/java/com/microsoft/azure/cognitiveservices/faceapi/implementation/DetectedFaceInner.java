@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
+import java.util.UUID;
 import com.microsoft.azure.cognitiveservices.faceapi.FaceRectangle;
 import com.microsoft.azure.cognitiveservices.faceapi.FaceLandmarks;
 import com.microsoft.azure.cognitiveservices.faceapi.FaceAttributes;
@@ -19,7 +20,7 @@ public class DetectedFaceInner {
      * The faceId property.
      */
     @JsonProperty(value = "faceId")
-    private String faceId;
+    private UUID faceId;
 
     /**
      * The faceRectangle property.
@@ -44,7 +45,7 @@ public class DetectedFaceInner {
      *
      * @return the faceId value
      */
-    public String faceId() {
+    public UUID faceId() {
         return this.faceId;
     }
 
@@ -54,7 +55,7 @@ public class DetectedFaceInner {
      * @param faceId the faceId value to set
      * @return the DetectedFaceInner object itself.
      */
-    public DetectedFaceInner withFaceId(String faceId) {
+    public DetectedFaceInner withFaceId(UUID faceId) {
         this.faceId = faceId;
         return this;
     }

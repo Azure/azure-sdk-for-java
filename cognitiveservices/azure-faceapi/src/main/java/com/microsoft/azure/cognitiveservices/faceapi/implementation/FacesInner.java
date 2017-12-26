@@ -25,6 +25,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -102,7 +103,7 @@ public class FacesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;SimilarFaceResultInner&gt; object if successful.
      */
-    public List<SimilarFaceResultInner> findSimilar(String faceId) {
+    public List<SimilarFaceResultInner> findSimilar(UUID faceId) {
         return findSimilarWithServiceResponseAsync(faceId).toBlocking().single().body();
     }
 
@@ -114,7 +115,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SimilarFaceResultInner>> findSimilarAsync(String faceId, final ServiceCallback<List<SimilarFaceResultInner>> serviceCallback) {
+    public ServiceFuture<List<SimilarFaceResultInner>> findSimilarAsync(UUID faceId, final ServiceCallback<List<SimilarFaceResultInner>> serviceCallback) {
         return ServiceFuture.fromResponse(findSimilarWithServiceResponseAsync(faceId), serviceCallback);
     }
 
@@ -125,7 +126,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SimilarFaceResultInner&gt; object
      */
-    public Observable<List<SimilarFaceResultInner>> findSimilarAsync(String faceId) {
+    public Observable<List<SimilarFaceResultInner>> findSimilarAsync(UUID faceId) {
         return findSimilarWithServiceResponseAsync(faceId).map(new Func1<ServiceResponse<List<SimilarFaceResultInner>>, List<SimilarFaceResultInner>>() {
             @Override
             public List<SimilarFaceResultInner> call(ServiceResponse<List<SimilarFaceResultInner>> response) {
@@ -141,7 +142,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SimilarFaceResultInner&gt; object
      */
-    public Observable<ServiceResponse<List<SimilarFaceResultInner>>> findSimilarWithServiceResponseAsync(String faceId) {
+    public Observable<ServiceResponse<List<SimilarFaceResultInner>>> findSimilarWithServiceResponseAsync(UUID faceId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -149,7 +150,7 @@ public class FacesInner {
             throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
         final String faceListId = null;
-        final List<String> faceIds = null;
+        final List<UUID> faceIds = null;
         final Integer maxNumOfCandidatesReturned = null;
         final FaceMatchingMode mode = null;
         FindSimilarRequest body = new FindSimilarRequest();
@@ -186,7 +187,7 @@ public class FacesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;SimilarFaceResultInner&gt; object if successful.
      */
-    public List<SimilarFaceResultInner> findSimilar(String faceId, String faceListId, List<String> faceIds, Integer maxNumOfCandidatesReturned, FaceMatchingMode mode) {
+    public List<SimilarFaceResultInner> findSimilar(UUID faceId, String faceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FaceMatchingMode mode) {
         return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode).toBlocking().single().body();
     }
 
@@ -202,7 +203,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<SimilarFaceResultInner>> findSimilarAsync(String faceId, String faceListId, List<String> faceIds, Integer maxNumOfCandidatesReturned, FaceMatchingMode mode, final ServiceCallback<List<SimilarFaceResultInner>> serviceCallback) {
+    public ServiceFuture<List<SimilarFaceResultInner>> findSimilarAsync(UUID faceId, String faceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FaceMatchingMode mode, final ServiceCallback<List<SimilarFaceResultInner>> serviceCallback) {
         return ServiceFuture.fromResponse(findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode), serviceCallback);
     }
 
@@ -217,7 +218,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SimilarFaceResultInner&gt; object
      */
-    public Observable<List<SimilarFaceResultInner>> findSimilarAsync(String faceId, String faceListId, List<String> faceIds, Integer maxNumOfCandidatesReturned, FaceMatchingMode mode) {
+    public Observable<List<SimilarFaceResultInner>> findSimilarAsync(UUID faceId, String faceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FaceMatchingMode mode) {
         return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode).map(new Func1<ServiceResponse<List<SimilarFaceResultInner>>, List<SimilarFaceResultInner>>() {
             @Override
             public List<SimilarFaceResultInner> call(ServiceResponse<List<SimilarFaceResultInner>> response) {
@@ -237,7 +238,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SimilarFaceResultInner&gt; object
      */
-    public Observable<ServiceResponse<List<SimilarFaceResultInner>>> findSimilarWithServiceResponseAsync(String faceId, String faceListId, List<String> faceIds, Integer maxNumOfCandidatesReturned, FaceMatchingMode mode) {
+    public Observable<ServiceResponse<List<SimilarFaceResultInner>>> findSimilarWithServiceResponseAsync(UUID faceId, String faceListId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, FaceMatchingMode mode) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -282,7 +283,7 @@ public class FacesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the GroupResponseInner object if successful.
      */
-    public GroupResponseInner group(List<String> faceIds) {
+    public GroupResponseInner group(List<UUID> faceIds) {
         return groupWithServiceResponseAsync(faceIds).toBlocking().single().body();
     }
 
@@ -294,7 +295,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<GroupResponseInner> groupAsync(List<String> faceIds, final ServiceCallback<GroupResponseInner> serviceCallback) {
+    public ServiceFuture<GroupResponseInner> groupAsync(List<UUID> faceIds, final ServiceCallback<GroupResponseInner> serviceCallback) {
         return ServiceFuture.fromResponse(groupWithServiceResponseAsync(faceIds), serviceCallback);
     }
 
@@ -305,7 +306,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GroupResponseInner object
      */
-    public Observable<GroupResponseInner> groupAsync(List<String> faceIds) {
+    public Observable<GroupResponseInner> groupAsync(List<UUID> faceIds) {
         return groupWithServiceResponseAsync(faceIds).map(new Func1<ServiceResponse<GroupResponseInner>, GroupResponseInner>() {
             @Override
             public GroupResponseInner call(ServiceResponse<GroupResponseInner> response) {
@@ -321,7 +322,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the GroupResponseInner object
      */
-    public Observable<ServiceResponse<GroupResponseInner>> groupWithServiceResponseAsync(List<String> faceIds) {
+    public Observable<ServiceResponse<GroupResponseInner>> groupWithServiceResponseAsync(List<UUID> faceIds) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -363,7 +364,7 @@ public class FacesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IdentifyResultItemInner&gt; object if successful.
      */
-    public List<IdentifyResultItemInner> identify(String personGroupId, List<String> faceIds) {
+    public List<IdentifyResultItemInner> identify(String personGroupId, List<UUID> faceIds) {
         return identifyWithServiceResponseAsync(personGroupId, faceIds).toBlocking().single().body();
     }
 
@@ -376,7 +377,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<IdentifyResultItemInner>> identifyAsync(String personGroupId, List<String> faceIds, final ServiceCallback<List<IdentifyResultItemInner>> serviceCallback) {
+    public ServiceFuture<List<IdentifyResultItemInner>> identifyAsync(String personGroupId, List<UUID> faceIds, final ServiceCallback<List<IdentifyResultItemInner>> serviceCallback) {
         return ServiceFuture.fromResponse(identifyWithServiceResponseAsync(personGroupId, faceIds), serviceCallback);
     }
 
@@ -388,7 +389,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResultItemInner&gt; object
      */
-    public Observable<List<IdentifyResultItemInner>> identifyAsync(String personGroupId, List<String> faceIds) {
+    public Observable<List<IdentifyResultItemInner>> identifyAsync(String personGroupId, List<UUID> faceIds) {
         return identifyWithServiceResponseAsync(personGroupId, faceIds).map(new Func1<ServiceResponse<List<IdentifyResultItemInner>>, List<IdentifyResultItemInner>>() {
             @Override
             public List<IdentifyResultItemInner> call(ServiceResponse<List<IdentifyResultItemInner>> response) {
@@ -405,7 +406,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResultItemInner&gt; object
      */
-    public Observable<ServiceResponse<List<IdentifyResultItemInner>>> identifyWithServiceResponseAsync(String personGroupId, List<String> faceIds) {
+    public Observable<ServiceResponse<List<IdentifyResultItemInner>>> identifyWithServiceResponseAsync(String personGroupId, List<UUID> faceIds) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -417,12 +418,12 @@ public class FacesInner {
         }
         Validator.validate(faceIds);
         final Integer maxNumOfCandidatesReturned = null;
-        final double confidenceThreshold = 0.0;
+        final Double confidenceThreshold = null;
         IdentifyRequest body = new IdentifyRequest();
         body.withPersonGroupId(personGroupId);
         body.withFaceIds(faceIds);
         body.withMaxNumOfCandidatesReturned(null);
-        body.withConfidenceThreshold(confidenceThreshold);
+        body.withConfidenceThreshold(null);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         return service.identify(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IdentifyResultItemInner>>>>() {
@@ -444,13 +445,13 @@ public class FacesInner {
      * @param personGroupId personGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of candidate faceId created by Face - Detect.
      * @param maxNumOfCandidatesReturned The number of top similar faces returned.
-     * @param confidenceThreshold the double value
+     * @param confidenceThreshold the Double value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;IdentifyResultItemInner&gt; object if successful.
      */
-    public List<IdentifyResultItemInner> identify(String personGroupId, List<String> faceIds, Integer maxNumOfCandidatesReturned, double confidenceThreshold) {
+    public List<IdentifyResultItemInner> identify(String personGroupId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
         return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold).toBlocking().single().body();
     }
 
@@ -460,12 +461,12 @@ public class FacesInner {
      * @param personGroupId personGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of candidate faceId created by Face - Detect.
      * @param maxNumOfCandidatesReturned The number of top similar faces returned.
-     * @param confidenceThreshold the double value
+     * @param confidenceThreshold the Double value
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<IdentifyResultItemInner>> identifyAsync(String personGroupId, List<String> faceIds, Integer maxNumOfCandidatesReturned, double confidenceThreshold, final ServiceCallback<List<IdentifyResultItemInner>> serviceCallback) {
+    public ServiceFuture<List<IdentifyResultItemInner>> identifyAsync(String personGroupId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold, final ServiceCallback<List<IdentifyResultItemInner>> serviceCallback) {
         return ServiceFuture.fromResponse(identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold), serviceCallback);
     }
 
@@ -475,11 +476,11 @@ public class FacesInner {
      * @param personGroupId personGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of candidate faceId created by Face - Detect.
      * @param maxNumOfCandidatesReturned The number of top similar faces returned.
-     * @param confidenceThreshold the double value
+     * @param confidenceThreshold the Double value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResultItemInner&gt; object
      */
-    public Observable<List<IdentifyResultItemInner>> identifyAsync(String personGroupId, List<String> faceIds, Integer maxNumOfCandidatesReturned, double confidenceThreshold) {
+    public Observable<List<IdentifyResultItemInner>> identifyAsync(String personGroupId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
         return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold).map(new Func1<ServiceResponse<List<IdentifyResultItemInner>>, List<IdentifyResultItemInner>>() {
             @Override
             public List<IdentifyResultItemInner> call(ServiceResponse<List<IdentifyResultItemInner>> response) {
@@ -494,11 +495,11 @@ public class FacesInner {
      * @param personGroupId personGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of candidate faceId created by Face - Detect.
      * @param maxNumOfCandidatesReturned The number of top similar faces returned.
-     * @param confidenceThreshold the double value
+     * @param confidenceThreshold the Double value
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResultItemInner&gt; object
      */
-    public Observable<ServiceResponse<List<IdentifyResultItemInner>>> identifyWithServiceResponseAsync(String personGroupId, List<String> faceIds, Integer maxNumOfCandidatesReturned, double confidenceThreshold) {
+    public Observable<ServiceResponse<List<IdentifyResultItemInner>>> identifyWithServiceResponseAsync(String personGroupId, List<UUID> faceIds, Integer maxNumOfCandidatesReturned, Double confidenceThreshold) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -546,7 +547,7 @@ public class FacesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerifyResultInner object if successful.
      */
-    public VerifyResultInner verify(String faceId1, String faceId2) {
+    public VerifyResultInner verify(UUID faceId1, UUID faceId2) {
         return verifyWithServiceResponseAsync(faceId1, faceId2).toBlocking().single().body();
     }
 
@@ -559,7 +560,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<VerifyResultInner> verifyAsync(String faceId1, String faceId2, final ServiceCallback<VerifyResultInner> serviceCallback) {
+    public ServiceFuture<VerifyResultInner> verifyAsync(UUID faceId1, UUID faceId2, final ServiceCallback<VerifyResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(verifyWithServiceResponseAsync(faceId1, faceId2), serviceCallback);
     }
 
@@ -571,7 +572,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerifyResultInner object
      */
-    public Observable<VerifyResultInner> verifyAsync(String faceId1, String faceId2) {
+    public Observable<VerifyResultInner> verifyAsync(UUID faceId1, UUID faceId2) {
         return verifyWithServiceResponseAsync(faceId1, faceId2).map(new Func1<ServiceResponse<VerifyResultInner>, VerifyResultInner>() {
             @Override
             public VerifyResultInner call(ServiceResponse<VerifyResultInner> response) {
@@ -588,7 +589,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerifyResultInner object
      */
-    public Observable<ServiceResponse<VerifyResultInner>> verifyWithServiceResponseAsync(String faceId1, String faceId2) {
+    public Observable<ServiceResponse<VerifyResultInner>> verifyWithServiceResponseAsync(UUID faceId1, UUID faceId2) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -803,7 +804,7 @@ public class FacesInner {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the VerifyResultInner object if successful.
      */
-    public VerifyResultInner verifyWithPersonGroup(String faceId, String personId, String personGroupId) {
+    public VerifyResultInner verifyWithPersonGroup(UUID faceId, UUID personId, String personGroupId) {
         return verifyWithPersonGroupWithServiceResponseAsync(faceId, personId, personGroupId).toBlocking().single().body();
     }
 
@@ -817,7 +818,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<VerifyResultInner> verifyWithPersonGroupAsync(String faceId, String personId, String personGroupId, final ServiceCallback<VerifyResultInner> serviceCallback) {
+    public ServiceFuture<VerifyResultInner> verifyWithPersonGroupAsync(UUID faceId, UUID personId, String personGroupId, final ServiceCallback<VerifyResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(verifyWithPersonGroupWithServiceResponseAsync(faceId, personId, personGroupId), serviceCallback);
     }
 
@@ -830,7 +831,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerifyResultInner object
      */
-    public Observable<VerifyResultInner> verifyWithPersonGroupAsync(String faceId, String personId, String personGroupId) {
+    public Observable<VerifyResultInner> verifyWithPersonGroupAsync(UUID faceId, UUID personId, String personGroupId) {
         return verifyWithPersonGroupWithServiceResponseAsync(faceId, personId, personGroupId).map(new Func1<ServiceResponse<VerifyResultInner>, VerifyResultInner>() {
             @Override
             public VerifyResultInner call(ServiceResponse<VerifyResultInner> response) {
@@ -848,7 +849,7 @@ public class FacesInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerifyResultInner object
      */
-    public Observable<ServiceResponse<VerifyResultInner>> verifyWithPersonGroupWithServiceResponseAsync(String faceId, String personId, String personGroupId) {
+    public Observable<ServiceResponse<VerifyResultInner>> verifyWithPersonGroupWithServiceResponseAsync(UUID faceId, UUID personId, String personGroupId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }

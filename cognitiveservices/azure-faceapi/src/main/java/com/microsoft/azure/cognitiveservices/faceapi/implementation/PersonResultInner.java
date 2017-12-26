@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
+import java.util.UUID;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -17,7 +18,7 @@ public class PersonResultInner {
      * personId of the target face list.
      */
     @JsonProperty(value = "personId", required = true)
-    private String personId;
+    private UUID personId;
 
     /**
      * persistedFaceIds of registered faces in the person. These
@@ -25,16 +26,17 @@ public class PersonResultInner {
      * not expire.
      */
     @JsonProperty(value = "persistedFaceIds")
-    private List<String> persistedFaceIds;
+    private List<UUID> persistedFaceIds;
 
     /**
-     * Person's display name.
+     * Person's display name, maximum length is 128.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * User-provided data attached to this person.
+     * User-provided data attached to this person. Length should not exceed
+     * 16KB.
      */
     @JsonProperty(value = "userData")
     private String userData;
@@ -44,7 +46,7 @@ public class PersonResultInner {
      *
      * @return the personId value
      */
-    public String personId() {
+    public UUID personId() {
         return this.personId;
     }
 
@@ -54,7 +56,7 @@ public class PersonResultInner {
      * @param personId the personId value to set
      * @return the PersonResultInner object itself.
      */
-    public PersonResultInner withPersonId(String personId) {
+    public PersonResultInner withPersonId(UUID personId) {
         this.personId = personId;
         return this;
     }
@@ -64,7 +66,7 @@ public class PersonResultInner {
      *
      * @return the persistedFaceIds value
      */
-    public List<String> persistedFaceIds() {
+    public List<UUID> persistedFaceIds() {
         return this.persistedFaceIds;
     }
 
@@ -74,7 +76,7 @@ public class PersonResultInner {
      * @param persistedFaceIds the persistedFaceIds value to set
      * @return the PersonResultInner object itself.
      */
-    public PersonResultInner withPersistedFaceIds(List<String> persistedFaceIds) {
+    public PersonResultInner withPersistedFaceIds(List<UUID> persistedFaceIds) {
         this.persistedFaceIds = persistedFaceIds;
         return this;
     }

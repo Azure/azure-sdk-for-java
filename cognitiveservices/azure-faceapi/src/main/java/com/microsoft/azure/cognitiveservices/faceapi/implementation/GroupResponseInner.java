@@ -7,6 +7,7 @@
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
 import java.util.List;
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,21 +19,21 @@ public class GroupResponseInner {
      * ranked by number of faces.
      */
     @JsonProperty(value = "groups", required = true)
-    private List<List<String>> groups;
+    private List<List<UUID>> groups;
 
     /**
      * Face ids array of faces that cannot find any similar faces from original
      * faces.
      */
     @JsonProperty(value = "messyGroup")
-    private List<String> messyGroup;
+    private List<UUID> messyGroup;
 
     /**
      * Get the groups value.
      *
      * @return the groups value
      */
-    public List<List<String>> groups() {
+    public List<List<UUID>> groups() {
         return this.groups;
     }
 
@@ -42,7 +43,7 @@ public class GroupResponseInner {
      * @param groups the groups value to set
      * @return the GroupResponseInner object itself.
      */
-    public GroupResponseInner withGroups(List<List<String>> groups) {
+    public GroupResponseInner withGroups(List<List<UUID>> groups) {
         this.groups = groups;
         return this;
     }
@@ -52,7 +53,7 @@ public class GroupResponseInner {
      *
      * @return the messyGroup value
      */
-    public List<String> messyGroup() {
+    public List<UUID> messyGroup() {
         return this.messyGroup;
     }
 
@@ -62,7 +63,7 @@ public class GroupResponseInner {
      * @param messyGroup the messyGroup value to set
      * @return the GroupResponseInner object itself.
      */
-    public GroupResponseInner withMessyGroup(List<String> messyGroup) {
+    public GroupResponseInner withMessyGroup(List<UUID> messyGroup) {
         this.messyGroup = messyGroup;
         return this;
     }

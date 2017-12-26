@@ -16,26 +16,26 @@ public class FacialHairProperties {
      * The moustache property.
      */
     @JsonProperty(value = "moustache")
-    private Double moustache;
+    private double moustache;
 
     /**
      * The beard property.
      */
     @JsonProperty(value = "beard")
-    private Double beard;
+    private double beard;
 
     /**
      * The sideburns property.
      */
     @JsonProperty(value = "sideburns")
-    private Double sideburns;
+    private double sideburns;
 
     /**
      * Get the moustache value.
      *
      * @return the moustache value
      */
-    public Double moustache() {
+    public double moustache() {
         return this.moustache;
     }
 
@@ -45,7 +45,7 @@ public class FacialHairProperties {
      * @param moustache the moustache value to set
      * @return the FacialHairProperties object itself.
      */
-    public FacialHairProperties withMoustache(Double moustache) {
+    public FacialHairProperties withMoustache(double moustache) {
         this.moustache = moustache;
         return this;
     }
@@ -55,7 +55,7 @@ public class FacialHairProperties {
      *
      * @return the beard value
      */
-    public Double beard() {
+    public double beard() {
         return this.beard;
     }
 
@@ -65,7 +65,7 @@ public class FacialHairProperties {
      * @param beard the beard value to set
      * @return the FacialHairProperties object itself.
      */
-    public FacialHairProperties withBeard(Double beard) {
+    public FacialHairProperties withBeard(double beard) {
         this.beard = beard;
         return this;
     }
@@ -75,7 +75,7 @@ public class FacialHairProperties {
      *
      * @return the sideburns value
      */
-    public Double sideburns() {
+    public double sideburns() {
         return this.sideburns;
     }
 
@@ -85,7 +85,7 @@ public class FacialHairProperties {
      * @param sideburns the sideburns value to set
      * @return the FacialHairProperties object itself.
      */
-    public FacialHairProperties withSideburns(Double sideburns) {
+    public FacialHairProperties withSideburns(double sideburns) {
         this.sideburns = sideburns;
         return this;
     }

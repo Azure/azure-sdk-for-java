@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi;
 
+import java.util.UUID;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -19,7 +20,7 @@ public class FindSimilarRequest {
      * 24 hours after the detection call.
      */
     @JsonProperty(value = "faceId", required = true)
-    private String faceId;
+    private UUID faceId;
 
     /**
      * An existing user-specified unique candidate face list, created in Face
@@ -35,7 +36,7 @@ public class FindSimilarRequest {
      * and the faceIds will expire 24 hours after the detection call.
      */
     @JsonProperty(value = "faceIds")
-    private List<String> faceIds;
+    private List<UUID> faceIds;
 
     /**
      * The number of top similar faces returned. The valid range is [1, 1000].
@@ -55,7 +56,7 @@ public class FindSimilarRequest {
      *
      * @return the faceId value
      */
-    public String faceId() {
+    public UUID faceId() {
         return this.faceId;
     }
 
@@ -65,7 +66,7 @@ public class FindSimilarRequest {
      * @param faceId the faceId value to set
      * @return the FindSimilarRequest object itself.
      */
-    public FindSimilarRequest withFaceId(String faceId) {
+    public FindSimilarRequest withFaceId(UUID faceId) {
         this.faceId = faceId;
         return this;
     }
@@ -95,7 +96,7 @@ public class FindSimilarRequest {
      *
      * @return the faceIds value
      */
-    public List<String> faceIds() {
+    public List<UUID> faceIds() {
         return this.faceIds;
     }
 
@@ -105,7 +106,7 @@ public class FindSimilarRequest {
      * @param faceIds the faceIds value to set
      * @return the FindSimilarRequest object itself.
      */
-    public FindSimilarRequest withFaceIds(List<String> faceIds) {
+    public FindSimilarRequest withFaceIds(List<UUID> faceIds) {
         this.faceIds = faceIds;
         return this;
     }

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,14 +19,14 @@ public class PersistedFaceResultInner {
      * in below response.
      */
     @JsonProperty(value = "persistedFaceId", required = true)
-    private String persistedFaceId;
+    private UUID persistedFaceId;
 
     /**
      * Get the persistedFaceId value.
      *
      * @return the persistedFaceId value
      */
-    public String persistedFaceId() {
+    public UUID persistedFaceId() {
         return this.persistedFaceId;
     }
 
@@ -35,7 +36,7 @@ public class PersistedFaceResultInner {
      * @param persistedFaceId the persistedFaceId value to set
      * @return the PersistedFaceResultInner object itself.
      */
-    public PersistedFaceResultInner withPersistedFaceId(String persistedFaceId) {
+    public PersistedFaceResultInner withPersistedFaceId(UUID persistedFaceId) {
         this.persistedFaceId = persistedFaceId;
         return this;
     }

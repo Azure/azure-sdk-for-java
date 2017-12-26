@@ -16,26 +16,26 @@ public class OcclusionProperties {
      * A boolean value indicating whether forehead is occluded.
      */
     @JsonProperty(value = "foreheadOccluded")
-    private Boolean foreheadOccluded;
+    private boolean foreheadOccluded;
 
     /**
      * A boolean value indicating whether eyes are occluded.
      */
     @JsonProperty(value = "eyeOccluded")
-    private Boolean eyeOccluded;
+    private boolean eyeOccluded;
 
     /**
      * A boolean value indicating whether the mouth is occluded.
      */
     @JsonProperty(value = "mouthOccluded")
-    private Boolean mouthOccluded;
+    private boolean mouthOccluded;
 
     /**
      * Get the foreheadOccluded value.
      *
      * @return the foreheadOccluded value
      */
-    public Boolean foreheadOccluded() {
+    public boolean foreheadOccluded() {
         return this.foreheadOccluded;
     }
 
@@ -45,7 +45,7 @@ public class OcclusionProperties {
      * @param foreheadOccluded the foreheadOccluded value to set
      * @return the OcclusionProperties object itself.
      */
-    public OcclusionProperties withForeheadOccluded(Boolean foreheadOccluded) {
+    public OcclusionProperties withForeheadOccluded(boolean foreheadOccluded) {
         this.foreheadOccluded = foreheadOccluded;
         return this;
     }
@@ -55,7 +55,7 @@ public class OcclusionProperties {
      *
      * @return the eyeOccluded value
      */
-    public Boolean eyeOccluded() {
+    public boolean eyeOccluded() {
         return this.eyeOccluded;
     }
 
@@ -65,7 +65,7 @@ public class OcclusionProperties {
      * @param eyeOccluded the eyeOccluded value to set
      * @return the OcclusionProperties object itself.
      */
-    public OcclusionProperties withEyeOccluded(Boolean eyeOccluded) {
+    public OcclusionProperties withEyeOccluded(boolean eyeOccluded) {
         this.eyeOccluded = eyeOccluded;
         return this;
     }
@@ -75,7 +75,7 @@ public class OcclusionProperties {
      *
      * @return the mouthOccluded value
      */
-    public Boolean mouthOccluded() {
+    public boolean mouthOccluded() {
         return this.mouthOccluded;
     }
 
@@ -85,7 +85,7 @@ public class OcclusionProperties {
      * @param mouthOccluded the mouthOccluded value to set
      * @return the OcclusionProperties object itself.
      */
-    public OcclusionProperties withMouthOccluded(Boolean mouthOccluded) {
+    public OcclusionProperties withMouthOccluded(boolean mouthOccluded) {
         this.mouthOccluded = mouthOccluded;
         return this;
     }

@@ -11,7 +11,6 @@ import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
 import com.microsoft.azure.cognitiveservices.videosearch.implementation.VideosInner;
-
 /**
  * The SearchResultsAnswer model.
  */

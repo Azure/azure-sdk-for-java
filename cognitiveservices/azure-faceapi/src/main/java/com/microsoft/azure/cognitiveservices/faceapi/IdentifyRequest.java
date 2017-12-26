@@ -7,6 +7,7 @@
 package com.microsoft.azure.cognitiveservices.faceapi;
 
 import java.util.List;
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -24,7 +25,7 @@ public class IdentifyRequest {
      * Array of candidate faceId created by Face - Detect.
      */
     @JsonProperty(value = "faceIds", required = true)
-    private List<String> faceIds;
+    private List<UUID> faceIds;
 
     /**
      * The number of top similar faces returned.
@@ -36,7 +37,7 @@ public class IdentifyRequest {
      * The confidenceThreshold property.
      */
     @JsonProperty(value = "confidenceThreshold")
-    private double confidenceThreshold;
+    private Double confidenceThreshold;
 
     /**
      * Get the personGroupId value.
@@ -63,7 +64,7 @@ public class IdentifyRequest {
      *
      * @return the faceIds value
      */
-    public List<String> faceIds() {
+    public List<UUID> faceIds() {
         return this.faceIds;
     }
 
@@ -73,7 +74,7 @@ public class IdentifyRequest {
      * @param faceIds the faceIds value to set
      * @return the IdentifyRequest object itself.
      */
-    public IdentifyRequest withFaceIds(List<String> faceIds) {
+    public IdentifyRequest withFaceIds(List<UUID> faceIds) {
         this.faceIds = faceIds;
         return this;
     }
@@ -103,7 +104,7 @@ public class IdentifyRequest {
      *
      * @return the confidenceThreshold value
      */
-    public double confidenceThreshold() {
+    public Double confidenceThreshold() {
         return this.confidenceThreshold;
     }
 
@@ -113,7 +114,7 @@ public class IdentifyRequest {
      * @param confidenceThreshold the confidenceThreshold value to set
      * @return the IdentifyRequest object itself.
      */
-    public IdentifyRequest withConfidenceThreshold(double confidenceThreshold) {
+    public IdentifyRequest withConfidenceThreshold(Double confidenceThreshold) {
         this.confidenceThreshold = confidenceThreshold;
         return this;
     }

@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,10 +19,10 @@ public class PersonFaceResultInner {
      * in 24 hours after the detection call.
      */
     @JsonProperty(value = "persistedFaceId", required = true)
-    private String persistedFaceId;
+    private UUID persistedFaceId;
 
     /**
-     * User-provided data attached to the face.
+     * User-provided data attached to the face. The size limit is 1KB.
      */
     @JsonProperty(value = "userData")
     private String userData;
@@ -31,7 +32,7 @@ public class PersonFaceResultInner {
      *
      * @return the persistedFaceId value
      */
-    public String persistedFaceId() {
+    public UUID persistedFaceId() {
         return this.persistedFaceId;
     }
 
@@ -41,7 +42,7 @@ public class PersonFaceResultInner {
      * @param persistedFaceId the persistedFaceId value to set
      * @return the PersonFaceResultInner object itself.
      */
-    public PersonFaceResultInner withPersistedFaceId(String persistedFaceId) {
+    public PersonFaceResultInner withPersistedFaceId(UUID persistedFaceId) {
         this.persistedFaceId = persistedFaceId;
         return this;
     }

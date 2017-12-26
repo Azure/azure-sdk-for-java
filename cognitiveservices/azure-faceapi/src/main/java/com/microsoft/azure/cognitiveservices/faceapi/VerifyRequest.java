@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi;
 
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,20 +17,20 @@ public class VerifyRequest {
      * faceId of the first face, comes from Face - Detect.
      */
     @JsonProperty(value = "faceId1", required = true)
-    private String faceId1;
+    private UUID faceId1;
 
     /**
      * faceId of the second face, comes from Face - Detect.
      */
     @JsonProperty(value = "faceId2", required = true)
-    private String faceId2;
+    private UUID faceId2;
 
     /**
      * Get the faceId1 value.
      *
      * @return the faceId1 value
      */
-    public String faceId1() {
+    public UUID faceId1() {
         return this.faceId1;
     }
 
@@ -39,7 +40,7 @@ public class VerifyRequest {
      * @param faceId1 the faceId1 value to set
      * @return the VerifyRequest object itself.
      */
-    public VerifyRequest withFaceId1(String faceId1) {
+    public VerifyRequest withFaceId1(UUID faceId1) {
         this.faceId1 = faceId1;
         return this;
     }
@@ -49,7 +50,7 @@ public class VerifyRequest {
      *
      * @return the faceId2 value
      */
-    public String faceId2() {
+    public UUID faceId2() {
         return this.faceId2;
     }
 
@@ -59,7 +60,7 @@ public class VerifyRequest {
      * @param faceId2 the faceId2 value to set
      * @return the VerifyRequest object itself.
      */
-    public VerifyRequest withFaceId2(String faceId2) {
+    public VerifyRequest withFaceId2(UUID faceId2) {
         this.faceId2 = faceId2;
         return this;
     }
