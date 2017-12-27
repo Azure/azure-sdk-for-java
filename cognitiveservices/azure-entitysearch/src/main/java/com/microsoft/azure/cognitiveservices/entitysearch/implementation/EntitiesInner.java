@@ -124,7 +124,8 @@ public class EntitiesInner {
         final List<ResponseFormat> responseFormat = null;
         final SafeSearch safeSearch = null;
         final String setLang = null;
-        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);String responseFormatConverted = this.client.serializerAdapter().serializeList(responseFormat, CollectionFormat.CSV);
+        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);
+        String responseFormatConverted = this.client.serializerAdapter().serializeList(responseFormat, CollectionFormat.CSV);
         return service.search(xBingApisSDK, acceptLanguage, pragma, this.client.userAgent(), clientId, clientIp, location, countryCode, market, query, responseFilterConverted, responseFormatConverted, safeSearch, setLang)
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchResponseInner>>>() {
                 @Override
@@ -238,7 +239,8 @@ public class EntitiesInner {
         Validator.validate(responseFilter);
         Validator.validate(responseFormat);
         final String xBingApisSDK = "true";
-        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);String responseFormatConverted = this.client.serializerAdapter().serializeList(responseFormat, CollectionFormat.CSV);
+        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);
+        String responseFormatConverted = this.client.serializerAdapter().serializeList(responseFormat, CollectionFormat.CSV);
         return service.search(xBingApisSDK, acceptLanguage, pragma, this.client.userAgent(), clientId, clientIp, location, countryCode, market, query, responseFilterConverted, responseFormatConverted, safeSearch, setLang)
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchResponseInner>>>() {
                 @Override
