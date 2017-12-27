@@ -23,7 +23,7 @@ public class BlurProperties {
      * A number indicating level of blurriness ranging from 0 to 1.
      */
     @JsonProperty(value = "value")
-    private Double value;
+    private double value;
 
     /**
      * Get the blurLevel value.
@@ -50,7 +50,7 @@ public class BlurProperties {
      *
      * @return the value value
      */
-    public Double value() {
+    public double value() {
         return this.value;
     }
 
@@ -60,7 +60,7 @@ public class BlurProperties {
      * @param value the value value to set
      * @return the BlurProperties object itself.
      */
-    public BlurProperties withValue(Double value) {
+    public BlurProperties withValue(double value) {
         this.value = value;
         return this;
     }

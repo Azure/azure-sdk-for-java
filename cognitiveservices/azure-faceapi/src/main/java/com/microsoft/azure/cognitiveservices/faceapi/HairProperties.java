@@ -17,13 +17,13 @@ public class HairProperties {
      * A number describing confidence level of whether the person is bald.
      */
     @JsonProperty(value = "bald")
-    private Double bald;
+    private double bald;
 
     /**
      * A boolean value describing whether the hair is visible in the image.
      */
     @JsonProperty(value = "invisible")
-    private Boolean invisible;
+    private boolean invisible;
 
     /**
      * The hairColor property.
@@ -36,7 +36,7 @@ public class HairProperties {
      *
      * @return the bald value
      */
-    public Double bald() {
+    public double bald() {
         return this.bald;
     }
 
@@ -46,7 +46,7 @@ public class HairProperties {
      * @param bald the bald value to set
      * @return the HairProperties object itself.
      */
-    public HairProperties withBald(Double bald) {
+    public HairProperties withBald(double bald) {
         this.bald = bald;
         return this;
     }
@@ -56,7 +56,7 @@ public class HairProperties {
      *
      * @return the invisible value
      */
-    public Boolean invisible() {
+    public boolean invisible() {
         return this.invisible;
     }
 
@@ -66,7 +66,7 @@ public class HairProperties {
      * @param invisible the invisible value to set
      * @return the HairProperties object itself.
      */
-    public HairProperties withInvisible(Boolean invisible) {
+    public HairProperties withInvisible(boolean invisible) {
         this.invisible = invisible;
         return this;
     }

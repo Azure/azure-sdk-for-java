@@ -165,8 +165,8 @@ public class PersonGroupsInner {
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId User-provided personGroupId as a string.
-     * @param name Name of the face list, maximum length is 128.
-     * @param userData Optional user defined data for the face list. Length should not exceed 16KB.
+     * @param name Person group display name. The maximum length is 128.
+     * @param userData User-provided data attached to the person group. The size limit is 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -179,8 +179,8 @@ public class PersonGroupsInner {
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId User-provided personGroupId as a string.
-     * @param name Name of the face list, maximum length is 128.
-     * @param userData Optional user defined data for the face list. Length should not exceed 16KB.
+     * @param name Person group display name. The maximum length is 128.
+     * @param userData User-provided data attached to the person group. The size limit is 16KB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -193,8 +193,8 @@ public class PersonGroupsInner {
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId User-provided personGroupId as a string.
-     * @param name Name of the face list, maximum length is 128.
-     * @param userData Optional user defined data for the face list. Length should not exceed 16KB.
+     * @param name Person group display name. The maximum length is 128.
+     * @param userData User-provided data attached to the person group. The size limit is 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -211,8 +211,8 @@ public class PersonGroupsInner {
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId User-provided personGroupId as a string.
-     * @param name Name of the face list, maximum length is 128.
-     * @param userData Optional user defined data for the face list. Length should not exceed 16KB.
+     * @param name Person group display name. The maximum length is 128.
+     * @param userData User-provided data attached to the person group. The size limit is 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -479,8 +479,8 @@ public class PersonGroupsInner {
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
      * @param personGroupId personGroupId of the person group to be updated.
-     * @param name Name of the face list, maximum length is 128.
-     * @param userData Optional user defined data for the face list. Length should not exceed 16KB.
+     * @param name Person group display name. The maximum length is 128.
+     * @param userData User-provided data attached to the person group. The size limit is 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -493,8 +493,8 @@ public class PersonGroupsInner {
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
      * @param personGroupId personGroupId of the person group to be updated.
-     * @param name Name of the face list, maximum length is 128.
-     * @param userData Optional user defined data for the face list. Length should not exceed 16KB.
+     * @param name Person group display name. The maximum length is 128.
+     * @param userData User-provided data attached to the person group. The size limit is 16KB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -507,8 +507,8 @@ public class PersonGroupsInner {
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
      * @param personGroupId personGroupId of the person group to be updated.
-     * @param name Name of the face list, maximum length is 128.
-     * @param userData Optional user defined data for the face list. Length should not exceed 16KB.
+     * @param name Person group display name. The maximum length is 128.
+     * @param userData User-provided data attached to the person group. The size limit is 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -525,8 +525,8 @@ public class PersonGroupsInner {
      * Update an existing person group's display name and userData. The properties which does not appear in request body will not be updated.
      *
      * @param personGroupId personGroupId of the person group to be updated.
-     * @param name Name of the face list, maximum length is 128.
-     * @param userData Optional user defined data for the face list. Length should not exceed 16KB.
+     * @param name Person group display name. The maximum length is 128.
+     * @param userData User-provided data attached to the person group. The size limit is 16KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -569,9 +569,9 @@ public class PersonGroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the TrainingStatus1Inner object if successful.
+     * @return the TrainingStatusInner object if successful.
      */
-    public TrainingStatus1Inner getTrainingStatus(String personGroupId) {
+    public TrainingStatusInner getTrainingStatus(String personGroupId) {
         return getTrainingStatusWithServiceResponseAsync(personGroupId).toBlocking().single().body();
     }
 
@@ -583,7 +583,7 @@ public class PersonGroupsInner {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TrainingStatus1Inner> getTrainingStatusAsync(String personGroupId, final ServiceCallback<TrainingStatus1Inner> serviceCallback) {
+    public ServiceFuture<TrainingStatusInner> getTrainingStatusAsync(String personGroupId, final ServiceCallback<TrainingStatusInner> serviceCallback) {
         return ServiceFuture.fromResponse(getTrainingStatusWithServiceResponseAsync(personGroupId), serviceCallback);
     }
 
@@ -592,12 +592,12 @@ public class PersonGroupsInner {
      *
      * @param personGroupId personGroupId of target person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TrainingStatus1Inner object
+     * @return the observable to the TrainingStatusInner object
      */
-    public Observable<TrainingStatus1Inner> getTrainingStatusAsync(String personGroupId) {
-        return getTrainingStatusWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<TrainingStatus1Inner>, TrainingStatus1Inner>() {
+    public Observable<TrainingStatusInner> getTrainingStatusAsync(String personGroupId) {
+        return getTrainingStatusWithServiceResponseAsync(personGroupId).map(new Func1<ServiceResponse<TrainingStatusInner>, TrainingStatusInner>() {
             @Override
-            public TrainingStatus1Inner call(ServiceResponse<TrainingStatus1Inner> response) {
+            public TrainingStatusInner call(ServiceResponse<TrainingStatusInner> response) {
                 return response.body();
             }
         });
@@ -608,9 +608,9 @@ public class PersonGroupsInner {
      *
      * @param personGroupId personGroupId of target person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TrainingStatus1Inner object
+     * @return the observable to the TrainingStatusInner object
      */
-    public Observable<ServiceResponse<TrainingStatus1Inner>> getTrainingStatusWithServiceResponseAsync(String personGroupId) {
+    public Observable<ServiceResponse<TrainingStatusInner>> getTrainingStatusWithServiceResponseAsync(String personGroupId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -619,11 +619,11 @@ public class PersonGroupsInner {
         }
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
         return service.getTrainingStatus(personGroupId, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TrainingStatus1Inner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TrainingStatusInner>>>() {
                 @Override
-                public Observable<ServiceResponse<TrainingStatus1Inner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<TrainingStatusInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<TrainingStatus1Inner> clientResponse = getTrainingStatusDelegate(response);
+                        ServiceResponse<TrainingStatusInner> clientResponse = getTrainingStatusDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -632,9 +632,9 @@ public class PersonGroupsInner {
             });
     }
 
-    private ServiceResponse<TrainingStatus1Inner> getTrainingStatusDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<TrainingStatus1Inner, APIErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<TrainingStatus1Inner>() { }.getType())
+    private ServiceResponse<TrainingStatusInner> getTrainingStatusDelegate(Response<ResponseBody> response) throws APIErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<TrainingStatusInner, APIErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<TrainingStatusInner>() { }.getType())
                 .registerError(APIErrorException.class)
                 .build(response);
     }

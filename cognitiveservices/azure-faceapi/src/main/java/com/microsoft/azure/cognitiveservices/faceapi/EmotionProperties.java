@@ -17,56 +17,56 @@ public class EmotionProperties {
      * The anger property.
      */
     @JsonProperty(value = "anger")
-    private Double anger;
+    private double anger;
 
     /**
      * The contempt property.
      */
     @JsonProperty(value = "contempt")
-    private Double contempt;
+    private double contempt;
 
     /**
      * The disgust property.
      */
     @JsonProperty(value = "disgust")
-    private Double disgust;
+    private double disgust;
 
     /**
      * The fear property.
      */
     @JsonProperty(value = "fear")
-    private Double fear;
+    private double fear;
 
     /**
      * The happiness property.
      */
     @JsonProperty(value = "happiness")
-    private Double happiness;
+    private double happiness;
 
     /**
      * The neutral property.
      */
     @JsonProperty(value = "neutral")
-    private Double neutral;
+    private double neutral;
 
     /**
      * The sadness property.
      */
     @JsonProperty(value = "sadness")
-    private Double sadness;
+    private double sadness;
 
     /**
      * The surprise property.
      */
     @JsonProperty(value = "surprise")
-    private Double surprise;
+    private double surprise;
 
     /**
      * Get the anger value.
      *
      * @return the anger value
      */
-    public Double anger() {
+    public double anger() {
         return this.anger;
     }
 
@@ -76,7 +76,7 @@ public class EmotionProperties {
      * @param anger the anger value to set
      * @return the EmotionProperties object itself.
      */
-    public EmotionProperties withAnger(Double anger) {
+    public EmotionProperties withAnger(double anger) {
         this.anger = anger;
         return this;
     }
@@ -86,7 +86,7 @@ public class EmotionProperties {
      *
      * @return the contempt value
      */
-    public Double contempt() {
+    public double contempt() {
         return this.contempt;
     }
 
@@ -96,7 +96,7 @@ public class EmotionProperties {
      * @param contempt the contempt value to set
      * @return the EmotionProperties object itself.
      */
-    public EmotionProperties withContempt(Double contempt) {
+    public EmotionProperties withContempt(double contempt) {
         this.contempt = contempt;
         return this;
     }
@@ -106,7 +106,7 @@ public class EmotionProperties {
      *
      * @return the disgust value
      */
-    public Double disgust() {
+    public double disgust() {
         return this.disgust;
     }
 
@@ -116,7 +116,7 @@ public class EmotionProperties {
      * @param disgust the disgust value to set
      * @return the EmotionProperties object itself.
      */
-    public EmotionProperties withDisgust(Double disgust) {
+    public EmotionProperties withDisgust(double disgust) {
         this.disgust = disgust;
         return this;
     }
@@ -126,7 +126,7 @@ public class EmotionProperties {
      *
      * @return the fear value
      */
-    public Double fear() {
+    public double fear() {
         return this.fear;
     }
 
@@ -136,7 +136,7 @@ public class EmotionProperties {
      * @param fear the fear value to set
      * @return the EmotionProperties object itself.
      */
-    public EmotionProperties withFear(Double fear) {
+    public EmotionProperties withFear(double fear) {
         this.fear = fear;
         return this;
     }
@@ -146,7 +146,7 @@ public class EmotionProperties {
      *
      * @return the happiness value
      */
-    public Double happiness() {
+    public double happiness() {
         return this.happiness;
     }
 
@@ -156,7 +156,7 @@ public class EmotionProperties {
      * @param happiness the happiness value to set
      * @return the EmotionProperties object itself.
      */
-    public EmotionProperties withHappiness(Double happiness) {
+    public EmotionProperties withHappiness(double happiness) {
         this.happiness = happiness;
         return this;
     }
@@ -166,7 +166,7 @@ public class EmotionProperties {
      *
      * @return the neutral value
      */
-    public Double neutral() {
+    public double neutral() {
         return this.neutral;
     }
 
@@ -176,7 +176,7 @@ public class EmotionProperties {
      * @param neutral the neutral value to set
      * @return the EmotionProperties object itself.
      */
-    public EmotionProperties withNeutral(Double neutral) {
+    public EmotionProperties withNeutral(double neutral) {
         this.neutral = neutral;
         return this;
     }
@@ -186,7 +186,7 @@ public class EmotionProperties {
      *
      * @return the sadness value
      */
-    public Double sadness() {
+    public double sadness() {
         return this.sadness;
     }
 
@@ -196,7 +196,7 @@ public class EmotionProperties {
      * @param sadness the sadness value to set
      * @return the EmotionProperties object itself.
      */
-    public EmotionProperties withSadness(Double sadness) {
+    public EmotionProperties withSadness(double sadness) {
         this.sadness = sadness;
         return this;
     }
@@ -206,7 +206,7 @@ public class EmotionProperties {
      *
      * @return the surprise value
      */
-    public Double surprise() {
+    public double surprise() {
         return this.surprise;
     }
 
@@ -216,7 +216,7 @@ public class EmotionProperties {
      * @param surprise the surprise value to set
      * @return the EmotionProperties object itself.
      */
-    public EmotionProperties withSurprise(Double surprise) {
+    public EmotionProperties withSurprise(double surprise) {
         this.surprise = surprise;
         return this;
     }

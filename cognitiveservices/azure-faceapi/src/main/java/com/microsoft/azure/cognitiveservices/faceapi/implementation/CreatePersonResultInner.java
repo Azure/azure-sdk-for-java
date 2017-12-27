@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
+import java.util.UUID;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -16,14 +17,14 @@ public class CreatePersonResultInner {
      * personID of the new created person.
      */
     @JsonProperty(value = "personId", required = true)
-    private String personId;
+    private UUID personId;
 
     /**
      * Get the personId value.
      *
      * @return the personId value
      */
-    public String personId() {
+    public UUID personId() {
         return this.personId;
     }
 
@@ -33,7 +34,7 @@ public class CreatePersonResultInner {
      * @param personId the personId value to set
      * @return the CreatePersonResultInner object itself.
      */
-    public CreatePersonResultInner withPersonId(String personId) {
+    public CreatePersonResultInner withPersonId(UUID personId) {
         this.personId = personId;
         return this;
     }

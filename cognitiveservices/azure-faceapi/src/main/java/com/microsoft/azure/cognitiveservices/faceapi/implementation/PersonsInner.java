@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
-import com.microsoft.azure.management.resources.fluentcore.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
@@ -21,6 +20,7 @@ import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
+import java.util.UUID;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 import okhttp3.ResponseBody;
@@ -41,7 +41,7 @@ import rx.Observable;
  * An instance of this class provides access to all the operations defined
  * in Persons.
  */
-public class PersonsInner implements InnerSupportsDelete<Void> {
+public class PersonsInner {
     /** The Retrofit service to perform REST calls. */
     private PersonsService service;
     /** The service client containing this operation class. */
@@ -73,35 +73,35 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.Persons delete" })
         @HTTP(path = "persongroups/{personGroupId}/persons/{personId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> delete(@Path("personGroupId") String personGroupId, @Path("personId") String personId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> delete(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.Persons get" })
         @GET("persongroups/{personGroupId}/persons/{personId}")
-        Observable<Response<ResponseBody>> get(@Path("personGroupId") String personGroupId, @Path("personId") String personId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> get(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.Persons update" })
         @PATCH("persongroups/{personGroupId}/persons/{personId}")
-        Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Path("personId") String personId, @Header("accept-language") String acceptLanguage, @Body CreatePersonRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Header("accept-language") String acceptLanguage, @Body CreatePersonRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.Persons deleteFace" })
         @HTTP(path = "persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> deleteFace(@Path("personGroupId") String personGroupId, @Path("personId") String personId, @Path("persistedFaceId") String persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> deleteFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.Persons getFace" })
         @GET("persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
-        Observable<Response<ResponseBody>> getFace(@Path("personGroupId") String personGroupId, @Path("personId") String personId, @Path("persistedFaceId") String persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> getFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.Persons updateFace" })
         @PATCH("persongroups/{personGroupId}/persons/{personId}/persistedFaces/{persistedFaceId}")
-        Observable<Response<ResponseBody>> updateFace(@Path("personGroupId") String personGroupId, @Path("personId") String personId, @Path("persistedFaceId") String persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdatePersonFaceDataRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> updateFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Path("persistedFaceId") UUID persistedFaceId, @Header("accept-language") String acceptLanguage, @Body UpdatePersonFaceDataRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.Persons addPersonFace" })
         @POST("persongroups/{personGroupId}/persons/{personId}/persistedFaces")
-        Observable<Response<ResponseBody>> addPersonFace(@Path("personGroupId") String personGroupId, @Path("personId") String personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addPersonFace(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Header("accept-language") String acceptLanguage, @Body ImageUrl imageUrl, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.faceapi.Persons addPersonFaceFromStream" })
         @POST("persongroups/{personGroupId}/persons/{personId}/persistedFaces")
-        Observable<Response<ResponseBody>> addPersonFaceFromStream(@Path("personGroupId") String personGroupId, @Path("personId") String personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addPersonFaceFromStream(@Path("personGroupId") String personGroupId, @Path("personId") UUID personId, @Query("userData") String userData, @Query("targetFace") String targetFace, @Body RequestBody image, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
@@ -434,7 +434,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void delete(String personGroupId, String personId) {
+    public void delete(String personGroupId, UUID personId) {
         deleteWithServiceResponseAsync(personGroupId, personId).toBlocking().single().body();
     }
 
@@ -447,7 +447,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteAsync(String personGroupId, String personId, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> deleteAsync(String personGroupId, UUID personId, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteWithServiceResponseAsync(personGroupId, personId), serviceCallback);
     }
 
@@ -459,7 +459,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteAsync(String personGroupId, String personId) {
+    public Observable<Void> deleteAsync(String personGroupId, UUID personId) {
         return deleteWithServiceResponseAsync(personGroupId, personId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -476,7 +476,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId, String personId) {
+    public Observable<ServiceResponse<Void>> deleteWithServiceResponseAsync(String personGroupId, UUID personId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -518,7 +518,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersonResultInner object if successful.
      */
-    public PersonResultInner get(String personGroupId, String personId) {
+    public PersonResultInner get(String personGroupId, UUID personId) {
         return getWithServiceResponseAsync(personGroupId, personId).toBlocking().single().body();
     }
 
@@ -531,7 +531,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersonResultInner> getAsync(String personGroupId, String personId, final ServiceCallback<PersonResultInner> serviceCallback) {
+    public ServiceFuture<PersonResultInner> getAsync(String personGroupId, UUID personId, final ServiceCallback<PersonResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(getWithServiceResponseAsync(personGroupId, personId), serviceCallback);
     }
 
@@ -543,7 +543,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersonResultInner object
      */
-    public Observable<PersonResultInner> getAsync(String personGroupId, String personId) {
+    public Observable<PersonResultInner> getAsync(String personGroupId, UUID personId) {
         return getWithServiceResponseAsync(personGroupId, personId).map(new Func1<ServiceResponse<PersonResultInner>, PersonResultInner>() {
             @Override
             public PersonResultInner call(ServiceResponse<PersonResultInner> response) {
@@ -560,7 +560,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersonResultInner object
      */
-    public Observable<ServiceResponse<PersonResultInner>> getWithServiceResponseAsync(String personGroupId, String personId) {
+    public Observable<ServiceResponse<PersonResultInner>> getWithServiceResponseAsync(String personGroupId, UUID personId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -601,7 +601,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void update(String personGroupId, String personId) {
+    public void update(String personGroupId, UUID personId) {
         updateWithServiceResponseAsync(personGroupId, personId).toBlocking().single().body();
     }
 
@@ -614,7 +614,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateAsync(String personGroupId, String personId, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> updateAsync(String personGroupId, UUID personId, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId, personId), serviceCallback);
     }
 
@@ -626,7 +626,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateAsync(String personGroupId, String personId) {
+    public Observable<Void> updateAsync(String personGroupId, UUID personId) {
         return updateWithServiceResponseAsync(personGroupId, personId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -643,7 +643,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, String personId) {
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UUID personId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -684,7 +684,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void update(String personGroupId, String personId, String name, String userData) {
+    public void update(String personGroupId, UUID personId, String name, String userData) {
         updateWithServiceResponseAsync(personGroupId, personId, name, userData).toBlocking().single().body();
     }
 
@@ -699,7 +699,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateAsync(String personGroupId, String personId, String name, String userData, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> updateAsync(String personGroupId, UUID personId, String name, String userData, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(updateWithServiceResponseAsync(personGroupId, personId, name, userData), serviceCallback);
     }
 
@@ -713,7 +713,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateAsync(String personGroupId, String personId, String name, String userData) {
+    public Observable<Void> updateAsync(String personGroupId, UUID personId, String name, String userData) {
         return updateWithServiceResponseAsync(personGroupId, personId, name, userData).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -732,7 +732,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, String personId, String name, String userData) {
+    public Observable<ServiceResponse<Void>> updateWithServiceResponseAsync(String personGroupId, UUID personId, String name, String userData) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -777,7 +777,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void deleteFace(String personGroupId, String personId, String persistedFaceId) {
+    public void deleteFace(String personGroupId, UUID personId, UUID persistedFaceId) {
         deleteFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId).toBlocking().single().body();
     }
 
@@ -791,7 +791,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> deleteFaceAsync(String personGroupId, String personId, String persistedFaceId, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> deleteFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(deleteFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId), serviceCallback);
     }
 
@@ -804,7 +804,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> deleteFaceAsync(String personGroupId, String personId, String persistedFaceId) {
+    public Observable<Void> deleteFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
         return deleteFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -822,7 +822,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String personGroupId, String personId, String persistedFaceId) {
+    public Observable<ServiceResponse<Void>> deleteFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -868,7 +868,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersonFaceResultInner object if successful.
      */
-    public PersonFaceResultInner getFace(String personGroupId, String personId, String persistedFaceId) {
+    public PersonFaceResultInner getFace(String personGroupId, UUID personId, UUID persistedFaceId) {
         return getFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId).toBlocking().single().body();
     }
 
@@ -882,7 +882,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersonFaceResultInner> getFaceAsync(String personGroupId, String personId, String persistedFaceId, final ServiceCallback<PersonFaceResultInner> serviceCallback) {
+    public ServiceFuture<PersonFaceResultInner> getFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<PersonFaceResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(getFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId), serviceCallback);
     }
 
@@ -895,7 +895,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersonFaceResultInner object
      */
-    public Observable<PersonFaceResultInner> getFaceAsync(String personGroupId, String personId, String persistedFaceId) {
+    public Observable<PersonFaceResultInner> getFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
         return getFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId).map(new Func1<ServiceResponse<PersonFaceResultInner>, PersonFaceResultInner>() {
             @Override
             public PersonFaceResultInner call(ServiceResponse<PersonFaceResultInner> response) {
@@ -913,7 +913,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersonFaceResultInner object
      */
-    public Observable<ServiceResponse<PersonFaceResultInner>> getFaceWithServiceResponseAsync(String personGroupId, String personId, String persistedFaceId) {
+    public Observable<ServiceResponse<PersonFaceResultInner>> getFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -958,7 +958,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void updateFace(String personGroupId, String personId, String persistedFaceId) {
+    public void updateFace(String personGroupId, UUID personId, UUID persistedFaceId) {
         updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId).toBlocking().single().body();
     }
 
@@ -972,7 +972,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateFaceAsync(String personGroupId, String personId, String persistedFaceId, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId), serviceCallback);
     }
 
@@ -985,7 +985,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateFaceAsync(String personGroupId, String personId, String persistedFaceId) {
+    public Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
         return updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -1003,7 +1003,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, String personId, String persistedFaceId) {
+    public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -1040,12 +1040,12 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @param personGroupId Specifying the person group containing the target person.
      * @param personId personId of the target person.
      * @param persistedFaceId persistedFaceId of target face, which is persisted and will not expire.
-     * @param userData User-provided data attached to the face. The size limit is 1KB
+     * @param userData User-provided data attached to the face. The size limit is 1KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void updateFace(String personGroupId, String personId, String persistedFaceId, String userData) {
+    public void updateFace(String personGroupId, UUID personId, UUID persistedFaceId, String userData) {
         updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData).toBlocking().single().body();
     }
 
@@ -1055,12 +1055,12 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @param personGroupId Specifying the person group containing the target person.
      * @param personId personId of the target person.
      * @param persistedFaceId persistedFaceId of target face, which is persisted and will not expire.
-     * @param userData User-provided data attached to the face. The size limit is 1KB
+     * @param userData User-provided data attached to the face. The size limit is 1KB.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> updateFaceAsync(String personGroupId, String personId, String persistedFaceId, String userData, final ServiceCallback<Void> serviceCallback) {
+    public ServiceFuture<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData, final ServiceCallback<Void> serviceCallback) {
         return ServiceFuture.fromResponse(updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData), serviceCallback);
     }
 
@@ -1070,11 +1070,11 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @param personGroupId Specifying the person group containing the target person.
      * @param personId personId of the target person.
      * @param persistedFaceId persistedFaceId of target face, which is persisted and will not expire.
-     * @param userData User-provided data attached to the face. The size limit is 1KB
+     * @param userData User-provided data attached to the face. The size limit is 1KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> updateFaceAsync(String personGroupId, String personId, String persistedFaceId, String userData) {
+    public Observable<Void> updateFaceAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData) {
         return updateFaceWithServiceResponseAsync(personGroupId, personId, persistedFaceId, userData).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
@@ -1089,11 +1089,11 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @param personGroupId Specifying the person group containing the target person.
      * @param personId personId of the target person.
      * @param persistedFaceId persistedFaceId of target face, which is persisted and will not expire.
-     * @param userData User-provided data attached to the face. The size limit is 1KB
+     * @param userData User-provided data attached to the face. The size limit is 1KB.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, String personId, String persistedFaceId, String userData) {
+    public Observable<ServiceResponse<Void>> updateFaceWithServiceResponseAsync(String personGroupId, UUID personId, UUID persistedFaceId, String userData) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -1141,7 +1141,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFaceResultInner object if successful.
      */
-    public PersistedFaceResultInner addPersonFace(String personGroupId, String personId, String url) {
+    public PersistedFaceResultInner addPersonFace(String personGroupId, UUID personId, String url) {
         return addPersonFaceWithServiceResponseAsync(personGroupId, personId, url).toBlocking().single().body();
     }
 
@@ -1155,7 +1155,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFaceResultInner> addPersonFaceAsync(String personGroupId, String personId, String url, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
+    public ServiceFuture<PersistedFaceResultInner> addPersonFaceAsync(String personGroupId, UUID personId, String url, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(addPersonFaceWithServiceResponseAsync(personGroupId, personId, url), serviceCallback);
     }
 
@@ -1168,7 +1168,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<PersistedFaceResultInner> addPersonFaceAsync(String personGroupId, String personId, String url) {
+    public Observable<PersistedFaceResultInner> addPersonFaceAsync(String personGroupId, UUID personId, String url) {
         return addPersonFaceWithServiceResponseAsync(personGroupId, personId, url).map(new Func1<ServiceResponse<PersistedFaceResultInner>, PersistedFaceResultInner>() {
             @Override
             public PersistedFaceResultInner call(ServiceResponse<PersistedFaceResultInner> response) {
@@ -1186,7 +1186,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<ServiceResponse<PersistedFaceResultInner>> addPersonFaceWithServiceResponseAsync(String personGroupId, String personId, String url) {
+    public Observable<ServiceResponse<PersistedFaceResultInner>> addPersonFaceWithServiceResponseAsync(String personGroupId, UUID personId, String url) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -1232,7 +1232,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFaceResultInner object if successful.
      */
-    public PersistedFaceResultInner addPersonFace(String personGroupId, String personId, String url, String userData, List<Integer> targetFace) {
+    public PersistedFaceResultInner addPersonFace(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
         return addPersonFaceWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).toBlocking().single().body();
     }
 
@@ -1248,7 +1248,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFaceResultInner> addPersonFaceAsync(String personGroupId, String personId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
+    public ServiceFuture<PersistedFaceResultInner> addPersonFaceAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(addPersonFaceWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace), serviceCallback);
     }
 
@@ -1263,7 +1263,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<PersistedFaceResultInner> addPersonFaceAsync(String personGroupId, String personId, String url, String userData, List<Integer> targetFace) {
+    public Observable<PersistedFaceResultInner> addPersonFaceAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
         return addPersonFaceWithServiceResponseAsync(personGroupId, personId, url, userData, targetFace).map(new Func1<ServiceResponse<PersistedFaceResultInner>, PersistedFaceResultInner>() {
             @Override
             public PersistedFaceResultInner call(ServiceResponse<PersistedFaceResultInner> response) {
@@ -1283,7 +1283,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<ServiceResponse<PersistedFaceResultInner>> addPersonFaceWithServiceResponseAsync(String personGroupId, String personId, String url, String userData, List<Integer> targetFace) {
+    public Observable<ServiceResponse<PersistedFaceResultInner>> addPersonFaceWithServiceResponseAsync(String personGroupId, UUID personId, String url, String userData, List<Integer> targetFace) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -1333,7 +1333,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFaceResultInner object if successful.
      */
-    public PersistedFaceResultInner addPersonFaceFromStream(String personGroupId, String personId, byte[] image) {
+    public PersistedFaceResultInner addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image) {
         return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image).toBlocking().single().body();
     }
 
@@ -1347,7 +1347,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFaceResultInner> addPersonFaceFromStreamAsync(String personGroupId, String personId, byte[] image, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
+    public ServiceFuture<PersistedFaceResultInner> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image), serviceCallback);
     }
 
@@ -1360,7 +1360,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<PersistedFaceResultInner> addPersonFaceFromStreamAsync(String personGroupId, String personId, byte[] image) {
+    public Observable<PersistedFaceResultInner> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image) {
         return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image).map(new Func1<ServiceResponse<PersistedFaceResultInner>, PersistedFaceResultInner>() {
             @Override
             public PersistedFaceResultInner call(ServiceResponse<PersistedFaceResultInner> response) {
@@ -1378,7 +1378,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<ServiceResponse<PersistedFaceResultInner>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, String personId, byte[] image) {
+    public Observable<ServiceResponse<PersistedFaceResultInner>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -1423,7 +1423,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the PersistedFaceResultInner object if successful.
      */
-    public PersistedFaceResultInner addPersonFaceFromStream(String personGroupId, String personId, byte[] image, String userData, List<Integer> targetFace) {
+    public PersistedFaceResultInner addPersonFaceFromStream(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
         return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).toBlocking().single().body();
     }
 
@@ -1439,7 +1439,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<PersistedFaceResultInner> addPersonFaceFromStreamAsync(String personGroupId, String personId, byte[] image, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
+    public ServiceFuture<PersistedFaceResultInner> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace, final ServiceCallback<PersistedFaceResultInner> serviceCallback) {
         return ServiceFuture.fromResponse(addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace), serviceCallback);
     }
 
@@ -1454,7 +1454,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<PersistedFaceResultInner> addPersonFaceFromStreamAsync(String personGroupId, String personId, byte[] image, String userData, List<Integer> targetFace) {
+    public Observable<PersistedFaceResultInner> addPersonFaceFromStreamAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
         return addPersonFaceFromStreamWithServiceResponseAsync(personGroupId, personId, image, userData, targetFace).map(new Func1<ServiceResponse<PersistedFaceResultInner>, PersistedFaceResultInner>() {
             @Override
             public PersistedFaceResultInner call(ServiceResponse<PersistedFaceResultInner> response) {
@@ -1474,7 +1474,7 @@ public class PersonsInner implements InnerSupportsDelete<Void> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PersistedFaceResultInner object
      */
-    public Observable<ServiceResponse<PersistedFaceResultInner>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, String personId, byte[] image, String userData, List<Integer> targetFace) {
+    public Observable<ServiceResponse<PersistedFaceResultInner>> addPersonFaceFromStreamWithServiceResponseAsync(String personGroupId, UUID personId, byte[] image, String userData, List<Integer> targetFace) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }

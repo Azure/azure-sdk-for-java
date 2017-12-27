@@ -6,15 +6,14 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
-import com.microsoft.azure.cognitiveservices.faceapi.TrainingStatus;
-import com.microsoft.rest.DateTimeRfc1123;
+import com.microsoft.azure.cognitiveservices.faceapi.TrainingStatusType;
 import org.joda.time.DateTime;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * Training status object.
  */
-public class TrainingStatus1Inner {
+public class TrainingStatusInner {
     /**
      * Training status: notstarted, running, succeeded, failed. If the training
      * process is waiting to perform, the status is notstarted. If the training
@@ -24,21 +23,21 @@ public class TrainingStatus1Inner {
      * include: 'nonstarted', 'running', 'succeeded', 'failed'.
      */
     @JsonProperty(value = "status", required = true)
-    private TrainingStatus status;
+    private TrainingStatusType status;
 
     /**
      * A combined UTC date and time string that describes person group created
      * time.
      */
     @JsonProperty(value = "createdDateTime")
-    private DateTimeRfc1123 created;
+    private DateTime created;
 
     /**
      * Person group last modify time in the UTC, could be null value when the
      * person group is not successfully trained.
      */
     @JsonProperty(value = "lastActionDateTime")
-    private DateTimeRfc1123 lastAction;
+    private DateTime lastAction;
 
     /**
      * Show failure message when training failed (omitted when training
@@ -52,7 +51,7 @@ public class TrainingStatus1Inner {
      *
      * @return the status value
      */
-    public TrainingStatus status() {
+    public TrainingStatusType status() {
         return this.status;
     }
 
@@ -60,9 +59,9 @@ public class TrainingStatus1Inner {
      * Set the status value.
      *
      * @param status the status value to set
-     * @return the TrainingStatus1Inner object itself.
+     * @return the TrainingStatusInner object itself.
      */
-    public TrainingStatus1Inner withStatus(TrainingStatus status) {
+    public TrainingStatusInner withStatus(TrainingStatusType status) {
         this.status = status;
         return this;
     }
@@ -73,24 +72,17 @@ public class TrainingStatus1Inner {
      * @return the created value
      */
     public DateTime created() {
-        if (this.created == null) {
-            return null;
-        }
-        return this.created.dateTime();
+        return this.created;
     }
 
     /**
      * Set the created value.
      *
      * @param created the created value to set
-     * @return the TrainingStatus1Inner object itself.
+     * @return the TrainingStatusInner object itself.
      */
-    public TrainingStatus1Inner withCreated(DateTime created) {
-        if (created == null) {
-            this.created = null;
-        } else {
-            this.created = new DateTimeRfc1123(created);
-        }
+    public TrainingStatusInner withCreated(DateTime created) {
+        this.created = created;
         return this;
     }
 
@@ -100,24 +92,17 @@ public class TrainingStatus1Inner {
      * @return the lastAction value
      */
     public DateTime lastAction() {
-        if (this.lastAction == null) {
-            return null;
-        }
-        return this.lastAction.dateTime();
+        return this.lastAction;
     }
 
     /**
      * Set the lastAction value.
      *
      * @param lastAction the lastAction value to set
-     * @return the TrainingStatus1Inner object itself.
+     * @return the TrainingStatusInner object itself.
      */
-    public TrainingStatus1Inner withLastAction(DateTime lastAction) {
-        if (lastAction == null) {
-            this.lastAction = null;
-        } else {
-            this.lastAction = new DateTimeRfc1123(lastAction);
-        }
+    public TrainingStatusInner withLastAction(DateTime lastAction) {
+        this.lastAction = lastAction;
         return this;
     }
 
@@ -134,9 +119,9 @@ public class TrainingStatus1Inner {
      * Set the message value.
      *
      * @param message the message value to set
-     * @return the TrainingStatus1Inner object itself.
+     * @return the TrainingStatusInner object itself.
      */
-    public TrainingStatus1Inner withMessage(String message) {
+    public TrainingStatusInner withMessage(String message) {
         this.message = message;
         return this;
     }

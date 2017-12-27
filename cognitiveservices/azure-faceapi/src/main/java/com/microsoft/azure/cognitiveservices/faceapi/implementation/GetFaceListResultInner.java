@@ -20,13 +20,14 @@ public class GetFaceListResultInner {
     private String faceListId;
 
     /**
-     * Face list's display name.
+     * Face list's display name, maximum length is 128.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * User-provided data attached to this face list.
+     * User-provided data attached to this face list. Length should not exceed
+     * 16KB.
      */
     @JsonProperty(value = "userData")
     private String userData;

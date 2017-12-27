@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.JsonCreator;
 import com.fasterxml.jackson.annotation.JsonValue;
 
 /**
- * Defines values for TrainingStatus.
+ * Defines values for TrainingStatusType.
  */
-public enum TrainingStatus {
+public enum TrainingStatusType {
     /** Enum value nonstarted. */
     NONSTARTED("nonstarted"),
 
@@ -25,23 +25,23 @@ public enum TrainingStatus {
     /** Enum value failed. */
     FAILED("failed");
 
-    /** The actual serialized value for a TrainingStatus instance. */
+    /** The actual serialized value for a TrainingStatusType instance. */
     private String value;
 
-    TrainingStatus(String value) {
+    TrainingStatusType(String value) {
         this.value = value;
     }
 
     /**
-     * Parses a serialized value to a TrainingStatus instance.
+     * Parses a serialized value to a TrainingStatusType instance.
      *
      * @param value the serialized value to parse.
-     * @return the parsed TrainingStatus object, or null if unable to parse.
+     * @return the parsed TrainingStatusType object, or null if unable to parse.
      */
     @JsonCreator
-    public static TrainingStatus fromString(String value) {
-        TrainingStatus[] items = TrainingStatus.values();
-        for (TrainingStatus item : items) {
+    public static TrainingStatusType fromString(String value) {
+        TrainingStatusType[] items = TrainingStatusType.values();
+        for (TrainingStatusType item : items) {
             if (item.toString().equalsIgnoreCase(value)) {
                 return item;
             }

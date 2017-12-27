@@ -13,14 +13,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class CreatePersonGroupRequest {
     /**
-     * Name of the face list, maximum length is 128.
+     * Person group display name. The maximum length is 128.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * Optional user defined data for the face list. Length should not exceed
-     * 16KB.
+     * User-provided data attached to the person group. The size limit is 16KB.
      */
     @JsonProperty(value = "userData")
     private String userData;

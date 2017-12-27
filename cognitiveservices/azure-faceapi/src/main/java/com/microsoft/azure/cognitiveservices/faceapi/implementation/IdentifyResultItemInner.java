@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.cognitiveservices.faceapi.implementation;
 
+import java.util.UUID;
 import java.util.List;
 import com.microsoft.azure.cognitiveservices.faceapi.IdentifyResultCandidate;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -18,7 +19,7 @@ public class IdentifyResultItemInner {
      * faceId of the query face.
      */
     @JsonProperty(value = "faceId", required = true)
-    private String faceId;
+    private UUID faceId;
 
     /**
      * The candidates property.
@@ -31,7 +32,7 @@ public class IdentifyResultItemInner {
      *
      * @return the faceId value
      */
-    public String faceId() {
+    public UUID faceId() {
         return this.faceId;
     }
 
@@ -41,7 +42,7 @@ public class IdentifyResultItemInner {
      * @param faceId the faceId value to set
      * @return the IdentifyResultItemInner object itself.
      */
-    public IdentifyResultItemInner withFaceId(String faceId) {
+    public IdentifyResultItemInner withFaceId(UUID faceId) {
         this.faceId = faceId;
         return this;
     }

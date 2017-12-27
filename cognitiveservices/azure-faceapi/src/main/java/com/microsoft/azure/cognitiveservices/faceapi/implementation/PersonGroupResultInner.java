@@ -13,19 +13,20 @@ import com.fasterxml.jackson.annotation.JsonProperty;
  */
 public class PersonGroupResultInner {
     /**
-     * faceListId of the target face list.
+     * personGroupId of the existing person groups.
      */
     @JsonProperty(value = "personGroupId", required = true)
     private String personGroupId;
 
     /**
-     * Face list's display name.
+     * Person group's display name, maximum length is 128.
      */
     @JsonProperty(value = "name")
     private String name;
 
     /**
-     * User-provided data attached to this face list.
+     * User-provided data attached to this person group. Length should not
+     * exceed 16KB.
      */
     @JsonProperty(value = "userData")
     private String userData;

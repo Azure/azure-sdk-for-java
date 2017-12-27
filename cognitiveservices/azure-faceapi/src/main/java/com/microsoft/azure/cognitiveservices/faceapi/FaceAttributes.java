@@ -20,7 +20,8 @@ public class FaceAttributes {
     private Double age;
 
     /**
-     * Possible gender of the face. Possible values include: 'male', 'female'.
+     * Possible gender of the face. Possible values include: 'male', 'female',
+     * 'genderless'.
      */
     @JsonProperty(value = "gender")
     private Gender gender;
