@@ -251,6 +251,12 @@
 
         <module name="UpperEll"/>
 
+        <module name="Regexp">
+            <property name="format" value="Charset\.defaultCharset()" />
+            <property name="illegalPattern" value="true" />
+            <property name="ignoreComments" value="true" />
+            <property name="message" value="Call to platform-dependent method Charset.defaultCharset()" />
+        </module>
     </module>
 
 </module>
