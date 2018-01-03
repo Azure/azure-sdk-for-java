@@ -13,9 +13,15 @@ import io.netty.channel.Channel;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.ChannelInboundHandlerAdapter;
 import io.netty.channel.ChannelOption;
+import io.netty.channel.DefaultFileRegion;
+import io.netty.channel.EventLoop;
+import io.netty.channel.FileRegion;
+import io.netty.channel.MultithreadEventLoopGroup;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.AbstractChannelPoolHandler;
+import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import io.netty.handler.codec.EncoderException;
 import io.netty.handler.codec.http.DefaultHttpContent;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultLastHttpContent;
@@ -26,18 +32,22 @@ import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.handler.codec.http.HttpResponseDecoder;
 import io.netty.handler.codec.http.HttpVersion;
 import io.netty.handler.codec.http.LastHttpContent;
+import io.netty.handler.ssl.SslHandler;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
+import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
+import io.reactivex.exceptions.Exceptions;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
+import org.slf4j.LoggerFactory;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
@@ -70,45 +80,103 @@ public final class NettyClient extends HttpClient {
     }
 
     private static final class NettyAdapter {
-        private final NioEventLoopGroup eventLoopGroup;
+        private static final String EPOLL_GROUP_CLASS_NAME = "io.netty.channel.epoll.EpollEventLoopGroup";
+        private static final String EPOLL_SOCKET_CLASS_NAME = "io.netty.channel.epoll.EpollSocketChannel";
+
+        private static final String KQUEUE_GROUP_CLASS_NAME = "io.netty.channel.kqueue.KQueueEventLoopGroup";
+        private static final String KQUEUE_SOCKET_CLASS_NAME = "io.netty.channel.kqueue.KQueueSocketChannel";
+
+        private final MultithreadEventLoopGroup eventLoopGroup;
         private final SharedChannelPool channelPool;
 
-        private NettyAdapter() {
-            this.eventLoopGroup = new NioEventLoopGroup();
+        private static final class TransportConfig {
+            final MultithreadEventLoopGroup eventLoopGroup;
+            final Class<? extends SocketChannel> channelClass;
+
+            private TransportConfig(MultithreadEventLoopGroup eventLoopGroup, Class<? extends SocketChannel> channelClass) {
+                this.eventLoopGroup = eventLoopGroup;
+                this.channelClass = channelClass;
+            }
+        }
+
+        private static MultithreadEventLoopGroup loadEventLoopGroup(String className, Integer optionalSize) throws ReflectiveOperationException {
+            MultithreadEventLoopGroup result;
+            if (optionalSize == null) {
+                result = (MultithreadEventLoopGroup) Class.forName(className).getConstructor().newInstance();
+            } else {
+                result = (MultithreadEventLoopGroup) Class.forName(className).getConstructor(Integer.TYPE).newInstance(optionalSize);
+            }
+            return result;
+        }
+
+        @SuppressWarnings("unchecked")
+        private static TransportConfig loadTransport(Integer optionalGroupSize) {
+            TransportConfig result = null;
+            try {
+                final String osName = System.getProperty("os.name");
+                if (osName.contains("Linux")) {
+                    result = new TransportConfig(
+                            loadEventLoopGroup(EPOLL_GROUP_CLASS_NAME, optionalGroupSize),
+                            (Class<? extends SocketChannel>) Class.forName(EPOLL_SOCKET_CLASS_NAME));
+                } else if (osName.contains("Mac")) {
+                    result = new TransportConfig(
+                            loadEventLoopGroup(KQUEUE_GROUP_CLASS_NAME, optionalGroupSize),
+                            (Class<? extends SocketChannel>) Class.forName(KQUEUE_SOCKET_CLASS_NAME));
+                }
+            } catch (Exception e) {
+                String message = e.getMessage();
+                if (message == null) {
+                    Throwable cause = e.getCause();
+                    if (cause != null) {
+                        message = cause.getMessage();
+                    }
+                }
+                LoggerFactory.getLogger(NettyAdapter.class).debug("Exception when obtaining native EventLoopGroup and SocketChannel: " + message);
+            }
+
+            if (result == null) {
+                result = new TransportConfig(new NioEventLoopGroup(), NioSocketChannel.class);
+            }
+
+            return result;
+        }
+
+        private static SharedChannelPool createChannelPool(final NettyAdapter adapter, TransportConfig config, int poolSize) {
             Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(eventLoopGroup);
-            bootstrap.channel(NioSocketChannel.class);
+            bootstrap.group(config.eventLoopGroup);
+            bootstrap.channel(config.channelClass);
             bootstrap.option(ChannelOption.AUTO_READ, false);
             bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
             bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) TimeUnit.MINUTES.toMillis(3L));
-            this.channelPool = new SharedChannelPool(bootstrap, new AbstractChannelPoolHandler() {
+            return new SharedChannelPool(bootstrap, new AbstractChannelPoolHandler() {
                 @Override
                 public void channelCreated(Channel ch) throws Exception {
                     ch.pipeline().addLast("HttpResponseDecoder", new HttpResponseDecoder());
                     ch.pipeline().addLast("HttpRequestEncoder", new HttpRequestEncoder());
-                    ch.pipeline().addLast("HttpClientInboundHandler", new HttpClientInboundHandler(NettyAdapter.this));
+                    ch.pipeline().addLast("HttpClientInboundHandler", new HttpClientInboundHandler(adapter));
                 }
-            }, eventLoopGroup.executorCount() * 2);
+            }, poolSize);
+        }
+
+        private NettyAdapter() {
+            TransportConfig config = loadTransport(null);
+            this.eventLoopGroup = config.eventLoopGroup;
+            this.channelPool = createChannelPool(this, config, eventLoopGroup.executorCount() * 2);
         }
 
         private NettyAdapter(int eventLoopGroupSize, int channelPoolSize) {
-            this.eventLoopGroup = new NioEventLoopGroup(eventLoopGroupSize);
-            Bootstrap bootstrap = new Bootstrap();
-            bootstrap.group(eventLoopGroup);
-            bootstrap.channel(NioSocketChannel.class);
-            bootstrap.option(ChannelOption.SO_KEEPALIVE, true);
-            bootstrap.option(ChannelOption.CONNECT_TIMEOUT_MILLIS, (int) TimeUnit.MINUTES.toMillis(3L));
-            this.channelPool = new SharedChannelPool(bootstrap, new AbstractChannelPoolHandler() {
-                @Override
-                public void channelCreated(Channel ch) throws Exception {
-                    ch.pipeline().addLast("HttpResponseDecoder", new HttpResponseDecoder());
-                    ch.pipeline().addLast("HttpRequestEncoder", new HttpRequestEncoder());
-                    ch.pipeline().addLast("HttpClientInboundHandler", new HttpClientInboundHandler(NettyAdapter.this));
-                }
-            }, channelPoolSize);
+            TransportConfig config = loadTransport(eventLoopGroupSize);
+            this.eventLoopGroup = config.eventLoopGroup;
+            this.channelPool = createChannelPool(this, config, channelPoolSize);
         }
 
-        private Single<HttpResponse> sendRequestInternalAsync(final HttpRequest request, Proxy proxy) {
+        private boolean useZeroCopy(Channel channel) {
+            boolean isSSL = channel.pipeline().get(SslHandler.class) != null;
+            boolean isNativeTransport = eventLoopGroup.getClass().getName().equals(EPOLL_GROUP_CLASS_NAME) || eventLoopGroup.getClass().getName().equals(KQUEUE_GROUP_CLASS_NAME);
+            return !isSSL && isNativeTransport;
+        }
+
+        private Single<HttpResponse> sendRequestInternalAsync(final HttpRequest request, final Proxy proxy) {
             final URI channelAddress;
             try {
                 if (proxy == null) {
@@ -204,8 +272,8 @@ public final class NettyClient extends HttpClient {
                                 @Override
                                 public void operationComplete(Future<? super Void> future) throws Exception {
                                     if (!future.isSuccess()) {
+                                        channelPool.closeAndRelease(channel);
                                         emitErrorIfSubscribed(future.cause());
-                                        channelPool.release(channel);
                                     }
                                 }
                             });
@@ -218,10 +286,28 @@ public final class NettyClient extends HttpClient {
                                                 if (future.isSuccess()) {
                                                     channel.read();
                                                 } else {
+                                                    channelPool.closeAndRelease(channel);
                                                     emitErrorIfSubscribed(future.cause());
                                                 }
                                             }
                                         });
+                            } else if (request.body() instanceof FileRequestBody && useZeroCopy(channel)) {
+                                FileSegment segment = ((FileRequestBody) request.body()).fileSegment();
+                                FileRegion region = new DefaultFileRegion(segment.fileChannel(), segment.offset(), segment.length());
+                                channel.write(region);
+                                channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
+                                        .addListener(new GenericFutureListener<Future<? super Void>>() {
+                                            @Override
+                                            public void operationComplete(Future<? super Void> future) throws Exception {
+                                                if (!future.isSuccess()) {
+                                                    channelPool.closeAndRelease(channel);
+                                                    emitErrorIfSubscribed(future.cause());
+                                                } else {
+                                                    channel.read();
+                                                }
+                                            }
+                                        });
+
                             } else {
                                 Flowable<ByteBuf> bodyContent;
                                 if (request.body() instanceof FileRequestBody) {
@@ -234,7 +320,7 @@ public final class NettyClient extends HttpClient {
                                         }
                                     });
                                 }
-                                bodyContent.subscribeOn(Schedulers.io()).subscribe(new FlowableSubscriber<ByteBuf>() {
+                                bodyContent.observeOn(Schedulers.from(channel.eventLoop())).subscribe(new FlowableSubscriber<ByteBuf>() {
                                     Subscription subscription;
                                     @Override
                                     public void onSubscribe(Subscription s) {
@@ -249,6 +335,7 @@ public final class NettyClient extends HttpClient {
                                                 public void operationComplete(Future<? super Void> future) throws Exception {
                                                     if (!future.isSuccess()) {
                                                         subscription.cancel();
+                                                        channelPool.closeAndRelease(channel);
                                                         emitErrorIfSubscribed(future.cause());
                                                     }
                                                 }
@@ -256,6 +343,9 @@ public final class NettyClient extends HttpClient {
 
                                     @Override
                                     public void onNext(ByteBuf buf) {
+                                        if (!channel.eventLoop().inEventLoop()) {
+                                            throw new IllegalStateException("onNext must be called from the event loop managing the channel.");
+                                        }
                                         channel.writeAndFlush(new DefaultHttpContent(buf))
                                                 .addListener(onChannelWriteComplete);
 
@@ -266,6 +356,7 @@ public final class NettyClient extends HttpClient {
 
                                     @Override
                                     public void onError(Throwable t) {
+                                        channelPool.closeAndRelease(channel);
                                         emitErrorIfSubscribed(t);
                                     }
 
@@ -277,6 +368,7 @@ public final class NettyClient extends HttpClient {
                                                     public void operationComplete(Future<? super Void> future) throws Exception {
                                                         if (!future.isSuccess()) {
                                                             subscription.cancel();
+                                                            channelPool.closeAndRelease(channel);
                                                             emitErrorIfSubscribed(future.cause());
                                                         } else {
                                                             channel.read();
@@ -289,18 +381,38 @@ public final class NettyClient extends HttpClient {
                         }
                     });
                 }
+            }).onErrorResumeNext(new Function<Throwable, Single<HttpResponse>>() {
+                @Override
+                public Single<HttpResponse> apply(Throwable throwable) throws Exception {
+                    if (throwable instanceof EncoderException) {
+                        LoggerFactory.getLogger(getClass()).warn("Got EncoderException: " + throwable.getMessage());
+                        return sendRequestInternalAsync(request, proxy);
+                    } else {
+                        throw Exceptions.propagate(throwable);
+                    }
+                }
             });
         }
     }
 
-    private static final class ResponseContentFlowable extends Flowable<ByteBuf> {
+    /**
+     * Emits HTTP response content from Netty. This class is not thread safe.
+     * It must be observed on the same event loop associated with the Netty channel providing the data.
+     * Only cancel() may be called on a different thread.
+     */
+    private static final class ResponseContentFlowable extends Flowable<ByteBuf> implements Subscription {
+        final EventLoop currentEventLoop;
         final Queue<HttpContent> queuedContent = new ArrayDeque<>();
         final Subscription handlerSubscription;
         long chunksRequested = 0;
         Subscriber<? super ByteBuf> subscriber;
 
-        ResponseContentFlowable(Subscription subscription) {
-            handlerSubscription = subscription;
+        // Cancellation is triggered by a non-observing thread.
+        volatile boolean isCanceled = false;
+
+        ResponseContentFlowable(EventLoop currentEventLoop, Subscription handlerSubscription) {
+            this.currentEventLoop = currentEventLoop;
+            this.handlerSubscription = handlerSubscription;
         }
 
         long chunksRequested() {
@@ -314,23 +426,36 @@ public final class NettyClient extends HttpClient {
             }
 
             subscriber = s;
+            s.onSubscribe(this);
+        }
 
-            s.onSubscribe(new Subscription() {
+        @Override
+        public void request(long l) {
+            if (!currentEventLoop.inEventLoop()) {
+                throw new IllegalStateException("request() must be called from the event loop managing the channel.");
+            }
+
+            chunksRequested += l;
+            while (!queuedContent.isEmpty() && chunksRequested > 0 && !isCanceled) {
+                emitContent(queuedContent.remove());
+            }
+
+            if (chunksRequested > 0 && !isCanceled) {
+                handlerSubscription.request(l);
+            }
+        }
+
+        @Override
+        public void cancel() {
+            isCanceled = true;
+            handlerSubscription.cancel();
+
+            currentEventLoop.execute(new Runnable() {
                 @Override
-                public void request(long l) {
-                    chunksRequested += l;
-
-
-                    while (!queuedContent.isEmpty() && chunksRequested > 0) {
-                        emitContent(queuedContent.remove());
+                public void run() {
+                    while (!queuedContent.isEmpty()) {
+                        queuedContent.remove().release();
                     }
-
-                    handlerSubscription.request(l);
-                }
-
-                @Override
-                public void cancel() {
-                    handlerSubscription.cancel();
                 }
             });
         }
@@ -403,24 +528,40 @@ public final class NettyClient extends HttpClient {
                     return;
                 }
 
-                contentEmitter = new ResponseContentFlowable(new Subscription() {
+                contentEmitter = new ResponseContentFlowable(ctx.channel().eventLoop(), new Subscription() {
+                    /**
+                     * Required to run on this thread.
+                     */
                     @Override
                     public void request(long n) {
+                        if (!ctx.channel().eventLoop().inEventLoop()) {
+                            throw new IllegalStateException("request() must be called from the event loop managing the channel.");
+                        }
                         ctx.channel().read();
                     }
 
+                    /**
+                     * May be run on a different thread.
+                     */
                     @Override
                     public void cancel() {
-                        if (contentEmitter != null) {
-                            adapter.channelPool.closeAndRelease(ctx.channel());
-                            contentEmitter = null;
-                        }
+                        ctx.channel().eventLoop().execute(new Runnable() {
+                            @Override
+                            public void run() {
+                                if (contentEmitter != null) {
+                                    adapter.channelPool.closeAndRelease(ctx.channel());
+                                    contentEmitter = null;
+                                }
+                            }
+                        });
                     }
                 });
 
                 // Prevents channel from being closed when the Single<HttpResponse> is disposed
                 didEmitHttpResponse = true;
-                responseEmitter.onSuccess(new NettyResponse(response, contentEmitter));
+
+                Scheduler scheduler = Schedulers.from(ctx.channel().eventLoop());
+                responseEmitter.onSuccess(new NettyResponse(response, contentEmitter.subscribeOn(scheduler)));
             }
 
             if (msg instanceof HttpContent) {

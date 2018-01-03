@@ -211,8 +211,12 @@ public class SharedChannelPool implements ChannelPool {
      * @return a Future representing the operation.
      */
     public Future<Void> closeAndRelease(final Channel channel) {
-        channel.close();
-        return release(channel);
+        return channel.close().addListener(new GenericFutureListener<Future<? super Void>>() {
+            @Override
+            public void operationComplete(Future<? super Void> future) throws Exception {
+                release(channel);
+            }
+        });
     }
 
     @Override

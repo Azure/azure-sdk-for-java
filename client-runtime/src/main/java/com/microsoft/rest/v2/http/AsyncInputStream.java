@@ -9,14 +9,19 @@ package com.microsoft.rest.v2.http;
 import io.reactivex.Emitter;
 import io.reactivex.Flowable;
 import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.Function;
+import io.reactivex.internal.util.BackpressureHelper;
+import io.reactivex.schedulers.Schedulers;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.CompletionHandler;
 import java.util.Arrays;
 import java.util.concurrent.Callable;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * Represents an asynchronous input stream with a content length.
@@ -71,25 +76,7 @@ public final class AsyncInputStream {
      * @return The AsyncInputStream.
      */
     public static AsyncInputStream create(final AsynchronousFileChannel fileChannel, final long offset, final long length) {
-        int numChunks = (int) length / CHUNK_SIZE + (length % CHUNK_SIZE == 0 ? 0 : 1);
-        Flowable<byte[]> fileStream = Flowable.range(0, numChunks).concatMap(new Function<Integer, Flowable<byte[]>>() {
-            ByteBuffer innerBuf = ByteBuffer.wrap(new byte[CHUNK_SIZE]);
-
-            @Override
-            public Flowable<byte[]> apply(Integer chunkNo) throws Exception {
-                final long position = offset + (chunkNo * CHUNK_SIZE);
-                innerBuf.clear();
-                return Flowable.fromFuture(fileChannel.read(innerBuf, position))
-                        .map(new Function<Integer, byte[]>() {
-                            @Override
-                            public byte[] apply(Integer bytesRead) throws Exception {
-                                int bytesWanted = (int) Math.min(offset + length - position, bytesRead);
-                                return Arrays.copyOf(innerBuf.array(), bytesWanted);
-                            }
-                        });
-            }
-        });
-
+        Flowable<byte[]> fileStream = new FileReadFlowable(fileChannel, offset, length);
         return new AsyncInputStream(fileStream, length, true);
     }
 
@@ -102,6 +89,82 @@ public final class AsyncInputStream {
     public static AsyncInputStream create(AsynchronousFileChannel fileChannel) throws IOException {
         long size = fileChannel.size();
         return create(fileChannel, 0, size);
+    }
+
+    private static class FileReadFlowable extends Flowable<byte[]> {
+        private final AsynchronousFileChannel fileChannel;
+        private final long offset;
+        private final long length;
+
+        FileReadFlowable(AsynchronousFileChannel fileChannel, long offset, long length) {
+            this.fileChannel = fileChannel;
+            this.offset = offset;
+            this.length = length;
+        }
+
+        @Override
+        protected void subscribeActual(Subscriber<? super byte[]> s) {
+            s.onSubscribe(new FileReadSubscription(s));
+        }
+
+        private class FileReadSubscription implements Subscription {
+            final Subscriber<? super byte[]> subscriber;
+            final ByteBuffer innerBuf = ByteBuffer.wrap(new byte[CHUNK_SIZE]);
+            final AtomicLong requested = new AtomicLong();
+            volatile boolean cancelled = false;
+
+            // I/O callbacks are serialized, but not guaranteed to happen on the same thread, which makes volatile necessary.
+            volatile long position = offset;
+
+            FileReadSubscription(Subscriber<? super byte[]> subscriber) {
+                this.subscriber = subscriber;
+            }
+
+            @Override
+            public void request(long n) {
+                if (BackpressureHelper.add(requested, n) == 0L) {
+                    doRead();
+                }
+            }
+
+            void doRead() {
+                innerBuf.clear();
+                fileChannel.read(innerBuf, position, null, onReadComplete);
+            }
+
+            private final CompletionHandler<Integer, Object> onReadComplete = new CompletionHandler<Integer, Object>() {
+                @Override
+                public void completed(Integer bytesRead, Object attachment) {
+                    if (!cancelled) {
+                        if (bytesRead == -1) {
+                            subscriber.onComplete();
+                        } else {
+                            int bytesWanted = (int) Math.min(bytesRead, offset + length - position);
+                            //noinspection NonAtomicOperationOnVolatileField
+                            position += bytesWanted;
+                            subscriber.onNext(Arrays.copyOf(innerBuf.array(), bytesWanted));
+                            if (position >= offset + length) {
+                                subscriber.onComplete();
+                            } else if (requested.decrementAndGet() > 0) {
+                                doRead();
+                            }
+                        }
+                    }
+                }
+
+                @Override
+                public void failed(Throwable exc, Object attachment) {
+                    if (!cancelled) {
+                        subscriber.onError(exc);
+                    }
+                }
+            };
+
+            @Override
+            public void cancel() {
+                cancelled = true;
+            }
+        }
     }
 
     /**
@@ -136,7 +199,7 @@ public final class AsyncInputStream {
                             emitter.onError(e);
                         }
                     }
-                });
+                }).observeOn(Schedulers.io());
 
         return new AsyncInputStream(content, contentLength, false);
     }
