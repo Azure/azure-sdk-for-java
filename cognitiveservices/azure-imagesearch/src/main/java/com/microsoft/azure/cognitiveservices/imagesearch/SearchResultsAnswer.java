@@ -15,7 +15,8 @@ import com.microsoft.azure.cognitiveservices.imagesearch.implementation.ImagesIn
 /**
  * Defines a search result answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = SearchResultsAnswer.class)
 @JsonTypeName("SearchResultsAnswer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Images", value = ImagesInner.class)

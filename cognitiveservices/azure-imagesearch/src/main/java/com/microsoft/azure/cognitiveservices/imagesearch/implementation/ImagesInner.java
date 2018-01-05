@@ -18,7 +18,8 @@ import com.microsoft.azure.cognitiveservices.imagesearch.SearchResultsAnswer;
 /**
  * Defines an image answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = ImagesInner.class)
 @JsonTypeName("Images")
 public class ImagesInner extends SearchResultsAnswer {
     /**

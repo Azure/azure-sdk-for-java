@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a recognized entity.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = RecognizedEntity.class)
 @JsonTypeName("RecognizedEntity")
 public class RecognizedEntity extends Response {
     /**

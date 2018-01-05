@@ -17,7 +17,8 @@ import com.microsoft.azure.cognitiveservices.imagesearch.Response;
  * The top-level object that the response includes when a trending images
  * request succeeds.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = TrendingImagesInner.class)
 @JsonTypeName("TrendingImages")
 public class TrendingImagesInner extends Response {
     /**

@@ -18,7 +18,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 @JsonTypeName("Thing")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CreativeWork", value = CreativeWork.class),
-    @JsonSubTypes.Type(name = "Intangible", value = Intangible.class)
+    @JsonSubTypes.Type(name = "Intangible", value = Intangible.class),
+        @JsonSubTypes.Type(name = "Organization", value = Intangible.class),
 })
 public class Thing extends Response {
     /**

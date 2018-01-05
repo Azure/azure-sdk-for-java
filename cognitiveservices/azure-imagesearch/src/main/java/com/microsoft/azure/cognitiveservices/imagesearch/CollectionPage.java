@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines a link to a webpage that contains a collection.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = CollectionPage.class)
 @JsonTypeName("CollectionPage")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ImageGallery", value = ImageGallery.class)

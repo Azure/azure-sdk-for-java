@@ -16,7 +16,8 @@ import com.microsoft.azure.cognitiveservices.newssearch.Answer;
 /**
  * The TrendingTopicsInner model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = TrendingTopicsInner.class)
 @JsonTypeName("TrendingTopics")
 public class TrendingTopicsInner extends Answer {
     /**
