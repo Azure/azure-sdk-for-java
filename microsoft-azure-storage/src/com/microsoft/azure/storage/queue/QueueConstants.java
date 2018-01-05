@@ -58,7 +58,7 @@ final class QueueConstants {
     /**
      * The maximum amount of time a message is kept inside the queue, in seconds.
      */
-    public static final int MAX_TIME_TO_LIVE_IN_SECONDS = 7 * 24 * 60 * 60;
+    public static final int MAX_VISIBILITY_TIMEOUT_IN_SECONDS = 7 * 24 * 60 * 60;
 
     /**
      * XML element for MessageId.

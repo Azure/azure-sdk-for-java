@@ -338,7 +338,7 @@ public class EventFiringTests {
         catch (StorageException e) {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getHttpStatusCode());
             assertEquals("The specified container does not exist.", e.getMessage());
-            assertEquals(StorageErrorCode.RESOURCE_NOT_FOUND.toString(), e.getErrorCode());
+            assertEquals(StorageErrorCodeStrings.CONTAINER_NOT_FOUND, e.getErrorCode());
         }
         assertEquals(1, callList.size());
         assertEquals(1, globalCallList.size());
@@ -351,7 +351,7 @@ public class EventFiringTests {
         catch (StorageException e) {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getHttpStatusCode());
             assertEquals("The specified container does not exist.", e.getMessage());
-            assertEquals(StorageErrorCode.RESOURCE_NOT_FOUND.toString(), e.getErrorCode());
+            assertEquals(StorageErrorCodeStrings.CONTAINER_NOT_FOUND, e.getErrorCode());
         }
         assertEquals(1, callList.size());
         assertEquals(2, globalCallList.size());
@@ -368,7 +368,7 @@ public class EventFiringTests {
         catch (StorageException e) {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getHttpStatusCode());
             assertEquals("The specified container does not exist.", e.getMessage());
-            assertEquals(StorageErrorCode.RESOURCE_NOT_FOUND.toString(), e.getErrorCode());
+            assertEquals(StorageErrorCodeStrings.CONTAINER_NOT_FOUND, e.getErrorCode());
         }
         assertEquals(1, callList.size());
         assertEquals(2, globalCallList.size());
@@ -422,7 +422,7 @@ public class EventFiringTests {
         catch (StorageException e) {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getHttpStatusCode());
             assertEquals("The specified container does not exist.", e.getMessage());
-            assertEquals(StorageErrorCode.RESOURCE_NOT_FOUND.toString(), e.getErrorCode());
+            assertEquals(StorageErrorCodeStrings.CONTAINER_NOT_FOUND, e.getErrorCode());
         }
 
         assertEquals(2, sendingCallList.size());

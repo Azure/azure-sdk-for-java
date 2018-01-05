@@ -451,6 +451,11 @@ public final class Constants {
         public static final String ETAG = "ETag";
 
         /**
+         * The ErrorCode header.
+         */
+        public static final String ERROR_CODE = "x-ms-error-code";
+
+        /**
          * An unused HTTP code used internally to indicate a non-http related failure when constructing
          * {@link StorageException} objects
          */
@@ -641,7 +646,7 @@ public final class Constants {
         /**
          * The current storage version header value.
          */
-        public static final String TARGET_STORAGE_VERSION = "2017-04-17";
+        public static final String TARGET_STORAGE_VERSION = "2017-07-29";
 
         /**
          * The header that specifies the next visible time for a queue message.

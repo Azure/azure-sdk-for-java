@@ -911,6 +911,9 @@ public class CloudQueueTests {
         this.queue.addMessage(message, 1, 0, null, null);
         this.queue.addMessage(message, 7 * 24 * 60 * 60, 0, null, null);
         this.queue.addMessage(message, 7 * 24 * 60 * 60, 7 * 24 * 60 * 60 - 1, null, null);
+        this.queue.addMessage(message, 7 * 24 * 60 * 60 * 1024, 0, null, null);
+        this.queue.addMessage(message, -1, 0, null, null);
+        this.queue.addMessage(message, 0, 1, null, null);
 
         try {
             this.queue.addMessage(message, 0, -1, null, null);
@@ -927,14 +930,14 @@ public class CloudQueueTests {
         }
 
         try {
-            this.queue.addMessage(message, 7 * 24 * 60 * 60 + 1, 0, null, null);
+            this.queue.addMessage(message, 0, 7 * 24 * 60 * 60 + 1, null, null);
             fail();
         }
         catch (final IllegalArgumentException e) {
         }
 
         try {
-            this.queue.addMessage(message, 0, 7 * 24 * 60 * 60 + 1, null, null);
+            this.queue.addMessage(message, -2, 0, null, null);
             fail();
         }
         catch (final IllegalArgumentException e) {

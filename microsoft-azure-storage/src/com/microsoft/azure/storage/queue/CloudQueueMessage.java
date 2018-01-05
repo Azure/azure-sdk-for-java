@@ -293,7 +293,7 @@ public class CloudQueueMessage {
     /**
      * Sets the <code>java.util.Date</code> representing the time the message was added to the queue.
      * 
-     * @param insertiontTime
+     * @param insertionTime
      *        The <code>java.util.Date</code> representing the time the message was added to the queue.
      */
     protected final void setInsertionTime(Date insertionTime) {

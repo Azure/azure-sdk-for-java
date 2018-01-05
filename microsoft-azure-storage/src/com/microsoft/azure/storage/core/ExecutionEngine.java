@@ -111,6 +111,7 @@ public final class ExecutionEngine {
                     currResult.setEtag(BaseResponse.getEtag(request));
                     currResult.setRequestDate(BaseResponse.getDate(request));
                     currResult.setContentMD5(BaseResponse.getContentMD5(request));
+                    currResult.setErrorCode(BaseResponse.getErrorCode(request));
 
                     // 7. Fire ResponseReceived Event
                     responseReceivedEventTriggered = true;
