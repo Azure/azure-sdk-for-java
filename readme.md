@@ -113,9 +113,9 @@ an offset, in the snippet below it's simply the start of the log.
 ```Java
 		String partitionId = "0";
 		PartitionReceiver receiver = ehClient.createReceiverSync(
-				EventHubClient.DefaultConsumerGroupName, 
+				EventHubClient.DEFAULT_CONSUMER_GROUP_NAME, 
 				partitionId, 
-				PartitionReceiver.StartOfStream,
+				PartitionReceiver.START_OF_STREAM,
 				false);
 
 		receiver.setReceiveTimeout(Duration.ofSeconds(20));
