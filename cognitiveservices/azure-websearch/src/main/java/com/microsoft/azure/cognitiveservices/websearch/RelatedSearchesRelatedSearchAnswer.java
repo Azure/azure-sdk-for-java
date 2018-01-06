@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a list of related queries made by others.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = RelatedSearchesRelatedSearchAnswer.class)
 @JsonTypeName("RelatedSearches/RelatedSearchAnswer")
 public class RelatedSearchesRelatedSearchAnswer extends SearchResultsAnswer {
     /**

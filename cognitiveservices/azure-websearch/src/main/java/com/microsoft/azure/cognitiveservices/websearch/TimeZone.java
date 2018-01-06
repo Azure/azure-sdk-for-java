@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines the data and time of one or more geographic locations.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = TimeZone.class)
 @JsonTypeName("TimeZone")
 public class TimeZone extends SearchResultsAnswer {
     /**

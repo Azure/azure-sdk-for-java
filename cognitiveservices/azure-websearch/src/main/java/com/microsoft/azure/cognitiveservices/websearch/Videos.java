@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a video answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = Videos.class)
 @JsonTypeName("Videos")
 public class Videos extends SearchResultsAnswer {
     /**

@@ -19,7 +19,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * intended to search for Alton Brown instead (based on past searches by others
  * of Alon Brown).
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = SpellSuggestions.class)
 @JsonTypeName("SpellSuggestions")
 public class SpellSuggestions extends SearchResultsAnswer {
     /**

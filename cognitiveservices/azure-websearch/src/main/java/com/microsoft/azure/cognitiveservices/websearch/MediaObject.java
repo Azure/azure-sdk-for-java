@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The MediaObject model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = MediaObject.class)
 @JsonTypeName("MediaObject")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ImageObject", value = ImageObject.class),
