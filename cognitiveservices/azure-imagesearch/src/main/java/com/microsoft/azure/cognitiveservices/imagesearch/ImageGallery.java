@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a link to a webpage that contains a collection of related images.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = ImageGallery.class)
 @JsonTypeName("ImageGallery")
 public class ImageGallery extends CollectionPage {
     /**

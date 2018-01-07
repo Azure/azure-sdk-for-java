@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The StructuredValue model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = StructuredValue.class)
 @JsonTypeName("StructuredValue")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "NormalizedRectangle", value = NormalizedRectangle.class)

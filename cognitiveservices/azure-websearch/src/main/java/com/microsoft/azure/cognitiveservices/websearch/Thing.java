@@ -14,11 +14,13 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The Thing model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+    defaultImpl = Thing.class)
 @JsonTypeName("Thing")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CreativeWork", value = CreativeWork.class),
-    @JsonSubTypes.Type(name = "Intangible", value = Intangible.class)
+    @JsonSubTypes.Type(name = "Intangible", value = Intangible.class),
+        @JsonSubTypes.Type(name = "Organization", value = Intangible.class),
 })
 public class Thing extends Response {
     /**

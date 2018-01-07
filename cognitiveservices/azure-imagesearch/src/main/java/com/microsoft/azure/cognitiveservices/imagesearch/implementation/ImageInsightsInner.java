@@ -29,7 +29,8 @@ import com.microsoft.azure.cognitiveservices.imagesearch.Response;
  * [modules](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#modulesrequested)
  * to only Caption, then this object includes only the imageCaption field.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = ImageInsightsInner.class)
 @JsonTypeName("ImageInsights")
 public class ImageInsightsInner extends Response {
     /**

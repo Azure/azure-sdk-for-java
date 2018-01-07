@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines the identity of a resource.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = Identifiable.class)
 @JsonTypeName("Identifiable")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Response", value = Response.class)

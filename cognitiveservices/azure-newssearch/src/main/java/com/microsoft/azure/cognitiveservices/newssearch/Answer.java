@@ -16,7 +16,8 @@ import com.microsoft.azure.cognitiveservices.newssearch.implementation.TrendingT
 /**
  * Defines an answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = Answer.class)
 @JsonTypeName("Answer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "SearchResultsAnswer", value = SearchResultsAnswer.class),
