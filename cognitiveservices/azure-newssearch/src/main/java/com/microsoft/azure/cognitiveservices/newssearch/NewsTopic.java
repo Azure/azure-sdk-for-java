@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The NewsTopic model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = NewsTopic.class)
 @JsonTypeName("News/Topic")
 public class NewsTopic extends Thing {
     /**

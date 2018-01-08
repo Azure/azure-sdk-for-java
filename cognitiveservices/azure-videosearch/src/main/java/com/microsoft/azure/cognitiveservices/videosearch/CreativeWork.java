@@ -15,7 +15,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The CreativeWork model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = CreativeWork.class)
 @JsonTypeName("CreativeWork")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "MediaObject", value = MediaObject.class)

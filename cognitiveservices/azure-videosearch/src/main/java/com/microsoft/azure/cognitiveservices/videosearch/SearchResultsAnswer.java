@@ -14,7 +14,8 @@ import com.microsoft.azure.cognitiveservices.videosearch.implementation.VideosIn
 /**
  * The SearchResultsAnswer model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = SearchResultsAnswer.class)
 @JsonTypeName("SearchResultsAnswer")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Videos", value = VideosInner.class)

@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines a list of relevant webpage links.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = WebWebAnswer.class)
 @JsonTypeName("Web/WebAnswer")
 public class WebWebAnswer extends SearchResultsAnswer {
     /**

@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
  * The most generic kind of creative work, including books, movies,
  * photographs, software programs, etc.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = CreativeWork.class)
 @JsonTypeName("CreativeWork")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "MediaObject", value = MediaObject.class),

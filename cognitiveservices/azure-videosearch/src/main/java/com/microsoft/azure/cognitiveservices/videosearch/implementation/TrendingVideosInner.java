@@ -17,7 +17,8 @@ import com.microsoft.azure.cognitiveservices.videosearch.Response;
 /**
  * The TrendingVideosInner model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = TrendingVideosInner.class)
 @JsonTypeName("TrendingVideos")
 public class TrendingVideosInner extends Response {
     /**

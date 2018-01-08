@@ -25,7 +25,8 @@ import com.microsoft.azure.cognitiveservices.websearch.Response;
  * Defines the top-level object that the response includes when the request
  * succeeds.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = SearchResponseInner.class)
 @JsonTypeName("SearchResponse")
 public class SearchResponseInner extends Response {
     /**

@@ -4,7 +4,7 @@
  * license information.
  */
 
-package com.microsoft.azure.cognitiveservices.newssearch;
+package com.microsoft.azure.cognitiveservices.websearch;
 
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;

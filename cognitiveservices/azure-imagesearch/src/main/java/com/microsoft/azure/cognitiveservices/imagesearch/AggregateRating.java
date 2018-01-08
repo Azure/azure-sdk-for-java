@@ -13,7 +13,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines the metrics that indicate how well an item was rated by others.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = AggregateRating.class)
 @JsonTypeName("AggregateRating")
 public class AggregateRating extends Rating {
     /**

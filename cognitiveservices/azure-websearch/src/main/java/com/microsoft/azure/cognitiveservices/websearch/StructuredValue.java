@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The StructuredValue model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = StructuredValue.class)
 @JsonTypeName("StructuredValue")
 public class StructuredValue extends Intangible {
 }

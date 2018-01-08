@@ -16,7 +16,8 @@ import com.microsoft.azure.cognitiveservices.newssearch.SearchResultsAnswer;
 /**
  * Defines a news answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = NewsInner.class)
 @JsonTypeName("News")
 public class NewsInner extends SearchResultsAnswer {
     /**

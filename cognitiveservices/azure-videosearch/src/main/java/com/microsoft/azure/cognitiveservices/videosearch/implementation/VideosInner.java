@@ -19,7 +19,8 @@ import com.microsoft.azure.cognitiveservices.videosearch.SearchResultsAnswer;
 /**
  * Defines a video answer.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = VideosInner.class)
 @JsonTypeName("Videos")
 public class VideosInner extends SearchResultsAnswer {
     /**

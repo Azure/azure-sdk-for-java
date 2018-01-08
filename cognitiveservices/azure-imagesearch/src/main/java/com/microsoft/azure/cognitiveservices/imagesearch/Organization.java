@@ -12,7 +12,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * Defines an organization.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = Organization.class)
 @JsonTypeName("Organization")
 public class Organization extends Thing {
 }

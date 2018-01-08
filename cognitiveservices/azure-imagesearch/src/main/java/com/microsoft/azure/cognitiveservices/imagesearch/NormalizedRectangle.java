@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * are fractional values of the original image's width and height in the range
  * 0.0 through 1.0.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = NormalizedRectangle.class)
 @JsonTypeName("NormalizedRectangle")
 public class NormalizedRectangle extends StructuredValue {
     /**

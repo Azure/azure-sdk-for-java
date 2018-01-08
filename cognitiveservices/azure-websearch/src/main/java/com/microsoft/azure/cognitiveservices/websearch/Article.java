@@ -14,7 +14,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The Article model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
+        defaultImpl = Article.class)
 @JsonTypeName("Article")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "NewsArticle", value = NewsArticle.class)
