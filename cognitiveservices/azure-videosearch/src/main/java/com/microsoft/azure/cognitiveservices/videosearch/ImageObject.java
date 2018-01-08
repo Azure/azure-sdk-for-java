@@ -14,7 +14,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Defines an image.
  */
 @JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type",
-	defaultImpl = ImageObject.class)
+    defaultImpl = ImageObject.class)
 @JsonTypeName("ImageObject")
 public class ImageObject extends MediaObject {
     /**
