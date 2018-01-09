@@ -3,6 +3,7 @@ package com.microsoft.azure.v2.credentials;
 import com.google.common.base.Charsets;
 import com.google.common.io.CharStreams;
 import com.microsoft.azure.v2.credentials.http.MockHttpClient;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import org.junit.Test;
@@ -22,7 +23,7 @@ public class RefreshTokenClientTests {
 
         assertEquals(1, httpClient.requests().size());
         final HttpRequest request = httpClient.requests().get(0);
-        assertEquals("POST", request.httpMethod());
+        assertEquals(HttpMethod.POST, request.httpMethod());
         assertEquals("com.microsoft.azure.v2.credentials.RefreshTokenClient$RefreshTokenService.refreshToken", request.callerMethod());
         assertEquals("http://my.base.url/mockTenant/oauth2/token", request.url());
 

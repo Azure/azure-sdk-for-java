@@ -246,7 +246,7 @@ public final class NettyClient extends HttpClient {
                                 }
                             });
 
-                            if (request.httpMethod().equalsIgnoreCase("HEAD")) {
+                            if (request.httpMethod() == com.microsoft.rest.v2.http.HttpMethod.HEAD) {
                                 // Use HttpClientCodec for HEAD operations
                                 if (channel.pipeline().get("HttpClientCodec") == null) {
                                     channel.pipeline().remove(HttpRequestEncoder.class);
@@ -261,7 +261,7 @@ public final class NettyClient extends HttpClient {
                             }
 
                             final DefaultHttpRequest raw = new DefaultHttpRequest(HttpVersion.HTTP_1_1,
-                                    HttpMethod.valueOf(request.httpMethod()),
+                                    HttpMethod.valueOf(request.httpMethod().toString()),
                                     request.url());
 
                             for (HttpHeader header : request.headers()) {

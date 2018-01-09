@@ -21,6 +21,7 @@ import com.microsoft.rest.v2.entities.SignedIdentifiersWrapper;
 import com.microsoft.rest.v2.entities.Slideshow;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
@@ -114,7 +115,7 @@ public class RestProxyXMLTests {
     public void canWriteXMLRequest() throws Exception {
         URL url = getClass().getClassLoader().getResource("GetContainerACLs.xml");
         byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
-        HttpRequest request = new HttpRequest("canWriteXMLRequest", "PUT", "http://unused/SetContainerACLs");
+        HttpRequest request = new HttpRequest("canWriteXMLRequest", HttpMethod.PUT, "http://unused/SetContainerACLs");
         request.withBody(bytes, "application/xml");
 
         SignedIdentifierInner si = new SignedIdentifierInner();

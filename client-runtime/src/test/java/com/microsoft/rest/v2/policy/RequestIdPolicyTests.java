@@ -8,6 +8,7 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.HttpRequest;
@@ -94,8 +95,8 @@ public class RequestIdPolicyTests {
             })
             .build();
 
-        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).blockingGet();
-        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", "GET", "http://localhost/")).blockingGet();
+        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, "http://localhost/")).blockingGet();
+        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, "http://localhost/")).blockingGet();
     }
 
     @Test
@@ -121,6 +122,6 @@ public class RequestIdPolicyTests {
             new RequestIdPolicy.Factory(),
             new RetryPolicy.Factory(1));
 
-        pipeline.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", "GET", "http://localhost/")).blockingGet();
+        pipeline.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", HttpMethod.GET, "http://localhost/")).blockingGet();
     }
 }

@@ -14,7 +14,7 @@ import static org.junit.Assert.*;
 public class HttpPipelineTests {
     @Test
     public void withNoRequestPolicies() {
-        final String expectedHttpMethod = "GET";
+        final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final String expectedUrl = "http://my.site.com";
         final HttpPipeline httpPipeline = HttpPipeline.build(new HttpClient() {
             @Override
@@ -33,7 +33,7 @@ public class HttpPipelineTests {
 
     @Test
     public void withUserAgentRequestPolicy() {
-        final String expectedHttpMethod = "GET";
+        final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final String expectedUrl = "http://my.site.com/1";
         final String expectedUserAgent = "my-user-agent";
         final HttpClient httpClient = new HttpClient() {
@@ -57,7 +57,7 @@ public class HttpPipelineTests {
 
     @Test
     public void withRequestIdRequestPolicy() {
-        final String expectedHttpMethod = "GET";
+        final HttpMethod expectedHttpMethod = HttpMethod.GET;
         final String expectedUrl = "http://my.site.com/1";
         final HttpPipeline httpPipeline = HttpPipeline.build(
                 new HttpClient() {

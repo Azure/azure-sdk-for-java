@@ -1,5 +1,6 @@
 package com.microsoft.rest.v2.policy;
 
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
@@ -38,7 +39,7 @@ public class ProxyAuthenticationPolicyTests {
                     }
                 });
 
-        pipeline.sendRequestAsync(new HttpRequest("test", "GET", "localhost"))
+        pipeline.sendRequestAsync(new HttpRequest("test", HttpMethod.GET, "localhost"))
                 .blockingGet();
 
         if (!auditorVisited.get()) {

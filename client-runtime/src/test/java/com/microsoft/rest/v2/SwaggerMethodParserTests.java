@@ -4,6 +4,7 @@ import com.microsoft.rest.v2.annotations.ExpectedResponses;
 import com.microsoft.rest.v2.annotations.PATCH;
 import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
+import com.microsoft.rest.v2.http.HttpMethod;
 import org.junit.Test;
 
 import java.lang.reflect.Method;
@@ -37,7 +38,7 @@ public class SwaggerMethodParserTests {
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, "https://raw.host.com");
         assertEquals("com.microsoft.rest.v2.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.fullyQualifiedMethodName());
-        assertEquals("PATCH", methodParser.httpMethod());
+        assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
         assertEquals(RestException.class, methodParser.exceptionType());
         assertEquals(Object.class, methodParser.exceptionBodyType());
@@ -60,7 +61,7 @@ public class SwaggerMethodParserTests {
 
         final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, "https://raw.host.com");
         assertEquals("com.microsoft.rest.v2.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
-        assertEquals("PATCH", methodParser.httpMethod());
+        assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
         assertEquals(MyRestException.class, methodParser.exceptionType());
         assertEquals(HttpBinJSON.class, methodParser.exceptionBodyType());

@@ -1,5 +1,6 @@
 package com.microsoft.rest.v2.policy;
 
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import org.junit.Test;
@@ -47,6 +48,6 @@ public class HostPolicyTests {
     }
 
     private static HttpRequest createHttpRequest(String url) {
-        return new HttpRequest("mock.caller", "GET", url);
+        return new HttpRequest("mock.caller", HttpMethod.GET, url);
     }
 }

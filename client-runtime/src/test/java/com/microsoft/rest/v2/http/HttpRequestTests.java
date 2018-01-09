@@ -10,9 +10,9 @@ import static org.junit.Assert.*;
 public class HttpRequestTests {
     @Test
     public void constructor() {
-        final HttpRequest request = new HttpRequest("request caller method", "request http method", "request url");
+        final HttpRequest request = new HttpRequest("request caller method", HttpMethod.fromString("request http method"), "request url");
         assertEquals("request caller method", request.callerMethod());
-        assertEquals("request http method", request.httpMethod());
+        assertEquals(HttpMethod.fromString("request http method"), request.httpMethod());
         assertEquals("request url", request.url());
     }
 
@@ -24,7 +24,7 @@ public class HttpRequestTests {
 
         final HttpRequest request = new HttpRequest(
                 "request caller method",
-                "request http method",
+                HttpMethod.fromString("request http method"),
                 "request url",
                 headers,
                 new FlowableHttpRequestBody(0, "application/octet-stream", Flowable.just(new byte[0]), true));

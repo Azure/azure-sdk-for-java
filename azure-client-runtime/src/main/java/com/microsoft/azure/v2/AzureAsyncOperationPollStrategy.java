@@ -8,6 +8,7 @@ package com.microsoft.azure.v2;
 
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerMethodParser;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Single;
@@ -61,7 +62,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
             throw new IllegalStateException("Polling is completed and did not succeed. Cannot create a polling request.");
         }
 
-        return new HttpRequest(fullyQualifiedMethodName(), "GET", pollUrl);
+        return new HttpRequest(fullyQualifiedMethodName(), HttpMethod.GET, pollUrl);
     }
 
     @Override

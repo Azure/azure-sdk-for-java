@@ -7,6 +7,7 @@
 package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
@@ -37,7 +38,7 @@ public class UserAgentTests {
 
         HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(
                 "defaultUserAgentTests",
-                "GET", "http://localhost")).blockingGet();
+                HttpMethod.GET, "http://localhost")).blockingGet();
 
         Assert.assertEquals(200, response.statusCode());
     }
@@ -55,7 +56,7 @@ public class UserAgentTests {
             },
             new UserAgentPolicy.Factory("Awesome"));
 
-        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", "GET", "http://localhost")).blockingGet();
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", HttpMethod.GET, "http://localhost")).blockingGet();
         Assert.assertEquals(200, response.statusCode());
     }
 }

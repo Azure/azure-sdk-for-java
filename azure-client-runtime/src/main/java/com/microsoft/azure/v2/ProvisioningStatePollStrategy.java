@@ -8,6 +8,7 @@ package com.microsoft.azure.v2;
 
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerMethodParser;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Single;
@@ -31,7 +32,7 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
 
     @Override
     HttpRequest createPollRequest() {
-        return new HttpRequest(originalRequest.callerMethod(), "GET", originalRequest.url());
+        return new HttpRequest(originalRequest.callerMethod(), HttpMethod.GET, originalRequest.url());
     }
 
     @Override

@@ -31,7 +31,7 @@ public class RetryPolicyTests {
         HttpResponse response = pipeline.sendRequestAsync(
                 new HttpRequest(
                         "exponentialRetryEndOn501",
-                        "GET",
+                        HttpMethod.GET,
                         "http://localhost/")).blockingGet();
 
         Assert.assertEquals(501, response.statusCode());
@@ -55,7 +55,7 @@ public class RetryPolicyTests {
         HttpResponse response = pipeline.sendRequestAsync(
                 new HttpRequest(
                         "exponentialRetryMax",
-                        "GET",
+                        HttpMethod.GET,
                         "http://localhost/")).blockingGet();
 
         Assert.assertEquals(500, response.statusCode());

@@ -16,7 +16,7 @@ import java.io.IOException;
  */
 public class HttpRequest {
     private String callerMethod;
-    private String httpMethod;
+    private HttpMethod httpMethod;
     private String url;
     private HttpHeaders headers;
     private HttpRequestBody body;
@@ -28,7 +28,7 @@ public class HttpRequest {
      * @param httpMethod The HTTP method to use with this request.
      * @param url The URL where this HTTP request should be sent to.
      */
-    public HttpRequest(String callerMethod, String httpMethod, String url) {
+    public HttpRequest(String callerMethod, HttpMethod httpMethod, String url) {
         this.callerMethod = callerMethod;
         this.httpMethod = httpMethod;
         this.url = url;
@@ -44,7 +44,7 @@ public class HttpRequest {
      * @param headers The HTTP headers to use with this request.
      * @param body The body of this HTTP request.
      */
-    public HttpRequest(String callerMethod, String httpMethod, String url, HttpHeaders headers, HttpRequestBody body) {
+    public HttpRequest(String callerMethod, HttpMethod httpMethod, String url, HttpHeaders headers, HttpRequestBody body) {
         this.callerMethod = callerMethod;
         this.httpMethod = httpMethod;
         this.url = url;
@@ -74,7 +74,7 @@ public class HttpRequest {
      * Get the HTTP method that this request will use.
      * @return The HTTP method that this request will use.
      */
-    public String httpMethod() {
+    public HttpMethod httpMethod() {
         return httpMethod;
     }
 
@@ -83,7 +83,7 @@ public class HttpRequest {
      * @param httpMethod The HTTP method to use, e.g. "GET".
      * @return This HttpRequest so that multiple operations can be chained together.
      */
-    public HttpRequest withHttpMethod(String httpMethod) {
+    public HttpRequest withHttpMethod(HttpMethod httpMethod) {
         this.httpMethod = httpMethod;
         return this;
     }

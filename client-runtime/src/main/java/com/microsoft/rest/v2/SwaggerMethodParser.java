@@ -26,6 +26,7 @@ import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpMethod;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -43,7 +44,7 @@ import java.util.List;
 public class SwaggerMethodParser {
     private final String rawHost;
     private final String fullyQualifiedMethodName;
-    private String httpMethod;
+    private HttpMethod httpMethod;
     private String relativePath;
     private final List<Substitution> hostSubstitutions = new ArrayList<>();
     private final List<Substitution> pathSubstitutions = new ArrayList<>();
@@ -73,22 +74,22 @@ public class SwaggerMethodParser {
         fullyQualifiedMethodName = swaggerInterface.getName() + "." + swaggerMethod.getName();
 
         if (swaggerMethod.isAnnotationPresent(GET.class)) {
-            setHttpMethodAndRelativePath("GET", swaggerMethod.getAnnotation(GET.class).value());
+            setHttpMethodAndRelativePath(HttpMethod.GET, swaggerMethod.getAnnotation(GET.class).value());
         }
         else if (swaggerMethod.isAnnotationPresent(PUT.class)) {
-            setHttpMethodAndRelativePath("PUT", swaggerMethod.getAnnotation(PUT.class).value());
+            setHttpMethodAndRelativePath(HttpMethod.PUT, swaggerMethod.getAnnotation(PUT.class).value());
         }
         else if (swaggerMethod.isAnnotationPresent(HEAD.class)) {
-            setHttpMethodAndRelativePath("HEAD", swaggerMethod.getAnnotation(HEAD.class).value());
+            setHttpMethodAndRelativePath(HttpMethod.HEAD, swaggerMethod.getAnnotation(HEAD.class).value());
         }
         else if (swaggerMethod.isAnnotationPresent(DELETE.class)) {
-            setHttpMethodAndRelativePath("DELETE", swaggerMethod.getAnnotation(DELETE.class).value());
+            setHttpMethodAndRelativePath(HttpMethod.DELETE, swaggerMethod.getAnnotation(DELETE.class).value());
         }
         else if (swaggerMethod.isAnnotationPresent(POST.class)) {
-            setHttpMethodAndRelativePath("POST", swaggerMethod.getAnnotation(POST.class).value());
+            setHttpMethodAndRelativePath(HttpMethod.POST, swaggerMethod.getAnnotation(POST.class).value());
         }
         else if (swaggerMethod.isAnnotationPresent(PATCH.class)) {
-            setHttpMethodAndRelativePath("PATCH", swaggerMethod.getAnnotation(PATCH.class).value());
+            setHttpMethodAndRelativePath(HttpMethod.PATCH, swaggerMethod.getAnnotation(PATCH.class).value());
         }
         else {
             final ArrayList<Class<? extends Annotation>> requiredAnnotationOptions = new ArrayList<>();
@@ -197,7 +198,7 @@ public class SwaggerMethodParser {
      * Get the HTTP method that will be used to complete the Swagger method's request.
      * @return The HTTP method that will be used to complete the Swagger method's request.
      */
-    public String httpMethod() {
+    public HttpMethod httpMethod() {
         return httpMethod;
     }
 
@@ -431,7 +432,7 @@ public class SwaggerMethodParser {
      * @param relativePath The path in the URL that will be used to complete the Swagger method's
      *                     request.
      */
-    private void setHttpMethodAndRelativePath(String httpMethod, String relativePath) {
+    private void setHttpMethodAndRelativePath(HttpMethod httpMethod, String relativePath) {
         this.httpMethod = httpMethod;
         this.relativePath = relativePath;
     }

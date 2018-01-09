@@ -12,6 +12,7 @@ import com.microsoft.azure.v2.annotations.AzureHost;
 import com.microsoft.azure.v2.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.NettyClient;
@@ -286,7 +287,7 @@ public final class AzureProxy extends RestProxy {
                                         final Long parsedDelayInMilliseconds = PollStrategy.delayInMillisecondsFrom(originalHttpResponse);
                                         final long delayInMilliseconds = parsedDelayInMilliseconds != null ? parsedDelayInMilliseconds : AzureProxy.defaultDelayInMilliseconds();
 
-                                        final String originalHttpRequestMethod = originalHttpRequest.httpMethod();
+                                        final HttpMethod originalHttpRequestMethod = originalHttpRequest.httpMethod();
 
                                         PollStrategy pollStrategy = null;
                                         if (httpStatusCode == 200) {
@@ -298,7 +299,7 @@ public final class AzureProxy extends RestProxy {
                                                 result = createProvisioningStateOrCompletedPollStrategy(originalHttpRequest, originalHttpResponse, methodParser, delayInMilliseconds);
                                             }
                                         }
-                                        else if (originalHttpRequestMethod.equalsIgnoreCase("PUT") || originalHttpRequestMethod.equalsIgnoreCase("PATCH")) {
+                                        else if (originalHttpRequestMethod == HttpMethod.PUT || originalHttpRequestMethod == HttpMethod.PATCH) {
                                             if (httpStatusCode == 201) {
                                                 pollStrategy = AzureAsyncOperationPollStrategy.tryToCreate(AzureProxy.this, methodParser, originalHttpRequest, originalHttpResponse, delayInMilliseconds);
                                                 if (pollStrategy == null) {
@@ -341,10 +342,10 @@ public final class AzureProxy extends RestProxy {
     private Single<PollStrategy> createProvisioningStateOrCompletedPollStrategy(final HttpRequest httpRequest, HttpResponse httpResponse, final SwaggerMethodParser methodParser, final long delayInMilliseconds) {
         Single<PollStrategy> result;
 
-        final String httpRequestMethod = httpRequest.httpMethod();
-        if (httpRequestMethod.equalsIgnoreCase("DELETE")
-                || httpRequestMethod.equalsIgnoreCase("GET")
-                || httpRequestMethod.equalsIgnoreCase("HEAD")
+        final HttpMethod httpRequestMethod = httpRequest.httpMethod();
+        if (httpRequestMethod == HttpMethod.DELETE
+                || httpRequestMethod == HttpMethod.GET
+                || httpRequestMethod == HttpMethod.HEAD
                 || !methodParser.expectsResponseBody()) {
             result = Single.<PollStrategy>just(new CompletedPollStrategy(AzureProxy.this, methodParser, httpResponse));
         } else {

@@ -9,6 +9,7 @@ package com.microsoft.rest.v2;
 import com.microsoft.rest.v2.credentials.BasicAuthenticationCredentials;
 import com.microsoft.rest.v2.credentials.TokenCredentials;
 
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.policy.CredentialsPolicy;
 import com.microsoft.rest.v2.http.HttpRequest;
@@ -46,7 +47,7 @@ public class CredentialsTests {
                 new CredentialsPolicy.Factory(credentials),
                 auditorFactory);
 
-        HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
+        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, "http://localhost");
         pipeline.sendRequestAsync(request).blockingGet();
     }
 
@@ -73,7 +74,7 @@ public class CredentialsTests {
                 new CredentialsPolicy.Factory(credentials),
                 auditorFactory);
 
-        HttpRequest request = new HttpRequest("basicCredentialsTest", "GET", "http://localhost");
+        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, "http://localhost");
         pipeline.sendRequestAsync(request).blockingGet();
     }
 }

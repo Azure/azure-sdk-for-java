@@ -8,6 +8,7 @@ package com.microsoft.azure.v2;
 
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerMethodParser;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Single;
@@ -38,7 +39,7 @@ public final class LocationPollStrategy extends PollStrategy {
 
     @Override
     public HttpRequest createPollRequest() {
-        return new HttpRequest(fullyQualifiedMethodName(), "GET", locationUrl);
+        return new HttpRequest(fullyQualifiedMethodName(), HttpMethod.GET, locationUrl);
     }
 
     @Override

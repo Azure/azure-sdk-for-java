@@ -16,6 +16,7 @@ import com.microsoft.rest.v2.http.FileSegment;
 import com.microsoft.rest.v2.http.FlowableHttpRequestBody;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.HttpRequest;
@@ -471,11 +472,11 @@ public class RestProxy implements InvocationHandler {
     private Maybe<?> handleBodyReturnTypeAsync(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final int responseStatusCode = response.statusCode();
-        final String httpMethod = methodParser.httpMethod();
+        final HttpMethod httpMethod = methodParser.httpMethod();
         final Type returnValueWireType = methodParser.returnValueWireType();
 
         final Maybe<?> asyncResult;
-        if (httpMethod.equalsIgnoreCase("HEAD")
+        if (httpMethod == HttpMethod.HEAD
                 && (entityTypeToken.isSubtypeOf(boolean.class) || entityTypeToken.isSubtypeOf(Boolean.class))) {
             boolean isSuccess = (responseStatusCode / 100) == 2;
             asyncResult = Maybe.just(isSuccess);

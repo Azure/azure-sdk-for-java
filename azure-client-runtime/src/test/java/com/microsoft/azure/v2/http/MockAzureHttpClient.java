@@ -19,6 +19,7 @@ import com.microsoft.azure.v2.LocationPollStrategy;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.util.FlowableUtil;
@@ -124,7 +125,7 @@ public class MockAzureHttpClient extends HttpClient {
                 }
             }
             else if (requestHost.equalsIgnoreCase("mock.azure.com")) {
-                if (request.httpMethod().equalsIgnoreCase("GET")) {
+                if (request.httpMethod() == HttpMethod.GET) {
                     if (requestPathLower.contains("/mockprovider/mockresources/")) {
                         ++getRequests;
                         --pollsRemaining;
@@ -171,7 +172,7 @@ public class MockAzureHttpClient extends HttpClient {
                         }
                     }
                 }
-                else if (request.httpMethod().equalsIgnoreCase("PUT")) {
+                else if (request.httpMethod() == HttpMethod.PUT) {
                     ++createRequests;
 
                     final Map<String, String> requestQueryMap = queryToMap(requestUrl.getQuery());
@@ -232,7 +233,7 @@ public class MockAzureHttpClient extends HttpClient {
                         }
                     }
                 }
-                else if (request.httpMethod().equalsIgnoreCase("DELETE")) {
+                else if (request.httpMethod() == HttpMethod.DELETE) {
                     ++deleteRequests;
 
                     final Map<String,String> requestQueryMap = queryToMap(requestUrl.getQuery());
