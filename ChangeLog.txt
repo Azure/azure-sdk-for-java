@@ -1,3 +1,6 @@
+XXXX.XX.XX Version X.X.X
+ * Upgraded Key Vault dependency to 1.0.
+
 2017.11.01 Version 6.1.0
  * Added support for the last time the tier was modified.
 
