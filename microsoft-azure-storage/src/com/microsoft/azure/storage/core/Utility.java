@@ -365,7 +365,7 @@ public final class Utility {
      */
     public static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_NULL_OR_EMPTY, param));
+            throw new IllegalArgumentException(String.format(Utility.LOCALE_US, SR.ARGUMENT_NULL, param));
         }
     }
 

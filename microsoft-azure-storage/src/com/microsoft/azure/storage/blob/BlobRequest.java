@@ -54,6 +54,8 @@ final class BlobRequest {
 
     private static final String SNAPSHOTS_QUERY_ELEMENT_NAME = "snapshots";
 
+    private static final String DELETED_QUERY_ELEMENT_NAME = "deleted";
+
     private static final String TIER_QUERY_ELEMENT_NAME = "tier";
 
     private static final String UNCOMMITTED_BLOBS_QUERY_ELEMENT_NAME = "uncommittedblobs";
@@ -311,8 +313,6 @@ final class BlobRequest {
      * 
      * @param uri
      *            The absolute URI to the container.
-     * @param timeout
-     *            The server timeout interval.
      * @param query
      *            The query builder to use.
      * @param blobOptions
@@ -360,7 +360,8 @@ final class BlobRequest {
      */
     public static HttpURLConnection deleteBlob(final URI uri, final BlobRequestOptions blobOptions,
             final OperationContext opContext, final AccessCondition accessCondition, final String snapshotVersion,
-            final DeleteSnapshotsOption deleteSnapshotsOption) throws IOException, URISyntaxException, StorageException {
+            final DeleteSnapshotsOption deleteSnapshotsOption)
+            throws IOException, URISyntaxException, StorageException {
 
         if (snapshotVersion != null && deleteSnapshotsOption != DeleteSnapshotsOption.NONE) {
             throw new IllegalArgumentException(String.format(SR.DELETE_SNAPSHOT_NOT_VALID_ERROR,
@@ -369,6 +370,7 @@ final class BlobRequest {
 
         final UriQueryBuilder builder = new UriQueryBuilder();
         BlobRequest.addSnapshot(builder, snapshotVersion);
+
         final HttpURLConnection request = BaseRequest.delete(uri, blobOptions, builder, opContext);
 
         if (accessCondition != null) {
@@ -392,6 +394,35 @@ final class BlobRequest {
         }
 
         return request;
+    }
+
+    /**
+     * Constructs a HttpURLConnection to un-delete the blob, Sign with no length specified.
+     *
+     * @param uri
+     *            A <code>java.net.URI</code> object that specifies the absolute URI.
+     * @param blobOptions
+     *            A {@link BlobRequestOptions} object that specifies execution options such as retry policy and timeout
+     *            settings for the operation. Specify <code>null</code> to use the request options specified on the
+     *            {@link CloudBlobClient}.
+     * @param opContext
+     *            An {@link OperationContext} object that represents the context for the current operation. This object
+     *            is used to track requests to the storage service, and to provide additional runtime information about
+     *            the operation.
+     * @return a HttpURLConnection to use to perform the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if the resource URI is invalid
+     * @throws StorageException
+     *             an exception representing any error which occurred during the operation.
+     * @throws IllegalArgumentException
+     */
+    public static HttpURLConnection undeleteBlob(final URI uri, final BlobRequestOptions blobOptions,
+                                               final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+
+        final UriQueryBuilder builder = new UriQueryBuilder();
+        return BaseRequest.undelete(uri, blobOptions, builder, opContext);
     }
 
     /**
@@ -430,8 +461,6 @@ final class BlobRequest {
      * 
      * @param uri
      *            The absolute URI to the container.
-     * @param timeout
-     *            The server timeout interval.
      * @param accessCondition
      *            An {@link AccessCondition} object that represents the access conditions for the container.
      * @param opContext
@@ -828,9 +857,6 @@ final class BlobRequest {
      * @param breakPeriodInSeconds
      *            Specifies the amount of time to allow the lease to remain, in seconds.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
-     * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection
@@ -903,9 +929,6 @@ final class BlobRequest {
      * @param breakPeriodInSeconds
      *            Specifies the amount of time to allow the lease to remain, in seconds.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
-     * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection
@@ -949,9 +972,6 @@ final class BlobRequest {
      * @param breakPeriodInSeconds
      *            Specifies the amount of time to allow the lease to remain, in seconds.
      *            If null, the break period is the remainder of the current lease, or zero for infinite leases.
-     * @param visibilityTimeoutInSeconds
-     *            Specifies the the span of time for which to acquire the lease, in seconds.
-     *            If null, an infinite lease will be acquired. If not null, this must be greater than zero.
      * @return a HttpURLConnection to use to perform the operation.
      * @throws IOException
      *             if there is an error opening the connection
@@ -1068,6 +1088,17 @@ final class BlobRequest {
                     }
 
                     sb.append(Constants.QueryConstants.METADATA);
+                }
+
+                if (listingContext.getListingDetails().contains(BlobListingDetails.DELETED)) {
+                    if (!started) {
+                        started = true;
+                    }
+                    else {
+                        sb.append(",");
+                    }
+
+                    sb.append(DELETED_QUERY_ELEMENT_NAME);
                 }
 
                 builder.add(Constants.QueryConstants.INCLUDE, sb.toString());

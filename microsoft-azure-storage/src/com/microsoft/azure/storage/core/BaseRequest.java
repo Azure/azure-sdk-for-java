@@ -218,8 +218,6 @@ public final class BaseRequest {
      * 
      * @param uri
      *            the request Uri.
-     * @param timeout
-     *            the timeout for the request
      * @param builder
      *            the UriQueryBuilder for the request
      * @param opContext
@@ -240,6 +238,36 @@ public final class BaseRequest {
         final HttpURLConnection retConnection = createURLConnection(uri, options, builder, opContext);
         retConnection.setRequestMethod(Constants.HTTP_DELETE);
 
+        return retConnection;
+    }
+
+    /**
+     * Un-deletes the specified resource. Sign with no length specified.
+     *
+     * @param uri
+     *            the request Uri.
+     * @param builder
+     *            the UriQueryBuilder for the request
+     * @param opContext
+     *            an object used to track the execution of the operation
+     * @return a HttpURLConnection to perform the operation.
+     * @throws IOException
+     *             if there is an error opening the connection
+     * @throws URISyntaxException
+     *             if there is an improperly formated URI
+     * @throws StorageException
+     */
+    public static HttpURLConnection undelete(final URI uri, final RequestOptions options, UriQueryBuilder builder,
+                                           final OperationContext opContext) throws IOException, URISyntaxException, StorageException {
+        if (builder == null) {
+            builder = new UriQueryBuilder();
+        }
+        builder.add(Constants.QueryConstants.COMPONENT, Constants.QueryConstants.UNDELETE);
+
+        final HttpURLConnection retConnection = createURLConnection(uri, options, builder, opContext);
+        retConnection.setFixedLengthStreamingMode(0);
+        retConnection.setDoOutput(true);
+        retConnection.setRequestMethod(Constants.HTTP_PUT);
         return retConnection;
     }
 
@@ -279,8 +307,6 @@ public final class BaseRequest {
      * 
      * @param uri
      *            The Uri to query.
-     * @param timeout
-     *            The timeout.
      * @param builder
      *            The builder.
      * @param opContext
@@ -307,8 +333,6 @@ public final class BaseRequest {
      * 
      * @param uri
      *            The service endpoint.
-     * @param timeout
-     *            The timeout.
      * @param builder
      *            The builder.
      * @param opContext
@@ -339,8 +363,6 @@ public final class BaseRequest {
      * 
      * @param uri
      *            The service endpoint.
-     * @param timeout
-     *            The timeout.
      * @param builder
      *            The builder.
      * @param opContext
@@ -388,8 +410,6 @@ public final class BaseRequest {
      * 
      * @param uri
      *            The blob Uri.
-     * @param timeout
-     *            The timeout.
      * @param builder
      *            The builder.
      * @param opContext
@@ -421,8 +441,6 @@ public final class BaseRequest {
      * 
      * @param uri
      *            The service endpoint.
-     * @param timeout
-     *            The timeout.
      * @param builder
      *            The builder.
      * @param opContext
