@@ -16,9 +16,9 @@ package com.microsoft.azure.storage;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.Future;
 
-import org.apache.commons.lang3.concurrent.ConcurrentUtils;
+import com.google.common.util.concurrent.ListenableFuture;
+import com.google.common.util.concurrent.SettableFuture;
 
 import com.microsoft.azure.keyvault.core.IKey;
 import com.microsoft.azure.keyvault.core.IKeyResolver;
@@ -32,8 +32,10 @@ public class DictionaryKeyResolver implements IKeyResolver {
     }
 
     @Override
-    public Future<IKey> resolveKeyAsync(String keyId)
+    public ListenableFuture<IKey> resolveKeyAsync(String keyId)
     {
-        return ConcurrentUtils.constantFuture(this.keys.get(keyId));
+        SettableFuture<IKey> future = SettableFuture.create();
+        future.set(this.keys.get(keyId));
+        return future;
     }
 }

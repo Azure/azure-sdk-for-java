@@ -47,8 +47,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.microsoft.azure.keyvault.extensions.RsaKey;
-import com.microsoft.azure.keyvault.extensions.SymmetricKey;
+import com.microsoft.azure.keyvault.cryptography.RsaKey;
+import com.microsoft.azure.keyvault.cryptography.SymmetricKey;
 import com.microsoft.azure.storage.analytics.CloudAnalyticsClient;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.file.CloudFileClient;

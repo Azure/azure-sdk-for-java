@@ -1,4 +1,9 @@
-﻿Changes in 6.0.0
+﻿Changes in 7.0.0
+
+OTHER
+* Upgraded Key Vault dependency to 1.0.
+
+Changes in 6.0.0
 
 FILE
 * Many File service APIs can now throw a URISyntaxException.
