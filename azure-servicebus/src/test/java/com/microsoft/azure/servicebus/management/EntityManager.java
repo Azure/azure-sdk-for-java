@@ -17,8 +17,8 @@ import javax.net.ssl.HttpsURLConnection;
 
 import com.microsoft.azure.servicebus.ClientSettings;
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
-import com.microsoft.azure.sevicebus.security.SecurityToken;
-import com.microsoft.azure.sevicebus.security.TokenProvider;
+import com.microsoft.azure.servicebus.security.SecurityToken;
+import com.microsoft.azure.servicebus.security.TokenProvider;
 
 public class EntityManager {
     private static final int ONE_BOX_HTTPS_PORT = 4446;

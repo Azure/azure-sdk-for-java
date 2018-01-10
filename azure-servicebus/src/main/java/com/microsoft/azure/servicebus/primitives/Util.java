@@ -38,9 +38,9 @@ import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
 
 import com.microsoft.azure.servicebus.ClientSettings;
-import com.microsoft.azure.sevicebus.security.SecurityConstants;
-import com.microsoft.azure.sevicebus.security.SharedAccessSignatureTokenProvider;
-import com.microsoft.azure.sevicebus.security.TokenProvider;
+import com.microsoft.azure.servicebus.security.SecurityConstants;
+import com.microsoft.azure.servicebus.security.SharedAccessSignatureTokenProvider;
+import com.microsoft.azure.servicebus.security.TokenProvider;
 
 public class Util
 {

@@ -19,7 +19,7 @@ import org.slf4j.MarkerFactory;
 
 /**
  * 
- * @deprecated Use {@link com.microsoft.azure.sevicebus.security.SharedAccessSignatureTokenProvider}
+ * @deprecated Use {@link com.microsoft.azure.servicebus.security.SharedAccessSignatureTokenProvider}
  *
  */
 @Deprecated

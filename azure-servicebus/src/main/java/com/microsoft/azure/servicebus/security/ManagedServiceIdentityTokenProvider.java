@@ -1,4 +1,4 @@
-package com.microsoft.azure.sevicebus.security;
+package com.microsoft.azure.servicebus.security;
 
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -16,7 +16,11 @@ import org.slf4j.LoggerFactory;
 
 import com.google.gson.Gson;
 
-
+/**
+ * This is a token provider that obtains token using Managed Service Identity(MSI). This token provider automatically detects MSI settings.
+ * @since 1.2.0
+ *
+ */
 public class ManagedServiceIdentityTokenProvider extends TokenProvider
 {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ManagedServiceIdentityTokenProvider.class);

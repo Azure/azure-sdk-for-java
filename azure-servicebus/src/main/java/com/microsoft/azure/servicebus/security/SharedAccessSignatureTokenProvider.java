@@ -1,4 +1,4 @@
-package com.microsoft.azure.sevicebus.security;
+package com.microsoft.azure.servicebus.security;
 
 import java.security.InvalidKeyException;
 import java.time.Duration;
@@ -11,6 +11,11 @@ import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.SASUtil;
 
+/**
+ * This is a token provider that generates Shared Access Signature(SAS) tokens or reuses an already generated SAS token.
+ * @since 1.2.0
+ *
+ */
 public class SharedAccessSignatureTokenProvider extends TokenProvider
 {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SharedAccessSignatureTokenProvider.class);
@@ -21,6 +26,12 @@ public class SharedAccessSignatureTokenProvider extends TokenProvider
     private String sasToken;
     private Instant sasTokenValidUntil;
     
+    /**
+     * Creates an instance that generates SAS tokens from the given SAS key name and value.
+     * @param sasKeyName name of the SAS key
+     * @param sasKey SAS key
+     * @param tokenValidityInSeconds validity of the token to be generated
+     */
     public SharedAccessSignatureTokenProvider(String sasKeyName, String sasKey, int tokenValidityInSeconds)
     {
         this.sasKeyName = sasKeyName;
@@ -29,6 +40,11 @@ public class SharedAccessSignatureTokenProvider extends TokenProvider
         this.sasToken = null;
     }
     
+    /**
+     * Creates an instance that doesn't generate tokens but reuses an already generated SAS token.
+     * @param sasToken SAS token already generated
+     * @param sasTokenValidUntil Instant when the SAS token expires.
+     */
     public SharedAccessSignatureTokenProvider(String sasToken, Instant sasTokenValidUntil)
     {
         this.sasToken = sasToken;

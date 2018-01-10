@@ -10,7 +10,7 @@ import java.time.format.DateTimeParseException;
 import java.util.*;
 import java.util.regex.*;
 
-import com.microsoft.azure.sevicebus.security.SharedAccessSignatureTokenProvider;
+import com.microsoft.azure.servicebus.security.SharedAccessSignatureTokenProvider;
 
 /**
  * This class can be used to construct a connection string which can establish communication with ServiceBus entities.

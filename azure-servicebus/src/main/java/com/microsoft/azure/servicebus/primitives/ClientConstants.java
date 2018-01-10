@@ -182,7 +182,7 @@ public final class ClientConstants
         try {
             properties.load(ClientConstants.class.getResourceAsStream("/client.properties"));
             clientVersion = properties.getProperty("client.version");
-        } catch (IOException e) {
+        } catch (Exception e) {
             clientVersion = "NOTFOUND";
             TRACE_LOGGER.error("Exception while retrieving client version. Exception: ", e.toString());
         }

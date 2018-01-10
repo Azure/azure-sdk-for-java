@@ -14,7 +14,7 @@ import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import com.microsoft.azure.sevicebus.security.SecurityToken;
+import com.microsoft.azure.servicebus.security.SecurityToken;
 
 final class CommonRequestResponseOperations {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(CommonRequestResponseOperations.class);

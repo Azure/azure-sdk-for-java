@@ -1,4 +1,4 @@
-package com.microsoft.azure.sevicebus.security;
+package com.microsoft.azure.servicebus.security;
 
 import java.time.Duration;
 import java.time.Instant;
@@ -13,10 +13,19 @@ import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 
+/**
+ * This is a token provider that obtains tokens from Azure Active Directory. It supports multiple modes of authentication with active directory
+ * to obtain tokens.
+ * @since 1.2.0
+ *
+ */
 public class AzureActiveDirectoryTokenProvider extends TokenProvider
 {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(AzureActiveDirectoryTokenProvider.class);
     
+    /**
+     * Enumeration representing different authentication modes supported by this token provider.
+     */
     enum AuthenticationMode
     {
         CLIENT_CREDENTIAL,
@@ -32,6 +41,11 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider
     private String userName;
     private String password;
     
+    /**
+     * Creates a token provider that authenticates with active directory using client secret.
+     * @param authenticationContext Authentication context pointing to the instance of Azure Active Directory
+     * @param clientCredential Client credential containing client id and client secret of the application
+     */
     public AzureActiveDirectoryTokenProvider(AuthenticationContext authenticationContext, ClientCredential clientCredential)
     {
         this.authenticationMode = AuthenticationMode.CLIENT_CREDENTIAL;
@@ -39,6 +53,11 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider
         this.clientCredential = clientCredential;
     }
     
+    /**
+     * Creates a token provider that authenticates with active directory using certificate.
+     * @param authenticationContext Authentication context pointing to the instance of Azure Active Directory
+     * @param asymmetricKeyCredential Key credential containing the certificate to be used for authentication
+     */
     public AzureActiveDirectoryTokenProvider(AuthenticationContext authenticationContext, AsymmetricKeyCredential asymmetricKeyCredential)
     {
         this.authenticationMode = AuthenticationMode.CERTIFICATE;
@@ -46,6 +65,13 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider
         this.asymmetricKeyCredential = asymmetricKeyCredential;
     }
     
+    /**
+     * Creates a token provider that authenticates with active directory using username and password.
+     * @param authenticationContext Authentication context pointing to the instance of Azure Active Directory
+     * @param clientId client id of the application
+     * @param userName user name
+     * @param password password
+     */
     public AzureActiveDirectoryTokenProvider(AuthenticationContext authenticationContext, String clientId, String userName, String password)
     {
         this.authenticationMode = AuthenticationMode.USER_PASSWORD_CREDENTIAL;
@@ -54,7 +80,7 @@ public class AzureActiveDirectoryTokenProvider extends TokenProvider
         this.userName = userName;
         this.password = password;
     }
-
+    
     @Override
     public CompletableFuture<SecurityToken> getSecurityTokenAsync(String audience) {
         String addAudienceForSB = SecurityConstants.SERVICEBUS_AAD_AUDIENCE_RESOURCE_URL;

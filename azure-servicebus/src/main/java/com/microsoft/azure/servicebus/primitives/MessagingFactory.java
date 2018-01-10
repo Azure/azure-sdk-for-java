@@ -38,7 +38,7 @@ import com.microsoft.azure.servicebus.amqp.IAmqpConnection;
 import com.microsoft.azure.servicebus.amqp.ProtonUtil;
 import com.microsoft.azure.servicebus.amqp.ReactorDispatcher;
 import com.microsoft.azure.servicebus.amqp.ReactorHandler;
-import com.microsoft.azure.sevicebus.security.SecurityToken;
+import com.microsoft.azure.servicebus.security.SecurityToken;
 
 /**
  * Abstracts all AMQP related details and encapsulates an AMQP connection and manages its life cycle. Each instance of this class represent one AMQP connection to the namespace.
