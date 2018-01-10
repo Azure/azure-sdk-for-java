@@ -14,6 +14,16 @@ Refer to [azure.com](https://azure.microsoft.com/services/service-bus/) to learn
 
 See our [Contribution Guidelines](./.github/CONTRIBUTING.md).
 
+## Known issues
+
+### Java client 1.0.0
+
+There where a set of problems with message locks getting lost and then causing issues in message processing. Those issues are addressed in version 1.1.0.
+
+### Java client 1.1.0
+
+If you send messages from a client any other than the Java client itself in any other format than a stream you may not be able to receive the message body content. So if you are using multiple clients make sure you send and receive stream data. We are working on fixing this currently and evaluating releasing a version 1.1.1 which should contain this fix as soon as possible. If you send and receive with the Jave client you should not experience this issue.
+
 ## FAQ
 ### Where is the API document?
 Click [here](https://docs.microsoft.com/en-us/java/api/overview/azure/servicebus/clientlibrary).
