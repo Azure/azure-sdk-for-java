@@ -8,10 +8,10 @@ package com.microsoft.rest.v2.policy;
 
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.UrlBuilder;
 import io.reactivex.Single;
 
 import java.net.MalformedURLException;
-import java.net.URL;
 
 /**
  * Type representing RequestPolicy that retries a request at a different host depending on the response.
@@ -34,18 +34,19 @@ public final class UseOtherHostPolicy implements RequestPolicy {
 
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
-        URL url;
+        // FIXME: check a response header or similar in order to reissue the request with a new host?
+        // This is really just here to prove the concept right now
+        final UrlBuilder builder = UrlBuilder.parse(request.url());
+        builder.withScheme("https");
+        builder.withHost("httpbin.org");
+
+        HttpRequest newRequest;
         try {
-           url = new URL(request.url());
+            newRequest = new HttpRequest(request.callerMethod(), request.httpMethod(), builder.toURL());
         } catch (MalformedURLException e) {
             return Single.error(e);
         }
 
-        // FIXME: check a response header or similar in order to reissue the request with a new host?
-        // This is really just here to prove the concept right now
-        String newURL = "https://httpbin.org/" + url.getPath() + url.getQuery();
-
-        HttpRequest newRequest = new HttpRequest(request.callerMethod(), request.httpMethod(), newURL);
         newRequest.withBody(request.body());
 
         return next.sendAsync(newRequest);

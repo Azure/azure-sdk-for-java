@@ -10,6 +10,8 @@ import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.junit.Test;
 import io.reactivex.Single;
 
+import java.net.MalformedURLException;
+import java.net.URL;
 import java.util.concurrent.atomic.AtomicBoolean;
 
 import static org.junit.Assert.assertEquals;
@@ -17,7 +19,7 @@ import static org.junit.Assert.fail;
 
 public class ProxyAuthenticationPolicyTests {
     @Test
-    public void test() {
+    public void test() throws MalformedURLException {
         final AtomicBoolean auditorVisited = new AtomicBoolean(false);
         final String username = "testuser";
         final String password = "testpass";
@@ -39,7 +41,7 @@ public class ProxyAuthenticationPolicyTests {
                     }
                 });
 
-        pipeline.sendRequestAsync(new HttpRequest("test", HttpMethod.GET, "localhost"))
+        pipeline.sendRequestAsync(new HttpRequest("test", HttpMethod.GET, new URL("http://localhost")))
                 .blockingGet();
 
         if (!auditorVisited.get()) {

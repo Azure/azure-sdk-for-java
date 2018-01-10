@@ -6,6 +6,9 @@
 
 package com.microsoft.rest.v2.http;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 /**
  * A builder class that is used to create URLs.
  */
@@ -197,6 +200,15 @@ public class UrlBuilder {
     }
 
     /**
+     * Get the URL that is being built.
+     * @return The URL that is being built.
+     * @throws MalformedURLException if the URL is not fully formed.
+     */
+    public URL toURL() throws MalformedURLException {
+        return new URL(toString());
+    }
+
+    /**
      * Get the string representation of the URL that is being built.
      * @return The string representation of the URL that is being built.
      */
@@ -248,6 +260,44 @@ public class UrlBuilder {
     public static UrlBuilder parse(String url) {
         final UrlBuilder result = new UrlBuilder();
         result.with(url, UrlTokenizerState.SCHEME_OR_HOST);
+        return result;
+    }
+
+    /**
+     * Parse a UrlBuilder from the provided URL object.
+     * @param url The URL object to parse.
+     * @return The UrlBuilder that was parsed from the URL object.
+     */
+    public static UrlBuilder parse(URL url) {
+        final UrlBuilder result = new UrlBuilder();
+
+        if (url != null) {
+            final String protocol = url.getProtocol();
+            if (protocol != null && !protocol.isEmpty()) {
+                result.withScheme(protocol);
+            }
+
+            final String host = url.getHost();
+            if (host != null && !host.isEmpty()) {
+                result.withHost(host);
+            }
+
+            final int port = url.getPort();
+            if (port != -1) {
+                result.withPort(port);
+            }
+
+            final String path = url.getPath();
+            if (path != null && !path.isEmpty()) {
+                result.withPath(path);
+            }
+
+            final String query = url.getQuery();
+            if (query != null && !query.isEmpty()) {
+                result.withQuery(query);
+            }
+        }
+
         return result;
     }
 

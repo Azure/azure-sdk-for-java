@@ -2,6 +2,9 @@ package com.microsoft.rest.v2.http;
 
 import org.junit.Test;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static org.junit.Assert.*;
 
 public class UrlBuilderTests {
@@ -508,8 +511,8 @@ public class UrlBuilderTests {
     }
 
     @Test
-    public void parseWithNull() {
-        final UrlBuilder builder = UrlBuilder.parse(null);
+    public void parseWithNullString() {
+        final UrlBuilder builder = UrlBuilder.parse((String)null);
         assertEquals("", builder.toString());
     }
 
@@ -667,5 +670,17 @@ public class UrlBuilderTests {
     public void parseWithColonInPath() {
         final UrlBuilder builder = UrlBuilder.parse("https://www.bing.com/my:/path");
         assertEquals("https://www.bing.com/my:/path", builder.toString());
+    }
+
+    @Test
+    public void parseURLWithNull() {
+        final UrlBuilder builder = UrlBuilder.parse((URL)null);
+        assertEquals("", builder.toString());
+    }
+
+    @Test
+    public void parseURLWithSchemeAndHost() throws MalformedURLException {
+        final UrlBuilder builder = UrlBuilder.parse(new URL("http://www.bing.com"));
+        assertEquals("http://www.bing.com", builder.toString());
     }
 }

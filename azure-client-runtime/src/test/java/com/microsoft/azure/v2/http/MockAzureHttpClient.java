@@ -31,6 +31,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URI;
+import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -66,7 +67,7 @@ public class MockAzureHttpClient extends HttpClient {
         MockAzureHttpResponse response = null;
 
         try {
-            final URI requestUrl = new URI(request.url());
+            final URL requestUrl = request.url();
             final String requestHost = requestUrl.getHost();
             final String requestPath = requestUrl.getPath();
             final String requestPathLower = requestPath.toLowerCase();
@@ -76,7 +77,7 @@ public class MockAzureHttpClient extends HttpClient {
                         response = new MockAzureHttpResponse(200, responseHeaders(), "");
                     } else {
                         final HttpBinJSON json = new HttpBinJSON();
-                        json.url = request.url()
+                        json.url = request.url().toString()
                                 // This is just to mimic the behavior we've seen with httpbin.org.
                                 .replace("%20", " ");
                         json.headers = toMap(request.headers());
@@ -90,31 +91,31 @@ public class MockAzureHttpClient extends HttpClient {
                 }
                 else if (requestPathLower.equals("/delete")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url();
+                    json.url = request.url().toString();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(200, responseHeaders(), json);
                 }
                 else if (requestPathLower.equals("/get")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url();
+                    json.url = request.url().toString();
                     json.headers = toMap(request.headers());
                     response = new MockAzureHttpResponse(200, responseHeaders(), json);
                 }
                 else if (requestPathLower.equals("/patch")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url();
+                    json.url = request.url().toString();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(200, responseHeaders(), json);
                 }
                 else if (requestPathLower.equals("/post")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url();
+                    json.url = request.url().toString();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(200, responseHeaders(), json);
                 }
                 else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
-                    json.url = request.url();
+                    json.url = request.url().toString();
                     json.data = bodyToString(request);
                     response = new MockAzureHttpResponse(200, responseHeaders(), json);
                 }
@@ -167,7 +168,7 @@ public class MockAzureHttpClient extends HttpClient {
                             else {
                                 --pollsRemaining;
                                 response = new MockAzureHttpResponse(202, responseHeaders())
-                                        .withHeader(LocationPollStrategy.HEADER_NAME, request.url());
+                                        .withHeader(LocationPollStrategy.HEADER_NAME, request.url().toString());
                             }
                         }
                     }

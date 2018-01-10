@@ -25,6 +25,7 @@ import io.reactivex.Single;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.net.URL;
 
 public class RequestIdPolicyTests {
     private final HttpResponse mockResponse = new HttpResponse() {
@@ -95,8 +96,8 @@ public class RequestIdPolicyTests {
             })
             .build();
 
-        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, "http://localhost/")).blockingGet();
-        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, "http://localhost/")).blockingGet();
+        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, new URL("http://localhost/"))).blockingGet();
+        pipeline.sendRequestAsync(new HttpRequest("newRequestIdForEachCall", HttpMethod.GET, new URL("http://localhost/"))).blockingGet();
     }
 
     @Test
@@ -122,6 +123,6 @@ public class RequestIdPolicyTests {
             new RequestIdPolicy.Factory(),
             new RetryPolicy.Factory(1));
 
-        pipeline.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", HttpMethod.GET, "http://localhost/")).blockingGet();
+        pipeline.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", HttpMethod.GET, new URL("http://localhost/"))).blockingGet();
     }
 }

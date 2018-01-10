@@ -20,6 +20,7 @@ import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 
+import java.net.URL;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -131,7 +132,7 @@ public final class LoggingPolicy implements RequestPolicy {
         });
     }
 
-    private Single<HttpResponse> logResponse(final Logger logger, final HttpResponse response, String url, long tookMs) {
+    private Single<HttpResponse> logResponse(final Logger logger, final HttpResponse response, URL url, long tookMs) {
         String contentLengthString = response.headerValue("Content-Length");
         String bodySize;
         if (contentLengthString == null || contentLengthString.isEmpty()) {

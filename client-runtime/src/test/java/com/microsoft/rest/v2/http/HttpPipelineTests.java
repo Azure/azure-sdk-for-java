@@ -9,13 +9,16 @@ import com.microsoft.rest.v2.policy.RequestIdPolicy;
 import org.junit.Test;
 import io.reactivex.Single;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import static org.junit.Assert.*;
 
 public class HttpPipelineTests {
     @Test
-    public void withNoRequestPolicies() {
+    public void withNoRequestPolicies() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
-        final String expectedUrl = "http://my.site.com";
+        final URL expectedUrl = new URL("http://my.site.com");
         final HttpPipeline httpPipeline = HttpPipeline.build(new HttpClient() {
             @Override
             public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
@@ -32,9 +35,9 @@ public class HttpPipelineTests {
     }
 
     @Test
-    public void withUserAgentRequestPolicy() {
+    public void withUserAgentRequestPolicy() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
-        final String expectedUrl = "http://my.site.com/1";
+        final URL expectedUrl = new URL("http://my.site.com/1");
         final String expectedUserAgent = "my-user-agent";
         final HttpClient httpClient = new HttpClient() {
             @Override
@@ -56,9 +59,9 @@ public class HttpPipelineTests {
     }
 
     @Test
-    public void withRequestIdRequestPolicy() {
+    public void withRequestIdRequestPolicy() throws MalformedURLException {
         final HttpMethod expectedHttpMethod = HttpMethod.GET;
-        final String expectedUrl = "http://my.site.com/1";
+        final URL expectedUrl = new URL("http://my.site.com/1");
         final HttpPipeline httpPipeline = HttpPipeline.build(
                 new HttpClient() {
                     @Override

@@ -12,6 +12,8 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import io.reactivex.Single;
 
+import java.net.MalformedURLException;
+
 /**
  * A RequestPolicy that adds the provided port to each HttpRequest.
  */
@@ -32,7 +34,11 @@ public class PortPolicy extends AbstractRequestPolicy {
             if (shouldLog(HttpPipelineLogLevel.INFO)) {
                 log(HttpPipelineLogLevel.INFO, "Changing port to {0}", port);
             }
-            request.withUrl(urlBuilder.withPort(port).toString());
+            try {
+                request.withUrl(urlBuilder.withPort(port).toURL());
+            } catch (MalformedURLException e) {
+                return Single.error(e);
+            }
         }
         return nextPolicy().sendAsync(request);
     }

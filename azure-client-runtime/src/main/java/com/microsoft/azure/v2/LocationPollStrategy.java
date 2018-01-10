@@ -22,7 +22,7 @@ import java.net.URL;
  * operation.
  */
 public final class LocationPollStrategy extends PollStrategy {
-    private String locationUrl;
+    private URL locationUrl;
     private boolean done;
 
     /**
@@ -31,7 +31,7 @@ public final class LocationPollStrategy extends PollStrategy {
      */
     public static final String HEADER_NAME = "Location";
 
-    private LocationPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, String locationUrl, long delayInMilliseconds) {
+    private LocationPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, URL locationUrl, long delayInMilliseconds) {
         super(restProxy, methodParser, delayInMilliseconds);
 
         this.locationUrl = locationUrl;
@@ -47,15 +47,15 @@ public final class LocationPollStrategy extends PollStrategy {
         return ensureExpectedStatus(httpPollResponse, new int[] {202})
                 .map(new Function<HttpResponse, HttpResponse>() {
                     @Override
-                    public HttpResponse apply(HttpResponse response) {
+                    public HttpResponse apply(HttpResponse response) throws MalformedURLException {
                         final int httpStatusCode = response.statusCode();
 
                         updateDelayInMillisecondsFrom(response);
 
                         if (httpStatusCode == 202) {
-                            String newLocationUrl = response.headerValue(HEADER_NAME);
+                            String newLocationUrl = getHeader(response);
                             if (newLocationUrl != null) {
-                                locationUrl = newLocationUrl;
+                                locationUrl = new URL(newLocationUrl);
                             }
                         }
                         else {
@@ -86,19 +86,22 @@ public final class LocationPollStrategy extends PollStrategy {
     static PollStrategy tryToCreate(RestProxy restProxy, SwaggerMethodParser methodParser, HttpRequest originalHttpRequest, HttpResponse httpResponse, long delayInMilliseconds) {
         final String locationUrl = getHeader(httpResponse);
 
-        String pollUrl = null;
+        URL pollUrl = null;
         if (locationUrl != null && !locationUrl.isEmpty()) {
             if (locationUrl.startsWith("/")) {
                 try {
-                    final URL originalRequestUrl = new URL(originalHttpRequest.url());
-                    pollUrl = new URL(originalRequestUrl, locationUrl).toString();
+                    final URL originalRequestUrl = originalHttpRequest.url();
+                    pollUrl = new URL(originalRequestUrl, locationUrl);
                 } catch (MalformedURLException ignored) {
                 }
             }
             else {
                 final String locationUrlLower = locationUrl.toLowerCase();
                 if (locationUrlLower.startsWith("http://") || locationUrlLower.startsWith("https://")) {
-                    pollUrl = locationUrl;
+                    try {
+                        pollUrl = new URL(locationUrl);
+                    } catch (MalformedURLException ignored) {
+                    }
                 }
             }
         }

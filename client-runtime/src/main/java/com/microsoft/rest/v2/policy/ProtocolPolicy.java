@@ -12,6 +12,8 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import io.reactivex.Single;
 
+import java.net.MalformedURLException;
+
 /**
  * A RequestPolicy that adds the provided protocol/scheme to each HttpRequest.
  */
@@ -32,7 +34,11 @@ public class ProtocolPolicy extends AbstractRequestPolicy {
             if (shouldLog(HttpPipelineLogLevel.INFO)) {
                 log(HttpPipelineLogLevel.INFO, "Setting protocol to {0}", protocol);
             }
-            request.withUrl(urlBuilder.withScheme(protocol).toString());
+            try {
+                request.withUrl(urlBuilder.withScheme(protocol).toURL());
+            } catch (MalformedURLException e) {
+                return Single.error(e);
+            }
         }
         return nextPolicy().sendAsync(request);
     }

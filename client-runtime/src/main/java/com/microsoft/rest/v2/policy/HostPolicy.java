@@ -12,6 +12,8 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import io.reactivex.Single;
 
+import java.net.MalformedURLException;
+
 /**
  * A RequestPolicy that adds the provided host to each HttpRequest.
  */
@@ -28,9 +30,16 @@ public class HostPolicy extends AbstractRequestPolicy {
         if (shouldLog(HttpPipelineLogLevel.INFO)) {
             log(HttpPipelineLogLevel.INFO, "Setting host to {0}", host);
         }
+
+        Single<HttpResponse> result;
         final UrlBuilder urlBuilder = UrlBuilder.parse(request.url());
-        request.withUrl(urlBuilder.withHost(host).toString());
-        return nextPolicy().sendAsync(request);
+        try {
+            request.withUrl(urlBuilder.withHost(host).toURL());
+            result = nextPolicy().sendAsync(request);
+        } catch (MalformedURLException e) {
+            result = Single.error(e);
+        }
+        return result;
     }
 
     /**

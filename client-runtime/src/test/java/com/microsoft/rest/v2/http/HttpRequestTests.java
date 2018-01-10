@@ -4,16 +4,18 @@ import io.reactivex.Flowable;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.net.MalformedURLException;
+import java.net.URL;
 
 import static org.junit.Assert.*;
 
 public class HttpRequestTests {
     @Test
-    public void constructor() {
-        final HttpRequest request = new HttpRequest("request caller method", HttpMethod.fromString("request http method"), "request url");
+    public void constructor() throws MalformedURLException {
+        final HttpRequest request = new HttpRequest("request caller method", HttpMethod.fromString("request http method"), new URL("http://request.url"));
         assertEquals("request caller method", request.callerMethod());
         assertEquals(HttpMethod.fromString("request http method"), request.httpMethod());
-        assertEquals("request url", request.url());
+        assertEquals(new URL("http://request.url"), request.url());
     }
 
     @Test
@@ -25,7 +27,7 @@ public class HttpRequestTests {
         final HttpRequest request = new HttpRequest(
                 "request caller method",
                 HttpMethod.fromString("request http method"),
-                "request url",
+                new URL("http://request.url"),
                 headers,
                 new FlowableHttpRequestBody(0, "application/octet-stream", Flowable.just(new byte[0]), true));
 

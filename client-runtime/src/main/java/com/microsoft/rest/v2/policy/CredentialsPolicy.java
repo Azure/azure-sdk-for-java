@@ -53,7 +53,7 @@ public final class CredentialsPolicy implements RequestPolicy {
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         try {
-            String token = credentials.authorizationHeaderValue(request.url());
+            String token = credentials.authorizationHeaderValue(request.url().toString());
             request.headers().set("Authorization", token);
             return next.sendAsync(request);
         } catch (IOException e) {

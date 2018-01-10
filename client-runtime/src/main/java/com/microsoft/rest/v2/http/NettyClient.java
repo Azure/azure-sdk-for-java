@@ -179,7 +179,7 @@ public final class NettyClient extends HttpClient {
             final URI channelAddress;
             try {
                 if (proxy == null) {
-                    channelAddress = new URI(request.url());
+                    channelAddress = request.url().toURI();
                 } else if (proxy.address() instanceof InetSocketAddress) {
                     InetSocketAddress address = (InetSocketAddress) proxy.address();
                     String scheme = address.getPort() == 443
@@ -261,7 +261,7 @@ public final class NettyClient extends HttpClient {
 
                             final DefaultHttpRequest raw = new DefaultHttpRequest(HttpVersion.HTTP_1_1,
                                     HttpMethod.valueOf(request.httpMethod().toString()),
-                                    request.url());
+                                    request.url().toString());
 
                             for (HttpHeader header : request.headers()) {
                                 raw.headers().add(header.name(), header.value());

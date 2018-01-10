@@ -10,6 +10,7 @@ import com.google.common.base.Charsets;
 import io.reactivex.Flowable;
 
 import java.io.IOException;
+import java.net.URL;
 
 /**
  * This class contains all of the details necessary for sending a HTTP request through a HttpClient.
@@ -17,7 +18,7 @@ import java.io.IOException;
 public class HttpRequest {
     private String callerMethod;
     private HttpMethod httpMethod;
-    private String url;
+    private URL url;
     private HttpHeaders headers;
     private HttpRequestBody body;
 
@@ -28,7 +29,7 @@ public class HttpRequest {
      * @param httpMethod The HTTP method to use with this request.
      * @param url The URL where this HTTP request should be sent to.
      */
-    public HttpRequest(String callerMethod, HttpMethod httpMethod, String url) {
+    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url) {
         this.callerMethod = callerMethod;
         this.httpMethod = httpMethod;
         this.url = url;
@@ -44,7 +45,7 @@ public class HttpRequest {
      * @param headers The HTTP headers to use with this request.
      * @param body The body of this HTTP request.
      */
-    public HttpRequest(String callerMethod, HttpMethod httpMethod, String url, HttpHeaders headers, HttpRequestBody body) {
+    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url, HttpHeaders headers, HttpRequestBody body) {
         this.callerMethod = callerMethod;
         this.httpMethod = httpMethod;
         this.url = url;
@@ -92,7 +93,7 @@ public class HttpRequest {
      * Get the URL that this request will be sent to.
      * @return The URL that this request will be sent to.
      */
-    public String url() {
+    public URL url() {
         return url;
     }
 
@@ -101,7 +102,7 @@ public class HttpRequest {
      * @param url The new URL that this request will be sent to.
      * @return This HttpRequest so that multiple operations can be chained together.
      */
-    public HttpRequest withUrl(String url) {
+    public HttpRequest withUrl(URL url) {
         this.url = url;
         return this;
     }

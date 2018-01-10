@@ -48,6 +48,7 @@ import java.lang.reflect.Method;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
+import java.net.URL;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -276,7 +277,7 @@ public class RestProxy implements InvocationHandler {
             urlBuilder.addQueryParameter(queryParameter.name(), queryParameter.encodedValue());
         }
 
-        final String url = urlBuilder.toString();
+        final URL url = urlBuilder.toURL();
         final HttpRequest request = new HttpRequest(methodParser.fullyQualifiedMethodName(), methodParser.httpMethod(), url);
 
         for (final HttpHeader header : methodParser.headers(args)) {

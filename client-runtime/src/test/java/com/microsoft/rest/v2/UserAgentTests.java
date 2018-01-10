@@ -19,7 +19,7 @@ import org.junit.Test;
 
 import io.reactivex.Single;
 
-import java.util.Collections;
+import java.net.URL;
 
 public class UserAgentTests {
     @Test
@@ -38,7 +38,7 @@ public class UserAgentTests {
 
         HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(
                 "defaultUserAgentTests",
-                HttpMethod.GET, "http://localhost")).blockingGet();
+                HttpMethod.GET, new URL("http://localhost"))).blockingGet();
 
         Assert.assertEquals(200, response.statusCode());
     }
@@ -56,7 +56,7 @@ public class UserAgentTests {
             },
             new UserAgentPolicy.Factory("Awesome"));
 
-        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", HttpMethod.GET, "http://localhost")).blockingGet();
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", HttpMethod.GET, new URL("http://localhost"))).blockingGet();
         Assert.assertEquals(200, response.statusCode());
     }
 }

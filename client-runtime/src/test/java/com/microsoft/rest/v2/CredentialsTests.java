@@ -22,6 +22,8 @@ import org.junit.Assert;
 import org.junit.Test;
 import io.reactivex.Single;
 
+import java.net.URL;
+
 public class CredentialsTests {
 
     @Test
@@ -47,7 +49,7 @@ public class CredentialsTests {
                 new CredentialsPolicy.Factory(credentials),
                 auditorFactory);
 
-        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, "http://localhost");
+        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, new URL("http://localhost"));
         pipeline.sendRequestAsync(request).blockingGet();
     }
 
@@ -74,7 +76,7 @@ public class CredentialsTests {
                 new CredentialsPolicy.Factory(credentials),
                 auditorFactory);
 
-        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, "http://localhost");
+        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, new URL("http://localhost"));
         pipeline.sendRequestAsync(request).blockingGet();
     }
 }

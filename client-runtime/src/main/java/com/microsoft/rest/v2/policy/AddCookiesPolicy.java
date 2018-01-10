@@ -38,7 +38,7 @@ public final class AddCookiesPolicy implements RequestPolicy {
     @Override
     public Single<HttpResponse> sendAsync(HttpRequest request) {
         try {
-            final URI uri = new URI(request.url());
+            final URI uri = request.url().toURI();
 
             Map<String, List<String>> cookieHeaders = new HashMap<>();
             for (HttpHeader header : request.headers()) {
