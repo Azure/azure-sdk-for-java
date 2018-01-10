@@ -64,7 +64,7 @@ public class TestHelper {
     private static StorageCredentialsAccountAndKey premiumBlobCredentials;
     private static CloudStorageAccount premiumBlobAccount;
 
-    private final static boolean enableFiddler = true;
+    private final static boolean enableFiddler = false;
     private final static boolean requireSecondaryEndpoint = false;
 
     public static CloudBlobClient createCloudBlobClient() throws StorageException {

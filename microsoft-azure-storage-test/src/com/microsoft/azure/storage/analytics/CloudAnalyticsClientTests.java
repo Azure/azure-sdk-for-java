@@ -401,7 +401,7 @@ public class CloudAnalyticsClientTests {
             CloudAnalyticsClient.parseLogBlobs(null);
         }
         catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(), "The argument must not be null or an empty string. Argument name: logBlobs.");
+            assertEquals("The argument must not be null. Argument name: logBlobs.", e.getMessage());
         }
     }
 

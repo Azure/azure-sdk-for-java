@@ -120,7 +120,7 @@ public class TestRunners {
     @SuiteClasses({ BlobOutputStreamTests.class, CloudBlobClientTests.class, CloudBlobContainerTests.class,
             CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class, CloudPageBlobTests.class,
             CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class, LeaseTests.class, SasTests.class,
-            PremiumBlobTests.class })
+            PremiumBlobTestSuite.class })
     public static class BlobTestSuite {
     }
 
@@ -184,6 +184,7 @@ public class TestRunners {
 
     @RunWith(Categories.class)
     @IncludeCategory(PremiumBlobTests.class)
+    @SuiteClasses(AllTestSuite.class)
     public static class PremiumBlobTestSuite {
     }
 }

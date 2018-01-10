@@ -322,7 +322,7 @@ public class TableBatchOperationTests {
             fail();
         }
         catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(), String.format(SR.ARGUMENT_NULL_OR_EMPTY, "element"));
+            assertEquals(String.format(SR.ARGUMENT_NULL, "element"), ex.getMessage());
         }
     }
 
@@ -334,8 +334,8 @@ public class TableBatchOperationTests {
             fail();
         }
         catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(),
-                    String.format(SR.ARGUMENT_NULL_OR_EMPTY, SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER));
+            assertEquals(String.format(SR.ARGUMENT_NULL, SR.QUERY_REQUIRES_VALID_CLASSTYPE_OR_RESOLVER),
+                    ex.getMessage());
         }
     }
 
