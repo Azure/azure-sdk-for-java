@@ -41,7 +41,6 @@ import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
 import io.reactivex.SingleOnSubscribe;
-import io.reactivex.exceptions.Exceptions;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
@@ -388,7 +387,7 @@ public final class NettyClient extends HttpClient {
                         LoggerFactory.getLogger(getClass()).warn("Got EncoderException: " + throwable.getMessage());
                         return sendRequestInternalAsync(request, proxy);
                     } else {
-                        throw Exceptions.propagate(throwable);
+                        return Single.error(throwable);
                     }
                 }
             });

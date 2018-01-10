@@ -133,7 +133,7 @@ public class RestProxyStressTests {
                             return sendAsync(request);
                         }
                         LoggerFactory.getLogger(getClass()).warn("Unrecoverable exception occurred: " + throwable.getMessage());
-                        throw Exceptions.propagate(throwable);
+                        return Single.error(throwable);
                     }
                 });
             }
