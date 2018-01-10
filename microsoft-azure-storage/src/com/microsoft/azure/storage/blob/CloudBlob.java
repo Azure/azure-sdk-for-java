@@ -14,7 +14,6 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
 import java.io.File;

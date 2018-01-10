@@ -24,7 +24,6 @@ import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
-import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.core.PathUtility;
 
 import org.junit.After;
@@ -46,27 +45,11 @@ import java.util.Random;
 import java.util.TimeZone;
 import java.util.UUID;
 
-import org.junit.After;
-import org.junit.Before;
-import org.junit.Test;
-import org.junit.experimental.categories.Category;
-
 import com.microsoft.azure.keyvault.extensions.Strings;
-import com.microsoft.azure.storage.LocationMode;
-import com.microsoft.azure.storage.NameValidator;
-import com.microsoft.azure.storage.OperationContext;
-import com.microsoft.azure.storage.RetryNoRetry;
-import com.microsoft.azure.storage.SendingRequestEvent;
-import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
-import com.microsoft.azure.storage.StorageErrorCodeStrings;
-import com.microsoft.azure.storage.StorageEvent;
-import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestHelper;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.core.PathUtility;
 
 import static org.junit.Assert.*;
 
@@ -457,8 +440,8 @@ public class CloudQueueTests {
             catch (StorageException ex) {
                 assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getHttpStatusCode(),
                         HttpURLConnection.HTTP_CONFLICT);
-                assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getExtendedErrorInformation()
-                        .getErrorCode(), StorageErrorCodeStrings.QUEUE_BEING_DELETED);
+                assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getErrorCode(),
+                        StorageErrorCodeStrings.QUEUE_BEING_DELETED);
             }
         }
         finally {
@@ -528,8 +511,8 @@ public class CloudQueueTests {
             catch (StorageException ex) {
                 assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getHttpStatusCode(),
                         HttpURLConnection.HTTP_CONFLICT);
-                assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getExtendedErrorInformation()
-                        .getErrorCode(), StorageErrorCodeStrings.QUEUE_BEING_DELETED);
+                assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getErrorCode(),
+                        StorageErrorCodeStrings.QUEUE_BEING_DELETED);
             }
         }
         finally {
@@ -589,8 +572,7 @@ public class CloudQueueTests {
             catch (StorageException ex) {
                 assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getHttpStatusCode(),
                         HttpURLConnection.HTTP_CONFLICT);
-                assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getExtendedErrorInformation()
-                        .getErrorCode(), StorageErrorCodeStrings.QUEUE_BEING_DELETED);
+                assertEquals("Expected 409 Exception, QueueBeingDeleted not thrown", ex.getErrorCode(), StorageErrorCodeStrings.QUEUE_BEING_DELETED);
             }
         }
         finally {

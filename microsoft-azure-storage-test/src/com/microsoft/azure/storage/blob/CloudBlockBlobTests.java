@@ -24,7 +24,6 @@ import com.microsoft.azure.storage.StorageCredentialsAnonymous;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.core.Utility;
 import com.microsoft.azure.storage.file.CloudFile;
 import com.microsoft.azure.storage.file.CloudFileShare;
@@ -1222,27 +1221,27 @@ public class CloudBlockBlobTests {
 
         ByteArrayOutputStream blobStream = new ByteArrayOutputStream();
         try {
-            blob.downloadRange(0, new Long(0), blobStream, null, null, null);
+            blob.downloadRange(0, Long.valueOf(0), blobStream, null, null, null);
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
 
-        blob.downloadRange(0, new Long(1024), blobStream);
+        blob.downloadRange(0, Long.valueOf(1024), blobStream);
         assertEquals(blobStream.size(), 1024);
         BlobTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(blobStream.toByteArray()), wholeBlob, 0,
                 0, 1024, 2 * 1024);
 
         CloudBlockBlob blob2 = this.container.getBlockBlobReference("blob1");
         try {
-            blob.downloadRange(1024, new Long(0), blobStream, null, null, null);
+            blob.downloadRange(1024, Long.valueOf(0), blobStream, null, null, null);
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
 
         ByteArrayOutputStream blobStream2 = new ByteArrayOutputStream();
-        blob2.downloadRange(1024, new Long(1024), blobStream2);
+        blob2.downloadRange(1024, Long.valueOf(1024), blobStream2);
         BlobTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(blobStream2.toByteArray()), wholeBlob,
                 0, 1024, 1024, 2 * 1024);
         blob2.downloadAttributes();
@@ -1655,27 +1654,27 @@ public class CloudBlockBlobTests {
                 .generateRandomBlobNameWithPrefix("downloadrange"));
 
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * Constants.MB, 8 * Constants.MB, 1 * Constants.MB,
-                new Long(1 * Constants.MB), new Long(5 * Constants.MB));
+                Long.valueOf(1 * Constants.MB), Long.valueOf(5 * Constants.MB));
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * Constants.MB, 8 * Constants.MB, 2 * Constants.MB,
-                new Long(2 * Constants.MB), new Long(6 * Constants.MB));
+                Long.valueOf(2 * Constants.MB), Long.valueOf(6 * Constants.MB));
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * Constants.MB, 8 * Constants.MB, 1 * Constants.MB,
-                new Long(4 * Constants.MB), new Long(4 * Constants.MB));
+                Long.valueOf(4 * Constants.MB), Long.valueOf(4 * Constants.MB));
 
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 0, new Long(1 * 512), new Long(1 * 512));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, new Long(0), null);
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, new Long(1 * 512), null);
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, new Long(0), new Long(1 * 512));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, new Long(1 * 512), new Long(
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 0, Long.valueOf(1 * 512), Long.valueOf(1 * 512));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(0), null);
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(1 * 512), null);
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(0), Long.valueOf(1 * 512));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, Long.valueOf(1 * 512), Long.valueOf(
                 1 * 512));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, new Long(1 * 512), new Long(
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, Long.valueOf(1 * 512), Long.valueOf(
                 2 * 512));
 
         // Edge cases
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 1023, new Long(1023), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, new Long(1023), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, new Long(0), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, new Long(512), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 512, new Long(1023), new Long(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 1023, Long.valueOf(1023), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, Long.valueOf(1023), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, Long.valueOf(0), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, Long.valueOf(512), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 512, Long.valueOf(1023), Long.valueOf(1));
     }
 
     @Test
@@ -2396,7 +2395,7 @@ public class CloudBlockBlobTests {
         assertNull(blob2.getProperties().getPremiumPageBlobTier());
         assertNotNull(blob2.getProperties().getTierChangeTime());
 
-        Iterator it = this.container.listBlobs().iterator();
+        Iterator<ListBlobItem> it = this.container.listBlobs().iterator();
         CloudBlockBlob listBlob = (CloudBlockBlob)it.next();
         assertEquals(RehydrationStatus.PENDING_TO_COOL, listBlob.getProperties().getRehydrationStatus());
         assertEquals(StandardBlobTier.ARCHIVE, listBlob.getProperties().getStandardBlobTier());

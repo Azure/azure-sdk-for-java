@@ -38,7 +38,6 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners;
 
 import static org.junit.Assert.*;
 
@@ -334,7 +333,6 @@ public class CloudBlobClientTests {
 
         CloudBlobContainer container = null;
         File sourceFile = File.createTempFile("sourceFile", ".tmp");
-        File destinationFile = new File(sourceFile.getParentFile(), "destinationFile.tmp");
         try {
             container = bClient.getContainerReference(BlobTestHelper.generateRandomContainerName());
             container.createIfNotExists();
@@ -342,7 +340,6 @@ public class CloudBlobClientTests {
                     .generateRandomBlobNameWithPrefix("uploadThreshold"));
 
             sourceFile = File.createTempFile("sourceFile", ".tmp");
-            destinationFile = new File(sourceFile.getParentFile(), "destinationFile.tmp");
 
             int fileSize = 10 * 1024;
             byte[] buffer = BlobTestHelper.getRandomBuffer(fileSize);

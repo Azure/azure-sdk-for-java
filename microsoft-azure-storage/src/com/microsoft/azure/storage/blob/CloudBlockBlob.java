@@ -830,7 +830,7 @@ public final class CloudBlockBlob extends CloudBlob {
             final InputStream sourceStream = block;
             final long blockSize = block instanceof SubStream ? ((SubStream) block).getLength() : this.streamWriteSizeInBytes;
 
-            Future<Void> uploadTask = completionService.submit(new Callable<Void>() {
+            completionService.submit(new Callable<Void>() {
                 @Override
                 public Void call() throws IOException, StorageException {
                     uploadBlock(blockId, sourceStream, blockSize, _accessCondition, _requestOptions, _operationContext);

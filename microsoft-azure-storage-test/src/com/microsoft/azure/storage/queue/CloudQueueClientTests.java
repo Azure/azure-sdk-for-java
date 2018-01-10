@@ -18,7 +18,6 @@ import com.microsoft.azure.storage.LocationMode;
 import com.microsoft.azure.storage.ResultSegment;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
-import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.core.SR;
 
 import org.junit.Test;

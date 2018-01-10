@@ -475,12 +475,9 @@ public class GenericTests {
 
     @Test
     public void testErrorCodeFromHeader() throws URISyntaxException, StorageException, IOException {
-        byte[] buffer = BlobTestHelper.getRandomBuffer(1 * 1024 * 1024);
-
         CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
         CloudBlobContainer container = blobClient.getContainerReference(generateRandomContainerName());
 
-        String blobName = "testBlob";
         CloudAppendBlob appendBlob = container.getAppendBlobReference("testAppend");
 
         try {

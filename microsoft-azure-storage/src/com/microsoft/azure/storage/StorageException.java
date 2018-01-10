@@ -87,14 +87,8 @@ public class StorageException extends Exception {
         translatedException = new StorageException(request.getResult().getErrorCode(), responseMessage,
                 responseCode, extendedError, cause);
 
-        if (translatedException != null) {
-            Utility.logHttpError(translatedException, opContext);
-            return translatedException;
-        } else {
-            return new StorageException(StorageErrorCode.SERVICE_INTERNAL_ERROR.toString(),
-                    "The server encountered an unknown failure: ".concat(responseMessage),
-                    HttpURLConnection.HTTP_INTERNAL_ERROR, null, cause);   
-        }
+        Utility.logHttpError(translatedException, opContext);
+        return translatedException;
     }
 
     /**

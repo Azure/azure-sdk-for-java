@@ -19,7 +19,6 @@ import static org.junit.Assert.*;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.net.HttpURLConnection;
-import java.net.URI;
 import java.net.URISyntaxException;
 import java.security.InvalidKeyException;
 import java.util.Calendar;
@@ -34,7 +33,6 @@ import java.util.TimeZone;
 import java.util.UUID;
 
 import org.junit.After;
-import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -905,12 +903,12 @@ public class CloudBlobContainerTests {
             return;
         }
         else {
-            assertEquals(new Long(length), state2.getBytesCopied());
+            assertEquals(Long.valueOf(length), state2.getBytesCopied());
             assertNotNull(state2.getCompletionTime());
             assertEquals(state1.getCopyId(), state2.getCopyId());
             assertNotNull(state2.getSource());
             assertEquals(state1.getStatus(), state2.getStatus());
-            assertEquals(new Long(length), state2.getTotalBytes());
+            assertEquals(Long.valueOf(length), state2.getTotalBytes());
         }
     }
 }
