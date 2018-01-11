@@ -28,6 +28,7 @@ import com.microsoft.azure.storage.blob.LeaseTests;
 import com.microsoft.azure.storage.blob.SasTests;
 import com.microsoft.azure.storage.file.CloudFileClientTests;
 import com.microsoft.azure.storage.file.CloudFileDirectoryTests;
+import com.microsoft.azure.storage.file.CloudFileServerEncryptionTests;
 import com.microsoft.azure.storage.file.CloudFileShareTests;
 import com.microsoft.azure.storage.file.CloudFileTests;
 import com.microsoft.azure.storage.file.FileSasTests;
@@ -138,8 +139,8 @@ public class TestRunners {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({ CloudFileClientTests.class, CloudFileDirectoryTests.class, CloudFileShareTests.class,
-            CloudFileTests.class, FileSasTests.class })
+    @SuiteClasses({ CloudFileClientTests.class, CloudFileDirectoryTests.class, CloudFileServerEncryptionTests.class,
+        CloudFileShareTests.class, CloudFileTests.class, FileSasTests.class })
     public static class FileTestSuite {
     }
 
