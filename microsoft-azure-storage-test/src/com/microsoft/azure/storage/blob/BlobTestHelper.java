@@ -14,6 +14,7 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.DeleteRetentionPolicy;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageException;
@@ -440,6 +441,7 @@ public class BlobTestHelper extends TestHelper {
 
     public static void enableSoftDelete() throws StorageException, URISyntaxException, InterruptedException {
         ServiceProperties serviceProperties = new ServiceProperties();
+        serviceProperties.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         serviceProperties.getDeleteRetentionPolicy().setEnabled(true);
         serviceProperties.getDeleteRetentionPolicy().setRetentionIntervalInDays(3);
 
@@ -450,7 +452,7 @@ public class BlobTestHelper extends TestHelper {
 
     public static void disableSoftDelete() throws StorageException, URISyntaxException, InterruptedException {
         ServiceProperties serviceProperties = new ServiceProperties();
-        serviceProperties.getDeleteRetentionPolicy().setEnabled(false);
+        serviceProperties.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
 
         CloudBlobClient bClient = TestHelper.createCloudBlobClient();
         bClient.uploadServiceProperties(serviceProperties);

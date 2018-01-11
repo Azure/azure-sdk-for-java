@@ -58,7 +58,6 @@ public final class ServiceProperties {
         this.setHourMetrics(new MetricsProperties());
         this.setMinuteMetrics(new MetricsProperties());
         this.setCors(new CorsProperties());
-        this.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
     }
 
     /**

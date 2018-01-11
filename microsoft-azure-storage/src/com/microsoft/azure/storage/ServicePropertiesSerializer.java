@@ -77,7 +77,7 @@ final class ServicePropertiesSerializer {
         }
 
         // Delete retention policy
-        if (properties.getDeleteRetentionPolicy() != null && properties.getDeleteRetentionPolicy().getEnabled() != null) {
+        if (properties.getDeleteRetentionPolicy() != null) {
             writeDeleteRetentionPolicy(xmlw, properties.getDeleteRetentionPolicy());
         }
 
@@ -110,10 +110,10 @@ final class ServicePropertiesSerializer {
 
         // Enabled
         xmlw.writeStartElement(Constants.AnalyticsConstants.ENABLED_ELEMENT);
-        xmlw.writeCharacters(deleteRetentionPolicy.getEnabled() != null && deleteRetentionPolicy.getEnabled() ? Constants.TRUE : Constants.FALSE);
+        xmlw.writeCharacters(deleteRetentionPolicy.getEnabled() ? Constants.TRUE : Constants.FALSE);
         xmlw.writeEndElement();
 
-        if (deleteRetentionPolicy.getEnabled() != null && deleteRetentionPolicy.getEnabled()) {
+        if (deleteRetentionPolicy.getEnabled()) {
             // Include retention days and retained versions per blob
             xmlw.writeStartElement(Constants.AnalyticsConstants.DAYS_ELEMENT);
             xmlw.writeCharacters(deleteRetentionPolicy.getRetentionIntervalInDays().toString());

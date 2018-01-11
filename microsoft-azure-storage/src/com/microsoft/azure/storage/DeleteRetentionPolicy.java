@@ -22,7 +22,7 @@ public class DeleteRetentionPolicy {
     /**
      * Indicates whether a deleted blob or snapshot is retained or immediately removed by a delete operation.
      */
-    private Boolean enabled;
+    private boolean enabled = false;
 
     /**
      * Required only if Enabled is true. Indicates the number of days that deleted blobs are retained.
@@ -32,11 +32,11 @@ public class DeleteRetentionPolicy {
     private Integer retentionIntervalInDays;
 
     /**
-     * Return a Boolean indicating whether the DeleteRetentionPolicy is enabled.
+     * Return a boolean indicating whether the DeleteRetentionPolicy is enabled.
      *
-     * @return A <code>Boolean</code> indicating whether a deleted blob or snapshot is retained or immediately removed by a delete operation.
+     * @return A <code>boolean</code> indicating whether a deleted blob or snapshot is retained or immediately removed by a delete operation.
      */
-    public Boolean getEnabled() {
+    public boolean getEnabled() {
         return this.enabled;
     }
 
@@ -50,7 +50,7 @@ public class DeleteRetentionPolicy {
     }
 
     /**
-     * Set the Boolean indicating whether the DeleteRetentionPolicy is enabled.
+     * Set a boolean indicating whether the DeleteRetentionPolicy is enabled.
      * @param enabled indicates whether the DeleteRetentionPolicy is enabled.
      */
     public void setEnabled(boolean enabled) {

@@ -118,9 +118,9 @@ public class TestRunners {
 
     @RunWith(Suite.class)
     @SuiteClasses({ BlobOutputStreamTests.class, CloudBlobClientTests.class, CloudBlobContainerTests.class,
-            CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class, CloudPageBlobTests.class,
-            CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class, LeaseTests.class, SasTests.class,
-            PremiumBlobTestSuite.class })
+            CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class,
+            CloudPageBlobTests.class, CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class,
+            LeaseTests.class, SasTests.class })
     public static class BlobTestSuite {
     }
 
