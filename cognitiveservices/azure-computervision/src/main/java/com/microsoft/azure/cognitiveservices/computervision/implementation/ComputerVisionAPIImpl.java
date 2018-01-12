@@ -169,7 +169,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient {
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    private ComputerVisionAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public ComputerVisionAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }

@@ -152,7 +152,7 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient {
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    private TextAnalyticsAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public TextAnalyticsAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
