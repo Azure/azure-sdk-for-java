@@ -27,7 +27,7 @@ public enum HttpLogDetailLevel {
 
     /**
      * Logs everything in BASIC, plus all the request and response body.
-     * Note that only payloads in plain text or plan text encoded in GZIP
+     * Note that only payloads in plain text or plain text encoded in GZIP
      * will be logged.
      */
     BODY,
@@ -36,28 +36,6 @@ public enum HttpLogDetailLevel {
      * Logs everything in HEADERS and BODY.
      */
     BODY_AND_HEADERS;
-
-    // FIXME: this flag is not currently honored
-    private boolean prettyJson = false;
-
-    /**
-     * @return if the JSON payloads will be prettified when log level is set
-     * to BODY or BODY_AND_HEADERS. Default is false.
-     */
-    public boolean isPrettyJson() {
-        return prettyJson;
-    }
-
-    /**
-     * Specifies whether to log prettified JSON.
-     *
-     * @param prettyJson true if JSON paylods are prettified.
-     * @return the enum object
-     */
-    public HttpLogDetailLevel withPrettyJson(boolean prettyJson) {
-        this.prettyJson = prettyJson;
-        return this;
-    }
 
     /**
      * @return a value indicating whether a request's URL should be logged.

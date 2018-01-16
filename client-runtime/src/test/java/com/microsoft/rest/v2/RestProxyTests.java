@@ -1374,7 +1374,7 @@ public abstract class RestProxyTests {
 
         final HttpClient httpClient = createHttpClient();
         // Log the body so that body buffering/replay behavior is exercised.
-        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY));
+        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY, true));
         RestResponse<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream);
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.body().data);

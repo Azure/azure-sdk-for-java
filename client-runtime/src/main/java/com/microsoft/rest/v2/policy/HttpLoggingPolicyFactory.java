@@ -6,6 +6,8 @@
 
 package com.microsoft.rest.v2.policy;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.SerializationFeature;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
@@ -27,15 +29,28 @@ import java.util.concurrent.TimeUnit;
  * Creates a RequestPolicy that handles logging of HTTP requests and responses.
  */
 public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
+    private static final ObjectMapper PRETTY_PRINTER = new ObjectMapper().enable(SerializationFeature.INDENT_OUTPUT);
     private final HttpLogDetailLevel detailLevel;
+    private final boolean prettyPrintJSON;
 
     /**
-     * Creates a HttpLoggingPolicyFactory with the given log level.
+     * Creates an HttpLoggingPolicyFactory with the given log level.
      *
      * @param detailLevel The HTTP logging detail level.
      */
     public HttpLoggingPolicyFactory(HttpLogDetailLevel detailLevel) {
+        this(detailLevel, false);
+    }
+
+    /**
+     * Creates an HttpLoggingPolicyFactory with the given log level and pretty printing setting.
+     * @param detailLevel The HTTP logging detail level.
+     * @param prettyPrintJSON If true, pretty prints JSON message bodies when logging.
+     *                        If the detailLevel does not include body logging, this flag does nothing.
+     */
+    public HttpLoggingPolicyFactory(HttpLogDetailLevel detailLevel, boolean prettyPrintJSON) {
         this.detailLevel = detailLevel;
+        this.prettyPrintJSON = prettyPrintJSON;
     }
 
     @Override
@@ -93,6 +108,7 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
                                 @Override
                                 public CompletableSource apply(byte[] bytes) throws Exception {
                                     String bodyString = new String(bytes, StandardCharsets.UTF_8);
+                                    bodyString = prettyPrintIfNeeded(logger, request.body().contentType(), bodyString);
                                     log(logger, String.format("%s-byte body:\n%s", request.body().contentLength(), bodyString));
                                     log(logger, "--> END " + request.httpMethod());
                                     return Completable.complete();
@@ -152,13 +168,14 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
                 } catch (NumberFormatException ignored) {
                 }
 
-                String contentTypeHeader = response.headerValue("Content-Type");
+                final String contentTypeHeader = response.headerValue("Content-Type");
                 if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
                         && contentLength != -1 && contentLength < MAX_BODY_LOG_SIZE) {
                     final HttpResponse bufferedResponse = response.buffer();
                     return bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
                         @Override
                         public HttpResponse apply(String s) {
+                            s = prettyPrintIfNeeded(logger, contentTypeHeader, s);
                             log(logger, "Response body:\n" + s);
                             log(logger, "<-- END HTTP");
                             return bufferedResponse;
@@ -173,6 +190,20 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
             }
 
             return Single.just(response);
+        }
+
+        private String prettyPrintIfNeeded(Logger logger, String contentType, String body) {
+            String result = body;
+            if (prettyPrintJSON && contentType != null && (contentType.startsWith("application/json") || contentType.startsWith("text/json"))) {
+                try {
+                    final Object deserialized = PRETTY_PRINTER.readTree(body);
+                    result = PRETTY_PRINTER.writeValueAsString(deserialized);
+                } catch (Exception e) {
+                    log(logger, "Failed to pretty print JSON: " + e.getMessage());
+                }
+            }
+
+            return result;
         }
     }
 }
