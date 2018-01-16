@@ -16,11 +16,12 @@ import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.NettyClient;
-import com.microsoft.rest.v2.policy.AddCookiesPolicy;
-import com.microsoft.rest.v2.policy.CredentialsPolicy;
-import com.microsoft.rest.v2.policy.LoggingPolicy;
+import com.microsoft.rest.v2.policy.CookiePolicyFactory;
+import com.microsoft.rest.v2.policy.CredentialsPolicyFactory;
+import com.microsoft.rest.v2.policy.HttpLogDetailLevel;
+import com.microsoft.rest.v2.policy.HttpLoggingPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
-import com.microsoft.rest.v2.policy.RetryPolicy;
+import com.microsoft.rest.v2.policy.RetryPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.InvalidReturnTypeException;
 import com.microsoft.rest.v2.RestProxy;
@@ -156,7 +157,7 @@ public final class AzureProxy extends RestProxy {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, ServiceClientCredentials credentials) {
-        return createDefaultPipeline(swaggerInterface, new CredentialsPolicy.Factory(credentials));
+        return createDefaultPipeline(swaggerInterface, new CredentialsPolicyFactory(credentials));
     }
 
     /**
@@ -171,12 +172,12 @@ public final class AzureProxy extends RestProxy {
         final HttpClient httpClient = new NettyClient.Factory().create(null);
         final HttpPipelineBuilder builder = new HttpPipelineBuilder().withHttpClient(httpClient);
         builder.withUserAgent(getDefaultUserAgentString(swaggerInterface));
-        builder.withRequestPolicy(new RetryPolicy.Factory());
-        builder.withRequestPolicy(new AddCookiesPolicy.Factory());
+        builder.withRequestPolicy(new RetryPolicyFactory());
+        builder.withRequestPolicy(new CookiePolicyFactory());
         if (credentialsPolicy != null) {
             builder.withRequestPolicy(credentialsPolicy);
         }
-        builder.withRequestPolicy(new LoggingPolicy.Factory(LoggingPolicy.LogLevel.HEADERS));
+        builder.withRequestPolicy(new HttpLoggingPolicyFactory(HttpLogDetailLevel.HEADERS));
         return builder.build();
     }
 

@@ -8,8 +8,6 @@ package com.microsoft.rest.v2.http;
 
 import io.reactivex.Flowable;
 
-import java.io.IOException;
-
 /**
  * An HTTP request body which is given by subscribing to a Flowable.
  */
@@ -50,7 +48,7 @@ public final class FlowableHttpRequestBody implements HttpRequestBody {
     }
 
     @Override
-    public HttpRequestBody buffer() throws IOException {
+    public HttpRequestBody buffer() {
         if (!isReplayable) {
             content = content.replay().autoConnect();
             isReplayable = true;

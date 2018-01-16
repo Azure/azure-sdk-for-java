@@ -5,8 +5,6 @@ import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
-import com.microsoft.rest.v2.policy.ProxyAuthenticationPolicy;
-import com.microsoft.rest.v2.policy.RequestPolicy;
 import org.junit.Test;
 import io.reactivex.Single;
 
@@ -26,7 +24,7 @@ public class ProxyAuthenticationPolicyTests {
 
         final HttpPipeline pipeline = HttpPipeline.build(
                 new MockHttpClient(),
-                new ProxyAuthenticationPolicy.Factory(username, password),
+                new ProxyAuthenticationPolicyFactory(username, password),
                 new RequestPolicyFactory() {
                     @Override
                     public RequestPolicy create(final RequestPolicy next, RequestPolicyOptions options) {

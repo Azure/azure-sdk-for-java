@@ -1,11 +1,6 @@
 package com.microsoft.rest.v2.http;
 
-import com.microsoft.rest.v2.http.HttpClient;
-import com.microsoft.rest.v2.http.HttpPipeline;
-import com.microsoft.rest.v2.http.HttpRequest;
-import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.http.MockHttpResponse;
-import com.microsoft.rest.v2.policy.RequestIdPolicy;
+import com.microsoft.rest.v2.policy.RequestIdPolicyFactory;
 import org.junit.Test;
 import io.reactivex.Single;
 
@@ -76,7 +71,7 @@ public class HttpPipelineTests {
                         return Single.<HttpResponse>just(new MockHttpResponse(200));
                     }
                 },
-                new RequestIdPolicy.Factory());
+                new RequestIdPolicyFactory());
         final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).blockingGet();
         assertNotNull(response);
         assertEquals(200, response.statusCode());

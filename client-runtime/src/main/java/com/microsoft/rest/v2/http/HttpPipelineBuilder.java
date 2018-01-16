@@ -7,7 +7,7 @@
 package com.microsoft.rest.v2.http;
 
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
-import com.microsoft.rest.v2.policy.UserAgentPolicy;
+import com.microsoft.rest.v2.policy.UserAgentPolicyFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -128,78 +128,13 @@ public final class HttpPipelineBuilder {
     }
 
     /**
-     * Add the provided RequestPolicy factory to this HttpPipeline builder
-     * directly before the first instance of the provided RequestPolicy
-     * factory type. If the provided RequestPolicy factory type is not
-     * found, then the RequestPolicy factory will be added to the end of the
-     * pipeline.
-     * @param requestPolicyFactoryType The RequestPolicy factory type to
-     *                                 search for.
-     * @param requestPolicyFactory The RequestPolicy factory to add.
-     * @return This HttpPipeline builder.
-     */
-    public HttpPipelineBuilder withRequestPolicyBefore(Class<? extends RequestPolicyFactory> requestPolicyFactoryType, RequestPolicyFactory requestPolicyFactory) {
-        int searchIndex = 0;
-        for (final RequestPolicyFactory factory : requestPolicyFactories) {
-            if (requestPolicyFactoryType.equals(factory.getClass())) {
-                break;
-            }
-            else {
-                ++searchIndex;
-            }
-        }
-        final int factoryCount = requestPolicyFactories.size();
-
-        if (searchIndex == factoryCount) {
-            withRequestPolicy(requestPolicyFactory);
-        } else {
-            final int insertIndex = searchIndex + 1;
-            requestPolicyFactories.add(insertIndex, requestPolicyFactory);
-        }
-
-        return this;
-    }
-
-    /**
-     * Add the provided RequestPolicy factory to this HttpPipeline builder
-     * directly after the first instance of the provided RequestPolicy
-     * factory type. If the provided RequestPolicy factory type is not
-     * found, then the RequestPolicy factory will be added to the end of the
-     * pipeline.
-     * @param requestPolicyFactoryType The RequestPolicy factory type to
-     *                                 search for.
-     * @param requestPolicyFactory The RequestPolicy factory to add.
-     * @return This HttpPipeline builder.
-     */
-    public HttpPipelineBuilder withRequestPolicyAfter(Class<? extends RequestPolicyFactory> requestPolicyFactoryType, RequestPolicyFactory requestPolicyFactory) {
-        int searchIndex = 0;
-        for (final RequestPolicyFactory factory : requestPolicyFactories) {
-            if (requestPolicyFactoryType.equals(factory.getClass())) {
-                break;
-            }
-            else {
-                ++searchIndex;
-            }
-        }
-        final int factoryCount = requestPolicyFactories.size();
-
-        if (searchIndex == factoryCount) {
-            withRequestPolicy(requestPolicyFactory);
-        } else {
-            requestPolicyFactories.add(searchIndex, requestPolicyFactory);
-        }
-
-        return this;
-    }
-
-    /**
-     * Add a RequestPolicy that will add the providedd UserAgent header to each outgoing
+     * Add a RequestPolicy that will add the provided UserAgent header to each outgoing
      * HttpRequest.
      * @param userAgent The userAgent header value to add to each outgoing HttpRequest.
      * @return This HttpPipeline builder.
      */
     public HttpPipelineBuilder withUserAgent(String userAgent) {
-        return withRequestPolicy(new UserAgentPolicy.Factory(userAgent));
+        return withRequestPolicy(new UserAgentPolicyFactory(userAgent));
     }
 
     /**

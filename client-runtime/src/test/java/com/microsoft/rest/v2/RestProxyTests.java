@@ -1,6 +1,5 @@
 package com.microsoft.rest.v2;
 
-import com.google.common.base.Charsets;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.DELETE;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
@@ -24,7 +23,8 @@ import com.microsoft.rest.v2.http.FileSegment;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipeline;
-import com.microsoft.rest.v2.policy.LoggingPolicy;
+import com.microsoft.rest.v2.policy.HttpLogDetailLevel;
+import com.microsoft.rest.v2.policy.HttpLoggingPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
@@ -1374,7 +1374,7 @@ public abstract class RestProxyTests {
 
         final HttpClient httpClient = createHttpClient();
         // Log the body so that body buffering/replay behavior is exercised.
-        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new LoggingPolicy.Factory(LoggingPolicy.LogLevel.BODY));
+        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY));
         RestResponse<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream);
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.body().data);

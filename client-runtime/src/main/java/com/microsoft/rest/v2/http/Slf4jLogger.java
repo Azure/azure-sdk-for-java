@@ -6,17 +6,19 @@
 
 package com.microsoft.rest.v2.http;
 
+import org.slf4j.Logger;
+
 /**
- * An adapter that connects an HttpPipeline.Logger to an slf4j.Logger.
+ * An adapter that delegates logging to an slf4j Logger.
  */
 public class Slf4jLogger extends AbstractHttpPipelineLogger {
-    private final org.slf4j.Logger slf4jLogger;
+    private final Logger slf4jLogger;
 
     /**
      * Create a new Slf4jLogger with the provided slf4jLogger object.
      * @param slf4jLogger The org.slf4j.Logger to adapt to the HttpPipeline.Logger interface.
      */
-    public Slf4jLogger(org.slf4j.Logger slf4jLogger) {
+    public Slf4jLogger(Logger slf4jLogger) {
         this.slf4jLogger = slf4jLogger;
     }
 
@@ -33,8 +35,11 @@ public class Slf4jLogger extends AbstractHttpPipelineLogger {
                 break;
 
             case INFO:
-            default:
                 slf4jLogger.info(message);
+                break;
+
+            case OFF:
+            default:
                 break;
         }
     }

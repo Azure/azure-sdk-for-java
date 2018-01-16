@@ -22,11 +22,11 @@ import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.UrlBuilder;
-import com.microsoft.rest.v2.policy.AddCookiesPolicy;
-import com.microsoft.rest.v2.policy.CredentialsPolicy;
+import com.microsoft.rest.v2.policy.CookiePolicyFactory;
+import com.microsoft.rest.v2.policy.CredentialsPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
-import com.microsoft.rest.v2.policy.RetryPolicy;
-import com.microsoft.rest.v2.policy.UserAgentPolicy;
+import com.microsoft.rest.v2.policy.RetryPolicyFactory;
+import com.microsoft.rest.v2.policy.UserAgentPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerAdapter.Encoding;
 import com.microsoft.rest.v2.protocol.TypeFactory;
@@ -36,6 +36,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
+import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
 
@@ -229,15 +230,19 @@ public class RestProxy implements InvocationHandler {
     }
 
     @Override
-    public Object invoke(Object proxy, final Method method, Object[] args) throws IOException, InterruptedException {
-        final SwaggerMethodParser methodParser = methodParser(method);
+    public Object invoke(Object proxy, final Method method, Object[] args) {
+        try {
+            final SwaggerMethodParser methodParser = methodParser(method);
 
-        final HttpRequest request = createHttpRequest(methodParser, args);
+            final HttpRequest request = createHttpRequest(methodParser, args);
 
-        final Single<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
+            final Single<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
 
-        final Type returnType = methodParser.returnType();
-        return handleAsyncHttpResponse(request, asyncResponse, methodParser, returnType);
+            final Type returnType = methodParser.returnType();
+            return handleAsyncHttpResponse(request, asyncResponse, methodParser, returnType);
+        } catch (Exception e) {
+            throw Exceptions.propagate(e);
+        }
     }
 
     /**
@@ -620,7 +625,7 @@ public class RestProxy implements InvocationHandler {
      * @return the default HttpPipeline.
      */
     public static HttpPipeline createDefaultPipeline(ServiceClientCredentials credentials) {
-        return createDefaultPipeline(new CredentialsPolicy.Factory(credentials));
+        return createDefaultPipeline(new CredentialsPolicyFactory(credentials));
     }
 
     /**
@@ -631,9 +636,9 @@ public class RestProxy implements InvocationHandler {
      */
     public static HttpPipeline createDefaultPipeline(RequestPolicyFactory credentialsPolicy) {
         final HttpPipelineBuilder builder = new HttpPipelineBuilder();
-        builder.withRequestPolicy(new UserAgentPolicy.Factory());
-        builder.withRequestPolicy(new RetryPolicy.Factory());
-        builder.withRequestPolicy(new AddCookiesPolicy.Factory());
+        builder.withRequestPolicy(new UserAgentPolicyFactory());
+        builder.withRequestPolicy(new RetryPolicyFactory());
+        builder.withRequestPolicy(new CookiePolicyFactory());
         if (credentialsPolicy != null) {
             builder.withRequestPolicy(credentialsPolicy);
         }

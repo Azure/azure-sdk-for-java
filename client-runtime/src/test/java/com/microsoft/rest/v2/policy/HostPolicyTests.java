@@ -14,13 +14,13 @@ import static org.junit.Assert.assertEquals;
 public class HostPolicyTests {
     @Test
     public void withNoPort() throws MalformedURLException {
-        final HostPolicy policy = createHostPolicy("localhost", "ftp://localhost");
+        final RequestPolicy policy = createHostPolicy("localhost", "ftp://localhost");
         policy.sendAsync(createHttpRequest("ftp://www.example.com"));
     }
 
     @Test
     public void withPort() throws MalformedURLException {
-        final HostPolicy policy = createHostPolicy("localhost", "ftp://localhost:1234");
+        final RequestPolicy policy = createHostPolicy("localhost", "ftp://localhost:1234");
         policy.sendAsync(createHttpRequest("ftp://www.example.com:1234"));
     }
 
@@ -34,8 +34,8 @@ public class HostPolicyTests {
         };
     }
 
-    private static HostPolicy createHostPolicy(String host, String expectedUrl) {
-        return new HostPolicy.Factory(host).create(createMockRequestPolicy(expectedUrl), null);
+    private static RequestPolicy createHostPolicy(String host, String expectedUrl) {
+        return new HostPolicyFactory(host).create(createMockRequestPolicy(expectedUrl), null);
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {

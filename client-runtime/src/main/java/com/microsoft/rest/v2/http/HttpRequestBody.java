@@ -8,8 +8,6 @@ package com.microsoft.rest.v2.http;
 
 import io.reactivex.Flowable;
 
-import java.io.IOException;
-
 /**
  * The body of an HTTP request.
  */
@@ -35,7 +33,6 @@ public interface HttpRequestBody {
      * can only be read once, then calling this method will consume this
      * HttpRequestBody and the resulting object should be used instead.
      * @return A buffered version of this HttpRequestBody.
-     * @throws IOException if there is a problem buffering.
      */
-    HttpRequestBody buffer() throws IOException;
+    HttpRequestBody buffer();
 }

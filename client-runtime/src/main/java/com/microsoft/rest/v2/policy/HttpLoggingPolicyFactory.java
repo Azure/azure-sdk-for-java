@@ -1,0 +1,180 @@
+/**
+ * Copyright (c) Microsoft Corporation. All rights reserved.
+ * Licensed under the MIT License. See License.txt in the project root for
+ * license information.
+ */
+
+package com.microsoft.rest.v2.policy;
+
+import com.microsoft.rest.v2.http.HttpHeader;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.util.FlowableUtil;
+import io.netty.handler.codec.http.HttpResponseStatus;
+import io.reactivex.Completable;
+import io.reactivex.CompletableSource;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import io.reactivex.Single;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
+
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.util.concurrent.TimeUnit;
+
+/**
+ * Creates a RequestPolicy that handles logging of HTTP requests and responses.
+ */
+public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
+    private final HttpLogDetailLevel detailLevel;
+
+    /**
+     * Creates a HttpLoggingPolicyFactory with the given log level.
+     *
+     * @param detailLevel The HTTP logging detail level.
+     */
+    public HttpLoggingPolicyFactory(HttpLogDetailLevel detailLevel) {
+        this.detailLevel = detailLevel;
+    }
+
+    @Override
+    public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
+        return new LoggingPolicy(next);
+    }
+
+    private final class LoggingPolicy implements RequestPolicy {
+        private static final int MAX_BODY_LOG_SIZE = 1024 * 16;
+        private final RequestPolicy next;
+
+        private LoggingPolicy(RequestPolicy next) {
+            this.next = next;
+        }
+
+        /**
+         * Process the log using an SLF4j logger and an HTTP message.
+         *
+         * @param logger the SLF4j logger with the context of the request
+         * @param s      the message for logging
+         */
+        private void log(Logger logger, String s) {
+            logger.info(s);
+        }
+
+        @Override
+        public Single<HttpResponse> sendAsync(final HttpRequest request) {
+            String context = request.callerMethod();
+            if (context == null) {
+                context = "";
+            }
+            final Logger logger = LoggerFactory.getLogger(context);
+
+            if (detailLevel.shouldLogURL()) {
+                log(logger, String.format("--> %s %s", request.httpMethod(), request.url()));
+            }
+
+            if (detailLevel.shouldLogHeaders()) {
+                for (HttpHeader header : request.headers()) {
+                    log(logger, header.toString());
+                }
+            }
+
+            Completable bodyLoggingTask = Completable.complete();
+            if (detailLevel.shouldLogBody()) {
+                if (request.body() == null) {
+                    log(logger, "(empty body)");
+                    log(logger, "--> END " + request.httpMethod());
+                } else {
+                    boolean isHumanReadableContentType = !"application/octet-stream".equalsIgnoreCase(request.body().contentType());
+                    if (request.body().contentLength() < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
+                        try {
+                            Single<byte[]> collectedBytes = FlowableUtil.collectBytes(request.body().buffer().content());
+                            bodyLoggingTask = collectedBytes.flatMapCompletable(new Function<byte[], CompletableSource>() {
+                                @Override
+                                public CompletableSource apply(byte[] bytes) throws Exception {
+                                    String bodyString = new String(bytes, StandardCharsets.UTF_8);
+                                    log(logger, String.format("%s-byte body:\n%s", request.body().contentLength(), bodyString));
+                                    log(logger, "--> END " + request.httpMethod());
+                                    return Completable.complete();
+                                }
+                            });
+                        } catch (Exception e) {
+                            bodyLoggingTask = Completable.error(e);
+                        }
+                    } else {
+                        log(logger, request.body().contentLength() + "-byte body: (content not logged)");
+                        log(logger, "--> END " + request.httpMethod());
+                    }
+                }
+            }
+
+            final long startNs = System.nanoTime();
+            return bodyLoggingTask.andThen(next.sendAsync(request)).flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
+                @Override
+                public Single<HttpResponse> apply(HttpResponse httpResponse) {
+                    long tookMs = TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startNs);
+                    return logResponse(logger, httpResponse, request.url(), tookMs);
+                }
+            }).doOnError(new Consumer<Throwable>() {
+                @Override
+                public void accept(Throwable throwable) {
+                    log(logger, "<-- HTTP FAILED: " + throwable);
+                }
+            });
+        }
+
+        private Single<HttpResponse> logResponse(final Logger logger, final HttpResponse response, URL url, long tookMs) {
+            String contentLengthString = response.headerValue("Content-Length");
+            String bodySize;
+            if (contentLengthString == null || contentLengthString.isEmpty()) {
+                bodySize = "unknown-length";
+            } else {
+                bodySize = contentLengthString + "-byte";
+            }
+
+            HttpResponseStatus responseStatus = HttpResponseStatus.valueOf(response.statusCode());
+            if (detailLevel.shouldLogURL()) {
+                log(logger, String.format("<-- %s %s %s (%s ms, %s body)", response.statusCode(), responseStatus.reasonPhrase(), url, tookMs, bodySize));
+            }
+
+            if (detailLevel.shouldLogHeaders()) {
+                for (HttpHeader header : response.headers()) {
+                    log(logger, header.toString());
+                }
+            }
+
+            if (detailLevel.shouldLogBody()) {
+                long contentLength = -1;
+                try {
+                    if (contentLengthString != null) {
+                        contentLength = Long.parseLong(contentLengthString);
+                    }
+                } catch (NumberFormatException ignored) {
+                }
+
+                String contentTypeHeader = response.headerValue("Content-Type");
+                if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
+                        && contentLength != -1 && contentLength < MAX_BODY_LOG_SIZE) {
+                    final HttpResponse bufferedResponse = response.buffer();
+                    return bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
+                        @Override
+                        public HttpResponse apply(String s) {
+                            log(logger, "Response body:\n" + s);
+                            log(logger, "<-- END HTTP");
+                            return bufferedResponse;
+                        }
+                    });
+                } else {
+                    log(logger, "(body content not logged)");
+                    log(logger, "<-- END HTTP");
+                }
+            } else {
+                log(logger, "<-- END HTTP");
+            }
+
+            return Single.just(response);
+        }
+    }
+}
+
+

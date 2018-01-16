@@ -15,13 +15,13 @@ public class ProtocolPolicyTests {
 
     @Test
     public void withOverwrite() throws MalformedURLException {
-        final ProtocolPolicy policy = createProtocolPolicy("ftp", "ftp://www.bing.com");
+        final RequestPolicy policy = createProtocolPolicy("ftp", "ftp://www.bing.com");
         policy.sendAsync(createHttpRequest("http://www.bing.com"));
     }
 
     @Test
     public void withNoOverwrite() throws MalformedURLException {
-        final ProtocolPolicy policy = createProtocolPolicy("ftp", false, "https://www.bing.com");
+        final RequestPolicy policy = createProtocolPolicy("ftp", false, "https://www.bing.com");
         policy.sendAsync(createHttpRequest("https://www.bing.com"));
     }
 
@@ -35,12 +35,12 @@ public class ProtocolPolicyTests {
         };
     }
 
-    private static ProtocolPolicy createProtocolPolicy(String protocol, String expectedUrl) {
-        return new ProtocolPolicy.Factory(protocol).create(createMockRequestPolicy(expectedUrl), null);
+    private static RequestPolicy createProtocolPolicy(String protocol, String expectedUrl) {
+        return new ProtocolPolicyFactory(protocol).create(createMockRequestPolicy(expectedUrl), null);
     }
 
-    private static ProtocolPolicy createProtocolPolicy(String protocol, boolean overwrite, String expectedUrl) {
-        return new ProtocolPolicy.Factory(protocol, overwrite).create(createMockRequestPolicy(expectedUrl), null);
+    private static RequestPolicy createProtocolPolicy(String protocol, boolean overwrite, String expectedUrl) {
+        return new ProtocolPolicyFactory(protocol, overwrite).create(createMockRequestPolicy(expectedUrl), null);
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {

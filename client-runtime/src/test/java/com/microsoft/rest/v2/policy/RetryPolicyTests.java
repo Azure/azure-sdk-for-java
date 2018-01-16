@@ -28,7 +28,7 @@ public class RetryPolicyTests {
                     return Single.<HttpResponse>just(new MockHttpResponse(codes[count++]));
                 }
             },
-            new RetryPolicy.Factory(3));
+            new RetryPolicyFactory(3));
 
         HttpResponse response = pipeline.sendRequestAsync(
                 new HttpRequest(
@@ -52,7 +52,7 @@ public class RetryPolicyTests {
                     return Single.<HttpResponse>just(new MockHttpResponse(500));
                 }
             },
-            new RetryPolicy.Factory(maxRetries));
+            new RetryPolicyFactory(maxRetries));
 
         HttpResponse response = pipeline.sendRequestAsync(
                 new HttpRequest(

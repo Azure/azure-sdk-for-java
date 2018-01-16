@@ -9,6 +9,7 @@ package com.microsoft.rest.v2;
 import com.google.common.util.concurrent.AbstractFuture;
 import io.reactivex.Maybe;
 import io.reactivex.Completable;
+import io.reactivex.Single;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.Consumer;
@@ -27,6 +28,37 @@ public class ServiceFuture<T> extends AbstractFuture<T> {
     private Disposable subscription;
 
     protected ServiceFuture() {
+    }
+
+    /**
+     * Creates a ServiceCall from a Single object and a callback.
+     *
+     * @param single the single to create from
+     * @param callback the callback to call when events happen
+     * @param <T> the type of the response
+     * @return the created ServiceCall
+     */
+    public static <T> ServiceFuture<T> fromBody(final Single<T> single, final ServiceCallback<T> callback) {
+        final ServiceFuture<T> serviceFuture = new ServiceFuture<>();
+        serviceFuture.subscription = single
+                .subscribe(new Consumer<T>() {
+                    @Override
+                    public void accept(T t) {
+                        if (callback != null) {
+                            callback.success(t);
+                        }
+                        serviceFuture.set(t);
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) {
+                        if (callback != null) {
+                            callback.failure(throwable);
+                        }
+                        serviceFuture.setException(throwable);
+                    }
+                });
+        return serviceFuture;
     }
 
     /**
