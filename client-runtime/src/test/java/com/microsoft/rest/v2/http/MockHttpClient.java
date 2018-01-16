@@ -7,23 +7,15 @@
 package com.microsoft.rest.v2.http;
 
 import com.google.common.base.Charsets;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
 import com.microsoft.rest.v2.Base64Url;
 import com.microsoft.rest.v2.DateTimeRfc1123;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
 import com.microsoft.rest.v2.util.FlowableUtil;
-import io.reactivex.exceptions.Exceptions;
-import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
 import io.reactivex.Single;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.HashMap;

@@ -354,9 +354,6 @@ public class SwaggerMethodParser {
                 && 0 <= bodyContentMethodParameterIndex
                 && bodyContentMethodParameterIndex < swaggerMethodArguments.length) {
             result = swaggerMethodArguments[bodyContentMethodParameterIndex];
-            if (result == null) {
-                throw new IllegalArgumentException("Argument for @BodyParam parameter must be non-null.");
-            }
         }
 
         return result;
