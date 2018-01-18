@@ -99,7 +99,7 @@ class EventHubPartitionPump extends PartitionPump
     {
     	// Create new client
         TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionContext, "Opening EH client"));
-		this.internalOperationFuture = EventHubClient.createFromConnectionString(this.host.getEventHubConnectionString(), this.host.getExecutorService());
+		this.internalOperationFuture = EventHubClient.createFromConnectionString(this.host.getEventHubConnectionString(), this.host.getRetryPolicy(), this.host.getExecutorService());
 		this.eventHubClient = (EventHubClient) this.internalOperationFuture.get();
 		this.internalOperationFuture = null;
 		

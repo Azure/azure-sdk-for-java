@@ -6,6 +6,7 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.storage.StorageException;
 
 import java.net.URISyntaxException;
@@ -22,6 +23,7 @@ public final class EventProcessorHost
     private final String eventHubPath;
     private final String consumerGroupName;
     private String eventHubConnectionString;
+    private RetryPolicy retryPolicy;
 
     private ICheckpointManager checkpointManager;
     private ILeaseManager leaseManager;
@@ -213,7 +215,7 @@ public final class EventProcessorHost
             final AzureStorageCheckpointLeaseManager combinedManager,
             final ExecutorService executorService)
     {
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, combinedManager, combinedManager, executorService);
+        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, combinedManager, combinedManager, executorService, null);
     }
 
 
@@ -238,7 +240,7 @@ public final class EventProcessorHost
             ICheckpointManager checkpointManager,
             ILeaseManager leaseManager)
     {
-    	this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, checkpointManager, leaseManager, null);
+    	this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, checkpointManager, leaseManager, null, null);
     }
     
     /**
@@ -262,7 +264,8 @@ public final class EventProcessorHost
             final String eventHubConnectionString,
             ICheckpointManager checkpointManager,
             ILeaseManager leaseManager,
-            ExecutorService executorService)
+            ExecutorService executorService,
+            RetryPolicy retryPolicy)
     {
     	if ((hostName == null) || hostName.isEmpty())
     	{
@@ -303,7 +306,6 @@ public final class EventProcessorHost
     			ConnectionStringBuilder rebuildCSB = new ConnectionStringBuilder(providedCSB.getEndpoint(), this.eventHubPath,
     					providedCSB.getSasKeyName(), providedCSB.getSasKey());
     			rebuildCSB.setOperationTimeout(providedCSB.getOperationTimeout());
-    			rebuildCSB.setRetryPolicy(providedCSB.getRetryPolicy());
     			this.eventHubConnectionString = rebuildCSB.toString();
     		}
     	}
@@ -341,6 +343,7 @@ public final class EventProcessorHost
         this.consumerGroupName = consumerGroupName;
         this.checkpointManager = checkpointManager;
         this.leaseManager = leaseManager;
+        this.retryPolicy = retryPolicy;
 
         if (executorService != null)
         {
@@ -378,6 +381,19 @@ public final class EventProcessorHost
      * @return	Event Hub connection string.
      */
     public String getEventHubConnectionString() { return this.eventHubConnectionString; }
+
+    /**
+     * Returns the retry policy used by the processor host. See {@link RetryPolicy}
+     *
+     * @return Event Hub retry policy.
+     */
+    public RetryPolicy getRetryPolicy() {
+        if (this.retryPolicy != null) {
+            return this.retryPolicy;
+        } else {
+            return RetryPolicy.getDefault();
+        }
+    }
     
     // TEST USE ONLY
     void setPartitionManager(PartitionManager pm) { this.partitionManager = pm; }

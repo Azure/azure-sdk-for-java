@@ -222,44 +222,6 @@ public class EventData implements Serializable {
 
     /**
      * Get Actual Payload/Data wrapped by EventData.
-     * This is the underlying array and should be used in conjunction with {@link #getBodyOffset()} and {@link #getBodyLength()}.
-     *
-     * @return byte[] of the actual data <p>null if the body of the AMQP message doesn't have Data section
-     * @deprecated use {@link #getBytes()}
-     */
-    @Deprecated
-    public byte[] getBody() {
-        return this.bodyData == null ? null : this.bodyData.getArray();
-    }
-
-    /**
-     * Get the offset of the current Payload/Data in the byte array returned by {@link #getBody()}.
-     *
-     * @return returns the byte[] of the actual data
-     * @see #getBodyLength()
-     * @see #getBody()
-     * @deprecated use {@link #getBytes()}
-     */
-    @Deprecated
-    public int getBodyOffset() {
-        return this.bodyData == null ? 0 : this.bodyData.getArrayOffset();
-    }
-
-    /**
-     * Get the length of the Actual Payload/Data in the byte array returned by {@link #getBody()}.
-     *
-     * @return returns the byte[] of the actual data
-     * @see #getBody()
-     * @see #getBodyOffset()
-     * @deprecated use {@link #getBytes()}
-     */
-    @Deprecated
-    public int getBodyLength() {
-        return this.bodyData == null ? 0 : this.bodyData.getLength();
-    }
-
-    /**
-     * Get Actual Payload/Data wrapped by EventData.
      *
      * @return byte[] of the actual data
      * <p>null if the body of the message has other inter-operable AMQP messages, whose body does not represent byte[].
@@ -284,17 +246,6 @@ public class EventData implements Serializable {
         }
 
         return this.properties;
-    }
-
-    /**
-     * Set Application Properties
-     *
-     * @param applicationProperties the Application Properties bag
-     * @deprecated use {@link #getProperties()} and add properties to the bag.
-     */
-    @Deprecated
-    public void setProperties(final Map<String, Object> applicationProperties) {
-        this.properties = applicationProperties;
     }
 
     /**
