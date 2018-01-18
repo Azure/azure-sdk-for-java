@@ -55,6 +55,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      * Synchronous version of {@link #createFromConnectionString(String, Executor)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
+     * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
@@ -69,6 +70,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
+     * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
@@ -117,7 +119,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
      * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
-     * @return CompletableFuture<EventHubClient> which can be used to create Senders and Receivers to EventHub
+     * @return CompletableFuture{@literal <EventHubClient>} which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */

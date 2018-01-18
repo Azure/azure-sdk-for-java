@@ -10,6 +10,7 @@ import java.io.ObjectOutputStream;
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.util.concurrent.Executor;
 import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
@@ -137,7 +138,7 @@ public class EventData implements Serializable {
      * </pre>
      *
      * @param data the actual payload of data in bytes to be Sent to EventHubs.
-     * @see EventHubClient#createFromConnectionString(String)
+     * @see EventHubClient#createFromConnectionString(String, Executor)
      */
     public EventData(byte[] data) {
         this();
@@ -166,7 +167,7 @@ public class EventData implements Serializable {
      * @param data   the byte[] where the payload of the Event to be sent to EventHubs is present
      * @param offset Offset in the byte[] to read from ; inclusive index
      * @param length length of the byte[] to be read, starting from offset
-     * @see EventHubClient#createFromConnectionString(String)
+     * @see EventHubClient#createFromConnectionString(String, Executor)
      */
     public EventData(byte[] data, final int offset, final int length) {
         this();
@@ -193,7 +194,7 @@ public class EventData implements Serializable {
      *  }</pre>
      *
      * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs
-     * @see EventHubClient#createFromConnectionString(String)
+     * @see EventHubClient#createFromConnectionString(String, Executor)
      */
     public EventData(ByteBuffer buffer) {
         this();

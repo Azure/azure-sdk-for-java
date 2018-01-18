@@ -8,6 +8,7 @@ import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
 import java.time.format.DateTimeParseException;
+import java.util.concurrent.Executor;
 import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -116,7 +117,7 @@ public class ConnectionStringBuilder {
     }
 
     /**
-     * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String)}
+     * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String, Executor)}
      *
      * @param namespaceName       Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
      * @param entityPath          Entity path. For eventHubs case specify - eventHub name.
@@ -133,7 +134,7 @@ public class ConnectionStringBuilder {
 
 
     /**
-     * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String)}
+     * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String, Executor)}
      *
      * @param endpointAddress     namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
      * @param entityPath          Entity path. For eventHubs case specify - eventHub name.
@@ -149,7 +150,7 @@ public class ConnectionStringBuilder {
     }
 
     /**
-     * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String)}
+     * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String, Executor)}
      *
      * @param endpointAddress       namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
      * @param entityPath            Entity path. For eventHubs case specify - eventHub name.
