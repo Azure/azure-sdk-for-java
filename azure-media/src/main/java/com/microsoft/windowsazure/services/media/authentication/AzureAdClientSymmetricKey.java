@@ -1,7 +1,7 @@
 package com.microsoft.windowsazure.services.media.authentication;
 
 /**
- * Represents a symmetric key pair of ClientId & ClientKey
+ * Represents a symmetric key pair of ClientId &amp; ClientKey
  */
 public class AzureAdClientSymmetricKey {
 

@@ -29,7 +29,7 @@ public class JobNotificationSubscription {
     /**
      * Instantiates a new job notification subscription.
      * 
-     * @param uuid
+     * @param notificationEndPointId
      *            the notification end point id
      * @param targetJobState
      *            the target job state

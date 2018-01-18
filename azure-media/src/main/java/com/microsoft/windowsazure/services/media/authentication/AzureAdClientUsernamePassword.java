@@ -1,7 +1,7 @@
 package com.microsoft.windowsazure.services.media.authentication;
 
 /**
- * Represents a pair of username & password credentials
+ * Represents a pair of username &amp; password credentials
  */
 public class AzureAdClientUsernamePassword {
 
@@ -26,8 +26,8 @@ public class AzureAdClientUsernamePassword {
 
     /**
      * Initializes a new instance of the AzureAdClientSymmetricKey class.
-     * @param clientId The client ID.
-     * @param clientKey The client key.
+     * @param username The client username
+     * @param password The client password
      */
     public AzureAdClientUsernamePassword(String username, String password) {
         if (username == null || username.trim().isEmpty()) {

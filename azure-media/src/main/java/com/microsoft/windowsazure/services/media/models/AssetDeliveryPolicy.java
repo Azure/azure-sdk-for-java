@@ -44,8 +44,6 @@ public final class AssetDeliveryPolicy {
     /**
      * Creates an operation to create a new AssetDeliveryPolicy
      * 
-     * @param name
-     *            name of the asset delivery policy
      * @return The operation
      */
     public static Creator create() {
@@ -162,9 +160,9 @@ public final class AssetDeliveryPolicy {
 
     /**
      * Create an operation to delete the given asset delivery policy
-     * 
-     * @param contentKeyAuthorizationPolicyId
-     *            id of content key authorization policy to delete
+     *
+     * @param assetDeliveryPolicyId
+     *            id of the asset delivery policy to delete
      * @return the delete operation
      */
 

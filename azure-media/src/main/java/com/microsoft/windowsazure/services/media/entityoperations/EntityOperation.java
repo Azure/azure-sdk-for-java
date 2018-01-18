@@ -39,7 +39,6 @@ public interface EntityOperation {
      * Get the MIME type for the content that's being sent to the server.
      * 
      * @return The MIME type
-     * @throws ServiceException
      */
     MediaType getContentType();
 

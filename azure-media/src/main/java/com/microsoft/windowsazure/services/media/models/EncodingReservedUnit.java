@@ -66,9 +66,7 @@ public final class EncodingReservedUnit {
 
         /**
          * Instantiates a new updater.
-         * @param encodingReservedUnitInfo 
-         * 
-         * @param assetId
+         * @param encodingReservedUnitInfo
          *            the asset id
          */
         protected Updater(final EncodingReservedUnitInfo encodingReservedUnitInfo) {

@@ -171,7 +171,7 @@ public final class AssetFile {
      * @param assetId
      *            asset to create file infos for
      * @return The action operation object to pass to rest proxy.
-     * @throws UnsupportedEncodingException
+     * @throws RuntimeException
      */
     public static EntityActionOperation createFileInfos(String assetId) {
         String encodedId;

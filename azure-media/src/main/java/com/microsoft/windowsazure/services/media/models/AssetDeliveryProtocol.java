@@ -38,16 +38,16 @@ public enum AssetDeliveryProtocol {
     All(0xFFFF);
 
     /** The content key type code. */
-    private int falgValue;
+    private int flagValue;
 
     /**
      * Instantiates a new content key type.
      *
-     * @param contentKeyTypeCode
+     * @param flagValue
      *            the content key type code
      */
-    private AssetDeliveryProtocol(int falgValue) {
-        this.falgValue = falgValue;
+    private AssetDeliveryProtocol(int flagValue) {
+        this.flagValue = flagValue;
     }
 
     /**
@@ -56,7 +56,7 @@ public enum AssetDeliveryProtocol {
      * @return the flags value
      */
     public int getFlagValue() {
-        return falgValue;
+        return flagValue;
     }
 
     /**
@@ -86,7 +86,7 @@ public enum AssetDeliveryProtocol {
      * Convert an <code>EnumSet</code> containing protocols into the
      * corresponding integer bit vector to be passed to Media services.
      *
-     * @param perms
+     * @param protos
      *            The protocols
      * @return The bit vector to go out over the wire.
      */

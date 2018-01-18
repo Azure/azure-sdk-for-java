@@ -43,8 +43,8 @@ public final class OperationUtils {
      * 
      * @param service 
      *          the media contract
-     * @param operation
-     *          the operation id to wait for.
+     * @param entity
+     *          the entity to wait for.
      * @return the final state of the operation. If the entity has not operationId, returns OperationState.Succeeded.
      * @throws ServiceException 
      */
