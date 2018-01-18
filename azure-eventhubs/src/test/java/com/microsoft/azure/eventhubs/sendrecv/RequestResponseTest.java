@@ -43,7 +43,7 @@ public class RequestResponseTest  extends ApiTestBase {
     public static void initializeEventHub()  throws Exception {
 
         connectionString = TestContext.getConnectionString();
-        factory = MessagingFactory.createFromConnectionString(connectionString.toString()).get();
+        factory = MessagingFactory.createFromConnectionString(connectionString.toString(), TestContext.EXECUTOR_SERVICE).get();
     }
     
     @Test()
@@ -194,7 +194,7 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimes() throws Exception {
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	EventHubRuntimeInformation ehInfo = ehc.getRuntimeInformation().get();
 
     	Assert.assertNotNull(ehInfo);
@@ -243,7 +243,7 @@ public class RequestResponseTest  extends ApiTestBase {
     public void testGetRuntimesBadHub() throws EventHubException, IOException {
     	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), "NOHUBZZZZZ",
     			connectionString.getSasKeyName(), connectionString.getSasKey());
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString());
+    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	
     	try {
     		ehc.getRuntimeInformation().get();
@@ -294,7 +294,7 @@ public class RequestResponseTest  extends ApiTestBase {
     public void testGetRuntimesBadKeyname() throws EventHubException, IOException {
     	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), connectionString.getEntityPath(),
     			"xxxnokeyxxx", connectionString.getSasKey());
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString());
+    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	
     	try {
     		ehc.getRuntimeInformation().get();
@@ -339,7 +339,7 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimesClosedClient() throws EventHubException, IOException, InterruptedException, ExecutionException {
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	ehc.closeSync();
 
     	try {

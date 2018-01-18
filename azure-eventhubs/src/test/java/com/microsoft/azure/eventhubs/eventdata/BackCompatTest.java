@@ -70,8 +70,8 @@ public class BackCompatTest extends ApiTestBase
 		final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
 		final String connectionString = connStrBuilder.toString();
 
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString);
-		msgFactory = MessagingFactory.createFromConnectionString(connectionString).get();
+		ehClient = EventHubClient.createFromConnectionStringSync(connectionString, TestContext.EXECUTOR_SERVICE);
+		msgFactory = MessagingFactory.createFromConnectionString(connectionString, TestContext.EXECUTOR_SERVICE).get();
 		receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), partitionId, Instant.now());
 		partitionMsgSender = MessageSender.create(msgFactory, "link1", connStrBuilder.getEntityPath() + "/partitions/" + partitionId).get();
 		

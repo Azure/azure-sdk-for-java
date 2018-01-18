@@ -48,7 +48,7 @@ class PartitionManager
         {
 			try
 			{
-				EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(this.host.getEventHubConnectionString());
+				EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(this.host.getEventHubConnectionString(), this.host.getExecutorService());
 				EventHubRuntimeInformation ehInfo = ehClient.getRuntimeInformation().get();
 				if (ehInfo != null)
 				{

@@ -9,6 +9,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutionException;
 
 /**
@@ -28,9 +29,12 @@ public abstract class ClientEntity {
     private boolean isClosing;
     private boolean isClosed;
 
-    protected ClientEntity(final String clientId, final ClientEntity parent) {
+    protected final Executor executor;
+
+    protected ClientEntity(final String clientId, final ClientEntity parent, final Executor executor) {
         this.clientId = clientId;
         this.parent = parent;
+        this.executor = executor;
 
         this.syncClose = new Object();
     }
@@ -83,7 +87,7 @@ public abstract class ClientEntity {
                     ClientEntity.this.isClosed = true;
                 }
             }
-        });
+        }, this.executor);
 
         return this.closeTask;
     }

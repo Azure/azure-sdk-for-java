@@ -6,6 +6,8 @@ package com.microsoft.azure.eventhubs.extensions.appender;
 
 import java.io.*;
 import java.util.*;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 
 import org.apache.logging.log4j.core.appender.*;
 
@@ -14,6 +16,7 @@ import com.microsoft.azure.eventhubs.*;
 public final class EventHubsManager extends AbstractManager
 {
 	private final String eventHubConnectionString;
+	private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
 	
 	private EventHubClient eventHubSender;
 	
@@ -48,6 +51,6 @@ public final class EventHubsManager extends AbstractManager
 
 	public void startup() throws EventHubException, IOException
 	{
-		this.eventHubSender = EventHubClient.createFromConnectionStringSync(this.eventHubConnectionString);
+		this.eventHubSender = EventHubClient.createFromConnectionStringSync(this.eventHubConnectionString, EXECUTOR_SERVICE);
 	}
 }

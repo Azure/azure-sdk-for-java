@@ -112,7 +112,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
     }
 
     private MessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath) {
-        super(sendLinkName, factory);
+        super(sendLinkName, factory, factory.executor);
 
         this.sendPath = senderPath;
         this.underlyingFactory = factory;

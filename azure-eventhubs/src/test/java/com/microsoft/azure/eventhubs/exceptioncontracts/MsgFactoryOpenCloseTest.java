@@ -5,7 +5,11 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.MessagingFactory;
+import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.FaultInjectingReactorFactory;
@@ -15,13 +19,19 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import java.util.LinkedList;
-import java.util.List;
+import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 public class MsgFactoryOpenCloseTest extends ApiTestBase {
 
+    static final String PARTITION_ID = "0";
     static ConnectionStringBuilder connStr;
 
     @BeforeClass
@@ -31,42 +41,87 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     }
 
     @Test()
+    public void VerifyTaskQueueEmptyOnMsgFactoryGracefulClose() throws Exception    {
+
+        final LinkedBlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>();
+        final ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                1, 1, 1, TimeUnit.MINUTES, blockingQueue);
+        try {
+            final EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(
+                    TestContext.getConnectionString().toString(),
+                    executor);
+
+            final PartitionReceiver receiver = ehClient.createReceiverSync(
+                    TestContext.getConsumerGroupName(), PARTITION_ID, Instant.now());
+            final PartitionSender sender = ehClient.createPartitionSenderSync(PARTITION_ID);
+            sender.sendSync(new EventData("test data - string".getBytes()));
+            Iterable<EventData> events = receiver.receiveSync(10);
+
+            Assert.assertTrue(events.iterator().hasNext());
+            sender.closeSync();
+            receiver.closeSync();
+
+            ehClient.closeSync();
+
+            Assert.assertEquals(blockingQueue.size(), 0);
+            Assert.assertEquals(executor.getTaskCount(), executor.getCompletedTaskCount());
+        } finally {
+            executor.shutdown();
+        }
+    }
+
+    @Test()
     public void VerifyThreadReleaseOnMsgFactoryOpenError() throws Exception    {
 
-        final LifecycleTrackingThreadFactory threadFactory = new LifecycleTrackingThreadFactory();
         final FaultInjectingReactorFactory networkOutageSimulator = new FaultInjectingReactorFactory();
         networkOutageSimulator.setFaultType(FaultInjectingReactorFactory.FaultType.NetworkOutage);
 
-        final CompletableFuture<MessagingFactory> openFuture = MessagingFactory.createFromConnectionString(
-                connStr.toString(), null,
-                threadFactory,
-                networkOutageSimulator);
+        final LinkedBlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>();
+        final ThreadPoolExecutor executor = new ThreadPoolExecutor(
+                1, 1, 1, TimeUnit.MINUTES, blockingQueue);
+
         try {
-            openFuture.get();
-            Assert.assertFalse(true);
-        }
-        catch (ExecutionException error) {
-            Assert.assertEquals(EventHubException.class, error.getCause().getClass());
-        };
+            final CompletableFuture<MessagingFactory> openFuture = MessagingFactory.createFromConnectionString(
+                    connStr.toString(), null,
+                    executor,
+                    networkOutageSimulator);
+            try {
+                openFuture.get();
+                Assert.assertFalse(true);
+            } catch (ExecutionException error) {
+                Assert.assertEquals(EventHubException.class, error.getCause().getClass());
+            }
 
-        Assert.assertEquals(1, threadFactory.Threads.size());
-
-        int retryAttempt = 0;
-        while (retryAttempt++ < 3 && threadFactory.Threads.get(0).isAlive()) {
             Thread.sleep(1000); // for reactor to transition from cleanup to complete-stop
-        }
 
-        Assert.assertEquals(false, threadFactory.Threads.get(0).isAlive());
+            Assert.assertEquals(0, blockingQueue.size());
+            Assert.assertEquals(executor.getTaskCount(), executor.getCompletedTaskCount());
+        } finally {
+            executor.shutdown();
+        }
     }
 
-    public static final class LifecycleTrackingThreadFactory extends MessagingFactory.ThreadFactory {
-        final public List<Thread> Threads = new LinkedList<>();
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceToEventHubClient() throws Exception {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+        testClosed.shutdown();
 
-        @Override
-        public Thread create(final Runnable worker) {
-            final Thread newThread = super.create(worker);
-            this.Threads.add(newThread);
-            return newThread;
-        }
+        EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed);
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceToSendOperation() throws Exception {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+
+        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed);
+        temp.sendSync(new EventData("test data - string".getBytes()));
+
+        testClosed.shutdown();
+
+        temp.sendSync(new EventData("test data - string".getBytes()));
     }
 }

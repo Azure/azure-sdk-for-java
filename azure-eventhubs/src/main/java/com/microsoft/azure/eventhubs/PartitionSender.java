@@ -5,6 +5,7 @@
 package com.microsoft.azure.eventhubs;
 
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -14,7 +15,7 @@ import java.util.function.Function;
  * if you do not care about sending events to specific partitions. Instead, use {@link EventHubClient#send} method.
  *
  * @see EventHubClient#createPartitionSender(String)
- * @see EventHubClient#createFromConnectionString(String)
+ * @see EventHubClient#createFromConnectionString(String, Executor)
  */
 public final class PartitionSender extends ClientEntity {
     private final String partitionId;
@@ -23,8 +24,8 @@ public final class PartitionSender extends ClientEntity {
 
     private MessageSender internalSender;
 
-    private PartitionSender(MessagingFactory factory, String eventHubName, String partitionId) {
-        super(null, null);
+    private PartitionSender(final MessagingFactory factory, final String eventHubName, final String partitionId, final Executor executor) {
+        super(null, null, executor);
 
         this.partitionId = partitionId;
         this.eventHubName = eventHubName;
@@ -34,14 +35,17 @@ public final class PartitionSender extends ClientEntity {
     /**
      * Internal-Only: factory pattern to Create EventHubSender
      */
-    static CompletableFuture<PartitionSender> Create(MessagingFactory factory, String eventHubName, String partitionId) throws EventHubException {
-        final PartitionSender sender = new PartitionSender(factory, eventHubName, partitionId);
+    static CompletableFuture<PartitionSender> Create(final MessagingFactory factory,
+                                                     final String eventHubName,
+                                                     final String partitionId,
+                                                     final Executor executor) throws EventHubException {
+        final PartitionSender sender = new PartitionSender(factory, eventHubName, partitionId, executor);
         return sender.createInternalSender()
                 .thenApplyAsync(new Function<Void, PartitionSender>() {
                     public PartitionSender apply(Void a) {
                         return sender;
                     }
-                });
+                }, executor);
     }
 
     private CompletableFuture<Void> createInternalSender() throws EventHubException {
@@ -51,7 +55,7 @@ public final class PartitionSender extends ClientEntity {
                     public void accept(MessageSender a) {
                         PartitionSender.this.internalSender = a;
                     }
-                });
+                }, this.executor);
     }
 
     /**

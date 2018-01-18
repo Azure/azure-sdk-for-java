@@ -97,7 +97,6 @@ public final class ReactorDispatcher {
                 throw new RuntimeException(ioException);
             }
 
-
             BaseHandler topWork;
             while ((topWork = workQueue.poll()) != null) {
                 topWork.onTimerTask(null);

@@ -36,7 +36,7 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 	public static void initializeEventHub()  throws EventHubException, IOException
 	{
 		final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 	}
 	
 	@Before

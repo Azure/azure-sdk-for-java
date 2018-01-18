@@ -18,13 +18,15 @@ import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.eventhubs.EventHubException;
+import org.junit.Test;
 
 public class ReceiveParallelManualTest extends ApiTestBase
 {
 	static final String cgName = TestContext.getConsumerGroupName();
 	static final String partitionId = "0";
 	
-	static EventHubClient ehClient;
+	static EventHubClient[] ehClient;
+
 	
 	@BeforeClass
 	public static void initializeEventHub()  throws Exception
@@ -36,8 +38,11 @@ public class ReceiveParallelManualTest extends ApiTestBase
 		lc1.setLevel(Level.FINE);
 
 		final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
-
+		ehClient = new EventHubClient[4];
+		ehClient[0] = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient[1] = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient[2] = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient[3] = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 	}
 
 	class PRunnable implements Runnable{
@@ -49,8 +54,9 @@ public class ReceiveParallelManualTest extends ApiTestBase
         @Override
         public void run() {
 
+	        int partitionIdInt = Integer.parseInt(sPartitionId);
             try {
-                TestBase.pushEventsToPartition(ehClient, sPartitionId, 25000).get();
+                TestBase.pushEventsToPartition(ehClient[partitionIdInt], sPartitionId, 100).get();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (ExecutionException e) {
@@ -61,7 +67,8 @@ public class ReceiveParallelManualTest extends ApiTestBase
 
             PartitionReceiver offsetReceiver1 = null;
             try {
-                offsetReceiver1 = ehClient.createReceiverSync(cgName, sPartitionId, PartitionReceiver.START_OF_STREAM, false);
+                offsetReceiver1 =
+                        ehClient[partitionIdInt].createReceiverSync(cgName, sPartitionId, PartitionReceiver.START_OF_STREAM, false);
             } catch (EventHubException e) {
                 e.printStackTrace();
             }
@@ -108,15 +115,17 @@ public class ReceiveParallelManualTest extends ApiTestBase
         new Thread(new PRunnable("1")).start();
         new Thread(new PRunnable("2")).start();
         new Thread(new PRunnable("3")).start();
+        System.out.println("scheduled receivers");
 		System.in.read();
 	}
 	
 	@AfterClass()
 	public static void cleanup() throws EventHubException
 	{
-		if (ehClient != null)
+	    for (int i=0; i<4;i++)
+		if (ehClient[i] != null)
 		{
-			ehClient.closeSync();
+			ehClient[i].closeSync();
 		}
 	}
 }

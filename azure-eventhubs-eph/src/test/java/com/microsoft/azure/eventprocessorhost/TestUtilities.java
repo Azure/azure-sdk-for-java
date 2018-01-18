@@ -5,6 +5,8 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -15,7 +17,9 @@ class TestUtilities
 		String retval = System.getenv("EPHTESTSTORAGE");
 		return ((retval != null) ? retval : "");
 	}
-	
+
+	static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+
 	static final Logger TEST_LOGGER = Logger.getLogger("servicebus.test-eph.trace");
 	
 	static final String syntacticallyCorrectDummyConnectionString =

@@ -84,7 +84,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                             final String recvPath,
                             final int prefetchCount,
                             final IReceiverSettingsProvider settingsProvider) {
-        super(name, factory);
+        super(name, factory, factory.executor);
 
         this.underlyingFactory = factory;
         this.operationTimeout = factory.getOperationTimeout();

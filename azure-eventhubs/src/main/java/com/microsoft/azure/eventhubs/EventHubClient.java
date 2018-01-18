@@ -18,6 +18,7 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executor;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -25,7 +26,7 @@ import java.util.function.Function;
 /**
  * Anchor class - all EventHub client operations STARTS here.
  *
- * @see EventHubClient#createFromConnectionString(String)
+ * @see EventHubClient#createFromConnectionString(String, Executor)
  */
 public class EventHubClient extends ClientEntity implements IEventHubClient {
     private volatile boolean isSenderCreateStarted;
@@ -43,28 +44,28 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     private MessageSender sender;
     private CompletableFuture<Void> createSender;
 
-    private EventHubClient(final ConnectionStringBuilder connectionString) throws IOException, IllegalEntityException {
-        super(StringUtil.getRandomString(), null);
+    private EventHubClient(final ConnectionStringBuilder connectionString, final Executor executor) throws IOException, IllegalEntityException {
+        super(StringUtil.getRandomString(), null, executor);
 
         this.eventHubName = connectionString.getEntityPath();
         this.senderCreateSync = new Object();
     }
 
     /**
-     * Synchronous version of {@link #createFromConnectionString(String)}.
+     * Synchronous version of {@link #createFromConnectionString(String, Executor)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */
-    public static EventHubClient createFromConnectionStringSync(final String connectionString)
+    public static EventHubClient createFromConnectionStringSync(final String connectionString, final Executor executor)
             throws EventHubException, IOException {
-        return createFromConnectionStringSync(connectionString, null);
+        return createFromConnectionStringSync(connectionString, null, executor);
     }
 
     /**
-     * Synchronous version of {@link #createFromConnectionString(String)}.
+     * Synchronous version of {@link #createFromConnectionString(String, Executor)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
@@ -72,10 +73,10 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */
-    public static EventHubClient createFromConnectionStringSync(final String connectionString, final RetryPolicy retryPolicy)
+    public static EventHubClient createFromConnectionStringSync(final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
             throws EventHubException, IOException {
         try {
-            return createFromConnectionString(connectionString, retryPolicy).get();
+            return createFromConnectionString(connectionString, retryPolicy, executor).get();
         } catch (InterruptedException | ExecutionException exception) {
             if (exception instanceof InterruptedException) {
                 // Re-assert the thread's interrupted status
@@ -103,9 +104,9 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */
-    public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString)
+    public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString, final Executor executor)
             throws EventHubException, IOException {
-        return createFromConnectionString(connectionString, null);
+        return createFromConnectionString(connectionString, null, executor);
     }
 
     /**
@@ -115,23 +116,25 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
-     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
+     * @return CompletableFuture<EventHubClient> which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */
-    public static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString, final RetryPolicy retryPolicy)
+    public static CompletableFuture<EventHubClient> createFromConnectionString(
+            final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
             throws EventHubException, IOException {
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
-        final EventHubClient eventHubClient = new EventHubClient(connStr);
+        final EventHubClient eventHubClient = new EventHubClient(connStr, executor);
 
-        return MessagingFactory.createFromConnectionString(connectionString.toString(), retryPolicy)
+        return MessagingFactory.createFromConnectionString(connectionString.toString(), retryPolicy, executor)
                 .thenApplyAsync(new Function<MessagingFactory, EventHubClient>() {
                     @Override
                     public EventHubClient apply(MessagingFactory factory) {
                         eventHubClient.underlyingFactory = factory;
                         return eventHubClient;
                     }
-                });
+                }, executor);
     }
 
     /**
@@ -144,7 +147,9 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      */
     public final EventDataBatch createBatch(BatchOptions options) throws EventHubException {
         try {
-            int maxSize = this.createInternalSender().thenApplyAsync((aVoid) -> this.sender.getMaxMessageSize()).get();
+            int maxSize = this.createInternalSender().thenApplyAsync(
+                    (aVoid) -> this.sender.getMaxMessageSize(),
+                    this.executor).get();
             if (options.maxMessageSize == null) {
                 return new EventDataBatch(maxSize, options.partitionKey);
             }
@@ -248,7 +253,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClient.this.sender.send(data.toAmqpMessage());
             }
-        });
+        }, this.executor);
     }
 
     /**
@@ -332,7 +337,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClient.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas));
             }
-        });
+        }, this.executor);
     }
 
     /**
@@ -451,7 +456,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClient.this.sender.send(eventData.toAmqpMessage(partitionKey));
             }
-        });
+        }, this.executor);
     }
 
     /**
@@ -521,7 +526,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             public CompletableFuture<Void> apply(Void voidArg) {
                 return EventHubClient.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey));
             }
-        });
+        }, this.executor);
     }
 
     /**
@@ -571,7 +576,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final CompletableFuture<PartitionSender> createPartitionSender(final String partitionId)
             throws EventHubException {
-        return PartitionSender.Create(this.underlyingFactory, this.eventHubName, partitionId);
+        return PartitionSender.Create(this.underlyingFactory, this.eventHubName, partitionId, this.executor);
     }
 
     /**
@@ -824,7 +829,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final ReceiverOptions receiverOptions)
             throws EventHubException {
-        return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, PartitionReceiver.NULL_EPOCH, false, receiverOptions);
+        return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, PartitionReceiver.NULL_EPOCH, false, receiverOptions, this.executor);
     }
 
     /**
@@ -874,7 +879,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime, final ReceiverOptions receiverOptions)
             throws EventHubException {
-        return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, PartitionReceiver.NULL_EPOCH, false, receiverOptions);
+        return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, PartitionReceiver.NULL_EPOCH, false, receiverOptions, this.executor);
     }
 
     /**
@@ -1172,7 +1177,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final String startingOffset, boolean offsetInclusive, final long epoch, final ReceiverOptions receiverOptions)
             throws EventHubException {
-        return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, epoch, true, receiverOptions);
+        return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, null, epoch, true, receiverOptions, this.executor);
     }
 
     /**
@@ -1232,7 +1237,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final Instant dateTime, final long epoch, final ReceiverOptions receiverOptions)
             throws EventHubException {
-        return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, epoch, true, receiverOptions);
+        return PartitionReceiver.create(this.underlyingFactory, this.eventHubName, consumerGroupName, partitionId, null, false, dateTime, epoch, true, receiverOptions, this.executor);
     }
 
     @Override
@@ -1241,11 +1246,11 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             synchronized (this.senderCreateSync) {
                 final CompletableFuture<Void> internalSenderClose = this.sender != null
                         ? this.sender.close().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
-                    @Override
-                    public CompletableFuture<Void> apply(Void voidArg) {
-                        return EventHubClient.this.underlyingFactory.close();
-                    }
-                })
+                                @Override
+                                public CompletableFuture<Void> apply(Void voidArg) {
+                                    return EventHubClient.this.underlyingFactory.close();
+                                }
+                            }, this.executor)
                         : this.underlyingFactory.close();
 
                 return internalSenderClose;
@@ -1264,7 +1269,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
                                 public void accept(MessageSender a) {
                                     EventHubClient.this.sender = a;
                                 }
-                            });
+                            }, this.executor);
 
                     this.isSenderCreateStarted = true;
                 }
@@ -1305,7 +1310,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
 							(String[])rawdata.get(ClientConstants.MANAGEMENT_RESULT_PARTITION_IDS)));
 			        return future2;
 				}
-	        });
+	        }, this.executor);
         }
         
         return future1;
@@ -1346,7 +1351,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
 							((Date)rawdata.get(ClientConstants.MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC)).toInstant()));
 					return future2;
 				}
-	        });
+	        }, this.executor);
         }
         
         return future1;

@@ -38,7 +38,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     @BeforeClass
     public static void initializeEventHub() throws Exception {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         sender = ehClient.createPartitionSenderSync(partitionId);
     }
 

@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.Executors;
 
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
@@ -55,7 +56,7 @@ class RealEventHubUtilities
 		ArrayList<String> partitionIds = setupWithoutSenders(fakePartitions);
 		
 		// EventHubClient is source of all senders
-		this.client = EventHubClient.createFromConnectionStringSync(this.hubConnectionString.toString());
+		this.client = EventHubClient.createFromConnectionStringSync(this.hubConnectionString.toString(), TestUtilities.EXECUTOR_SERVICE);
 		
 		return partitionIds;
 	}
@@ -165,7 +166,7 @@ class RealEventHubUtilities
 	    	this.cachedPartitionIds = new ArrayList<String>();
 	    	ehCacheCheck();
 	    	
-	    	EventHubClient idClient = EventHubClient.createFromConnectionStringSync(this.hubConnectionString.toString());
+	    	EventHubClient idClient = EventHubClient.createFromConnectionStringSync(this.hubConnectionString.toString(), TestUtilities.EXECUTOR_SERVICE);
 	    	try
 	    	{
 	    		EventHubRuntimeInformation info = idClient.getRuntimeInformation().get();

@@ -13,6 +13,7 @@ import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.Executor;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Function;
@@ -84,9 +85,10 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                               final Instant dateTime,
                               final Long epoch,
                               final boolean isEpochReceiver,
-                              final ReceiverOptions receiverOptions)
+                              final ReceiverOptions receiverOptions,
+                              final Executor executor)
             throws EventHubException {
-        super(null, null);
+        super(null, null, executor);
 
         this.underlyingFactory = factory;
         this.eventHubName = eventHubName;
@@ -113,7 +115,8 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                                                        final Instant dateTime,
                                                        final long epoch,
                                                        final boolean isEpochReceiver,
-                                                       final ReceiverOptions receiverOptions)
+                                                       final ReceiverOptions receiverOptions,
+                                                       final Executor executor)
             throws EventHubException {
         if (epoch < NULL_EPOCH) {
             throw new IllegalArgumentException("epoch cannot be a negative value. Please specify a zero or positive long value.");
@@ -123,12 +126,12 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
             throw new IllegalArgumentException("specify valid string for argument - 'consumerGroupName'");
         }
 
-        final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver, receiverOptions);
+        final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver, receiverOptions, executor);
         return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>() {
             public PartitionReceiver apply(Void a) {
                 return receiver;
             }
-        });
+        }, executor);
     }
 
     private CompletableFuture<Void> createInternalReceiver() throws EventHubException {
@@ -140,7 +143,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                     public void accept(MessageReceiver r) {
                         PartitionReceiver.this.internalReceiver = r;
                     }
-                });
+                }, this.executor);
     }
 
     /**
@@ -295,7 +298,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
                 if (PartitionReceiver.this.receiverOptions != null && PartitionReceiver.this.receiverOptions.getReceiverRuntimeMetricEnabled())
                     lastMessageRef = new PassByRef<>();
 
-                Iterable<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages, lastMessageRef);
+                final Iterable<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages, lastMessageRef);
 
                 if (lastMessageRef != null && lastMessageRef.get() != null) {
 
@@ -312,7 +315,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 
                 return events;
             }
-        });
+        }, this.executor);
     }
 
     /**

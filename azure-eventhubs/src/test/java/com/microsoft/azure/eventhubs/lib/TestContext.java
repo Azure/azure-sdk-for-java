@@ -6,8 +6,13 @@ package com.microsoft.azure.eventhubs.lib;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+
 public final class TestContext
 {
+	public final static ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+
 	final static String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "EVENT_HUB_CONNECTION_STRING";
 	final static String PARTIION_COUNT_ENV_NAME = "PARTITION_COUNT";
         
