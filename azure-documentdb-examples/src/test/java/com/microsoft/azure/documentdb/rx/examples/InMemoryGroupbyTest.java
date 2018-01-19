@@ -52,7 +52,7 @@ import rx.observables.GroupedObservable;
 public class InMemoryGroupbyTest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(InMemoryGroupbyTest.class);
-    private static final String DATABASE_ID = "in-memory-groupby-" + UUID.randomUUID().toString();
+    private static final String DATABASE_ID = "in-memory-groupby";
 
     private AsyncDocumentClient asyncClient;
 
