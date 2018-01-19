@@ -416,10 +416,10 @@ public class RestProxy implements InvocationHandler {
         final int responseStatusCode = response.statusCode();
         final Single<HttpResponse> asyncResult;
         if (!methodParser.isExpectedResponseStatusCode(responseStatusCode, additionalAllowedStatusCodes)) {
-            asyncResult = response.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
+            asyncResult = response.bodyAsStringAsync().flatMap(new Function<String, Single<HttpResponse>>() {
                 @Override
-                public HttpResponse apply(String responseBody) throws Exception {
-                    throw instantiateUnexpectedException(methodParser, response, responseBody);
+                public Single<HttpResponse> apply(String responseBody) throws Exception {
+                    return Single.error(instantiateUnexpectedException(methodParser, response, responseBody));
                 }
             });
         } else {
@@ -475,7 +475,7 @@ public class RestProxy implements InvocationHandler {
         return false;
     }
 
-    private Maybe<?> handleBodyReturnTypeAsync(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
+    protected final Maybe<?> handleBodyReturnTypeAsync(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final int responseStatusCode = response.statusCode();
         final HttpMethod httpMethod = methodParser.httpMethod();

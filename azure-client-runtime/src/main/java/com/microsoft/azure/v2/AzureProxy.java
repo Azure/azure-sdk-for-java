@@ -30,6 +30,7 @@ import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Observable;
+import io.reactivex.ObservableSource;
 import io.reactivex.Single;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
@@ -248,14 +249,25 @@ public final class AzureProxy extends RestProxy {
             }
             else {
                 final Type operationStatusResultType = ((ParameterizedType) operationStatusType).getActualTypeArguments()[0];
-                result = createPollStrategy(httpRequest, asyncHttpResponse, methodParser)
-                            .toObservable()
-                            .flatMap(new Function<PollStrategy, Observable<OperationStatus<Object>>>() {
-                                @Override
-                                public Observable<OperationStatus<Object>> apply(final PollStrategy pollStrategy) {
-                                    return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);
-                                }
-                            });
+                result = asyncHttpResponse.flatMapObservable(new Function<HttpResponse, ObservableSource<?>>() {
+                    @Override
+                    public ObservableSource<?> apply(HttpResponse httpResponse) throws Exception {
+                        final HttpResponse bufferedHttpResponse = httpResponse.buffer();
+                        return createPollStrategy(httpRequest, Single.just(bufferedHttpResponse), methodParser).flatMapObservable(new Function<PollStrategy, ObservableSource<OperationStatus<?>>>() {
+                            @Override
+                            public ObservableSource<OperationStatus<?>> apply(final PollStrategy pollStrategy) throws Exception {
+                                Observable<OperationStatus<?>> first = handleBodyReturnTypeAsync(bufferedHttpResponse, methodParser, operationStatusResultType).flatMapObservable(new Function<Object, ObservableSource<OperationStatus<?>>>() {
+                                    @Override
+                                    public ObservableSource<OperationStatus<?>> apply(Object operationResult) throws Exception {
+                                        return Observable.<OperationStatus<?>>just(new OperationStatus<>(operationResult, pollStrategy.status()));
+                                    }
+                                });
+                                Observable<OperationStatus<Object>> rest = pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);
+                                return first.concatWith(rest);
+                            }
+                        });
+                    }
+                });
             }
         }
         else {

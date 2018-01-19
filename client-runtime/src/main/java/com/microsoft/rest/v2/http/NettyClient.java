@@ -420,12 +420,12 @@ public final class NettyClient extends HttpClient {
 
         @Override
         protected void subscribeActual(Subscriber<? super ByteBuf> s) {
-            if (subscriber != null) {
-                throw new IllegalStateException("Multiple subscription not allowed for response content.");
+            if (subscriber == null) {
+                subscriber = s;
+                subscriber.onSubscribe(this);
+            } else {
+                s.onError(new IllegalStateException("Multiple subscription not allowed for response content."));
             }
-
-            subscriber = s;
-            s.onSubscribe(this);
         }
 
         @Override
