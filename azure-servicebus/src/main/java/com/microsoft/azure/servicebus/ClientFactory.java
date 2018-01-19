@@ -313,7 +313,7 @@ public final class ClientFactory {
      * @param namespaceName namespace of entity
      * @param entityPath path of entity
      * @param clientSettings client settings
-     * @param receiveMode
+     * @param receiveMode PeekLock or ReceiveAndDelete
      * @return a CompletableFuture representing the pending creation of message receiver
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(String namespaceName, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) {
@@ -323,9 +323,9 @@ public final class ClientFactory {
     
     /**
      * Asynchronously creates a message receiver to the entity using the client settings in PeekLock mode
-     * @param namespaceEndpointURI
-     * @param entityPath
-     * @param clientSettings
+     * @param namespaceEndpointURI endpoint uri of entity namespace
+     * @param entityPath path of entity
+     * @param clientSettings client settings
      * @return a CompletableFuture representing the pending creation of message receiver
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) {
@@ -334,10 +334,10 @@ public final class ClientFactory {
     
     /**
      * Asynchronously creates a message receiver to the entity using the client settings
-     * @param namespaceEndpointURI
-     * @param entityPath
-     * @param clientSettings
-     * @param receiveMode
+     * @param namespaceEndpointURI endpoint uri of entity namespace
+     * @param entityPath path of entity
+     * @param clientSettings client settings
+     * @param receiveMode PeekLock or ReceiveAndDelete
      * @return a CompletableFuture representing the pending creation of message receiver
      */
     public static CompletableFuture<IMessageReceiver> createMessageReceiverFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings, ReceiveMode receiveMode) {
