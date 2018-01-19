@@ -4,14 +4,14 @@
 
   <parent>
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-documentdb-parent</artifactId>
+    <artifactId>azure-documentdb-rx-parent</artifactId>
     <version>1.0.0-SNAPSHOT</version>
   </parent>
 
-  <artifactId>azure-documentdb-examples</artifactId>
+  <artifactId>azure-documentdb-rx-examples</artifactId>
   <packaging>jar</packaging>
   
-  <name>azure-documentdb-examples</name>
+  <name>azure-documentdb-rx-examples</name>
   <url>https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-java</url>
   <licenses>
     <license>

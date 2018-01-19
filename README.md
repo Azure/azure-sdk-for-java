@@ -17,7 +17,7 @@ To get the binaries of the latest official Microsoft Azure DocumentDB Java SDK a
     </dependency>
 
 ## Minimum Requirements
-* Java Development Kit 7
+* Java Development Kit 8
 * (Optional) Maven
 
 ### Dependencies
