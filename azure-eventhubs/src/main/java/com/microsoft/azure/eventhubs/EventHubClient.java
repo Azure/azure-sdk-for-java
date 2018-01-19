@@ -385,7 +385,9 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
         }
 
-        return this.send(eventDatas.getInternalIterable(), eventDatas.getPartitionKey());
+        return eventDatas.getPartitionKey() != null ?
+                this.send(eventDatas.getInternalIterable(), eventDatas.getPartitionKey()) :
+                this.send(eventDatas.getInternalIterable());
     }
 
     /**
