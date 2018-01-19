@@ -80,7 +80,7 @@ public class DatabaseAndCollectionCreationAsyncAPITest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DatabaseAndCollectionCreationAsyncAPITest.class);
 
-    private static final String DATABASE_ID = "async-test-db-" + UUID.randomUUID().toString();
+    private static final String DATABASE_ID = "async-test-db";
     private DocumentCollection collectionDefinition;
     private Database databaseDefinition;
     

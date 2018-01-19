@@ -90,7 +90,7 @@ public class DocumentCRUDAsyncAPITest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentCRUDAsyncAPITest.class);
 
-    private static final String DATABASE_ID = "async-test-db-" + UUID.randomUUID().toString();
+    private static final String DATABASE_ID = "async-test-db";
 
     private AsyncDocumentClient asyncClient;
     private DocumentCollection createdCollection;
