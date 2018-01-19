@@ -12,7 +12,7 @@ To get the binaries of the latest official Microsoft Azure DocumentDB Java SDK a
 
     <dependency>
     	<groupId>com.microsoft.azure</groupId>
-    	<artifactId>azure-documentdb</artifactId>
+    	<artifactId>azure-documentdb-rx</artifactId>
     	<version>LATEST</version>
     </dependency>
 
