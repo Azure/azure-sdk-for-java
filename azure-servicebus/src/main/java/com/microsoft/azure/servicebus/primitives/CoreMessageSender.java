@@ -364,6 +364,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 	{
 		if (completionException == null)
 		{
+		    this.underlyingFactory.registerForConnectionError(this.sendLink);
 			this.lastKnownLinkError = null;
 			this.retryPolicy.resetRetryCount(this.getClientId());
 
@@ -450,6 +451,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		}
 		else
 		{
+		    this.underlyingFactory.deregisterForConnectionError(this.sendLink);
 			this.lastKnownLinkError = completionException;
 			this.lastKnownErrorReportedAt = Instant.now();
 
@@ -593,16 +595,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		
 		SendLinkHandler handler = new SendLinkHandler(CoreMessageSender.this);
 		BaseHandler.setHandler(sender, handler);
-
-		this.underlyingFactory.registerForConnectionError(sender);
-		sender.open();
-		
-		if (this.sendLink != null)
-		{
-			final Sender oldSender = this.sendLink;
-			this.underlyingFactory.deregisterForConnectionError(oldSender);
-		}
-		
+		sender.open();		
 		this.sendLink = sender;
 	}
 	

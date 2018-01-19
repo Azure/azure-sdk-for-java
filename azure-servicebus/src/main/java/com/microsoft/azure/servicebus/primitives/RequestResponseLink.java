@@ -480,6 +480,7 @@ class RequestResponseLink extends ClientEntity{
 			if(completionException == null)
 			{
 			    TRACE_LOGGER.debug("Opened internal receive link of requestresponselink to {}", parent.linkPath);
+			    this.parent.underlyingFactory.registerForConnectionError(this.receiveLink);
 				this.openFuture.complete(null);
 				
 				// Send unlimited credit
@@ -511,6 +512,7 @@ class RequestResponseLink extends ClientEntity{
 			}
 			
 			TRACE_LOGGER.warn("Internal receive link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
+			this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
 			this.parent.amqpSender.closeInternals(false);
             this.parent.amqpSender.setClosed();
 			this.parent.completeAllPendingRequestsWithException(exception);
@@ -547,6 +549,7 @@ class RequestResponseLink extends ClientEntity{
 					else
 					{
 					    TRACE_LOGGER.warn("Internal receive link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
+					    this.parent.underlyingFactory.deregisterForConnectionError(this.receiveLink);
 					    this.parent.amqpSender.closeInternals(false);
 					    this.parent.amqpSender.setClosed();
 					    this.parent.completeAllPendingRequestsWithException(exception);
@@ -592,13 +595,6 @@ class RequestResponseLink extends ClientEntity{
 		}
 
 		public void setReceiveLink(Receiver receiveLink) {
-			if (this.receiveLink != null)
-			{
-				Receiver oldReceiver = this.receiveLink;
-				this.parent.underlyingFactory.deregisterForConnectionError(oldReceiver);
-			}
-			
-			this.parent.underlyingFactory.registerForConnectionError(receiveLink);
 			this.receiveLink = receiveLink;
 		}
 	}
@@ -685,6 +681,7 @@ class RequestResponseLink extends ClientEntity{
 			if(completionException == null)
 			{
 			    TRACE_LOGGER.debug("Opened internal send link of requestresponselink to {}", parent.linkPath);
+			    this.parent.underlyingFactory.registerForConnectionError(this.sendLink);
 				this.openFuture.complete(null);	
 				this.runSendLoop();
 			}
@@ -714,6 +711,7 @@ class RequestResponseLink extends ClientEntity{
 			}
 			
 			TRACE_LOGGER.warn("Internal send link of requestresponselink to '{}' encountered error.", this.parent.linkPath, exception);
+			this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
 			this.parent.amqpReceiver.closeInternals(false);
             this.parent.amqpReceiver.setClosed();
 			this.parent.completeAllPendingRequestsWithException(exception);
@@ -750,6 +748,7 @@ class RequestResponseLink extends ClientEntity{
 					else
 					{
 					    TRACE_LOGGER.warn("Internal send link of requestresponselink to '{}' closed with error.", this.parent.linkPath, exception);
+					    this.parent.underlyingFactory.deregisterForConnectionError(this.sendLink);
 					    this.parent.amqpReceiver.closeInternals(false);
                         this.parent.amqpReceiver.setClosed();
 					    this.parent.completeAllPendingRequestsWithException(exception);
@@ -819,14 +818,7 @@ class RequestResponseLink extends ClientEntity{
 			// Doesn't happen as sends are settled on send
 		}		
 
-		public void setSendLink(Sender sendLink) {
-			if (this.sendLink != null)
-			{
-				Sender oldSender = this.sendLink;
-				this.parent.underlyingFactory.deregisterForConnectionError(oldSender);
-			}
-			
-			this.parent.underlyingFactory.registerForConnectionError(sendLink);
+		public void setSendLink(Sender sendLink) {			
 			this.sendLink = sendLink;
 			this.availableCredit = new AtomicInteger(0);
 		}
