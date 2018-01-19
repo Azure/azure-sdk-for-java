@@ -47,7 +47,6 @@ public class TestBase
 					settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH) ? "" : settings.inoutEPHConstructorArgs.getEHPath(), 
 					environmentCSB.getSasKeyName(), environmentCSB.getSasKey());
 			replacedCSB.setOperationTimeout(environmentCSB.getOperationTimeout());
-			replacedCSB.setRetryPolicy(environmentCSB.getRetryPolicy());
 			effectiveConnectionString = replacedCSB.toString();
 		}
 		if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_OVERRIDE))
@@ -79,7 +78,7 @@ public class TestBase
 					settings.inoutEPHConstructorArgs.getLeaseManager() : new BogusLeaseManager();
 					
 			settings.outHost = new EventProcessorHost(effectiveHostName, effectiveEntityPath, effectiveConsumerGroup, effectiveConnectionString,
-					effectiveCheckpointMananger, effectiveLeaseManager, effectiveExecutor);
+					effectiveCheckpointMananger, effectiveLeaseManager, effectiveExecutor, null);
 		}
 		else
 		{

@@ -239,27 +239,6 @@ public class ConnectionStringBuilder {
     }
 
     /**
-     * Get the retry policy instance that was created as part of this builder's creation.
-     *
-     * @return RetryPolicy applied for any operation performed using this ConnectionString
-     */
-    @Deprecated
-    public RetryPolicy getRetryPolicy() {
-        return (this.retryPolicy == null ? RetryPolicy.getDefault() : this.retryPolicy);
-    }
-
-    /**
-     * Set the retry policy.
-     * <p>RetryPolicy is not inter-operable with ServiceBus clients in other platforms.
-     *
-     * @param retryPolicy RetryPolicy applied for any operation performed using this ConnectionString
-     */
-    @Deprecated
-    public void setRetryPolicy(final RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
-    }
-
-    /**
      * Returns an inter-operable connection string that can be used to connect to ServiceBus Namespace
      *
      * @return connection string

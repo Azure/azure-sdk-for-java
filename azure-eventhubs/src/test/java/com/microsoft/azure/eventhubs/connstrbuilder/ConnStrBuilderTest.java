@@ -27,7 +27,6 @@ public class ConnStrBuilderTest extends ApiTestBase
 			Assert.assertTrue(connStrBuilder.getEndpoint().getHost().equals("endpoint1"));
 			Assert.assertTrue(connStrBuilder.getSasKey().equals("something"));
 			Assert.assertTrue(connStrBuilder.getSasKeyName().equals("somevalue"));
-			Assert.assertTrue(connStrBuilder.getRetryPolicy() == RetryPolicy.getNoRetry());
 			Assert.assertTrue(connStrBuilder.getOperationTimeout().equals(Duration.ofSeconds(5)));
 		}
 	};
@@ -58,8 +57,7 @@ public class ConnStrBuilderTest extends ApiTestBase
 		final ConnectionStringBuilder secondConnStr = new ConnectionStringBuilder(connStrBuilder.getEndpoint(),
 				connStrBuilder.getEntityPath(), connStrBuilder.getSasKeyName(), connStrBuilder.getSasKey());
 		secondConnStr.setOperationTimeout(connStrBuilder.getOperationTimeout());
-		secondConnStr.setRetryPolicy(connStrBuilder.getRetryPolicy());
-		
+
 		validateConnStrBuilder.accept(new ConnectionStringBuilder(secondConnStr.toString()));
 	}
 	
@@ -71,10 +69,8 @@ public class ConnStrBuilderTest extends ApiTestBase
 		validateConnStrBuilder.accept(testConnStrBuilder);
 		
 		connStrBuilder.setOperationTimeout(Duration.ofSeconds(8));
-		connStrBuilder.setRetryPolicy(RetryPolicy.getDefault());
-		
+
 		ConnectionStringBuilder testConnStrBuilder1 = new ConnectionStringBuilder(connStrBuilder.toString());
-		Assert.assertTrue(testConnStrBuilder1.getRetryPolicy().toString().equals(RetryPolicy.getDefault().toString()));
 		Assert.assertTrue(testConnStrBuilder1.getOperationTimeout().getSeconds() == 8);
 	}
 }
