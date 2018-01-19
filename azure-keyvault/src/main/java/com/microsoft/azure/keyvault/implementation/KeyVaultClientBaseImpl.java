@@ -1552,9 +1552,9 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * Retrieves a list of individual key versions with the same key name.
      * The full key identifier, attributes, and tags are provided in the response.
      *
-    ServiceResponse<PageImpl<KeyItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<KeyItem>> * @param keyName The name of the key.
-    ServiceResponse<PageImpl<KeyItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param keyName The name of the key.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -1791,8 +1791,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List keys in the specified vault.
      * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored key. The LIST operation is applicable to all key types, however only the base key identifier,attributes, and tags are provided in the response. Individual versions of a key are not listed in the response. Authorization: Requires the keys/list permission.
      *
-    ServiceResponse<PageImpl<KeyItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<KeyItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -2874,8 +2874,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     /**
      * List deleted keys in the specified vault. Authorization: Requires the keys/list permission.
      *
-    ServiceResponse<PageImpl<DeletedKeyItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<DeletedKeyItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedKeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -3961,8 +3961,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List secrets in a specified key vault.
      * The LIST operation is applicable to the entire vault, however only the base secret identifier and attributes are provided in the response. Individual secret versions are not listed in the response.
      *
-    ServiceResponse<PageImpl<SecretItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<SecretItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -4208,9 +4208,9 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List the versions of the specified secret.
      * The LIST VERSIONS operation can be applied to all versions having the same secret name in the same key vault. The full secret identifier and attributes are provided in the response. No values are returned for the secrets and only current versions of a secret are listed.
      *
-    ServiceResponse<PageImpl<SecretItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<SecretItem>> * @param secretName The name of the secret.
-    ServiceResponse<PageImpl<SecretItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param secretName The name of the secret.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -4437,8 +4437,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     /**
      * List deleted secrets in the specified vault. Authorization: requires the secrets/list permission.
      *
-    ServiceResponse<PageImpl<DeletedSecretItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<DeletedSecretItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedSecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -5093,8 +5093,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List certificates in a specified key vault.
      * The GetCertificates operation returns the set of certificates resources in the specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<CertificateItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -5667,8 +5667,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List certificate issuers for a specified key vault.
      * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateIssuerItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<CertificateIssuerItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -6916,9 +6916,9 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List the versions of a certificate.
      * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<CertificateItem>> * @param certificateName The name of the certificate.
-    ServiceResponse<PageImpl<CertificateItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -8102,8 +8102,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * Lists the deleted certificates in the specified vault, currently available for recovery.
      * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging.
      *
-    ServiceResponse<PageImpl<DeletedCertificateItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<DeletedCertificateItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedCertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -8485,7 +8485,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * Retrieves a list of individual key versions with the same key name.
      * The full key identifier, attributes, and tags are provided in the response.
      *
-    ServiceResponse<PageImpl<KeyItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -8601,7 +8601,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List keys in the specified vault.
      * Retrieves a list of the keys in the Key Vault as JSON Web Key structures that contain the public part of a stored key. The LIST operation is applicable to all key types, however only the base key identifier,attributes, and tags are provided in the response. Individual versions of a key are not listed in the response. Authorization: Requires the keys/list permission.
      *
-    ServiceResponse<PageImpl<KeyItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -8712,7 +8712,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     /**
      * List deleted keys in the specified vault. Authorization: Requires the keys/list permission.
      *
-    ServiceResponse<PageImpl<DeletedKeyItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedKeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -8828,7 +8828,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List secrets in a specified key vault.
      * The LIST operation is applicable to the entire vault, however only the base secret identifier and attributes are provided in the response. Individual secret versions are not listed in the response.
      *
-    ServiceResponse<PageImpl<SecretItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -8944,7 +8944,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List the versions of the specified secret.
      * The LIST VERSIONS operation can be applied to all versions having the same secret name in the same key vault. The full secret identifier and attributes are provided in the response. No values are returned for the secrets and only current versions of a secret are listed.
      *
-    ServiceResponse<PageImpl<SecretItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -9055,7 +9055,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     /**
      * List deleted secrets in the specified vault. Authorization: requires the secrets/list permission.
      *
-    ServiceResponse<PageImpl<DeletedSecretItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedSecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -9171,7 +9171,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List certificates in a specified key vault.
      * The GetCertificates operation returns the set of certificates resources in the specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -9287,7 +9287,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List certificate issuers for a specified key vault.
      * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateIssuerItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -9403,7 +9403,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List the versions of a certificate.
      * The GetCertificateVersions operation returns the versions of a certificate in the specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -9519,7 +9519,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * Lists the deleted certificates in the specified vault, currently available for recovery.
      * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging.
      *
-    ServiceResponse<PageImpl<DeletedCertificateItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedCertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
