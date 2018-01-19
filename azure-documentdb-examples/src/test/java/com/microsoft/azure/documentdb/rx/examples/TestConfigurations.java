@@ -22,6 +22,9 @@
  */
 package com.microsoft.azure.documentdb.rx.examples;
 
+import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Strings;
+
 /**
  * Contains the configurations for test file
  */
@@ -29,7 +32,17 @@ public final class TestConfigurations {
     // Replace MASTER_KEY and HOST with values from your DocumentDB account.
     // The default values are credentials of the local emulator, which are not used in any production environment.
     // <!--[SuppressMessage("Microsoft.Security", "CS002:SecretInNextLine")]-->
-    public static final String MASTER_KEY =
-            "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw==";
-    public static final String HOST = "https://localhost:443/";
+    public static String MASTER_KEY = 
+            System.getProperty("ACCOUNT_KEY", StringUtils.defaultString(Strings.emptyToNull(System.getenv().get("ACCOUNT_KEY")), 
+                    "C2y6yDjf5/R+ob0N8A7Cgv30VRDJIWEHLM+4QDU5DE2nQ9nDuVTqobD4b8mGGyPMbIZnqyMsEcaGQy67XIw/Jw=="));
+
+    public static String HOST = 
+            System.getProperty("ACCOUNT_HOST", 
+                    StringUtils.defaultString(
+                            Strings.emptyToNull(System.getenv().get("ACCOUNT_HOST")), 
+                            "https://localhost:443/"));
+
+    static {
+        System.out.println("host is " + HOST);
+    }
 }

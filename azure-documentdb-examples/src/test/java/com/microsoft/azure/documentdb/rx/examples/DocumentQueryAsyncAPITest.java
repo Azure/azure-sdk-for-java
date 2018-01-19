@@ -93,7 +93,7 @@ public class DocumentQueryAsyncAPITest {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(DocumentQueryAsyncAPITest.class);
 
-    private static final String DATABASE_ID = "async-test-db";
+    private static final String DATABASE_ID = "async-test-db-" + UUID.randomUUID().toString();
 
     private AsyncDocumentClient asyncClient;
 
