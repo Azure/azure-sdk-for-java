@@ -2,13 +2,17 @@
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-documentdb-examples</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-documentdb-rx-parent</artifactId>
+    <version>1.0.0-SNAPSHOT</version>
+  </parent>
+
+  <artifactId>azure-documentdb-rx-examples</artifactId>
   <packaging>jar</packaging>
   
-  <name>azure-documentdb-examples</name>
-  <url>http://azure.microsoft.com/en-us/services/documentdb/</url>
+  <name>azure-documentdb-rx-examples</name>
+  <url>https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-java</url>
   <licenses>
     <license>
       <name>MIT License</name>
@@ -44,13 +48,24 @@
         </classpathContainers>
         </configuration>
       </plugin>
+      <plugin>
+        <groupId>org.apache.maven.plugins</groupId>
+        <artifactId>maven-surefire-plugin</artifactId>
+        <version>2.19.1</version>
+        <configuration>
+          <includes>
+            <include>**/*Test*.java</include>
+            <include>**/*Sample*.java</include>
+          </includes>
+        </configuration>
+      </plugin>
     </plugins>
   </build>
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-documentdb-rx</artifactId>
-      <version>0.9.0-SNAPSHOT</version>
+      <version>LATEST</version>
     </dependency>
 	<dependency>
       <groupId>io.reactivex</groupId>
