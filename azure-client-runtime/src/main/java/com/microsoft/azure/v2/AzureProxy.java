@@ -32,6 +32,7 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
+import io.reactivex.SingleSource;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
 
@@ -41,6 +42,7 @@ import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
 import java.net.NetworkInterface;
 import java.util.Enumeration;
+import java.util.concurrent.Callable;
 
 /**
  * This class can be used to create an Azure specific proxy implementation for a provided Swagger
@@ -256,12 +258,18 @@ public final class AzureProxy extends RestProxy {
                         return createPollStrategy(httpRequest, Single.just(bufferedHttpResponse), methodParser).flatMapObservable(new Function<PollStrategy, ObservableSource<OperationStatus<?>>>() {
                             @Override
                             public ObservableSource<OperationStatus<?>> apply(final PollStrategy pollStrategy) throws Exception {
-                                Observable<OperationStatus<?>> first = handleBodyReturnTypeAsync(bufferedHttpResponse, methodParser, operationStatusResultType).flatMapObservable(new Function<Object, ObservableSource<OperationStatus<?>>>() {
-                                    @Override
-                                    public ObservableSource<OperationStatus<?>> apply(Object operationResult) throws Exception {
-                                        return Observable.<OperationStatus<?>>just(new OperationStatus<>(operationResult, pollStrategy.status()));
-                                    }
-                                });
+                                Observable<OperationStatus<?>> first = handleBodyReturnTypeAsync(bufferedHttpResponse, methodParser, operationStatusResultType)
+                                        .map(new Function<Object, OperationStatus<?>>() {
+                                            @Override
+                                            public OperationStatus<?> apply(Object operationResult) throws Exception {
+                                                return new OperationStatus<>(operationResult, pollStrategy.status());
+                                            }
+                                        }).switchIfEmpty(Single.defer(new Callable<SingleSource<? extends OperationStatus<?>>>() {
+                                            @Override
+                                            public SingleSource<? extends OperationStatus<?>> call() throws Exception {
+                                                return Single.just(new OperationStatus<>((Object) null, pollStrategy.status()));
+                                            }
+                                        })).toObservable();
                                 Observable<OperationStatus<Object>> rest = pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusResultType);
                                 return first.concatWith(rest);
                             }
