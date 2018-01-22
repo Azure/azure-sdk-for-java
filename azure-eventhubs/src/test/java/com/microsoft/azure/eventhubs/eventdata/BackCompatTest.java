@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.eventdata;
 
+import java.awt.*;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -11,6 +12,7 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
+import com.microsoft.azure.eventhubs.*;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
@@ -21,15 +23,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.MessageSender;
-import com.microsoft.azure.eventhubs.MessagingFactory;
-import com.microsoft.azure.eventhubs.EventHubException;
 
 public class BackCompatTest extends ApiTestBase
 {
@@ -72,7 +67,7 @@ public class BackCompatTest extends ApiTestBase
 
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString, TestContext.EXECUTOR_SERVICE);
 		msgFactory = MessagingFactory.createFromConnectionString(connectionString, TestContext.EXECUTOR_SERVICE).get();
-		receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), partitionId, Instant.now());
+		receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
 		partitionMsgSender = MessageSender.create(msgFactory, "link1", connStrBuilder.getEntityPath() + "/partitions/" + partitionId).get();
 		
                 // until version 0.10.0 - we used to have Properties as HashMap<String,String> 

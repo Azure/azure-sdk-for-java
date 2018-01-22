@@ -56,7 +56,7 @@ public class SendTest extends ApiTestBase
 		}
 		
 		final CompletableFuture<Void> validator = new CompletableFuture<>();
-		final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, partitionId, Instant.now());
+		final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
 		this.receivers.add(receiver);
 		receiver.setReceiveTimeout(Duration.ofSeconds(1));
 		receiver.setReceiveHandler(new OrderValidator(validator, batchSize));
@@ -82,7 +82,7 @@ public class SendTest extends ApiTestBase
 		PartitionKeyValidator validator = new PartitionKeyValidator(validateSignal, partitionKey, 1);
 		for (int receiversCount=0; receiversCount < partitionCount; receiversCount++)
 		{
-			final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, Integer.toString(receiversCount), Instant.now());
+			final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, Integer.toString(receiversCount), EventPosition.fromEnqueuedTime(Instant.now()));
 			receivers.add(receiver);
                         
                         // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
@@ -109,7 +109,7 @@ public class SendTest extends ApiTestBase
 		PartitionKeyValidator validator = new PartitionKeyValidator(validateSignal, partitionKey, batchSize);
 		for (int receiversCount = 0; receiversCount < partitionCount; receiversCount++)
 		{
-			final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, Integer.toString(receiversCount), Instant.now());
+			final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, Integer.toString(receiversCount), EventPosition.fromEnqueuedTime(Instant.now()));
 			receivers.add(receiver);
 			
                         // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service

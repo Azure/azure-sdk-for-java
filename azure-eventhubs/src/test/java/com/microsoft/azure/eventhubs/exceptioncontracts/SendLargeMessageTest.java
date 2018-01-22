@@ -38,7 +38,7 @@ public class SendLargeMessageTest extends ApiTestBase
 		sender = ehClient.createPartitionSender(partitionId).get();
 		
 		receiverHub = EventHubClient.createFromConnectionString(connStr.toString(), TestContext.EXECUTOR_SERVICE).get();
-		receiver = receiverHub.createReceiver(TestContext.getConsumerGroupName(), partitionId, Instant.now()).get();
+		receiver = receiverHub.createReceiver(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromEnqueuedTime(Instant.now())).get();
 	}
 	
 	@Test()

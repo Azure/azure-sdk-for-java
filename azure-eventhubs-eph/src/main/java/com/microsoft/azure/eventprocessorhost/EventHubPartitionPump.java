@@ -11,13 +11,7 @@ import java.util.ArrayList;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.eventhubs.ReceiverOptions;
-import com.microsoft.azure.eventhubs.ReceiverDisconnectedException;
-import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -113,12 +107,12 @@ class EventHubPartitionPump extends PartitionPump
     	if (startAt instanceof String)
     	{
     		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
-    				(String)startAt, epoch, options);
+    				EventPosition.fromOffset((String)startAt), epoch, options);
     	}
     	else if (startAt instanceof Instant) 
     	{
     		this.internalOperationFuture = this.eventHubClient.createEpochReceiver(this.partitionContext.getConsumerGroupName(), this.partitionContext.getPartitionId(),
-    				(Instant)startAt, epoch, options);
+    				EventPosition.fromEnqueuedTime((Instant)startAt), epoch, options);
     	}
     	else
     	{

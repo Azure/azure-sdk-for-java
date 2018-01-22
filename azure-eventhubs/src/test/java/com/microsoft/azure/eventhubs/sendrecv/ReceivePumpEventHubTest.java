@@ -42,7 +42,7 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 	@Before
 	public void initializeTest() throws EventHubException
 	{
-		receiver = ehClient.createReceiverSync(cgName, partitionId, Instant.now());
+		receiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
 	}
 	
 	@Test(expected = TimeoutException.class)

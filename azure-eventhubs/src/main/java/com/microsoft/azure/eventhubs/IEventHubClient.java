@@ -4,112 +4,57 @@
  */
 package com.microsoft.azure.eventhubs;
 
-import java.time.Instant;
 import java.util.concurrent.CompletableFuture;
 
 public interface IEventHubClient {
-    void sendSync(EventData data)
-            throws EventHubException;
+
+    void sendSync(EventData data) throws EventHubException;
 
     CompletableFuture<Void> send(EventData data);
 
-    void sendSync(Iterable<EventData> eventDatas)
-            throws EventHubException;
-
-    void sendSync(EventDataBatch eventDatas)
-        throws EventHubException;
+    void sendSync(Iterable<EventData> eventDatas) throws EventHubException;
 
     CompletableFuture<Void> send(Iterable<EventData> eventDatas);
 
+    void sendSync(EventDataBatch eventDatas) throws EventHubException;
+
     CompletableFuture<Void> send(EventDataBatch eventDatas);
 
-    void sendSync(EventData eventData, String partitionKey)
-            throws EventHubException;
+    void sendSync(EventData eventData, String partitionKey) throws EventHubException;
 
     CompletableFuture<Void> send(EventData eventData, String partitionKey);
 
-    void sendSync(Iterable<EventData> eventDatas, String partitionKey)
-            throws EventHubException;
+    void sendSync(Iterable<EventData> eventDatas, String partitionKey) throws EventHubException;
 
     CompletableFuture<Void> send(Iterable<EventData> eventDatas, String partitionKey);
 
-    PartitionSender createPartitionSenderSync(String partitionId)
-            throws EventHubException, IllegalArgumentException;
+    PartitionSender createPartitionSenderSync(String partitionId) throws EventHubException, IllegalArgumentException;
 
-    CompletableFuture<PartitionSender> createPartitionSender(String partitionId)
-                    throws EventHubException;
+    CompletableFuture<PartitionSender> createPartitionSender(String partitionId) throws EventHubException;
 
-    PartitionReceiver createReceiverSync(String consumerGroupName, String partitionId, String startingOffset)
-                            throws EventHubException;
+    PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition)
+            throws EventHubException;
 
-    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, String startingOffset)
-                                    throws EventHubException;
+    CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition)
+            throws EventHubException;
 
-    PartitionReceiver createReceiverSync(String consumerGroupName, String partitionId, String startingOffset, boolean offsetInclusive)
-                                            throws EventHubException;
+    PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions)
+            throws EventHubException;
 
-    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, String startingOffset, boolean offsetInclusive)
-                                                    throws EventHubException;
+    CompletableFuture<PartitionReceiver> createReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions)
+            throws EventHubException;
 
-    PartitionReceiver createReceiverSync(String consumerGroupName, String partitionId, Instant dateTime)
-                                                            throws EventHubException;
+    PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch)
+            throws EventHubException;
 
-    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, Instant dateTime)
-                                                                    throws EventHubException;
+    CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch)
+            throws EventHubException;
 
-    PartitionReceiver createReceiverSync(String consumerGroupName, String partitionId, String startingOffset, ReceiverOptions receiverOptions)
-                                                                            throws EventHubException;
+    PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions)
+            throws EventHubException;
 
-    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, String startingOffset, ReceiverOptions receiverOptions)
-                                                                                    throws EventHubException;
-
-    PartitionReceiver createReceiverSync(String consumerGroupName, String partitionId, String startingOffset, boolean offsetInclusive, ReceiverOptions receiverOptions)
-                                                                                            throws EventHubException;
-
-    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, String startingOffset, boolean offsetInclusive, ReceiverOptions receiverOptions)
-                                                                                                    throws EventHubException;
-
-    PartitionReceiver createReceiverSync(String consumerGroupName, String partitionId, Instant dateTime, ReceiverOptions receiverOptions)
-                                                                                                            throws EventHubException;
-
-    CompletableFuture<PartitionReceiver> createReceiver(String consumerGroupName, String partitionId, Instant dateTime, ReceiverOptions receiverOptions)
-                                                                                                                    throws EventHubException;
-
-    PartitionReceiver createEpochReceiverSync(String consumerGroupName, String partitionId, String startingOffset, long epoch)
-                                                                                                                            throws EventHubException;
-
-    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, String startingOffset, long epoch)
-                                                                                                                                    throws EventHubException;
-
-    PartitionReceiver createEpochReceiverSync(String consumerGroupName, String partitionId, String startingOffset, boolean offsetInclusive, long epoch)
-                                                                                                                                            throws EventHubException;
-
-    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, String startingOffset, boolean offsetInclusive, long epoch)
-                                                                                                                                                    throws EventHubException;
-
-    PartitionReceiver createEpochReceiverSync(String consumerGroupName, String partitionId, Instant dateTime, long epoch)
-                                                                                                                                                            throws EventHubException;
-
-    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, Instant dateTime, long epoch)
-                                                                                                                                                                    throws EventHubException;
-
-    PartitionReceiver createEpochReceiverSync(String consumerGroupName, String partitionId, String startingOffset, long epoch, ReceiverOptions receiverOptions)
-                                                                                                                                                                            throws EventHubException;
-
-    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, String startingOffset, long epoch, ReceiverOptions receiverOptions)
-                                                                                                                                                                                    throws EventHubException;
-
-    PartitionReceiver createEpochReceiverSync(String consumerGroupName, String partitionId, String startingOffset, boolean offsetInclusive, long epoch, ReceiverOptions receiverOptions)
-                                                                                                                                                                                            throws EventHubException;
-
-    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, String startingOffset, boolean offsetInclusive, long epoch, ReceiverOptions receiverOptions)
-                                                                                                                                                                                                    throws EventHubException;
-
-    PartitionReceiver createEpochReceiverSync(String consumerGroupName, String partitionId, Instant dateTime, long epoch, ReceiverOptions receiverOptions)
-                                                                                                                                                                                                            throws EventHubException;
-
-    CompletableFuture<PartitionReceiver> createEpochReceiver(String consumerGroupName, String partitionId, Instant dateTime, long epoch, ReceiverOptions receiverOptions)
-                                                                                                                                                                                                                    throws EventHubException;
+    CompletableFuture<PartitionReceiver> createEpochReceiver(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions)
+            throws EventHubException;
 
     CompletableFuture<Void> onClose();
 

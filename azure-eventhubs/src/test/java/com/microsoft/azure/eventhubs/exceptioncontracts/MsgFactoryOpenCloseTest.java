@@ -4,13 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
-import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.MessagingFactory;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.eventhubs.PartitionSender;
-import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.*;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.FaultInjectingReactorFactory;
 import com.microsoft.azure.eventhubs.lib.TestContext;
@@ -52,7 +46,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
                     executor);
 
             final PartitionReceiver receiver = ehClient.createReceiverSync(
-                    TestContext.getConsumerGroupName(), PARTITION_ID, Instant.now());
+                    TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
             final PartitionSender sender = ehClient.createPartitionSenderSync(PARTITION_ID);
             sender.sendSync(new EventData("test data - string".getBytes()));
             Iterable<EventData> events = receiver.receiveSync(10);

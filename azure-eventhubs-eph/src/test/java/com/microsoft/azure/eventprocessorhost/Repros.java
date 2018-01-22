@@ -4,12 +4,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.eventhubs.*;
 import org.junit.Test;
-
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 
 public class Repros extends TestBase
 {
@@ -123,7 +119,7 @@ public class Repros extends TestBase
 			
 			System.out.println("Client " + clientSerialNumber + " starting");
 			EventHubClient client = EventHubClient.createFromConnectionStringSync(utils.getConnectionString().toString(), TestUtilities.EXECUTOR_SERVICE);
-			PartitionReceiver receiver = client.createReceiver(utils.getConsumerGroup(), "0", PartitionReceiver.START_OF_STREAM).get();
+			PartitionReceiver receiver = client.createReceiver(utils.getConsumerGroup(), "0", EventPosition.fromStartOfStream()).get();
 					//client.createEpochReceiver(utils.getConsumerGroup(), "0", PartitionReceiver.START_OF_STREAM, 1).get();
 
 			boolean useReceiveHandler = false;

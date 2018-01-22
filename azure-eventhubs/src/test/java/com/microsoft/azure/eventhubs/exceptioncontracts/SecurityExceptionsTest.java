@@ -135,7 +135,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				correctConnectionString.getSasKey());
 		
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-		ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, PartitionReceiver.START_OF_STREAM);
+		ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromStartOfStream());
 	}
 
 	@Test (expected = IllegalEntityException.class)
@@ -163,7 +163,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				correctConnectionString.getSasKey());
 
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-		ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, PartitionReceiver.START_OF_STREAM);
+		ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromStartOfStream());
 	}
 	
 	@After

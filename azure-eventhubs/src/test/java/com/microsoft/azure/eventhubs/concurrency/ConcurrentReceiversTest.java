@@ -13,20 +13,16 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 import java.util.function.Consumer;
+
+import com.microsoft.azure.eventhubs.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventHubException;
 
 public class ConcurrentReceiversTest extends ApiTestBase
 {
@@ -61,7 +57,7 @@ public class ConcurrentReceiversTest extends ApiTestBase
 		for(int i=0; i < partitionCount; i++)
 		{
 			final int index = i;
-			receiverFutures[i] = ehClient.createReceiver(consumerGroupName, Integer.toString(i), Instant.now()).thenAcceptAsync(
+			receiverFutures[i] = ehClient.createReceiver(consumerGroupName, Integer.toString(i), EventPosition.fromEnqueuedTime(Instant.now())).thenAcceptAsync(
 					new Consumer<PartitionReceiver>(){
 						@Override
 						public void accept(final PartitionReceiver t) {

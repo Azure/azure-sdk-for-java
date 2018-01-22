@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.concurrency;
 
+import java.awt.*;
 import java.util.concurrent.*;
 
 import org.junit.*;
@@ -40,8 +41,8 @@ public class EventHubClientTest extends ApiTestBase {
 					TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
 					firstOne = false;
 				}
-				
-				PartitionReceiver receiver = ehClient.createReceiverSync(consumerGroupName, partitionId, PartitionReceiver.START_OF_STREAM, false);
+
+				PartitionReceiver receiver = ehClient.createReceiverSync(consumerGroupName, partitionId, EventPosition.fromStartOfStream());
 				try {
 					Assert.assertTrue(receiver.receiveSync(100).iterator().hasNext());
 				} finally {

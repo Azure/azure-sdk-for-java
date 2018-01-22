@@ -44,9 +44,9 @@ public class ReceiverRuntimeMetricsTest  extends ApiTestBase {
         ReceiverOptions optionsWithMetricsDisabled = new ReceiverOptions();
         optionsWithMetricsDisabled.setReceiverRuntimeMetricEnabled(false);
 
-        receiverWithOptions = ehClient.createReceiverSync(cgName, partitionId, Instant.now(), options);
-        receiverWithoutOptions = ehClient.createReceiverSync(cgName, partitionId, Instant.EPOCH);
-        receiverWithOptionsDisabled = ehClient.createReceiverSync(cgName, partitionId, Instant.EPOCH, optionsWithMetricsDisabled);
+        receiverWithOptions = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()), options);
+        receiverWithoutOptions = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
+        receiverWithOptionsDisabled = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH), optionsWithMetricsDisabled);
         
         TestBase.pushEventsToPartition(ehClient, partitionId, sentEvents).get();
     }
