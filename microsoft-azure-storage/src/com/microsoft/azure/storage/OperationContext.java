@@ -186,7 +186,7 @@ public final class OperationContext {
     /**
      * Gets the client side trace ID.
      * 
-     * @return A <code>String</cod> which represents the client request ID.
+     * @return A <code>String</code> which represents the client request ID.
      */
     public String getClientRequestID() {
         return this.clientRequestID;

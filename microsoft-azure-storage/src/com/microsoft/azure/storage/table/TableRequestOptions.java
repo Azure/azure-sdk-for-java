@@ -27,7 +27,7 @@ import com.microsoft.azure.storage.core.Utility;
 public class TableRequestOptions extends RequestOptions {
 
     /**
-     * The interface whose function is used to get the <see cref="EdmType"/> for an entity property
+     * The interface whose function is used to get the {@link EdmType} for an entity property
      * given the partition key, row, key, and the property name, if the interface is implemented
      */
     public interface PropertyResolver {
@@ -223,7 +223,7 @@ public class TableRequestOptions extends RequestOptions {
     }
 
     /**
-     * Gets the interface that contains a function which is used to get the <see cref="EdmType"/> for an entity property
+     * Gets the interface that contains a function which is used to get the {@link EdmType} for an entity property
      * given the partition key, row, key, and the property name. For more information about the {@link PropertyResolver}
      * defaults, see {@link #setPropertyResolver(PropertyResolver)}.
      * 
@@ -286,7 +286,7 @@ public class TableRequestOptions extends RequestOptions {
     }
 
     /**
-     * Sets the interface that contains a function which is used to get the <see cref="EdmType"/> for an entity property
+     * Sets the interface that contains a function which is used to get the {@link EdmType} for an entity property
      * given the partition key, row, key, and the property name.
      * <p>
      * The default {@link PropertyResolver} is set in the client and is by default null, indicating not to use a
@@ -340,11 +340,11 @@ public class TableRequestOptions extends RequestOptions {
      * required if a {@link TableEncryptionPolicy} is specified.
      * <p>
      * You can change the {@link EncryptionResolver} on this request by setting this property. You can also change the 
-     * value on the {@link TableServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made 
+     * value on the {@link TableServiceClient#getDefaultRequestOptions()} object so that all subsequent requests made
      * via the service client will use that {@link EncryptionResolver}.
      * 
-     * @param propertyResolver
-     *            Specifies the {@link PropertyResolver} to set.
+     * @param encryptionResolver
+     *            Specifies the {@link EncryptionResolver} to set.
      */
     public void setEncryptionResolver(EncryptionResolver encryptionResolver) {
         this.encryptionResolver = encryptionResolver;

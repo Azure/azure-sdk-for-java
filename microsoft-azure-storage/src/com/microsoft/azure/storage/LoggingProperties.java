@@ -27,7 +27,7 @@ public final class LoggingProperties {
     private String version = "1.0";
 
     /**
-     * An <code>EnumSet<code> of <code>LoggingOperations</code> that represents which storage operations should be logged.
+     * An <code>EnumSet</code> of <code>LoggingOperations</code> that represents which storage operations should be logged.
      */
     private EnumSet<LoggingOperations> logOperationTypes = EnumSet.noneOf(LoggingOperations.class);
 
@@ -37,9 +37,9 @@ public final class LoggingProperties {
     private Integer retentionIntervalInDays;
 
     /**
-     * Gets an <code>EnumSet<code> of <code>{@link LoggingOperations}</code> that represents which storage operations should be logged.
+     * Gets an <code>EnumSet</code> of <code>{@link LoggingOperations}</code> that represents which storage operations should be logged.
      * 
-     * @return An <code>EnumSet<code> of <code>{@link LoggingOperations}</code>.
+     * @return An <code>EnumSet</code> of <code>{@link LoggingOperations}</code>.
      */
     public EnumSet<LoggingOperations> getLogOperationTypes() {
         return this.logOperationTypes;
@@ -67,7 +67,7 @@ public final class LoggingProperties {
      * Sets the <code>{@link LoggingOperations}</code> for which storage operations should be logged.
      * 
      * @param logOperationTypes
-     *        An <code>EnumSet<code> of <code>{@link LoggingOperations}</code> to set.
+     *        An <code>EnumSet</code> of <code>{@link LoggingOperations}</code> to set.
      */
     public void setLogOperationTypes(final EnumSet<LoggingOperations> logOperationTypes) {
         this.logOperationTypes = logOperationTypes;

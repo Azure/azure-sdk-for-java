@@ -43,10 +43,10 @@ import com.microsoft.azure.storage.core.Utility;
  * <p>
  * As an example, you could construct a table query using fluent syntax:
  * <p>
- * <code>TableQuery&ltTableServiceEntity> myQuery = TableQuery.from("Products", DynamicTableEntity.class)<br>
- * &nbsp&nbsp&nbsp&nbsp.where("(PartitionKey eq 'ProductsMNO') and (RowKey ge 'Napkin')")<br>
- * &nbsp&nbsp&nbsp&nbsp.take(25)<br>
- * &nbsp&nbsp&nbsp&nbsp.select(new String[] {"InventoryCount"});</code>
+ * <code>TableQuery&lt;TableServiceEntity&gt; myQuery = TableQuery.from("Products", DynamicTableEntity.class)<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;.where("(PartitionKey eq 'ProductsMNO') and (RowKey ge 'Napkin')")<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;.take(25)<br>
+ * &nbsp;&nbsp;&nbsp;&nbsp;.select(new String[] {"InventoryCount"});</code>
  * <p>
  * This example creates a query on the "Products" table for all entities where the PartitionKey value is "ProductsMNO"
  * and the RowKey value is greater than or equal to "Napkin" and requests the first 25 matching entities, selecting only
@@ -597,7 +597,7 @@ public class TableQuery<T extends TableEntity> {
      * constant. The PartitionKey and RowKey property values are <code>String</code> types for comparison purposes. For
      * example, to query all entities with a PartitionKey value of "AccessLogs" on table query <code>myQuery</code>:
      * <p>
-     * <code>&nbsp&nbsp&nbsp&nbspmyQuery.setFilterString("PartitionKey eq 'AccessLogs'");</code>
+     * <code>&nbsp;&nbsp;&nbsp;&nbsp;myQuery.setFilterString("PartitionKey eq 'AccessLogs'");</code>
      * <p>
      * The values that may be used in table queries are explained in more detail in the MSDN topic
      * 
@@ -676,7 +676,7 @@ public class TableQuery<T extends TableEntity> {
      * PartitionKey and RowKey property values are <code>String</code> types for comparison purposes. For example, to
      * query all entities with a PartitionKey value of "AccessLogs" on table query <code>myQuery</code>:
      * <p>
-     * <code>&nbsp&nbsp&nbsp&nbspmyQuery = myQuery.where("PartitionKey eq 'AccessLogs'");</code>
+     * <code>&nbsp;&nbsp;&nbsp;&nbsp;myQuery = myQuery.where("PartitionKey eq 'AccessLogs'");</code>
      * <p>
      * The values that may be used in table queries are explained in more detail in the MSDN topic
      * 

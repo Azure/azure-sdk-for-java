@@ -304,7 +304,7 @@ public final class BlobProperties {
     /**
      * Gets a value indicating if the tier of the blob has been inferred.
      *
-     * @return A {@Link java.lang.Boolean} object which represents if the blob tier was inferred.
+     * @return A {@link java.lang.Boolean} object which represents if the blob tier was inferred.
      */
     public Boolean isBlobTierInferred() { return this.isBlobTierInferredTier; }
 

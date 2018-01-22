@@ -60,7 +60,6 @@ public class SubStream extends InputStream {
      * @param streamLength The length of the substream.
      * @param lock         An intrinsic lock to ensure thread-safe, concurrent operations
      *                     on substream instances wrapping the same InputStream.
-     * @throws Exception
      */
     public SubStream(InputStream source, long startIndex, long streamLength, Object lock)  {
         if (startIndex < 0 || streamLength < 1) {
