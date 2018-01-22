@@ -115,7 +115,7 @@ public class RequestResponseTest  extends ApiTestBase {
             final Message request= Proton.message();
             final Map<String, String> properties = new HashMap<>();
             properties.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_EVENTHUB_ENTITY_TYPE);
-            properties.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, connectionString.getEntityPath());
+            properties.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, connectionString.getEventHubName());
             properties.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
@@ -147,7 +147,7 @@ public class RequestResponseTest  extends ApiTestBase {
                                         this.onError(new AmqpException(error));
                                     }
 
-                                    if (connectionString.getEntityPath().equalsIgnoreCase((String) resultMap.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY)))
+                                    if (connectionString.getEventHubName().equalsIgnoreCase((String) resultMap.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY)))
                                         task.complete(null);
                                     else
                                         task.completeExceptionally(new AssertionFailedError("response doesn't have correct eventhub name"));
@@ -198,7 +198,7 @@ public class RequestResponseTest  extends ApiTestBase {
     	EventHubRuntimeInformation ehInfo = ehc.getRuntimeInformation().get();
 
     	Assert.assertNotNull(ehInfo);
-    	Assert.assertTrue(connectionString.getEntityPath().equalsIgnoreCase(ehInfo.getPath()));
+    	Assert.assertTrue(connectionString.getEventHubName().equalsIgnoreCase(ehInfo.getPath()));
     	Assert.assertNotNull(ehInfo.getCreatedAt()); // creation time could be almost anything, can't really check value
     	Assert.assertTrue(ehInfo.getPartitionCount() >= 2); // max legal partition count is variable but 2 is hard minimum
     	Assert.assertEquals(ehInfo.getPartitionIds().length, ehInfo.getPartitionCount());
@@ -218,7 +218,7 @@ public class RequestResponseTest  extends ApiTestBase {
 	    	EventHubPartitionRuntimeInformation partInfo = ehc.getPartitionRuntimeInformation(id).get();
 	    	
 	    	Assert.assertNotNull(partInfo);
-	    	Assert.assertTrue(connectionString.getEntityPath().equalsIgnoreCase(partInfo.getEventHubPath()));
+	    	Assert.assertTrue(connectionString.getEventHubName().equalsIgnoreCase(partInfo.getEventHubPath()));
 	    	Assert.assertTrue(id.equalsIgnoreCase(partInfo.getPartitionId()));
 	    	Assert.assertTrue(partInfo.getBeginSequenceNumber() >= -1);
 	    	Assert.assertTrue(partInfo.getLastEnqueuedSequenceNumber() >= -1);
@@ -241,8 +241,11 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimesBadHub() throws EventHubException, IOException {
-    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), "NOHUBZZZZZ",
-    			connectionString.getSasKeyName(), connectionString.getSasKey());
+    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder()
+                .setEndpoint(connectionString.getEndpoint())
+                .setEventHubName("NOHUBZZZZZ")
+                .setSasKeyName(connectionString.getSasKeyName())
+                .setSasKey(connectionString.getSasKey());
     	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	
     	try {
@@ -292,8 +295,11 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimesBadKeyname() throws EventHubException, IOException {
-    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), connectionString.getEntityPath(),
-    			"xxxnokeyxxx", connectionString.getSasKey());
+    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder()
+                .setEndpoint(connectionString.getEndpoint())
+                .setEventHubName(connectionString.getEventHubName())
+                .setSasKeyName("xxxnokeyxxx")
+                .setSasKey(connectionString.getSasKey());
     	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	
     	try {

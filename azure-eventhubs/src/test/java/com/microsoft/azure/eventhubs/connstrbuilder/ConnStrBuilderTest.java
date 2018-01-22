@@ -13,7 +13,6 @@ import org.junit.Test;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
 import com.microsoft.azure.eventhubs.IllegalConnectionStringFormatException;
-import com.microsoft.azure.eventhubs.RetryPolicy;
 
 public class ConnStrBuilderTest extends ApiTestBase
 {
@@ -23,7 +22,7 @@ public class ConnStrBuilderTest extends ApiTestBase
 		@Override
 		public void accept(ConnectionStringBuilder connStrBuilder)
 		{
-			Assert.assertTrue(connStrBuilder.getEntityPath().equals("eventhub1"));
+			Assert.assertTrue(connStrBuilder.getEventHubName().equals("eventhub1"));
 			Assert.assertTrue(connStrBuilder.getEndpoint().getHost().equals("endpoint1"));
 			Assert.assertTrue(connStrBuilder.getSasKey().equals("something"));
 			Assert.assertTrue(connStrBuilder.getSasKeyName().equals("somevalue"));
@@ -54,8 +53,11 @@ public class ConnStrBuilderTest extends ApiTestBase
 	public void exchangeConnectionStringAcrossConstructors()
 	{
 		final ConnectionStringBuilder connStrBuilder = new ConnectionStringBuilder(correctConnectionString);
-		final ConnectionStringBuilder secondConnStr = new ConnectionStringBuilder(connStrBuilder.getEndpoint(),
-				connStrBuilder.getEntityPath(), connStrBuilder.getSasKeyName(), connStrBuilder.getSasKey());
+		final ConnectionStringBuilder secondConnStr = new ConnectionStringBuilder()
+                .setEndpoint(connStrBuilder.getEndpoint())
+                .setEventHubName(connStrBuilder.getEventHubName())
+                .setSasKeyName(connStrBuilder.getSasKeyName())
+                .setSasKey(connStrBuilder.getSasKey());
 		secondConnStr.setOperationTimeout(connStrBuilder.getOperationTimeout());
 
 		validateConnStrBuilder.accept(new ConnectionStringBuilder(secondConnStr.toString()));

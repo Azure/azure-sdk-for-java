@@ -100,7 +100,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString, TestContext.EXECUTOR_SERVICE);
 		msgFactory = MessagingFactory.createFromConnectionString(connectionString, TestContext.EXECUTOR_SERVICE).get();
 		receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
-		partitionMsgSender = MessageSender.create(msgFactory, "link1", connStrBuilder.getEntityPath() + "/partitions/" + partitionId).get();
+		partitionMsgSender = MessageSender.create(msgFactory, "link1", connStrBuilder.getEventHubName() + "/partitions/" + partitionId).get();
 		partitionEventSender = ehClient.createPartitionSenderSync(partitionId);
 		
 		final HashMap<String, Object> appProperties = new HashMap<>();
@@ -137,7 +137,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase
 		msgReceiver = MessageReceiver.create(
 				msgFactory, 
 				"receiver1", 
-				connStrBuilder.getEntityPath() + "/ConsumerGroups/" + TestContext.getConsumerGroupName() + "/Partitions/" + partitionId,
+				connStrBuilder.getEventHubName() + "/ConsumerGroups/" + TestContext.getConsumerGroupName() + "/Partitions/" + partitionId,
 				100,
 				ehClient.createReceiver(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromOffset(reSentAndReceivedEvent.getSystemProperties().getOffset(), false)).get()).get();
                 

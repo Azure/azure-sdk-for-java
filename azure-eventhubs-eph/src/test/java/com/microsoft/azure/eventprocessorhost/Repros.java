@@ -38,7 +38,7 @@ public class Repros extends TestBase
 		
 		PrefabGeneralErrorHandler general1 = new PrefabGeneralErrorHandler();
 		PrefabProcessorFactory factory1 = new PrefabProcessorFactory(telltale, doCheckpointing, doMarker);
-		EventProcessorHost host1 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEntityPath(),
+		EventProcessorHost host1 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEventHubName(),
 				utils.getConsumerGroup(), utils.getConnectionString().toString(),
 				TestUtilities.getStorageConnectionString(), storageName);
 		EventProcessorOptions options1 = EventProcessorOptions.getDefaultOptions();
@@ -46,7 +46,7 @@ public class Repros extends TestBase
 		
 		PrefabGeneralErrorHandler general2 = new PrefabGeneralErrorHandler();
 		PrefabProcessorFactory factory2 = new PrefabProcessorFactory(telltale, doCheckpointing, doMarker);
-		EventProcessorHost host2 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEntityPath(),
+		EventProcessorHost host2 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEventHubName(),
 				utils.getConsumerGroup(), utils.getConnectionString().toString(),
 				TestUtilities.getStorageConnectionString(), storageName);
 		EventProcessorOptions options2 = EventProcessorOptions.getDefaultOptions();

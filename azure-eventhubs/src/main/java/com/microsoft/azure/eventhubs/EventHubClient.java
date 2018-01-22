@@ -47,7 +47,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     private EventHubClient(final ConnectionStringBuilder connectionString, final Executor executor) throws IOException, IllegalEntityException {
         super(StringUtil.getRandomString(), null, executor);
 
-        this.eventHubName = connectionString.getEntityPath();
+        this.eventHubName = connectionString.getEventHubName();
         this.senderCreateSync = new Object();
     }
 
