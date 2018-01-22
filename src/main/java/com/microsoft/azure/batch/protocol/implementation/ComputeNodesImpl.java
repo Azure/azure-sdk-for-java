@@ -2551,8 +2551,8 @@ public class ComputeNodesImpl implements ComputeNodes {
     /**
      * Lists the compute nodes in the specified pool.
      *
-    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param poolId The ID of the pool from which you want to list nodes.
-    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param computeNodeListOptions Additional parameters for the operation
+     * @param poolId The ID of the pool from which you want to list nodes.
+     * @param computeNodeListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -2814,8 +2814,8 @@ public class ComputeNodesImpl implements ComputeNodes {
     /**
      * Lists the compute nodes in the specified pool.
      *
-    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<ComputeNode>, ComputeNodeListHeaders> * @param computeNodeListNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param computeNodeListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ComputeNode&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

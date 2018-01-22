@@ -569,8 +569,8 @@ public class TasksImpl implements Tasks {
      * Lists all of the tasks that are associated with the specified job.
      * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> * @param jobId The ID of the job.
-    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> * @param taskListOptions Additional parameters for the operation
+     * @param jobId The ID of the job.
+     * @param taskListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -2448,8 +2448,8 @@ public class TasksImpl implements Tasks {
      * Lists all of the tasks that are associated with the specified job.
      * For multi-instance tasks, information such as affinityId, executionInfo and nodeInfo refer to the primary task. Use the list subtasks API to retrieve information about subtasks.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<CloudTask>, TaskListHeaders> * @param taskListNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param taskListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudTask&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

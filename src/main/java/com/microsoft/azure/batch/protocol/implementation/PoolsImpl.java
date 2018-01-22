@@ -409,7 +409,7 @@ public class PoolsImpl implements Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals. If you do not specify a $filter clause including a startTime or endTime these filters default to the start and end times of the last aggregation interval currently available; that is, only the last aggregation interval is returned.
      *
-    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param poolListUsageMetricsOptions Additional parameters for the operation
+     * @param poolListUsageMetricsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -1046,7 +1046,7 @@ public class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListOptions Additional parameters for the operation
+     * @param poolListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -3972,8 +3972,8 @@ public class PoolsImpl implements Pools {
      * Lists the usage metrics, aggregated by pool across individual time intervals, for the specified account.
      * If you do not specify a $filter clause including a poolId, the response includes all pools that existed in the account in the time range of the returned aggregation intervals. If you do not specify a $filter clause including a startTime or endTime these filters default to the start and end times of the last aggregation interval currently available; that is, only the last aggregation interval is returned.
      *
-    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<PoolUsageMetrics>, PoolListUsageMetricsHeaders> * @param poolListUsageMetricsNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListUsageMetricsNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;PoolUsageMetrics&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -4217,8 +4217,8 @@ public class PoolsImpl implements Pools {
     /**
      * Lists all of the pools in the specified account.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<CloudPool>, PoolListHeaders> * @param poolListNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param poolListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudPool&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

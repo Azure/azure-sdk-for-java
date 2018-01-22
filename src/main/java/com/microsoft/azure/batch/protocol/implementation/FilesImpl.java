@@ -1787,10 +1787,10 @@ public class FilesImpl implements Files {
     /**
      * Lists the files in a task's directory on its compute node.
      *
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param jobId The ID of the job that contains the task.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param taskId The ID of the task whose files you want to list.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param recursive Whether to list children of the task directory. This parameter can be used in combination with the filter parameter to list specific type of files.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param fileListFromTaskOptions Additional parameters for the operation
+     * @param jobId The ID of the job that contains the task.
+     * @param taskId The ID of the task whose files you want to list.
+     * @param recursive Whether to list children of the task directory. This parameter can be used in combination with the filter parameter to list specific type of files.
+     * @param fileListFromTaskOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -2092,10 +2092,10 @@ public class FilesImpl implements Files {
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param poolId The ID of the pool that contains the compute node.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param nodeId The ID of the compute node whose files you want to list.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param recursive Whether to list children of a directory.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param fileListFromComputeNodeOptions Additional parameters for the operation
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node whose files you want to list.
+     * @param recursive Whether to list children of a directory.
+     * @param fileListFromComputeNodeOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -2356,8 +2356,8 @@ public class FilesImpl implements Files {
     /**
      * Lists the files in a task's directory on its compute node.
      *
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromTaskHeaders> * @param fileListFromTaskNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param fileListFromTaskNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -2601,8 +2601,8 @@ public class FilesImpl implements Files {
     /**
      * Lists all of the files in task directories on the specified compute node.
      *
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<NodeFile>, FileListFromComputeNodeHeaders> * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param fileListFromComputeNodeNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NodeFile&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

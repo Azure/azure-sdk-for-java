@@ -2313,7 +2313,7 @@ public class JobSchedulesImpl implements JobSchedules {
     /**
      * Lists all of the job schedules in the specified account.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> * @param jobScheduleListOptions Additional parameters for the operation
+     * @param jobScheduleListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -2576,8 +2576,8 @@ public class JobSchedulesImpl implements JobSchedules {
     /**
      * Lists all of the job schedules in the specified account.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<CloudJobSchedule>, JobScheduleListHeaders> * @param jobScheduleListNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobScheduleListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJobSchedule&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

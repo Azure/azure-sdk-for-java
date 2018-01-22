@@ -125,7 +125,6 @@
           <target>1.7</target>
           <showWarnings>true</showWarnings>
           <showDeprecation>true</showDeprecation>
-          <compilerArgument>-Xlint:unchecked</compilerArgument>
         </configuration>
       </plugin>
 

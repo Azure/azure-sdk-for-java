@@ -494,7 +494,7 @@ public class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListOptions Additional parameters for the operation
+     * @param certificateListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -1349,8 +1349,8 @@ public class CertificatesImpl implements Certificates {
     /**
      * Lists all of the certificates that have been added to the specified account.
      *
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<Certificate>, CertificateListHeaders> * @param certificateListNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param certificateListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;Certificate&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

@@ -301,7 +301,7 @@ public class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
-    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListOptions Additional parameters for the operation
+     * @param applicationListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -749,8 +749,8 @@ public class ApplicationsImpl implements Applications {
      * Lists all of the applications available in the specified account.
      * This operation returns only applications and versions that are available for use on compute nodes; that is, that can be used in an application package reference. For administrator information about applications and versions that are not yet available to compute nodes, use the Azure portal or the Azure Resource Manager API.
      *
-    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<ApplicationSummary>, ApplicationListHeaders> * @param applicationListNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param applicationListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;ApplicationSummary&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

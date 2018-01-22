@@ -284,7 +284,7 @@ public class AccountsImpl implements Accounts {
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
-    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param accountListNodeAgentSkusOptions Additional parameters for the operation
+     * @param accountListNodeAgentSkusOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -539,8 +539,8 @@ public class AccountsImpl implements Accounts {
     /**
      * Lists all node agent SKUs supported by the Azure Batch service.
      *
-    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<NodeAgentSku>, AccountListNodeAgentSkusHeaders> * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param accountListNodeAgentSkusNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;NodeAgentSku&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */

@@ -2381,7 +2381,7 @@ public class JobsImpl implements Jobs {
     /**
      * Lists all of the jobs in the specified account.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param jobListOptions Additional parameters for the operation
+     * @param jobListOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -2670,8 +2670,8 @@ public class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
-    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobListFromJobScheduleOptions Additional parameters for the operation
+     @param jobScheduleId The ID of the job schedule from which you want to get a list of jobs.
+     @param jobListFromJobScheduleOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -2972,8 +2972,8 @@ public class JobsImpl implements Jobs {
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool. If this API is invoked on a job which has no Job Preparation or Job Release task, the Batch service returns HTTP status code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
      *
-    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobId The ID of the job.
-    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
+     * @param jobId The ID of the job.
+     * @param jobListPreparationAndReleaseTaskStatusOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -3422,8 +3422,8 @@ public class JobsImpl implements Jobs {
     /**
      * Lists all of the jobs in the specified account.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListHeaders> * @param jobListNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -3667,8 +3667,8 @@ public class JobsImpl implements Jobs {
     /**
      * Lists the jobs that have been created under the specified job schedule.
      *
-    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<CloudJob>, JobListFromJobScheduleHeaders> * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListFromJobScheduleNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CloudJob&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
@@ -3922,8 +3922,8 @@ public class JobsImpl implements Jobs {
      * Lists the execution status of the Job Preparation and Job Release task for the specified job across the compute nodes where the job has run.
      * This API returns the Job Preparation and Job Release task status on all compute nodes that have run the Job Preparation or Job Release task. This includes nodes which have since been removed from the pool. If this API is invoked on a job which has no Job Preparation or Job Release task, the Batch service returns HTTP status code 409 (Conflict) with an error code of JobPreparationTaskNotSpecified.
      *
-    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param nextPageLink The NextLink from the previous successful call to List operation.
-    ServiceResponseWithHeaders<PageImpl<JobPreparationAndReleaseTaskExecutionInformation>, JobListPreparationAndReleaseTaskStatusHeaders> * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param jobListPreparationAndReleaseTaskStatusNextOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;JobPreparationAndReleaseTaskExecutionInformation&gt; object wrapped in {@link ServiceResponseWithHeaders} if successful.
      */
