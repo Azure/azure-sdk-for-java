@@ -5,7 +5,8 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import java.util.concurrent.Future;
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 
 /***
  * If you wish to have EventProcessorHost store leases somewhere other than Azure Storage,
@@ -41,58 +42,53 @@ public interface ILeaseManager
 	 * Does the lease store exist?
 	 * 
 	 * @return true if it does, false if not
+	 * @throws ExceptionWithAction with action EventProcessorHostActionStrings.CHECKING_LEASE_STORE on error
 	 */
-    public Future<Boolean> leaseStoreExists();
+    public CompletableFuture<Boolean> leaseStoreExists();
 
     /**
      * Create the lease store if it does not exist, do nothing if it does exist.
      * 
-     * @return true if the lease store already exists or was created successfully, false if not
+     * @return Void
+     * @throws ExceptionWithAction with action EventProcessorHostActionStrings.CREATING_LEASE_STORE on error
      */
-    public Future<Boolean> createLeaseStoreIfNotExists();
+    public CompletableFuture<Void> createLeaseStoreIfNotExists();
     
     /**
      * Not used by EventProcessorHost, but a convenient function to have for testing.
      * 
      * @return true if the lease store was deleted successfully, false if not
      */
-    public Future<Boolean> deleteLeaseStore();
-
-    /**
-     * Return the lease info for the specified partition. Can return null if no lease has been
-     * created in the store for the specified partition.
-     * 
-     * @param partitionId  id of partition to get lease for
-     * @return  lease info for the partition, or null
-     */
-    public Future<Lease> getLease(String partitionId);
+    public CompletableFuture<Boolean> deleteLeaseStore();
     
     /**
      * Return the lease info for all partitions.
      * 
      * A typical implementation could just call getLease() on all partitions.
      * 
-     * @return  Iterable list of lease info.
+     * @return  List of lease info.
      */
-    public Iterable<Future<Lease>> getAllLeases() throws Exception;
+    public CompletableFuture<List<Lease>> getAllLeases();
 
     /**
      * Create in the store the lease info for the given partition, if it does not exist. Do nothing if it does exist
      * in the store already.
      * 
      * @param partitionId  id of partition to create lease info for
-     * @return  the existing or newly-created lease info for the partition
+     * @return the existing or newly-created lease info for the partition
+     * @throws ExceptionWithAction with action EventProcessorHostActionString.CREATING_LEASE on error 
      */
-    public Future<Lease> createLeaseIfNotExists(String partitionId);
+    public CompletableFuture<Lease> createLeaseIfNotExists(String partitionId);
 
     /**
      * Delete the lease info for the given partition from the store. If there is no stored lease for the given partition,
      * that is treated as success.
      *  
      * @param lease  Lease info for the desired partition as previously obtained from getLease()
-     * @return  Void
+     * @return void
+     * @throws ExceptionWithAction with action EventProcessorHostActionString.DELETING_LEASE on error 
      */
-    public Future<Void> deleteLease(Lease lease);
+    public CompletableFuture<Void> deleteLease(Lease lease);
 
     /**
      * Acquire the lease on the desired partition for this EventProcessorHost.
@@ -101,30 +97,34 @@ public interface ILeaseManager
      * partitions are redistributed when additional hosts are started.
      * 
      * @param lease  Lease info for the desired partition as previously obtained from getLease()
-     * @return  true if the lease was acquired successfully, false if not
+     * @return  true if the lease was acquired successfully, false if it failed because another host acquired it.
+     * @throws ExceptionWithAction with action EventProcessorHostActionStrings.ACQUIRING_LEASE on error
      */
-    public Future<Boolean> acquireLease(Lease lease);
+    public CompletableFuture<Boolean> acquireLease(Lease lease);
 
     /**
      * Renew a lease currently held by this host.
      * 
-     * If the lease has been stolen, or expired, or released, it is not possible to renew it. You will have to call getLease()
-     * and then acquireLease() again.
+     * If the lease has been taken by another host (either stolen or after expiration) or explicitly released, it is
+     * not possible to renew it. You will have to call getLease() and then acquireLease() again. With the Azure Storage-based
+     * default implementation, it IS possible to renew an expired lease (that has not been taken by another host), so other
+     * implementations can allow that.
      * 
      * @param lease  Lease to be renewed
-     * @return  true if the lease was renewed successfully, false if not
+     * @return  true if the lease was renewed, false if the lease was lost and could not renewed
+     * @throws ExceptionWithAction with action EventProcessorHostActionString.RENEWING_LEASE on error
      */
-    public Future<Boolean> renewLease(Lease lease);
+    public CompletableFuture<Boolean> renewLease(Lease lease);
 
     /**
      * Give up a lease currently held by this host.
      * 
-     * If the lease has been stolen, or expired, releasing it is unnecessary, and will fail if attempted.
+     * If the lease has expired or been taken by another host, releasing it is unnecessary, and will fail if attempted.
      * 
-     * @param lease  Lease to be give up
-     * @return  true if the lease was released successfully, false if not
+     * @param lease  Lease to be given up
+     * @return CompletableFuture  
      */
-    public Future<Boolean> releaseLease(Lease lease);
+    public CompletableFuture<Void> releaseLease(Lease lease);
 
     /**
      * Update the store with the information in the provided lease.
@@ -134,7 +134,8 @@ public interface ILeaseManager
      * expiration during the process.
      * 
      * @param lease  New lease info to be stored
-     * @return  true if the updated was performed successfully, false if not
+     * @return  true if the updated was performed successfully, false if lease was lost and could not be updated
+     * @throws ExceptionWithAction with action EventProcessorHostActionStrings.UPDATING_LEASE on error
      */
-    public Future<Boolean> updateLease(Lease lease);
+    public CompletableFuture<Boolean> updateLease(Lease lease);
 }

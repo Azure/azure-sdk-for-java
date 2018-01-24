@@ -5,84 +5,108 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import java.util.Map;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.TimeUnit;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
 import com.microsoft.azure.eventhubs.IllegalEntityException;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.TimeoutException;
-import com.microsoft.azure.storage.StorageException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 class PartitionManager
 {
 	// Protected instead of private for testability
-    protected final EventProcessorHost host;
+    protected final HostContext hostContext;
     protected Pump pump;
-
-    private String partitionIds[] = null;
+    protected volatile String partitionIds[] = null;
     
-    private Future<?> partitionsFuture = null;
-    private boolean keepGoing = true;
+    final private Object scanFutureSynchronizer = new Object(); 
+    private ScheduledFuture<?> scanFuture = null;
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionManager.class);
 
-    PartitionManager(EventProcessorHost host)
+    PartitionManager(HostContext hostContext)
     {
-        this.host = host;
+        this.hostContext = hostContext;
     }
     
-    String[] getPartitionIds() throws IllegalEntityException
+    CompletableFuture<Void> cachePartitionIds()
     {
-        Throwable saved = null;
-
-        if (this.partitionIds == null)
+    	CompletableFuture<Void> retval = null;
+    	
+    	if (this.partitionIds != null)
+    	{
+    		retval = CompletableFuture.completedFuture(null);
+    	}
+    	else
         {
-			try
-			{
-				EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(this.host.getEventHubConnectionString(), this.host.getRetryPolicy(), this.host.getExecutorService());
-				EventHubRuntimeInformation ehInfo = ehClient.getRuntimeInformation().get();
-				if (ehInfo != null)
+    		// This try-catch is necessary because EventHubClient.createFromConnectionString can directly throw
+    		// EventHubException or IOException, in addition to whatever failures may occur when the result of
+    		// the CompletableFuture is evaluated.
+    		try
+    		{
+    			// Stage 0: get EventHubClient for the event hub
+				retval = EventHubClient.createFromConnectionString(this.hostContext.getEventHubConnectionString(), this.hostContext.getRetryPolicy(), this.hostContext.getExecutor())
+				// Stage 1: use the client to get runtime info for the event hub 
+				.thenComposeAsync((ehClient) -> ehClient.getRuntimeInformation(), this.hostContext.getExecutor())
+				// Stage 2: extract the partition ids from the runtime info or throw on null (timeout)
+				.thenAcceptAsync((EventHubRuntimeInformation ehInfo) ->
 				{
-					this.partitionIds = ehInfo.getPartitionIds();
-	
-					TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(),
-                           "Eventhub " + this.host.getEventHubPath() + " count of partitions: " + ehInfo.getPartitionCount()));
-					for (String id : this.partitionIds)
+					if (ehInfo != null)
 					{
-						TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(), "Found partition with id: " + id));
+						this.partitionIds = ehInfo.getPartitionIds();
+
+						TRACE_LOGGER.info(this.hostContext.withHost("Eventhub " + this.hostContext.getEventHubPath() + " count of partitions: " + ehInfo.getPartitionCount()));
+						for (String id : this.partitionIds)
+						{
+							TRACE_LOGGER.info(this.hostContext.withHost("Found partition with id: " + id));
+						}
 					}
-				}
-				else
+					else
+					{
+						throw new CompletionException(new TimeoutException("getRuntimeInformation returned null"));
+					}
+				}, this.hostContext.getExecutor())
+				// Stage 3: RUN REGARDLESS OF EXCEPTIONS -- if there was an error, wrap it in IllegalEntityException and throw
+				.whenCompleteAsync((empty, e) ->
 				{
-					saved = new TimeoutException("getRuntimeInformation returned null");
-				}
+					if (e != null)
+					{
+						Throwable notifyWith = e;
+						if (e instanceof CompletionException)
+						{
+							notifyWith = e.getCause();
+						}
+						throw new CompletionException(new IllegalEntityException("Failure getting partition ids for event hub", notifyWith));
+					}
+				}, this.hostContext.getExecutor());
 			}
-			catch (EventHubException | IOException | InterruptedException | ExecutionException e)
-			{
-				saved = e;
+    		catch (EventHubException | IOException e)
+    		{
+    			retval = new CompletableFuture<Void>();
+    			retval.completeExceptionally(new IllegalEntityException("Failure getting partition ids for event hub", e));
 			}
-        }
-        if (this.partitionIds == null)
-        {
-			throw new IllegalEntityException("Failure getting partition ids for event hub", saved);
         }
         
-        return this.partitionIds;
+        return retval;
     }
 
     // Testability hook: allows a test subclass to insert dummy pump.
     Pump createPumpTestHook()
     {
-        return new Pump(this.host);
+        return new Pump(this.hostContext);
     }
 
     // Testability hook: called after stores are initialized.
@@ -95,339 +119,335 @@ class PartitionManager
     {
     }
     
-    Future<?> stopPartitions()
+    CompletableFuture<Void> stopPartitions()
     {
-    	this.keepGoing = false;
-    	return this.partitionsFuture;
+    	// Stop the lease scanner.
+    	synchronized (this.scanFutureSynchronizer)
+    	{
+    		this.scanFuture.cancel(true);
+    	}
+
+    	// Stop any partition pumps that are running.
+    	TRACE_LOGGER.info(this.hostContext.withHost("Shutting down all pumps"));
+    	CompletableFuture<?>[] pumpRemovals = this.pump.removeAllPumps(CloseReason.Shutdown);
+    	return CompletableFuture.allOf(pumpRemovals).whenCompleteAsync((empty, e) ->
+    	{
+    		if (e != null)
+    		{
+    			Throwable notifyWith = LoggingUtils.unwrapException(e, null);
+    			TRACE_LOGGER.warn(this.hostContext.withHost("Failure during shutdown"), notifyWith);
+    			if (notifyWith instanceof Exception)
+    			{
+    				this.hostContext.getEventProcessorOptions().notifyOfException(this.hostContext.getHostName(), (Exception) notifyWith,
+    						EventProcessorHostActionStrings.PARTITION_MANAGER_CLEANUP);
+
+    			}
+    		}
+	        TRACE_LOGGER.info(this.hostContext.withHost("Partition manager exiting"));
+    	}, this.hostContext.getExecutor());
     }
     
-    // Return Void so it can be called from a lambda.
-    public Void initialize() throws Exception
+    public CompletableFuture<Void> initialize()
     {
     	this.pump = createPumpTestHook();
     	
-    	try
+    	// Stage 0: get partition ids and cache
+    	return cachePartitionIds()
+    	// Stage 1: initialize stores, if stage 0 succeeded
+    	.thenComposeAsync((unused) -> initializeStores(), this.hostContext.getExecutor())
+    	// Stage 2: RUN REGARDLESS OF EXCEPTIONS -- trace errors
+    	.whenCompleteAsync((empty, e) ->
     	{
-    		initializeStores();
-    		onInitializeCompleteTestHook();
-    	}
-    	catch (ExceptionWithAction e)
-    	{
-    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(),
-                    "Exception while initializing stores (" + e.getAction() + "), not starting partition manager"), e.getCause());
-    		throw e;
-    	}
-    	catch (Exception e)
-    	{
-    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(),
-                    "Exception while initializing stores, not starting partition manager"), e);
-    		throw e;
-    	}
-    	
-        this.partitionsFuture = this.host.getExecutorService().submit(() -> runAndCleanUp());
-    	
-    	return null;
-    }
-    
-    // Return Void so it can be called from a lambda.
-    private Void runAndCleanUp()
-	{
-    	try
-    	{
-    		runLoop();
-    		TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(),
-                    "Partition manager main loop exited normally, shutting down"));
-    	}
-    	catch (ExceptionWithAction e)
-    	{
-    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(),
-                    "Exception from partition manager main loop, shutting down"), e.getCause());
-    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, e.getAction());
-    	}
-    	catch (Exception e)
-    	{
-    		if ((e instanceof ExecutionException) && (e.getCause() instanceof OutOfMemoryError))
+    		if (e != null)
     		{
-    			Exception forLogging = new Exception("Got OutOfMemoryError with " + Thread.activeCount() + " threads running");
-    			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), forLogging, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
-    			Map<Thread, StackTraceElement[]> stacks = Thread.getAllStackTraces();
-    			for (Map.Entry<Thread, StackTraceElement[]> entry : stacks.entrySet())
+    			StringBuilder outAction = new StringBuilder();
+    			Throwable notifyWith = LoggingUtils.unwrapException(e, outAction);
+    			if (outAction.length() > 0)
     			{
-    				String stackString = "Thread " + entry.getKey().getId() + ":\n";
-    				for (int i = 0; i < entry.getValue().length; i++)
-    				{
-    					stackString += (entry.getValue()[i].toString() + "\n");
-    				}
-    				forLogging = new Exception(stackString);
-        			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), forLogging, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
-    			}
-    		}
-    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(),
-                    "Exception from partition manager main loop, shutting down"), e);
-    		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_MAIN_LOOP);
-    	}
-    	
-    	// Cleanup
-    	TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(), "Shutting down all pumps"));
-    	Iterable<Future<?>> pumpRemovals = this.pump.removeAllPumps(CloseReason.Shutdown);
-    	
-    	// Wait for shutdown threads.
-    	for (Future<?> removal : pumpRemovals)
-    	{
-    		try
-    		{
-				removal.get();
-			}
-    		catch (InterruptedException | ExecutionException e)
-    		{
-    			TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Failure during shutdown"), e);
-    			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.PARTITION_MANAGER_CLEANUP);
-    			
-    			// By convention, bail immediately on interrupt, even though we're just cleaning
-    			// up on the way out. Fortunately, we ARE just cleaning up on the way out, so we're
-    			// free to bail without serious side effects.
-    			if (e instanceof InterruptedException)
-    			{
-    				Thread.currentThread().interrupt();
-    				throw new RuntimeException(e);
-    			}
-			}
-    	}
-    	
-        // All of the shutdown threads are done, we can shut down the executor now.
-        // We can't wait for executor termination here because this thread is in the executor.
-        this.host.stopExecutor();
-
-        TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(), "Partition manager exiting"));
-
-    	return null;
-    }
-    
-    private void initializeStores() throws InterruptedException, ExecutionException, ExceptionWithAction, IllegalEntityException
-    {
-        ILeaseManager leaseManager = this.host.getLeaseManager();
-        
-        // Make sure the lease store exists
-        if (!leaseManager.leaseStoreExists().get())
-        {
-        	retryWrapper(() -> leaseManager.createLeaseStoreIfNotExists(), null, "Failure creating lease store for this Event Hub, retrying",
-        			"Out of retries creating lease store for this Event Hub", EventProcessorHostActionStrings.CREATING_LEASE_STORE, 5);
-        }
-        // else
-        //	lease store already exists, no work needed
-        
-        // Now make sure the leases exist
-        for (String id : getPartitionIds())
-        {
-        	retryWrapper(() -> leaseManager.createLeaseIfNotExists(id), id, "Failure creating lease for partition, retrying",
-        			"Out of retries creating lease for partition", EventProcessorHostActionStrings.CREATING_LEASE, 5);
-        }
-        
-        ICheckpointManager checkpointManager = this.host.getCheckpointManager();
-        
-        // Make sure the checkpoint store exists
-        if (!checkpointManager.checkpointStoreExists().get())
-        {
-        	retryWrapper(() -> checkpointManager.createCheckpointStoreIfNotExists(), null, "Failure creating checkpoint store for this Event Hub, retrying",
-        			"Out of retries creating checkpoint store for this Event Hub", EventProcessorHostActionStrings.CREATING_CHECKPOINT_STORE, 5);
-        }
-        // else
-        //	checkpoint store already exists, no work needed
-        
-        // Now make sure the checkpoints exist
-        for (String id : getPartitionIds())
-        {
-        	retryWrapper(() -> checkpointManager.createCheckpointIfNotExists(id), id, "Failure creating checkpoint for partition, retrying",
-        			"Out of retries creating checkpoint blob for partition", EventProcessorHostActionStrings.CREATING_CHECKPOINT, 5);
-        }
-    }
-    
-    // Throws if it runs out of retries. If it returns, action succeeded.
-    private void retryWrapper(Callable<Future<?>> lambda, String partitionId, String retryMessage, String finalFailureMessage, String action, int maxRetries) throws ExceptionWithAction
-    {
-    	boolean createdOK = false;
-    	int retryCount = 0;
-    	do
-    	{
-    		try
-    		{
-    			lambda.call().get();
-    			createdOK = true;
-    		}
-    		catch (Exception e)
-    		{
-    			if (partitionId != null)
-    			{
-    				TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, retryMessage), e);
+    	    		TRACE_LOGGER.warn(this.hostContext.withHost(
+    	                    "Exception while initializing stores (" + outAction.toString() + "), not starting partition manager"), notifyWith);
     			}
     			else
     			{
-    				TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), retryMessage), e);
+    	    		TRACE_LOGGER.warn(this.hostContext.withHost("Exception while initializing stores, not starting partition manager"), notifyWith);
     			}
-    			retryCount++;
     		}
-    	} while (!createdOK && (retryCount < maxRetries));
-    	if (!createdOK)
-        {
-    		if (partitionId != null)
-    		{
-    			TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, finalFailureMessage));
-    		}
-    		else
-    		{
-    			TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), finalFailureMessage));
-    		}
-    		throw new ExceptionWithAction(new RuntimeException(finalFailureMessage), action);
-        }
-    }
-    
-    private void runLoop() throws Exception, ExceptionWithAction
-    {
-    	while (this.keepGoing)
+    	}, this.hostContext.getExecutor())
+    	// Stage 3: schedule scan, which will find partitions and start pumps, if previous stages succeeded
+    	.thenRunAsync(() ->
     	{
-            ILeaseManager leaseManager = this.host.getLeaseManager();
-            HashMap<String, Lease> allLeases = new HashMap<String, Lease>();
-
-            // Inspect all leases.
-            // Acquire any expired leases.
-            // Renew any leases that currently belong to us.
-            Iterable<Future<Lease>> gettingAllLeases = leaseManager.getAllLeases();
-            ArrayList<Lease> leasesOwnedByOthers = new ArrayList<Lease>();
-            int ourLeasesCount = 0;
-            for (Future<Lease> leaseFuture : gettingAllLeases)
-            {
-            	Lease possibleLease = null;
-            	try
-            	{
-                    possibleLease = leaseFuture.get();
-                    if (possibleLease.isExpired())
-                    {
-                    	if (leaseManager.acquireLease(possibleLease).get())
-                    	{
-                    		allLeases.put(possibleLease.getPartitionId(), possibleLease);
-                    		ourLeasesCount++;
-                    	}
-                    	else
-                    	{
-                    		// Probably failed because another host stole it between get and acquire
-                        	allLeases.put(possibleLease.getPartitionId(), possibleLease);
-                        	leasesOwnedByOthers.add(possibleLease);
-                    	}
-                    }
-                    else if (possibleLease.getOwner().compareTo(this.host.getHostName()) == 0)
-                    {
-                        if (leaseManager.renewLease(possibleLease).get())
-                        {
-                            allLeases.put(possibleLease.getPartitionId(), possibleLease);
-                            ourLeasesCount++;
-                        }
-                    	else
-                    	{
-                    		// Probably failed because another host stole it between get and renew
-                        	allLeases.put(possibleLease.getPartitionId(), possibleLease);
-                        	leasesOwnedByOthers.add(possibleLease);
-                    	}
-                    }
-                    else
-                    {
-                    	allLeases.put(possibleLease.getPartitionId(), possibleLease);
-                    	leasesOwnedByOthers.add(possibleLease);
-                    }
-            	}
-        		// Most exceptions will arrive packaged as ExecutionException because they occur during a short-lived thread
-        		// down in AzureStorageCheckpointLeastManager. However, AzureBlobLease.isExpired calls Storage directly and
-        		// therefore can throw a plain StorageException. Handling is the same for all: log, notify, and move on to the
-            	// next partition.
-            	catch (ExecutionException|StorageException e)
-            	{
-            		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Failure getting/acquiring/renewing lease, skipping"), e);
-            		Exception notifyWith = e;
-            		if ((e instanceof ExecutionException) && (e.getCause() != null) && (e.getCause() instanceof Exception))
-            		{
-            			notifyWith = (Exception)e.getCause();
-            		}
-            		this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), notifyWith, EventProcessorHostActionStrings.CHECKING_LEASES,
-            				((possibleLease != null) ? possibleLease.getPartitionId() : ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION));
-            	}
-            }
-            
-            // Grab more leases if available and needed for load balancing
-            if (leasesOwnedByOthers.size() > 0)
-            {
-	            Iterable<Lease> stealTheseLeases = whichLeasesToSteal(leasesOwnedByOthers, ourLeasesCount);
-	            if (stealTheseLeases != null)
-	            {
-	            	for (Lease stealee : stealTheseLeases)
-	            	{
-	            		try
-	            		{
-    	                	if (leaseManager.acquireLease(stealee).get())
-    	                	{
-    	                		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), stealee.getPartitionId(),
-                                        "Stole lease"));
-    	                		allLeases.put(stealee.getPartitionId(), stealee);
-    	                		ourLeasesCount++;
-    	                	}
-    	                	else
-    	                	{
-    	                		TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(),
-                                        "Failed to steal lease for partition " + stealee.getPartitionId()));
-    	                	}
-	            		}
-	            		catch (ExecutionException e)
-	            		{
-	            			TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(),
-                                    "Exception stealing lease for partition " + stealee.getPartitionId()), e);
-	            			this.host.getEventProcessorOptions().notifyOfException(this.host.getHostName(), e, EventProcessorHostActionStrings.STEALING_LEASE,
-	            					stealee.getPartitionId());
-	            		}
-	            	}
-	            }
-            }
-
-            // Update pump with new state of leases.
-            for (String partitionId : allLeases.keySet())
-            {
-            	Lease updatedLease = allLeases.get(partitionId);
-            	TRACE_LOGGER.debug(LoggingUtils.withHost(this.host.getHostName(),
-                        "Lease on partition " + updatedLease.getPartitionId() + " owned by " + updatedLease.getOwner())); // DEBUG
-            	if (updatedLease.getOwner().compareTo(this.host.getHostName()) == 0)
-            	{
-            		this.pump.addPump(partitionId, updatedLease);
-            	}
-            	else
-            	{
-            		Future<?> removing = this.pump.removePump(partitionId, CloseReason.LeaseLost);
-            		if (removing != null)
-            		{
-            			removing.get();
-            		}
-            	}
-            }
-            
-            onPartitionCheckCompleteTestHook();
-    		
-            try
-            {
-                Thread.sleep(leaseManager.getLeaseRenewIntervalInMilliseconds());
-            }
-            catch (InterruptedException e)
-            {
-            	// Bail on the thread if we are interrupted.
-                TRACE_LOGGER.warn(LoggingUtils.withHost(this.host.getHostName(), "Sleep was interrupted"), e);
-                this.keepGoing = false;
-				Thread.currentThread().interrupt();
-				throw new RuntimeException(e);
-            }
-    	}
+			// Schedule the first scan right away.
+    		synchronized (this.scanFutureSynchronizer)
+    		{
+    			this.scanFuture = this.hostContext.getExecutor().schedule(() -> scan(), 0, TimeUnit.SECONDS);
+    		}
+	    	
+			onInitializeCompleteTestHook();
+    	}, this.hostContext.getExecutor());
     }
     
-    private Iterable<Lease> whichLeasesToSteal(ArrayList<Lease> stealableLeases, int haveLeaseCount)
+    private CompletableFuture<?> initializeStores()
+    {
+        ILeaseManager leaseManager = this.hostContext.getLeaseManager();
+        ICheckpointManager checkpointManager = this.hostContext.getCheckpointManager();
+        
+        // Stages 0 to N: create lease store if it doesn't exist
+        CompletableFuture<?> initializeStoresFuture = buildRetries(CompletableFuture.completedFuture(null),
+        		() -> leaseManager.createLeaseStoreIfNotExists(), null, "Failure creating lease store for this Event Hub, retrying",
+				"Out of retries creating lease store for this Event Hub", EventProcessorHostActionStrings.CREATING_LEASE_STORE, 5);
+        
+        // Stages N+1 to M: create checkpoint store if it doesn't exist
+        initializeStoresFuture = buildRetries(initializeStoresFuture, () -> checkpointManager.createCheckpointStoreIfNotExists(), null,
+				"Failure creating checkpoint store for this Event Hub, retrying", "Out of retries creating checkpoint store for this Event Hub",
+				EventProcessorHostActionStrings.CREATING_CHECKPOINT_STORE, 5);
+        
+        // Stages M to whatever: by now, either the stores exist or one of them completed exceptionally and
+        // all these stages will be skipped
+        for (String id : this.partitionIds)
+        {
+        	final String iterationId = id;
+        	// Stages X to X+N: create lease for partition <iterationId>
+        	initializeStoresFuture = buildRetries(initializeStoresFuture, () -> leaseManager.createLeaseIfNotExists(iterationId), iterationId,
+        			"Failure creating lease for partition, retrying", "Out of retries creating lease for partition", EventProcessorHostActionStrings.CREATING_LEASE, 5);
+        	// Stages X+N+1 to X+N+M: create checkpoint holder for partition <iterationId>
+        	initializeStoresFuture = buildRetries(initializeStoresFuture, () -> checkpointManager.createCheckpointIfNotExists(iterationId), iterationId,
+        			"Failure creating checkpoint for partition, retrying", "Out of retries creating checkpoint blob for partition",
+        			EventProcessorHostActionStrings.CREATING_CHECKPOINT, 5);
+        }
+
+        return initializeStoresFuture;
+    }
+    
+    // CompletableFuture will be completed exceptionally if it runs out of retries.
+    // If the lambda succeeds, then it will not be invoked again by following stages.
+    private CompletableFuture<?> buildRetries(CompletableFuture<?> buildOnto, Callable<CompletableFuture<?>> lambda, String partitionId, String retryMessage,
+    		String finalFailureMessage, String action, int maxRetries)
+    {
+    	// Stage 0: first attempt
+    	CompletableFuture<?> retryChain = buildOnto.thenComposeAsync((unused) ->
+    	{
+    		CompletableFuture<?> newresult = CompletableFuture.completedFuture(null);
+    		try
+    		{
+				newresult = lambda.call();
+			}
+    		catch (Exception e1)
+    		{
+    			throw new CompletionException(e1);
+			}
+    		return newresult;
+    	}, this.hostContext.getExecutor());
+    	
+    	for (int i = 1; i < maxRetries; i++)
+    	{
+    		retryChain = retryChain
+    		// Stages 1, 3, 5, etc: trace errors but stop exception propagation in order to keep going
+    		// Either return null if we don't have a valid result, or pass the result along to the next stage.
+    		.handleAsync((r,e) ->
+    		{
+    			if (e != null)
+    			{
+        			if (partitionId != null)
+        			{
+        				TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, retryMessage), LoggingUtils.unwrapException(e, null));
+        			}
+        			else
+        			{
+        				TRACE_LOGGER.warn(this.hostContext.withHost(retryMessage), LoggingUtils.unwrapException(e, null));
+        			}
+    			}
+    			return (e == null) ? r : null; // stop propagation of exceptions
+    		}, this.hostContext.getExecutor())
+    		// Stages 2, 4, 6, etc: if we already have a valid result, pass it along. Otherwise, make another attempt.
+    		// Once we have a valid result there will be no more attempts or exceptions.
+    		.thenComposeAsync((oldresult) ->
+    		{
+    			CompletableFuture<?> newresult = CompletableFuture.completedFuture(oldresult);
+    			if (oldresult == null)
+    			{
+	    			try
+	    			{
+						newresult = lambda.call();
+					}
+	    			catch (Exception e1)
+	    			{
+	    				throw new CompletionException(e1);
+					}
+    			}
+    			return newresult;
+    		}, this.hostContext.getExecutor());
+    	}
+    	// Stage final: trace the exception with the final message, or pass along the valid result.
+    	retryChain = retryChain.handleAsync((r,e) ->
+    	{
+    		if (e != null)
+    		{
+        		if (partitionId != null)
+        		{
+        			TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, finalFailureMessage));
+        		}
+        		else
+        		{
+        			TRACE_LOGGER.warn(this.hostContext.withHost(finalFailureMessage));
+        		}
+        		throw LoggingUtils.wrapException(new RuntimeException(finalFailureMessage), action);
+    		}
+    		return (e == null) ? r : null;
+    	}, this.hostContext.getExecutor());
+    	
+    	return retryChain;
+    }
+    
+    private class BoolWrapper
+    {
+    	public BoolWrapper(boolean init) { this.value = init; }
+    	public boolean value;
+    }
+    
+    // Return Void so it can be called from a lambda.
+    // throwOnFailure is true 
+    private Void scan()
+    {
+    	TRACE_LOGGER.info(this.hostContext.withHost("Starting lease scan"));
+
+    	// DO NOT check whether this.scanFuture is cancelled. The first execution of this method is scheduled
+    	// with 0 delay and can occur before this.scanFuture is set to the result of the schedule() call.
+
+        // These are final so they can be used in the lambdas below.
+        final AtomicInteger ourLeasesCount = new AtomicInteger();
+        final ConcurrentHashMap<String, Lease> leasesOwnedByOthers = new ConcurrentHashMap<String, Lease>();
+        final BoolWrapper resultsAreComplete = new BoolWrapper(true);
+
+        // Stage A: get the list of all leases
+        CompletableFuture<Lease> leaseToStealFuture = this.hostContext.getLeaseManager().getAllLeases()
+        // Stage B: check the state of each lease in parallel, acquiring those which are expired
+        .thenApplyAsync((leaseList) ->
+        {
+        	ArrayList<CompletableFuture<Lease>> transformedLeases = new ArrayList<CompletableFuture<Lease>>();
+        	for (Lease l : leaseList)
+        	{
+        		final Lease workingLease = l;
+        		
+        		// Stage B.0: is the lease expired?
+        		CompletableFuture<Lease> oneResult = workingLease.isExpired()
+        		// Stage B.1: if it is expired, attempt to acquire it.
+        		.thenComposeAsync((expired) ->
+        		{
+        			return expired ? this.hostContext.getLeaseManager().acquireLease(workingLease) : CompletableFuture.completedFuture(false);
+        		}, this.hostContext.getExecutor())
+        		// Stage B.2: if it was acquired, start a pump and do the counting.
+        		.thenApplyAsync((acquired) ->
+				{
+	        		if (acquired)
+	        		{
+	        			this.pump.addPump(workingLease);
+	        		}
+	        		if (workingLease.isOwnedBy(this.hostContext.getHostName()))
+	        		{
+	        			ourLeasesCount.getAndIncrement(); // count leases owned by this host
+	        		}
+	        		else
+	        		{
+	        			leasesOwnedByOthers.put(workingLease.getPartitionId(), workingLease); // save leases owned by other hosts
+	        		}
+	        		return workingLease;
+				}, this.hostContext.getExecutor())
+            	// Stage B.3: ALWAYS RUN REGARDLESS OF EXCEPTIONS -- log/notify if exception occurred
+            	.whenCompleteAsync((lease, e) ->
+            	{
+            		if (e != null)
+            		{
+            			resultsAreComplete.value = false;
+                		Exception notifyWith = (Exception)LoggingUtils.unwrapException(e, null);
+                		TRACE_LOGGER.warn(this.hostContext.withHost("Failure getting/acquiring lease, skipping"), notifyWith);
+                		this.hostContext.getEventProcessorOptions().notifyOfException(this.hostContext.getHostName(), notifyWith,
+                				EventProcessorHostActionStrings.CHECKING_LEASES, ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
+            		}
+            	}, this.hostContext.getExecutor());
+
+        		transformedLeases.add(oneResult);
+        	}
+        	return transformedLeases;
+        }, this.hostContext.getExecutor())
+        // Stage C: get a future that waits for all the results
+        .thenComposeAsync((transformedLeases) ->
+        {
+            CompletableFuture<?>[] dummy = new CompletableFuture<?>[transformedLeases.size()];
+            return CompletableFuture.allOf(transformedLeases.toArray(dummy));
+        }, this.hostContext.getExecutor())
+        // Stage D: consume the counting done by the per-lease stage to decide whether and what lease to steal
+        .thenApplyAsync((empty) ->
+        {
+        	TRACE_LOGGER.info(this.hostContext.withHost("Lease scan steal check"));
+        	
+            // Grab more leases if available and needed for load balancing, but only if all leases were checked OK.
+            // Don't try to steal if numbers are in doubt due to errors in the previous stage. 
+        	Lease stealThisLease = null;
+            if ((leasesOwnedByOthers.size() > 0) && resultsAreComplete.value)
+            {
+	            stealThisLease = whichLeaseToSteal(leasesOwnedByOthers.values(), ourLeasesCount.get());
+            }
+        	return stealThisLease;
+        }, this.hostContext.getExecutor());
+        
+        // Stage E: if D identified a candidate for stealing, attempt to steal it. Return true on successful stealing, false in all other cases
+        leaseToStealFuture.thenComposeAsync((stealThisLease) ->
+        {
+        	return (stealThisLease != null) ? this.hostContext.getLeaseManager().acquireLease(stealThisLease) : CompletableFuture.completedFuture(false);
+        }, this.hostContext.getExecutor())
+        // Stage F: consume results from E and D. Start a pump if a lease was stolen.
+        .thenCombineAsync(leaseToStealFuture, (stealSucceeded, lease) ->
+        {
+            if (stealSucceeded)
+            {
+        		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Stole lease"));
+        		this.pump.addPump(lease);
+            }
+            return lease;
+        }, this.hostContext.getExecutor())
+        // Stage G: ALWAYS RUN REGARDLESS OF EXCEPTIONS -- log/notify, schedule next scan
+        .whenCompleteAsync((lease, e) ->
+        {
+        	if (e != null)
+        	{
+    			Exception notifyWith = (Exception)LoggingUtils.unwrapException(e, null);
+    			if (lease != null)
+    			{
+	    			TRACE_LOGGER.warn(this.hostContext.withHost("Exception stealing lease for partition " + lease.getPartitionId()), notifyWith);
+	    			this.hostContext.getEventProcessorOptions().notifyOfException(this.hostContext.getHostName(), notifyWith,
+	    					EventProcessorHostActionStrings.STEALING_LEASE, lease.getPartitionId());
+    			}
+    			else
+    			{
+	    			TRACE_LOGGER.warn(this.hostContext.withHost("Exception stealing lease"), notifyWith);
+	    			this.hostContext.getEventProcessorOptions().notifyOfException(this.hostContext.getHostName(), notifyWith,
+	    					EventProcessorHostActionStrings.STEALING_LEASE, ExceptionReceivedEventArgs.NO_ASSOCIATED_PARTITION);
+    			}
+        	}
+        	
+            onPartitionCheckCompleteTestHook();
+            
+        	// Schedule the next scan unless the future has been cancelled.
+            synchronized (this.scanFutureSynchronizer)
+            {
+	        	if (!this.scanFuture.isCancelled())
+	        	{
+	        		int seconds = this.hostContext.getPartitionManagerOptions().getLeaseRenewIntervalInSeconds();
+	    	    	this.scanFuture = this.hostContext.getExecutor().schedule(() -> scan(), seconds, TimeUnit.SECONDS);
+	    	    	TRACE_LOGGER.info(this.hostContext.withHost("Scheduling lease scanner in " + seconds));
+	        	}
+            }
+        }, this.hostContext.getExecutor());
+
+    	return null;
+    }
+
+    private Lease whichLeaseToSteal(Collection<Lease> stealableLeases, int haveLeaseCount)
     {
     	HashMap<String, Integer> countsByOwner = countLeasesByOwner(stealableLeases);
     	String biggestOwner = findBiggestOwner(countsByOwner);
-    	int biggestCount = countsByOwner.get(biggestOwner);
-    	ArrayList<Lease> stealTheseLeases = null;
+    	int biggestCount = countsByOwner.get(biggestOwner); // HASHMAP
+    	Lease stealThisLease = null;
     	
     	// If the number of leases is a multiple of the number of hosts, then the desired configuration is
     	// that all hosts own the name number of leases, and the difference between the "biggest" owner and
@@ -450,19 +470,17 @@ class PartitionManager
     	
     	if ((biggestCount - haveLeaseCount) >= 2)
     	{
-    		stealTheseLeases = new ArrayList<Lease>();
     		for (Lease l : stealableLeases)
     		{
-    			if (l.getOwner().compareTo(biggestOwner) == 0)
+    			if (l.isOwnedBy(biggestOwner))
     			{
-    				stealTheseLeases.add(l);
-    				TRACE_LOGGER.info(LoggingUtils.withHost(this.host.getHostName(),
-                            "Proposed to steal lease for partition " + l.getPartitionId() + " from " + biggestOwner));
+    				stealThisLease = l;
+    				TRACE_LOGGER.info(this.hostContext.withHost("Proposed to steal lease for partition " + l.getPartitionId() + " from " + biggestOwner));
   					break;
     			}
     		}
     	}
-    	return stealTheseLeases;
+    	return stealThisLease;
     }
     
     private String findBiggestOwner(HashMap<String, Integer> countsByOwner)
@@ -471,9 +489,9 @@ class PartitionManager
     	String biggestOwner = null;
     	for (String owner : countsByOwner.keySet())
     	{
-    		if (countsByOwner.get(owner) > biggestCount)
+    		if (countsByOwner.get(owner) > biggestCount) // HASHMAP
     		{
-    			biggestCount = countsByOwner.get(owner);
+    			biggestCount = countsByOwner.get(owner); // HASHMAP
     			biggestOwner = owner;
     		}
     	}
@@ -487,7 +505,7 @@ class PartitionManager
     	{
     		if (counts.containsKey(l.getOwner()))
     		{
-    			Integer oldCount = counts.get(l.getOwner());
+    			Integer oldCount = counts.get(l.getOwner()); // HASHMAP
     			counts.put(l.getOwner(), oldCount + 1);
     		}
     		else
@@ -497,9 +515,9 @@ class PartitionManager
     	}
     	for (String owner : counts.keySet())
     	{
-    		TRACE_LOGGER.info("host " + owner + " owns " + counts.get(owner) + " leases");
+    		TRACE_LOGGER.info(this.hostContext.withHost("host " + owner + " owns " + counts.get(owner) + " leases")); // HASHMAP
     	}
-    	TRACE_LOGGER.info("total hosts in sorted list: " + counts.size());
+    	TRACE_LOGGER.info(this.hostContext.withHost("total hosts in sorted list: " + counts.size()));
     	
     	return counts;
     }

@@ -8,131 +8,87 @@ package com.microsoft.azure.eventprocessorhost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.util.ArrayList;
-import java.util.concurrent.Callable;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 
 class Pump
 {
-    protected final EventProcessorHost host; // protected for testability
+    protected final HostContext hostContext;
 
-    private ConcurrentHashMap<String, PartitionPump> pumpStates;
+    protected ConcurrentHashMap<String, PartitionPump> pumpStates; // protected for testability
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(Pump.class);
     
-    public Pump(EventProcessorHost host)
+    public Pump(HostContext hostContext)
     {
-        this.host = host;
+        this.hostContext = hostContext;
 
         this.pumpStates = new ConcurrentHashMap<String, PartitionPump>();
     }
     
-    public void addPump(String partitionId, Lease lease) throws Exception
+    public void addPump(Lease lease)
     {
-    	PartitionPump capturedPump = this.pumpStates.get(partitionId);
-    	if (capturedPump != null)
-    	{
-    		// There already is a pump. Make sure the pump is working and replace the lease.
-    		if ((capturedPump.getPumpStatus() == PartitionPumpStatus.PP_ERRORED) || capturedPump.isClosing())
-    		{
-    			// The existing pump is bad. Remove it (if it exists!) and create a new one.
-    			Future<?> removing = removePump(partitionId, CloseReason.Shutdown);
-    			if (removing != null)
-    			{
-    				removing.get();
-    			}
-    			createNewPump(partitionId, lease);
-    		}
-    		else
-    		{
-    			// Pump is working, just replace the lease.
-    			TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "updating lease for pump"));
-    			capturedPump.setLease(lease);
-    		}
-    	}
-    	else
+    	PartitionPump capturedPump = this.pumpStates.get(lease.getPartitionId()); // CONCURRENTHASHTABLE
+    	if (capturedPump == null)
     	{
     		// No existing pump, create a new one.
-    		createNewPump(partitionId, lease);
-    	}
-    }
-    
-    private void createNewPump(String partitionId, Lease lease) throws Exception
-    {
-		PartitionPump newPartitionPump = new EventHubPartitionPump(this.host, this, lease);
-		this.host.getExecutorService().submit(new Callable<Void>()
-			{
-				@Override
-				public Void call() throws Exception
-				{
-					// Do this whole section as a callable so it runs on a separate thread and doesn't hold up the main loop
-					// while we wait for startPump to return in order to know whether to add the pump to pumpStates.
-					newPartitionPump.startPump();
-					if (newPartitionPump.getPumpStatus() == PartitionPumpStatus.PP_RUNNING)
-					{
-						Pump.this.pumpStates.put(partitionId, newPartitionPump); // do the put after start, if the start fails then put doesn't happen
-						TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(Pump.this.host.getHostName(), partitionId, "created new pump"));
-					}
-					return null;
-				}
-			});
-    }
-    
-    public Future<?> removePump(String partitionId, final CloseReason reason)
-    {
-    	Future<?> retval = null;
-    	PartitionPump capturedPump = this.pumpStates.get(partitionId);
-    	if (capturedPump != null)
-    	{
-            TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
-                    "closing pump for reason " + reason.toString()));
-			retval = this.host.getExecutorService().submit(() -> capturedPump.shutdown(reason));
-
-    		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId, "removing pump"));
-    		this.pumpStates.remove(partitionId);
+    		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "creating new pump"));
+    		PartitionPump newPartitionPump = createNewPump(lease);
+    		this.pumpStates.put(lease.getPartitionId(), newPartitionPump);
+    		
+    		final String capturedPartitionId = lease.getPartitionId();
+    		// These are fast, non-blocking actions, so it is OK to run on the same thread that was running pump shutdown.
+    		// Also, do not run async because otherwise there can be a race with executor being shut down.
+    		newPartitionPump.startPump().whenComplete((r,e) -> this.pumpStates.remove(capturedPartitionId))
+    			.whenComplete((r,e) -> removingPumpTestHook(capturedPartitionId, e));
     	}
     	else
     	{
-    		// PartitionManager main loop tries to remove pump for every partition that the host does not own, just to be sure.
-    		// Not finding a pump for a partition is normal and expected most of the time.
-    		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
+    		// There already is a pump. Shouldn't get here but do something sane if it happens -- just replace the lease.
+			TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "updating lease for pump"));
+			capturedPump.setLease(lease);
+    	}
+    }
+    
+    // Separated out so that tests can override and substitute their own pump class.
+    protected PartitionPump createNewPump(Lease lease)
+    {
+    	return new PartitionPump(this.hostContext, lease);
+    }
+    
+    public CompletableFuture<Void> removePump(String partitionId, final CloseReason reason)
+    {
+    	CompletableFuture<Void> retval = CompletableFuture.completedFuture(null);
+    	PartitionPump capturedPump = this.pumpStates.get(partitionId); // CONCURRENTHASHTABLE
+    	if (capturedPump != null)
+    	{
+            TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId,
+                    "closing pump for reason " + reason.toString()));
+            retval = capturedPump.shutdown(reason);
+    	}
+    	else
+    	{
+    		// Shouldn't get here but not really harmful, so just trace.
+    		TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId,
                     "no pump found to remove for partition " + partitionId));
     	}
     	return retval;
     }
-    
-    void onPumpError(String partitionId)
+
+    public CompletableFuture<?>[] removeAllPumps(CloseReason reason)
     {
-    	Future<?> removal = removePump(partitionId, CloseReason.Shutdown);
-    	if (removal != null)
-    	{
-			try
-			{
-				removal.get();
-			}
-			catch (InterruptedException | ExecutionException e)
-			{
-				TRACE_LOGGER.warn(LoggingUtils.withHostAndPartition(this.host.getHostName(), partitionId,
-                        "error while shutting down failed partition pump"), e);
-			}
-    	}
-    }
-    
-    public Iterable<Future<?>> removeAllPumps(CloseReason reason)
-    {
-    	ArrayList<Future<?>> futures = new ArrayList<Future<?>>();
+    	CompletableFuture<?>[] futures = new CompletableFuture<?>[this.pumpStates.size()];
+    	int i = 0;
     	for (String partitionId : this.pumpStates.keySet())
     	{
-    		futures.add(removePump(partitionId, reason));
+    		futures[i++] = removePump(partitionId, reason);
     	}
     	return futures;
     }
     
-    public boolean hasPump(String partitionId)
+    protected void removingPumpTestHook(String partitionId, Throwable e)
     {
-    	return this.pumpStates.containsKey(partitionId);
+    	// For test use.
     }
 }

@@ -17,6 +17,12 @@ public class LeaseLostException extends Exception
 		this.lease = lease;
 	}
 	
+	LeaseLostException(Lease lease, String message)
+	{
+		super(message, null);
+		this.lease = lease;
+	}
+	
 	// We don't want to expose Lease to the public.
 	public String getPartitionId()
 	{

@@ -147,6 +147,8 @@ public class EventPosition implements Serializable {
     @Override
     public String toString() {
         return String.format("offset[%s], sequenceNumber[%s], enqueuedTime[%s], inclusiveFlag[%s]",
-                this.offset, this.sequenceNumber, this.dateTime.toEpochMilli(), this.inclusiveFlag);
+                this.offset, this.sequenceNumber,
+                (this.dateTime != null) ? this.dateTime.toEpochMilli() : "null",
+                this.inclusiveFlag);
     }
 }

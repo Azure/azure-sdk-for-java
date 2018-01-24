@@ -55,13 +55,13 @@ public class PrefabEventProcessor implements IEventProcessor
 		{
 			this.eventCount++;
 			batchSize++;
-			if (((this.eventCount % 100) == 0) && this.doMarker)
+			if (((this.eventCount % 10) == 0) && this.doMarker)
 			{
-				TestUtilities.console(context.getPartitionId());
+				TestUtilities.log("P" + context.getPartitionId() + ": " + this.eventCount + "\n");
 			}
 			if (this.logEveryMessage)
 			{
-				//TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBody()) + " @ " + event.getSystemProperties().getOffset() + "\n");
+				TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBytes()) + " @ " + event.getSystemProperties().getOffset() + "\n");
 			}
 			if (Arrays.equals(event.getBytes(), this.telltaleBytes))
 			{
@@ -89,12 +89,12 @@ public class PrefabEventProcessor implements IEventProcessor
 			break;
 			
 		case CKP_EXPLICIT:
-			context.checkpoint(lastEvent);
+			context.checkpoint(lastEvent).get(); // do a get so that errors will throw
 			TestUtilities.log("P" + context.getPartitionId() + " checkpointed at " + lastEvent.getSystemProperties().getOffset() + "\n");
 			break;
 			
 		case CKP_NOARGS:
-			context.checkpoint();
+			context.checkpoint().get(); // do a get so errors will throw
 			TestUtilities.log("P" + context.getPartitionId() + " checkpointed without arguments\n");
 			break;
 		}

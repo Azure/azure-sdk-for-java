@@ -5,6 +5,8 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import java.util.concurrent.CompletableFuture;
+
 /**
  * Lease class is public so that advanced users can implement an ILeaseManager. 
  * Unless you are implementing ILeaseManager you should not have to deal with objects
@@ -120,6 +122,22 @@ public class Lease
     }
 
     /**
+     * Convenience function for comparing possibleOwner against this.owner
+     * 
+     * @param possibleOwner  string to check 
+     * @return  true if possibleOwner is the same as this.owner, false otherwise
+     */
+    public boolean isOwnedBy(String possibleOwner)
+    {
+    	boolean retval = false;
+    	if (this.owner != null)
+    	{
+        	retval = (this.owner.compareTo(possibleOwner) == 0);
+    	}
+    	return retval;
+    }
+
+    /**
      * Returns the id of the partition that this Lease is for. Immutable so there is no corresponding setter.
      * 
      * @return
@@ -154,14 +172,15 @@ public class Lease
     /**
      * If an implementation of ILeaseManager supports the concept of lease expiration, then a class derived from Lease
      * may override this function to inspect the lease and return whether it has expired.
+     * Uses CompletableFuture because determining whether a lease is expired may involve I/O.
      *  
-     * @return true if the lease is expired, false if it is still valid
+     * @return CompletableFuture that returns true if the lease is expired, false if it is still valid
      * @throws Exception An override which does significant work may need to throw exceptions.
      */
-    public boolean isExpired() throws Exception
+    public CompletableFuture<Boolean> isExpired()
     {
     	// this function is meaningless in the base class
-    	return false;
+    	return CompletableFuture.completedFuture(false);
     }
     
     String getStateDebug()

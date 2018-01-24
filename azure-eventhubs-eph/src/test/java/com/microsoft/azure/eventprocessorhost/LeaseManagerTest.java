@@ -5,7 +5,10 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 
 import org.junit.Test;
 
@@ -59,8 +62,7 @@ public class LeaseManagerTest
 		assertFalse("lease store should not exist yet", boolret);
 		
 		TestUtilities.log("Creating lease store");
-		boolret = this.leaseManagers[0].createLeaseStoreIfNotExists().get();
-		assertTrue("creating lease store returned false", boolret);
+		this.leaseManagers[0].createLeaseStoreIfNotExists().get();
 
 		TestUtilities.log("Checking whether lease store exists after create");
 		boolret = this.leaseManagers[0].leaseStoreExists().get();
@@ -96,7 +98,7 @@ public class LeaseManagerTest
 		}
 		
 		int x = 1;
-		while (!leases[0].isExpired())
+		while (!leases[0].isExpired().get())
 		{
 			Thread.sleep(5000);
 			TestUtilities.log("Still waiting for lease on 0 to expire: " + (5 * x));
@@ -118,7 +120,7 @@ public class LeaseManagerTest
 		}
 		boolret = this.leaseManagers[0].updateLease(leases[1]).get();
 		assertTrue("failed to update lease for 1", boolret);
-		Lease retrievedLease = this.leaseManagers[0].getLease("1").get();
+		Lease retrievedLease = getOneLease("1", this.leaseManagers[0]).get();
 		assertNotNull("failed to get lease for 1", retrievedLease);
 		assertEquals("epoch was not persisted, expected " + leases[1].getEpoch() + " got " + retrievedLease.getEpoch(), leases[1].getEpoch(), retrievedLease.getEpoch());
 		if (!useAzureStorage)
@@ -126,10 +128,9 @@ public class LeaseManagerTest
 			assertEquals("token was not persisted, expected [" + leases[1].getToken() + "] got [" + retrievedLease.getToken() + "]", leases[1].getToken(), retrievedLease.getToken());
 		}
 		
-		// Release for 0 is expected to fail because it has expired
+		// Release for 0 should not throw even though lease has expired -- it just won't do anything
 		TestUtilities.log("Trying to release expired lease 0");
-		boolret = this.leaseManagers[0].releaseLease(leases[0]).get();
-		assertFalse("release lease on 0 succeeded unexpectedly", boolret);
+		this.leaseManagers[0].releaseLease(leases[0]).get();
 		
 		// Renew for 0 succeeds even though it has expired.
 		// This is the behavior of AzureStorageCheckpointLeaseManager, which is dictated by the behavior of Azure Storage leases.
@@ -141,8 +142,7 @@ public class LeaseManagerTest
 		for (int i = 0; i < partitionCount; i++)
 		{
 			TestUtilities.logConditional(useAzureStorage, "Partition " + i + " state before: " + leases[i].getStateDebug());
-			boolret = this.leaseManagers[0].releaseLease(leases[i]).get();
-			assertTrue("failed to release lease for " + i, boolret);
+			this.leaseManagers[0].releaseLease(leases[i]).get();
 			TestUtilities.logConditional(useAzureStorage, "Partition " + i + " state after: " + leases[i].getStateDebug());
 		}
 		
@@ -150,9 +150,8 @@ public class LeaseManagerTest
 		boolret = this.leaseManagers[0].acquireLease(leases[0]).get();
 		assertTrue("failed to acquire previously released 0", boolret);
 
-		TestUtilities.log("Trying to double release lease 0");
-		boolret = this.leaseManagers[0].releaseLease(leases[0]).get();
-		assertTrue("failed to release lease for 0", boolret);
+		TestUtilities.log("Trying to release lease 0");
+		this.leaseManagers[0].releaseLease(leases[0]).get();
 		
 		TestUtilities.log("Cleaning up lease store");
 		boolret = this.leaseManagers[0].deleteLeaseStore().get();
@@ -178,8 +177,7 @@ public class LeaseManagerTest
 		assertFalse("lease store should not exist yet", boolret);
 		
 		TestUtilities.log("Creating lease store");
-		boolret = this.leaseManagers[0].createLeaseStoreIfNotExists().get();
-		assertTrue("creating lease store returned false", boolret);
+		this.leaseManagers[0].createLeaseStoreIfNotExists().get();
 
 		TestUtilities.log("Check whether lease store exists after create");
 		boolret = this.leaseManagers[0].leaseStoreExists().get();
@@ -194,7 +192,7 @@ public class LeaseManagerTest
 		assertNotNull("first manager failed creating lease for 0", mgr1Lease);
 		
 		TestUtilities.log("Checking whether second manager can see lease 0");
-		Lease mgr2Lease = this.leaseManagers[1].getLease("0").get();
+		Lease mgr2Lease = getOneLease("0", this.leaseManagers[1]).get();
 		assertNotNull("second manager cannot see lease for 0", mgr2Lease);
 
 		TestUtilities.log("First manager acquiring lease 0");
@@ -203,7 +201,7 @@ public class LeaseManagerTest
 		TestUtilities.logConditional(useAzureStorage, "Lease token is " + mgr1Lease.getToken());
 		
 		int x = 0;
-		while (!mgr1Lease.isExpired())
+		while (!mgr1Lease.isExpired().get())
 		{
 			assertFalse("lease 0 expiration is overdue", (5000 * x) > (this.leaseManagers[0].getLeaseDurationInMilliseconds() + 10000));
 			Thread.sleep(5000);
@@ -220,7 +218,7 @@ public class LeaseManagerTest
 		assertFalse("first manager unexpected success renewing lease for 0", boolret);
 		
 		TestUtilities.log("First manager getting lease 0");
-		mgr1Lease = this.leaseManagers[0].getLease(mgr1Lease.getPartitionId()).get();
+		mgr1Lease = getOneLease(mgr1Lease.getPartitionId(), this.leaseManagers[0]).get();
 		assertNotNull("first manager cannot see lease for 0", mgr1Lease);
 		
 		TestUtilities.log("First manager stealing lease 0");
@@ -229,7 +227,7 @@ public class LeaseManagerTest
 		TestUtilities.logConditional(useAzureStorage, "Lease token is " + mgr1Lease.getToken());
 		
 		TestUtilities.log("Second mananger getting lease 0");
-		mgr2Lease = this.leaseManagers[1].getLease("0").get();
+		mgr2Lease = getOneLease("0", this.leaseManagers[1]).get();
 		assertNotNull("second manager cannot see lease for 0", mgr2Lease);
 
 		TestUtilities.log("Second mananger stealing lease 0");
@@ -238,12 +236,11 @@ public class LeaseManagerTest
 		TestUtilities.logConditional(useAzureStorage, "Lease token is " + mgr2Lease.getToken());
 		
 		TestUtilities.log("Second mananger releasing lease 0");
-		boolret = this.leaseManagers[1].releaseLease(mgr2Lease).get();
-		assertTrue("second manager failed to release lease 0", boolret);
+		this.leaseManagers[1].releaseLease(mgr2Lease).get();
 
+		// Won't do anything because first manager didn't own lease 0, but shouldn't throw either
 		TestUtilities.log("First mananger tyring to release lease 0");
-		boolret = this.leaseManagers[0].releaseLease(mgr1Lease).get();
-		assertFalse("first manager unexpected success releasing lease 0", boolret);
+		this.leaseManagers[0].releaseLease(mgr1Lease).get();
 		
 		TestUtilities.log("Cleaning up lease store");
 		boolret = this.leaseManagers[1].deleteLeaseStore().get();
@@ -263,6 +260,22 @@ public class LeaseManagerTest
 		}
 		containerName.append(UUID.randomUUID().toString());
 		return containerName.toString();
+	}
+	
+	private CompletableFuture<Lease> getOneLease(String partitionId, ILeaseManager leaseMgr) throws InterruptedException, ExecutionException
+	{
+		List<Lease> leaseList = leaseMgr.getAllLeases().get();
+		Lease returnLease = null;
+		for (int i = 0; i < leaseList.size(); i++)
+		{
+			Lease l = leaseList.get(i);
+			if (l.getPartitionId().compareTo(partitionId) == 0)
+			{
+				returnLease = l;
+				break;
+			}
+		}
+		return CompletableFuture.completedFuture(returnLease);
 	}
 	
 	private void setupOneManager(boolean useAzureStorage, int index, String suffix, String containerName) throws Exception
@@ -291,12 +304,12 @@ public class LeaseManagerTest
     	{
     		if (!useAzureStorage)
     		{
-    			((InMemoryLeaseManager)leaseMgr).initialize(host);
-    			((InMemoryCheckpointManager)checkpointMgr).initialize(host);
+    			((InMemoryLeaseManager)leaseMgr).initialize( host.getHostContext());
+    			((InMemoryCheckpointManager)checkpointMgr).initialize(host.getHostContext());
     		}
     		else
     		{
-    			((AzureStorageCheckpointLeaseManager)leaseMgr).initialize(host);
+    			((AzureStorageCheckpointLeaseManager)leaseMgr).initialize(host.getHostContext());
     		}
 		}
     	catch (Exception e)
