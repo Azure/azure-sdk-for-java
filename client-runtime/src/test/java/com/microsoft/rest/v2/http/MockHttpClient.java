@@ -180,7 +180,7 @@ public class MockHttpClient extends HttpClient {
     private static String bodyToString(HttpRequest request) throws IOException {
         String body = "";
         if (request.body() != null) {
-            Single<String> asyncString = FlowableUtil.collectBytes(request.body().content())
+            Single<String> asyncString = FlowableUtil.collectBytes(request.body())
                     .map(new Function<byte[], String>() {
                 @Override
                 public String apply(byte[] bytes) throws Exception {

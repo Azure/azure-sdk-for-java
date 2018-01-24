@@ -97,7 +97,7 @@ public class RestProxyXMLTests {
         @Override
         public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
             if (request.url().toString().endsWith("SetContainerACLs")) {
-                return FlowableUtil.collectBytes(request.body().content())
+                return FlowableUtil.collectBytes(request.body())
                         .map(new Function<byte[], HttpResponse>() {
                             @Override
                             public HttpResponse apply(byte[] bytes) throws Exception {
@@ -116,7 +116,7 @@ public class RestProxyXMLTests {
         URL url = getClass().getClassLoader().getResource("GetContainerACLs.xml");
         byte[] bytes = Files.readAllBytes(Paths.get(url.toURI()));
         HttpRequest request = new HttpRequest("canWriteXMLRequest", HttpMethod.PUT, new URL("http://unused/SetContainerACLs"));
-        request.withBody(bytes, "application/xml");
+        request.withBody(bytes);
 
         SignedIdentifierInner si = new SignedIdentifierInner();
         si.withId("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=");

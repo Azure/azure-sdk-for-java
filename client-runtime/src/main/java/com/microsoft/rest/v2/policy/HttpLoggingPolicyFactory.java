@@ -9,6 +9,7 @@ package com.microsoft.rest.v2.policy;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.SerializationFeature;
 import com.microsoft.rest.v2.http.HttpHeader;
+import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.util.FlowableUtil;
@@ -76,6 +77,16 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
             logger.info(s);
         }
 
+        private long getContentLength(HttpHeaders headers) {
+            long contentLength = 0;
+            try {
+                contentLength = Long.parseLong(headers.value("content-length"));
+            } catch (NumberFormatException | NullPointerException ignored) {
+            }
+
+            return contentLength;
+        }
+
         @Override
         public Single<HttpResponse> sendAsync(final HttpRequest request) {
             String context = request.callerMethod();
@@ -100,16 +111,18 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
                     log(logger, "(empty body)");
                     log(logger, "--> END " + request.httpMethod());
                 } else {
-                    boolean isHumanReadableContentType = !"application/octet-stream".equalsIgnoreCase(request.body().contentType());
-                    if (request.body().contentLength() < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
+                    boolean isHumanReadableContentType = !"application/octet-stream".equalsIgnoreCase(request.headers().value("Content-Type"));
+                    final long contentLength = getContentLength(request.headers());
+
+                    if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                         try {
-                            Single<byte[]> collectedBytes = FlowableUtil.collectBytes(request.body().buffer().content());
+                            Single<byte[]> collectedBytes = FlowableUtil.collectBytes(request.body());
                             bodyLoggingTask = collectedBytes.flatMapCompletable(new Function<byte[], CompletableSource>() {
                                 @Override
                                 public CompletableSource apply(byte[] bytes) throws Exception {
                                     String bodyString = new String(bytes, StandardCharsets.UTF_8);
-                                    bodyString = prettyPrintIfNeeded(logger, request.body().contentType(), bodyString);
-                                    log(logger, String.format("%s-byte body:\n%s", request.body().contentLength(), bodyString));
+                                    bodyString = prettyPrintIfNeeded(logger, request.headers().value("Content-Type"), bodyString);
+                                    log(logger, String.format("%s-byte body:\n%s", contentLength, bodyString));
                                     log(logger, "--> END " + request.httpMethod());
                                     return Completable.complete();
                                 }
@@ -118,7 +131,7 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
                             bodyLoggingTask = Completable.error(e);
                         }
                     } else {
-                        log(logger, request.body().contentLength() + "-byte body: (content not logged)");
+                        log(logger, contentLength + "-byte body: (content not logged)");
                         log(logger, "--> END " + request.httpMethod());
                     }
                 }
@@ -160,17 +173,10 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
             }
 
             if (detailLevel.shouldLogBody()) {
-                long contentLength = -1;
-                try {
-                    if (contentLengthString != null) {
-                        contentLength = Long.parseLong(contentLengthString);
-                    }
-                } catch (NumberFormatException ignored) {
-                }
-
+                long contentLength = getContentLength(response.headers());
                 final String contentTypeHeader = response.headerValue("Content-Type");
                 if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
-                        && contentLength != -1 && contentLength < MAX_BODY_LOG_SIZE) {
+                        && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
                     final HttpResponse bufferedResponse = response.buffer();
                     return bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
                         @Override

@@ -53,6 +53,7 @@ public class SwaggerMethodParser {
     private final HttpHeaders headers = new HttpHeaders();
     private Integer bodyContentMethodParameterIndex;
     private String bodyContentType;
+    private Type bodyJavaType;
     private int[] expectedStatusCodes;
     private Type returnType;
     private Type returnValueWireType;
@@ -181,6 +182,7 @@ public class SwaggerMethodParser {
                     final BodyParam bodyParamAnnotation = (BodyParam) annotation;
                     bodyContentMethodParameterIndex = parameterIndex;
                     bodyContentType = bodyParamAnnotation.value();
+                    bodyJavaType = swaggerMethod.getGenericParameterTypes()[parameterIndex];
                 }
             }
         }
@@ -372,6 +374,15 @@ public class SwaggerMethodParser {
      */
     public Type returnType() {
         return returnType;
+    }
+
+
+    /**
+     * Get the type of the body parameter to this method, if present.
+     * @return The return type of the body parameter to this method.
+     */
+    public Type bodyJavaType() {
+        return bodyJavaType;
     }
 
     /**

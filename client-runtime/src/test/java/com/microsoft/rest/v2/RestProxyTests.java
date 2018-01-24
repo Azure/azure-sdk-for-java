@@ -17,9 +17,7 @@ import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import com.microsoft.rest.v2.entities.HttpBinHeaders;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
-import com.microsoft.rest.v2.http.AsyncInputStream;
 import com.microsoft.rest.v2.http.ContentType;
-import com.microsoft.rest.v2.http.FileSegment;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipeline;
@@ -27,6 +25,7 @@ import com.microsoft.rest.v2.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v2.policy.HttpLoggingPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
+import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Flowable;
 import org.junit.Assert;
 import org.junit.Test;
@@ -34,18 +33,15 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.channels.AsynchronousFileChannel;
-import java.nio.channels.FileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.*;
 
@@ -1335,47 +1331,44 @@ public abstract class RestProxyTests {
         RestResponse<Void, Flowable<byte[]>> getBytes();
 
         @GET("/bytes/30720")
-        RestResponse<Void, AsyncInputStream> getBytesAsyncInputStream();
+        Flowable<byte[]> getBytesFlowable();
     }
 
     @Test
     public void SimpleDownloadTest() {
         RestResponse<Void, Flowable<byte[]>> response = createService(DownloadService.class).getBytes();
-        final AtomicInteger count = new AtomicInteger();
+        int count = 0;
         for (byte[] bytes : response.body().blockingIterable()) {
-            count.addAndGet(bytes.length);
+            count += bytes.length;
         }
-        assertEquals(30720, count.intValue());
+        assertEquals(30720, count);
     }
 
     @Test
-    public void SimpleDownloadAsyncInputStreamTest() {
-        RestResponse<Void, AsyncInputStream> response = createService(DownloadService.class).getBytesAsyncInputStream();
-        final AtomicInteger count = new AtomicInteger();
-        for (byte[] bytes : response.body().content().blockingIterable()) {
-            count.addAndGet(bytes.length);
+    public void RawFlowableDownloadTest() {
+        Flowable<byte[]> response = createService(DownloadService.class).getBytesFlowable();
+        int count = 0;
+        for (byte[] bytes : response.blockingIterable()) {
+            count += bytes.length;
         }
-        assertEquals(30720, count.intValue());
+        assertEquals(30720, count);
     }
 
     @Host("http://httpbin.org")
     interface FlowableUploadService {
         @PUT("/put")
-        RestResponse<Void, HttpBinJSON> put(@BodyParam("text/plain") AsyncInputStream content);
-
-        @PUT("/put")
-        RestResponse<Void, HttpBinJSON> put(@BodyParam("text/plain") FileSegment content);
+        RestResponse<Void, HttpBinJSON> put(@BodyParam("text/plain") Flowable<byte[]> content, @HeaderParam("Content-Length") long contentLength);
     }
 
     @Test
     public void FlowableUploadTest() throws Exception {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
-        AsyncInputStream stream = AsyncInputStream.create(new FileInputStream(filePath.toFile()), Files.size(filePath));
+        Flowable<byte[]> stream = FlowableUtil.readFile(AsynchronousFileChannel.open(filePath));
 
         final HttpClient httpClient = createHttpClient();
         // Log the body so that body buffering/replay behavior is exercised.
-        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY, true));
-        RestResponse<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream);
+        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY_AND_HEADERS, true));
+        RestResponse<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.body().data);
     }
@@ -1385,17 +1378,7 @@ public abstract class RestProxyTests {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
         AsynchronousFileChannel fileChannel = AsynchronousFileChannel.open(filePath, StandardOpenOption.READ);
         RestResponse<Void, HttpBinJSON> response = createService(FlowableUploadService.class)
-                .put(AsyncInputStream.create(fileChannel, 4, 15));
-
-        assertEquals("quick brown fox", response.body().data);
-    }
-
-    @Test
-    public void FileSegmentUploadTest() throws Exception {
-        Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
-        FileChannel fileChannel = FileChannel.open(filePath, StandardOpenOption.READ);
-        RestResponse<Void, HttpBinJSON> response = createService(FlowableUploadService.class)
-                .put(new FileSegment(fileChannel, 4, 15));
+                .put(FlowableUtil.readFile(fileChannel, 4, 15), 15);
 
         assertEquals("quick brown fox", response.body().data);
     }

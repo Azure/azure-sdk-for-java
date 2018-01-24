@@ -29,7 +29,7 @@ public class HttpRequestTests {
                 HttpMethod.fromString("request http method"),
                 new URL("http://request.url"),
                 headers,
-                new FlowableHttpRequestBody(0, "application/octet-stream", Flowable.just(new byte[0]), true));
+                Flowable.just(new byte[0]));
 
         final HttpRequest bufferedRequest = request.buffer();
 

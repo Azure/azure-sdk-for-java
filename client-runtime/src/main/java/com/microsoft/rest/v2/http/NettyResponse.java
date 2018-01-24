@@ -22,25 +22,12 @@ import java.util.Map.Entry;
  * A HttpResponse that is implemented using Netty.
  */
 class NettyResponse extends HttpResponse {
-    private static final String HEADER_CONTENT_LENGTH = "Content-Length";
     private final io.netty.handler.codec.http.HttpResponse rxnRes;
-    private final long contentLength;
     private final Flowable<ByteBuf> contentStream;
 
     NettyResponse(io.netty.handler.codec.http.HttpResponse rxnRes, Flowable<ByteBuf> emitter) {
         this.rxnRes = rxnRes;
-        this.contentLength = getContentLength(rxnRes);
         this.contentStream = emitter;
-    }
-
-    private static long getContentLength(io.netty.handler.codec.http.HttpResponse rxnRes) {
-        long result;
-        try {
-            result = Long.parseLong(rxnRes.headers().get(HEADER_CONTENT_LENGTH));
-        } catch (NullPointerException | NumberFormatException e) {
-            result = 0;
-        }
-        return result;
     }
 
     @Override

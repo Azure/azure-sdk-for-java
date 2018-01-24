@@ -27,7 +27,7 @@ public class RefreshTokenClientTests {
         assertEquals("com.microsoft.azure.v2.credentials.RefreshTokenClient$RefreshTokenService.refreshToken", request.callerMethod());
         assertEquals("http://my.base.url/mockTenant/oauth2/token", request.url().toString());
 
-        String receivedContent = new String(FlowableUtil.collectBytes(request.body().content()).blockingGet(), Charsets.UTF_8);
+        String receivedContent = new String(FlowableUtil.collectBytes(request.body()).blockingGet(), Charsets.UTF_8);
         assertEquals("client_id=mockClientId&grant_type=refresh_token&resource=mockResource&refresh_token=mockRefreshToken", receivedContent);
     }
 }
