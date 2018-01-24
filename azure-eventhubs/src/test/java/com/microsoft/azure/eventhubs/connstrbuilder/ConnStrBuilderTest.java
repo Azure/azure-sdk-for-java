@@ -16,7 +16,7 @@ import com.microsoft.azure.eventhubs.IllegalConnectionStringFormatException;
 
 public class ConnStrBuilderTest extends ApiTestBase
 {
-	static final String correctConnectionString = "Endpoint=sb://endpoint1;EntityPath=eventhub1;SharedAccessKeyName=somevalue;SharedAccessKey=something;OperationTimeout=PT5S;RetryPolicy=NoRetry";
+	static final String correctConnectionString = "Endpoint=sb://endpoint1;EntityPath=eventhub1;SharedAccessKeyName=somevalue;SharedAccessKey=something;OperationTimeout=PT5S";
 	static final Consumer<ConnectionStringBuilder> validateConnStrBuilder = new Consumer<ConnectionStringBuilder>()
 	{
 		@Override
