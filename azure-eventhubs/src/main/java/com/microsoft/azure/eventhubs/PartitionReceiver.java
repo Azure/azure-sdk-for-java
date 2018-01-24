@@ -42,9 +42,9 @@ import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
  */
 public final class PartitionReceiver extends ClientEntity implements IReceiverSettingsProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionReceiver.class);
-    static final int MINIMUM_PREFETCH_COUNT = 10;
+    public static final int MINIMUM_PREFETCH_COUNT = 10;
 
-    static final int DEFAULT_PREFETCH_COUNT = 999;
+    public static final int DEFAULT_PREFETCH_COUNT = 999;
     static final long NULL_EPOCH = 0;
 
 
