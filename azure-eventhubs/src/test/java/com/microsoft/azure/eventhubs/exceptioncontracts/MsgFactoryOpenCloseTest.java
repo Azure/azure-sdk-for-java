@@ -117,5 +117,124 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
         testClosed.shutdown();
 
         temp.sendSync(new EventData("test data - string".getBytes()));
+        testClosed.awaitTermination(60, TimeUnit.SECONDS);
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceToReceiveOperation() throws Exception {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+
+        final PartitionReceiver temp = EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed)
+                .createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEndOfStream());
+
+        testClosed.shutdown();
+        testClosed.awaitTermination(60, TimeUnit.SECONDS);
+
+        temp.receiveSync(20);
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceToCreateLinkOperation() throws Exception {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+
+        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed);
+
+        testClosed.shutdown();
+        testClosed.awaitTermination(60, TimeUnit.SECONDS);
+
+        // first send creates send link
+        temp.sendSync(new EventData("test data - string".getBytes()));
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceToCreateSenderOperation() throws Exception {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+
+        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed);
+
+        testClosed.shutdown();
+        testClosed.awaitTermination(60, TimeUnit.SECONDS);
+
+        temp.createPartitionSenderSync(PARTITION_ID);
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceToCreateReceiverOperation() throws Exception {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+
+        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed);
+
+        testClosed.shutdown();
+        testClosed.awaitTermination(60, TimeUnit.SECONDS);
+
+        temp.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEndOfStream());
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceThenMgmtOperation() throws Throwable {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+
+        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed);
+
+        testClosed.shutdown();
+        testClosed.awaitTermination(60, TimeUnit.SECONDS);
+
+        try {
+            temp.getPartitionRuntimeInformation(PARTITION_ID).get();
+        } catch(ExecutionException ex) {
+            throw ex.getCause();
+        }
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceThenFactoryCloseOperation() throws Exception {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+
+        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed);
+
+        testClosed.shutdown();
+        testClosed.awaitTermination(60, TimeUnit.SECONDS);
+
+        temp.closeSync();
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceThenSenderCloseOperation() throws Exception {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+
+        final PartitionSender temp = EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed).createPartitionSenderSync(PARTITION_ID);
+
+        testClosed.shutdown();
+        testClosed.awaitTermination(60, TimeUnit.SECONDS);
+
+        temp.closeSync();
+    }
+
+    @Test(expected = RejectedExecutionException.class)
+    public void SupplyClosedExecutorServiceThenReceiverCloseOperation() throws Exception {
+        final ExecutorService testClosed = Executors.newWorkStealingPool();
+
+        final PartitionReceiver temp = EventHubClient.createFromConnectionStringSync(
+                TestContext.getConnectionString().toString(),
+                testClosed).createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEndOfStream());
+
+        testClosed.shutdown();
+        testClosed.awaitTermination(60, TimeUnit.SECONDS);
+
+        temp.closeSync();
     }
 }

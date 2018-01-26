@@ -282,10 +282,10 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
 
                 if (lastMessageRef != null && lastMessageRef.get() != null) {
 
-                    DeliveryAnnotations deliveryAnnotations = lastMessageRef.get().getDeliveryAnnotations();
+                    final DeliveryAnnotations deliveryAnnotations = lastMessageRef.get().getDeliveryAnnotations();
                     if (deliveryAnnotations != null && deliveryAnnotations.getValue() != null) {
 
-                        Map<Symbol, Object> deliveryAnnotationsMap = deliveryAnnotations.getValue();
+                        final Map<Symbol, Object> deliveryAnnotationsMap = deliveryAnnotations.getValue();
                         PartitionReceiver.this.runtimeInformation.setRuntimeInformation(
                                 (long) deliveryAnnotationsMap.get(ClientConstants.LAST_ENQUEUED_SEQUENCE_NUMBER),
                                 ((Date) deliveryAnnotationsMap.get(ClientConstants.LAST_ENQUEUED_TIME_UTC)).toInstant(),

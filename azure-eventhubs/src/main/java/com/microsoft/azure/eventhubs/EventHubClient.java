@@ -43,6 +43,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     private MessagingFactory underlyingFactory;
     private MessageSender sender;
     private CompletableFuture<Void> createSender;
+    private Timer timer;
 
     private EventHubClient(final ConnectionStringBuilder connectionString, final Executor executor) throws IOException, IllegalEntityException {
         super(StringUtil.getRandomString(), null, executor);
@@ -134,6 +135,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
                     @Override
                     public EventHubClient apply(MessagingFactory factory) {
                         eventHubClient.underlyingFactory = factory;
+                        eventHubClient.timer = new Timer(factory);
                         return eventHubClient;
                     }
                 }, executor);
@@ -937,8 +939,12 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
         CompletableFuture<Map<String, Object>> rawdataFuture = new CompletableFuture<Map<String, Object>>();
         
         ManagementRetry retrier = new ManagementRetry(rawdataFuture, endTime, this.underlyingFactory, request);
-        Timer.schedule(retrier, Duration.ZERO, TimerType.OneTimeRun);
-        
+
+        final CompletableFuture<?> scheduledTask = this.timer.schedule(retrier, Duration.ZERO);
+        if (scheduledTask.isCompletedExceptionally()) {
+            rawdataFuture.completeExceptionally(ExceptionUtil.getExceptionFromCompletedFuture(scheduledTask));
+        }
+
         return rawdataFuture;
     }
     
@@ -1010,7 +1016,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
 							// the next time it is needed.
 							ManagementRetry retrier = new ManagementRetry(ManagementRetry.this.finalFuture, ManagementRetry.this.endTime,
 									ManagementRetry.this.mf, ManagementRetry.this.request);
-							Timer.schedule(retrier, waitTime, TimerType.OneTimeRun);
+							EventHubClient.this.timer.schedule(retrier, waitTime);
 						}
 					}
 				}

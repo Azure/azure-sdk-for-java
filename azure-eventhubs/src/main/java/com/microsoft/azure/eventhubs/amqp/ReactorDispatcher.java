@@ -9,6 +9,7 @@ import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.Pipe;
 import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.RejectedExecutionException;
 
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
@@ -52,14 +53,26 @@ public final class ReactorDispatcher {
         this.reactor.update(schedulerSelectable);
     }
 
-    public void invoke(final DispatchHandler timerCallback) throws IOException {
+    public void invoke(final DispatchHandler timerCallback) throws IOException, RejectedExecutionException {
+        this.throwIfSchedulerError();
+
         this.workQueue.offer(timerCallback);
         this.signalWorkQueue();
     }
 
-    public void invoke(final int delay, final DispatchHandler timerCallback) throws IOException {
+    public void invoke(final int delay, final DispatchHandler timerCallback) throws IOException, RejectedExecutionException {
+        this.throwIfSchedulerError();
+
         this.workQueue.offer(new DelayHandler(this.reactor, delay, timerCallback));
         this.signalWorkQueue();
+    }
+
+    private void throwIfSchedulerError() {
+        final RejectedExecutionException rejectedException = this.reactor.attachments()
+                .get(RejectedExecutionException.class, RejectedExecutionException.class);
+        if (rejectedException != null) {
+            throw new RejectedExecutionException(rejectedException.getMessage(), rejectedException);
+        }
     }
 
     private void signalWorkQueue() throws IOException {

@@ -15,7 +15,7 @@ public class ReplayableWorkItem<T> extends WorkItem<T> {
     private boolean waitingForAck;
 
     private Exception lastKnownException;
-    private ScheduledFuture<?> timeoutTask;
+    private CompletableFuture<?> timeoutTask;
 
     public ReplayableWorkItem(final byte[] amqpMessage, final int encodedMessageSize, final int messageFormat, final CompletableFuture<T> completableFuture, final Duration timeout) {
         super(completableFuture, timeout);
@@ -53,11 +53,11 @@ public class ReplayableWorkItem<T> extends WorkItem<T> {
         this.lastKnownException = exception;
     }
 
-    public ScheduledFuture<?> getTimeoutTask() {
+    public CompletableFuture<?> getTimeoutTask() {
         return this.timeoutTask;
     }
 
-    public void setTimeoutTask(final ScheduledFuture<?> timeoutTask) {
+    public void setTimeoutTask(final CompletableFuture<?> timeoutTask) {
         this.timeoutTask = timeoutTask;
     }
 

@@ -10,16 +10,16 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
 import java.util.Collection;
+import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.ScheduledFuture;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-
 
 import com.microsoft.azure.eventhubs.amqp.AmqpException;
 import com.microsoft.azure.eventhubs.amqp.DispatchHandler;
@@ -68,6 +68,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
     private final ReceiveWork receiveWork;
     private final CreateAndReceive createAndReceive;
     private final Object errorConditionLock;
+    private final Timer timer;
 
     private int prefetchCount;
     private Receiver receiveLink;
@@ -76,8 +77,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
     private Exception lastKnownLinkError;
     private int nextCreditToFlow;
     private boolean creatingLink;
-    private ScheduledFuture openTimer;
-    private ScheduledFuture closeTimer;
+    private CompletableFuture<?> openTimer;
+    private CompletableFuture<?> closeTimer;
 
     private MessageReceiver(final MessagingFactory factory,
                             final String name,
@@ -97,6 +98,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
         this.prefetchCountSync = new Object();
         this.settingsProvider = settingsProvider;
         this.linkOpen = new WorkItem<>(new CompletableFuture<>(), factory.getOperationTimeout());
+        this.timer = new Timer(factory);
 
         this.pendingReceives = new ConcurrentLinkedQueue<>();
         this.errorConditionLock = new Object();
@@ -163,7 +165,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                         }
                     }
                 },
-                ClientConstants.TOKEN_REFRESH_INTERVAL);
+                ClientConstants.TOKEN_REFRESH_INTERVAL,
+                this.underlyingFactory);
     }
 
     // @param connection Connection on which the MessageReceiver's receive Amqp link need to be created on.
@@ -196,8 +199,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                     MessageReceiver.this.createReceiveLink();
                 }
             });
-        } catch (IOException ioException) {
-            this.linkOpen.getWork().completeExceptionally(new EventHubException(false, "Failed to create Receiver, see cause for more details.", ioException));
+        } catch (IOException|RejectedExecutionException schedulerException) {
+            this.linkOpen.getWork().completeExceptionally(schedulerException);
         }
 
         return this.linkOpen.getWork();
@@ -241,8 +244,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                     sendFlow(deltaPrefetchCount);
                 }
             });
-        } catch (IOException ioException) {
-            throw new EventHubException(false, "Setting prefetch count failed, see cause for more details", ioException);
+        } catch (IOException|RejectedExecutionException schedulerException) {
+            throw new EventHubException(false, "Setting prefetch count failed, see cause for more details", schedulerException);
         }
     }
 
@@ -262,16 +265,16 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
         }
 
         if (this.pendingReceives.isEmpty()) {
-            this.scheduleOperationTimer(TimeoutTracker.create(this.receiveTimeout));
+            timer.schedule(this.onOperationTimedout, this.receiveTimeout);
         }
 
-        CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<>();
+        final CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<>();
         pendingReceives.offer(new ReceiveWorkItem(onReceive, receiveTimeout, maxMessageCount));
 
         try {
             this.underlyingFactory.scheduleOnReactorThread(this.createAndReceive);
-        } catch (IOException ioException) {
-            onReceive.completeExceptionally(new OperationCancelledException("Receive failed while dispatching to Reactor, see cause for more details.", ioException));
+        } catch (IOException|RejectedExecutionException schedulerException) {
+            onReceive.completeExceptionally(schedulerException);
         }
 
         return onReceive;
@@ -390,7 +393,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                             }
                         }
                     });
-                } catch (IOException ignore) {
+                } catch (IOException|RejectedExecutionException ignore) {
                     recreateScheduled = false;
                 }
             }
@@ -406,7 +409,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 
     private void scheduleOperationTimer(final TimeoutTracker tracker) {
         if (tracker != null) {
-            Timer.schedule(this.onOperationTimedout, tracker.remaining(), TimerType.OneTimeRun);
+            timer.schedule(this.onOperationTimedout, tracker.remaining());
         }
     }
 
@@ -541,7 +544,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
 
     private void scheduleLinkOpenTimeout(final TimeoutTracker timeout) {
         // timer to signal a timeout if exceeds the operationTimeout on MessagingFactory
-        this.openTimer = Timer.schedule(
+        this.openTimer = timer.schedule(
                 new Runnable() {
                     public void run() {
                         if (!linkOpen.getWork().isDone()) {
@@ -565,13 +568,21 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                         }
                     }
                 }
-                , timeout.remaining()
-                , TimerType.OneTimeRun);
+                , timeout.remaining());
+
+        this.openTimer.whenCompleteAsync(
+                (unUsed, exception) -> {
+                    if (exception != null
+                            && exception instanceof Exception
+                            && !(exception instanceof CancellationException)) {
+                        ExceptionUtil.completeExceptionally(linkOpen.getWork(), (Exception) exception, MessageReceiver.this);
+                    }
+                }, this.executor);
     }
 
     private void scheduleLinkCloseTimeout(final TimeoutTracker timeout) {
         // timer to signal a timeout if exceeds the operationTimeout on MessagingFactory
-        this.closeTimer = Timer.schedule(
+        this.closeTimer = timer.schedule(
                 new Runnable() {
                     public void run() {
                         if (!linkClose.isDone()) {
@@ -592,8 +603,14 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                         }
                     }
                 }
-                , timeout.remaining()
-                , TimerType.OneTimeRun);
+                , timeout.remaining());
+
+        this.closeTimer.whenCompleteAsync(
+                (unUsed, exception) -> {
+                    if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
+                        ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageReceiver.this);
+                    }
+                }, this.executor);
     }
 
     @Override
@@ -653,8 +670,8 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                         }
                     }
                 });
-            } catch (IOException ioException) {
-                this.linkClose.completeExceptionally(new EventHubException(false, "Scheduling close failed with error. See cause for more details.", ioException));
+            } catch (IOException|RejectedExecutionException schedulerException) {
+                this.linkClose.completeExceptionally(schedulerException);
             }
         }
 

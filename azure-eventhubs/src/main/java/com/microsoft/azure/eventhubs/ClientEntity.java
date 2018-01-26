@@ -101,17 +101,13 @@ public abstract class ClientEntity {
                 Thread.currentThread().interrupt();
             }
 
-            Throwable throwable = exception.getCause();
-            if (throwable != null) {
-                if (throwable instanceof RuntimeException) {
-                    throw (RuntimeException) throwable;
-                }
-
-                if (throwable instanceof EventHubException) {
-                    throw (EventHubException) throwable;
-                }
-
-                throw new EventHubException(true, throwable);
+            final Throwable throwable = exception.getCause();
+            if (throwable instanceof RuntimeException) {
+                throw (RuntimeException) throwable;
+            } else if (throwable instanceof EventHubException) {
+                throw (EventHubException) throwable;
+            } else {
+                throw new RuntimeException(throwable != null ? throwable : exception);
             }
         }
     }

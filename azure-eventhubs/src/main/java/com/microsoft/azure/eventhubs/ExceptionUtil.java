@@ -8,6 +8,7 @@ import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import org.apache.qpid.proton.amqp.Symbol;
@@ -129,5 +130,19 @@ public final class ExceptionUtil {
         }
 
         return builder.toString();
+    }
+
+    public static Throwable getExceptionFromCompletedFuture(
+            final CompletableFuture<?> exceptionallyCompletedFuture) {
+        try {
+            exceptionallyCompletedFuture.get();
+        } catch (ExecutionException|InterruptedException exception) {
+            final Throwable cause = exception.getCause();
+            return (cause == null ? exception : cause);
+        } catch (Exception exception) {
+            return exception;
+        }
+
+        return null;
     }
 }

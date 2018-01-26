@@ -12,6 +12,10 @@ import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
 import java.util.Comparator;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.RejectedExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
 import java.util.Iterator;
@@ -21,9 +25,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.UUID;
 import java.util.PriorityQueue;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ScheduledFuture;
 
 import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
 import com.microsoft.azure.eventhubs.amqp.AmqpException;
@@ -60,7 +61,7 @@ import org.apache.qpid.proton.message.Message;
  * Abstracts all amqp related details
  * translates event-driven reactor model into async send Api
  */
-public class MessageSender extends ClientEntity implements IAmqpSender, IErrorContextProvider {
+public final class MessageSender extends ClientEntity implements IAmqpSender, IErrorContextProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageSender.class);
     private static final String SEND_TIMED_OUT = "Send operation timed out";
 
@@ -76,6 +77,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
     private final ActiveClientTokenManager activeClientTokenManager;
     private final String tokenAudience;
     private final Object errorConditionLock;
+    private final Timer timer;
 
     private volatile int maxMessageSize;
 
@@ -86,8 +88,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
     private Exception lastKnownLinkError;
     private Instant lastKnownErrorReportedAt;
     private boolean creatingLink;
-    private ScheduledFuture closeTimer;
-    private ScheduledFuture openTimer;
+    private CompletableFuture<?> closeTimer;
+    private CompletableFuture<?> openTimer;
 
     public static CompletableFuture<MessageSender> create(
             final MessagingFactory factory,
@@ -104,8 +106,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                     msgSender.createSendLink();
                 }
             });
-        } catch (IOException ioException) {
-            msgSender.linkFirstOpen.completeExceptionally(new EventHubException(false, "Failed to create Sender, see cause for more details.", ioException));
+        } catch (IOException|RejectedExecutionException schedulerException) {
+            msgSender.linkFirstOpen.completeExceptionally(schedulerException);
         }
 
         return msgSender.linkFirstOpen;
@@ -117,6 +119,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         this.sendPath = senderPath;
         this.underlyingFactory = factory;
         this.operationTimeout = factory.getOperationTimeout();
+        this.timer = new Timer(factory);
 
         this.lastKnownLinkError = null;
         this.lastKnownErrorReportedAt = Instant.EPOCH;
@@ -176,7 +179,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                         }
                     }
                 },
-                ClientConstants.TOKEN_REFRESH_INTERVAL);
+                ClientConstants.TOKEN_REFRESH_INTERVAL,
+                this.underlyingFactory);
     }
 
     public String getSendPath() {
@@ -198,7 +202,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
             final CompletableFuture<Void> onSend,
             final TimeoutTracker tracker,
             final Exception lastKnownError,
-            final ScheduledFuture<?> timeoutTask) {
+            final CompletableFuture<?> timeoutTask) {
         this.throwIfClosed();
 
         final boolean isRetrySend = (onSend != null);
@@ -219,9 +223,22 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         if (timeoutTask != null)
             timeoutTask.cancel(false);
 
-        final ScheduledFuture<?> timeoutTimerTask = Timer.schedule(
+        final CompletableFuture<?> timeoutTimerTask = this.timer.schedule(
                 new SendTimeout(deliveryTag, sendWaiterData),
-                currentSendTracker.remaining(), TimerType.OneTimeRun);
+                currentSendTracker.remaining());
+
+        // if the timeoutTask completed with scheduling error - notify sender
+        if (timeoutTimerTask.isCompletedExceptionally()) {
+            timeoutTimerTask.whenCompleteAsync(
+                    (unUsed, exception) -> {
+                        if (exception != null && !(exception instanceof CancellationException))
+                            onSendFuture.completeExceptionally(
+                                new OperationCancelledException("Send failed while dispatching to Reactor, see cause for more details.",
+                                        exception));
+                    }, this.executor);
+
+            return onSendFuture;
+        }
 
         sendWaiterData.setTimeoutTask(timeoutTimerTask);
 
@@ -232,9 +249,9 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
         try {
             this.underlyingFactory.scheduleOnReactorThread(this.sendWork);
-        } catch (IOException ioException) {
+        } catch (IOException|RejectedExecutionException schedulerException) {
             onSendFuture.completeExceptionally(
-                    new OperationCancelledException("Send failed while dispatching to Reactor, see cause for more details.", ioException));
+                    new OperationCancelledException("Send failed while dispatching to Reactor, see cause for more details.", schedulerException));
         }
 
         return onSendFuture;
@@ -431,7 +448,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                                     }
                                 }
                             });
-                        } catch (IOException ignore) {
+                        } catch (IOException|RejectedExecutionException ignore) {
                             scheduledRecreate = false;
                         }
                     }
@@ -508,11 +525,11 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                                                 pendingSendWorkItem.getTimeoutTask());
                                     }
                                 });
-                    } catch (IOException ioException) {
-                        exception.initCause(ioException);
+                    } catch (IOException|RejectedExecutionException schedulerException) {
+                        exception.initCause(schedulerException);
                         this.cleanupFailedSend(
                                 pendingSendWorkItem,
-                                new EventHubException(false, "Send operation failed while scheduling a retry on Reactor, see cause for more details.", ioException));
+                                new EventHubException(false, "Send operation failed while scheduling a retry on Reactor, see cause for more details.", schedulerException));
                     }
                 }
             } else if (outcome instanceof Released) {
@@ -619,12 +636,11 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
         }
     }
 
-    // TODO: consolidate common-code written for timeouts in Sender/Receiver
     private void initializeLinkOpen(TimeoutTracker timeout) {
         this.linkFirstOpen = new CompletableFuture<>();
 
         // timer to signal a timeout if exceeds the operationTimeout on MessagingFactory
-        this.openTimer = Timer.schedule(
+        this.openTimer = this.timer.schedule(
                 new Runnable() {
                     public void run() {
                         if (!MessageSender.this.linkFirstOpen.isDone()) {
@@ -651,8 +667,16 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                         }
                     }
                 }
-                , timeout.remaining()
-                , TimerType.OneTimeRun);
+                , timeout.remaining());
+
+        this.openTimer.whenCompleteAsync(
+                (unUsed, exception) -> {
+                    if (exception != null
+                            && exception instanceof Exception
+                            && !(exception instanceof CancellationException)) {
+                        ExceptionUtil.completeExceptionally(linkFirstOpen, (Exception) exception, this);
+                    }
+                }, this.executor);
     }
 
     @Override
@@ -812,7 +836,7 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
 
     private void scheduleLinkCloseTimeout(final TimeoutTracker timeout) {
         // timer to signal a timeout if exceeds the operationTimeout on MessagingFactory
-        this.closeTimer = Timer.schedule(
+        this.closeTimer = this.timer.schedule(
                 new Runnable() {
                     public void run() {
                         if (!linkClose.isDone()) {
@@ -833,8 +857,14 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                         }
                     }
                 }
-                , timeout.remaining()
-                , TimerType.OneTimeRun);
+                , timeout.remaining());
+
+        this.closeTimer.whenCompleteAsync(
+                (unUsed, exception) -> {
+                    if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
+                        ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageSender.this);
+                    }
+                }, this.executor);
     }
 
     @Override
@@ -857,8 +887,8 @@ public class MessageSender extends ClientEntity implements IAmqpSender, IErrorCo
                     }
                 });
 
-            } catch (IOException ioException) {
-                this.linkClose.completeExceptionally(new EventHubException(false, "Scheduling close failed. See cause for more details.", ioException));
+            } catch (IOException|RejectedExecutionException schedulerException) {
+                this.linkClose.completeExceptionally(schedulerException);
             }
         }
 
