@@ -15,9 +15,14 @@ import java.util.concurrent.ThreadPoolExecutor;
  */
 public final class LoggingUtils
 {
-    static CompletionException wrapException(Exception e, String action)
+    static CompletionException wrapException(Throwable e, String action)
     {
     	return new CompletionException(new ExceptionWithAction(e, action));
+    }
+    
+    static CompletionException wrapExceptionWithMessage(Throwable e, String message, String action)
+    {
+    	return new CompletionException(new ExceptionWithAction(e, message, action));
     }
     
     // outAction can be null if you don't care about any action string

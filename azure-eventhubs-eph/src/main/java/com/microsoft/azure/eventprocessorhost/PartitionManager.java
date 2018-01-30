@@ -290,7 +290,7 @@ class PartitionManager
         		{
         			TRACE_LOGGER.warn(this.hostContext.withHost(finalFailureMessage));
         		}
-        		throw LoggingUtils.wrapException(new RuntimeException(finalFailureMessage), action);
+        		throw LoggingUtils.wrapExceptionWithMessage(e, finalFailureMessage, action);
     		}
     		return (e == null) ? r : null;
     	}, this.hostContext.getExecutor());
