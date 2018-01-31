@@ -321,6 +321,15 @@ public final class EventProcessorHost
         TRACE_LOGGER.info(this.hostContext.withHost("New EventProcessorHost created."));
     }
 
+    /**
+     * The processor host name is supplied by the user at constructor time, but being able to get
+     * it is useful because it means not having to carry both the host object and the name around.
+     * As long as you have the host object, you can get the name back, such as for logging.
+     * 
+     * @return	The processor host name
+     */
+    public String getHostName() { return this.hostContext.getHostName(); }
+    
     // TEST USE ONLY
     void setPartitionManager(PartitionManager pm) { this.partitionManager = pm; }
     HostContext getHostContext() { return this.hostContext; }
