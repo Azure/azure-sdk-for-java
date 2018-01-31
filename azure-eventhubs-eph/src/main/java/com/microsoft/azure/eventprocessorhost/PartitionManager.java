@@ -214,8 +214,37 @@ class PartitionManager
         			"Failure creating checkpoint for partition, retrying", "Out of retries creating checkpoint blob for partition",
         			EventProcessorHostActionStrings.CREATING_CHECKPOINT, 5);
         }
+        
+        initializeStoresFuture.whenCompleteAsync((r,e) ->
+        {
+        	// If an exception has propagated this far, it should be a FinalException, which is guaranteed to contain a CompletionException.
+        	// Unwrap it so we don't leak a private type.
+        	if ((e != null) && (e instanceof FinalException))
+        	{
+        		throw ((FinalException)e).getInner();
+        	}
+        	
+        	// Otherwise, allow the existing result to pass to the caller.
+        }, this.hostContext.getExecutor());
 
         return initializeStoresFuture;
+    }
+    
+    // Exception wrapper that buildRetries() uses to indicate that a fatal error has occurred. The chain
+    // built by buildRetries() normally swallows exceptions via odd-numbered stages so that the retries in
+    // even-numbered stages will execute. If multiple chains are concatenated, FinalException short-circuits
+    // the exceptional swallowing and allows fatal errors in earlier chains to be propagated all the way to the end.
+    class FinalException extends CompletionException
+    {
+    	FinalException(CompletionException e)
+    	{
+    		super(e);
+    	}
+    	
+    	CompletionException getInner()
+    	{
+    		return (CompletionException)this.getCause();
+    	}
     }
     
     // CompletableFuture will be completed exceptionally if it runs out of retries.
@@ -241,22 +270,31 @@ class PartitionManager
     	for (int i = 1; i < maxRetries; i++)
     	{
     		retryChain = retryChain
-    		// Stages 1, 3, 5, etc: trace errors but stop exception propagation in order to keep going
+    		// Stages 1, 3, 5, etc: trace errors but stop normal exception propagation in order to keep going.
     		// Either return null if we don't have a valid result, or pass the result along to the next stage.
+    		// FinalExceptions are passed along also so that fatal error earlier in the chain aren't lost.
     		.handleAsync((r,e) ->
     		{
     			if (e != null)
     			{
-        			if (partitionId != null)
-        			{
-        				TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, retryMessage), LoggingUtils.unwrapException(e, null));
-        			}
-        			else
-        			{
-        				TRACE_LOGGER.warn(this.hostContext.withHost(retryMessage), LoggingUtils.unwrapException(e, null));
-        			}
+    				if (e instanceof FinalException)
+    				{
+    					// Propagate FinalException up to the end
+    					throw (FinalException)e;
+    				}
+    				else
+    				{    					
+	        			if (partitionId != null)
+	        			{
+	        				TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, retryMessage), LoggingUtils.unwrapException(e, null));
+	        			}
+	        			else
+	        			{
+	        				TRACE_LOGGER.warn(this.hostContext.withHost(retryMessage), LoggingUtils.unwrapException(e, null));
+	        			}
+    				}
     			}
-    			return (e == null) ? r : null; // stop propagation of exceptions
+    			return (e == null) ? r : null; // stop propagation of other exceptions so we can retry
     		}, this.hostContext.getExecutor())
     		// Stages 2, 4, 6, etc: if we already have a valid result, pass it along. Otherwise, make another attempt.
     		// Once we have a valid result there will be no more attempts or exceptions.
