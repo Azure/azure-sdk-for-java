@@ -1,5 +1,9 @@
 package com.microsoft.azure.eventprocessorhost;
 
+/***
+ * The action string of ExceptionReceivedEventArts will be one of this. 
+ * They describe what activity was taking place when the exception occurred.  
+ */
 public final class EventProcessorHostActionStrings
 {
 	public final static String ACQUIRING_LEASE = "Acquiring Lease";

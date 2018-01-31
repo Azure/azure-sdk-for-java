@@ -17,6 +17,9 @@ import java.util.concurrent.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * The main class of event processor host.  
+ */
 public final class EventProcessorHost
 {
     private boolean initializeLeaseManager = false;
@@ -36,15 +39,16 @@ public final class EventProcessorHost
 	private static final Object uuidSynchronizer = new Object();
 
     /**
-     * Create a new host to process events from an Event Hub.
+     * Create a new host instance to process events from an Event Hub.
      * 
-     * Since Event Hubs are generally used for scale-out, high-traffic scenarios, generally there will
-     * be only one host per process, and the processes will be run on separate machines. However, it is
-     * supported to run multiple hosts on one machine, or even within one process, if throughput is less
-     * of a concern, or for development and testing.
+     * Since Event Hubs are generally used for scale-out, high-traffic scenarios, in most scenarios there will
+     * be only one host instances per process, and the processes will be run on separate machines. Besides scale, this also
+     * provides isolation: one process or machine crashing will not take out multiple host instances. However, it is
+     * supported to run multiple host instances on one machine, or even within one process, for development and testing.
      * <p>
-     * The hostName parameter is a name for this event processor host, which must be unique among all event processor hosts
-     * receiving from this Event Hub/consumer group combination. An easy way to generate a unique hostName which also includes
+     * The hostName parameter is a name for this event processor host, which must be unique among all event processor host instances
+     * receiving from this event hub+consumer group combination: the unique name is used to distinguish which event processor host
+     * instance owns the lease for a given partition. An easy way to generate a unique hostName which also includes
      * other information is to call EventProcessorHost.createHostName("mystring"). 
      * <p>
      * This overload of the constructor uses the built-in lease and checkpoint managers. The
@@ -75,7 +79,7 @@ public final class EventProcessorHost
     /**
      * Create a new host to process events from an Event Hub.
      * 
-     * This overload adds an argument to specify the Azure Storage container name that will be used to persist leases and checkpoints.
+     * This overload adds an argument to specify a user-provided thread pool.
      * 
      * @param hostName		A name for this event processor host. See method notes.
 	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
@@ -100,7 +104,7 @@ public final class EventProcessorHost
     /**
      * Create a new host to process events from an Event Hub.
      * 
-     * This overload adds an argument to specify the Azure Storage container name that will be used to persist leases and checkpoints.
+     * This overload adds an argument to specify a prefix used by the built-in lease manager when naming blobs in Azure Storage.
      * 
      * @param hostName		A name for this event processor host. See method notes.
 	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
@@ -126,7 +130,8 @@ public final class EventProcessorHost
     /**
      * Create a new host to process events from an Event Hub.
      * 
-     * This overload adds an argument to specify the Azure Storage container name that will be used to persist leases and checkpoints.
+     * This overload allows the caller to specify both a user-supplied thread pool and
+     * a prefix used by the built-in lease manager when naming blobs in Azure Storage.
      * 
      * @param hostName		A name for this event processor host. See method notes.
 	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
@@ -147,7 +152,7 @@ public final class EventProcessorHost
             final String storageBlobPrefix,
             final ScheduledExecutorService executorService)
     {
-    	// Want to check storageConnectionString and storageContainerName here but can't because Java doesn't allow statements before
+    	// Would like to check storageConnectionString and storageContainerName here but can't, because Java doesn't allow statements before
     	// calling another constructor. storageBlobPrefix is allowed to be null or empty, doesn't need checking. 
         this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString,
                 new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, storageBlobPrefix), executorService);
@@ -197,7 +202,7 @@ public final class EventProcessorHost
      * Create a new host to process events from an Event Hub.
      * 
      * This overload allows the caller to provide their own lease and checkpoint managers to replace the built-in
-     * ones based on Azure Storage, and to provide an executor service.
+     * ones based on Azure Storage, and to provide an executor service and a retry policy for communications with the event hub.
      * 
      * @param hostName		A name for this event processor host. See method notes.
 	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
@@ -206,6 +211,7 @@ public final class EventProcessorHost
      * @param checkpointManager			Implementation of ICheckpointManager, to be replacement checkpoint manager.
      * @param leaseManager				Implementation of ILeaseManager, to be replacement lease manager.
      * @param executorService			User-supplied thread executor, or null to use EventProcessorHost-internal executor.
+     * @param retryPolicy				Retry policy governing communications with the event hub.
      */
     public EventProcessorHost(
             final String hostName,
@@ -315,26 +321,6 @@ public final class EventProcessorHost
         TRACE_LOGGER.info(this.hostContext.withHost("New EventProcessorHost created."));
     }
 
-    /**
-     * Returns processor host name.
-     * 
-     * If the processor host name was automatically generated, this is the only way to get it.
-     * 
-     * @return	the processor host name
-     */
-    public String getHostName() { return this.hostContext.getHostName(); }
-
-    /**
-     * Returns the Event Hub connection string assembled by the processor host.
-     * 
-     * The connection string is assembled from info provider by the caller to the constructor
-     * using ConnectionStringBuilder, so it's not clear that there's any value to making this
-     * string accessible.
-     * 
-     * @return	Event Hub connection string.
-     */
-    public String getEventHubConnectionString() { return this.hostContext.getEventHubConnectionString(); }
-
     // TEST USE ONLY
     void setPartitionManager(PartitionManager pm) { this.partitionManager = pm; }
     HostContext getHostContext() { return this.hostContext; }
@@ -362,19 +348,22 @@ public final class EventProcessorHost
     
     /**
      * Register class for event processor and start processing.
-     *
-     * <p>
+     * 
      * This overload uses the default event processor factory, which simply creates new instances of
      * the registered event processor class, and uses all the default options.
+     * 
+     * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
+     * reported by completing the future with an exception, so it is important to call get() on the future and handle
+     * any exceptions thrown. 
      * <pre>
-     * class EventProcessor implements IEventProcessor { ... }
+     * class MyEventProcessor implements IEventProcessor { ... }
      * EventProcessorHost host = new EventProcessorHost(...);
-     * CompletableFuture<Void> foo = host.registerEventProcessor(EventProcessor.class);
+     * CompletableFuture<Void> foo = host.registerEventProcessor(MyEventProcessor.class);
      * foo.get();
      * </pre>
      *  
      * @param eventProcessorType	Class that implements IEventProcessor.
-     * @return					Future that completes when initialization is finished. If initialization fails, get() will throw CompletionException. Check the cause for details.
+     * @return	Future that completes when initialization is finished.
      */
     public <T extends IEventProcessor> CompletableFuture<Void> registerEventProcessor(Class<T> eventProcessorType) throws Exception
     {
@@ -389,9 +378,13 @@ public final class EventProcessorHost
      * This overload uses the default event processor factory, which simply creates new instances of
      * the registered event processor class, but takes user-specified options.
      *  
+     * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
+     * reported by completing the future with an exception, so it is important to call get() on the future and handle
+     * any exceptions thrown.
+     *  
      * @param eventProcessorType	Class that implements IEventProcessor.
      * @param processorOptions		Options for the processor host and event processor(s).
-     * @return					Future that completes when initialization is finished. If initialization fails, get() will throw CompletionException. Check the cause for details.
+     * @return	Future that completes when initialization is finished.
      */
     public <T extends IEventProcessor> CompletableFuture<Void> registerEventProcessor(Class<T> eventProcessorType, EventProcessorOptions processorOptions) throws Exception
     {
@@ -401,17 +394,20 @@ public final class EventProcessorHost
     }
 
     /**
-     * Register user-supplied event processor factory and start processing.
+     * Register a user-supplied event processor factory and start processing.
      * 
-     * <p>
      * If creating a new event processor requires more work than just new'ing an objects, the user must
      * create an object that implements IEventProcessorFactory and pass it to this method, instead of calling
      * registerEventProcessor.
-     * <p>
+     * 
      * This overload uses default options for the processor host and event processor(s).
      * 
+     * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
+     * reported by completing the future with an exception, so it is important to call get() on the future and handle
+     * any exceptions thrown.
+     *  
      * @param factory	User-supplied event processor factory object.
-     * @return					Future that completes when initialization is finished. If initialization fails, get() will throw CompletionException. Check the cause for details.
+     * @return			Future that completes when initialization is finished.
      */
     public CompletableFuture<Void> registerEventProcessorFactory(IEventProcessorFactory<?> factory) throws Exception
     {
@@ -423,9 +419,13 @@ public final class EventProcessorHost
      * 
      * This overload takes user-specified options.
      * 
+     * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
+     * reported by completing the future with an exception, so it is important to call get() on the future and handle
+     * any exceptions thrown.
+     *  
      * @param factory			User-supplied event processor factory object.			
      * @param processorOptions	Options for the processor host and event processor(s).
-     * @return					Future that completes when initialization is finished. If initialization fails, get() will throw CompletionException. Check the cause for details.
+     * @return					Future that completes when initialization is finished.
      */
     public CompletableFuture<Void> registerEventProcessorFactory(IEventProcessorFactory<?> factory, EventProcessorOptions processorOptions)
     {
@@ -466,10 +466,9 @@ public final class EventProcessorHost
     }
 
     /**
-     * Stop processing events.
+     * Stop processing events and shut down this host instance.
      * 
      * @return A CompletableFuture that completes when shutdown is finished.
-     * 
      */
     public CompletableFuture<Void> unregisterEventProcessor()
     {

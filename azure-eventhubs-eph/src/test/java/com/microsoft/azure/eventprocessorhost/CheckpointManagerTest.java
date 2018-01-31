@@ -133,8 +133,7 @@ public class CheckpointManagerTest
 		}
 		
 		TestUtilities.log("Cleaning up checkpoint store");
-		boolret = this.checkpointManagers[0].deleteCheckpointStore().get();
-		assertTrue("failed while cleaning up store", boolret);
+		this.checkpointManagers[0].deleteCheckpointStore().get();
 		
 		TestUtilities.log("singleManagerCheckpointSmokeTest DONE");
 	}
@@ -226,8 +225,7 @@ public class CheckpointManagerTest
 		}
 		
 		TestUtilities.log("Clean up checkpoint store");
-		boolret = this.checkpointManagers[0].deleteCheckpointStore().get();
-		assertTrue("failed while cleaning up store", boolret);
+		this.checkpointManagers[0].deleteCheckpointStore().get();
 		
 		TestUtilities.log("twoManagerCheckpointSmokeTest DONE");
 	}

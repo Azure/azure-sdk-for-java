@@ -14,6 +14,13 @@ import com.microsoft.azure.eventhubs.ReceiverRuntimeInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * PartitionContext is used to provide partition-related information to the methods of IEventProcessor,
+ * particularly onEvents where the user's event-processing logic lives. It also allows the user to
+ * persist checkpoints for the partition, which determine where event processing will begin if the
+ * event processor for that partition must be restarted, such as if ownership of the partition moves
+ * from one event processor host instance to another.
+ */
 public class PartitionContext
 {
     private final HostContext hostContext;
@@ -34,21 +41,42 @@ public class PartitionContext
         this.runtimeInformation = new ReceiverRuntimeInformation(partitionId);
     }
 
+    /***
+     * Get the name of the consumer group that is being received from. 
+     * 
+     * @return consumer group name
+     */
     public String getConsumerGroupName()
     {
         return this.hostContext.getConsumerGroupName();
     }
 
+    /***
+     * Get the path of the event hub that is being received from.
+     * 
+     * @return event hub path
+     */
     public String getEventHubPath()
     {
         return this.hostContext.getEventHubPath();
     }
-    
+
+    /***
+     * Get the name of the event processor host instance.
+     * 
+     * @return event processor host instance name
+     */
     public String getOwner()
     {
     	return this.lease.getOwner();
     }
     
+    /***
+     * If receiver runtime metrics have been enabled in EventProcessorHost, this method
+     * gets the metrics as they come in.  
+     * 
+     * @return See ReceiverRuntimeInformation.
+     */
     public ReceiverRuntimeInformation getRuntimeInformation()
     {
         return this.runtimeInformation;
@@ -85,6 +113,11 @@ public class PartitionContext
 		}
     }
     
+    /***
+     * Get the id of the partition being received from.
+     * 
+     * @return partition id
+     */
     public String getPartitionId()
     {
     	return this.partitionId;
@@ -126,13 +159,15 @@ public class PartitionContext
     }
 
     /**
-     * Writes the current offset and sequenceNumber to the checkpoint store via the checkpoint manager.
+     * Writes the position of the last event in the current batch to the checkpoint store via the checkpoint manager.
+     * 
      * It is important to check the result in order to detect failures.
+     * 
      * If receiving started from a user-provided EventPosition and no messages have been received yet,
      * then this will fail. (This scenario is possible when invoke-after-receive-timeout has been set
      * in EventProcessorOptions.)
      * 
-     * @return A CompletableFuture that completes when the checkpoint is updated (result is null) or the update fails (exceptional completion).
+     * @return CompletableFuture -> null when the checkpoint has been persisted successfully, completes exceptionally on error.
      */
     public CompletableFuture<Void> checkpoint()
     {
@@ -151,12 +186,12 @@ public class PartitionContext
     }
 
     /**
-     * Stores the offset and sequenceNumber from the provided received EventData instance, then writes those
-     * values to the checkpoint store via the checkpoint manager.
+     * Writes the position of the provided EventData instance to the checkpoint store via the checkpoint manager.
+     * 
      * It is important to check the result in order to detect failures.
      *  
-     * @param event  A received EventData with valid offset and sequenceNumber
-     * @return A CompletableFuture that completes when the checkpoint is updated (result is null) or the update fails (exceptional completion).
+     * @param event  A received EventData
+     * @return CompletableFuture -> null when the checkpoint has been persisted successfully, completes exceptionally on error.
      */
     public CompletableFuture<Void> checkpoint(EventData event)
     {

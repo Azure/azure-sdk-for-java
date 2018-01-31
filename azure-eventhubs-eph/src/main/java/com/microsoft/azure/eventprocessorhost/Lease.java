@@ -11,16 +11,16 @@ import java.util.concurrent.CompletableFuture;
  * Lease class is public so that advanced users can implement an ILeaseManager. 
  * Unless you are implementing ILeaseManager you should not have to deal with objects
  * of this class or derived classes directly.
- * <p>
+ * 
  * When implementing an ILeaseManager it may be necessary to derive from this class to
  * carry around more information and override isExpired. The data fields have been left
  * private instead of protected because they have a full set of getters and setters
  * (except partitionId, which is immutable) which provide equivalent access. When
  * implementing AzureBlobLease, for example, there was no need for more access than
  * the getters and setters provide.
- * <p>
- * Note that a Lease object just carries information about a partition lease. The functionality
- * to acquire/renew/release a lease is all on the ILeaseManager.
+ * 
+ * Note that a Lease object just carries information about a partition lease. The APIs
+ * to acquire/renew/release a lease are all on ILeaseManager.
  */
 public class Lease
 {
@@ -55,7 +55,7 @@ public class Lease
     /**
      * Create a Lease by duplicating the given Lease.
      * 
-     * @param source
+     * @param source Lease to clone.
      */
     public Lease(Lease source)
     {
@@ -67,12 +67,12 @@ public class Lease
     }
 
     /**
-     * Epoch is a concept used by Event Hub receivers. Basically, if a receiver is created on a partition
+     * Epoch is a concept used by Event Hub receivers. If a receiver is created on a partition
      * with a higher epoch than the existing receiver, the previous receiver is forcibly disconnected.
      * Attempting to create a receiver with a lower epoch that the existing receiver will fail. The Lease
-     * carries the epoch around so that when a host steals a lease, it can create a receiver with a higher epoch.
+     * carries the epoch around so that when a host instance steals a lease, it can create a receiver with a higher epoch.
      *  
-     * @return
+     * @return the epoch of the current receiver
      */
     public long getEpoch()
     {
@@ -80,9 +80,9 @@ public class Lease
     }
 
     /**
-     * Set the epoch value.
+     * Set the epoch value. Used to update the lease after creating a new receiver with a higher epoch.
      * 
-     * @param epoch
+     * @param epoch  updated epoch value
      */
     public void setEpoch(long epoch)
     {
@@ -102,9 +102,9 @@ public class Lease
     }
     
     /**
-     * The owner of a lease is the name of the EventProcessorHost which currently holds the lease.
+     * The owner of a lease is the name of the EventProcessorHost instance which currently holds the lease.
      * 
-     * @return
+     * @return  name of the owning instance
      */
     public String getOwner()
     {
@@ -114,7 +114,7 @@ public class Lease
     /**
      * Set the owner string. Used when a host steals a lease.
      * 
-     * @param owner
+     * @param owner  name of the new owning instance
      */
     public void setOwner(String owner)
     {
@@ -124,7 +124,7 @@ public class Lease
     /**
      * Convenience function for comparing possibleOwner against this.owner
      * 
-     * @param possibleOwner  string to check 
+     * @param possibleOwner  name to check 
      * @return  true if possibleOwner is the same as this.owner, false otherwise
      */
     public boolean isOwnedBy(String possibleOwner)
@@ -140,7 +140,7 @@ public class Lease
     /**
      * Returns the id of the partition that this Lease is for. Immutable so there is no corresponding setter.
      * 
-     * @return
+     * @return partition id
      */
     public String getPartitionId()
     {
@@ -148,11 +148,11 @@ public class Lease
     }
 
     /**
-     * The Lease carries an arbitrary string called the "token". AzureStorageCheckpointLeaseManager uses this to
+     * The "token" is an arbitrary string whose use is not defined by Lease. AzureStorageCheckpointLeaseManager uses the token to
      * store the blob lease ID used by the Azure Storage API. Other implementations of ILeaseManager may use it
      * for anything.
      * 
-     * @return
+     * @return the current token
      */
     public String getToken()
     {
@@ -162,7 +162,7 @@ public class Lease
     /**
      * Set the token value.
      * 
-     * @param token
+     * @param token  new value for the token
      */
     public void setToken(String token)
     {
@@ -170,12 +170,10 @@ public class Lease
     }
 
     /**
-     * If an implementation of ILeaseManager supports the concept of lease expiration, then a class derived from Lease
-     * may override this function to inspect the lease and return whether it has expired.
+     * A class derived from Lease should override this function to inspect the lease and return whether it has expired.
      * Uses CompletableFuture because determining whether a lease is expired may involve I/O.
      *  
-     * @return CompletableFuture that returns true if the lease is expired, false if it is still valid
-     * @throws Exception An override which does significant work may need to throw exceptions.
+     * @return CompletableFuture -> true if the lease is expired, false if it is still valid, completes exceptionally on error.
      */
     public CompletableFuture<Boolean> isExpired()
     {

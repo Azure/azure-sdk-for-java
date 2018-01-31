@@ -168,7 +168,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
     
     @Override
-    public CompletableFuture<Boolean> deleteCheckpointStore()
+    public CompletableFuture<Void> deleteCheckpointStore()
     {
     	return deleteLeaseStoreInternal(this.checkpointOperationOptions);
     }
@@ -336,17 +336,15 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     }
 
     @Override
-    public CompletableFuture<Boolean> deleteLeaseStore()
+    public CompletableFuture<Void> deleteLeaseStore()
     {
         return deleteLeaseStoreInternal(this.leaseOperationOptions);
     }
     
-    private CompletableFuture<Boolean> deleteLeaseStoreInternal(BlobRequestOptions options)
+    private CompletableFuture<Void> deleteLeaseStoreInternal(BlobRequestOptions options)
     {
-    	return CompletableFuture.supplyAsync(() ->
+    	return CompletableFuture.runAsync(() ->
     	{
-	    	boolean retval = true;
-	    	
 	    	for (ListBlobItem blob : this.eventHubContainer.listBlobs(null, false, EnumSet.noneOf(BlobListingDetails.class), options, null))
 	    	{
 	    		if (blob instanceof CloudBlobDirectory)
@@ -361,7 +359,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 	    			catch (StorageException | URISyntaxException e)
 	    			{
 	    				TRACE_LOGGER.warn(this.hostContext.withHost("Failure while deleting lease store"), e);
-	    				retval = false;
+	    				throw new CompletionException(e);
 					}
 	    		}
 	    		else if (blob instanceof CloudBlockBlob)
@@ -373,7 +371,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 	    			catch (StorageException e)
 	    			{
 	    			    TRACE_LOGGER.warn(this.hostContext.withHost("Failure while deleting lease store"), e);
-	    				retval = false;
+	    				throw new CompletionException(e);
 					}
 	    		}
 	    	}
@@ -385,10 +383,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 	    	catch (StorageException e)
 	    	{
 				TRACE_LOGGER.warn(this.hostContext.withHost("Failure while deleting lease store"), e);
-				retval = false;
+				throw new CompletionException(e);
 			}
-	    	
-	    	return retval;
     	}, this.hostContext.getExecutor());
     }
     

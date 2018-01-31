@@ -11,7 +11,7 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
  * Checkpoint class is public so that advanced users can implement an ICheckpointManager. 
  * Unless you are implementing ICheckpointManager you should not have to deal with objects
  * of this class directly.
- * <p>
+ * 
  * A Checkpoint is essentially just a tuple. It has a fixed partition id, set at creation time
  * and immutable thereafter, and associates that with an offset/sequenceNumber pair which
  * indicates a position within the messages in that partition.
@@ -23,9 +23,9 @@ public class Checkpoint
 	private long sequenceNumber = 0;
 	
 	/**
-	 * Create a checkpoint with offset/sequenceNumber set to the first available message.
+	 * Create a checkpoint with offset/sequenceNumber set to the start of the stream.
 	 * 
-	 * @param partitionId
+	 * @param partitionId Associated partition.
 	 */
 	public Checkpoint(String partitionId)
 	{
@@ -33,11 +33,13 @@ public class Checkpoint
 	}
 	
 	/**
-	 * Create a checkpoint with the given offset and sequenceNumber.
+	 * Create a checkpoint with the given offset and sequenceNumber. It is important that the
+	 * offset and sequence number refer to the same message in the stream. The safest thing
+	 * to do is get both values from the system properties of one EventData instance.
 	 * 
-	 * @param partitionId
-	 * @param offset
-	 * @param sequenceNumber
+	 * @param partitionId Associated partition.
+	 * @param offset Offset in the stream.
+	 * @param sequenceNumber Sequence number in the stream.
 	 */
 	public Checkpoint(String partitionId, String offset, long sequenceNumber)
 	{
@@ -49,7 +51,7 @@ public class Checkpoint
 	/**
 	 * Create a checkpoint which is a duplicate of the given checkpoint.
 	 * 
-	 * @param source
+	 * @param source Existing checkpoint to clone.
 	 */
 	public Checkpoint(Checkpoint source)
 	{
@@ -59,10 +61,9 @@ public class Checkpoint
 	}
 	
 	/**
-	 * Set the offset. Should be paired with setSequenceNumber since the two values are
-	 * connected in the Event Hub.
+	 * Set the offset. Remember to also set the sequence number!
 	 * 
-	 * @param newOffset the new offset to be persisted.
+	 * @param newOffset the new value for offset in the stream.
 	 */
 	public void setOffset(String newOffset)
 	{
@@ -72,7 +73,7 @@ public class Checkpoint
 	/**
 	 * Return the offset.
 	 * 
-	 * @return the current offset string value.
+	 * @return the current offset value.
 	 */
 	public String getOffset()
 	{
@@ -80,10 +81,9 @@ public class Checkpoint
 	}
 	
 	/**
-	 * Set the sequence number. Should be paired with setOffset since the two values are
-	 * connected in the Event Hub.
+	 * Set the sequence number. Remember to also set the offset!
 	 * 
-	 * @param newSequenceNumber the new sequence number to be persisted.
+	 * @param newSequenceNumber the new value for sequence number.
 	 */
 	public void setSequenceNumber(long newSequenceNumber)
 	{
@@ -103,7 +103,7 @@ public class Checkpoint
 	/**
 	 * Get the partition id. There is no corresponding setter because the partition id is immutable.
 	 * 
-	 * @return get the current partition id that the processing is associated with.
+	 * @return the associated partition id.
 	 */
 	public String getPartitionId()
 	{

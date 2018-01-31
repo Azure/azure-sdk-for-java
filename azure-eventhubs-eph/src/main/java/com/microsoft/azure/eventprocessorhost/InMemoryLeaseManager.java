@@ -82,11 +82,11 @@ public class InMemoryLeaseManager implements ILeaseManager
     }
     
     @Override
-    public CompletableFuture<Boolean> deleteLeaseStore()
+    public CompletableFuture<Void> deleteLeaseStore()
     {
     	TRACE_LOGGER.info(this.hostContext.withHost("deleteLeaseStore()"));
     	InMemoryLeaseStore.singleton.deleteMap();
-    	return CompletableFuture.completedFuture(true);
+    	return CompletableFuture.completedFuture(null);
     }
 
     @Override

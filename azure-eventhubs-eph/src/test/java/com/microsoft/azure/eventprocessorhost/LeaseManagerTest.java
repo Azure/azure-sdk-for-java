@@ -154,8 +154,7 @@ public class LeaseManagerTest
 		this.leaseManagers[0].releaseLease(leases[0]).get();
 		
 		TestUtilities.log("Cleaning up lease store");
-		boolret = this.leaseManagers[0].deleteLeaseStore().get();
-		assertTrue("failed while cleaning up store", boolret);
+		this.leaseManagers[0].deleteLeaseStore().get();
 		
 		TestUtilities.log("singleManagerLeaseSmokeTest DONE");
 	}
@@ -243,8 +242,7 @@ public class LeaseManagerTest
 		this.leaseManagers[0].releaseLease(mgr1Lease).get();
 		
 		TestUtilities.log("Cleaning up lease store");
-		boolret = this.leaseManagers[1].deleteLeaseStore().get();
-		assertTrue("failed while cleaning up store", boolret);
+		this.leaseManagers[1].deleteLeaseStore().get();
 		
 		TestUtilities.log("twoManagerLeaseStealingTest DONE");
 	}

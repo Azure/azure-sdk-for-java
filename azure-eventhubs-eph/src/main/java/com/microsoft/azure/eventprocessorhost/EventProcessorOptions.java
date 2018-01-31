@@ -11,6 +11,9 @@ import java.util.function.Function;
 
 import com.microsoft.azure.eventhubs.EventPosition;
 
+/***
+ * Options affecting the behavior of the event processor host instance in general.
+ */
 public final class EventProcessorOptions
 {
 	private Consumer<ExceptionReceivedEventArgs> exceptionNotificationHandler = null;
@@ -52,6 +55,9 @@ public final class EventProcessorOptions
 	 * to the onError method of the event processor for that partition. This handler is called on occasions
 	 * when there is no event processor associated with the throwing activity, or the event processor could
 	 * not be created.
+	 * 
+	 * The handler is not expected to do anything about the exception. If it is possible to recover, the
+	 * event processor host instance will recover automatically.
 	 * 
 	 * @param notificationHandler  Handler which is called when an exception occurs. Set to null to stop handling.  
 	 */
@@ -101,7 +107,7 @@ public final class EventProcessorOptions
     }
 
     /***
-     * Returns the current prefetch count for the underlying client.
+     * Returns the current prefetch count for the underlying event hub client.
      * 
      * @return the current prefetch count for the underlying client
      */
@@ -111,9 +117,9 @@ public final class EventProcessorOptions
     }
 
     /***
-     * Sets the prefetch count for the underlying client.
+     * Sets the prefetch count for the underlying event hub client.
      * 
-     * The default is 300.
+     * The default is 300. This controls how many messages are received in advance. 
      * 
      * @param prefetchCount  The new prefetch count.
      */

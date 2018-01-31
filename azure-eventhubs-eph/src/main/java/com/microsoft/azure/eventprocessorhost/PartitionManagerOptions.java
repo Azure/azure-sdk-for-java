@@ -5,6 +5,12 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+/***
+ * Options affecting the operation of the partition manager within the event processor host.
+ * This class is broken out separately because many of these options also affect the operation
+ * of the ILeaseManager and ICheckpointManager implementations, and different implementations
+ * may need to subclass and provide different options or defaults. 
+ */
 public class PartitionManagerOptions
 {
 	/**
@@ -26,6 +32,9 @@ public class PartitionManagerOptions
 	protected int leaseRenewIntervalInSeconds = PartitionManagerOptions.DefaultLeaseRenewIntervalInSeconds;
 	protected int checkpointTimeoutInSeconds = PartitionManagerOptions.DefaultCheckpointTimeoutInSeconds;
 	
+	/***
+	 * The base class automatically sets members to the static defaults.
+	 */
 	public PartitionManagerOptions()
 	{
 	}
@@ -34,7 +43,7 @@ public class PartitionManagerOptions
 	 * Gets the duration after which a partition lease will expire unless renewed.
 	 * Defaults to DefaultLeaseDurationInSeconds.
 	 *
-	 * @return
+	 * @return  lease duration
 	 */
 	public int getLeaseDurationInSeconds() { return this.leaseDurationInSeconds; }
 	
@@ -43,7 +52,7 @@ public class PartitionManagerOptions
 	 * Must be greater than 0 and should not be less than the renew interval. When using the
 	 * default, Azure Storage-based ILeaseManager, the duration cannot be greater than 60.
 	 *
-	 * @param duration
+	 * @param duration  new value for lease duration
 	 */
 	public void setLeaseDurationInSeconds(int duration)
 	{
@@ -57,14 +66,14 @@ public class PartitionManagerOptions
 	/**
 	 * Gets the duration between lease renewals. Defaults to DefaultLeaseRenewIntervalInSeconds.
 	 *
-	 * @return
+	 * @return  how often leases are renewed
 	 */
 	public int getLeaseRenewIntervalInSeconds() { return this.leaseRenewIntervalInSeconds; }
 	
 	/**
 	 * Sets the duration between lease renewals. Must be greater than 0 and less than the current lease duration.
 	 *
-	 * @param interval
+	 * @param interval  new value for how often leases are renewed
 	 */
 	public void setLeaseRenewIntervalInSeconds(int interval)
 	{
@@ -78,14 +87,14 @@ public class PartitionManagerOptions
 	/**
 	 * Gets the timeout for checkpoint operations. Defaults to DefaultCheckpointTimeoutInSeconds.
 	 *
-	 * @return
+	 * @return  timeout for checkpoint operations
 	 */
 	public int getCheckpointTimeoutInSeconds() { return this.checkpointTimeoutInSeconds; }
 	
 	/**
 	 * Sets the timeout for checkpoint operations. Must be greater than 0.
 	 *
-	 * @param timeout
+	 * @param timeout  new value for checkpoint timeout
 	 */
 	public void setCheckpointTimeoutInSeconds(int timeout)
 	{

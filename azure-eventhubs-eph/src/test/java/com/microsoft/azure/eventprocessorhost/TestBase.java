@@ -206,9 +206,9 @@ public class TestBase
 		}
 
 		@Override
-		public CompletableFuture<Boolean> deleteCheckpointStore()
+		public CompletableFuture<Void> deleteCheckpointStore()
 		{
-			return CompletableFuture.completedFuture(true);
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
@@ -263,9 +263,9 @@ public class TestBase
 		}
 
 		@Override
-		public CompletableFuture<Boolean> deleteLeaseStore()
+		public CompletableFuture<Void> deleteLeaseStore()
 		{
-			return CompletableFuture.completedFuture(true);
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override

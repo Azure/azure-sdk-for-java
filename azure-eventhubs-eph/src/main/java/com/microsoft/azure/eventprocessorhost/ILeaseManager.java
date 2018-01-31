@@ -17,12 +17,13 @@ import java.util.concurrent.CompletableFuture;
  * a unified store for both types of data.
  * 
  * This interface does not specify initialization methods because we have no way of knowing what
- * information your implementation will require.
+ * information your implementation will require. If your implementation needs initialization, you
+ * will have to initialize the instance before passing it to the EventProcessorHost constructor.
  */
 public interface ILeaseManager
 {
 	/**
-	 * Allows a lease manager implementation to specify to PartitionManager how often it should
+	 * The lease renew interval is used by PartitionManager to determine how often it should
 	 * scan leases and renew them. In order to redistribute leases in a timely fashion after a host
 	 * ceases operating, we recommend a relatively short interval, such as ten seconds. Obviously it
 	 * should be less than half of the lease length, to prevent accidental expiration.
@@ -32,97 +33,100 @@ public interface ILeaseManager
 	public int getLeaseRenewIntervalInMilliseconds();
 	
 	/**
-	 * Mostly useful for testing.
+	 * The lease duration is mostly internal to the lease manager implementation but may be needed
+	 * by other parts of the event processor host.
 	 * 
-	 * @return  Duration of a lease before it expires unless renewed.
+	 * @return  Duration of a lease before it expires unless renewed, specified in milliseconds.
 	 */
 	public int getLeaseDurationInMilliseconds();
 	
 	/**
 	 * Does the lease store exist?
 	 * 
-	 * @return true if it does, false if not
-	 * @throws ExceptionWithAction with action EventProcessorHostActionStrings.CHECKING_LEASE_STORE on error
+	 * The returned CompletableFuture completes with true if the checkpoint store exists or false if it
+	 * does not. It completes exceptionally on error.
+	 * 
+	 * @return CompletableFuture -> true if it exists, false if not
 	 */
     public CompletableFuture<Boolean> leaseStoreExists();
 
     /**
      * Create the lease store if it does not exist, do nothing if it does exist.
      * 
-     * @return Void
-     * @throws ExceptionWithAction with action EventProcessorHostActionStrings.CREATING_LEASE_STORE on error
+     * @return CompletableFuture -> null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> createLeaseStoreIfNotExists();
     
     /**
-     * Not used by EventProcessorHost, but a convenient function to have for testing.
+     * Deletes the lease store.
      * 
-     * @return true if the lease store was deleted successfully, false if not
+     * @return CompletableFuture -> null on success, completes exceptionally on error.
      */
-    public CompletableFuture<Boolean> deleteLeaseStore();
+    public CompletableFuture<Void> deleteLeaseStore();
     
     /**
-     * Return the lease info for all partitions.
+     * Returns the lease info for all partitions.
      * 
-     * A typical implementation could just call getLease() on all partitions.
-     * 
-     * @return  List of lease info.
+     * @return  CompletableFuture -> list of Leases, completes exceptionally on error.
      */
     public CompletableFuture<List<Lease>> getAllLeases();
 
     /**
-     * Create in the store the lease info for the given partition, if it does not exist. Do nothing if it does exist
+     * Create in the store the lease for the given partition, if it does not exist. Do nothing if it exists
      * in the store already.
      * 
      * @param partitionId  id of partition to create lease info for
-     * @return the existing or newly-created lease info for the partition
-     * @throws ExceptionWithAction with action EventProcessorHostActionString.CREATING_LEASE on error 
+     * @return CompletableFuture -> the existing or newly-created lease info for the partition, completes exceptionally on error
      */
     public CompletableFuture<Lease> createLeaseIfNotExists(String partitionId);
 
     /**
-     * Delete the lease info for the given partition from the store. If there is no stored lease for the given partition,
+     * Delete the lease info for a partition from the store. If there is no stored lease for the given partition,
      * that is treated as success.
      *  
-     * @param lease  Lease info for the desired partition as previously obtained from getLease()
-     * @return void
-     * @throws ExceptionWithAction with action EventProcessorHostActionString.DELETING_LEASE on error 
+     * @param lease  the currently existing lease info for the partition
+     * @return CompletableFuture -> null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> deleteLease(Lease lease);
 
     /**
      * Acquire the lease on the desired partition for this EventProcessorHost.
      * 
-     * Note that it is legal to acquire a lease that is already owned by another host. Lease-stealing is how
-     * partitions are redistributed when additional hosts are started.
+     * Note that it is legal to acquire a lease that is currently owned by another host, which is called "stealing".
+     * Lease-stealing is how partitions are redistributed when additional hosts are started.
      * 
-     * @param lease  Lease info for the desired partition as previously obtained from getLease()
-     * @return  true if the lease was acquired successfully, false if it failed because another host acquired it.
-     * @throws ExceptionWithAction with action EventProcessorHostActionStrings.ACQUIRING_LEASE on error
+     * The existing Azure Storage implementation can experience races between two host instances attempting to acquire or steal
+     * the lease at the same time. To avoid situations where two host instances both believe that they own the lease, acquisition
+     * can fail non-exceptionally by returning false and should do so when there is any doubt -- the worst that can happen is that
+     * no host instance owns the lease for a short time. This is qualitatively different from, for example, the underlying store
+     * throwing an access exception, which is an error and should complete exceptionally. 
+     * 
+     * @param lease  Lease info for the desired partition
+     * @return  CompletableFuture -> true if the lease was acquired, false if not, completes exceptionally on error. 
      */
     public CompletableFuture<Boolean> acquireLease(Lease lease);
 
     /**
-     * Renew a lease currently held by this host.
+     * Renew a lease currently held by this host instance.
      * 
-     * If the lease has been taken by another host (either stolen or after expiration) or explicitly released, it is
-     * not possible to renew it. You will have to call getLease() and then acquireLease() again. With the Azure Storage-based
-     * default implementation, it IS possible to renew an expired lease (that has not been taken by another host), so other
-     * implementations can allow that.
+     * If the lease has been taken by another host instance (either stolen or after expiration) or explicitly released, 
+     * renewLease must return false. With the Azure Storage-based implementation, it IS possible to renew an expired lease
+     * that has not been taken by another host, so your implementation can allow that or not, whichever is convenient. If
+     * it does not, renewLease should return false.
      * 
      * @param lease  Lease to be renewed
-     * @return  true if the lease was renewed, false if the lease was lost and could not renewed
-     * @throws ExceptionWithAction with action EventProcessorHostActionString.RENEWING_LEASE on error
+     * @return  true if the lease was renewed, false as described above, completes exceptionally on error.
      */
     public CompletableFuture<Boolean> renewLease(Lease lease);
 
     /**
      * Give up a lease currently held by this host.
      * 
-     * If the lease has expired or been taken by another host, releasing it is unnecessary, and will fail if attempted.
+     * If the lease has expired or been taken by another host, releasing it is unnecessary but will succeed since the intent
+     * has been fulfilled.
      * 
      * @param lease  Lease to be given up
-     * @return CompletableFuture  
+     * @return CompletableFuture -> null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> releaseLease(Lease lease);
 
@@ -130,12 +134,11 @@ public interface ILeaseManager
      * Update the store with the information in the provided lease.
      * 
      * It is necessary to currently hold a lease in order to update it. If the lease has been stolen, or expired, or
-     * released, it cannot be updated. Updating should renew the lease before performing the update to avoid lease
+     * released, it cannot be updated. Lease manager implementations should renew the lease before performing the update to avoid lease
      * expiration during the process.
      * 
      * @param lease  New lease info to be stored
-     * @return  true if the updated was performed successfully, false if lease was lost and could not be updated
-     * @throws ExceptionWithAction with action EventProcessorHostActionStrings.UPDATING_LEASE on error
+     * @return  true if the update was successful, false if lease was lost and could not be updated, completes exceptionally on error.
      */
     public CompletableFuture<Boolean> updateLease(Lease lease);
 }

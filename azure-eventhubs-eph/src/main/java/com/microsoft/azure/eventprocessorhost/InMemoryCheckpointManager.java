@@ -65,11 +65,11 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     }
     
     @Override
-    public CompletableFuture<Boolean> deleteCheckpointStore()
+    public CompletableFuture<Void> deleteCheckpointStore()
     {
     	TRACE_LOGGER.info(this.hostContext.withHost("deleteCheckpointStore()"));
     	InMemoryCheckpointStore.singleton.deleteMap();
-    	return CompletableFuture.completedFuture(true);
+    	return CompletableFuture.completedFuture(null);
     }
     
     @Override

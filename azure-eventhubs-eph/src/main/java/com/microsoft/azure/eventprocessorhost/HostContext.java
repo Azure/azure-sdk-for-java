@@ -80,6 +80,10 @@ final class HostContext
 	
 	IEventProcessorFactory<?> getEventProcessorFactory() { return this.processorFactory; }
 	
+	//
+	// Logging utility functions. They are here rather than on LoggingUtils because they
+	// make use of this.hostName.
+	//
 	
     String withHost(String logMessage)
     {
