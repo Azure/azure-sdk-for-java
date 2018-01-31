@@ -6,7 +6,6 @@ package com.microsoft.azure.eventhubs;
 
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -104,23 +103,7 @@ public final class PartitionSender extends ClientEntity {
      */
     public final void sendSync(final EventData data)
             throws EventHubException {
-        try {
-            this.send(data).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        ExceptionUtil.syncVoid(() -> this.send(data).get());
     }
 
     /**
@@ -155,23 +138,7 @@ public final class PartitionSender extends ClientEntity {
      */
     public final void sendSync(final Iterable<EventData> eventDatas)
             throws EventHubException {
-        try {
-            this.send(eventDatas).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 
     /**
@@ -231,23 +198,7 @@ public final class PartitionSender extends ClientEntity {
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
     public final void sendSync(final EventDataBatch eventDatas) throws EventHubException {
-        try {
-            this.send(eventDatas).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 
     /**

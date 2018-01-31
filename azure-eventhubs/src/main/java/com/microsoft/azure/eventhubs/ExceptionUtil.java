@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.UUID;
@@ -144,5 +145,78 @@ public final class ExceptionUtil {
         }
 
         return null;
+    }
+
+    @FunctionalInterface
+    interface SyncFactory<T> {
+        T execute() throws EventHubException, ExecutionException, InterruptedException;
+    }
+
+    @FunctionalInterface
+    interface SyncFactoryWithIOException<T> {
+        T execute() throws IOException, EventHubException, ExecutionException, InterruptedException;
+    }
+
+   @FunctionalInterface
+    interface SyncFactoryVoid {
+        void execute() throws EventHubException, ExecutionException, InterruptedException;
+    }
+
+    @FunctionalInterface
+    interface SyncFactoryWithIllegalArgException<T> {
+        T execute() throws IllegalArgumentException, EventHubException, ExecutionException, InterruptedException;
+    }
+
+    private static void handle(final Exception exception) throws EventHubException {
+        if (exception instanceof InterruptedException) {
+            // Re-assert the thread's interrupted status
+            Thread.currentThread().interrupt();
+        }
+
+        Throwable throwable = exception.getCause();
+        if (throwable instanceof EventHubException) {
+            throw (EventHubException) throwable;
+        } else if (throwable instanceof RuntimeException) {
+            throw (RuntimeException) throwable;
+        } else if (throwable != null) {
+            throw new RuntimeException(throwable);
+        } else {
+            throw new RuntimeException(exception);
+        }
+    }
+
+    static <T> T sync(final SyncFactory<T> factory) throws EventHubException {
+        try {
+            return factory.execute();
+        } catch (InterruptedException | ExecutionException exception) {
+            handle(exception);
+            return null;
+        }
+    }
+
+    static <T> T syncWithIOException(final SyncFactoryWithIOException<T> factory) throws IOException, EventHubException {
+        try {
+            return factory.execute();
+        } catch (InterruptedException | ExecutionException exception) {
+            handle(exception);
+            return null;
+        }
+    }
+
+    static void syncVoid(final SyncFactoryVoid factory) throws EventHubException {
+        try {
+            factory.execute();
+        } catch (InterruptedException | ExecutionException exception) {
+            handle(exception);
+        }
+    }
+
+    static <T> T syncWithIllegalArgException(final SyncFactoryWithIllegalArgException<T> factory) throws EventHubException {
+        try {
+            return factory.execute();
+        } catch (InterruptedException | ExecutionException exception) {
+            handle(exception);
+            return null;
+        }
     }
 }

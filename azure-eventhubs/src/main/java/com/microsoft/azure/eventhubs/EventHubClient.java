@@ -78,24 +78,10 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      */
     public static EventHubClient createFromConnectionStringSync(final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
             throws EventHubException, IOException {
-        try {
-            return createFromConnectionString(connectionString, retryPolicy, executor).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        return ExceptionUtil.syncWithIOException(() -> createFromConnectionString(connectionString, retryPolicy, executor).get());
     }
+
+
 
     /**
      * Factory method to create an instance of {@link EventHubClient} using the supplied connectionString.
@@ -150,7 +136,8 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      * @throws EventHubException if the Microsoft Azure Event Hubs service encountered problems during the operation.
      */
     public final EventDataBatch createBatch(BatchOptions options) throws EventHubException {
-        try {
+
+        return ExceptionUtil.sync(() -> {
             int maxSize = this.createInternalSender().thenApplyAsync(
                     (aVoid) -> this.sender.getMaxMessageSize(),
                     this.executor).get();
@@ -164,21 +151,8 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
             }
 
             return new EventDataBatch(options.maxMessageSize, options.partitionKey);
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            final Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
         }
+        );
     }
 
     /**
@@ -202,23 +176,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      */
     @Override
     public final void sendSync(final EventData data) throws EventHubException {
-        try {
-            this.send(data).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        ExceptionUtil.syncVoid(() -> this.send(data).get());
     }
 
     /**
@@ -270,23 +228,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      */
     @Override
     public final void sendSync(final Iterable<EventData> eventDatas) throws EventHubException {
-        try {
-            this.send(eventDatas).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 
    /**
@@ -352,23 +294,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      */
     @Override
     public final void sendSync(final EventDataBatch eventDatas) throws EventHubException {
-        try {
-            this.send(eventDatas).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 
     /**
@@ -402,23 +328,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
      */
     @Override
     public final void sendSync(final EventData eventData, final String partitionKey) throws EventHubException {
-        try {
-            this.send(eventData, partitionKey).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        ExceptionUtil.syncVoid(() -> this.send(eventData, partitionKey).get());
     }
 
     /**
@@ -477,23 +387,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final void sendSync(final Iterable<EventData> eventDatas, final String partitionKey)
             throws EventHubException {
-        try {
-            this.send(eventDatas, partitionKey).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        ExceptionUtil.syncVoid(() -> this.send(eventDatas, partitionKey).get());
     }
 
     /**
@@ -545,23 +439,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final PartitionSender createPartitionSenderSync(final String partitionId)
             throws EventHubException, IllegalArgumentException {
-        try {
-            return this.createPartitionSender(partitionId).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        return ExceptionUtil.syncWithIllegalArgException(() -> this.createPartitionSender(partitionId).get());
     }
 
     /**
@@ -597,23 +475,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition)
             throws EventHubException {
-        try {
-            return this.createReceiver(consumerGroupName, partitionId, eventPosition).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        return ExceptionUtil.sync(() -> this.createReceiver(consumerGroupName, partitionId, eventPosition).get());
     }
 
     /**
@@ -646,23 +508,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions)
             throws EventHubException {
-        try {
-            return this.createReceiver(consumerGroupName, partitionId, eventPosition, receiverOptions).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        return ExceptionUtil.sync(() -> this.createReceiver(consumerGroupName, partitionId, eventPosition, receiverOptions).get());
     }
 
     /**
@@ -697,23 +543,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
 
     public final PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch)
             throws EventHubException {
-        try {
-            return this.createEpochReceiver(consumerGroupName, partitionId, eventPosition, epoch).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        return ExceptionUtil.sync(() -> this.createEpochReceiver(consumerGroupName, partitionId, eventPosition, epoch).get());
     }
 
     /**
@@ -756,23 +586,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     @Override
     public final PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions)
             throws EventHubException {
-        try {
-            return this.createEpochReceiver(consumerGroupName, partitionId, eventPosition, epoch, receiverOptions).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable instanceof EventHubException) {
-                throw (EventHubException) throwable;
-            } else if (throwable instanceof RuntimeException) {
-                throw (RuntimeException) throwable;
-            } else {
-                throw new RuntimeException(exception);
-            }
-        }
+        return ExceptionUtil.sync(() -> this.createEpochReceiver(consumerGroupName, partitionId, eventPosition, epoch, receiverOptions).get());
     }
 
     /**
@@ -947,7 +761,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
 
         return rawdataFuture;
     }
-    
+
     private class ManagementRetry implements Runnable {
     	private final CompletableFuture<Map<String, Object>> finalFuture;
     	private final Instant endTime;

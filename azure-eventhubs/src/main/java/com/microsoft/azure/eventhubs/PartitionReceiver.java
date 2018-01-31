@@ -13,7 +13,6 @@ import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
@@ -212,29 +211,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      */
     public final Iterable<EventData> receiveSync(final int maxEventCount)
             throws EventHubException {
-        try {
-            return this.receive(maxEventCount).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable != null) {
-                if (throwable instanceof RuntimeException) {
-                    throw (RuntimeException) throwable;
-                }
-
-                if (throwable instanceof EventHubException) {
-                    throw (EventHubException) throwable;
-                }
-
-                throw new EventHubException(true, throwable);
-            }
-        }
-
-        return null;
+        return ExceptionUtil.sync(() -> this.receive(maxEventCount).get());
     }
 
     /**
