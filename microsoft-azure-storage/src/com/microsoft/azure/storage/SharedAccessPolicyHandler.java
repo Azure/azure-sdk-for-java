@@ -58,8 +58,6 @@ public class SharedAccessPolicyHandler<T extends SharedAccessPolicy> extends Def
      * @return the HashMap of SharedAccessPolicies from the response
      * @throws SAXException
      * @throws ParserConfigurationException
-     * @throws ParseException
-     *             if a date is incorrectly encoded in the stream
      * @throws IOException
      */
     public static <T extends SharedAccessPolicy> HashMap<String, T> getAccessIdentifiers(final InputStream stream,

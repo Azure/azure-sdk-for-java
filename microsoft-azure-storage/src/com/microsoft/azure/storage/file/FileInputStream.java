@@ -329,7 +329,7 @@ public class FileInputStream extends InputStream {
      * bytes actually read; these bytes will be stored in elements <code>b[0]</code> through <code>b[k-1]</code>,
      * leaving elements <code>b[k]</code> through <code>b[b.length-1]</code> unaffected.
      * 
-     * The <code>read(b) method for class {@link InputStream} has the same effect as:
+     * The <code>read(b)</code> method for class {@link InputStream} has the same effect as:
      * 
      * <code>read(b, 0, b.length)</code>
      * 

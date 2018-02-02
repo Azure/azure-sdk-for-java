@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
  * annotation to specify whether to encrypt the data stored by a setter method or decrypt the data retrieved by a getter
  * method in a class implementing {@link TableEntity}.
  * 
- * @see {@link Ignore}
+ * @see Ignore
  */
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.METHOD)

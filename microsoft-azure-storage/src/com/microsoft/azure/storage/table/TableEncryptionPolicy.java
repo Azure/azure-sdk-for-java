@@ -88,7 +88,7 @@ public class TableEncryptionPolicy {
     /**
      * Gets the key resolver used to select the correct key for decrypting existing table entities.
      * 
-     * @return A resolver that returns an {@link SymmetricKey} given a keyId.
+     * @return A resolver that returns an {@link IKey} given a keyId.
      */
     public IKeyResolver getKeyResolver() {
         return this.keyResolver;

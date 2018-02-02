@@ -1549,7 +1549,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            A <code>byte</code> array which represents the buffer to which the blob bytes are downloaded.
      * @param bufferOffset
      *            An <code>int</code> which represents the byte offset to use as the starting point for the target.
-     * @returns The total number of bytes read into the buffer.
+     * @return The total number of bytes read into the buffer.
      * 
      * @throws StorageException
      */
@@ -1582,7 +1582,7 @@ public abstract class CloudBlob implements ListBlobItem {
      *            An {@link OperationContext} object that represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * @returns The total number of bytes read into the buffer.
+     * @return The total number of bytes read into the buffer.
      * 
      * @throws StorageException
      *             If a storage service error occurred.

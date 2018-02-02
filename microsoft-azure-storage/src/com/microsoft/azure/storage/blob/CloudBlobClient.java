@@ -136,7 +136,7 @@ public final class CloudBlobClient extends ServiceClient {
     /**
      * Returns the value for the default delimiter used for cloud blob directories. The default is '/'.
      * 
-     * @return A <code>String<code> which represents the value for the default delimiter.
+     * @return A <code>String</code> which represents the value for the default delimiter.
      */
     public String getDirectoryDelimiter() {
         return this.directoryDelimiter;

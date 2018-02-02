@@ -45,7 +45,7 @@ public class RetryInfo {
     }
 
     /**
-     * Initializes a new instance of the {@link "RetryInfo"} class.
+     * Initializes a new instance of the {@link RetryInfo} class.
      * 
      * @param retryContext
      *            The {@link RetryContext} object that was passed in to the retry policy.
@@ -114,7 +114,7 @@ public class RetryInfo {
     }
 
     /**
-     * Returns a string that represents the current {@link "RetryInfo"} instance.
+     * Returns a string that represents the current {@link RetryInfo} instance.
      * 
      * @return A <code>String</code> which represents the current <code>RetryInfo</code> instance.
      */
