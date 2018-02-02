@@ -29,6 +29,7 @@ import com.microsoft.rest.v2.SwaggerInterfaceParser;
 import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import io.reactivex.Observable;
 import io.reactivex.ObservableSource;
 import io.reactivex.Single;
@@ -130,7 +131,7 @@ public final class AzureProxy extends RestProxy {
         return javaVersion;
     }
 
-    private static <T> String getDefaultUserAgentString(Class<?> swaggerInterface) {
+    private static String getDefaultUserAgentString(Class<?> swaggerInterface) {
         final String packageImplementationVersion = swaggerInterface == null ? "" : "/" + swaggerInterface.getPackage().getImplementationVersion();
         final String operatingSystem = operatingSystem();
         final String macAddressHash = macAddressHash();
@@ -382,7 +383,7 @@ public final class AzureProxy extends RestProxy {
                             PollStrategy result;
                             try {
                                 final SerializerAdapter<?> serializer = serializer();
-                                final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class, SerializerAdapter.Encoding.JSON);
+                                final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class, SerializerEncoding.JSON);
                                 if (resource != null && resource.properties() != null && !OperationState.isCompleted(resource.properties().provisioningState())) {
                                     result = new ProvisioningStatePollStrategy(AzureProxy.this, methodParser, httpRequest, resource.properties().provisioningState(), delayInMilliseconds);
                                 } else {

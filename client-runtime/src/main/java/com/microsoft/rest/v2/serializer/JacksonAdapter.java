@@ -19,6 +19,7 @@ import com.google.common.base.CharMatcher;
 import com.google.common.base.Joiner;
 import com.microsoft.rest.v2.CollectionFormat;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
+import com.microsoft.rest.v2.protocol.SerializerEncoding;
 
 import java.io.IOException;
 import java.io.StringWriter;
@@ -70,12 +71,12 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     }
 
     @Override
-    public String serialize(Object object, Encoding encoding) throws IOException {
+    public String serialize(Object object, SerializerEncoding encoding) throws IOException {
         if (object == null) {
             return null;
         }
         StringWriter writer = new StringWriter();
-        if (encoding == Encoding.XML) {
+        if (encoding == SerializerEncoding.XML) {
             xmlMapper.writeValue(writer, object);
         } else {
             serializer().writeValue(writer, object);
@@ -86,7 +87,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
 
     @Override
     public String serialize(Object object) throws IOException {
-        return serialize(object, Encoding.JSON);
+        return serialize(object, SerializerEncoding.JSON);
     }
 
     @Override
@@ -121,14 +122,14 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
 
     @Override
     @SuppressWarnings("unchecked")
-    public <T> T deserialize(String value, final Type type, Encoding encoding) throws IOException {
+    public <T> T deserialize(String value, final Type type, SerializerEncoding encoding) throws IOException {
         if (value == null || value.isEmpty()) {
             return null;
         }
 
         final JacksonTypeFactory typeFactory = getTypeFactory();
         final JavaType javaType = typeFactory.create(type);
-        if (encoding == Encoding.XML) {
+        if (encoding == SerializerEncoding.XML) {
             return (T) xmlMapper.readValue(value, javaType);
         } else {
             return (T) serializer().readValue(value, javaType);
@@ -138,7 +139,7 @@ public class JacksonAdapter implements SerializerAdapter<ObjectMapper> {
     @Override
     @SuppressWarnings("unchecked")
     public <T> T deserialize(String value, final Type type) throws IOException {
-        return deserialize(value, type, Encoding.JSON);
+        return deserialize(value, type, SerializerEncoding.JSON);
     }
 
     /**

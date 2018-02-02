@@ -6,6 +6,7 @@
 
 package com.microsoft.rest.v2.http;
 
+import com.microsoft.rest.v2.protocol.HttpResponseDecoder;
 import io.reactivex.Flowable;
 
 import java.net.URL;
@@ -20,6 +21,7 @@ public class HttpRequest {
     private URL url;
     private HttpHeaders headers;
     private Flowable<byte[]> body;
+    private final HttpResponseDecoder responseDecoder;
 
     /**
      * Create a new HttpRequest object with the provided HTTP method (GET, POST, PUT, etc.) and the
@@ -27,13 +29,15 @@ public class HttpRequest {
      * @param callerMethod The fully qualified method that was called to invoke this HTTP request.
      * @param httpMethod The HTTP method to use with this request.
      * @param url The URL where this HTTP request should be sent to.
+     * @param responseDecoder the which decodes messages sent in response to this HttpRequest.
      */
-    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url) {
+    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url, HttpResponseDecoder responseDecoder) {
         this.callerMethod = callerMethod;
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = new HttpHeaders();
         this.body = null;
+        this.responseDecoder = responseDecoder;
     }
 
     /**
@@ -43,13 +47,15 @@ public class HttpRequest {
      * @param url The URL where this HTTP request should be sent to.
      * @param headers The HTTP headers to use with this request.
      * @param body The body of this HTTP request.
+     * @param responseDecoder the which decodes messages sent in response to this HttpRequest.
      */
-    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url, HttpHeaders headers, Flowable<byte[]> body) {
+    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url, HttpHeaders headers, Flowable<byte[]> body, HttpResponseDecoder responseDecoder) {
         this.callerMethod = callerMethod;
         this.httpMethod = httpMethod;
         this.url = url;
         this.headers = headers;
         this.body = body;
+        this.responseDecoder = responseDecoder;
     }
 
     /**
@@ -104,6 +110,14 @@ public class HttpRequest {
     public HttpRequest withUrl(URL url) {
         this.url = url;
         return this;
+    }
+
+    /**
+     * Get the {@link HttpResponseDecoder} which decodes messages sent in response to this HttpRequest.
+     * @return the response decoder
+     */
+    public HttpResponseDecoder responseDecoder() {
+        return responseDecoder;
     }
 
     /**
@@ -185,6 +199,6 @@ public class HttpRequest {
      */
     public HttpRequest buffer() {
         final HttpHeaders bufferedHeaders = new HttpHeaders(headers);
-        return new HttpRequest(callerMethod, httpMethod, url, bufferedHeaders, body);
+        return new HttpRequest(callerMethod, httpMethod, url, bufferedHeaders, body, responseDecoder);
     }
 }

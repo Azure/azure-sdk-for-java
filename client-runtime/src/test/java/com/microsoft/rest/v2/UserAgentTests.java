@@ -37,7 +37,7 @@ public class UserAgentTests {
 
         HttpResponse response = pipeline.sendRequestAsync(new HttpRequest(
                 "defaultUserAgentTests",
-                HttpMethod.GET, new URL("http://localhost"))).blockingGet();
+                HttpMethod.GET, new URL("http://localhost"), null)).blockingGet();
 
         Assert.assertEquals(200, response.statusCode());
     }
@@ -55,7 +55,7 @@ public class UserAgentTests {
             },
             new UserAgentPolicyFactory("Awesome"));
 
-        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", HttpMethod.GET, new URL("http://localhost"))).blockingGet();
+        HttpResponse response = pipeline.sendRequestAsync(new HttpRequest("customUserAgentTests", HttpMethod.GET, new URL("http://localhost"), null)).blockingGet();
         Assert.assertEquals(200, response.statusCode());
     }
 }

@@ -8,6 +8,7 @@ package com.microsoft.rest.v2.util;
 
 import com.google.common.io.ByteArrayDataOutput;
 import com.google.common.io.ByteStreams;
+import com.google.common.reflect.TypeToken;
 import io.reactivex.Completable;
 import io.reactivex.CompletableEmitter;
 import io.reactivex.CompletableOnSubscribe;
@@ -21,6 +22,8 @@ import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
 
 import java.io.IOException;
+import java.lang.reflect.ParameterizedType;
+import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
@@ -31,6 +34,23 @@ import java.util.concurrent.atomic.AtomicLong;
  * Contains helper methods for dealing with Flowables.
  */
 public class FlowableUtil {
+    /**
+     * Checks if a type is Flowable&lt;byte[]&gt;.
+     *
+     * @param entityTypeToken the entity to check
+     * @return whether the type represents a Flowable that emits byte arrays
+     */
+    public static boolean isFlowableByteArray(TypeToken entityTypeToken) {
+        if (entityTypeToken.isSubtypeOf(Flowable.class)) {
+            final Type innerType = ((ParameterizedType) entityTypeToken.getType()).getActualTypeArguments()[0];
+            final TypeToken innerTypeToken = TypeToken.of(innerType);
+            if (innerTypeToken.isSubtypeOf(byte[].class)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
     /**
      * Collects byte arrays emitted by a Flowable into a Single.
      * @param content A stream which emits byte arrays.

@@ -7,14 +7,12 @@
 package com.microsoft.rest.v2.http;
 
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
+import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
-import io.reactivex.Observable;
 import io.reactivex.Single;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class MockHttpResponse extends HttpResponse {
     private final static SerializerAdapter<?> serializer = new JacksonAdapter();
@@ -36,11 +34,11 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     public MockHttpResponse(int statusCode) {
-        this(statusCode, (byte[])null);
+        this(statusCode, new byte[0]);
     }
 
     public MockHttpResponse(int statusCode, String string) {
-        this(statusCode, new HttpHeaders(), string == null ? null : string.getBytes());
+        this(statusCode, new HttpHeaders(), string == null ? new byte[0] : string.getBytes());
     }
 
     public MockHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
@@ -54,7 +52,7 @@ public class MockHttpResponse extends HttpResponse {
     private static byte[] serialize(Object serializable) {
         byte[] result = null;
         try {
-            final String serializedString = serializer.serialize(serializable);
+            final String serializedString = serializer.serialize(serializable, SerializerEncoding.JSON);
             result = serializedString == null ? null : serializedString.getBytes();
         } catch (IOException e) {
             e.printStackTrace();
@@ -75,11 +73,6 @@ public class MockHttpResponse extends HttpResponse {
     @Override
     public HttpHeaders headers() {
         return new HttpHeaders(headers);
-    }
-
-    @Override
-    public Single<? extends InputStream> bodyAsInputStreamAsync() {
-        return Single.just(new ByteArrayInputStream(bodyBytes));
     }
 
     @Override

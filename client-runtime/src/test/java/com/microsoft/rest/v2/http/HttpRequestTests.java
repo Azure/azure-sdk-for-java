@@ -12,7 +12,7 @@ import static org.junit.Assert.*;
 public class HttpRequestTests {
     @Test
     public void constructor() throws MalformedURLException {
-        final HttpRequest request = new HttpRequest("request caller method", HttpMethod.fromString("request http method"), new URL("http://request.url"));
+        final HttpRequest request = new HttpRequest("request caller method", HttpMethod.fromString("request http method"), new URL("http://request.url"), null);
         assertEquals("request caller method", request.callerMethod());
         assertEquals(HttpMethod.fromString("request http method"), request.httpMethod());
         assertEquals(new URL("http://request.url"), request.url());
@@ -29,7 +29,7 @@ public class HttpRequestTests {
                 HttpMethod.fromString("request http method"),
                 new URL("http://request.url"),
                 headers,
-                Flowable.just(new byte[0]));
+                Flowable.just(new byte[0]), null);
 
         final HttpRequest bufferedRequest = request.buffer();
 

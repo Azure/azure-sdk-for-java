@@ -7,9 +7,6 @@
 package com.microsoft.azure.v2.http;
 
 import com.google.common.base.Charsets;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
-import com.google.common.io.CharStreams;
 import com.microsoft.azure.v2.AsyncOperationResource;
 import com.microsoft.azure.v2.AzureAsyncOperationPollStrategy;
 import com.microsoft.azure.v2.MockResource;
@@ -24,13 +21,9 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Single;
-import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
 
 import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.URI;
 import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;

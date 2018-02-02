@@ -8,6 +8,7 @@ package com.microsoft.azure.v2;
 
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerMethodParser;
+import com.microsoft.rest.v2.http.BufferedHttpResponse;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Observable;
@@ -20,30 +21,29 @@ import java.lang.reflect.Type;
  * further polling.
  */
 public class CompletedPollStrategy extends PollStrategy {
-    private final HttpResponse bufferedOriginalHttpResponse;
+    private final BufferedHttpResponse firstHttpResponse;
 
     /**
      * Create a new CompletedPollStrategy.
      * @param restProxy The RestProxy that created this PollStrategy.
      * @param methodParser The method parser that describes the service interface method that
      *                     initiated the long running operation.
-     * @param originalHttpResponse The HTTP response to the original HTTP request.
+     * @param firstHttpResponse The HTTP response to the original HTTP request.
      */
-    public CompletedPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, HttpResponse originalHttpResponse) {
+    public CompletedPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, HttpResponse firstHttpResponse) {
         super(restProxy, methodParser, 0);
-
-        this.bufferedOriginalHttpResponse = originalHttpResponse.buffer();
+        this.firstHttpResponse = firstHttpResponse.buffer();
         setStatus(OperationState.SUCCEEDED);
     }
 
     @Override
     HttpRequest createPollRequest() {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
     Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
-        return null;
+        throw new UnsupportedOperationException();
     }
 
     @Override
@@ -52,10 +52,10 @@ public class CompletedPollStrategy extends PollStrategy {
     }
 
     Observable<OperationStatus<Object>> pollUntilDoneWithStatusUpdates(final HttpRequest originalHttpRequest, final SwaggerMethodParser methodParser, final Type operationStatusResultType) {
-        return createOperationStatusObservable(originalHttpRequest, bufferedOriginalHttpResponse, methodParser, operationStatusResultType);
+        return createOperationStatusObservable(originalHttpRequest, firstHttpResponse, methodParser, operationStatusResultType);
     }
 
     Single<HttpResponse> pollUntilDone() {
-        return Single.just(bufferedOriginalHttpResponse);
+        return Single.<HttpResponse>just(firstHttpResponse);
     }
 }

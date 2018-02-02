@@ -9,13 +9,16 @@ package com.microsoft.rest.v2.http;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-import java.io.InputStream;
+import java.io.Closeable;
 
 /**
  * This class contains all of the details necessary for reacting to a HTTP response from a
  * HttpResponse.
  */
-public abstract class HttpResponse {
+public abstract class HttpResponse implements Closeable {
+    private Object deserializedHeaders;
+    private Object deserializedBody;
+
     /**
      * Get this response object's HTTP status code.
      * @return This response object's HTTP status code.
@@ -37,12 +40,10 @@ public abstract class HttpResponse {
     public abstract HttpHeaders headers();
 
     /**
-     * Get this response object's body as an InputStream. If this response object doesn't have a
-     * body, then null will be returned.
-     * @return This response object's body as an InputStream. If this response object doesn't have a
-     * body, then null will be returned.
+     * Stream this response's body content.
+     * @return This response's body as an asynchronous sequence of byte[].
      */
-    public abstract Single<? extends InputStream> bodyAsInputStreamAsync();
+    public abstract Flowable<byte[]> streamBodyAsync();
 
     /**
      * Get this response object's body as a byte[]. If this response object doesn't have a body,
@@ -51,12 +52,6 @@ public abstract class HttpResponse {
      * then null will be returned.
      */
     public abstract Single<byte[]> bodyAsByteArrayAsync();
-
-    /**
-     * Stream this response's body content.
-     * @return This response's body as an asynchronous sequence of byte[].
-     */
-    public abstract Flowable<byte[]> streamBodyAsync();
 
     /**
      * Get this response object's body as a string. If this response object doesn't have a body,
@@ -70,7 +65,48 @@ public abstract class HttpResponse {
      * Buffers the HTTP response body into memory, allowing the content to be inspected and replayed.
      * @return This HTTP response, with body content buffered into memory.
      */
-    public HttpResponse buffer() {
+    public BufferedHttpResponse buffer() {
         return new BufferedHttpResponse(this);
+    }
+
+    /**
+     * Closes the stream providing this HttpResponse's content, if any.
+     */
+    public void close() {
+        // no-op
+    }
+
+    /**
+     * @return the deserialized headers, if present. Otherwise, null.
+     */
+    public Object deserializedHeaders() {
+        return deserializedHeaders;
+    }
+
+    /**
+     * Set the deserialized headers on this HttpResponse.
+     * @param deserializedHeaders the deserialized headers
+     * @return this HTTP repsonse
+     */
+    public HttpResponse withDeserializedHeaders(Object deserializedHeaders) {
+        this.deserializedHeaders = deserializedHeaders;
+        return this;
+    }
+
+    /**
+     * @return the deserialized body, if present. Otherwise, null.
+     */
+    public Object deserializedBody() {
+        return deserializedBody;
+    }
+
+    /**
+     * Sets the deserialized body on this HttpResponse.
+     * @param deserializedBody the deserialized body
+     * @return this HTTP response
+     */
+    public HttpResponse withDeserializedBody(Object deserializedBody) {
+        this.deserializedBody = deserializedBody;
+        return this;
     }
 }

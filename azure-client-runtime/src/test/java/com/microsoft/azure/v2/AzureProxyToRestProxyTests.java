@@ -5,6 +5,7 @@ import com.microsoft.rest.v2.http.ContentType;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.RestResponse;
+import com.microsoft.rest.v2.policy.DecodingPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.annotations.BodyParam;
@@ -136,36 +137,6 @@ public abstract class AzureProxyToRestProxyTests {
         createService(Service3.class)
                 .getNothingAsync()
                 .blockingAwait();
-    }
-
-    @Host("http://httpbin.org")
-    private interface Service4 {
-        @GET("bytes/2")
-        @ExpectedResponses({200})
-        InputStream getByteStream();
-
-        @GET("bytes/2")
-        @ExpectedResponses({200})
-        Single<InputStream> getByteStreamAsync();
-    }
-
-    @Test
-    public void SyncGetRequestWithInputStreamReturn() throws IOException {
-        final InputStream byteStream = createService(Service4.class)
-                .getByteStream();
-        final byte[] buffer = new byte[10];
-        assertEquals(2, byteStream.read(buffer));
-        assertEquals(-1, byteStream.read(buffer));
-    }
-
-    @Test
-    public void AsyncGetRequestWithInputStreamReturn() throws IOException {
-        final InputStream byteStream = createService(Service4.class)
-                .getByteStreamAsync()
-                .blockingGet();
-        final byte[] buffer = new byte[10];
-        assertEquals(2, byteStream.read(buffer));
-        assertEquals(-1, byteStream.read(buffer));
     }
 
     @Host("http://httpbin.org")
@@ -776,7 +747,7 @@ public abstract class AzureProxyToRestProxyTests {
 
     private <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
-        return AzureProxy.create(serviceClass, (AzureEnvironment) null, HttpPipeline.build(httpClient), serializer);
+        return AzureProxy.create(serviceClass, null, HttpPipeline.build(httpClient, new DecodingPolicyFactory()), serializer);
     }
 
     private static void assertContains(String value, String expectedSubstring) {

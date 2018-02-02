@@ -34,7 +34,7 @@ public class RetryPolicyTests {
                 new HttpRequest(
                         "exponentialRetryEndOn501",
                         HttpMethod.GET,
-                        new URL("http://localhost/"))).blockingGet();
+                        new URL("http://localhost/"), null)).blockingGet();
 
         Assert.assertEquals(501, response.statusCode());
     }
@@ -58,7 +58,7 @@ public class RetryPolicyTests {
                 new HttpRequest(
                         "exponentialRetryMax",
                         HttpMethod.GET,
-                        new URL("http://localhost/"))).blockingGet();
+                        new URL("http://localhost/"), null)).blockingGet();
 
         Assert.assertEquals(500, response.statusCode());
     }

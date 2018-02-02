@@ -9,13 +9,12 @@ package com.microsoft.azure.v2.credentials.http;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
+import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
-import java.io.ByteArrayInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 
 public class MockHttpResponse extends HttpResponse {
     private final static SerializerAdapter<?> serializer = new JacksonAdapter();
@@ -49,7 +48,7 @@ public class MockHttpResponse extends HttpResponse {
         this(statusCode);
 
         try {
-            this.string = serializer.serialize(serializable);
+            this.string = serializer.serialize(serializable, SerializerEncoding.JSON);
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -68,11 +67,6 @@ public class MockHttpResponse extends HttpResponse {
     @Override
     public HttpHeaders headers() {
         return new HttpHeaders(headers);
-    }
-
-    @Override
-    public Single<? extends InputStream> bodyAsInputStreamAsync() {
-        return Single.just(new ByteArrayInputStream(byteArray));
     }
 
     @Override

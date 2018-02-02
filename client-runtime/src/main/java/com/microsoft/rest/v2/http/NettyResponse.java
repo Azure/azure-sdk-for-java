@@ -9,12 +9,12 @@ package com.microsoft.rest.v2.http;
 import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
-import io.netty.util.ReferenceCountUtil;
 import io.reactivex.Flowable;
+import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
+import org.reactivestreams.Subscription;
 
-import java.io.InputStream;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -60,16 +60,6 @@ class NettyResponse extends HttpResponse {
     }
 
     @Override
-    public Single<? extends InputStream> bodyAsInputStreamAsync() {
-        return collectContent().map(new Function<ByteBuf, InputStream>() {
-            @Override
-            public InputStream apply(ByteBuf byteBuf) {
-                return new ClosableByteBufInputStream(byteBuf);
-            }
-        });
-    }
-
-    @Override
     public Single<byte[]> bodyAsByteArrayAsync() {
         return collectContent().map(new Function<ByteBuf, byte[]>() {
             @Override
@@ -110,20 +100,28 @@ class NettyResponse extends HttpResponse {
         });
     }
 
-    /**
-     * Extends the ByreBufInputStream so that underlying ByteBuf can be returned to pool.
-     */
-    private class ClosableByteBufInputStream extends io.netty.buffer.ByteBufInputStream {
-        private final ByteBuf buffer;
+    @Override
+    public void close() {
+        contentStream.subscribe(new FlowableSubscriber<ByteBuf>() {
+            @Override
+            public void onSubscribe(Subscription s) {
+                s.cancel();
+            }
 
-        ClosableByteBufInputStream(ByteBuf buffer) {
-            super(buffer);
-            this.buffer = buffer;
-        }
+            @Override
+            public void onNext(ByteBuf byteBuf) {
+                // no-op
+            }
 
-        @Override
-        public void close() {
-            ReferenceCountUtil.release(this.buffer);
-        }
+            @Override
+            public void onError(Throwable ignored) {
+                // May receive a "multiple subscription not allowed" error here, but we don't care
+            }
+
+            @Override
+            public void onComplete() {
+                // no-op
+            }
+        });
     }
 }

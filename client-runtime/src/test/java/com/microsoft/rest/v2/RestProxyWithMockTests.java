@@ -183,9 +183,9 @@ public class RestProxyWithMockTests extends RestProxyTests {
         try {
             service.get();
             fail();
-        } catch (RuntimeException ex) {
+        } catch (RestException ex) {
             assertContains(ex.getMessage(), "Status code 200");
-            assertContains(ex.getMessage(), "Response body: \"BAD JSON\"");
+            assertContains(ex.getMessage(), "\"BAD JSON\"");
         }
     }
 
@@ -231,9 +231,9 @@ public class RestProxyWithMockTests extends RestProxyTests {
         try {
             service.get();
             fail();
-        } catch (RuntimeException ex) {
+        } catch (RestException ex) {
             assertContains(ex.getMessage(), "Status code 200");
-            assertContains(ex.getMessage(), "Response body: \"BAD JSON\"");
+            assertContains(ex.getMessage(), "\"BAD JSON\"");
         }
     }
 

@@ -24,7 +24,7 @@ public class HttpPipelineTests {
             }
         });
 
-        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).blockingGet();
+        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).blockingGet();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }
@@ -48,7 +48,7 @@ public class HttpPipelineTests {
                 .withHttpClient(httpClient)
                 .withUserAgent(expectedUserAgent)
                 .build();
-        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).blockingGet();
+        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).blockingGet();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }
@@ -72,7 +72,7 @@ public class HttpPipelineTests {
                     }
                 },
                 new RequestIdPolicyFactory());
-        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl)).blockingGet();
+        final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).blockingGet();
         assertNotNull(response);
         assertEquals(200, response.statusCode());
     }

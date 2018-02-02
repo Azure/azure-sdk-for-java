@@ -39,7 +39,7 @@ public class ProxyAuthenticationPolicyTests {
                     }
                 });
 
-        pipeline.sendRequestAsync(new HttpRequest("test", HttpMethod.GET, new URL("http://localhost")))
+        pipeline.sendRequestAsync(new HttpRequest("test", HttpMethod.GET, new URL("http://localhost"), null))
                 .blockingGet();
 
         if (!auditorVisited.get()) {

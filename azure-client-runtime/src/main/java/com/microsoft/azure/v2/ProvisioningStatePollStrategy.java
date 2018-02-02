@@ -20,7 +20,7 @@ import java.io.IOException;
  * A PollStrategy that will continue to poll a resource's URL until the resource's provisioning
  * state property is in a completed state.
  */
-public class ProvisioningStatePollStrategy extends PollStrategy {
+public final class ProvisioningStatePollStrategy extends PollStrategy {
     private final HttpRequest originalRequest;
     private final SwaggerMethodParser methodParser;
 
@@ -34,12 +34,12 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
 
     @Override
     HttpRequest createPollRequest() {
-        return new HttpRequest(originalRequest.callerMethod(), HttpMethod.GET, originalRequest.url());
+        return new HttpRequest(originalRequest.callerMethod(), HttpMethod.GET, originalRequest.url(), createResponseDecoder());
     }
 
     @Override
-    Single<HttpResponse> updateFromAsync(HttpResponse httpPollResponse) {
-        return ensureExpectedStatus(httpPollResponse)
+    Single<HttpResponse> updateFromAsync(HttpResponse pollResponse) {
+        return ensureExpectedStatus(pollResponse)
                 .flatMap(new Function<HttpResponse, Single<HttpResponse>>() {
                     @Override
                     public Single<HttpResponse> apply(HttpResponse response) {
@@ -48,31 +48,26 @@ public class ProvisioningStatePollStrategy extends PollStrategy {
                                 .map(new Function<String, HttpResponse>() {
                                     @Override
                                     public HttpResponse apply(String responseBody) {
-                                            ResourceWithProvisioningState resource = null;
-                                            try {
-                                                resource = deserialize(responseBody, ResourceWithProvisioningState.class);
-                                            } catch (IOException ignored) {
-                                            }
+                                        ResourceWithProvisioningState resource = null;
+                                        try {
+                                            resource = deserialize(responseBody, ResourceWithProvisioningState.class);
+                                        } catch (IOException ignored) {
+                                        }
 
-                                            if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
-                                                if (methodParser.isExpectedResponseStatusCode(bufferedHttpPollResponse.statusCode())) {
-                                                   setStatus(OperationState.SUCCEEDED);
-                                                } else {
-                                                    setStatus(OperationState.FAILED);
-                                                }
-                                            }
-                                            else if (OperationState.isFailedOrCanceled(resource.properties().provisioningState())) {
-                                                throw new CloudException("Async operation failed with provisioning state: " + resource.properties().provisioningState(), bufferedHttpPollResponse);
-                                            }
-                                            else {
-                                                setStatus(resource.properties().provisioningState());
-                                            }
+                                        if (resource == null || resource.properties() == null || resource.properties().provisioningState() == null) {
+                                            throw new CloudException("The polling response does not contain a valid body", bufferedHttpPollResponse, null);
+                                        }
+                                        else if (OperationState.isFailedOrCanceled(resource.properties().provisioningState())) {
+                                            throw new CloudException("Async operation failed with provisioning state: " + resource.properties().provisioningState(), bufferedHttpPollResponse);
+                                        }
+                                        else {
+                                            setStatus(resource.properties().provisioningState());
+                                        }
                                         return bufferedHttpPollResponse;
                                     }
                                 });
                     }
                 });
-
     }
 
     @Override

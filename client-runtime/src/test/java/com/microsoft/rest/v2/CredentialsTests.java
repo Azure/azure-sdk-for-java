@@ -49,7 +49,7 @@ public class CredentialsTests {
                 new CredentialsPolicyFactory(credentials),
                 auditorFactory);
 
-        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, new URL("http://localhost"));
+        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, new URL("http://localhost"), null);
         pipeline.sendRequestAsync(request).blockingGet();
     }
 
@@ -76,7 +76,7 @@ public class CredentialsTests {
                 new CredentialsPolicyFactory(credentials),
                 auditorFactory);
 
-        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, new URL("http://localhost"));
+        HttpRequest request = new HttpRequest("basicCredentialsTest", HttpMethod.GET, new URL("http://localhost"), null);
         pipeline.sendRequestAsync(request).blockingGet();
     }
 }

@@ -39,7 +39,7 @@ public final class LocationPollStrategy extends PollStrategy {
 
     @Override
     public HttpRequest createPollRequest() {
-        return new HttpRequest(fullyQualifiedMethodName(), HttpMethod.GET, locationUrl);
+        return new HttpRequest(fullyQualifiedMethodName(), HttpMethod.GET, locationUrl, createResponseDecoder());
     }
 
     @Override

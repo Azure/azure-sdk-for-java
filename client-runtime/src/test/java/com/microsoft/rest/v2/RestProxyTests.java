@@ -21,6 +21,7 @@ import com.microsoft.rest.v2.http.ContentType;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.policy.DecodingPolicyFactory;
 import com.microsoft.rest.v2.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v2.policy.HttpLoggingPolicyFactory;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
@@ -33,8 +34,6 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
-import java.io.IOException;
-import java.io.InputStream;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -150,36 +149,6 @@ public abstract class RestProxyTests {
         createService(Service3.class)
                 .getNothingAsync()
                 .blockingAwait();
-    }
-
-    @Host("http://httpbin.org")
-    private interface Service4 {
-        @GET("bytes/2")
-        @ExpectedResponses({200})
-        InputStream getByteStream();
-
-        @GET("bytes/2")
-        @ExpectedResponses({200})
-        Single<InputStream> getByteStreamAsync();
-    }
-
-    @Test
-    public void SyncGetRequestWithInputStreamReturn() throws IOException {
-        final InputStream byteStream = createService(Service4.class)
-                .getByteStream();
-        final byte[] buffer = new byte[10];
-        assertEquals(2, byteStream.read(buffer));
-        assertEquals(-1, byteStream.read(buffer));
-    }
-
-    @Test
-    public void AsyncGetRequestWithInputStreamReturn() throws IOException {
-        final InputStream byteStream = createService(Service4.class)
-                .getByteStreamAsync()
-                .blockingGet();
-        final byte[] buffer = new byte[10];
-        assertEquals(2, byteStream.read(buffer));
-        assertEquals(-1, byteStream.read(buffer));
     }
 
     @Host("http://httpbin.org")
@@ -1367,7 +1336,7 @@ public abstract class RestProxyTests {
 
         final HttpClient httpClient = createHttpClient();
         // Log the body so that body buffering/replay behavior is exercised.
-        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY_AND_HEADERS, true));
+        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new DecodingPolicyFactory(), new HttpLoggingPolicyFactory(HttpLogDetailLevel.BODY_AND_HEADERS, true));
         RestResponse<Void, HttpBinJSON> response = RestProxy.create(FlowableUploadService.class, httpPipeline, serializer).put(stream, Files.size(filePath));
 
         assertEquals("The quick brown fox jumps over the lazy dog", response.body().data);
@@ -1414,7 +1383,7 @@ public abstract class RestProxyTests {
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
-        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient);
+        final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new DecodingPolicyFactory());
         return RestProxy.create(serviceClass, httpPipeline, serializer);
     }
 

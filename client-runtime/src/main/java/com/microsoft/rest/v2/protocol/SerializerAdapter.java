@@ -20,23 +20,10 @@ import java.util.List;
  */
 public interface SerializerAdapter<T> {
     /**
-     * Represents which encoding to use for serialization.
-     */
-    enum Encoding {
-        /**
-         * JavaScript Object Notation.
-         */
-        JSON,
-
-        /**
-         * Extensible Markup Language.
-         */
-        XML
-    }
-
-    /**
+     * @deprecated original serializer type should not be exposed
      * @return the adapted original serializer
      */
+    @Deprecated
     T serializer();
 
     /**
@@ -47,7 +34,7 @@ public interface SerializerAdapter<T> {
      * @return the serialized string. Null if the object to serialize is null.
      * @throws IOException exception from serialization.
      */
-    String serialize(Object object, Encoding encoding) throws IOException;
+    String serialize(Object object, SerializerEncoding encoding) throws IOException;
 
     /**
      * @deprecated Use serialize(Object, Encoding) instead.
@@ -104,7 +91,7 @@ public interface SerializerAdapter<T> {
      * @return the deserialized object.
      * @throws IOException exception in deserialization
      */
-    <U> U deserialize(String value, Type type, Encoding encoding) throws IOException;
+    <U> U deserialize(String value, Type type, SerializerEncoding encoding) throws IOException;
 
     /**
      * Get the TypeFactory for this SerializerAdapter.

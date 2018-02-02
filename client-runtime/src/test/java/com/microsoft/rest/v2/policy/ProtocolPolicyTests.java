@@ -44,6 +44,6 @@ public class ProtocolPolicyTests {
     }
 
     private static HttpRequest createHttpRequest(String url) throws MalformedURLException {
-        return new HttpRequest("mock.caller", HttpMethod.GET, new URL(url));
+        return new HttpRequest("mock.caller", HttpMethod.GET, new URL(url), null);
     }
 }

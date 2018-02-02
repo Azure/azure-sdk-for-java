@@ -11,7 +11,8 @@ import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
-import com.microsoft.rest.v2.protocol.SerializerAdapter.Encoding;
+import com.microsoft.rest.v2.protocol.HttpResponseDecoder;
+import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
@@ -42,7 +43,7 @@ abstract class PollStrategy {
 
     @SuppressWarnings("unchecked")
     protected <T> T deserialize(String value, Type returnType) throws IOException {
-        return (T) restProxy.deserialize(value, returnType, null, Encoding.JSON);
+        return (T) restProxy.serializer().deserialize(value, returnType, SerializerEncoding.JSON);
     }
 
     protected Single<HttpResponse> ensureExpectedStatus(HttpResponse httpResponse) {
@@ -121,6 +122,10 @@ abstract class PollStrategy {
         this.status = status;
     }
 
+    protected final HttpResponseDecoder createResponseDecoder() {
+        return new HttpResponseDecoder(methodParser, restProxy.serializer());
+    }
+
     /**
      * Create a new HTTP poll request.
      * @return A new HTTP poll request.
@@ -149,6 +154,7 @@ abstract class PollStrategy {
                             @Override
                             public Single<HttpResponse> call() throws Exception {
                                 final HttpRequest pollRequest = createPollRequest();
+
                                 return restProxy.sendHttpRequestAsync(pollRequest);
                             }
                         }))

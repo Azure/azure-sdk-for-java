@@ -9,6 +9,7 @@ package com.microsoft.azure.v2.http;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.protocol.SerializerAdapter;
+import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -48,7 +49,7 @@ public class MockAzureHttpResponse extends HttpResponse {
     private static byte[] serialize(Object serializable) {
         byte[] result = null;
         try {
-            final String serializedString = serializer.serialize(serializable);
+            final String serializedString = serializer.serialize(serializable, SerializerEncoding.JSON);
             result = serializedString == null ? null : serializedString.getBytes();
         } catch (IOException e) {
             e.printStackTrace();
@@ -69,11 +70,6 @@ public class MockAzureHttpResponse extends HttpResponse {
     @Override
     public HttpHeaders headers() {
         return new HttpHeaders(headers);
-    }
-
-    @Override
-    public Single<? extends InputStream> bodyAsInputStreamAsync() {
-        return Single.just(new ByteArrayInputStream(bodyBytes));
     }
 
     @Override
