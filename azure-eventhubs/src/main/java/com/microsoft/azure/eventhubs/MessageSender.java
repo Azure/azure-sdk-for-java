@@ -490,6 +490,7 @@ public final class MessageSender extends ClientEntity implements IAmqpSender, IE
                 this.retryPolicy.resetRetryCount(this.getClientId());
 
                 pendingSendWorkItem.getTimeoutTask().cancel(false);
+                pendingSendWorkItem.clearMessage();
                 pendingSendWorkItem.getWork().complete(null);
             } else if (outcome instanceof Rejected) {
                 final Rejected rejected = (Rejected) outcome;

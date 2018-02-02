@@ -37,6 +37,10 @@ public class ReplayableWorkItem<T> extends WorkItem<T> {
         return this.amqpMessage;
     }
 
+    public void clearMessage() {
+        this.amqpMessage = null;
+    }
+
     public int getEncodedMessageSize() {
         return this.encodedMessageSize;
     }
