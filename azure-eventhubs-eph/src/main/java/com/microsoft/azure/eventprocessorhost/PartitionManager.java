@@ -320,15 +320,22 @@ class PartitionManager
     	{
     		if (e != null)
     		{
-        		if (partitionId != null)
-        		{
-        			TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, finalFailureMessage));
-        		}
-        		else
-        		{
-        			TRACE_LOGGER.warn(this.hostContext.withHost(finalFailureMessage));
-        		}
-        		throw LoggingUtils.wrapExceptionWithMessage(e, finalFailureMessage, action);
+    			if (e instanceof FinalException)
+    			{
+    				throw (FinalException)e;
+    			}
+    			else
+    			{
+	        		if (partitionId != null)
+	        		{
+	        			TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, finalFailureMessage));
+	        		}
+	        		else
+	        		{
+	        			TRACE_LOGGER.warn(this.hostContext.withHost(finalFailureMessage));
+	        		}
+	        		throw new FinalException(LoggingUtils.wrapExceptionWithMessage(LoggingUtils.unwrapException(e, null), finalFailureMessage, action));
+    			}
     		}
     		return (e == null) ? r : null;
     	}, this.hostContext.getExecutor());

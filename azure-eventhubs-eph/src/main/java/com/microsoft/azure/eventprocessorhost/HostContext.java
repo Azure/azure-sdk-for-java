@@ -74,10 +74,14 @@ final class HostContext
 	
 	void setEventProcessorOptions(EventProcessorOptions epo) { this.eventProcessorOptions = epo; }
 	
+	// May be null if called too early! Not set until register time.
+	// In particular, store initialization happens before this is set.
 	EventProcessorOptions getEventProcessorOptions() { return this.eventProcessorOptions; }
 	
 	void setEventProcessorFactory(IEventProcessorFactory<?> pf) { this.processorFactory = pf; }
 	
+	// May be null if called too early! Not set until register time.
+	// In particular, store initialization happens before this is set.
 	IEventProcessorFactory<?> getEventProcessorFactory() { return this.processorFactory; }
 	
 	//

@@ -447,6 +447,9 @@ public final class EventProcessorHost
     		throw new IllegalStateException("Register has already been called on this EventProcessorHost");
     	}
     	
+        this.hostContext.setEventProcessorFactory(factory);
+        this.hostContext.setEventProcessorOptions(processorOptions);
+        
         if (this.executorService.isShutdown() || this.executorService.isTerminated())
     	{
     		TRACE_LOGGER.warn(this.hostContext.withHost("Calling registerEventProcessor/Factory after executor service has been shut down."));
@@ -468,9 +471,6 @@ public final class EventProcessorHost
 
         TRACE_LOGGER.info(this.hostContext.withHost("Starting event processing."));
 
-        this.hostContext.setEventProcessorFactory(factory);
-        this.hostContext.setEventProcessorOptions(processorOptions);
-        
         return this.partitionManager.initialize();
     }
 
