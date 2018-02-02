@@ -668,7 +668,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     	
     	throwIfClosed();
 
-    	Map<String, String> request = new HashMap<String, String>();
+    	Map<String, Object> request = new HashMap<String, Object>();
         request.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_EVENTHUB_ENTITY_TYPE);
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
@@ -706,7 +706,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     	
     	throwIfClosed();
 
-    	Map<String, String> request = new HashMap<String, String>();
+    	Map<String, Object> request = new HashMap<String, Object>();
         request.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_PARTITION_ENTITY_TYPE);
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY, partitionId);
@@ -733,7 +733,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
         return future1;
     }
     
-    private <T> CompletableFuture<T> addManagementToken(Map<String, String> request)
+    private <T> CompletableFuture<T> addManagementToken(Map<String, Object> request)
     {
     	CompletableFuture<T> retval = null;
         try {
@@ -748,7 +748,7 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     	return retval;
     }
     
-    private CompletableFuture<Map<String, Object>> managementWithRetry(Map<String, String> request) {
+    private CompletableFuture<Map<String, Object>> managementWithRetry(Map<String, Object> request) {
         Instant endTime = Instant.now().plus(this.underlyingFactory.getOperationTimeout());
         CompletableFuture<Map<String, Object>> rawdataFuture = new CompletableFuture<Map<String, Object>>();
         
@@ -766,10 +766,10 @@ public class EventHubClient extends ClientEntity implements IEventHubClient {
     	private final CompletableFuture<Map<String, Object>> finalFuture;
     	private final Instant endTime;
     	private final MessagingFactory mf;
-    	private final Map<String, String> request;
+    	private final Map<String, Object> request;
     	
     	public ManagementRetry(CompletableFuture<Map<String, Object>> future, Instant endTime, MessagingFactory mf,
-    			Map<String, String> request) {
+    			Map<String, Object> request) {
     		this.finalFuture = future;
     		this.endTime = endTime;
     		this.mf = mf;

@@ -42,7 +42,7 @@ public class Sender1MsgOnLinkFlowHandler extends ServerTraceHandler
 					{
 						byte[] bytes = new byte[5 * 1024];
 						Message msg = Proton.message();
-						Map<String, String> properties = new HashMap<String, String>();
+						Map<String, Object> properties = new HashMap<String, Object>();
 						properties.put("testkey", "testvalue");
 						msg.setApplicationProperties(new ApplicationProperties(properties));
 						Map<Symbol, Object> annotations = new HashMap<Symbol, Object>();

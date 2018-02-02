@@ -124,7 +124,10 @@ class PartitionManager
     	// Stop the lease scanner.
     	synchronized (this.scanFutureSynchronizer)
     	{
-    		this.scanFuture.cancel(true);
+    		if (this.scanFuture != null)
+    		{
+    			this.scanFuture.cancel(true);
+    		}
     	}
 
     	// Stop any partition pumps that are running.
@@ -236,7 +239,9 @@ class PartitionManager
     // the exceptional swallowing and allows fatal errors in earlier chains to be propagated all the way to the end.
     class FinalException extends CompletionException
     {
-    	FinalException(CompletionException e)
+		private static final long serialVersionUID = -4600271981700687166L;
+
+		FinalException(CompletionException e)
     	{
     		super(e);
     	}

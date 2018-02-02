@@ -39,7 +39,7 @@ public class ManagementChannel {
         closer.setInnerChannel(this.innerChannel);
     }
 	
-	public CompletableFuture<Map<String, Object>> request(final ReactorDispatcher dispatcher, final Map<String, String> request)
+	public CompletableFuture<Map<String, Object>> request(final ReactorDispatcher dispatcher, final Map<String, Object> request)
 	{
 		final Message requestMessage = Proton.message();
         final ApplicationProperties applicationProperties = new ApplicationProperties(request);

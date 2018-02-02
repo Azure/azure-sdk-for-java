@@ -72,7 +72,7 @@ public class BackCompatTest extends ApiTestBase
 		
                 // until version 0.10.0 - we used to have Properties as HashMap<String,String> 
                 // This specific combination is intended to test the back compat - with the new Properties type as HashMap<String, Object>
-                final HashMap<String, String> appProperties = new HashMap<>();
+                final HashMap<String, Object> appProperties = new HashMap<>();
 		appProperties.put(applicationProperty, "value1");
                 appProperties.put(intApplicationProperty, "3");
                 // back compat end

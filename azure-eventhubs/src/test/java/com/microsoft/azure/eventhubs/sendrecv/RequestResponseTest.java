@@ -113,7 +113,7 @@ public class RequestResponseTest  extends ApiTestBase {
             final CompletableFuture<Void> task = new CompletableFuture<>();
 
             final Message request= Proton.message();
-            final Map<String, String> properties = new HashMap<>();
+            final Map<String, Object> properties = new HashMap<>();
             properties.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_EVENTHUB_ENTITY_TYPE);
             properties.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, connectionString.getEventHubName());
             properties.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
