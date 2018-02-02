@@ -3,7 +3,7 @@
 // regenerated.
 
 /**
- * This package contains the classes for ConsumptionManagementClient.
+ * This package contains the models classes for ConsumptionManagementClient.
  * Consumption management client provides access to consumption resources for Azure Enterprise Subscriptions.
  */
-package consumption;
+package consumption.models;
