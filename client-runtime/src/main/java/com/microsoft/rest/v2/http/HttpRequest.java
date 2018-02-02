@@ -10,6 +10,7 @@ import com.microsoft.rest.v2.protocol.HttpResponseDecoder;
 import io.reactivex.Flowable;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
 
 /**
@@ -20,7 +21,7 @@ public class HttpRequest {
     private HttpMethod httpMethod;
     private URL url;
     private HttpHeaders headers;
-    private Flowable<byte[]> body;
+    private Flowable<ByteBuffer> body;
     private final HttpResponseDecoder responseDecoder;
 
     /**
@@ -49,7 +50,7 @@ public class HttpRequest {
      * @param body The body of this HTTP request.
      * @param responseDecoder the which decodes messages sent in response to this HttpRequest.
      */
-    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url, HttpHeaders headers, Flowable<byte[]> body, HttpResponseDecoder responseDecoder) {
+    public HttpRequest(String callerMethod, HttpMethod httpMethod, URL url, HttpHeaders headers, Flowable<ByteBuffer> body, HttpResponseDecoder responseDecoder) {
         this.callerMethod = callerMethod;
         this.httpMethod = httpMethod;
         this.url = url;
@@ -153,7 +154,7 @@ public class HttpRequest {
      * Get the body for this HttpRequest.
      * @return The body for this HttpRequest.
      */
-    public Flowable<byte[]> body() {
+    public Flowable<ByteBuffer> body() {
         return body;
     }
 
@@ -175,7 +176,7 @@ public class HttpRequest {
      */
     public HttpRequest withBody(byte[] body) {
         headers.set("Content-Length", String.valueOf(body.length));
-        return withBody(Flowable.just(body));
+        return withBody(Flowable.just(ByteBuffer.wrap(body)));
     }
 
     /**
@@ -185,7 +186,7 @@ public class HttpRequest {
      * @param body The body of this HTTP request.
      * @return This HttpRequest so that multiple operations can be chained together.
      */
-    public HttpRequest withBody(Flowable<byte[]> body) {
+    public HttpRequest withBody(Flowable<ByteBuffer> body) {
         this.body = body;
         return this;
     }

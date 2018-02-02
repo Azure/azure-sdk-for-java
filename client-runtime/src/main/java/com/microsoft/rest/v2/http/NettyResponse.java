@@ -15,6 +15,7 @@ import io.reactivex.Single;
 import io.reactivex.functions.Function;
 import org.reactivestreams.Subscription;
 
+import java.nio.ByteBuffer;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -70,22 +71,22 @@ class NettyResponse extends HttpResponse {
     }
 
     static byte[] toByteArray(ByteBuf byteBuf) {
-        if (byteBuf.hasArray()) {
-            return byteBuf.array();
-        } else {
-            byte[] res = new byte[byteBuf.readableBytes()];
-            byteBuf.readBytes(res);
-            byteBuf.release();
-            return res;
-        }
+        byte[] res = new byte[byteBuf.readableBytes()];
+        byteBuf.readBytes(res);
+        byteBuf.release();
+        return res;
     }
 
     @Override
-    public Flowable<byte[]> streamBodyAsync() {
-        return contentStream.map(new Function<ByteBuf, byte[]>() {
+    public Flowable<ByteBuffer> streamBodyAsync() {
+        return contentStream.map(new Function<ByteBuf, ByteBuffer>() {
             @Override
-            public byte[] apply(ByteBuf byteBuf) {
-                return toByteArray(byteBuf);
+            public ByteBuffer apply(ByteBuf byteBuf) {
+                ByteBuffer dst = ByteBuffer.allocate(byteBuf.readableBytes());
+                byteBuf.readBytes(dst);
+                byteBuf.release();
+                dst.flip();
+                return dst;
             }
         });
     }

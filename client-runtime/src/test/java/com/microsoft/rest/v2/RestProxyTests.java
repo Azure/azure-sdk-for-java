@@ -34,6 +34,7 @@ import io.reactivex.Completable;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
+import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -1297,28 +1298,28 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     interface DownloadService {
         @GET("/bytes/30720")
-        RestResponse<Void, Flowable<byte[]>> getBytes();
+        RestResponse<Void, Flowable<ByteBuffer>> getBytes();
 
         @GET("/bytes/30720")
-        Flowable<byte[]> getBytesFlowable();
+        Flowable<ByteBuffer> getBytesFlowable();
     }
 
     @Test
     public void SimpleDownloadTest() {
-        RestResponse<Void, Flowable<byte[]>> response = createService(DownloadService.class).getBytes();
+        RestResponse<Void, Flowable<ByteBuffer>> response = createService(DownloadService.class).getBytes();
         int count = 0;
-        for (byte[] bytes : response.body().blockingIterable()) {
-            count += bytes.length;
+        for (ByteBuffer bytes : response.body().blockingIterable()) {
+            count += bytes.remaining();
         }
         assertEquals(30720, count);
     }
 
     @Test
     public void RawFlowableDownloadTest() {
-        Flowable<byte[]> response = createService(DownloadService.class).getBytesFlowable();
+        Flowable<ByteBuffer> response = createService(DownloadService.class).getBytesFlowable();
         int count = 0;
-        for (byte[] bytes : response.blockingIterable()) {
-            count += bytes.length;
+        for (ByteBuffer bytes : response.blockingIterable()) {
+            count += bytes.remaining();
         }
         assertEquals(30720, count);
     }
@@ -1326,13 +1327,13 @@ public abstract class RestProxyTests {
     @Host("http://httpbin.org")
     interface FlowableUploadService {
         @PUT("/put")
-        RestResponse<Void, HttpBinJSON> put(@BodyParam("text/plain") Flowable<byte[]> content, @HeaderParam("Content-Length") long contentLength);
+        RestResponse<Void, HttpBinJSON> put(@BodyParam("text/plain") Flowable<ByteBuffer> content, @HeaderParam("Content-Length") long contentLength);
     }
 
     @Test
     public void FlowableUploadTest() throws Exception {
         Path filePath = Paths.get(getClass().getClassLoader().getResource("upload.txt").toURI());
-        Flowable<byte[]> stream = FlowableUtil.readFile(AsynchronousFileChannel.open(filePath));
+        Flowable<ByteBuffer> stream = FlowableUtil.readFile(AsynchronousFileChannel.open(filePath));
 
         final HttpClient httpClient = createHttpClient();
         // Log the body so that body buffering/replay behavior is exercised.

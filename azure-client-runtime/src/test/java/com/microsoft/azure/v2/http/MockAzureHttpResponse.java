@@ -17,6 +17,7 @@ import io.reactivex.Single;
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.ByteBuffer;
 
 public class MockAzureHttpResponse extends HttpResponse {
     private final static SerializerAdapter<?> serializer = new JacksonAdapter();
@@ -78,8 +79,8 @@ public class MockAzureHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Flowable<byte[]> streamBodyAsync() {
-        return Flowable.just(bodyBytes);
+    public Flowable<ByteBuffer> streamBodyAsync() {
+        return Flowable.just(ByteBuffer.wrap(bodyBytes));
     }
 
     @Override

@@ -9,6 +9,9 @@ package com.microsoft.rest.v2.http;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
+import org.reactivestreams.Publisher;
+
+import java.nio.ByteBuffer;
 
 /**
  * HTTP response which will buffer the response's body when/if it is read.
@@ -57,8 +60,13 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Flowable<byte[]> streamBodyAsync() {
-        return bodyAsByteArrayAsync().toFlowable();
+    public Flowable<ByteBuffer> streamBodyAsync() {
+        return bodyAsByteArrayAsync().flatMapPublisher(new Function<byte[], Publisher<? extends ByteBuffer>>() {
+            @Override
+            public Publisher<? extends ByteBuffer> apply(byte[] bytes) throws Exception {
+                return Flowable.just(ByteBuffer.wrap(bytes));
+            }
+        });
     }
 
     @Override

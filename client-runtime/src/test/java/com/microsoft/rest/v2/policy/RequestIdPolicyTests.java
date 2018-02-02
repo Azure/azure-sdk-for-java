@@ -19,6 +19,7 @@ import org.junit.Assert;
 import org.junit.Test;
 
 import java.net.URL;
+import java.nio.ByteBuffer;
 
 public class RequestIdPolicyTests {
     private final HttpResponse mockResponse = new HttpResponse() {
@@ -43,8 +44,8 @@ public class RequestIdPolicyTests {
         }
 
         @Override
-        public Flowable<byte[]> streamBodyAsync() {
-            return Flowable.just(new byte[0]);
+        public Flowable<ByteBuffer> streamBodyAsync() {
+            return Flowable.just(ByteBuffer.allocate(0));
         }
 
         @Override

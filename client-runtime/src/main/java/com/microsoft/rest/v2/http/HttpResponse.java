@@ -10,6 +10,7 @@ import io.reactivex.Flowable;
 import io.reactivex.Single;
 
 import java.io.Closeable;
+import java.nio.ByteBuffer;
 
 /**
  * This class contains all of the details necessary for reacting to a HTTP response from a
@@ -43,7 +44,7 @@ public abstract class HttpResponse implements Closeable {
      * Stream this response's body content.
      * @return This response's body as an asynchronous sequence of byte[].
      */
-    public abstract Flowable<byte[]> streamBodyAsync();
+    public abstract Flowable<ByteBuffer> streamBodyAsync();
 
     /**
      * Get this response object's body as a byte[]. If this response object doesn't have a body,
