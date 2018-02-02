@@ -44,6 +44,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -657,6 +658,10 @@ public class CloudBlockBlobTests {
         byte[] retrievedBuff = outStream.toByteArray();
         assertEquals(length, retrievedBuff.length);
 
+        InputStream inputStream = blobSnapshot.openInputStream();
+        retrievedBuff = inputStream.readAllBytes();
+        assertEquals(length, retrievedBuff.length);
+
         // Read operation should work fine.
         blobSnapshot.downloadAttributes();
 
@@ -667,6 +672,11 @@ public class CloudBlockBlobTests {
         blobSnapshotUsingRootUri.download(outStream);
         retrievedBuff = outStream.toByteArray();
         assertEquals(length, retrievedBuff.length);
+
+        inputStream = blobSnapshotUsingRootUri.openInputStream();
+        retrievedBuff = inputStream.readAllBytes();
+        assertEquals(length, retrievedBuff.length);
+
         assertEquals(blobSnapshot.getSnapshotID(), blobSnapshotUsingRootUri.getSnapshotID());
 
         // Expect an IllegalArgumentException from upload.
@@ -703,6 +713,33 @@ public class CloudBlockBlobTests {
         try {
             blobSnapshot.createSnapshot();
             fail("Expect an IllegalArgumentException from createSnapshot");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+        }
+
+        // Expect an IllegalArgumentException from openOutputStream.
+        try {
+            blobSnapshotUsingRootUri.openOutputStream();
+            fail("Expect an IllegalArgumentException from openOutputStream");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+        }
+
+        // Expect an IllegalArgumentException from uploadBlock.
+        try {
+            blobSnapshotUsingRootUri.uploadBlock("foo", new ByteArrayInputStream(new byte[0]), 0);
+            fail("Expect an IllegalArgumentException from uploadBlock");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+        }
+
+        // Expect an IllegalArgumentException from commitBlockList.
+        try {
+            blobSnapshotUsingRootUri.commitBlockList(new ArrayList<BlockEntry>());
+            fail("Expect an IllegalArgumentException from commitBlockList");
         }
         catch (IllegalArgumentException e) {
             assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());

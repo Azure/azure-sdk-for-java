@@ -2,6 +2,7 @@ XXXX.XX.XX Version X.X.X
  * Improved performance of blob uploadFromFile APIs to avoid unnecessary buffering.
  * Improved performance when streaming directly from a FileInputStream to avoid unnecessary buffering.
  * Switched to using fixed length streaming mode in the HTTP client to avoid unnecessary buffering.
+ * Fixed a bug preventing openInputStream from working on a blob snapshot.
 
 2017.11.01 Version 6.1.0
  * Added support for the last time the tier was modified.

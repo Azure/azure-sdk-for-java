@@ -2375,8 +2375,6 @@ public abstract class CloudBlob implements ListBlobItem {
             opContext = new OperationContext();
         }
 
-        assertNoWriteOperationForSnapshot();
-
         options = BlobRequestOptions.populateAndApplyDefaults(options, this.properties.getBlobType(), this.blobServiceClient, 
                 false /* setStartTime */);
 
