@@ -145,12 +145,12 @@ public final class FlowableUtil {
     }
 
     /**
-     * Creates an AsyncInputStream from an AsynchronousFileChannel.
+     * Creates a {@link Flowable} from an {@link AsynchronousFileChannel} which reads part of a file.
      *
      * @param fileChannel The file channel.
      * @param offset The offset in the file to begin reading.
-     * @param length The number of bytes of data to read from the file.
-     * @return The AsyncInputStream.
+     * @param length The number of bytes to read from the file.
+     * @return the Flowable.
      */
     public static Flowable<ByteBuffer> readFile(final AsynchronousFileChannel fileChannel, final long offset, final long length) {
         Flowable<ByteBuffer> fileStream = new FileReadFlowable(fileChannel, offset, length);
