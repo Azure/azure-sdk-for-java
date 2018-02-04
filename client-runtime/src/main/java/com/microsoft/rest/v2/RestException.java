@@ -47,6 +47,18 @@ public class RestException extends RuntimeException {
     }
 
     /**
+     * Initializes a new instance of the RestException class.
+     *
+     * @param message the exception message or the response content if a message is not available
+     * @param response the HTTP response
+     * @param cause the Throwable which caused the creation of this RestException
+     */
+    public RestException(String message, HttpResponse response, Throwable cause) {
+        super(message, cause);
+        this.response = response;
+    }
+
+    /**
      * @return information about the associated HTTP response
      */
     public HttpResponse response() {

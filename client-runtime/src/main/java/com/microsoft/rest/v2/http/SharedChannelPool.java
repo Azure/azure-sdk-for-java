@@ -146,7 +146,6 @@ public class SharedChannelPool implements ChannelPool {
                                         request.promise.setSuccess(channelFuture.channel());
                                     } else {
                                         request.promise.setFailure(channelFuture.cause());
-                                        throw new RuntimeException(channelFuture.cause());
                                     }
                                 }
                             });

@@ -10,10 +10,12 @@ import com.fasterxml.jackson.core.JsonParseException;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.Base64Url;
 import com.microsoft.rest.v2.DateTimeRfc1123;
+import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.UnixTime;
 import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Completable;
@@ -57,17 +59,17 @@ public final class HttpResponseDecoder {
         try {
             deserializedHeaders = deserializeHeaders(response.headers());
         } catch (IOException e) {
-            return Single.error(e);
+            return Single.error(new RestException("HTTP response has malformed headers", response, e));
         }
 
         final Type returnValueWireType = methodParser.returnValueWireType();
 
         final TypeToken entityTypeToken = getEntityType();
 
-        boolean isSerializableBody = !FlowableUtil.isFlowableByteBuffer(entityTypeToken)
+        boolean isSerializableBody = methodParser.httpMethod() != HttpMethod.HEAD
+            && !FlowableUtil.isFlowableByteBuffer(entityTypeToken)
             && !entityTypeToken.isSubtypeOf(Completable.class)
             && !entityTypeToken.isSubtypeOf(byte[].class)
-            && !entityTypeToken.isSubtypeOf(Boolean.TYPE) && !entityTypeToken.isSubtypeOf(Boolean.class)
             && !entityTypeToken.isSubtypeOf(Void.TYPE) && !entityTypeToken.isSubtypeOf(Void.class);
 
         int[] expectedStatuses = methodParser.expectedStatusCodes();
@@ -94,7 +96,7 @@ public final class HttpResponseDecoder {
                     Object body = null;
                     try {
                         body = deserializeBody(bodyString, methodParser.exceptionBodyType(), null, SerializerEncoding.fromHeaders(response.headers()));
-                    } catch (JsonParseException ignored) {
+                    } catch (IOException ignored) {
                         // This translates in RestProxy as a RestException with no deserialized body.
                         // The response content will still be accessible via the .response() member.
                     }
@@ -107,10 +109,14 @@ public final class HttpResponseDecoder {
             result = bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
                 @Override
                 public HttpResponse apply(String bodyString) throws Exception {
-                    Object body = deserializeBody(bodyString, getEntityType().getType(), returnValueWireType, SerializerEncoding.fromHeaders(response.headers()));
-                    return bufferedResponse
-                            .withDeserializedHeaders(deserializedHeaders)
-                            .withDeserializedBody(body);
+                    try {
+                        Object body = deserializeBody(bodyString, getEntityType().getType(), returnValueWireType, SerializerEncoding.fromHeaders(response.headers()));
+                        return bufferedResponse
+                                .withDeserializedHeaders(deserializedHeaders)
+                                .withDeserializedBody(body);
+                    } catch (JsonParseException e) {
+                        throw new RestException("HTTP response has a malformed body", response, e);
+                    }
                 }
             });
         } else {
