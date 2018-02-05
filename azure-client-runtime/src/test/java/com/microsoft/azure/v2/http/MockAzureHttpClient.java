@@ -296,7 +296,7 @@ public class MockAzureHttpClient extends HttpClient {
     }
 
     private static String bodyToString(HttpRequest request) throws IOException {
-        Single<String> asyncString = FlowableUtil.collectBytes(request.body()).map(new Function<byte[], String>() {
+        Single<String> asyncString = FlowableUtil.collectBytesInArray(request.body()).map(new Function<byte[], String>() {
             @Override
             public String apply(byte[] bytes) throws Exception {
                 return new String(bytes, Charsets.UTF_8);

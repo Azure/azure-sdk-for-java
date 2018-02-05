@@ -116,7 +116,7 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
 
                     if (contentLength < MAX_BODY_LOG_SIZE && isHumanReadableContentType) {
                         try {
-                            Single<byte[]> collectedBytes = FlowableUtil.collectBytes(request.body());
+                            Single<byte[]> collectedBytes = FlowableUtil.collectBytesInArray(request.body());
                             bodyLoggingTask = collectedBytes.flatMapCompletable(new Function<byte[], CompletableSource>() {
                                 @Override
                                 public CompletableSource apply(byte[] bytes) throws Exception {

@@ -8,8 +8,6 @@
 package com.microsoft.rest.v2;
 
 import com.google.common.base.Charsets;
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.GET;
@@ -27,18 +25,15 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpResponse;
 import com.microsoft.rest.v2.policy.DecodingPolicyFactory;
-import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.util.FlowableUtil;
-import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import io.reactivex.Single;
 
 import java.io.IOException;
-import java.io.InputStream;
 import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
@@ -99,7 +94,7 @@ public class RestProxyXMLTests {
         @Override
         public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
             if (request.url().toString().endsWith("SetContainerACLs")) {
-                return FlowableUtil.collectBytes(request.body())
+                return FlowableUtil.collectBytesInArray(request.body())
                         .map(new Function<byte[], HttpResponse>() {
                             @Override
                             public HttpResponse apply(byte[] bytes) throws Exception {

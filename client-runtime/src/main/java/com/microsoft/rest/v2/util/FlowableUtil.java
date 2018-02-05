@@ -55,10 +55,10 @@ public final class FlowableUtil {
 
     /**
      * Collects byte buffers emitted by a Flowable into a byte array.
-     * @param content A stream which emits byte arrays.
+     * @param content A stream which emits byte buffers.
      * @return A Single which emits the concatenation of all the byte buffers given by the source Flowable.
      */
-    public static Single<byte[]> collectBytes(Flowable<ByteBuffer> content) {
+    public static Single<byte[]> collectBytesInArray(Flowable<ByteBuffer> content) {
         return content.collectInto(ByteStreams.newDataOutput(), new BiConsumer<ByteArrayDataOutput, ByteBuffer>() {
             @Override
             public void accept(ByteArrayDataOutput out, ByteBuffer chunk) throws Exception {
@@ -73,6 +73,21 @@ public final class FlowableUtil {
                 return out.toByteArray();
             }
         });
+    }
+
+    /**
+     * Collects byte buffers emitted by a Flowable into a ByteBuffer.
+     * @param content A stream which emits byte arrays.
+     * @return A Single which emits the concatenation of all the byte buffers given by the source Flowable.
+     */
+    public static Single<ByteBuffer> collectBytesInBuffer(Flowable<ByteBuffer> content) {
+        return collectBytesInArray(content)
+            .map(new Function<byte[], ByteBuffer>() {
+                @Override
+                public ByteBuffer apply(byte[] bytes) throws Exception {
+                    return ByteBuffer.wrap(bytes);
+                }
+            });
     }
 
     /**
