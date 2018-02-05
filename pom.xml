@@ -10,7 +10,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.microsoft.azure</groupId>
 	<artifactId>azure-storage</artifactId>
-	<version>6.1.0</version>
+	<version>7.0.0</version>
 	<packaging>jar</packaging>
 
 	<name>Microsoft Azure Storage Client SDK</name>
@@ -73,12 +73,12 @@
         <dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-keyvault-core</artifactId>
-			<version>0.8.0</version>
+			<version>1.0.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-keyvault-extensions</artifactId>
-			<version>0.8.0</version>
+			<version>1.0.0</version>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>

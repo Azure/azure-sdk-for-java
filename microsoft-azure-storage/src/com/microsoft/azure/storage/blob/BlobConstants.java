@@ -237,6 +237,11 @@ final class BlobConstants {
     public static final String SNAPSHOT_ELEMENT = "Snapshot";
 
     /**
+     * XML element to indicate whether blob was deleted.
+     */
+    public static final String DELETED_ELEMENT = "Deleted";
+
+    /**
      * The header for snapshots.
      */
     public static final String SNAPSHOT_HEADER = Constants.PREFIX_FOR_STORAGE_HEADER + "snapshot";
@@ -265,6 +270,16 @@ final class BlobConstants {
      * Query component value for lease.
      */
     public static final String LEASE = "lease";
+
+    /**
+     * XML element for blob properties, indicate delete time.
+     */
+    public static final String DELETED_TIME = "DeletedTime";
+
+    /**
+     * XML element for blob properties, indicate remaining retention days.
+     */
+    public static final String REMAINING_RETENTION_DAYS = "RemainingRetentionDays";
 
     /**
      * Private Default Constructor.

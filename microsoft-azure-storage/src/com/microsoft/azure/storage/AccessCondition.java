@@ -346,9 +346,6 @@ public final class AccessCondition {
      * @param request
      *            A <code>java.net.HttpURLConnection</code> object that represents the request to which the condition is
      *            being applied.
-     * 
-     * @throws StorageException
-     *             If there is an error parsing the date value of the access condition.
      */
     public void applyAppendConditionToRequest(final HttpURLConnection request) {
         if (this.ifMaxSizeLessThanOrEqual != null) {

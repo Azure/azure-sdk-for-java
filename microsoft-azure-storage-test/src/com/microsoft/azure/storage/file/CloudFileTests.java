@@ -25,7 +25,6 @@ import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageErrorCodeStrings;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.blob.BlobProperties;
 import com.microsoft.azure.storage.blob.BlobTestHelper;
 import com.microsoft.azure.storage.blob.CloudBlob;
@@ -40,7 +39,6 @@ import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.UriQueryBuilder;
-import com.microsoft.azure.storage.core.Utility;
 
 import org.junit.After;
 import org.junit.Before;
@@ -805,27 +803,27 @@ public class CloudFileTests {
 
         ByteArrayOutputStream fileStream = new ByteArrayOutputStream();
         try {
-            file.downloadRange(0, new Long(0), fileStream);
+            file.downloadRange(0, Long.valueOf(0), fileStream);
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
 
-        file.downloadRange(0, new Long(1024), fileStream);
+        file.downloadRange(0, Long.valueOf(1024), fileStream);
         assertEquals(fileStream.size(), 1024);
         FileTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(fileStream.toByteArray()), wholeFile, 0,
                 0, 1024, 2 * 1024);
 
         CloudFile file2 = this.share.getRootDirectoryReference().getFileReference("file1");
         try {
-            file.downloadRange(1024, new Long(0), fileStream);
+            file.downloadRange(1024, Long.valueOf(0), fileStream);
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
 
         ByteArrayOutputStream fileStream2 = new ByteArrayOutputStream();
-        file2.downloadRange(1024, new Long(1024), fileStream2);
+        file2.downloadRange(1024, Long.valueOf(1024), fileStream2);
         FileTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(fileStream2.toByteArray()), wholeFile,
                 0, 1024, 1024, 2 * 1024);
 
@@ -848,27 +846,27 @@ public class CloudFileTests {
                 FileTestHelper.generateRandomFileName());
 
         FileTestHelper.doDownloadRangeToByteArrayTest(file, 8 * 1024 * 1024, 8 * 1024 * 1024, 1 * 1024 * 1024,
-                new Long(1 * 1024 * 1024), new Long(5 * 1024 * 1024));
+                Long.valueOf(1 * 1024 * 1024), Long.valueOf(5 * 1024 * 1024));
         FileTestHelper.doDownloadRangeToByteArrayTest(file, 8 * 1024 * 1024, 8 * 1024 * 1024, 2 * 1024 * 1024,
-                new Long(2 * 1024 * 1024), new Long(6 * 1024 * 1024));
+                Long.valueOf(2 * 1024 * 1024), Long.valueOf(6 * 1024 * 1024));
         FileTestHelper.doDownloadRangeToByteArrayTest(file, 8 * 1024 * 1024, 8 * 1024 * 1024, 1 * 1024 * 1024,
-                new Long(4 * 1024 * 1024), new Long(4 * 1024 * 1024));
+                Long.valueOf(4 * 1024 * 1024), Long.valueOf(4 * 1024 * 1024));
 
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 0, new Long(1 * 512), new Long(1 * 512));
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 1 * 512, new Long(0), null);
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 1 * 512, new Long(1 * 512), null);
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 1 * 512, new Long(0), new Long(1 * 512));
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 2 * 512, new Long(1 * 512), new Long(
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 0, Long.valueOf(1 * 512), Long.valueOf(1 * 512));
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(0), null);
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(1 * 512), null);
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(0), Long.valueOf(1 * 512));
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 2 * 512, Long.valueOf(1 * 512), Long.valueOf(
                 1 * 512));
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 2 * 512, new Long(1 * 512), new Long(
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 2 * 512, 4 * 512, 2 * 512, Long.valueOf(1 * 512), Long.valueOf(
                 2 * 512));
 
         // Edge cases
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 1023, new Long(1023), new Long(1));
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 0, new Long(1023), new Long(1));
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 0, new Long(0), new Long(1));
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 0, new Long(512), new Long(1));
-        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 512, new Long(1023), new Long(1));
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 1023, Long.valueOf(1023), Long.valueOf(1));
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 0, Long.valueOf(1023), Long.valueOf(1));
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 0, Long.valueOf(0), Long.valueOf(1));
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 0, Long.valueOf(512), Long.valueOf(1));
+        FileTestHelper.doDownloadRangeToByteArrayTest(file, 1024, 1024, 512, Long.valueOf(1023), Long.valueOf(1));
     }
 
     @Test

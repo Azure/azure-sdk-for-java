@@ -35,7 +35,7 @@ import java.util.List;
 
 import static org.junit.Assert.*;
 
-@Category({ SlowTests.class, DevFabricTests.class, DevStoreTests.class, CloudTests.class })
+@Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
 public class ServicePropertiesTests {
 
     /**
@@ -48,6 +48,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsDisable() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsDisable(client, props);
 
@@ -91,6 +92,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsDefaultServiceVersion() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsDefaultServiceVersion(client, props);
 
@@ -151,6 +153,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsLoggingOperations() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsLoggingOperations(client, props);
 
@@ -191,6 +194,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsHourMetricsLevel() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsHourMetricsLevel(client, props, null);
 
@@ -259,6 +263,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsMinuteMetricsLevel() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsMinuteMetricsLevel(client, props, null);
 
@@ -327,6 +332,7 @@ public class ServicePropertiesTests {
     public void testAnalyticsRetentionPolicies() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testAnalyticsRetentionPolicies(client, props);
 
@@ -398,6 +404,157 @@ public class ServicePropertiesTests {
     }
 
     /**
+     * Test delete retention policy for blobs
+     *
+     * @throws StorageException
+     * @throws InterruptedException
+     */
+    @Test
+    public void testValidDeleteRetentionPolicy() throws StorageException, InterruptedException {
+        ServiceClient client = TestHelper.createCloudBlobClient();
+
+        // average setting
+        testValidDeleteRetentionPolicy(client, true, 5);
+
+        // minimum setting
+        testValidDeleteRetentionPolicy(client, true, 1);
+
+        // maximum setting
+        testValidDeleteRetentionPolicy(client, true, 365);
+
+        // disable setting
+        testValidDeleteRetentionPolicy(client, false, 5);
+    }
+
+    private void testValidDeleteRetentionPolicy(ServiceClient client, boolean enabled,
+                                                Integer interval)
+            throws StorageException, InterruptedException {
+
+        try {
+            ServiceProperties expectedServiceProperties = new ServiceProperties();
+            expectedServiceProperties.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
+            expectedServiceProperties.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
+
+            if (enabled) {
+                expectedServiceProperties.getDeleteRetentionPolicy().setEnabled(true);
+                expectedServiceProperties.getDeleteRetentionPolicy().setRetentionIntervalInDays(interval);
+                callUploadServiceProps(client, expectedServiceProperties, null);
+            } else {
+                // interval and retained versions per blob would both be ignored by the service in case the policy is not enabled
+                ServiceProperties propertiesToUpload = new ServiceProperties();
+                propertiesToUpload.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
+                propertiesToUpload.getDeleteRetentionPolicy().setRetentionIntervalInDays(interval);
+
+                expectedServiceProperties.getDeleteRetentionPolicy().setEnabled(false);
+                callUploadServiceProps(client, propertiesToUpload, null);
+            }
+
+            // verify
+            assertServicePropertiesAreEqual(expectedServiceProperties, callDownloadServiceProperties(client));
+        }
+        finally {
+            // reset the delete retention policy
+            ServiceProperties disabledDeleteRetentionPolicy = new ServiceProperties();
+            disabledDeleteRetentionPolicy.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
+            callUploadServiceProps(client, disabledDeleteRetentionPolicy, null);
+        }
+    }
+
+    /**
+     * Test invalid delete retention policy for blobs
+     *
+     * @throws StorageException
+     * @throws InterruptedException
+     */
+    @Test
+    public void testInvalidDeleteRetentionPolicy() throws StorageException, InterruptedException {
+        ServiceClient client = TestHelper.createCloudBlobClient();
+
+        // Should not work with 0 days
+        testInvalidDeleteRetentionPolicy(client, true, 0);
+
+        // Should not work with <0 days
+        testInvalidDeleteRetentionPolicy(client, true, -1);
+
+        // Should not work with 366 days
+        testInvalidDeleteRetentionPolicy(client, true, 366);
+
+
+        // Should not work with interval as null
+        testInvalidDeleteRetentionPolicy(client, true, null);
+    }
+
+    private void testInvalidDeleteRetentionPolicy(ServiceClient client, boolean enabled,
+                                                Integer interval)
+            throws StorageException, InterruptedException {
+
+        // Arrange
+        ServiceProperties serviceProperties = new ServiceProperties();
+        serviceProperties.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
+        serviceProperties.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
+
+        if (enabled) {
+            serviceProperties.getDeleteRetentionPolicy().setEnabled(true);
+        }
+        else {
+            serviceProperties.getDeleteRetentionPolicy().setEnabled(false);
+        }
+        serviceProperties.getDeleteRetentionPolicy().setRetentionIntervalInDays(interval);
+
+        // Failure is expected since the retention policy is invalid
+        try {
+            callUploadServiceProps(client, serviceProperties, null);
+            fail("No exception received. An invalid delete retention policy should have raised an exception.");
+        }
+        catch (StorageException e) {
+            assertEquals(e.errorCode, "InvalidXmlDocument");
+        }
+        catch (IllegalArgumentException e) {
+            assertTrue(e.getMessage().contains("argument must not be null"));
+        }
+        catch (Exception e) {
+            fail("Invalid exception " + e.getClass() + " received when expecting StorageException");
+        }
+    }
+
+    /**
+     * Test empty delete retention policy for blobs
+     *
+     * @throws StorageException
+     * @throws InterruptedException
+     */
+    @Test
+    public void testEmptyDeleteRetentionPolicy() throws StorageException, InterruptedException {
+        ServiceClient client = TestHelper.createCloudBlobClient();
+
+        try {
+            // set up initial delete retention policy
+            ServiceProperties currentServiceProperties = new ServiceProperties();
+            currentServiceProperties.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
+            currentServiceProperties.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
+            currentServiceProperties.getDeleteRetentionPolicy().setEnabled(true);
+            currentServiceProperties.getDeleteRetentionPolicy().setRetentionIntervalInDays(5);
+            callUploadServiceProps(client, currentServiceProperties, null);
+
+            // verify
+            assertServicePropertiesAreEqual(currentServiceProperties, callDownloadServiceProperties(client));
+
+            // try to upload empty retention policy
+            ServiceProperties emptyServiceProperties = new ServiceProperties();
+            callUploadServiceProps(client, emptyServiceProperties, null);
+
+            // verify
+            assertServicePropertiesAreEqual(currentServiceProperties, callDownloadServiceProperties(client));
+        }
+        finally {
+            // reset the delete retention policy
+            ServiceProperties disabledDeleteRetentionPolicy = new ServiceProperties();
+            disabledDeleteRetentionPolicy.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
+            callUploadServiceProps(client, disabledDeleteRetentionPolicy, null);
+        }
+    }
+
+    /**
      * Test CORS with different rules.
      *
      * @throws StorageException
@@ -407,6 +564,7 @@ public class ServicePropertiesTests {
     public void testCloudValidCorsRules() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testCloudValidCorsRules(client, props, null);
 
@@ -530,6 +688,7 @@ public class ServicePropertiesTests {
     public void testCorsExpectedExceptions() throws StorageException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testCorsExpectedExceptions(client, props, null);
 
@@ -593,6 +752,7 @@ public class ServicePropertiesTests {
     public void testCorsMaxOrigins() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testCorsMaxOrigins(client, props, null);
 
@@ -644,6 +804,7 @@ public class ServicePropertiesTests {
     public void testCorsMaxHeaders() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testCorsMaxHeaders(client, props, null);
 
@@ -747,6 +908,7 @@ public class ServicePropertiesTests {
     public void testOptionalServiceProperties() throws StorageException, InterruptedException {
         ServiceClient client = TestHelper.createCloudBlobClient();
         ServiceProperties props = new ServiceProperties();
+        props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         props.setDefaultServiceVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         testOptionalServiceProperties(client, props);
 
@@ -829,8 +991,9 @@ public class ServicePropertiesTests {
         else {
             fail();
         }
-
-        Thread.sleep(30000);
+        
+        // It may take up to 30 seconds for the settings to take effect, but the new properties are immediately
+        // visible when querying service properties.
     }
 
     private ServiceProperties callDownloadServiceProperties(ServiceClient client) throws StorageException {
@@ -867,7 +1030,6 @@ public class ServicePropertiesTests {
         } else {
             CloudFileClient fileClient = ((CloudFileClient) client);
             fileClient.uploadServiceProperties(fileServiceProperties);
-            Thread.sleep(30000);
             assertFileServicePropertiesAreEqual(fileServiceProperties, fileClient.downloadServiceProperties());
         }
     }
@@ -891,7 +1053,6 @@ public class ServicePropertiesTests {
         } else {
             CloudFileClient fileClient = ((CloudFileClient) client);
             fileClient.uploadServiceProperties(fileServiceProperties);
-            Thread.sleep(30000);
             assertFileServicePropertiesAreEqual(fileServiceProperties, fileClient.downloadServiceProperties());
         }
     }
@@ -973,6 +1134,15 @@ public class ServicePropertiesTests {
         else {
             assertNull(propsA.getCors());
             assertNull(propsB.getCors());
+        }
+
+        if (propsA.getDeleteRetentionPolicy() != null && propsB.getDeleteRetentionPolicy() != null) {
+            assertEquals(propsA.getDeleteRetentionPolicy().getEnabled(), propsB.getDeleteRetentionPolicy().getEnabled());
+            assertEquals(propsA.getDeleteRetentionPolicy().getRetentionIntervalInDays(), propsB.getDeleteRetentionPolicy().getRetentionIntervalInDays());
+        }
+        else {
+            assertNull(propsA.getDeleteRetentionPolicy());
+            assertNull(propsB.getDeleteRetentionPolicy());
         }
     }
 

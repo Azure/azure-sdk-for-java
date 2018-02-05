@@ -1,8 +1,14 @@
-﻿Changes in 6.0.0
+﻿Changes in 7.0.0
+
+OTHER
+ * Upgraded Key Vault dependency to 1.0. Users of the IKey and IKeyResolver interfaces should note the interface changes in this version.
+ * The getErrorCode method of StorageExtendedErrorInformation is now deprecated. Use the corresponding methods in RequestResult and StorageException instead.
+
+Changes in 6.0.0
 
 FILE
-* Many File service APIs can now throw a URISyntaxException.
-* Changed listShares() ShareListingDetails parameter to be an enum set like what is done for listing blobs.
+ * Many File service APIs can now throw a URISyntaxException.
+ * Changed listShares() ShareListingDetails parameter to be an enum set like what is done for listing blobs.
 
 OTHER
  * DefaultEndpointsProtocol will now be explicitly included in generated connection strings.
@@ -10,7 +16,7 @@ OTHER
 
 Changes in 5.1.1
 OTHER
-  * Reverted the code from 5.1.0 because it contained a regression and an accidental change.
+ * Reverted the code from 5.1.0 because it contained a regression and an accidental change.
 
 Changes in 5.0.0
 

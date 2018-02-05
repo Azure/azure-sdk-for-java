@@ -68,6 +68,11 @@ public final class RequestResult {
     private String statusMessage;
 
     /**
+     * Represents the service ErrorCode for the request.
+     */
+    private String errorCode;
+
+    /**
      * Represents the stop date of the operation.
      */
     private Date stopDate;
@@ -167,6 +172,12 @@ public final class RequestResult {
         return this.statusMessage;
     }
 
+    /**
+     * Gets the service ErrorCode for the request.
+     *
+     * @return A <code>String</code> which contains the service ErrorCode.
+     */
+    public String getErrorCode() { return this.errorCode; }
     /**
      * Gets the stop date for the request.
      * 
@@ -272,6 +283,14 @@ public final class RequestResult {
     public void setStatusMessage(final String statusMessage) {
         this.statusMessage = statusMessage;
     }
+
+    /**
+     * Sets the service ErrorCode for the request.
+     *
+     * @param errorCode
+     *           A <code>String</code> which contains the service ErrorCode to set.
+     */
+    public void setErrorCode(final String errorCode) { this.errorCode = errorCode; }
 
     /**
      * Sets the stop date for the request.

@@ -28,6 +28,7 @@ import com.microsoft.azure.storage.blob.LeaseTests;
 import com.microsoft.azure.storage.blob.SasTests;
 import com.microsoft.azure.storage.file.CloudFileClientTests;
 import com.microsoft.azure.storage.file.CloudFileDirectoryTests;
+import com.microsoft.azure.storage.file.CloudFileServerEncryptionTests;
 import com.microsoft.azure.storage.file.CloudFileShareTests;
 import com.microsoft.azure.storage.file.CloudFileTests;
 import com.microsoft.azure.storage.file.FileSasTests;
@@ -118,9 +119,9 @@ public class TestRunners {
 
     @RunWith(Suite.class)
     @SuiteClasses({ BlobOutputStreamTests.class, CloudBlobClientTests.class, CloudBlobContainerTests.class,
-            CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class, CloudPageBlobTests.class,
-            CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class, LeaseTests.class, SasTests.class,
-            PremiumBlobTests.class })
+            CloudBlobDirectoryTests.class, CloudAppendBlobTests.class, CloudBlockBlobTests.class,
+            CloudPageBlobTests.class, CloudBlobClientEncryptionTests.class, CloudBlobServerEncryptionTests.class,
+            LeaseTests.class, SasTests.class })
     public static class BlobTestSuite {
     }
 
@@ -138,8 +139,8 @@ public class TestRunners {
     }
 
     @RunWith(Suite.class)
-    @SuiteClasses({ CloudFileClientTests.class, CloudFileDirectoryTests.class, CloudFileShareTests.class,
-            CloudFileTests.class, FileSasTests.class })
+    @SuiteClasses({ CloudFileClientTests.class, CloudFileDirectoryTests.class, CloudFileServerEncryptionTests.class,
+        CloudFileShareTests.class, CloudFileTests.class, FileSasTests.class })
     public static class FileTestSuite {
     }
 
@@ -184,6 +185,7 @@ public class TestRunners {
 
     @RunWith(Categories.class)
     @IncludeCategory(PremiumBlobTests.class)
+    @SuiteClasses(AllTestSuite.class)
     public static class PremiumBlobTestSuite {
     }
 }

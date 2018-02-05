@@ -224,12 +224,12 @@ public final class CloudQueue {
      * 
      * @param timeToLiveInSeconds
      *            The maximum time to allow the message to be in the queue. A value of zero will set the time-to-live to
-     *            the service default value of seven days.
+     *            the service default value of seven days. A value of negative one will set an infinite time-to-live.
      * 
      * @param initialVisibilityDelayInSeconds
      *            The length of time during which the message will be invisible, starting when it is added to the queue,
      *            or 0 to make the message visible immediately. This value must be greater than or equal to zero and
-     *            less than or equal to the time-to-live value.
+     *            less than the time-to-live value.
      * 
      * @param options
      *            A {@link QueueRequestOptions} object that specifies any additional options for the request. Specifying
@@ -250,13 +250,19 @@ public final class CloudQueue {
             throws StorageException {
         Utility.assertNotNull("message", message);
         Utility.assertNotNull("messageContent", message.getMessageContentAsByte());
-        Utility.assertInBounds("timeToLiveInSeconds", timeToLiveInSeconds, 0,
-                QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS);
 
-        final int realTimeToLiveInSeconds = timeToLiveInSeconds == 0 ? QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS
-                : timeToLiveInSeconds;
+        if (!(timeToLiveInSeconds == -1 || timeToLiveInSeconds >= 0)){
+            throw new IllegalArgumentException(String.format(SR.ARGUMENT_OUT_OF_RANGE_ERROR,
+                    "timeToLiveInSeconds", timeToLiveInSeconds));
+        }
+        // If ttl is 0, it will default to 7 days (MAX_VISIBILITY_TIMOUT) on the service
+        int realTimeToLiveInSeconds = timeToLiveInSeconds == 0 ? QueueConstants.MAX_VISIBILITY_TIMEOUT_IN_SECONDS : timeToLiveInSeconds;
+
+        // Ensures the visibilityTimeout is less than or equal to the max allowed and strictly less than the TTL.
+        int visibilityUpperBound = ((realTimeToLiveInSeconds < 0) || realTimeToLiveInSeconds - 1 > QueueConstants.MAX_VISIBILITY_TIMEOUT_IN_SECONDS) ?
+                QueueConstants.MAX_VISIBILITY_TIMEOUT_IN_SECONDS : realTimeToLiveInSeconds - 1;
         Utility.assertInBounds("initialVisibilityDelayInSeconds", initialVisibilityDelayInSeconds, 0,
-                realTimeToLiveInSeconds - 1);
+                visibilityUpperBound);
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -1262,7 +1268,7 @@ public final class CloudQueue {
             throws StorageException {
         Utility.assertInBounds("numberOfMessages", numberOfMessages, 1, QueueConstants.MAX_NUMBER_OF_MESSAGES_TO_PEEK);
         Utility.assertInBounds("visibilityTimeoutInSeconds", visibilityTimeoutInSeconds, 0,
-                QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS);
+                QueueConstants.MAX_VISIBILITY_TIMEOUT_IN_SECONDS);
 
         if (opContext == null) {
             opContext = new OperationContext();
@@ -1400,7 +1406,7 @@ public final class CloudQueue {
         Utility.assertNotNullOrEmpty("popReceipt", message.getPopReceipt());
 
         Utility.assertInBounds("visibilityTimeoutInSeconds", visibilityTimeoutInSeconds, 0,
-                QueueConstants.MAX_TIME_TO_LIVE_IN_SECONDS);
+                QueueConstants.MAX_VISIBILITY_TIMEOUT_IN_SECONDS);
 
         if (opContext == null) {
             opContext = new OperationContext();

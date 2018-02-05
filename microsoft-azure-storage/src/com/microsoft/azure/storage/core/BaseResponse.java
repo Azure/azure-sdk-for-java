@@ -61,7 +61,21 @@ public class BaseResponse {
     }
 
     /**
-     * Gets the metadata from the request The response from server.
+     * Gets the ErrorCode
+     *
+     * @param request
+     *           The response from server.
+     * @return The ErrorCode.
+     */
+    public static String getErrorCode(final HttpURLConnection request) {
+        return request.getHeaderField(Constants.HeaderConstants.ERROR_CODE);
+    }
+
+    /**
+     * Gets the metadata from the request.
+     *
+     * @param request
+     *            The response from server.
      * 
      * @return the metadata from the request
      */

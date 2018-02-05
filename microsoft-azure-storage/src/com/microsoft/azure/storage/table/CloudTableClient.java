@@ -36,6 +36,8 @@ import com.microsoft.azure.storage.StorageCredentialsAnonymous;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageExtendedErrorInformation;
 import com.microsoft.azure.storage.StorageUri;
+import com.microsoft.azure.storage.blob.CloudBlobClient;
+import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.core.ExecutionEngine;
 import com.microsoft.azure.storage.core.LazySegmentedIterable;
 import com.microsoft.azure.storage.core.SR;
@@ -53,7 +55,7 @@ import com.microsoft.azure.storage.core.Utility;
  * <p>
  * A Table service endpoint is the base URI for Table service resources, including the DNS name of the storage account:
  * <br>
- * <code>&nbsp&nbsp&nbsp&nbsphttp://<em>myaccount</em>.table.core.windows.net</code><br>
+ * <code>&nbsp;&nbsp;&nbsp;&nbsp;http://<em>myaccount</em>.table.core.windows.net</code><br>
  * For more information, see the MSDN topic <a
  * href="http://msdn.microsoft.com/en-us/library/azure/dd179360.aspx">Addressing Table Service Resources</a>.
  * <p>

@@ -1294,7 +1294,7 @@ public final class CloudBlobContainer {
      *            the returned list will be hierarchical.
      * @param listingDetails
      *            A <code>java.util.EnumSet</code> object that contains {@link BlobListingDetails} values that indicate
-     *            whether snapshots, metadata, and/or uncommitted blocks are returned. Committed blocks are always
+     *            whether snapshots, soft-deleted blobs, metadata, and/or uncommitted blocks are returned. Committed blocks are always
      *            returned.
      * @param options
      *            A {@link BlobRequestOptions} object that specifies any additional options for the request. Specifying
@@ -1372,7 +1372,7 @@ public final class CloudBlobContainer {
      *            <code>false</code> to indicate that the returned list will be hierarchical.
      * @param listingDetails
      *            A <code>java.util.EnumSet</code> object that contains {@link BlobListingDetails} 
-     *            values that indicate whether snapshots, metadata, and/or uncommitted blocks
+     *            values that indicate whether snapshots, soft-deleted blobs, metadata, and/or uncommitted blocks
      *            are returned. Committed blocks are always returned.
      * @param maxResults
      *            The maximum number of results to retrieve.  If <code>null</code> or greater

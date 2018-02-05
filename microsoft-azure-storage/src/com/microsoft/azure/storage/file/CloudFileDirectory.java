@@ -764,11 +764,6 @@ public final class CloudFileDirectory implements ListFileItem {
      * 
      * @return An enumerable collection of {@link ListFileItem} objects that represent the file and directory items in
      *         this directory.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
      */
     @DoesServiceRequest
     public Iterable<ListFileItem> listFilesAndDirectories(FileRequestOptions options, OperationContext opContext) {
@@ -791,11 +786,6 @@ public final class CloudFileDirectory implements ListFileItem {
      * 
      * @return An enumerable collection of {@link ListFileItem} objects that represent the file and directory items in
      *         this directory.
-     * 
-     * @throws StorageException
-     *             If a storage service error occurred.
-     * @throws URISyntaxException
-     *             If the resource URI is invalid.
      */
     @DoesServiceRequest
     public Iterable<ListFileItem> listFilesAndDirectories(

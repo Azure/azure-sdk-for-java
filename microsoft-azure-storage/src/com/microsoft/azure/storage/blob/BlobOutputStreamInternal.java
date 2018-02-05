@@ -27,13 +27,8 @@ import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
-import java.util.concurrent.Callable;
-import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.ExecutorCompletionService;
-import java.util.concurrent.Future;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import com.microsoft.azure.storage.AccessCondition;
 import com.microsoft.azure.storage.Constants;
@@ -50,6 +45,29 @@ import com.microsoft.azure.storage.core.Utility;
  * The class is an append-only stream for writing into storage.
  */
 final class BlobOutputStreamInternal extends BlobOutputStream {
+
+    private static class BlobOutputStreamThreadFactory implements ThreadFactory {
+        private final ThreadGroup group;
+        private final AtomicInteger threadNumber = new AtomicInteger(1);
+        private final String namePrefix;
+
+                BlobOutputStreamThreadFactory() {
+                        SecurityManager s = System.getSecurityManager();
+                        group = (s != null) ? s.getThreadGroup() :
+                                        Thread.currentThread().getThreadGroup();
+                        namePrefix = "azure-storage-bloboutputstream-thread-";
+                    }
+
+                public Thread newThread(Runnable r) {
+                        Thread t = new Thread(group, r,
+                                        namePrefix + threadNumber.getAndIncrement(),
+                                        0);
+                        t.setDaemon(true);
+                        if (t.getPriority() != Thread.NORM_PRIORITY)
+                                t.setPriority(Thread.NORM_PRIORITY);
+                        return t;
+                    }
+    }
 
     /**
      * Holds the {@link AccessCondition} object that represents the access conditions for the blob.
@@ -171,9 +189,10 @@ final class BlobOutputStreamInternal extends BlobOutputStream {
         this.threadExecutor = new ThreadPoolExecutor(
                 this.options.getConcurrentRequestCount(),
                 this.options.getConcurrentRequestCount(),
-                10, 
+                10,
                 TimeUnit.SECONDS,
-                new LinkedBlockingQueue<Runnable>());
+                new LinkedBlockingQueue<Runnable>(),
+                new BlobOutputStreamThreadFactory());
         this.completionService = new ExecutorCompletionService<Void>(this.threadExecutor);
     }
 
@@ -473,10 +492,10 @@ final class BlobOutputStreamInternal extends BlobOutputStream {
             if (this.options.getAbsorbConditionalErrorsOnRetry()
                     && e.getHttpStatusCode() == HttpURLConnection.HTTP_PRECON_FAILED
                     && e.getExtendedErrorInformation() != null
-                    && e.getExtendedErrorInformation().getErrorCode() != null
-                    && (e.getExtendedErrorInformation().getErrorCode()
-                            .equals(StorageErrorCodeStrings.INVALID_APPEND_POSITION) || e.getExtendedErrorInformation()
-                            .getErrorCode().equals(StorageErrorCodeStrings.INVALID_MAX_BLOB_SIZE_CONDITION))
+                    && e.getErrorCode() != null
+                    && (e.getErrorCode()
+                            .equals(StorageErrorCodeStrings.INVALID_APPEND_POSITION) ||
+                            e.getErrorCode().equals(StorageErrorCodeStrings.INVALID_MAX_BLOB_SIZE_CONDITION))
                     && (this.opContext.getRequestResults().size() - previousResultsCount > 1)) {
 
                 // Pre-condition failure on a retry should be ignored in a single writer scenario since 

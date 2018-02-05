@@ -40,7 +40,12 @@ public enum BlobListingDetails {
     /**
      * Include copy properties in the listing.
      */
-    COPY(8);
+    COPY(8),
+
+    /**
+     * Specifies that soft deleted blobs which are retained by the service should be included in the response.
+     */
+    DELETED(16);
 
     /**
      * Returns the value of this enum.

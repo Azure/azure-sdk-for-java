@@ -393,7 +393,7 @@ public final class EntityProperty {
      * Gets the class type of the {@link EntityProperty}.
      * 
      * @return
-     *         The <code>Class<?></code> of the {@link EntityProperty}.
+     *         The <code>Class&lt;?&gt;</code> of the {@link EntityProperty}.
      */
     public Class<?> getType() {
         return this.type;

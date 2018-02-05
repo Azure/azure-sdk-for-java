@@ -25,7 +25,6 @@ import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
 import com.microsoft.azure.storage.TestRunners.SlowTests;
-import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.UriQueryBuilder;
 
 import org.junit.After;
@@ -626,7 +625,6 @@ public class CloudFileShareTests {
 
     @Test
     public void testUnsupportedApisShareSnapshot() throws StorageException, URISyntaxException {
-        CloudFileClient client = FileTestHelper.createCloudFileClient();
         this.share.create();
         this.share.downloadPermissions();
         CloudFileShare snapshot = this.share.createSnapshot();

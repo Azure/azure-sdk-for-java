@@ -87,6 +87,15 @@ public final class ExecutionEngine {
                 try {
                     if (task.getSendStream() != null) {
                         Logger.info(opContext, LogConstants.UPLOAD);
+
+                        // Always set fixed length streaming mode when we know the length in advance.
+                        // This sets the Content-Length of the request and allows the request payload to
+                        // be streamed from the source. Otherwise, the HTTP layer will buffer the entire
+                        // request and compute the Content-Length itself.
+                        if (task.getLength() >= 0) {
+                            request.setFixedLengthStreamingMode(task.getLength());
+                        }
+
                         final StreamMd5AndLength descriptor = Utility.writeToOutputStream(task.getSendStream(),
                                 request.getOutputStream(), task.getLength(), false /* rewindStream */,
                                 false /* calculate MD5 */, opContext, task.getRequestOptions());
@@ -111,6 +120,7 @@ public final class ExecutionEngine {
                     currResult.setEtag(BaseResponse.getEtag(request));
                     currResult.setRequestDate(BaseResponse.getDate(request));
                     currResult.setContentMD5(BaseResponse.getContentMD5(request));
+                    currResult.setErrorCode(BaseResponse.getErrorCode(request));
 
                     // 7. Fire ResponseReceived Event
                     responseReceivedEventTriggered = true;

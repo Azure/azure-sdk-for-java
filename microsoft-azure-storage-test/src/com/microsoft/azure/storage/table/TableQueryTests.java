@@ -82,7 +82,7 @@ public class TableQueryTests {
             TableQuery.from(null);
         }
         catch (IllegalArgumentException ex) {
-            assertEquals(ex.getMessage(), String.format(SR.ARGUMENT_NULL_OR_EMPTY, "class type"));
+            assertEquals(String.format(SR.ARGUMENT_NULL, "class type"), ex.getMessage());
         }
     }
 
