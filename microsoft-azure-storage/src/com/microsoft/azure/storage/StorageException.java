@@ -84,96 +84,11 @@ public class StorageException extends Exception {
         }
 
         StorageExtendedErrorInformation extendedError = request.parseErrorDetails();
-        if (extendedError != null) {
-            // 1. If extended information is available use it
-            translatedException = new StorageException(extendedError.getErrorCode(), responseMessage, responseCode,
-                    extendedError, cause);
-        } else {
-            // 2. If extended information is unavailable, translate exception based
-            // on status code
-            translatedException = translateFromHttpStatus(responseCode, responseMessage, cause);   
-        }
+        translatedException = new StorageException(request.getResult().getErrorCode(), responseMessage,
+                responseCode, extendedError, cause);
 
-        if (translatedException != null) {
-            Utility.logHttpError(translatedException, opContext);
-            return translatedException;
-        } else {
-            return new StorageException(StorageErrorCode.SERVICE_INTERNAL_ERROR.toString(),
-                    "The server encountered an unknown failure: ".concat(responseMessage),
-                    HttpURLConnection.HTTP_INTERNAL_ERROR, null, cause);   
-        }
-    }
-
-    /**
-     * Translates the specified HTTP status code into a storage exception.
-     * 
-     * @param statusCode
-     *            The HTTP status code returned by the operation.
-     * @param statusDescription
-     *            A <code>String</code> that represents the status description.
-     * @param inner
-     *            An <code>Exception</code> object that represents a reference to the initial exception, if one exists.
-     * 
-     * @return A <code>StorageException</code> object that represents translated exception.
-     **/
-    protected static StorageException translateFromHttpStatus(final int statusCode, final String statusDescription,
-            final Exception inner) {
-        String errorCode;
-        switch (statusCode) {
-        case HttpURLConnection.HTTP_FORBIDDEN:
-            errorCode = StorageErrorCode.ACCESS_DENIED.toString();
-            break;
-        case HttpURLConnection.HTTP_GONE:
-        case HttpURLConnection.HTTP_NOT_FOUND:
-            errorCode = StorageErrorCode.RESOURCE_NOT_FOUND.toString();
-            break;
-        case 416:
-        case HttpURLConnection.HTTP_BAD_REQUEST:
-            // 416: RequestedRangeNotSatisfiable - No corresponding enum in HttpURLConnection
-            errorCode = StorageErrorCode.BAD_REQUEST.toString();
-            break;
-
-        case HttpURLConnection.HTTP_PRECON_FAILED:
-        case HttpURLConnection.HTTP_NOT_MODIFIED:
-            errorCode = StorageErrorCode.CONDITION_FAILED.toString();
-            break;
-
-        case HttpURLConnection.HTTP_CONFLICT:
-            errorCode = StorageErrorCode.RESOURCE_ALREADY_EXISTS.toString();
-            break;
-
-        case HttpURLConnection.HTTP_UNAVAILABLE:
-            errorCode = StorageErrorCode.SERVER_BUSY.toString();
-            break;
-
-        case HttpURLConnection.HTTP_GATEWAY_TIMEOUT:
-            errorCode = StorageErrorCode.SERVICE_TIMEOUT.toString();
-            break;
-
-        case HttpURLConnection.HTTP_INTERNAL_ERROR:
-            errorCode = StorageErrorCode.SERVICE_INTERNAL_ERROR.toString();
-            break;
-
-        case HttpURLConnection.HTTP_NOT_IMPLEMENTED:
-            errorCode = StorageErrorCode.NOT_IMPLEMENTED.toString();
-            break;
-
-        case HttpURLConnection.HTTP_BAD_GATEWAY:
-            errorCode = StorageErrorCode.BAD_GATEWAY.toString();
-            break;
-
-        case HttpURLConnection.HTTP_VERSION:
-            errorCode = StorageErrorCode.HTTP_VERSION_NOT_SUPPORTED.toString();
-            break;
-        default:
-            errorCode = null;
-        }
-
-        if (errorCode == null) {
-            return null;
-        } else {
-            return new StorageException(errorCode, statusDescription, statusCode, null, inner);
-        }
+        Utility.logHttpError(translatedException, opContext);
+        return translatedException;
     }
 
     /**

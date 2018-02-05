@@ -24,7 +24,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.EnumSet;
 import java.util.GregorianCalendar;
-import java.util.Locale;
 import java.util.UUID;
 
 import org.junit.Test;
@@ -566,7 +565,7 @@ public class TableClientTests {
             }
             catch (StorageException e) {
                 assertEquals(HttpURLConnection.HTTP_FORBIDDEN, e.getHttpStatusCode());
-                assertEquals("AuthorizationFailure", e.getExtendedErrorInformation().getErrorCode());
+                assertEquals("AuthorizationFailure", e.getErrorCode());
             }
 
             ent = new Class1("javatables_batch_1", "05");
@@ -576,7 +575,7 @@ public class TableClientTests {
             }
             catch (StorageException e) {
                 assertEquals(HttpURLConnection.HTTP_FORBIDDEN, e.getHttpStatusCode());
-                assertEquals("AuthorizationFailure", e.getExtendedErrorInformation().getErrorCode());
+                assertEquals("AuthorizationFailure", e.getErrorCode());
             }
 
         }

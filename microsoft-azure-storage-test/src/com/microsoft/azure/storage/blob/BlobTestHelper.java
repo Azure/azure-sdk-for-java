@@ -14,10 +14,12 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.DeleteRetentionPolicy;
 import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.StorageCredentials;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
+import com.microsoft.azure.storage.ServiceProperties;
 
 import java.io.ByteArrayInputStream;
 import java.io.IOException;
@@ -435,5 +437,25 @@ public class BlobTestHelper extends TestHelper {
             assertEquals(copy1.getStatus(), copy2.getStatus());
             assertEquals(copy1.getTotalBytes(), copy2.getTotalBytes());
         }
+    }
+
+    public static void enableSoftDelete() throws StorageException, URISyntaxException, InterruptedException {
+        ServiceProperties serviceProperties = new ServiceProperties();
+        serviceProperties.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
+        serviceProperties.getDeleteRetentionPolicy().setEnabled(true);
+        serviceProperties.getDeleteRetentionPolicy().setRetentionIntervalInDays(3);
+
+        CloudBlobClient bClient = TestHelper.createCloudBlobClient();
+        bClient.uploadServiceProperties(serviceProperties);
+        Thread.sleep(30000);
+    }
+
+    public static void disableSoftDelete() throws StorageException, URISyntaxException, InterruptedException {
+        ServiceProperties serviceProperties = new ServiceProperties();
+        serviceProperties.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
+
+        CloudBlobClient bClient = TestHelper.createCloudBlobClient();
+        bClient.uploadServiceProperties(serviceProperties);
+        Thread.sleep(30000);
     }
 }

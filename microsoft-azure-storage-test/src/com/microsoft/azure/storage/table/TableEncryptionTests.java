@@ -32,7 +32,9 @@ import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
 
-import com.microsoft.azure.keyvault.extensions.SymmetricKey;
+import com.google.common.io.BaseEncoding;
+
+import com.microsoft.azure.keyvault.cryptography.SymmetricKey;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.DictionaryKeyResolver;
 import com.microsoft.azure.storage.ResultContinuation;
@@ -45,7 +47,6 @@ import com.microsoft.azure.storage.table.TableRequestOptions.PropertyResolver;
 import com.microsoft.azure.storage.table.TableTestHelper.Class1;
 import com.microsoft.azure.storage.table.TableTestHelper.EncryptedClass1;
 import com.microsoft.azure.storage.table.TableTestHelper.ComplexEntity;
-import com.sun.jersey.core.util.Base64;
 
 public class TableEncryptionTests {
     CloudTable table = null;
@@ -1096,27 +1097,27 @@ public class TableEncryptionTests {
             
             // Hard code some sample data, then see if we can decrypt it.
             // This key is used only for test, do not use to encrypt any sensitive data.
-            SymmetricKey sampleKEK = new SymmetricKey("key1", Base64.decode("rFz7+tv4hRiWdWUJMFlxl1xxtU/qFUeTriGaxwEcxjU="));
+            SymmetricKey sampleKEK = new SymmetricKey("key1", BaseEncoding.base64().decode("rFz7+tv4hRiWdWUJMFlxl1xxtU/qFUeTriGaxwEcxjU="));
 
             // This data here was created using Fiddler to capture the .NET library uploading an encrypted entity, encrypted with the specified KEK and CEK.
             // Note that this data is lacking the library information in the KeyWrappingMetadata.
             DynamicTableEntity dteNetOld = new DynamicTableEntity("pk", "netUp");
-            dteNetOld.getProperties().put("sampleProp", new EntityProperty(Base64.decode("27cLSlSFqy9C0xUCr57XAA==")));
-            dteNetOld.getProperties().put("sampleProp2", new EntityProperty(Base64.decode("pZR6Ln/DwbwyyOCEezL/hg==")));
-            dteNetOld.getProperties().put("sampleProp3", new EntityProperty(Base64.decode("JOix4N8eX/WuCtIvlD2QxQ==")));
+            dteNetOld.getProperties().put("sampleProp", new EntityProperty(BaseEncoding.base64().decode("27cLSlSFqy9C0xUCr57XAA==")));
+            dteNetOld.getProperties().put("sampleProp2", new EntityProperty(BaseEncoding.base64().decode("pZR6Ln/DwbwyyOCEezL/hg==")));
+            dteNetOld.getProperties().put("sampleProp3", new EntityProperty(BaseEncoding.base64().decode("JOix4N8eX/WuCtIvlD2QxQ==")));
             dteNetOld.getProperties().put("_ClientEncryptionMetadata1", new EntityProperty("{\"WrappedContentKey\":{\"KeyId\":\"key1\",\"EncryptedKey\":\"pwSKxpJkwCS2zCaykh0m8e4OApeLuQ4FiahZ9zdwxaLL1HsWqQ4DSw==\",\"Algorithm\":\"A256KW\"},\"EncryptionAgent\":{\"Protocol\":\"1.0\",\"EncryptionAlgorithm\":\"AES_CBC_256\"},\"ContentEncryptionIV\":\"obTAQcYeFQ3IU7Jfcema7Q==\",\"KeyWrappingMetadata\":{}}"));
-            dteNetOld.getProperties().put("_ClientEncryptionMetadata2", new EntityProperty(Base64.decode("MWA7LlvXSJnKhf8f7MVhfjWECkxrCyCXGIlYY6ucpr34IVDU7fN6IHvKxV15WiXp")));
+            dteNetOld.getProperties().put("_ClientEncryptionMetadata2", new EntityProperty(BaseEncoding.base64().decode("MWA7LlvXSJnKhf8f7MVhfjWECkxrCyCXGIlYY6ucpr34IVDU7fN6IHvKxV15WiXp")));
 
             testTable.execute(TableOperation.insert(dteNetOld));
 
             // This data here was created using Fiddler to capture the Java library uploading an encrypted entity, encrypted with the specified KEK and CEK.
             // Note that this data is lacking the KeyWrappingMetadata.  It also constructs an IV with PK + RK + column name.
             DynamicTableEntity dteJavaOld = new DynamicTableEntity("pk", "javaUp");
-            dteJavaOld.getProperties().put("sampleProp", new EntityProperty(Base64.decode("sa3bCvXq79ImSPveChS+cg==")));
-            dteJavaOld.getProperties().put("sampleProp2", new EntityProperty(Base64.decode("KXjuBNn9DesCmMcdVpamJw==")));
-            dteJavaOld.getProperties().put("sampleProp3", new EntityProperty(Base64.decode("wykVEni1rV+H6oNjoNml6A==")));
+            dteJavaOld.getProperties().put("sampleProp", new EntityProperty(BaseEncoding.base64().decode("sa3bCvXq79ImSPveChS+cg==")));
+            dteJavaOld.getProperties().put("sampleProp2", new EntityProperty(BaseEncoding.base64().decode("KXjuBNn9DesCmMcdVpamJw==")));
+            dteJavaOld.getProperties().put("sampleProp3", new EntityProperty(BaseEncoding.base64().decode("wykVEni1rV+H6oNjoNml6A==")));
             dteJavaOld.getProperties().put("_ClientEncryptionMetadata1", new EntityProperty("{\"WrappedContentKey\":{\"KeyId\":\"key1\",\"EncryptedKey\":\"2F4rIuDmGPgEmhpvTtE7x6281BetKz80EsgRwGxTjL8rRt7Z7GrOgg==\",\"Algorithm\":\"A256KW\"},\"EncryptionAgent\":{\"Protocol\":\"1.0\",\"EncryptionAlgorithm\":\"AES_CBC_256\"},\"ContentEncryptionIV\":\"8st/uXffG+6DxBhw4D1URw==\"}"));
-            dteJavaOld.getProperties().put("_ClientEncryptionMetadata2", new EntityProperty(Base64.decode("WznUoytxkvl9KhZ4mNlqkBvRTUHN/D5IgJmNl7kQBOtFBOSgZZrTfZXKH8GjmvKA")));
+            dteJavaOld.getProperties().put("_ClientEncryptionMetadata2", new EntityProperty(BaseEncoding.base64().decode("WznUoytxkvl9KhZ4mNlqkBvRTUHN/D5IgJmNl7kQBOtFBOSgZZrTfZXKH8GjmvKA")));
 
             testTable.execute(TableOperation.insert(dteJavaOld));
             

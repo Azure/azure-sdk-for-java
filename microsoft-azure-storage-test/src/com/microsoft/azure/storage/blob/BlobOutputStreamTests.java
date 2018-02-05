@@ -20,7 +20,6 @@ import com.microsoft.azure.storage.OperationContext;
 import com.microsoft.azure.storage.ResponseReceivedEvent;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.core.SR;
 

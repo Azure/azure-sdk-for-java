@@ -42,8 +42,8 @@ import org.junit.experimental.categories.Category;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.microsoft.azure.keyvault.core.IKey;
-import com.microsoft.azure.keyvault.extensions.RsaKey;
-import com.microsoft.azure.keyvault.extensions.SymmetricKey;
+import com.microsoft.azure.keyvault.cryptography.RsaKey;
+import com.microsoft.azure.keyvault.cryptography.SymmetricKey;
 import com.microsoft.azure.storage.DictionaryKeyResolver;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;

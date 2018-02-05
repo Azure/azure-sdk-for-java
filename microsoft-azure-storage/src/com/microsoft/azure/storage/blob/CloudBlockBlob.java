@@ -25,6 +25,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.FileInputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -644,8 +645,16 @@ public final class CloudBlockBlob extends CloudBlob {
 
         StreamMd5AndLength descriptor = new StreamMd5AndLength();
         descriptor.setLength(length);
-        
-        InputStream inputDataStream = sourceStream;
+
+        // If the sourceStream is a FileInputStream, wrap it in a MarkableFileStream.
+        // This allows for single shot upload on FileInputStreams.
+        InputStream inputDataStream;
+        if(!sourceStream.markSupported() && sourceStream instanceof FileInputStream) {
+            inputDataStream = new MarkableFileStream((FileInputStream)sourceStream);
+        }
+        else {
+            inputDataStream = sourceStream;
+        }
         
         // Initial check - skip the PutBlob operation if the input stream isn't markable, or if the length is known to
         // be greater than the threshold.
@@ -821,7 +830,7 @@ public final class CloudBlockBlob extends CloudBlob {
             final InputStream sourceStream = block;
             final long blockSize = block instanceof SubStream ? ((SubStream) block).getLength() : this.streamWriteSizeInBytes;
 
-            Future<Void> uploadTask = completionService.submit(new Callable<Void>() {
+            completionService.submit(new Callable<Void>() {
                 @Override
                 public Void call() throws IOException, StorageException {
                     uploadBlock(blockId, sourceStream, blockSize, _accessCondition, _requestOptions, _operationContext);
@@ -1018,19 +1027,29 @@ public final class CloudBlockBlob extends CloudBlob {
             throw new IllegalArgumentException(SR.INVALID_BLOCK_ID);
         }
 
-        if (sourceStream.markSupported()) {
-            // Mark sourceStream for current position.
-            sourceStream.mark(Constants.MAX_MARK_LENGTH);
+        // If the sourceStream is a FileInputStream, wrap it in a MarkableFileStream.
+        // This prevents buffering the entire block into memory.
+        InputStream bufferedStreamReference;
+        if(!sourceStream.markSupported() && sourceStream instanceof FileInputStream) {
+            bufferedStreamReference = new MarkableFileStream((FileInputStream)sourceStream);
+        }
+        else {
+            bufferedStreamReference = sourceStream;
         }
 
-        InputStream bufferedStreamReference = sourceStream;
+        if (bufferedStreamReference.markSupported()) {
+            // Mark sourceStream for current position.
+            bufferedStreamReference.mark(Constants.MAX_MARK_LENGTH);
+        }
+
         StreamMd5AndLength descriptor = new StreamMd5AndLength();
         descriptor.setLength(length);
 
-        if (!sourceStream.markSupported()) {
+        if (!bufferedStreamReference.markSupported()) {
             // needs buffering
+            // TODO: Change to a BufferedInputStream to avoid the extra buffering and copying.
             final ByteArrayOutputStream byteStream = new ByteArrayOutputStream();
-            descriptor = Utility.writeToOutputStream(sourceStream, byteStream, length, false /* rewindSourceStream */,
+            descriptor = Utility.writeToOutputStream(bufferedStreamReference, byteStream, length, false /* rewindSourceStream */,
                     options.getUseTransactionalContentMD5(), opContext, options);
 
             bufferedStreamReference = new ByteArrayInputStream(byteStream.toByteArray());
@@ -1038,7 +1057,7 @@ public final class CloudBlockBlob extends CloudBlob {
         else if (length < 0 || options.getUseTransactionalContentMD5()) {
             // If the stream is of unknown length or we need to calculate the
             // MD5, then we we need to read the stream contents first
-            descriptor = Utility.analyzeStream(sourceStream, length, -1L, true /* rewindSourceStream */,
+            descriptor = Utility.analyzeStream(bufferedStreamReference, length, -1L, true /* rewindSourceStream */,
                     options.getUseTransactionalContentMD5());
         }
 

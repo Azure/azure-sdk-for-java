@@ -62,7 +62,7 @@ public final class TableServiceException extends StorageException {
      * @param message
      *            A <code>String</code> that represents the error message returned by the table operation.
      * @param statusCode
-     *            An <code>int>/code> which represents the HTTP status code returned by the table operation.
+     *            An <code>int</code> which represents the HTTP status code returned by the table operation.
      * @param extendedErrorInfo
      *            A {@link StorageExtendedErrorInformation} object that represents the extended error information
      *            returned by the table operation.

@@ -155,9 +155,7 @@ public final class CloudFileShare {
      *            A <code>java.net.URI</code> object that represents the absolute URI of the share.
      * @param credentials
      *            A {@link StorageCredentials} object used to authenticate access.
-     * @param snapshotID
-     *            A <code>String</code> that represents the snapshot version, if applicable.
-     * 
+     *
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -172,8 +170,6 @@ public final class CloudFileShare {
      *            A {@link StorageUri} object which represents the absolute StorageUri of the share.
      * @param credentials
      *            A {@link StorageCredentials} object used to authenticate access.
-     * @param snapshotID
-     *            A <code>String</code> that represents the snapshot version, if applicable.
      * @throws StorageException
      *             If a storage service error occurred.
      */
@@ -1511,7 +1507,7 @@ public final class CloudFileShare {
      *
      * @return <code>true</code> if the share is a snapshot, otherwise <code>false</code>.
      *
-     * @see DeleteSnapshotsOption
+     * @see com.microsoft.azure.storage.blob.DeleteSnapshotsOption
      */
     public final boolean isSnapshot() {
         return this.snapshotID != null;

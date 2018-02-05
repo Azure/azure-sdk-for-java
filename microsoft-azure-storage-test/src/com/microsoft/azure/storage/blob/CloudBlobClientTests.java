@@ -14,6 +14,9 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
@@ -35,7 +38,6 @@ import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
-import com.microsoft.azure.storage.TestRunners;
 
 import static org.junit.Assert.*;
 
@@ -308,6 +310,55 @@ public class CloudBlobClientTests {
         }
         finally {
             container.deleteIfExists();
+        }
+    }
+
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class, CloudTests.class })
+    public void testUploadBlobFromFileSinglePut() throws URISyntaxException, StorageException, IOException {
+        CloudBlobClient bClient = BlobTestHelper.createCloudBlobClient();
+
+        final ArrayList<Boolean> callList = new ArrayList<Boolean>();
+        OperationContext sendingRequestEventContext = new OperationContext();
+        sendingRequestEventContext.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
+
+            @Override
+            public void eventOccurred(SendingRequestEvent eventArg) {
+                assertEquals(eventArg.getRequestResult(), eventArg.getOpContext().getLastResult());
+                callList.add(true);
+            }
+        });
+
+        assertEquals(0, callList.size());
+
+        CloudBlobContainer container = null;
+        File sourceFile = File.createTempFile("sourceFile", ".tmp");
+        try {
+            container = bClient.getContainerReference(BlobTestHelper.generateRandomContainerName());
+            container.createIfNotExists();
+            CloudBlockBlob blob = container.getBlockBlobReference(BlobTestHelper
+                    .generateRandomBlobNameWithPrefix("uploadThreshold"));
+
+            sourceFile = File.createTempFile("sourceFile", ".tmp");
+
+            int fileSize = 10 * 1024;
+            byte[] buffer = BlobTestHelper.getRandomBuffer(fileSize);
+            FileOutputStream fos = new FileOutputStream(sourceFile);
+            fos.write(buffer);
+            fos.close();
+
+            // This should make a single call even though FileInputStream is not seekable because of the optimizations
+            // from wrapping it in a MarkableFileInputStream
+            blob.upload(new FileInputStream(sourceFile), fileSize - 1, null, null, sendingRequestEventContext);
+
+            assertEquals(1, callList.size());
+        }
+        finally {
+            container.deleteIfExists();
+
+            if (sourceFile.exists()) {
+                sourceFile.delete();
+            }
         }
     }
 }

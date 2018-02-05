@@ -35,7 +35,7 @@ import com.microsoft.azure.storage.core.SR;
  * <a href="http://www.odata.org/developers/protocols/overview">OData Protocol Overview</a>.
  * <p>
  * The Abstract Type System used to define the primitive types supported by OData is defined in detail in <a
- * href="http://msdn.microsoft.com/en-us/library/dd541474.aspx">[MC-CSDL] (section 2.2.1).
+ * href="http://msdn.microsoft.com/en-us/library/dd541474.aspx">[MC-CSDL] (section 2.2.1)</a>.
  */
 public enum EdmType {
     /**

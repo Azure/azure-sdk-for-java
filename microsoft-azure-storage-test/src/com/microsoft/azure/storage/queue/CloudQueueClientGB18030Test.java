@@ -15,7 +15,6 @@
 package com.microsoft.azure.storage.queue;
 
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;

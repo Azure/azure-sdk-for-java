@@ -357,7 +357,7 @@ public final class CloudAppendBlob extends CloudBlob {
      *            An {@link OperationContext} object which represents the context for the current operation. This object
      *            is used to track requests to the storage service, and to provide additional runtime information about
      *            the operation.
-     * @return The offset at which the block was appended.</returns>
+     * @return The offset at which the block was appended.
      * @throws IOException
      *             If an I/O exception occurred.
      * @throws StorageException

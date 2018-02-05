@@ -53,7 +53,6 @@ import com.microsoft.azure.storage.SharedAccessAccountService;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.TestHelper;
-import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.TestRunners.CloudTests;
 import com.microsoft.azure.storage.TestRunners.DevFabricTests;
 import com.microsoft.azure.storage.TestRunners.DevStoreTests;
@@ -324,27 +323,27 @@ public class CloudPageBlobTests {
 
         ByteArrayOutputStream blobStream = new ByteArrayOutputStream();
         try {
-            blob.downloadRange(0, new Long(0), blobStream);
+            blob.downloadRange(0, Long.valueOf(0), blobStream);
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
 
-        blob.downloadRange(0, new Long(1024), blobStream);
+        blob.downloadRange(0, Long.valueOf(1024), blobStream);
         assertEquals(blobStream.size(), 1024);
         BlobTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(blobStream.toByteArray()), wholeBlob, 0,
                 0, 1024, 2 * 1024);
 
         CloudPageBlob blob2 = this.container.getPageBlobReference("blob1");
         try {
-            blob.downloadRange(1024, new Long(0), blobStream);
+            blob.downloadRange(1024, Long.valueOf(0), blobStream);
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
 
         ByteArrayOutputStream blobStream2 = new ByteArrayOutputStream();
-        blob2.downloadRange(1024, new Long(1024), blobStream2);
+        blob2.downloadRange(1024, Long.valueOf(1024), blobStream2);
         BlobTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(blobStream2.toByteArray()), wholeBlob,
                 0, 1024, 1024, 2 * 1024);
 
@@ -367,27 +366,27 @@ public class CloudPageBlobTests {
                 .generateRandomBlobNameWithPrefix("downloadrange"));
 
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * 1024 * 1024, 8 * 1024 * 1024, 1 * 1024 * 1024,
-                new Long(1 * 1024 * 1024), new Long(5 * 1024 * 1024));
+                Long.valueOf(1 * 1024 * 1024), Long.valueOf(5 * 1024 * 1024));
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * 1024 * 1024, 8 * 1024 * 1024, 2 * 1024 * 1024,
-                new Long(2 * 1024 * 1024), new Long(6 * 1024 * 1024));
+                Long.valueOf(2 * 1024 * 1024), Long.valueOf(6 * 1024 * 1024));
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * 1024 * 1024, 8 * 1024 * 1024, 1 * 1024 * 1024,
-                new Long(4 * 1024 * 1024), new Long(4 * 1024 * 1024));
+                Long.valueOf(4 * 1024 * 1024), Long.valueOf(4 * 1024 * 1024));
 
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 0, new Long(1 * 512), new Long(1 * 512));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, new Long(0), null);
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, new Long(1 * 512), null);
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, new Long(0), new Long(1 * 512));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, new Long(1 * 512), new Long(
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 0, Long.valueOf(1 * 512), Long.valueOf(1 * 512));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(0), null);
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(1 * 512), null);
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(0), Long.valueOf(1 * 512));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, Long.valueOf(1 * 512), Long.valueOf(
                 1 * 512));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, new Long(1 * 512), new Long(
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, Long.valueOf(1 * 512), Long.valueOf(
                 2 * 512));
 
         // Edge cases
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 1023, new Long(1023), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, new Long(1023), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, new Long(0), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, new Long(512), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 512, new Long(1023), new Long(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 1023, Long.valueOf(1023), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, Long.valueOf(1023), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, Long.valueOf(0), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, Long.valueOf(512), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 512, Long.valueOf(1023), Long.valueOf(1));
     }
 
     @Test
@@ -1286,8 +1285,6 @@ public class CloudPageBlobTests {
 
             // Test upload from file API
             File sourceFile = File.createTempFile("sourceFile", ".tmp");
-            File destinationFile = new File(sourceFile.getParentFile(),
-                    "destinationFile.tmp");
             FileOutputStream fos = new FileOutputStream(sourceFile);
             fos.write(buffer);
             fos.close();
@@ -1393,7 +1390,7 @@ public class CloudPageBlobTests {
 
             // copy to larger disk
             CloudPageBlob copy = container.getPageBlobReference("copy");
-            String copyId = copy.startCopy(TestHelper.defiddler(source.getUri()), PremiumPageBlobTier.P30, null, null, null, null);
+            copy.startCopy(TestHelper.defiddler(source.getUri()), PremiumPageBlobTier.P30, null, null, null, null);
             assertEquals(BlobType.PAGE_BLOB, copy.getProperties().getBlobType());
             assertEquals(PremiumPageBlobTier.P30, copy.getProperties().getPremiumPageBlobTier());
             assertEquals(PremiumPageBlobTier.P10, source.getProperties().getPremiumPageBlobTier());
@@ -1415,7 +1412,7 @@ public class CloudPageBlobTests {
             source2.create(1024);
 
             CloudPageBlob copy3 = container.getPageBlobReference("copy3");
-            String copyId3 = copy3.startCopy(TestHelper.defiddler(source2.getUri()), PremiumPageBlobTier.P60, null ,null ,null, null);
+            copy3.startCopy(TestHelper.defiddler(source2.getUri()), PremiumPageBlobTier.P60, null ,null ,null, null);
             assertEquals(BlobType.PAGE_BLOB, copy3.getProperties().getBlobType());
             assertEquals(PremiumPageBlobTier.P60, copy3.getProperties().getPremiumPageBlobTier());
             assertNull(source2.getProperties().getPremiumPageBlobTier());

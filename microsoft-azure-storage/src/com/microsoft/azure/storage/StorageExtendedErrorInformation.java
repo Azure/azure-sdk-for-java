@@ -61,7 +61,10 @@ public final class StorageExtendedErrorInformation implements Serializable {
      * Gets the storage service error code.
      * 
      * @return A <code>String</code> which contains the error code.
+     *
+     * @deprecated use the property on {@link RequestResult} instead.
      */
+    @Deprecated
     public String getErrorCode() {
         return this.errorCode;
     }

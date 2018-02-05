@@ -46,6 +46,11 @@ public final class ServiceProperties {
     private String defaultServiceVersion;
 
     /**
+     * Specifies whether to retain deleted blobs for a certain period of time or remove them permanently when being deleted.
+     */
+    private DeleteRetentionPolicy deleteRetentionPolicy;
+
+    /**
      * Initializes a new instances of the ServiceProperties class.
      */
     public ServiceProperties() {
@@ -148,5 +153,21 @@ public final class ServiceProperties {
      */
     public void setDefaultServiceVersion(final String defaultServiceVersion) {
         this.defaultServiceVersion = defaultServiceVersion;
+    }
+
+    /**
+     * Set the delete retention policy for blobs.
+     * @param deleteRetentionPolicy is the policy which indicates whether to retain deleted blobs for a period of time.
+     */
+    public void setDeleteRetentionPolicy(DeleteRetentionPolicy deleteRetentionPolicy) {
+        this.deleteRetentionPolicy = deleteRetentionPolicy;
+    }
+
+    /**
+     * Get the delete retention policy.
+     * @return the policy which indicates whether to retain deleted blobs for a period of time.
+     */
+    public DeleteRetentionPolicy getDeleteRetentionPolicy() {
+        return deleteRetentionPolicy;
     }
 }

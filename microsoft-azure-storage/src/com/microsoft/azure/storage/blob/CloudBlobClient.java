@@ -136,7 +136,7 @@ public final class CloudBlobClient extends ServiceClient {
     /**
      * Returns the value for the default delimiter used for cloud blob directories. The default is '/'.
      * 
-     * @return A <code>String<code> which represents the value for the default delimiter.
+     * @return A <code>String</code> which represents the value for the default delimiter.
      */
     public String getDirectoryDelimiter() {
         return this.directoryDelimiter;
@@ -560,6 +560,10 @@ public final class CloudBlobClient extends ServiceClient {
         options = BlobRequestOptions.populateAndApplyDefaults(options, BlobType.UNSPECIFIED, this);
 
         Utility.assertNotNull("properties", properties);
+        if (properties.getDeleteRetentionPolicy() != null
+                && properties.getDeleteRetentionPolicy().getEnabled()) {
+            Utility.assertNotNull("RetentionIntervalInDays", properties.getDeleteRetentionPolicy().getRetentionIntervalInDays());
+        }
 
         ExecutionEngine.executeWithRetry(this, null,
                 this.uploadServicePropertiesImpl(properties, options, opContext, false),

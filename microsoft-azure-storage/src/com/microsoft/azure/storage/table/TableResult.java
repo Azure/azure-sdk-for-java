@@ -50,7 +50,7 @@ public class TableResult {
      * Initializes a {@link TableResult} instance with the specified HTTP status code.
      * 
      * @param httpStatusCode
-     *            An <code>int<code> which represents the HTTP status code for the table operation returned by the server.
+     *            An <code>int</code> which represents the HTTP status code for the table operation returned by the server.
      */
     public TableResult(final int httpStatusCode) {
         this.httpStatusCode = httpStatusCode;
@@ -71,7 +71,7 @@ public class TableResult {
      * Gets the HTTP status code returned by a table operation request.
      * 
      * @return
-     *         An <code>int<code> which represents the HTTP status code for the table operation returned by the server.
+     *         An <code>int</code> which represents the HTTP status code for the table operation returned by the server.
      */
     public int getHttpStatusCode() {
         return this.httpStatusCode;

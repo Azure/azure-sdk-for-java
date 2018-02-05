@@ -385,9 +385,7 @@ public class CloudAnalyticsClient {
      * @param logBlobs
      *            An {@link Iterable} of blobs to parse LogRecords from.
      * @return
-     *         An enumerable collection of objects that implement {@link LogRecords} and are retrieved lazily.
-     * @throws StorageException
-     * @throws URISyntaxException
+     *         An enumerable collection of objects that implement {@link LogRecord} and are retrieved lazily.
      */
     public static Iterable<LogRecord> parseLogBlobs(Iterable<ListBlobItem> logBlobs) {
         Utility.assertNotNull("logBlobs", logBlobs);
@@ -398,12 +396,10 @@ public class CloudAnalyticsClient {
     /**
      * Returns an enumerable collection of log records, retrieved lazily.
      * 
-     * @param logBlobs
-     *            An {@link Iterable} of blobs to parse LogRecords from.
+     * @param logBlob
+     *            A single blob to parse LogRecords from.
      * @return
-     *         An enumerable collection of objects that implement {@link LogRecords} and are retrieved lazily.
-     * @throws StorageException
-     * @throws URISyntaxException
+     *         An enumerable collection of objects that implement {@link LogRecord} and are retrieved lazily.
      */
     public static Iterable<LogRecord> parseLogBlob(ListBlobItem logBlob) {
         Utility.assertNotNull("logBlob", logBlob);

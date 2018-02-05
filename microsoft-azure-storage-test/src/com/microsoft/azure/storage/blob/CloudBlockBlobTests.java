@@ -24,7 +24,6 @@ import com.microsoft.azure.storage.StorageCredentialsAnonymous;
 import com.microsoft.azure.storage.StorageCredentialsSharedAccessSignature;
 import com.microsoft.azure.storage.StorageEvent;
 import com.microsoft.azure.storage.StorageException;
-import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.core.Utility;
 import com.microsoft.azure.storage.file.CloudFile;
 import com.microsoft.azure.storage.file.CloudFileShare;
@@ -44,6 +43,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -150,6 +150,381 @@ public class CloudBlockBlobTests {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, ex.getHttpStatusCode());
             assertEquals("The specified blob does not exist.", ex.getMessage());
             assertEquals("BlobNotFound", ex.getErrorCode());
+        }
+    }
+
+    private void assertBlobIsDeleted(CloudBlockBlob blobItem) {
+        assertTrue(blobItem.deleted);
+        assertNotNull(blobItem.properties.getDeletedTime());
+        assertNotNull(blobItem.properties.getRemainingRetentionDays());
+    }
+
+    private void assertBlobNotDeleted(CloudBlockBlob blobItem) {
+        assertFalse(blobItem.deleted);
+        assertNull(blobItem.properties.getDeletedTime());
+        assertNull(blobItem.properties.getRemainingRetentionDays());
+    }
+
+    /**
+     * Soft-delete a block blob without snapshot.
+     *
+     * @throws StorageException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testSoftDeleteBlockBlobWithoutSnapshot() throws StorageException, URISyntaxException, IOException, InterruptedException {
+        try {
+            BlobTestHelper.enableSoftDelete();
+            final CloudBlockBlob blob = this.container.getBlockBlobReference(BlobTestHelper
+                    .generateRandomBlobNameWithPrefix("testBlob"));
+
+            // create
+            blob.uploadText("text");
+            assertTrue(blob.exists());
+            assertFalse(blob.deleted);
+
+            // soft-delete
+            blob.delete();
+            assertFalse(blob.exists());
+            assertTrue(blob.deleted);
+
+            // deleted blob should be listed
+            int count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                assertBlobIsDeleted(blobItem);
+                count++;
+            }
+            assertEquals(count, 1);
+
+            // un-delete the blob so now it should be listed as a normal blob
+            blob.undelete();
+            assertFalse(blob.deleted);
+            count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                assertBlobNotDeleted(blobItem);
+                count++;
+            }
+            assertEquals(count, 1);
+        }
+        finally {
+            BlobTestHelper.disableSoftDelete();
+        }
+    }
+
+    /**
+     * Soft-delete a block blob snapshot.
+     *
+     * @throws StorageException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testSoftDeleteSingleBlobSnapshot() throws StorageException, URISyntaxException, IOException, InterruptedException {
+        try {
+            BlobTestHelper.enableSoftDelete();
+            final CloudBlockBlob blob = this.container.getBlockBlobReference(BlobTestHelper
+                    .generateRandomBlobNameWithPrefix("testBlob"));
+
+            // create
+            blob.uploadText("text");
+            assertTrue(blob.exists());
+            assertFalse(blob.deleted);
+            CloudBlob snapshot = blob.createSnapshot();
+            assertTrue(snapshot.exists());
+            assertFalse(snapshot.deleted);
+
+            // soft-delete the snapshot
+            snapshot.delete();
+            assertFalse(snapshot.exists());
+            assertTrue(snapshot.deleted);
+
+            // deleted snapshot should be listed
+            int count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                if (!blobItem.isSnapshot()) {
+                    assertBlobNotDeleted(blobItem);
+                }
+                else {
+                    assertBlobIsDeleted(blobItem);
+                }
+                count++;
+            }
+            assertEquals(count, 2);
+
+            // un-delete the snapshot so now its snapshot should be listed as a normal snapshot
+            blob.undelete();
+            count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                assertBlobNotDeleted(blobItem);
+                count++;
+            }
+            assertEquals(count, 2);
+        }
+        finally {
+            BlobTestHelper.disableSoftDelete();
+        }
+    }
+
+    /**
+     * Soft-delete only the snapshots of a block blob.
+     *
+     * @throws StorageException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testSoftDeleteOnlyBlobSnapshots() throws StorageException, URISyntaxException, IOException, InterruptedException {
+        try {
+            BlobTestHelper.enableSoftDelete();
+            final CloudBlockBlob blob = this.container.getBlockBlobReference(BlobTestHelper
+                    .generateRandomBlobNameWithPrefix("testBlob"));
+
+            // create
+            blob.uploadText("text");
+            assertTrue(blob.exists());
+            assertFalse(blob.deleted);
+            CloudBlob snapshot1 = blob.createSnapshot();
+            assertTrue(snapshot1.exists());
+            assertFalse(snapshot1.deleted);
+            CloudBlob snapshot2 = blob.createSnapshot();
+            assertTrue(snapshot2.exists());
+            assertFalse(snapshot2.deleted);
+
+            // soft-delete the snapshots only
+            blob.delete(DeleteSnapshotsOption.DELETE_SNAPSHOTS_ONLY, null, null, null);
+            assertFalse(snapshot1.exists());
+            assertFalse(snapshot2.exists());
+
+            // deleted snapshots should be listed
+            int count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                if (!blobItem.isSnapshot()) {
+                    assertBlobNotDeleted(blobItem);
+                }
+                else {
+                    assertBlobIsDeleted(blobItem);
+                }
+                count++;
+            }
+            assertEquals(count, 3);
+
+            // un-delete the snapshots so now they should be listed as a normal snapshots
+            blob.undelete();
+            count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                assertBlobNotDeleted(blobItem);
+                count++;
+            }
+            assertEquals(count, 3);
+        }
+        finally {
+            BlobTestHelper.disableSoftDelete();
+        }
+    }
+
+    /**
+     * Soft-delete a block blob along with its snapshots.
+     *
+     * @throws StorageException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testSoftDeleteBlobIncludingSnapshots() throws StorageException, URISyntaxException, IOException, InterruptedException {
+        try {
+            BlobTestHelper.enableSoftDelete();
+            final CloudBlockBlob blob = this.container.getBlockBlobReference(BlobTestHelper
+                    .generateRandomBlobNameWithPrefix("testBlob"));
+
+            // create
+            blob.uploadText("text");
+            assertTrue(blob.exists());
+            assertFalse(blob.deleted);
+            CloudBlob snapshot1 = blob.createSnapshot();
+            assertTrue(snapshot1.exists());
+            assertFalse(snapshot1.deleted);
+            CloudBlob snapshot2 = blob.createSnapshot();
+            assertTrue(snapshot2.exists());
+            assertFalse(snapshot2.deleted);
+
+            // soft-delete the blob including the snapshots
+            blob.delete(DeleteSnapshotsOption.INCLUDE_SNAPSHOTS, null, null, null);
+            assertFalse(blob.exists());
+            assertFalse(snapshot1.exists());
+            assertFalse(snapshot2.exists());
+
+            // deleted snapshots and blob should be listed
+            int count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                assertBlobIsDeleted(blobItem);
+                count++;
+            }
+            assertEquals(count, 3);
+
+            // un-delete the blob and snapshots so now they should be listed as a normal blob and snapshots
+            blob.undelete();
+            assertFalse(blob.deleted);
+            count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertBlobNotDeleted(blobItem);
+                count++;
+            }
+            assertEquals(count, 3);
+        }
+        finally {
+            BlobTestHelper.disableSoftDelete();
+        }
+    }
+
+    /**
+     * Soft-delete a block blob which is leased.
+     *
+     * @throws StorageException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testSoftDeleteBlobWithLease() throws StorageException, URISyntaxException, IOException, InterruptedException {
+        try {
+            BlobTestHelper.enableSoftDelete();
+            final CloudBlockBlob blob = this.container.getBlockBlobReference(BlobTestHelper
+                    .generateRandomBlobNameWithPrefix("testBlob"));
+
+            // create
+            blob.uploadText("text");
+            assertTrue(blob.exists());
+            assertFalse(blob.deleted);
+            String leaseId = blob.acquireLease();
+
+            // soft-delete the blob without the lease should fail
+            try {
+                blob.delete(DeleteSnapshotsOption.INCLUDE_SNAPSHOTS, null, null, null);
+                fail("soft-delete the blob without the lease should fail.");
+            }
+            catch (StorageException e) {
+                assertEquals(e.getErrorCode(), "LeaseIdMissing");
+                assertFalse(blob.deleted);
+            }
+
+            // soft-delete the blob with the lease should succeed
+            AccessCondition accessCondition = new AccessCondition();
+            accessCondition.setLeaseID(leaseId);
+            blob.delete(DeleteSnapshotsOption.NONE, accessCondition, null, null);
+            assertFalse(blob.exists());
+            assertTrue(blob.deleted);
+
+            // deleted blob should be listed
+            int count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                assertBlobIsDeleted(blobItem);
+                count++;
+            }
+            assertEquals(count, 1);
+
+            // un-delete the blob so now it should be listed as a normal blob
+            // also un-deleting the blob gets ride of the lease
+            blob.undelete();
+            count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                assertBlobNotDeleted(blobItem);
+                count++;
+            }
+            assertEquals(count, 1);
+        }
+        finally {
+            BlobTestHelper.disableSoftDelete();
+        }
+    }
+
+    /**
+     * Test retained versions per blob on soft-delete.
+     *
+     * @throws StorageException
+     * @throws URISyntaxException
+     * @throws IOException
+     */
+    @Test
+    @Category({ DevFabricTests.class, DevStoreTests.class })
+    public void testSoftDeleteRetainedVersionsPerBlob() throws StorageException, URISyntaxException, IOException, InterruptedException {
+        try {
+            BlobTestHelper.enableSoftDelete();
+            final CloudBlockBlob blob = this.container.getBlockBlobReference(BlobTestHelper
+                    .generateRandomBlobNameWithPrefix("testBlob"));
+
+            // create
+            blob.uploadText("text1");
+            assertTrue(blob.exists());
+            blob.uploadText("test2");
+            blob.uploadText("test3");
+            blob.uploadText("test4");
+
+            // list should show v4 as the current blob, and v1, v2, v3 as soft-deleted snapshots
+            // so there should be 4 in the list
+            assertEquals(blob.downloadText(), "test4");
+            int count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                if (blobItem.isSnapshot()) {
+                    assertBlobIsDeleted(blobItem);
+                }
+                else {
+                    assertBlobNotDeleted(blobItem);
+                }
+                count++;
+            }
+            assertEquals(count, 4);
+
+            // un-delete the snapshots so now they should be listed as a normal snapshots
+            blob.undelete();
+            count = 0;
+            for (ListBlobItem listBlobItem : this.container.listBlobs(null, true, EnumSet.allOf(BlobListingDetails.class), null,
+                    null)) {
+                CloudBlockBlob blobItem = (CloudBlockBlob) listBlobItem;
+                assertEquals(blobItem.getName(), blob.getName());
+                assertBlobNotDeleted(blobItem);
+                count++;
+            }
+            assertEquals(count, 4);
+        }
+        finally {
+            BlobTestHelper.disableSoftDelete();
         }
     }
 
@@ -657,6 +1032,10 @@ public class CloudBlockBlobTests {
         byte[] retrievedBuff = outStream.toByteArray();
         assertEquals(length, retrievedBuff.length);
 
+        InputStream inputStream = blobSnapshot.openInputStream();
+        retrievedBuff = inputStream.readAllBytes();
+        assertEquals(length, retrievedBuff.length);
+
         // Read operation should work fine.
         blobSnapshot.downloadAttributes();
 
@@ -667,6 +1046,11 @@ public class CloudBlockBlobTests {
         blobSnapshotUsingRootUri.download(outStream);
         retrievedBuff = outStream.toByteArray();
         assertEquals(length, retrievedBuff.length);
+
+        inputStream = blobSnapshotUsingRootUri.openInputStream();
+        retrievedBuff = inputStream.readAllBytes();
+        assertEquals(length, retrievedBuff.length);
+
         assertEquals(blobSnapshot.getSnapshotID(), blobSnapshotUsingRootUri.getSnapshotID());
 
         // Expect an IllegalArgumentException from upload.
@@ -703,6 +1087,33 @@ public class CloudBlockBlobTests {
         try {
             blobSnapshot.createSnapshot();
             fail("Expect an IllegalArgumentException from createSnapshot");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+        }
+
+        // Expect an IllegalArgumentException from openOutputStream.
+        try {
+            blobSnapshotUsingRootUri.openOutputStream();
+            fail("Expect an IllegalArgumentException from openOutputStream");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+        }
+
+        // Expect an IllegalArgumentException from uploadBlock.
+        try {
+            blobSnapshotUsingRootUri.uploadBlock("foo", new ByteArrayInputStream(new byte[0]), 0);
+            fail("Expect an IllegalArgumentException from uploadBlock");
+        }
+        catch (IllegalArgumentException e) {
+            assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
+        }
+
+        // Expect an IllegalArgumentException from commitBlockList.
+        try {
+            blobSnapshotUsingRootUri.commitBlockList(new ArrayList<BlockEntry>());
+            fail("Expect an IllegalArgumentException from commitBlockList");
         }
         catch (IllegalArgumentException e) {
             assertEquals("Cannot perform this operation on a blob representing a snapshot.", e.getMessage());
@@ -847,27 +1258,27 @@ public class CloudBlockBlobTests {
 
         ByteArrayOutputStream blobStream = new ByteArrayOutputStream();
         try {
-            blob.downloadRange(0, new Long(0), blobStream, null, null, null);
+            blob.downloadRange(0, Long.valueOf(0), blobStream, null, null, null);
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
 
-        blob.downloadRange(0, new Long(1024), blobStream);
+        blob.downloadRange(0, Long.valueOf(1024), blobStream);
         assertEquals(blobStream.size(), 1024);
         BlobTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(blobStream.toByteArray()), wholeBlob, 0,
                 0, 1024, 2 * 1024);
 
         CloudBlockBlob blob2 = this.container.getBlockBlobReference("blob1");
         try {
-            blob.downloadRange(1024, new Long(0), blobStream, null, null, null);
+            blob.downloadRange(1024, Long.valueOf(0), blobStream, null, null, null);
         }
         catch (IndexOutOfBoundsException ex) {
 
         }
 
         ByteArrayOutputStream blobStream2 = new ByteArrayOutputStream();
-        blob2.downloadRange(1024, new Long(1024), blobStream2);
+        blob2.downloadRange(1024, Long.valueOf(1024), blobStream2);
         BlobTestHelper.assertStreamsAreEqualAtIndex(new ByteArrayInputStream(blobStream2.toByteArray()), wholeBlob,
                 0, 1024, 1024, 2 * 1024);
         blob2.downloadAttributes();
@@ -1280,27 +1691,27 @@ public class CloudBlockBlobTests {
                 .generateRandomBlobNameWithPrefix("downloadrange"));
 
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * Constants.MB, 8 * Constants.MB, 1 * Constants.MB,
-                new Long(1 * Constants.MB), new Long(5 * Constants.MB));
+                Long.valueOf(1 * Constants.MB), Long.valueOf(5 * Constants.MB));
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * Constants.MB, 8 * Constants.MB, 2 * Constants.MB,
-                new Long(2 * Constants.MB), new Long(6 * Constants.MB));
+                Long.valueOf(2 * Constants.MB), Long.valueOf(6 * Constants.MB));
         BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 8 * Constants.MB, 8 * Constants.MB, 1 * Constants.MB,
-                new Long(4 * Constants.MB), new Long(4 * Constants.MB));
+                Long.valueOf(4 * Constants.MB), Long.valueOf(4 * Constants.MB));
 
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 0, new Long(1 * 512), new Long(1 * 512));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, new Long(0), null);
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, new Long(1 * 512), null);
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, new Long(0), new Long(1 * 512));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, new Long(1 * 512), new Long(
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 0, Long.valueOf(1 * 512), Long.valueOf(1 * 512));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(0), null);
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(1 * 512), null);
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 1 * 512, Long.valueOf(0), Long.valueOf(1 * 512));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, Long.valueOf(1 * 512), Long.valueOf(
                 1 * 512));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, new Long(1 * 512), new Long(
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 2 * 512, 4 * 512, 2 * 512, Long.valueOf(1 * 512), Long.valueOf(
                 2 * 512));
 
         // Edge cases
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 1023, new Long(1023), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, new Long(1023), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, new Long(0), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, new Long(512), new Long(1));
-        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 512, new Long(1023), new Long(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 1023, Long.valueOf(1023), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, Long.valueOf(1023), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, Long.valueOf(0), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 0, Long.valueOf(512), Long.valueOf(1));
+        BlobTestHelper.doDownloadRangeToByteArrayTest(blob, 1024, 1024, 512, Long.valueOf(1023), Long.valueOf(1));
     }
 
     @Test
@@ -2021,7 +2432,7 @@ public class CloudBlockBlobTests {
         assertNull(blob2.getProperties().getPremiumPageBlobTier());
         assertNotNull(blob2.getProperties().getTierChangeTime());
 
-        Iterator it = this.container.listBlobs().iterator();
+        Iterator<ListBlobItem> it = this.container.listBlobs().iterator();
         CloudBlockBlob listBlob = (CloudBlockBlob)it.next();
         assertEquals(RehydrationStatus.PENDING_TO_COOL, listBlob.getProperties().getRehydrationStatus());
         assertEquals(StandardBlobTier.ARCHIVE, listBlob.getProperties().getStandardBlobTier());

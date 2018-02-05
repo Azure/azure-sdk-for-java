@@ -14,12 +14,8 @@
  */
 package com.microsoft.azure.storage;
 
-import com.microsoft.azure.storage.blob.BlobOutputStream;
-import com.microsoft.azure.storage.blob.BlobRequestOptions;
-import com.microsoft.azure.storage.blob.BlobTestHelper;
-import com.microsoft.azure.storage.blob.CloudBlobClient;
-import com.microsoft.azure.storage.blob.CloudBlobContainer;
-import com.microsoft.azure.storage.blob.CloudBlockBlob;
+import com.microsoft.azure.storage.blob.*;
+import com.microsoft.azure.storage.core.BaseRequest;
 import com.microsoft.azure.storage.core.SR;
 import com.microsoft.azure.storage.core.Utility;
 import com.microsoft.azure.storage.queue.CloudQueue;
@@ -475,5 +471,46 @@ public class GenericTests {
     private static String generateRandomContainerName() {
         String containerName = "container" + UUID.randomUUID().toString();
         return containerName.replace("-", "");
+    }
+
+    @Test
+    public void testErrorCodeFromHeader() throws URISyntaxException, StorageException, IOException {
+        CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
+        CloudBlobContainer container = blobClient.getContainerReference(generateRandomContainerName());
+
+        CloudAppendBlob appendBlob = container.getAppendBlobReference("testAppend");
+
+        try {
+            container.createIfNotExists();
+            OperationContext ctx = new OperationContext();
+            appendBlob.createOrReplace();
+
+            // Verify that the error code is set on a non HEAD request
+            try {
+                appendBlob.delete(DeleteSnapshotsOption.NONE, AccessCondition.generateIfMatchCondition("garbage"),
+                        null, ctx);
+            }
+            catch (Exception e) {
+                // Validate that the error code is set on the exception and the result
+                assertEquals(((StorageException)e).getErrorCode(), StorageErrorCodeStrings.CONDITION_NOT_MET);
+                assertEquals(ctx.getLastResult().getErrorCode(), StorageErrorCodeStrings.CONDITION_NOT_MET);
+            }
+
+            // Verify that the error code is set on a HEAD request
+            try {
+                appendBlob.downloadAttributes(AccessCondition.generateIfMatchCondition("garbage"), null, ctx);
+            }
+            catch (Exception e) {
+                assertEquals(((StorageException)e).getErrorCode(), StorageErrorCodeStrings.CONDITION_NOT_MET);
+                assertEquals(ctx.getLastResult().getErrorCode(), StorageErrorCodeStrings.CONDITION_NOT_MET);
+            }
+
+            // Verify that the ErrorCode is not set on a successful request
+            appendBlob.delete(DeleteSnapshotsOption.NONE, null, null, ctx);
+            assertEquals(ctx.getLastResult().getErrorCode(), null);
+        }
+        finally {
+            container.deleteIfExists();
+        }
     }
 }

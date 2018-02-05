@@ -47,8 +47,8 @@ import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 import org.xml.sax.SAXException;
 
-import com.microsoft.azure.keyvault.extensions.RsaKey;
-import com.microsoft.azure.keyvault.extensions.SymmetricKey;
+import com.microsoft.azure.keyvault.cryptography.RsaKey;
+import com.microsoft.azure.keyvault.cryptography.SymmetricKey;
 import com.microsoft.azure.storage.analytics.CloudAnalyticsClient;
 import com.microsoft.azure.storage.blob.CloudBlobClient;
 import com.microsoft.azure.storage.file.CloudFileClient;
@@ -64,7 +64,7 @@ public class TestHelper {
     private static StorageCredentialsAccountAndKey premiumBlobCredentials;
     private static CloudStorageAccount premiumBlobAccount;
 
-    private final static boolean enableFiddler = true;
+    private final static boolean enableFiddler = false;
     private final static boolean requireSecondaryEndpoint = false;
 
     public static CloudBlobClient createCloudBlobClient() throws StorageException {

@@ -1,3 +1,14 @@
+2018.02.05 Version 7.0.0
+ * Support for 2017-07-29 REST version. Please see our REST api documentation and blogs for information about the related added features.
+ * Added support for soft delete feature. If a delete retention policy is enabled through the set service properties API, then blobs or snapshots can be deleted softly and retained for a specified number of days, before being permanently removed by garbage collection.
+ * When a storage request fails, the error code may now be retrieved directly from the RequestResult and StorageException classes. This error code is populated even in cases where there is no StorageExtendedErrorInformation available, such as in calls to FetchAttributes.
+ * Queue messages may now be inserted with infinite duration by specifying -1 as the timeToLiveInSeconds parameter to addMessage.
+ * Improved performance of blob uploadFromFile APIs to avoid unnecessary buffering.
+ * Improved performance when streaming directly from a FileInputStream to avoid unnecessary buffering.
+ * Switched to using fixed length streaming mode in the HTTP client to avoid unnecessary buffering.
+ * Upgraded Key Vault dependency to 1.0.
+ * Fixed a bug preventing openInputStream from working on a blob snapshot.
+
 2017.11.01 Version 6.1.0
  * Added support for the last time the tier was modified.
 
