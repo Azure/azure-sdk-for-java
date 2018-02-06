@@ -167,7 +167,7 @@ public class PartitionContext
      * then this will fail. (This scenario is possible when invoke-after-receive-timeout has been set
      * in EventProcessorOptions.)
      * 
-     * @return CompletableFuture -> null when the checkpoint has been persisted successfully, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null when the checkpoint has been persisted successfully, completes exceptionally on error.
      */
     public CompletableFuture<Void> checkpoint()
     {
@@ -191,7 +191,7 @@ public class PartitionContext
      * It is important to check the result in order to detect failures.
      *  
      * @param event  A received EventData
-     * @return CompletableFuture -> null when the checkpoint has been persisted successfully, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null when the checkpoint has been persisted successfully, completes exceptionally on error.
      */
     public CompletableFuture<Void> checkpoint(EventData event)
     {

@@ -173,7 +173,7 @@ public class Lease
      * A class derived from Lease should override this function to inspect the lease and return whether it has expired.
      * Uses CompletableFuture because determining whether a lease is expired may involve I/O.
      *  
-     * @return CompletableFuture -> true if the lease is expired, false if it is still valid, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} true if the lease is expired, false if it is still valid, completes exceptionally on error.
      */
     public CompletableFuture<Boolean> isExpired()
     {

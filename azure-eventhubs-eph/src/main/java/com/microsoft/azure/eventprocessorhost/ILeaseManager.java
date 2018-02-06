@@ -46,28 +46,28 @@ public interface ILeaseManager
 	 * The returned CompletableFuture completes with true if the checkpoint store exists or false if it
 	 * does not. It completes exceptionally on error.
 	 * 
-	 * @return CompletableFuture -> true if it exists, false if not
+	 * @return CompletableFuture {@literal ->} true if it exists, false if not
 	 */
     public CompletableFuture<Boolean> leaseStoreExists();
 
     /**
      * Create the lease store if it does not exist, do nothing if it does exist.
      * 
-     * @return CompletableFuture -> null on success, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> createLeaseStoreIfNotExists();
     
     /**
      * Deletes the lease store.
      * 
-     * @return CompletableFuture -> null on success, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> deleteLeaseStore();
     
     /**
      * Returns the lease info for all partitions.
      * 
-     * @return  CompletableFuture -> list of Leases, completes exceptionally on error.
+     * @return  CompletableFuture {@literal ->} list of Leases, completes exceptionally on error.
      */
     public CompletableFuture<List<Lease>> getAllLeases();
 
@@ -76,7 +76,7 @@ public interface ILeaseManager
      * in the store already.
      * 
      * @param partitionId  id of partition to create lease info for
-     * @return CompletableFuture -> the existing or newly-created lease info for the partition, completes exceptionally on error
+     * @return CompletableFuture {@literal ->} the existing or newly-created lease info for the partition, completes exceptionally on error
      */
     public CompletableFuture<Lease> createLeaseIfNotExists(String partitionId);
 
@@ -85,7 +85,7 @@ public interface ILeaseManager
      * that is treated as success.
      *  
      * @param lease  the currently existing lease info for the partition
-     * @return CompletableFuture -> null on success, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> deleteLease(Lease lease);
 
@@ -102,7 +102,7 @@ public interface ILeaseManager
      * throwing an access exception, which is an error and should complete exceptionally. 
      * 
      * @param lease  Lease info for the desired partition
-     * @return  CompletableFuture -> true if the lease was acquired, false if not, completes exceptionally on error. 
+     * @return  CompletableFuture {@literal ->} true if the lease was acquired, false if not, completes exceptionally on error.
      */
     public CompletableFuture<Boolean> acquireLease(Lease lease);
 
@@ -126,7 +126,7 @@ public interface ILeaseManager
      * has been fulfilled.
      * 
      * @param lease  Lease to be given up
-     * @return CompletableFuture -> null on success, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> releaseLease(Lease lease);
 
