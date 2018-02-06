@@ -8,16 +8,20 @@ package com.microsoft.rest.v2.http;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.LinkedHashMap;
+import java.util.Map;
 
 /**
  * A builder class that is used to create URLs.
  */
-public class UrlBuilder {
+public final class UrlBuilder {
     private String scheme;
     private String host;
     private String port;
     private String path;
-    private String query;
+
+    // LinkedHashMap preserves insertion order
+    private final Map<String, String> query = new LinkedHashMap<>();
 
     /**
      * Set the scheme/protocol that will be used to build the final URL.
@@ -121,20 +125,14 @@ public class UrlBuilder {
     }
 
     /**
-     * Add the provided query parameter name and encoded value to query string for the final URL.
+     * Set the provided query parameter name and encoded value to query string for the final URL.
      * @param queryParameterName The name of the query parameter.
      * @param queryParameterEncodedValue The encoded value of the query parameter.
      * @return The provided query parameter name and encoded value to query string for the final
      * URL.
      */
-    public UrlBuilder addQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
-        if (query == null) {
-            query = "";
-        }
-        else {
-            query += "&";
-        }
-        query += queryParameterName + "=" + queryParameterEncodedValue;
+    public UrlBuilder setQueryParameter(String queryParameterName, String queryParameterEncodedValue) {
+        query.put(queryParameterName, queryParameterEncodedValue);
         return this;
     }
 
@@ -145,7 +143,7 @@ public class UrlBuilder {
      */
     public UrlBuilder withQuery(String query) {
         if (query == null || query.isEmpty()) {
-            this.query = null;
+            this.query.clear();
         }
         else {
             with(query, UrlTokenizerState.QUERY);
@@ -157,7 +155,7 @@ public class UrlBuilder {
      * Get the query that has been assigned to this UrlBuilder.
      * @return the query that has been assigned to this UrlBuilder.
      */
-    public String query() {
+    public Map<String, String> query() {
         return query;
     }
 
@@ -189,7 +187,22 @@ public class UrlBuilder {
                     break;
 
                 case QUERY:
-                    query = emptyToNull(tokenText);
+                    String queryString = emptyToNull(tokenText);
+                    if (queryString != null) {
+                        if (queryString.startsWith("?")) {
+                            queryString = queryString.substring(1);
+                        }
+
+                        for (String entry : queryString.split("&")) {
+                            String[] nameValue = entry.split("=");
+                            if (nameValue.length == 2) {
+                                setQueryParameter(nameValue[0], nameValue[1]);
+                            } else {
+                                throw new IllegalArgumentException("Malformed query entry: " + entry);
+                            }
+                        }
+                    }
+
                     break;
 
                 default:
@@ -242,11 +255,18 @@ public class UrlBuilder {
             result.append(path);
         }
 
-        if (query != null) {
-            if (!query.startsWith("?")) {
-                result.append('?');
+        if (!query.isEmpty()) {
+            StringBuilder queryBuilder = new StringBuilder("?");
+            for (Map.Entry<String, String> entry : query.entrySet()) {
+                if (queryBuilder.length() > 1) {
+                    queryBuilder.append("&");
+                }
+                queryBuilder.append(entry.getKey());
+                queryBuilder.append("=");
+                queryBuilder.append(entry.getValue());
             }
-            result.append(query);
+
+            result.append(queryBuilder.toString());
         }
 
         return result.toString();

@@ -1,5 +1,6 @@
 package com.microsoft.rest.v2.http;
 
+import org.hamcrest.CoreMatchers;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
@@ -163,7 +164,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withHost("www.example.com?");
         assertEquals("www.example.com", builder.host());
-        assertNull(builder.query());
+        assertEquals(0, builder.query().size());
         assertEquals("www.example.com", builder.toString());
     }
 
@@ -172,7 +173,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withHost("www.example.com?a=b");
         assertEquals("www.example.com", builder.host());
-        assertEquals("a=b", builder.query());
+        assertThat(builder.toString(), CoreMatchers.containsString("a=b"));
         assertEquals("www.example.com?a=b", builder.toString());
     }
 
@@ -294,7 +295,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withPort("50?");
         assertEquals(50, builder.port().intValue());
-        assertNull(builder.query());
+        assertEquals(0, builder.query().size());
         assertEquals(":50", builder.toString());
     }
 
@@ -303,7 +304,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withPort("50?a=b&c=d");
         assertEquals(50, builder.port().intValue());
-        assertEquals("a=b&c=d", builder.query());
+        assertThat(builder.toString(), CoreMatchers.containsString("?a=b&c=d"));
         assertEquals(":50?a=b&c=d", builder.toString());
     }
 
@@ -336,7 +337,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withScheme("http")
                 .withHost("www.example.com")
-                .addQueryParameter("A", "B");
+                .setQueryParameter("A", "B");
         assertEquals("http://www.example.com?A=B", builder.toString());
     }
 
@@ -345,7 +346,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withScheme("http")
                 .withHost("www.example.com")
-                .addQueryParameter("App les", "B");
+                .setQueryParameter("App les", "B");
         assertEquals("http://www.example.com?App les=B", builder.toString());
     }
 
@@ -354,7 +355,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withScheme("http")
                 .withHost("www.example.com")
-                .addQueryParameter("App%20les", "B");
+                .setQueryParameter("App%20les", "B");
         assertEquals("http://www.example.com?App%20les=B", builder.toString());
     }
 
@@ -363,7 +364,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withScheme("http")
                 .withHost("www.example.com")
-                .addQueryParameter("Apples", "Go od");
+                .setQueryParameter("Apples", "Go od");
         assertEquals("http://www.example.com?Apples=Go od", builder.toString());
     }
 
@@ -372,7 +373,7 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withScheme("http")
                 .withHost("www.example.com")
-                .addQueryParameter("Apples", "Go%20od");
+                .setQueryParameter("Apples", "Go%20od");
         assertEquals("http://www.example.com?Apples=Go%20od", builder.toString());
     }
 
@@ -381,8 +382,8 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withScheme("http")
                 .withHost("www.example.com")
-                .addQueryParameter("A", "B")
-                .addQueryParameter("C", "D");
+                .setQueryParameter("A", "B")
+                .setQueryParameter("C", "D");
         assertEquals("http://www.example.com?A=B&C=D", builder.toString());
     }
 
@@ -391,8 +392,8 @@ public class UrlBuilderTests {
         final UrlBuilder builder = new UrlBuilder()
                 .withScheme("http")
                 .withHost("www.example.com")
-                .addQueryParameter("A", "B")
-                .addQueryParameter("C", "D")
+                .setQueryParameter("A", "B")
+                .setQueryParameter("C", "D")
                 .withPath("index.html");
         assertEquals("http://www.example.com/index.html?A=B&C=D", builder.toString());
     }
@@ -472,7 +473,7 @@ public class UrlBuilderTests {
                 .withScheme("http")
                 .withHost("www.example.com")
                 .withPath("mypath?thing=stuff")
-                .addQueryParameter("otherthing", "otherstuff");
+                .setQueryParameter("otherthing", "otherstuff");
         assertEquals("http://www.example.com/mypath?thing=stuff&otherthing=otherstuff", builder.toString());
     }
 
@@ -482,7 +483,7 @@ public class UrlBuilderTests {
                 .withScheme("http")
                 .withHost("www.example.com")
                 .withPath("http://www.othersite.com/mypath?thing=stuff")
-                .addQueryParameter("otherthing", "otherstuff");
+                .setQueryParameter("otherthing", "otherstuff");
         assertEquals("http://www.othersite.com/mypath?thing=stuff&otherthing=otherstuff", builder.toString());
     }
 
@@ -490,7 +491,7 @@ public class UrlBuilderTests {
     public void withQueryWithNull() {
         final UrlBuilder builder = new UrlBuilder()
                 .withQuery(null);
-        assertNull(builder.query());
+        assertEquals(0, builder.query().size());
         assertEquals("", builder.toString());
     }
 
@@ -498,7 +499,7 @@ public class UrlBuilderTests {
     public void withQueryWithEmpty() {
         final UrlBuilder builder = new UrlBuilder()
                 .withQuery("");
-        assertNull(builder.query());
+        assertEquals(0, builder.query().size());
         assertEquals("", builder.toString());
     }
 
@@ -506,7 +507,7 @@ public class UrlBuilderTests {
     public void withQueryWithQuestionMark() {
         final UrlBuilder builder = new UrlBuilder()
                 .withQuery("?");
-        assertNull(builder.query());
+        assertEquals(0, builder.query().size());
         assertEquals("", builder.toString());
     }
 
