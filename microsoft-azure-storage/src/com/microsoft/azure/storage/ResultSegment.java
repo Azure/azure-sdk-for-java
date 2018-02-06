@@ -84,7 +84,7 @@ public class ResultSegment<T> {
      * @return <code>true</code> if the page has more results; otherwise, <code>false</code>.
      */
     public boolean getIsPageComplete() {
-        return (new Integer(this.length)).equals(this.pageSize);
+        return Integer.valueOf(this.length).equals(this.pageSize);
     }
 
     /**

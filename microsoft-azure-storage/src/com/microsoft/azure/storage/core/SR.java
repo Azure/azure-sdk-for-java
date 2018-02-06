@@ -22,6 +22,7 @@ public class SR {
     public static final String ACCOUNT_NAME_NULL_OR_EMPTY = "The account name is null or empty.";
     public static final String ACCOUNT_NAME_MISMATCH = "The account name does not match the existing account name on the credentials.";
     public static final String APPEND_BLOB_MD5_NOT_POSSIBLE = "MD5 cannot be calculated for an existing append blob because it would require reading the existing data. Please disable StoreFileContentMD5.";
+    public static final String ARGUMENT_NULL = "The argument must not be null. Argument name: %s.";
     public static final String ARGUMENT_NULL_OR_EMPTY = "The argument must not be null or an empty string. Argument name: %s.";
     public static final String ARGUMENT_OUT_OF_RANGE_ERROR = "The argument is out of range. Argument name: %s, Value passed: %s.";
     public static final String ATTEMPTED_TO_SERIALIZE_INACCESSIBLE_PROPERTY = "An attempt was made to access an inaccessible member of the entity during serialization.";

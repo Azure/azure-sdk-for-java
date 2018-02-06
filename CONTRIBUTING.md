@@ -20,6 +20,7 @@ The Azure Storage development team uses Intellij. However, any preferred IDE or 
 
 ### Configuration
 The only step to configure testing is to setup a configuration file or connection string via environment variables. To use the connection string route, create an environment variable named "storageConnection". To use the configuration file route, create an environment variable named "storageTestConfiguration" with the path to a TestConfigurations.xml file with this [template](https://github.com/Azure/azure-storage-java/blob/master/microsoft-azure-storage-test/res/TestConfigurations.xml).
+Alternatively, you can fill in microsoft-azure-storage-test/res/TestConfigurations.xml with the appropriate information.
 
 ### Running
 To actually run tests, right click on the test class in the Package Explorer or the individual test in the Outline and select Run As->JUnitTest. All tests or tests grouped by service can be run using the test runners in the com.microsoft.azure.storage package TestRunners file. Running all tests from the top of the package explorer will result in each test being run multiple times as the package explorer will also run every test runner.

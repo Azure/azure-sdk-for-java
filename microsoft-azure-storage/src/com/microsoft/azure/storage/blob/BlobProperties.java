@@ -143,6 +143,16 @@ public final class BlobProperties {
     private RehydrationStatus rehydrationStatus;
 
     /**
+     * Indicates when the blob was deleted.
+     */
+    private Date deletedTime;
+
+    /**
+     * If deleted, this indicates how many days the blob will be retained before it is permanently deleted.
+     */
+    private Integer remainingRetentionDays;
+
+    /**
      * Creates an instance of the <code>BlobProperties</code> class.
      */
     public BlobProperties() {
@@ -180,6 +190,8 @@ public final class BlobProperties {
         this.standardBlobTier = other.standardBlobTier;
         this.rehydrationStatus = other.rehydrationStatus;
         this.tierChangeTime = other.tierChangeTime;
+        this.deletedTime = other.deletedTime;
+        this.remainingRetentionDays = other.remainingRetentionDays;
     }
 
     /**
@@ -404,6 +416,22 @@ public final class BlobProperties {
     }
 
     /**
+     * Gets the time when the blob was deleted.
+     * @return A {@link java.util.Date} object which represents the time when the blob was deleted. It returns null if the blob has not been deleted.
+     */
+    public Date getDeletedTime() {
+        return this.deletedTime;
+    }
+
+    /**
+     * Gets the number of days that the deleted blob will be kept by the service.
+     * @return A <code>Integer</code> value that represents the number of days that the deleted blob will be kept by the service.
+     */
+    public Integer getRemainingRetentionDays() {
+        return this.remainingRetentionDays;
+    }
+
+    /**
      * Sets the cache control value for the blob.
      * 
      * @param cacheControl
@@ -625,5 +653,23 @@ public final class BlobProperties {
      */
     protected void setRehydrationStatus(RehydrationStatus rehydrationStatus) {
         this.rehydrationStatus = rehydrationStatus;
+    }
+
+    /**
+     * Sets the time when the blob was deleted.
+     * @param deletedTime
+     *      A {@link java.util.Date} object which represents the time when the blob was deleted.
+     */
+    protected void setDeletedTime(Date deletedTime) {
+        this.deletedTime = deletedTime;
+    }
+
+    /**
+     * Sets the number days that the deleted blob will be kept by the service.
+     * @param remainingRetentionDays
+     *      A <code>Integer</code> value that represents the number days that the deleted blob will be kept by the service.
+     */
+    protected void setRemainingRetentionDays(Integer remainingRetentionDays) {
+        this.remainingRetentionDays = remainingRetentionDays;
     }
 }

@@ -383,14 +383,14 @@ public class TableTestHelper extends TestHelper {
             // this.setNegativeZeroValuePrimDouble(-0.0);
 
             // set objects
-            this.setRegularDouble(new Double(5));
+            this.setRegularDouble(Double.valueOf(5));
             this.setNanDouble(Double.NaN);
             this.setPositiveInfinityDouble(Double.POSITIVE_INFINITY);
             this.setNegativeInfinityDouble(Double.NEGATIVE_INFINITY);
             this.setMinValueDouble(Double.MIN_VALUE);
             this.setMaxValueDouble(Double.MAX_VALUE);
-            this.setMinExponentValueDouble(new Double(Double.MIN_EXPONENT));
-            this.setMaxExponentValueDouble(new Double(Double.MAX_EXPONENT));
+            this.setMinExponentValueDouble(Double.valueOf(Double.MIN_EXPONENT));
+            this.setMaxExponentValueDouble(Double.valueOf(Double.MAX_EXPONENT));
             this.setMinNormalValueDouble(Double.MIN_NORMAL);
             this.setZeroValueDouble(0.0);
             // this.setNegativeZeroValueDouble(-0.0);

@@ -17,7 +17,6 @@ package com.microsoft.azure.storage.analytics;
 import com.microsoft.azure.storage.Constants;
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.StorageLocation;
-import com.microsoft.azure.storage.TestRunners;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.ListBlobItem;
@@ -401,7 +400,7 @@ public class CloudAnalyticsClientTests {
             CloudAnalyticsClient.parseLogBlobs(null);
         }
         catch (IllegalArgumentException e) {
-            assertEquals(e.getMessage(), "The argument must not be null or an empty string. Argument name: logBlobs.");
+            assertEquals("The argument must not be null. Argument name: logBlobs.", e.getMessage());
         }
     }
 

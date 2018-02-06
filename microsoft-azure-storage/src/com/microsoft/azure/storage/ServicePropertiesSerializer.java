@@ -32,8 +32,8 @@ final class ServicePropertiesSerializer {
     /**
      * Writes the contents of the ServiceProperties to the stream in xml format.
      * 
-     * @param opContext
-     *            a tracking object for the request
+     * @param properties
+     *            the ServiceProperties object to write.
      * @return a byte array of the content to write to the stream.
      * @throws XMLStreamException
      *             if there is an error writing content to the stream.
@@ -76,6 +76,11 @@ final class ServicePropertiesSerializer {
             xmlw.writeEndElement();
         }
 
+        // Delete retention policy
+        if (properties.getDeleteRetentionPolicy() != null) {
+            writeDeleteRetentionPolicy(xmlw, properties.getDeleteRetentionPolicy());
+        }
+
         // end StorageServiceProperties
         xmlw.writeEndElement();
 
@@ -88,6 +93,35 @@ final class ServicePropertiesSerializer {
         catch (final UnsupportedEncodingException e) {
             throw Utility.generateNewUnexpectedStorageException(e);
         }
+    }
+
+    /**
+     * Writes the given delete retention policy to the XMLStreamWriter.
+     *
+     * @param xmlw
+     *            the XMLStreamWriter to write to.
+     * @param deleteRetentionPolicy
+     *            the delete retention policy to write
+     * @throws XMLStreamException
+     */
+    private static void writeDeleteRetentionPolicy(final XMLStreamWriter xmlw, final DeleteRetentionPolicy deleteRetentionPolicy) throws XMLStreamException {
+        // deleteRetentionPolicy
+        xmlw.writeStartElement(Constants.AnalyticsConstants.DELETE_RETENTION_POLICY_ELEMENT);
+
+        // Enabled
+        xmlw.writeStartElement(Constants.AnalyticsConstants.ENABLED_ELEMENT);
+        xmlw.writeCharacters(deleteRetentionPolicy.getEnabled() ? Constants.TRUE : Constants.FALSE);
+        xmlw.writeEndElement();
+
+        if (deleteRetentionPolicy.getEnabled()) {
+            // Include retention days and retained versions per blob
+            xmlw.writeStartElement(Constants.AnalyticsConstants.DAYS_ELEMENT);
+            xmlw.writeCharacters(deleteRetentionPolicy.getRetentionIntervalInDays().toString());
+            xmlw.writeEndElement();
+        }
+
+        // end deleteRetentionPolicy
+        xmlw.writeEndElement();
     }
 
     /**
@@ -217,7 +251,7 @@ final class ServicePropertiesSerializer {
      * 
      * @param xmlw
      *            the XMLStreamWriter to write to.
-     * @param cors
+     * @param logging
      *            the logging properties to be written.
      * @throws XMLStreamException
      */

@@ -168,16 +168,6 @@ public class EventFiringTests {
         BlobRequestOptions options = new BlobRequestOptions();
         options.setRetryPolicyFactory(new RetryNoRetry());
 
-        // setting the sending request event handler to trigger an exception.
-        // this is a retryable exception
-        eventContext.getSendingRequestEventHandler().addListener(new StorageEvent<SendingRequestEvent>() {
-            @Override
-            public void eventOccurred(SendingRequestEvent eventArg) {
-                HttpURLConnection connection = (HttpURLConnection) eventArg.getConnectionObject();
-                connection.setFixedLengthStreamingMode(0);
-            }
-        });
-
         eventContext.getErrorReceivingResponseEventHandler().addListener(new StorageEvent<ErrorReceivingResponseEvent>() {
             @Override
             public void eventOccurred(ErrorReceivingResponseEvent eventArg) {
@@ -186,13 +176,15 @@ public class EventFiringTests {
             }
         });
 
-        OperationContext.getGlobalErrorReceivingResponseEventHandler().addListener(new StorageEvent<ErrorReceivingResponseEvent>() {
+        StorageEvent<ErrorReceivingResponseEvent> globalEvent = new StorageEvent<ErrorReceivingResponseEvent>() {
             @Override
             public void eventOccurred(ErrorReceivingResponseEvent eventArg) {
                 assertEquals(eventArg.getRequestResult(), eventArg.getOpContext().getLastResult());
                 globalCallList.add(true);
             }
-        });
+        };
+
+        OperationContext.getGlobalErrorReceivingResponseEventHandler().addListener(globalEvent);
 
         CloudBlobClient blobClient = TestHelper.createCloudBlobClient();
         CloudBlobContainer container = blobClient.getContainerReference("container1");
@@ -202,10 +194,12 @@ public class EventFiringTests {
             CloudBlockBlob blob1 = container.getBlockBlobReference("blob1");
             try {
                 String blockID = String.format("%08d", 1);
-                blob1.uploadBlock(blockID, BlobTestHelper.getRandomDataStream(10), 10, null, options, eventContext);
+
+                // Trigger an error receiving the response by sending more bytes than the stream has.
+                blob1.uploadBlock(blockID, BlobTestHelper.getRandomDataStream(10), 11, null, options, eventContext);
             } catch (Exception e) { }
 
-            // make sure both the local and globab context update
+            // make sure both the local and global context update
             assertEquals(1, callList.size());
             assertEquals(1, globalCallList.size());
 
@@ -214,7 +208,9 @@ public class EventFiringTests {
                     .setErrorReceivingResponseEventHandler(new StorageEventMultiCaster<ErrorReceivingResponseEvent, StorageEvent<ErrorReceivingResponseEvent>>());
             try {
                 String blockID2 = String.format("%08d", 2);
-                blob1.uploadBlock(blockID2, BlobTestHelper.getRandomDataStream(10), 10, null, options, eventContext);
+
+                // Trigger an error receiving the response by sending more bytes than the stream has.
+                blob1.uploadBlock(blockID2, BlobTestHelper.getRandomDataStream(10), 11, null, options, eventContext);
             } catch (Exception e) { }
 
             assertEquals(1, callList.size());
@@ -227,13 +223,17 @@ public class EventFiringTests {
             // make sure neither update
             try {
                 String blockID3 = String.format("%08d", 3);
-                blob1.uploadBlock(blockID3, BlobTestHelper.getRandomDataStream(10), 10, null, options, eventContext);
+
+                // Trigger an error receiving the response by sending more bytes than the stream has.
+                blob1.uploadBlock(blockID3, BlobTestHelper.getRandomDataStream(10), 11, null, options, eventContext);
             } catch (Exception e) { }
 
             assertEquals(1, callList.size());
             assertEquals(2, globalCallList.size());
         }
         finally {
+            // Remove the global listener if it wasn't removed already.
+            OperationContext.getGlobalErrorReceivingResponseEventHandler().removeListener(globalEvent);
             container.deleteIfExists();
         }
     }
@@ -338,7 +338,7 @@ public class EventFiringTests {
         catch (StorageException e) {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getHttpStatusCode());
             assertEquals("The specified container does not exist.", e.getMessage());
-            assertEquals(StorageErrorCode.RESOURCE_NOT_FOUND.toString(), e.getErrorCode());
+            assertEquals(StorageErrorCodeStrings.CONTAINER_NOT_FOUND, e.getErrorCode());
         }
         assertEquals(1, callList.size());
         assertEquals(1, globalCallList.size());
@@ -351,7 +351,7 @@ public class EventFiringTests {
         catch (StorageException e) {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getHttpStatusCode());
             assertEquals("The specified container does not exist.", e.getMessage());
-            assertEquals(StorageErrorCode.RESOURCE_NOT_FOUND.toString(), e.getErrorCode());
+            assertEquals(StorageErrorCodeStrings.CONTAINER_NOT_FOUND, e.getErrorCode());
         }
         assertEquals(1, callList.size());
         assertEquals(2, globalCallList.size());
@@ -368,7 +368,7 @@ public class EventFiringTests {
         catch (StorageException e) {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getHttpStatusCode());
             assertEquals("The specified container does not exist.", e.getMessage());
-            assertEquals(StorageErrorCode.RESOURCE_NOT_FOUND.toString(), e.getErrorCode());
+            assertEquals(StorageErrorCodeStrings.CONTAINER_NOT_FOUND, e.getErrorCode());
         }
         assertEquals(1, callList.size());
         assertEquals(2, globalCallList.size());
@@ -422,7 +422,7 @@ public class EventFiringTests {
         catch (StorageException e) {
             assertEquals(HttpURLConnection.HTTP_NOT_FOUND, e.getHttpStatusCode());
             assertEquals("The specified container does not exist.", e.getMessage());
-            assertEquals(StorageErrorCode.RESOURCE_NOT_FOUND.toString(), e.getErrorCode());
+            assertEquals(StorageErrorCodeStrings.CONTAINER_NOT_FOUND, e.getErrorCode());
         }
 
         assertEquals(2, sendingCallList.size());

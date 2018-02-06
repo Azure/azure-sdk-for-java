@@ -62,6 +62,7 @@ final class ServicePropertiesHandler extends DefaultHandler {
         handler.props.setHourMetrics(null);
         handler.props.setMinuteMetrics(null);
         handler.props.setCors(null);
+        handler.props.setDeleteRetentionPolicy(null);
         saxParser.parse(stream, handler);
 
         return handler.props;
@@ -85,6 +86,9 @@ final class ServicePropertiesHandler extends DefaultHandler {
         }
         else if (Constants.AnalyticsConstants.CORS_ELEMENT.equals(localName)) {
             this.props.setCors(new CorsProperties());
+        }
+        else if (Constants.AnalyticsConstants.DELETE_RETENTION_POLICY_ELEMENT.equals(localName)) {
+            this.props.setDeleteRetentionPolicy(new DeleteRetentionPolicy());
         }
     }
 
@@ -209,6 +213,24 @@ final class ServicePropertiesHandler extends DefaultHandler {
             }
             else if (Constants.AnalyticsConstants.MAX_AGE_IN_SECONDS_ELEMENT.equals(currentNode)) {
                 this.rule.setMaxAgeInSeconds(Integer.parseInt(value));
+            }
+        }
+        else if (Constants.AnalyticsConstants.DELETE_RETENTION_POLICY_ELEMENT.equals(parentNode)) {
+            if (Constants.AnalyticsConstants.ENABLED_ELEMENT.equals(currentNode)) {
+                if (value != null) {
+                    boolean enabled = Boolean.parseBoolean(value);
+                    if (enabled) {
+                        this.props.getDeleteRetentionPolicy().setEnabled(true);
+                    }
+                    else {
+                        this.props.getDeleteRetentionPolicy().setEnabled(false);
+                    }
+                }
+            }
+            else if (Constants.AnalyticsConstants.DAYS_ELEMENT.equals(currentNode)) {
+                if (value != null) {
+                    this.props.getDeleteRetentionPolicy().setRetentionIntervalInDays(Integer.parseInt(value));
+                }
             }
         }
 
