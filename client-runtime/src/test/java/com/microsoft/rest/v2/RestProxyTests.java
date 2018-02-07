@@ -1324,7 +1324,7 @@ public abstract class RestProxyTests {
         assertEquals(30720, count);
     }
 
-    @Host("http://httpbin.org")
+    @Host("https://httpbin.org")
     interface FlowableUploadService {
         @PUT("/put")
         RestResponse<Void, HttpBinJSON> put(@BodyParam("text/plain") Flowable<ByteBuffer> content, @HeaderParam("Content-Length") long contentLength);
