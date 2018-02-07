@@ -72,9 +72,6 @@ public final class ConnectionHandler extends BaseHandler {
 
         final SslDomain domain = makeDomain(SslDomain.Mode.CLIENT);
         transport.ssl(domain);
-
-        Sasl sasl = transport.sasl();
-        sasl.setMechanisms("ANONYMOUS");
     }
 
     @Override
