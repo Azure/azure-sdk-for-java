@@ -1,27 +1,24 @@
 version: 1.0.{build}
+os: Windows Server 2012
 branches:
   only:
   - master
   - dev
-environment:
-  ClientSecret:
-    secure: /8H7C81iNS+gVi7LhJCEOPUlNaa30y4KcY4nw/g2C4HGxOv6SrcroyDvMnqD+5GN
-  TenantId:
-    secure: xohonz/X8PPLOVIdT3ch2C5XeSa30RwR6NuXFh4e85svXT1mJNGGO1HQEGxCk3wp
-  AppId:
-    secure: c+H140oRJfHtmFHZxSRLWocv5AU0q33X7kgMcTcXxhJvtVhk2WAk1dRQkSN+SyoA
-before_build:
-- ps: >-
-    . .\build\AppveyorBuildFunctions.ps1
+install:
+  - ps: |
+      Add-Type -AssemblyName System.IO.Compression.FileSystem
+      if (!(Test-Path -Path "C:\maven" )) {
+        (new-object System.Net.WebClient).DownloadFile(
+          'http://www.us.apache.org/dist/maven/maven-3/3.5.2/binaries/apache-maven-3.5.2-bin.zip',
+          'C:\maven-bin.zip'
+        )
+        [System.IO.Compression.ZipFile]::ExtractToDirectory("C:\maven-bin.zip", "C:\maven")
+      }
+  - cmd: SET PATH=C:\maven\apache-maven-3.2.5\bin;%JAVA_HOME%\bin;%PATH%
+  - cmd: SET MAVEN_OPTS=-XX:MaxPermSize=2g -Xmx4g
+  - cmd: SET JAVA_OPTS=-XX:MaxPermSize=2g -Xmx4g
 build_script:
-- ps: >-
-    Build-Solution
-before_test:
-- ps: >-
-    Deploy-AzureResources
-test_script:
-- ps: >-
-    Run-UnitTests
-on_finish:
-- ps: >-
-    Delete-AzureResources
+  - mvn clean package -DskipTests javadoc:jar source:jar
+cache:
+  - C:\maven\
+  - C:\Users\appveyor\.m2
