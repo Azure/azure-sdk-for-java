@@ -36,6 +36,7 @@ import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * This class parses details of a specific Swagger REST API call from a provided Swagger interface
@@ -254,7 +255,26 @@ public class SwaggerMethodParser {
      * @return An Iterable with the encoded query parameters.
      */
     public Iterable<EncodedParameter> encodedQueryParameters(Object[] swaggerMethodArguments) {
-        return getEncodedParameters(querySubstitutions, swaggerMethodArguments, UrlEscapers.urlFormParameterEscaper());
+        final List<EncodedParameter> result = new ArrayList<>();
+        if (querySubstitutions != null) {
+            final Escaper escaper = UrlEscapers.urlFormParameterEscaper();
+
+            for (Substitution querySubstitution : querySubstitutions) {
+                final int parameterIndex = querySubstitution.methodParameterIndex();
+                if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
+                    final Object methodArgument = swaggerMethodArguments[querySubstitution.methodParameterIndex()];
+                    String parameterValue = methodArgument == null ? null : methodArgument.toString();
+                    if (parameterValue != null) {
+                        if (querySubstitution.shouldEncode() && escaper != null) {
+                            parameterValue = escaper.escape(parameterValue);
+                        }
+
+                        result.add(new EncodedParameter(querySubstitution.urlParameterName(), parameterValue));
+                    }
+                }
+            }
+        }
+        return result;
     }
 
     /**
@@ -265,9 +285,26 @@ public class SwaggerMethodParser {
     public Iterable<HttpHeader> headers(Object[] swaggerMethodArguments) {
         final HttpHeaders result = new HttpHeaders(headers);
 
-        final Iterable<EncodedParameter> substitutedHeaders = getEncodedParameters(headerSubstitutions, swaggerMethodArguments, null);
-        for (final EncodedParameter substitutedHeader : substitutedHeaders) {
-            result.set(substitutedHeader.name(), substitutedHeader.encodedValue());
+        if (headerSubstitutions != null) {
+            for (Substitution headerSubstitution : headerSubstitutions) {
+                final int parameterIndex = headerSubstitution.methodParameterIndex();
+                if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
+                    final Object methodArgument = swaggerMethodArguments[headerSubstitution.methodParameterIndex()];
+                    if (methodArgument instanceof Map) {
+                        final Map<String, ?> headerCollection = (Map<String, ?>) methodArgument;
+                        final String headerCollectionPrefix = headerSubstitution.urlParameterName();
+                        for (final Map.Entry<String, ?> headerCollectionEntry : headerCollection.entrySet()) {
+                            final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
+                            final String headerValue = headerCollectionEntry.getValue() == null ? null : headerCollectionEntry.getValue().toString();
+                            result.set(headerName, headerValue);
+                        }
+                    } else {
+                        final String headerName = headerSubstitution.urlParameterName();
+                        final String headerValue = methodArgument == null ? null : methodArgument.toString();
+                        result.set(headerName, headerValue);
+                    }
+                }
+            }
         }
 
         return result;
@@ -460,29 +497,6 @@ public class SwaggerMethodParser {
                     }
 
                     result = result.replace("{" + substitution.urlParameterName() + "}", substitutionValue);
-                }
-            }
-        }
-
-        return result;
-    }
-
-    private static Iterable<EncodedParameter> getEncodedParameters(Iterable<Substitution> substitutions, Object[] methodArguments, Escaper escaper) {
-        final List<EncodedParameter> result = new ArrayList<>();
-
-        if (substitutions != null) {
-            for (Substitution substitution : substitutions) {
-                final int parameterIndex = substitution.methodParameterIndex();
-                if (0 <= parameterIndex && parameterIndex < methodArguments.length) {
-                    final Object methodArgument = methodArguments[substitution.methodParameterIndex()];
-                    String parameterValue = methodArgument == null ? null : methodArgument.toString();
-                    if (parameterValue != null) {
-                        if (substitution.shouldEncode() && escaper != null) {
-                            parameterValue = escaper.escape(parameterValue);
-                        }
-
-                        result.add(new EncodedParameter(substitution.urlParameterName(), parameterValue));
-                    }
                 }
             }
         }

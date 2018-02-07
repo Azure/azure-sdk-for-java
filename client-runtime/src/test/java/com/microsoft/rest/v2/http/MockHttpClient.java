@@ -151,12 +151,14 @@ public class MockHttpClient extends HttpClient {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
                     json.data = bodyToString(request);
+                    json.headers = toMap(request.headers());
                     response = new MockHttpResponse(200, json);
                 }
                 else if (requestPathLower.equals("/put")) {
                     final HttpBinJSON json = new HttpBinJSON();
                     json.url = request.url().toString();
                     json.data = bodyToString(request);
+                    json.headers = toMap(request.headers());
                     response = new MockHttpResponse(200, responseHeaders, json);
                 }
                 else if (requestPathLower.startsWith("/status/")) {

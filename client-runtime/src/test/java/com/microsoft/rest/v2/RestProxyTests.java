@@ -40,6 +40,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
+import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
@@ -1380,6 +1381,24 @@ public abstract class RestProxyTests {
         assertEquals(28, bytes.length);
     }
 
+    @Host("http://httpbin.org/")
+    interface Service24 {
+        @PUT("put")
+        HttpBinJSON put(@HeaderParam("ABC") Map<String,String> headerCollection);
+    }
+
+    @Test
+    public void service24Put() {
+        final Map<String,String> headerCollection = new HashMap<>();
+        headerCollection.put("DEF", "GHIJ");
+        headerCollection.put("123", "45");
+        final HttpBinJSON result = createService(Service24.class)
+            .put(headerCollection);
+        assertNotNull(result.headers);
+        final HttpHeaders resultHeaders = new HttpHeaders(result.headers);
+        assertEquals("GHIJ", resultHeaders.value("ABCDEF"));
+        assertEquals("45", resultHeaders.value("ABC123"));
+    }
 
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {

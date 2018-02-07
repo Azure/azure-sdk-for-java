@@ -14,8 +14,11 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 /**
  * Replaces the header with the value of its target. The value specified here
- * replaces headers specified statically in the {@link Headers}, headers added
- * in any interceptors, and headers added by the HTTP itself.
+ * replaces headers specified statically in the {@link Headers}.
+ * If the parameter this annotation is attached to is a Map type, then this will
+ * be treated as a header collection. In that case each of the entries in the
+ * argument's map will be individual header values that use the value of this
+ * annotation as a prefix to their key/header name.
  *
  * Example 1:
  *   {@literal @}PUT("{functionId}")
@@ -34,6 +37,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
  *   {@literal Single<RestResponse<Headers, Body>>} list(@Path("subscriptionId") String subscriptionId, @Header("Authorization") String token);
  *
  *   The token parameter will replace the effect of any credentials in the HTTP pipeline.
+ *
+ * Example 4:
+ *   {@literal @}PUT("{containerName}/{blob}")
+ *   {@literal @}ExpectedResponses({200})
+ *   {@literal Single<RestResponse<BlobSetMetadataHeaders, Void>>} setMetadata(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-lease-id") String leaseId, @HeaderParam("If-Modified-Since") String ifModifiedSince, @HeaderParam("If-Unmodified-Since") String ifUnmodifiedSince, @HeaderParam("If-Match") String ifMatches, @HeaderParam("If-None-Match") String ifNoneMatch, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("comp") String comp);
+ *
+ *   The metadata parameter will be expanded out so that each entry becomes "x-ms-meta-{@literal <entryKey>}: {@literal <entryValue>}".
  */
 @Retention(RUNTIME)
 @Target(PARAMETER)
