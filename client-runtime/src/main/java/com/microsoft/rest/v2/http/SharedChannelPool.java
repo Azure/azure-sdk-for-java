@@ -15,7 +15,6 @@ import io.netty.channel.pool.ChannelPool;
 import io.netty.channel.pool.ChannelPoolHandler;
 import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
-import io.netty.handler.ssl.util.InsecureTrustManagerFactory;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
 import io.netty.util.concurrent.GenericFutureListener;
@@ -80,8 +79,7 @@ public class SharedChannelPool implements ChannelPool {
         this.available = new ConcurrentMultiHashMap<>();
         this.leased = new ConcurrentMultiHashMap<>();
         try {
-            sslContext = SslContextBuilder.forClient()
-                    .trustManager(InsecureTrustManagerFactory.INSTANCE).build();
+            sslContext = SslContextBuilder.forClient().build();
         } catch (SSLException e) {
             throw new RuntimeException(e);
         }

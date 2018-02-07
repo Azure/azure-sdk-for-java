@@ -311,9 +311,8 @@ public class RestProxyStressTests {
                 .zipWith(md5s, new BiFunction<Integer, byte[], Completable>() {
                     @Override
                     public Completable apply(Integer id, final byte[] md5) throws Exception {
-                        // Must memory map in read/write mode for native transports until Netty 4.1.21.Final release.
-                        final FileChannel fileStream = FileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"), StandardOpenOption.READ, StandardOpenOption.WRITE);
-                        Flowable<ByteBuffer> stream = FlowableUtil.split(fileStream.map(FileChannel.MapMode.READ_WRITE, 0, fileStream.size()), CHUNK_SIZE);
+                        final FileChannel fileStream = FileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"), StandardOpenOption.READ);
+                        Flowable<ByteBuffer> stream = FlowableUtil.split(fileStream.map(FileChannel.MapMode.READ_ONLY, 0, fileStream.size()), CHUNK_SIZE);
                         return service.upload100MB(String.valueOf(id), sas, "BlockBlob", stream, FILE_SIZE).flatMapCompletable(new Function<RestResponse<Void, Void>, CompletableSource>() {
                             @Override
                             public CompletableSource apply(RestResponse<Void, Void> response) throws Exception {
