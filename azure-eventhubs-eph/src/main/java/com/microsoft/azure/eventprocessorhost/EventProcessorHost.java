@@ -367,10 +367,10 @@ public final class EventProcessorHost
      * <pre>
      * class MyEventProcessor implements IEventProcessor { ... }
      * EventProcessorHost host = new EventProcessorHost(...);
-     * CompletableFuture<Void> foo = host.registerEventProcessor(MyEventProcessor.class);
+     * {@literal CompletableFuture<Void>} foo = host.registerEventProcessor(MyEventProcessor.class);
      * foo.get();
      * </pre>
-     *  
+     *
      * @param eventProcessorType	Class that implements IEventProcessor.
      * @return	Future that completes when initialization is finished.
      */

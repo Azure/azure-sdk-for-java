@@ -27,21 +27,21 @@ public interface ICheckpointManager
 	 * The returned CompletableFuture completes with true if the checkpoint store exists or false if it
 	 * does not. It completes exceptionally on error.
 	 * 
-	 * @return CompletableFuture -> true if it exists, false if not
+	 * @return CompletableFuture {@literal ->} true if it exists, false if not
 	 */
     public CompletableFuture<Boolean> checkpointStoreExists();
 
     /***
      * Create the checkpoint store if it doesn't exist. Do nothing if it does exist.
      * 
-     * @return CompletableFuture -> null on success, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> createCheckpointStoreIfNotExists();
     
     /**
      * Deletes the checkpoint store.
      * 
-     * @return CompletableFuture -> null on success, completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> deleteCheckpointStore();
 
@@ -51,7 +51,7 @@ public interface ICheckpointManager
      * 
      * @param partitionId  Id of partition to get checkpoint info for.
      * 
-     * @return  CompletableFuture -> checkpoint info, or null. Completes exceptionally on error.
+     * @return  CompletableFuture {@literal ->} checkpoint info, or null. Completes exceptionally on error.
      */
     public CompletableFuture<Checkpoint> getCheckpoint(String partitionId);
     
@@ -67,7 +67,7 @@ public interface ICheckpointManager
      * a checkpoint (storing an offset/sequence number pair in the structure).
      * 
      * @param partitionId  Id of partition to create the checkpoint HOLDER for.
-     * @return CompletableFuture -> the checkpoint for the given partition, if one exists, or null. Completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} the checkpoint for the given partition, if one exists, or null. Completes exceptionally on error.
      */
     public CompletableFuture<Checkpoint> createCheckpointIfNotExists(String partitionId);
 
@@ -81,7 +81,7 @@ public interface ICheckpointManager
      * 
      * @param lease		  lease for the partition to be checkpointed.
      * @param checkpoint  offset/sequenceNumber and partition id to update the store with.
-     * @return CompletableFuture -> null on success. Completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null on success. Completes exceptionally on error.
      */
     public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint);
     
@@ -91,7 +91,7 @@ public interface ICheckpointManager
      * your implementation is free to do whichever is more convenient. 
      * 
      * @param partitionId  id of partition to delete checkpoint from store
-     * @return CompletableFuture -> null on success. Completes exceptionally on error.
+     * @return CompletableFuture {@literal ->} null on success. Completes exceptionally on error.
      */
     public CompletableFuture<Void> deleteCheckpoint(String partitionId);
 }
