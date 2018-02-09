@@ -3,18 +3,29 @@ package com.microsoft.rest.v2;
 import com.google.common.base.Charsets;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
 import com.microsoft.rest.v2.annotations.GET;
+import com.microsoft.rest.v2.annotations.HeaderCollection;
 import com.microsoft.rest.v2.annotations.Host;
 import com.microsoft.rest.v2.annotations.ReturnValueWireType;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
-import com.microsoft.rest.v2.http.*;
+import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpHeaders;
+import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpRequest;
+import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.MockHttpClient;
+import com.microsoft.rest.v2.http.MockHttpResponse;
 import io.reactivex.Single;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.fail;
 
 public class RestProxyWithMockTests extends RestProxyTests {
     @Override
@@ -235,6 +246,139 @@ public class RestProxyWithMockTests extends RestProxyTests {
             assertContains(ex.getMessage(), "Status code 200");
             assertContains(ex.getMessage(), "\"BAD JSON\"");
         }
+    }
+
+    private static class HeaderCollectionTypePublicFields {
+        public String name;
+
+        @HeaderCollection("header-collection-prefix-")
+        public Map<String,String> headerCollection;
+    }
+
+    private static class HeaderCollectionTypeProtectedFields {
+        protected String name;
+
+        @HeaderCollection("header-collection-prefix-")
+        protected Map<String,String> headerCollection;
+    }
+
+    private static class HeaderCollectionTypePrivateFields {
+        private String name;
+
+        @HeaderCollection("header-collection-prefix-")
+        private Map<String,String> headerCollection;
+    }
+
+    private static class HeaderCollectionTypePackagePrivateFields {
+        String name;
+
+        @HeaderCollection("header-collection-prefix-")
+        Map<String,String> headerCollection;
+    }
+
+    @Host("https://www.example.com")
+    interface ServiceHeaderCollections {
+        @GET("url/path")
+        RestResponse<HeaderCollectionTypePublicFields,Void> publicFields();
+
+        @GET("url/path")
+        RestResponse<HeaderCollectionTypeProtectedFields,Void> protectedFields();
+
+        @GET("url/path")
+        RestResponse<HeaderCollectionTypePrivateFields,Void> privateFields();
+
+        @GET("url/path")
+        RestResponse<HeaderCollectionTypePackagePrivateFields,Void> packagePrivateFields();
+    }
+
+    private static final HttpClient headerCollectionHttpClient = new MockHttpClient() {
+        @Override
+        public Single<HttpResponse> sendRequestAsync(HttpRequest request) {
+            final HttpHeaders headers = new HttpHeaders();
+            headers.set("name", "Phillip");
+            headers.set("header-collection-prefix-one", "1");
+            headers.set("header-collection-prefix-two", "2");
+            headers.set("header-collection-prefix-three", "3");
+            final MockHttpResponse response = new MockHttpResponse(200, headers);
+            return Single.<HttpResponse>just(response);
+        }
+    };
+
+    private ServiceHeaderCollections createHeaderCollectionsService() {
+        return createService(ServiceHeaderCollections.class, headerCollectionHttpClient);
+    }
+
+    private static void assertHeaderCollectionsRawHeaders(RestResponse<?,Void> response) {
+        final HttpHeaders responseRawHeaders = new HttpHeaders(response.rawHeaders());
+        assertEquals("Phillip", responseRawHeaders.value("name"));
+        assertEquals("1", responseRawHeaders.value("header-collection-prefix-one"));
+        assertEquals("2", responseRawHeaders.value("header-collection-prefix-two"));
+        assertEquals("3", responseRawHeaders.value("header-collection-prefix-three"));
+        assertEquals(4, responseRawHeaders.size());
+    }
+
+    private static void assertHeaderCollections(Map<String,String> headerCollections) {
+        final Map<String,String> expectedHeaderCollections = new HashMap<>();
+        expectedHeaderCollections.put("one", "1");
+        expectedHeaderCollections.put("two", "2");
+        expectedHeaderCollections.put("three", "3");
+
+        for (final String key : headerCollections.keySet()) {
+            assertEquals(expectedHeaderCollections.get(key), headerCollections.get(key));
+        }
+        assertEquals(expectedHeaderCollections.size(), headerCollections.size());
+    }
+
+    @Test
+    public void serviceHeaderCollectionPublicFields() {
+        final RestResponse<HeaderCollectionTypePublicFields,Void> response = createHeaderCollectionsService()
+            .publicFields();
+        assertNotNull(response);
+        assertHeaderCollectionsRawHeaders(response);
+
+        final HeaderCollectionTypePublicFields responseHeaders = response.headers();
+        assertNotNull(responseHeaders);
+        assertEquals("Phillip", responseHeaders.name);
+        assertHeaderCollections(responseHeaders.headerCollection);
+    }
+
+    @Test
+    public void serviceHeaderCollectionProtectedFields() {
+        final RestResponse<HeaderCollectionTypeProtectedFields,Void> response = createHeaderCollectionsService()
+            .protectedFields();
+        assertNotNull(response);
+        assertHeaderCollectionsRawHeaders(response);
+
+        final HeaderCollectionTypeProtectedFields responseHeaders = response.headers();
+        assertNotNull(responseHeaders);
+        assertEquals("Phillip", responseHeaders.name);
+        assertHeaderCollections(responseHeaders.headerCollection);
+    }
+
+    @Test
+    public void serviceHeaderCollectionPrivateFields() {
+        final RestResponse<HeaderCollectionTypePrivateFields,Void> response = createHeaderCollectionsService()
+            .privateFields();
+        assertNotNull(response);
+        assertHeaderCollectionsRawHeaders(response);
+
+        final HeaderCollectionTypePrivateFields responseHeaders = response.headers();
+        assertNotNull(responseHeaders);
+        assertEquals("Phillip", responseHeaders.name);
+        assertHeaderCollections(responseHeaders.headerCollection);
+    }
+
+    @Test
+    public void serviceHeaderCollectionPackagePrivateFields() {
+        final RestResponse<HeaderCollectionTypePackagePrivateFields,Void> response = createHeaderCollectionsService()
+            .packagePrivateFields();
+        assertNotNull(response);
+        assertHeaderCollectionsRawHeaders(response);
+
+        final HeaderCollectionTypePackagePrivateFields responseHeaders = response.headers();
+        assertNotNull(responseHeaders);
+        assertEquals("Phillip", responseHeaders.name);
+        assertHeaderCollections(responseHeaders.headerCollection);
     }
 
     private static void assertContains(String value, String expectedSubstring) {

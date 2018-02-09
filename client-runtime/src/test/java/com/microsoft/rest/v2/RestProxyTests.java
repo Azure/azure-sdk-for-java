@@ -1403,6 +1403,10 @@ public abstract class RestProxyTests {
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();
+        return createService(serviceClass, httpClient);
+    }
+
+    protected <T> T createService(Class<T> serviceClass, HttpClient httpClient) {
         final HttpPipeline httpPipeline = HttpPipeline.build(httpClient, new DecodingPolicyFactory());
         return RestProxy.create(serviceClass, httpPipeline, serializer);
     }

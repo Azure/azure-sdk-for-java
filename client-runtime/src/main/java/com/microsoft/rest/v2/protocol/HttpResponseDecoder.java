@@ -14,6 +14,8 @@ import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.UnixTime;
+import com.microsoft.rest.v2.annotations.HeaderCollection;
+import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpResponse;
@@ -26,8 +28,10 @@ import io.reactivex.functions.Function;
 import org.joda.time.DateTime;
 
 import java.io.IOException;
+import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -292,6 +296,45 @@ public final class HttpResponseDecoder {
             } else {
                 final String headersJsonString = serializer.serialize(headers, SerializerEncoding.JSON);
                 Object deserializedHeaders = serializer.deserialize(headersJsonString, deserializedHeadersType, SerializerEncoding.JSON);
+
+                final Class<?> deserializedHeadersClass = TypeToken.of(deserializedHeadersType).getRawType();
+                final Field[] declaredFields = deserializedHeadersClass.getDeclaredFields();
+                for (final Field declaredField : declaredFields) {
+                    if (declaredField.isAnnotationPresent(HeaderCollection.class)) {
+                        final Type declaredFieldType = declaredField.getGenericType();
+                        if (TypeToken.of(declaredField.getType()).isSubtypeOf(Map.class)) {
+                            final Type[] mapTypeArguments = getTypeArguments(declaredFieldType);
+                            if (mapTypeArguments.length == 2 && mapTypeArguments[0] == String.class && mapTypeArguments[1] == String.class) {
+                                final HeaderCollection headerCollectionAnnotation = declaredField.getAnnotation(HeaderCollection.class);
+                                final String headerCollectionPrefix = headerCollectionAnnotation.value().toLowerCase();
+                                final int headerCollectionPrefixLength = headerCollectionPrefix.length();
+                                if (headerCollectionPrefixLength > 0) {
+                                    final Map<String, String> headerCollection = new HashMap<>();
+                                    for (final HttpHeader header : headers) {
+                                        final String headerName = header.name();
+                                        if (headerName.toLowerCase().startsWith(headerCollectionPrefix)) {
+                                            headerCollection.put(headerName.substring(headerCollectionPrefixLength), header.value());
+                                        }
+                                    }
+
+                                    final boolean declaredFieldAccessibleBackup = declaredField.isAccessible();
+                                    try {
+                                        if (!declaredFieldAccessibleBackup) {
+                                            declaredField.setAccessible(true);
+                                        }
+                                        declaredField.set(deserializedHeaders, headerCollection);
+                                    } catch (IllegalAccessException ignored) {
+                                    } finally {
+                                        if (!declaredFieldAccessibleBackup) {
+                                            declaredField.setAccessible(declaredFieldAccessibleBackup);
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+                }
+
                 return deserializedHeaders;
             }
     }

@@ -42,6 +42,10 @@ public class MockHttpResponse extends HttpResponse {
         this(statusCode, new HttpHeaders(), string == null ? new byte[0] : string.getBytes());
     }
 
+    public MockHttpResponse(int statusCode, HttpHeaders headers) {
+        this(statusCode, headers, null);
+    }
+
     public MockHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {
         this(statusCode, headers, serialize(serializable));
     }
