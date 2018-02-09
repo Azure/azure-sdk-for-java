@@ -52,14 +52,14 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     public CompletableFuture<Boolean> checkpointStoreExists()
     {
     	boolean exists = InMemoryCheckpointStore.singleton.existsMap();
-    	TRACE_LOGGER.info(this.hostContext.withHost("checkpointStoreExists() " + exists));
+    	TRACE_LOGGER.debug(this.hostContext.withHost("checkpointStoreExists() " + exists));
     	return CompletableFuture.completedFuture(exists);
     }
 
     @Override
     public CompletableFuture<Void> createCheckpointStoreIfNotExists()
     {
-    	TRACE_LOGGER.info(this.hostContext.withHost("createCheckpointStoreIfNotExists()"));
+    	TRACE_LOGGER.debug(this.hostContext.withHost("createCheckpointStoreIfNotExists()"));
         InMemoryCheckpointStore.singleton.initializeMap();
         return CompletableFuture.completedFuture(null);
     }
@@ -67,7 +67,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public CompletableFuture<Void> deleteCheckpointStore()
     {
-    	TRACE_LOGGER.info(this.hostContext.withHost("deleteCheckpointStore()"));
+    	TRACE_LOGGER.debug(this.hostContext.withHost("deleteCheckpointStore()"));
     	InMemoryCheckpointStore.singleton.deleteMap();
     	return CompletableFuture.completedFuture(null);
     }
@@ -86,12 +86,12 @@ public class InMemoryCheckpointManager implements ICheckpointManager
         else if (checkpointInStore.getSequenceNumber() == -1)
         {
         	// Uninitialized, so return null.
-        	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId, "getCheckpoint() uninitalized"));
+        	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId, "getCheckpoint() uninitalized"));
         	returnCheckpoint = null;
         }
         else
         {
-        	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId,
+        	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId,
         			"getCheckpoint() found " + checkpointInStore.getOffset() + "//" + checkpointInStore.getSequenceNumber()));
         	returnCheckpoint = new Checkpoint(checkpointInStore);
         }
@@ -105,7 +105,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     	Checkpoint returnCheckpoint = null;
     	if (checkpointInStore != null)
     	{
-        	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId,
+        	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId,
                     "createCheckpointIfNotExists() found existing checkpoint, OK"));
         	if (checkpointInStore.getSequenceNumber() != -1)
         	{
@@ -119,7 +119,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     	}
     	else
     	{
-        	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId,
+        	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId,
                     "createCheckpointIfNotExists() creating new checkpoint"));
         	Checkpoint newStoreCheckpoint = new Checkpoint(partitionId);
         	newStoreCheckpoint.setOffset(null);
@@ -136,7 +136,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
     {
-    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(checkpoint.getPartitionId(),
+    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(checkpoint.getPartitionId(),
     		"updateCheckpoint() " + checkpoint.getOffset() + "//" + checkpoint.getSequenceNumber()));
     	Checkpoint checkpointInStore = InMemoryCheckpointStore.singleton.getCheckpoint(checkpoint.getPartitionId());
     	if (checkpointInStore != null)
@@ -155,7 +155,7 @@ public class InMemoryCheckpointManager implements ICheckpointManager
     @Override
     public CompletableFuture<Void> deleteCheckpoint(String partitionId)
     {
-    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId, "deleteCheckpoint()"));
+    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId, "deleteCheckpoint()"));
     	InMemoryCheckpointStore.singleton.removeCheckpoint(partitionId);
     	return CompletableFuture.completedFuture(null);
     }

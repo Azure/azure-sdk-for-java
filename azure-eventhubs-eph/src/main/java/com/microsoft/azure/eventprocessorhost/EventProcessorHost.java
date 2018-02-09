@@ -309,7 +309,6 @@ public final class EventProcessorHost
             this.weOwnExecutor = true;
             this.executorService = Executors.newScheduledThreadPool(this.executorServicePoolSize);
         }
-        TRACE_LOGGER.info(LoggingUtils.threadPoolStatusReport(hostName, this.executorService));
         
         this.hostContext = new HostContext(this.executorService,
         		this, hostName,
@@ -464,7 +463,7 @@ public final class EventProcessorHost
 			}
             catch (InvalidKeyException | URISyntaxException | StorageException e)
             {
-                TRACE_LOGGER.warn(this.hostContext.withHost("Failure initializing Storage lease manager."));
+                TRACE_LOGGER.error(this.hostContext.withHost("Failure initializing default lease and checkpoint manager."));
             	throw new RuntimeException("Failure initializing Storage lease manager", e);
 			}
         }

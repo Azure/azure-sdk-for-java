@@ -140,7 +140,7 @@ public class PartitionContext
     	{
     		// No checkpoint was ever stored. Use the initialOffsetProvider instead.
         	Function<String, EventPosition> initialPositionProvider = this.hostContext.getEventProcessorOptions().getInitialPositionProvider();
-    		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionId, "Calling user-provided initial position provider"));
+    		TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(this.partitionId, "Calling user-provided initial position provider"));
     		startAt = initialPositionProvider.apply(this.partitionId);
     		// Leave this.offset as null. The initialPositionProvider cannot provide enough information to write a valid checkpoint:
     		// at most if will give one of offset or sequence number, and if it is a starting time then it doesn't have either.
@@ -200,7 +200,7 @@ public class PartitionContext
     
     private CompletableFuture<Void> persistCheckpoint(Checkpoint persistThis)
     {
-    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(persistThis.getPartitionId(),
+    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(persistThis.getPartitionId(),
                 "Saving checkpoint: " + persistThis.getOffset() + "//" + persistThis.getSequenceNumber()));
 		
         return this.hostContext.getCheckpointManager().updateCheckpoint(this.lease, persistThis);

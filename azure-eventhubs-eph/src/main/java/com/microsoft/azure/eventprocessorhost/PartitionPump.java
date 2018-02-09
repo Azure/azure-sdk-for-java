@@ -202,7 +202,7 @@ class PartitionPump implements PartitionReceiveHandler
     {
     	int seconds = this.hostContext.getPartitionManagerOptions().getLeaseRenewIntervalInSeconds(); 
 		this.leaseRenewerFuture = this.hostContext.getExecutor().schedule(() -> leaseRenewer(), seconds, TimeUnit.SECONDS);
-    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.lease,
+    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(this.lease,
     			"scheduling leaseRenewer in " + seconds));
     }
 
@@ -357,14 +357,14 @@ class PartitionPump implements PartitionReceiveHandler
     	}
     	else
     	{
-            TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionContext, "partitionReceiver is null in cleanup"));
+            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(this.partitionContext, "partitionReceiver is null in cleanup"));
     		cleanupFuture = CompletableFuture.completedFuture(null);
     	}
     	cleanupFuture = cleanupFuture.handleAsync((empty, e) ->
     	{
     		if (e != null)
     		{
-				TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionContext,
+				TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(this.partitionContext,
 						"Got exception when ReceiveHandler is set to null."), LoggingUtils.unwrapException(e, null));
     		}
     		return null; // stop propagation of exceptions
@@ -396,7 +396,7 @@ class PartitionPump implements PartitionReceiveHandler
 			this.eventHubClient = null;
 			if (eventHubClientTemp == null)
 			{
-	            TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionContext,
+	            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(this.partitionContext,
 	                    "eventHubClient is null in cleanup"));
 			}
 			return eventHubClientTemp;
@@ -409,7 +409,7 @@ class PartitionPump implements PartitionReceiveHandler
     	{
     		if (e != null)
     		{
-				TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionContext, "Closing EH client failed."),
+				TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(this.partitionContext, "Closing EH client failed."),
 						LoggingUtils.unwrapException(e, null));
 			}
             return null; // stop propagation of exceptions
@@ -448,7 +448,7 @@ class PartitionPump implements PartitionReceiveHandler
         	{
         		if (e != null)
     	        {
-    	        	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionContext,
+    	        	TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(this.partitionContext,
     	        			"Failure releasing lease on pump shutdown"), LoggingUtils.unwrapException(e, null));
     			}
         		return null; // stop propagation of exceptions
@@ -482,7 +482,7 @@ class PartitionPump implements PartitionReceiveHandler
     
     private void leaseRenewer()
     {
-    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.lease, "leaseRenewer()"));
+    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(this.lease, "leaseRenewer()"));
     	
     	// Theoretically, if the future is cancelled then this method should never fire, but
     	// there's no harm in being sure.
@@ -515,7 +515,7 @@ class PartitionPump implements PartitionReceiveHandler
         		// Failure renewing lease due to storage exception or whatever.
         		// Trace error and leave scheduleNext as true to schedule another try.
         		Exception notifyWith = (Exception)LoggingUtils.unwrapException(e, null);
-        		TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(this.lease, "Transient failure renewing lease"), notifyWith);
+        		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.lease, "Transient failure renewing lease"), notifyWith);
         		// Notify the general error handler rather than calling this.processor.onError so we can provide context (RENEWING_LEASE)
         		this.hostContext.getEventProcessorOptions().notifyOfException(this.hostContext.getHostName(), notifyWith, EventProcessorHostActionStrings.RENEWING_LEASE,
         				this.lease.getPartitionId());
@@ -600,7 +600,7 @@ class PartitionPump implements PartitionReceiveHandler
 		}
 		if (error instanceof ReceiverDisconnectedException)
 		{
-			TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(this.partitionContext,
+			TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionContext,
 					"EventHub client disconnected, probably another host took the partition"));
 		}
 		else

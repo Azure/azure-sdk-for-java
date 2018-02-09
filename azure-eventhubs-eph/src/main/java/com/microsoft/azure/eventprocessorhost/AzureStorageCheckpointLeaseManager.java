@@ -149,7 +149,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 		{
 			if (e != null)
 			{
-				TRACE_LOGGER.warn(this.hostContext.withHost("Failure while checking checkpoint store existence"), LoggingUtils.unwrapException(e, null));
+				TRACE_LOGGER.error(this.hostContext.withHost("Failure while checking checkpoint store existence"), LoggingUtils.unwrapException(e, null));
 			}
 		}, this.hostContext.getExecutor());
     }
@@ -162,7 +162,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	{
     		if (e != null)
     		{
-	        	TRACE_LOGGER.warn(this.hostContext.withHost("Failure while creating checkpoint store"), LoggingUtils.unwrapException(e, null));
+	        	TRACE_LOGGER.error(this.hostContext.withHost("Failure while creating checkpoint store"), LoggingUtils.unwrapException(e, null));
     		}
     	}, this.hostContext.getExecutor());
     }
@@ -215,7 +215,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 			}
 			catch (URISyntaxException | IOException | StorageException e)
 			{
-	            TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId,
+	            TRACE_LOGGER.error(this.hostContext.withHostAndPartition(partitionId,
 					"CreateCheckpointIfNotExist exception - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName() +
 					"storageBlobPrefix: " + this.storageBlobPrefix), e);
 	            throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_CHECKPOINT);
@@ -235,7 +235,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
     {
     	AzureBlobLease updatedLease = new AzureBlobLease((AzureBlobLease) lease);
-        TRACE_LOGGER.info(this.hostContext.withHostAndPartition(checkpoint.getPartitionId(),
+        TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(checkpoint.getPartitionId(),
                 "Checkpointing at " + checkpoint.getOffset() + " // " + checkpoint.getSequenceNumber()));
     	updatedLease.setOffset(checkpoint.getOffset());
     	updatedLease.setSequenceNumber(checkpoint.getSequenceNumber());
@@ -283,7 +283,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 		{
 			if (e != null)
 			{
-				TRACE_LOGGER.warn(this.hostContext.withHost("Failure while checking lease store existence"), LoggingUtils.unwrapException(e, null));
+				TRACE_LOGGER.error(this.hostContext.withHost("Failure while checking lease store existence"), LoggingUtils.unwrapException(e, null));
 			}
 		}, this.hostContext.getExecutor());
     }
@@ -313,7 +313,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     	{
     		if (e != null)
     		{
-	        	TRACE_LOGGER.warn(this.hostContext.withHost("Failure while creating lease store"), LoggingUtils.unwrapException(e, null));
+	        	TRACE_LOGGER.error(this.hostContext.withHost("Failure while creating lease store"), LoggingUtils.unwrapException(e, null));
     		}
     	}, this.hostContext.getExecutor());
     }
@@ -326,7 +326,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		{
 		    	// returns true if the container was created, false if it already existed -- we don't care
 				this.eventHubContainer.createIfNotExists(options, null);
-				TRACE_LOGGER.info(this.hostContext.withHost("Created lease store OK"));
+				TRACE_LOGGER.info(this.hostContext.withHost("Created lease store OK or it already existed"));
     		}
     		catch (StorageException e)
     		{
@@ -358,7 +358,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 					}
 	    			catch (StorageException | URISyntaxException e)
 	    			{
-	    				TRACE_LOGGER.warn(this.hostContext.withHost("Failure while deleting lease store"), e);
+	    				TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
 	    				throw new CompletionException(e);
 					}
 	    		}
@@ -370,7 +370,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 					}
 	    			catch (StorageException e)
 	    			{
-	    			    TRACE_LOGGER.warn(this.hostContext.withHost("Failure while deleting lease store"), e);
+	    			    TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
 	    				throw new CompletionException(e);
 					}
 	    		}
@@ -382,7 +382,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 			}
 	    	catch (StorageException e)
 	    	{
-				TRACE_LOGGER.warn(this.hostContext.withHost("Failure while deleting lease store"), e);
+				TRACE_LOGGER.error(this.hostContext.withHost("Failure while deleting lease store"), e);
 				throw new CompletionException(e);
 			}
     	}, this.hostContext.getExecutor());
@@ -502,7 +502,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 	        }
 	    	catch (URISyntaxException|IOException|StorageException e)
 	    	{
-	            TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId,
+	            TRACE_LOGGER.error(this.hostContext.withHostAndPartition(partitionId,
 					"CreateLeaseIfNotExist exception - leaseContainerName: " + this.storageContainerName + " consumerGroupName: " + this.hostContext.getConsumerGroupName() +
 					" storageBlobPrefix: " + this.storageBlobPrefix), e);
 	            throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.CREATING_LEASE);
@@ -555,7 +555,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 			}
 	    	catch (StorageException e)
 	    	{
-	    		TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(lease, "Exception deleting lease"), e);
+	    		TRACE_LOGGER.error(this.hostContext.withHostAndPartition(lease, "Exception deleting lease"), e);
 	    		throw LoggingUtils.wrapException(e, EventProcessorHostActionStrings.DELETING_LEASE);
 			}
     	}, this.hostContext.getExecutor());
@@ -582,7 +582,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     private boolean acquireLeaseInternal(AzureBlobLease lease) throws IOException, StorageException
     {
-    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Acquiring lease"));
+    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Acquiring lease"));
     	
     	CloudBlockBlob leaseBlob = lease.getBlob();
     	boolean succeeded = true;
@@ -597,7 +597,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		leaseBlob.downloadAttributes();
 	    	if (leaseBlob.getProperties().getLeaseState() == LeaseState.LEASED)
 	    	{
-	    		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "changeLease"));
+	    		TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "changeLease"));
 	    		if ((lease.getToken() == null) || lease.getToken().isEmpty())
 	    		{
 	    			// We reach here in a race condition: when this instance of EventProcessorHost scanned the
@@ -616,7 +616,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
 	    	}
 	    	else
 	    	{
-	    		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "acquireLease"));
+	    		TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "acquireLease"));
 	    		newToken = leaseBlob.acquireLease(this.hostContext.getPartitionManagerOptions().getLeaseDurationInSeconds(), newLeaseId);
 	    	}
 	    	if (succeeded)
@@ -647,7 +647,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     {
     	return CompletableFuture.supplyAsync(() ->
     	{
-	    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Renewing lease"));
+	    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Renewing lease"));
 	    	
 	    	CloudBlockBlob leaseBlob = ((AzureBlobLease)lease).getBlob();
 	    	boolean retval = true;
@@ -677,7 +677,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     {
     	return CompletableFuture.runAsync(() ->
     	{
-	    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Releasing lease"));
+	    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Releasing lease"));
 	    	
 	    	AzureBlobLease inLease = (AzureBlobLease)lease;
 	    	CloudBlockBlob leaseBlob = inLease.getBlob();
@@ -723,7 +723,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     public CompletableFuture<Boolean> updateLeaseInternal(AzureBlobLease lease, BlobRequestOptions options, String action)
     {
-    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Updating lease"));
+    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Updating lease"));
     	
     	if (lease == null)
     	{
@@ -769,7 +769,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     private AzureBlobLease downloadLease(CloudBlockBlob blob, BlobRequestOptions options) throws StorageException, IOException
     {
     	String jsonLease = blob.downloadText(null, null, options, null);
-    	TRACE_LOGGER.info(this.hostContext.withHost("Raw JSON downloaded: " + jsonLease));
+    	TRACE_LOGGER.debug(this.hostContext.withHost("Raw JSON downloaded: " + jsonLease));
     	AzureBlobLease rehydrated = this.gson.fromJson(jsonLease, AzureBlobLease.class);
     	AzureBlobLease blobLease = new AzureBlobLease(rehydrated, blob, this.leaseOperationOptions);
     	
@@ -797,7 +797,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		{
 				lease.setOffset(cached.getOffset());
 				lease.setSequenceNumber(cached.getSequenceNumber());
-				TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease,
+				TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease,
                         "Replacing stale offset/seqno while uploading lease"));
 			}
 			else if (lease.getOffset() != null)
@@ -810,18 +810,17 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
  		blob.uploadText(jsonLease, null, condition, options, null);
 		// During create, we blindly try upload and it may throw. Doing the logging after the upload
 		// avoids a spurious trace in that case.
-        TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease,
+        TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease,
                 "Raw JSON uploading for " + activity + ": " + jsonLease));
     }
     
     private boolean wasLeaseLost(StorageException se, String partitionId)
     {
     	boolean retval = false;
-        TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId, "WAS LEASE LOST?"));
-		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(partitionId, "Http " + se.getHttpStatusCode()));
+		TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId, "WAS LEASE LOST? Http " + se.getHttpStatusCode()));
 		if (se.getExtendedErrorInformation() != null)
 		{
-            TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId,
+            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId,
                     "Http " + se.getExtendedErrorInformation().getErrorCode() + " :: " + se.getExtendedErrorInformation().getErrorMessage()));
 		}
     	if ((se.getHttpStatusCode() == 409) || // conflict
@@ -831,8 +830,8 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     		if (extendedErrorInfo != null)
     		{
     			String errorCode = extendedErrorInfo.getErrorCode();
-                TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, "Error code: " + errorCode));
-                TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId, "Error message: " + extendedErrorInfo.getErrorMessage()));
+                TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId, "Error code: " + errorCode));
+                TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId, "Error message: " + extendedErrorInfo.getErrorMessage()));
     			if ((errorCode.compareTo(StorageErrorCodeStrings.LEASE_LOST) == 0) ||
     				(errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_LEASE_OPERATION) == 0) ||
     				(errorCode.compareTo(StorageErrorCodeStrings.LEASE_ID_MISMATCH_WITH_BLOB_OPERATION) == 0) ||

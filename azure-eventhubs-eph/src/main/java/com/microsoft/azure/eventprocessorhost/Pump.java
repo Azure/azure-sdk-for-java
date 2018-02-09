@@ -70,7 +70,7 @@ class Pump
     	else
     	{
     		// Shouldn't get here but not really harmful, so just trace.
-    		TRACE_LOGGER.warn(this.hostContext.withHostAndPartition(partitionId,
+    		TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId,
                     "no pump found to remove for partition " + partitionId));
     	}
     	return retval;
