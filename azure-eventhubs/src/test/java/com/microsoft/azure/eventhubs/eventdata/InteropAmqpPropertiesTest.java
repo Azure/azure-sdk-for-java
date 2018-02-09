@@ -27,8 +27,7 @@ import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.EventHubException;
-import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
+import com.microsoft.azure.eventhubs.impl.*;
 
 public class InteropAmqpPropertiesTest extends ApiTestBase
 {
@@ -139,7 +138,7 @@ public class InteropAmqpPropertiesTest extends ApiTestBase
 				"receiver1", 
 				connStrBuilder.getEventHubName() + "/ConsumerGroups/" + TestContext.getConsumerGroupName() + "/Partitions/" + partitionId,
 				100,
-				ehClient.createReceiver(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromOffset(reSentAndReceivedEvent.getSystemProperties().getOffset(), false)).get()).get();
+				(IReceiverSettingsProvider) ehClient.createReceiver(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromOffset(reSentAndReceivedEvent.getSystemProperties().getOffset(), false)).get()).get();
                 
                 reSendAndReceivedMessage = msgReceiver.receive(10).get().iterator().next();
 	}

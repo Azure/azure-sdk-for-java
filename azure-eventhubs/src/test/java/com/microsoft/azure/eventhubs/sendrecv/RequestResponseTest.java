@@ -11,15 +11,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.EventHubException;
-import com.microsoft.azure.eventhubs.amqp.AmqpException;
-import com.microsoft.azure.eventhubs.amqp.AmqpResponseCode;
-import com.microsoft.azure.eventhubs.amqp.IOperation;
-import com.microsoft.azure.eventhubs.amqp.IOperationResult;
-import com.microsoft.azure.eventhubs.amqp.ReactorDispatcher;
-import com.microsoft.azure.eventhubs.amqp.RequestResponseChannel;
 
 import org.junit.Assert;
 import junit.framework.AssertionFailedError;

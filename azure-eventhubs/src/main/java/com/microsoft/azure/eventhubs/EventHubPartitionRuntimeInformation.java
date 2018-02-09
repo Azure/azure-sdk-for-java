@@ -6,8 +6,8 @@ package com.microsoft.azure.eventhubs;
 
 import java.time.Instant;
 
-final public class EventHubPartitionRuntimeInformation {
-	//final String type;
+public final class EventHubPartitionRuntimeInformation {
+
     private final String eventHubPath;
     private final String partitionId;
     private final long beginSequenceNumber;
@@ -15,13 +15,14 @@ final public class EventHubPartitionRuntimeInformation {
     private final String lastEnqueuedOffset;
     private final Instant lastEnqueuedTimeUtc;
 
-    EventHubPartitionRuntimeInformation(
+    public EventHubPartitionRuntimeInformation(
             final String eventHubPath,
             final String partitionId,
             final long beginSequenceNumber,
             final long lastEnqueuedSequenceNumber,
             final String lastEnqueuedOffset,
             final Instant lastEnqueuedTimeUtc) {
+
         this.eventHubPath = eventHubPath;
         this.partitionId = partitionId;
         this.beginSequenceNumber = beginSequenceNumber;
@@ -29,12 +30,6 @@ final public class EventHubPartitionRuntimeInformation {
         this.lastEnqueuedOffset = lastEnqueuedOffset;
         this.lastEnqueuedTimeUtc = lastEnqueuedTimeUtc;
     }
-
-    /*
-	public String getType() {
-		return this.type;
-	}
-	*/
 
     public String getEventHubPath() {
         return this.eventHubPath;

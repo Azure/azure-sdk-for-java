@@ -12,6 +12,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpSequence;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -55,7 +56,7 @@ public class InteropEventBodyTest extends ApiTestBase {
         
         // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
         receiver.setReceiveTimeout(Duration.ofSeconds(5));
-        Iterable<EventData> clockSkewEvents;
+        Iterable<? extends EventData> clockSkewEvents;
         do {
             clockSkewEvents = receiver.receiveSync(100);
         } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());

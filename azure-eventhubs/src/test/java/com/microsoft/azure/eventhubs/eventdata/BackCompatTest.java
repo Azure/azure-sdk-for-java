@@ -4,7 +4,6 @@
  */
 package com.microsoft.azure.eventhubs.eventdata;
 
-import java.awt.*;
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.time.Instant;
@@ -13,6 +12,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;

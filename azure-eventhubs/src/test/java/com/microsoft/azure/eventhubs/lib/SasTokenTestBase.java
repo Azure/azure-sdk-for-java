@@ -6,12 +6,10 @@ package com.microsoft.azure.eventhubs.lib;
 
 import java.time.Duration;
 
-import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
-
-import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.SharedAccessSignatureTokenProvider;
 
 public class SasTokenTestBase extends ApiTestBase {
     

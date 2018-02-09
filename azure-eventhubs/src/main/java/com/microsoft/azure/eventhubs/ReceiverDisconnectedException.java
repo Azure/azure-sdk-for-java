@@ -17,13 +17,14 @@ package com.microsoft.azure.eventhubs;
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  */
 public class ReceiverDisconnectedException extends EventHubException {
+
     private static final long serialVersionUID = 3385140843418138213L;
 
     ReceiverDisconnectedException() {
         super(false);
     }
 
-    ReceiverDisconnectedException(final String message) {
+    public ReceiverDisconnectedException(final String message) {
         super(false, message);
     }
 

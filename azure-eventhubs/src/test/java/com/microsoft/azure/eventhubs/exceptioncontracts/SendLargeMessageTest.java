@@ -57,7 +57,7 @@ public class SendLargeMessageTest extends ApiTestBase
 			body[i] = 1;
 		}
 		
-		EventData largeMsg = new EventData(body);
+		EventData largeMsg = EventData.create(body);
 		sender.sendSync(largeMsg);
 	}
 	
@@ -75,10 +75,10 @@ public class SendLargeMessageTest extends ApiTestBase
 			body[i] = 1;
 		}
 		
-		EventData largeMsg = new EventData(body);
+		EventData largeMsg = EventData.create(body);
 		sender.sendSync(largeMsg);
 		
-		Iterable<EventData> messages = receiver.receiveSync(100);
+		Iterable<? extends EventData> messages = receiver.receiveSync(100);
 		Assert.assertTrue(messages != null && messages.iterator().hasNext());
 
 		EventData recdMessage = messages.iterator().next();

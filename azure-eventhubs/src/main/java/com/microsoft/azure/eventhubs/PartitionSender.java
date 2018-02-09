@@ -4,10 +4,10 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
+
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-import java.util.function.Consumer;
-import java.util.function.Function;
 
 /**
  * This sender class is a logical representation of sending events to a specific EventHub partition. Do not use this class
@@ -16,46 +16,7 @@ import java.util.function.Function;
  * @see EventHubClient#createPartitionSender(String)
  * @see EventHubClient#createFromConnectionString(String, Executor)
  */
-public final class PartitionSender extends ClientEntity {
-    private final String partitionId;
-    private final String eventHubName;
-    private final MessagingFactory factory;
-
-    private MessageSender internalSender;
-
-    private PartitionSender(final MessagingFactory factory, final String eventHubName, final String partitionId, final Executor executor) {
-        super(null, null, executor);
-
-        this.partitionId = partitionId;
-        this.eventHubName = eventHubName;
-        this.factory = factory;
-    }
-
-    /**
-     * Internal-Only: factory pattern to Create EventHubSender
-     */
-    static CompletableFuture<PartitionSender> Create(final MessagingFactory factory,
-                                                     final String eventHubName,
-                                                     final String partitionId,
-                                                     final Executor executor) throws EventHubException {
-        final PartitionSender sender = new PartitionSender(factory, eventHubName, partitionId, executor);
-        return sender.createInternalSender()
-                .thenApplyAsync(new Function<Void, PartitionSender>() {
-                    public PartitionSender apply(Void a) {
-                        return sender;
-                    }
-                }, executor);
-    }
-
-    private CompletableFuture<Void> createInternalSender() throws EventHubException {
-        return MessageSender.create(this.factory, StringUtil.getRandomString(),
-                String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
-                .thenAcceptAsync(new Consumer<MessageSender>() {
-                    public void accept(MessageSender a) {
-                        PartitionSender.this.internalSender = a;
-                    }
-                }, this.executor);
-    }
+public interface PartitionSender {
 
     /**
      * Creates an Empty Collection of {@link EventData}.
@@ -64,25 +25,7 @@ public final class PartitionSender extends ClientEntity {
      * @param options see {@link BatchOptions} for more usage details
      * @return the empty {@link EventDataBatch}, after negotiating maximum message size with EventHubs service
      */
-    public EventDataBatch createBatch(BatchOptions options) {
-        if (!StringUtil.isNullOrEmpty(options.partitionKey)) {
-            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSender. If you'd like to " +
-                    "continue using PartitionSender with EventDataBatches, then please do not set a partition key in your BatchOptions.");
-        }
-
-        int maxSize = this.internalSender.getMaxMessageSize();
-
-        if (options.maxMessageSize == null) {
-            return new EventDataBatch(maxSize, null);
-        }
-
-        if (options.maxMessageSize > maxSize) {
-            throw new IllegalArgumentException("The maxMessageSize set in BatchOptions is too large. You set a maxMessageSize of " +
-                    options.maxMessageSize + ". The maximum allowed size is " + maxSize + ".");
-        }
-
-        return new EventDataBatch(options.maxMessageSize, null);
-    }
+    EventDataBatch createBatch(BatchOptions options);
 
     /**
      * Creates an Empty Collection of {@link EventData}.
@@ -90,7 +33,7 @@ public final class PartitionSender extends ClientEntity {
      *
      * @return the empty {@link EventDataBatch}, after negotiating maximum message size with EventHubs service
      */
-    public final EventDataBatch createBatch() {
+    default EventDataBatch createBatch() {
         return this.createBatch(new BatchOptions());
     }
 
@@ -101,8 +44,7 @@ public final class PartitionSender extends ClientEntity {
      * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
      * @throws EventHubException          if Service Bus service encountered problems during the operation.
      */
-    public final void sendSync(final EventData data)
-            throws EventHubException {
+    default void sendSync(final EventData data) throws EventHubException{
         ExceptionUtil.syncVoid(() -> this.send(data).get());
     }
 
@@ -126,9 +68,7 @@ public final class PartitionSender extends ClientEntity {
      * @param data the {@link EventData} to be sent.
      * @return a CompletableFuture that can be completed when the send operations is done..
      */
-    public final CompletableFuture<Void> send(EventData data) {
-        return this.internalSender.send(data.toAmqpMessage());
-    }
+    CompletableFuture<Void> send(EventData data);
 
     /**
      * Synchronous version of {@link #send(Iterable)} .
@@ -136,8 +76,7 @@ public final class PartitionSender extends ClientEntity {
      * @param eventDatas batch of events to send to EventHub
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
-    public final void sendSync(final Iterable<EventData> eventDatas)
-            throws EventHubException {
+    default void sendSync(final Iterable<? extends EventData> eventDatas) throws EventHubException{
         ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 
@@ -179,17 +118,8 @@ public final class PartitionSender extends ClientEntity {
      *
      * @param eventDatas batch of events to send to EventHub
      * @return a CompletableFuture that can be completed when the send operations is done..
-     * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-     * @throws EventHubException          if Service Bus service encountered problems during the operation.
      */
-    public final CompletableFuture<Void> send(Iterable<EventData> eventDatas)
-            throws EventHubException {
-        if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0)) {
-            throw new IllegalArgumentException("EventData batch cannot be empty.");
-        }
-
-        return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas));
-    }
+    CompletableFuture<Void> send(Iterable<? extends EventData> eventDatas);
 
     /**
      * Synchronous version of {@link #send(EventDataBatch)}
@@ -197,7 +127,7 @@ public final class PartitionSender extends ClientEntity {
      * @param eventDatas EventDataBatch to send to EventHub
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
-    public final void sendSync(final EventDataBatch eventDatas) throws EventHubException {
+    default void sendSync(final EventDataBatch eventDatas) throws EventHubException{
         ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 
@@ -215,30 +145,12 @@ public final class PartitionSender extends ClientEntity {
      *
      * @param eventDatas EventDataBatch to send to EventHub
      * @return a CompletableFuture that can be completed when the send operation is done..
-     * @throws EventHubException if Service Bus service encountered problems during the operation.
      * @see #send(Iterable)
      * @see EventDataBatch
      */
-    public final CompletableFuture<Void> send(EventDataBatch eventDatas)
-            throws EventHubException {
-        if (eventDatas == null || Integer.compare(eventDatas.getSize(), 0) == 0) {
-            throw new IllegalArgumentException("EventDataBatch cannot be empty.");
-        }
+    CompletableFuture<Void> send(EventDataBatch eventDatas);
 
-        if (!StringUtil.isNullOrEmpty(eventDatas.getPartitionKey())) {
-            throw new IllegalArgumentException("A partition key cannot be set when using PartitionSender. If you'd like to " +
-            "continue using PartitionSender with EventDataBatches, then please do not set a partition key in your BatchOptions");
-        }
+    CompletableFuture<Void> close();
 
-        return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas.getInternalIterable()));
-    }
-
-    @Override
-    public CompletableFuture<Void> onClose() {
-        if (this.internalSender == null) {
-            return CompletableFuture.completedFuture(null);
-        } else {
-            return this.internalSender.close();
-        }
-    }
+    void closeSync() throws EventHubException;
 }

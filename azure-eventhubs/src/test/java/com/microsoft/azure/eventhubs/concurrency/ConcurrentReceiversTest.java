@@ -109,20 +109,24 @@ public class ConcurrentReceiversTest extends ApiTestBase
 		}
 	}
 
-	public static final class ReceiveAtleastOneEventValidator extends PartitionReceiveHandler
+	public static final class ReceiveAtleastOneEventValidator implements PartitionReceiveHandler
 	{
 		final CompletableFuture<Void>signalReceived;
 		final PartitionReceiver currentReceiver;
 		
 		public ReceiveAtleastOneEventValidator(final CompletableFuture<Void> signalReceived, final PartitionReceiver currentReceiver)
 		{
-			super(50);
 			this.signalReceived = signalReceived;
 			this.currentReceiver = currentReceiver;
 		}
 
 		@Override
-		public void onReceive(Iterable<EventData> events)
+		public int getMaxEventCount() {
+			return 50;
+		}
+
+		@Override
+		public void onReceive(Iterable<? extends EventData> events)
 		{
 			if (events != null && events.iterator().hasNext())
 			{

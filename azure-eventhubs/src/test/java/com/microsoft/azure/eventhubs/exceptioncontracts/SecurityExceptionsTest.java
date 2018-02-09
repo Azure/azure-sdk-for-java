@@ -8,6 +8,7 @@ import java.time.Duration;
 import java.util.UUID;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.junit.After;
 import org.junit.Test;
 
@@ -31,7 +32,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSasKey(correctConnectionString.getSasKey());
 		
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-		ehClient.sendSync(new EventData("Test Message".getBytes()));
+		ehClient.sendSync(EventData.create("Test Message".getBytes()));
 	}
 	
 	@Test (expected = AuthorizationFailedException.class)
@@ -45,7 +46,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSasKey("--------------wrongvalue-----------");
 		
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-		ehClient.sendSync(new EventData("Test Message".getBytes()));
+		ehClient.sendSync(EventData.create("Test Message".getBytes()));
 	}
         
         @Test (expected = EventHubException.class)
@@ -58,7 +59,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSharedAccessSignature("--------------invalidtoken-------------");
 		
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-		ehClient.sendSync(new EventData("Test Message".getBytes()));
+		ehClient.sendSync(EventData.create(("Test Message".getBytes())));
 	}
         
         @Test (expected = IllegalArgumentException.class)
@@ -71,7 +72,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSharedAccessSignature(null);
 		
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-		ehClient.sendSync(new EventData("Test Message".getBytes()));
+		ehClient.sendSync(EventData.create(("Test Message".getBytes())));
 	}
         
         @Test (expected = AuthorizationFailedException.class)
@@ -89,7 +90,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSharedAccessSignature(wrongToken);
 		
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-		ehClient.sendSync(new EventData("Test Message".getBytes()));
+		ehClient.sendSync(EventData.create("Test Message".getBytes()));
 	}
         
         @Test (expected = AuthorizationFailedException.class)
@@ -107,7 +108,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSharedAccessSignature(wrongToken);
 		
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-		ehClient.sendSync(new EventData("Test Message".getBytes()));
+		ehClient.sendSync(EventData.create("Test Message".getBytes()));
 	}
 	
 	@Test (expected = AuthorizationFailedException.class)
@@ -149,7 +150,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSasKey(correctConnectionString.getSasKey());
 
 		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-		ehClient.sendSync(new EventData("test string".getBytes()));
+		ehClient.sendSync(EventData.create("test string".getBytes()));
 	}
 
 	@Test (expected = IllegalEntityException.class)

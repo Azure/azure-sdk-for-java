@@ -11,6 +11,7 @@ import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
 
@@ -73,7 +74,7 @@ public class ReceiveParallelManualTest extends ApiTestBase
                 e.printStackTrace();
             }
 
-            Iterable<EventData> receivedEvents;
+            Iterable<? extends EventData> receivedEvents;
             long totalEvents = 0L;
             while (true) {
                 try {

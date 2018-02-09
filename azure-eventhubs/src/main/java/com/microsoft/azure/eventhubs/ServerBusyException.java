@@ -11,6 +11,7 @@ package com.microsoft.azure.eventhubs;
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  */
 public class ServerBusyException extends EventHubException {
+
     private static final long serialVersionUID = 1L;
 
     /**
@@ -20,7 +21,7 @@ public class ServerBusyException extends EventHubException {
         super(true);
     }
 
-    ServerBusyException(final String message) {
+    public ServerBusyException(final String message) {
         super(true, message);
     }
 

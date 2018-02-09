@@ -44,7 +44,7 @@ public class PrefabEventProcessor implements IEventProcessor
 	}
 
 	@Override
-	public void onEvents(PartitionContext context, Iterable<EventData> messages) throws Exception
+	public void onEvents(PartitionContext context, Iterable<? extends EventData> messages) throws Exception
 	{
 		int batchSize = 0;
 		EventData lastEvent = null;

@@ -1,0 +1,75 @@
+/*
+ * Copyright (c) Microsoft. All rights reserved.
+ * Licensed under the MIT license. See LICENSE file in the project root for full license information.
+ */
+package com.microsoft.azure.eventhubs.impl;
+
+import java.time.Duration;
+import java.util.Locale;
+import java.util.concurrent.CompletableFuture;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+final class ActiveClientTokenManager {
+
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ActiveClientTokenManager.class);
+
+    private CompletableFuture timer;
+
+    private final Object timerLock;
+    private final Runnable sendTokenTask;
+    private final ClientEntity clientEntity;
+    private final Duration tokenRefreshInterval;
+    private final ISchedulerProvider schedulerProvider;
+    private final Timer timerScheduler;
+
+    public ActiveClientTokenManager(
+            final ClientEntity clientEntity,
+            final Runnable sendTokenAsync,
+            final Duration tokenRefreshInterval,
+            final ISchedulerProvider schedulerProvider) {
+
+        this.sendTokenTask = sendTokenAsync;
+        this.clientEntity = clientEntity;
+        this.tokenRefreshInterval = tokenRefreshInterval;
+        this.timerLock = new Object();
+        this.schedulerProvider = schedulerProvider;
+        this.timerScheduler = new Timer(schedulerProvider);
+
+        synchronized (this.timerLock) {
+            this.timer = this.timerScheduler.schedule(new TimerCallback(), tokenRefreshInterval);
+        }
+    }
+
+    public void cancel() {
+
+        synchronized (this.timerLock) {
+            this.timer.cancel(false);
+        }
+    }
+
+    private class TimerCallback implements Runnable {
+
+        @Override
+        public void run() {
+
+            if (!clientEntity.getIsClosingOrClosed()) {
+
+                sendTokenTask.run();
+
+                synchronized (ActiveClientTokenManager.this.timerLock) {
+                    ActiveClientTokenManager.this.timer = ActiveClientTokenManager.this.timerScheduler.schedule(new TimerCallback(), tokenRefreshInterval);
+                }
+            } else {
+
+                if (TRACE_LOGGER.isInfoEnabled()) {
+                    TRACE_LOGGER.info(
+                            String.format(Locale.US,
+                                    "clientEntity[%s] - closing ActiveClientLinkManager", clientEntity.getClientId()));
+                }
+            }
+        }
+
+    }
+}

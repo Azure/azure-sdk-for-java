@@ -5,31 +5,18 @@
 package com.microsoft.azure.eventhubs;
 
 /**
- * A handler class for the receive operation. Use any implementation of this abstract class to specify
+ * The handler to invoke after receiving {@link EventData}s from Microsoft Azure EventHubs. Use any implementation of this abstract class to specify
  * user action when using PartitionReceiver's setReceiveHandler().
  *
  * @see PartitionReceiver#setReceiveHandler
  */
-public abstract class PartitionReceiveHandler {
-    private int maxEventCount;
-
-    protected PartitionReceiveHandler(final int maxEventCount) {
-        this.maxEventCount = maxEventCount;
-    }
-
-    int getMaxEventCount() {
-        return maxEventCount;
-    }
+public interface PartitionReceiveHandler {
 
     /**
-     * implementor of {@link PartitionReceiveHandler#onReceive} can use this to set the limit on maximum {@link EventData}'s that
-     * can be received by the next {@link PartitionReceiveHandler#onReceive} call
-     *
-     * @param value maximum {@link EventData}'s to be received in the next {@link PartitionReceiveHandler#onReceive} call
+     * Maximum number of {@link EventData} to supply while invoking {@link #onReceive(Iterable)}
+     * @return value indicating the maximum number of {@link EventData} to supply while invoking {@link #onReceive(Iterable)}
      */
-    protected final void setMaxEventCount(final int value) {
-        this.maxEventCount = value;
-    }
+    int getMaxEventCount();
 
     /**
      * user should implement this method to specify the action to be performed on the received events.
@@ -37,12 +24,12 @@ public abstract class PartitionReceiveHandler {
      * @param events the list of fetched events from the corresponding PartitionReceiver.
      * @see PartitionReceiver#receive
      */
-    public abstract void onReceive(Iterable<EventData> events);
+    void onReceive(final Iterable<? extends EventData> events);
 
     /**
      * Implement this method to Listen to errors which lead to Closure of the {@link PartitionReceiveHandler} pump.
      *
      * @param error fatal error encountered while running the {@link PartitionReceiveHandler} pump
      */
-    public abstract void onError(Throwable error);
+    void onError(final Throwable error);
 }

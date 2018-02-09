@@ -30,7 +30,7 @@ public final class EventHubsManager extends AbstractManager
 	{
 		if (msg != null)
 		{
-			EventData data = new EventData(msg);
+			EventData data = EventData.create(msg);
 			this.eventHubSender.sendSync(data);
 		}
 	}
@@ -42,7 +42,7 @@ public final class EventHubsManager extends AbstractManager
 			LinkedList<EventData> events = new LinkedList<EventData>();
 			for(byte[] message : messages)
 			{
-				events.add(new EventData(message));
+				events.add(EventData.create(message));
 			}
 			
 			this.eventHubSender.sendSync(events);

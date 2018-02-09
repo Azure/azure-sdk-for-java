@@ -15,6 +15,7 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -22,7 +23,6 @@ import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.EventHubException;
 
 import junit.framework.AssertionFailedError;
 
@@ -50,7 +50,7 @@ public class SendTest extends ApiTestBase
 		final int batchSize = 50;
 		for (int count = 0; count< batchSize; count++)
 		{
-			EventData event = new EventData("a".getBytes());
+			EventData event = EventData.create("a".getBytes());
 			event.getProperties().put(ORDER_PROPERTY, count);
 			batchEvents.add(event);
 		}
@@ -62,7 +62,7 @@ public class SendTest extends ApiTestBase
 		receiver.setReceiveHandler(new OrderValidator(validator, batchSize));
                 
                 // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
-                Iterable<EventData> clockSkewEvents;
+                Iterable<? extends EventData> clockSkewEvents;
                 do {
                     clockSkewEvents = receiver.receiveSync(100);
                 } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());
@@ -85,17 +85,17 @@ public class SendTest extends ApiTestBase
 			final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, Integer.toString(receiversCount), EventPosition.fromEnqueuedTime(Instant.now()));
 			receivers.add(receiver);
                         
-                        // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
-                        receiver.setReceiveTimeout(Duration.ofSeconds(5));
-                        Iterable<EventData> clockSkewEvents;
-                        do {
-                            clockSkewEvents = receiver.receiveSync(100);
-                        } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());
+            // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
+            receiver.setReceiveTimeout(Duration.ofSeconds(5));
+            Iterable<? extends EventData> clockSkewEvents;
+            do {
+                clockSkewEvents = receiver.receiveSync(100);
+            } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());
 
-                        receiver.setReceiveHandler(validator);
+            receiver.setReceiveHandler(validator);
 		}
 		
-		ehClient.sendSync(new EventData("TestMessage".getBytes()), partitionKey);
+		ehClient.sendSync(EventData.create("TestMessage".getBytes()), partitionKey);
 		validateSignal.get(partitionCount * 5, TimeUnit.SECONDS);
 	}
 	
@@ -114,7 +114,7 @@ public class SendTest extends ApiTestBase
 			
                         // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
                         receiver.setReceiveTimeout(Duration.ofSeconds(5));
-                        Iterable<EventData> clockSkewEvents;
+                        Iterable<? extends EventData> clockSkewEvents;
                         do {
                             clockSkewEvents = receiver.receiveSync(100);
                         } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());
@@ -124,7 +124,7 @@ public class SendTest extends ApiTestBase
 		
 		List<EventData> events = new LinkedList<>();
 		for(int index = 0; index < batchSize; index++)
-			events.add(new EventData("TestMessage".getBytes()));
+			events.add(EventData.create("TestMessage".getBytes()));
 		
 		ehClient.sendSync(events, partitionKey);
 		validateSignal.get(partitionCount * 5, TimeUnit.SECONDS);
@@ -154,7 +154,7 @@ public class SendTest extends ApiTestBase
 		ehClient.closeSync();
 	}
 	
-	public static class PartitionKeyValidator extends PartitionReceiveHandler
+	public static class PartitionKeyValidator implements PartitionReceiveHandler
 	{
 		final CompletableFuture<Void> validateSignal;
 		final String partitionKey;
@@ -163,14 +163,18 @@ public class SendTest extends ApiTestBase
 		
 		protected PartitionKeyValidator(final CompletableFuture<Void> validateSignal, final String partitionKey, final int eventCount)
 		{
-			super(50);
 			this.validateSignal = validateSignal;
 			this.partitionKey = partitionKey;
 			this.eventCount = eventCount;
 		}
 
 		@Override
-		public void onReceive(Iterable<EventData> events)
+		public int getMaxEventCount() {
+			return 50;
+		}
+
+		@Override
+		public void onReceive(Iterable<? extends EventData> events)
 		{
 			if (events != null & events.iterator().hasNext())
 			{
@@ -195,7 +199,7 @@ public class SendTest extends ApiTestBase
 		}
 	}
 	
-	public static class OrderValidator extends PartitionReceiveHandler
+	public static class OrderValidator implements PartitionReceiveHandler
 	{
 		final CompletableFuture<Void> validateSignal;
 		final int netEventCount;
@@ -204,13 +208,17 @@ public class SendTest extends ApiTestBase
 		
 		public OrderValidator(final CompletableFuture<Void> validateSignal, final int netEventCount)
 		{
-			super(100);
 			this.validateSignal = validateSignal;
 			this.netEventCount = netEventCount;
 		}
 
 		@Override
-		public void onReceive(Iterable<EventData> events)
+		public int getMaxEventCount() {
+			return 100;
+		}
+
+		@Override
+		public void onReceive(Iterable<? extends EventData> events)
 		{
 			if (events != null)
 				for(EventData event: events)

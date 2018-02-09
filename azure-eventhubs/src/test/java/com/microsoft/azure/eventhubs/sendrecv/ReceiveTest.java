@@ -11,6 +11,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.Assert;
@@ -21,7 +22,6 @@ import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.eventhubs.EventHubException;
-import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
 
 public class ReceiveTest extends ApiTestBase
 {
@@ -45,16 +45,16 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverStartOfStreamFilters() throws EventHubException
 	{
 		offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream());
-		Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receiveSync(100);
+		Iterable<? extends EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receiveSync(100);
 		
 		Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingOffsetReceiver.iterator().hasNext());
 		
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receiveSync(100);
+		Iterable<? extends EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receiveSync(100);
 		
 		Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingDateTimeReceiver.iterator().hasNext());
 		
-		Iterator<EventData> dateTimeIterator = startingEventsUsingDateTimeReceiver.iterator();
+		Iterator<? extends EventData> dateTimeIterator = startingEventsUsingDateTimeReceiver.iterator();
 		for(EventData eventDataUsingOffset: startingEventsUsingOffsetReceiver)
 		{
 			EventData eventDataUsingDateTime = dateTimeIterator.next();
@@ -71,7 +71,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverLatestFilter() throws EventHubException, ExecutionException, InterruptedException
 	{
 		offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEndOfStream());
-		Iterable<EventData> events = offsetReceiver.receiveSync(100);
+		Iterable<? extends EventData> events = offsetReceiver.receiveSync(100);
 		Assert.assertTrue(events == null);
 
 		TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
@@ -83,7 +83,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverOffsetInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
+		Iterable<? extends EventData> events = datetimeReceiver.receiveSync(100);
 		
 		Assert.assertTrue(events != null && events.iterator().hasNext());
 		EventData event = events.iterator().next();
@@ -99,7 +99,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverOffsetNonInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
+		Iterable<? extends EventData> events = datetimeReceiver.receiveSync(100);
 		
 		Assert.assertTrue(events != null && events.iterator().hasNext());
 		
@@ -114,7 +114,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverSequenceNumberInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
+		Iterable<? extends EventData> events = datetimeReceiver.receiveSync(100);
 
 		Assert.assertTrue(events != null && events.iterator().hasNext());
 		EventData event = events.iterator().next();
@@ -130,7 +130,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverSequenceNumberNonInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
+		Iterable<? extends EventData> events = datetimeReceiver.receiveSync(100);
 
 		Assert.assertTrue(events != null && events.iterator().hasNext());
 
@@ -147,7 +147,7 @@ public class ReceiveTest extends ApiTestBase
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEndOfStream());
 		datetimeReceiver.setReceiveTimeout(Duration.ofSeconds(5));
 
-	 	Iterable<EventData> drainedEvents =	datetimeReceiver.receiveSync(100);
+	 	Iterable<? extends EventData> drainedEvents =	datetimeReceiver.receiveSync(100);
 		while(drainedEvents != null && drainedEvents.iterator().hasNext()) {
 			drainedEvents = datetimeReceiver.receiveSync(100);
 		}
@@ -174,7 +174,7 @@ public class ReceiveTest extends ApiTestBase
 			}
 		};
 			
-		final EventData sentEvent = new EventData(payload.getBytes());
+		final EventData sentEvent = EventData.create(payload.getBytes());
 		sentEvent.getProperties().put(property1, propertyValue1);
 		sentEvent.getProperties().put(property2, propertyValue2);
 		final PartitionSender sender = ehClient.createPartitionSenderSync(partitionId);

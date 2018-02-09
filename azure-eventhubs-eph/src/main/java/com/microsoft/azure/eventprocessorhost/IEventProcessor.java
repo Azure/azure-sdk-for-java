@@ -61,7 +61,7 @@ public interface IEventProcessor
      * @param messages	The events to be processed. May be empty.
      * @throws Exception to indicate failure.
      */
-    public void onEvents(PartitionContext context, Iterable<EventData> messages) throws Exception;
+    public void onEvents(PartitionContext context, Iterable<? extends EventData> messages) throws Exception;
     
     /**
      * Called when the underlying client experiences an error while receiving. EventProcessorHost will take

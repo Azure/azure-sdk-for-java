@@ -4,12 +4,15 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import com.microsoft.azure.eventhubs.impl.StringUtil;
+
+import java.io.Serializable;
 import java.util.Locale;
 
-public abstract class ErrorContext {
+public abstract class ErrorContext implements Serializable {
     private final String namespaceName;
 
-    ErrorContext(final String namespaceName) {
+    protected ErrorContext(final String namespaceName) {
         this.namespaceName = namespaceName;
     }
 

@@ -10,7 +10,7 @@ import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class TestUtilities
+final class TestUtilities
 {
 	static String getStorageConnectionString()
 	{

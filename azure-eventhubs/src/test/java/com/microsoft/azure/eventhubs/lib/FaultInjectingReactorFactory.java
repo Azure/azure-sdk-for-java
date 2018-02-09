@@ -1,8 +1,7 @@
 package com.microsoft.azure.eventhubs.lib;
 
-import com.microsoft.azure.eventhubs.MessagingFactory;
-import com.microsoft.azure.eventhubs.amqp.CustomIOHandler;
-import com.microsoft.azure.eventhubs.amqp.ReactorHandler;
+import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;

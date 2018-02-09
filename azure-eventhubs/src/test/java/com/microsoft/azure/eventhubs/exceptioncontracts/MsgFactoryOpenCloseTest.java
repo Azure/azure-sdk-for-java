@@ -5,6 +5,7 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.FaultInjectingReactorFactory;
 import com.microsoft.azure.eventhubs.lib.TestContext;
@@ -48,8 +49,8 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
             final PartitionReceiver receiver = ehClient.createReceiverSync(
                     TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
             final PartitionSender sender = ehClient.createPartitionSenderSync(PARTITION_ID);
-            sender.sendSync(new EventData("test data - string".getBytes()));
-            Iterable<EventData> events = receiver.receiveSync(10);
+            sender.sendSync(EventData.create("test data - string".getBytes()));
+            Iterable<? extends EventData> events = receiver.receiveSync(10);
 
             Assert.assertTrue(events.iterator().hasNext());
             sender.closeSync();
@@ -112,11 +113,11 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
         final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
                 TestContext.getConnectionString().toString(),
                 testClosed);
-        temp.sendSync(new EventData("test data - string".getBytes()));
+        temp.sendSync(EventData.create("test data - string".getBytes()));
 
         testClosed.shutdown();
 
-        temp.sendSync(new EventData("test data - string".getBytes()));
+        temp.sendSync(EventData.create("test data - string".getBytes()));
         testClosed.awaitTermination(60, TimeUnit.SECONDS);
     }
 
@@ -147,7 +148,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
         testClosed.awaitTermination(60, TimeUnit.SECONDS);
 
         // first send creates send link
-        temp.sendSync(new EventData("test data - string".getBytes()));
+        temp.sendSync(EventData.create("test data - string".getBytes()));
     }
 
     @Test(expected = RejectedExecutionException.class)
