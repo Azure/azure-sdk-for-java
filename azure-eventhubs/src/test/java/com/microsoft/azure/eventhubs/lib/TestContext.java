@@ -14,9 +14,8 @@ public final class TestContext
 	public final static ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
 
 	final static String EVENT_HUB_CONNECTION_STRING_ENV_NAME = "EVENT_HUB_CONNECTION_STRING";
-	final static String PARTIION_COUNT_ENV_NAME = "PARTITION_COUNT";
-        
-        private static String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
+
+	private static String CONNECTION_STRING = System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME);
 
 	private TestContext()
 	{
@@ -27,12 +26,7 @@ public final class TestContext
 	{
 		return new ConnectionStringBuilder(CONNECTION_STRING);
 	}
-	
-	public static int getPartitionCount()
-	{
-		return Integer.parseInt(System.getenv(PARTIION_COUNT_ENV_NAME));
-	}
-	
+
 	public static String getConsumerGroupName()
 	{
 		return "$default";
@@ -45,7 +39,6 @@ public final class TestContext
 	
 	public static boolean isTestConfigurationSet()
 	{
-		return System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME) != null &&
-				System.getenv(PARTIION_COUNT_ENV_NAME) != null;
+		return System.getenv(EVENT_HUB_CONNECTION_STRING_ENV_NAME) != null;
 	}
 }

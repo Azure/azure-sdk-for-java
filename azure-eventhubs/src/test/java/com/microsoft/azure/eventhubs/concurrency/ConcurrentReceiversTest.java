@@ -38,10 +38,10 @@ public class ConcurrentReceiversTest extends ApiTestBase
 	@BeforeClass
 	public static void initialize() throws InterruptedException, ExecutionException, EventHubException, IOException
 	{
-		partitionCount = TestContext.getPartitionCount();
 		connStr = TestContext.getConnectionString();
 
 		sender = EventHubClient.createFromConnectionString(connStr.toString(), TestContext.EXECUTOR_SERVICE).get();
+		partitionCount = sender.getRuntimeInformation().get().getPartitionCount();
 		receivers = new PartitionReceiver[partitionCount];
 		consumerGroupName = TestContext.getConsumerGroupName();
 	}

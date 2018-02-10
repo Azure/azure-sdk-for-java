@@ -225,8 +225,11 @@ public class EventDataBatchAPITest extends ApiTestBase {
     @AfterClass
     public static void cleanupClient() throws EventHubException
     {
-        sender.closeSync();
-        ehClient.closeSync();
+        if (sender != null)
+            sender.closeSync();
+
+        if (ehClient != null)
+            ehClient.closeSync();
     }
 
     public static class CountValidator implements PartitionReceiveHandler {

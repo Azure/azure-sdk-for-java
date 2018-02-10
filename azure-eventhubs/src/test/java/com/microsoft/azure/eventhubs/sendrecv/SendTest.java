@@ -76,7 +76,7 @@ public class SendTest extends ApiTestBase
 	@Test
 	public void sendResultsInSysPropertiesWithPartitionKey() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
-		final int partitionCount = TestContext.getPartitionCount();
+		final int partitionCount = ehClient.getRuntimeInformation().get().getPartitionCount();
 		final String partitionKey = UUID.randomUUID().toString();
 		CompletableFuture<Void> validateSignal = new CompletableFuture<>();
 		PartitionKeyValidator validator = new PartitionKeyValidator(validateSignal, partitionKey, 1);
@@ -103,7 +103,7 @@ public class SendTest extends ApiTestBase
 	public void sendBatchResultsInSysPropertiesWithPartitionKey() throws EventHubException, InterruptedException, ExecutionException, TimeoutException
 	{
 		final int batchSize = 20;
-		final int partitionCount = TestContext.getPartitionCount();
+		final int partitionCount = ehClient.getRuntimeInformation().get().getPartitionCount();
 		final String partitionKey = UUID.randomUUID().toString();
 		CompletableFuture<Void> validateSignal = new CompletableFuture<>();
 		PartitionKeyValidator validator = new PartitionKeyValidator(validateSignal, partitionKey, batchSize);
@@ -151,7 +151,8 @@ public class SendTest extends ApiTestBase
 	@AfterClass
 	public static void cleanupClient() throws EventHubException
 	{
-		ehClient.closeSync();
+		if (ehClient != null)
+			ehClient.closeSync();
 	}
 	
 	public static class PartitionKeyValidator implements PartitionReceiveHandler

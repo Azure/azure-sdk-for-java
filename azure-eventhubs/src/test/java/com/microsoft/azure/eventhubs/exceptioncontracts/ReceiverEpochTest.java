@@ -99,6 +99,7 @@ public class ReceiverEpochTest extends ApiTestBase
 	@AfterClass
 	public static void cleanup() throws EventHubException
 	{
-		ehClient.closeSync();
+		if (ehClient != null)
+			ehClient.closeSync();
 	}
 }

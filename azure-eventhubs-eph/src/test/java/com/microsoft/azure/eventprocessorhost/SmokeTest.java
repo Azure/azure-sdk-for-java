@@ -8,6 +8,8 @@ import java.time.Instant;
 import java.util.concurrent.Executors;
 
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
 
 import com.microsoft.azure.eventhubs.EventPosition;
@@ -15,6 +17,12 @@ import com.microsoft.azure.eventhubs.EventPosition;
 
 public class SmokeTest extends TestBase
 {
+	@BeforeClass
+	public static void skipIfNoEnvPresent()
+	{
+		Assume.assumeTrue(System.getenv("EVENT_HUB_CONNECTION_STRING") != null);
+	}
+
 	@Test
 	public void SendRecv1MsgTest() throws Exception
 	{

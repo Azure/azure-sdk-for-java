@@ -167,7 +167,6 @@ the required version of Apache Qpid Proton-J, and the crytography library BCPKIX
   * [go to Project > Properties > 'Java Build Path' > Libraries tab. Click on 'JRE System Library (V x.xx)' and Edit this to be 1.8 or higher]
 6. Set these Environment variables to be able to run unit tests:
   * EVENT_HUB_CONNECTION_STRING
-  * PARTITION_COUNT
   * EPHTESTSTORAGE
 
 ## Samples

@@ -5,6 +5,8 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import org.junit.Assume;
+
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Level;
@@ -15,6 +17,10 @@ final class TestUtilities
 	static String getStorageConnectionString()
 	{
 		String retval = System.getenv("EPHTESTSTORAGE");
+
+		// if EPHTESTSTORAGE is not set - we cannot run integration tests
+		Assume.assumeTrue(retval != null);
+
 		return ((retval != null) ? retval : "");
 	}
 
