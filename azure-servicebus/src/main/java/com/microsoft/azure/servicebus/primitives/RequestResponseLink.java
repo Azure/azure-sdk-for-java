@@ -91,10 +91,19 @@ class RequestResponseLink extends ClientEntity{
 				public void onEvent()
 				{
 					requestReponseLink.createInternalLinks();
-					requestReponseLink.amqpSender.openFuture.runAfterBothAsync(requestReponseLink.amqpReceiver.openFuture, () -> 
+					CompletableFuture.allOf(requestReponseLink.amqpSender.openFuture, requestReponseLink.amqpReceiver.openFuture).handleAsync((v, ex) -> 
 					{
-					    TRACE_LOGGER.info("Opened requestresponselink to {}", requestReponseLink.linkPath);
-					    requestReponseLink.createFuture.complete(requestReponseLink);
+					    if(ex == null)
+					    {
+					        TRACE_LOGGER.info("Opened requestresponselink to {}", requestReponseLink.linkPath);
+	                        requestReponseLink.createFuture.complete(requestReponseLink);
+					    }
+					    else
+					    {
+	                        requestReponseLink.createFuture.completeExceptionally(ex);
+					    }
+					    
+					    return null;
 					});
 				}
 			});

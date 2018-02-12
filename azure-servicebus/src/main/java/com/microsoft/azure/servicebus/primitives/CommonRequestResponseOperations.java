@@ -18,7 +18,7 @@ import com.microsoft.azure.servicebus.security.SecurityToken;
 
 final class CommonRequestResponseOperations {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(CommonRequestResponseOperations.class);
-	static CompletableFuture<Collection<Message>> peekMessagesAsync(RequestResponseLink requestResponseLink, Duration operationTimeout, long fromSequenceNumber, int messageCount, String sessionId)
+	static CompletableFuture<Collection<Message>> peekMessagesAsync(RequestResponseLink requestResponseLink, Duration operationTimeout, long fromSequenceNumber, int messageCount, String sessionId, String associatedLinkName)
 	{
 	    TRACE_LOGGER.debug("Peeking '{}' messages from sequence number '{}' in entity '{}', sessionId '{}'", messageCount, fromSequenceNumber, requestResponseLink.getLinkPath(), sessionId);
 		HashMap requestBodyMap = new HashMap();
@@ -28,7 +28,7 @@ final class CommonRequestResponseOperations {
 		{
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
 		}
-		Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_PEEK_OPERATION, requestBodyMap, Util.adjustServerTimeout(operationTimeout));
+		Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_PEEK_OPERATION, requestBodyMap, Util.adjustServerTimeout(operationTimeout), associatedLinkName);
 		CompletableFuture<Message> responseFuture = requestResponseLink.requestAysnc(requestMessage, operationTimeout);
 		return responseFuture.thenComposeAsync((responseMessage) -> {
 			CompletableFuture<Collection<Message>> returningFuture = new CompletableFuture<Collection<Message>>();

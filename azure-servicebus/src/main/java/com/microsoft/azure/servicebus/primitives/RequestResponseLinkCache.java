@@ -30,7 +30,7 @@ class RequestResponseLinkcache
             if(wrapper == null)
             {
                 wrapper = new RequestResponseLinkWrapper(this.underlyingFactory, entityPath);
-                this.pathToRRLinkMap.put(entityPath, wrapper);            
+                this.pathToRRLinkMap.put(entityPath, wrapper);
             }
         }
         return wrapper.acquireReferenceAsync();

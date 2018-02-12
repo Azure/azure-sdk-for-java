@@ -16,16 +16,30 @@ import org.apache.qpid.proton.message.Message;
 public class RequestResponseUtils {
 	public static Message createRequestMessageFromPropertyBag(String operation, Map propertyBag, Duration timeout)
 	{
-		return createRequestMessageFromValueBody(operation, propertyBag, timeout);
+		return createRequestMessageFromPropertyBag(operation, propertyBag, timeout, null);
 	}
 	
+	public static Message createRequestMessageFromPropertyBag(String operation, Map propertyBag, Duration timeout, String associatedLinkName)
+    {
+        return createRequestMessageFromValueBody(operation, propertyBag, timeout, associatedLinkName);
+    }
+	
 	public static Message createRequestMessageFromValueBody(String operation, Object valueBody, Duration timeout)
+    {
+	    return createRequestMessageFromValueBody(operation, valueBody, timeout, null);
+    }
+	
+	private static Message createRequestMessageFromValueBody(String operation, Object valueBody, Duration timeout, String associatedLinkName)
     {
         Message requestMessage = Message.Factory.create();
         requestMessage.setBody(new AmqpValue(valueBody));
         HashMap applicationPropertiesMap = new HashMap();
         applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_OPERATION_NAME, operation);
         applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_TIMEOUT, timeout.toMillis());
+        if(!StringUtil.isNullOrEmpty(associatedLinkName))
+        {
+            applicationPropertiesMap.put(ClientConstants.REQUEST_RESPONSE_ASSOCIATED_LINK_NAME, associatedLinkName);
+        }
         requestMessage.setApplicationProperties(new ApplicationProperties(applicationPropertiesMap));
         return requestMessage;
     }
