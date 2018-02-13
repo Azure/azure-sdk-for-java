@@ -463,14 +463,14 @@ public interface EventHubClient {
     CompletableFuture<EventHubRuntimeInformation> getRuntimeInformation();
 
     /**
-     * Retrieves dynamic information about a partition of an event hub (see {@link EventHubPartitionRuntimeInformation} for
+     * Retrieves dynamic information about a partition of an event hub (see {@link PartitionRuntimeInformation} for
      * details. Retries until it reaches the operation timeout, then either rethrows the last error if available or
      * returns null to indicate timeout.
      *
-     * @param partitionId  Partition to get information about. Must be one of the partition ids returned by getRuntimeInformation.
-     * @return CompletableFuture which returns an EventHubPartitionRuntimeInformation on success, or null on timeout.
+     * @param partitionId  Partition to get information about. Must be one of the partition ids returned by {@link #getRuntimeInformation}.
+     * @return CompletableFuture which returns an PartitionRuntimeInformation on success, or null on timeout.
      */
-    CompletableFuture<EventHubPartitionRuntimeInformation> getPartitionRuntimeInformation(String partitionId);
+    CompletableFuture<PartitionRuntimeInformation> getPartitionRuntimeInformation(String partitionId);
 
     CompletableFuture<Void> close();
 

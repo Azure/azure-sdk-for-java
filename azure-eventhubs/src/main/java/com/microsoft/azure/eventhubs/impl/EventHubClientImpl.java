@@ -28,10 +28,10 @@ import com.microsoft.azure.eventhubs.EventDataBatch;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.EventPosition;
-import com.microsoft.azure.eventhubs.EventHubPartitionRuntimeInformation;
 import com.microsoft.azure.eventhubs.EventHubRuntimeInformation;
 import com.microsoft.azure.eventhubs.IllegalEntityException;
 import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.PartitionRuntimeInformation;
 import com.microsoft.azure.eventhubs.PartitionSender;
 import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.RetryPolicy;
@@ -272,8 +272,8 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     @Override
-    public CompletableFuture<EventHubPartitionRuntimeInformation> getPartitionRuntimeInformation(String partitionId) {
-    	CompletableFuture<EventHubPartitionRuntimeInformation> future1 = null;
+    public CompletableFuture<PartitionRuntimeInformation> getPartitionRuntimeInformation(String partitionId) {
+    	CompletableFuture<PartitionRuntimeInformation> future1 = null;
     	
     	throwIfClosed();
 
@@ -282,14 +282,14 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         request.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, this.eventHubName);
         request.put(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY, partitionId);
         request.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
-        future1 = this.<EventHubPartitionRuntimeInformation>addManagementToken(request);
+        future1 = this.<PartitionRuntimeInformation>addManagementToken(request);
 
         if (future1 == null) {
-	        future1 = managementWithRetry(request).thenComposeAsync(new Function<Map<String, Object>, CompletableFuture<EventHubPartitionRuntimeInformation>>() {
+	        future1 = managementWithRetry(request).thenComposeAsync(new Function<Map<String, Object>, CompletableFuture<PartitionRuntimeInformation>>() {
 				@Override
-				public CompletableFuture<EventHubPartitionRuntimeInformation> apply(Map<String, Object> rawdata) {
-					CompletableFuture<EventHubPartitionRuntimeInformation> future2 = new CompletableFuture<EventHubPartitionRuntimeInformation>();
-					future2.complete(new EventHubPartitionRuntimeInformation(
+				public CompletableFuture<PartitionRuntimeInformation> apply(Map<String, Object> rawdata) {
+					CompletableFuture<PartitionRuntimeInformation> future2 = new CompletableFuture<PartitionRuntimeInformation>();
+					future2.complete(new PartitionRuntimeInformation(
 							(String)rawdata.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY),
 							(String)rawdata.get(ClientConstants.MANAGEMENT_PARTITION_NAME_KEY),
 							(long)rawdata.get(ClientConstants.MANAGEMENT_RESULT_BEGIN_SEQUENCE_NUMBER),

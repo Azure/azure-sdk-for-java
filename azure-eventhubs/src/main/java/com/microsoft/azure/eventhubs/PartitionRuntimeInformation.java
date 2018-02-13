@@ -6,7 +6,7 @@ package com.microsoft.azure.eventhubs;
 
 import java.time.Instant;
 
-public final class EventHubPartitionRuntimeInformation {
+public final class PartitionRuntimeInformation {
 
     private final String eventHubPath;
     private final String partitionId;
@@ -15,7 +15,7 @@ public final class EventHubPartitionRuntimeInformation {
     private final String lastEnqueuedOffset;
     private final Instant lastEnqueuedTimeUtc;
 
-    public EventHubPartitionRuntimeInformation(
+    public PartitionRuntimeInformation(
             final String eventHubPath,
             final String partitionId,
             final long beginSequenceNumber,

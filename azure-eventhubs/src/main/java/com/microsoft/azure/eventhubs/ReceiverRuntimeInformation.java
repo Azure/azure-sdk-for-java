@@ -36,7 +36,7 @@ public final class ReceiverRuntimeInformation {
      * The last enqueued {@link EventData}'s sequence number on this EventHubs Partition
      * @return last enqueued sequence number
      */
-    public long getLastSequenceNumber() {
+    public long getLastEnqueuedSequenceNumber() {
 
         return this.lastSequenceNumber;
     }

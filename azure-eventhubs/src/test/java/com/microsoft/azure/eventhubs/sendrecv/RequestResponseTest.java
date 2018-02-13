@@ -209,7 +209,7 @@ public class RequestResponseTest  extends ApiTestBase {
     	}
     	
     	for (String id : ehInfo.getPartitionIds()) {
-	    	EventHubPartitionRuntimeInformation partInfo = ehc.getPartitionRuntimeInformation(id).get();
+	    	PartitionRuntimeInformation partInfo = ehc.getPartitionRuntimeInformation(id).get();
 	    	
 	    	Assert.assertNotNull(partInfo);
 	    	Assert.assertTrue(connectionString.getEventHubName().equalsIgnoreCase(partInfo.getEventHubPath()));
