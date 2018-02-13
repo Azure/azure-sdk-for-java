@@ -52,6 +52,7 @@ public interface EventData extends Serializable {
      * </pre>
      *
      * @param data the actual payload of data in bytes to be Sent to EventHubs.
+     * @return EventData the created {@link EventData} to send to EventHubs.
      * @see EventHubClient#createFromConnectionString(String, Executor)
      */
     static EventData create(final byte[] data) {
@@ -75,6 +76,7 @@ public interface EventData extends Serializable {
      * @param data   the byte[] where the payload of the Event to be sent to EventHubs is present
      * @param offset Offset in the byte[] to read from ; inclusive index
      * @param length length of the byte[] to be read, starting from offset
+     * @return EventData the created {@link EventData} to send to EventHubs.
      * @see EventHubClient#createFromConnectionString(String, Executor)
      */
     static EventData create(final byte[] data, final int offset, final int length) {
@@ -96,6 +98,7 @@ public interface EventData extends Serializable {
      *  }</pre>
      *
      * @param buffer ByteBuffer which references the payload of the Event to be sent to EventHubs
+     * @return EventData the created {@link EventData} to send to EventHubs.
      * @see EventHubClient#createFromConnectionString(String, Executor)
      */
     static EventData create(final ByteBuffer buffer) {

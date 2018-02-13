@@ -61,7 +61,8 @@ public interface EventHubClient {
      * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
-     * @return EventHubClient which can be used to create Senders and Receivers to EventHub
+     * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
+     * @return CompletableFuture{@literal <EventHubClient>} which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */
