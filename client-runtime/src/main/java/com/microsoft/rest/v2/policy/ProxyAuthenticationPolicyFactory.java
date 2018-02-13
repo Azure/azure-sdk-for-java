@@ -6,11 +6,12 @@
 
 package com.microsoft.rest.v2.policy;
 
-import com.google.common.base.Charsets;
 import com.google.common.io.BaseEncoding;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Single;
+
+import java.nio.charset.StandardCharsets;
 
 /**
  * Creates a RequestPolicy that adds basic proxy authentication to outgoing HTTP requests.
@@ -44,7 +45,7 @@ public class ProxyAuthenticationPolicyFactory implements RequestPolicyFactory {
         @Override
         public Single<HttpResponse> sendAsync(HttpRequest request) {
             String auth = username + ":" + password;
-            String encodedAuth = BaseEncoding.base64().encode(auth.getBytes(Charsets.UTF_8));
+            String encodedAuth = BaseEncoding.base64().encode(auth.getBytes(StandardCharsets.UTF_8));
             request.withHeader("Proxy-Authentication", "Basic " + encodedAuth);
             return next.sendAsync(request);
         }

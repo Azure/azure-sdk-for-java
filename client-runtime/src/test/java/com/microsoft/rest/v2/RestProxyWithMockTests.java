@@ -1,6 +1,5 @@
 package com.microsoft.rest.v2;
 
-import com.google.common.base.Charsets;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
 import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.HeaderCollection;
@@ -18,6 +17,7 @@ import io.reactivex.Single;
 import org.joda.time.DateTime;
 import org.junit.Test;
 
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -163,7 +163,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         headers.set("Content-Type", "application/json");
 
                         HttpResponse response = new MockHttpResponse(200, headers,
-                                "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(Charsets.UTF_8));
+                                "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
                         return Single.just(response);
                     }
                 }));
@@ -186,7 +186,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         HttpHeaders headers = new HttpHeaders();
                         headers.set("Content-Type", "application/json");
 
-                        HttpResponse response = new MockHttpResponse(200, headers, "BAD JSON".getBytes(Charsets.UTF_8));
+                        HttpResponse response = new MockHttpResponse(200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
                         return Single.just(response);
                     }
                 }));
@@ -211,7 +211,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         headers.set("Content-Type", "application/json; charset=UTF-8");
 
                         HttpResponse response = new MockHttpResponse(200, headers,
-                                "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(Charsets.UTF_8));
+                                "{ \"error\": \"Something went wrong, but at least this JSON is valid.\"}".getBytes(StandardCharsets.UTF_8));
                         return Single.just(response);
                     }
                 }));
@@ -234,7 +234,7 @@ public class RestProxyWithMockTests extends RestProxyTests {
                         HttpHeaders headers = new HttpHeaders();
                         headers.set("Content-Type", "application/json; charset=UTF-8");
 
-                        HttpResponse response = new MockHttpResponse(200, headers, "BAD JSON".getBytes(Charsets.UTF_8));
+                        HttpResponse response = new MockHttpResponse(200, headers, "BAD JSON".getBytes(StandardCharsets.UTF_8));
                         return Single.just(response);
                     }
                 }));

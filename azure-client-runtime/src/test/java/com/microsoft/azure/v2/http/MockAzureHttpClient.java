@@ -6,7 +6,6 @@
 
 package com.microsoft.azure.v2.http;
 
-import com.google.common.base.Charsets;
 import com.microsoft.azure.v2.AsyncOperationResource;
 import com.microsoft.azure.v2.AzureAsyncOperationPollStrategy;
 import com.microsoft.azure.v2.MockResource;
@@ -25,6 +24,7 @@ import io.reactivex.functions.Function;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -299,7 +299,7 @@ public class MockAzureHttpClient extends HttpClient {
         Single<String> asyncString = FlowableUtil.collectBytesInArray(request.body()).map(new Function<byte[], String>() {
             @Override
             public String apply(byte[] bytes) throws Exception {
-                return new String(bytes, Charsets.UTF_8);
+                return new String(bytes, StandardCharsets.UTF_8);
             }
         });
 

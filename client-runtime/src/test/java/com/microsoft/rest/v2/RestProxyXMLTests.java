@@ -7,7 +7,6 @@
 
 package com.microsoft.rest.v2;
 
-import com.google.common.base.Charsets;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.GET;
@@ -36,6 +35,7 @@ import io.reactivex.Single;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.Collections;
@@ -133,7 +133,7 @@ public class RestProxyXMLTests {
         myXMLService.setContainerACLs(wrapper);
 
         SignedIdentifiersWrapper actualAclsWrapped = serializer.deserialize(
-                new String(httpClient.receivedBytes, Charsets.UTF_8),
+                new String(httpClient.receivedBytes, StandardCharsets.UTF_8),
                 new TypeToken<SignedIdentifiersWrapper>() {}.getType(),
                 SerializerEncoding.XML);
 

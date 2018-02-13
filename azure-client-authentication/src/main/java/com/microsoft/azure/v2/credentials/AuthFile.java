@@ -7,7 +7,6 @@
 package com.microsoft.azure.v2.credentials;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.google.common.base.Charsets;
 import com.google.common.io.Files;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.v2.AzureEnvironment;
@@ -19,6 +18,7 @@ import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import java.io.File;
 import java.io.IOException;
 import java.io.StringReader;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
@@ -55,7 +55,7 @@ final class AuthFile {
      * @throws IOException thrown when the auth file or the certificate file cannot be read or parsed
      */
     static AuthFile parse(File file) throws IOException {
-        String content = Files.toString(file, Charsets.UTF_8).trim();
+        String content = Files.toString(file, StandardCharsets.UTF_8).trim();
 
         AuthFile authFile;
         if (isJsonBased(content)) {

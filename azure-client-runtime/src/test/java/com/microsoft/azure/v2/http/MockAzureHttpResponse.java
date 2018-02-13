@@ -18,6 +18,7 @@ import java.io.ByteArrayInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 public class MockAzureHttpResponse extends HttpResponse {
     private final static SerializerAdapter<?> serializer = new JacksonAdapter();
@@ -85,7 +86,7 @@ public class MockAzureHttpResponse extends HttpResponse {
 
     @Override
     public Single<String> bodyAsStringAsync() {
-        return Single.just(new String(bodyBytes));
+        return Single.just(new String(bodyBytes, StandardCharsets.UTF_8));
     }
 
     public MockAzureHttpResponse withHeader(String headerName, String headerValue) {

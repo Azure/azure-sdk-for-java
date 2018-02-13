@@ -12,6 +12,7 @@ import io.reactivex.functions.Function;
 import org.reactivestreams.Publisher;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 
 /**
  * HTTP response which will buffer the response's body when/if it is read.
@@ -75,7 +76,7 @@ public final class BufferedHttpResponse extends HttpResponse {
                 .map(new Function<byte[], String>() {
                     @Override
                     public String apply(byte[] bytes) {
-                        return bytes == null ? null : new String(bytes);
+                        return bytes == null ? null : new String(bytes, StandardCharsets.UTF_8);
                     }
                 });
     }

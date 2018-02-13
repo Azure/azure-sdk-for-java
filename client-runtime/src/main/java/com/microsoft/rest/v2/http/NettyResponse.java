@@ -6,7 +6,6 @@
 
 package com.microsoft.rest.v2.http;
 
-import com.google.common.base.Charsets;
 import io.netty.buffer.ByteBuf;
 import io.netty.buffer.Unpooled;
 import io.reactivex.Flowable;
@@ -16,6 +15,7 @@ import io.reactivex.functions.Function;
 import org.reactivestreams.Subscription;
 
 import java.nio.ByteBuffer;
+import java.nio.charset.StandardCharsets;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -96,7 +96,7 @@ class NettyResponse extends HttpResponse {
         return collectContent().map(new Function<ByteBuf, String>() {
             @Override
             public String apply(ByteBuf byteBuf) {
-                return byteBuf.toString(Charsets.UTF_8);
+                return byteBuf.toString(StandardCharsets.UTF_8);
             }
         });
     }

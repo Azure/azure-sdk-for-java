@@ -6,7 +6,6 @@
 
 package com.microsoft.rest.v2.http;
 
-import com.google.common.base.Charsets;
 import com.microsoft.rest.v2.Base64Url;
 import com.microsoft.rest.v2.DateTimeRfc1123;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
@@ -17,6 +16,7 @@ import io.reactivex.Single;
 
 import java.io.IOException;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -186,7 +186,7 @@ public class MockHttpClient extends HttpClient {
                     .map(new Function<byte[], String>() {
                 @Override
                 public String apply(byte[] bytes) throws Exception {
-                    return new String(bytes, Charsets.UTF_8);
+                    return new String(bytes, StandardCharsets.UTF_8);
                 }
             });
             body = asyncString.blockingGet();
