@@ -145,7 +145,7 @@ public final class EventProcessorOptions
      * 
      * The provider function takes one argument, the partition id (a String), and returns the desired position.
      * 
-     * @param initialPositionProvider
+     * @param initialPositionProvider The new provider function.
      */
     public void setInitialPositionProvider(Function<String, EventPosition> initialPositionProvider)
     {

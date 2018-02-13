@@ -41,7 +41,7 @@ public class Lease
     /**
      * Create a Lease for the given partition.
      * 
-     * @param partitionId
+     * @param partitionId  Partition id for this lease.
      */
     public Lease(String partitionId)
     {

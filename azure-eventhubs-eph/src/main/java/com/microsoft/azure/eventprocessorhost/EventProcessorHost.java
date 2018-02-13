@@ -370,10 +370,11 @@ public final class EventProcessorHost
      * foo.get();
      * </pre>
      *
+     * @param <T>	Not actually a parameter. Represents the type of your class that implements IEventProcessor. 
      * @param eventProcessorType	Class that implements IEventProcessor.
      * @return	Future that completes when initialization is finished.
      */
-    public <T extends IEventProcessor> CompletableFuture<Void> registerEventProcessor(Class<T> eventProcessorType) throws Exception
+    public <T extends IEventProcessor> CompletableFuture<Void> registerEventProcessor(Class<T> eventProcessorType)
     {
         DefaultEventProcessorFactory<T> defaultFactory = new DefaultEventProcessorFactory<T>();
         defaultFactory.setEventProcessorClass(eventProcessorType);
@@ -390,11 +391,12 @@ public final class EventProcessorHost
      * reported by completing the future with an exception, so it is important to call get() on the future and handle
      * any exceptions thrown.
      *  
+     * @param <T>	Not actually a parameter. Represents the type of your class that implements IEventProcessor. 
      * @param eventProcessorType	Class that implements IEventProcessor.
      * @param processorOptions		Options for the processor host and event processor(s).
      * @return	Future that completes when initialization is finished.
      */
-    public <T extends IEventProcessor> CompletableFuture<Void> registerEventProcessor(Class<T> eventProcessorType, EventProcessorOptions processorOptions) throws Exception
+    public <T extends IEventProcessor> CompletableFuture<Void> registerEventProcessor(Class<T> eventProcessorType, EventProcessorOptions processorOptions)
     {
         DefaultEventProcessorFactory<T> defaultFactory = new DefaultEventProcessorFactory<T>();
         defaultFactory.setEventProcessorClass(eventProcessorType);
@@ -417,7 +419,7 @@ public final class EventProcessorHost
      * @param factory	User-supplied event processor factory object.
      * @return			Future that completes when initialization is finished.
      */
-    public CompletableFuture<Void> registerEventProcessorFactory(IEventProcessorFactory<?> factory) throws Exception
+    public CompletableFuture<Void> registerEventProcessorFactory(IEventProcessorFactory<?> factory)
     {
         return registerEventProcessorFactory(factory, EventProcessorOptions.getDefaultOptions());
     }
