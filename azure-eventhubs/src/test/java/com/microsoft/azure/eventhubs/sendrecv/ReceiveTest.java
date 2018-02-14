@@ -45,16 +45,16 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverStartOfStreamFilters() throws EventHubException
 	{
 		offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream());
-		Iterable<? extends EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receiveSync(100);
+		Iterable<EventData> startingEventsUsingOffsetReceiver = offsetReceiver.receiveSync(100);
 		
 		Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingOffsetReceiver.iterator().hasNext());
 		
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<? extends EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receiveSync(100);
+		Iterable<EventData> startingEventsUsingDateTimeReceiver = datetimeReceiver.receiveSync(100);
 		
 		Assert.assertTrue(startingEventsUsingOffsetReceiver != null && startingEventsUsingDateTimeReceiver.iterator().hasNext());
 		
-		Iterator<? extends EventData> dateTimeIterator = startingEventsUsingDateTimeReceiver.iterator();
+		Iterator<EventData> dateTimeIterator = startingEventsUsingDateTimeReceiver.iterator();
 		for(EventData eventDataUsingOffset: startingEventsUsingOffsetReceiver)
 		{
 			EventData eventDataUsingDateTime = dateTimeIterator.next();
@@ -71,7 +71,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverLatestFilter() throws EventHubException, ExecutionException, InterruptedException
 	{
 		offsetReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEndOfStream());
-		Iterable<? extends EventData> events = offsetReceiver.receiveSync(100);
+		Iterable<EventData> events = offsetReceiver.receiveSync(100);
 		Assert.assertTrue(events == null);
 
 		TestBase.pushEventsToPartition(ehClient, partitionId, 10).get();
@@ -83,7 +83,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverOffsetInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<? extends EventData> events = datetimeReceiver.receiveSync(100);
+		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
 		
 		Assert.assertTrue(events != null && events.iterator().hasNext());
 		EventData event = events.iterator().next();
@@ -99,7 +99,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverOffsetNonInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<? extends EventData> events = datetimeReceiver.receiveSync(100);
+		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
 		
 		Assert.assertTrue(events != null && events.iterator().hasNext());
 		
@@ -114,7 +114,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverSequenceNumberInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<? extends EventData> events = datetimeReceiver.receiveSync(100);
+		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
 
 		Assert.assertTrue(events != null && events.iterator().hasNext());
 		EventData event = events.iterator().next();
@@ -130,7 +130,7 @@ public class ReceiveTest extends ApiTestBase
 	public void testReceiverSequenceNumberNonInclusiveFilter() throws EventHubException
 	{
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
-		Iterable<? extends EventData> events = datetimeReceiver.receiveSync(100);
+		Iterable<EventData> events = datetimeReceiver.receiveSync(100);
 
 		Assert.assertTrue(events != null && events.iterator().hasNext());
 
@@ -147,7 +147,7 @@ public class ReceiveTest extends ApiTestBase
 		datetimeReceiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEndOfStream());
 		datetimeReceiver.setReceiveTimeout(Duration.ofSeconds(5));
 
-	 	Iterable<? extends EventData> drainedEvents =	datetimeReceiver.receiveSync(100);
+	 	Iterable<EventData> drainedEvents =	datetimeReceiver.receiveSync(100);
 		while(drainedEvents != null && drainedEvents.iterator().hasNext()) {
 			drainedEvents = datetimeReceiver.receiveSync(100);
 		}

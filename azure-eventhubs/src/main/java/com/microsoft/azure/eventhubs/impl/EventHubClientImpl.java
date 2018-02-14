@@ -37,6 +37,12 @@ import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.RetryPolicy;
 
 public final class EventHubClientImpl extends ClientEntity implements EventHubClient {
+
+    /**
+     * It will be truncated to 128 characters
+     */
+    public static String USER_AGENT = null;
+
     private volatile boolean isSenderCreateStarted;
 
     private final String eventHubName;
@@ -106,7 +112,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     @Override
-    public final CompletableFuture<Void> send(final Iterable<? extends EventData> eventDatas) {
+    public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas) {
         if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0)) {
             throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
         }
@@ -114,7 +120,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
-                return EventHubClientImpl.this.sender.send(EventDataUtil.toAmqpMessages((Iterable<EventDataImpl>) eventDatas));
+                return EventHubClientImpl.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas));
             }
         }, this.executor);
     }
@@ -150,7 +156,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     }
 
     @Override
-    public final CompletableFuture<Void> send(final Iterable<? extends EventData> eventDatas, final String partitionKey) {
+    public final CompletableFuture<Void> send(final Iterable<EventData> eventDatas, final String partitionKey) {
         if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0)) {
             throw new IllegalArgumentException("Empty batch of EventData cannot be sent.");
         }
@@ -167,7 +173,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
             @Override
             public CompletableFuture<Void> apply(Void voidArg) {
-                return EventHubClientImpl.this.sender.send(EventDataUtil.toAmqpMessages((Iterable<EventDataImpl>) eventDatas, partitionKey));
+                return EventHubClientImpl.this.sender.send(EventDataUtil.toAmqpMessages(eventDatas, partitionKey));
             }
         }, this.executor);
     }

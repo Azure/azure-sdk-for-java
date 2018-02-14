@@ -33,7 +33,7 @@ public class ReceivePumpTest
 		final ReceivePump receivePump = new ReceivePump(
 				new ReceivePump.IPartitionReceiver()
 				{
-					@Override public Iterable<? extends EventData> receive(int maxBatchSize) throws EventHubException
+					@Override public Iterable<EventData> receive(int maxBatchSize) throws EventHubException
 					{
 						LinkedList<EventData> events = new LinkedList<EventData>();
 						events.add(EventData.create("some".getBytes()));
@@ -49,7 +49,7 @@ public class ReceivePumpTest
 					public int getMaxEventCount() {
 						return 10;
 					}
-					@Override public void onReceive(Iterable<? extends EventData> events)
+					@Override public void onReceive(Iterable<EventData> events)
 					{
 						assertion = IteratorUtil.sizeEquals(events, 1); 
 						
@@ -87,7 +87,7 @@ public class ReceivePumpTest
 					public int getMaxEventCount() {
 						return 10;
 					}
-					@Override public void onReceive(Iterable<? extends EventData> events)
+					@Override public void onReceive(Iterable<EventData> events)
 					{						
 					}
 					@Override public void onError(Throwable error)
@@ -121,7 +121,7 @@ public class ReceivePumpTest
 					public int getMaxEventCount() {
 						return 10;
 					}
-					@Override public void onReceive(Iterable<? extends EventData> events)
+					@Override public void onReceive(Iterable<EventData> events)
 					{						
 					}
 					@Override public void onError(Throwable error)
@@ -156,7 +156,7 @@ public class ReceivePumpTest
 					public int getMaxEventCount() {
 						return 10;
 					}
-					@Override public void onReceive(Iterable<? extends EventData> events)
+					@Override public void onReceive(Iterable<EventData> events)
 					{
 						throw new RuntimeException(runtimeExceptionMsg);
 					}

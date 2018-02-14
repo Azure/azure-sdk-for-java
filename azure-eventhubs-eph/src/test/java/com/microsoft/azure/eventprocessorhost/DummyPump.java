@@ -77,7 +77,7 @@ class DummyPump extends Pump
 	    }
 	    
 		@Override
-		public void onReceive(Iterable<? extends EventData> events)
+		public void onReceive(Iterable<EventData> events)
 		{
 		}
 

@@ -76,7 +76,7 @@ public interface PartitionSender {
      * @param eventDatas batch of events to send to EventHub
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
-    default void sendSync(final Iterable<? extends EventData> eventDatas) throws EventHubException{
+    default void sendSync(final Iterable<EventData> eventDatas) throws EventHubException{
         ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 
@@ -119,7 +119,7 @@ public interface PartitionSender {
      * @param eventDatas batch of events to send to EventHub
      * @return a CompletableFuture that can be completed when the send operations is done..
      */
-    CompletableFuture<Void> send(Iterable<? extends EventData> eventDatas);
+    CompletableFuture<Void> send(Iterable<EventData> eventDatas);
 
     /**
      * Synchronous version of {@link #send(EventDataBatch)}

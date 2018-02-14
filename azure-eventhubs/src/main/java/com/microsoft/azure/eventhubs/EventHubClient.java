@@ -22,11 +22,6 @@ public interface EventHubClient {
     String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
     /**
-     * It will be truncated to 128 characters
-     */
-    String USER_AGENT = null;
-
-    /**
      * Synchronous version of {@link #createFromConnectionString(String, Executor)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
@@ -157,7 +152,7 @@ public interface EventHubClient {
      * @throws EventHubException          if Service Bus service encountered problems during the operation.
      * @throws UnresolvedAddressException   if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
      */
-    default void sendSync(final Iterable<? extends EventData> eventDatas) throws EventHubException {
+    default void sendSync(final Iterable<EventData> eventDatas) throws EventHubException {
         ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 
@@ -202,7 +197,7 @@ public interface EventHubClient {
      * @see #send(EventData, String)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final Iterable<? extends EventData> eventDatas);
+    CompletableFuture<Void> send(final Iterable<EventData> eventDatas);
 
     /**
      * Synchronous version of {@link #send(EventDataBatch)}.
@@ -275,7 +270,7 @@ public interface EventHubClient {
      * @throws EventHubException          if Service Bus service encountered problems during the operation.
      * @throws UnresolvedAddressException   if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
      */
-    default void sendSync(final Iterable<? extends EventData> eventDatas, final String partitionKey) throws EventHubException{
+    default void sendSync(final Iterable<EventData> eventDatas, final String partitionKey) throws EventHubException{
         ExceptionUtil.syncVoid(() -> this.send(eventDatas, partitionKey).get());
     }
 
@@ -295,7 +290,7 @@ public interface EventHubClient {
      * @see #send(EventData)
      * @see PartitionSender#send(EventData)
      */
-    CompletableFuture<Void> send(final Iterable<? extends EventData> eventDatas, final String partitionKey);
+    CompletableFuture<Void> send(final Iterable<EventData> eventDatas, final String partitionKey);
 
     /**
      * Synchronous version of {@link #createPartitionSender(String)}.

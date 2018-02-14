@@ -38,7 +38,7 @@ public class ReceivePump {
     public void run() {
         boolean isPumpHealthy = true;
         while (isPumpHealthy && !this.stopPumpRaised.get()) {
-            Iterable<? extends EventData> receivedEvents = null;
+            Iterable<EventData> receivedEvents = null;
 
             try {
                 receivedEvents = this.receiver.receive(this.onReceiveHandler.getMaxEventCount());
@@ -88,6 +88,6 @@ public class ReceivePump {
     public static interface IPartitionReceiver {
         public String getPartitionId();
 
-        public Iterable<? extends EventData> receive(final int maxBatchSize) throws EventHubException;
+        public Iterable<EventData> receive(final int maxBatchSize) throws EventHubException;
     }
 }

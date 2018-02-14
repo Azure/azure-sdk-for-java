@@ -78,7 +78,7 @@ public class SendLargeMessageTest extends ApiTestBase
 		EventData largeMsg = EventData.create(body);
 		sender.sendSync(largeMsg);
 		
-		Iterable<? extends EventData> messages = receiver.receiveSync(100);
+		Iterable<EventData> messages = receiver.receiveSync(100);
 		Assert.assertTrue(messages != null && messages.iterator().hasNext());
 
 		EventData recdMessage = messages.iterator().next();

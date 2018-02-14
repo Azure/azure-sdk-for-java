@@ -87,9 +87,9 @@ public class EventDataBatchAPITest extends ApiTestBase {
             }
 
             @Override
-            public void onReceive(Iterable<? extends EventData> events) {
+            public void onReceive(Iterable<EventData> events) {
                 if (events != null) {
-                    final Iterator<? extends EventData> eterator = events.iterator();
+                    final Iterator<EventData> eterator = events.iterator();
                     while (eterator.hasNext()) {
                         final EventData currentData = eterator.next();
                         final String currentPartitionKey = currentData.getSystemProperties().getPartitionKey();
@@ -250,7 +250,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
         }
 
         @Override
-        public void onReceive(Iterable<? extends EventData> events) {
+        public void onReceive(Iterable<EventData> events) {
             if (events != null)
                 for (EventData event : events) {
                     currentCount++;

@@ -18,12 +18,9 @@ import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
-import org.apache.qpid.proton.engine.Sasl;
 import org.apache.qpid.proton.engine.SslDomain;
 import org.apache.qpid.proton.engine.Transport;
 import org.apache.qpid.proton.reactor.Handshaker;
-
-import com.microsoft.azure.eventhubs.EventHubClient;
 
 // ServiceBus <-> ProtonReactor interaction handles all
 // amqp_connection/transport related events from reactor
@@ -48,18 +45,20 @@ public final class ConnectionHandler extends BaseHandler {
         connection.setHostname(hostName);
         connection.setContainer(StringUtil.getRandomString());
 
-        final Map<Symbol, Object> connectionProperties = new HashMap<Symbol, Object>();
+        final Map<Symbol, Object> connectionProperties = new HashMap<>();
         connectionProperties.put(AmqpConstants.PRODUCT, ClientConstants.PRODUCT_NAME);
         connectionProperties.put(AmqpConstants.VERSION, ClientConstants.CURRENT_JAVACLIENT_VERSION);
         connectionProperties.put(AmqpConstants.PLATFORM, ClientConstants.PLATFORM_INFO);
         connectionProperties.put(AmqpConstants.FRAMEWORK, ClientConstants.FRAMEWORK_INFO);
-        if (EventHubClient.USER_AGENT != null) {
-            connectionProperties.put(AmqpConstants.USER_AGENT, EventHubClient.USER_AGENT.length() < AmqpConstants.MAX_USER_AGENT_LENGTH ?
-                    EventHubClient.USER_AGENT :
-                    EventHubClient.USER_AGENT.substring(0, AmqpConstants.MAX_USER_AGENT_LENGTH));
-        }
-        connection.setProperties(connectionProperties);
 
+        final String userAgent = EventHubClientImpl.USER_AGENT;
+        if (userAgent != null) {
+            connectionProperties.put(AmqpConstants.USER_AGENT, userAgent.length() < AmqpConstants.MAX_USER_AGENT_LENGTH ?
+                    userAgent :
+                    userAgent.substring(0, AmqpConstants.MAX_USER_AGENT_LENGTH));
+        }
+
+        connection.setProperties(connectionProperties);
         connection.open();
     }
 
