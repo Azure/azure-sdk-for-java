@@ -119,7 +119,7 @@ public final class EventProcessorOptions
     /***
      * Sets the prefetch count for the underlying event hub client.
      * 
-     * The default is 300. This controls how many messages are received in advance. 
+     * The default is 300. This controls how many events are received in advance. 
      * 
      * @param prefetchCount  The new prefetch count.
      */
@@ -211,7 +211,7 @@ public final class EventProcessorOptions
      * the first parameter {@link com.microsoft.azure.eventprocessorhost.PartitionContext#runtimeInformation} of
      * {@link IEventProcessor#onEvents(com.microsoft.azure.eventprocessorhost.PartitionContext, java.lang.Iterable)} will be populated.
      * <p>
-     * Enabling this knob will add 3 additional properties to all raw AMQP messages received.
+     * Enabling this knob will add 3 additional properties to all raw AMQP events received.
      * @return the {@link boolean} indicating, whether, the runtime metric of the receiver was enabled
      */
     public boolean getReceiverRuntimeMetricEnabled()
@@ -224,7 +224,7 @@ public final class EventProcessorOptions
      * the first parameter {@link com.microsoft.azure.eventprocessorhost.PartitionContext#runtimeInformation} of
      * {@link IEventProcessor#onEvents(com.microsoft.azure.eventprocessorhost.PartitionContext, java.lang.Iterable)} will be populated.
      * <p>
-     * Enabling this knob will add 3 additional properties to all raw AMQP messages received.
+     * Enabling this knob will add 3 additional properties to all raw AMQP events received.
      * @param value the {@link boolean} to indicate, whether, the runtime metric of the receiver should be enabled
      */
     public void setReceiverRuntimeMetricEnabled(boolean value)

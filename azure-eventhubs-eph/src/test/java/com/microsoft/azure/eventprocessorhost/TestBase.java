@@ -145,10 +145,10 @@ public class TestBase
 	}
 
 	
-	final static int SKIP_COUNT_CHECK = -3; // expectedMessages could be anything, don't check it at all
+	final static int SKIP_COUNT_CHECK = -3; // expectedEvents could be anything, don't check it at all
 	final static int NO_CHECKS = -2; // do no checks at all, used for tests which are expected fail in startup
-	final static int ANY_NONZERO_COUNT = -1; // if expectedMessages is -1, just check for > 0
-	void testFinish(PerTestSettings settings, int expectedMessages) throws InterruptedException, ExecutionException, EventHubException
+	final static int ANY_NONZERO_COUNT = -1; // if expectedEvents is -1, just check for > 0
+	void testFinish(PerTestSettings settings, int expectedEvents) throws InterruptedException, ExecutionException, EventHubException
 	{
 		if (settings.outHost != null)
 		{
@@ -156,19 +156,19 @@ public class TestBase
 			TestUtilities.log("Host unregistered");
 		}
 		
-		if (expectedMessages != NO_CHECKS)
+		if (expectedEvents != NO_CHECKS)
 		{
 			TestUtilities.log("Events received: " + settings.outProcessorFactory.getEventsReceivedCount() + "\n");
-			if (expectedMessages == ANY_NONZERO_COUNT)
+			if (expectedEvents == ANY_NONZERO_COUNT)
 			{
-				assertTrue("no messages received", settings.outProcessorFactory.getEventsReceivedCount() > 0);
+				assertTrue("no events received", settings.outProcessorFactory.getEventsReceivedCount() > 0);
 			}
-			else if (expectedMessages != SKIP_COUNT_CHECK)
+			else if (expectedEvents != SKIP_COUNT_CHECK)
 			{
-				assertEquals("wrong number of messages received", expectedMessages, settings.outProcessorFactory.getEventsReceivedCount());
+				assertEquals("wrong number of events received", expectedEvents, settings.outProcessorFactory.getEventsReceivedCount());
 			}
 			
-			assertTrue("telltale message was not found", settings.outProcessorFactory.getAnyTelltaleFound());
+			assertTrue("telltale event was not found", settings.outProcessorFactory.getAnyTelltaleFound());
 			assertEquals("partition errors seen", 0, settings.outProcessorFactory.getErrors().size());
 			assertEquals("general errors seen", 0, settings.outGeneralErrorHandler.getErrors().size());
 			for (String err : settings.outProcessorFactory.getErrors())

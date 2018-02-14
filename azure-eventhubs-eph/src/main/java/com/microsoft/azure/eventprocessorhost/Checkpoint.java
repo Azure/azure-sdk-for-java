@@ -14,7 +14,7 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
  * 
  * A Checkpoint is essentially just a tuple. It has a fixed partition id, set at creation time
  * and immutable thereafter, and associates that with an offset/sequenceNumber pair which
- * indicates a position within the messages in that partition.
+ * indicates a position within the events in that partition.
  */
 public class Checkpoint
 {
@@ -34,7 +34,7 @@ public class Checkpoint
 	
 	/**
 	 * Create a checkpoint with the given offset and sequenceNumber. It is important that the
-	 * offset and sequence number refer to the same message in the stream. The safest thing
+	 * offset and sequence number refer to the same event in the stream. The safest thing
 	 * to do is get both values from the system properties of one EventData instance.
 	 * 
 	 * @param partitionId Associated partition.

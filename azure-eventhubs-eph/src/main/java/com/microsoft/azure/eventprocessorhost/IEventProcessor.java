@@ -58,14 +58,14 @@ public interface IEventProcessor
      * cause a call to this method.
      * 
      * @param context	Information about the partition.
-     * @param messages	The events to be processed. May be empty.
+     * @param events	The events to be processed. May be empty.
      * @throws Exception to indicate failure.
      */
-    public void onEvents(PartitionContext context, Iterable<? extends EventData> messages) throws Exception;
+    public void onEvents(PartitionContext context, Iterable<? extends EventData> events) throws Exception;
     
     /**
      * Called when the underlying client experiences an error while receiving. EventProcessorHost will take
-     * care of recovering from the error and continuing to pump messages, so no action is required from
+     * care of recovering from the error and continuing to pump events, so no action is required from
      * your code. This method is provided for informational purposes. 
      *  
      * @param context  Information about the partition.

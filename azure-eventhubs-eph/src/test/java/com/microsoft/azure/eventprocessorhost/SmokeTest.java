@@ -71,7 +71,7 @@ public class SmokeTest extends TestBase
 		receiveFromNowIteration(storedNow, 2, 2, firstSettings.inoutEPHConstructorArgs.getStorageContainerName());
 	}
 	
-	private PerTestSettings receiveFromNowIteration(final Instant storedNow, int iteration, int expectedMessages, String containerName) throws Exception
+	private PerTestSettings receiveFromNowIteration(final Instant storedNow, int iteration, int expectedEvents, String containerName) throws Exception
 	{
 		PerTestSettings settings = new PerTestSettings("receiveFromNow-iter-" + iteration);
 		if (containerName != null)
@@ -84,7 +84,7 @@ public class SmokeTest extends TestBase
 		settings.outUtils.sendToAny(settings.outTelltale);
 		waitForTelltale(settings);
 
-		testFinish(settings, expectedMessages);
+		testFinish(settings, expectedEvents);
 		
 		return settings;
 	}
@@ -107,7 +107,7 @@ public class SmokeTest extends TestBase
 				firstSettings.inDoCheckpoint);
 	}
 
-	private PerTestSettings receiveFromCheckpointIteration(int iteration, int expectedMessages, String containerName,
+	private PerTestSettings receiveFromCheckpointIteration(int iteration, int expectedEvents, String containerName,
 			PrefabEventProcessor.CheckpointChoices checkpointCallType) throws Exception
 	{
 		String distinguisher = "e";
@@ -129,7 +129,7 @@ public class SmokeTest extends TestBase
 			waitForTelltale(settings, id);
 		}
 
-		testFinish(settings, expectedMessages);
+		testFinish(settings, expectedEvents);
 		
 		return settings;
 	}

@@ -163,7 +163,7 @@ public class PartitionContext
      * 
      * It is important to check the result in order to detect failures.
      * 
-     * If receiving started from a user-provided EventPosition and no messages have been received yet,
+     * If receiving started from a user-provided EventPosition and no events have been received yet,
      * then this will fail. (This scenario is possible when invoke-after-receive-timeout has been set
      * in EventProcessorOptions.)
      * 
@@ -175,7 +175,7 @@ public class PartitionContext
     	if (this.offset == null)
     	{
     		result = new CompletableFuture<Void>();
-    		result.completeExceptionally(new RuntimeException("Cannot checkpoint until at least one message has been received on this partition"));
+    		result.completeExceptionally(new RuntimeException("Cannot checkpoint until at least one event has been received on this partition"));
     	}
     	else
     	{

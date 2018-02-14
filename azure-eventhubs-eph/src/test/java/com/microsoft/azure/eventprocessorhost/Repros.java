@@ -169,13 +169,13 @@ public class Repros extends TestBase
 			{
 				Blah b = new Blah(clientSerialNumber++, receiver, client);
 				receiver.setReceiveHandler(b).get();
-				// wait for messages to start flowing
-				b.waitForReceivedMessages().get();
+				// wait for events to start flowing
+				b.waitForReceivedEvents().get();
 			}
 			else
 			{
 				receiver.receiveSync(1);
-				System.out.println("Received a message");
+				System.out.println("Received an event");
 			}
 			
 			// Enable these lines to avoid overlap
@@ -213,7 +213,7 @@ public class Repros extends TestBase
 		private int clientSerialNumber;
 		private PartitionReceiver receiver;
 		private EventHubClient client;
-		private CompletableFuture<Void> receivedMessages = null;
+		private CompletableFuture<Void> receivedEvents = null;
 		private boolean firstEvents = true;
 		
 		protected Blah(int clientSerialNumber, PartitionReceiver receiver, EventHubClient client)
@@ -223,10 +223,10 @@ public class Repros extends TestBase
 			this.client = client;
 		}
 		
-		CompletableFuture<Void> waitForReceivedMessages()
+		CompletableFuture<Void> waitForReceivedEvents()
 		{
-			this.receivedMessages = new CompletableFuture<Void>();
-			return this.receivedMessages;
+			this.receivedEvents = new CompletableFuture<Void>();
+			return this.receivedEvents;
 		}
 
 		@Override
@@ -240,7 +240,7 @@ public class Repros extends TestBase
 			if (this.firstEvents)
 			{
 				System.out.println("Client " + this.clientSerialNumber + " got events");
-				this.receivedMessages.complete(null);
+				this.receivedEvents.complete(null);
 				this.firstEvents = false;
 			}
 		}
