@@ -26,6 +26,12 @@ public interface EventHubClient {
      */
     String USER_AGENT = null;
 
+
+    /**
+     * @return the name of the Event Hub this client is connected to.
+     */
+    String getEventHubName();
+
     /**
      * Synchronous version of {@link #createFromConnectionString(String, Executor)}.
      *
