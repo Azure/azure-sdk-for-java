@@ -823,7 +823,7 @@ public final class MessageSender extends ClientEntity implements IAmqpSender, IE
 
         final boolean isClientSideTimeout = (cause == null || !(cause instanceof EventHubException));
         final EventHubException exception = isClientSideTimeout
-                ? new TimeoutException(String.format(Locale.US, "%s %s %s.", MessageSender.SEND_TIMED_OUT, " at ", ZonedDateTime.now(), cause))
+                ? new TimeoutException(String.format(Locale.US, "%s %s %s.", MessageSender.SEND_TIMED_OUT, " at ", ZonedDateTime.now()), cause)
                 : (EventHubException) cause;
 
         ExceptionUtil.completeExceptionally(pendingSendWork, exception, this);

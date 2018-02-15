@@ -4,14 +4,13 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.EndpointState;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class BaseLinkHandler extends BaseHandler {
     protected static final Logger TRACE_LOGGER = LoggerFactory.getLogger(BaseHandler.class);
@@ -24,11 +23,9 @@ public class BaseLinkHandler extends BaseHandler {
 
     @Override
     public void onLinkLocalClose(Event event) {
-        Link link = event.getLink();
-        if (link != null) {
-            if (TRACE_LOGGER.isInfoEnabled()) {
-                TRACE_LOGGER.info(String.format("linkName[%s]", link.getName()));
-            }
+        final Link link = event.getLink();
+        if (TRACE_LOGGER.isInfoEnabled()) {
+            TRACE_LOGGER.info(String.format("linkName[%s]", link.getName()));
         }
 
         closeSession(link);
@@ -36,41 +33,18 @@ public class BaseLinkHandler extends BaseHandler {
 
     @Override
     public void onLinkRemoteClose(Event event) {
-        final Link link = event.getLink();
-
-        if (link.getLocalState() != EndpointState.CLOSED) {
-            link.close();
-        }
-
-        if (link != null) {
-            ErrorCondition condition = link.getRemoteCondition();
-            this.processOnClose(link, condition);
-        }
-
-        closeSession(link);
+        handleRemoteLinkClosed(event);
     }
 
     @Override
     public void onLinkRemoteDetach(Event event) {
-        final Link link = event.getLink();
-
-        if (link.getLocalState() != EndpointState.CLOSED) {
-            link.close();
-        }
-
-        if (link != null) {
-            this.processOnClose(link, link.getRemoteCondition());
-        }
-
-        closeSession(link);
+        handleRemoteLinkClosed(event);
     }
 
     public void processOnClose(Link link, ErrorCondition condition) {
-        if (condition != null) {
-            if (TRACE_LOGGER.isInfoEnabled()) {
+        if (TRACE_LOGGER.isInfoEnabled()) {
                 TRACE_LOGGER.info("linkName[" + link.getName() +
                         (condition != null ? "], ErrorCondition[" + condition.getCondition() + ", " + condition.getDescription() + "]" : "], condition[null]"));
-            }
         }
 
         this.underlyingEntity.onClose(condition);
@@ -83,5 +57,18 @@ public class BaseLinkHandler extends BaseHandler {
     private void closeSession(Link link) {
         if (link.getSession() != null && link.getSession().getLocalState() != EndpointState.CLOSED)
             link.getSession().close();
+    }
+
+    private void handleRemoteLinkClosed(final Event event) {
+        final Link link = event.getLink();
+
+        if (link.getLocalState() != EndpointState.CLOSED) {
+            link.close();
+        }
+
+        final ErrorCondition condition = link.getRemoteCondition();
+        this.processOnClose(link, condition);
+
+        closeSession(link);
     }
 }

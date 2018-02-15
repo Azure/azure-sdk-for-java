@@ -176,7 +176,7 @@ public class SendTest extends ApiTestBase
 		@Override
 		public void onReceive(Iterable<EventData> events)
 		{
-			if (events != null & events.iterator().hasNext())
+			if (events != null && events.iterator().hasNext())
 			{
 				for(EventData event : events)
 				{

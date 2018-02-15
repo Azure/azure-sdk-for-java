@@ -121,7 +121,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
         this.receiveWork = new ReceiveWork();
         this.createAndReceive = new CreateAndReceive();
 
-        this.tokenAudience = String.format("amqp://%s/%s", underlyingFactory.getHostName(), receivePath);
+        this.tokenAudience = String.format(ClientConstants.TOKEN_AUDIENCE_FORMAT, underlyingFactory.getHostName(), receivePath);
 
         this.activeClientTokenManager = new ActiveClientTokenManager(
                 this,
@@ -467,7 +467,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
             @Override
             public void accept(ErrorCondition t, Exception u) {
                 if (t != null)
-                    onError((t != null && t.getCondition() != null) ? ExceptionUtil.toException(t) : null);
+                    onError((t.getCondition() != null) ? ExceptionUtil.toException(t) : null);
                 else if (u != null)
                     onError(u);
             }

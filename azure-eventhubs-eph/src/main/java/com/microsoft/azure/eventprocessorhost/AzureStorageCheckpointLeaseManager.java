@@ -723,12 +723,13 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
     
     public CompletableFuture<Boolean> updateLeaseInternal(AzureBlobLease lease, BlobRequestOptions options, String action)
     {
-    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Updating lease"));
-    	
+
     	if (lease == null)
     	{
     		return CompletableFuture.completedFuture(false);
     	}
+
+		TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(lease, "Updating lease"));
     	
     	String token = lease.getToken();
     	if ((token == null) || (token.length() == 0))
