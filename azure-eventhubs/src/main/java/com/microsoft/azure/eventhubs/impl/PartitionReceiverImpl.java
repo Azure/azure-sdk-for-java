@@ -147,7 +147,7 @@ final class PartitionReceiverImpl extends ClientEntity implements IReceiverSetti
         return this.runtimeInformation;
     }
 
-    public CompletableFuture<Iterable<? extends EventData>> receive(final int maxEventCount) {
+    public CompletableFuture<Iterable<EventData>> receive(final int maxEventCount) {
         return this.internalReceiver.receive(maxEventCount).thenApplyAsync(new Function<Collection<Message>, Iterable<EventData>>() {
             @Override
             public Iterable<EventData> apply(Collection<Message> amqpMessages) {
@@ -194,7 +194,7 @@ final class PartitionReceiverImpl extends ClientEntity implements IReceiverSetti
                 this.receivePump = new ReceivePump(
                         new ReceivePump.IPartitionReceiver() {
                             @Override
-                            public Iterable<? extends EventData> receive(int maxBatchSize) throws EventHubException {
+                            public Iterable<EventData> receive(int maxBatchSize) throws EventHubException {
                                 return PartitionReceiverImpl.this.receiveSync(maxBatchSize);
                             }
 

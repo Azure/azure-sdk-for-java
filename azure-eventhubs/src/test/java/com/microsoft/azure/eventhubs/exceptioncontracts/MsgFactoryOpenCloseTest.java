@@ -50,7 +50,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
                     TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEnqueuedTime(Instant.now()));
             final PartitionSender sender = ehClient.createPartitionSenderSync(PARTITION_ID);
             sender.sendSync(EventData.create("test data - string".getBytes()));
-            Iterable<? extends EventData> events = receiver.receiveSync(10);
+            Iterable<EventData> events = receiver.receiveSync(10);
 
             Assert.assertTrue(events.iterator().hasNext());
             sender.closeSync();

@@ -18,7 +18,7 @@ final class EventDataBatchImpl implements EventDataBatch {
 
     private final int maxMessageSize;
     private final String partitionKey;
-    private final List<EventDataImpl> events;
+    private final List<EventData> events;
     private final byte[] eventBytes;
     private int currentSize = 0;
 
@@ -58,12 +58,12 @@ final class EventDataBatchImpl implements EventDataBatch {
         return true;
     }
 
-    public Iterator<EventDataImpl> iterator() {
+    public Iterator<EventData> iterator() {
 
         return this.events.iterator();
     }
 
-    Iterable<EventDataImpl> getInternalIterable() {
+    Iterable<EventData> getInternalIterable() {
 
         return this.events;
     }

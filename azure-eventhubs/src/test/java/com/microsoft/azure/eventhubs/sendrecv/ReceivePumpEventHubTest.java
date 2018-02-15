@@ -125,7 +125,7 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 		}
 
 		@Override
-		public void onReceive(Iterable<? extends EventData> events)
+		public void onReceive(Iterable<EventData> events)
 		{
 			this.signalInvoked.complete(null);
 		}

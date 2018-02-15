@@ -81,7 +81,7 @@ public interface PartitionReceiver  {
      * @return Batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
      * @throws EventHubException if ServiceBus client encountered any unrecoverable/non-transient problems during {@link #receive}
      */
-    default Iterable<? extends EventData> receiveSync(final int maxEventCount) throws EventHubException{
+    default Iterable<EventData> receiveSync(final int maxEventCount) throws EventHubException{
         return ExceptionUtil.sync(() -> this.receive(maxEventCount).get());
     }
 
@@ -118,7 +118,7 @@ public interface PartitionReceiver  {
      * @param maxEventCount maximum number of {@link EventData}'s that this call should return
      * @return A completableFuture that will yield a batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
      */
-    CompletableFuture<Iterable<? extends EventData>> receive(final int maxEventCount);
+    CompletableFuture<Iterable<EventData>> receive(final int maxEventCount);
 
     /**
      * Register a receive handler that will be called when an event is available. A

@@ -56,7 +56,7 @@ public class InteropEventBodyTest extends ApiTestBase {
         
         // run out of messages in that specific partition - to account for clock-skew with Instant.now() on test machine vs eventhubs service
         receiver.setReceiveTimeout(Duration.ofSeconds(5));
-        Iterable<? extends EventData> clockSkewEvents;
+        Iterable<EventData> clockSkewEvents;
         do {
             clockSkewEvents = receiver.receiveSync(100);
         } while (clockSkewEvents != null && clockSkewEvents.iterator().hasNext());

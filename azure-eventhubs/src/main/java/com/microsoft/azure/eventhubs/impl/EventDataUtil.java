@@ -49,13 +49,14 @@ final class EventDataUtil {
         return events;
     }
 
-    static Iterable<Message> toAmqpMessages(final Iterable<EventDataImpl> eventDatas, final String partitionKey) {
+    static Iterable<Message> toAmqpMessages(final Iterable<EventData> eventDatas, final String partitionKey) {
 
         final LinkedList<Message> messages = new LinkedList<>();
-        eventDatas.forEach(new Consumer<EventDataImpl>() {
+        eventDatas.forEach(new Consumer<EventData>() {
             @Override
-            public void accept(EventDataImpl eventData) {
-                Message amqpMessage = partitionKey == null ? eventData.toAmqpMessage() : eventData.toAmqpMessage(partitionKey);
+            public void accept(EventData eventData) {
+                EventDataImpl eventDataImpl = (EventDataImpl) eventData;
+                Message amqpMessage = partitionKey == null ? eventDataImpl.toAmqpMessage() : eventDataImpl.toAmqpMessage(partitionKey);
                 messages.add(amqpMessage);
             }
         });
@@ -63,7 +64,7 @@ final class EventDataUtil {
         return messages;
     }
 
-    static Iterable<Message> toAmqpMessages(final Iterable<EventDataImpl> eventDatas) {
+    static Iterable<Message> toAmqpMessages(final Iterable<EventData> eventDatas) {
 
         return EventDataUtil.toAmqpMessages(eventDatas, null);
     }

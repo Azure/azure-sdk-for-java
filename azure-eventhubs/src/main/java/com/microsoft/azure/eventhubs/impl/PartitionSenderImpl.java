@@ -73,12 +73,12 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
         return this.internalSender.send(((EventDataImpl) data).toAmqpMessage());
     }
 
-    public final CompletableFuture<Void> send(Iterable<? extends EventData> eventDatas) {
+    public final CompletableFuture<Void> send(Iterable<EventData> eventDatas) {
         if (eventDatas == null || IteratorUtil.sizeEquals(eventDatas, 0)) {
             throw new IllegalArgumentException("EventData batch cannot be empty.");
         }
 
-        return this.internalSender.send(EventDataUtil.toAmqpMessages((Iterable<EventDataImpl>) eventDatas));
+        return this.internalSender.send(EventDataUtil.toAmqpMessages(eventDatas));
     }
 
     public final CompletableFuture<Void> send(EventDataBatch eventDatas) {
