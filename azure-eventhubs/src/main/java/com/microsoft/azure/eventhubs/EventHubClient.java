@@ -22,6 +22,11 @@ public interface EventHubClient {
     String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
     /**
+     * @return the name of the Event Hub this client is connected to.
+     */
+    String getEventHubName();
+
+    /**
      * Synchronous version of {@link #createFromConnectionString(String, Executor)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
