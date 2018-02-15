@@ -19,7 +19,6 @@ import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
 import com.microsoft.azure.eventhubs.EventHubException;
-import org.junit.Test;
 
 public class ReceiveParallelManualTest extends ApiTestBase
 {
@@ -40,10 +39,10 @@ public class ReceiveParallelManualTest extends ApiTestBase
 
 		final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
 		ehClient = new EventHubClient[4];
-		ehClient[0] = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient[1] = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient[2] = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        ehClient[3] = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient[0] = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient[1] = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient[2] = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+        ehClient[3] = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 	}
 
 	class PRunnable implements Runnable{

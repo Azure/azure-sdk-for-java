@@ -90,7 +90,7 @@ public interface PartitionReceiver  {
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
      * <pre>
-     * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
+     * EventHubClient client = EventHubClient.createSync("__connection__");
      * PartitionReceiver receiver = client.createPartitionReceiverSync("ConsumerGroup1", "1");
      * Iterable{@literal<}EventData{@literal>} receivedEvents = receiver.receiveSync();
      *

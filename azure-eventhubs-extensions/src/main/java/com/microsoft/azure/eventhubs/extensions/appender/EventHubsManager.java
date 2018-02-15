@@ -51,6 +51,6 @@ public final class EventHubsManager extends AbstractManager
 
 	public void startup() throws EventHubException, IOException
 	{
-		this.eventHubSender = EventHubClient.createFromConnectionStringSync(this.eventHubConnectionString, EXECUTOR_SERVICE);
+		this.eventHubSender = EventHubClient.createSync(this.eventHubConnectionString, EXECUTOR_SERVICE);
 	}
 }

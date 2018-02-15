@@ -214,7 +214,7 @@ class PartitionPump implements PartitionReceiveHandler
         CompletableFuture<EventHubClient> startOpeningFuture = null;
         try
         {
-			startOpeningFuture = EventHubClient.createFromConnectionString(this.hostContext.getEventHubConnectionString(),
+			startOpeningFuture = EventHubClient.create(this.hostContext.getEventHubConnectionString(),
 					this.hostContext.getRetryPolicy(), this.hostContext.getExecutor());
 		}
         catch (EventHubException | IOException e2)

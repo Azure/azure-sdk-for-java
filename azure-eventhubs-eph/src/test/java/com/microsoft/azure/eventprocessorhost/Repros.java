@@ -159,7 +159,7 @@ public class Repros extends TestBase
 			System.out.println("\nParked: " + parkedCount + "  SELECTING: " + selectingList);
 			
 			System.out.println("Client " + clientSerialNumber + " starting");
-			EventHubClient client = EventHubClient.createFromConnectionStringSync(utils.getConnectionString().toString(), TestUtilities.EXECUTOR_SERVICE);
+			EventHubClient client = EventHubClient.createSync(utils.getConnectionString().toString(), TestUtilities.EXECUTOR_SERVICE);
 			PartitionReceiver receiver = client.createReceiver(utils.getConsumerGroup(), "0", EventPosition.fromStartOfStream()).get();
 					//client.createEpochReceiver(utils.getConsumerGroup(), "0", PartitionReceiver.START_OF_STREAM, 1).get();
 

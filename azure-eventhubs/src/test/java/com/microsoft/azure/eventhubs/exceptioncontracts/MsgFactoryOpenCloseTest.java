@@ -42,7 +42,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
         final ThreadPoolExecutor executor = new ThreadPoolExecutor(
                 1, 1, 1, TimeUnit.MINUTES, blockingQueue);
         try {
-            final EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(
+            final EventHubClient ehClient = EventHubClient.createSync(
                     TestContext.getConnectionString().toString(),
                     executor);
 
@@ -101,7 +101,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
         testClosed.shutdown();
 
-        EventHubClient.createFromConnectionStringSync(
+        EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed);
     }
@@ -110,7 +110,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     public void SupplyClosedExecutorServiceToSendOperation() throws Exception {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
 
-        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+        final EventHubClient temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed);
         temp.sendSync(EventData.create("test data - string".getBytes()));
@@ -125,7 +125,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     public void SupplyClosedExecutorServiceToReceiveOperation() throws Exception {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
 
-        final PartitionReceiver temp = EventHubClient.createFromConnectionStringSync(
+        final PartitionReceiver temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed)
                 .createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEndOfStream());
@@ -140,7 +140,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     public void SupplyClosedExecutorServiceToCreateLinkOperation() throws Exception {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
 
-        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+        final EventHubClient temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed);
 
@@ -155,7 +155,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     public void SupplyClosedExecutorServiceToCreateSenderOperation() throws Exception {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
 
-        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+        final EventHubClient temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed);
 
@@ -169,7 +169,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     public void SupplyClosedExecutorServiceToCreateReceiverOperation() throws Exception {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
 
-        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+        final EventHubClient temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed);
 
@@ -183,7 +183,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     public void SupplyClosedExecutorServiceThenMgmtOperation() throws Throwable {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
 
-        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+        final EventHubClient temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed);
 
@@ -201,7 +201,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     public void SupplyClosedExecutorServiceThenFactoryCloseOperation() throws Exception {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
 
-        final EventHubClient temp = EventHubClient.createFromConnectionStringSync(
+        final EventHubClient temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed);
 
@@ -215,7 +215,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     public void SupplyClosedExecutorServiceThenSenderCloseOperation() throws Exception {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
 
-        final PartitionSender temp = EventHubClient.createFromConnectionStringSync(
+        final PartitionSender temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed).createPartitionSenderSync(PARTITION_ID);
 
@@ -229,7 +229,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     public void SupplyClosedExecutorServiceThenReceiverCloseOperation() throws Exception {
         final ExecutorService testClosed = Executors.newWorkStealingPool();
 
-        final PartitionReceiver temp = EventHubClient.createFromConnectionStringSync(
+        final PartitionReceiver temp = EventHubClient.createSync(
                 TestContext.getConnectionString().toString(),
                 testClosed).createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromEndOfStream());
 

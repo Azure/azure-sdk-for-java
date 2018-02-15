@@ -15,7 +15,7 @@ import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 /**
  * Anchor class - all EventHub client operations STARTS here.
  *
- * @see EventHubClient#createFromConnectionString(String, Executor)
+ * @see EventHubClient#create(String, Executor)
  */
 public interface EventHubClient {
 
@@ -27,7 +27,7 @@ public interface EventHubClient {
     String getEventHubName();
 
     /**
-     * Synchronous version of {@link #createFromConnectionString(String, Executor)}.
+     * Synchronous version of {@link #create(String, Executor)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
@@ -35,13 +35,13 @@ public interface EventHubClient {
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */
-    static EventHubClient createFromConnectionStringSync(final String connectionString, final Executor executor)
+    static EventHubClient createSync(final String connectionString, final Executor executor)
             throws EventHubException, IOException {
-        return EventHubClient.createFromConnectionStringSync(connectionString, null, executor);
+        return EventHubClient.createSync(connectionString, null, executor);
     }
 
     /**
-     * Synchronous version of {@link #createFromConnectionString(String, Executor)}.
+     * Synchronous version of {@link #create(String, Executor)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
@@ -50,9 +50,9 @@ public interface EventHubClient {
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */
-    static EventHubClient createFromConnectionStringSync(final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
+    static EventHubClient createSync(final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
             throws EventHubException, IOException {
-        return ExceptionUtil.syncWithIOException(() -> createFromConnectionString(connectionString, retryPolicy, executor).get());
+        return ExceptionUtil.syncWithIOException(() -> create(connectionString, retryPolicy, executor).get());
     }
 
     /**
@@ -66,9 +66,9 @@ public interface EventHubClient {
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */
-    static CompletableFuture<EventHubClient> createFromConnectionString(final String connectionString, final Executor executor)
+    static CompletableFuture<EventHubClient> create(final String connectionString, final Executor executor)
             throws EventHubException, IOException {
-        return EventHubClient.createFromConnectionString(connectionString, null, executor);
+        return EventHubClient.create(connectionString, null, executor);
     }
 
     /**
@@ -83,7 +83,7 @@ public interface EventHubClient {
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
      * @throws IOException         If the underlying Proton-J layer encounter network errors.
      */
-    static CompletableFuture<EventHubClient> createFromConnectionString(
+    static CompletableFuture<EventHubClient> create(
             final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
             throws EventHubException, IOException {
         return EventHubClientImpl.createFromConnectionString(connectionString, retryPolicy, executor);
@@ -175,7 +175,7 @@ public interface EventHubClient {
      * Sample code (sample uses sync version of the api but concept are identical):
      * <pre>
      * Gson gson = new GsonBuilder().create();
-     * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
+     * EventHubClient client = EventHubClient.createSync("__connection__");
      *
      * while (true)
      * {

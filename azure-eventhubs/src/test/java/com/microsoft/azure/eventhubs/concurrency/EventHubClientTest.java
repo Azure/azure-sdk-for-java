@@ -4,7 +4,6 @@
  */
 package com.microsoft.azure.eventhubs.concurrency;
 
-import java.awt.*;
 import java.util.concurrent.*;
 
 import org.junit.*;
@@ -28,7 +27,7 @@ public class EventHubClientTest extends ApiTestBase {
 		{
 			ConnectionStringBuilder connectionString = TestContext.getConnectionString();
 			for (int i = 0; i < noOfClients; i ++) {
-				createFutures[i] = EventHubClient.createFromConnectionString(connectionString.toString(), executorService);
+				createFutures[i] = EventHubClient.create(connectionString.toString(), executorService);
 			}
 			
 			CompletableFuture.allOf(createFutures).get();

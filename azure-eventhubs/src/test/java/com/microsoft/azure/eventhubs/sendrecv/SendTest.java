@@ -15,7 +15,6 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
 import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.eventhubs.impl.*;
 import org.junit.After;
 import org.junit.AfterClass;
 import org.junit.BeforeClass;
@@ -40,7 +39,7 @@ public class SendTest extends ApiTestBase
 	public static void initializeEventHub()  throws Exception
 	{
             	final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 	}
 	
 	@Test

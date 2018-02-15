@@ -31,7 +31,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSasKeyName("---------------wrongkey------------")
 				.setSasKey(correctConnectionString.getSasKey());
 		
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.sendSync(EventData.create("Test Message".getBytes()));
 	}
 	
@@ -45,7 +45,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSasKeyName(correctConnectionString.getSasKeyName())
 				.setSasKey("--------------wrongvalue-----------");
 		
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.sendSync(EventData.create("Test Message".getBytes()));
 	}
         
@@ -58,7 +58,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setEventHubName(correctConnectionString.getEventHubName())
 				.setSharedAccessSignature("--------------invalidtoken-------------");
 		
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.sendSync(EventData.create(("Test Message".getBytes())));
 	}
         
@@ -71,7 +71,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setEventHubName(correctConnectionString.getEventHubName())
 				.setSharedAccessSignature(null);
 		
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.sendSync(EventData.create(("Test Message".getBytes())));
 	}
         
@@ -89,7 +89,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setEventHubName(correctConnectionString.getEventHubName())
 				.setSharedAccessSignature(wrongToken);
 		
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.sendSync(EventData.create("Test Message".getBytes()));
 	}
         
@@ -107,7 +107,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setEventHubName(correctConnectionString.getEventHubName())
 				.setSharedAccessSignature(wrongToken);
 		
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.sendSync(EventData.create("Test Message".getBytes()));
 	}
 	
@@ -121,7 +121,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSasKeyName("------------wrongkeyname----------")
 				.setSasKey(correctConnectionString.getSasKey());
 		
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.createPartitionSenderSync(PARTITION_ID);
 	}
 	
@@ -135,7 +135,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSasKeyName("---------------wrongkey------------")
 				.setSasKey(correctConnectionString.getSasKey());
 		
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromStartOfStream());
 	}
 
@@ -149,7 +149,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSasKeyName(correctConnectionString.getSasKeyName())
 				.setSasKey(correctConnectionString.getSasKey());
 
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.sendSync(EventData.create("test string".getBytes()));
 	}
 
@@ -163,7 +163,7 @@ public class SecurityExceptionsTest extends ApiTestBase
 				.setSasKeyName(correctConnectionString.getSasKeyName())
 				.setSasKey(correctConnectionString.getSasKey());
 
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 		ehClient.createReceiverSync(TestContext.getConsumerGroupName(), PARTITION_ID, EventPosition.fromStartOfStream());
 	}
 	

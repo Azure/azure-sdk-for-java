@@ -188,7 +188,7 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimes() throws Exception {
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+    	EventHubClient ehc = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	EventHubRuntimeInformation ehInfo = ehc.getRuntimeInformation().get();
 
     	Assert.assertNotNull(ehInfo);
@@ -240,7 +240,7 @@ public class RequestResponseTest  extends ApiTestBase {
                 .setEventHubName("NOHUBZZZZZ")
                 .setSasKeyName(connectionString.getSasKeyName())
                 .setSasKey(connectionString.getSasKey());
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
+    	EventHubClient ehc = EventHubClient.createSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	
     	try {
     		ehc.getRuntimeInformation().get();
@@ -294,7 +294,7 @@ public class RequestResponseTest  extends ApiTestBase {
                 .setEventHubName(connectionString.getEventHubName())
                 .setSasKeyName("xxxnokeyxxx")
                 .setSasKey(connectionString.getSasKey());
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
+    	EventHubClient ehc = EventHubClient.createSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	
     	try {
     		ehc.getRuntimeInformation().get();
@@ -339,7 +339,7 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimesClosedClient() throws EventHubException, IOException, InterruptedException, ExecutionException {
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+    	EventHubClient ehc = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	ehc.closeSync();
 
     	try {
