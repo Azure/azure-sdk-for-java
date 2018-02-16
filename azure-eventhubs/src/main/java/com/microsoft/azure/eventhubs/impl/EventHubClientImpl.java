@@ -64,7 +64,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
         return eventHubName;
     }
 
-    public static CompletableFuture<EventHubClient> createFromConnectionString(
+    public static CompletableFuture<EventHubClient> create(
             final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
             throws EventHubException, IOException {
         final ConnectionStringBuilder connStr = new ConnectionStringBuilder(connectionString);
