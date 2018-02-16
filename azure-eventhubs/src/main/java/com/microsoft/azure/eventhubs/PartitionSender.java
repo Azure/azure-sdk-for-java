@@ -19,7 +19,7 @@ import java.util.concurrent.Executor;
 public interface PartitionSender {
 
     /**
-     * The partition id that will receive messages from this sender.
+     * The partition id that will receive events from this sender.
      *
      * @return the partition id the PartitionSender is connected to.
      */
