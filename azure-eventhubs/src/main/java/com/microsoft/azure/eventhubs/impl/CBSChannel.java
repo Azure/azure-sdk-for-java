@@ -16,11 +16,11 @@ final class CBSChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
     final SessionProvider sessionProvider;
-    final IAmqpConnection connectionEventDispatcher;
+    final AmqpConnection connectionEventDispatcher;
 
     public CBSChannel(
             final SessionProvider sessionProvider,
-            final IAmqpConnection connection,
+            final AmqpConnection connection,
             final String linkName) {
 
         this.sessionProvider = sessionProvider;

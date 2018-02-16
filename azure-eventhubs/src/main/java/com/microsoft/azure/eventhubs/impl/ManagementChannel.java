@@ -16,9 +16,9 @@ final class ManagementChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
     final SessionProvider sessionProvider;
-    final IAmqpConnection connectionEventDispatcher;
+    final AmqpConnection connectionEventDispatcher;
 
-    public ManagementChannel(final SessionProvider sessionProvider, final IAmqpConnection connection,
+    public ManagementChannel(final SessionProvider sessionProvider, final AmqpConnection connection,
                              final String linkName) {
         this.sessionProvider = sessionProvider;
         this.connectionEventDispatcher = connection;

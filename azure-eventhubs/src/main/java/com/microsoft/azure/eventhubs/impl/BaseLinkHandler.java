@@ -15,9 +15,9 @@ import org.slf4j.LoggerFactory;
 public class BaseLinkHandler extends BaseHandler {
     protected static final Logger TRACE_LOGGER = LoggerFactory.getLogger(BaseHandler.class);
 
-    private final IAmqpLink underlyingEntity;
+    private final AmqpLink underlyingEntity;
 
-    public BaseLinkHandler(final IAmqpLink amqpLink) {
+    public BaseLinkHandler(final AmqpLink amqpLink) {
         this.underlyingEntity = amqpLink;
     }
 

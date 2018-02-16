@@ -11,10 +11,10 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
 	private final String sessionName;
 	private final String linkName;
 	private final String endpointAddress;
-	private final IAmqpConnection eventDispatcher;
+	private final AmqpConnection eventDispatcher;
 	
 	public RequestResponseOpener(final SessionProvider sessionProvider, final String sessionName, final String linkName,
-                                 final String endpointAddress, final IAmqpConnection eventDispatcher) {
+                                 final String endpointAddress, final AmqpConnection eventDispatcher) {
 		this.sessionProvider = sessionProvider;
 		this.sessionName = sessionName;
 		this.linkName = linkName;

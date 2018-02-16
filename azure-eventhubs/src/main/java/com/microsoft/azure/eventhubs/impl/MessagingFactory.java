@@ -36,7 +36,7 @@ import org.apache.qpid.proton.reactor.Reactor;
  * Abstracts all amqp related details and exposes AmqpConnection object
  * Manages connection life-cycle
  */
-public final class MessagingFactory extends ClientEntity implements IAmqpConnection, SessionProvider, SchedulerProvider {
+public final class MessagingFactory extends ClientEntity implements AmqpConnection, SessionProvider, SchedulerProvider {
     public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60);
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessagingFactory.class);

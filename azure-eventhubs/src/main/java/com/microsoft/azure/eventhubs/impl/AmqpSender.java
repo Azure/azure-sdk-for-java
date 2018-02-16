@@ -6,7 +6,7 @@ package com.microsoft.azure.eventhubs.impl;
 
 import org.apache.qpid.proton.engine.Delivery;
 
-public interface AmqpSender extends IAmqpLink {
+public interface AmqpSender extends AmqpLink {
     void onFlow(final int creditIssued);
 
     void onSendComplete(final Delivery delivery);

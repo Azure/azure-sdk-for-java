@@ -6,6 +6,6 @@ package com.microsoft.azure.eventhubs.impl;
 
 import org.apache.qpid.proton.engine.Delivery;
 
-public interface AmqpReceiver extends IAmqpLink {
+public interface AmqpReceiver extends AmqpLink {
     void onReceiveComplete(Delivery delivery);
 }
