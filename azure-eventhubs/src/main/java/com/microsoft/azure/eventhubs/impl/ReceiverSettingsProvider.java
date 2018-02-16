@@ -11,9 +11,9 @@ import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.message.Message;
 
 public interface ReceiverSettingsProvider {
-    public Map<Symbol, UnknownDescribedType> getFilter(final Message lastReceivedMessage);
+    Map<Symbol, UnknownDescribedType> getFilter(final Message lastReceivedMessage);
 
-    public Map<Symbol, Object> getProperties();
+    Map<Symbol, Object> getProperties();
 
-    public Symbol[] getDesiredCapabilities();
+    Symbol[] getDesiredCapabilities();
 }
