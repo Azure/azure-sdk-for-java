@@ -24,10 +24,6 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface PartitionReceiver  {
 
-    // Both constants should be removed before 1.0.0 release
-    public static String START_OF_STREAM = "-1";
-    public static String END_OF_STREAM = "@latest";
-
     /**
      * Get EventHubs partition identifier.
      *
