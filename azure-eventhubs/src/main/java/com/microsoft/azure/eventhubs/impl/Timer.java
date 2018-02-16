@@ -11,9 +11,9 @@ import java.util.concurrent.RejectedExecutionException;
 
 final class Timer {
 
-    final ISchedulerProvider schedulerProvider;
+    final SchedulerProvider schedulerProvider;
 
-    public Timer(final ISchedulerProvider schedulerProvider) {
+    public Timer(final SchedulerProvider schedulerProvider) {
         this.schedulerProvider = schedulerProvider;
     }
 

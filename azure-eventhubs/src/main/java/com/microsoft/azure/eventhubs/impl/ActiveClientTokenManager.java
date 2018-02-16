@@ -21,14 +21,14 @@ final class ActiveClientTokenManager {
     private final Runnable sendTokenTask;
     private final ClientEntity clientEntity;
     private final Duration tokenRefreshInterval;
-    private final ISchedulerProvider schedulerProvider;
+    private final SchedulerProvider schedulerProvider;
     private final Timer timerScheduler;
 
     public ActiveClientTokenManager(
             final ClientEntity clientEntity,
             final Runnable sendTokenAsync,
             final Duration tokenRefreshInterval,
-            final ISchedulerProvider schedulerProvider) {
+            final SchedulerProvider schedulerProvider) {
 
         this.sendTokenTask = sendTokenAsync;
         this.clientEntity = clientEntity;

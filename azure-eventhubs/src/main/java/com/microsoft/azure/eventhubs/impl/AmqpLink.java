@@ -6,7 +6,7 @@ package com.microsoft.azure.eventhubs.impl;
 
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
-public interface IAmqpLink {
+public interface AmqpLink {
     /**
      * @param completionException completionException=null if open is successful
      */

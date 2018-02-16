@@ -10,7 +10,7 @@ import java.util.function.Consumer;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Session;
 
-public interface ISessionProvider {
+public interface SessionProvider {
     Session getSession(
             final String path,
             final Consumer<Session> onSessionOpen,

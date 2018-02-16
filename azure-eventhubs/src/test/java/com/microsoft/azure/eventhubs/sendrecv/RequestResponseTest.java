@@ -49,12 +49,12 @@ public class RequestResponseTest  extends ApiTestBase {
                                 ClientConstants.MANAGEMENT_ADDRESS,
                                 factory.getSession("path", null, null));
         final FaultTolerantObject<RequestResponseChannel> fchannel = new FaultTolerantObject<>(
-                new IOperation<RequestResponseChannel>() {
+                new Operation<RequestResponseChannel>() {
                     @Override
-                    public void run(IOperationResult<RequestResponseChannel, Exception> operationCallback) {
+                    public void run(OperationResult<RequestResponseChannel, Exception> operationCallback) {
 
                             requestResponseChannel.open(
-                                new IOperationResult<Void, Exception>() {
+                                new OperationResult<Void, Exception>() {
                                     @Override
                                     public void onComplete(Void result) {
                                         factory.registerForConnectionError(requestResponseChannel.getSendLink());
@@ -67,7 +67,7 @@ public class RequestResponseTest  extends ApiTestBase {
                                         operationCallback.onError(error);
                                     }
                                 },
-                                new IOperationResult<Void, Exception>() {
+                                new OperationResult<Void, Exception>() {
                                 @Override
                                 public void onComplete(Void result) {
                                     factory.deregisterForConnectionError(requestResponseChannel.getSendLink());
@@ -81,10 +81,10 @@ public class RequestResponseTest  extends ApiTestBase {
                             });
                     }
             },
-            new IOperation<Void>() {
+            new Operation<Void>() {
             @Override
-            public void run(IOperationResult<Void, Exception> operationCallback) {
-                requestResponseChannel.close(new IOperationResult<Void, Exception>() {
+            public void run(OperationResult<Void, Exception> operationCallback) {
+                requestResponseChannel.close(new OperationResult<Void, Exception>() {
                     @Override
                     public void onComplete(Void result) {
                         operationCallback.onComplete(result);
@@ -115,11 +115,11 @@ public class RequestResponseTest  extends ApiTestBase {
             request.setApplicationProperties(applicationProperties);
 
             fchannel.runOnOpenedObject(dispatcher, 
-                new IOperationResult<RequestResponseChannel, Exception>() {
+                new OperationResult<RequestResponseChannel, Exception>() {
                     @Override
                     public void onComplete(RequestResponseChannel result) {
                         result.request(request,
-                            new IOperationResult<Message, Exception>() {
+                            new OperationResult<Message, Exception>() {
                                 @Override
                                 public void onComplete(Message response) {
                                     Map<String, Object> resultMap = null;
@@ -171,7 +171,7 @@ public class RequestResponseTest  extends ApiTestBase {
         }
         
         final CompletableFuture<Void> closeFuture = new CompletableFuture<>();
-        fchannel.close(dispatcher, new IOperationResult<Void, Exception>() {
+        fchannel.close(dispatcher, new OperationResult<Void, Exception>() {
             @Override
             public void onComplete(Void result) {
                 closeFuture.complete(null);

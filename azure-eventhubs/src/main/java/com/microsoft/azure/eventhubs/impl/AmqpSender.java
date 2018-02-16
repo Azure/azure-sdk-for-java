@@ -4,7 +4,10 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-public interface IOperation<T> {
+import org.apache.qpid.proton.engine.Delivery;
 
-    public void run(IOperationResult<T, Exception> operationCallback);
+public interface AmqpSender extends AmqpLink {
+    void onFlow(final int creditIssued);
+
+    void onSendComplete(final Delivery delivery);
 }

@@ -36,7 +36,7 @@ import org.apache.qpid.proton.reactor.Reactor;
  * Abstracts all amqp related details and exposes AmqpConnection object
  * Manages connection life-cycle
  */
-public final class MessagingFactory extends ClientEntity implements IAmqpConnection, ISessionProvider, ISchedulerProvider {
+public final class MessagingFactory extends ClientEntity implements AmqpConnection, SessionProvider, SchedulerProvider {
     public static final Duration DefaultOperationTimeout = Duration.ofSeconds(60);
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessagingFactory.class);
@@ -359,7 +359,7 @@ public final class MessagingFactory extends ClientEntity implements IAmqpConnect
 
                     cbsChannel.close(
                             dispatcher,
-                            new IOperationResult<Void, Exception>() {
+                            new OperationResult<Void, Exception>() {
 
                                 @Override
                                 public void onComplete(Void result) {
@@ -390,7 +390,7 @@ public final class MessagingFactory extends ClientEntity implements IAmqpConnect
                 if (mgmtChannel != null) {
                     mgmtChannel.close(
                             dispatcher,
-                            new IOperationResult<Void, Exception>() {
+                            new OperationResult<Void, Exception>() {
 
                                 @Override
                                 public void onComplete(Void result) {

@@ -78,7 +78,7 @@ public final class ExceptionUtil {
         }
     }
 
-    static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, IErrorContextProvider contextProvider) {
+    static <T> void completeExceptionally(CompletableFuture<T> future, Exception exception, ErrorContextProvider contextProvider) {
         if (exception != null && exception instanceof EventHubException) {
             final ErrorContext errorContext = contextProvider.getContext();
             ((EventHubException) exception).setContext(errorContext);

@@ -4,8 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import org.apache.qpid.proton.engine.Delivery;
+public interface Operation<T> {
 
-public interface IAmqpReceiver extends IAmqpLink {
-    void onReceiveComplete(Delivery delivery);
+    void run(OperationResult<T, Exception> operationCallback);
 }

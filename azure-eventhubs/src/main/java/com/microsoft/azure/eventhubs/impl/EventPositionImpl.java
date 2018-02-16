@@ -14,18 +14,6 @@ public final class EventPositionImpl implements EventPosition {
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(EventPositionImpl.class);
 
-    /**
-     * This is a constant defined to represent the start of a partition stream in EventHub.
-     */
-    static final String START_OF_STREAM = "-1";
-
-    /**
-     * This is a constant defined to represent the current end of a partition stream in EventHub.
-     * This can be used as an offset argument in receiver creation to start receiving from the latest
-     * event, instead of a specific offset or point in time.
-     */
-    static final String END_OF_STREAM = "@latest";
-
     private final String offset;
     private final Long sequenceNumber;
     private final Instant dateTime;
@@ -59,11 +47,11 @@ public final class EventPositionImpl implements EventPosition {
     }
 
     public static EventPositionImpl fromStartOfStream() {
-        return new EventPositionImpl(START_OF_STREAM, null, null, true);
+        return new EventPositionImpl(ClientConstants.START_OF_STREAM, null, null, true);
     }
 
     public static EventPositionImpl fromEndOfStream() {
-        return new EventPositionImpl(END_OF_STREAM, null, null, false);
+        return new EventPositionImpl(ClientConstants.END_OF_STREAM, null, null, false);
     }
 
     String getExpression() {

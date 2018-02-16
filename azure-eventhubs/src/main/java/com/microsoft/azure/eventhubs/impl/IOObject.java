@@ -4,7 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-public interface IIOObject {
+public interface IOObject {
 
     public static enum IOObjectState {
         OPENING,

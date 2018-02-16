@@ -4,8 +4,8 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.ErrorContext;
+import org.apache.qpid.proton.engine.Delivery;
 
-interface IErrorContextProvider {
-    ErrorContext getContext();
+public interface AmqpReceiver extends AmqpLink {
+    void onReceiveComplete(Delivery delivery);
 }

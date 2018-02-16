@@ -55,7 +55,7 @@ import org.apache.qpid.proton.message.Message;
  * Abstracts all amqp related details
  * translates event-driven reactor model into async send Api
  */
-public final class MessageSender extends ClientEntity implements IAmqpSender, IErrorContextProvider {
+public final class MessageSender extends ClientEntity implements AmqpSender, ErrorContextProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageSender.class);
     private static final String SEND_TIMED_OUT = "Send operation timed out";
 
@@ -148,7 +148,7 @@ public final class MessageSender extends ClientEntity implements IAmqpSender, IE
                                     underlyingFactory.getReactorScheduler(),
                                     underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
                                     tokenAudience,
-                                    new IOperationResult<Void, Exception>() {
+                                    new OperationResult<Void, Exception>() {
                                         @Override
                                         public void onComplete(Void result) {
                                             if (TRACE_LOGGER.isDebugEnabled()) {
@@ -598,7 +598,7 @@ public final class MessageSender extends ClientEntity implements IAmqpSender, IE
                     this.underlyingFactory.getReactorScheduler(),
                     this.underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
                     tokenAudience,
-                    new IOperationResult<Void, Exception>() {
+                    new OperationResult<Void, Exception>() {
                         @Override
                         public void onComplete(Void result) {
                             if (MessageSender.this.getIsClosingOrClosed())

@@ -7,7 +7,7 @@ package com.microsoft.azure.eventhubs.impl;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Link;
 
-public interface IAmqpConnection {
+public interface AmqpConnection {
     void onOpenComplete(Exception exception);
 
     void onConnectionError(ErrorCondition error);

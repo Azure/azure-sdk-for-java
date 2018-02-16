@@ -1,6 +1,6 @@
 package com.microsoft.azure.eventhubs.impl;
 
-public class RequestResponseCloser implements IOperation<Void> {
+public class RequestResponseCloser implements Operation<Void> {
 	private FaultTolerantObject<RequestResponseChannel> innerChannel = null;
 	
 	public RequestResponseCloser() {
@@ -12,13 +12,13 @@ public class RequestResponseCloser implements IOperation<Void> {
 	}
 	
     @Override
-    public void run(IOperationResult<Void, Exception> closeOperationCallback) {
+    public void run(OperationResult<Void, Exception> closeOperationCallback) {
         final RequestResponseChannel channelToBeClosed = this.innerChannel.unsafeGetIfOpened();
         if (channelToBeClosed == null) {
             closeOperationCallback.onComplete(null);
         }
         else {
-            channelToBeClosed.close(new IOperationResult<Void, Exception>() {
+            channelToBeClosed.close(new OperationResult<Void, Exception>() {
                 @Override
                 public void onComplete(Void result) {
                     closeOperationCallback.onComplete(result);

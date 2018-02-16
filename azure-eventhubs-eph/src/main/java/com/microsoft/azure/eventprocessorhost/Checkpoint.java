@@ -6,6 +6,7 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.impl.ClientConstants;
 
 /**
  * Checkpoint class is public so that advanced users can implement an ICheckpointManager. 
@@ -19,7 +20,7 @@ import com.microsoft.azure.eventhubs.PartitionReceiver;
 public class Checkpoint
 {
 	private final String partitionId;
-	private String offset = PartitionReceiver.START_OF_STREAM;
+	private String offset = ClientConstants.START_OF_STREAM;
 	private long sequenceNumber = 0;
 	
 	/**
