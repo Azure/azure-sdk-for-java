@@ -39,7 +39,6 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
                 }, executor);
     }
 
-
     private CompletableFuture<Void> createInternalSender() throws EventHubException {
         return MessageSender.create(this.factory, StringUtil.getRandomString(),
                 String.format("%s/Partitions/%s", this.eventHubName, this.partitionId))
