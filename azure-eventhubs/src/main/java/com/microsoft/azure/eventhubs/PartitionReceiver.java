@@ -24,6 +24,11 @@ import java.util.concurrent.CompletableFuture;
  */
 public interface PartitionReceiver  {
 
+    int MINIMUM_PREFETCH_COUNT = 10;
+    int DEFAULT_PREFETCH_COUNT = 999;
+
+    long NULL_EPOCH = 0;
+
     /**
      * Get EventHubs partition identifier.
      *
