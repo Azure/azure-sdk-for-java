@@ -93,6 +93,18 @@ public final class ClientConstants {
 
     public static final int MAX_RECEIVER_NAME_LENGTH = 64;
 
+    /**
+     * This is a constant defined to represent the start of a partition stream in EventHub.
+     */
+    public static final String START_OF_STREAM = "-1";
+
+    /**
+     * This is a constant defined to represent the current end of a partition stream in EventHub.
+     * This can be used as an offset argument in receiver creation to start receiving from the latest
+     * event, instead of a specific offset or point in time.
+     */
+    static final String END_OF_STREAM = "@latest";
+
     private static String getPlatformInfo() {
         final StringBuilder platformInfo = new StringBuilder();
         platformInfo.append("arch:");
