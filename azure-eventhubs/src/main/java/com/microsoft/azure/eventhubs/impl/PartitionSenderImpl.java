@@ -49,6 +49,10 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
                 }, this.executor);
     }
 
+    public String getPartitionId() {
+        return this.partitionId;
+    }
+
     public EventDataBatch createBatch(BatchOptions options) {
         if (!StringUtil.isNullOrEmpty(options.partitionKey)) {
             throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to " +
