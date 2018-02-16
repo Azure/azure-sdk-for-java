@@ -19,6 +19,13 @@ import java.util.concurrent.Executor;
 public interface PartitionSender {
 
     /**
+     * The partition id that will receive messages from this sender.
+     *
+     * @return the partition id the PartitionSender is connected to.
+     */
+    String getPartitionId();
+
+    /**
      * Creates an Empty Collection of {@link EventData}.
      * The same partitionKey must be used while sending these events using {@link PartitionSender#send(EventDataBatch)}.
      *
