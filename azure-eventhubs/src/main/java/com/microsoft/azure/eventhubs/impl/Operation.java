@@ -4,7 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-public interface IOperation<T> {
+public interface Operation<T> {
 
-    public void run(IOperationResult<T, Exception> operationCallback);
+    public void run(OperationResult<T, Exception> operationCallback);
 }

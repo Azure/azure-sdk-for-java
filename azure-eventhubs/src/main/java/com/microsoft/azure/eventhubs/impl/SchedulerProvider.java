@@ -1,6 +1,6 @@
 package com.microsoft.azure.eventhubs.impl;
 
-interface ISchedulerProvider {
+interface SchedulerProvider {
 
     ReactorDispatcher getReactorScheduler();
 }

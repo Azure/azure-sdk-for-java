@@ -45,7 +45,7 @@ import org.apache.qpid.proton.message.Message;
  * Common Receiver that abstracts all amqp related details
  * translates event-driven reactor model into async receive Api
  */
-public final class MessageReceiver extends ClientEntity implements IAmqpReceiver, IErrorContextProvider {
+public final class MessageReceiver extends ClientEntity implements AmqpReceiver, ErrorContextProvider {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageReceiver.class);
     private static final int MIN_TIMEOUT_DURATION_MILLIS = 20;
 
@@ -56,7 +56,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
     private final Duration operationTimeout;
     private final CompletableFuture<Void> linkClose;
     private final Object prefetchCountSync;
-    private final IReceiverSettingsProvider settingsProvider;
+    private final ReceiverSettingsProvider settingsProvider;
     private final String tokenAudience;
     private final ActiveClientTokenManager activeClientTokenManager;
     private final WorkItem<MessageReceiver> linkOpen;
@@ -80,7 +80,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                             final String name,
                             final String recvPath,
                             final int prefetchCount,
-                            final IReceiverSettingsProvider settingsProvider) {
+                            final ReceiverSettingsProvider settingsProvider) {
         super(name, factory, factory.executor);
 
         this.underlyingFactory = factory;
@@ -133,7 +133,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                                     underlyingFactory.getReactorScheduler(),
                                     underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
                                     tokenAudience,
-                                    new IOperationResult<Void, Exception>() {
+                                    new OperationResult<Void, Exception>() {
                                         @Override
                                         public void onComplete(Void result) {
                                             if (TRACE_LOGGER.isDebugEnabled()) {
@@ -172,7 +172,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
             final String name,
             final String recvPath,
             final int prefetchCount,
-            final IReceiverSettingsProvider settingsProvider) {
+            final ReceiverSettingsProvider settingsProvider) {
         MessageReceiver msgReceiver = new MessageReceiver(
                 factory,
                 name,
@@ -478,7 +478,7 @@ public final class MessageReceiver extends ClientEntity implements IAmqpReceiver
                     this.underlyingFactory.getReactorScheduler(),
                     this.underlyingFactory.getTokenProvider().getToken(tokenAudience, ClientConstants.TOKEN_VALIDITY),
                     tokenAudience,
-                    new IOperationResult<Void, Exception>() {
+                    new OperationResult<Void, Exception>() {
                         @Override
                         public void onComplete(Void result) {
                             if (MessageReceiver.this.getIsClosingOrClosed())

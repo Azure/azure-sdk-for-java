@@ -15,11 +15,11 @@ import org.apache.qpid.proton.message.Message;
 final class ManagementChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
-    final ISessionProvider sessionProvider;
+    final SessionProvider sessionProvider;
     final IAmqpConnection connectionEventDispatcher;
 
-    public ManagementChannel(final ISessionProvider sessionProvider, final IAmqpConnection connection,
-            final String linkName) {
+    public ManagementChannel(final SessionProvider sessionProvider, final IAmqpConnection connection,
+                             final String linkName) {
         this.sessionProvider = sessionProvider;
         this.connectionEventDispatcher = connection;
 
@@ -40,11 +40,11 @@ final class ManagementChannel {
         CompletableFuture<Map<String, Object>> resultFuture = new CompletableFuture<Map<String, Object>>();
         
         this.innerChannel.runOnOpenedObject(dispatcher,
-                new IOperationResult<RequestResponseChannel, Exception>() {
+                new OperationResult<RequestResponseChannel, Exception>() {
                     @Override
                     public void onComplete(final RequestResponseChannel result) {
                         result.request(requestMessage,
-                                new IOperationResult<Message, Exception>() {
+                                new OperationResult<Message, Exception>() {
                                     @Override
                                     public void onComplete(final Message response) {
                                         final int statusCode = (int)response.getApplicationProperties().getValue().get(ClientConstants.PUT_TOKEN_STATUS_CODE);
@@ -76,7 +76,7 @@ final class ManagementChannel {
 		return resultFuture;
 	}
 	
-    public void close(final ReactorDispatcher reactorDispatcher, final IOperationResult<Void, Exception> closeCallback) {
+    public void close(final ReactorDispatcher reactorDispatcher, final OperationResult<Void, Exception> closeCallback) {
         this.innerChannel.close(reactorDispatcher, closeCallback);
     }
 }

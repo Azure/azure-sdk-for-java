@@ -4,8 +4,8 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import org.apache.qpid.proton.engine.Connection;
+import org.apache.qpid.proton.engine.Delivery;
 
-interface IConnectionFactory {
-    Connection getConnection();
+public interface AmqpReceiver extends IAmqpLink {
+    void onReceiveComplete(Delivery delivery);
 }

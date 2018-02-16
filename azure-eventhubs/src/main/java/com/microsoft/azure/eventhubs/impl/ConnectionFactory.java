@@ -4,8 +4,8 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import com.microsoft.azure.eventhubs.ErrorContext;
+import org.apache.qpid.proton.engine.Connection;
 
-interface IErrorContextProvider {
-    ErrorContext getContext();
+interface ConnectionFactory {
+    Connection getConnection();
 }

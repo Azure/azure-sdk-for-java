@@ -18,11 +18,11 @@ import org.apache.qpid.proton.engine.Receiver;
 // handles all recvLink - reactor events
 public final class ReceiveLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReceiveLinkHandler.class);
-    private final IAmqpReceiver amqpReceiver;
+    private final AmqpReceiver amqpReceiver;
     private final Object firstResponse;
     private boolean isFirstResponse;
 
-    public ReceiveLinkHandler(final IAmqpReceiver receiver) {
+    public ReceiveLinkHandler(final AmqpReceiver receiver) {
         super(receiver);
 
         this.amqpReceiver = receiver;

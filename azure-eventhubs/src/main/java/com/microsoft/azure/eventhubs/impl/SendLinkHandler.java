@@ -16,11 +16,11 @@ import org.apache.qpid.proton.engine.Sender;
 
 public class SendLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SendLinkHandler.class);
-    private final IAmqpSender msgSender;
+    private final AmqpSender msgSender;
     private final Object firstFlow;
     private boolean isFirstFlow;
 
-    public SendLinkHandler(final IAmqpSender sender) {
+    public SendLinkHandler(final AmqpSender sender) {
         super(sender);
 
         this.msgSender = sender;

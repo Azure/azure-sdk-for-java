@@ -4,10 +4,8 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import org.apache.qpid.proton.engine.Delivery;
+import com.microsoft.azure.eventhubs.ErrorContext;
 
-public interface IAmqpSender extends IAmqpLink {
-    void onFlow(final int creditIssued);
-
-    void onSendComplete(final Delivery delivery);
+interface ErrorContextProvider {
+    ErrorContext getContext();
 }

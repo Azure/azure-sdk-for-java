@@ -5,7 +5,7 @@
 package com.microsoft.azure.eventhubs.impl;
 
 
-public interface IOperationResult<T, E extends Throwable> {
+public interface OperationResult<T, E extends Throwable> {
 
     void onComplete(T result);
 

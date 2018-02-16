@@ -27,19 +27,19 @@ import org.apache.qpid.proton.engine.EndpointState;
 
 import com.microsoft.azure.eventhubs.OperationCancelledException;
 
-public class RequestResponseChannel implements IIOObject {
+public class RequestResponseChannel implements IOObject {
 
     private final Sender sendLink;
     private final Receiver receiveLink;
     private final String replyTo;
-    private final HashMap<Object, IOperationResult<Message, Exception>> inflightRequests;
+    private final HashMap<Object, OperationResult<Message, Exception>> inflightRequests;
     private final AtomicLong requestId;
     private final AtomicInteger openRefCount;
     private final AtomicInteger closeRefCount;
 
-    private IOperationResult<Void, Exception> onOpen;
-    private IOperationResult<Void, Exception> onClose; // handles closeLink due to failures
-    private IOperationResult<Void, Exception> onGraceFullClose; // handles intentional close
+    private OperationResult<Void, Exception> onOpen;
+    private OperationResult<Void, Exception> onClose; // handles closeLink due to failures
+    private OperationResult<Void, Exception> onGraceFullClose; // handles intentional close
 
     public RequestResponseChannel(
             final String linkName,
@@ -73,7 +73,7 @@ public class RequestResponseChannel implements IIOObject {
     }
 
     // open should be called only once - we use FaultTolerantObject for that
-    public void open(final IOperationResult<Void, Exception> onOpen, final IOperationResult<Void, Exception> onClose) {
+    public void open(final OperationResult<Void, Exception> onOpen, final OperationResult<Void, Exception> onClose) {
 
         this.onOpen = onOpen;
         this.onClose = onClose;
@@ -82,7 +82,7 @@ public class RequestResponseChannel implements IIOObject {
     }
 
     // close should be called exactly once - we use FaultTolerantObject for that
-    public void close(final IOperationResult<Void, Exception> onGraceFullClose) {
+    public void close(final OperationResult<Void, Exception> onGraceFullClose) {
 
         this.onGraceFullClose = onGraceFullClose;
         this.sendLink.close();
@@ -102,7 +102,7 @@ public class RequestResponseChannel implements IIOObject {
     // & assumes that this is run on Opened Object
     public void request(
             final Message message,
-            final IOperationResult<Message, Exception> onResponse) {
+            final OperationResult<Message, Exception> onResponse) {
 
         if (message == null)
             throw new IllegalArgumentException("message cannot be null");
@@ -177,7 +177,7 @@ public class RequestResponseChannel implements IIOObject {
         return IOObjectState.CLOSING; // only left cases are if some are active and some are closed
     }
 
-    private class RequestHandler implements IAmqpSender {
+    private class RequestHandler implements AmqpSender {
 
         @Override
         public void onFlow(int creditIssued) {
@@ -210,7 +210,7 @@ public class RequestResponseChannel implements IIOObject {
 
     }
 
-    private class ResponseHandler implements IAmqpReceiver {
+    private class ResponseHandler implements AmqpReceiver {
 
         @Override
         public void onReceiveComplete(Delivery delivery) {
@@ -224,7 +224,7 @@ public class RequestResponseChannel implements IIOObject {
             response.decode(buffer, 0, read);
             delivery.settle();
 
-            final IOperationResult<Message, Exception> responseCallback = inflightRequests.remove(response.getCorrelationId());
+            final OperationResult<Message, Exception> responseCallback = inflightRequests.remove(response.getCorrelationId());
             if (responseCallback != null)
                 responseCallback.onComplete(response);
         }
@@ -260,7 +260,7 @@ public class RequestResponseChannel implements IIOObject {
         }
 
         private void cancelPendingRequests(final Exception exception) {
-            for (IOperationResult<Message, Exception> responseCallback : inflightRequests.values())
+            for (OperationResult<Message, Exception> responseCallback : inflightRequests.values())
                 responseCallback.onError(exception);
 
             inflightRequests.clear();

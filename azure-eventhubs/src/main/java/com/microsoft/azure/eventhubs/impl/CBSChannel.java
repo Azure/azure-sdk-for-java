@@ -15,11 +15,11 @@ import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 final class CBSChannel {
 
     final FaultTolerantObject<RequestResponseChannel> innerChannel;
-    final ISessionProvider sessionProvider;
+    final SessionProvider sessionProvider;
     final IAmqpConnection connectionEventDispatcher;
 
     public CBSChannel(
-            final ISessionProvider sessionProvider,
+            final SessionProvider sessionProvider,
             final IAmqpConnection connection,
             final String linkName) {
 
@@ -37,7 +37,7 @@ final class CBSChannel {
             final ReactorDispatcher dispatcher,
             final String token,
             final String tokenAudience,
-            final IOperationResult<Void, Exception> sendTokenCallback) {
+            final OperationResult<Void, Exception> sendTokenCallback) {
 
         final Message request = Proton.message();
         final Map<String, Object> properties = new HashMap<>();
@@ -49,11 +49,11 @@ final class CBSChannel {
         request.setBody(new AmqpValue(token));
 
         this.innerChannel.runOnOpenedObject(dispatcher,
-                new IOperationResult<RequestResponseChannel, Exception>() {
+                new OperationResult<RequestResponseChannel, Exception>() {
                     @Override
                     public void onComplete(final RequestResponseChannel result) {
                         result.request(request,
-                                new IOperationResult<Message, Exception>() {
+                                new OperationResult<Message, Exception>() {
                                     @Override
                                     public void onComplete(final Message response) {
 
@@ -83,7 +83,7 @@ final class CBSChannel {
 
     public void close(
             final ReactorDispatcher reactorDispatcher,
-            final IOperationResult<Void, Exception> closeCallback) {
+            final OperationResult<Void, Exception> closeCallback) {
 
         this.innerChannel.close(reactorDispatcher, closeCallback);
     }
