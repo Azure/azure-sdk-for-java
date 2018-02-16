@@ -50,7 +50,7 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
     }
 
     public String getPartitionId() {
-        return partitionId;
+        return this.partitionId;
     }
 
     public EventDataBatch createBatch(BatchOptions options) {
