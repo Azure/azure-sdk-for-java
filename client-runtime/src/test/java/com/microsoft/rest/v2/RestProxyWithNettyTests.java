@@ -1,7 +1,7 @@
 package com.microsoft.rest.v2;
 
 import com.microsoft.rest.v2.http.HttpClient;
-import com.microsoft.rest.v2.http.HttpClient.Configuration;
+import com.microsoft.rest.v2.http.HttpClientConfiguration;
 import com.microsoft.rest.v2.http.NettyClient;
 
 public class RestProxyWithNettyTests extends RestProxyTests {
@@ -9,6 +9,6 @@ public class RestProxyWithNettyTests extends RestProxyTests {
 
     @Override
     protected HttpClient createHttpClient() {
-        return nettyClientFactory.create(new Configuration(null));
+        return nettyClientFactory.create(new HttpClientConfiguration(null));
     }
 }

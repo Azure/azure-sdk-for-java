@@ -11,16 +11,17 @@ import com.google.common.escape.Escaper;
 import com.google.common.net.UrlEscapers;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.management.apigeneration.Beta;
-import com.microsoft.rest.v2.annotations.Host;
-import com.microsoft.rest.v2.annotations.HostParam;
-import com.microsoft.rest.v2.http.ContentType;
-import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.annotations.BodyParam;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
+import com.microsoft.rest.v2.annotations.Host;
+import com.microsoft.rest.v2.annotations.HostParam;
 import com.microsoft.rest.v2.annotations.POST;
 import com.microsoft.rest.v2.annotations.PathParam;
+import com.microsoft.rest.v2.http.ContentType;
 import com.microsoft.rest.v2.http.HttpClient;
+import com.microsoft.rest.v2.http.HttpClientConfiguration;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.NettyClient;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
@@ -47,7 +48,7 @@ final class RefreshTokenClient {
 
     private static HttpClient createHttpClient(Proxy proxy) {
         return new NettyClient.Factory()
-                .create(new HttpClient.Configuration(proxy));
+                .create(new HttpClientConfiguration(proxy));
     }
 
     AuthenticationResult refreshToken(String tenant, String clientId, String resource, String refreshToken, boolean isMultipleResoureRefreshToken) {

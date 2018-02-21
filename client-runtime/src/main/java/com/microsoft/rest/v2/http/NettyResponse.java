@@ -11,12 +11,12 @@ import io.netty.buffer.Unpooled;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Function;
 import org.reactivestreams.Subscription;
 
 import java.nio.ByteBuffer;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
 import java.util.Map.Entry;
 
 /**
@@ -51,11 +51,25 @@ class NettyResponse extends HttpResponse {
     }
 
     private Single<ByteBuf> collectContent() {
-        return contentStream.toList().map(new Function<List<ByteBuf>, ByteBuf>() {
+        ByteBuf allContent = null;
+        String contentLengthString = headerValue("Content-Length");
+        if (contentLengthString != null) {
+            try {
+                int contentLength = Integer.parseInt(contentLengthString);
+                allContent = Unpooled.buffer(contentLength);
+            } catch (NumberFormatException ignored) {
+            }
+        }
+
+        if (allContent == null) {
+            allContent = Unpooled.buffer();
+        }
+
+        return contentStream.collectInto(allContent, new BiConsumer<ByteBuf, ByteBuf>() {
             @Override
-            public ByteBuf apply(List<ByteBuf> l) {
-                ByteBuf[] bufs = new ByteBuf[l.size()];
-                return Unpooled.wrappedBuffer(l.toArray(bufs));
+            public void accept(ByteBuf allContent, ByteBuf chunk) throws Exception {
+                allContent.writeBytes(chunk);
+                chunk.release();
             }
         });
     }
@@ -64,17 +78,21 @@ class NettyResponse extends HttpResponse {
     public Single<byte[]> bodyAsByteArrayAsync() {
         return collectContent().map(new Function<ByteBuf, byte[]>() {
             @Override
-            public byte[] apply(ByteBuf byteBuf) {
-                return toByteArray(byteBuf);
+            public byte[] apply(ByteBuf byteBuf) throws Exception {
+                byte[] result;
+                if (byteBuf.readableBytes() == byteBuf.array().length) {
+                    result = byteBuf.array();
+                } else {
+                    byte[] dst = new byte[byteBuf.readableBytes()];
+                    byteBuf.readBytes(dst);
+                    result = dst;
+                }
+
+                // This byteBuf is not pooled but Netty uses ref counting to track allocation metrics
+                byteBuf.release();
+                return result;
             }
         });
-    }
-
-    static byte[] toByteArray(ByteBuf byteBuf) {
-        byte[] res = new byte[byteBuf.readableBytes()];
-        byteBuf.readBytes(res);
-        byteBuf.release();
-        return res;
     }
 
     @Override
@@ -95,8 +113,10 @@ class NettyResponse extends HttpResponse {
     public Single<String> bodyAsStringAsync() {
         return collectContent().map(new Function<ByteBuf, String>() {
             @Override
-            public String apply(ByteBuf byteBuf) {
-                return byteBuf.toString(StandardCharsets.UTF_8);
+            public String apply(ByteBuf byteBuf) throws Exception {
+                String result = byteBuf.toString(StandardCharsets.UTF_8);
+                byteBuf.release();
+                return result;
             }
         });
     }
