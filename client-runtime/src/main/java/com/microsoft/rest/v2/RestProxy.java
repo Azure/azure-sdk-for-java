@@ -107,12 +107,12 @@ public class RestProxy implements InvocationHandler {
         try {
             SwaggerMethodParser methodParser = null;
             HttpRequest request = null;
-            if(method.isAnnotationPresent(ResumeOperation.class)) {
-                OperationDescription opDesc = (OperationDescription)args[0];
+            if (method.isAnnotationPresent(ResumeOperation.class)) {
+                OperationDescription opDesc = (OperationDescription) args[0];
                 Method resumeMethod = null;
                 Method[] methods = method.getDeclaringClass().getMethods();
-                for(Method origMethod : methods) {
-                    if(origMethod.getName().equals(opDesc.methodName())) {
+                for (Method origMethod : methods) {
+                    if (origMethod.getName().equals(opDesc.methodName())) {
                         resumeMethod = origMethod;
                         break;
                     }
@@ -123,7 +123,7 @@ public class RestProxy implements InvocationHandler {
                 final Type returnType = methodParser.returnType();
                 return handleResumeOperation(request, opDesc, methodParser, returnType);
 
-            }else {
+            } else {
                 methodParser = methodParser(method);
                 request = createHttpRequest(methodParser, args);
                 final Single<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
