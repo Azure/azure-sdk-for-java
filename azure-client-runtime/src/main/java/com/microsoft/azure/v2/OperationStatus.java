@@ -6,7 +6,10 @@
 
 package com.microsoft.azure.v2;
 
+import com.microsoft.rest.v2.OperationDescription;
 import com.microsoft.rest.v2.RestException;
+import com.microsoft.rest.v2.SwaggerMethodParser;
+import com.microsoft.rest.v2.http.HttpRequest;
 
 /**
  * The current state of polling for the result of a long running operation.
@@ -14,6 +17,7 @@ import com.microsoft.rest.v2.RestException;
  */
 public class OperationStatus<T> {
     private final PollStrategy pollStrategy;
+    private final HttpRequest originalHttpRequest;
     private final T result;
     private final RestException error;
     private final String status;
@@ -23,7 +27,8 @@ public class OperationStatus<T> {
      * @param pollStrategy The polling strategy that the OperationStatus will use to check the
      *                     progress of a long running operation.
      */
-    OperationStatus(PollStrategy pollStrategy) {
+    OperationStatus(PollStrategy pollStrategy, HttpRequest originalHttpRequest) {
+        this.originalHttpRequest = originalHttpRequest;
         this.pollStrategy = pollStrategy;
         this.result = null;
         this.error = null;
@@ -36,6 +41,7 @@ public class OperationStatus<T> {
      */
     OperationStatus(T result, String provisioningState) {
         this.pollStrategy = null;
+        this.originalHttpRequest = null;
         this.result = result;
         this.error = null;
         this.status = provisioningState;
@@ -43,6 +49,7 @@ public class OperationStatus<T> {
 
     OperationStatus(RestException error, String provisioningState) {
         this.pollStrategy = null;
+        this.originalHttpRequest = null;
         this.result = null;
         this.error = error;
         this.status = provisioningState;
@@ -79,4 +86,16 @@ public class OperationStatus<T> {
     public RestException error() {
         return error;
     }
+
+    public OperationDescription buildDescription() {
+        if(this.isDone()) {
+            return null;
+        }
+
+        return new OperationDescription(
+                this.pollStrategy.methodParser().fullyQualifiedMethodName(),
+                this.pollStrategy.strategyData(),
+                this.originalHttpRequest);
+    }
+
 }

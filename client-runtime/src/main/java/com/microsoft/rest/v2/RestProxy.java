@@ -7,6 +7,7 @@
 package com.microsoft.rest.v2;
 
 import com.google.common.reflect.TypeToken;
+import com.microsoft.rest.v2.annotations.ResumeOperation;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.ContentType;
 import com.microsoft.rest.v2.http.HttpHeader;
@@ -104,14 +105,32 @@ public class RestProxy implements InvocationHandler {
     @Override
     public Object invoke(Object proxy, final Method method, Object[] args) {
         try {
-            final SwaggerMethodParser methodParser = methodParser(method);
+            SwaggerMethodParser methodParser = null;
+            HttpRequest request = null;
+            if(method.isAnnotationPresent(ResumeOperation.class)) {
+                OperationDescription opDesc = (OperationDescription)args[0];
+                Method resumeMethod = null;
+                Method[] methods = method.getDeclaringClass().getMethods();
+                for(Method origMethod : methods) {
+                    if(origMethod.getName().equals(opDesc.methodName())) {
+                        resumeMethod = origMethod;
+                        break;
+                    }
+                }
 
-            final HttpRequest request = createHttpRequest(methodParser, args);
+                methodParser = methodParser(resumeMethod);
+                request = createHttpRequest(opDesc, methodParser, args);
+                final Type returnType = methodParser.returnType();
+                return handleResumeOperation(request, opDesc, methodParser, returnType);
 
-            final Single<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
+            }else {
+                methodParser = methodParser(method);
+                request = createHttpRequest(methodParser, args);
+                final Single<HttpResponse> asyncResponse = sendHttpRequestAsync(request);
+                final Type returnType = methodParser.returnType();
+                return handleAsyncHttpResponse(request, asyncResponse, methodParser, returnType);
+            }
 
-            final Type returnType = methodParser.returnType();
-            return handleAsyncHttpResponse(request, asyncResponse, methodParser, returnType);
         } catch (Exception e) {
             throw Exceptions.propagate(e);
         }
@@ -210,6 +229,78 @@ public class RestProxy implements InvocationHandler {
         // Headers from Swagger method arguments always take precedence over inferred headers from body types
         for (final HttpHeader header : methodParser.headers(args)) {
             request.withHeader(header.name(), header.value());
+        }
+
+        return request;
+    }
+
+    /**
+     * Create a HttpRequest for the provided Swagger method using the provided arguments.
+     * @param methodParser The Swagger method parser to use.
+     * @param args The arguments to use to populate the method's annotation values.
+     * @return A HttpRequest.
+     * @throws IOException Thrown if the body contents cannot be serialized.
+     */
+    @SuppressWarnings("unchecked")
+    private HttpRequest createHttpRequest(OperationDescription operationDescription, SwaggerMethodParser methodParser, Object[] args) throws IOException {
+        final HttpRequest request = new HttpRequest(
+                methodParser.fullyQualifiedMethodName(),
+                methodParser.httpMethod(),
+                operationDescription.url(),
+                new HttpResponseDecoder(methodParser, serializer));
+
+        final Object bodyContentObject = methodParser.body(args);
+        if (bodyContentObject == null) {
+            request.headers().set("Content-Length", "0");
+        } else {
+            String contentType = methodParser.bodyContentType();
+            if (contentType == null || contentType.isEmpty()) {
+                if (bodyContentObject instanceof byte[] || bodyContentObject instanceof String) {
+                    contentType = ContentType.APPLICATION_OCTET_STREAM;
+                }
+                else {
+                    contentType = ContentType.APPLICATION_JSON;
+                }
+            }
+
+            request.headers().set("Content-Type", contentType);
+
+            boolean isJson = false;
+            final String[] contentTypeParts = contentType.split(";");
+            for (String contentTypePart : contentTypeParts) {
+                if (contentTypePart.trim().equalsIgnoreCase(ContentType.APPLICATION_JSON)) {
+                    isJson = true;
+                    break;
+                }
+            }
+
+            if (isJson) {
+                final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.JSON);
+                request.withBody(bodyContentString);
+            }
+            else if (FlowableUtil.isFlowableByteBuffer(TypeToken.of(methodParser.bodyJavaType()))) {
+                // Content-Length or Transfer-Encoding: chunked must be provided by a user-specified header when a Flowable<byte[]> is given for the body.
+                //noinspection ConstantConditions
+                request.withBody((Flowable<ByteBuffer>) bodyContentObject);
+            }
+            else if (bodyContentObject instanceof byte[]) {
+                request.withBody((byte[]) bodyContentObject);
+            }
+            else if (bodyContentObject instanceof String) {
+                final String bodyContentString = (String) bodyContentObject;
+                if (!bodyContentString.isEmpty()) {
+                    request.withBody(bodyContentString);
+                }
+            }
+            else {
+                final String bodyContentString = serializer.serialize(bodyContentObject, SerializerEncoding.fromHeaders(request.headers()));
+                request.withBody(bodyContentString);
+            }
+        }
+
+        // Headers from Swagger method arguments always take precedence over inferred headers from body types
+        for (final String headerName : operationDescription.headers().keySet()) {
+            request.withHeader(headerName, operationDescription.headers().get(headerName));
         }
 
         return request;
@@ -355,6 +446,11 @@ public class RestProxy implements InvocationHandler {
 
     protected Object handleAsyncHttpResponse(HttpRequest httpRequest, Single<HttpResponse> asyncHttpResponse, SwaggerMethodParser methodParser, Type returnType) {
         return handleRestReturnType(httpRequest, asyncHttpResponse, methodParser, returnType);
+    }
+
+    protected Object handleResumeOperation(HttpRequest httpRequest, OperationDescription operationDescription, SwaggerMethodParser methodParser, Type returnType)
+        throws Exception {
+        throw new Exception("The resume operation is not avaiable in the base RestProxy class.");
     }
 
     private static final Function<Throwable, Single<?>> WARN_MISSING_DECODING = new Function<Throwable, Single<?>>() {

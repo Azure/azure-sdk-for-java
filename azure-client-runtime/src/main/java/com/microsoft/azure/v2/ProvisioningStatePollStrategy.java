@@ -15,26 +15,46 @@ import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
 import java.io.IOException;
+import java.io.Serializable;
 
 /**
  * A PollStrategy that will continue to poll a resource's URL until the resource's provisioning
  * state property is in a completed state.
  */
 public final class ProvisioningStatePollStrategy extends PollStrategy {
-    private final HttpRequest originalRequest;
-    private final SwaggerMethodParser methodParser;
+    private ProvisioningStatePollStrategyData data;
+    ProvisioningStatePollStrategy(ProvisioningStatePollStrategyData data) {
+        super(data);
+        setStatus(data.provisioningState);
+        this.data = data;
+    }
 
-    ProvisioningStatePollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, HttpRequest originalRequest, String provisioningState, long delayInMilliseconds) {
-        super(restProxy, methodParser, delayInMilliseconds);
+    static class ProvisioningStatePollStrategyData extends PollStrategy.PollStrategyData {
+        HttpRequest originalRequest;
+        String provisioningState;
 
-        this.originalRequest = originalRequest;
-        this.methodParser = methodParser;
-        setStatus(provisioningState);
+        public ProvisioningStatePollStrategyData(RestProxy restProxy,
+                                                 SwaggerMethodParser methodParser,
+                                                 HttpRequest originalRequest,
+                                                 String provisioningState,
+                                                 long delayInMilliseconds) {
+            super(restProxy, methodParser, delayInMilliseconds);
+            this.originalRequest = originalRequest;
+            this.provisioningState = provisioningState;
+        }
+
+        PollStrategy initializeStrategy(RestProxy restProxy,
+                                                 SwaggerMethodParser methodParser) {
+            this.restProxy = restProxy;
+            this.methodParser = methodParser;
+            return new ProvisioningStatePollStrategy(this);
+        }
+
     }
 
     @Override
     HttpRequest createPollRequest() {
-        return new HttpRequest(originalRequest.callerMethod(), HttpMethod.GET, originalRequest.url(), createResponseDecoder());
+        return new HttpRequest(data.originalRequest.callerMethod(), HttpMethod.GET, data.originalRequest.url(), createResponseDecoder());
     }
 
     @Override
@@ -73,5 +93,9 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
     @Override
     boolean isDone() {
         return OperationState.isCompleted(status());
+    }
+
+    public Serializable strategyData() {
+        return this.data;
     }
 }
