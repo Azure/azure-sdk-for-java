@@ -47,7 +47,7 @@ abstract class PollStrategy {
         transient SwaggerMethodParser methodParser;
         long delayInMilliseconds;
 
-        public PollStrategyData(RestProxy restProxy,
+        PollStrategyData(RestProxy restProxy,
                                 SwaggerMethodParser methodParser,
                                 long delayInMilliseconds) {
             this.restProxy = restProxy;
@@ -233,7 +233,10 @@ abstract class PollStrategy {
                 .lastOrError();
     }
 
-    abstract Serializable strategyData();
+    /**
+     * @erturn The data for the strategy.
+     */
+    public abstract Serializable strategyData();
 
     SwaggerMethodParser methodParser() {
         return this.methodParser;

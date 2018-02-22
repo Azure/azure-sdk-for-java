@@ -36,6 +36,9 @@ public class CompletedPollStrategy extends PollStrategy {
         this.data = data;
     }
 
+    /**
+     * The CompletedPollStrategy data
+     */
     public static class CompletedPollStrategyData extends PollStrategyData
     {
         HttpResponse firstHttpResponse;
@@ -84,6 +87,7 @@ public class CompletedPollStrategy extends PollStrategy {
         return Single.<HttpResponse>just(firstHttpResponse);
     }
 
+    @Override
     public Serializable strategyData() {
         return this.data;
     }

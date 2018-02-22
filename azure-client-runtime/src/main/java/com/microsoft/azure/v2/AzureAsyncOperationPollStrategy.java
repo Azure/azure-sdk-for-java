@@ -42,6 +42,9 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         this.data = data;
     }
 
+    /**
+     * The AzureAsyncOperationPollStrategy data
+     */
     private static class AzureAsyncOperationPollStrategyData extends PollStrategyData {
         private boolean pollingCompleted;
         private boolean pollingSucceeded;
@@ -189,6 +192,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         return httpResponse.headerValue(HEADER_NAME);
     }
 
+    @Override
     public Serializable strategyData() {
         return this.data;
     }

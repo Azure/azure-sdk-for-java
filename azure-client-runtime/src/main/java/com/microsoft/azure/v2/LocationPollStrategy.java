@@ -36,15 +36,29 @@ public final class LocationPollStrategy extends PollStrategy {
         this.data = data;
     }
 
+    /**
+     * The LocationPollStrategy data
+     */
     public static class LocationPollStrategyData extends PollStrategyData {
         URL locationUrl;
         boolean done;
 
+        /**
+         * Create a new LocationPollStrategyData
+         */
         public LocationPollStrategyData() {
             super(null, null, 0);
             this.locationUrl = null;
         }
 
+        /**
+         * Create a new LocationPollStrategyData
+         * @param restProxy The RestProxy that created this PollStrategy.
+         * @param methodParser The method parser that describes the service interface method that
+         *                     initiated the long running operation.
+         * @param locationUrl The location url.
+         * @param delayInMilliseconds The delay value.
+         */
         public LocationPollStrategyData(RestProxy restProxy,
                                         SwaggerMethodParser methodParser,
                                         URL locationUrl,
@@ -140,6 +154,7 @@ public final class LocationPollStrategy extends PollStrategy {
         return httpResponse.headerValue(HEADER_NAME);
     }
 
+    @Override
     public Serializable strategyData() {
         return this.data;
     }

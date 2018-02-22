@@ -33,6 +33,15 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
         HttpRequest originalRequest;
         String provisioningState;
 
+        /**
+         * Create a new ProvisioningStatePollStrategyData
+         * @param restProxy The RestProxy that created this PollStrategy.
+         * @param methodParser The method parser that describes the service interface method that
+         *                     initiated the long running operation.
+         * @param originalRequest The HTTP response to the original HTTP request.
+         * @param provisioningState The provisioning state.
+         * @param delayInMilliseconds The delay value.
+         */
         public ProvisioningStatePollStrategyData(RestProxy restProxy,
                                                  SwaggerMethodParser methodParser,
                                                  HttpRequest originalRequest,
@@ -95,6 +104,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
         return OperationState.isCompleted(status());
     }
 
+    @Override
     public Serializable strategyData() {
         return this.data;
     }
