@@ -34,7 +34,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
         String provisioningState;
 
         /**
-         * Create a new ProvisioningStatePollStrategyData
+         * Create a new ProvisioningStatePollStrategyData.
          * @param restProxy The RestProxy that created this PollStrategy.
          * @param methodParser The method parser that describes the service interface method that
          *                     initiated the long running operation.

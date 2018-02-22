@@ -37,10 +37,9 @@ public class CompletedPollStrategy extends PollStrategy {
     }
 
     /**
-     * The CompletedPollStrategy data
+     * The CompletedPollStrategy data.
      */
-    public static class CompletedPollStrategyData extends PollStrategyData
-    {
+    public static class CompletedPollStrategyData extends PollStrategyData {
         HttpResponse firstHttpResponse;
 
         /**

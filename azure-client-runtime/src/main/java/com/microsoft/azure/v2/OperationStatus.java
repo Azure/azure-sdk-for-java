@@ -8,7 +8,6 @@ package com.microsoft.azure.v2;
 
 import com.microsoft.rest.v2.OperationDescription;
 import com.microsoft.rest.v2.RestException;
-import com.microsoft.rest.v2.SwaggerMethodParser;
 import com.microsoft.rest.v2.http.HttpRequest;
 
 /**
@@ -87,8 +86,12 @@ public class OperationStatus<T> {
         return error;
     }
 
+    /**
+     * Builds an object that can be used to resume the polling of the operation.
+     * @return The OperationDescription.
+     */
     public OperationDescription buildDescription() {
-        if(this.isDone()) {
+        if (this.isDone()) {
             return null;
         }
 

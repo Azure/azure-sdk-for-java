@@ -40,7 +40,6 @@ import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
 
 import java.io.IOException;
-import java.io.Serializable;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Proxy;
 import java.lang.reflect.Type;
@@ -311,7 +310,7 @@ public final class AzureProxy extends RestProxy {
         }
 
         PollStrategy.PollStrategyData pollStrategyData =
-                (PollStrategy.PollStrategyData)operationDescription.pollStrategyData();
+                (PollStrategy.PollStrategyData) operationDescription.pollStrategyData();
         PollStrategy pollStrategy = pollStrategyData.initializeStrategy(this, methodParser);
         return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusType);
     }

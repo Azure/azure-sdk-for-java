@@ -37,14 +37,14 @@ public final class LocationPollStrategy extends PollStrategy {
     }
 
     /**
-     * The LocationPollStrategy data
+     * The LocationPollStrategy data.
      */
     public static class LocationPollStrategyData extends PollStrategyData {
         URL locationUrl;
         boolean done;
 
         /**
-         * Create a new LocationPollStrategyData
+         * Create a new LocationPollStrategyData.
          */
         public LocationPollStrategyData() {
             super(null, null, 0);
@@ -52,7 +52,7 @@ public final class LocationPollStrategy extends PollStrategy {
         }
 
         /**
-         * Create a new LocationPollStrategyData
+         * Create a new LocationPollStrategyData.
          * @param restProxy The RestProxy that created this PollStrategy.
          * @param methodParser The method parser that describes the service interface method that
          *                     initiated the long running operation.

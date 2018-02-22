@@ -43,7 +43,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     }
 
     /**
-     * The AzureAsyncOperationPollStrategy data
+     * The AzureAsyncOperationPollStrategy data.
      */
     private static class AzureAsyncOperationPollStrategyData extends PollStrategyData {
         private boolean pollingCompleted;
