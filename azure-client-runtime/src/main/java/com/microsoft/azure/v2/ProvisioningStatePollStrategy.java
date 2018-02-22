@@ -29,7 +29,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
         this.data = data;
     }
 
-    static class ProvisioningStatePollStrategyData extends PollStrategy.PollStrategyData {
+    public static class ProvisioningStatePollStrategyData extends PollStrategy.PollStrategyData {
         HttpRequest originalRequest;
         String provisioningState;
 
