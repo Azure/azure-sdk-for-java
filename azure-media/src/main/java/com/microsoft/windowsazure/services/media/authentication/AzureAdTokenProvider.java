@@ -81,12 +81,12 @@ public class AzureAdTokenProvider implements TokenProvider {
             case UserCredential:
                 throw new NotImplementedException(
                         String.format(
-                            "Interactive user credential is currently not supported by the java sdk",
+                            "Interactive user credential %s is currently not supported by the java sdk",
                             this.tokenCredentials.getCredentialType()));
             default:
                 throw new NotImplementedException(
                     String.format(
-                        "Token Credential type %1 is not supported.",
+                        "Token Credential type %s is not supported.",
                         this.tokenCredentials.getCredentialType()));
         }
     }

@@ -63,13 +63,13 @@ public class ResourceNamer {
     }
 
     private String randomString(int length) {
-        String str = "";
+        StringBuilder str = new StringBuilder();
         while (str.length() < length) {
-            str += UUID.randomUUID()
+            str.append(UUID.randomUUID()
                     .toString()
                     .replace("-", "")
-                    .substring(0, Math.min(32, length)).toLowerCase();
+                    .substring(0, Math.min(32, length)).toLowerCase());
         }
-        return str;
+        return str.toString();
     }
 }

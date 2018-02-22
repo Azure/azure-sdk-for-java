@@ -55,7 +55,7 @@ public final class ListVirtualMachineExtensionImages {
             System.out.println("Publisher - " + publisher.name());
 
             if (publisher.name().equalsIgnoreCase("Microsoft.OSTCExtensions")
-                    | publisher.name().equalsIgnoreCase("Microsoft.Azure.Extensions")) {
+                    || publisher.name().equalsIgnoreCase("Microsoft.Azure.Extensions")) {
 
                 chosenPublisher = publisher;
                 System.out.print("\n\n");

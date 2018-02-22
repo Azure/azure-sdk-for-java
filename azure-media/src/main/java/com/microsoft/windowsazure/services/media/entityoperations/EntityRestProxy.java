@@ -196,7 +196,7 @@ public abstract class EntityRestProxy implements EntityContract {
         updater.processResponse(clientResponse);
         if (clientResponse.getHeaders().containsKey("operation-id")) {
             List<String> operationIds = clientResponse.getHeaders().get("operation-id");
-            if (operationIds.size() >= 0) {
+            if (operationIds.size() > 0) {
                 return operationIds.get(0);
             }
         }
@@ -219,7 +219,7 @@ public abstract class EntityRestProxy implements EntityContract {
         PipelineHelpers.throwIfNotSuccess(clientResponse);
         if (clientResponse.getHeaders().containsKey("operation-id")) {
             List<String> operationIds = clientResponse.getHeaders().get("operation-id");
-            if (operationIds.size() >= 0) {
+            if (operationIds.size() > 0) {
                 return operationIds.get(0);
             }
         }
@@ -269,7 +269,7 @@ public abstract class EntityRestProxy implements EntityContract {
         
         if (clientResponse.getHeaders().containsKey("operation-id")) {
             List<String> operationIds = clientResponse.getHeaders().get("operation-id");
-            if (operationIds.size() >= 0) {
+            if (operationIds.size() > 0) {
                 return operationIds.get(0);
             }
         }
