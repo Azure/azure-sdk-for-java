@@ -1,9 +1,7 @@
 package com.microsoft.azure.servicebus.primitives;
 
-import java.time.ZonedDateTime;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ScheduledFuture;
 
 import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.message.Message;
@@ -18,11 +16,9 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
     
 	private final Object requestResonseLinkCreationLock = new Object();
 	private final String entityPath;
-	private final String sasTokenAudienceURI;
 	private final MessagingFactory underlyingFactory;
 	private RequestResponseLink requestResponseLink;
 	private CompletableFuture<Void> requestResponseLinkCreationFuture;
-	private ScheduledFuture<?> sasTokenRenewTimerFuture;
 	
 	private MiscRequestResponseOperationHandler(MessagingFactory factory, String linkName, String entityPath)
 	{
@@ -30,51 +26,16 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 		
 		this.underlyingFactory = factory;
 		this.entityPath = entityPath;
-		this.sasTokenAudienceURI = String.format(ClientConstants.SAS_TOKEN_AUDIENCE_FORMAT, factory.getHostName(), entityPath);
 	}	
 	
 	public static CompletableFuture<MiscRequestResponseOperationHandler> create(MessagingFactory factory, String entityPath)
 	{
-	    CompletableFuture<MiscRequestResponseOperationHandler> creationFuture = new CompletableFuture<MiscRequestResponseOperationHandler>();
 	    MiscRequestResponseOperationHandler requestResponseOperationHandler = new MiscRequestResponseOperationHandler(factory, StringUtil.getShortRandomString(), entityPath);
-	    requestResponseOperationHandler.sendTokenAndSetRenewTimer(false).handleAsync((v, ex) -> {
-	        if(ex == null)
-	        {
-	            TRACE_LOGGER.info("Opened MiscRequestResponseOperationHandler");
-	            creationFuture.complete(requestResponseOperationHandler);
-	        }
-	        else
-	        {
-	            TRACE_LOGGER.error("Opening of MiscRequestResponseOperationHandler failed", ex);
-	            creationFuture.completeExceptionally(ExceptionUtil.extractAsyncCompletionCause(ex));
-	        }
-	        return null;
-	    });
-	    
-	    Timer.schedule(
-                new Runnable()
-                {
-                    public void run()
-                    {
-                        if (!creationFuture.isDone())
-                        {
-                            requestResponseOperationHandler.closeInternals();
-                            Exception operationTimedout = new TimeoutException(
-                                    String.format(Locale.US, "Open operation on CBSLink(%s) on Entity(%s) timed out at %s.", requestResponseOperationHandler.getClientId(), requestResponseOperationHandler.entityPath, ZonedDateTime.now().toString()));                            
-                            TRACE_LOGGER.warn(operationTimedout.getMessage());
-
-                            creationFuture.completeExceptionally(operationTimedout);
-                        }
-                    }
-                }
-                , factory.getOperationTimeout()
-                , TimerType.OneTimeRun);
-	    return creationFuture;		
+	    return CompletableFuture.completedFuture(requestResponseOperationHandler);		
 	}
 	
 	private void closeInternals()
 	{
-	    this.cancelSASTokenRenewTimer();
         this.closeRequestResponseLink();
 	}
 	
@@ -84,28 +45,6 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 	    this.closeInternals();
 	    return CompletableFuture.completedFuture(null);
 	}
-	
-	private CompletableFuture<Void> sendTokenAndSetRenewTimer(boolean retryOnFailure)
-    {
-        if(this.getIsClosingOrClosed())
-        {
-            return CompletableFuture.completedFuture(null);
-        }
-        else
-        {
-            CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSecurityTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendTokenAndSetRenewTimer(true));
-            return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Set SAS Token renew timer");});
-        }
-    }
-    
-    private void cancelSASTokenRenewTimer()
-    {
-        if(this.sasTokenRenewTimerFuture != null && !this.sasTokenRenewTimerFuture.isDone())
-        {
-            TRACE_LOGGER.debug("Cancelling SAS Token renew timer");
-            this.sasTokenRenewTimerFuture.cancel(true);
-        }
-    }
 	
 	private CompletableFuture<Void> createRequestResponseLink()
 	{

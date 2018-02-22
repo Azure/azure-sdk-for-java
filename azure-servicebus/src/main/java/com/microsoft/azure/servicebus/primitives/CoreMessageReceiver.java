@@ -1142,7 +1142,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                                 TRACE_LOGGER.warn(operationTimedout.getMessage());
                                 linkReopenFutureThatCanBeCancelled.completeExceptionally(operationTimedout);
                             }
-	                    }	                    
+	                    }
 	                    , CoreMessageReceiver.LINK_REOPEN_TIMEOUT
 	                    , TimerType.OneTimeRun);
 	            this.cancelSASTokenRenewTimer();

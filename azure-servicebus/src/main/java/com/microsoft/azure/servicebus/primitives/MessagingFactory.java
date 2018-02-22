@@ -628,7 +628,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	        String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
 	        TRACE_LOGGER.info("Creating CBS link to {}", requestResponseLinkPath);
 	        CompletableFuture<Void> crateAndAssignRequestResponseLink =
-	                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath).handleAsync((cbsLink, ex) ->
+	                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath, null).handleAsync((cbsLink, ex) ->
 	                        {
 	                            if(ex == null)
 	                            {

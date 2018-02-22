@@ -92,8 +92,9 @@ class RequestResponseLinkcache
         private void createRequestResponseLinkAsync()
         {
             String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.entityPath);
+            String sasTokenAudienceURI = String.format(ClientConstants.SAS_TOKEN_AUDIENCE_FORMAT, this.underlyingFactory.getHostName(), this.entityPath);
             TRACE_LOGGER.debug("Creating requestresponselink to '{}'", requestResponseLinkPath);
-            RequestResponseLink.createAsync(this.underlyingFactory, StringUtil.getShortRandomString() + "-RequestResponse", requestResponseLinkPath).handleAsync((rrlink, ex) ->
+            RequestResponseLink.createAsync(this.underlyingFactory, StringUtil.getShortRandomString() + "-RequestResponse", requestResponseLinkPath, sasTokenAudienceURI).handleAsync((rrlink, ex) ->
             {
                 synchronized (this.lock)
                 {
