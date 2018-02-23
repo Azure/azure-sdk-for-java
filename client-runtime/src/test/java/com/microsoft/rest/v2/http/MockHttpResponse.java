@@ -43,7 +43,7 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     public MockHttpResponse(int statusCode, HttpHeaders headers) {
-        this(statusCode, headers, null);
+        this(statusCode, headers, new byte[0]);
     }
 
     public MockHttpResponse(int statusCode, HttpHeaders headers, Object serializable) {

@@ -8,6 +8,7 @@ package com.microsoft.rest.v2;
 
 import com.google.common.io.BaseEncoding;
 import com.microsoft.rest.v2.annotations.BodyParam;
+import com.microsoft.rest.v2.annotations.DELETE;
 import com.microsoft.rest.v2.annotations.ExpectedResponses;
 import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.HeaderParam;
@@ -154,6 +155,14 @@ public class RestProxyStressTests {
 
         @GET("/javasdktest/upload/100m-{id}.dat?{sas}")
         Single<RestResponse<Void, Flowable<ByteBuffer>>> download100M(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+
+        @ExpectedResponses({ 201 })
+        @PUT("/testcontainer{id}?restype=container&{sas}")
+        Single<RestResponse<Void, Void>> createContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
+
+        @ExpectedResponses({ 202 })
+        @DELETE("/testcontainer{id}?restype=container&{sas}")
+        Single<RestResponse<Void, Void>> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
     }
 
     private static final Path TEMP_FOLDER_PATH = Paths.get("temp");
@@ -478,6 +487,38 @@ public class RestProxyStressTests {
                     }
                 })).blockingAwait();
 
-        System.in.read();
+        Thread.sleep(10000);
+    }
+
+    @Test
+    public void testHighParallelism() throws Exception {
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
+        HttpHeaders headers = new HttpHeaders()
+                .set("x-ms-version", "2017-04-17");
+
+        HttpPipeline pipeline = HttpPipeline.build(
+                new AddDatePolicyFactory(),
+                new AddHeadersPolicyFactory(headers),
+                new HttpLoggingPolicyFactory(HttpLogDetailLevel.BASIC));
+
+        final IOService service = RestProxy.create(IOService.class, pipeline);
+        Flowable.range(0, 10000)
+                .flatMapCompletable(new Function<Integer, CompletableSource>() {
+                    @Override
+                    public CompletableSource apply(Integer integer) throws Exception {
+                        return service.createContainer(integer.toString(), sas)
+                                .toCompletable()
+                                .onErrorResumeNext(new Function<Throwable, CompletableSource>() {
+                                    @Override
+                                    public CompletableSource apply(Throwable throwable) throws Exception {
+                                        if (throwable instanceof RestException && ((RestException) throwable).response().statusCode() == 409) {
+                                            return Completable.complete();
+                                        } else {
+                                            return Completable.error(throwable);
+                                        }
+                                    }
+                                }).andThen(service.deleteContainer(integer.toString(), sas).toCompletable());
+                    }
+                }).blockingAwait();
     }
 }

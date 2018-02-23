@@ -389,7 +389,8 @@ public class RestProxy implements InvocationHandler {
 
             final TypeToken bodyTypeToken = TypeToken.of(bodyType);
             if (bodyTypeToken.isSubtypeOf(Void.class)) {
-                asyncResult = Single.just(new RestResponse<>(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null));
+                asyncResult = response.streamBodyAsync().lastElement().ignoreElement()
+                        .andThen(Single.just(new RestResponse<>(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
             } else {
                 final Map<String, String> rawHeaders = responseHeaders.toMap();
 
