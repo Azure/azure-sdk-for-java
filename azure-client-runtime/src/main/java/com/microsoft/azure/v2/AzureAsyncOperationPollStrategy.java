@@ -6,8 +6,8 @@
 
 package com.microsoft.azure.v2;
 
-import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerMethodParser;
+import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.http.HttpMethod;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
@@ -15,6 +15,7 @@ import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -23,12 +24,7 @@ import java.net.URL;
  * running operation.
  */
 public final class AzureAsyncOperationPollStrategy extends PollStrategy {
-    private final URL operationResourceUrl;
-    private final URL originalResourceUrl;
-
-    private boolean pollingCompleted;
-    private boolean pollingSucceeded;
-    private boolean gotResourceResponse;
+    private AzureAsyncOperationPollStrategyData data;
 
     /**
      * The name of the header that indicates that a long running operation will use the
@@ -39,27 +35,55 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
     /**
      * Create a new AzureAsyncOperationPollStrategy object that will poll the provided operation
      * resource URL.
-     * @param operationResourceUrl The URL of the operation resource this pollStrategy will poll.
-     * @param originalResourceUrl The URL of the resource that the long running operation is
-     *                            operating on.
-     * @param delayInMilliseconds The delay (in milliseconds) that the pollStrategy will use when
-     *                            polling.
+     * @param data The AzureAsyncOperationPollStrategyData data object.
      */
-    private AzureAsyncOperationPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, URL operationResourceUrl, URL originalResourceUrl, long delayInMilliseconds) {
-        super(restProxy, methodParser, delayInMilliseconds);
+    private AzureAsyncOperationPollStrategy(AzureAsyncOperationPollStrategyData data) {
+        super(data);
+        this.data = data;
+    }
 
-        this.operationResourceUrl = operationResourceUrl;
-        this.originalResourceUrl = originalResourceUrl;
+    /**
+     * The AzureAsyncOperationPollStrategy data.
+     */
+    private static class AzureAsyncOperationPollStrategyData extends PollStrategyData {
+        private boolean pollingCompleted;
+        private boolean pollingSucceeded;
+        private boolean gotResourceResponse;
+
+        URL operationResourceUrl;
+        URL originalResourceUrl;
+
+        /**
+         * Create a new AzureAsyncOperationPollStrategyData object that will poll the provided operation
+         * resource URL.
+         * @param operationResourceUrl The URL of the operation resource this pollStrategy will poll.
+         * @param originalResourceUrl The URL of the resource that the long running operation is
+         *                            operating on.
+         * @param delayInMilliseconds The delay (in milliseconds) that the pollStrategy will use when
+         *                            polling.
+         */
+        AzureAsyncOperationPollStrategyData(RestProxy restProxy, SwaggerMethodParser methodParser, URL operationResourceUrl, URL originalResourceUrl, long delayInMilliseconds) {
+            super(restProxy, methodParser, delayInMilliseconds);
+            this.operationResourceUrl = operationResourceUrl;
+            this.originalResourceUrl = originalResourceUrl;
+        }
+
+        PollStrategy initializeStrategy(RestProxy restProxy,
+                                        SwaggerMethodParser methodParser) {
+            this.restProxy = restProxy;
+            this.methodParser = methodParser;
+            return new AzureAsyncOperationPollStrategy(this);
+        }
     }
 
     @Override
     public HttpRequest createPollRequest() {
         URL pollUrl;
-        if (!pollingCompleted) {
-            pollUrl = operationResourceUrl;
+        if (!data.pollingCompleted) {
+            pollUrl = data.operationResourceUrl;
         }
-        else if (pollingSucceeded) {
-            pollUrl = originalResourceUrl;
+        else if (data.pollingSucceeded) {
+            pollUrl = data.originalResourceUrl;
         } else {
             throw new IllegalStateException("Polling is completed and did not succeed. Cannot create a polling request.");
         }
@@ -76,7 +100,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                         updateDelayInMillisecondsFrom(response);
 
                         Single<HttpResponse> result;
-                        if (!pollingCompleted) {
+                        if (!data.pollingCompleted) {
                             final HttpResponse bufferedHttpPollResponse = response.buffer();
                             result = bufferedHttpPollResponse.bodyAsStringAsync()
                                     .map(new Function<String, HttpResponse>() {
@@ -97,17 +121,17 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                                                 final String status = operationResource.status();
                                                 setStatus(status);
 
-                                                pollingCompleted = OperationState.isCompleted(status);
-                                                if (pollingCompleted) {
-                                                    pollingSucceeded = OperationState.SUCCEEDED.equalsIgnoreCase(status);
+                                                data.pollingCompleted = OperationState.isCompleted(status);
+                                                if (data.pollingCompleted) {
+                                                    data.pollingSucceeded = OperationState.SUCCEEDED.equalsIgnoreCase(status);
                                                     clearDelayInMilliseconds();
 
-                                                    if (!pollingSucceeded) {
+                                                    if (!data.pollingSucceeded) {
                                                         throw new CloudException("Async operation failed with provisioning state: " + status, bufferedHttpPollResponse);
                                                     }
 
                                                     if (operationResource.id() != null) {
-                                                        gotResourceResponse = true;
+                                                        data.gotResourceResponse = true;
                                                     }
                                                 }
                                             }
@@ -117,8 +141,8 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                                     });
                         }
                         else {
-                            if (pollingSucceeded) {
-                                gotResourceResponse = true;
+                            if (data.pollingSucceeded) {
+                                data.gotResourceResponse = true;
                             }
 
                             result = Single.just(response);
@@ -131,7 +155,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
 
     @Override
     public boolean isDone() {
-        return pollingCompleted && (!pollingSucceeded || !expectsResourceResponse() || gotResourceResponse);
+        return data.pollingCompleted && (!data.pollingSucceeded || !expectsResourceResponse() || data.gotResourceResponse);
     }
 
     /**
@@ -159,11 +183,17 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
         }
 
         return azureAsyncOperationUrl != null
-                ? new AzureAsyncOperationPollStrategy(restProxy, methodParser, azureAsyncOperationUrl, originalHttpRequest.url(), delayInMilliseconds)
+                ? new AzureAsyncOperationPollStrategy(
+                        new AzureAsyncOperationPollStrategyData(restProxy, methodParser, azureAsyncOperationUrl, originalHttpRequest.url(), delayInMilliseconds))
                 : null;
     }
 
     static String getHeader(HttpResponse httpResponse) {
         return httpResponse.headerValue(HEADER_NAME);
+    }
+
+    @Override
+    public Serializable strategyData() {
+        return this.data;
     }
 }

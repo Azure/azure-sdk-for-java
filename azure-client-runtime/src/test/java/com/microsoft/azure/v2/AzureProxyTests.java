@@ -1,7 +1,12 @@
 package com.microsoft.azure.v2;
 
+import com.fasterxml.jackson.annotation.JsonAutoDetect;
+import com.fasterxml.jackson.annotation.PropertyAccessor;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.v2.http.MockAzureHttpClient;
 import com.microsoft.azure.v2.http.MockAzureHttpResponse;
+import com.microsoft.rest.v2.OperationDescription;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.http.HttpRequest;
@@ -16,6 +21,7 @@ import com.microsoft.rest.v2.annotations.GET;
 import com.microsoft.rest.v2.annotations.Host;
 import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.PathParam;
+import com.microsoft.rest.v2.annotations.ResumeOperation;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -24,6 +30,7 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 
+import java.io.IOException;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static org.junit.Assert.*;
@@ -119,6 +126,10 @@ public class AzureProxyTests {
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Location&PollsRemaining={pollsRemaining}")
         @ExpectedResponses({200})
         Observable<OperationStatus<MockResource>> beginCreateAsyncWithLocationAndPolls(@PathParam("subscriptionId") String subscriptionId, @PathParam("resourceGroupName") String resourceGroupName, @PathParam("mockResourceName") String mockResourceName, @PathParam("pollsRemaining") int pollsUntilResource);
+
+        @ExpectedResponses({200})
+        @ResumeOperation
+        Observable<OperationStatus<MockResource>> resumeCreateAsyncWithLocationAndPolls(OperationDescription operationDescription);
 
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/mockprovider/mockresources/{mockResourceName}?PollType=Azure-AsyncOperation&PollsRemaining={pollsRemaining}")
         @ExpectedResponses({200})
@@ -513,6 +524,76 @@ public class AzureProxyTests {
         assertEquals(1, httpClient.createRequests());
         assertEquals(0, httpClient.deleteRequests());
         assertEquals(3, httpClient.pollRequests());
+    }
+
+    @Test
+    public void beginAndResumeCreateAsyncWithLocationAndPolls() {
+        final MockAzureHttpClient httpClient = new MockAzureHttpClient();
+
+        final AtomicInteger inProgressCount = new AtomicInteger();
+        final Value<MockResource> resource = new Value<>();
+        final StringBuffer data = new StringBuffer();
+        final ObjectMapper mapper = new ObjectMapper();
+        mapper.setVisibility(PropertyAccessor.ALL, JsonAutoDetect.Visibility.NONE);
+        mapper.setVisibility(PropertyAccessor.FIELD, JsonAutoDetect.Visibility.ANY);
+        mapper.enableDefaultTyping();
+
+        createMockService(MockResourceService.class, httpClient)
+                .beginCreateAsyncWithLocationAndPolls("1", "mine", "c", 10)
+                .take(2)
+                .subscribe(new Consumer<OperationStatus<MockResource>>() {
+                    @Override
+                    public void accept(OperationStatus<MockResource> operationStatus) {
+                        if (!operationStatus.isDone()) {
+                            OperationDescription operationDescription = operationStatus.buildDescription();
+                            try {
+                                data.append(mapper.writeValueAsString(operationDescription));
+                            } catch (JsonProcessingException e) {
+                                fail("Error serializing OperationDescription object");
+                                e.printStackTrace();
+                            }
+                            inProgressCount.incrementAndGet();
+                        }
+                        else {
+                            resource.set(operationStatus.result());
+                        }
+                    }
+                });
+
+        OperationDescription operationDescription = null;
+        PollStrategy.PollStrategyData pollData = null;
+        try {
+            operationDescription = mapper.readValue(data.toString(), OperationDescription.class);
+            pollData = (PollStrategy.PollStrategyData)operationDescription.pollStrategyData();
+        } catch (IOException e) {
+            fail("Error deserializing OperationDescription object");
+            e.printStackTrace();
+        }
+
+        assertNotNull(operationDescription);
+        assertNotNull(pollData);
+
+        createMockService(MockResourceService.class, httpClient)
+                .resumeCreateAsyncWithLocationAndPolls(operationDescription)
+                .subscribe(new Consumer<OperationStatus<MockResource>>() {
+                    @Override
+                    public void accept(OperationStatus<MockResource> operationStatus) {
+                        if (!operationStatus.isDone()) {
+                            OperationDescription operationDescription = operationStatus.buildDescription();
+                            try {
+                                data.append(mapper.writeValueAsString(operationDescription));
+                            } catch (JsonProcessingException e) {
+                                fail("Error serializing OperationDescription object");
+                                e.printStackTrace();
+                            }
+                            inProgressCount.incrementAndGet();
+                        }
+                        else {
+                            resource.set(operationStatus.result());
+                        }
+                    }
+                });
+
     }
 
     @Test

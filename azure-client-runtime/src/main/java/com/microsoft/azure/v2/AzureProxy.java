@@ -14,6 +14,7 @@ import com.microsoft.rest.v2.InvalidReturnTypeException;
 import com.microsoft.rest.v2.RestProxy;
 import com.microsoft.rest.v2.SwaggerInterfaceParser;
 import com.microsoft.rest.v2.SwaggerMethodParser;
+import com.microsoft.rest.v2.OperationDescription;
 import com.microsoft.rest.v2.credentials.ServiceClientCredentials;
 import com.microsoft.rest.v2.http.HttpClient;
 import com.microsoft.rest.v2.http.HttpMethod;
@@ -258,7 +259,8 @@ public final class AzureProxy extends RestProxy {
                     @Override
                     public ObservableSource<?> apply(HttpResponse httpResponse) throws Exception {
                         final HttpResponse bufferedHttpResponse = httpResponse.buffer();
-                        return createPollStrategy(httpRequest, Single.just(bufferedHttpResponse), methodParser).flatMapObservable(new Function<PollStrategy, ObservableSource<OperationStatus<?>>>() {
+                        return createPollStrategy(httpRequest, Single.just(bufferedHttpResponse), methodParser)
+                                .flatMapObservable(new Function<PollStrategy, ObservableSource<OperationStatus<?>>>() {
                             @Override
                             public ObservableSource<OperationStatus<?>> apply(final PollStrategy pollStrategy) throws Exception {
                                 Observable<OperationStatus<?>> first = handleBodyReturnTypeAsync(bufferedHttpResponse, methodParser, operationStatusResultType)
@@ -293,6 +295,24 @@ public final class AzureProxy extends RestProxy {
         }
 
         return result;
+    }
+
+    @Override
+    protected Object handleResumeOperation(final HttpRequest httpRequest,
+                                           OperationDescription operationDescription,
+                                           final SwaggerMethodParser methodParser,
+                                           Type returnType)
+            throws Exception {
+        final Type operationStatusType = ((ParameterizedType) returnType).getActualTypeArguments()[0];
+        final TypeToken operationStatusTypeToken = TypeToken.of(operationStatusType);
+        if (!operationStatusTypeToken.isSubtypeOf(OperationStatus.class)) {
+            throw new InvalidReturnTypeException("AzureProxy only supports swagger interface methods that return Observable (such as " + methodParser.fullyQualifiedMethodName() + "()) if the Observable's inner type that is OperationStatus (not " + returnType.toString() + ").");
+        }
+
+        PollStrategy.PollStrategyData pollStrategyData =
+                (PollStrategy.PollStrategyData) operationDescription.pollStrategyData();
+        PollStrategy pollStrategy = pollStrategyData.initializeStrategy(this, methodParser);
+        return pollStrategy.pollUntilDoneWithStatusUpdates(httpRequest, methodParser, operationStatusType);
     }
 
     private Single<PollStrategy> createPollStrategy(final HttpRequest originalHttpRequest, final Single<HttpResponse> asyncOriginalHttpResponse, final SwaggerMethodParser methodParser) {
@@ -349,7 +369,8 @@ public final class AzureProxy extends RestProxy {
                                         }
 
                                         if (pollStrategy == null && result == null) {
-                                            pollStrategy = new CompletedPollStrategy(AzureProxy.this, methodParser, originalHttpResponse);
+                                            pollStrategy = new CompletedPollStrategy(
+                                                    new CompletedPollStrategy.CompletedPollStrategyData(AzureProxy.this, methodParser, originalHttpResponse));
                                         }
 
                                         if (pollStrategy != null) {
@@ -371,7 +392,8 @@ public final class AzureProxy extends RestProxy {
                 || httpRequestMethod == HttpMethod.GET
                 || httpRequestMethod == HttpMethod.HEAD
                 || !methodParser.expectsResponseBody()) {
-            result = Single.<PollStrategy>just(new CompletedPollStrategy(AzureProxy.this, methodParser, httpResponse));
+            result = Single.<PollStrategy>just(new CompletedPollStrategy(
+                    new CompletedPollStrategy.CompletedPollStrategyData(AzureProxy.this, methodParser, httpResponse)));
         } else {
             final HttpResponse bufferedOriginalHttpResponse = httpResponse.buffer();
             result = bufferedOriginalHttpResponse.bodyAsStringAsync()
@@ -387,9 +409,13 @@ public final class AzureProxy extends RestProxy {
                                 final SerializerAdapter<?> serializer = serializer();
                                 final ResourceWithProvisioningState resource = serializer.deserialize(originalHttpResponseBody, ResourceWithProvisioningState.class, SerializerEncoding.JSON);
                                 if (resource != null && resource.properties() != null && !OperationState.isCompleted(resource.properties().provisioningState())) {
-                                    result = new ProvisioningStatePollStrategy(AzureProxy.this, methodParser, httpRequest, resource.properties().provisioningState(), delayInMilliseconds);
+                                    result = new ProvisioningStatePollStrategy(
+                                            new ProvisioningStatePollStrategy.ProvisioningStatePollStrategyData(
+                                                    AzureProxy.this, methodParser, httpRequest, resource.properties().provisioningState(), delayInMilliseconds));
                                 } else {
-                                    result = new CompletedPollStrategy(AzureProxy.this, methodParser, bufferedOriginalHttpResponse);
+                                    result = new CompletedPollStrategy(
+                                            new CompletedPollStrategy.CompletedPollStrategyData(
+                                                    AzureProxy.this, methodParser, bufferedOriginalHttpResponse));
                                 }
                             } catch (IOException e) {
                                 throw Exceptions.propagate(e);

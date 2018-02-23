@@ -14,6 +14,7 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
+import java.io.Serializable;
 import java.lang.reflect.Type;
 
 /**
@@ -22,20 +23,46 @@ import java.lang.reflect.Type;
  */
 public class CompletedPollStrategy extends PollStrategy {
     private final BufferedHttpResponse firstHttpResponse;
+    private CompletedPollStrategyData data;
 
     /**
      * Create a new CompletedPollStrategy.
-     * @param restProxy The RestProxy that created this PollStrategy.
-     * @param methodParser The method parser that describes the service interface method that
-     *                     initiated the long running operation.
-     * @param firstHttpResponse The HTTP response to the original HTTP request.
+     * @param data The poll strategy data.
      */
-    public CompletedPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, HttpResponse firstHttpResponse) {
-        super(restProxy, methodParser, 0);
-        this.firstHttpResponse = firstHttpResponse.buffer();
+    public CompletedPollStrategy(CompletedPollStrategyData data) {
+        super(data);
+        this.firstHttpResponse = data.firstHttpResponse.buffer();
         setStatus(OperationState.SUCCEEDED);
+        this.data = data;
     }
 
+    /**
+     * The CompletedPollStrategy data.
+     */
+    public static class CompletedPollStrategyData extends PollStrategyData {
+        HttpResponse firstHttpResponse;
+
+        /**
+         * Create a new CompletedPollStrategyData.
+         * @param restProxy The RestProxy that created this PollStrategy.
+         * @param methodParser The method parser that describes the service interface method that
+         *                     initiated the long running operation.
+         * @param firstHttpResponse The HTTP response to the original HTTP request.
+         */
+        public CompletedPollStrategyData(RestProxy restProxy, SwaggerMethodParser methodParser, HttpResponse firstHttpResponse) {
+            super(restProxy, methodParser, 0);
+            this.firstHttpResponse = firstHttpResponse;
+        }
+
+        PollStrategy initializeStrategy(RestProxy restProxy,
+                                        SwaggerMethodParser methodParser) {
+            this.restProxy = restProxy;
+            this.methodParser = methodParser;
+            return new CompletedPollStrategy(this);
+        }
+    }
+
+    public
     @Override
     HttpRequest createPollRequest() {
         throw new UnsupportedOperationException();
@@ -57,5 +84,10 @@ public class CompletedPollStrategy extends PollStrategy {
 
     Single<HttpResponse> pollUntilDone() {
         return Single.<HttpResponse>just(firstHttpResponse);
+    }
+
+    @Override
+    public Serializable strategyData() {
+        return this.data;
     }
 }

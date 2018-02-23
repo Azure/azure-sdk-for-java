@@ -20,6 +20,7 @@ import io.reactivex.functions.Function;
 import io.reactivex.functions.Predicate;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.lang.reflect.Type;
 import java.util.concurrent.Callable;
 import java.util.concurrent.TimeUnit;
@@ -35,10 +36,28 @@ abstract class PollStrategy {
     private long delayInMilliseconds;
     private String status;
 
-    PollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, long delayInMilliseconds) {
-        this.restProxy = restProxy;
-        this.methodParser = methodParser;
-        this.delayInMilliseconds = delayInMilliseconds;
+    PollStrategy(PollStrategyData data) {
+        this.restProxy = data.restProxy;
+        this.methodParser = data.methodParser;
+        this.delayInMilliseconds = data.delayInMilliseconds;
+    }
+
+    abstract static class PollStrategyData implements Serializable {
+        transient RestProxy restProxy;
+        transient SwaggerMethodParser methodParser;
+        long delayInMilliseconds;
+
+        PollStrategyData(RestProxy restProxy,
+                                SwaggerMethodParser methodParser,
+                                long delayInMilliseconds) {
+            this.restProxy = restProxy;
+            this.methodParser = methodParser;
+            this.delayInMilliseconds = delayInMilliseconds;
+        }
+
+
+        abstract PollStrategy initializeStrategy(RestProxy restProxy,
+                                        SwaggerMethodParser methodParser);
     }
 
     @SuppressWarnings("unchecked")
@@ -172,7 +191,7 @@ abstract class PollStrategy {
     Observable<OperationStatus<Object>> createOperationStatusObservable(HttpRequest httpRequest, HttpResponse httpResponse, SwaggerMethodParser methodParser, Type operationStatusResultType) {
         OperationStatus<Object> operationStatus;
         if (!isDone()) {
-            operationStatus = new OperationStatus<>(this);
+            operationStatus = new OperationStatus<>(this, httpRequest);
         }
         else {
             try {
@@ -212,5 +231,14 @@ abstract class PollStrategy {
                     }
                 })
                 .lastOrError();
+    }
+
+    /**
+     * @erturn The data for the strategy.
+     */
+    public abstract Serializable strategyData();
+
+    SwaggerMethodParser methodParser() {
+        return this.methodParser;
     }
 }

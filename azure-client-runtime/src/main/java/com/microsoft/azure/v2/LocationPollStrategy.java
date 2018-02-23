@@ -14,6 +14,7 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
+import java.io.Serializable;
 import java.net.MalformedURLException;
 import java.net.URL;
 
@@ -22,8 +23,7 @@ import java.net.URL;
  * operation.
  */
 public final class LocationPollStrategy extends PollStrategy {
-    private URL locationUrl;
-    private boolean done;
+    LocationPollStrategyData data;
 
     /**
      * The name of the header that indicates that a long running operation will use the Location
@@ -31,15 +31,53 @@ public final class LocationPollStrategy extends PollStrategy {
      */
     public static final String HEADER_NAME = "Location";
 
-    private LocationPollStrategy(RestProxy restProxy, SwaggerMethodParser methodParser, URL locationUrl, long delayInMilliseconds) {
-        super(restProxy, methodParser, delayInMilliseconds);
+    private LocationPollStrategy(LocationPollStrategyData data) {
+        super(data);
+        this.data = data;
+    }
 
-        this.locationUrl = locationUrl;
+    /**
+     * The LocationPollStrategy data.
+     */
+    public static class LocationPollStrategyData extends PollStrategyData {
+        URL locationUrl;
+        boolean done;
+
+        /**
+         * Create a new LocationPollStrategyData.
+         */
+        public LocationPollStrategyData() {
+            super(null, null, 0);
+            this.locationUrl = null;
+        }
+
+        /**
+         * Create a new LocationPollStrategyData.
+         * @param restProxy The RestProxy that created this PollStrategy.
+         * @param methodParser The method parser that describes the service interface method that
+         *                     initiated the long running operation.
+         * @param locationUrl The location url.
+         * @param delayInMilliseconds The delay value.
+         */
+        public LocationPollStrategyData(RestProxy restProxy,
+                                        SwaggerMethodParser methodParser,
+                                        URL locationUrl,
+                                        long delayInMilliseconds) {
+            super(restProxy, methodParser, delayInMilliseconds);
+            this.locationUrl = locationUrl;
+        }
+
+        PollStrategy initializeStrategy(RestProxy restProxy,
+                                        SwaggerMethodParser methodParser) {
+            this.restProxy = restProxy;
+            this.methodParser = methodParser;
+            return new LocationPollStrategy(this);
+        }
     }
 
     @Override
     public HttpRequest createPollRequest() {
-        return new HttpRequest(fullyQualifiedMethodName(), HttpMethod.GET, locationUrl, createResponseDecoder());
+        return new HttpRequest(fullyQualifiedMethodName(), HttpMethod.GET, data.locationUrl, createResponseDecoder());
     }
 
     @Override
@@ -55,11 +93,11 @@ public final class LocationPollStrategy extends PollStrategy {
                         if (httpStatusCode == 202) {
                             String newLocationUrl = getHeader(response);
                             if (newLocationUrl != null) {
-                                locationUrl = new URL(newLocationUrl);
+                                data.locationUrl = new URL(newLocationUrl);
                             }
                         }
                         else {
-                            done = true;
+                            data.done = true;
                         }
                         return response;
                     }
@@ -68,7 +106,7 @@ public final class LocationPollStrategy extends PollStrategy {
 
     @Override
     public boolean isDone() {
-        return done;
+        return data.done;
     }
 
     /**
@@ -108,10 +146,16 @@ public final class LocationPollStrategy extends PollStrategy {
 
         return pollUrl == null
                 ? null
-                : new LocationPollStrategy(restProxy, methodParser, pollUrl, delayInMilliseconds);
+                : new LocationPollStrategy(
+                        new LocationPollStrategyData(restProxy, methodParser, pollUrl, delayInMilliseconds));
     }
 
     static String getHeader(HttpResponse httpResponse) {
         return httpResponse.headerValue(HEADER_NAME);
+    }
+
+    @Override
+    public Serializable strategyData() {
+        return this.data;
     }
 }
