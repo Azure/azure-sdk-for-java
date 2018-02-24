@@ -123,7 +123,7 @@ public class SharedKeyFilter extends ClientFilter implements
 
     protected void addOptionalDateHeader(ClientRequest cr) {
         String date = getHeader(cr, "Date");
-        if (date.isEmpty()) {
+        if (date != null && date.isEmpty()) {
             date = new RFC1123DateConverter().format(new Date());
             cr.getHeaders().putSingle("Date", date);
         }
