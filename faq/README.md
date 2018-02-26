@@ -1,6 +1,6 @@
 # Frequently Asked Questions
 
-The SDK provide Reative Extension Observable based async API You can read more about RxJava and Observable APIs here:
+The SDK provide Reative Extension Observable based async API. You can read more about RxJava and Observable APIs here:
 http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html
 
 ## Performance for Prod
@@ -16,9 +16,9 @@ To achieve better performance and higher throughput there are a few tips that ar
 ### Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads)
 SDK uses [netty](https://netty.io/) for non-blocking IO. The SDK uses a fixed number of IO netty eventloop threads (as many CPU cores your machine has) for executing IO operations.
 
-Eventually the Observable returned by API emits the result on one of the shared IO eventloop netty threads.
+ The Observable returned by API emits the result on one of the shared IO eventloop netty threads. So it is important to not block the shared IO eventloop netty threads. Doing CPU intensive work or blocking operation on the IO eventloop netty thread may cause deadlock or significantly reduce SDK throughput.
 
-Once your application receives the result emitted by observable it is important not to steal eventloop IO netty threads. For example the following code can cause problem in prod environment. It may cause deadlock or significantly reduce the SDK throughput:
+For example the following code executes a cpu intensive work on the eventloop IO netty thread:
 
 
 ```java
@@ -36,7 +36,7 @@ createDocObs.subscribe(
 
 ```
 
-After result is received if you need to do blocking calls (e.g., ``Thread.sleep(.)``) or do CPU intensive work on the result you should avoid doing so on eventloop IO netty thread. You can instead provide your own Scheduler to provide your own thread for running your work.
+After result is received if you want to do CPU intensive work on the result you should avoid doing so on eventloop IO netty thread. You can instead provide your own Scheduler to provide your own thread for running your work.
 
 ```java
 import rx.schedulers;
@@ -58,13 +58,13 @@ or provide your own customized scheduler.
 
 
 ### Disable netty's logging
-If you are not in debugging mode disable netty's logging altogether. Please note suppressing netty's loggging may not be enough. So if you are using log4j to remove the additional CPU costs incurred by org.apache.log4j.Category.callAppenders() from netty add the following line to your codebase:
+If you are not in debugging mode disable netty's logging altogether. Please note suppressing netty's loggging may not be enough. So if you are using log4j to remove the additional CPU costs incurred by ``org.apache.log4j.Category.callAppenders()`` from netty add the following line to your codebase:
 
 ```java
 org.apache.log4j.Logger.getLogger("io.netty").setLevel(org.apache.log4j.Level.OFF);
 ```
 
-* Use native SSL implementation for netty
+### Use native SSL implementation for netty
 Netty can use OpenSSL directly for SSL implementation stack to achieve better performance.
 In the absence of this configuration netty will fall back to Java's default SSL implementation.
 
@@ -123,7 +123,7 @@ RX API has some advantages over Future based APIs. But if you wish to use ``Futu
 import rx.observable.ListenableFutureObservable;
 
 Observable<ResourceResponse<Document>> createDocObservable = asyncClient.createDocument(
-  collectionLink, document,null, false);
+  collectionLink, document, null, false);
 
 // NOTE: if you are going to do CPU intensive work
 // on the result thread consider changing the scheduler see Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads) section
@@ -135,5 +135,5 @@ ResourceResponse<Document> rrd = listenableFuture.get();
 
 For this to work you will need [RxJava Guava library dependency ](https://mvnrepository.com/artifact/io.reactivex/rxjava-guava/1.0.3) more information here https://github.com/ReactiveX/RxJavaGuava.
 
-You can see more details on how to convert Observabelt to Futures here:
+You can see more details on how to convert Observabels to Futures here:
 https://dzone.com/articles/converting-between
