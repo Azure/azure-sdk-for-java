@@ -22,6 +22,8 @@ http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html
 
 Code Sample for creating a Document:
 ```java
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+
 asyncClient = new AsyncDocumentClient.Builder()
 				.withServiceEndpoint(HOST)
 				.withMasterKey(MASTER_KEY)
@@ -42,7 +44,7 @@ Observable<ResourceResponse<Document>> createDocumentObservable =
 	                },
 
 	                error -> {
-	                    System.err.println("an error happened in document creation: actual cause: "
+	                    System.err.println("an error happened: "
 												+ error.getMessage());
 	                });
 ```
@@ -194,4 +196,4 @@ https://dzone.com/articles/converting-between
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
 | 1.0.0       | [1.0.0](https://github.com/Azure/azure-cosmosdb-java/tree/v1.0.0)               | Tagged release for 1.0.0 version of Azure Cosmos DB SDK. |
 | 0.9.0-rc2       | [0.9.0-rc2](https://github.com/Azure/azure-cosmosdb-java/tree/v0.9.0-rc2)             | Release 1.0.0 deprecates this 0.9.0-rc2. Java Package name and artifact Id changed.
-| 0.9-rc1       |            | Release 1.0.0 deprecate this release. Java Package name and artifact Id changed.
+| 0.9-rc1       |            | Release 1.0.0 deprecates this release. Java Package name and artifact Id changed.
