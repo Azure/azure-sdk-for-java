@@ -17,6 +17,39 @@
 The SDK provide Reative Extension Observable based async API. You can read more about RxJava and Observable APIs here:
 http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html
 
+## API Code Sample
+
+Code Sample for creating a Document:
+```java
+asyncClient = new AsyncDocumentClient.Builder()
+				.withServiceEndpoint(TestConfigurations.HOST)
+				.withMasterKey(TestConfigurations.MASTER_KEY)
+				.withConnectionPolicy(ConnectionPolicy.GetDefault())
+				.withConsistencyLevel(ConsistencyLevel.Session)
+				.build();
+
+Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+
+Observable<ResourceResponse<Document>> createDocumentObservable =
+	asyncClient.createDocument(collectionLink, doc, null, false);
+	createDocumentObservable
+	            .single()           // we know there will be one response
+	            .subscribe(
+
+	                documentResourceResponse -> {
+	                    System.out.println(documentResourceResponse.getRequestCharge());
+	                },
+
+	                error -> {
+	                    System.err.println("an error happened in document creation: actual cause: "
+												+ error.getMessage());
+	                });
+```
+
+We have more examples in form of standalone unit tests:
+
+Please check the [examples project](https://github.com/Azure/azure-cosmosdb-java/tree/moderakh/faq/examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
+
 ## Performance Guide for Prod
 To achieve better performance and higher throughput there are a few tips that are helpful to follow:
 
