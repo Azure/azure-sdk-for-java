@@ -34,7 +34,6 @@ import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Future;
 
 import org.junit.After;
 import org.junit.Assert;
@@ -424,21 +423,6 @@ public class DocumentCRUDAsyncAPITest {
 
         // assert document is retrieved
         assertThat(capturedResponse, hasSize(1));
-    }
-    
-    @Test
-    public void testTransformObservableToFuture() throws Exception {
-        
-        // You can convert an Observable to a Future.
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
-                .createDocument(createdCollection.getSelfLink(), doc, null, false);
-        Future<ResourceResponse<Document>> future = createDocumentObservable.toBlocking().toFuture();
-
-        ResourceResponse<Document> rrd = future.get();
-        
-        assertThat(rrd.getRequestCharge(), greaterThan((double) 0));
-        System.out.print(rrd.getRequestCharge());
     }
     
     @Test
