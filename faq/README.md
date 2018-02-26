@@ -1,7 +1,7 @@
-
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Frequently Asked Questions](#frequently-asked-questions)
+	- [Usage Code Sample](#usage-code-sample)
 	- [Performance Guide for Prod](#performance-guide-for-prod)
 		- [Use Proper Scheduler (Avoid stealing Eventloop IO Netty threads)](#use-proper-scheduler-avoid-stealing-eventloop-io-netty-threads)
 		- [Disable netty's logging](#disable-nettys-logging)
@@ -9,23 +9,24 @@
 		- [Use native SSL implementation for netty](#use-native-ssl-implementation-for-netty)
 	- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
 	- [Changes in 1.0.0 compared to 0.9.0-rc2](#changes-in-100-compared-to-090-rc2)
-- [Previous Releases and Corresponding Repo Branches](#previous-releases-and-corresponding-repo-branches)
+	- [Previous Releases and Corresponding Repo Branches](#previous-releases-and-corresponding-repo-branches)
 
 <!-- /TOC -->
+
 # Frequently Asked Questions
 
 The SDK provide Reative Extension Observable based async API. You can read more about RxJava and Observable APIs here:
 http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html
 
-## API Code Sample
+## Usage Code Sample
 
 Code Sample for creating a Document:
 ```java
 asyncClient = new AsyncDocumentClient.Builder()
-				.withServiceEndpoint(TestConfigurations.HOST)
-				.withMasterKey(TestConfigurations.MASTER_KEY)
+				.withServiceEndpoint(HOST)
+				.withMasterKey(MASTER_KEY)
 				.withConnectionPolicy(ConnectionPolicy.GetDefault())
-				.withConsistencyLevel(ConsistencyLevel.Session)
+				.withConsistencyLevel(ConsistencyLevel.Eventual)
 				.build();
 
 Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
@@ -187,7 +188,7 @@ https://dzone.com/articles/converting-between
 * Some minor modifications to ConnectionPolicy configuration
 * Some minor modification to ``FeedOptions``
 
-# Previous Releases and Corresponding Repo Branches
+## Previous Releases and Corresponding Repo Branches
 
 | Version           | SHA1                                                                                      | Remarks                                               |
 |-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
