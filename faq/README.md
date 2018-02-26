@@ -1,17 +1,22 @@
+
+<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+
+- [Frequently Asked Questions](#frequently-asked-questions)
+	- [Performance Guide for Prod](#performance-guide-for-prod)
+		- [Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads)](#use-proper-scheduler-avoid-stealing-eventloop-io-netty-threads)
+		- [Disable netty's logging](#disable-nettys-logging)
+		- [OS Open files Resource Limit](#os-open-files-resource-limit)
+		- [Use native SSL implementation for netty](#use-native-ssl-implementation-for-netty)
+	- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
+
+<!-- /TOC -->
 # Frequently Asked Questions
 
 The SDK provide Reative Extension Observable based async API. You can read more about RxJava and Observable APIs here:
 http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html
 
-## Performance for Prod
+## Performance Guide for Prod
 To achieve better performance and higher throughput there are a few tips that are helpful to follow:
-
-
-* Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads)
-* Disable netty's logging
-* OS Open files Resource Limit
-* Use native SSL implementation for netty
-
 
 ### Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads)
 SDK uses [netty](https://netty.io/) for non-blocking IO. The SDK uses a fixed number of IO netty eventloop threads (as many CPU cores your machine has) for executing IO operations.
@@ -64,6 +69,26 @@ If you are not in debugging mode disable netty's logging altogether. Please note
 org.apache.log4j.Logger.getLogger("io.netty").setLevel(org.apache.log4j.Level.OFF);
 ```
 
+### OS Open files Resource Limit
+Some Linux systems (like Redhat) have an upper limit on the number of open files and total number of connections. Run the following to view the current limits:
+
+```bash
+ulimit -a
+```
+
+The number of open files (nofile) will need to be modified to allow for a larger connection pool size.
+
+Open the limits.conf file:
+
+```bash
+vim /etc/security/limits.conf
+```
+Add/modify the following lines:
+
+```
+* - nofile 100000
+```
+
 ### Use native SSL implementation for netty
 Netty can use OpenSSL directly for SSL implementation stack to achieve better performance.
 In the absence of this configuration netty will fall back to Java's default SSL implementation.
@@ -86,26 +111,6 @@ and add the following dependency to your project maven dependencies:
 
 For other platforms or more details please refer to these instructions https://netty.io/wiki/forked-tomcat-native.html
 
-
-## OS Open files Resource Limit
-Some Linux systems (like Redhat) have an upper limit on the number of open files and total number of connections. Run the following to view the current limits:
-
-```bash
-ulimit -a
-```
-
-The number of open files (nofile) will need to be modified to allow for a larger connection pool size.
-
-Open the limits.conf file:
-
-```bash
-vim /etc/security/limits.conf
-```
-Add/modify the following lines:
-
-```
-* - nofile 100000
-```
 
 ## Future, CompletableFuture, and ListenableFuture
 
