@@ -224,7 +224,7 @@ public class ContentModeratorClientImpl extends AzureServiceClient {
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    private ContentModeratorClientImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public ContentModeratorClientImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
