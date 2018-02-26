@@ -22,7 +22,8 @@ Once your application receives the result emitted by observable it is important 
 
 
 ```java
-Observable<ResourceResponse<Document>> createDocObs = asyncDocumentClient.createDocument(collectionLink, document, null, true);
+Observable<ResourceResponse<Document>> createDocObs = asyncDocumentClient.createDocument(
+  collectionLink, document, null, true);
 
 createDocObs.subscribe(
   resourceResponse -> {
@@ -40,7 +41,8 @@ After result is received if you need to do blocking calls (e.g., ``Thread.sleep(
 ```java
 import rx.schedulers;
 
-Observable<ResourceResponse<Document>> createDocObs = asyncDocumentClient.createDocument(collectionLink, document, null, true);
+Observable<ResourceResponse<Document>> createDocObs = asyncDocumentClient.createDocument(
+  collectionLink, document, null, true);
 
 createDocObs.subscribeOn(Schedulers.computation())
 subscribe(
@@ -105,8 +107,6 @@ Add/modify the following lines:
 * - nofile 100000
 ```
 
-
-
 ## Future, CompletableFuture, and ListenableFuture
 
 The SDK provide Reative Extension (Rx) Observable based async API You can read more about RxJava and Observable APIs here:
@@ -120,12 +120,12 @@ RX API has some advantages over Future based APIs. But if you wish to use ``Futu
 // of Java's Future which allows registering listener callbacks:
 // https://github.com/google/guava/wiki/ListenableFutureExplained
 
-Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
-        .createDocument(createdCollection.getSelfLink(), document, null, false);
+Observable<ResourceResponse<Document>> createDocObservable = asyncClient.createDocument(
+  collectionLink, document,null, false);
 
 // NOTE: if you are going to do CPU intensive work
 // on the result thread consider changing the scheduler see Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads) section
-ListenableFuture<ResourceResponse<Document>> listenableFuture = ListenableFutureObservable.to(createDocumentObservable);
+ListenableFuture<ResourceResponse<Document>> listenableFuture = ListenableFutureObservable.to(createDocObservable);
 
 ResourceResponse<Document> rrd = listenableFuture.get();
 ```
