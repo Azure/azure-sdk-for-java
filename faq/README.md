@@ -120,12 +120,15 @@ RX API has some advantages over Future based APIs. But if you wish to use ``Futu
 // of Java's Future which allows registering listener callbacks:
 // https://github.com/google/guava/wiki/ListenableFutureExplained
 
+import rx.observable.ListenableFutureObservable;
+
 Observable<ResourceResponse<Document>> createDocObservable = asyncClient.createDocument(
   collectionLink, document,null, false);
 
 // NOTE: if you are going to do CPU intensive work
 // on the result thread consider changing the scheduler see Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads) section
-ListenableFuture<ResourceResponse<Document>> listenableFuture = ListenableFutureObservable.to(createDocObservable);
+ListenableFuture<ResourceResponse<Document>> listenableFuture =
+  ListenableFutureObservable.to(createDocObservable);
 
 ResourceResponse<Document> rrd = listenableFuture.get();
 ```
