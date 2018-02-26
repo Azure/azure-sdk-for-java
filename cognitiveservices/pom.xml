@@ -5,12 +5,6 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <version>0.0.1-SNAPSHOT</version>
-    <artifactId>azure-sdk-parent</artifactId>
-    <relativePath>../pom.xml</relativePath>
-  </parent>
   <groupId>com.microsoft.azure.cognitiveservices</groupId>
   <artifactId>azure-cognitiveservices-parent</artifactId>
   <version>0.0.1-beta-SNAPSHOT</version>
@@ -39,6 +33,16 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
+    <azure.core.version>0.9.8</azure.core.version>
+    <azure.runtime.version>1.2.0</azure.runtime.version>
+    <azure.annotations.version>1.4.0</azure.annotations.version>
+    <commons.io.version>2.4</commons.io.version>
+    <commons.codec.version>1.10</commons.codec.version>
+    <jjwt.version>0.5.1</jjwt.version>
+    <jackson.version>2.7.2</jackson.version>
+    <guava.version>20.0</guava.version>
+    <rxjava.version>1.2.4</rxjava.version>
+    <junit.version>4.12</junit.version>
   </properties>
 
   <developers>
