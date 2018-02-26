@@ -3,11 +3,12 @@
 
 - [Frequently Asked Questions](#frequently-asked-questions)
 	- [Performance Guide for Prod](#performance-guide-for-prod)
-		- [Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads)](#use-proper-scheduler-avoid-stealing-eventloop-io-netty-threads)
+		- [Use Proper Scheduler (Avoid stealing Eventloop IO Netty threads)](#use-proper-scheduler-avoid-stealing-eventloop-io-netty-threads)
 		- [Disable netty's logging](#disable-nettys-logging)
 		- [OS Open files Resource Limit](#os-open-files-resource-limit)
 		- [Use native SSL implementation for netty](#use-native-ssl-implementation-for-netty)
 	- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
+- [Previous Releases and Corresponding Repo Branches](#previous-releases-and-corresponding-repo-branches)
 
 <!-- /TOC -->
 # Frequently Asked Questions
@@ -18,7 +19,7 @@ http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html
 ## Performance Guide for Prod
 To achieve better performance and higher throughput there are a few tips that are helpful to follow:
 
-### Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads)
+### Use Proper Scheduler (Avoid stealing Eventloop IO Netty threads)
 SDK uses [netty](https://netty.io/) for non-blocking IO. The SDK uses a fixed number of IO netty eventloop threads (as many CPU cores your machine has) for executing IO operations.
 
  The Observable returned by API emits the result on one of the shared IO eventloop netty threads. So it is important to not block the shared IO eventloop netty threads. Doing CPU intensive work or blocking operation on the IO eventloop netty thread may cause deadlock or significantly reduce SDK throughput.
@@ -142,3 +143,24 @@ For this to work you will need [RxJava Guava library dependency ](https://mvnrep
 
 You can see more details on how to convert Observabels to Futures here:
 https://dzone.com/articles/converting-between
+
+
+# Previous Releases and Corresponding Repo Branches
+
+| Version           | SHA1                                                                                      | Remarks                                               |
+|-------------------|-------------------------------------------------------------------------------------------|-------------------------------------------------------|
+| 1.0.0       | [1.6.0](https://github.com/Azure/azure-libraries-for-java/tree/v1.6.0)               | Tagged release for 1.6.0 version of Azure management libraries |
+| 1.5.1       | [1.5.1](https://github.com/Azure/azure-libraries-for-java/tree/v1.5.1)               | Tagged release for 1.5.1 version of Azure management libraries |
+| 1.4.0       | [1.4.0](https://github.com/Azure/azure-libraries-for-java/tree/v1.4.0)               | Tagged release for 1.4.0 version of Azure management libraries |
+| 1.3.0       | [1.3.0](https://github.com/Azure/azure-sdk-for-java/tree/v1.3.0)               | Tagged release for 1.3.0 version of Azure management libraries |
+| 1.2.1       | [1.2.1](https://github.com/Azure/azure-sdk-for-java/tree/v1.2.1)               | Tagged release for 1.2.1 version of Azure management libraries |
+| 1.1.0       | [1.1.0](https://github.com/Azure/azure-sdk-for-java/tree/v1.1.0)               | Tagged release for 1.1.0 version of Azure management libraries |
+| 1.0.0       | [1.0.0](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0)               | Tagged release for 1.0.0 version of Azure management libraries |
+| 1.0.0-beta5       | [1.0.0-beta5](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta5)               | Tagged release for 1.0.0-beta5 version of Azure management libraries |
+| 1.0.0-beta4.1       | [1.0.0-beta4.1](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta4.1)               | Tagged release for 1.0.0-beta4.1 version of Azure management libraries |
+| 1.0.0-beta3       | [1.0.0-beta3](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta3)               | Tagged release for 1.0.0-beta3 version of Azure management libraries |
+| 1.0.0-beta2       | [1.0.0-beta2](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta2)               | Tagged release for 1.0.0-beta2 version of Azure management libraries |
+| 1.0.0-beta1       | [1.0.0-beta1](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1)               | Maintenance branch for AutoRest generated raw clients |
+| 1.0.0-beta1+fixes | [1.0.0-beta1+fixes](https://github.com/Azure/azure-sdk-for-java/tree/v1.0.0-beta1+fixes) | Stable build for AutoRest generated raw clients       |
+| 0.9.x-SNAPSHOTS   | [0.9](https://github.com/Azure/azure-sdk-for-java/tree/0.9)                               | Maintenance branch for service management libraries   |
+| 0.9.3             | [0.9.3](https://github.com/Azure/azure-sdk-for-java/tree/v0.9.3)                         | Latest release for service management libraries       |
