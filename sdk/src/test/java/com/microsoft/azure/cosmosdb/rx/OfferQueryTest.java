@@ -47,7 +47,7 @@ import rx.Observable;
 
 public class OfferQueryTest extends TestSuiteBase {
 
-    public final static int SETUP_TIMEOUT = 20000;
+    public final static int SETUP_TIMEOUT = 30000;
     public final static String DATABASE_ID = getDatabaseId(OfferQueryTest.class);
 
     private List<DocumentCollection> createdCollections = new ArrayList<>();
