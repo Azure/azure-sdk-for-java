@@ -5,12 +5,10 @@ matrix:
   include:
   - os: linux
     jdk: oraclejdk8
-  - os: osx
-    osx_image: xcode8
+#  - os: osx
+#    osx_image: xcode8
 script:
-- cd azure-documentdb-rx
 - mvn dependency:resolve
-- find $HOME/.m2/repository/com/microsoft/azure/azure-documentdb -iname '*.jar' -exec sh -c 'zip -d "{}" META-INF/*.SF META-INF/*.RSA' \; || echo "maybe already fixed and cached!" 
 - mvn test -P fast -DargLine="-DACCOUNT_HOST=$ACCOUNT_HOST -DACCOUNT_KEY=$ACCOUNT_KEY" cobertura:cobertura
 after_success:
   - bash <(curl -s https://codecov.io/bash)
