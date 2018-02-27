@@ -30,7 +30,7 @@
 
 ## Consuming the official Microsoft Azure Cosmos DB Java SDK
 
-Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/1.0.0)
+Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/1.0.0).
 
 For example, using maven, you can add the following dependency to your maven pom file:
 
@@ -129,7 +129,7 @@ subscribe(
 
 ```
 
-Based on the type of work you should use the appropriate Scheduler for your work. Please read here
+Based on the type of your work you should use the appropriate Scheduler for your work. Please read here
 [``Schedulers``](http://reactivex.io/RxJava/1.x/javadoc/rx/schedulers/Schedulers.html).
 
 
@@ -148,7 +148,7 @@ Some Linux systems (like Redhat) have an upper limit on the number of open files
 ulimit -a
 ```
 
-The number of open files (nofile) will need have enough room for your configured connection pool size and other open files by the OS. It can be modified to allow for a larger connection pool size.
+The number of open files (nofile) need to be large enough to have enough room for your configured connection pool size and other open files by the OS. It can be modified to allow for a larger connection pool size.
 
 Open the limits.conf file:
 
@@ -181,15 +181,15 @@ and add the following dependency to your project maven dependencies:
 </dependency>
 ```
 
-For other platforms or more details please refer to these instructions https://netty.io/wiki/forked-tomcat-native.html
+For other platforms (Redhat, Windows, Mac, etc) please refer to these instructions https://netty.io/wiki/forked-tomcat-native.html
 
 
 ## Future, CompletableFuture, and ListenableFuture
 
-The SDK provide Reactive Extension (Rx) Observable based async API You can read more about RxJava and Observable APIs here:
-http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html
+The SDK provide Reactive Extension (Rx) [Observable](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html) based async API.
 
-RX API has some advantages over Future based APIs. But if you wish to use ``Future`` you can translate Observables to Java native Futures.
+
+RX API has advantages over Future based APIs. But if you wish to use ``Future`` you can translate Observables to Java native Futures:
 
 ```java
 // You can convert an Observable to a ListenableFuture.
@@ -211,7 +211,7 @@ ListenableFuture<ResourceResponse<Document>> listenableFuture =
 ResourceResponse<Document> rrd = listenableFuture.get();
 ```
 
-For this to work you will need [RxJava Guava library dependency ](https://mvnrepository.com/artifact/io.reactivex/rxjava-guava/1.0.3) more information here https://github.com/ReactiveX/RxJavaGuava.
+For this to work you will need [RxJava Guava library dependency ](https://mvnrepository.com/artifact/io.reactivex/rxjava-guava/1.0.3). More information available here https://github.com/ReactiveX/RxJavaGuava.
 
 You can see more details on how to convert Observables to Futures here:
 https://dzone.com/articles/converting-between
