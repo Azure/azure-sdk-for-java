@@ -5,7 +5,7 @@
 - Release 1.0.0 has fully end to end support for non-blocking IO using netty library in Gateway mode.
 - Dependency on ``azure-documentdb`` SDK removed.
 - Artifact id changed to ``azure-cosmosdb`` from ``azure-documentdb-rx`` in 0.9.0-rc2.
-- Java package name changed to ``com.microsoft.azure.cosmosdb`` from ``com.microsoft.azure.documentdb`` in
+- Java package name changed to ``com.microsoft.azure.cosmosdb`` from ``com.microsoft.azure.documentdb`` in 0.9.0-rc2.
 
 ### 0.9.0-rc2
 - ``FeedResponsePage`` renamed to ``FeedReponse``
