@@ -5,13 +5,13 @@
 	- [Minimum Requirements](#minimum-requirements)
 	- [API Documentation](#api-documentation)
 	- [Usage Code Sample](#usage-code-sample)
-	- [Performance Guide for Prod](#performance-guide-for-prod)
+	- [Guide for Prod](#guide-for-prod)
 		- [Use Proper Scheduler (Avoid stealing Eventloop IO Netty threads)](#use-proper-scheduler-avoid-stealing-eventloop-io-netty-threads)
 		- [Disable netty's logging](#disable-nettys-logging)
 		- [OS Open files Resource Limit](#os-open-files-resource-limit)
 		- [Use native SSL implementation for netty](#use-native-ssl-implementation-for-netty)
 	- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
-	- [Checking out the Code](#checking-out-the-code)
+	- [Checking out the Code and Examples](#checking-out-the-code-and-examples)
 		- [Eclipse](#eclipse)
 		- [Command line](#command-line)
 	- [Release changes](#release-changes)
@@ -76,8 +76,7 @@ Observable<ResourceResponse<Document>> createDocumentObservable =
 	                },
 
 	                error -> {
-	                    System.err.println("an error happened: "
-												+ error.getMessage());
+	                    System.err.println("an error happened: " + error.getMessage());
 	                });
 ```
 
@@ -85,7 +84,7 @@ We have more examples in form of standalone unit tests:
 
 Please check the [examples project](https://github.com/Azure/azure-cosmosdb-java/tree/moderakh/faq/examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
 
-## Performance Guide for Prod
+## Guide for Prod
 To achieve better performance and higher throughput there are a few tips that are helpful to follow:
 
 ### Use Proper Scheduler (Avoid stealing Eventloop IO Netty threads)
@@ -133,20 +132,21 @@ or provide your own customized scheduler.
 
 
 ### Disable netty's logging
-If you are not in debugging mode disable netty's logging altogether. Please note suppressing netty's loggging may not be enough. So if you are using log4j to remove the additional CPU costs incurred by ``org.apache.log4j.Category.callAppenders()`` from netty add the following line to your codebase:
+Netty library logging is very chatty and need to be turned off (suppressing log in the configuration may not be enough) to avoid additional CPU costs.
+If you are not in debugging mode disable netty's logging altogether. So if you are using log4j to remove the additional CPU costs incurred by ``org.apache.log4j.Category.callAppenders()`` from netty add the following line to your codebase:
 
 ```java
 org.apache.log4j.Logger.getLogger("io.netty").setLevel(org.apache.log4j.Level.OFF);
 ```
 
 ### OS Open files Resource Limit
-Some Linux systems (like Redhat) have an upper limit on the number of open files and total number of connections. Run the following to view the current limits:
+Some Linux systems (like Redhat) have an upper limit on the number of open files and so the total number of connections. Run the following to view the current limits:
 
 ```bash
 ulimit -a
 ```
 
-The number of open files (nofile) will need to be modified to allow for a larger connection pool size.
+The number of open files (nofile) will need have enough room for your configured connection pool size and other open files by the OS. It can be modified to allow for a larger connection pool size.
 
 Open the limits.conf file:
 
@@ -184,7 +184,7 @@ For other platforms or more details please refer to these instructions https://n
 
 ## Future, CompletableFuture, and ListenableFuture
 
-The SDK provide Reative Extension (Rx) Observable based async API You can read more about RxJava and Observable APIs here:
+The SDK provide Reactive Extension (Rx) Observable based async API You can read more about RxJava and Observable APIs here:
 http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html
 
 RX API has some advantages over Future based APIs. But if you wish to use ``Future`` you can translate Observables to Java native Futures.
@@ -201,7 +201,8 @@ Observable<ResourceResponse<Document>> createDocObservable = asyncClient.createD
   collectionLink, document, null, false);
 
 // NOTE: if you are going to do CPU intensive work
-// on the result thread consider changing the scheduler see Use Proper Scheduler (Avoid Stealing Eventloop IO Netty threads) section
+// on the result thread consider changing the scheduler see Use Proper Scheduler
+// (Avoid Stealing Eventloop IO Netty threads) section
 ListenableFuture<ResourceResponse<Document>> listenableFuture =
   ListenableFutureObservable.to(createDocObservable);
 
@@ -213,7 +214,7 @@ For this to work you will need [RxJava Guava library dependency ](https://mvnrep
 You can see more details on how to convert Observables to Futures here:
 https://dzone.com/articles/converting-between
 
-## Checking out the Code
+## Checking out the Code and Examples
  Clone the Repo
 ```bash
 git clone https://github.com/Azure/azure-cosmosdb-java.git
