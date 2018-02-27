@@ -1,3 +1,10 @@
+
+
+# Java SDK for Document API of Azure Cosmos DB
+![](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb.svg)
+[![Build Status](https://api.travis-ci.org/Azure/azure-cosmosdb-java.svg?branch=master)](https://travis-ci.org/Azure/azure-cosmosdb-java)
+[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmosdb-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
+![](https://img.shields.io/github/issues/azure/azure-cosmosdb-java.svg)
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Java SDK for Document API of Azure Cosmos DB](#java-sdk-for-document-api-of-azure-cosmos-db)
@@ -20,12 +27,6 @@
 <!-- /TOC -->
 
 
-# Java SDK for Document API of Azure Cosmos DB
-
-![](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb.svg)
-[![Build Status](https://api.travis-ci.org/Azure/azure-cosmosdb-java.svg?branch=master)](https://travis-ci.org/Azure/azure-cosmosdb-java)
-[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmosdb-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
-![](https://img.shields.io/github/issues/azure/azure-cosmosdb-java.svg)
 
 ## Consuming the official Microsoft Azure Cosmos DB Java SDK
 
