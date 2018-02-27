@@ -21,6 +21,7 @@
 	- [Checking out the Code and Examples](#checking-out-the-code-and-examples)
 		- [Eclipse](#eclipse)
 		- [Command line](#command-line)
+	- [FAQ](#faq)
 	- [Release changes](#release-changes)
 	- [License](#license)
 
@@ -244,6 +245,8 @@ The other way for running samples is to use maven:
 ```bash
 mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME_WITH_YOURS"
 ```
+## FAQ
+We have a frequently asked questions which is maintained [here](faq/)
 
 ## Release changes
 Release changelog is available [here](changelog/).
