@@ -28,7 +28,7 @@ SOFTWARE.
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmosdb-parent</artifactId>
-    <version>1.0.0</version>
+    <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>azure-cosmosdb</artifactId>
   <name>Async SDK for Document API of Azure Cosmos DB Service</name>
