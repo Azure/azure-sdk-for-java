@@ -13,7 +13,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault</artifactId>
-    <version>1.0.0</version>
+    <version>1.1-alpha-1<</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
@@ -40,11 +40,6 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 ## Pre-requisites
 - A Java Developer Kit (JDK), v 1.7 or later
 - Maven
-- Azure Service Principal, using
-[Azure CLI](http://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal-cli/),
-[PowerShell](http://azure.microsoft.com/documentation/articles/resource-group-authenticate-service-principal/)
-or [Azure Portal](http://azure.microsoft.com/documentation/articles/resource-group-create-service-principal-portal/).
-
 
 ## Contributing
 
@@ -57,6 +52,7 @@ If you would like to become an active contributor to this project please follow 
 5. Create new Pull Request
 
 # More information
+* [Azure Key Vault Java Documentation](https://docs.microsoft.com/en-us/java/api/overview/azure/keyvault)
 * [What is Key Vault?](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-whatis)
 * [Get started with Azure Key Vault](https://docs.microsoft.com/en-us/azure/key-vault/key-vault-get-started)
 * [Azure Key Vault General Documentation](https://docs.microsoft.com/en-us/azure/key-vault/)
