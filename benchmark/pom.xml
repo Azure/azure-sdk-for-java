@@ -1,24 +1,57 @@
+<!--
+
+ The MIT License (MIT)
+ Copyright (c) 2018 Microsoft Corporation
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy
+ of this software and associated documentation files (the "Software"), to deal
+ in the Software without restriction, including without limitation the rights
+ to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ copies of the Software, and to permit persons to whom the Software is
+ furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all
+ copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ SOFTWARE.
+
+-->
+
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
-
-  <groupId>com.microsoft.azure</groupId>
-  <artifactId>azure-documentdb-benchmark</artifactId>
-  <version>0.0.1-SNAPSHOT</version>
-  <packaging>jar</packaging>
-
-  <name>azure-documentdb-benchmark</name>
-  <url>http://azure.microsoft.com/en-us/services/documentdb/</url>
+  <parent>
+    <groupId>com.microsoft.azure</groupId>
+    <artifactId>azure-cosmosdb-parent</artifactId>
+    <version>1.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>azure-cosmosdb-benchmark</artifactId>
+  <name>Async SDK for Document API of Azure Cosmos DB Service - Benchmarking tool</name>
+  <description>Benchmarking tool for Async SDK for Document API of Azure Cosmos DB Service</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf4j.version>1.7.6</slf4j.version>
     <log4j.version>1.2.17</log4j.version>
     <metrics.version>3.1.2</metrics.version>
-    <netty.version>4.1.7.Final</netty.version>
   </properties>
   <build>
     <plugins>
+      <plugin>
+        <groupId>org.codehaus.mojo</groupId>
+        <artifactId>exec-maven-plugin</artifactId>
+        <version>1.2.1</version>
+        <configuration>
+          <mainClass>com.microsoft.azure.cosmosdb.benchmark.Main</mainClass>
+        </configuration>
+      </plugin>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
         <version>2.2</version>
@@ -28,7 +61,7 @@
           </descriptorRefs>
           <archive>
             <manifest>
-              <mainClass>com.microsoft.azure.documentdb.benchmark.Main</mainClass>
+              <mainClass>com.microsoft.azure.cosmosdb.benchmark.Main</mainClass>
             </manifest>
           </archive>
         </configuration>
@@ -68,9 +101,20 @@
   <dependencies>
     <dependency>
       <groupId>com.microsoft.azure</groupId>
-      <artifactId>azure-documentdb-rx</artifactId>
-      <version>0.9.0-rc2</version>
+      <artifactId>azure-cosmosdb</artifactId>
     </dependency>
+    <!--dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-epoll</artifactId>
+      <version>4.1.20.Final</version>
+      <classifier>linux-x86_64</classifier>
+    </dependency -->
+    <!-- dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-tcnative</artifactId>
+      <version>2.0.7.Final</version>
+      <classifier>linux-x86_64</classifier>
+    </dependency-->
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>
