@@ -5,6 +5,7 @@
 [![Build Status](https://api.travis-ci.org/Azure/azure-cosmosdb-java.svg?branch=master)](https://travis-ci.org/Azure/azure-cosmosdb-java)
 [![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmosdb-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
 ![](https://img.shields.io/github/issues/azure/azure-cosmosdb-java.svg)
+
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Java SDK for Document API of Azure Cosmos DB](#java-sdk-for-document-api-of-azure-cosmos-db)
@@ -13,12 +14,12 @@
 	- [API Documentation](#api-documentation)
 	- [Usage Code Sample](#usage-code-sample)
 	- [Guide for Prod](#guide-for-prod)
-		- [Use Proper Scheduler (Avoid stealing Eventloop IO Netty threads)](#use-proper-scheduler-avoid-stealing-eventloop-io-netty-threads)
+		- [Use Appropriate Scheduler (Avoid stealing Eventloop IO Netty threads)](#use-appropriate-scheduler-avoid-stealing-eventloop-io-netty-threads)
 		- [Disable netty's logging](#disable-nettys-logging)
 		- [OS Open files Resource Limit](#os-open-files-resource-limit)
 		- [Use native SSL implementation for netty](#use-native-ssl-implementation-for-netty)
 	- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
-	- [Checking out the Code and Examples](#checking-out-the-code-and-examples)
+	- [Checking out the Source Code](#checking-out-the-source-code)
 		- [Eclipse](#eclipse)
 		- [Command line](#command-line)
 	- [FAQ](#faq)
@@ -84,12 +85,12 @@ Observable<ResourceResponse<Document>> createDocumentObservable =
 
 We have more examples in form of standalone unit tests:
 
-Please check the [examples project](https://github.com/Azure/azure-cosmosdb-java/tree/moderakh/faq/examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
+Please check the [examples project](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
 
 ## Guide for Prod
 To achieve better performance and higher throughput there are a few tips that are helpful to follow:
 
-### Use Proper Scheduler (Avoid stealing Eventloop IO Netty threads)
+### Use Appropriate Scheduler (Avoid stealing Eventloop IO Netty threads)
 SDK uses [netty](https://netty.io/) for non-blocking IO. The SDK uses a fixed number of IO netty eventloop threads (as many CPU cores your machine has) for executing IO operations.
 
  The Observable returned by API emits the result on one of the shared IO eventloop netty threads. So it is important to not block the shared IO eventloop netty threads. Doing CPU intensive work or blocking operation on the IO eventloop netty thread may cause deadlock or significantly reduce SDK throughput.
@@ -217,7 +218,9 @@ For this to work you will need [RxJava Guava library dependency ](https://mvnrep
 You can see more details on how to convert Observables to Futures here:
 https://dzone.com/articles/converting-between
 
-## Checking out the Code and Examples
+## Checking out the Source Code
+The SDK is open source and is availbe here [sdk](sdk/).
+
  Clone the Repo
 ```bash
 git clone https://github.com/Azure/azure-cosmosdb-java.git
@@ -229,7 +232,7 @@ You can run the samples either using Eclipse or from Command Line using Maven:
 ### Eclipse
 
 * Load the main parent project pom file in Eclipse (That should automatically load examples).
-* For running the samples you need a proper Azure Cosmos DB Endpoint. The endpoints are picked up from [TestConfigurations.java](https://github.com/Azure/azure-cosmosdb-java/blob/master/examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples/TestConfigurations.java).
+* For running the samples you need a proper Azure Cosmos DB Endpoint. The endpoints are picked up from [TestConfigurations.java](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples/TestConfigurations.java).
 * You can pass your endpoint credentials as VM Arguments in Eclipse JUnit Run Config:
 ```bash
  -DACCOUNT_HOST="https://REPLACE_ME.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME"
