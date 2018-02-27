@@ -129,7 +129,7 @@ subscribe(
 
 ```
 
-Based on the type of your work you should use the appropriate Scheduler for your work. Please read here
+Based on the type of your work you should use the appropriate existing RxJava Scheduler for your work. Please read here
 [``Schedulers``](http://reactivex.io/RxJava/1.x/javadoc/rx/schedulers/Schedulers.html).
 
 
