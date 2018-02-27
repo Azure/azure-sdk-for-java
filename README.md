@@ -123,13 +123,14 @@ createDocObs.subscribeOn(Schedulers.computation())
 subscribe(
   resourceResponse -> {
     // this is executed on threads provided by Scheduler.computation()
+    // Schedulers.computation() should be used only the work is cpu intensive and you are not doing blocking IO, thread sleep, etc. in this thread against other resources.
     veryCpuIntensiveWork();
   });
 
 ```
 
-[``Schedulers.computation()``](http://reactivex.io/RxJava/javadoc/rx/schedulers/Schedulers.html#computation--) is the simplest schdeduler you can use which is suitable for CPU intensive work. If you are doing non cpu intensive work with blocking nature, e.g, blocking IO (reading or writing to files, etc), you should use [``Schedulers.io``](http://reactivex.io/RxJava/javadoc/rx/schedulers/Schedulers.html#io--)
-or provide your own customized scheduler.
+Based on the type of work you should use the appropriate Scheduler for your work. Please read here
+[``Schedulers``](http://reactivex.io/RxJava/1.x/javadoc/rx/schedulers/Schedulers.html).
 
 
 ### Disable netty's logging
