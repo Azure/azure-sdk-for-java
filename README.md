@@ -24,6 +24,7 @@
 		- [Command line](#command-line)
 	- [FAQ](#faq)
 	- [Release changes](#release-changes)
+	- [Contribution](#contribution)
 	- [License](#license)
 
 <!-- /TOC -->
@@ -253,6 +254,11 @@ We have a frequently asked questions which is maintained [here](faq/)
 
 ## Release changes
 Release changelog is available [here](changelog/).
+
+
+## Contribution
+
+This is an open source project and we welcome  contributions.
 
 ## License
 MIT License
