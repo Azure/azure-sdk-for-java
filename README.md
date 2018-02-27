@@ -17,6 +17,9 @@ To get the binaries of the latest official Microsoft Azure Cosmos DB Java SDK as
 </dependency>
 ```
 
+## API Documentation:
+Javadoc for is available [here](https://azure.github.io/azure-cosmosdb-java).
+
 ## Minimum Requirements
 * Java Development Kit 8
 * (Optional) Maven
@@ -54,6 +57,9 @@ The other way for running samples is to use maven:
 ```bash
 mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME_WITH_YOURS"
 ```
+
+### Release changes
+Release changelog is available [here](changelog/).
 
 ## License
 MIT License
