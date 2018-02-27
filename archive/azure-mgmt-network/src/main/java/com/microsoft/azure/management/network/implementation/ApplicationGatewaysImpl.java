@@ -109,7 +109,7 @@ class ApplicationGatewaysImpl
     @Override
     public Observable<String> stopAsync(Collection<String> applicationGatewayResourceIds) {
         if (applicationGatewayResourceIds == null) {
-            Observable.empty();
+            return Observable.empty();
         }
         Collection<Observable<String>> observables = new ArrayList<>();
         for (String id : applicationGatewayResourceIds) {

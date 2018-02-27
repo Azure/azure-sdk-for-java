@@ -57,7 +57,7 @@ class MXRecordSetImpl
                 for (MxRecord recordToRemove : this.recordSetRemoveInfo.mxRecords()) {
                     for (MxRecord record : resource.mxRecords()) {
                         if (record.exchange().equalsIgnoreCase(recordToRemove.exchange())
-                                && (record.preference() == recordToRemove.preference())) {
+                                && (record.preference().equals(recordToRemove.preference()))) {
                             resource.mxRecords().remove(record);
                             break;
                         }

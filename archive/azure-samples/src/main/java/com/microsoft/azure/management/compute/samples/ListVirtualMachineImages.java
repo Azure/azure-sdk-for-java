@@ -56,8 +56,8 @@ public final class ListVirtualMachineImages {
             System.out.println("Publisher - " + publisher.name());
 
             if (publisher.name().equalsIgnoreCase("Canonical")
-                    | publisher.name().equalsIgnoreCase("Suse")
-                    | publisher.name().equalsIgnoreCase("RedHat")) {
+                    || publisher.name().equalsIgnoreCase("Suse")
+                    || publisher.name().equalsIgnoreCase("RedHat")) {
 
                 chosenPublisher = publisher;
                 System.out.print("\n\n");

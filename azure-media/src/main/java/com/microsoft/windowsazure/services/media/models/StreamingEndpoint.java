@@ -105,7 +105,7 @@ public final class StreamingEndpoint {
 
             if (clientResponse.getHeaders().containsKey("operation-id")) {
                 List<String> operationIds = clientResponse.getHeaders().get("operation-id");
-                if (operationIds.size() >= 0) {
+                if (operationIds.size() > 0) {
                     streamingEndpointInfo.setOperationId(operationIds.get(0));
                 }
             }

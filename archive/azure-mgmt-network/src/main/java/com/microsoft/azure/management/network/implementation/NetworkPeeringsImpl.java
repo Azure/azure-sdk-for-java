@@ -82,7 +82,7 @@ class NetworkPeeringsImpl
                 @Override
                 public Observable<NetworkPeering> call(NetworkPeering localPeering) {
                     if (localPeering == null) {
-                        return Observable.just(localPeering);
+                        return Observable.just(null);
                     } else if (!localPeering.isSameSubscription()) {
                         return Observable.just(localPeering);
                     } else {
