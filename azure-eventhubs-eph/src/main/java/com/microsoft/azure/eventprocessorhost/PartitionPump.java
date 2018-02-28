@@ -55,7 +55,7 @@ class PartitionPump implements PartitionReceiveHandler
 		
         // Set up the shutdown futures. The shutdown process can be triggered just by completing this.shutdownFuture.
         this.shutdownTriggerFuture = new CompletableFuture<Void>();
-        this.shutdownFinishedFuture = this.shutdownTriggerFuture.whenCompleteAsync((r,e) -> cancelPendingOperations(), this.hostContext.getExecutor())
+        this.shutdownFinishedFuture = this.shutdownTriggerFuture.handleAsync((r,e) -> cancelPendingOperations(), this.hostContext.getExecutor())
         .thenComposeAsync((empty) -> cleanUpAll(this.shutdownReason), this.hostContext.getExecutor())
         .thenComposeAsync((empty) -> releaseLeaseOnShutdown(), this.hostContext.getExecutor());
 	}
@@ -418,7 +418,7 @@ class PartitionPump implements PartitionReceiveHandler
     	return cleanupFuture;
     }
     
-    protected void cancelPendingOperations()
+    protected Void cancelPendingOperations()
     {
     	// If an open operation is stuck, this lets us shut down anyway.
     	CompletableFuture<?> captured = this.internalOperationFuture;
@@ -432,7 +432,7 @@ class PartitionPump implements PartitionReceiveHandler
     	{
     		this.leaseRenewerFuture.cancel(true);
     	}
-
+		return null;
     }
     
     private CompletableFuture<Void> releaseLeaseOnShutdown() // swallows all exceptions

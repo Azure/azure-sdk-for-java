@@ -76,7 +76,7 @@ public class Repros extends TestBase
 		utils.setupWithoutSenders(RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
 		
 		PrefabGeneralErrorHandler genErr = new PrefabGeneralErrorHandler();
-		PrefabProcessorFactory factory = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
+		PrefabProcessorFactory factory = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, false, false);
 		InMemoryCheckpointManager checkpointer = new InMemoryCheckpointManager();
 		InMemoryLeaseManager leaser = new InMemoryLeaseManager();
 		EventProcessorHost host = new EventProcessorHost("infiniteReceive-1", utils.getConnectionString().getEventHubName(),
@@ -107,6 +107,47 @@ public class Repros extends TestBase
 		host.unregisterEventProcessor();
 	}
 
+	@Test
+	public void infiniteReceive2Hosts() throws Exception
+	{
+		System.out.println("infiniteReceive2Hosts starting");
+		
+		RealEventHubUtilities utils = new RealEventHubUtilities();
+		utils.setup(RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+		
+		String storageName = "ir2hosts" + EventProcessorHost.safeCreateUUID();
+		
+		PrefabGeneralErrorHandler general1 = new PrefabGeneralErrorHandler();
+		PrefabProcessorFactory factory1 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
+		EventProcessorHost host1 = new EventProcessorHost("infiniteReceive2Hosts-1", utils.getConnectionString().getEventHubName(),
+				utils.getConsumerGroup(), utils.getConnectionString().toString(),
+				TestUtilities.getStorageConnectionString(), storageName);
+		EventProcessorOptions options1 = EventProcessorOptions.getDefaultOptions();
+		options1.setExceptionNotification(general1);
+		
+		PrefabGeneralErrorHandler general2 = new PrefabGeneralErrorHandler();
+		PrefabProcessorFactory factory2 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
+		EventProcessorHost host2 = new EventProcessorHost("infiniteReceive2Hosts-2", utils.getConnectionString().getEventHubName(),
+				utils.getConsumerGroup(), utils.getConnectionString().toString(),
+				TestUtilities.getStorageConnectionString(), storageName);
+		EventProcessorOptions options2 = EventProcessorOptions.getDefaultOptions();
+		options2.setExceptionNotification(general2);
+
+		host1.registerEventProcessorFactory(factory1, options1);
+		host2.registerEventProcessorFactory(factory2, options2);
+		
+		int i = 0;
+		while (true)
+		{
+			utils.sendToAny("blah-" + i++, 10);
+			System.out.println("\n." + factory1.getEventsReceivedCount() + "." + factory2.getEventsReceivedCount() + ":" +
+					((ThreadPoolExecutor)host1.getHostContext().getExecutor()).getPoolSize() + "." +
+					((ThreadPoolExecutor)host2.getHostContext().getExecutor()).getPoolSize() + ":" +
+					Thread.activeCount());
+			Thread.sleep(100);
+		}
+	}
+	
 	/*
 	 * The memory leak mentioned in the previous case turned out to be a thread leak. This case was created to see if
 	 * the thread leak was related to EPH or was in the underlying client. At first we believed that the leak was due

@@ -288,6 +288,7 @@ class PartitionManager
     		// FinalExceptions are passed along also so that fatal error earlier in the chain aren't lost.
     		.handleAsync((r,e) ->
     		{
+    			Object effectiveResult = r;
     			if (e != null)
     			{
     				if (e instanceof FinalException)
@@ -307,7 +308,15 @@ class PartitionManager
 	        			}
     				}
     			}
-    			return (e == null) ? r : null; // stop propagation of other exceptions so we can retry
+    			else
+    			{
+    				// Some lambdas return null on success. Change to TRUE to skip retrying.
+    				if (r == null)
+    				{
+    					effectiveResult = true;
+    				}
+    			}
+    			return (e == null) ? effectiveResult : null; // stop propagation of other exceptions so we can retry
     		}, this.hostContext.getExecutor())
     		// Stages 2, 4, 6, etc: if we already have a valid result, pass it along. Otherwise, make another attempt.
     		// Once we have a valid result there will be no more attempts or exceptions.

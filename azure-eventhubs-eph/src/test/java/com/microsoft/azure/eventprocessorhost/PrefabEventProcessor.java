@@ -100,6 +100,7 @@ public class PrefabEventProcessor implements IEventProcessor
 	@Override
 	public void onError(PartitionContext context, Throwable error)
 	{
-		this.factory.putError(context.getPartitionId() + ": " + error.toString() + " " + error.getMessage());
+		TestUtilities.log("P" + context.getPartitionId() + "onError: "  + error.toString() + " " + error.getMessage());
+		this.factory.putError(context.getPartitionId() + " onError: " + error.toString() + " " + error.getMessage());
 	}
 }
