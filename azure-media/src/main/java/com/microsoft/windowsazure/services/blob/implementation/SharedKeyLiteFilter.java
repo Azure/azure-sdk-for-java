@@ -81,7 +81,7 @@ public class SharedKeyLiteFilter extends ClientFilter implements
         String contentType = getHeader(cr, "Content-Type");
         String date = getHeader(cr, "Date");
 
-        if (date == "") {
+        if (date != null && date.isEmpty()) {
             date = new RFC1123DateConverter().format(new Date());
             cr.getHeaders().add("Date", date);
         }
