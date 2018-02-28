@@ -18,3 +18,8 @@ java -jar benchmark/target/azure-cosmosdb-benchmark-1.0.1-SNAPSHOT-jar-with-depe
 ```
 
 You can provide ``--help`` to the tool to see the list of other work loads (read, etc) and other options. 
+
+## Further Improvements
+
+For a higher throughput, please look at https://github.com/Azure/azure-cosmosdb-java#use-native-ssl-implementation-for-netty .
+Under optimal conditions, we see a 43k inserts per second for documents of size 1 KB.
