@@ -2,7 +2,6 @@ package com.microsoft.azure.eventhubs.impl;
 
 import java.util.function.BiConsumer;
 
-import com.microsoft.azure.eventhubs.AmqpException;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.Session;
 
@@ -32,7 +31,7 @@ public class RequestResponseOpener implements Operation<RequestResponseChannel> 
                     @Override
                     public void accept(ErrorCondition error, Exception exception) {
                         if (error != null)
-                            operationCallback.onError(new AmqpException(error));
+                            operationCallback.onError(ExceptionUtil.toException(error));
                         else if (exception != null)
                             operationCallback.onError(exception);
                     }
