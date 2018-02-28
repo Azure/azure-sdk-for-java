@@ -100,7 +100,7 @@ public class PartitionContext
 
     void setOffsetAndSequenceNumber(EventData event)
     {
-		if (sequenceNumber >= this.sequenceNumber)
+		if (event.getSystemProperties().getSequenceNumber() >= this.sequenceNumber)
 		{
 			this.offset = event.getSystemProperties().getOffset();
 			this.sequenceNumber = event.getSystemProperties().getSequenceNumber();

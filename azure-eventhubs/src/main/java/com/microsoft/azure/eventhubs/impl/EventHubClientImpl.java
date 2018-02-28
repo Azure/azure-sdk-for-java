@@ -171,7 +171,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
 
         if (partitionKey.length() > ClientConstants.MAX_PARTITION_KEY_LENGTH) {
             throw new IllegalArgumentException(
-                    String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: {0}", ClientConstants.MAX_PARTITION_KEY_LENGTH));
+                    String.format(Locale.US, "PartitionKey exceeds the maximum allowed length of partitionKey: %s", ClientConstants.MAX_PARTITION_KEY_LENGTH));
         }
 
         return this.createInternalSender().thenComposeAsync(new Function<Void, CompletableFuture<Void>>() {
