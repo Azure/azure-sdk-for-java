@@ -74,10 +74,9 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
     private final Timer timer;
 
     private volatile int maxMessageSize;
+    private volatile Sender sendLink;
 
-    private Sender sendLink;
     private CompletableFuture<MessageSender> linkFirstOpen;
-    private int linkCredit;
     private TimeoutTracker openLinkTracker;
     private Exception lastKnownLinkError;
     private Instant lastKnownErrorReportedAt;
@@ -126,7 +125,6 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         this.pendingSendLock = new Object();
         this.pendingSendsData = new ConcurrentHashMap<>();
         this.pendingSends = new PriorityQueue<>(1000, new DeliveryTagComparator());
-        this.linkCredit = 0;
 
         this.linkClose = new CompletableFuture<>();
 
@@ -390,7 +388,6 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
     @Override
     public void onError(final Exception completionException) {
-        this.linkCredit = 0;
         this.underlyingFactory.deregisterForConnectionError(this.sendLink);
 
         if (this.getIsClosingOrClosed()) {
@@ -709,7 +706,6 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                     this.sendPath, this.sendLink.getName(), creditIssued, numberOfSendsWaitingforCredit, this.pendingSendsData.size() - numberOfSendsWaitingforCredit));
         }
 
-        this.linkCredit = this.linkCredit + creditIssued;
         this.sendWork.onEvent();
     }
 
@@ -728,7 +724,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
         }
 
         while (this.sendLink.getLocalState() == EndpointState.ACTIVE && this.sendLink.getRemoteState() == EndpointState.ACTIVE
-                && this.linkCredit > 0) {
+                && this.sendLink.getCredit() > 0) {
             final WeightedDeliveryTag weightedDelivery;
             final ReplayableWorkItem<Void> sendData;
             final String deliveryTag;
@@ -769,7 +765,6 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 }
 
                 if (linkAdvance) {
-                    this.linkCredit--;
                     sendData.setWaitingForAck();
                 } else {
                     if (TRACE_LOGGER.isDebugEnabled()) {
