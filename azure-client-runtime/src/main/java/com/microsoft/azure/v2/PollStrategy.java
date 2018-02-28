@@ -234,7 +234,7 @@ abstract class PollStrategy {
     }
 
     /**
-     * @erturn The data for the strategy.
+     * @return The data for the strategy.
      */
     public abstract Serializable strategyData();
 
