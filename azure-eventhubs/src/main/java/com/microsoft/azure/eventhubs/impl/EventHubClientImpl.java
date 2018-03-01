@@ -347,7 +347,7 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     	private final MessagingFactory mf;
     	private final Map<String, Object> request;
     	
-    	public ManagementRetry(CompletableFuture<Map<String, Object>> future, Instant endTime, MessagingFactory mf,
+    	ManagementRetry(CompletableFuture<Map<String, Object>> future, Instant endTime, MessagingFactory mf,
     			Map<String, Object> request) {
     		this.finalFuture = future;
     		this.endTime = endTime;
