@@ -107,9 +107,10 @@ Observable<ResourceResponse<Document>> createDocumentObservable =
 	                });
 ```
 
-We have more examples in form of standalone unit tests:
+We have a get started sample app available [here](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started).
 
-Please check the [examples project](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
+Also We have more examples in form of standalone unit tests in [examples project](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples).
+
 
 ## Guide for Prod
 To achieve better performance and higher throughput there are a few tips that are helpful to follow:
