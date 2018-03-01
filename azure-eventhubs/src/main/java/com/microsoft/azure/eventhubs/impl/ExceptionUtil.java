@@ -68,7 +68,7 @@ public final class ExceptionUtil {
             case BAD_REQUEST:
                 return new IllegalArgumentException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
             case NOT_FOUND:
-                return new AmqpException(new ErrorCondition(AmqpErrorCode.NotFound, statusDescription));
+                return new EventHubException(false, new AmqpException(new ErrorCondition(AmqpErrorCode.NotFound, statusDescription)));
             case FORBIDDEN:
                 return new QuotaExceededException(String.format(ClientConstants.AMQP_PUT_TOKEN_FAILED_ERROR, statusCode, statusDescription));
             case UNAUTHORIZED:
