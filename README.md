@@ -11,7 +11,7 @@
 
 - [Java SDK for Document API of Azure Cosmos DB](#java-sdk-for-document-api-of-azure-cosmos-db)
 	- [Consuming the official Microsoft Azure Cosmos DB Java SDK](#consuming-the-official-microsoft-azure-cosmos-db-java-sdk)
-	- [Minimum Requirements](#minimum-requirements)
+	- [Prerequisites](#prerequisites)
 	- [API Documentation](#api-documentation)
 	- [Usage Code Sample](#usage-code-sample)
 	- [Guide for Prod](#guide-for-prod)
@@ -19,13 +19,15 @@
 		- [Disable netty's logging](#disable-nettys-logging)
 		- [OS Open files Resource Limit](#os-open-files-resource-limit)
 		- [Use native SSL implementation for netty](#use-native-ssl-implementation-for-netty)
+	- [Common Tips](#common-tips)
 	- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
 	- [Checking out the Source Code](#checking-out-the-source-code)
-		- [Eclipse](#eclipse)
-		- [Command line](#command-line)
+		- [How to Build from Command Line](#how-to-build-from-command-line)
+			- [Running Tests from Command Line](#running-tests-from-command-line)
+		- [Import into Intellij / Eclipse](#import-into-intellij-eclipse)
 	- [FAQ](#faq)
 	- [Release changes](#release-changes)
-	- [Contribution](#contribution)
+	- [Contribution and Feedback](#contribution-and-feedback)
 	- [License](#license)
 
 <!-- /TOC -->
@@ -34,8 +36,8 @@
 
 ## Consuming the official Microsoft Azure Cosmos DB Java SDK
 
-This project provides a SDK library in Java for interacting with Document API of Azure Cosmos DB
-Database Service.
+This project provides a SDK library in Java for interacting with [Document/SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
+Database Service](https://azure.microsoft.com/en-us/services/cosmos-db/). This project also includes samples, tools, and utilities.
 
 Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/1.0.0).
 
@@ -49,11 +51,21 @@ For example, using maven, you can add the following dependency to your maven pom
 </dependency>
 ```
 
+
+
+Useful links:
+- [Sample Get Started APP](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started)
+- [Introduction to Resource Model of Azure Cosmos DB Service]( https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-resources)
+- [Introduction to SQL API of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query)
+- [SDK JavaDoc API](https://azure.github.io/azure-cosmosdb-java)
+- [RxJava Observable JavaDoc API](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html)
+- [SDK FAQ](faq/)
+
 ## Prerequisites
 * Java Development Kit 8
 * An active Azure account. If you don't have one, you can sign up for a [free account](https://azure.microsoft.com/free/). Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator-export-ssl-certificates)
 * (Optional) SLF4J is a logging facade.
-* (Optional) (SLF4J binding)[http://www.slf4j.org/manual.html] is used to associate a specific logging framework with SLF4J.
+* (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
 * (Optional) Maven
 
 SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
@@ -62,8 +74,8 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 ## API Documentation
 Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java).
 
-The SDK provide Reactive Extension Observable based async API. You can read more about RxJava and Observable APIs here:
-http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html
+The SDK provide Reactive Extension Observable based async API. You can read more about RxJava and [Observable APIs here](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html).
+
 
 ## Usage Code Sample
 
@@ -197,6 +209,8 @@ and add the following dependency to your project maven dependencies:
 
 For other platforms (Redhat, Windows, Mac, etc) please refer to these instructions https://netty.io/wiki/forked-tomcat-native.html
 
+## Common Tips
+There is a set of common tips written for our sync SDK. The majority of them also apply to the async SDK. It is available [here](https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java).
 
 ## Future, CompletableFuture, and ListenableFuture
 
@@ -239,7 +253,7 @@ git clone https://github.com/Azure/azure-cosmosdb-java.git
 cd azure-cosmosdb-java
 ```
 
-### How to Build
+### How to Build from Command Line
 
 * Run the following maven command to build:
 
@@ -258,7 +272,7 @@ mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/"
 ### Import into Intellij / Eclipse
 
 * Load the main parent project pom file in Intellij/Eclipse (That should automatically load examples).
-* For running the samples you need a proper Azure Cosmos DB Endpoint. The endpoints are picked up from [TestConfigurations.java](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples/TestConfigurations.java).
+* For running the samples you need a proper Azure Cosmos DB Endpoint. The endpoints are picked up from [TestConfigurations.java](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples/TestConfigurations.java). There is a similar endpoint config file for the sdk tests [here](sdk/src/test/java/com/microsoft/azure/cosmosdb/rx/TestConfigurations.java).
 * You can pass your endpoint credentials as VM Arguments in Eclipse JUnit Run Config:
 ```bash
  -DACCOUNT_HOST="https://REPLACE_ME.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME"
