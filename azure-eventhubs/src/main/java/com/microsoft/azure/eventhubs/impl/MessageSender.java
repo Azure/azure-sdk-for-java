@@ -75,14 +75,14 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
     private volatile int maxMessageSize;
     private volatile Sender sendLink;
+    private volatile CompletableFuture<MessageSender> linkFirstOpen;
+    private volatile TimeoutTracker openLinkTracker;
+    private volatile boolean creatingLink;
+    private volatile CompletableFuture<?> closeTimer;
+    private volatile CompletableFuture<?> openTimer;
 
-    private CompletableFuture<MessageSender> linkFirstOpen;
-    private TimeoutTracker openLinkTracker;
     private Exception lastKnownLinkError;
     private Instant lastKnownErrorReportedAt;
-    private boolean creatingLink;
-    private CompletableFuture<?> closeTimer;
-    private CompletableFuture<?> openTimer;
 
     public static CompletableFuture<MessageSender> create(
             final MessagingFactory factory,

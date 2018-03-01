@@ -16,7 +16,7 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
     private final String eventHubName;
     private final MessagingFactory factory;
 
-    private MessageSender internalSender;
+    private volatile MessageSender internalSender;
 
     private PartitionSenderImpl(final MessagingFactory factory, final String eventHubName, final String partitionId, final Executor executor) {
         super(null, null, executor);

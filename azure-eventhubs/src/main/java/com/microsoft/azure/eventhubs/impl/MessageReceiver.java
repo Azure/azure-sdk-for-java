@@ -67,15 +67,15 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     private final Timer timer;
 
     private volatile int nextCreditToFlow;
+    private volatile Receiver receiveLink;
+    private volatile Duration receiveTimeout;
+    private volatile Message lastReceivedMessage;
+    private volatile boolean creatingLink;
+    private volatile CompletableFuture<?> openTimer;
+    private volatile CompletableFuture<?> closeTimer;
 
     private int prefetchCount;
-    private Receiver receiveLink;
-    private Duration receiveTimeout;
-    private Message lastReceivedMessage;
     private Exception lastKnownLinkError;
-    private boolean creatingLink;
-    private CompletableFuture<?> openTimer;
-    private CompletableFuture<?> closeTimer;
 
     private MessageReceiver(final MessagingFactory factory,
                             final String name,

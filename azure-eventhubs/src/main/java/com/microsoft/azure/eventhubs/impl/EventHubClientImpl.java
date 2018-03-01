@@ -45,10 +45,11 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
     private final String eventHubName;
     private final Object senderCreateSync;
 
-    private MessagingFactory underlyingFactory;
-    private MessageSender sender;
+    private volatile MessagingFactory underlyingFactory;
+    private volatile MessageSender sender;
+    private volatile Timer timer;
+
     private CompletableFuture<Void> createSender;
-    private Timer timer;
 
     private EventHubClientImpl(final ConnectionStringBuilder connectionString, final Executor executor) throws IOException, IllegalEntityException {
         super(StringUtil.getRandomString(), null, executor);
