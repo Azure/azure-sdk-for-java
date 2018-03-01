@@ -19,7 +19,7 @@
 		- [Disable netty's logging](#disable-nettys-logging)
 		- [OS Open files Resource Limit](#os-open-files-resource-limit)
 		- [Use native SSL implementation for netty](#use-native-ssl-implementation-for-netty)
-	- [Common Tips](#common-tips)
+		- [Common Perf Tips](#common-perf-tips)
 	- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
 	- [Checking out the Source Code](#checking-out-the-source-code)
 		- [How to Build from Command Line](#how-to-build-from-command-line)
@@ -209,8 +209,8 @@ and add the following dependency to your project maven dependencies:
 
 For other platforms (Redhat, Windows, Mac, etc) please refer to these instructions https://netty.io/wiki/forked-tomcat-native.html
 
-## Common Tips
-There is a set of common tips written for our sync SDK. The majority of them also apply to the async SDK. It is available [here](https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java).
+### Common Perf Tips
+There is a set of common perf tips written for our sync SDK. The majority of them also apply to the async SDK. It is available [here](https://docs.microsoft.com/en-us/azure/cosmos-db/performance-tips-java).
 
 ## Future, CompletableFuture, and ListenableFuture
 
