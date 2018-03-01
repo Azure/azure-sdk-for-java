@@ -276,7 +276,7 @@ mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/"
 
 
 ## FAQ
-We have a frequently asked questions which is maintained [here](faq/)
+We have a frequently asked questions which is maintained [here](faq/).
 
 ## Release changes
 Release changelog is available [here](changelog/).
