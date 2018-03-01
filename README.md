@@ -7,31 +7,21 @@
 ![](https://img.shields.io/github/issues/azure/azure-cosmosdb-java.svg)
  -->
 
-<!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
+<!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
 
-- [Java SDK for Document API of Azure Cosmos DB](#java-sdk-for-document-api-of-azure-cosmos-db)
-	- [Consuming the official Microsoft Azure Cosmos DB Java SDK](#consuming-the-official-microsoft-azure-cosmos-db-java-sdk)
-	- [Prerequisites](#prerequisites)
-	- [API Documentation](#api-documentation)
-	- [Usage Code Sample](#usage-code-sample)
-	- [Guide for Prod](#guide-for-prod)
-		- [Use Appropriate Scheduler (Avoid stealing Eventloop IO Netty threads)](#use-appropriate-scheduler-avoid-stealing-eventloop-io-netty-threads)
-		- [Disable netty's logging](#disable-nettys-logging)
-		- [OS Open files Resource Limit](#os-open-files-resource-limit)
-		- [Use native SSL implementation for netty](#use-native-ssl-implementation-for-netty)
-		- [Common Perf Tips](#common-perf-tips)
-	- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
-	- [Checking out the Source Code](#checking-out-the-source-code)
-		- [How to Build from Command Line](#how-to-build-from-command-line)
-			- [Running Tests from Command Line](#running-tests-from-command-line)
-		- [Import into Intellij or Eclipse](#import-into-intellij-or-eclipse)
-	- [FAQ](#faq)
-	- [Release changes](#release-changes)
-	- [Contribution and Feedback](#contribution-and-feedback)
-	- [License](#license)
+- [Consuming the official Microsoft Azure Cosmos DB Java SDK](#consuming-the-official-microsoft-azure-cosmos-db-java-sdk)
+- [Prerequisites](#prerequisites)
+- [API Documentation](#api-documentation)
+- [Usage Code Sample](#usage-code-sample)
+- [Guide for Prod](#guide-for-prod)
+- [Future, CompletableFuture, and ListenableFuture](#future-completablefuture-and-listenablefuture)
+- [Checking out the Source Code](#checking-out-the-source-code)
+- [FAQ](#faq)
+- [Release changes](#release-changes)
+- [Contribution and Feedback](#contribution-and-feedback)
+- [License](#license)
 
 <!-- /TOC -->
-
 
 
 ## Consuming the official Microsoft Azure Cosmos DB Java SDK
