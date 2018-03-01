@@ -4,6 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import java.awt.*;
 import java.io.IOException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
@@ -360,61 +361,48 @@ public final class EventHubClientImpl extends ClientEntity implements EventHubCl
 		@Override
 		public void run() {
 			CompletableFuture<Map<String, Object>> intermediateFuture = this.mf.getManagementChannel().request(this.mf.getReactorScheduler(), request);
-			intermediateFuture.whenComplete(new BiConsumer<Map<String, Object>, Throwable>() {
-				@Override
-				public void accept(Map<String, Object> result, Throwable error) {
-					if ((result != null) && (error == null)) {
-						// Success!
-						ManagementRetry.this.finalFuture.complete(result);
+			intermediateFuture.whenComplete( (Map<String, Object> result, Throwable error) -> {
+			    if ((result != null) && (error == null)) {
+			        // Success!
+                    ManagementRetry.this.finalFuture.complete(result);
+			    } else {
+			        Duration remainingTime = Duration.between(Instant.now(), ManagementRetry.this.endTime);
+					Exception lastException;
+					Throwable completeWith = error;
+					if (error == null) {
+					    // Timeout, so fake up an exception to keep getNextRetryInternal happy.
+						// It has to be a EventHubException that is set to retryable or getNextRetryInterval will halt the retries.
+                        lastException = new EventHubException(true, "timed out");
+                        completeWith = null;
+					} else if (error instanceof Exception) {
+					    if (error instanceof EventHubException) {
+                            lastException = (EventHubException) error;
+                        } else if (error instanceof AmqpException) {
+                            lastException = ExceptionUtil.toException(((AmqpException) error).getError());
+                        } else {
+                            lastException = (Exception) error;
+                        }
+                        completeWith = lastException;
+                    } else {
+                        lastException = new Exception("got a throwable: " + error.toString());
+                    }
+                    Duration waitTime = ManagementRetry.this.mf.getRetryPolicy().getNextRetryInterval(ManagementRetry.this.mf.getClientId(), lastException, remainingTime);
+					if (waitTime == null) {
+					    // Do not retry again, give up and report error.
+						if (completeWith == null) {
+                            ManagementRetry.this.finalFuture.complete(null);
+                        } else {
+						    ManagementRetry.this.finalFuture.completeExceptionally(completeWith);
+						}
+					} else {
+					    // The only thing needed here is to schedule a new attempt. Even if the RequestResponseChannel has croaked,
+						// ManagementChannel uses FaultTolerantObject, so the underlying RequestResponseChannel will be recreated
+						// the next time it is needed.
+                        ManagementRetry retrier = new ManagementRetry(ManagementRetry.this.finalFuture, ManagementRetry.this.endTime,
+                                ManagementRetry.this.mf, ManagementRetry.this.request);
+                        EventHubClientImpl.this.timer.schedule(retrier, waitTime);
 					}
-					else {
-						Duration remainingTime = Duration.between(Instant.now(), ManagementRetry.this.endTime);
-						Exception lastException = null;
-						Throwable completeWith = error;
-						if (error == null) {
-							// Timeout, so fake up an exception to keep getNextRetryInternal happy.
-							// It has to be a EventHubException that is set to retryable or getNextRetryInterval will halt the retries.
-							lastException = new EventHubException(true, "timed out");
-							completeWith = null;
-						}
-						else if (error instanceof Exception) {
-							if ((error instanceof ExecutionException) && (error.getCause() != null) && (error.getCause() instanceof Exception)) {
-							    if(error.getCause() instanceof AmqpException) {
-							        lastException = ExceptionUtil.toException(((AmqpException) error.getCause()).getError());
-                                }
-                                else {
-							        lastException = (Exception)error.getCause();
-                                }
-
-								completeWith = error.getCause();
-							}
-							else {
-								lastException = (Exception)error;
-							}
-						}
-						else {
-							lastException = new Exception("got a throwable: " + error.toString());
-						}
-						Duration waitTime = ManagementRetry.this.mf.getRetryPolicy().getNextRetryInterval(ManagementRetry.this.mf.getClientId(), lastException, remainingTime);
-						if (waitTime == null) {
-							// Do not retry again, give up and report error.
-							if (completeWith == null) {
-								ManagementRetry.this.finalFuture.complete(null);
-							}
-							else {
-								ManagementRetry.this.finalFuture.completeExceptionally(completeWith);
-							}
-						}
-						else {
-							// The only thing needed here is to schedule a new attempt. Even if the RequestResponseChannel has croaked,
-							// ManagementChannel uses FaultTolerantObject, so the underlying RequestResponseChannel will be recreated
-							// the next time it is needed.
-							ManagementRetry retrier = new ManagementRetry(ManagementRetry.this.finalFuture, ManagementRetry.this.endTime,
-									ManagementRetry.this.mf, ManagementRetry.this.request);
-							EventHubClientImpl.this.timer.schedule(retrier, waitTime);
-						}
-					}
-				}
+			    }
 			});
 		}
     }
