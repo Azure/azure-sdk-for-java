@@ -24,7 +24,7 @@
 	- [Checking out the Source Code](#checking-out-the-source-code)
 		- [How to Build from Command Line](#how-to-build-from-command-line)
 			- [Running Tests from Command Line](#running-tests-from-command-line)
-		- [Import into Intellij / Eclipse](#import-into-intellij-eclipse)
+		- [Import into Intellij or Eclipse](#import-into-intellij-or-eclipse)
 	- [FAQ](#faq)
 	- [Release changes](#release-changes)
 	- [Contribution and Feedback](#contribution-and-feedback)
@@ -269,7 +269,7 @@ Running tests require Azure Cosmos DB Endpoint credentials:
 mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME_WITH_YOURS"
 ```
 
-### Import into Intellij / Eclipse
+### Import into Intellij or Eclipse
 
 * Load the main parent project pom file in Intellij/Eclipse (That should automatically load examples).
 * For running the samples you need a proper Azure Cosmos DB Endpoint. The endpoints are picked up from [TestConfigurations.java](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples/TestConfigurations.java). There is a similar endpoint config file for the sdk tests [here](sdk/src/test/java/com/microsoft/azure/cosmosdb/rx/TestConfigurations.java).
