@@ -6,7 +6,7 @@
 <!--[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmosdb-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
 ![](https://img.shields.io/github/issues/azure/azure-cosmosdb-java.svg)
  -->
- 
+
 <!-- TOC depthFrom:1 depthTo:6 withLinks:1 updateOnSave:1 orderedList:0 -->
 
 - [Java SDK for Document API of Azure Cosmos DB](#java-sdk-for-document-api-of-azure-cosmos-db)
@@ -34,6 +34,9 @@
 
 ## Consuming the official Microsoft Azure Cosmos DB Java SDK
 
+This project provides a SDK library in Java for interacting with Document API of Azure Cosmos DB
+Database Service.
+
 Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/1.0.0).
 
 For example, using maven, you can add the following dependency to your maven pom file:
@@ -46,8 +49,15 @@ For example, using maven, you can add the following dependency to your maven pom
 </dependency>
 ```
 
-## Minimum Requirements
+## Prerequisites
 * Java Development Kit 8
+* An active Azure account. If you don't have one, you can sign up for a [free account](https://azure.microsoft.com/free/). Alternatively, you can use the [Azure Cosmos DB Emulator](https://azure.microsoft.com/documentation/articles/documentdb-nosql-local-emulator) for development and testing. As emulator https certificate is self signed, you need to import its certificate to java trusted cert store as [explained here](https://docs.microsoft.com/en-us/azure/cosmos-db/local-emulator-export-ssl-certificates)
+* (Optional) SLF4J is a logging facade.
+* (Optional) (SLF4J binding)[http://www.slf4j.org/manual.html] is used to associate a specific logging framework with SLF4J.
+* (Optional) Maven
+
+SLF4J is only needed if you plan to use logging, please also download an SLF4J binding which will link the SLF4J API with the logging implementation of your choice. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
+
 
 ## API Documentation
 Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java).
@@ -221,7 +231,7 @@ You can see more details on how to convert Observables to Futures here:
 https://dzone.com/articles/converting-between
 
 ## Checking out the Source Code
-The SDK is open source and is availbe here [sdk](sdk/).
+The SDK is open source and is available here [sdk](sdk/).
 
  Clone the Repo
 ```bash
@@ -229,27 +239,37 @@ git clone https://github.com/Azure/azure-cosmosdb-java.git
 cd azure-cosmosdb-java
 ```
 
-You can run the samples either using Eclipse or from Command Line using Maven:
+### How to Build
 
-### Eclipse
+* Run the following maven command to build:
 
-* Load the main parent project pom file in Eclipse (That should automatically load examples).
+```bash
+maven clean package -DskipTests
+```
+
+#### Running Tests from Command Line
+
+Running tests require Azure Cosmos DB Endpoint credentials:
+
+```bash
+mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME_WITH_YOURS"
+```
+
+### Import into Intellij / Eclipse
+
+* Load the main parent project pom file in Intellij/Eclipse (That should automatically load examples).
 * For running the samples you need a proper Azure Cosmos DB Endpoint. The endpoints are picked up from [TestConfigurations.java](examples/src/test/java/com/microsoft/azure/cosmosdb/rx/examples/TestConfigurations.java).
 * You can pass your endpoint credentials as VM Arguments in Eclipse JUnit Run Config:
 ```bash
  -DACCOUNT_HOST="https://REPLACE_ME.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME"
  ```
 * or you can simply put your endpoint credentials in TestConfigurations.java
-* Now you can run the samples as JUnit tests in Eclipse.
+* The SDK tests are written using TestNG framework, if you use Eclipse you may have to
+  add TestNG plugin to your eclipse IDE as explained [here](http://testng.org/doc/eclipse.html).
+  Intellij has builtin support for TestNG.
+* Now you can run the tests in your Intellij/Eclipse IDE.
 
-### Command line
 
-The other way for running samples is to use maven:
-
-* Run Maven and pass your Azure Cosmos DB Endpoint credentials:
-```bash
-mvn test -DACCOUNT_HOST="https://REPLACE_ME_WITH_YOURS.documents.azure.com:443/" -DACCOUNT_KEY="REPLACE_ME_WITH_YOURS"
-```
 ## FAQ
 We have a frequently asked questions which is maintained [here](faq/)
 
@@ -257,9 +277,16 @@ We have a frequently asked questions which is maintained [here](faq/)
 Release changelog is available [here](changelog/).
 
 
-## Contribution
+## Contribution and Feedback
 
-This is an open source project and we welcome  contributions.
+This is an open source project and we welcome contributions.
+
+If you would like to become an active contributor to this project please follow the instructions provided in [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/).
+
+We have [travis build CI](https://travis-ci.org/Azure/azure-cosmosdb-java) which should pass for any PR.
+
+If you encounter any bugs with the SDK please file an [issue](https://github.com/Azure/azure-cosmosdb-java/issues) in the Issues section of the project.
+
 
 ## License
 MIT License
