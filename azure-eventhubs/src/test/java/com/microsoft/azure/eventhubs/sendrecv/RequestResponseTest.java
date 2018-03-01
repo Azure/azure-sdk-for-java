@@ -250,9 +250,7 @@ public class RequestResponseTest  extends ApiTestBase {
     		if (e.getCause() == null) {
     			Assert.fail("Got ExecutionException but no inner exception");
     		}
-    		else if (e.getCause() instanceof AmqpException) {
-    			// TODO we should really be returning a MessagingEntityNotFound exception
-    			// but that can be an enhancement for later, right now it's an AmqpException
+    		else if (e.getCause() instanceof IllegalEntityException) {
     			Assert.assertTrue(e.getCause().getMessage().contains("could not be found"));
     		}
     		else {
@@ -271,9 +269,7 @@ public class RequestResponseTest  extends ApiTestBase {
     		if (e.getCause() == null) {
     			Assert.fail("Got ExecutionException but no inner exception");
     		}
-    		else if (e.getCause() instanceof AmqpException) {
-    			// TODO we should really be returning a MessagingEntityNotFound exception
-    			// but that can be an enhancement for later, right now it's an AmqpException
+    		else if (e.getCause() instanceof IllegalEntityException) {
     			Assert.assertTrue(e.getCause().getMessage().contains("could not be found"));
     		}
     		else {
