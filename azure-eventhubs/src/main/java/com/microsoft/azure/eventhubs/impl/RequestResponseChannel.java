@@ -9,7 +9,6 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.HashMap;
 import java.util.UUID;
 
-import com.microsoft.azure.eventhubs.AmqpException;
 import org.apache.qpid.proton.amqp.UnsignedLong;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
@@ -141,7 +140,7 @@ public class RequestResponseChannel implements IOObject {
                     final ErrorCondition error = (this.sendLink.getRemoteCondition() != null && this.sendLink.getRemoteCondition().getCondition() != null)
                             ? this.sendLink.getRemoteCondition()
                             : this.receiveLink.getRemoteCondition();
-                    onOpen.onError(new AmqpException(error));
+                    onOpen.onError(ExceptionUtil.toException(error));
                 }
             }
     }
@@ -205,7 +204,7 @@ public class RequestResponseChannel implements IOObject {
             if (condition == null || condition.getCondition() == null)
                 onLinkCloseComplete(null);
             else
-                onError(new AmqpException(condition));
+                onError(ExceptionUtil.toException(condition));
         }
 
     }
@@ -255,7 +254,7 @@ public class RequestResponseChannel implements IOObject {
                     onLinkCloseComplete(null);
             }
             else {
-                this.onError(new AmqpException(condition));
+                this.onError(ExceptionUtil.toException(condition));
             }
         }
 
