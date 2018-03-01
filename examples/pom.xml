@@ -35,6 +35,7 @@
   <artifactId>azure-cosmosdb-examples</artifactId>
   <name>Async SDK for Document API of Azure Cosmos DB Service - Examples</name>
   <description>Examples for Async SDK for Document API of Azure Cosmos DB Service</description>
+  <packaging>pom</packaging>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
