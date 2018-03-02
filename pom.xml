@@ -29,8 +29,8 @@
   <artifactId>azure-cosmosdb-parent</artifactId>
   <version>1.0.1-SNAPSHOT</version>
   <packaging>pom</packaging>
-  <name>Azure Cosmons DB Document API</name>
-  <description>Java Async SDK (with Reactive Extension rx support) for Azure Cosmos DB Document API</description>
+  <name>Azure Cosmons DB SQL API</name>
+  <description>Java Async SDK (with Reactive Extension rx support) for Azure Cosmos DB SQL API</description>
   <url>https://docs.microsoft.com/en-us/azure/cosmos-db</url>
 
   <modules>

@@ -33,8 +33,8 @@
   </parent>
 
   <artifactId>azure-cosmosdb-examples</artifactId>
-  <name>Async SDK for Document API of Azure Cosmos DB Service - Examples</name>
-  <description>Examples for Async SDK for Document API of Azure Cosmos DB Service</description>
+  <name>Async SDK for SQL API of Azure Cosmos DB Service - Examples</name>
+  <description>Examples for Async SDK for SQL API of Azure Cosmos DB Service</description>
   <packaging>pom</packaging>
 
   <properties>

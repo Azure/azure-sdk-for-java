@@ -31,8 +31,8 @@ SOFTWARE.
     <version>1.0.1-SNAPSHOT</version>
   </parent>
   <artifactId>azure-cosmosdb</artifactId>
-  <name>Async SDK for Document API of Azure Cosmos DB Service</name>
-  <description>Java Async SDK (with Reactive Extension rx support) for Azure Cosmos DB Document API</description>
+  <name>Async SDK for SQL API of Azure Cosmos DB Service</name>
+  <description>Java Async SDK (with Reactive Extension rx support) for Azure Cosmos DB SQL API</description>
   <packaging>jar</packaging>
   <build>
     <plugins>
