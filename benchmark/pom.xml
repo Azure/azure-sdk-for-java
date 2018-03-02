@@ -33,9 +33,9 @@
   </parent>
   
   <artifactId>azure-cosmosdb-benchmark</artifactId>
-  <name>Async SDK for Document API of Azure Cosmos DB Service - Benchmarking tool</name>
-  <description>Benchmarking tool for Async SDK for Document API of Azure Cosmos DB Service</description>
-
+  <name>Async SDK for SQL API of Azure Cosmos DB Service - Benchmarking tool</name>
+  <description>Benchmarking tool for Async SDK for SQL API of Azure Cosmos DB Service</description>
+  <url>https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-async-java</url>
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf4j.version>1.7.6</slf4j.version>

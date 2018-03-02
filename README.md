@@ -1,6 +1,6 @@
 
 
-# Java SDK for Document API of Azure Cosmos DB
+# Java SDK for SQL API of Azure Cosmos DB
 ![](https://img.shields.io/maven-central/v/com.microsoft.azure/azure-cosmosdb.svg)
 [![Build Status](https://api.travis-ci.org/Azure/azure-cosmosdb-java.svg?branch=master)](https://travis-ci.org/Azure/azure-cosmosdb-java)
 <!--[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmosdb-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
@@ -26,7 +26,7 @@
 
 ## Consuming the official Microsoft Azure Cosmos DB Java SDK
 
-This project provides a SDK library in Java for interacting with [Document/SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
+This project provides a SDK library in Java for interacting with [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
 Database Service](https://azure.microsoft.com/en-us/services/cosmos-db/). This project also includes samples, tools, and utilities.
 
 Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/1.0.0).
