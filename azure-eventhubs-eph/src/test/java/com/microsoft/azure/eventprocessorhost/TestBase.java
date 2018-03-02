@@ -3,9 +3,10 @@ package com.microsoft.azure.eventprocessorhost;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 
+import java.util.List;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Future;
+import java.util.concurrent.ScheduledExecutorService;
 
 import org.junit.AfterClass;
 
@@ -34,7 +35,7 @@ public class TestBase
 		ConnectionStringBuilder environmentCSB = settings.outUtils.getConnectionString();
 
 		String effectiveEntityPath = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_OVERRIDE) ?
-				settings.inoutEPHConstructorArgs.getEHPath() : environmentCSB.getEntityPath();
+				settings.inoutEPHConstructorArgs.getEHPath() : environmentCSB.getEventHubName();
 				
 		String effectiveConsumerGroup = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.CONSUMER_GROUP_OVERRIDE) ?
 				settings.inoutEPHConstructorArgs.getConsumerGroupName() : EventHubClient.DEFAULT_CONSUMER_GROUP_NAME; 
@@ -43,11 +44,16 @@ public class TestBase
 		if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_PATH_REPLACE_IN_CONNECTION) ||
 				settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH))
 		{
-			ConnectionStringBuilder replacedCSB = new ConnectionStringBuilder(environmentCSB.getEndpoint(),
-					settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH) ? "" : settings.inoutEPHConstructorArgs.getEHPath(), 
-					environmentCSB.getSasKeyName(), environmentCSB.getSasKey());
+			ConnectionStringBuilder replacedCSB = new ConnectionStringBuilder()
+					.setEndpoint(environmentCSB.getEndpoint())
+					.setEventHubName(
+							settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_REMOVE_PATH) ?
+                                    "" :
+                                    settings.inoutEPHConstructorArgs.getEHPath()
+					)
+					.setSasKeyName(environmentCSB.getSasKeyName())
+					.setSasKey(environmentCSB.getSasKey());
 			replacedCSB.setOperationTimeout(environmentCSB.getOperationTimeout());
-			replacedCSB.setRetryPolicy(environmentCSB.getRetryPolicy());
 			effectiveConnectionString = replacedCSB.toString();
 		}
 		if (settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EH_CONNECTION_OVERRIDE))
@@ -55,7 +61,7 @@ public class TestBase
 			effectiveConnectionString = settings.inoutEPHConstructorArgs.getEHConnection();
 		}
 		
-		ExecutorService effectiveExecutor = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EXECUTOR_OVERRIDE) ?
+		ScheduledExecutorService effectiveExecutor = settings.inoutEPHConstructorArgs.isFlagSet(PerTestSettings.EPHConstructorArgs.EXECUTOR_OVERRIDE) ?
 				settings.inoutEPHConstructorArgs.getExecutor() : null;
 		
 		if (settings.inTelltaleOnTimeout)
@@ -67,7 +73,7 @@ public class TestBase
 			settings.outTelltale = settings.getTestName() + "-telltale-" + EventProcessorHost.safeCreateUUID();
 		}
 		settings.outGeneralErrorHandler = new PrefabGeneralErrorHandler();
-		settings.outProcessorFactory = new PrefabProcessorFactory(settings.outTelltale, settings.inDoCheckpoint, true, true);
+		settings.outProcessorFactory = new PrefabProcessorFactory(settings.outTelltale, settings.inDoCheckpoint, false, false);
 		
 		settings.inOptions.setExceptionNotification(settings.outGeneralErrorHandler);
 		
@@ -79,7 +85,7 @@ public class TestBase
 					settings.inoutEPHConstructorArgs.getLeaseManager() : new BogusLeaseManager();
 					
 			settings.outHost = new EventProcessorHost(effectiveHostName, effectiveEntityPath, effectiveConsumerGroup, effectiveConnectionString,
-					effectiveCheckpointMananger, effectiveLeaseManager, effectiveExecutor);
+					effectiveCheckpointMananger, effectiveLeaseManager, effectiveExecutor, null);
 		}
 		else
 		{
@@ -139,29 +145,30 @@ public class TestBase
 	}
 
 	
-	final static int SKIP_COUNT_CHECK = -3; // expectedMessages could be anything, don't check it at all
+	final static int SKIP_COUNT_CHECK = -3; // expectedEvents could be anything, don't check it at all
 	final static int NO_CHECKS = -2; // do no checks at all, used for tests which are expected fail in startup
-	final static int ANY_NONZERO_COUNT = -1; // if expectedMessages is -1, just check for > 0
-	void testFinish(PerTestSettings settings, int expectedMessages) throws InterruptedException, ExecutionException, EventHubException
+	final static int ANY_NONZERO_COUNT = -1; // if expectedEvents is -1, just check for > 0
+	void testFinish(PerTestSettings settings, int expectedEvents) throws InterruptedException, ExecutionException, EventHubException
 	{
 		if (settings.outHost != null)
 		{
-			settings.outHost.unregisterEventProcessor();
+			settings.outHost.unregisterEventProcessor().get();
+			TestUtilities.log("Host unregistered");
 		}
 		
-		if (expectedMessages != NO_CHECKS)
+		if (expectedEvents != NO_CHECKS)
 		{
 			TestUtilities.log("Events received: " + settings.outProcessorFactory.getEventsReceivedCount() + "\n");
-			if (expectedMessages == ANY_NONZERO_COUNT)
+			if (expectedEvents == ANY_NONZERO_COUNT)
 			{
-				assertTrue("no messages received", settings.outProcessorFactory.getEventsReceivedCount() > 0);
+				assertTrue("no events received", settings.outProcessorFactory.getEventsReceivedCount() > 0);
 			}
-			else if (expectedMessages != SKIP_COUNT_CHECK)
+			else if (expectedEvents != SKIP_COUNT_CHECK)
 			{
-				assertEquals("wrong number of messages received", expectedMessages, settings.outProcessorFactory.getEventsReceivedCount());
+				assertEquals("wrong number of events received", expectedEvents, settings.outProcessorFactory.getEventsReceivedCount());
 			}
 			
-			assertTrue("telltale message was not found", settings.outProcessorFactory.getAnyTelltaleFound());
+			assertTrue("telltale event was not found", settings.outProcessorFactory.getAnyTelltaleFound());
 			assertEquals("partition errors seen", 0, settings.outProcessorFactory.getErrors().size());
 			assertEquals("general errors seen", 0, settings.outGeneralErrorHandler.getErrors().size());
 			for (String err : settings.outProcessorFactory.getErrors())
@@ -182,65 +189,50 @@ public class TestBase
 	@AfterClass
 	public static void allTestFinish()
 	{
-		try
-		{
-			EventProcessorHost.forceExecutorShutdown(20);
-		}
-		catch (InterruptedException e)
-		{
-			TestUtilities.log("forceExecutorShutdown threw " + e.toString() + "\n");
-		}
 	}
 	
 	class BogusCheckpointMananger implements ICheckpointManager
 	{
 		@Override
-		public Future<Boolean> checkpointStoreExists()
+		public CompletableFuture<Boolean> checkpointStoreExists()
 		{
-			return null;
+			return CompletableFuture.completedFuture(true);
 		}
 
 		@Override
-		public Future<Boolean> createCheckpointStoreIfNotExists()
+		public CompletableFuture<Void> createCheckpointStoreIfNotExists()
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Boolean> deleteCheckpointStore()
+		public CompletableFuture<Void> deleteCheckpointStore()
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Checkpoint> getCheckpoint(String partitionId)
+		public CompletableFuture<Checkpoint> getCheckpoint(String partitionId)
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Checkpoint> createCheckpointIfNotExists(String partitionId)
+		public CompletableFuture<Checkpoint> createCheckpointIfNotExists(String partitionId)
 		{
-			return null;
-		}
-
-		@Deprecated
-		@Override
-		public Future<Void> updateCheckpoint(Checkpoint checkpoint)
-		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
+		public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint)
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Void> deleteCheckpoint(String partitionId)
+		public CompletableFuture<Void> deleteCheckpoint(String partitionId)
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 	}
 	
@@ -259,69 +251,63 @@ public class TestBase
 		}
 
 		@Override
-		public Future<Boolean> leaseStoreExists()
+		public CompletableFuture<Boolean> leaseStoreExists()
 		{
-			return null;
+			return CompletableFuture.completedFuture(true);
 		}
 
 		@Override
-		public Future<Boolean> createLeaseStoreIfNotExists()
+		public CompletableFuture<Void> createLeaseStoreIfNotExists()
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Boolean> deleteLeaseStore()
+		public CompletableFuture<Void> deleteLeaseStore()
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Lease> getLease(String partitionId)
+		public CompletableFuture<List<Lease>> getAllLeases()
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Iterable<Future<Lease>> getAllLeases() throws Exception
+		public CompletableFuture<Lease> createLeaseIfNotExists(String partitionId)
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Lease> createLeaseIfNotExists(String partitionId)
+		public CompletableFuture<Void> deleteLease(Lease lease)
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Void> deleteLease(Lease lease)
+		public CompletableFuture<Boolean> acquireLease(Lease lease)
 		{
-			return null;
+			return CompletableFuture.completedFuture(true);
 		}
 
 		@Override
-		public Future<Boolean> acquireLease(Lease lease)
+		public CompletableFuture<Boolean> renewLease(Lease lease)
 		{
-			return null;
+			return CompletableFuture.completedFuture(true);
 		}
 
 		@Override
-		public Future<Boolean> renewLease(Lease lease)
+		public CompletableFuture<Void> releaseLease(Lease lease)
 		{
-			return null;
+			return CompletableFuture.completedFuture(null);
 		}
 
 		@Override
-		public Future<Boolean> releaseLease(Lease lease)
+		public CompletableFuture<Boolean> updateLease(Lease lease)
 		{
-			return null;
-		}
-
-		@Override
-		public Future<Boolean> updateLease(Lease lease)
-		{
-			return null;
+			return CompletableFuture.completedFuture(true);
 		}
 	}
 }

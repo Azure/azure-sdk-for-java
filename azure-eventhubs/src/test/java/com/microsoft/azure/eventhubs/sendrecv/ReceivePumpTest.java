@@ -9,6 +9,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
@@ -35,7 +36,7 @@ public class ReceivePumpTest
 					@Override public Iterable<EventData> receive(int maxBatchSize) throws EventHubException
 					{
 						LinkedList<EventData> events = new LinkedList<EventData>();
-						events.add(new EventData("some".getBytes()));
+						events.add(EventData.create("some".getBytes()));
 						return events;
 					}
 					@Override public String getPartitionId()
@@ -43,7 +44,11 @@ public class ReceivePumpTest
 						return "0";
 					}
 				},
-				new PartitionReceiveHandler(10) {
+				new PartitionReceiveHandler() {
+					@Override
+					public int getMaxEventCount() {
+						return 10;
+					}
 					@Override public void onReceive(Iterable<EventData> events)
 					{
 						assertion = IteratorUtil.sizeEquals(events, 1); 
@@ -77,7 +82,11 @@ public class ReceivePumpTest
 						return "0";
 					}
 				},
-				new PartitionReceiveHandler(10) {
+				new PartitionReceiveHandler() {
+					@Override
+					public int getMaxEventCount() {
+						return 10;
+					}
 					@Override public void onReceive(Iterable<EventData> events)
 					{						
 					}
@@ -107,7 +116,11 @@ public class ReceivePumpTest
 						return "0";
 					}
 				},
-				new PartitionReceiveHandler(10) {
+				new PartitionReceiveHandler() {
+					@Override
+					public int getMaxEventCount() {
+						return 10;
+					}
 					@Override public void onReceive(Iterable<EventData> events)
 					{						
 					}
@@ -138,7 +151,11 @@ public class ReceivePumpTest
 						return "0";
 					}
 				},
-				new PartitionReceiveHandler(10) {
+				new PartitionReceiveHandler() {
+					@Override
+					public int getMaxEventCount() {
+						return 10;
+					}
 					@Override public void onReceive(Iterable<EventData> events)
 					{
 						throw new RuntimeException(runtimeExceptionMsg);

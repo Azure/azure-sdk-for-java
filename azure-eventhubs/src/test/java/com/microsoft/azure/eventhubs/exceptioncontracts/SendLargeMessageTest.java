@@ -34,11 +34,11 @@ public class SendLargeMessageTest extends ApiTestBase
 	{
 		connStr = TestContext.getConnectionString();
 	
-		ehClient = EventHubClient.createFromConnectionString(connStr.toString()).get();
+		ehClient = EventHubClient.create(connStr.toString(), TestContext.EXECUTOR_SERVICE).get();
 		sender = ehClient.createPartitionSender(partitionId).get();
 		
-		receiverHub = EventHubClient.createFromConnectionString(connStr.toString()).get();
-		receiver = receiverHub.createReceiver(TestContext.getConsumerGroupName(), partitionId, Instant.now()).get();
+		receiverHub = EventHubClient.create(connStr.toString(), TestContext.EXECUTOR_SERVICE).get();
+		receiver = receiverHub.createReceiver(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromEnqueuedTime(Instant.now())).get();
 	}
 	
 	@Test()
@@ -57,7 +57,7 @@ public class SendLargeMessageTest extends ApiTestBase
 			body[i] = 1;
 		}
 		
-		EventData largeMsg = new EventData(body);
+		EventData largeMsg = EventData.create(body);
 		sender.sendSync(largeMsg);
 	}
 	
@@ -75,7 +75,7 @@ public class SendLargeMessageTest extends ApiTestBase
 			body[i] = 1;
 		}
 		
-		EventData largeMsg = new EventData(body);
+		EventData largeMsg = EventData.create(body);
 		sender.sendSync(largeMsg);
 		
 		Iterable<EventData> messages = receiver.receiveSync(100);

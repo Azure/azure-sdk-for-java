@@ -1,7 +1,7 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import java.util.ArrayList;
-import java.util.concurrent.ExecutorService;
+import java.util.concurrent.ScheduledExecutorService;
 
 public class PerTestSettings
 {
@@ -67,7 +67,7 @@ public class PerTestSettings
 		private String storageConnection;
 		private String storageContainerName;
 		private String storageBlobPrefix;
-		private ExecutorService executor;
+		private ScheduledExecutorService executor;
 		private ICheckpointManager checkpointManager;
 		private ILeaseManager leaseManager;
 		
@@ -144,12 +144,12 @@ public class PerTestSettings
 		}
 		String getStorageBlobPrefix() { return this.storageBlobPrefix; }
 		
-		void setExecutor(ExecutorService executor)
+		void setExecutor(ScheduledExecutorService executor)
 		{
 			this.executor = executor;
 			this.flags |= EXECUTOR_OVERRIDE;
 		}
-		ExecutorService getExecutor() { return this.executor; }
+		ScheduledExecutorService getExecutor() { return this.executor; }
 		
 		boolean useExplicitManagers() { return ((this.flags & EXPLICIT_MANAGER) != 0); }
 		

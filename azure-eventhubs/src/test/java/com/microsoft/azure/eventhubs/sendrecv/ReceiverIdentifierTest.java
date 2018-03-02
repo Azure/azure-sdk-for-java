@@ -9,20 +9,15 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.UUID;
 
-import com.microsoft.azure.eventhubs.QuotaExceededException;
+import com.microsoft.azure.eventhubs.*;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
-import com.microsoft.azure.eventhubs.ReceiverOptions;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.EventHubException;
 
 public class ReceiverIdentifierTest extends ApiTestBase {
 
@@ -38,7 +33,7 @@ public class ReceiverIdentifierTest extends ApiTestBase {
     public static void initializeEventHub()  throws Exception {
 
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 
         TestBase.pushEventsToPartition(ehClient, partitionId, sentEvents).get();
     }
@@ -50,11 +45,11 @@ public class ReceiverIdentifierTest extends ApiTestBase {
         for (int receiverCount = 0; receiverCount < 5; receiverCount ++) {
             final ReceiverOptions options = new ReceiverOptions();
             options.setIdentifier(receiverIdentifierPrefix + receiverCount);
-            ehClient.createReceiverSync(cgName, partitionId, PartitionReceiver.START_OF_STREAM, options);
+            ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream(), options);
         }
 
         try {
-            ehClient.createReceiverSync(cgName, partitionId, PartitionReceiver.START_OF_STREAM);
+            ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream());
             Assert.assertTrue(false);
         }
         catch (QuotaExceededException quotaError) {

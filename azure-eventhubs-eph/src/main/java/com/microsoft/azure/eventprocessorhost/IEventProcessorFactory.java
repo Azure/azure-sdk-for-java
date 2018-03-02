@@ -19,9 +19,11 @@ public interface IEventProcessorFactory<T extends IEventProcessor>
 	/**
 	 * Called to create an event processor for the given partition.
 	 * 
+	 * If it throws an exception, that causes this event processor host instance to give up ownership of the partition.
+	 * 
 	 * @param context	Information about the partition that the event processor will handle events from.
 	 * @return			The event processor object.
-	 * @throws Exception
+	 * @throws Exception to indicate failure.
 	 */
     public T createEventProcessor(PartitionContext context) throws Exception;
 }

@@ -16,18 +16,18 @@ public class PrefabEventProcessor implements IEventProcessor
 	private byte[] telltaleBytes;
 	private CheckpointChoices doCheckpoint;
 	private boolean doMarker;
-	private boolean logEveryMessage;
+	private boolean logEveryEvent;
 	private boolean telltaleOnTimeout;
 	
 	private int eventCount = 0;
 	
-	PrefabEventProcessor(PrefabProcessorFactory factory, String telltale, CheckpointChoices doCheckpoint, boolean doMarker, boolean logEveryMessage)
+	PrefabEventProcessor(PrefabProcessorFactory factory, String telltale, CheckpointChoices doCheckpoint, boolean doMarker, boolean logEveryEvent)
 	{
 		this.factory = factory;
 		this.telltaleBytes = telltale.getBytes();
 		this.doCheckpoint = doCheckpoint;
 		this.doMarker = doMarker;
-		this.logEveryMessage = logEveryMessage;
+		this.logEveryEvent = logEveryEvent;
 		this.telltaleOnTimeout = telltale.isEmpty();
 	}
 	
@@ -44,30 +44,27 @@ public class PrefabEventProcessor implements IEventProcessor
 	}
 
 	@Override
-	public void onEvents(PartitionContext context, Iterable<EventData> messages) throws Exception
+	public void onEvents(PartitionContext context, Iterable<EventData> events) throws Exception
 	{
 		int batchSize = 0;
 		EventData lastEvent = null;
-                if (messages != null && messages.iterator().hasNext())
-                    this.factory.setOnEventsContext(context);
-                
-		for (EventData event : messages)
-		{
-			this.eventCount++;
-			batchSize++;
-			if (((this.eventCount % 100) == 0) && this.doMarker)
-			{
-				TestUtilities.console(context.getPartitionId());
+		if (events != null && events.iterator().hasNext()) {
+			this.factory.setOnEventsContext(context);
+
+			for (EventData event : events) {
+				this.eventCount++;
+				batchSize++;
+				if (((this.eventCount % 10) == 0) && this.doMarker) {
+					TestUtilities.log("P" + context.getPartitionId() + ": " + this.eventCount + "\n");
+				}
+				if (this.logEveryEvent) {
+					TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBytes()) + " @ " + event.getSystemProperties().getOffset() + "\n");
+				}
+				if (Arrays.equals(event.getBytes(), this.telltaleBytes)) {
+					this.factory.setTelltaleFound(context.getPartitionId());
+				}
+				lastEvent = event;
 			}
-			if (this.logEveryMessage)
-			{
-				//TestUtilities.log("P" + context.getPartitionId() + " " + new String(event.getBody()) + " @ " + event.getSystemProperties().getOffset() + "\n");
-			}
-			if (Arrays.equals(event.getBytes(), this.telltaleBytes))
-			{
-				this.factory.setTelltaleFound(context.getPartitionId());
-			}
-			lastEvent = event;
 		}
 		if (batchSize == 0)
 		{
@@ -89,12 +86,12 @@ public class PrefabEventProcessor implements IEventProcessor
 			break;
 			
 		case CKP_EXPLICIT:
-			context.checkpoint(lastEvent);
+			context.checkpoint(lastEvent).get(); // do a get so that errors will throw
 			TestUtilities.log("P" + context.getPartitionId() + " checkpointed at " + lastEvent.getSystemProperties().getOffset() + "\n");
 			break;
 			
 		case CKP_NOARGS:
-			context.checkpoint();
+			context.checkpoint().get(); // do a get so errors will throw
 			TestUtilities.log("P" + context.getPartitionId() + " checkpointed without arguments\n");
 			break;
 		}
@@ -103,6 +100,7 @@ public class PrefabEventProcessor implements IEventProcessor
 	@Override
 	public void onError(PartitionContext context, Throwable error)
 	{
-		this.factory.putError(context.getPartitionId() + ": " + error.toString() + " " + error.getMessage());
+		TestUtilities.log("P" + context.getPartitionId() + "onError: "  + error.toString() + " " + error.getMessage());
+		this.factory.putError(context.getPartitionId() + " onError: " + error.toString() + " " + error.getMessage());
 	}
 }

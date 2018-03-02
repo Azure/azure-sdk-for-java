@@ -13,7 +13,7 @@ import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.*;
 import org.apache.qpid.proton.reactor.Handshaker;
 
-import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
+import com.microsoft.azure.eventhubs.impl.AmqpConstants;
 
 /**
  * Sends 1 Msg on the first onLinkFlow event
@@ -42,7 +42,7 @@ public class Sender1MsgOnLinkFlowHandler extends ServerTraceHandler
 					{
 						byte[] bytes = new byte[5 * 1024];
 						Message msg = Proton.message();
-						Map<String, String> properties = new HashMap<String, String>();
+						Map<String, Object> properties = new HashMap<String, Object>();
 						properties.put("testkey", "testvalue");
 						msg.setApplicationProperties(new ApplicationProperties(properties));
 						Map<Symbol, Object> annotations = new HashMap<Symbol, Object>();

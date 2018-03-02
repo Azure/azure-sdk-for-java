@@ -5,17 +5,27 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import org.junit.Assume;
+
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-class TestUtilities
+final class TestUtilities
 {
 	static String getStorageConnectionString()
 	{
 		String retval = System.getenv("EPHTESTSTORAGE");
+
+		// if EPHTESTSTORAGE is not set - we cannot run integration tests
+		Assume.assumeTrue(retval != null);
+
 		return ((retval != null) ? retval : "");
 	}
-	
+
+	static final ExecutorService EXECUTOR_SERVICE = Executors.newSingleThreadExecutor();
+
 	static final Logger TEST_LOGGER = Logger.getLogger("servicebus.test-eph.trace");
 	
 	static final String syntacticallyCorrectDummyConnectionString =

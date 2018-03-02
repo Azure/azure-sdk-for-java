@@ -8,10 +8,21 @@ import java.time.Instant;
 import java.util.concurrent.Executors;
 
 import org.junit.Assert;
+import org.junit.Assume;
+import org.junit.BeforeClass;
 import org.junit.Test;
+
+import com.microsoft.azure.eventhubs.EventPosition;
+
 
 public class SmokeTest extends TestBase
 {
+	@BeforeClass
+	public static void skipIfNoEnvPresent()
+	{
+		Assume.assumeTrue(System.getenv("EVENT_HUB_CONNECTION_STRING") != null);
+	}
+
 	@Test
 	public void SendRecv1MsgTest() throws Exception
 	{
@@ -36,7 +47,7 @@ public class SmokeTest extends TestBase
 
                 // correctness of runtimeInfo is already tested in javaclient - this is only testing for presence of non-default value
 		Assert.assertTrue(settings.outProcessorFactory.getOnEventsContext().getRuntimeInformation() != null);
-                Assert.assertTrue(settings.outProcessorFactory.getOnEventsContext().getRuntimeInformation().getLastSequenceNumber() > 0);
+                Assert.assertTrue(settings.outProcessorFactory.getOnEventsContext().getRuntimeInformation().getLastEnqueuedSequenceNumber() > 0);
 
    testFinish(settings, SmokeTest.ANY_NONZERO_COUNT);
 	}
@@ -60,20 +71,20 @@ public class SmokeTest extends TestBase
 		receiveFromNowIteration(storedNow, 2, 2, firstSettings.inoutEPHConstructorArgs.getStorageContainerName());
 	}
 	
-	private PerTestSettings receiveFromNowIteration(final Instant storedNow, int iteration, int expectedMessages, String containerName) throws Exception
+	private PerTestSettings receiveFromNowIteration(final Instant storedNow, int iteration, int expectedEvents, String containerName) throws Exception
 	{
 		PerTestSettings settings = new PerTestSettings("receiveFromNow-iter-" + iteration);
 		if (containerName != null)
 		{
 			settings.inoutEPHConstructorArgs.setStorageContainerName(containerName);
 		}
-		settings.inOptions.setInitialOffsetProvider((partitionId) -> { return storedNow; });
+		settings.inOptions.setInitialPositionProvider((partitionId) -> { return EventPosition.fromEnqueuedTime(storedNow); });
 		settings = testSetup(settings);
 
 		settings.outUtils.sendToAny(settings.outTelltale);
 		waitForTelltale(settings);
 
-		testFinish(settings, expectedMessages);
+		testFinish(settings, expectedEvents);
 		
 		return settings;
 	}
@@ -96,7 +107,7 @@ public class SmokeTest extends TestBase
 				firstSettings.inDoCheckpoint);
 	}
 
-	private PerTestSettings receiveFromCheckpointIteration(int iteration, int expectedMessages, String containerName,
+	private PerTestSettings receiveFromCheckpointIteration(int iteration, int expectedEvents, String containerName,
 			PrefabEventProcessor.CheckpointChoices checkpointCallType) throws Exception
 	{
 		String distinguisher = "e";
@@ -118,7 +129,7 @@ public class SmokeTest extends TestBase
 			waitForTelltale(settings, id);
 		}
 
-		testFinish(settings, expectedMessages);
+		testFinish(settings, expectedEvents);
 		
 		return settings;
 	}
@@ -160,7 +171,7 @@ public class SmokeTest extends TestBase
 		final Instant savedNow = Instant.now();
 		
 		PerTestSettings settings = new PerTestSettings("receiveAllPartitions");
-		settings.inOptions.setInitialOffsetProvider((partitionId) -> { return savedNow; });
+		settings.inOptions.setInitialPositionProvider((partitionId) -> { return EventPosition.fromEnqueuedTime(savedNow); });
 		settings = testSetup(settings);
 
 		final int maxGeneration = 10;
@@ -192,8 +203,8 @@ public class SmokeTest extends TestBase
 		final Instant savedNow = Instant.now();
 		
 		PerTestSettings settings = new PerTestSettings("rcvAllPartsUserExec");
-		settings.inOptions.setInitialOffsetProvider((partitionId) -> { return savedNow; });
-		settings.inoutEPHConstructorArgs.setExecutor(Executors.newCachedThreadPool());
+		settings.inOptions.setInitialPositionProvider((partitionId) -> { return EventPosition.fromEnqueuedTime(savedNow); });
+		settings.inoutEPHConstructorArgs.setExecutor(Executors.newScheduledThreadPool(4));
 		settings = testSetup(settings);
 
 		final int maxGeneration = 10;
@@ -202,6 +213,39 @@ public class SmokeTest extends TestBase
 			for (String id : settings.outPartitionIds)
 			{
 				settings.outUtils.sendToPartition(id, "receiveAllPartitionsWithUserExecutor-" + id + "-" + generation);
+			}
+			TestUtilities.log("Generation " + generation + " sent\n");
+		}
+		for (String id : settings.outPartitionIds)
+		{
+			settings.outUtils.sendToPartition(id, settings.outTelltale);
+			TestUtilities.log("Telltale " + id + " sent\n");
+		}
+		for (String id : settings.outPartitionIds)
+		{
+			waitForTelltale(settings, id);
+		}
+		
+		testFinish(settings, (settings.outPartitionIds.size() * (maxGeneration + 1))); // +1 for the telltales
+	}
+	
+	@Test
+	public void receiveAllPartitionsWithSingleThreadExecutorTest() throws Exception
+	{
+		// Save "now" to avoid race with sender startup.
+		final Instant savedNow = Instant.now();
+		
+		PerTestSettings settings = new PerTestSettings("rcvAllParts1ThrdExec");
+		settings.inOptions.setInitialPositionProvider((partitionId) -> { return EventPosition.fromEnqueuedTime(savedNow); });
+		settings.inoutEPHConstructorArgs.setExecutor(Executors.newSingleThreadScheduledExecutor());
+		settings = testSetup(settings);
+
+		final int maxGeneration = 10;
+		for (int generation = 0; generation < maxGeneration; generation++)
+		{
+			for (String id : settings.outPartitionIds)
+			{
+				settings.outUtils.sendToPartition(id, "receiveAllPartitionsWithSingleThreadExecutor-" + id + "-" + generation);
 			}
 			TestUtilities.log("Generation " + generation + " sent\n");
 		}

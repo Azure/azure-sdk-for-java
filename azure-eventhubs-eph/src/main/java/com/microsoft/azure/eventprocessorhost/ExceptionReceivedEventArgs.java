@@ -7,7 +7,6 @@ package com.microsoft.azure.eventprocessorhost;
 
 /**
  * Passed as an argument to the general exception handler that can be set via EventProcessorOptions. 
- *
  */
 public final class ExceptionReceivedEventArgs
 {
@@ -46,8 +45,9 @@ public final class ExceptionReceivedEventArgs
 	}
 	
 	/**
+	 * Returns the exception that was thrown.
 	 * 
-	 * @return	The exception that was thrown.
+	 * @return	The exception.
 	 */
 	public Exception getException()
 	{
@@ -65,9 +65,10 @@ public final class ExceptionReceivedEventArgs
 	}
 
 	/**
+	 * If the error is associated with a particular partition (for example, failed to open the event processor
+	 * for the partition), the id of the partition. Otherwise, NO_ASSOCIATED_PARTITION.
 	 * 
-	 * @return If the error is associated with a particular partition (for example, failed to open
-	 *         the event processor for the partition), the id of the partition. Otherwise, NO_ASSOCIATED_PARTITION.
+	 * @return A partition id. 
 	 */
 	public String getPartitionId()
 	{

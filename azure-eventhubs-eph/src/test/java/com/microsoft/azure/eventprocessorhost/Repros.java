@@ -4,12 +4,8 @@ import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.eventhubs.*;
 import org.junit.Test;
-
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 
 public class Repros extends TestBase
 {
@@ -42,7 +38,7 @@ public class Repros extends TestBase
 		
 		PrefabGeneralErrorHandler general1 = new PrefabGeneralErrorHandler();
 		PrefabProcessorFactory factory1 = new PrefabProcessorFactory(telltale, doCheckpointing, doMarker);
-		EventProcessorHost host1 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEntityPath(),
+		EventProcessorHost host1 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEventHubName(),
 				utils.getConsumerGroup(), utils.getConnectionString().toString(),
 				TestUtilities.getStorageConnectionString(), storageName);
 		EventProcessorOptions options1 = EventProcessorOptions.getDefaultOptions();
@@ -50,7 +46,7 @@ public class Repros extends TestBase
 		
 		PrefabGeneralErrorHandler general2 = new PrefabGeneralErrorHandler();
 		PrefabProcessorFactory factory2 = new PrefabProcessorFactory(telltale, doCheckpointing, doMarker);
-		EventProcessorHost host2 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEntityPath(),
+		EventProcessorHost host2 = new EventProcessorHost(conflictingName, utils.getConnectionString().getEventHubName(),
 				utils.getConsumerGroup(), utils.getConnectionString().toString(),
 				TestUtilities.getStorageConnectionString(), storageName);
 		EventProcessorOptions options2 = EventProcessorOptions.getDefaultOptions();
@@ -64,7 +60,89 @@ public class Repros extends TestBase
 		{
 			utils.sendToAny("conflict-" + i++, 10);
 			System.out.println("\n." + factory1.getEventsReceivedCount() + "." + factory2.getEventsReceivedCount() + ":" +
-					((ThreadPoolExecutor)host1.getExecutorService()).getPoolSize() + "." + ((ThreadPoolExecutor)host2.getExecutorService()).getPoolSize() + ":" +
+					((ThreadPoolExecutor)host1.getHostContext().getExecutor()).getPoolSize() + "." +
+					((ThreadPoolExecutor)host2.getHostContext().getExecutor()).getPoolSize() + ":" +
+					Thread.activeCount());
+			Thread.sleep(100);
+		}
+	}
+
+	@Test
+	public void infiniteReceive() throws Exception
+	{
+		System.out.println("infiniteReceive starting");
+		
+		RealEventHubUtilities utils = new RealEventHubUtilities();
+		utils.setupWithoutSenders(RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+		
+		PrefabGeneralErrorHandler genErr = new PrefabGeneralErrorHandler();
+		PrefabProcessorFactory factory = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, false, false);
+		InMemoryCheckpointManager checkpointer = new InMemoryCheckpointManager();
+		InMemoryLeaseManager leaser = new InMemoryLeaseManager();
+		EventProcessorHost host = new EventProcessorHost("infiniteReceive-1", utils.getConnectionString().getEventHubName(),
+				utils.getConsumerGroup(), utils.getConnectionString().toString(),
+				checkpointer, leaser);
+		checkpointer.initialize(host.getHostContext());
+		leaser.initialize(host.getHostContext());
+		
+		EventProcessorOptions opts = EventProcessorOptions.getDefaultOptions();
+		opts.setExceptionNotification(genErr);
+		host.registerEventProcessorFactory(factory, opts).get();
+		
+		while (System.in.available() == 0)
+		{
+			System.out.println("STANDING BY AT " + Thread.activeCount());
+			Thread.sleep(10000);
+		}
+		while (System.in.available() > 0)
+		{
+			System.in.read();
+		}
+		while (System.in.available() == 0)
+		{
+			System.out.println("STANDING BY AT " + Thread.activeCount());
+			Thread.sleep(1000);
+		}
+
+		host.unregisterEventProcessor();
+	}
+
+	@Test
+	public void infiniteReceive2Hosts() throws Exception
+	{
+		System.out.println("infiniteReceive2Hosts starting");
+		
+		RealEventHubUtilities utils = new RealEventHubUtilities();
+		utils.setup(RealEventHubUtilities.QUERY_ENTITY_FOR_PARTITIONS);
+		
+		String storageName = "ir2hosts" + EventProcessorHost.safeCreateUUID();
+		
+		PrefabGeneralErrorHandler general1 = new PrefabGeneralErrorHandler();
+		PrefabProcessorFactory factory1 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
+		EventProcessorHost host1 = new EventProcessorHost("infiniteReceive2Hosts-1", utils.getConnectionString().getEventHubName(),
+				utils.getConsumerGroup(), utils.getConnectionString().toString(),
+				TestUtilities.getStorageConnectionString(), storageName);
+		EventProcessorOptions options1 = EventProcessorOptions.getDefaultOptions();
+		options1.setExceptionNotification(general1);
+		
+		PrefabGeneralErrorHandler general2 = new PrefabGeneralErrorHandler();
+		PrefabProcessorFactory factory2 = new PrefabProcessorFactory("never match", PrefabEventProcessor.CheckpointChoices.CKP_NONE, true, false);
+		EventProcessorHost host2 = new EventProcessorHost("infiniteReceive2Hosts-2", utils.getConnectionString().getEventHubName(),
+				utils.getConsumerGroup(), utils.getConnectionString().toString(),
+				TestUtilities.getStorageConnectionString(), storageName);
+		EventProcessorOptions options2 = EventProcessorOptions.getDefaultOptions();
+		options2.setExceptionNotification(general2);
+
+		host1.registerEventProcessorFactory(factory1, options1);
+		host2.registerEventProcessorFactory(factory2, options2);
+		
+		int i = 0;
+		while (true)
+		{
+			utils.sendToAny("blah-" + i++, 10);
+			System.out.println("\n." + factory1.getEventsReceivedCount() + "." + factory2.getEventsReceivedCount() + ":" +
+					((ThreadPoolExecutor)host1.getHostContext().getExecutor()).getPoolSize() + "." +
+					((ThreadPoolExecutor)host2.getHostContext().getExecutor()).getPoolSize() + ":" +
 					Thread.activeCount());
 			Thread.sleep(100);
 		}
@@ -122,8 +200,8 @@ public class Repros extends TestBase
 			System.out.println("\nParked: " + parkedCount + "  SELECTING: " + selectingList);
 			
 			System.out.println("Client " + clientSerialNumber + " starting");
-			EventHubClient client = EventHubClient.createFromConnectionStringSync(utils.getConnectionString().toString());
-			PartitionReceiver receiver = client.createReceiver(utils.getConsumerGroup(), "0", PartitionReceiver.START_OF_STREAM).get();
+			EventHubClient client = EventHubClient.createSync(utils.getConnectionString().toString(), TestUtilities.EXECUTOR_SERVICE);
+			PartitionReceiver receiver = client.createReceiver(utils.getConsumerGroup(), "0", EventPosition.fromStartOfStream()).get();
 					//client.createEpochReceiver(utils.getConsumerGroup(), "0", PartitionReceiver.START_OF_STREAM, 1).get();
 
 			boolean useReceiveHandler = false;
@@ -132,13 +210,13 @@ public class Repros extends TestBase
 			{
 				Blah b = new Blah(clientSerialNumber++, receiver, client);
 				receiver.setReceiveHandler(b).get();
-				// wait for messages to start flowing
-				b.waitForReceivedMessages().get();
+				// wait for events to start flowing
+				b.waitForReceivedEvents().get();
 			}
 			else
 			{
 				receiver.receiveSync(1);
-				System.out.println("Received a message");
+				System.out.println("Received an event");
 			}
 			
 			// Enable these lines to avoid overlap
@@ -171,26 +249,30 @@ public class Repros extends TestBase
 		}
 	}
 	
-	private class Blah extends PartitionReceiveHandler
+	private class Blah implements PartitionReceiveHandler
 	{
 		private int clientSerialNumber;
 		private PartitionReceiver receiver;
 		private EventHubClient client;
-		private CompletableFuture<Void> receivedMessages = null;
+		private CompletableFuture<Void> receivedEvents = null;
 		private boolean firstEvents = true;
 		
 		protected Blah(int clientSerialNumber, PartitionReceiver receiver, EventHubClient client)
 		{
-			super(300);
 			this.clientSerialNumber = clientSerialNumber;
 			this.receiver = receiver;
 			this.client = client;
 		}
 		
-		CompletableFuture<Void> waitForReceivedMessages()
+		CompletableFuture<Void> waitForReceivedEvents()
 		{
-			this.receivedMessages = new CompletableFuture<Void>();
-			return this.receivedMessages;
+			this.receivedEvents = new CompletableFuture<Void>();
+			return this.receivedEvents;
+		}
+
+		@Override
+		public int getMaxEventCount() {
+			return 300;
 		}
 
 		@Override
@@ -199,7 +281,7 @@ public class Repros extends TestBase
 			if (this.firstEvents)
 			{
 				System.out.println("Client " + this.clientSerialNumber + " got events");
-				this.receivedMessages.complete(null);
+				this.receivedEvents.complete(null);
 				this.firstEvents = false;
 			}
 		}

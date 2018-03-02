@@ -4,6 +4,9 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import com.microsoft.azure.eventhubs.impl.MessagingFactory;
+import com.microsoft.azure.eventhubs.impl.StringUtil;
+
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.time.Duration;
@@ -13,173 +16,162 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 /**
- * {@link ConnectionStringBuilder} can be used to construct a connection string which can establish communication with ServiceBus entities.
- * It can also be used to perform basic validation on an existing connection string.
+ * {@link ConnectionStringBuilder} can be used to construct a connection string which can establish communication with Event Hub instances.
+ * In addition to constructing a connection string, the {@link ConnectionStringBuilder} can be used to modify an existing connection string.
  * <p> Sample Code:
  * <pre>{@code
- * 	ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(
- *     "ServiceBusNamespaceName",
- *     "ServiceBusEntityName", // eventHubName or QueueName or TopicName
- *     "SharedAccessSignatureKeyName",
- *     "SharedAccessSignatureKey");
+ *  // Construct a new connection string
+ * 	ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder()
+ * 	    .setNamespaceName("EventHubsNamespaceName")
+ * 	    .setEventHubName("EventHubsEntityName")
+ * 	    .setSasKeyName("SharedAccessSignatureKeyName")
+ * 	    .setSasKey("SharedAccessSignatureKey")
  *
- * String connectionString = connectionStringBuilder.toString();
+ *  string connString = connectionStringBuilder.build();
+ *
+ *  // Modify an existing connection string
+ *  ConnectionStringBuilder connectionStringBuilder = new ConnectionStringBuilder(existingConnectionString)
+ *      .setEventHubName("SomeOtherEventHubsName")
+ *      .setOperationTimeout(Duration.ofSeconds(30)
+ *
+ *  string connString = connectionStringBuilder.build();
  * }</pre>
  * <p>
- * A connection string is basically a string consisted of key-value pair separated by ";".
- * Basic format is {{@literal <}key{@literal >}={@literal <}value{@literal >}[;{@literal <}key{@literal >}={@literal <}value{@literal >}]} where supported key name are as follow:
+ * A connection string is basically a string consisting of key-value pairs separated by ";".
+ * The basic format is {{@literal <}key{@literal >}={@literal <}value{@literal >}[;{@literal <}key{@literal >}={@literal <}value{@literal >}]} where supported key name are as follow:
  * <ul>
- * <li> Endpoint - the URL that contains the servicebus namespace
- * <li> EntityPath - the path to the service bus entity (queue/topic/eventhub/subscription/consumergroup/partition)
+ * <li> Endpoint - the URL that contains the EventHubs namespace
+ * <li> EntityPath - the EventHub name which you are connecting to
  * <li> SharedAccessKeyName - the key name to the corresponding shared access policy rule for the namespace, or entity.
  * <li> SharedAccessKey - the key for the corresponding shared access policy rule of the namespace or entity.
  * </ul>
  */
-public class ConnectionStringBuilder {
-    final static String endpointFormat = "amqps://%s.servicebus.windows.net";
-    final static String endpointRawFormat = "amqps://%s";
+public final class ConnectionStringBuilder {
+    final static String endpointFormat = "sb://%s.%s";
+    final static String hostnameFormat = "sb://%s";
+    final static String defaultDomainName = "servicebus.windows.net";
 
-    final static String HostnameConfigName = "Hostname";
-    final static String EndpointConfigName = "Endpoint";
-    final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";
-    final static String SharedAccessKeyConfigName = "SharedAccessKey";
-    final static String SharedAccessSignatureConfigName = "SharedAccessSignature";
+    final static String HostnameConfigName = "Hostname";    // Hostname is a key that is used in IoTHub.
+    final static String EndpointConfigName = "Endpoint";    // Endpoint key is used in EventHubs. It's identical to Hostname in IoTHub.
     final static String EntityPathConfigName = "EntityPath";
     final static String OperationTimeoutConfigName = "OperationTimeout";
-    final static String RetryPolicyConfigName = "RetryPolicy";
     final static String KeyValueSeparator = "=";
     final static String KeyValuePairDelimiter = ";";
+    final static String SharedAccessKeyNameConfigName = "SharedAccessKeyName";  // We use a (KeyName, Key) pair OR the SAS token - never both.
+    final static String SharedAccessKeyConfigName = "SharedAccessKey";
+    final static String SharedAccessSignatureConfigName = "SharedAccessSignature";
 
     private static final String AllKeyEnumerateRegex = "(" + HostnameConfigName + "|" + EndpointConfigName + "|" + SharedAccessKeyNameConfigName
             + "|" + SharedAccessKeyConfigName + "|" + SharedAccessSignatureConfigName + "|" + EntityPathConfigName + "|" + OperationTimeoutConfigName
-            + "|" + RetryPolicyConfigName + ")";
+            + "|" + ")";
 
     private static final String KeysWithDelimitersRegex = KeyValuePairDelimiter + AllKeyEnumerateRegex
             + KeyValueSeparator;
 
     private URI endpoint;
+    private String eventHubName;
     private String sharedAccessKeyName;
     private String sharedAccessKey;
-    private String entityPath;
     private String sharedAccessSignature;
     private Duration operationTimeout;
-    private RetryPolicy retryPolicy;
-
-    private ConnectionStringBuilder(
-            final URI endpointAddress,
-            final String entityPath,
-            final String sharedAccessKeyName,
-            final String sharedAccessKey,
-            final Duration operationTimeout,
-            final RetryPolicy retryPolicy) {
-        this.endpoint = endpointAddress;
-        this.sharedAccessKey = sharedAccessKey;
-        this.sharedAccessKeyName = sharedAccessKeyName;
-        this.operationTimeout = operationTimeout;
-        this.retryPolicy = retryPolicy;
-        this.entityPath = entityPath;
-    }
-
-    private ConnectionStringBuilder(
-            final URI endpointAddress,
-            final String entityPath,
-            final String sharedAccessSignature,
-            final Duration operationTimeout,
-            final RetryPolicy retryPolicy) {
-        this.endpoint = endpointAddress;
-        this.sharedAccessSignature = sharedAccessSignature;
-        this.operationTimeout = operationTimeout;
-        this.retryPolicy = retryPolicy;
-        this.entityPath = entityPath;
-    }
-
-    private ConnectionStringBuilder(
-            final String namespaceName,
-            final String entityPath,
-            final String sharedAccessKeyName,
-            final String sharedAccessKey,
-            final Duration operationTimeout,
-            final RetryPolicy retryPolicy) {
-        try {
-            this.endpoint = new URI(String.format(Locale.US, endpointFormat, namespaceName));
-        } catch (URISyntaxException exception) {
-            throw new IllegalConnectionStringFormatException(
-                    String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
-                    exception);
-        }
-
-        this.sharedAccessKey = sharedAccessKey;
-        this.sharedAccessKeyName = sharedAccessKeyName;
-        this.operationTimeout = operationTimeout;
-        this.retryPolicy = retryPolicy;
-        this.entityPath = entityPath;
-    }
 
     /**
-     * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String)}
+     * Creates an empty {@link ConnectionStringBuilder}. At minimum, a namespace name, an entity path, SAS key name, and SAS key
+     * need to be set before a valid connection string can be built.
      *
-     * @param namespaceName       Namespace name (dns suffix - ex: .servicebus.windows.net is not required)
-     * @param entityPath          Entity path. For eventHubs case specify - eventHub name.
-     * @param sharedAccessKeyName Shared Access Key name
-     * @param sharedAccessKey     Shared Access Key
+     * For advanced users, the following replacements can be done:
+     * <ul>
+     *     <li>An endpoint can be provided instead of a namespace name.</li>
+     *     <li>A SAS token can be provided instead of a SAS key name and SAS key.</li>
+     *     <li>Optionally, users can set an operation timeout instead of using the default value.</li>
+     * </ul>
      */
-    public ConnectionStringBuilder(
-            final String namespaceName,
-            final String entityPath,
-            final String sharedAccessKeyName,
-            final String sharedAccessKey) {
-        this(namespaceName, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
-    }
-
-
-    /**
-     * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String)}
-     *
-     * @param endpointAddress     namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
-     * @param entityPath          Entity path. For eventHubs case specify - eventHub name.
-     * @param sharedAccessKeyName Shared Access Key name
-     * @param sharedAccessKey     Shared Access Key
-     */
-    public ConnectionStringBuilder(
-            final URI endpointAddress,
-            final String entityPath,
-            final String sharedAccessKeyName,
-            final String sharedAccessKey) {
-        this(endpointAddress, entityPath, sharedAccessKeyName, sharedAccessKey, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
-    }
-
-    /**
-     * Build a connection string consumable by {@link com.microsoft.azure.eventhubs.EventHubClient#createFromConnectionString(String)}
-     *
-     * @param endpointAddress       namespace level endpoint. This needs to be in the format of scheme://fullyQualifiedServiceBusNamespaceEndpointName
-     * @param entityPath            Entity path. For eventHubs case specify - eventHub name.
-     * @param sharedAccessSignature Shared Access Signature
-     */
-    public ConnectionStringBuilder(
-            final URI endpointAddress,
-            final String entityPath,
-            final String sharedAccessSignature) {
-        this(endpointAddress, entityPath, sharedAccessSignature, MessagingFactory.DefaultOperationTimeout, RetryPolicy.getDefault());
-    }
+    public ConnectionStringBuilder() {}
 
     /**
      * ConnectionString format:
      * Endpoint=sb://namespace_DNS_Name;EntityPath=EVENT_HUB_NAME;SharedAccessKeyName=SHARED_ACCESS_KEY_NAME;SharedAccessKey=SHARED_ACCESS_KEY
      *
-     * @param connectionString ServiceBus ConnectionString
+     * @param connectionString EventHubs ConnectionString
      * @throws IllegalConnectionStringFormatException when the format of the ConnectionString is not valid
      */
     public ConnectionStringBuilder(String connectionString) {
-        this.parseConnectionString(connectionString);
+        parseConnectionString(connectionString);
     }
 
     /**
-     * Get the endpoint which can be used to connect to the ServiceBus Namespace
+     * Get the endpoint which can be used to connect to the EventHub instance.
      *
-     * @return Endpoint
+     * @return The currently set endpoint
      */
     public URI getEndpoint() {
         return this.endpoint;
+    }
+
+    /**
+     * Set an endpoint which can be used to connect to the EventHub instance.
+     *
+     * @param endpoint is a combination of the namespace name and domain name. Together, these pieces make a valid
+     *                 endpoint. For example, the default domain name is "servicebus.windows.net", so a sample endpoint
+     *                 would look like this: "sb://namespace_name.servicebus.windows.net".
+     * @return the {@link ConnectionStringBuilder} being set.
+     */
+    public ConnectionStringBuilder setEndpoint(URI endpoint) {
+        this.endpoint = endpoint;
+        return this;
+    }
+
+    /**
+     * Set an endpoint which can be used to connect to the EventHub instance.
+     *
+     * @param namespaceName the name of the namespace to connect to.
+     * @param domainName    identifies the domain the namespace is located in. For non-public and national clouds,
+     *                      the domain will not be "servicebus.windows.net". Available options include:
+     *                          - "servicebus.usgovcloudapi.net"
+     *                          - "servicebus.cloudapi.de"
+     *                          - "servicebus.chinacloudapi.cn"
+     * @return the {@link ConnectionStringBuilder} being set.
+     */
+    public ConnectionStringBuilder setEndpoint(String namespaceName, String domainName) {
+        try {
+            this.endpoint = new URI(String.format(Locale.US, endpointFormat, namespaceName, domainName));
+        } catch (URISyntaxException exception) {
+            throw new IllegalConnectionStringFormatException(
+                    String.format(Locale.US, "Invalid namespace name: %s", namespaceName),
+                    exception);
+        }
+        return this;
+    }
+
+    /**
+     * Set a namespace name which will be used to connect to an EventHubs instance. This method adds
+     * "servicebus.windows.net" as the default domain name.
+     *
+     * @param namespaceName the name of the namespace to connect to.
+     * @return the {@link ConnectionStringBuilder} being set.
+     */
+    public ConnectionStringBuilder setNamespaceName(String namespaceName) {
+        return this.setEndpoint(namespaceName, defaultDomainName);
+    }
+
+    /**
+     * Get the entity path value from the connection string.
+     *
+     * @return Entity Path
+     */
+    public String getEventHubName() {
+        return this.eventHubName;
+    }
+
+    /**
+     * Set the entity path value from the connection string.
+     *
+     * @param eventHubName the name of the Event Hub to connect to.
+     * @return the {@link ConnectionStringBuilder} being set.
+     */
+    public ConnectionStringBuilder setEventHubName(String eventHubName) {
+        this.eventHubName = eventHubName;
+        return this;
     }
 
     /**
@@ -192,12 +184,34 @@ public class ConnectionStringBuilder {
     }
 
     /**
+     * Set the shared access policy key value from the connection string
+     *
+     * @param sasKey the SAS key
+     * @return the {@link ConnectionStringBuilder} being set.
+     */
+    public ConnectionStringBuilder setSasKey(String sasKey) {
+        this.sharedAccessKey = sasKey;
+        return this;
+    }
+
+    /**
      * Get the shared access policy owner name from the connection string
      *
      * @return Shared Access Signature key name.
      */
     public String getSasKeyName() {
         return this.sharedAccessKeyName;
+    }
+
+    /**
+     * Set the shared access policy owner name from the connection string
+     *
+     * @param sasKeyName the SAS key name
+     * @return the {@link ConnectionStringBuilder} being set.
+     */
+    public ConnectionStringBuilder setSasKeyName(String sasKeyName) {
+        this.sharedAccessKeyName = sasKeyName;
+        return this;
     }
 
     /**
@@ -210,12 +224,14 @@ public class ConnectionStringBuilder {
     }
 
     /**
-     * Get the entity path value from the connection string
+     * Set the shared access signature (also referred as SAS Token) from the connection string
      *
-     * @return Entity Path
+     * @param sharedAccessSignature the shared access key signature
+     * @return the {@link ConnectionStringBuilder} being set.
      */
-    public String getEntityPath() {
-        return this.entityPath;
+    public ConnectionStringBuilder setSharedAccessSignature(String sharedAccessSignature) {
+        this.sharedAccessSignature = sharedAccessSignature;
+        return this;
     }
 
     /**
@@ -232,34 +248,15 @@ public class ConnectionStringBuilder {
      * <p>ConnectionString with operationTimeout is not inter-operable between java and clients in other platforms.
      *
      * @param operationTimeout Operation Timeout
+     * @return the {@link ConnectionStringBuilder} being set.
      */
-    public void setOperationTimeout(final Duration operationTimeout) {
+    public ConnectionStringBuilder setOperationTimeout(final Duration operationTimeout) {
         this.operationTimeout = operationTimeout;
+        return this;
     }
 
     /**
-     * Get the retry policy instance that was created as part of this builder's creation.
-     *
-     * @return RetryPolicy applied for any operation performed using this ConnectionString
-     */
-    @Deprecated
-    public RetryPolicy getRetryPolicy() {
-        return (this.retryPolicy == null ? RetryPolicy.getDefault() : this.retryPolicy);
-    }
-
-    /**
-     * Set the retry policy.
-     * <p>RetryPolicy is not inter-operable with ServiceBus clients in other platforms.
-     *
-     * @param retryPolicy RetryPolicy applied for any operation performed using this ConnectionString
-     */
-    @Deprecated
-    public void setRetryPolicy(final RetryPolicy retryPolicy) {
-        this.retryPolicy = retryPolicy;
-    }
-
-    /**
-     * Returns an inter-operable connection string that can be used to connect to ServiceBus Namespace
+     * Returns an inter-operable connection string that can be used to connect to EventHubs instances.
      *
      * @return connection string
      */
@@ -271,9 +268,9 @@ public class ConnectionStringBuilder {
                     this.endpoint.toString(), KeyValuePairDelimiter));
         }
 
-        if (!StringUtil.isNullOrWhiteSpace(this.entityPath)) {
+        if (!StringUtil.isNullOrWhiteSpace(this.eventHubName)) {
             connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", EntityPathConfigName,
-                    KeyValueSeparator, this.entityPath, KeyValuePairDelimiter));
+                    KeyValueSeparator, this.eventHubName, KeyValuePairDelimiter));
         }
 
         if (!StringUtil.isNullOrWhiteSpace(this.sharedAccessKeyName)) {
@@ -296,18 +293,15 @@ public class ConnectionStringBuilder {
                     KeyValueSeparator, this.operationTimeout.toString(), KeyValuePairDelimiter));
         }
 
-        if (this.retryPolicy != null) {
-            connectionStringBuilder.append(String.format(Locale.US, "%s%s%s%s", RetryPolicyConfigName,
-                    KeyValueSeparator, this.retryPolicy.toString(), KeyValuePairDelimiter));
-        }
-
         connectionStringBuilder.deleteCharAt(connectionStringBuilder.length() - 1);
         return connectionStringBuilder.toString();
     }
 
+
+
     private void parseConnectionString(final String connectionString) {
         if (StringUtil.isNullOrWhiteSpace(connectionString)) {
-            throw new IllegalConnectionStringFormatException(String.format("connectionString cannot be empty"));
+            throw new IllegalConnectionStringFormatException("connectionString cannot be empty");
         }
 
         final String connection = KeyValuePairDelimiter + connectionString;
@@ -359,7 +353,7 @@ public class ConnectionStringBuilder {
                 }
 
                 try {
-                    this.endpoint = new URI(String.format(Locale.US, endpointRawFormat, values[valueIndex]));
+                    this.endpoint = new URI(String.format(Locale.US, hostnameFormat, values[valueIndex]));
                 } catch (URISyntaxException exception) {
                     throw new IllegalConnectionStringFormatException(
                             String.format(Locale.US, "%s should be a fully quantified host name address", HostnameConfigName),
@@ -372,22 +366,13 @@ public class ConnectionStringBuilder {
             } else if (key.equalsIgnoreCase(SharedAccessSignatureConfigName)) {
                 this.sharedAccessSignature = values[valueIndex];
             } else if (key.equalsIgnoreCase(EntityPathConfigName)) {
-                this.entityPath = values[valueIndex];
+                this.eventHubName = values[valueIndex];
             } else if (key.equalsIgnoreCase(OperationTimeoutConfigName)) {
                 try {
                     this.operationTimeout = Duration.parse(values[valueIndex]);
                 } catch (DateTimeParseException exception) {
                     throw new IllegalConnectionStringFormatException("Invalid value specified for property 'Duration' in the ConnectionString.", exception);
                 }
-            } else if (key.equalsIgnoreCase(RetryPolicyConfigName)) {
-                this.retryPolicy = values[valueIndex].equals(ClientConstants.DEFAULT_RETRY)
-                        ? RetryPolicy.getDefault()
-                        : (values[valueIndex].equals(ClientConstants.NO_RETRY) ? RetryPolicy.getNoRetry() : null);
-
-                if (this.retryPolicy == null)
-                    throw new IllegalConnectionStringFormatException(
-                            String.format(Locale.US, "Connection string parameter '%s'='%s' is not recognized",
-                                    RetryPolicyConfigName, values[valueIndex]));
             } else {
                 throw new IllegalConnectionStringFormatException(
                         String.format(Locale.US, "Illegal connection string parameter name: %s", key));

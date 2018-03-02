@@ -11,6 +11,7 @@ package com.microsoft.azure.eventhubs;
  * @see <a href="http://go.microsoft.com/fwlink/?LinkId=761101">http://go.microsoft.com/fwlink/?LinkId=761101</a>
  */
 public class TimeoutException extends EventHubException {
+
     private static final long serialVersionUID = -3505469991851121512L;
 
     /**

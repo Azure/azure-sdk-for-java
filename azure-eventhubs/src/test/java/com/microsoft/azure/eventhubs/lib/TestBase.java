@@ -35,7 +35,7 @@ public abstract class TestBase
 						CompletableFuture<Void>[] sends = new CompletableFuture[noOfEvents]; 
 						for (int count = 0; count< noOfEvents; count++)
 						{
-							EventData sendEvent = new EventData("test string".getBytes());
+							EventData sendEvent = EventData.create("test string".getBytes());
 							sends[count] = pSender.send(sendEvent);
 						}
 						

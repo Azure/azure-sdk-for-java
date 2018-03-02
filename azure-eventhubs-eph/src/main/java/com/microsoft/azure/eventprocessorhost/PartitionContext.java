@@ -5,55 +5,78 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import java.time.Instant;
-import java.util.concurrent.ExecutionException;
+import java.util.concurrent.CompletableFuture;
 import java.util.function.Function;
 
 import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.EventPosition;
 import com.microsoft.azure.eventhubs.ReceiverRuntimeInformation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * PartitionContext is used to provide partition-related information to the methods of IEventProcessor,
+ * particularly onEvents where the user's event-processing logic lives. It also allows the user to
+ * persist checkpoints for the partition, which determine where event processing will begin if the
+ * event processor for that partition must be restarted, such as if ownership of the partition moves
+ * from one event processor host instance to another.
+ */
 public class PartitionContext
 {
-    private final EventProcessorHost host;
+    private final HostContext hostContext;
     private final String partitionId;
-    private final String eventHubPath;
-    private final String consumerGroupName;
     
     private Lease lease;
-    private String offset = PartitionReceiver.START_OF_STREAM;
+    private String offset = null;
     private long sequenceNumber = 0;
     private ReceiverRuntimeInformation runtimeInformation;
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionContext.class);
     
-    PartitionContext(EventProcessorHost host, String partitionId, String eventHubPath, String consumerGroupName)
+    PartitionContext(HostContext hostContext, String partitionId)
     {
-        this.host = host;
+        this.hostContext = hostContext;
         this.partitionId = partitionId;
-        this.eventHubPath = eventHubPath;
-        this.consumerGroupName = consumerGroupName;
 
-      this.runtimeInformation = new ReceiverRuntimeInformation(partitionId);
+        this.runtimeInformation = new ReceiverRuntimeInformation(partitionId);
     }
 
+    /***
+     * Get the name of the consumer group that is being received from. 
+     * 
+     * @return consumer group name
+     */
     public String getConsumerGroupName()
     {
-        return this.consumerGroupName;
+        return this.hostContext.getConsumerGroupName();
     }
 
+    /***
+     * Get the path of the event hub that is being received from.
+     * 
+     * @return event hub path
+     */
     public String getEventHubPath()
     {
-        return this.eventHubPath;
+        return this.hostContext.getEventHubPath();
     }
-    
+
+    /***
+     * Get the name of the event processor host instance.
+     * 
+     * @return event processor host instance name
+     */
     public String getOwner()
     {
     	return this.lease.getOwner();
     }
     
+    /***
+     * If receiver runtime metrics have been enabled in EventProcessorHost, this method
+     * gets the metrics as they come in.  
+     * 
+     * @return See ReceiverRuntimeInformation.
+     */
     public ReceiverRuntimeInformation getRuntimeInformation()
     {
         return this.runtimeInformation;
@@ -77,105 +100,109 @@ public class PartitionContext
 
     void setOffsetAndSequenceNumber(EventData event)
     {
-		if (sequenceNumber >= this.sequenceNumber)
+		if (event.getSystemProperties().getSequenceNumber() >= this.sequenceNumber)
 		{
 			this.offset = event.getSystemProperties().getOffset();
 			this.sequenceNumber = event.getSystemProperties().getSequenceNumber();
 		}
 		else
 		{
-			TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId,
+			TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionId,
                     "setOffsetAndSequenceNumber(" + event.getSystemProperties().getOffset() + "//" +
 					event.getSystemProperties().getSequenceNumber() + ") would move backwards, ignoring"));
 		}
     }
     
+    /***
+     * Get the id of the partition being received from.
+     * 
+     * @return partition id
+     */
     public String getPartitionId()
     {
     	return this.partitionId;
     }
     
     // Returns a String (offset) or Instant (timestamp).
-    Object getInitialOffset() throws InterruptedException, ExecutionException
+    CompletableFuture<EventPosition> getInitialOffset()
     {
-    	Object startAt = null;
-    	
-    	Checkpoint startingCheckpoint = this.host.getCheckpointManager().getCheckpoint(this.partitionId).get();
+    	return this.hostContext.getCheckpointManager().getCheckpoint(this.partitionId)
+    	.thenApply((startingCheckpoint) ->
+    	{
+    		return checkpointToOffset(startingCheckpoint);
+    	});
+    }
+    
+    EventPosition checkpointToOffset(Checkpoint startingCheckpoint)
+    {
+    	EventPosition startAt = null;
     	if (startingCheckpoint == null)
     	{
     		// No checkpoint was ever stored. Use the initialOffsetProvider instead.
-        	Function<String, Object> initialOffsetProvider = this.host.getEventProcessorOptions().getInitialOffsetProvider();
-    		TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId,
-                    "Calling user-provided initial offset provider"));
-    		startAt = initialOffsetProvider.apply(this.partitionId);
-    		if (startAt instanceof String)
-    		{
-    			this.offset = (String)startAt;
-        		this.sequenceNumber = 0; // TODO we use sequenceNumber to check for regression of offset, 0 could be a problem until it gets updated from an event
-    	    	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId,
-                        "Initial offset provided: " + this.offset + "//" + this.sequenceNumber));
-    		}
-    		else if (startAt instanceof Instant)
-    		{
-    			// can't set offset/sequenceNumber
-    	    	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId,
-                        "Initial timestamp provided: " + (Instant)startAt));
-    		}
-    		else
-    		{
-    			throw new IllegalArgumentException("Unexpected object type returned by user-provided initialOffsetProvider");
-    		}
+        	Function<String, EventPosition> initialPositionProvider = this.hostContext.getEventProcessorOptions().getInitialPositionProvider();
+    		TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(this.partitionId, "Calling user-provided initial position provider"));
+    		startAt = initialPositionProvider.apply(this.partitionId);
+    		// Leave this.offset as null. The initialPositionProvider cannot provide enough information to write a valid checkpoint:
+    		// at most if will give one of offset or sequence number, and if it is a starting time then it doesn't have either.
+	    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionId, "Initial position provided: " + startAt));
     	}
     	else
     	{
     		// Checkpoint is valid, use it.
 	    	this.offset = startingCheckpoint.getOffset();
-	    	startAt = this.offset;
+	    	startAt = EventPosition.fromOffset(this.offset);
 	    	this.sequenceNumber = startingCheckpoint.getSequenceNumber();
-	    	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), this.partitionId,
-                    "Retrieved starting offset " + this.offset + "//" + this.sequenceNumber));
+	    	TRACE_LOGGER.info(this.hostContext.withHostAndPartition(this.partitionId, "Retrieved starting offset " + this.offset + "//" + this.sequenceNumber));
     	}
     	
     	return startAt;
     }
 
     /**
-     * Writes the current offset and sequenceNumber to the checkpoint store via the checkpoint manager.
-     * @throws IllegalArgumentException  If this.sequenceNumber is less than the last checkpointed value  
-     * @throws ExecutionException 
-     * @throws InterruptedException 
+     * Writes the position of the last event in the current batch to the checkpoint store via the checkpoint manager.
+     * 
+     * It is important to check the result in order to detect failures.
+     * 
+     * If receiving started from a user-provided EventPosition and no events have been received yet,
+     * then this will fail. (This scenario is possible when invoke-after-receive-timeout has been set
+     * in EventProcessorOptions.)
+     * 
+     * @return CompletableFuture {@literal ->} null when the checkpoint has been persisted successfully, completes exceptionally on error.
      */
-    public void checkpoint() throws IllegalArgumentException, InterruptedException, ExecutionException
+    public CompletableFuture<Void> checkpoint()
     {
-    	// Capture the current offset and sequenceNumber. Synchronize to be sure we get a matched pair
-    	// instead of catching an update halfway through. The capturing may not be strictly necessary,
-    	// since checkpoint() is called from the user's event processor which also controls the retrieval
-    	// of events, and no other thread should be updating this PartitionContext, unless perhaps the
-    	// event processor is itself multithreaded... Whether it's required or not, the amount of work
-    	// required is trivial, so we might as well do it to be sure.
-    	Checkpoint capturedCheckpoint = new Checkpoint(this.partitionId, this.offset, this.sequenceNumber);
-    	persistCheckpoint(capturedCheckpoint);
+    	CompletableFuture<Void> result = null;
+    	if (this.offset == null)
+    	{
+    		result = new CompletableFuture<Void>();
+    		result.completeExceptionally(new RuntimeException("Cannot checkpoint until at least one event has been received on this partition"));
+    	}
+    	else
+    	{
+	    	Checkpoint capturedCheckpoint = new Checkpoint(this.partitionId, this.offset, this.sequenceNumber);
+	    	result = persistCheckpoint(capturedCheckpoint);
+    	}
+    	return result;
     }
 
     /**
-     * Stores the offset and sequenceNumber from the provided received EventData instance, then writes those
-     * values to the checkpoint store via the checkpoint manager.
+     * Writes the position of the provided EventData instance to the checkpoint store via the checkpoint manager.
+     * 
+     * It is important to check the result in order to detect failures.
      *  
-     * @param event  A received EventData with valid offset and sequenceNumber
-     * @throws IllegalArgumentException  If the sequenceNumber in the provided event is less than the last checkpointed value  
-     * @throws ExecutionException 
-     * @throws InterruptedException 
+     * @param event  A received EventData
+     * @return CompletableFuture {@literal ->} null when the checkpoint has been persisted successfully, completes exceptionally on error.
      */
-    public void checkpoint(EventData event) throws IllegalArgumentException, InterruptedException, ExecutionException
+    public CompletableFuture<Void> checkpoint(EventData event)
     {
-    	persistCheckpoint(new Checkpoint(this.partitionId, event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber()));
+    	return persistCheckpoint(new Checkpoint(this.partitionId, event.getSystemProperties().getOffset(), event.getSystemProperties().getSequenceNumber()));
     }
     
-    private void persistCheckpoint(Checkpoint persistThis) throws IllegalArgumentException, InterruptedException, ExecutionException
+    private CompletableFuture<Void> persistCheckpoint(Checkpoint persistThis)
     {
-    	TRACE_LOGGER.info(LoggingUtils.withHostAndPartition(this.host.getHostName(), persistThis.getPartitionId(),
+    	TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(persistThis.getPartitionId(),
                 "Saving checkpoint: " + persistThis.getOffset() + "//" + persistThis.getSequenceNumber()));
 		
-        this.host.getCheckpointManager().updateCheckpoint(this.lease, persistThis).get();
+        return this.hostContext.getCheckpointManager().updateCheckpoint(this.lease, persistThis);
     }
 }

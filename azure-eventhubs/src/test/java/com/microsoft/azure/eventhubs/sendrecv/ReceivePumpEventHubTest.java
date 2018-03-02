@@ -36,13 +36,13 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 	public static void initializeEventHub()  throws EventHubException, IOException
 	{
 		final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+		ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 	}
 	
 	@Before
 	public void initializeTest() throws EventHubException
 	{
-		receiver = ehClient.createReceiverSync(cgName, partitionId, Instant.now());
+		receiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
 	}
 	
 	@Test(expected = TimeoutException.class)
@@ -110,14 +110,18 @@ public class ReceivePumpEventHubTest extends ApiTestBase
 			ehClient.closeSync();
 	}
 	
-	public static final class InvokeOnReceiveEventValidator extends PartitionReceiveHandler
+	public static final class InvokeOnReceiveEventValidator implements PartitionReceiveHandler
 	{
 		final CompletableFuture<Void> signalInvoked;
 		
 		public InvokeOnReceiveEventValidator(final CompletableFuture<Void> signalInvoked)
 		{
-			super(50);
 			this.signalInvoked = signalInvoked;
+		}
+
+		@Override
+		public int getMaxEventCount() {
+			return 50;
 		}
 
 		@Override

@@ -11,15 +11,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.EventHubException;
-import com.microsoft.azure.eventhubs.amqp.AmqpException;
-import com.microsoft.azure.eventhubs.amqp.AmqpResponseCode;
-import com.microsoft.azure.eventhubs.amqp.IOperation;
-import com.microsoft.azure.eventhubs.amqp.IOperationResult;
-import com.microsoft.azure.eventhubs.amqp.ReactorDispatcher;
-import com.microsoft.azure.eventhubs.amqp.RequestResponseChannel;
 
 import org.junit.Assert;
 import junit.framework.AssertionFailedError;
@@ -43,7 +37,7 @@ public class RequestResponseTest  extends ApiTestBase {
     public static void initializeEventHub()  throws Exception {
 
         connectionString = TestContext.getConnectionString();
-        factory = MessagingFactory.createFromConnectionString(connectionString.toString()).get();
+        factory = MessagingFactory.createFromConnectionString(connectionString.toString(), TestContext.EXECUTOR_SERVICE).get();
     }
     
     @Test()
@@ -55,12 +49,12 @@ public class RequestResponseTest  extends ApiTestBase {
                                 ClientConstants.MANAGEMENT_ADDRESS,
                                 factory.getSession("path", null, null));
         final FaultTolerantObject<RequestResponseChannel> fchannel = new FaultTolerantObject<>(
-                new IOperation<RequestResponseChannel>() {
+                new Operation<RequestResponseChannel>() {
                     @Override
-                    public void run(IOperationResult<RequestResponseChannel, Exception> operationCallback) {
+                    public void run(OperationResult<RequestResponseChannel, Exception> operationCallback) {
 
                             requestResponseChannel.open(
-                                new IOperationResult<Void, Exception>() {
+                                new OperationResult<Void, Exception>() {
                                     @Override
                                     public void onComplete(Void result) {
                                         factory.registerForConnectionError(requestResponseChannel.getSendLink());
@@ -73,7 +67,7 @@ public class RequestResponseTest  extends ApiTestBase {
                                         operationCallback.onError(error);
                                     }
                                 },
-                                new IOperationResult<Void, Exception>() {
+                                new OperationResult<Void, Exception>() {
                                 @Override
                                 public void onComplete(Void result) {
                                     factory.deregisterForConnectionError(requestResponseChannel.getSendLink());
@@ -87,10 +81,10 @@ public class RequestResponseTest  extends ApiTestBase {
                             });
                     }
             },
-            new IOperation<Void>() {
+            new Operation<Void>() {
             @Override
-            public void run(IOperationResult<Void, Exception> operationCallback) {
-                requestResponseChannel.close(new IOperationResult<Void, Exception>() {
+            public void run(OperationResult<Void, Exception> operationCallback) {
+                requestResponseChannel.close(new OperationResult<Void, Exception>() {
                     @Override
                     public void onComplete(Void result) {
                         operationCallback.onComplete(result);
@@ -113,19 +107,19 @@ public class RequestResponseTest  extends ApiTestBase {
             final CompletableFuture<Void> task = new CompletableFuture<>();
 
             final Message request= Proton.message();
-            final Map<String, String> properties = new HashMap<>();
+            final Map<String, Object> properties = new HashMap<>();
             properties.put(ClientConstants.MANAGEMENT_ENTITY_TYPE_KEY, ClientConstants.MANAGEMENT_EVENTHUB_ENTITY_TYPE);
-            properties.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, connectionString.getEntityPath());
+            properties.put(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY, connectionString.getEventHubName());
             properties.put(ClientConstants.MANAGEMENT_OPERATION_KEY, ClientConstants.READ_OPERATION_VALUE);
             final ApplicationProperties applicationProperties = new ApplicationProperties(properties);
             request.setApplicationProperties(applicationProperties);
 
             fchannel.runOnOpenedObject(dispatcher, 
-                new IOperationResult<RequestResponseChannel, Exception>() {
+                new OperationResult<RequestResponseChannel, Exception>() {
                     @Override
                     public void onComplete(RequestResponseChannel result) {
                         result.request(request,
-                            new IOperationResult<Message, Exception>() {
+                            new OperationResult<Message, Exception>() {
                                 @Override
                                 public void onComplete(Message response) {
                                     Map<String, Object> resultMap = null;
@@ -147,7 +141,7 @@ public class RequestResponseTest  extends ApiTestBase {
                                         this.onError(new AmqpException(error));
                                     }
 
-                                    if (connectionString.getEntityPath().equalsIgnoreCase((String) resultMap.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY)))
+                                    if (connectionString.getEventHubName().equalsIgnoreCase((String) resultMap.get(ClientConstants.MANAGEMENT_ENTITY_NAME_KEY)))
                                         task.complete(null);
                                     else
                                         task.completeExceptionally(new AssertionFailedError("response doesn't have correct eventhub name"));
@@ -177,7 +171,7 @@ public class RequestResponseTest  extends ApiTestBase {
         }
         
         final CompletableFuture<Void> closeFuture = new CompletableFuture<>();
-        fchannel.close(dispatcher, new IOperationResult<Void, Exception>() {
+        fchannel.close(dispatcher, new OperationResult<Void, Exception>() {
             @Override
             public void onComplete(Void result) {
                 closeFuture.complete(null);
@@ -194,11 +188,11 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimes() throws Exception {
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+    	EventHubClient ehc = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	EventHubRuntimeInformation ehInfo = ehc.getRuntimeInformation().get();
 
     	Assert.assertNotNull(ehInfo);
-    	Assert.assertTrue(connectionString.getEntityPath().equalsIgnoreCase(ehInfo.getPath()));
+    	Assert.assertTrue(connectionString.getEventHubName().equalsIgnoreCase(ehInfo.getPath()));
     	Assert.assertNotNull(ehInfo.getCreatedAt()); // creation time could be almost anything, can't really check value
     	Assert.assertTrue(ehInfo.getPartitionCount() >= 2); // max legal partition count is variable but 2 is hard minimum
     	Assert.assertEquals(ehInfo.getPartitionIds().length, ehInfo.getPartitionCount());
@@ -215,10 +209,10 @@ public class RequestResponseTest  extends ApiTestBase {
     	}
     	
     	for (String id : ehInfo.getPartitionIds()) {
-	    	EventHubPartitionRuntimeInformation partInfo = ehc.getPartitionRuntimeInformation(id).get();
+	    	PartitionRuntimeInformation partInfo = ehc.getPartitionRuntimeInformation(id).get();
 	    	
 	    	Assert.assertNotNull(partInfo);
-	    	Assert.assertTrue(connectionString.getEntityPath().equalsIgnoreCase(partInfo.getEventHubPath()));
+	    	Assert.assertTrue(connectionString.getEventHubName().equalsIgnoreCase(partInfo.getEventHubPath()));
 	    	Assert.assertTrue(id.equalsIgnoreCase(partInfo.getPartitionId()));
 	    	Assert.assertTrue(partInfo.getBeginSequenceNumber() >= -1);
 	    	Assert.assertTrue(partInfo.getLastEnqueuedSequenceNumber() >= -1);
@@ -241,9 +235,12 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimesBadHub() throws EventHubException, IOException {
-    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), "NOHUBZZZZZ",
-    			connectionString.getSasKeyName(), connectionString.getSasKey());
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString());
+    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder()
+                .setEndpoint(connectionString.getEndpoint())
+                .setEventHubName("NOHUBZZZZZ")
+                .setSasKeyName(connectionString.getSasKeyName())
+                .setSasKey(connectionString.getSasKey());
+    	EventHubClient ehc = EventHubClient.createSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	
     	try {
     		ehc.getRuntimeInformation().get();
@@ -253,9 +250,7 @@ public class RequestResponseTest  extends ApiTestBase {
     		if (e.getCause() == null) {
     			Assert.fail("Got ExecutionException but no inner exception");
     		}
-    		else if (e.getCause() instanceof AmqpException) {
-    			// TODO we should really be returning a MessagingEntityNotFound exception
-    			// but that can be an enhancement for later, right now it's an AmqpException
+    		else if (e.getCause() instanceof IllegalEntityException) {
     			Assert.assertTrue(e.getCause().getMessage().contains("could not be found"));
     		}
     		else {
@@ -274,9 +269,7 @@ public class RequestResponseTest  extends ApiTestBase {
     		if (e.getCause() == null) {
     			Assert.fail("Got ExecutionException but no inner exception");
     		}
-    		else if (e.getCause() instanceof AmqpException) {
-    			// TODO we should really be returning a MessagingEntityNotFound exception
-    			// but that can be an enhancement for later, right now it's an AmqpException
+    		else if (e.getCause() instanceof IllegalEntityException) {
     			Assert.assertTrue(e.getCause().getMessage().contains("could not be found"));
     		}
     		else {
@@ -292,9 +285,12 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimesBadKeyname() throws EventHubException, IOException {
-    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder(connectionString.getEndpoint(), connectionString.getEntityPath(),
-    			"xxxnokeyxxx", connectionString.getSasKey());
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(bogusConnectionString.toString());
+    	ConnectionStringBuilder bogusConnectionString = new ConnectionStringBuilder()
+                .setEndpoint(connectionString.getEndpoint())
+                .setEventHubName(connectionString.getEventHubName())
+                .setSasKeyName("xxxnokeyxxx")
+                .setSasKey(connectionString.getSasKey());
+    	EventHubClient ehc = EventHubClient.createSync(bogusConnectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	
     	try {
     		ehc.getRuntimeInformation().get();
@@ -339,7 +335,7 @@ public class RequestResponseTest  extends ApiTestBase {
     
     @Test
     public void testGetRuntimesClosedClient() throws EventHubException, IOException, InterruptedException, ExecutionException {
-    	EventHubClient ehc = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+    	EventHubClient ehc = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
     	ehc.closeSync();
 
     	try {

@@ -5,23 +5,29 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CompletionException;
+
 import com.microsoft.azure.storage.StorageException;
 import com.microsoft.azure.storage.blob.BlobProperties;
 import com.microsoft.azure.storage.blob.BlobRequestOptions;
 import com.microsoft.azure.storage.blob.CloudBlockBlob;
 import com.microsoft.azure.storage.blob.LeaseState;
 
-class AzureBlobLease extends Lease
+final class AzureBlobLease extends Lease
 {
-	private transient CloudBlockBlob blob; // do not serialize
-	private transient BlobRequestOptions options; // do not serialize
+	private final transient CloudBlockBlob blob; // do not serialize
+	private final transient BlobRequestOptions options; // do not serialize
 	private String offset = null; // null means checkpoint is uninitialized
 	private long sequenceNumber = 0;
 
 	// not intended to be used; built for GSon
+	@SuppressWarnings("unused")
 	private AzureBlobLease()
 	{
 		super();
+		this.blob = null; // so that we can mark blob as final
+		this.options = null; // so that we can mark options as final
 	}
 
 	AzureBlobLease(String partitionId, CloudBlockBlob blob, BlobRequestOptions options)
@@ -72,11 +78,25 @@ class AzureBlobLease extends Lease
 	}
 
 	@Override
-	public boolean isExpired() throws Exception
+	public CompletableFuture<Boolean> isExpired()
 	{
-		this.blob.downloadAttributes(null, options, null); // Get the latest metadata
-		LeaseState currentState = this.blob.getProperties().getLeaseState();
-		return (currentState != LeaseState.LEASED); 
+		return CompletableFuture.supplyAsync(() ->
+		{
+			try
+			{
+				this.blob.downloadAttributes(null, options, null); // Get the latest metadata
+			}
+			catch (StorageException e)
+			{
+				throw new CompletionException(e);
+			}
+			LeaseState currentState = this.blob.getProperties().getLeaseState();
+			// There are multiple lease states, but for our purposes anything but LEASED means that
+			// the blob is no longer definitely owned by the last known owner and is potentially available.
+			// It could be owned by another host, so just because the state is LEASED does not mean
+			// that operations on the blob will not fail with lease lost.
+			return (currentState != LeaseState.LEASED);
+		});
 	}
 	
 	@Override

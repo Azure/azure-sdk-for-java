@@ -4,9 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import java.nio.charset.Charset;
 import java.time.Duration;
-import java.time.Instant;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Random;
@@ -38,7 +36,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     @BeforeClass
     public static void initializeEventHub() throws Exception {
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
-        ehClient = EventHubClient.createFromConnectionStringSync(connectionString.toString());
+        ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
         sender = ehClient.createPartitionSenderSync(partitionId);
     }
 
@@ -47,7 +45,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         final EventDataBatch batchEvents = sender.createBatch();
 
-        while (batchEvents.tryAdd(new EventData("a".getBytes())));
+        while (batchEvents.tryAdd(EventData.create("a".getBytes())));
 
         sender = ehClient.createPartitionSenderSync(partitionId);
         sender.sendSync(batchEvents);
@@ -60,7 +58,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
                 .with(o -> o.partitionKey = UUID.randomUUID().toString());
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
-        while (batchEvents.tryAdd(new EventData("a".getBytes())));
+        while (batchEvents.tryAdd(EventData.create("a".getBytes())));
 
         ehClient.sendSync(batchEvents);
     }
@@ -74,12 +72,17 @@ public class EventDataBatchAPITest extends ApiTestBase {
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
         int count = 0;
-        while (batchEvents.tryAdd(new EventData("a".getBytes())) && count++ < 10);
+        while (batchEvents.tryAdd(EventData.create("a".getBytes())) && count++ < 10);
 
         final int sentCount = count;
         final CompletableFuture<Void> testResult = new CompletableFuture<>();
-        final PartitionReceiveHandler validator = new PartitionReceiveHandler(100) {
+        final PartitionReceiveHandler validator = new PartitionReceiveHandler() {
             final AtomicInteger netCount = new AtomicInteger(0);
+
+            @Override
+            public int getMaxEventCount() {
+                return 100;
+            }
 
             @Override
             public void onReceive(Iterable<EventData> events) {
@@ -108,7 +111,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
         try {
             final String[] partitionIds = ehClient.getRuntimeInformation().get().getPartitionIds();
             for (int index = 0; index < partitionIds.length; index++) {
-                final PartitionReceiver receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), partitionIds[index], PartitionReceiver.END_OF_STREAM);
+                final PartitionReceiver receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), partitionIds[index], EventPosition.fromEndOfStream());
                 receiver.setReceiveTimeout(Duration.ofSeconds(5));
                 receiver.setReceiveHandler(validator);
                 receivers.add(receiver);
@@ -135,7 +138,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
     public void sendEventsFullBatchWithAppPropsTest()
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         final CompletableFuture<Void> validator = new CompletableFuture<>();
-        final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, partitionId, PartitionReceiver.END_OF_STREAM);
+        final PartitionReceiver receiver = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEndOfStream());
         receiver.setReceiveTimeout(Duration.ofSeconds(5));
 
         try {
@@ -143,7 +146,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
             int count = 0;
             while (true) {
-                final EventData eventData = new EventData(new String(new char[new Random().nextInt(50000)]).replace("\0", "a").getBytes());
+                final EventData eventData = EventData.create(new String(new char[new Random().nextInt(50000)]).replace("\0", "a").getBytes());
                 for (int i = 0; i < new Random().nextInt(20); i++)
                     eventData.getProperties().put("somekey" + i, "somevalue");
 
@@ -176,7 +179,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
         int count = 0;
         while (true) {
-            final EventData eventData = new EventData(new String("a").getBytes());
+            final EventData eventData = EventData.create(new String("a").getBytes());
             for (int i=0;i<new Random().nextInt(20);i++)
                 eventData.getProperties().put("somekey" + i, "somevalue");
 
@@ -200,7 +203,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
         int count = 0;
         while (true) {
-            final EventData eventData = new EventData(new String("a").getBytes());
+            final EventData eventData = EventData.create(new String("a").getBytes());
             for (int i=0;i<new Random().nextInt(20);i++)
                 eventData.getProperties().put("somekey" + i, "somevalue");
 
@@ -220,20 +223,28 @@ public class EventDataBatchAPITest extends ApiTestBase {
     @AfterClass
     public static void cleanupClient() throws EventHubException
     {
-        sender.closeSync();
-        ehClient.closeSync();
+        if (sender != null)
+            sender.closeSync();
+
+        if (ehClient != null)
+            ehClient.closeSync();
     }
 
-    public static class CountValidator extends PartitionReceiveHandler {
+    public static class CountValidator implements PartitionReceiveHandler {
         final CompletableFuture<Void> validateSignal;
         final int netEventCount;
 
         int currentCount = 0;
 
         public CountValidator(final CompletableFuture<Void> validateSignal, final int netEventCount) {
-            super(999);
+
             this.validateSignal = validateSignal;
             this.netEventCount = netEventCount;
+        }
+
+        @Override
+        public int getMaxEventCount() {
+            return 999;
         }
 
         @Override

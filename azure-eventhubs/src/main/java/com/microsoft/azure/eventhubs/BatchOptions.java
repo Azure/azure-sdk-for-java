@@ -48,7 +48,18 @@ import java.util.function.Consumer;
  * </pre>
  */
 public final class BatchOptions {
+
+    /**
+     * The partitionKey to use for all {@link EventData}s sent in the current {@link EventDataBatch}.
+     * Setting a PartitionKey will deliver the {@link EventData} to a specific Event Hubs partition.
+     */
     public String partitionKey = null;
+
+    /**
+     * The maximum size in bytes of {@link EventDataBatch} being constructed.
+     * This value cannot exceed the maximum size supported by Event Hubs service.
+     * {@link EventDataBatch#tryAdd(EventData)} API will use this value as the upper limit.
+     */
     public Integer maxMessageSize = null;
 
     public final BatchOptions with(Consumer<BatchOptions> builderFunction) {

@@ -12,11 +12,15 @@ class ExceptionWithAction extends Exception
 	
 	private final String action;
 
-	// This class is only ever instantiated to wrap an already existing exception with an action string,
-	// so this is the only constructor needed.
 	ExceptionWithAction(Throwable e, String action)
 	{
 		super(e);
+		this.action = action;
+	}
+	
+	ExceptionWithAction(Throwable e, String message, String action)
+	{
+		super(message, e);
 		this.action = action;
 	}
 	

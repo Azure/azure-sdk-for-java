@@ -11,6 +11,8 @@ import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.function.Consumer;
 
+import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.impl.*;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
@@ -21,15 +23,8 @@ import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.EventData;
-import com.microsoft.azure.eventhubs.EventHubClient;
-import com.microsoft.azure.eventhubs.PartitionReceiver;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
-import com.microsoft.azure.eventhubs.MessageSender;
-import com.microsoft.azure.eventhubs.MessagingFactory;
-import com.microsoft.azure.eventhubs.EventHubException;
 
 public class BackCompatTest extends ApiTestBase
 {
@@ -70,14 +65,14 @@ public class BackCompatTest extends ApiTestBase
 		final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
 		final String connectionString = connStrBuilder.toString();
 
-		ehClient = EventHubClient.createFromConnectionStringSync(connectionString);
-		msgFactory = MessagingFactory.createFromConnectionString(connectionString).get();
-		receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), partitionId, Instant.now());
-		partitionMsgSender = MessageSender.create(msgFactory, "link1", connStrBuilder.getEntityPath() + "/partitions/" + partitionId).get();
+		ehClient = EventHubClient.createSync(connectionString, TestContext.EXECUTOR_SERVICE);
+		msgFactory = MessagingFactory.createFromConnectionString(connectionString, TestContext.EXECUTOR_SERVICE).get();
+		receiver = ehClient.createReceiverSync(TestContext.getConsumerGroupName(), partitionId, EventPosition.fromEnqueuedTime(Instant.now()));
+		partitionMsgSender = MessageSender.create(msgFactory, "link1", connStrBuilder.getEventHubName() + "/partitions/" + partitionId).get();
 		
                 // until version 0.10.0 - we used to have Properties as HashMap<String,String> 
                 // This specific combination is intended to test the back compat - with the new Properties type as HashMap<String, Object>
-                final HashMap<String, String> appProperties = new HashMap<>();
+                final HashMap<String, Object> appProperties = new HashMap<>();
 		appProperties.put(applicationProperty, "value1");
                 appProperties.put(intApplicationProperty, "3");
                 // back compat end

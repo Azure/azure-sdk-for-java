@@ -4,28 +4,10 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
+
 import java.time.Duration;
-import java.time.Instant;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
 import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.function.Consumer;
-import java.util.function.Function;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.UnknownDescribedType;
-import org.apache.qpid.proton.message.Message;
-
-import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
 
 /**
  * This is a logical representation of receiving from a EventHub partition.
@@ -40,129 +22,19 @@ import com.microsoft.azure.eventhubs.amqp.AmqpConstants;
  * @see EventHubClient#createReceiver
  * @see EventHubClient#createEpochReceiver
  */
-public final class PartitionReceiver extends ClientEntity implements IReceiverSettingsProvider {
-    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionReceiver.class);
-    private static final int MINIMUM_PREFETCH_COUNT = 10;
-    private static final int MAXIMUM_PREFETCH_COUNT = 999;
+public interface PartitionReceiver  {
 
-    static final int DEFAULT_PREFETCH_COUNT = 999;
-    static final long NULL_EPOCH = 0;
+    int MINIMUM_PREFETCH_COUNT = 10;
+    int DEFAULT_PREFETCH_COUNT = 999;
 
-    /**
-     * This is a constant defined to represent the start of a partition stream in EventHub.
-     */
-    public static final String START_OF_STREAM = "-1";
-
-    /**
-     * This is a constant defined to represent the current end of a partition stream in EventHub.
-     * This can be used as an offset argument in receiver creation to start receiving from the latest
-     * event, instead of a specific offset or point in time.
-     */
-    public static final String END_OF_STREAM = "@latest";
-
-    private final String partitionId;
-    private final MessagingFactory underlyingFactory;
-    private final String eventHubName;
-    private final String consumerGroupName;
-    private final Object receiveHandlerLock;
-
-    private String startingOffset;
-    private boolean offsetInclusive;
-    private Instant startingDateTime;
-    private MessageReceiver internalReceiver;
-    private Long epoch;
-    private boolean isEpochReceiver;
-    private ReceivePump receivePump;
-    private ReceiverOptions receiverOptions;
-    private ReceiverRuntimeInformation runtimeInformation;
-
-    private PartitionReceiver(MessagingFactory factory,
-                              final String eventHubName,
-                              final String consumerGroupName,
-                              final String partitionId,
-                              final String startingOffset,
-                              final boolean offsetInclusive,
-                              final Instant dateTime,
-                              final Long epoch,
-                              final boolean isEpochReceiver,
-                              final ReceiverOptions receiverOptions)
-            throws EventHubException {
-        super(null, null);
-
-        this.underlyingFactory = factory;
-        this.eventHubName = eventHubName;
-        this.consumerGroupName = consumerGroupName;
-        this.partitionId = partitionId;
-        this.startingOffset = startingOffset;
-        this.offsetInclusive = offsetInclusive;
-        this.startingDateTime = dateTime;
-        this.epoch = epoch;
-        this.isEpochReceiver = isEpochReceiver;
-        this.receiveHandlerLock = new Object();
-        this.receiverOptions = receiverOptions;
-
-        if (this.receiverOptions != null && this.receiverOptions.getReceiverRuntimeMetricEnabled())
-            this.runtimeInformation = new ReceiverRuntimeInformation(partitionId);
-    }
-
-    static CompletableFuture<PartitionReceiver> create(MessagingFactory factory,
-                                                       final String eventHubName,
-                                                       final String consumerGroupName,
-                                                       final String partitionId,
-                                                       final String startingOffset,
-                                                       final boolean offsetInclusive,
-                                                       final Instant dateTime,
-                                                       final long epoch,
-                                                       final boolean isEpochReceiver,
-                                                       final ReceiverOptions receiverOptions)
-            throws EventHubException {
-        if (epoch < NULL_EPOCH) {
-            throw new IllegalArgumentException("epoch cannot be a negative value. Please specify a zero or positive long value.");
-        }
-
-        if (StringUtil.isNullOrWhiteSpace(consumerGroupName)) {
-            throw new IllegalArgumentException("specify valid string for argument - 'consumerGroupName'");
-        }
-
-        final PartitionReceiver receiver = new PartitionReceiver(factory, eventHubName, consumerGroupName, partitionId, startingOffset, offsetInclusive, dateTime, epoch, isEpochReceiver, receiverOptions);
-        return receiver.createInternalReceiver().thenApplyAsync(new Function<Void, PartitionReceiver>() {
-            public PartitionReceiver apply(Void a) {
-                return receiver;
-            }
-        });
-    }
-
-    private CompletableFuture<Void> createInternalReceiver() throws EventHubException {
-        return MessageReceiver.create(this.underlyingFactory,
-                StringUtil.getRandomString(),
-                String.format("%s/ConsumerGroups/%s/Partitions/%s", this.eventHubName, this.consumerGroupName, this.partitionId),
-                PartitionReceiver.DEFAULT_PREFETCH_COUNT, this)
-                .thenAcceptAsync(new Consumer<MessageReceiver>() {
-                    public void accept(MessageReceiver r) {
-                        PartitionReceiver.this.internalReceiver = r;
-                    }
-                });
-    }
-
-    /**
-     * @return The Cursor from which this Receiver started receiving from
-     */
-    final String getStartingOffset() {
-        return this.startingOffset;
-    }
-
-    final boolean getOffsetInclusive() {
-        return this.offsetInclusive;
-    }
+    long NULL_EPOCH = 0;
 
     /**
      * Get EventHubs partition identifier.
      *
      * @return The identifier representing the partition from which this receiver is fetching data
      */
-    public final String getPartitionId() {
-        return this.partitionId;
-    }
+    String getPartitionId();
 
     /**
      * Get Prefetch Count configured on the Receiver.
@@ -170,17 +42,11 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      * @return the upper limit of events this receiver will actively receive regardless of whether a receive operation is pending.
      * @see #setPrefetchCount
      */
-    public final int getPrefetchCount() {
-        return this.internalReceiver.getPrefetchCount();
-    }
+    int getPrefetchCount();
 
-    public final Duration getReceiveTimeout() {
-        return this.internalReceiver.getReceiveTimeout();
-    }
+    Duration getReceiveTimeout();
 
-    public void setReceiveTimeout(Duration value) {
-        this.internalReceiver.setReceiveTimeout(value);
-    }
+    void setReceiveTimeout(Duration value);
 
     /**
      * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver}.
@@ -189,14 +55,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      * @param prefetchCount the number of events to pre-fetch. value must be between 10 and 999. Default is 300.
      * @throws EventHubException if setting prefetchCount encounters error
      */
-    public final void setPrefetchCount(final int prefetchCount) throws EventHubException {
-        if (prefetchCount < PartitionReceiver.MINIMUM_PREFETCH_COUNT || prefetchCount > PartitionReceiver.MAXIMUM_PREFETCH_COUNT) {
-            throw new IllegalArgumentException(String.format(Locale.US,
-                    "PrefetchCount has to be between %s and %s", PartitionReceiver.MINIMUM_PREFETCH_COUNT, PartitionReceiver.MAXIMUM_PREFETCH_COUNT));
-        }
-
-        this.internalReceiver.setPrefetchCount(prefetchCount);
-    }
+    void setPrefetchCount(final int prefetchCount) throws EventHubException;
 
     /**
      * Get the epoch value that this receiver is currently using for partition ownership.
@@ -205,9 +64,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      *
      * @return the epoch value that this receiver is currently using for partition ownership.
      */
-    public final long getEpoch() {
-        return this.epoch;
-    }
+    long getEpoch();
 
     /**
      * Gets the temporal {@link ReceiverRuntimeInformation} for this EventHub partition.
@@ -216,10 +73,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      *
      * @return receiver runtime information
      */
-    public final ReceiverRuntimeInformation getRuntimeInformation() {
-
-        return this.runtimeInformation;
-    }
+    ReceiverRuntimeInformation getRuntimeInformation();
 
     /**
      * Synchronous version of {@link #receive}.
@@ -228,31 +82,8 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      * @return Batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
      * @throws EventHubException if ServiceBus client encountered any unrecoverable/non-transient problems during {@link #receive}
      */
-    public final Iterable<EventData> receiveSync(final int maxEventCount)
-            throws EventHubException {
-        try {
-            return this.receive(maxEventCount).get();
-        } catch (InterruptedException | ExecutionException exception) {
-            if (exception instanceof InterruptedException) {
-                // Re-assert the thread's interrupted status
-                Thread.currentThread().interrupt();
-            }
-
-            Throwable throwable = exception.getCause();
-            if (throwable != null) {
-                if (throwable instanceof RuntimeException) {
-                    throw (RuntimeException) throwable;
-                }
-
-                if (throwable instanceof EventHubException) {
-                    throw (EventHubException) throwable;
-                }
-
-                throw new EventHubException(true, throwable);
-            }
-        }
-
-        return null;
+    default Iterable<EventData> receiveSync(final int maxEventCount) throws EventHubException{
+        return ExceptionUtil.sync(() -> this.receive(maxEventCount).get());
     }
 
     /**
@@ -260,7 +91,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      * <p>
      * Sample code (sample uses sync version of the api but concept are identical):
      * <pre>
-     * EventHubClient client = EventHubClient.createFromConnectionStringSync("__connection__");
+     * EventHubClient client = EventHubClient.createSync("__connection__");
      * PartitionReceiver receiver = client.createPartitionReceiverSync("ConsumerGroup1", "1");
      * Iterable{@literal<}EventData{@literal>} receivedEvents = receiver.receiveSync();
      *
@@ -288,33 +119,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      * @param maxEventCount maximum number of {@link EventData}'s that this call should return
      * @return A completableFuture that will yield a batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
      */
-    public CompletableFuture<Iterable<EventData>> receive(final int maxEventCount) {
-        return this.internalReceiver.receive(maxEventCount).thenApplyAsync(new Function<Collection<Message>, Iterable<EventData>>() {
-            @Override
-            public Iterable<EventData> apply(Collection<Message> amqpMessages) {
-                PassByRef<Message> lastMessageRef = null;
-                if (PartitionReceiver.this.receiverOptions != null && PartitionReceiver.this.receiverOptions.getReceiverRuntimeMetricEnabled())
-                    lastMessageRef = new PassByRef<>();
-
-                Iterable<EventData> events = EventDataUtil.toEventDataCollection(amqpMessages, lastMessageRef);
-
-                if (lastMessageRef != null && lastMessageRef.get() != null) {
-
-                    DeliveryAnnotations deliveryAnnotations = lastMessageRef.get().getDeliveryAnnotations();
-                    if (deliveryAnnotations != null && deliveryAnnotations.getValue() != null) {
-
-                        Map<Symbol, Object> deliveryAnnotationsMap = deliveryAnnotations.getValue();
-                        PartitionReceiver.this.runtimeInformation.setRuntimeInformation(
-                                (long) deliveryAnnotationsMap.get(ClientConstants.LAST_ENQUEUED_SEQUENCE_NUMBER),
-                                ((Date) deliveryAnnotationsMap.get(ClientConstants.LAST_ENQUEUED_TIME_UTC)).toInstant(),
-                                (String) deliveryAnnotationsMap.get(ClientConstants.LAST_ENQUEUED_OFFSET));
-                    }
-                }
-
-                return events;
-            }
-        });
-    }
+    CompletableFuture<Iterable<EventData>> receive(final int maxEventCount);
 
     /**
      * Register a receive handler that will be called when an event is available. A
@@ -324,9 +129,7 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      * @param receiveHandler An implementation of {@link PartitionReceiveHandler}. Setting this handler to <code>null</code> will stop the receive pump.
      * @return A completableFuture which sets receiveHandler
      */
-    public CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler) {
-        return this.setReceiveHandler(receiveHandler, false);
-    }
+    CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler);
 
     /**
      * Register a receive handler that will be called when an event is available. A
@@ -337,140 +140,9 @@ public final class PartitionReceiver extends ClientEntity implements IReceiverSe
      * @param invokeWhenNoEvents flag to indicate whether the {@link PartitionReceiveHandler#onReceive(Iterable)} should be invoked when the receive call times out
      * @return A completableFuture which sets receiveHandler
      */
-    public CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler, final boolean invokeWhenNoEvents) {
-        synchronized (this.receiveHandlerLock) {
-            // user setting receiveHandler==null should stop the pump if its running
-            if (receiveHandler == null) {
-                if (this.receivePump != null && this.receivePump.isRunning()) {
-                    return this.receivePump.stop();
-                }
-            } else {
-                if (this.receivePump != null && this.receivePump.isRunning())
-                    throw new IllegalArgumentException(
-                            "Unexpected value for parameter 'receiveHandler'. PartitionReceiver was already registered with a PartitionReceiveHandler instance. Only 1 instance can be registered.");
+    CompletableFuture<Void> setReceiveHandler(final PartitionReceiveHandler receiveHandler, final boolean invokeWhenNoEvents);
 
-                this.receivePump = new ReceivePump(
-                        new ReceivePump.IPartitionReceiver() {
-                            @Override
-                            public Iterable<EventData> receive(int maxBatchSize) throws EventHubException {
-                                return PartitionReceiver.this.receiveSync(maxBatchSize);
-                            }
+    CompletableFuture<Void> close();
 
-                            @Override
-                            public String getPartitionId() {
-                                return PartitionReceiver.this.getPartitionId();
-                            }
-                        },
-                        receiveHandler,
-                        invokeWhenNoEvents);
-
-                final Thread onReceivePumpThread = new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        receivePump.run();
-                    }
-                });
-
-                onReceivePumpThread.start();
-            }
-
-            return CompletableFuture.completedFuture(null);
-        }
-    }
-
-    @Override
-    public CompletableFuture<Void> onClose() {
-        if (this.receivePump != null && this.receivePump.isRunning()) {
-            // set the state of receivePump to StopEventRaised
-            // - but don't actually wait until the current user-code completes
-            // if user intends to stop everything - setReceiveHandler(null) should be invoked before close
-            this.receivePump.stop();
-        }
-
-        if (this.internalReceiver != null) {
-            return this.internalReceiver.close();
-        } else {
-            return CompletableFuture.completedFuture(null);
-        }
-    }
-
-
-    @Override
-    public Map<Symbol, UnknownDescribedType> getFilter(final Message lastReceivedMessage) {
-        final UnknownDescribedType filter;
-        if (lastReceivedMessage == null && this.startingOffset == null) {
-            long totalMilliSeconds;
-            try {
-                totalMilliSeconds = this.startingDateTime.toEpochMilli();
-            } catch (ArithmeticException ex) {
-                totalMilliSeconds = Long.MAX_VALUE;
-                if (TRACE_LOGGER.isWarnEnabled()) {
-                    TRACE_LOGGER.warn(
-                            String.format("receiverPath[%s], action[createReceiveLink], warning[starting receiver from epoch+Long.Max]", this.internalReceiver.getReceivePath()));
-                }
-            }
-
-            filter = new UnknownDescribedType(AmqpConstants.STRING_FILTER,
-                    String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT, AmqpConstants.ENQUEUED_TIME_UTC_ANNOTATION_NAME, StringUtil.EMPTY, totalMilliSeconds));
-        } else {
-            final String lastReceivedOffset;
-            final boolean offsetInclusiveFlag;
-            if (lastReceivedMessage != null) {
-                offsetInclusiveFlag = false;
-                lastReceivedOffset = lastReceivedMessage.getMessageAnnotations().getValue().get(AmqpConstants.OFFSET).toString();
-            } else {
-                offsetInclusiveFlag = this.offsetInclusive;
-                lastReceivedOffset = this.startingOffset;
-            }
-
-            if (TRACE_LOGGER.isInfoEnabled()) {
-                String logReceivePath = "";
-                if (this.internalReceiver == null) {
-                    // During startup, internalReceiver is still null. Need to handle this special case when logging during startup
-                    // or the reactor thread crashes with NPE when calling internalReceiver.getReceivePath() and no receiving occurs.
-                    logReceivePath = "receiverPath[RECEIVER IS NULL]";
-                } else {
-                    logReceivePath = "receiverPath[" + this.internalReceiver.getReceivePath() + "]";
-                }
-                TRACE_LOGGER.info(String.format("%s, action[createReceiveLink], offset[%s], offsetInclusive[%s]", logReceivePath, lastReceivedOffset, offsetInclusiveFlag));
-            }
-
-            filter = new UnknownDescribedType(AmqpConstants.STRING_FILTER,
-                    String.format(AmqpConstants.AMQP_ANNOTATION_FORMAT,
-                            AmqpConstants.OFFSET_ANNOTATION_NAME,
-                            offsetInclusiveFlag ? "=" : StringUtil.EMPTY,
-                            lastReceivedOffset));
-        }
-
-        return Collections.singletonMap(AmqpConstants.STRING_FILTER, filter);
-    }
-
-    @Override
-    public Map<Symbol, Object> getProperties() {
-
-        if (!this.isEpochReceiver &&
-                (this.receiverOptions == null || this.receiverOptions.getIdentifier() == null)) {
-            return null;
-        }
-
-        final Map<Symbol, Object> properties = new HashMap<>();
-
-        if (this.isEpochReceiver) {
-            properties.put(AmqpConstants.EPOCH, (Object) this.epoch);
-        }
-
-        if (this.receiverOptions != null && this.receiverOptions.getIdentifier() != null) {
-            properties.put(AmqpConstants.RECEIVER_IDENTIFIER_NAME, (Object) this.receiverOptions.getIdentifier());
-        }
-
-        return properties;
-    }
-
-    @Override
-    public Symbol[] getDesiredCapabilities() {
-
-        return this.receiverOptions != null && this.receiverOptions.getReceiverRuntimeMetricEnabled()
-                ? new Symbol[]{AmqpConstants.ENABLE_RECEIVER_RUNTIME_METRIC_NAME}
-                : null;
-    }
+    void closeSync() throws EventHubException;
 }

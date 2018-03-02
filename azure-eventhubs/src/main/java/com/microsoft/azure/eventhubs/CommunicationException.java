@@ -31,7 +31,7 @@ public class CommunicationException extends EventHubException {
         super(true, cause);
     }
 
-    CommunicationException(final String message, final Throwable cause) {
+    public CommunicationException(final String message, final Throwable cause) {
         super(true, message, cause);
     }
 }

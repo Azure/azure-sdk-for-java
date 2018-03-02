@@ -7,8 +7,7 @@ package com.microsoft.azure.eventhubs;
 import java.time.Instant;
 
 /**
- * Represents the temporal receiver runtime information for a {@link PartitionReceiver}.
- * Current received {@link EventData} and {@link ReceiverRuntimeInformation} can be used to find approximate value of pending events (which are not processed yet).
+ * Represents the temporal end of stream information of an EventHubs Partition.
  */
 public final class ReceiverRuntimeInformation {
 
@@ -25,9 +24,8 @@ public final class ReceiverRuntimeInformation {
     }
 
     /**
-     * Get PartitionId of the {@link PartitionReceiver} for which the {@link ReceiverRuntimeInformation} is returned.
-     *
-     * @return Partition Identifier
+     * The Event Hubs partition id to which this information belongs to
+     * @return the partition identifier
      */
     public String getPartitionId() {
 
@@ -35,18 +33,16 @@ public final class ReceiverRuntimeInformation {
     }
 
     /**
-     * Get sequence number of the {@link EventData}, that is written at the end of the Partition Stream.
-     *
-     * @return last sequence number
+     * The last enqueued {@link EventData}'s sequence number on this EventHubs Partition
+     * @return last enqueued sequence number
      */
-    public long getLastSequenceNumber() {
+    public long getLastEnqueuedSequenceNumber() {
 
         return this.lastSequenceNumber;
     }
 
     /**
-     * Get enqueued time of the {@link EventData}, that is written at the end of the Partition Stream.
-     *
+     * The last enqueued {@link EventData}'s enqueue time stamp on this EventHubs Partition
      * @return last enqueued time
      */
     public Instant getLastEnqueuedTime() {
@@ -55,9 +51,8 @@ public final class ReceiverRuntimeInformation {
     }
 
     /**
-     * Get offset of the {@link EventData}, that is written at the end of the Partition Stream.
-     *
-     * @return last enqueued offset
+     * The last enqueued {@link EventData}'s offset on this EventHubs Partition
+     * @return offset
      */
     public String getLastEnqueuedOffset() {
 
@@ -65,8 +60,7 @@ public final class ReceiverRuntimeInformation {
     }
 
     /**
-     * Get the timestamp at which this {@link ReceiverRuntimeInformation} was constructed.
-     *
+     * The value indicating when this information was retrieved from the Event Hubs service
      * @return retrieval time
      */
     public Instant getRetrievalTime() {
@@ -74,7 +68,7 @@ public final class ReceiverRuntimeInformation {
         return this.retrievalTime;
     }
 
-    void setRuntimeInformation(final long sequenceNumber, final Instant enqueuedTime, final String offset) {
+    public void setRuntimeInformation(final long sequenceNumber, final Instant enqueuedTime, final String offset) {
 
         this.lastSequenceNumber = sequenceNumber;
         this.lastEnqueuedTime = enqueuedTime;

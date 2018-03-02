@@ -9,8 +9,11 @@ import java.time.Duration;
 import java.util.function.Consumer;
 import java.util.function.Function;
 
-import com.microsoft.azure.eventhubs.PartitionReceiver;
+import com.microsoft.azure.eventhubs.EventPosition;
 
+/***
+ * Options affecting the behavior of the event processor host instance in general.
+ */
 public final class EventProcessorOptions
 {
 	private Consumer<ExceptionReceivedEventArgs> exceptionNotificationHandler = null;
@@ -19,7 +22,7 @@ public final class EventProcessorOptions
     private int maxBatchSize = 10;
     private int prefetchCount = 300;
     private Duration receiveTimeOut = Duration.ofMinutes(1);
-    private Function<String, Object> initialOffsetProvider = (partitionId) -> { return PartitionReceiver.START_OF_STREAM; };
+    private Function<String, EventPosition> initialPositionProvider = (partitionId) -> { return EventPosition.fromStartOfStream(); };
 
     /***
      * Returns an EventProcessorOptions instance with all options set to the default values.
@@ -29,7 +32,7 @@ public final class EventProcessorOptions
      * MaxBatchSize: 10
      * ReceiveTimeOut: 1 minute
      * PrefetchCount: 300
-     * InitialOffsetProvider: uses the last offset checkpointed, or START_OF_STREAM
+     * InitialPositionProvider: uses the last checkpoint, or START_OF_STREAM
      * InvokeProcessorAfterReceiveTimeout: false
      * ReceiverRuntimeMetricEnabled: false
      * </pre>
@@ -52,6 +55,9 @@ public final class EventProcessorOptions
 	 * to the onError method of the event processor for that partition. This handler is called on occasions
 	 * when there is no event processor associated with the throwing activity, or the event processor could
 	 * not be created.
+	 * 
+	 * The handler is not expected to do anything about the exception. If it is possible to recover, the
+	 * event processor host instance will recover automatically.
 	 * 
 	 * @param notificationHandler  Handler which is called when an exception occurs. Set to null to stop handling.  
 	 */
@@ -101,7 +107,7 @@ public final class EventProcessorOptions
     }
 
     /***
-     * Returns the current prefetch count for the underlying client.
+     * Returns the current prefetch count for the underlying event hub client.
      * 
      * @return the current prefetch count for the underlying client
      */
@@ -111,9 +117,9 @@ public final class EventProcessorOptions
     }
 
     /***
-     * Sets the prefetch count for the underlying client.
+     * Sets the prefetch count for the underlying event hub client.
      * 
-     * The default is 300.
+     * The default is 300. This controls how many events are received in advance. 
      * 
      * @param prefetchCount  The new prefetch count.
      */
@@ -123,55 +129,54 @@ public final class EventProcessorOptions
     }
 
     /***
-     * If there is no checkpoint for a partition, the initialOffsetProvider function is used to determine
-     * the offset at which to start receiving events for that partition.
+     * If there is no checkpoint for a partition, the initialPositionProvider function is used to determine
+     * the position at which to start receiving events for that partition.
      * 
-     * @return the current offset provider function
+     * @return the current initial position provider function
      */
-    public Function<String, Object> getInitialOffsetProvider()
+    public Function<String, EventPosition> getInitialPositionProvider()
     {
-    	return this.initialOffsetProvider;
+    	return this.initialPositionProvider;
     }
     
     /***
-     * Sets the function used to determine the offset at which to start receiving events for a
+     * Sets the function used to determine the position at which to start receiving events for a
      * partition if there is no checkpoint for that partition.
      * 
-     * The provider function takes one argument, the partition id (a String), and returns either the desired
-     * starting offset (also a String) or the desired starting timestamp (an Instant).
+     * The provider function takes one argument, the partition id (a String), and returns the desired position.
      * 
-     * @param initialOffsetProvider
+     * @param initialPositionProvider The new provider function.
      */
-    public void setInitialOffsetProvider(Function<String, Object> initialOffsetProvider)
+    public void setInitialPositionProvider(Function<String, EventPosition> initialPositionProvider)
     {
-    	this.initialOffsetProvider = initialOffsetProvider;
+    	this.initialPositionProvider = initialPositionProvider;
     }
 
     /***
-     * A prefab initial offset provider that starts from the first event available.
+     * A prefab initial position provider that starts from the first event available.
      *
-     * How to use this initial offset provider: setInitialOffsetProvider(new EventProcessorOptions.StartOfStreamInitialOffsetProvider());
+     * How to use this initial position provider: setInitialPositionProvider(new EventProcessorOptions.StartOfStreamInitialPositionProvider());
      */
-    public class StartOfStreamInitialOffsetProvider implements Function<String, Object>
+    public class StartOfStreamInitialPositionProvider implements Function<String, EventPosition>
     {
 		@Override
-		public Object apply(String t)
+		public EventPosition apply(String t)
 		{
-			return PartitionReceiver.START_OF_STREAM;
+			return EventPosition.fromStartOfStream();
 		}
     }
 
     /***
-     * A prefab initial offset provider that starts from the next event that becomes available.
+     * A prefab initial position provider that starts from the next event that becomes available.
      *
-     * How to use this initial offset provider: setInitialOffsetProvider(new EventProcessorOptions.EndOfStreamInitialOffsetProvider());
+     * How to use this initial position provider: setInitialPositionProvider(new EventProcessorOptions.EndOfStreamInitialPositionProvider());
      */
-    public class EndOfStreamInitialOffsetProvider implements Function<String, Object>
+    public class EndOfStreamInitialPositionProvider implements Function<String, EventPosition>
     {
 		@Override
-		public Object apply(String t)
+		public EventPosition apply(String t)
 		{
-			return PartitionReceiver.END_OF_STREAM;
+			return EventPosition.fromEndOfStream();
 		}
     }
 
@@ -206,7 +211,7 @@ public final class EventProcessorOptions
      * the first parameter {@link com.microsoft.azure.eventprocessorhost.PartitionContext#runtimeInformation} of
      * {@link IEventProcessor#onEvents(com.microsoft.azure.eventprocessorhost.PartitionContext, java.lang.Iterable)} will be populated.
      * <p>
-     * Enabling this knob will add 3 additional properties to all raw AMQP messages received.
+     * Enabling this knob will add 3 additional properties to all raw AMQP events received.
      * @return the {@link boolean} indicating, whether, the runtime metric of the receiver was enabled
      */
     public boolean getReceiverRuntimeMetricEnabled()
@@ -219,7 +224,7 @@ public final class EventProcessorOptions
      * the first parameter {@link com.microsoft.azure.eventprocessorhost.PartitionContext#runtimeInformation} of
      * {@link IEventProcessor#onEvents(com.microsoft.azure.eventprocessorhost.PartitionContext, java.lang.Iterable)} will be populated.
      * <p>
-     * Enabling this knob will add 3 additional properties to all raw AMQP messages received.
+     * Enabling this knob will add 3 additional properties to all raw AMQP events received.
      * @param value the {@link boolean} to indicate, whether, the runtime metric of the receiver should be enabled
      */
     public void setReceiverRuntimeMetricEnabled(boolean value)

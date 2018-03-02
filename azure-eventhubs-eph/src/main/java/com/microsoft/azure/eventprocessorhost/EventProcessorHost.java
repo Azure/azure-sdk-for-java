@@ -6,6 +6,7 @@
 package com.microsoft.azure.eventprocessorhost;
 
 import com.microsoft.azure.eventhubs.ConnectionStringBuilder;
+import com.microsoft.azure.eventhubs.RetryPolicy;
 import com.microsoft.azure.storage.StorageException;
 
 import java.net.URISyntaxException;
@@ -16,91 +17,46 @@ import java.util.concurrent.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+/***
+ * The main class of event processor host.  
+ */
 public final class EventProcessorHost
 {
-    private final String hostName;
-    private final String eventHubPath;
-    private final String consumerGroupName;
-    private String eventHubConnectionString;
-
-    private ICheckpointManager checkpointManager;
-    private ILeaseManager leaseManager;
     private boolean initializeLeaseManager = false;
     private boolean unregistered = false;
     private PartitionManager partitionManager;
-    private IEventProcessorFactory<?> processorFactory = null;
-    private EventProcessorOptions processorOptions;
     private PartitionManagerOptions partitionManagerOptions = null;
 
     // weOwnExecutor exists to support user-supplied thread pools.
-    private final ExecutorService executorService;
     private final boolean weOwnExecutor;
+    private final ScheduledExecutorService executorService;
+    private final int executorServicePoolSize = 8;
+    
+    private final HostContext hostContext;
     
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(EventProcessorHost.class);
 
 	private static final Object uuidSynchronizer = new Object();
 
-	/**
-	 * Create a new host to process events from an Event Hub.
-	 * 
-     * Since Event Hubs are generally used for scale-out, high-traffic scenarios, generally there will
-     * be only one host per process, and the processes will be run on separate machines. However, it is
-     * supported to run multiple hosts on one machine, or even within one process, if throughput is less
-     * of a concern, or for development and testing.
+    /**
+     * Create a new host instance to process events from an Event Hub.
+     * 
+     * Since Event Hubs are generally used for scale-out, high-traffic scenarios, in most scenarios there will
+     * be only one host instances per process, and the processes will be run on separate machines. Besides scale, this also
+     * provides isolation: one process or machine crashing will not take out multiple host instances. However, it is
+     * supported to run multiple host instances on one machine, or even within one process, for development and testing.
+     * <p>
+     * The hostName parameter is a name for this event processor host, which must be unique among all event processor host instances
+     * receiving from this event hub+consumer group combination: the unique name is used to distinguish which event processor host
+     * instance owns the lease for a given partition. An easy way to generate a unique hostName which also includes
+     * other information is to call EventProcessorHost.createHostName("mystring"). 
      * <p>
      * This overload of the constructor uses the built-in lease and checkpoint managers. The
      * Azure Storage account specified by the storageConnectionString parameter is used by the built-in
-     * managers to record leases and checkpoints.
+     * managers to record leases and checkpoints, in the specified container.
      * <p>
      * The Event Hub connection string may be conveniently constructed using the ConnectionStringBuilder class
      * from the Java Event Hub client.
-	 * 
-	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
-	 * @param consumerGroupName			The name of the consumer group to use when receiving from the Event Hub.
-	 * @param eventHubConnectionString	Connection string for the Event Hub to receive from.
-	 * @param storageConnectionString	Connection string for the Azure Storage account to use for persisting leases and checkpoints.
-	 */
-	@Deprecated
-    public EventProcessorHost(
-            final String eventHubPath,
-            final String consumerGroupName,
-            final String eventHubConnectionString,
-            final String storageConnectionString)
-    {
-        this(EventProcessorHost.createHostName(null), eventHubPath, consumerGroupName, eventHubConnectionString, storageConnectionString);
-    }
-
-    /**
-     * Create a new host to process events from an Event Hub.
-     * 
-     * The hostName parameter is a name for this event processor host, which must be unique among all event processor hosts
-     * receiving from this Event Hub/consumer group combination. The overload which does not have a hostName argument defaults to
-     * "javahost-" followed by a UUID, which is created by calling EventProcessorHost.createHostName(null). An easy way to
-     * generate a unique hostName which also includes other information is to call EventProcessorHost.createHostName("mystring"). 
-     * 
-     * @param hostName		A name for this event processor host. See method notes.
-	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
-	 * @param consumerGroupName			The name of the consumer group to use when receiving from the Event Hub.
-	 * @param eventHubConnectionString	Connection string for the Event Hub to receive from.
-	 * @param storageConnectionString	Connection string for the Azure Storage account to use for persisting leases and checkpoints.
-     */
-    @Deprecated
-    public EventProcessorHost(
-            final String hostName,
-            final String eventHubPath,
-            final String consumerGroupName,
-            final String eventHubConnectionString,
-            final String storageConnectionString)
-    {
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, new AzureStorageCheckpointLeaseManager(storageConnectionString), 
-        		(ExecutorService)null);
-        this.initializeLeaseManager = true;
-    }
-
-    /**
-     * Create a new host to process events from an Event Hub.
-     * 
-     * This overload adds an argument to specify the Azure Storage container name that will be used to persist leases and checkpoints.
      * 
      * @param hostName		A name for this event processor host. See method notes.
 	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
@@ -117,13 +73,13 @@ public final class EventProcessorHost
             final String storageConnectionString,
             final String storageContainerName)
     {
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, storageConnectionString, storageContainerName, (ExecutorService)null);
+        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, storageConnectionString, storageContainerName, (ScheduledExecutorService)null);
     }
 
     /**
      * Create a new host to process events from an Event Hub.
      * 
-     * This overload adds an argument to specify the Azure Storage container name that will be used to persist leases and checkpoints.
+     * This overload adds an argument to specify a user-provided thread pool.
      * 
      * @param hostName		A name for this event processor host. See method notes.
 	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
@@ -140,7 +96,7 @@ public final class EventProcessorHost
             final String eventHubConnectionString,
             final String storageConnectionString,
             final String storageContainerName,
-            final ExecutorService executorService)
+            final ScheduledExecutorService executorService)
     {
         this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, storageConnectionString, storageContainerName, (String)null, executorService);
     }
@@ -148,7 +104,7 @@ public final class EventProcessorHost
     /**
      * Create a new host to process events from an Event Hub.
      * 
-     * This overload adds an argument to specify the Azure Storage container name that will be used to persist leases and checkpoints.
+     * This overload adds an argument to specify a prefix used by the built-in lease manager when naming blobs in Azure Storage.
      * 
      * @param hostName		A name for this event processor host. See method notes.
 	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
@@ -168,13 +124,14 @@ public final class EventProcessorHost
             final String storageBlobPrefix)
     {
         this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, storageConnectionString, storageContainerName, storageBlobPrefix,
-        		(ExecutorService)null);
+        		(ScheduledExecutorService)null);
     }
 
     /**
      * Create a new host to process events from an Event Hub.
      * 
-     * This overload adds an argument to specify the Azure Storage container name that will be used to persist leases and checkpoints.
+     * This overload allows the caller to specify both a user-supplied thread pool and
+     * a prefix used by the built-in lease manager when naming blobs in Azure Storage.
      * 
      * @param hostName		A name for this event processor host. See method notes.
 	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
@@ -193,9 +150,9 @@ public final class EventProcessorHost
             final String storageConnectionString,
             final String storageContainerName,
             final String storageBlobPrefix,
-            final ExecutorService executorService)
+            final ScheduledExecutorService executorService)
     {
-    	// Want to check storageConnectionString and storageContainerName here but can't because Java doesn't allow statements before
+    	// Would like to check storageConnectionString and storageContainerName here but can't, because Java doesn't allow statements before
     	// calling another constructor. storageBlobPrefix is allowed to be null or empty, doesn't need checking. 
         this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString,
                 new AzureStorageCheckpointLeaseManager(storageConnectionString, storageContainerName, storageBlobPrefix), executorService);
@@ -211,9 +168,9 @@ public final class EventProcessorHost
             final String consumerGroupName,
             final String eventHubConnectionString,
             final AzureStorageCheckpointLeaseManager combinedManager,
-            final ExecutorService executorService)
+            final ScheduledExecutorService executorService)
     {
-        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, combinedManager, combinedManager, executorService);
+        this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, combinedManager, combinedManager, executorService, null);
     }
 
 
@@ -238,14 +195,14 @@ public final class EventProcessorHost
             ICheckpointManager checkpointManager,
             ILeaseManager leaseManager)
     {
-    	this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, checkpointManager, leaseManager, null);
+    	this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, checkpointManager, leaseManager, null, null);
     }
     
     /**
      * Create a new host to process events from an Event Hub.
      * 
      * This overload allows the caller to provide their own lease and checkpoint managers to replace the built-in
-     * ones based on Azure Storage, and to provide an executor service.
+     * ones based on Azure Storage, and to provide an executor service and a retry policy for communications with the event hub.
      * 
      * @param hostName		A name for this event processor host. See method notes.
 	 * @param eventHubPath 				Specifies the Event Hub to receive events from.
@@ -254,6 +211,7 @@ public final class EventProcessorHost
      * @param checkpointManager			Implementation of ICheckpointManager, to be replacement checkpoint manager.
      * @param leaseManager				Implementation of ILeaseManager, to be replacement lease manager.
      * @param executorService			User-supplied thread executor, or null to use EventProcessorHost-internal executor.
+     * @param retryPolicy				Retry policy governing communications with the event hub.
      */
     public EventProcessorHost(
             final String hostName,
@@ -262,7 +220,8 @@ public final class EventProcessorHost
             final String eventHubConnectionString,
             ICheckpointManager checkpointManager,
             ILeaseManager leaseManager,
-            ExecutorService executorService)
+            ScheduledExecutorService executorService,
+            RetryPolicy retryPolicy)
     {
     	if ((hostName == null) || hostName.isEmpty())
     	{
@@ -284,14 +243,14 @@ public final class EventProcessorHost
     	// The event hub path must appear in at least one of the eventHubPath argument or the connection string.
     	// If it appears in both, then it must be the same in both. If it appears in only one, populate the other.
     	ConnectionStringBuilder providedCSB = new ConnectionStringBuilder(eventHubConnectionString); 
-    	String extractedEntityPath = providedCSB.getEntityPath();
-        this.eventHubConnectionString = eventHubConnectionString;
-    	if ((eventHubPath != null) && !eventHubPath.isEmpty())
+    	String extractedEntityPath = providedCSB.getEventHubName();
+    	String effectiveEventHubPath = eventHubPath;
+        String effectiveEventHubConnectionString = eventHubConnectionString;
+    	if ((effectiveEventHubPath != null) && !effectiveEventHubPath.isEmpty())
     	{
-    		this.eventHubPath = eventHubPath;
     		if (extractedEntityPath != null)
    			{
-    			if (eventHubPath.compareTo(extractedEntityPath) != 0)
+    			if (effectiveEventHubPath.compareTo(extractedEntityPath) != 0)
 	    		{
 	    			throw new IllegalArgumentException("Provided EventHub path in eventHubPath parameter conflicts with the path in provided EventHub connection string");
 	    		}
@@ -300,18 +259,20 @@ public final class EventProcessorHost
     		else
     		{
     			// There is no entity path in the connection string, so put it there.
-    			ConnectionStringBuilder rebuildCSB = new ConnectionStringBuilder(providedCSB.getEndpoint(), this.eventHubPath,
-    					providedCSB.getSasKeyName(), providedCSB.getSasKey());
+    			ConnectionStringBuilder rebuildCSB = new ConnectionStringBuilder()
+                        .setEndpoint(providedCSB.getEndpoint())
+                        .setEventHubName(effectiveEventHubPath)
+                        .setSasKeyName(providedCSB.getSasKeyName())
+                        .setSasKey(providedCSB.getSasKey());
     			rebuildCSB.setOperationTimeout(providedCSB.getOperationTimeout());
-    			rebuildCSB.setRetryPolicy(providedCSB.getRetryPolicy());
-    			this.eventHubConnectionString = rebuildCSB.toString();
+    			effectiveEventHubConnectionString = rebuildCSB.toString();
     		}
     	}
     	else
     	{
     		if ((extractedEntityPath != null) && !extractedEntityPath.isEmpty())
     		{
-    			this.eventHubPath = extractedEntityPath;
+    			effectiveEventHubPath = extractedEntityPath;
     		}
     		else
     		{
@@ -337,11 +298,6 @@ public final class EventProcessorHost
     		this.partitionManagerOptions = new PartitionManagerOptions();
     	}
     	
-        this.hostName = hostName;
-        this.consumerGroupName = consumerGroupName;
-        this.checkpointManager = checkpointManager;
-        this.leaseManager = leaseManager;
-
         if (executorService != null)
         {
             // User has supplied an ExecutorService, so use that.
@@ -351,46 +307,31 @@ public final class EventProcessorHost
         else
         {
             this.weOwnExecutor = true;
-            this.executorService = Executors.newCachedThreadPool();
+            this.executorService = Executors.newScheduledThreadPool(this.executorServicePoolSize);
         }
         
-        this.partitionManager = new PartitionManager(this);
+        this.hostContext = new HostContext(this.executorService,
+        		this, hostName,
+        		effectiveEventHubPath, consumerGroupName, effectiveEventHubConnectionString, retryPolicy,
+        		leaseManager, checkpointManager);
+        
+        this.partitionManager = new PartitionManager(hostContext);
 
-        TRACE_LOGGER.info(LoggingUtils.withHost(this.hostName, "New EventProcessorHost created."));
+        TRACE_LOGGER.info(this.hostContext.withHost("New EventProcessorHost created."));
     }
 
     /**
-     * Returns processor host name.
+     * The processor host name is supplied by the user at constructor time, but being able to get
+     * it is useful because it means not having to carry both the host object and the name around.
+     * As long as you have the host object, you can get the name back, such as for logging.
      * 
-     * If the processor host name was automatically generated, this is the only way to get it.
-     * 
-     * @return	the processor host name
+     * @return	The processor host name
      */
-    public String getHostName() { return this.hostName; }
-
-    /**
-     * Returns the Event Hub connection string assembled by the processor host.
-     * 
-     * The connection string is assembled from info provider by the caller to the constructor
-     * using ConnectionStringBuilder, so it's not clear that there's any value to making this
-     * string accessible.
-     * 
-     * @return	Event Hub connection string.
-     */
-    public String getEventHubConnectionString() { return this.eventHubConnectionString; }
+    public String getHostName() { return this.hostContext.getHostName(); }
     
     // TEST USE ONLY
     void setPartitionManager(PartitionManager pm) { this.partitionManager = pm; }
-    
-    // All of these accessors are for internal use only.
-    ExecutorService getExecutorService() { return this.executorService; }
-    ICheckpointManager getCheckpointManager() { return this.checkpointManager; }
-    ILeaseManager getLeaseManager() { return this.leaseManager; }
-    PartitionManager getPartitionManager() { return this.partitionManager; }
-    IEventProcessorFactory<?> getProcessorFactory() { return this.processorFactory; }
-    String getEventHubPath() { return this.eventHubPath; }
-    String getConsumerGroupName() { return this.consumerGroupName; }
-    EventProcessorOptions getEventProcessorOptions() { return this.processorOptions; }
+    HostContext getHostContext() { return this.hostContext; }
     
     /**
      * Returns the existing partition manager options object. Unless you are providing implementations of
@@ -415,21 +356,25 @@ public final class EventProcessorHost
     
     /**
      * Register class for event processor and start processing.
-     *
-     * <p>
+     * 
      * This overload uses the default event processor factory, which simply creates new instances of
      * the registered event processor class, and uses all the default options.
+     * 
+     * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
+     * reported by completing the future with an exception, so it is important to call get() on the future and handle
+     * any exceptions thrown. 
      * <pre>
-     * class EventProcessor implements IEventProcessor { ... }
+     * class MyEventProcessor implements IEventProcessor { ... }
      * EventProcessorHost host = new EventProcessorHost(...);
-     * Future foo = host.registerEventProcessor(EventProcessor.class);
+     * {@literal CompletableFuture<Void>} foo = host.registerEventProcessor(MyEventProcessor.class);
      * foo.get();
      * </pre>
-     *  
+     *
+     * @param <T>	Not actually a parameter. Represents the type of your class that implements IEventProcessor. 
      * @param eventProcessorType	Class that implements IEventProcessor.
-     * @return						Future that completes when initialization is finished. If initialization fails, get() will throw. 
+     * @return	Future that completes when initialization is finished.
      */
-    public <T extends IEventProcessor> Future<?> registerEventProcessor(Class<T> eventProcessorType) throws Exception
+    public <T extends IEventProcessor> CompletableFuture<Void> registerEventProcessor(Class<T> eventProcessorType)
     {
         DefaultEventProcessorFactory<T> defaultFactory = new DefaultEventProcessorFactory<T>();
         defaultFactory.setEventProcessorClass(eventProcessorType);
@@ -442,11 +387,16 @@ public final class EventProcessorHost
      * This overload uses the default event processor factory, which simply creates new instances of
      * the registered event processor class, but takes user-specified options.
      *  
+     * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
+     * reported by completing the future with an exception, so it is important to call get() on the future and handle
+     * any exceptions thrown.
+     *  
+     * @param <T>	Not actually a parameter. Represents the type of your class that implements IEventProcessor. 
      * @param eventProcessorType	Class that implements IEventProcessor.
      * @param processorOptions		Options for the processor host and event processor(s).
-     * @return						Future that completes when initialization is finished. If initialization fails, get() will throw. 
+     * @return	Future that completes when initialization is finished.
      */
-    public <T extends IEventProcessor> Future<?> registerEventProcessor(Class<T> eventProcessorType, EventProcessorOptions processorOptions) throws Exception
+    public <T extends IEventProcessor> CompletableFuture<Void> registerEventProcessor(Class<T> eventProcessorType, EventProcessorOptions processorOptions)
     {
         DefaultEventProcessorFactory<T> defaultFactory = new DefaultEventProcessorFactory<T>();
         defaultFactory.setEventProcessorClass(eventProcessorType);
@@ -454,19 +404,22 @@ public final class EventProcessorHost
     }
 
     /**
-     * Register user-supplied event processor factory and start processing.
+     * Register a user-supplied event processor factory and start processing.
      * 
-     * <p>
      * If creating a new event processor requires more work than just new'ing an objects, the user must
      * create an object that implements IEventProcessorFactory and pass it to this method, instead of calling
      * registerEventProcessor.
-     * <p>
+     * 
      * This overload uses default options for the processor host and event processor(s).
      * 
+     * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
+     * reported by completing the future with an exception, so it is important to call get() on the future and handle
+     * any exceptions thrown.
+     *  
      * @param factory	User-supplied event processor factory object.
-     * @return			Future that completes when initialization is finished. If initialization fails, get() will throw.
+     * @return			Future that completes when initialization is finished.
      */
-    public Future<?> registerEventProcessorFactory(IEventProcessorFactory<?> factory) throws Exception
+    public CompletableFuture<Void> registerEventProcessorFactory(IEventProcessorFactory<?> factory)
     {
         return registerEventProcessorFactory(factory, EventProcessorOptions.getDefaultOptions());
     }
@@ -476,25 +429,31 @@ public final class EventProcessorHost
      * 
      * This overload takes user-specified options.
      * 
+     * The returned CompletableFuture completes when host initialization is finished. Initialization failures are
+     * reported by completing the future with an exception, so it is important to call get() on the future and handle
+     * any exceptions thrown.
+     *  
      * @param factory			User-supplied event processor factory object.			
      * @param processorOptions	Options for the processor host and event processor(s).
-     * @return					Future that completes when initialization is finished. If initialization fails, get() will throw.
+     * @return					Future that completes when initialization is finished.
      */
-    public Future<?> registerEventProcessorFactory(IEventProcessorFactory<?> factory, EventProcessorOptions processorOptions) throws Exception
+    public CompletableFuture<Void> registerEventProcessorFactory(IEventProcessorFactory<?> factory, EventProcessorOptions processorOptions)
     {
         if (this.unregistered)
         {
             throw new IllegalStateException("Register cannot be called on an EventProcessorHost after unregister. Please create a new EventProcessorHost instance.");
         }
-    	if (this.processorFactory != null)
+    	if (this.hostContext.getEventProcessorFactory() != null)
     	{
     		throw new IllegalStateException("Register has already been called on this EventProcessorHost");
     	}
     	
+        this.hostContext.setEventProcessorFactory(factory);
+        this.hostContext.setEventProcessorOptions(processorOptions);
+        
         if (this.executorService.isShutdown() || this.executorService.isTerminated())
     	{
-    		TRACE_LOGGER.warn(LoggingUtils.withHost(this.hostName,
-                    "Calling registerEventProcessor/Factory after executor service has been shut down."));
+    		TRACE_LOGGER.warn(this.hostContext.withHost("Calling registerEventProcessor/Factory after executor service has been shut down."));
     		throw new RejectedExecutionException("EventProcessorHost executor service has been shut down");
     	}
     	
@@ -502,86 +461,61 @@ public final class EventProcessorHost
         {
             try
             {
-				((AzureStorageCheckpointLeaseManager)leaseManager).initialize(this);
+				((AzureStorageCheckpointLeaseManager)this.hostContext.getLeaseManager()).initialize(this.hostContext);
 			}
             catch (InvalidKeyException | URISyntaxException | StorageException e)
             {
-                TRACE_LOGGER.warn(LoggingUtils.withHost(this.hostName, "Failure initializing Storage lease manager."));
+                TRACE_LOGGER.error(this.hostContext.withHost("Failure initializing default lease and checkpoint manager."));
             	throw new RuntimeException("Failure initializing Storage lease manager", e);
 			}
         }
 
-        TRACE_LOGGER.info(LoggingUtils.withHost(this.hostName, "Starting event processing."));
+        TRACE_LOGGER.info(this.hostContext.withHost("Starting event processing."));
 
-        this.processorFactory = factory;
-        this.processorOptions = processorOptions;
-        return this.executorService.submit(() -> this.partitionManager.initialize());
+        return this.partitionManager.initialize();
     }
 
     /**
-     * Stop processing events.
+     * Stop processing events and shut down this host instance.
      * 
-     * Does not return until the shutdown is complete.
-     * 
+     * @return A CompletableFuture that completes when shutdown is finished.
      */
-    public void unregisterEventProcessor() throws InterruptedException, ExecutionException
+    public CompletableFuture<Void> unregisterEventProcessor()
     {
-    	TRACE_LOGGER.info(LoggingUtils.withHost(this.hostName, "Stopping event processing"));
+    	TRACE_LOGGER.info(this.hostContext.withHost("Stopping event processing"));
         this.unregistered = true;
-    	
-    	if (this.partitionManager != null)
-    	{
-	        try
-	        {
-	        	Future<?> stoppingPartitions = this.partitionManager.stopPartitions();
-	        	if (stoppingPartitions != null)
-	        	{
-	        		stoppingPartitions.get();
-	        	}
-	            
-                if (this.weOwnExecutor)
-                {
-                    this.executorService.awaitTermination(10, TimeUnit.MINUTES);
-                }
-			}
-	        catch (InterruptedException | ExecutionException e)
-	        {
-	        	// Log the failure but nothing really to do about it.
-                TRACE_LOGGER.warn(LoggingUtils.withHost(this.hostName, "Failure shutting down"), e);
-	        	throw e;
-			}
-    	}
-    }
-    
-    // PartitionManager calls this after all shutdown tasks have been submitted to the ExecutorService.
-    void stopExecutor()
-    {
-        if (this.weOwnExecutor)
-        {
-			// It is OK to call shutdown() here even if threads are still running.
-			// Shutdown() causes the executor to stop accepting new tasks, but existing tasks will
-			// run to completion. The pool will terminate when all existing tasks finish.
-			// By this point all new tasks generated by the shutdown have been submitted.
-			this.executorService.shutdown();
-        }
-    }
-    
-    /**
-     * This method is no longer required and does nothing. If the user supplies a thread pool, we will never
-     * shut it down. The internal thread pool is per-instance now, so it is always safe to auto shut down.
-     */
-    @Deprecated
-    public static void setAutoExecutorShutdown(boolean auto)
-    {
-    }
 
-    /**
-     * This method is no longer required and does nothing. If the user supplies a thread pool, we will never
-     * shut it down. The internal thread pool is per-instance now, so it is always safe to auto shut down.
-     */
-    @Deprecated
-    public static void forceExecutorShutdown(long secondsToWait) throws InterruptedException
-    {
+        // PartitionManager is created in constructor. If this object exists, then
+        // this.partitionManager is not null.
+        CompletableFuture<Void> result = this.partitionManager.stopPartitions();
+        
+        // If we own the executor, stop it also.
+        // Owned executor is also created in constructor.
+    	if (this.weOwnExecutor)
+    	{
+        	result = result.thenRunAsync(() ->
+        	{
+        		// IMPORTANT: run this last stage in the default threadpool!
+        		// If a task running in a threadpool waits for that threadpool to terminate, it's going to wait a long time...
+        		
+    			// It is OK to call shutdown() here even if threads are still running.
+    			// Shutdown() causes the executor to stop accepting new tasks, but existing tasks will
+    			// run to completion. The pool will terminate when all existing tasks finish.
+    			// By this point all new tasks generated by the shutdown have been submitted.
+    			this.executorService.shutdown();
+    			
+                try
+                {
+					this.executorService.awaitTermination(10, TimeUnit.MINUTES);
+				}
+                catch (InterruptedException e)
+                {
+                	throw new CompletionException(e);
+				}
+        	}, ForkJoinPool.commonPool());
+    	}
+    	
+    	return result;
     }
 
     /**
@@ -622,7 +556,7 @@ public final class EventProcessorHost
     	synchronized (EventProcessorHost.uuidSynchronizer)
     	{
     		final UUID newUuid = UUID.randomUUID();
-        	return new String(newUuid.toString());
+        	return newUuid.toString();
     	}
     }
 }

@@ -22,7 +22,7 @@ public class OperationCancelledException extends EventHubException {
         super(false, cause);
     }
 
-    OperationCancelledException(final String message, final Throwable cause) {
+    public OperationCancelledException(final String message, final Throwable cause) {
         super(false, message, cause);
     }
 }
