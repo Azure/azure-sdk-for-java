@@ -449,10 +449,10 @@ public class SwaggerMethodParser {
             if (syncReturnTypeToken.isSubtypeOf(Void.class)) {
                 result = false;
             } else if (syncReturnTypeToken.isSubtypeOf(RestResponse.class)) {
-                result = restResponseTypeExpectsBody((ParameterizedType) syncReturnType);
+                result = restResponseTypeExpectsBody((ParameterizedType) syncReturnTypeToken.getSupertype(RestResponse.class).getType());
             }
         } else if (returnTypeToken.isSubtypeOf(RestResponse.class)) {
-            result = restResponseTypeExpectsBody((ParameterizedType) returnType);
+            result = restResponseTypeExpectsBody((ParameterizedType) returnTypeToken.getSupertype(RestResponse.class).getType());
         }
 
         return result;

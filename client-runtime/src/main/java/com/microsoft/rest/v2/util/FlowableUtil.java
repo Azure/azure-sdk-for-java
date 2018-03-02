@@ -124,13 +124,13 @@ public final class FlowableUtil {
 
                     CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
                         @Override
-                        public void completed(Integer bytesRead, Object attachment) {
+                        public void completed(Integer bytesWritten, Object attachment) {
                             isWriting = false;
                             if (isCompleted) {
                                 emitter.onComplete();
                             }
                             //noinspection NonAtomicOperationOnVolatileField
-                            position += bytesRead;
+                            position += bytesWritten;
                             subscription.request(1);
                         }
 

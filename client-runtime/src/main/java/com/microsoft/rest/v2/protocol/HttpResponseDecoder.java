@@ -239,6 +239,7 @@ public final class HttpResponseDecoder {
                     RestResponse<?, ?> restResponse = (RestResponse<?, ?>) wireResponse;
                     Object wireResponseBody = restResponse.body();
 
+                    // FIXME: RestProxy is always in charge of creating RestResponse--so this doesn't seem right
                     Object resultBody = convertToResultType(wireResponseBody, getTypeArguments(resultType)[1], wireType);
                     if (wireResponseBody != resultBody) {
                         result = new RestResponse<>(restResponse.statusCode(), restResponse.headers(), restResponse.rawHeaders(), resultBody);
@@ -260,6 +261,7 @@ public final class HttpResponseDecoder {
         }
 
         if (token.isSubtypeOf(RestResponse.class)) {
+            token = token.getSupertype(RestResponse.class);
             token = TypeToken.of(getTypeArguments(token.getType())[1]);
         }
 
@@ -283,6 +285,7 @@ public final class HttpResponseDecoder {
         }
 
         if (token.isSubtypeOf(RestResponse.class)) {
+            token = token.getSupertype(RestResponse.class);
             headersType = getTypeArguments(token.getType())[0];
         }
 

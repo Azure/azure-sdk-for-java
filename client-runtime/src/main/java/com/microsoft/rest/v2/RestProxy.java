@@ -376,37 +376,71 @@ public class RestProxy implements InvocationHandler {
         return asyncResult;
     }
 
-    private Single<?> handleRestResponseReturnTypeAsync(HttpResponse response, SwaggerMethodParser methodParser, Type entityType) throws IOException {
+    /**
+     * @param entityTypeToken the RestResponse subtype to get a constructor for.
+     * @return a Constructor which produces an instance of a RestResponse subtype.
+     */
+    @SuppressWarnings("unchecked")
+    public static Constructor<? extends RestResponse<?, ?>> getRestResponseConstructor(TypeToken entityTypeToken) {
+        Class<? extends RestResponse<?, ?>> rawEntityType = (Class<? extends RestResponse<?, ?>>) entityTypeToken.getRawType();
+        try {
+            Constructor<? extends RestResponse<?, ?>> ctor = null;
+            for (Constructor<?> c : rawEntityType.getDeclaredConstructors()) {
+                // Generic constructor arguments turn into Object.
+                // Because some child class constructors have a more specific concrete type,
+                // there's not a single type we can check for the headers or body parameters.
+                if (c.getParameterTypes().length == 4
+                        && c.getParameterTypes()[0].equals(Integer.TYPE)
+                        && c.getParameterTypes()[2].equals(Map.class)) {
+                    ctor = (Constructor<? extends RestResponse<?, ?>>) c;
+                }
+            }
+            if (ctor == null) {
+                throw new NoSuchMethodException("No appropriate constructor found for type " + rawEntityType.getName());
+            }
+            return ctor;
+        } catch (ReflectiveOperationException e) {
+            throw new Error(e);
+        }
+    }
+
+    private Single<?> handleRestResponseReturnTypeAsync(HttpResponse response, SwaggerMethodParser methodParser, Type entityType) {
         final TypeToken entityTypeToken = TypeToken.of(entityType);
         final int responseStatusCode = response.statusCode();
 
-        final Single<?> asyncResult;
-        if (entityTypeToken.isSubtypeOf(RestResponse.class)) {
-            final Type[] deserializedTypes = getTypeArguments(entityType);
-            final Type bodyType = deserializedTypes[1];
-            final HttpHeaders responseHeaders = response.headers();
-            final Object deserializedHeaders = response.deserializedHeaders();
+        try {
+            final Single<?> asyncResult;
+            if (entityTypeToken.isSubtypeOf(RestResponse.class)) {
+                final Constructor<? extends RestResponse<?, ?>> responseConstructor = getRestResponseConstructor(entityTypeToken);
 
-            final TypeToken bodyTypeToken = TypeToken.of(bodyType);
-            if (bodyTypeToken.isSubtypeOf(Void.class)) {
-                asyncResult = response.streamBodyAsync().lastElement().ignoreElement()
-                        .andThen(Single.just(new RestResponse<>(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
+                final Type[] deserializedTypes = getTypeArguments(entityTypeToken.getSupertype(RestResponse.class).getType());
+                final Type bodyType = deserializedTypes[1];
+                final HttpHeaders responseHeaders = response.headers();
+                final Object deserializedHeaders = response.deserializedHeaders();
+
+                final TypeToken bodyTypeToken = TypeToken.of(bodyType);
+                if (bodyTypeToken.isSubtypeOf(Void.class)) {
+                    asyncResult = response.streamBodyAsync().lastElement().ignoreElement()
+                            .andThen(Single.just(responseConstructor.newInstance(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
+                } else {
+                    final Map<String, String> rawHeaders = responseHeaders.toMap();
+
+                    asyncResult = handleBodyReturnTypeAsync(response, methodParser, bodyType)
+                            .map(new Function<Object, RestResponse<?, ?>>() {
+                                @Override
+                                public RestResponse<?, ?> apply(Object body) throws Exception {
+                                    return responseConstructor.newInstance(responseStatusCode, deserializedHeaders, rawHeaders, body);
+                                }
+                            }).toSingle(responseConstructor.newInstance(responseStatusCode, deserializedHeaders, rawHeaders, null));
+                }
             } else {
-                final Map<String, String> rawHeaders = responseHeaders.toMap();
-
-                asyncResult = handleBodyReturnTypeAsync(response, methodParser, bodyType)
-                        .map(new Function<Object, RestResponse<?, ?>>() {
-                            @Override
-                            public RestResponse<?, ?> apply(Object body) {
-                                return new RestResponse<>(responseStatusCode, deserializedHeaders, rawHeaders, body);
-                            }
-                        }).toSingle(new RestResponse<>(responseStatusCode, deserializedHeaders, rawHeaders, null));
+                // For now we're just throwing if the Maybe didn't emit a value.
+                asyncResult = handleBodyReturnTypeAsync(response, methodParser, entityType).toSingle();
             }
-        } else {
-            // For now we're just throwing if the Maybe didn't emit a value.
-            asyncResult = handleBodyReturnTypeAsync(response, methodParser, entityType).toSingle();
+            return asyncResult;
+        } catch (ReflectiveOperationException e) {
+            throw new RuntimeException(e);
         }
-        return asyncResult;
     }
 
     protected final Maybe<?> handleBodyReturnTypeAsync(final HttpResponse response, final SwaggerMethodParser methodParser, final Type entityType) {
