@@ -35,6 +35,7 @@
   <artifactId>azure-cosmosdb-examples</artifactId>
   <name>Async SDK for SQL API of Azure Cosmos DB Service - Examples</name>
   <description>Examples for Async SDK for SQL API of Azure Cosmos DB Service</description>
+  <url>https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-async-java</url>
   <packaging>pom</packaging>
 
   <properties>

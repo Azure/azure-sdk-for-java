@@ -31,7 +31,7 @@
   <packaging>pom</packaging>
   <name>Azure Cosmons DB SQL API</name>
   <description>Java Async SDK (with Reactive Extension rx support) for Azure Cosmos DB SQL API</description>
-  <url>https://docs.microsoft.com/en-us/azure/cosmos-db</url>
+  <url>https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-async-java</url>
 
   <modules>
     <module>sdk</module>
