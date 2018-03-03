@@ -18,16 +18,13 @@ public abstract class ClientEntity
 {
 	private final String clientId;
 	private final Object syncClose;
-	private final ClientEntity parent;
 
 	private boolean isClosing;
 	private boolean isClosed;
 
-	protected ClientEntity(final String clientId, final ClientEntity parent)
+	protected ClientEntity(final String clientId)
 	{
 		this.clientId = clientId;
-		this.parent = parent;
-
 		this.syncClose = new Object();
 	}
 
@@ -39,21 +36,19 @@ public abstract class ClientEntity
 	}
 
 	protected boolean getIsClosed()
-	{
-		final boolean isParentClosed = this.parent != null && this.parent.getIsClosed();
+	{		
 		synchronized (this.syncClose)
 		{
-			return isParentClosed || this.isClosed;
+			return this.isClosed;
 		}
 	}
-
-	// returns true even if the Parent is (being) Closed
+	
 	protected boolean getIsClosingOrClosed()
 	{
-		final boolean isParentClosingOrClosed = this.parent != null && this.parent.getIsClosingOrClosed();
+		
 		synchronized (this.syncClose)
 		{
-			return isParentClosingOrClosed || this.isClosing || this.isClosed;
+			return this.isClosing || this.isClosed;
 		}
 	}
 

@@ -74,7 +74,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	
 	private MessagingFactory(URI namespaceEndpointUri, ClientSettings clientSettings)
 	{
-	    super("MessagingFactory".concat(StringUtil.getShortRandomString()), null);
+	    super("MessagingFactory".concat(StringUtil.getShortRandomString()));
 	    this.namespaceEndpointUri = namespaceEndpointUri;
 	    this.clientSettings = clientSettings;
 	    
@@ -303,7 +303,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		    TRACE_LOGGER.info("Connection to host closed.");
 		    this.connetionCloseFuture.complete(null);
 			Timer.unregister(this.getClientId());
-		}
+		} 
 	}
 
 	private void onReactorError(Exception cause)
@@ -341,28 +341,25 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	// One of the parameters must be null
 	private void closeConnection(ErrorCondition error, Exception cause)
 	{
-	    TRACE_LOGGER.info("Closing connection to host");
 	    // Important to copy the reference of the connection as a call to getConnection might create a new connection while we are still in this method
 	    Connection currentConnection = this.connection;
 	    if(currentConnection != null)
 	    {
 	        Link[] links = this.registeredLinks.toArray(new Link[0]);
+	        this.registeredLinks.clear();
 	        
 	        TRACE_LOGGER.debug("Closing all links on the connection. Number of links '{}'", links.length);
 	        for(Link link : links)
 	        {
-	            if (link.getLocalState() != EndpointState.CLOSED && link.getRemoteState() != EndpointState.CLOSED)
-	            {
-	                link.close();
-	            }
+	            link.close();
 	        }
 	        
 	        TRACE_LOGGER.debug("Closed all links on the connection. Number of links '{}'", links.length);
 
-	        if (currentConnection.getLocalState() != EndpointState.CLOSED && currentConnection.getRemoteState() != EndpointState.CLOSED)
+	        if (currentConnection.getLocalState() != EndpointState.CLOSED)
 	        {
+	            TRACE_LOGGER.info("Closing connection to host");
 	            currentConnection.close();
-	            currentConnection.free();
 	        }
 	        
 	        for(Link link : links)
@@ -399,7 +396,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		    {
 		        TRACE_LOGGER.info("Closing CBS link");
 		        cbsLinkCloseFuture = this.cbsLink.closeAsync();
-		    }		    
+		    }
 		    
 		    cbsLinkCloseFuture.thenRun(() -> this.managementLinksCache.freeAsync()).thenRun(() -> {
 		        if(this.cbsLinkCreationFuture != null && !this.cbsLinkCreationFuture.isDone())

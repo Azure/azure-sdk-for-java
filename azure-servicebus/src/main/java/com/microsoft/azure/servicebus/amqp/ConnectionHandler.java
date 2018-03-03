@@ -69,12 +69,6 @@ public final class ConnectionHandler extends BaseHandler
 	}
 
 	@Override
-	public void onConnectionUnbound(Event event)
-	{
-		TRACE_LOGGER.debug("Connection.onConnectionUnbound: hostname:{}", event.getConnection().getHostname());
-	}
-
-	@Override
 	public void onTransportError(Event event)
 	{
 		ErrorCondition condition = event.getTransport().getCondition();
@@ -89,9 +83,10 @@ public final class ConnectionHandler extends BaseHandler
 
 		this.messagingFactory.onConnectionError(condition);
 		Connection connection = event.getConnection();
-		if (connection != null) {
-            connection.free();
-        }
+		if(connection != null)
+		{
+		    connection.free();
+		}
 	}
 
 	@Override
@@ -108,38 +103,33 @@ public final class ConnectionHandler extends BaseHandler
 		final ErrorCondition error = connection.getRemoteCondition();
 		
 		TRACE_LOGGER.debug("onConnectionRemoteClose: hostname:{},errorCondition:{}", connection.getHostname(), error != null ? error.getCondition() + "," + error.getDescription() : null);
-		
-		if (connection.getRemoteState() != EndpointState.CLOSED)
-		{
-			connection.close();
-		}
-
+		boolean shouldFreeConnection = connection.getLocalState() == EndpointState.CLOSED;		
 		this.messagingFactory.onConnectionError(error);
-		this.freeOnCloseResponse(connection);
+		if(shouldFreeConnection)
+		{
+		    connection.free();
+		}
 	}
 	
 	@Override
     public void onConnectionFinal(Event event) {
-        final Transport transport = event.getTransport();
-        if (transport != null) {
-            transport.unbind();
-            transport.free();
-        }
+	    TRACE_LOGGER.debug("onConnectionFinal: hostname:{}", event.getConnection().getHostname());
     }
 	
 	@Override
     public void onConnectionLocalClose(Event event) {
 	    Connection connection = event.getConnection();
 	    TRACE_LOGGER.debug("onConnectionLocalClose: hostname:{}", connection.getHostname());
-        this.freeOnCloseResponse(connection);
-    }
-	
-	private void freeOnCloseResponse(Connection connection) {
-        if (connection != null &&
-                connection.getLocalState() == EndpointState.CLOSED &&
-                (connection.getRemoteState() == EndpointState.CLOSED)) {
-            connection.free();
-        }
+	    if(connection.getRemoteState() == EndpointState.CLOSED)
+	    {
+	        // Service closed it first. In some such cases transport is not unbound and causing a leak.
+	        if(connection.getTransport() != null)
+	        {
+	            connection.getTransport().unbind();
+	        }
+	        
+	        connection.free();
+	    }
     }
 
 	private static SslDomain makeDomain(SslDomain.Mode mode)

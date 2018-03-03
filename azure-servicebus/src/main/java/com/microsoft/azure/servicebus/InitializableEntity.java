@@ -15,8 +15,8 @@ import com.microsoft.azure.servicebus.primitives.ClientEntity;
 abstract class InitializableEntity extends ClientEntity {
 
     //TODO Init and close semantics are primitive now. Fix them with support for other states like Initializing, Closing, and concurrency.
-    protected InitializableEntity(String clientId, ClientEntity parent) {
-        super(clientId, parent);
+    protected InitializableEntity(String clientId) {
+        super(clientId);
     }
 
     /**

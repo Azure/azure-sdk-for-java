@@ -22,7 +22,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 	
 	private MiscRequestResponseOperationHandler(MessagingFactory factory, String linkName, String entityPath)
 	{
-		super(linkName, factory);
+		super(linkName);
 		
 		this.underlyingFactory = factory;
 		this.entityPath = entityPath;

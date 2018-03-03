@@ -24,4 +24,13 @@ public class CustomIOHandler extends IOHandler
 		transport.setEmitFlowEventOnSend(false);
 		transport.bind(connection);
 	}
+	
+	@Override
+    public void onTransportClosed(Event event)
+    {
+	    if(event.getTransport() != null)
+	    {
+	        event.getTransport().unbind();
+	    }
+    }
 }

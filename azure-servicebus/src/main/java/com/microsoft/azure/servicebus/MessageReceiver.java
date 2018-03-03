@@ -56,7 +56,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     private final ConcurrentHashMap<UUID, Instant> requestResponseLockTokensToLockTimesMap;
 
     private MessageReceiver(ReceiveMode receiveMode) {
-        super(StringUtil.getShortRandomString(), null);
+        super(StringUtil.getShortRandomString());
         this.receiveMode = receiveMode;
         this.requestResponseLockTokensToLockTimesMap = new ConcurrentHashMap<>();
         if (receiveMode == ReceiveMode.PEEKLOCK) {

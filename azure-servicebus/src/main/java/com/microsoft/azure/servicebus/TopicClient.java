@@ -26,7 +26,7 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
     private MessageBrowser browser;
 
     private TopicClient() {
-        super(StringUtil.getShortRandomString(), null);
+        super(StringUtil.getShortRandomString());
     }
 
     public TopicClient(ConnectionStringBuilder amqpConnectionStringBuilder) throws InterruptedException, ServiceBusException {

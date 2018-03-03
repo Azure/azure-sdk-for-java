@@ -38,7 +38,7 @@ public final class SubscriptionClient extends InitializableEntity implements ISu
 
 	private SubscriptionClient(ReceiveMode receiveMode, String subscriptionPath)
 	{
-		super(StringUtil.getShortRandomString(), null);		
+		super(StringUtil.getShortRandomString());		
 		this.receiveMode = receiveMode;
 		this.subscriptionPath = subscriptionPath;
 	}

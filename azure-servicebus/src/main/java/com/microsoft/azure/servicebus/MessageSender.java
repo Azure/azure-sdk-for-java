@@ -29,7 +29,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
     private ClientSettings clientSettings;
 
     private MessageSender() {
-        super(StringUtil.getShortRandomString(), null);
+        super(StringUtil.getShortRandomString());
     }
 
     MessageSender(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) {

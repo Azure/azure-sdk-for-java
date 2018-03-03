@@ -36,7 +36,7 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
     private MiscRequestResponseOperationHandler miscRequestResponseHandler;
 
     private QueueClient(ReceiveMode receiveMode, String queuePath) {
-        super(StringUtil.getShortRandomString(), null);
+        super(StringUtil.getShortRandomString());
         this.receiveMode = receiveMode;
         this.queuePath = queuePath;
         this.senderCreationLock = new Object();

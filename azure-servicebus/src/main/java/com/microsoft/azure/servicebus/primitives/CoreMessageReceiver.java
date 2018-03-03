@@ -116,7 +116,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			final int prefetchCount,
 			final SettleModePair settleModePair)
 	{
-		super(name, factory);
+		super(name);
 
 		this.underlyingFactory = factory;
 		this.operationTimeout = factory.getOperationTimeout();

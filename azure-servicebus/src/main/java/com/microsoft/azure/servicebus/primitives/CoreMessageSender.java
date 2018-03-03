@@ -177,7 +177,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 
 	private CoreMessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath)
 	{
-		super(sendLinkName, factory);
+		super(sendLinkName);
 
 		this.sendPath = senderPath;
 		this.sasTokenAudienceURI = String.format(ClientConstants.SAS_TOKEN_AUDIENCE_FORMAT, factory.getHostName(), senderPath);
@@ -595,7 +595,7 @@ public class CoreMessageSender extends ClientEntity implements IAmqpSender, IErr
 		
 		SendLinkHandler handler = new SendLinkHandler(CoreMessageSender.this);
 		BaseHandler.setHandler(sender, handler);
-		sender.open();		
+		sender.open();
 		this.sendLink = sender;
 	}
 	

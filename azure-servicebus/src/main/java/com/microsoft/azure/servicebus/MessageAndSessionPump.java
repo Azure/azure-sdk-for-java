@@ -48,7 +48,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     private int prefetchCount;
 
     public MessageAndSessionPump(MessagingFactory factory, String entityPath, ReceiveMode receiveMode) {
-        super(StringUtil.getShortRandomString(), null);
+        super(StringUtil.getShortRandomString());
         this.factory = factory;
         this.entityPath = entityPath;
         this.receiveMode = receiveMode;
@@ -92,7 +92,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
         this.sessionHandlerOptions = handlerOptions;
 
         for (int i = 0; i < handlerOptions.getMaxConcurrentSessions(); i++) {
-            this.acceptSessionsAndPumpMessage();
+            this.acceptSessionAndPumpMessages();
         }
     }
 
@@ -141,6 +141,12 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                             TRACE_LOGGER.error("Invocation of onMessage with message containing sequence number '{}' threw unexpected exception", message.getSequenceNumber(), onMessageSyncEx);
                             onMessageFuture = new CompletableFuture<Void>();
                             onMessageFuture.completeExceptionally(onMessageSyncEx);
+                        }
+                        
+                        // Some clients are returning null from the call
+                        if(onMessageFuture == null)
+                        {
+                            onMessageFuture = CompletableFuture.completedFuture(null);
                         }
 
                         onMessageFuture.handleAsync((v, onMessageEx) -> {
@@ -203,7 +209,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
         }
     }
 
-    private void acceptSessionsAndPumpMessage() {
+    private void acceptSessionAndPumpMessages() {
         if (!this.getIsClosingOrClosed()) {
             TRACE_LOGGER.debug("Accepting a session from entity '{}'", this.entityPath);
             CompletableFuture<IMessageSession> acceptSessionFuture = ClientFactory.acceptSessionFromEntityPathAsync(this.factory, this.entityPath, null, this.receiveMode);
@@ -222,7 +228,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         // In case of any other exception, sleep and retry
                         TRACE_LOGGER.debug("AcceptSession from entity '{}' will be retried after '{}'.", this.entityPath, SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION);
                         Timer.schedule(() -> {
-                            MessageAndSessionPump.this.acceptSessionsAndPumpMessage();
+                            MessageAndSessionPump.this.acceptSessionAndPumpMessages();
                         }, SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION, TimerType.OneTimeRun);
                     }
                 } else {
@@ -293,6 +299,12 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                             onMessageFuture.completeExceptionally(onMessageSyncEx);
                         }
 
+                        // Some clients are returning null from the call
+                        if(onMessageFuture == null)
+                        {
+                            onMessageFuture = CompletableFuture.completedFuture(null);
+                        }
+                        
                         onMessageFuture.handleAsync((v, onMessageEx) -> {
                             renewCancelTimer.cancel(true);
                             if (onMessageEx != null) {
@@ -419,6 +431,12 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                     onCloseFuture = new CompletableFuture<Void>();
                     onCloseFuture.completeExceptionally(onCloseSyncEx);
                 }
+                
+                // Some clients are returning null from the call
+                if(onCloseFuture == null)
+                {
+                    onCloseFuture = CompletableFuture.completedFuture(null);
+                }
 
                 onCloseFuture.handleAsync((v, onCloseEx) -> {
                     renewCancelTimer.cancel(true);
@@ -441,7 +459,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
                         }
 
                         this.messageAndSessionPump.openSessions.remove(this.session.getSessionId());
-                        this.messageAndSessionPump.acceptSessionsAndPumpMessage();
+                        this.messageAndSessionPump.acceptSessionAndPumpMessages();
                         return null;
                     });
                     return null;
