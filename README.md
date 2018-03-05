@@ -41,6 +41,12 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 - A Java Developer Kit (JDK), v 1.7 or later
 - Maven
 
+## Building and Testing
+
+Clone the repo, then run `mvn compile` from the root directory.
+
+To run the recorded tests, run `mvn jetty:run` to start a jetty server, then run `mvn test`.
+
 ## Contributing
 
 If you would like to become an active contributor to this project please follow the instructions provided in [Microsoft Azure Projects Contribution Guidelines](http://azure.github.io/guidelines.html).
