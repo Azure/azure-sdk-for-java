@@ -12,7 +12,7 @@ following dependency declaration inside of your Maven project file:
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId>
-   		<version>0.15.1</version>
+   		<version>1.0.0</version>
    	</dependency>
  ```
  
@@ -131,7 +131,7 @@ The gesture is a straightforward extra override to the send operation supplying 
 
 If you indeed need to target a specific partition, for instance because you must use a particular distribution strategy, 
 you can send directly to the partition, but doing so requires an extra gesture so that you don't accidentally choose this
-option. To send to a partition you explicitly need to create a client object that is tued to the partition as shown below:
+option. To send to a partition you explicitly need to create a client object that is tied to the partition as shown below:
 
 ```Java
     EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(str);
