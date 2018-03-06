@@ -29,7 +29,7 @@ the required versions of Apache Qpid Proton-J, and the cryptography library BCPK
    	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId> 
-   		<version>0.15.1</version>
+   		<version>1.0.0</version>
    	</dependency>
 ```
 
@@ -42,7 +42,7 @@ It pulls the required versions of Event Hubs, Azure Storage and GSon libraries.
    	<dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs-eph</artifactId> 
-   		<version>0.15.1</version>
+   		<version>1.0.0</version>
    	</dependency>
 ```
  
