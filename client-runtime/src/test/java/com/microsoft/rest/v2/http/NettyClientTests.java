@@ -20,7 +20,7 @@ public class NettyClientTests {
         HttpRequest request = new HttpRequest("", HttpMethod.GET, new URL("https://httpbin.org/get"), null);
 
         client.sendRequestAsync(request).blockingGet();
-        factory.shutdown().blockingAwait();
+        factory.close();
     }
 
     @Test
@@ -30,7 +30,7 @@ public class NettyClientTests {
         HttpRequest request = new HttpRequest("", HttpMethod.GET, new URL("https://httpbin.org/get"), null);
 
         LoggerFactory.getLogger(getClass()).info("Closing factory");
-        factory.shutdown().blockingAwait();
+        factory.close();
 
         try {
             LoggerFactory.getLogger(getClass()).info("Sending request");
@@ -42,7 +42,7 @@ public class NettyClientTests {
     }
 
     @Test
-    @Ignore("Passes inconsistently due to race condition")
+    @Ignore("Fails intermittently due to race condition")
     public void testInFlightRequestSucceedsAfterCancellation() throws Exception {
         // Retry a few times in case shutdown begins before the request is submitted to Netty
         for (int i = 0; i < 3; i++) {
@@ -52,7 +52,7 @@ public class NettyClientTests {
 
             Future<HttpResponse> asyncResponse = client.sendRequestAsync(request).toFuture();
             Thread.sleep(100);
-            factory.shutdown().blockingAwait();
+            factory.close();
 
             boolean shouldRetry = false;
             try {
@@ -68,7 +68,7 @@ public class NettyClientTests {
             if (i == 2) {
                 fail();
             } else {
-                LoggerFactory.getLogger(getClass()).info("Shutdown started before sending request. Retry attempt " + i+1);
+                LoggerFactory.getLogger(getClass()).info("Shutdown started before sending request. Retry attempt " + (i+1));
             }
         }
     }

@@ -6,12 +6,12 @@
 
 package com.microsoft.rest.v2.http;
 
-import io.reactivex.Completable;
+import java.io.Closeable;
 
 /**
  * Creates an HttpClient from a Configuration.
  */
-public interface HttpClientFactory {
+public interface HttpClientFactory extends Closeable {
     /**
      * Creates an HttpClient with the given Configuration.
      * @param configuration the configuration.
@@ -20,11 +20,8 @@ public interface HttpClientFactory {
     HttpClient create(HttpClientConfiguration configuration);
 
     /**
-     * Asynchronously awaits completion of in-flight requests,
-     * then closes shared resources associated with this HttpClient.Factory.
-     * After this Completable completes, HttpClients created from this Factory can no longer be used.
-     *
-     * @return a Completable which shuts down the factory when subscribed to.
+     * Awaits completion of in-flight requests, then closes shared resources associated with this HttpClient.Factory.
+     * After this method returns, HttpClients created from this Factory can no longer be used.
      */
-    Completable shutdown();
+    void close();
 }

@@ -404,7 +404,7 @@ public class RestProxyStressTests {
         final Disposable d = Flowable.range(0, NUM_FILES)
                 .flatMap(integer ->
                         service.download100M(String.valueOf(integer), sas)
-                                .flatMapPublisher(RestResponse::body))
+                                .flatMapPublisher(StreamResponse::body))
                 .subscribe();
 
         Completable.complete().delay(10, TimeUnit.SECONDS)
@@ -438,15 +438,7 @@ public class RestProxyStressTests {
                                         return Completable.error(throwable);
                                     }
                                 })
-                                .andThen(service.deleteContainer(integer.toString(), sas).toCompletable()
-                                        .onErrorResumeNext(throwable -> {
-                                            if (throwable instanceof RestException && ((RestException) throwable).response().statusCode() == 404) {
-                                                LoggerFactory.getLogger(getClass()).info("What?");
-                                                return Completable.complete();
-                                            } else {
-                                                return Completable.error(throwable);
-                                            }
-                                        })))
+                                .andThen(service.deleteContainer(integer.toString(), sas).toCompletable()))
                 .blockingAwait();
     }
 }

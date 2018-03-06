@@ -11,7 +11,6 @@ import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
-import org.apache.commons.lang3.StringUtils;
 
 import java.io.IOException;
 import java.net.CookieHandler;
@@ -53,7 +52,7 @@ public final class CookiePolicyFactory implements RequestPolicyFactory {
 
                 Map<String, List<String>> requestCookies = cookies.get(uri, cookieHeaders);
                 for (Map.Entry<String, List<String>> entry : requestCookies.entrySet()) {
-                    request.headers().set(entry.getKey(), StringUtils.join(entry.getValue(), ","));
+                    request.headers().set(entry.getKey(), String.join(",", entry.getValue()));
                 }
 
                 return next.sendAsync(request).map(new Function<HttpResponse, HttpResponse>() {
