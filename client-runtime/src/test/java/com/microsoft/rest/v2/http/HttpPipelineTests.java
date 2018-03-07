@@ -46,7 +46,7 @@ public class HttpPipelineTests {
         };
         final HttpPipeline httpPipeline = new HttpPipelineBuilder()
                 .withHttpClient(httpClient)
-                .withUserAgent(expectedUserAgent)
+                .withUserAgentPolicy(expectedUserAgent)
                 .build();
         final HttpResponse response = httpPipeline.sendRequestAsync(new HttpRequest("MOCK_CALLER_METHOD", expectedHttpMethod, expectedUrl, null)).blockingGet();
         assertNotNull(response);

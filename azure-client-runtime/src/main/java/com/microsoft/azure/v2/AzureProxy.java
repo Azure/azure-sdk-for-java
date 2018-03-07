@@ -177,7 +177,7 @@ public final class AzureProxy extends RestProxy {
     public static HttpPipeline createDefaultPipeline(Class<?> swaggerInterface, RequestPolicyFactory credentialsPolicy) {
         final HttpClient httpClient = new NettyClient.Factory().create(null);
         final HttpPipelineBuilder builder = new HttpPipelineBuilder().withHttpClient(httpClient);
-        builder.withUserAgent(getDefaultUserAgentString(swaggerInterface));
+        builder.withUserAgentPolicy(getDefaultUserAgentString(swaggerInterface));
         builder.withRequestPolicy(new RetryPolicyFactory());
         builder.withRequestPolicy(new DecodingPolicyFactory());
         builder.withRequestPolicy(new CookiePolicyFactory());
