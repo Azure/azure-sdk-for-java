@@ -4,6 +4,20 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.*;
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.Binary;
+import org.apache.qpid.proton.amqp.UnsignedLong;
+import org.apache.qpid.proton.amqp.messaging.*;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
+import org.apache.qpid.proton.engine.*;
+import org.apache.qpid.proton.engine.impl.DeliveryImpl;
+import org.apache.qpid.proton.message.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.nio.BufferOverflowException;
 import java.security.InvalidKeyException;
@@ -11,45 +25,13 @@ import java.security.NoSuchAlgorithmException;
 import java.time.Duration;
 import java.time.Instant;
 import java.time.ZonedDateTime;
-import java.util.Comparator;
+import java.util.*;
 import java.util.concurrent.CancellationException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.function.BiConsumer;
 import java.util.function.Consumer;
-import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
-import java.util.PriorityQueue;
-
-import com.microsoft.azure.eventhubs.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.amqp.Binary;
-import org.apache.qpid.proton.amqp.UnsignedLong;
-import org.apache.qpid.proton.amqp.messaging.Accepted;
-import org.apache.qpid.proton.amqp.messaging.Data;
-import org.apache.qpid.proton.amqp.messaging.Rejected;
-import org.apache.qpid.proton.amqp.messaging.Released;
-import org.apache.qpid.proton.amqp.messaging.Source;
-import org.apache.qpid.proton.amqp.messaging.Target;
-import org.apache.qpid.proton.amqp.transport.DeliveryState;
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
-import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
-import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.Delivery;
-import org.apache.qpid.proton.engine.EndpointState;
-import org.apache.qpid.proton.engine.Sender;
-import org.apache.qpid.proton.engine.Session;
-import org.apache.qpid.proton.engine.impl.DeliveryImpl;
-import org.apache.qpid.proton.message.Message;
 
 /**
  * Abstracts all amqp related details
@@ -83,28 +65,6 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
     private Exception lastKnownLinkError;
     private Instant lastKnownErrorReportedAt;
-
-    public static CompletableFuture<MessageSender> create(
-            final MessagingFactory factory,
-            final String sendLinkName,
-            final String senderPath) {
-        final MessageSender msgSender = new MessageSender(factory, sendLinkName, senderPath);
-        msgSender.openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
-        msgSender.initializeLinkOpen(msgSender.openLinkTracker);
-
-        try {
-            msgSender.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
-                @Override
-                public void onEvent() {
-                    msgSender.createSendLink();
-                }
-            });
-        } catch (IOException|RejectedExecutionException schedulerException) {
-            msgSender.linkFirstOpen.completeExceptionally(schedulerException);
-        }
-
-        return msgSender.linkFirstOpen;
-    }
 
     private MessageSender(final MessagingFactory factory, final String sendLinkName, final String senderPath) {
         super(sendLinkName, factory, factory.executor);
@@ -159,20 +119,42 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                                         public void onError(Exception error) {
                                             if (TRACE_LOGGER.isInfoEnabled()) {
                                                 TRACE_LOGGER.info(String.format(Locale.US,
-                                                                "path[%s], linkName[%s] - tokenRenewalFailure[%s]", sendPath, sendLink.getName(), error.getMessage()));
+                                                        "path[%s], linkName[%s] - tokenRenewalFailure[%s]", sendPath, sendLink.getName(), error.getMessage()));
                                             }
                                         }
                                     });
                         } catch (IOException | NoSuchAlgorithmException | InvalidKeyException | RuntimeException exception) {
                             if (TRACE_LOGGER.isWarnEnabled()) {
                                 TRACE_LOGGER.warn(String.format(Locale.US,
-                                                "path[%s], linkName[%s] - tokenRenewalScheduleFailure[%s]", sendPath, sendLink.getName(), exception.getMessage()));
+                                        "path[%s], linkName[%s] - tokenRenewalScheduleFailure[%s]", sendPath, sendLink.getName(), exception.getMessage()));
                             }
                         }
                     }
                 },
                 ClientConstants.TOKEN_REFRESH_INTERVAL,
                 this.underlyingFactory);
+    }
+
+    public static CompletableFuture<MessageSender> create(
+            final MessagingFactory factory,
+            final String sendLinkName,
+            final String senderPath) {
+        final MessageSender msgSender = new MessageSender(factory, sendLinkName, senderPath);
+        msgSender.openLinkTracker = TimeoutTracker.create(factory.getOperationTimeout());
+        msgSender.initializeLinkOpen(msgSender.openLinkTracker);
+
+        try {
+            msgSender.underlyingFactory.scheduleOnReactorThread(new DispatchHandler() {
+                @Override
+                public void onEvent() {
+                    msgSender.createSendLink();
+                }
+            });
+        } catch (IOException | RejectedExecutionException schedulerException) {
+            msgSender.linkFirstOpen.completeExceptionally(schedulerException);
+        }
+
+        return msgSender.linkFirstOpen;
     }
 
     public String getSendPath() {
@@ -225,8 +207,8 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                     (unUsed, exception) -> {
                         if (exception != null && !(exception instanceof CancellationException))
                             onSendFuture.completeExceptionally(
-                                new OperationCancelledException("Send failed while dispatching to Reactor, see cause for more details.",
-                                        exception));
+                                    new OperationCancelledException("Send failed while dispatching to Reactor, see cause for more details.",
+                                            exception));
                     }, this.executor);
 
             return onSendFuture;
@@ -241,7 +223,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
         try {
             this.underlyingFactory.scheduleOnReactorThread(this.sendWork);
-        } catch (IOException|RejectedExecutionException schedulerException) {
+        } catch (IOException | RejectedExecutionException schedulerException) {
             onSendFuture.completeExceptionally(
                     new OperationCancelledException("Send failed while dispatching to Reactor, see cause for more details.", schedulerException));
         }
@@ -439,7 +421,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                                     }
                                 }
                             });
-                        } catch (IOException|RejectedExecutionException ignore) {
+                        } catch (IOException | RejectedExecutionException ignore) {
                             scheduledRecreate = false;
                         }
                     }
@@ -517,7 +499,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                                                 pendingSendWorkItem.getTimeoutTask());
                                     }
                                 });
-                    } catch (IOException|RejectedExecutionException schedulerException) {
+                    } catch (IOException | RejectedExecutionException schedulerException) {
                         exception.initCause(schedulerException);
                         this.cleanupFailedSend(
                                 pendingSendWorkItem,
@@ -610,13 +592,12 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                         @Override
                         public void onError(Exception error) {
                             final Exception completionException;
-                            if (error!= null && error instanceof AmqpException) {
+                            if (error != null && error instanceof AmqpException) {
                                 completionException = ExceptionUtil.toException(((AmqpException) error).getError());
                                 if (completionException != error && completionException.getCause() == null) {
                                     completionException.initCause(error);
                                 }
-                            }
-                            else {
+                            } else {
                                 completionException = error;
                             }
 
@@ -877,7 +858,7 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                     }
                 });
 
-            } catch (IOException|RejectedExecutionException schedulerException) {
+            } catch (IOException | RejectedExecutionException schedulerException) {
                 this.linkClose.completeExceptionally(schedulerException);
             }
         }

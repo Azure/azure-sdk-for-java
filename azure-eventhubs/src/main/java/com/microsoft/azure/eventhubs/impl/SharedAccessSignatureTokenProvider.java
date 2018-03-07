@@ -4,6 +4,8 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import javax.crypto.Mac;
+import javax.crypto.spec.SecretKeySpec;
 import java.io.IOException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -13,9 +15,6 @@ import java.time.Duration;
 import java.time.Instant;
 import java.util.Base64;
 import java.util.Locale;
-
-import javax.crypto.Mac;
-import javax.crypto.spec.SecretKeySpec;
 
 public class SharedAccessSignatureTokenProvider {
     final String keyName;
@@ -34,12 +33,6 @@ public class SharedAccessSignatureTokenProvider {
         this.keyName = null;
         this.sharedAccessKey = null;
         this.sharedAccessSignature = sharedAccessSignature;
-    }
-
-    public String getToken(final String resource, final Duration tokenTimeToLive) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
-        return this.sharedAccessSignature == null
-                ? generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, tokenTimeToLive)
-                : this.sharedAccessSignature;
     }
 
     public static String generateSharedAccessSignature(
@@ -82,5 +75,11 @@ public class SharedAccessSignatureTokenProvider {
                 URLEncoder.encode(signature, utf8Encoding),
                 URLEncoder.encode(expiresOn, utf8Encoding),
                 URLEncoder.encode(keyName, utf8Encoding));
+    }
+
+    public String getToken(final String resource, final Duration tokenTimeToLive) throws IOException, InvalidKeyException, NoSuchAlgorithmException {
+        return this.sharedAccessSignature == null
+                ? generateSharedAccessSignature(this.keyName, this.sharedAccessKey, resource, tokenTimeToLive)
+                : this.sharedAccessSignature;
     }
 }

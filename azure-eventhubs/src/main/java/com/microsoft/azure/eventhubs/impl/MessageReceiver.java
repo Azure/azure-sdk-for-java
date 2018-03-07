@@ -4,28 +4,9 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.io.IOException;
-import java.security.InvalidKeyException;
-import java.security.NoSuchAlgorithmException;
-import java.time.Duration;
-import java.time.ZonedDateTime;
-import java.util.Collection;
-import java.util.concurrent.CancellationException;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ConcurrentLinkedQueue;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.function.BiConsumer;
-import java.util.function.Consumer;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Locale;
-import java.util.Map;
-
-import com.microsoft.azure.eventhubs.*;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
+import com.microsoft.azure.eventhubs.ErrorContext;
+import com.microsoft.azure.eventhubs.EventHubException;
+import com.microsoft.azure.eventhubs.TimeoutException;
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
@@ -34,12 +15,23 @@ import org.apache.qpid.proton.amqp.messaging.Target;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
 import org.apache.qpid.proton.amqp.transport.SenderSettleMode;
-import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.Delivery;
-import org.apache.qpid.proton.engine.EndpointState;
-import org.apache.qpid.proton.engine.Receiver;
-import org.apache.qpid.proton.engine.Session;
+import org.apache.qpid.proton.engine.*;
 import org.apache.qpid.proton.message.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.io.IOException;
+import java.security.InvalidKeyException;
+import java.security.NoSuchAlgorithmException;
+import java.time.Duration;
+import java.time.ZonedDateTime;
+import java.util.*;
+import java.util.concurrent.CancellationException;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ConcurrentLinkedQueue;
+import java.util.concurrent.RejectedExecutionException;
+import java.util.function.BiConsumer;
+import java.util.function.Consumer;
 
 /**
  * Common Receiver that abstracts all amqp related details
@@ -196,7 +188,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     MessageReceiver.this.createReceiveLink();
                 }
             });
-        } catch (IOException|RejectedExecutionException schedulerException) {
+        } catch (IOException | RejectedExecutionException schedulerException) {
             this.linkOpen.getWork().completeExceptionally(schedulerException);
         }
 
@@ -241,7 +233,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     sendFlow(deltaPrefetchCount);
                 }
             });
-        } catch (IOException|RejectedExecutionException schedulerException) {
+        } catch (IOException | RejectedExecutionException schedulerException) {
             throw new EventHubException(false, "Setting prefetch count failed, see cause for more details", schedulerException);
         }
     }
@@ -270,7 +262,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
 
         try {
             this.underlyingFactory.scheduleOnReactorThread(this.createAndReceive);
-        } catch (IOException|RejectedExecutionException schedulerException) {
+        } catch (IOException | RejectedExecutionException schedulerException) {
             onReceive.completeExceptionally(schedulerException);
         }
 
@@ -390,7 +382,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                             }
                         }
                     });
-                } catch (IOException|RejectedExecutionException ignore) {
+                } catch (IOException | RejectedExecutionException ignore) {
                     recreateScheduled = false;
                 }
             }
@@ -494,13 +486,12 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         @Override
                         public void onError(Exception error) {
                             final Exception completionException;
-                            if (error!= null && error instanceof AmqpException) {
+                            if (error != null && error instanceof AmqpException) {
                                 completionException = ExceptionUtil.toException(((AmqpException) error).getError());
                                 if (completionException != error && completionException.getCause() == null) {
                                     completionException.initCause(error);
                                 }
-                            }
-                            else {
+                            } else {
                                 completionException = error;
                             }
 
@@ -638,15 +629,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
         return errorContext;
     }
 
-    private static class ReceiveWorkItem extends WorkItem<Collection<Message>> {
-        private final int maxMessageCount;
-
-        public ReceiveWorkItem(CompletableFuture<Collection<Message>> completableFuture, Duration timeout, final int maxMessageCount) {
-            super(completableFuture, timeout);
-            this.maxMessageCount = maxMessageCount;
-        }
-    }
-
     @Override
     protected CompletableFuture<Void> onClose() {
         if (!this.getIsClosed()) {
@@ -667,7 +649,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                         }
                     }
                 });
-            } catch (IOException|RejectedExecutionException schedulerException) {
+            } catch (IOException | RejectedExecutionException schedulerException) {
                 this.linkClose.completeExceptionally(schedulerException);
             }
         }
@@ -679,6 +661,15 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     protected Exception getLastKnownError() {
         synchronized (this.errorConditionLock) {
             return this.lastKnownLinkError;
+        }
+    }
+
+    private static class ReceiveWorkItem extends WorkItem<Collection<Message>> {
+        private final int maxMessageCount;
+
+        public ReceiveWorkItem(CompletableFuture<Collection<Message>> completableFuture, Duration timeout, final int maxMessageCount) {
+            super(completableFuture, timeout);
+            this.maxMessageCount = maxMessageCount;
         }
     }
 

@@ -4,15 +4,14 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.util.Locale;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Sender;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Locale;
 
 public class SendLinkHandler extends BaseLinkHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(SendLinkHandler.class);

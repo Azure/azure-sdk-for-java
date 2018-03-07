@@ -4,25 +4,23 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Duration;
 import java.util.Locale;
 import java.util.concurrent.CompletableFuture;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 final class ActiveClientTokenManager {
 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ActiveClientTokenManager.class);
-
-    private CompletableFuture timer;
-
     private final Object timerLock;
     private final Runnable sendTokenTask;
     private final ClientEntity clientEntity;
     private final Duration tokenRefreshInterval;
     private final SchedulerProvider schedulerProvider;
     private final Timer timerScheduler;
+    private CompletableFuture timer;
 
     public ActiveClientTokenManager(
             final ClientEntity clientEntity,

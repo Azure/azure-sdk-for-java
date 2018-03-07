@@ -4,8 +4,6 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.util.Locale;
-
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
@@ -13,6 +11,8 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.message.Message;
+
+import java.util.Locale;
 
 public final class AmqpUtil {
 

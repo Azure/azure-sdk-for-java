@@ -4,12 +4,11 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.reactor.Reactor;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 
 public class ReactorHandler extends BaseHandler {
 

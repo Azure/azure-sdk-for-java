@@ -4,6 +4,15 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
+import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.lib.ApiTestBase;
+import com.microsoft.azure.eventhubs.lib.TestContext;
+import junit.framework.AssertionFailedError;
+import org.junit.AfterClass;
+import org.junit.Assert;
+import org.junit.BeforeClass;
+import org.junit.Test;
+
 import java.time.Duration;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -11,20 +20,10 @@ import java.util.Random;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.Consumer;
-
-import com.microsoft.azure.eventhubs.*;
-import junit.framework.AssertionFailedError;
-import org.junit.AfterClass;
-import org.junit.Assert;
-import org.junit.BeforeClass;
-import org.junit.Test;
-
-import com.microsoft.azure.eventhubs.lib.ApiTestBase;
-import com.microsoft.azure.eventhubs.lib.TestContext;
 
 public class EventDataBatchAPITest extends ApiTestBase {
 
@@ -40,12 +39,21 @@ public class EventDataBatchAPITest extends ApiTestBase {
         sender = ehClient.createPartitionSenderSync(partitionId);
     }
 
+    @AfterClass
+    public static void cleanupClient() throws EventHubException {
+        if (sender != null)
+            sender.closeSync();
+
+        if (ehClient != null)
+            ehClient.closeSync();
+    }
+
     @Test
     public void sendSmallEventsFullBatchTest()
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         final EventDataBatch batchEvents = sender.createBatch();
 
-        while (batchEvents.tryAdd(EventData.create("a".getBytes())));
+        while (batchEvents.tryAdd(EventData.create("a".getBytes()))) ;
 
         sender = ehClient.createPartitionSenderSync(partitionId);
         sender.sendSync(batchEvents);
@@ -58,7 +66,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
                 .with(o -> o.partitionKey = UUID.randomUUID().toString());
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
-        while (batchEvents.tryAdd(EventData.create("a".getBytes())));
+        while (batchEvents.tryAdd(EventData.create("a".getBytes()))) ;
 
         ehClient.sendSync(batchEvents);
     }
@@ -68,11 +76,11 @@ public class EventDataBatchAPITest extends ApiTestBase {
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         final String partitionKey = UUID.randomUUID().toString();
 
-        final BatchOptions options = new BatchOptions().with( o -> o.partitionKey = partitionKey );
+        final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = partitionKey);
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
         int count = 0;
-        while (batchEvents.tryAdd(EventData.create("a".getBytes())) && count++ < 10);
+        while (batchEvents.tryAdd(EventData.create("a".getBytes())) && count++ < 10) ;
 
         final int sentCount = count;
         final CompletableFuture<Void> testResult = new CompletableFuture<>();
@@ -119,8 +127,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
 
             ehClient.sendSync(batchEvents);
             testResult.get();
-        }
-        finally {
+        } finally {
             if (receivers.size() > 0)
                 receivers.forEach(new Consumer<PartitionReceiver>() {
                     @Override
@@ -164,7 +171,7 @@ public class EventDataBatchAPITest extends ApiTestBase {
             validator.get(100, TimeUnit.SECONDS);
 
             receiver.setReceiveHandler(null);
-        }finally {
+        } finally {
             receiver.closeSync();
         }
     }
@@ -174,13 +181,13 @@ public class EventDataBatchAPITest extends ApiTestBase {
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
 
         final String partitionKey = UUID.randomUUID().toString();
-        final BatchOptions options = new BatchOptions().with( o -> o.partitionKey = partitionKey);
+        final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = partitionKey);
         final EventDataBatch batchEvents = ehClient.createBatch(options);
 
         int count = 0;
         while (true) {
             final EventData eventData = EventData.create(new String("a").getBytes());
-            for (int i=0;i<new Random().nextInt(20);i++)
+            for (int i = 0; i < new Random().nextInt(20); i++)
                 eventData.getProperties().put("somekey" + i, "somevalue");
 
             if (batchEvents.tryAdd(eventData))
@@ -198,13 +205,13 @@ public class EventDataBatchAPITest extends ApiTestBase {
             throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
 
 
-        final BatchOptions options = new BatchOptions().with( o -> o.partitionKey = UUID.randomUUID().toString() );
+        final BatchOptions options = new BatchOptions().with(o -> o.partitionKey = UUID.randomUUID().toString());
         final EventDataBatch batchEvents = sender.createBatch(options);
 
         int count = 0;
         while (true) {
             final EventData eventData = EventData.create(new String("a").getBytes());
-            for (int i=0;i<new Random().nextInt(20);i++)
+            for (int i = 0; i < new Random().nextInt(20); i++)
                 eventData.getProperties().put("somekey" + i, "somevalue");
 
             if (batchEvents.tryAdd(eventData))
@@ -218,16 +225,6 @@ public class EventDataBatchAPITest extends ApiTestBase {
         // the CreateBatch was created without taking PartitionKey size into account
         // so this call should fail with payload size exceeded
         sender.sendSync(batchEvents);
-    }
-
-    @AfterClass
-    public static void cleanupClient() throws EventHubException
-    {
-        if (sender != null)
-            sender.closeSync();
-
-        if (ehClient != null)
-            ehClient.closeSync();
     }
 
     public static class CountValidator implements PartitionReceiveHandler {

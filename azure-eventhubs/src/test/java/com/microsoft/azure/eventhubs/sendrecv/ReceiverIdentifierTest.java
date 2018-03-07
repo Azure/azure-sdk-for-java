@@ -4,20 +4,19 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import java.time.Instant;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.UUID;
-
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.lib.ApiTestBase;
+import com.microsoft.azure.eventhubs.lib.TestBase;
+import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.lib.ApiTestBase;
-import com.microsoft.azure.eventhubs.lib.TestBase;
-import com.microsoft.azure.eventhubs.lib.TestContext;
+import java.time.Instant;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.UUID;
 
 public class ReceiverIdentifierTest extends ApiTestBase {
 
@@ -30,34 +29,12 @@ public class ReceiverIdentifierTest extends ApiTestBase {
     static EventHubClient ehClient;
 
     @BeforeClass
-    public static void initializeEventHub()  throws Exception {
+    public static void initializeEventHub() throws Exception {
 
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
 
         TestBase.pushEventsToPartition(ehClient, partitionId, sentEvents).get();
-    }
-
-    @Test()
-    public void testReceiverIdentierShowsUpInQuotaErrors() throws EventHubException {
-
-        final String receiverIdentifierPrefix = UUID.randomUUID().toString();
-        for (int receiverCount = 0; receiverCount < 5; receiverCount ++) {
-            final ReceiverOptions options = new ReceiverOptions();
-            options.setIdentifier(receiverIdentifierPrefix + receiverCount);
-            ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream(), options);
-        }
-
-        try {
-            ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream());
-            Assert.assertTrue(false);
-        }
-        catch (QuotaExceededException quotaError) {
-            final String errorMsg = quotaError.getMessage();
-            for (int receiverCount=0; receiverCount < 5; receiverCount++) {
-                Assert.assertTrue(errorMsg.contains(receiverIdentifierPrefix + receiverCount));
-            }
-        }
     }
 
     @AfterClass()
@@ -68,5 +45,26 @@ public class ReceiverIdentifierTest extends ApiTestBase {
 
         if (ehClient != null)
             ehClient.closeSync();
+    }
+
+    @Test()
+    public void testReceiverIdentierShowsUpInQuotaErrors() throws EventHubException {
+
+        final String receiverIdentifierPrefix = UUID.randomUUID().toString();
+        for (int receiverCount = 0; receiverCount < 5; receiverCount++) {
+            final ReceiverOptions options = new ReceiverOptions();
+            options.setIdentifier(receiverIdentifierPrefix + receiverCount);
+            ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream(), options);
+        }
+
+        try {
+            ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromStartOfStream());
+            Assert.assertTrue(false);
+        } catch (QuotaExceededException quotaError) {
+            final String errorMsg = quotaError.getMessage();
+            for (int receiverCount = 0; receiverCount < 5; receiverCount++) {
+                Assert.assertTrue(errorMsg.contains(receiverIdentifierPrefix + receiverCount));
+            }
+        }
     }
 }

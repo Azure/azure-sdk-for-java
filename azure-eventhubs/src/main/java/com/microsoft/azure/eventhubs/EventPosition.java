@@ -18,7 +18,8 @@ public interface EventPosition extends Serializable {
     /**
      * Creates a position at the given offset. The specified event will not be included.
      * Instead, the next event is returned.
-     * @param offset    is the byte offset of the event.
+     *
+     * @param offset is the byte offset of the event.
      * @return An {@link EventPosition} object.
      */
     static EventPosition fromOffset(String offset) {
@@ -27,7 +28,8 @@ public interface EventPosition extends Serializable {
 
     /**
      * Creates a position at the given offset.
-     * @param offset    is the byte offset of the event.
+     *
+     * @param offset        is the byte offset of the event.
      * @param inclusiveFlag will include the specified event when set to true; otherwise, the next event is returned.
      * @return An {@link EventPosition} object.
      */
@@ -38,6 +40,7 @@ public interface EventPosition extends Serializable {
     /**
      * Creates a position at the given sequence number. The specified event will not be included.
      * Instead, the next event is returned.
+     *
      * @param sequenceNumber is the sequence number of the event.
      * @return An {@link EventPosition} object.
      */
@@ -48,8 +51,9 @@ public interface EventPosition extends Serializable {
     /**
      * Creates a position at the given sequence number. The specified event will not be included.
      * Instead, the next event is returned.
-     * @param sequenceNumber    is the sequence number of the event.
-     * @param inclusiveFlag         will include the specified event when set to true; otherwise, the next event is returned.
+     *
+     * @param sequenceNumber is the sequence number of the event.
+     * @param inclusiveFlag  will include the specified event when set to true; otherwise, the next event is returned.
      * @return An {@link EventPosition} object.
      */
     static EventPosition fromSequenceNumber(Long sequenceNumber, boolean inclusiveFlag) {
@@ -58,7 +62,8 @@ public interface EventPosition extends Serializable {
 
     /**
      * Creates a position at the given {@link Instant}.
-     * @param dateTime  is the enqueued time of the event.
+     *
+     * @param dateTime is the enqueued time of the event.
      * @return An {@link EventPosition} object.
      */
     static EventPosition fromEnqueuedTime(Instant dateTime) {

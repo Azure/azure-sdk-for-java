@@ -4,26 +4,20 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.*;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.UnknownDescribedType;
+import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
+import org.apache.qpid.proton.message.Message;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.time.Duration;
-import java.util.Collection;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.Locale;
-import java.util.Map;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
 import java.util.function.Consumer;
 import java.util.function.Function;
-
-import com.microsoft.azure.eventhubs.*;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import org.apache.qpid.proton.amqp.messaging.DeliveryAnnotations;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.UnknownDescribedType;
-import org.apache.qpid.proton.message.Message;
 
 final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettingsProvider, PartitionReceiver {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionReceiverImpl.class);
@@ -44,14 +38,14 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
     private ReceivePump receivePump;
 
     private PartitionReceiverImpl(MessagingFactory factory,
-                              final String eventHubName,
-                              final String consumerGroupName,
-                              final String partitionId,
-                              final EventPositionImpl eventPosition,
-                              final Long epoch,
-                              final boolean isEpochReceiver,
-                              final ReceiverOptions receiverOptions,
-                              final Executor executor) {
+                                  final String eventHubName,
+                                  final String consumerGroupName,
+                                  final String partitionId,
+                                  final EventPositionImpl eventPosition,
+                                  final Long epoch,
+                                  final boolean isEpochReceiver,
+                                  final ReceiverOptions receiverOptions,
+                                  final Executor executor) {
         super(null, null, executor);
 
         this.underlyingFactory = factory;
@@ -118,14 +112,6 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
         return this.internalReceiver.getPrefetchCount();
     }
 
-    public final Duration getReceiveTimeout() {
-        return this.internalReceiver.getReceiveTimeout();
-    }
-
-    public void setReceiveTimeout(Duration value) {
-        this.internalReceiver.setReceiveTimeout(value);
-    }
-
     public final void setPrefetchCount(final int prefetchCount) throws EventHubException {
         if (prefetchCount < PartitionReceiverImpl.MINIMUM_PREFETCH_COUNT) {
             throw new IllegalArgumentException(String.format(Locale.US,
@@ -133,6 +119,14 @@ final class PartitionReceiverImpl extends ClientEntity implements ReceiverSettin
         }
 
         this.internalReceiver.setPrefetchCount(prefetchCount);
+    }
+
+    public final Duration getReceiveTimeout() {
+        return this.internalReceiver.getReceiveTimeout();
+    }
+
+    public void setReceiveTimeout(Duration value) {
+        this.internalReceiver.setReceiveTimeout(value);
     }
 
     public final long getEpoch() {

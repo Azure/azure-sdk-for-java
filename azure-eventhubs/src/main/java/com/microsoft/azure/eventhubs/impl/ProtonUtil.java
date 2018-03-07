@@ -4,11 +4,11 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.io.IOException;
-
 import org.apache.qpid.proton.Proton;
 import org.apache.qpid.proton.reactor.Reactor;
 import org.apache.qpid.proton.reactor.ReactorOptions;
+
+import java.io.IOException;
 
 public final class ProtonUtil {
 

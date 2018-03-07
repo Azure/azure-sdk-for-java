@@ -5,24 +5,16 @@
 package com.microsoft.azure.eventhubs.exceptioncontracts;
 
 import com.microsoft.azure.eventhubs.*;
-import com.microsoft.azure.eventhubs.impl.*;
+import com.microsoft.azure.eventhubs.impl.MessagingFactory;
 import com.microsoft.azure.eventhubs.lib.ApiTestBase;
 import com.microsoft.azure.eventhubs.lib.FaultInjectingReactorFactory;
 import com.microsoft.azure.eventhubs.lib.TestContext;
-
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.time.Instant;
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.RejectedExecutionException;
-import java.util.concurrent.ThreadPoolExecutor;
-import java.util.concurrent.TimeUnit;
+import java.util.concurrent.*;
 
 public class MsgFactoryOpenCloseTest extends ApiTestBase {
 
@@ -30,13 +22,12 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     static ConnectionStringBuilder connStr;
 
     @BeforeClass
-    public static void initialize()  throws Exception
-    {
+    public static void initialize() throws Exception {
         connStr = TestContext.getConnectionString();
     }
 
     @Test()
-    public void VerifyTaskQueueEmptyOnMsgFactoryGracefulClose() throws Exception    {
+    public void VerifyTaskQueueEmptyOnMsgFactoryGracefulClose() throws Exception {
 
         final LinkedBlockingQueue<Runnable> blockingQueue = new LinkedBlockingQueue<>();
         final ThreadPoolExecutor executor = new ThreadPoolExecutor(
@@ -66,7 +57,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
     }
 
     @Test()
-    public void VerifyThreadReleaseOnMsgFactoryOpenError() throws Exception    {
+    public void VerifyThreadReleaseOnMsgFactoryOpenError() throws Exception {
 
         final FaultInjectingReactorFactory networkOutageSimulator = new FaultInjectingReactorFactory();
         networkOutageSimulator.setFaultType(FaultInjectingReactorFactory.FaultType.NetworkOutage);
@@ -192,7 +183,7 @@ public class MsgFactoryOpenCloseTest extends ApiTestBase {
 
         try {
             temp.getPartitionRuntimeInformation(PARTITION_ID).get();
-        } catch(ExecutionException ex) {
+        } catch (ExecutionException ex) {
             throw ex.getCause();
         }
     }

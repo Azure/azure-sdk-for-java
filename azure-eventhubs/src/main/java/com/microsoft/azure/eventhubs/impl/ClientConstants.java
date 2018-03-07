@@ -4,17 +4,13 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.time.Duration;
-
 import org.apache.qpid.proton.amqp.Symbol;
 
-public final class ClientConstants {
-    private ClientConstants() {
-    }
+import java.time.Duration;
 
+public final class ClientConstants {
     public final static int AMQPS_PORT = 5671;
     public final static int MAX_PARTITION_KEY_LENGTH = 128;
-
     public final static Symbol SERVER_BUSY_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":server-busy");
     public final static Symbol ARGUMENT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":argument-error");
     public final static Symbol ARGUMENT_OUT_OF_RANGE_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":argument-out-of-range");
@@ -24,36 +20,25 @@ public final class ClientConstants {
     public final static Symbol PUBLISHER_REVOKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":publisher-revoked");
     public final static Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
     public final static Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
-
     public static final int MAX_MESSAGE_LENGTH_BYTES = 256 * 1024;
     public static final int MAX_FRAME_SIZE_BYTES = 64 * 1024;
     public static final int MAX_EVENTHUB_AMQP_HEADER_SIZE_BYTES = 512;
-
     public final static Duration TIMER_TOLERANCE = Duration.ofSeconds(1);
-
     public final static Duration DEFAULT_RETRY_MIN_BACKOFF = Duration.ofSeconds(0);
     public final static Duration DEFAULT_RETRY_MAX_BACKOFF = Duration.ofSeconds(30);
     public final static Duration TOKEN_REFRESH_INTERVAL = Duration.ofMinutes(10); // renew every 10 mins, which expires 20 mins
     public final static Duration TOKEN_VALIDITY = Duration.ofMinutes(20);
-
     public final static int DEFAULT_MAX_RETRY_COUNT = 10;
-
     public final static boolean DEFAULT_IS_TRANSIENT = true;
-
     public final static int SESSION_OPEN_TIMEOUT_IN_MS = 15000;
-
     public final static int REACTOR_IO_POLL_TIMEOUT = 20;
     public final static int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
-
     public final static String NO_RETRY = "NoRetry";
     public final static String DEFAULT_RETRY = "Default";
-
     public final static String PRODUCT_NAME = "MSJavaClient";
     public final static String CURRENT_JAVACLIENT_VERSION = "1.0.0";
-
     public static final String PLATFORM_INFO = getPlatformInfo();
     public static final String FRAMEWORK_INFO = getFrameworkInfo();
-
     public static final String CBS_ADDRESS = "$cbs";
     public static final String PUT_TOKEN_OPERATION = "operation";
     public static final String PUT_TOKEN_OPERATION_VALUE = "put-token";
@@ -63,7 +48,6 @@ public final class ClientConstants {
     public static final String PUT_TOKEN_EXPIRY = "expiration";
     public static final String PUT_TOKEN_STATUS_CODE = "status-code";
     public static final String PUT_TOKEN_STATUS_DESCRIPTION = "status-description";
-
     public static final String MANAGEMENT_ADDRESS = "$management";
     public static final String MANAGEMENT_EVENTHUB_ENTITY_TYPE = AmqpConstants.VENDOR + ":eventhub";
     public static final String MANAGEMENT_PARTITION_ENTITY_TYPE = AmqpConstants.VENDOR + ":partition";
@@ -83,27 +67,25 @@ public final class ClientConstants {
     public static final String MANAGEMENT_STATUS_CODE_KEY = "status-code";
     public static final String MANAGEMENT_STATUS_DESCRIPTION_KEY = "status-description";
     public static final String MANAGEMENT_RESPONSE_ERROR_CONDITION = "error-condition";
-
     public static final Symbol LAST_ENQUEUED_SEQUENCE_NUMBER = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_SEQUENCE_NUMBER);
     public static final Symbol LAST_ENQUEUED_OFFSET = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_OFFSET);
     public static final Symbol LAST_ENQUEUED_TIME_UTC = Symbol.valueOf(MANAGEMENT_RESULT_LAST_ENQUEUED_TIME_UTC);
-
     public static final String AMQP_PUT_TOKEN_FAILED_ERROR = "Put token failed. status-code: %s, status-description: %s";
     public static final String TOKEN_AUDIENCE_FORMAT = "amqp://%s/%s";
-
     public static final int MAX_RECEIVER_NAME_LENGTH = 64;
-
     /**
      * This is a constant defined to represent the start of a partition stream in EventHub.
      */
     public static final String START_OF_STREAM = "-1";
-
     /**
      * This is a constant defined to represent the current end of a partition stream in EventHub.
      * This can be used as an offset argument in receiver creation to start receiving from the latest
      * event, instead of a specific offset or point in time.
      */
     static final String END_OF_STREAM = "@latest";
+
+    private ClientConstants() {
+    }
 
     private static String getPlatformInfo() {
         final StringBuilder platformInfo = new StringBuilder();

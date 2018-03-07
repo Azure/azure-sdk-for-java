@@ -4,7 +4,7 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import org.apache.qpid.proton.amqp.transport.*;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
 /**
  * All AmqpExceptions - which EventHub client handles internally.

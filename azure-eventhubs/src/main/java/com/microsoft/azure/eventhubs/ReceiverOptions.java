@@ -14,6 +14,14 @@ public final class ReceiverOptions {
     private boolean receiverRuntimeMetricEnabled;
     private String identifier;
 
+    private static void validateReceiverIdentifier(final String receiverName) {
+
+        if (receiverName != null &&
+                receiverName.length() > ClientConstants.MAX_RECEIVER_NAME_LENGTH) {
+            throw new IllegalArgumentException("receiverIdentifier length cannot exceed 64");
+        }
+    }
+
     /**
      * Knob to enable/disable runtime metric of the receiver. If this is set to true and is passed to {@link EventHubClient#createReceiver},
      * after the first {@link PartitionReceiver#receive(int)} call, {@link PartitionReceiver#getRuntimeInformation()} is populated.
@@ -53,25 +61,18 @@ public final class ReceiverOptions {
     /**
      * Set an identifier to {@link PartitionReceiver}.
      * <p>
-     *     This identifier will be used by EventHubs service when reporting any errors across receivers, and is caused by this receiver.
+     * This identifier will be used by EventHubs service when reporting any errors across receivers, and is caused by this receiver.
      * For example, when receiver quota limit is hit, while a user is trying to create New receiver,
      * EventHubs service will throw {@link QuotaExceededException} and will include this identifier.
      * So, its very critical to choose a value, which can uniquely identify the whereabouts of {@link PartitionReceiver}.
-     *
+     * <p>
      * </p>
+     *
      * @param value string to identify {@link PartitionReceiver}
      */
     public void setIdentifier(final String value) {
 
         ReceiverOptions.validateReceiverIdentifier(value);
         this.identifier = value;
-    }
-
-    private static void validateReceiverIdentifier(final String receiverName) {
-
-        if (receiverName != null &&
-                receiverName.length() > ClientConstants.MAX_RECEIVER_NAME_LENGTH) {
-            throw new IllegalArgumentException("receiverIdentifier length cannot exceed 64");
-        }
     }
 }

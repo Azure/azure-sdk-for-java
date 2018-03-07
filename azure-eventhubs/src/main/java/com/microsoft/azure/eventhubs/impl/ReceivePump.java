@@ -4,14 +4,14 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.util.concurrent.CompletableFuture;
-import java.util.concurrent.atomic.AtomicBoolean;
-
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventHubException;
 import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 public class ReceivePump {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(ReceivePump.class);

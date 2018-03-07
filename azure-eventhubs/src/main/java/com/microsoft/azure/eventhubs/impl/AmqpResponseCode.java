@@ -16,8 +16,6 @@ public enum AmqpResponseCode {
     INTERNAL_SERVER_ERROR(500),
     UNAUTHORIZED(0x191);
 
-    private final int value;
-
     private static Map<Integer, AmqpResponseCode> valueMap = new HashMap<>();
 
     static {
@@ -26,15 +24,17 @@ public enum AmqpResponseCode {
         }
     }
 
+    private final int value;
+
     private AmqpResponseCode(final int value) {
         this.value = value;
     }
 
-    public int getValue() {
-        return this.value;
-    }
-
     public static AmqpResponseCode valueOf(final int value) {
         return valueMap.get(value);
+    }
+
+    public int getValue() {
+        return this.value;
     }
 }

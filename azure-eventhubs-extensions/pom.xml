@@ -1,38 +1,38 @@
-<project xmlns="http://maven.apache.org/POM/4.0.0"
-		xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-		xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+<project xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xmlns="http://maven.apache.org/POM/4.0.0"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
 
-  <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
+    <description>libraries and extensions built on Microsoft Azure Event Hubs</description>
 
-  <parent>
-    <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-eventhubs-clients</artifactId>
-    <version>1.0.0</version>
-  </parent>
+    <parent>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-eventhubs-clients</artifactId>
+        <version>1.0.0</version>
+    </parent>
 
-  <modelVersion>4.0.0</modelVersion>
+    <modelVersion>4.0.0</modelVersion>
 
-	<artifactId>azure-eventhubs-extensions</artifactId>
-	<name>azure-eventhubs-extensions</name>
+    <artifactId>azure-eventhubs-extensions</artifactId>
+    <name>azure-eventhubs-extensions</name>
 
-	<dependencies>
-		<dependency> 
-			<groupId>com.microsoft.azure</groupId> 
-			<artifactId>azure-eventhubs</artifactId>
-			<version>${project.parent.version}</version>
-            		<scope>compile</scope>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-api</artifactId>
-			<version>2.5</version>
-		</dependency>
-		<dependency>
-			<groupId>org.apache.logging.log4j</groupId>
-			<artifactId>log4j-core</artifactId>
-			<version>2.5</version>
-		</dependency>
-	</dependencies>
+    <dependencies>
+        <dependency>
+            <groupId>com.microsoft.azure</groupId>
+            <artifactId>azure-eventhubs</artifactId>
+            <version>${project.parent.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-api</artifactId>
+            <version>2.5</version>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.5</version>
+        </dependency>
+    </dependencies>
 
 </project>
 

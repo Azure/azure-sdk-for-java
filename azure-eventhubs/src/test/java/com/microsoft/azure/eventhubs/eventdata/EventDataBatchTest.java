@@ -15,19 +15,19 @@ import java.util.concurrent.Executors;
 
 public class EventDataBatchTest extends ApiTestBase {
 
-   private static EventHubClient ehClient;
+    private static EventHubClient ehClient;
 
-   @Test(expected = PayloadSizeExceededException.class)
-   public void payloadExceededException() throws EventHubException, IOException {
-      final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
-      ehClient = EventHubClient.createSync(connStrBuilder.toString(), Executors.newSingleThreadExecutor());
+    @Test(expected = PayloadSizeExceededException.class)
+    public void payloadExceededException() throws EventHubException, IOException {
+        final ConnectionStringBuilder connStrBuilder = TestContext.getConnectionString();
+        ehClient = EventHubClient.createSync(connStrBuilder.toString(), Executors.newSingleThreadExecutor());
 
-      final EventDataBatch batch = ehClient.createBatch();
+        final EventDataBatch batch = ehClient.createBatch();
 
-      final EventData within = EventData.create(new byte[1024]);
-      final EventData tooBig = EventData.create(new byte[1024 * 500]);
+        final EventData within = EventData.create(new byte[1024]);
+        final EventData tooBig = EventData.create(new byte[1024 * 500]);
 
-      Assert.assertTrue(batch.tryAdd(within));
-      batch.tryAdd(tooBig);
-   }
+        Assert.assertTrue(batch.tryAdd(within));
+        batch.tryAdd(tooBig);
+    }
 }

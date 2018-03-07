@@ -4,13 +4,13 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
+import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
+
 import java.io.IOException;
 import java.nio.channels.UnresolvedAddressException;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executor;
-
-import com.microsoft.azure.eventhubs.impl.EventHubClientImpl;
-import com.microsoft.azure.eventhubs.impl.ExceptionUtil;
 
 /**
  * Anchor class - all EventHub client operations STARTS here.
@@ -22,18 +22,13 @@ public interface EventHubClient {
     String DEFAULT_CONSUMER_GROUP_NAME = "$Default";
 
     /**
-     * @return the name of the Event Hub this client is connected to.
-     */
-    String getEventHubName();
-
-    /**
      * Synchronous version of {@link #create(String, Executor)}.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
-     * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
+     * @param executor         An {@link Executor} to run all tasks performed by {@link EventHubClient}.
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
-     * @throws IOException         If the underlying Proton-J layer encounter network errors.
+     * @throws IOException       If the underlying Proton-J layer encounter network errors.
      */
     static EventHubClient createSync(final String connectionString, final Executor executor)
             throws EventHubException, IOException {
@@ -45,10 +40,10 @@ public interface EventHubClient {
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
-     * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
+     * @param executor         An {@link Executor} to run all tasks performed by {@link EventHubClient}.
      * @return EventHubClient which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
-     * @throws IOException         If the underlying Proton-J layer encounter network errors.
+     * @throws IOException       If the underlying Proton-J layer encounter network errors.
      */
     static EventHubClient createSync(final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
             throws EventHubException, IOException {
@@ -61,10 +56,10 @@ public interface EventHubClient {
      * <p>The {@link EventHubClient} created from this method creates a Sender instance internally, which is used by the {@link #send(EventData)} methods.
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
-     * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
+     * @param executor         An {@link Executor} to run all tasks performed by {@link EventHubClient}.
      * @return CompletableFuture{@literal <EventHubClient>} which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
-     * @throws IOException         If the underlying Proton-J layer encounter network errors.
+     * @throws IOException       If the underlying Proton-J layer encounter network errors.
      */
     static CompletableFuture<EventHubClient> create(final String connectionString, final Executor executor)
             throws EventHubException, IOException {
@@ -78,16 +73,21 @@ public interface EventHubClient {
      *
      * @param connectionString The connection string to be used. See {@link ConnectionStringBuilder} to construct a connectionString.
      * @param retryPolicy      A custom {@link RetryPolicy} to be used when communicating with EventHub.
-     * @param executor An {@link Executor} to run all tasks performed by {@link EventHubClient}.
+     * @param executor         An {@link Executor} to run all tasks performed by {@link EventHubClient}.
      * @return CompletableFuture{@literal <EventHubClient>} which can be used to create Senders and Receivers to EventHub
      * @throws EventHubException If Service Bus service encountered problems during connection creation.
-     * @throws IOException         If the underlying Proton-J layer encounter network errors.
+     * @throws IOException       If the underlying Proton-J layer encounter network errors.
      */
     static CompletableFuture<EventHubClient> create(
             final String connectionString, final RetryPolicy retryPolicy, final Executor executor)
             throws EventHubException, IOException {
         return EventHubClientImpl.create(connectionString, retryPolicy, executor);
     }
+
+    /**
+     * @return the name of the Event Hub this client is connected to.
+     */
+    String getEventHubName();
 
     /**
      * Creates an Empty Collection of {@link EventData}.
@@ -115,7 +115,7 @@ public interface EventHubClient {
      *
      * @param data the {@link EventData} to be sent.
      * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds a predefined limit set by the service. Default is 256k bytes.
-     * @throws EventHubException          if Service Bus service encountered problems during the operation.
+     * @throws EventHubException            if Service Bus service encountered problems during the operation.
      * @throws UnresolvedAddressException   if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
      */
     default void sendSync(final EventData data) throws EventHubException {
@@ -154,7 +154,7 @@ public interface EventHubClient {
      *
      * @param eventDatas batch of events to send to EventHub
      * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-     * @throws EventHubException          if Service Bus service encountered problems during the operation.
+     * @throws EventHubException            if Service Bus service encountered problems during the operation.
      * @throws UnresolvedAddressException   if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
      */
     default void sendSync(final Iterable<EventData> eventDatas) throws EventHubException {
@@ -208,7 +208,7 @@ public interface EventHubClient {
      * Synchronous version of {@link #send(EventDataBatch)}.
      *
      * @param eventDatas EventDataBatch to send to EventHub
-     * @throws EventHubException        if Service Bus service encountered problems during the operation.
+     * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
     default void sendSync(final EventDataBatch eventDatas) throws EventHubException {
         ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
@@ -232,9 +232,9 @@ public interface EventHubClient {
      * @param eventData    the {@link EventData} to be sent.
      * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
      * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-     * @throws EventHubException          if Service Bus service encountered problems during the operation.
+     * @throws EventHubException            if Service Bus service encountered problems during the operation.
      */
-    default void sendSync(final EventData eventData, final String partitionKey) throws EventHubException{
+    default void sendSync(final EventData eventData, final String partitionKey) throws EventHubException {
         ExceptionUtil.syncVoid(() -> this.send(eventData, partitionKey).get());
     }
 
@@ -272,10 +272,10 @@ public interface EventHubClient {
      * @param eventDatas   the batch of events to send to EventHub
      * @param partitionKey the partitionKey will be hash'ed to determine the partitionId to send the eventData to. On the Received message this can be accessed at {@link EventData.SystemProperties#getPartitionKey()}
      * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-     * @throws EventHubException          if Service Bus service encountered problems during the operation.
+     * @throws EventHubException            if Service Bus service encountered problems during the operation.
      * @throws UnresolvedAddressException   if there are Client to Service network connectivity issues, if the Azure DNS resolution of the ServiceBus Namespace fails (ex: namespace deleted etc.)
      */
-    default void sendSync(final Iterable<EventData> eventDatas, final String partitionKey) throws EventHubException{
+    default void sendSync(final Iterable<EventData> eventDatas, final String partitionKey) throws EventHubException {
         ExceptionUtil.syncVoid(() -> this.send(eventDatas, partitionKey).get());
     }
 
@@ -304,7 +304,7 @@ public interface EventHubClient {
      * @return PartitionSenderImpl which can be used to send events to a specific partition.
      * @throws EventHubException if Service Bus service encountered problems during connection creation.
      */
-    default PartitionSender createPartitionSenderSync(final String partitionId) throws EventHubException, IllegalArgumentException{
+    default PartitionSender createPartitionSenderSync(final String partitionId) throws EventHubException, IllegalArgumentException {
         return ExceptionUtil.syncWithIllegalArgException(() -> this.createPartitionSender(partitionId).get());
     }
 
@@ -334,7 +334,7 @@ public interface EventHubClient {
      * @return PartitionReceiver instance which can be used for receiving {@link EventData}.
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
-    default PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition) throws EventHubException{
+    default PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition) throws EventHubException {
         return ExceptionUtil.sync(() -> this.createReceiver(consumerGroupName, partitionId, eventPosition).get());
     }
 
@@ -361,7 +361,7 @@ public interface EventHubClient {
      * @return PartitionReceiver instance which can be used for receiving {@link EventData}.
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
-    default PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions) throws EventHubException{
+    default PartitionReceiver createReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final ReceiverOptions receiverOptions) throws EventHubException {
         return ExceptionUtil.sync(() -> this.createReceiver(consumerGroupName, partitionId, eventPosition, receiverOptions).get());
     }
 
@@ -389,7 +389,7 @@ public interface EventHubClient {
      * @return PartitionReceiver instance which can be used for receiving {@link EventData}.
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
-    default PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch) throws EventHubException{
+    default PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch) throws EventHubException {
         return ExceptionUtil.sync(() -> this.createEpochReceiver(consumerGroupName, partitionId, eventPosition, epoch).get());
     }
 
@@ -426,7 +426,7 @@ public interface EventHubClient {
      * @return PartitionReceiver instance which can be used for receiving {@link EventData}.
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
-    default PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions) throws EventHubException{
+    default PartitionReceiver createEpochReceiverSync(final String consumerGroupName, final String partitionId, final EventPosition eventPosition, final long epoch, final ReceiverOptions receiverOptions) throws EventHubException {
         return ExceptionUtil.sync(() -> this.createEpochReceiver(consumerGroupName, partitionId, eventPosition, epoch, receiverOptions).get());
     }
 
@@ -467,7 +467,7 @@ public interface EventHubClient {
      * details. Retries until it reaches the operation timeout, then either rethrows the last error if available or
      * returns null to indicate timeout.
      *
-     * @param partitionId  Partition to get information about. Must be one of the partition ids returned by {@link #getRuntimeInformation}.
+     * @param partitionId Partition to get information about. Must be one of the partition ids returned by {@link #getRuntimeInformation}.
      * @return CompletableFuture which returns an PartitionRuntimeInformation on success, or null on timeout.
      */
     CompletableFuture<PartitionRuntimeInformation> getPartitionRuntimeInformation(String partitionId);

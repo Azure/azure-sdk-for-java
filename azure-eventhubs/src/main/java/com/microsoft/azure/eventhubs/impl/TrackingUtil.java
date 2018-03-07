@@ -4,9 +4,9 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.time.Instant;
-
 import org.apache.qpid.proton.engine.Session;
+
+import java.time.Instant;
 
 public final class TrackingUtil {
     public static final String TRACKING_ID_TOKEN_SEPARATOR = "_";

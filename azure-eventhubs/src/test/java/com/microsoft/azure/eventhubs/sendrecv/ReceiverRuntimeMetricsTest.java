@@ -4,23 +4,21 @@
  */
 package com.microsoft.azure.eventhubs.sendrecv;
 
-import java.time.Instant;
-import java.util.HashSet;
-import java.util.LinkedList;
-
 import com.microsoft.azure.eventhubs.*;
+import com.microsoft.azure.eventhubs.lib.ApiTestBase;
+import com.microsoft.azure.eventhubs.lib.TestBase;
+import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-import com.microsoft.azure.eventhubs.lib.ApiTestBase;
-import com.microsoft.azure.eventhubs.lib.TestBase;
-import com.microsoft.azure.eventhubs.lib.TestContext;
-import com.microsoft.azure.eventhubs.EventHubException;
+import java.time.Instant;
+import java.util.HashSet;
+import java.util.LinkedList;
 
-public class ReceiverRuntimeMetricsTest  extends ApiTestBase {
-    
+public class ReceiverRuntimeMetricsTest extends ApiTestBase {
+
     static final String cgName = TestContext.getConsumerGroupName();
     static final String partitionId = "0";
     static final Instant beforeTestStart = Instant.now();
@@ -33,22 +31,38 @@ public class ReceiverRuntimeMetricsTest  extends ApiTestBase {
     static PartitionReceiver receiverWithOptionsDisabled = null;
 
     @BeforeClass
-    public static void initializeEventHub()  throws Exception {
-        
+    public static void initializeEventHub() throws Exception {
+
         final ConnectionStringBuilder connectionString = TestContext.getConnectionString();
         ehClient = EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
-        
+
         ReceiverOptions options = new ReceiverOptions();
         options.setReceiverRuntimeMetricEnabled(true);
-        
+
         ReceiverOptions optionsWithMetricsDisabled = new ReceiverOptions();
         optionsWithMetricsDisabled.setReceiverRuntimeMetricEnabled(false);
 
         receiverWithOptions = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.now()), options);
         receiverWithoutOptions = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH));
         receiverWithOptionsDisabled = ehClient.createReceiverSync(cgName, partitionId, EventPosition.fromEnqueuedTime(Instant.EPOCH), optionsWithMetricsDisabled);
-        
+
         TestBase.pushEventsToPartition(ehClient, partitionId, sentEvents).get();
+    }
+
+    @AfterClass()
+    public static void cleanup() throws EventHubException {
+
+        if (receiverWithOptions != null)
+            receiverWithOptions.closeSync();
+
+        if (receiverWithoutOptions != null)
+            receiverWithoutOptions.closeSync();
+
+        if (receiverWithOptionsDisabled != null)
+            receiverWithOptionsDisabled.closeSync();
+
+        if (ehClient != null)
+            ehClient.closeSync();
     }
 
     @Test()
@@ -56,13 +70,13 @@ public class ReceiverRuntimeMetricsTest  extends ApiTestBase {
 
         LinkedList<EventData> receivedEventsWithOptions = new LinkedList<>();
         while (receivedEventsWithOptions.size() < sentEvents)
-            for (EventData eData: receiverWithOptions.receiveSync(sentEvents))
+            for (EventData eData : receiverWithOptions.receiveSync(sentEvents))
                 receivedEventsWithOptions.add(eData);
-        
+
         HashSet<String> offsets = new HashSet<>();
-        for (EventData eData: receivedEventsWithOptions)
+        for (EventData eData : receivedEventsWithOptions)
             offsets.add(eData.getSystemProperties().getOffset());
-        
+
         Assert.assertTrue(receiverWithOptions.getRuntimeInformation() != null);
         Assert.assertTrue(offsets.contains(receiverWithOptions.getRuntimeInformation().getLastEnqueuedOffset()));
         Assert.assertTrue(receiverWithOptions.getRuntimeInformation().getLastEnqueuedSequenceNumber() >= receivedEventsWithOptions.iterator().next().getSystemProperties().getSequenceNumber());
@@ -74,27 +88,11 @@ public class ReceiverRuntimeMetricsTest  extends ApiTestBase {
         receiverWithOptionsDisabled.receiveSync(10);
         Assert.assertTrue(receiverWithOptionsDisabled.getRuntimeInformation() == null);
     }
-    
+
     @Test()
     public void testRuntimeMetricsDefaultDisabled() throws EventHubException {
 
         receiverWithoutOptions.receiveSync(10);
         Assert.assertTrue(receiverWithoutOptions.getRuntimeInformation() == null);
-    }
-    
-    @AfterClass()
-    public static void cleanup() throws EventHubException {
-        
-        if (receiverWithOptions != null)
-            receiverWithOptions.closeSync();
-        
-        if (receiverWithoutOptions != null)
-            receiverWithoutOptions.closeSync();
-
-        if (receiverWithOptionsDisabled != null)
-            receiverWithOptionsDisabled.closeSync();
-        
-        if (ehClient != null)
-            ehClient.closeSync();
     }
 }

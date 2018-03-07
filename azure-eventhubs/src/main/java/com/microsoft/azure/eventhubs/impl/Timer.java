@@ -25,7 +25,7 @@ final class Timer {
         final CompletableFuture<?> taskHandle = scheduledTask.getScheduledFuture();
         try {
             this.schedulerProvider.getReactorScheduler().invoke((int) runAfter.toMillis(), scheduledTask);
-        } catch (IOException|RejectedExecutionException e) {
+        } catch (IOException | RejectedExecutionException e) {
             taskHandle.completeExceptionally(e);
         }
 

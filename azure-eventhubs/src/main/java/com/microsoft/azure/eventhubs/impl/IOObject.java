@@ -6,13 +6,13 @@ package com.microsoft.azure.eventhubs.impl;
 
 public interface IOObject {
 
+    // should be run on reactor thread
+    public IOObjectState getState();
+
     public static enum IOObjectState {
         OPENING,
         OPENED,
         CLOSED,
         CLOSING
     }
-
-    // should be run on reactor thread
-    public IOObjectState getState();
 }

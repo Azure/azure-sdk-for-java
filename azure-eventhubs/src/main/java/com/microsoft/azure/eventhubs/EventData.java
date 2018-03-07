@@ -4,20 +4,15 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import com.microsoft.azure.eventhubs.impl.AmqpConstants;
+import com.microsoft.azure.eventhubs.impl.EventDataImpl;
+import org.apache.qpid.proton.amqp.Binary;
+
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.util.*;
 import java.util.concurrent.Executor;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.qpid.proton.amqp.Binary;
-
-import com.microsoft.azure.eventhubs.impl.AmqpConstants;
-import com.microsoft.azure.eventhubs.impl.EventDataImpl;
 
 /**
  * The data structure encapsulating the Event being sent-to and received-from EventHubs.
