@@ -1,13 +1,13 @@
 {
   "networkCallRecords" : [ {
     "Method" : "PUT",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/issuers/createCertificateJavaPemIssuer01?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/issuers/createCertificateJavaPemIssuer01?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:34 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:29 GMT",
       "content-length" : "0",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -21,19 +21,19 @@
       "x-powered-by" : "ASP.NET",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "93bc2687-144b-4cde-8884-c1347a269903",
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "d6c99d67-6b75-4be6-ad14-6643c0f4cd7b",
       "Body" : ""
     }
   }, {
     "Method" : "PUT",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/issuers/createCertificateJavaPemIssuer01?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/issuers/createCertificateJavaPemIssuer01?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:34 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:29 GMT",
       "content-length" : "373",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -47,19 +47,19 @@
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "73b5eed8-b35e-4d0c-b1f7-7b60ec0d0aae",
-      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/issuers/createCertificateJavaPemIssuer01\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"account1\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"John\",\"last_name\":\"Doe\",\"email\":\"john.doe@contoso.com\",\"phone\":\"1234567890\"}]},\"attributes\":{\"enabled\":true,\"created\":1504827186,\"updated\":1511297974}}"
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "5ae5f6fe-0f31-485d-bf37-66a263b51887",
+      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/issuers/createCertificateJavaPemIssuer01\",\"provider\":\"Test\",\"credentials\":{\"account_id\":\"account1\"},\"org_details\":{\"zip\":0,\"admin_details\":[{\"first_name\":\"John\",\"last_name\":\"Doe\",\"email\":\"john.doe@contoso.com\",\"phone\":\"1234567890\"}]},\"attributes\":{\"enabled\":true,\"created\":1504827186,\"updated\":1520461050}}"
     }
   }, {
     "Method" : "POST",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/create?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/create?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:36 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:32 GMT",
       "content-length" : "1333",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -71,22 +71,22 @@
       "x-content-type-options" : "nosniff",
       "x-powered-by" : "ASP.NET",
       "content-type" : "application/json; charset=utf-8",
-      "location" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending?api-version=2016-10-01&request_id=af63a55ef1ae4aac8e2d153ed3bac6db",
+      "location" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending?api-version=7.0-preview&request_id=673385ba95554c19a1424b95591f9818",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "106d2ceb-4605-4142-a162-f9d6cc135b0d",
-      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\",\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"csr\":\"MIICpjCCAY4CAQAwFjEUMBIGA1UEAxMLVGVzdEphdmFQZW0wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC9ptRDnOjUczy3vHqzkXc9P394rChCDi0fZqRE32cl6NFsYeaDWJjb//yZ26IlPQIQt7ZBQ4uMaecpLqwStKAZs1WiVZFtgN+0lgT+VO/7DjextQivGjP6HF+vwaL0ME2wtkufHgpkSEtiYwkNyUXbyapUH5nTGUU/lMZmQ+Ty45INjKNb/eP2OcbteCjGzj4fs4bsL8WpytkdJ10uFb30D51i26wxFoYeLm2rVo644kxNYvjIKVd+Z7xo6H5DD9S54Zjec/tpTLp62VlbUrGsgYz/MicGuYrA/lGRGXFOxoMUacaxOFnO2yezYcDbR1feoY4jFD2v1qDVeLv9KH7RAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAFBtzchXIEw6Hvy4MZ7O6NeKex5U8dFwDHm6ZZSgqW8vzd6lZInYQEN4rWZJW8atMIVcJOknw1JI18qAFXWJW0OqxJ8yEFit555GyL9oS5rn6pFT7T1F38493SymdqRczYO/DnrGQ/nKkXsFYZ13T+l+7OW0MKUZyOjMuKkTlrmKHstQwtwN2MSPjJ3JRVYwOuQkRrQt3U1Fx+TVAMYX0SBs04t6x7VU4egiIArvXYPFbUo7nIQOWIHWZyVKt9UigMnxqRjKU4szmA2h3VpJ4FVmGfSBVkzGAj1U92w3ClW8q7GZbTYBHaYT62IHtmsoTXDgbfMueJg6sPWxj7K3X+g==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"af63a55ef1ae4aac8e2d153ed3bac6db\"}"
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "198920d0-8e7a-4ea2-857b-7f02ef640c12",
+      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\",\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"csr\":\"MIICpjCCAY4CAQAwFjEUMBIGA1UEAxMLVGVzdEphdmFQZW0wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCk5lT8W3cxRbjG+/vkDZhq1Adx4ffJ0o9+Oj0UpyiQJAbP3f8+iKxWHE7nTjVcuVUNQvE31/MQcEUcy8Mx9dOjv/hCLSRs42YXX8pmTQvNdrcyLs7/u25Vb8wc5BHn0TRnS9ehWD2LMFr4Z8fEu46G2/UKyA61iS0II0r6BkEUHp0CyKx/CpsRit/EueGC5luRIbG7Jq3mKXgnIbsi1xTRpZpZAu+26+CyewDgs1+6uKZNRRIO+3OHkKYbSyMUSvcgvlu7fH5HWu04QNbFEYQKEZRkM4J+0ZwNIFyGA97S749owsC9Th7suDSUZKNCxgbKE0svl6fjoPW9m/pcVisfAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAJUjCKagi5m9GWg84i/OfqkJMIPo505enulaIjatPmr4zFpJyliH4zjPUqcS4/MWSvk/FrmPNO7iFjpIu3ZpLHVE5ghibs1DEbVI9GhgsMULgDRSVUtNRAMg/A6u9AFm4lo1PQt6Z/85+tU5u147avibjNEWJvy8etVAvCz6t/c6B5cPokGDG2Lgob+sElSXt1c8EunYFrQC8cRStGGHrUkIQ3DfqOLrWI290nb8Y+MrSJ+4fAB07ge/qP6M3BkIiBcbHj0v0qOyH75UjqGtYd3lRWQ2PETNs56iC9706FW50OUU9wvT0SEma9JXI5GJklAULv01CmsYGJbz+i8fMqQ==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"673385ba95554c19a1424b95591f9818\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:36 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:32 GMT",
       "content-length" : "1333",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -100,19 +100,19 @@
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "5b6a674a-b789-4ade-b6d7-5dcf72d62837",
-      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\",\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"csr\":\"MIICpjCCAY4CAQAwFjEUMBIGA1UEAxMLVGVzdEphdmFQZW0wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC9ptRDnOjUczy3vHqzkXc9P394rChCDi0fZqRE32cl6NFsYeaDWJjb//yZ26IlPQIQt7ZBQ4uMaecpLqwStKAZs1WiVZFtgN+0lgT+VO/7DjextQivGjP6HF+vwaL0ME2wtkufHgpkSEtiYwkNyUXbyapUH5nTGUU/lMZmQ+Ty45INjKNb/eP2OcbteCjGzj4fs4bsL8WpytkdJ10uFb30D51i26wxFoYeLm2rVo644kxNYvjIKVd+Z7xo6H5DD9S54Zjec/tpTLp62VlbUrGsgYz/MicGuYrA/lGRGXFOxoMUacaxOFnO2yezYcDbR1feoY4jFD2v1qDVeLv9KH7RAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAFBtzchXIEw6Hvy4MZ7O6NeKex5U8dFwDHm6ZZSgqW8vzd6lZInYQEN4rWZJW8atMIVcJOknw1JI18qAFXWJW0OqxJ8yEFit555GyL9oS5rn6pFT7T1F38493SymdqRczYO/DnrGQ/nKkXsFYZ13T+l+7OW0MKUZyOjMuKkTlrmKHstQwtwN2MSPjJ3JRVYwOuQkRrQt3U1Fx+TVAMYX0SBs04t6x7VU4egiIArvXYPFbUo7nIQOWIHWZyVKt9UigMnxqRjKU4szmA2h3VpJ4FVmGfSBVkzGAj1U92w3ClW8q7GZbTYBHaYT62IHtmsoTXDgbfMueJg6sPWxj7K3X+g==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"af63a55ef1ae4aac8e2d153ed3bac6db\"}"
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "4dafea4e-0a14-4df7-bb77-7eccb878d915",
+      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\",\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"csr\":\"MIICpjCCAY4CAQAwFjEUMBIGA1UEAxMLVGVzdEphdmFQZW0wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCk5lT8W3cxRbjG+/vkDZhq1Adx4ffJ0o9+Oj0UpyiQJAbP3f8+iKxWHE7nTjVcuVUNQvE31/MQcEUcy8Mx9dOjv/hCLSRs42YXX8pmTQvNdrcyLs7/u25Vb8wc5BHn0TRnS9ehWD2LMFr4Z8fEu46G2/UKyA61iS0II0r6BkEUHp0CyKx/CpsRit/EueGC5luRIbG7Jq3mKXgnIbsi1xTRpZpZAu+26+CyewDgs1+6uKZNRRIO+3OHkKYbSyMUSvcgvlu7fH5HWu04QNbFEYQKEZRkM4J+0ZwNIFyGA97S749owsC9Th7suDSUZKNCxgbKE0svl6fjoPW9m/pcVisfAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAJUjCKagi5m9GWg84i/OfqkJMIPo505enulaIjatPmr4zFpJyliH4zjPUqcS4/MWSvk/FrmPNO7iFjpIu3ZpLHVE5ghibs1DEbVI9GhgsMULgDRSVUtNRAMg/A6u9AFm4lo1PQt6Z/85+tU5u147avibjNEWJvy8etVAvCz6t/c6B5cPokGDG2Lgob+sElSXt1c8EunYFrQC8cRStGGHrUkIQ3DfqOLrWI290nb8Y+MrSJ+4fAB07ge/qP6M3BkIiBcbHj0v0qOyH75UjqGtYd3lRWQ2PETNs56iC9706FW50OUU9wvT0SEma9JXI5GJklAULv01CmsYGJbz+i8fMqQ==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"673385ba95554c19a1424b95591f9818\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:46 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:42 GMT",
       "content-length" : "1333",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -126,19 +126,19 @@
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "ae2126b8-cd4e-4481-aff3-a1417aeea98f",
-      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\",\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"csr\":\"MIICpjCCAY4CAQAwFjEUMBIGA1UEAxMLVGVzdEphdmFQZW0wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC9ptRDnOjUczy3vHqzkXc9P394rChCDi0fZqRE32cl6NFsYeaDWJjb//yZ26IlPQIQt7ZBQ4uMaecpLqwStKAZs1WiVZFtgN+0lgT+VO/7DjextQivGjP6HF+vwaL0ME2wtkufHgpkSEtiYwkNyUXbyapUH5nTGUU/lMZmQ+Ty45INjKNb/eP2OcbteCjGzj4fs4bsL8WpytkdJ10uFb30D51i26wxFoYeLm2rVo644kxNYvjIKVd+Z7xo6H5DD9S54Zjec/tpTLp62VlbUrGsgYz/MicGuYrA/lGRGXFOxoMUacaxOFnO2yezYcDbR1feoY4jFD2v1qDVeLv9KH7RAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAFBtzchXIEw6Hvy4MZ7O6NeKex5U8dFwDHm6ZZSgqW8vzd6lZInYQEN4rWZJW8atMIVcJOknw1JI18qAFXWJW0OqxJ8yEFit555GyL9oS5rn6pFT7T1F38493SymdqRczYO/DnrGQ/nKkXsFYZ13T+l+7OW0MKUZyOjMuKkTlrmKHstQwtwN2MSPjJ3JRVYwOuQkRrQt3U1Fx+TVAMYX0SBs04t6x7VU4egiIArvXYPFbUo7nIQOWIHWZyVKt9UigMnxqRjKU4szmA2h3VpJ4FVmGfSBVkzGAj1U92w3ClW8q7GZbTYBHaYT62IHtmsoTXDgbfMueJg6sPWxj7K3X+g==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"af63a55ef1ae4aac8e2d153ed3bac6db\"}"
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "a3821b81-6b60-40f4-b77e-248329265350",
+      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\",\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"csr\":\"MIICpjCCAY4CAQAwFjEUMBIGA1UEAxMLVGVzdEphdmFQZW0wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCk5lT8W3cxRbjG+/vkDZhq1Adx4ffJ0o9+Oj0UpyiQJAbP3f8+iKxWHE7nTjVcuVUNQvE31/MQcEUcy8Mx9dOjv/hCLSRs42YXX8pmTQvNdrcyLs7/u25Vb8wc5BHn0TRnS9ehWD2LMFr4Z8fEu46G2/UKyA61iS0II0r6BkEUHp0CyKx/CpsRit/EueGC5luRIbG7Jq3mKXgnIbsi1xTRpZpZAu+26+CyewDgs1+6uKZNRRIO+3OHkKYbSyMUSvcgvlu7fH5HWu04QNbFEYQKEZRkM4J+0ZwNIFyGA97S749owsC9Th7suDSUZKNCxgbKE0svl6fjoPW9m/pcVisfAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAJUjCKagi5m9GWg84i/OfqkJMIPo505enulaIjatPmr4zFpJyliH4zjPUqcS4/MWSvk/FrmPNO7iFjpIu3ZpLHVE5ghibs1DEbVI9GhgsMULgDRSVUtNRAMg/A6u9AFm4lo1PQt6Z/85+tU5u147avibjNEWJvy8etVAvCz6t/c6B5cPokGDG2Lgob+sElSXt1c8EunYFrQC8cRStGGHrUkIQ3DfqOLrWI290nb8Y+MrSJ+4fAB07ge/qP6M3BkIiBcbHj0v0qOyH75UjqGtYd3lRWQ2PETNs56iC9706FW50OUU9wvT0SEma9JXI5GJklAULv01CmsYGJbz+i8fMqQ==\",\"cancellation_requested\":false,\"status\":\"inProgress\",\"status_details\":\"Pending certificate created. Certificate request is in progress. This may take some time based on the issuer provider. Please check again later.\",\"request_id\":\"673385ba95554c19a1424b95591f9818\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:56 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:52 GMT",
       "content-length" : "1257",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -152,19 +152,19 @@
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "6c614497-ddf1-4e7c-a512-d840610c475e",
-      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\",\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"csr\":\"MIICpjCCAY4CAQAwFjEUMBIGA1UEAxMLVGVzdEphdmFQZW0wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQC9ptRDnOjUczy3vHqzkXc9P394rChCDi0fZqRE32cl6NFsYeaDWJjb//yZ26IlPQIQt7ZBQ4uMaecpLqwStKAZs1WiVZFtgN+0lgT+VO/7DjextQivGjP6HF+vwaL0ME2wtkufHgpkSEtiYwkNyUXbyapUH5nTGUU/lMZmQ+Ty45INjKNb/eP2OcbteCjGzj4fs4bsL8WpytkdJ10uFb30D51i26wxFoYeLm2rVo644kxNYvjIKVd+Z7xo6H5DD9S54Zjec/tpTLp62VlbUrGsgYz/MicGuYrA/lGRGXFOxoMUacaxOFnO2yezYcDbR1feoY4jFD2v1qDVeLv9KH7RAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAFBtzchXIEw6Hvy4MZ7O6NeKex5U8dFwDHm6ZZSgqW8vzd6lZInYQEN4rWZJW8atMIVcJOknw1JI18qAFXWJW0OqxJ8yEFit555GyL9oS5rn6pFT7T1F38493SymdqRczYO/DnrGQ/nKkXsFYZ13T+l+7OW0MKUZyOjMuKkTlrmKHstQwtwN2MSPjJ3JRVYwOuQkRrQt3U1Fx+TVAMYX0SBs04t6x7VU4egiIArvXYPFbUo7nIQOWIHWZyVKt9UigMnxqRjKU4szmA2h3VpJ4FVmGfSBVkzGAj1U92w3ClW8q7GZbTYBHaYT62IHtmsoTXDgbfMueJg6sPWxj7K3X+g==\",\"cancellation_requested\":false,\"status\":\"completed\",\"target\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem\",\"request_id\":\"af63a55ef1ae4aac8e2d153ed3bac6db\"}"
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "b2fc1c64-8425-4847-80cf-8d3483c1f814",
+      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\",\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"csr\":\"MIICpjCCAY4CAQAwFjEUMBIGA1UEAxMLVGVzdEphdmFQZW0wggEiMA0GCSqGSIb3DQEBAQUAA4IBDwAwggEKAoIBAQCk5lT8W3cxRbjG+/vkDZhq1Adx4ffJ0o9+Oj0UpyiQJAbP3f8+iKxWHE7nTjVcuVUNQvE31/MQcEUcy8Mx9dOjv/hCLSRs42YXX8pmTQvNdrcyLs7/u25Vb8wc5BHn0TRnS9ehWD2LMFr4Z8fEu46G2/UKyA61iS0II0r6BkEUHp0CyKx/CpsRit/EueGC5luRIbG7Jq3mKXgnIbsi1xTRpZpZAu+26+CyewDgs1+6uKZNRRIO+3OHkKYbSyMUSvcgvlu7fH5HWu04QNbFEYQKEZRkM4J+0ZwNIFyGA97S749owsC9Th7suDSUZKNCxgbKE0svl6fjoPW9m/pcVisfAgMBAAGgSzBJBgkqhkiG9w0BCQ4xPDA6MA4GA1UdDwEB/wQEAwIFoDAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwCQYDVR0TBAIwADANBgkqhkiG9w0BAQsFAAOCAQEAJUjCKagi5m9GWg84i/OfqkJMIPo505enulaIjatPmr4zFpJyliH4zjPUqcS4/MWSvk/FrmPNO7iFjpIu3ZpLHVE5ghibs1DEbVI9GhgsMULgDRSVUtNRAMg/A6u9AFm4lo1PQt6Z/85+tU5u147avibjNEWJvy8etVAvCz6t/c6B5cPokGDG2Lgob+sElSXt1c8EunYFrQC8cRStGGHrUkIQ3DfqOLrWI290nb8Y+MrSJ+4fAB07ge/qP6M3BkIiBcbHj0v0qOyH75UjqGtYd3lRWQ2PETNs56iC9706FW50OUU9wvT0SEma9JXI5GJklAULv01CmsYGJbz+i8fMqQ==\",\"cancellation_requested\":false,\"status\":\"completed\",\"target\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem\",\"request_id\":\"673385ba95554c19a1424b95591f9818\"}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:57 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:52 GMT",
       "content-length" : "2391",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -178,19 +178,19 @@
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "57d1f66b-e606-4ee3-915e-e89dfa11cd1c",
-      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"sid\":\"https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"x5t\":\"4Kdg-ND1Ytsp7lC8uW4V-y1lc2M\",\"cer\":\"MIIDMjCCAhqgAwIBAgIQI4MSXaydSri0oR3fKzDMDTANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDEwtUZXN0SmF2YVBlbTAeFw0xNzExMjEyMDQ5NDhaFw0xODExMjEyMDU5NDhaMBYxFDASBgNVBAMTC1Rlc3RKYXZhUGVtMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvabUQ5zo1HM8t7x6s5F3PT9/eKwoQg4tH2akRN9nJejRbGHmg1iY2//8mduiJT0CELe2QUOLjGnnKS6sErSgGbNVolWRbYDftJYE/lTv+w43sbUIrxoz+hxfr8Gi9DBNsLZLnx4KZEhLYmMJDclF28mqVB+Z0xlFP5TGZkPk8uOSDYyjW/3j9jnG7Xgoxs4+H7OG7C/FqcrZHSddLhW99A+dYtusMRaGHi5tq1aOuOJMTWL4yClXfme8aOh+Qw/UueGY3nP7aUy6etlZW1KxrIGM/zInBrmKwP5RkRlxTsaDFGnGsThZztsns2HA20dX3qGOIxQ9r9ag1Xi7/Sh+0QIDAQABo3wwejAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwHwYDVR0jBBgwFoAUTMvJKlXlNuEVCoJxEYydVoAkBzEwHQYDVR0OBBYEFBCOmrwKkzcHZwDP8I2+AcKYDIIpMA0GCSqGSIb3DQEBCwUAA4IBAQAaKqlzRQZC+6pAcrEy5VD8/o4dHD3mwcqkLALzUjTz/MWSw7ncHJvDowwcJTF24jXPOjt0aZubToycB+tLB5/s109TOGj8MS3ZPAWKA98/bpymckjRuu4LatW0AsS3y1ZPdsvJf9HffpUDKJuw+kyK2DcgnSOvGbfqlRSa4t18Qf4uQ/8eY9B3pj2xT16jYxjO1x/bqBnSJ9wPIxqSc4pX6lK1Slj+hx1mb5hGUhK7tcT5ldnAp2QpgzbFBtCAWQUZ1K/60tvxmoy+S6LkqHO1OkENAm89LtlZyqDuOKG0vpVqgqxgRZLCMMjosUOzws73Ag5lm0joXtA1Hiz5NOEg\",\"attributes\":{\"enabled\":true,\"nbf\":1511297388,\"exp\":1542833988,\"created\":1511297988,\"updated\":1511297988,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"policy\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pem-file\"},\"x509_props\":{\"subject\":\"CN=TestJavaPem\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"attributes\":{\"enabled\":true,\"created\":1511297976,\"updated\":1511297976}},\"pending\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\"}}"
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "0184e21d-4f5c-4e5d-b78b-4a671e1b2eda",
+      "Body" : "{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"sid\":\"https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"x5t\":\"ZBIJi8orGNr44JEHUxVEapDdJXg\",\"cer\":\"MIIDMjCCAhqgAwIBAgIQKYmzJ13LQqWiitOQyJNhfTANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDEwtUZXN0SmF2YVBlbTAeFw0xODAzMDcyMjA3NDNaFw0xOTAzMDcyMjE3NDNaMBYxFDASBgNVBAMTC1Rlc3RKYXZhUGVtMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApOZU/Ft3MUW4xvv75A2YatQHceH3ydKPfjo9FKcokCQGz93/PoisVhxO5041XLlVDULxN9fzEHBFHMvDMfXTo7/4Qi0kbONmF1/KZk0LzXa3Mi7O/7tuVW/MHOQR59E0Z0vXoVg9izBa+GfHxLuOhtv1CsgOtYktCCNK+gZBFB6dAsisfwqbEYrfxLnhguZbkSGxuyat5il4JyG7ItcU0aWaWQLvtuvgsnsA4LNfurimTUUSDvtzh5CmG0sjFEr3IL5bu3x+R1rtOEDWxRGEChGUZDOCftGcDSBchgPe0u+PaMLAvU4e7Lg0lGSjQsYGyhNLL5en46D1vZv6XFYrHwIDAQABo3wwejAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwHwYDVR0jBBgwFoAUkG2TGjP/VRSwXWZoole0X2C+y60wHQYDVR0OBBYEFCNO8zBQcKXX9OSO4ysorf22r1ahMA0GCSqGSIb3DQEBCwUAA4IBAQBqZuHsRuDgyaI9ayRb2IjH4nQI8UH8u+krafhGbckiMXmdEsHvRSoZj3sAh2rJGDPuRD/WkNqa/G1Mv+g3q97UfE95R7JinTNzEPYM2qvkQnd6ZyPtfQFPTgd5KUeTbKFcosej4NB1FxlV6oBARZRxy39cNvq5DV30C/H43ptlGxVGP8heASfbu2rjsK+ljyX29vwIXGvsSlLA/XFHqToXkPVPm2WAtptTfWNh9tmmQ76JlvoRYOQfS9ogNt0gQEH3aKk9oNjQJ39h4Juxcsx9bPGxvxsfS12J5Ciz+qgzaNoBHZXsuEfhAlRawktYHyI1/R7Y+pKRhOvlSTDfl0zt\",\"attributes\":{\"enabled\":true,\"nbf\":1520460463,\"exp\":1551997063,\"created\":1520461063,\"updated\":1520461063,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"policy\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pem-file\"},\"x509_props\":{\"subject\":\"CN=TestJavaPem\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"attributes\":{\"enabled\":true,\"created\":1520461051,\"updated\":1520461051}},\"pending\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:57 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:52 GMT",
       "content-length" : "3356",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -204,19 +204,19 @@
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "1cde1747-525b-494f-975d-c02f96dfbf24",
-      "Body" : "{\"value\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQC9ptRDnOjUczy3\\nvHqzkXc9P394rChCDi0fZqRE32cl6NFsYeaDWJjb//yZ26IlPQIQt7ZBQ4uMaecp\\nLqwStKAZs1WiVZFtgN+0lgT+VO/7DjextQivGjP6HF+vwaL0ME2wtkufHgpkSEti\\nYwkNyUXbyapUH5nTGUU/lMZmQ+Ty45INjKNb/eP2OcbteCjGzj4fs4bsL8Wpytkd\\nJ10uFb30D51i26wxFoYeLm2rVo644kxNYvjIKVd+Z7xo6H5DD9S54Zjec/tpTLp6\\n2VlbUrGsgYz/MicGuYrA/lGRGXFOxoMUacaxOFnO2yezYcDbR1feoY4jFD2v1qDV\\neLv9KH7RAgMBAAECggEABSMt2rVHXhpvS5GhsAe1r4E+526f8k6ioKgx1NsJpvZu\\nJmHGShpyPRrrjYIsa7Zx7fChEXZmQ0fq4vPkhcbyc5HG5QRtAaaxIKnj8Z0MyWvs\\nnK3xEde7jtfaDHd6DeP5VcsxZBp+6PGnp58Ty6WfNKWLTXcz7jrP9DmIMJTgIMd2\\n742l1rJf5Um90fH0gwGNBi1nQe54qBJO2qgzGUmPBognwjcQI+lA3csdKiup5XiW\\n2gYkxpLpN7z/Bven+JknVXgryjYUx3OJQqmuq2+RvLNmVTrqUhTboq++plCqzcOY\\namXYUa3JGoXv1oFFZiJryZQzikcrGUS/DwZ9NGi6oQKBgQD/lc0Hqmv7FA9Xk1/b\\niA0NVTc9YyJaRfERlOcynYOKwnZ9PXgcy0pfe9whHrPm/saj4ATeydHBK5ViBqWP\\nPsx0NWH1VxnZUg/XPd4CPF2BscMyL5UMehmW/mh3kPppzZIN5o5KP5JX2ig4HWO9\\nofE6frVIt7Nh7tNTRTuJGd3F4QKBgQC99aHK2fXTstt/NsxgroJ1kYcoHSF8lGf4\\np8cS0ZUjU+REFFzrt2TYf3tkneRbDBjIDcOAxIk9dPBvPnbj/BbBxY8hQtJVkMMP\\n7fWfnlLwAYBRHOMYsXXONSbHM2bVMFdfjyMBSzHwpLUL+9FXrPmDei/dom7Dsx61\\nNoovuJv28QKBgQCaUkYJEeK/KH6W/1pKwJw457JB86CjZ0XGuuTaT/dECmTm+/2R\\nTUIr4yqoKNSxbjZcboAiUTPAcmNxW9gNZPqoVC9ApwXpjT4ZVba+HNrM25ujqs1R\\nSkw3OoezYiuBROmiUQqrVDU1rHjKYRx/PM/d5PHq5Vh/kmexCMWI48BfoQKBgDU0\\ne2CJs+Tbj8cN3iimODwdyrFdl2eBWa23sHaA5TjD4od+/Je5AjHxYupHnxIxTS+b\\nS0rhwV7JRh6ibEJm9SjI4NH8GVWF+lyX1dgjTC+U/A+7+4+LBOgA0x+wMfk8VPya\\n5r8SBKbWOy9kFLpt5GUC8C0vtb5yiQNQh1veZTDBAoGBAOS018tST47p6VftYGOR\\nMZ39cKVRtxYvQETmTO2Kk7nrBSQZuU863j8dCfMzvPfXo2Trytp+fYNiJJozYFFh\\nFHZEy8rlNgKLtLhiaiWbEIvMEqZCvSrZXane2O5thsGgFwpqxyPOgyaUGEUeZBbA\\nRtKgnKuvc7ZolAZp01DlF+0R\\n-----END PRIVATE KEY-----\\n-----BEGIN CERTIFICATE-----\\nMIIDMjCCAhqgAwIBAgIQI4MSXaydSri0oR3fKzDMDTANBgkqhkiG9w0BAQsFADAW\\nMRQwEgYDVQQDEwtUZXN0SmF2YVBlbTAeFw0xNzExMjEyMDQ5NDhaFw0xODExMjEy\\nMDU5NDhaMBYxFDASBgNVBAMTC1Rlc3RKYXZhUGVtMIIBIjANBgkqhkiG9w0BAQEF\\nAAOCAQ8AMIIBCgKCAQEAvabUQ5zo1HM8t7x6s5F3PT9/eKwoQg4tH2akRN9nJejR\\nbGHmg1iY2//8mduiJT0CELe2QUOLjGnnKS6sErSgGbNVolWRbYDftJYE/lTv+w43\\nsbUIrxoz+hxfr8Gi9DBNsLZLnx4KZEhLYmMJDclF28mqVB+Z0xlFP5TGZkPk8uOS\\nDYyjW/3j9jnG7Xgoxs4+H7OG7C/FqcrZHSddLhW99A+dYtusMRaGHi5tq1aOuOJM\\nTWL4yClXfme8aOh+Qw/UueGY3nP7aUy6etlZW1KxrIGM/zInBrmKwP5RkRlxTsaD\\nFGnGsThZztsns2HA20dX3qGOIxQ9r9ag1Xi7/Sh+0QIDAQABo3wwejAOBgNVHQ8B\\nAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUH\\nAwIwHwYDVR0jBBgwFoAUTMvJKlXlNuEVCoJxEYydVoAkBzEwHQYDVR0OBBYEFBCO\\nmrwKkzcHZwDP8I2+AcKYDIIpMA0GCSqGSIb3DQEBCwUAA4IBAQAaKqlzRQZC+6pA\\ncrEy5VD8/o4dHD3mwcqkLALzUjTz/MWSw7ncHJvDowwcJTF24jXPOjt0aZubToyc\\nB+tLB5/s109TOGj8MS3ZPAWKA98/bpymckjRuu4LatW0AsS3y1ZPdsvJf9HffpUD\\nKJuw+kyK2DcgnSOvGbfqlRSa4t18Qf4uQ/8eY9B3pj2xT16jYxjO1x/bqBnSJ9wP\\nIxqSc4pX6lK1Slj+hx1mb5hGUhK7tcT5ldnAp2QpgzbFBtCAWQUZ1K/60tvxmoy+\\nS6LkqHO1OkENAm89LtlZyqDuOKG0vpVqgqxgRZLCMMjosUOzws73Ag5lm0joXtA1\\nHiz5NOEg\\n-----END CERTIFICATE-----\\n\",\"contentType\":\"application/x-pem-file\",\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"managed\":true,\"attributes\":{\"enabled\":true,\"nbf\":1511297388,\"exp\":1542833988,\"created\":1511297988,\"updated\":1511297988,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\"}"
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "5bea23f5-e041-4178-8b66-b45f8551e0cf",
+      "Body" : "{\"value\":\"-----BEGIN PRIVATE KEY-----\\nMIIEvgIBADANBgkqhkiG9w0BAQEFAASCBKgwggSkAgEAAoIBAQCk5lT8W3cxRbjG\\n+/vkDZhq1Adx4ffJ0o9+Oj0UpyiQJAbP3f8+iKxWHE7nTjVcuVUNQvE31/MQcEUc\\ny8Mx9dOjv/hCLSRs42YXX8pmTQvNdrcyLs7/u25Vb8wc5BHn0TRnS9ehWD2LMFr4\\nZ8fEu46G2/UKyA61iS0II0r6BkEUHp0CyKx/CpsRit/EueGC5luRIbG7Jq3mKXgn\\nIbsi1xTRpZpZAu+26+CyewDgs1+6uKZNRRIO+3OHkKYbSyMUSvcgvlu7fH5HWu04\\nQNbFEYQKEZRkM4J+0ZwNIFyGA97S749owsC9Th7suDSUZKNCxgbKE0svl6fjoPW9\\nm/pcVisfAgMBAAECggEAKotEnPFKQLugzzHfDLkXPGSk4RRwVjFNlT8YWDZCaGHr\\nIgFAI9WmRPc7wkCy0s/8KhY93u8HxpN4uVO28jJe3q4eMpCsB63pvpkXwqoZI/L/\\nk+JwxJkKf99+tWuAVSNsFkSChx2Zj0o0BkfcSh0ryg6A272+0cZpCGL2qqgnbTWI\\nvF9hLEGW8N+BVhD8wI/e6sVCBdixrs2Sq5o5erJpk0T4ZbTFfxb3Jk/wYH1BdIyd\\nNwNHm31dQ5i973AYyNR3HZuUkIH7N5LwDY7Z/dnM3M1kBEqcrtzTHBB7ZqEVX0m5\\nxJfgy+E33XMFiw+HvDjO4mpEEOeLD19rSxEIgOPe2QKBgQDKrWA29Ilz7CvbMeuV\\ngVT3DJJ5MVMjDyjccfIFJqdlreqGk6RqkZJqj8iB/vgf3af7DDSWM4Zr8COx4odm\\nUcAYgNpO8Wl5Gg6SDBYbB25ghJ5BYgr9S+07Zt2fFeR1c39qhf6iMd9ug/5lmoUz\\n74Ne7+ZV5kPbzu4Z4rVaS9cC5wKBgQDQSJUbdEB4czVVWoBu2c6/xC8ZHuMTa7EH\\n+Tag9sZ2YDNTn2Euhc8ZG/dONOzrCQoCw2RtbplFj7gWWlSHQ0L6BwYPYIPs+1z4\\ngM9vv5vQr+R8VrcJVhXstOR2N1ylhvfK+lCMIkhdgXlwh4/ziMINX0tn1eF7FNmy\\n4rdF2h9HCQKBgEypWaxPwLIVUd1eO4LYYZ/0pG6s5oprUIRZoTarkUPXjc8Lh3Q7\\nzcr6ydfJ7mZ3O/OsgTOTF7Q6J/Y//gEIyQU7r9eOXtvMrFg3tCDTJb/iSc3nXMrE\\nbl46oXdsG3cFkdtkBZWqEZ5G1PHviZTEcsd1LIWvTFmXIt6trvURnKlfAoGBAKDj\\ncEqEwkhItin4fr0iAlKfeMIu2blmtpkyKMCt3yARr5QoySjms9Lxh1ciCuCDWvhH\\ndowRotPY8JpTrHfPvSzlwAigxUeJ44cR+SqZGANb22MwmLLdjJIMKW4n1akHWOGx\\n+gZFdSDFoskJ7mhwe3VY5yaOUF6C/Kbx+iA7HW4BAoGBAKDM/73uddObyrb/TdM5\\nQDCl9WFh7kmQsflQxtLN6K2F5UFslxoyV7Wk8kGR+FlSGNdZ+ZOD3svVS65kIuO2\\nnB8N6Q35ESwP+YaVqS0k3r9GWmoJc3wrkI8l8OPT7hjglhGcwbkTA+0YYCpY3Ooy\\nAxnSNlIhAWHR8MVIPKDSYxqo\\n-----END PRIVATE KEY-----\\n-----BEGIN CERTIFICATE-----\\nMIIDMjCCAhqgAwIBAgIQKYmzJ13LQqWiitOQyJNhfTANBgkqhkiG9w0BAQsFADAW\\nMRQwEgYDVQQDEwtUZXN0SmF2YVBlbTAeFw0xODAzMDcyMjA3NDNaFw0xOTAzMDcy\\nMjE3NDNaMBYxFDASBgNVBAMTC1Rlc3RKYXZhUGVtMIIBIjANBgkqhkiG9w0BAQEF\\nAAOCAQ8AMIIBCgKCAQEApOZU/Ft3MUW4xvv75A2YatQHceH3ydKPfjo9FKcokCQG\\nz93/PoisVhxO5041XLlVDULxN9fzEHBFHMvDMfXTo7/4Qi0kbONmF1/KZk0LzXa3\\nMi7O/7tuVW/MHOQR59E0Z0vXoVg9izBa+GfHxLuOhtv1CsgOtYktCCNK+gZBFB6d\\nAsisfwqbEYrfxLnhguZbkSGxuyat5il4JyG7ItcU0aWaWQLvtuvgsnsA4LNfurim\\nTUUSDvtzh5CmG0sjFEr3IL5bu3x+R1rtOEDWxRGEChGUZDOCftGcDSBchgPe0u+P\\naMLAvU4e7Lg0lGSjQsYGyhNLL5en46D1vZv6XFYrHwIDAQABo3wwejAOBgNVHQ8B\\nAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUH\\nAwIwHwYDVR0jBBgwFoAUkG2TGjP/VRSwXWZoole0X2C+y60wHQYDVR0OBBYEFCNO\\n8zBQcKXX9OSO4ysorf22r1ahMA0GCSqGSIb3DQEBCwUAA4IBAQBqZuHsRuDgyaI9\\nayRb2IjH4nQI8UH8u+krafhGbckiMXmdEsHvRSoZj3sAh2rJGDPuRD/WkNqa/G1M\\nv+g3q97UfE95R7JinTNzEPYM2qvkQnd6ZyPtfQFPTgd5KUeTbKFcosej4NB1FxlV\\n6oBARZRxy39cNvq5DV30C/H43ptlGxVGP8heASfbu2rjsK+ljyX29vwIXGvsSlLA\\n/XFHqToXkPVPm2WAtptTfWNh9tmmQ76JlvoRYOQfS9ogNt0gQEH3aKk9oNjQJ39h\\n4Juxcsx9bPGxvxsfS12J5Ciz+qgzaNoBHZXsuEfhAlRawktYHyI1/R7Y+pKRhOvl\\nSTDfl0zt\\n-----END CERTIFICATE-----\\n\",\"contentType\":\"application/x-pem-file\",\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"managed\":true,\"attributes\":{\"enabled\":true,\"nbf\":1520460463,\"exp\":1551997063,\"created\":1520461063,\"updated\":1520461063,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\"}"
     }
   }, {
     "Method" : "DELETE",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:58 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:52 GMT",
       "content-length" : "2548",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -230,97 +230,19 @@
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "96e53ad7-6044-4131-914f-cc492e29186f",
-      "Body" : "{\"recoveryId\":\"https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem\",\"deletedDate\":1511297998,\"scheduledPurgeDate\":1519073998,\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"sid\":\"https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"x5t\":\"4Kdg-ND1Ytsp7lC8uW4V-y1lc2M\",\"cer\":\"MIIDMjCCAhqgAwIBAgIQI4MSXaydSri0oR3fKzDMDTANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDEwtUZXN0SmF2YVBlbTAeFw0xNzExMjEyMDQ5NDhaFw0xODExMjEyMDU5NDhaMBYxFDASBgNVBAMTC1Rlc3RKYXZhUGVtMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvabUQ5zo1HM8t7x6s5F3PT9/eKwoQg4tH2akRN9nJejRbGHmg1iY2//8mduiJT0CELe2QUOLjGnnKS6sErSgGbNVolWRbYDftJYE/lTv+w43sbUIrxoz+hxfr8Gi9DBNsLZLnx4KZEhLYmMJDclF28mqVB+Z0xlFP5TGZkPk8uOSDYyjW/3j9jnG7Xgoxs4+H7OG7C/FqcrZHSddLhW99A+dYtusMRaGHi5tq1aOuOJMTWL4yClXfme8aOh+Qw/UueGY3nP7aUy6etlZW1KxrIGM/zInBrmKwP5RkRlxTsaDFGnGsThZztsns2HA20dX3qGOIxQ9r9ag1Xi7/Sh+0QIDAQABo3wwejAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwHwYDVR0jBBgwFoAUTMvJKlXlNuEVCoJxEYydVoAkBzEwHQYDVR0OBBYEFBCOmrwKkzcHZwDP8I2+AcKYDIIpMA0GCSqGSIb3DQEBCwUAA4IBAQAaKqlzRQZC+6pAcrEy5VD8/o4dHD3mwcqkLALzUjTz/MWSw7ncHJvDowwcJTF24jXPOjt0aZubToycB+tLB5/s109TOGj8MS3ZPAWKA98/bpymckjRuu4LatW0AsS3y1ZPdsvJf9HffpUDKJuw+kyK2DcgnSOvGbfqlRSa4t18Qf4uQ/8eY9B3pj2xT16jYxjO1x/bqBnSJ9wPIxqSc4pX6lK1Slj+hx1mb5hGUhK7tcT5ldnAp2QpgzbFBtCAWQUZ1K/60tvxmoy+S6LkqHO1OkENAm89LtlZyqDuOKG0vpVqgqxgRZLCMMjosUOzws73Ag5lm0joXtA1Hiz5NOEg\",\"attributes\":{\"enabled\":true,\"nbf\":1511297388,\"exp\":1542833988,\"created\":1511297988,\"updated\":1511297988,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"policy\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pem-file\"},\"x509_props\":{\"subject\":\"CN=TestJavaPem\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"attributes\":{\"enabled\":true,\"created\":1511297976,\"updated\":1511297976}},\"pending\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\"}}"
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "46bdb4c1-4ba3-45d6-a1bb-e1f27a535786",
+      "Body" : "{\"recoveryId\":\"https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem\",\"deletedDate\":1520461073,\"scheduledPurgeDate\":1528237073,\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"sid\":\"https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"x5t\":\"ZBIJi8orGNr44JEHUxVEapDdJXg\",\"cer\":\"MIIDMjCCAhqgAwIBAgIQKYmzJ13LQqWiitOQyJNhfTANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDEwtUZXN0SmF2YVBlbTAeFw0xODAzMDcyMjA3NDNaFw0xOTAzMDcyMjE3NDNaMBYxFDASBgNVBAMTC1Rlc3RKYXZhUGVtMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApOZU/Ft3MUW4xvv75A2YatQHceH3ydKPfjo9FKcokCQGz93/PoisVhxO5041XLlVDULxN9fzEHBFHMvDMfXTo7/4Qi0kbONmF1/KZk0LzXa3Mi7O/7tuVW/MHOQR59E0Z0vXoVg9izBa+GfHxLuOhtv1CsgOtYktCCNK+gZBFB6dAsisfwqbEYrfxLnhguZbkSGxuyat5il4JyG7ItcU0aWaWQLvtuvgsnsA4LNfurimTUUSDvtzh5CmG0sjFEr3IL5bu3x+R1rtOEDWxRGEChGUZDOCftGcDSBchgPe0u+PaMLAvU4e7Lg0lGSjQsYGyhNLL5en46D1vZv6XFYrHwIDAQABo3wwejAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwHwYDVR0jBBgwFoAUkG2TGjP/VRSwXWZoole0X2C+y60wHQYDVR0OBBYEFCNO8zBQcKXX9OSO4ysorf22r1ahMA0GCSqGSIb3DQEBCwUAA4IBAQBqZuHsRuDgyaI9ayRb2IjH4nQI8UH8u+krafhGbckiMXmdEsHvRSoZj3sAh2rJGDPuRD/WkNqa/G1Mv+g3q97UfE95R7JinTNzEPYM2qvkQnd6ZyPtfQFPTgd5KUeTbKFcosej4NB1FxlV6oBARZRxy39cNvq5DV30C/H43ptlGxVGP8heASfbu2rjsK+ljyX29vwIXGvsSlLA/XFHqToXkPVPm2WAtptTfWNh9tmmQ76JlvoRYOQfS9ogNt0gQEH3aKk9oNjQJ39h4Juxcsx9bPGxvxsfS12J5Ciz+qgzaNoBHZXsuEfhAlRawktYHyI1/R7Y+pKRhOvlSTDfl0zt\",\"attributes\":{\"enabled\":true,\"nbf\":1520460463,\"exp\":1551997063,\"created\":1520461063,\"updated\":1520461063,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"policy\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pem-file\"},\"x509_props\":{\"subject\":\"CN=TestJavaPem\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"attributes\":{\"enabled\":true,\"created\":1520461051,\"updated\":1520461051}},\"pending\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\"}}"
     }
   }, {
     "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem?api-version=2016-10-01",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 20:59:58 GMT",
-      "content-length" : "101",
-      "server" : "Microsoft-IIS/8.5",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "West US",
-      "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "317bd83c-f6f2-4a36-b988-84650ac1ad45",
-      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: createTestJavaPem\"}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem?api-version=2016-10-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Tue, 21 Nov 2017 21:00:08 GMT",
-      "content-length" : "101",
-      "server" : "Microsoft-IIS/8.5",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
-      "retry-after" : "0",
-      "StatusCode" : "404",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "West US",
-      "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "0a285a26-bde3-4a53-bbda-6850b3039fae",
-      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: createTestJavaPem\"}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem?api-version=2016-10-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Tue, 21 Nov 2017 21:00:19 GMT",
-      "content-length" : "2548",
-      "server" : "Microsoft-IIS/8.5",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
-      "retry-after" : "0",
-      "StatusCode" : "200",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "content-type" : "application/json; charset=utf-8",
-      "x-ms-keyvault-region" : "West US",
-      "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "4abec88a-5bf3-4b4e-b66d-41191f94def9",
-      "Body" : "{\"recoveryId\":\"https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem\",\"deletedDate\":1511297998,\"scheduledPurgeDate\":1519073998,\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"sid\":\"https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/bc02941e882940a08941e4f65dd7b425\",\"x5t\":\"4Kdg-ND1Ytsp7lC8uW4V-y1lc2M\",\"cer\":\"MIIDMjCCAhqgAwIBAgIQI4MSXaydSri0oR3fKzDMDTANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDEwtUZXN0SmF2YVBlbTAeFw0xNzExMjEyMDQ5NDhaFw0xODExMjEyMDU5NDhaMBYxFDASBgNVBAMTC1Rlc3RKYXZhUGVtMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEAvabUQ5zo1HM8t7x6s5F3PT9/eKwoQg4tH2akRN9nJejRbGHmg1iY2//8mduiJT0CELe2QUOLjGnnKS6sErSgGbNVolWRbYDftJYE/lTv+w43sbUIrxoz+hxfr8Gi9DBNsLZLnx4KZEhLYmMJDclF28mqVB+Z0xlFP5TGZkPk8uOSDYyjW/3j9jnG7Xgoxs4+H7OG7C/FqcrZHSddLhW99A+dYtusMRaGHi5tq1aOuOJMTWL4yClXfme8aOh+Qw/UueGY3nP7aUy6etlZW1KxrIGM/zInBrmKwP5RkRlxTsaDFGnGsThZztsns2HA20dX3qGOIxQ9r9ag1Xi7/Sh+0QIDAQABo3wwejAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwHwYDVR0jBBgwFoAUTMvJKlXlNuEVCoJxEYydVoAkBzEwHQYDVR0OBBYEFBCOmrwKkzcHZwDP8I2+AcKYDIIpMA0GCSqGSIb3DQEBCwUAA4IBAQAaKqlzRQZC+6pAcrEy5VD8/o4dHD3mwcqkLALzUjTz/MWSw7ncHJvDowwcJTF24jXPOjt0aZubToycB+tLB5/s109TOGj8MS3ZPAWKA98/bpymckjRuu4LatW0AsS3y1ZPdsvJf9HffpUDKJuw+kyK2DcgnSOvGbfqlRSa4t18Qf4uQ/8eY9B3pj2xT16jYxjO1x/bqBnSJ9wPIxqSc4pX6lK1Slj+hx1mb5hGUhK7tcT5ldnAp2QpgzbFBtCAWQUZ1K/60tvxmoy+S6LkqHO1OkENAm89LtlZyqDuOKG0vpVqgqxgRZLCMMjosUOzws73Ag5lm0joXtA1Hiz5NOEg\",\"attributes\":{\"enabled\":true,\"nbf\":1511297388,\"exp\":1542833988,\"created\":1511297988,\"updated\":1511297988,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"policy\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pem-file\"},\"x509_props\":{\"subject\":\"CN=TestJavaPem\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"attributes\":{\"enabled\":true,\"created\":1511297976,\"updated\":1511297976}},\"pending\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\"}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/?api-version=2016-10-01",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Tue, 21 Nov 2017 21:00:19 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:52 GMT",
       "content-length" : "93",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
@@ -334,19 +256,71 @@
       "content-type" : "application/json; charset=utf-8",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "668297f4-8f1a-432c-aae1-32d30b329696",
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "c6a4de2a-db74-445b-9881-e19f0db2df74",
       "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Certificate not found: createTestJavaPem\"}}"
     }
   }, {
-    "Method" : "DELETE",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem?api-version=2016-10-01",
+    "Method" : "GET",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem?api-version=7.0-preview",
     "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 2016-10-01)",
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
       "Content-Type" : "application/json; charset=utf-8"
     },
     "Response" : {
-      "date" : "Tue, 21 Nov 2017 21:00:19 GMT",
+      "date" : "Wed, 07 Mar 2018 22:17:54 GMT",
+      "content-length" : "101",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "404",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "West US",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "6d98643c-2577-422d-858d-71dd1ef4d915",
+      "Body" : "{\"error\":{\"code\":\"CertificateNotFound\",\"message\":\"Deleted Certificate not found: createTestJavaPem\"}}"
+    }
+  }, {
+    "Method" : "GET",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem?api-version=7.0-preview",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 07 Mar 2018 22:18:04 GMT",
+      "content-length" : "2548",
+      "server" : "Microsoft-IIS/8.5",
+      "expires" : "-1",
+      "x-aspnet-version" : "4.0.30319",
+      "retry-after" : "0",
+      "StatusCode" : "200",
+      "pragma" : "no-cache",
+      "strict-transport-security" : "max-age=31536000;includeSubDomains",
+      "x-content-type-options" : "nosniff",
+      "x-powered-by" : "ASP.NET",
+      "content-type" : "application/json; charset=utf-8",
+      "x-ms-keyvault-region" : "West US",
+      "cache-control" : "no-cache",
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "e4fd8003-74b1-4ee7-ada2-cefbda266e68",
+      "Body" : "{\"recoveryId\":\"https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem\",\"deletedDate\":1520461073,\"scheduledPurgeDate\":1528237073,\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"sid\":\"https://tifchen-keyvault-fancy.vault.azure.net/secrets/createTestJavaPem/12a5e63ca5dc413db39a98df9302dde7\",\"x5t\":\"ZBIJi8orGNr44JEHUxVEapDdJXg\",\"cer\":\"MIIDMjCCAhqgAwIBAgIQKYmzJ13LQqWiitOQyJNhfTANBgkqhkiG9w0BAQsFADAWMRQwEgYDVQQDEwtUZXN0SmF2YVBlbTAeFw0xODAzMDcyMjA3NDNaFw0xOTAzMDcyMjE3NDNaMBYxFDASBgNVBAMTC1Rlc3RKYXZhUGVtMIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEApOZU/Ft3MUW4xvv75A2YatQHceH3ydKPfjo9FKcokCQGz93/PoisVhxO5041XLlVDULxN9fzEHBFHMvDMfXTo7/4Qi0kbONmF1/KZk0LzXa3Mi7O/7tuVW/MHOQR59E0Z0vXoVg9izBa+GfHxLuOhtv1CsgOtYktCCNK+gZBFB6dAsisfwqbEYrfxLnhguZbkSGxuyat5il4JyG7ItcU0aWaWQLvtuvgsnsA4LNfurimTUUSDvtzh5CmG0sjFEr3IL5bu3x+R1rtOEDWxRGEChGUZDOCftGcDSBchgPe0u+PaMLAvU4e7Lg0lGSjQsYGyhNLL5en46D1vZv6XFYrHwIDAQABo3wwejAOBgNVHQ8BAf8EBAMCBaAwCQYDVR0TBAIwADAdBgNVHSUEFjAUBggrBgEFBQcDAQYIKwYBBQUHAwIwHwYDVR0jBBgwFoAUkG2TGjP/VRSwXWZoole0X2C+y60wHQYDVR0OBBYEFCNO8zBQcKXX9OSO4ysorf22r1ahMA0GCSqGSIb3DQEBCwUAA4IBAQBqZuHsRuDgyaI9ayRb2IjH4nQI8UH8u+krafhGbckiMXmdEsHvRSoZj3sAh2rJGDPuRD/WkNqa/G1Mv+g3q97UfE95R7JinTNzEPYM2qvkQnd6ZyPtfQFPTgd5KUeTbKFcosej4NB1FxlV6oBARZRxy39cNvq5DV30C/H43ptlGxVGP8heASfbu2rjsK+ljyX29vwIXGvsSlLA/XFHqToXkPVPm2WAtptTfWNh9tmmQ76JlvoRYOQfS9ogNt0gQEH3aKk9oNjQJ39h4Juxcsx9bPGxvxsfS12J5Ciz+qgzaNoBHZXsuEfhAlRawktYHyI1/R7Y+pKRhOvlSTDfl0zt\",\"attributes\":{\"enabled\":true,\"nbf\":1520460463,\"exp\":1551997063,\"created\":1520461063,\"updated\":1520461063,\"recoveryLevel\":\"Recoverable+Purgeable\"},\"policy\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/policy\",\"key_props\":{\"exportable\":true,\"kty\":\"RSA\",\"key_size\":2048,\"reuse_key\":false},\"secret_props\":{\"contentType\":\"application/x-pem-file\"},\"x509_props\":{\"subject\":\"CN=TestJavaPem\",\"ekus\":[\"1.3.6.1.5.5.7.3.1\",\"1.3.6.1.5.5.7.3.2\"],\"key_usage\":[\"digitalSignature\",\"keyEncipherment\"],\"validity_months\":12,\"basic_constraints\":{\"ca\":false}},\"lifetime_actions\":[{\"trigger\":{\"lifetime_percentage\":80},\"action\":{\"action_type\":\"AutoRenew\"}}],\"issuer\":{\"name\":\"createCertificateJavaPemIssuer01\"},\"attributes\":{\"enabled\":true,\"created\":1520461051,\"updated\":1520461051}},\"pending\":{\"id\":\"https://tifchen-keyvault-fancy.vault.azure.net/certificates/createTestJavaPem/pending\"}}"
+    }
+  }, {
+    "Method" : "DELETE",
+    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedcertificates/createTestJavaPem?api-version=7.0-preview",
+    "Headers" : {
+      "User-Agent" : "Azure-SDK-For-Java/null OS:Windows 10/10.0 MacAddressHash:08b8c65810754c5927ba6275e7902c61544ffc9cb2de4d24196bc80b2fbba780 Java:1.8.0_141-2-redhat (KeyVaultClientBase, 7.0-preview)",
+      "Content-Type" : "application/json; charset=utf-8"
+    },
+    "Response" : {
+      "date" : "Wed, 07 Mar 2018 22:18:04 GMT",
       "server" : "Microsoft-IIS/8.5",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -358,8 +332,8 @@
       "x-powered-by" : "ASP.NET",
       "x-ms-keyvault-region" : "West US",
       "cache-control" : "no-cache",
-      "x-ms-keyvault-service-version" : "1.0.0.828",
-      "x-ms-request-id" : "31a8d564-cdcc-4206-b691-81a5c2ebcf24",
+      "x-ms-keyvault-service-version" : "1.0.0.841",
+      "x-ms-request-id" : "fac1d2e9-9114-4bda-9415-6b70bfc4b683",
       "Body" : ""
     }
   } ],

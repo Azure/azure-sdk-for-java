@@ -3,6 +3,7 @@ package com.microsoft.azure.keyvault.implementation;
 import com.google.common.base.Joiner;
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.keyvault.CertificateIdentifier;
 import com.microsoft.azure.keyvault.KeyIdentifier;
@@ -11,7 +12,9 @@ import com.microsoft.azure.keyvault.SecretIdentifier;
 import com.microsoft.azure.keyvault.models.*;
 import com.microsoft.azure.keyvault.requests.*;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -26,6 +29,7 @@ import rx.Observable;
 import rx.functions.Func1;
 
 import java.util.List;
+import java.util.Map;
 
 public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements KeyVaultClientCustom {
 
@@ -1377,6 +1381,77 @@ public class KeyVaultClientCustomImpl extends KeyVaultClientBaseImpl implements 
                     }
                 });
     }
+
+	@Override
+	public KeyBundle createKey(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize,
+			List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags) {
+		return createKey(vaultBaseUrl, keyName, kty, keySize, keyOps, keyAttributes, tags, null);
+	}
+
+	@Override
+	public ServiceFuture<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty,
+			Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags,
+			ServiceCallback<KeyBundle> serviceCallback) {
+		return createKeyAsync(vaultBaseUrl, keyName, kty, keySize, keyOps, keyAttributes, tags, null, serviceCallback);
+	}
+
+	@Override
+	public Observable<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty,
+			Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags) {
+		return createKeyAsync(vaultBaseUrl, keyName, kty, keySize, keyOps, keyAttributes, tags, (JsonWebKeyCurveName) null);
+	}
+
+	@Override
+	public Observable<ServiceResponse<KeyBundle>> createKeyWithServiceResponseAsync(String vaultBaseUrl, String keyName,
+			JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes,
+			Map<String, String> tags) {
+		return createKeyWithServiceResponseAsync(vaultBaseUrl, keyName, kty, keySize, keyOps, keyAttributes, tags, null);
+	}
+
+	@Override
+	public PagedList<CertificateItem> getCertificates(String vaultBaseUrl, Integer maxresults) {
+		return getCertificates(vaultBaseUrl, maxresults, false);
+	}
+
+	@Override
+	public ServiceFuture<List<CertificateItem>> getCertificatesAsync(String vaultBaseUrl, Integer maxresults,
+			ListOperationCallback<CertificateItem> serviceCallback) {
+		return getCertificatesAsync(vaultBaseUrl, maxresults, false, serviceCallback);
+	}
+
+	@Override
+	public Observable<Page<CertificateItem>> getCertificatesAsync(String vaultBaseUrl, Integer maxresults) {
+		return getCertificatesAsync(vaultBaseUrl, maxresults, false);
+	}
+
+	@Override
+	public Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesWithServiceResponseAsync(
+			String vaultBaseUrl, Integer maxresults) {
+		return getCertificatesWithServiceResponseAsync(vaultBaseUrl, maxresults, false);
+	}
+
+	@Override
+	public PagedList<DeletedCertificateItem> getDeletedCertificates(String vaultBaseUrl, Integer maxresults) {
+		return getDeletedCertificates(vaultBaseUrl, maxresults, false);
+	}
+
+	@Override
+	public ServiceFuture<List<DeletedCertificateItem>> getDeletedCertificatesAsync(String vaultBaseUrl,
+			Integer maxresults, ListOperationCallback<DeletedCertificateItem> serviceCallback) {
+		return getDeletedCertificatesAsync(vaultBaseUrl, maxresults, false, serviceCallback);
+	}
+
+	@Override
+	public Observable<Page<DeletedCertificateItem>> getDeletedCertificatesAsync(String vaultBaseUrl,
+			Integer maxresults) {
+		return getDeletedCertificatesAsync(vaultBaseUrl, maxresults, false);
+	}
+
+	@Override
+	public Observable<ServiceResponse<Page<DeletedCertificateItem>>> getDeletedCertificatesWithServiceResponseAsync(
+			String vaultBaseUrl, Integer maxresults) {
+		return getDeletedCertificatesWithServiceResponseAsync(vaultBaseUrl, maxresults, false);
+	}
 
 
 }

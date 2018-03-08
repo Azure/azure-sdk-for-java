@@ -7,6 +7,7 @@
 package com.microsoft.azure.keyvault.test;
 
 import java.security.MessageDigest;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -22,6 +23,7 @@ import com.microsoft.azure.keyvault.models.CertificateIssuerItem;
 import com.microsoft.azure.keyvault.models.CertificateItem;
 import com.microsoft.azure.keyvault.models.CertificateOperation;
 import com.microsoft.azure.keyvault.models.CertificatePolicy;
+import com.microsoft.azure.keyvault.models.Contact;
 import com.microsoft.azure.keyvault.models.Contacts;
 import com.microsoft.azure.keyvault.models.IssuerBundle;
 import com.microsoft.azure.keyvault.models.IssuerParameters;
@@ -47,6 +49,7 @@ import com.microsoft.azure.keyvault.requests.UpdateSecretRequest;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.rest.ServiceCallback;
 
 public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
@@ -180,6 +183,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		}
 		pollOnSecretDeletion(vault, secretname);
 		keyVaultClient.purgeDeletedSecretAsync(vault, secretname, null).get();
+		Thread.sleep(20000);
 	}
 
 	@Test
@@ -255,6 +259,7 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 		}
 
 		keyVaultClient.purgeDeletedCertificate(vault, certificateName);
+		Thread.sleep(20000);
 	}
 
 	@Test
@@ -287,8 +292,25 @@ public class AsyncOperationsTest extends KeyVaultClientIntegrationTestBase {
 	public void certificateContactsAsyncForAsyncOperationsTest() throws Exception {
 
 		String vault = getVaultUri();
-
-		Contacts contacts = keyVaultClient.setCertificateContactsAsync(vault, new Contacts(), null).get();
+		
+		 Contact contact1 = new Contact();
+	        contact1.withName("James");
+	        contact1.withEmailAddress("james@contoso.com");
+	        contact1.withPhone("7777777777");
+	        
+	        Contact contact2 = new Contact();
+	        contact2.withName("Ethan");
+	        contact2.withEmailAddress("ethan@contoso.com");
+	        contact2.withPhone("8888888888");
+	        
+	        List<Contact> contactList = new ArrayList<Contact>();
+	        contactList.add(contact1);
+	        contactList.add(contact2);
+	        
+	        Contacts certificateContacts = new Contacts();
+	        certificateContacts.withContactList(contactList);
+		
+		Contacts contacts = keyVaultClient.setCertificateContactsAsync(vault, certificateContacts, (ServiceCallback<Contacts>) null).get();
 		Assert.assertNotNull(contacts);
 
 		contacts = keyVaultClient.getCertificateContactsAsync(vault, null).get();
