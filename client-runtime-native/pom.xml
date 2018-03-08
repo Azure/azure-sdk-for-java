@@ -4,7 +4,7 @@
     <parent>
         <artifactId>autorest-clientruntime-for-java</artifactId>
         <groupId>com.microsoft.azure.v2</groupId>
-        <version>2.0.0-beta1</version>
+        <version>2.0.0-SNAPSHOT</version>
     </parent>
     <packaging>pom</packaging>
 
