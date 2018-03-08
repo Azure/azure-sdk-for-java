@@ -37,9 +37,8 @@ import io.reactivex.FlowableSubscriber;
 import io.reactivex.Scheduler;
 import io.reactivex.Single;
 import io.reactivex.SingleEmitter;
-import io.reactivex.SingleOnSubscribe;
 import io.reactivex.disposables.Disposable;
-import io.reactivex.functions.Function;
+import io.reactivex.internal.util.BackpressureHelper;
 import io.reactivex.schedulers.Schedulers;
 import org.reactivestreams.Subscriber;
 import org.reactivestreams.Subscription;
@@ -195,193 +194,173 @@ public final class NettyClient extends HttpClient {
             }
 
             // Creates cold observable from an emitter
-            return Single.create(new SingleOnSubscribe<HttpResponse>() {
-                @Override
-                public void subscribe(final SingleEmitter<HttpResponse> responseEmitter) {
-                    channelPool.acquire(channelAddress).addListener(new GenericFutureListener<Future<? super Channel>>() {
-                        private void emitErrorIfSubscribed(Throwable throwable) {
-                            if (!responseEmitter.isDisposed()) {
-                                responseEmitter.onError(throwable);
+            return Single.create((SingleEmitter<HttpResponse> responseEmitter) -> {
+                channelPool.acquire(channelAddress).addListener(new GenericFutureListener<Future<? super Channel>>() {
+                    private void emitErrorIfSubscribed(Throwable throwable) {
+                        if (!responseEmitter.isDisposed()) {
+                            responseEmitter.onError(throwable);
+                        }
+                    }
+
+                    @Override
+                    public void operationComplete(Future<? super Channel> cf) {
+                        if (!cf.isSuccess()) {
+                            emitErrorIfSubscribed(cf.cause());
+                            return;
+                        }
+
+                        final Channel channel = (Channel) cf.getNow();
+                        final HttpClientInboundHandler inboundHandler = channel.pipeline().get(HttpClientInboundHandler.class);
+
+                        if (responseEmitter.isDisposed()) {
+                            // We were cancelled before sending any data, so just return the channel to the pool.
+                            channelPool.release(channel);
+                            return;
+                        }
+
+                        // After this point, we're starting to send data, so if the Single<HttpResponse> gets canceled we need to close the channel.
+                        inboundHandler.didEmitHttpResponse = false;
+                        inboundHandler.responseEmitter = responseEmitter;
+                        responseEmitter.setDisposable(new Disposable() {
+                            boolean isDisposed = false;
+                            @Override
+                            public void dispose() {
+                                isDisposed = true;
+                                if (!inboundHandler.didEmitHttpResponse) {
+                                    channelPool.closeAndRelease(channel);
+                                }
+                            }
+
+                            @Override
+                            public boolean isDisposed() {
+                                return isDisposed;
+                            }
+                        });
+
+                        if (request.httpMethod() == com.microsoft.rest.v2.http.HttpMethod.HEAD) {
+                            // Use HttpClientCodec for HEAD operations
+                            if (channel.pipeline().get("HttpClientCodec") == null) {
+                                channel.pipeline().remove(HttpRequestEncoder.class);
+                                channel.pipeline().replace(HttpResponseDecoder.class, "HttpClientCodec", new HttpClientCodec());
+                            }
+                        } else {
+                            // Use HttpResponseDecoder for other operations
+                            if (channel.pipeline().get("HttpResponseDecoder") == null) {
+                                channel.pipeline().replace(HttpClientCodec.class, "HttpResponseDecoder", new HttpResponseDecoder());
+                                channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
                             }
                         }
 
-                        @Override
-                        public void operationComplete(Future<? super Channel> cf) {
-                            if (!cf.isSuccess()) {
-                                emitErrorIfSubscribed(cf.cause());
-                                return;
-                            }
+                        final DefaultHttpRequest raw = new DefaultHttpRequest(HttpVersion.HTTP_1_1,
+                                HttpMethod.valueOf(request.httpMethod().toString()),
+                                request.url().toString());
 
-                            final Channel channel = (Channel) cf.getNow();
-                            final HttpClientInboundHandler inboundHandler = channel.pipeline().get(HttpClientInboundHandler.class);
+                        for (HttpHeader header : request.headers()) {
+                            raw.headers().add(header.name(), header.value());
+                        }
 
-                            if (responseEmitter.isDisposed()) {
-                                // We were cancelled before sending any data, so just return the channel to the pool.
-                                channelPool.release(channel);
-                                return;
-                            }
-
-                            // After this point, we're starting to send data, so if the Single<HttpResponse> gets canceled we need to close the channel.
-                            inboundHandler.didEmitHttpResponse = false;
-                            inboundHandler.responseEmitter = responseEmitter;
-                            responseEmitter.setDisposable(new Disposable() {
-                                boolean isDisposed = false;
-                                @Override
-                                public void dispose() {
-                                    isDisposed = true;
-                                    if (!inboundHandler.didEmitHttpResponse) {
-                                        channelPool.closeAndRelease(channel);
-                                    }
-                                }
-
-                                @Override
-                                public boolean isDisposed() {
-                                    return isDisposed;
+                        try {
+                            channel.write(raw).addListener((Future<Void> future) -> {
+                                if (!future.isSuccess()) {
+                                    channelPool.closeAndRelease(channel);
+                                    emitErrorIfSubscribed(future.cause());
                                 }
                             });
 
-                            if (request.httpMethod() == com.microsoft.rest.v2.http.HttpMethod.HEAD) {
-                                // Use HttpClientCodec for HEAD operations
-                                if (channel.pipeline().get("HttpClientCodec") == null) {
-                                    channel.pipeline().remove(HttpRequestEncoder.class);
-                                    channel.pipeline().replace(HttpResponseDecoder.class, "HttpClientCodec", new HttpClientCodec());
-                                }
+                            if (request.body() == null) {
+                                channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
+                                        .addListener((Future<Void> future) -> {
+                                            if (future.isSuccess()) {
+                                                channel.read();
+                                            } else {
+                                                channelPool.closeAndRelease(channel);
+                                                emitErrorIfSubscribed(future.cause());
+                                            }
+                                        });
                             } else {
-                                // Use HttpResponseDecoder for other operations
-                                if (channel.pipeline().get("HttpResponseDecoder") == null) {
-                                    channel.pipeline().replace(HttpClientCodec.class, "HttpResponseDecoder", new HttpResponseDecoder());
-                                    channel.pipeline().addAfter("HttpResponseDecoder", "HttpRequestEncoder", new HttpRequestEncoder());
-                                }
-                            }
-
-                            final DefaultHttpRequest raw = new DefaultHttpRequest(HttpVersion.HTTP_1_1,
-                                    HttpMethod.valueOf(request.httpMethod().toString()),
-                                    request.url().toString());
-
-                            for (HttpHeader header : request.headers()) {
-                                raw.headers().add(header.name(), header.value());
-                            }
-
-                            try {
-                                channel.write(raw).addListener(new GenericFutureListener<Future<? super Void>>() {
+                                request.body().observeOn(Schedulers.from(channel.eventLoop())).subscribe(new FlowableSubscriber<ByteBuffer>() {
+                                    Subscription subscription;
                                     @Override
-                                    public void operationComplete(Future<? super Void> future) throws Exception {
+                                    public void onSubscribe(Subscription s) {
+                                        subscription = s;
+                                        inboundHandler.requestContentSubscription = subscription;
+                                        subscription.request(1);
+                                    }
+
+                                    GenericFutureListener<Future<Void>> onChannelWriteComplete = (Future<Void> future) -> {
                                         if (!future.isSuccess()) {
+                                            subscription.cancel();
                                             channelPool.closeAndRelease(channel);
                                             emitErrorIfSubscribed(future.cause());
                                         }
-                                    }
-                                });
+                                    };
 
-                                if (request.body() == null) {
-                                    channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
-                                            .addListener(new GenericFutureListener<Future<? super Void>>() {
-                                                @Override
-                                                public void operationComplete(Future<? super Void> future) throws Exception {
-                                                    if (future.isSuccess()) {
-                                                        channel.read();
-                                                    } else {
-                                                        channelPool.closeAndRelease(channel);
-                                                        emitErrorIfSubscribed(future.cause());
-                                                    }
-                                                }
-                                            });
-                                } else {
-                                    request.body().observeOn(Schedulers.from(channel.eventLoop())).subscribe(new FlowableSubscriber<ByteBuffer>() {
-                                        Subscription subscription;
-                                        @Override
-                                        public void onSubscribe(Subscription s) {
-                                            subscription = s;
-                                            inboundHandler.requestContentSubscription = subscription;
-                                            subscription.request(1);
+                                    @Override
+                                    public void onNext(ByteBuffer buf) {
+                                        if (!channel.eventLoop().inEventLoop()) {
+                                            throw new IllegalStateException("onNext must be called from the event loop managing the channel.");
                                         }
+                                        try {
+                                            channel.writeAndFlush(Unpooled.wrappedBuffer(buf))
+                                                    .addListener(onChannelWriteComplete);
 
-                                        GenericFutureListener<Future<Void>> onChannelWriteComplete =
-                                                new GenericFutureListener<Future<Void>>() {
-                                                    @Override
-                                                    public void operationComplete(Future<Void> future) throws Exception {
+                                            if (channel.isWritable()) {
+                                                subscription.request(1);
+                                            }
+                                        } catch (Exception e) {
+                                            subscription.cancel();
+                                            emitErrorIfSubscribed(e);
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onError(Throwable t) {
+                                        channelPool.closeAndRelease(channel);
+                                        emitErrorIfSubscribed(t);
+                                    }
+
+                                    @Override
+                                    public void onComplete() {
+                                        try {
+                                            channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
+                                                    .addListener((Future<Void> future) -> {
                                                         if (!future.isSuccess()) {
-                                                            subscription.cancel();
                                                             channelPool.closeAndRelease(channel);
                                                             emitErrorIfSubscribed(future.cause());
+                                                        } else {
+                                                            channel.read();
                                                         }
-                                                    }
-                                                };
-
-                                        @Override
-                                        public void onNext(ByteBuffer buf) {
-                                            if (!channel.eventLoop().inEventLoop()) {
-                                                throw new IllegalStateException("onNext must be called from the event loop managing the channel.");
-                                            }
-                                            try {
-                                                channel.writeAndFlush(Unpooled.wrappedBuffer(buf))
-                                                        .addListener(onChannelWriteComplete);
-
-                                                if (channel.isWritable()) {
-                                                    subscription.request(1);
-                                                }
-                                            } catch (Exception e) {
-                                                subscription.cancel();
-                                                emitErrorIfSubscribed(e);
-                                            }
+                                                    });
+                                        } catch (Exception e) {
+                                            emitErrorIfSubscribed(e);
                                         }
-
-                                        @Override
-                                        public void onError(Throwable t) {
-                                            channelPool.closeAndRelease(channel);
-                                            emitErrorIfSubscribed(t);
-                                        }
-
-                                        @Override
-                                        public void onComplete() {
-                                            try {
-                                                channel.writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT)
-                                                        .addListener(new GenericFutureListener<Future<? super Void>>() {
-                                                            @Override
-                                                            public void operationComplete(Future<? super Void> future) throws Exception {
-                                                                if (!future.isSuccess()) {
-                                                                    channelPool.closeAndRelease(channel);
-                                                                    emitErrorIfSubscribed(future.cause());
-                                                                } else {
-                                                                    channel.read();
-                                                                }
-                                                            }
-                                                        });
-                                            } catch (Exception e) {
-                                                emitErrorIfSubscribed(e);
-                                            }
-                                        }
-                                    });
-                                }
-                            } catch (Exception e) {
-                                emitErrorIfSubscribed(e);
+                                    }
+                                });
                             }
+                        } catch (Exception e) {
+                            emitErrorIfSubscribed(e);
                         }
-                    });
-                }
-            }).onErrorResumeNext(new Function<Throwable, Single<HttpResponse>>() {
-                @Override
-                public Single<HttpResponse> apply(Throwable throwable) throws Exception {
-                    if (throwable instanceof EncoderException) {
-                        LoggerFactory.getLogger(getClass()).warn("Got EncoderException: " + throwable.getMessage());
-                        return sendRequestInternalAsync(request, proxy);
-                    } else {
-                        return Single.error(throwable);
                     }
+                });
+            }).onErrorResumeNext((Throwable throwable) -> {
+                if (throwable instanceof EncoderException) {
+                    LoggerFactory.getLogger(getClass()).warn("Got EncoderException: " + throwable.getMessage());
+                    return sendRequestInternalAsync(request, proxy);
+                } else {
+                    return Single.error(throwable);
                 }
             });
         }
     }
 
     /**
-     * Emits HTTP response content from Netty. This class is not thread safe.
-     * It must be observed on the same event loop associated with the Netty channel providing the data.
-     * Only cancel() may be called on a different thread.
+     * Emits HTTP response content from Netty.
      */
     private static final class ResponseContentFlowable extends Flowable<ByteBuf> implements Subscription {
         final EventLoop currentEventLoop;
         final Queue<HttpContent> queuedContent = new ArrayDeque<>();
         final Subscription handlerSubscription;
+        boolean draining = false;
         long chunksRequested = 0;
         Subscriber<? super ByteBuf> subscriber;
 
@@ -413,13 +392,25 @@ public final class NettyClient extends HttpClient {
                 throw new IllegalStateException("request() must be called from the event loop managing the channel.");
             }
 
-            chunksRequested += l;
-            while (!queuedContent.isEmpty() && chunksRequested > 0 && !isCanceled) {
-                emitContent(queuedContent.remove());
-            }
+            if (l <= 0) {
+                subscriber.onError(new IllegalArgumentException("Request amount must be positive. Received amount: " + l));
+            } else {
+                chunksRequested = BackpressureHelper.addCap(chunksRequested, l);
 
-            if (chunksRequested > 0 && !isCanceled) {
-                handlerSubscription.request(chunksRequested);
+                if (!draining) {
+                    try {
+                        draining = true;
+                        while (!queuedContent.isEmpty() && chunksRequested > 0 && !isCanceled) {
+                            emitContent(queuedContent.remove());
+                        }
+
+                        if (chunksRequested > 0 && !isCanceled) {
+                            handlerSubscription.request(chunksRequested);
+                        }
+                    } finally {
+                        draining = false;
+                    }
+                }
             }
         }
 
@@ -428,12 +419,9 @@ public final class NettyClient extends HttpClient {
             isCanceled = true;
             handlerSubscription.cancel();
 
-            currentEventLoop.execute(new Runnable() {
-                @Override
-                public void run() {
-                    while (!queuedContent.isEmpty()) {
-                        queuedContent.remove().release();
-                    }
+            currentEventLoop.execute(() -> {
+                while (!queuedContent.isEmpty()) {
+                    queuedContent.remove().release();
                 }
             });
         }
@@ -507,29 +495,17 @@ public final class NettyClient extends HttpClient {
                 }
 
                 contentEmitter = new ResponseContentFlowable(ctx.channel().eventLoop(), new Subscription() {
-                    /**
-                     * Required to run on this thread.
-                     */
                     @Override
                     public void request(long n) {
-                        if (!ctx.channel().eventLoop().inEventLoop()) {
-                            throw new IllegalStateException("request() must be called from the event loop managing the channel.");
-                        }
                         ctx.channel().read();
                     }
 
-                    /**
-                     * May be run on a different thread.
-                     */
                     @Override
                     public void cancel() {
-                        ctx.channel().eventLoop().execute(new Runnable() {
-                            @Override
-                            public void run() {
-                                if (contentEmitter != null) {
-                                    adapter.channelPool.closeAndRelease(ctx.channel());
-                                    contentEmitter = null;
-                                }
+                        ctx.channel().eventLoop().execute(() -> {
+                            if (contentEmitter != null) {
+                                adapter.channelPool.closeAndRelease(ctx.channel());
+                                contentEmitter = null;
                             }
                         });
                     }
