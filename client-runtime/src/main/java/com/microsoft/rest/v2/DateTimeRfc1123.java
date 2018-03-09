@@ -6,31 +6,30 @@
 
 package com.microsoft.rest.v2;
 
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Locale;
 
 /**
- * Simple wrapper over joda.time.DateTime used for specifying RFC1123 format during serialization/deserialization.
+ * Simple wrapper over java.time.OffsetDateTime used for specifying RFC1123 format during serialization/deserialization.
  */
 public final class DateTimeRfc1123 {
     /**
      * The pattern of the datetime used for RFC1123 datetime format.
      */
     private static final DateTimeFormatter RFC1123_DATE_TIME_FORMATTER =
-        DateTimeFormat.forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZoneUTC().withLocale(Locale.US);
-
+            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneId.of("UTC")).withLocale(Locale.US);
     /**
      * The actual datetime object.
      */
-    private final DateTime dateTime;
+    private final OffsetDateTime dateTime;
 
     /**
      * Creates a new DateTimeRfc1123 object with the specified DateTime.
      * @param dateTime The DateTime object to wrap.
      */
-    public DateTimeRfc1123(DateTime dateTime) {
+    public DateTimeRfc1123(OffsetDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -39,14 +38,14 @@ public final class DateTimeRfc1123 {
      * @param formattedString The datetime string in RFC1123 format
      */
     public DateTimeRfc1123(String formattedString) {
-        this.dateTime = DateTime.parse(formattedString, RFC1123_DATE_TIME_FORMATTER);
+        this.dateTime = OffsetDateTime.parse(formattedString, DateTimeFormatter.RFC_1123_DATE_TIME);
     }
 
     /**
      * Returns the underlying DateTime.
      * @return The underlying DateTime.
      */
-    public DateTime dateTime() {
+    public OffsetDateTime dateTime() {
         if (this.dateTime == null) {
             return null;
         }
@@ -55,7 +54,7 @@ public final class DateTimeRfc1123 {
 
     @Override
     public String toString() {
-        return RFC1123_DATE_TIME_FORMATTER.print(this.dateTime);
+        return RFC1123_DATE_TIME_FORMATTER.format(this.dateTime);
     }
 
     @Override

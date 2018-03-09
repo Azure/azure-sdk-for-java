@@ -22,13 +22,13 @@ import com.fasterxml.jackson.databind.ser.BeanSerializerModifier;
 import com.fasterxml.jackson.databind.ser.ResolvableSerializer;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.microsoft.rest.v2.DateTimeRfc1123;
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -101,10 +101,10 @@ public class FlatteningSerializer extends StdSerializer<Object> implements Resol
         if (value.getClass().isPrimitive()
                 || value.getClass().isEnum()
                 || value instanceof LocalDate
-                || value instanceof DateTime
+                || value instanceof OffsetDateTime
                 || value instanceof String
                 || value instanceof DateTimeRfc1123
-                || value instanceof Period) {
+                || value instanceof Duration) {
             return mapper.valueToTree(value);
         }
 

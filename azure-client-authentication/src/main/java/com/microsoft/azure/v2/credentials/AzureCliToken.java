@@ -9,9 +9,8 @@ package com.microsoft.azure.v2.credentials;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.azure.management.apigeneration.Beta;
-import org.joda.time.DateTime;
-import org.joda.time.format.DateTimeFormat;
 
+import java.time.Instant;
 import java.util.Date;
 
 /**
@@ -72,11 +71,7 @@ final class AzureCliToken implements Cloneable {
 
     Date expiresOn() {
         if (expiresOnDate == null) {
-            try {
-                expiresOnDate = DateTime.parse(expiresOn, DateTimeFormat.forPattern("yyyy-MM-dd HH:mm:ss.SSSSSS")).toDate();
-            } catch (IllegalArgumentException e) {
-                expiresOnDate = DateTime.parse(expiresOn).toDate();
-            }
+            expiresOnDate = Date.from(Instant.parse(expiresOn));
         }
         return expiresOnDate;
     }

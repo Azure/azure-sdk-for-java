@@ -11,7 +11,8 @@
 package com.microsoft.rest.v2.entities;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import org.joda.time.DateTime;
+
+import java.time.OffsetDateTime;
 
 /**
  * An Access policy.
@@ -21,13 +22,13 @@ public class AccessPolicy {
      * the date-time the policy is active.
      */
     @JsonProperty(value = "Start")
-    private DateTime start;
+    private OffsetDateTime start;
 
     /**
      * the date-time the policy expires.
      */
     @JsonProperty(value = "Expiry")
-    private DateTime expiry;
+    private OffsetDateTime expiry;
 
     /**
      * the permissions for the acl policy.
@@ -40,7 +41,7 @@ public class AccessPolicy {
      *
      * @return the start value
      */
-    public DateTime start() {
+    public OffsetDateTime start() {
         return this.start;
     }
 
@@ -50,7 +51,7 @@ public class AccessPolicy {
      * @param start the start value to set
      * @return the AccessPolicy object itself.
      */
-    public AccessPolicy withStart(DateTime start) {
+    public AccessPolicy withStart(OffsetDateTime start) {
         this.start = start;
         return this;
     }
@@ -60,7 +61,7 @@ public class AccessPolicy {
      *
      * @return the expiry value
      */
-    public DateTime expiry() {
+    public OffsetDateTime expiry() {
         return this.expiry;
     }
 
@@ -70,7 +71,7 @@ public class AccessPolicy {
      * @param expiry the expiry value to set
      * @return the AccessPolicy object itself.
      */
-    public AccessPolicy withExpiry(DateTime expiry) {
+    public AccessPolicy withExpiry(OffsetDateTime expiry) {
         this.expiry = expiry;
         return this;
     }

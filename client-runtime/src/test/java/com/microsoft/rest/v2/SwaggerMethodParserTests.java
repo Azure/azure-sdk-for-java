@@ -7,6 +7,7 @@ import com.microsoft.rest.v2.entities.HttpBinJSON;
 import com.microsoft.rest.v2.http.HttpMethod;
 import org.junit.Test;
 
+import java.io.IOException;
 import java.lang.reflect.Method;
 
 import static org.junit.Assert.*;
@@ -22,7 +23,7 @@ public class SwaggerMethodParserTests {
         final Method testMethod1 = TestInterface1.class.getDeclaredMethods()[0];
         assertEquals("testMethod1", testMethod1.getName());
 
-        new SwaggerMethodParser(testMethod1, "https://raw.host.com");
+        new SwaggerMethodParser(testMethod1, RestProxy.createDefaultSerializer(), "https://raw.host.com");
     }
 
     interface TestInterface2 {
@@ -32,11 +33,11 @@ public class SwaggerMethodParserTests {
     }
 
     @Test
-    public void withOnlyExpectedResponse() {
+    public void withOnlyExpectedResponse() throws IOException {
         final Method testMethod2 = TestInterface2.class.getDeclaredMethods()[0];
         assertEquals("testMethod2", testMethod2.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod2, RestProxy.createDefaultSerializer(), "https://raw.host.com");
         assertEquals("com.microsoft.rest.v2.SwaggerMethodParserTests$TestInterface2.testMethod2", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());
@@ -55,11 +56,11 @@ public class SwaggerMethodParserTests {
     }
 
     @Test
-    public void withExpectedResponseAndUnexpectedResponseExceptionType() {
+    public void withExpectedResponseAndUnexpectedResponseExceptionType() throws IOException {
         final Method testMethod3 = TestInterface3.class.getDeclaredMethods()[0];
         assertEquals("testMethod3", testMethod3.getName());
 
-        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, "https://raw.host.com");
+        final SwaggerMethodParser methodParser = new SwaggerMethodParser(testMethod3, RestProxy.createDefaultSerializer(), "https://raw.host.com");
         assertEquals("com.microsoft.rest.v2.SwaggerMethodParserTests$TestInterface3.testMethod3", methodParser.fullyQualifiedMethodName());
         assertEquals(HttpMethod.PATCH, methodParser.httpMethod());
         assertArrayEquals(new int[] { 200 }, methodParser.expectedStatusCodes());

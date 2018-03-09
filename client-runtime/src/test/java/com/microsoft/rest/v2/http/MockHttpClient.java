@@ -11,12 +11,14 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import com.microsoft.rest.v2.entities.HttpBinJSON;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.functions.Function;
-import org.joda.time.DateTime;
 import io.reactivex.Single;
 
 import java.io.IOException;
 import java.net.URL;
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -122,7 +124,7 @@ public class MockHttpClient extends HttpClient {
                     response = new MockHttpResponse(200, responseHeaders, result);
                 }
                 else if (requestPathLower.equals("/datetimerfc1123")) {
-                    final DateTimeRfc1123 now = new DateTimeRfc1123(new DateTime(0));
+                    final DateTimeRfc1123 now = new DateTimeRfc1123(OffsetDateTime.ofInstant(Instant.ofEpochSecond(0), ZoneOffset.UTC));
                     final String result = now.toString();
                     response = new MockHttpResponse(200, responseHeaders, result);
                 }

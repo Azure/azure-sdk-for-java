@@ -28,7 +28,6 @@ import com.microsoft.rest.v2.protocol.SerializerEncoding;
 import com.microsoft.rest.v2.serializer.JacksonAdapter;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.functions.Function;
-import org.joda.time.DateTime;
 import org.junit.Test;
 import io.reactivex.Single;
 
@@ -38,6 +37,7 @@ import java.net.URL;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Paths;
+import java.time.OffsetDateTime;
 import java.util.Collections;
 import java.util.List;
 
@@ -119,8 +119,8 @@ public class RestProxyXMLTests {
         si.withId("MTIzNDU2Nzg5MDEyMzQ1Njc4OTAxMjM0NTY3ODkwMTI=");
 
         AccessPolicy ap = new AccessPolicy();
-        ap.withStart(DateTime.parse("2009-09-28T08:49:37.0000000Z"));
-        ap.withExpiry(DateTime.parse("2009-09-29T08:49:37.0000000Z"));
+        ap.withStart(OffsetDateTime.parse("2009-09-28T08:49:37.0000000Z"));
+        ap.withExpiry(OffsetDateTime.parse("2009-09-29T08:49:37.0000000Z"));
         ap.withPermission("rwd");
 
         si.withAccessPolicy(ap);

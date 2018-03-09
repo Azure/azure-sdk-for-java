@@ -10,9 +10,9 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.databind.node.TextNode;
 
 import org.junit.Assert;
-import org.joda.time.LocalDate;
 import org.junit.Test;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -60,7 +60,7 @@ public class ValidatorTests {
     @Test
     public void validateLocalDate() throws Exception {
         LocalDateWrapper body = new LocalDateWrapper();
-        body.value = new LocalDate(1, 2, 3);
+        body.value = LocalDate.of(1, 2, 3);
         Validator.validate(body); // pass
         try {
             body.value = null;
@@ -112,11 +112,11 @@ public class ValidatorTests {
         Validator.validate(body); // pass
         StringWrapper wrapper = new StringWrapper();
         wrapper.value = "valid";
-        body.map.put(new LocalDate(1, 2, 3), wrapper);
+        body.map.put(LocalDate.of(1, 2, 3), wrapper);
         Validator.validate(body); // pass
-        body.map.put(new LocalDate(1, 2, 3), null);
+        body.map.put(LocalDate.of(1, 2, 3), null);
         Validator.validate(body); // pass
-        body.map.put(new LocalDate(1, 2, 3), new StringWrapper());
+        body.map.put(LocalDate.of(1, 2, 3), new StringWrapper());
         try {
             Validator.validate(body); // fail
             fail();
