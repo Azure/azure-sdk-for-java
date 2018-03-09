@@ -8,6 +8,9 @@ import com.microsoft.azure.credentials.ApplicationTokenCredentials;
 import com.microsoft.azure.keyvault.KeyVaultClient;
 import com.microsoft.azure.keyvault.authentication.KeyVaultCredentials;
 import com.microsoft.azure.keyvault.models.Attributes;
+import com.microsoft.azure.keyvault.models.DeletedCertificateBundle;
+import com.microsoft.azure.keyvault.models.DeletedKeyBundle;
+import com.microsoft.azure.keyvault.models.DeletedSecretBundle;
 import com.microsoft.azure.management.resources.core.AzureTestCredentials;
 import com.microsoft.azure.management.resources.core.InterceptorManager;
 import com.microsoft.azure.management.resources.core.TestBase;
@@ -309,6 +312,60 @@ public class KeyVaultClientIntegrationTestBase {
 		}
 
 	}
+	
+	protected static DeletedCertificateBundle pollOnCertificateDeletion(String vaultBaseUrl, String certificateName)
+			throws Exception {
+		int pendingPollCount = 0;
+		while (pendingPollCount < 21) {
+			DeletedCertificateBundle certificateBundle = keyVaultClient.getDeletedCertificate(vaultBaseUrl,
+					certificateName);
+			if (certificateBundle == null) {
+				if (isRecordMode()) {
+					Thread.sleep(10000);
+				}
+				pendingPollCount += 1;
+				continue;
+			} else {
+				return certificateBundle;
+			}
+		}
+		throw new Exception("Deleting certificate delayed");
+	}
+
+	protected static DeletedKeyBundle pollOnKeyDeletion(String vaultBaseUrl, String certificateName) throws Exception {
+		int pendingPollCount = 0;
+		while (pendingPollCount < 21) {
+			DeletedKeyBundle deletedKeyBundle = keyVaultClient.getDeletedKey(vaultBaseUrl, certificateName);
+			if (deletedKeyBundle == null) {
+				if (isRecordMode()) {
+					Thread.sleep(10000);
+				}
+				pendingPollCount += 1;
+				continue;
+			} else {
+				return deletedKeyBundle;
+			}
+		}
+		throw new Exception("Deleting key delayed");
+	}
+
+	protected static DeletedSecretBundle pollOnSecretDeletion(String vaultBaseUrl, String secretName) throws Exception {
+		int pendingPollCount = 0;
+		while (pendingPollCount < 50) {
+			DeletedSecretBundle deletedSecretBundle = keyVaultClient.getDeletedSecret(vaultBaseUrl, secretName);
+			if (deletedSecretBundle == null) {
+				if (isRecordMode()) {
+					Thread.sleep(10000);
+				}
+				pendingPollCount += 1;
+				continue;
+			} else {
+				return deletedSecretBundle;
+			}
+		}
+		throw new Exception("Deleting secret delayed");
+	}
+
 
 	@After
 	public void afterTest() throws IOException {
