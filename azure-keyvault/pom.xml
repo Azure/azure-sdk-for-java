@@ -1,4 +1,4 @@
-<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under 
+<!-- Copyright (c) Microsoft Corporation. All rights reserved. Licensed under
 	the MIT License. See License.txt in the project root for license information. -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
@@ -102,7 +102,7 @@
 			<version>1.54</version>
 		</dependency>
 	</dependencies>
-	
+
 	<build>
 		<plugins>
 			<plugin>
@@ -145,24 +145,6 @@
 					<target>1.7</target>
 				</configuration>
 			</plugin>
-			<plugin>
-	  			<groupId>org.apache.maven.plugins</groupId>
-	  			<artifactId>maven-clean-plugin</artifactId>
-	  			<version>3.0.0</version>
-	  			<configuration>
-	  				<excludeDefaultDirectories>true</excludeDefaultDirectories>
-	  				<filesets>
-	  					<fileset>
-	  						<directory>target</directory>
-	  						<followSymlinks>false</followSymlinks>
-	  						<useDefaultExcludes>false</useDefaultExcludes>
-	  						<excludes>
-	  							<exclude>test-classes/session-records/</exclude>
-	  						</excludes>
-	  					</fileset>
-	  				</filesets>
-	  			</configuration>
-	  		</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-javadoc-plugin</artifactId>

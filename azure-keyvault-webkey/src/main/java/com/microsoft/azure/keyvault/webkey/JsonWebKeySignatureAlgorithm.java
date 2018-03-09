@@ -16,6 +16,15 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for JsonWebKeySignatureAlgorithm.
  */
 public final class JsonWebKeySignatureAlgorithm {
+    /** Static value PS256 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm PS256 = new JsonWebKeySignatureAlgorithm("PS256");
+
+    /** Static value PS384 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm PS384 = new JsonWebKeySignatureAlgorithm("PS384");
+
+    /** Static value PS512 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm PS512 = new JsonWebKeySignatureAlgorithm("PS512");
+
     /** Static value RS256 for JsonWebKeySignatureAlgorithm. */
     public static final JsonWebKeySignatureAlgorithm RS256 = new JsonWebKeySignatureAlgorithm("RS256");
 
@@ -64,7 +73,7 @@ public final class JsonWebKeySignatureAlgorithm {
             return value.equals(rhs.value);
         }
     }
-    
+
     /**
      * All the JWK signature algorithms.
      */
