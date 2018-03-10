@@ -6,23 +6,24 @@
 
 package com.microsoft.rest.v2;
 
-import org.joda.time.DateTime;
-import org.joda.time.DateTimeZone;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 
 /**
- * Simple wrapper over joda.time.DateTime used for specifying unix seconds format during serialization/deserialization.
+ * Simple wrapper over java.time.OffsetDateTime used for specifying unix seconds format during serialization/deserialization.
  */
 public final class UnixTime {
     /**
      * The actual datetime object.
      */
-    private final DateTime dateTime;
+    private final OffsetDateTime dateTime;
 
     /**
      * Creates a new UnixTime object with the specified DateTime.
      * @param dateTime The DateTime object to wrap.
      */
-    public UnixTime(DateTime dateTime) {
+    public UnixTime(OffsetDateTime dateTime) {
         this.dateTime = dateTime;
     }
 
@@ -31,14 +32,14 @@ public final class UnixTime {
      * @param unixSeconds The Unix seconds value.
      */
     public UnixTime(long unixSeconds) {
-        this.dateTime = new DateTime(unixSeconds * 1000L, DateTimeZone.UTC);
+        this.dateTime = OffsetDateTime.ofInstant(Instant.ofEpochSecond(unixSeconds), ZoneOffset.UTC);
     }
 
     /**
      * Returns the underlying DateTime.
      * @return The underlying DateTime.
      */
-    public DateTime dateTime() {
+    public OffsetDateTime dateTime() {
         if (this.dateTime == null) {
             return null;
         }

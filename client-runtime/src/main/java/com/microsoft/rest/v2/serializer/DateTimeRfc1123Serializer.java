@@ -34,7 +34,7 @@ public final class DateTimeRfc1123Serializer extends JsonSerializer<DateTimeRfc1
     @Override
     public void serialize(DateTimeRfc1123 value, JsonGenerator jgen, SerializerProvider provider) throws IOException {
         if (provider.isEnabled(SerializationFeature.WRITE_DATES_AS_TIMESTAMPS)) {
-            jgen.writeNumber(value.dateTime().getMillis());
+            jgen.writeNumber(value.dateTime().toInstant().toEpochMilli());
         } else {
             jgen.writeString(value.toString()); //Use the default toString as it is RFC1123.
         }

@@ -10,12 +10,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.google.common.primitives.Primitives;
 import com.google.common.reflect.TypeToken;
 
-import org.joda.time.DateTime;
-import org.joda.time.LocalDate;
-import org.joda.time.Period;
-
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.time.Duration;
+import java.time.LocalDate;
+import java.time.OffsetDateTime;
 import java.util.List;
 import java.util.Map;
 
@@ -50,10 +49,10 @@ public final class Validator {
                 || parameterType.isEnum()
                 || parameterType == Class.class
                 || parameterToken.isSupertypeOf(LocalDate.class)
-                || parameterToken.isSupertypeOf(DateTime.class)
+                || parameterToken.isSupertypeOf(OffsetDateTime.class)
                 || parameterToken.isSupertypeOf(String.class)
                 || parameterToken.isSupertypeOf(DateTimeRfc1123.class)
-                || parameterToken.isSupertypeOf(Period.class)) {
+                || parameterToken.isSupertypeOf(Duration.class)) {
             return;
         }
 

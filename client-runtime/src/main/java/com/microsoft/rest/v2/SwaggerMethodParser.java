@@ -27,6 +27,7 @@ import com.microsoft.rest.v2.annotations.QueryParam;
 import com.microsoft.rest.v2.http.HttpHeader;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpMethod;
+import com.microsoft.rest.v2.protocol.SerializerAdapter;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 
@@ -43,6 +44,7 @@ import java.util.Map;
  * method.
  */
 public class SwaggerMethodParser {
+    private final SerializerAdapter<?> serializer;
     private final String rawHost;
     private final String fullyQualifiedMethodName;
     private HttpMethod httpMethod;
@@ -68,7 +70,8 @@ public class SwaggerMethodParser {
      *                host value in an HTTP request, it must be processed through the possible host
      *                substitutions.
      */
-    SwaggerMethodParser(Method swaggerMethod, String rawHost) {
+    SwaggerMethodParser(Method swaggerMethod, SerializerAdapter<?> serializer, String rawHost) {
+        this.serializer = serializer;
         this.rawHost = rawHost;
 
         final Class<?> swaggerInterface = swaggerMethod.getDeclaringClass();
@@ -263,7 +266,7 @@ public class SwaggerMethodParser {
                 final int parameterIndex = querySubstitution.methodParameterIndex();
                 if (0 <= parameterIndex && parameterIndex < swaggerMethodArguments.length) {
                     final Object methodArgument = swaggerMethodArguments[querySubstitution.methodParameterIndex()];
-                    String parameterValue = methodArgument == null ? null : methodArgument.toString();
+                    String parameterValue = serialize(methodArgument);
                     if (parameterValue != null) {
                         if (querySubstitution.shouldEncode() && escaper != null) {
                             parameterValue = escaper.escape(parameterValue);
@@ -295,12 +298,12 @@ public class SwaggerMethodParser {
                         final String headerCollectionPrefix = headerSubstitution.urlParameterName();
                         for (final Map.Entry<String, ?> headerCollectionEntry : headerCollection.entrySet()) {
                             final String headerName = headerCollectionPrefix + headerCollectionEntry.getKey();
-                            final String headerValue = headerCollectionEntry.getValue() == null ? null : headerCollectionEntry.getValue().toString();
+                            final String headerValue = serialize(headerCollectionEntry.getValue());
                             result.set(headerName, headerValue);
                         }
                     } else {
                         final String headerName = headerSubstitution.urlParameterName();
-                        final String headerValue = methodArgument == null ? null : methodArgument.toString();
+                        final String headerValue = serialize(methodArgument);
                         result.set(headerName, headerValue);
                     }
                 }
@@ -482,7 +485,20 @@ public class SwaggerMethodParser {
         this.relativePath = relativePath;
     }
 
-    private static String applySubstitutions(String originalValue, Iterable<Substitution> substitutions, Object[] methodArguments, Escaper escaper) {
+    String serialize(Object value) {
+        String result = null;
+        if (value != null) {
+            if (value instanceof String) {
+                result = (String) value;
+            }
+            else {
+                result = serializer.serializeRaw(value);
+            }
+        }
+        return result;
+    }
+
+    private String applySubstitutions(String originalValue, Iterable<Substitution> substitutions, Object[] methodArguments, Escaper escaper) {
         String result = originalValue;
 
         if (methodArguments != null) {
@@ -491,7 +507,7 @@ public class SwaggerMethodParser {
                 if (0 <= substitutionParameterIndex && substitutionParameterIndex < methodArguments.length) {
                     final Object methodArgument = methodArguments[substitutionParameterIndex];
 
-                    String substitutionValue = methodArgument == null ? "" : methodArgument.toString();
+                    String substitutionValue = serialize(methodArgument);
                     if (substitutionValue != null && !substitutionValue.isEmpty() && substitution.shouldEncode() && escaper != null) {
                         substitutionValue = escaper.escape(substitutionValue);
                     }

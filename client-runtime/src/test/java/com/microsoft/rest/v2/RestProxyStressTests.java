@@ -34,12 +34,6 @@ import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.Functions;
-import org.joda.time.DateTime;
-import org.joda.time.Duration;
-import org.joda.time.Instant;
-import org.joda.time.format.DateTimeFormat;
-import org.joda.time.format.DateTimeFormatter;
-import org.joda.time.format.PeriodFormat;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
@@ -57,6 +51,11 @@ import java.nio.file.SimpleFileVisitor;
 import java.nio.file.StandardOpenOption;
 import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
+import java.time.Duration;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
 import java.util.Locale;
@@ -77,9 +76,9 @@ public class RestProxyStressTests {
         }
 
         private static final class AddDatePolicy implements RequestPolicy {
-            private final DateTimeFormatter format = DateTimeFormat
-                    .forPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-                    .withZoneUTC()
+            private final DateTimeFormatter format = DateTimeFormatter
+                    .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
+                    .withZone(ZoneId.of("UTC"))
                     .withLocale(Locale.US);
 
             private final RequestPolicy next;
@@ -90,7 +89,7 @@ public class RestProxyStressTests {
 
             @Override
             public Single<HttpResponse> sendAsync(HttpRequest request) {
-                request.headers().set("Date", format.print(DateTime.now()));
+                request.headers().set("Date", format.format(OffsetDateTime.now()));
                 return next.sendAsync(request);
             }
         }
@@ -263,8 +262,8 @@ public class RestProxyStressTests {
                         return Completable.complete();
                     });
                 }).flatMapCompletable(Functions.identity(), false, 30).blockingAwait();
-        String timeTakenString = PeriodFormat.getDefault().print(new Duration(start, Instant.now()).toPeriod());
-        LoggerFactory.getLogger(getClass()).info("Upload took " + timeTakenString);
+        long durationMilliseconds = Duration.between(start, Instant.now()).toMillis();
+        LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
     }
 
     @Test
@@ -299,8 +298,8 @@ public class RestProxyStressTests {
                         return Completable.complete();
                     });
                 }).flatMapCompletable(Functions.identity(), false, 30).blockingAwait();
-        String timeTakenString = PeriodFormat.getDefault().print(new Duration(start, Instant.now()).toPeriod());
-        LoggerFactory.getLogger(getClass()).info("Upload took " + timeTakenString);
+        long durationMilliseconds = Duration.between(start, Instant.now()).toMillis();
+        LoggerFactory.getLogger(getClass()).info("Upload took " + durationMilliseconds + " milliseconds.");
     }
 
 
@@ -341,8 +340,8 @@ public class RestProxyStressTests {
                             });
                         }))
                 .flatMapCompletable(Functions.identity()).blockingAwait();
-        String downloadTimeTakenString = PeriodFormat.getDefault().print(new Duration(downloadStart, Instant.now()).toPeriod());
-        LoggerFactory.getLogger(getClass()).info("Download took " + downloadTimeTakenString);
+        long durationMilliseconds = Duration.between(downloadStart, Instant.now()).toMillis();
+        LoggerFactory.getLogger(getClass()).info("Download took " + durationMilliseconds + " milliseconds.");
     }
 
     @Test
@@ -383,8 +382,8 @@ public class RestProxyStressTests {
                                 return Completable.complete();
                     });
                 }).flatMapCompletable(Functions.identity(), false, 30).blockingAwait();
-        String downloadTimeTakenString = PeriodFormat.getDefault().print(new Duration(downloadStart, Instant.now()).toPeriod());
-        LoggerFactory.getLogger(getClass()).info("Download/upload took " + downloadTimeTakenString);
+        long durationMilliseconds = Duration.between(downloadStart, Instant.now()).toMillis();
+        LoggerFactory.getLogger(getClass()).info("Download/Upload took " + durationMilliseconds + " milliseconds.");
     }
 
     @Test

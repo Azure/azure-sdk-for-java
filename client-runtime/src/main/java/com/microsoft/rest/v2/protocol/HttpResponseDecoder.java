@@ -25,12 +25,12 @@ import io.reactivex.Maybe;
 import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.functions.Function;
-import org.joda.time.DateTime;
 
 import java.io.IOException;
 import java.lang.reflect.Field;
 import java.lang.reflect.ParameterizedType;
 import java.lang.reflect.Type;
+import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -161,7 +161,7 @@ public final class HttpResponseDecoder {
                 wireResponseType = Base64Url.class;
             }
         }
-        else if (resultType == DateTime.class) {
+        else if (resultType == OffsetDateTime.class) {
             if (wireType == DateTimeRfc1123.class) {
                 wireResponseType = DateTimeRfc1123.class;
             }
@@ -198,7 +198,7 @@ public final class HttpResponseDecoder {
                 if (wireType == Base64Url.class) {
                     result = ((Base64Url) wireResponse).decodedBytes();
                 }
-            } else if (resultType == DateTime.class) {
+            } else if (resultType == OffsetDateTime.class) {
                 if (wireType == DateTimeRfc1123.class) {
                     result = ((DateTimeRfc1123) wireResponse).dateTime();
                 } else if (wireType == UnixTime.class) {

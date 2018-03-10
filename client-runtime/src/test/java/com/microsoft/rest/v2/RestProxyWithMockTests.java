@@ -14,10 +14,12 @@ import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.http.MockHttpClient;
 import com.microsoft.rest.v2.http.MockHttpResponse;
 import io.reactivex.Single;
-import org.joda.time.DateTime;
 import org.junit.Test;
 
 import java.nio.charset.StandardCharsets;
+import java.time.Instant;
+import java.time.OffsetDateTime;
+import java.time.ZoneOffset;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -53,11 +55,11 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
         @GET("DateTimeRfc1123")
         @ReturnValueWireType(DateTimeRfc1123.class)
-        DateTime getDateTimeRfc1123();
+        OffsetDateTime getDateTimeRfc1123();
 
         @GET("UnixTime")
         @ReturnValueWireType(UnixTime.class)
-        DateTime getDateTimeUnix();
+        OffsetDateTime getDateTimeUnix();
     }
 
     @Test
@@ -130,18 +132,18 @@ public class RestProxyWithMockTests extends RestProxyTests {
 
     @Test
     public void service1GetDateTimeRfc1123() {
-        final DateTime dateTime = createService(Service1.class)
+        final OffsetDateTime dateTime = createService(Service1.class)
                 .getDateTimeRfc1123();
         assertNotNull(dateTime);
-        assertEquals(new DateTime(0).withZone(dateTime.getZone()), dateTime);
+        assertEquals(OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC), dateTime);
     }
 
     @Test
     public void service1GetDateTimeUnix() {
-        final DateTime dateTime = createService(Service1.class)
+        final OffsetDateTime dateTime = createService(Service1.class)
                 .getDateTimeUnix();
         assertNotNull(dateTime);
-        assertEquals(new DateTime(0).withZone(dateTime.getZone()), dateTime);
+        assertEquals(OffsetDateTime.ofInstant(Instant.ofEpochMilli(0), ZoneOffset.UTC), dateTime);
     }
 
 
