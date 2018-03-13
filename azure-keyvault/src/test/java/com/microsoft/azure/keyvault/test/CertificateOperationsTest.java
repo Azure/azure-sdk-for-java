@@ -23,6 +23,7 @@ import java.security.cert.X509Certificate;
 import java.security.spec.InvalidKeySpecException;
 import java.security.spec.PKCS8EncodedKeySpec;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -184,12 +185,17 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 
         CertificateBundle deletedCertificateBundle = keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
         Assert.assertNotNull(deletedCertificateBundle);
+        
+        pollOnCertificateDeletion(getVaultUri(), certificateName);
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         } catch (KeyVaultErrorException e) {
             Assert.assertNotNull(e.body().error());
             Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
+        
+        keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
+        Thread.sleep(20000);
     }
 
     /**
@@ -243,6 +249,11 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             Assert.assertNotNull(e.body().error());
             Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
+        
+        pollOnCertificateDeletion(getVaultUri(), certificateName);
+        
+        keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
+        Thread.sleep(20000);
     }
 
     /**
@@ -341,6 +352,11 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             Assert.assertNotNull(e.body().error());
             Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
+        
+        pollOnCertificateDeletion(getVaultUri(), certificateName);
+
+        keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
+        Thread.sleep(20000);
     }
 
     /**
@@ -415,6 +431,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         CertificateBundle deletedCertificateBundle = keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
         Assert.assertNotNull(deletedCertificateBundle);
 
+        
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         }
@@ -422,20 +439,19 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
             Assert.assertNotNull(e.body().error());
             Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
+        
+        pollOnCertificateDeletion(getVaultUri(), certificateName);
+        
+        keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
+        Thread.sleep(20000);
     }
 
     /**
      * Create a certificate signing request with key in Key Vault.
-     * @throws ExecutionException 
-     * @throws InterruptedException 
-     * @throws IOException 
-     * @throws IllegalArgumentException 
-     * @throws KeyVaultErrorException 
-     * 
      * @throws Exception
      */    
     @Test
-    public void createCsrForCertificateOperationsTest() throws InterruptedException, ExecutionException, KeyVaultErrorException, IllegalArgumentException, IOException {
+    public void createCsrForCertificateOperationsTest() throws Exception {
         SecretProperties secretProperties = new SecretProperties();
         secretProperties.withContentType(MIME_PKCS12);
 
@@ -471,23 +487,26 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         CertificateBundle deletedCertificateBundle = keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
         Assert.assertNotNull(deletedCertificateBundle);
 
+        pollOnCertificateDeletion(getVaultUri(), certificateName);
+        
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         } catch (KeyVaultErrorException e) {
             Assert.assertNotNull(e.body().error());
             Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
+        
+        keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
+        Thread.sleep(20000);
     }
     
     /**
      * Cancel the certificate create asynchronously
-     * @throws IOException 
-     * @throws IllegalArgumentException 
-     * @throws KeyVaultErrorException 
+     * @throws Exception 
      * 
      */ 
     @Test
-    public void certificateAsyncRequestCancellationForCertificateOperationsTest() throws KeyVaultErrorException, IllegalArgumentException, IOException {
+    public void certificateAsyncRequestCancellationForCertificateOperationsTest() throws Exception {
         // Set content type to indicate the certificate is PKCS12 format.
         SecretProperties secretProperties = new SecretProperties()
                                         .withContentType(MIME_PKCS12);
@@ -524,6 +543,9 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 
         keyVaultClient.deleteCertificateOperation(getVaultUri(), certificateName);
         keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
+        pollOnCertificateDeletion(getVaultUri(), certificateName);
+        keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
+        Thread.sleep(20000);
     }
     
     /**
@@ -574,13 +596,17 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         validateCertificateKeyInKeyStore(keyStore, x509Certificate, secretPassword);
 
         CertificateBundle deletedCertificateBundle = keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
-
+        pollOnCertificateDeletion(getVaultUri(), certificateName);
+        
         try {
             keyVaultClient.getCertificate(deletedCertificateBundle.certificateIdentifier().baseIdentifier());
         } catch (KeyVaultErrorException e) {
             Assert.assertNotNull(e.body().error());
             Assert.assertEquals("CertificateNotFound", e.body().error().code());
         }
+        
+        keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
+        Thread.sleep(10000);
     }
     
        /**
@@ -629,6 +655,10 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         Assert.assertEquals(certificatePolicyUpdate.issuerParameters().name(), policy.issuerParameters().name());
         
         keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
+        pollOnCertificateDeletion(getVaultUri(), certificateName);
+        
+        keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
+        Thread.sleep(10000);
     }
 
     /**
@@ -691,6 +721,9 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 
         for (String toDeleteCertificateName : toDelete) {
             keyVaultClient.deleteCertificate(getVaultUri(), toDeleteCertificateName);
+            pollOnCertificateDeletion(getVaultUri(), toDeleteCertificateName);
+            keyVaultClient.purgeDeletedCertificate(getVaultUri(), toDeleteCertificateName);
+            Thread.sleep(10000);
         }
     }
 
@@ -751,6 +784,8 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
         Assert.assertEquals(0, certificates.size());
 
         keyVaultClient.deleteCertificate(getVaultUri(), certificateName);
+        pollOnCertificateDeletion(getVaultUri(), certificateName);
+        keyVaultClient.purgeDeletedCertificate(getVaultUri(), certificateName);
     }
 
     /**
@@ -916,7 +951,7 @@ public class CertificateOperationsTest extends KeyVaultClientIntegrationTestBase
 
         throw new Exception("Pending certificate processing delayed");
     }
-
+    
     /**
      * Extracts private key from PEM contents
      * 

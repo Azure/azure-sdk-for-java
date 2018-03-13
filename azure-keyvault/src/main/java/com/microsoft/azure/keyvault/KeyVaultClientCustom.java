@@ -1,19 +1,25 @@
 package com.microsoft.azure.keyvault;
 
 import com.microsoft.azure.ListOperationCallback;
+import com.microsoft.azure.Page;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.keyvault.models.*;
 import com.microsoft.azure.keyvault.requests.*;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.microsoft.rest.RestClient;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
+import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.protocol.SerializerAdapter;
 import okhttp3.OkHttpClient;
 import retrofit2.Retrofit;
+import rx.Observable;
 
 import java.util.List;
+import java.util.Map;
 
 public interface KeyVaultClientCustom extends KeyVaultClientBase {
 
@@ -46,6 +52,24 @@ public interface KeyVaultClientCustom extends KeyVaultClientBase {
      * @return the KeyBundle if successful.
      */
     KeyBundle createKey(CreateKeyRequest createKeyRequest);
+    
+    /**
+     * Creates a new key, stores it, then returns key parameters and attributes to the client.
+     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param keyName The name for the new key. The system will generate the version name for the new key.
+     * @param kty The type of key to create. For valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param keySize The key size in bytes. For example, 1024 or 2048.
+     * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
+     * @param keyAttributes the KeyAttributes value
+     * @param tags Application specific metadata in the form of key-value pairs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws KeyVaultErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the KeyBundle object if successful.
+     */
+    KeyBundle createKey(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags);
 
     /**
      * Creates a new key, stores it, then returns key parameters and attributes to the client. The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. Authorization: Requires the keys/create permission.
@@ -56,6 +80,55 @@ public interface KeyVaultClientCustom extends KeyVaultClientBase {
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<KeyBundle> createKeyAsync(CreateKeyRequest createKeyRequest, ServiceCallback<KeyBundle> serviceCallback);
+
+    /**
+     * Creates a new key, stores it, then returns key parameters and attributes to the client.
+     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param keyName The name for the new key. The system will generate the version name for the new key.
+     * @param kty The type of key to create. For valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param keySize The key size in bytes. For example, 1024 or 2048.
+     * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
+     * @param keyAttributes the KeyAttributes value
+     * @param tags Application specific metadata in the form of key-value pairs.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags, final ServiceCallback<KeyBundle> serviceCallback);
+
+    /**
+     * Creates a new key, stores it, then returns key parameters and attributes to the client.
+     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param keyName The name for the new key. The system will generate the version name for the new key.
+     * @param kty The type of key to create. For valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param keySize The key size in bytes. For example, 1024 or 2048.
+     * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
+     * @param keyAttributes the KeyAttributes value
+     * @param tags Application specific metadata in the form of key-value pairs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyBundle object
+     */
+    Observable<KeyBundle> createKeyAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags);
+
+    /**
+     * Creates a new key, stores it, then returns key parameters and attributes to the client.
+     * The create key operation can be used to create any key type in Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param keyName The name for the new key. The system will generate the version name for the new key.
+     * @param kty The type of key to create. For valid key types, see JsonWebKeyType. Supported JsonWebKey key types (kty) for Elliptic Curve, RSA, HSM, Octet. Possible values include: 'EC', 'RSA', 'RSA-HSM', 'oct'
+     * @param keySize The key size in bytes. For example, 1024 or 2048.
+     * @param keyOps the List&lt;JsonWebKeyOperation&gt; value
+     * @param keyAttributes the KeyAttributes value
+     * @param tags Application specific metadata in the form of key-value pairs.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyBundle object
+     */
+    Observable<ServiceResponse<KeyBundle>> createKeyWithServiceResponseAsync(String vaultBaseUrl, String keyName, JsonWebKeyType kty, Integer keySize, List<JsonWebKeyOperation> keyOps, KeyAttributes keyAttributes, Map<String, String> tags);
 
     /**
      * Imports an externally created key, stores it, and returns key parameters and attributes to the client. The import key operation may be used to import any key type into an Azure Key Vault. If the named key already exists, Azure Key Vault creates a new version of the key. Authorization: requires the keys/import permission.
@@ -499,6 +572,54 @@ public interface KeyVaultClientCustom extends KeyVaultClientBase {
     ServiceFuture<List<SecretItem>> listSecretVersionsAsync(final String vaultBaseUrl, final String secretName, final Integer maxresults, final ListOperationCallback<SecretItem> serviceCallback);
 
     /**
+     * List certificates in a specified key vault.
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires the certificates/list permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws KeyVaultErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;CertificateItem&gt; object if successful.
+     */
+    PagedList<CertificateItem> getCertificates(final String vaultBaseUrl, final Integer maxresults);
+    
+    /**
+     * List certificates in a specified key vault.
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires the certificates/list permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<CertificateItem>> getCertificatesAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback);
+    
+    /**
+     * List certificates in a specified key vault.
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires the certificates/list permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CertificateItem&gt; object
+     */
+    Observable<Page<CertificateItem>> getCertificatesAsync(final String vaultBaseUrl, final Integer maxresults);
+    
+    /**
+     * List certificates in a specified key vault.
+     * The GetCertificates operation returns the set of certificates resources in the specified key vault. This operation requires the certificates/list permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;CertificateItem&gt; object
+     */
+    Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesWithServiceResponseAsync(final String vaultBaseUrl, final Integer maxresults);
+
+    
+    /**
      * List certificates in the specified vault.
      *
      * @param vaultBaseUrl The vault name, e.g. https://myvault.vault.azure.net
@@ -612,8 +733,6 @@ public interface KeyVaultClientCustom extends KeyVaultClientBase {
      */
     ServiceFuture<IssuerBundle> updateCertificateIssuerAsync(UpdateCertificateIssuerRequest updateCertificateIssuerRequest, final ServiceCallback<IssuerBundle> serviceCallback);
 
-
-
     /**
      * Creates a new certificate version. If this is the first version, the certificate resource is created.
      *
@@ -693,8 +812,6 @@ public interface KeyVaultClientCustom extends KeyVaultClientBase {
      */
     ServiceFuture<List<CertificateItem>> listCertificateVersionsAsync(final String vaultBaseUrl, final String certificateName, final Integer maxresults, final ListOperationCallback<CertificateItem> serviceCallback);
 
-
-
     /**
      * Updates the policy for a certificate. Set appropriate members in the certificatePolicy that must be updated. Leave others as null.
      *
@@ -722,6 +839,7 @@ public interface KeyVaultClientCustom extends KeyVaultClientBase {
      * @return the CertificateBundle if successful.
      */
     CertificateBundle updateCertificate(UpdateCertificateRequest updateCertificateRequest);
+    
     /**
      * Updates the attributes associated with the specified certificate.
      *
@@ -820,5 +938,51 @@ public interface KeyVaultClientCustom extends KeyVaultClientBase {
      */
     ServiceFuture<String> getPendingCertificateSigningRequestAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<String> serviceCallback);
 
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws KeyVaultErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;DeletedCertificateItem&gt; object if successful.
+     */
+    PagedList<DeletedCertificateItem> getDeletedCertificates(final String vaultBaseUrl, final Integer maxresults);
+    
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<List<DeletedCertificateItem>> getDeletedCertificatesAsync(final String vaultBaseUrl, final Integer maxresults, final ListOperationCallback<DeletedCertificateItem> serviceCallback);
+
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;DeletedCertificateItem&gt; object
+     */
+    Observable<Page<DeletedCertificateItem>> getDeletedCertificatesAsync(final String vaultBaseUrl, final Integer maxresults);
+    
+    /**
+     * Lists the deleted certificates in the specified vault currently available for recovery.
+     * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;DeletedCertificateItem&gt; object
+     */
+    Observable<ServiceResponse<Page<DeletedCertificateItem>>> getDeletedCertificatesWithServiceResponseAsync(final String vaultBaseUrl, final Integer maxresults);
 
 }
