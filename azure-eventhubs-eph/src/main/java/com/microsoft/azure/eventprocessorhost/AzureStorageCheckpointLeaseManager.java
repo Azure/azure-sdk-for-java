@@ -153,7 +153,7 @@ class AzureStorageCheckpointLeaseManager implements ICheckpointManager, ILeaseMa
             }
             Checkpoint checkpoint = null;
             if (lease != null) {
-                if (lease.getOffset() != null) {
+                if ((lease.getOffset() != null) && !lease.getOffset().isEmpty()) {
                     checkpoint = new Checkpoint(partitionId);
                     checkpoint.setOffset(lease.getOffset());
                     checkpoint.setSequenceNumber(lease.getSequenceNumber());
