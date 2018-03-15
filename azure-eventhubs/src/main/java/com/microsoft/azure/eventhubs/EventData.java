@@ -41,7 +41,7 @@ public interface EventData extends Serializable {
      * </pre>
      * <p> Sample Code:
      * <pre>
-     * EventData eventData = new EventData(telemetryEventBytes);
+     * EventData eventData = EventData.create(telemetryEventBytes);
      * eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
      * partitionSender.Send(eventData);
      * </pre>
@@ -63,7 +63,7 @@ public interface EventData extends Serializable {
      *  </pre>
      * <p> Illustration:
      * <pre> {@code
-     *  EventData eventData = new EventData(telemetryEventBytes, offset, length);
+     *  EventData eventData = EventData.create(telemetryEventBytes, offset, length);
      *  eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
      *  partitionSender.Send(eventData);
      *  }</pre>
@@ -87,7 +87,7 @@ public interface EventData extends Serializable {
      *  </pre>
      * <p> Illustration:
      * <pre> {@code
-     *  EventData eventData = new EventData(telemetryEventByteBuffer);
+     *  EventData eventData = EventData.create(telemetryEventByteBuffer);
      *  eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
      * 	partitionSender.Send(eventData);
      *  }</pre>

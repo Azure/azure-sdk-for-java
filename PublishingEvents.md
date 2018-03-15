@@ -46,7 +46,7 @@ Once you have the client in hands, you can package any arbitrary payload as a pl
 we use to illustrate the functionality send a UTF-8 encoded JSON data, but you can transfer any format you wish. 
 
 ```Java
-    EventData sendEvent = new EventData(payloadBytes);
+    EventData sendEvent = EventData.create(payloadBytes);
     ehClient.sendSync(sendEvent);
 ```
          
@@ -123,7 +123,7 @@ Of the two addressing options, the preferable one is to let the hash algorithm m
 The gesture is a straightforward extra override to the send operation supplying the partition key: 
 
 ```Java
-    EventData sendEvent = new EventData(payloadBytes);
+    EventData sendEvent = EventData.create(payloadBytes);
 >   ehClient.sendSync(sendEvent, partitionKey);
 ```
      
@@ -136,7 +136,7 @@ option. To send to a partition you explicitly need to create a client object tha
 ```Java
     EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(str);
 >	EventHubSender sender = ehClient.createPartitionSenderSync("0");
-    EventData sendEvent = new EventData(payloadBytes);
+    EventData sendEvent = EventData.create(payloadBytes);
     sender.sendSync(sendEvent);
 ```
 
