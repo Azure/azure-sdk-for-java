@@ -75,7 +75,7 @@ public class FileTests extends BatchTestBase {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 batchClient.fileOperations().getFileFromTask(jobId, taskId, "stdout.txt", stream);
                 String fileContent = stream.toString("UTF-8");
-                Assert.assertEquals(fileContent, "hello\r\n");
+                Assert.assertEquals("hello\r\n", fileContent);
                 stream.close();
 
                 String output = batchClient.protocolLayer().files().getFromTaskAsync(jobId, taskId, "stdout.txt").map(new Func1<InputStream, String>() {
@@ -88,7 +88,7 @@ public class FileTests extends BatchTestBase {
                         }
                     }
                 }).toBlocking().single();
-                Assert.assertEquals(output, "hello\r\n");
+                Assert.assertEquals("hello\r\n", output);
 
                 FileProperties properties = batchClient.fileOperations().getFilePropertiesFromTask(jobId, taskId, "stdout.txt");
                 Assert.assertEquals(7, properties.contentLength());
@@ -141,7 +141,7 @@ public class FileTests extends BatchTestBase {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 batchClient.fileOperations().getFileFromComputeNode(livePool.id(), nodeId, fileName, stream);
                 String fileContent = stream.toString("UTF-8");
-                Assert.assertEquals(fileContent, "hello\r\n");
+                Assert.assertEquals("hello\r\n", fileContent);
                 stream.close();
 
                 String output = batchClient.protocolLayer().files().getFromComputeNodeAsync(livePool.id(), nodeId, fileName).map(new Func1<InputStream, String>() {
@@ -154,7 +154,7 @@ public class FileTests extends BatchTestBase {
                         }
                     }
                 }).toBlocking().single();
-                Assert.assertEquals(output, "hello\r\n");
+                Assert.assertEquals("hello\r\n", output);
 
                 FileProperties properties = batchClient.fileOperations().getFilePropertiesFromComputeNode(livePool.id(), nodeId, fileName);
                 Assert.assertEquals(7, properties.contentLength());

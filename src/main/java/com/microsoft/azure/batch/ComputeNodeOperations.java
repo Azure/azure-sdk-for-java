@@ -521,4 +521,47 @@ public class ComputeNodeOperations implements IInheritedBehaviors {
         return this._parentBatchClient.protocolLayer().computeNodes().list(poolId, options);
     }
 
+    /**
+     * Upload Azure Batch service log files from the specified compute node to Azure Blob Storage.
+     * This is for gathering Azure Batch service log files in an automated fashion from nodes if you are experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared with Azure support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node from which you want to upload the Azure Batch service log files.
+     * @param containerUrl The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s).
+     * @param startTime The start of the time range from which to upload Batch Service log file(s).
+     * @return The result of uploading Batch service log files from a specific compute node.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public UploadBatchServiceLogsResult uploadBatchServiceLogs(String poolId, String nodeId, String containerUrl, DateTime startTime) throws BatchErrorException, IOException {
+        return uploadBatchServiceLogs(poolId, nodeId, containerUrl, startTime, null, null);
+
+    }
+
+    /**
+     * Upload Azure Batch service log files from the specified compute node to Azure Blob Storage.
+     * This is for gathering Azure Batch service log files in an automated fashion from nodes if you are experiencing an error and wish to escalate to Azure support. The Azure Batch service log files should be shared with Azure support to aid in debugging issues with the Batch service.
+     *
+     * @param poolId The ID of the pool that contains the compute node.
+     * @param nodeId The ID of the compute node from which you want to upload the Azure Batch service log files.
+     * @param containerUrl The URL of the container within Azure Blob Storage to which to upload the Batch Service log file(s).
+     * @param startTime The start of the time range from which to upload Batch Service log file(s).
+     * @param endTime The end of the time range from which to upload Batch Service log file(s).
+     * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
+     * @return The result of uploading Batch service log files from a specific compute node.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public UploadBatchServiceLogsResult uploadBatchServiceLogs(String poolId, String nodeId, String containerUrl, DateTime startTime, DateTime endTime, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        UploadBatchServiceLogsConfiguration configuration = new UploadBatchServiceLogsConfiguration();
+        configuration.withContainerUrl(containerUrl);
+        configuration.withStartTime(startTime);
+        configuration.withEndTime(endTime);
+
+        ComputeNodeUploadBatchServiceLogsOptions options = new ComputeNodeUploadBatchServiceLogsOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
+        bhMgr.applyRequestBehaviors(options);
+
+        return this._parentBatchClient.protocolLayer().computeNodes().uploadBatchServiceLogs(poolId, nodeId, configuration, options);
+    }
 }

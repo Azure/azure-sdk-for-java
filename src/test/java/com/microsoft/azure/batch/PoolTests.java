@@ -112,25 +112,32 @@ public class PoolTests extends BatchTestBase {
             }
 
             Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
-            Assert.assertEquals((long)pool.currentDedicatedNodes(), POOL_VM_COUNT);
-            Assert.assertEquals((long)pool.currentLowPriorityNodes(), POOL_LOW_PRI_VM_COUNT);
+            Assert.assertEquals(POOL_VM_COUNT, (long)pool.currentDedicatedNodes());
+            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long)pool.currentLowPriorityNodes());
 
             List<ComputeNode> computeNodes = batchClient.computeNodeOperations().listComputeNodes(poolId);
             List<InboundEndpoint> inboundEndpoints = computeNodes.get(0).endpointConfiguration().inboundEndpoints();
             Assert.assertEquals(2, inboundEndpoints.size());
             InboundEndpoint inboundEndpoint = inboundEndpoints.get(0);
-            Assert.assertEquals(inboundEndpoint.backendPort(), 5000);
+            Assert.assertEquals(5000, inboundEndpoint.backendPort());
             Assert.assertTrue(inboundEndpoint.frontendPort() >= 60000);
             Assert.assertTrue(inboundEndpoint.frontendPort() <= 60040);
             Assert.assertTrue(inboundEndpoint.name().startsWith("testinbound."));
             Assert.assertTrue(inboundEndpoints.get(1).name().startsWith("SSHRule"));
 
+            // CHECK POOL NODE COUNTS
+            List<PoolNodeCounts> poolNodeCounts = batchClient.accountOperations().listPoolNodeCounts();
+            Assert.assertEquals(1, poolNodeCounts.size());  // Single pool only
+            Assert.assertNotNull(poolNodeCounts.get(0).lowPriority());
+            Assert.assertEquals(2, poolNodeCounts.get(0).lowPriority().idle());
+            Assert.assertEquals(0, poolNodeCounts.get(0).dedicated().idle());
+
             // RESIZE
             batchClient.poolOperations().resizePool(poolId, 1, 1);
 
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals((long)pool.targetDedicatedNodes(), 1);
-            Assert.assertEquals((long)pool.targetLowPriorityNodes(), 1);
+            Assert.assertEquals(1, (long)pool.targetDedicatedNodes());
+            Assert.assertEquals(1, (long)pool.targetLowPriorityNodes());
 
             // DELETE
             boolean deleted = false;
@@ -404,15 +411,15 @@ public class PoolTests extends BatchTestBase {
             }
 
             Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
-            Assert.assertEquals((long)pool.currentDedicatedNodes(), POOL_VM_COUNT);
-            Assert.assertEquals((long)pool.currentLowPriorityNodes(), POOL_LOW_PRI_VM_COUNT);
+            Assert.assertEquals(POOL_VM_COUNT, (long)pool.currentDedicatedNodes());
+            Assert.assertEquals(POOL_LOW_PRI_VM_COUNT, (long)pool.currentLowPriorityNodes());
 
             // RESIZE
             batchClient.poolOperations().resizePool(poolId, null, 1);
 
             pool = batchClient.poolOperations().getPool(poolId);
-            Assert.assertEquals((long)pool.targetDedicatedNodes(), POOL_VM_COUNT);
-            Assert.assertEquals((long)pool.targetLowPriorityNodes(), 1);
+            Assert.assertEquals(POOL_VM_COUNT, (long)pool.targetDedicatedNodes());
+            Assert.assertEquals(1, (long)pool.targetLowPriorityNodes());
 
             // DELETE
             boolean deleted = false;
@@ -462,6 +469,13 @@ public class PoolTests extends BatchTestBase {
         // 5 minutes
         long POOL_STEADY_TIMEOUT_IN_SECONDS = 5 * 60 * 1000;
 
+        // CHECK THE EXISTING POOL/NODES
+        List<PoolNodeCounts> poolNodeCounts = batchClient.accountOperations().listPoolNodeCounts();
+        Assert.assertEquals(1, poolNodeCounts.size());  // Only have live pool
+        Assert.assertNotNull(poolNodeCounts.get(0).lowPriority());
+        Assert.assertEquals(0, poolNodeCounts.get(0).lowPriority().idle());
+        Assert.assertEquals(3, poolNodeCounts.get(0).dedicated().idle());
+
         // Check if pool exists
         if (!batchClient.poolOperations().existsPool(poolId)) {
             // Use PaaS VM with Windows
@@ -505,10 +519,10 @@ public class PoolTests extends BatchTestBase {
 
             Assert.assertTrue("The pool did not reach a steady state in the allotted time", steady);
             Assert.assertNotNull(pool.userAccounts());
-            Assert.assertEquals(pool.userAccounts().get(0).name(), "test-user-1");
-            Assert.assertEquals(pool.userAccounts().get(0).elevationLevel(), ElevationLevel.NON_ADMIN);
+            Assert.assertEquals("test-user-1", pool.userAccounts().get(0).name());
+            Assert.assertEquals(ElevationLevel.NON_ADMIN, pool.userAccounts().get(0).elevationLevel());
             Assert.assertNull(pool.userAccounts().get(0).password());
-            Assert.assertEquals(pool.userAccounts().get(1).elevationLevel(), ElevationLevel.ADMIN);
+            Assert.assertEquals(ElevationLevel.ADMIN, pool.userAccounts().get(1).elevationLevel());
 
             // LIST
             List<CloudPool> pools = batchClient.poolOperations().listPools();

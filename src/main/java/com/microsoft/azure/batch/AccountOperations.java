@@ -6,9 +6,7 @@
 
 package com.microsoft.azure.batch;
 
-import com.microsoft.azure.batch.protocol.models.AccountListNodeAgentSkusOptions;
-import com.microsoft.azure.batch.protocol.models.BatchErrorException;
-import com.microsoft.azure.batch.protocol.models.NodeAgentSku;
+import com.microsoft.azure.batch.protocol.models.*;
 
 import java.io.IOException;
 import java.util.Collection;
@@ -57,7 +55,7 @@ public class AccountOperations implements IInheritedBehaviors {
      *
      * @return A list of {@link NodeAgentSku} objects.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
-     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<NodeAgentSku> listNodeAgentSkus() throws BatchErrorException, IOException {
         return listNodeAgentSkus(null, null);
@@ -69,7 +67,7 @@ public class AccountOperations implements IInheritedBehaviors {
      * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @return A list of {@link NodeAgentSku} objects.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
-     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel) throws BatchErrorException, IOException {
         return listNodeAgentSkus(detailLevel, null);
@@ -78,11 +76,11 @@ public class AccountOperations implements IInheritedBehaviors {
     /**
      * Lists the node agent SKU values supported by the Batch service.
      *
-     * @param detailLevel A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
+     * @param detailLevel         A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
      * @return A list of {@link NodeAgentSku} objects.
      * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
-     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
      */
     public List<NodeAgentSku> listNodeAgentSkus(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
         AccountListNodeAgentSkusOptions options = new AccountListNodeAgentSkusOptions();
@@ -91,5 +89,34 @@ public class AccountOperations implements IInheritedBehaviors {
         bhMgr.applyRequestBehaviors(options);
 
         return this._parentBatchClient.protocolLayer().accounts().listNodeAgentSkus(options);
+    }
+
+    /**
+     * Gets the number of nodes in each state, grouped by pool.
+     *
+     * @return A list of {@link NodeAgentSku} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public List<PoolNodeCounts> listPoolNodeCounts() throws BatchErrorException, IOException {
+        return listPoolNodeCounts(null, null);
+    }
+
+    /**
+     * Gets the number of nodes in each state, grouped by pool.
+     *
+     * @param detailLevel         A {@link DetailLevel} used for filtering the list and for controlling which properties are retrieved from the service.
+     * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
+     * @return A list of {@link PoolNodeCounts} objects.
+     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
+     * @throws IOException         Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     */
+    public List<PoolNodeCounts> listPoolNodeCounts(DetailLevel detailLevel, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException {
+        AccountListPoolNodeCountsOptions options = new AccountListPoolNodeCountsOptions();
+        BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
+        bhMgr.appendDetailLevelToPerCallBehaviors(detailLevel);
+        bhMgr.applyRequestBehaviors(options);
+
+        return this._parentBatchClient.protocolLayer().accounts().listPoolNodeCounts(options);
     }
 }

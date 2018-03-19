@@ -9,6 +9,7 @@ package com.microsoft.azure.batch;
 import com.microsoft.azure.batch.interceptor.BatchClientParallelOptions;
 import com.microsoft.azure.batch.protocol.models.*;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
+import org.joda.time.DateTime;
 import org.junit.AfterClass;
 import org.junit.Assert;
 import org.junit.BeforeClass;
@@ -82,14 +83,14 @@ public class TaskTests  extends BatchTestBase {
             // GET
             CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
             Assert.assertNotNull(task);
-            Assert.assertEquals(task.id(), taskId);
+            Assert.assertEquals(taskId, task.id());
 
             // UPDATE
             TaskConstraints contraint = new TaskConstraints();
             contraint.withMaxTaskRetryCount(5);
             batchClient.taskOperations().updateTask(jobId, taskId, contraint);
             task = batchClient.taskOperations().getTask(jobId, taskId);
-            Assert.assertEquals(task.constraints().maxTaskRetryCount(), (Integer)5);
+            Assert.assertEquals((Integer)5, task.constraints().maxTaskRetryCount());
 
             // LIST
             List<CloudTask> tasks = batchClient.taskOperations().listTasks(jobId);
@@ -113,9 +114,15 @@ public class TaskTests  extends BatchTestBase {
                 ByteArrayOutputStream stream = new ByteArrayOutputStream();
                 batchClient.fileOperations().getFileFromTask(jobId, task.id(), STANDARD_CONSOLE_OUTPUT_FILENAME, stream);
                 String fileContent = stream.toString("UTF-8");
-                Assert.assertEquals(fileContent, "This is an example");
-            }
+                Assert.assertEquals("This is an example", fileContent);
 
+                // UPLOAD LOG
+                String outputSas = generateContainerSasToken(container);
+                UploadBatchServiceLogsResult uploadBatchServiceLogsResult = batchClient.computeNodeOperations().uploadBatchServiceLogs(livePool.id(), task.nodeInfo().nodeId(), outputSas, DateTime.now().minusMinutes(-10));
+                Assert.assertNotNull(uploadBatchServiceLogsResult);
+                Assert.assertTrue(uploadBatchServiceLogsResult.numberOfFilesUploaded() > 0);
+                Assert.assertTrue(uploadBatchServiceLogsResult.virtualDirectoryName().contains(livePool.id()));
+            }
 
             // DELETE
             batchClient.taskOperations().deleteTask(jobId, taskId);
@@ -161,9 +168,9 @@ public class TaskTests  extends BatchTestBase {
             // GET
             CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
             Assert.assertNotNull(task);
-            Assert.assertEquals(task.id(), taskId);
-            Assert.assertEquals(task.userIdentity().userName(), "test-user");
-            Assert.assertEquals(task.applicationPackageReferences().get(0).applicationId(), "msmpi");
+            Assert.assertEquals(taskId, task.id());
+            Assert.assertEquals("test-user", task.userIdentity().userName());
+            Assert.assertEquals("msmpi", task.applicationPackageReferences().get(0).applicationId());
 
         } finally {
             try {
@@ -218,12 +225,12 @@ public class TaskTests  extends BatchTestBase {
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 CloudTask task = batchClient.taskOperations().getTask(jobId, taskId);
                 Assert.assertNotNull(task);
-                Assert.assertEquals(task.executionInfo().result(), TaskExecutionResult.SUCCESS);
+                Assert.assertEquals(TaskExecutionResult.SUCCESS, task.executionInfo().result());
                 Assert.assertNull(task.executionInfo().failureInfo());
 
                 // Get the task command output file
                 String result = getContentFromContainer(container, "taskLogs/output.txt");
-                Assert.assertEquals(result, "hello\n");
+                Assert.assertEquals("hello\n", result);
             }
 
             taskToAdd = new TaskAddParameter();
@@ -236,14 +243,14 @@ public class TaskTests  extends BatchTestBase {
             if (waitForTasksToComplete(batchClient, jobId, TASK_COMPLETE_TIMEOUT_IN_SECONDS)) {
                 CloudTask task = batchClient.taskOperations().getTask(jobId, badTaskId);
                 Assert.assertNotNull(task);
-                Assert.assertEquals(task.executionInfo().result(), TaskExecutionResult.FAILURE);
+                Assert.assertEquals(TaskExecutionResult.FAILURE, task.executionInfo().result());
                 Assert.assertNotNull(task.executionInfo().failureInfo());
-                Assert.assertEquals(task.executionInfo().failureInfo().category(), ErrorCategory.USER_ERROR);
-                Assert.assertEquals(task.executionInfo().failureInfo().code(), "FailureExitCode");
+                Assert.assertEquals(ErrorCategory.USER_ERROR, task.executionInfo().failureInfo().category());
+                Assert.assertEquals("FailureExitCode", task.executionInfo().failureInfo().code());
 
                 // Get the task command output file
                 String result = getContentFromContainer(container, "taskLogs/err.txt");
-                Assert.assertEquals(result, "bash: bad: command not found\n");
+                Assert.assertEquals("bash: bad: command not found\n", result);
             }
 
         } finally {
@@ -309,8 +316,8 @@ public class TaskTests  extends BatchTestBase {
             // Test Job count
             TaskCounts counts = batchClient.jobOperations().getTaskCounts(jobId);
             int all = counts.active() + counts.completed() + counts.running();
-            Assert.assertEquals(counts.validationStatus(), TaskCountValidationStatus.VALIDATED);
-            Assert.assertEquals(all, 0);
+            Assert.assertEquals(TaskCountValidationStatus.VALIDATED, counts.validationStatus());
+            Assert.assertEquals(0, all);
 
             // CREATE
             List<TaskAddParameter> tasksToAdd = new ArrayList<>();
@@ -330,8 +337,8 @@ public class TaskTests  extends BatchTestBase {
             // Test Job count
             counts = batchClient.jobOperations().getTaskCounts(jobId);
             all = counts.active() + counts.completed() + counts.running();
-            Assert.assertEquals(counts.validationStatus(), TaskCountValidationStatus.VALIDATED);
-            Assert.assertEquals(all, TASK_COUNT);
+            Assert.assertEquals(TaskCountValidationStatus.VALIDATED, counts.validationStatus());
+            Assert.assertEquals(TASK_COUNT, all);
         } finally {
             try {
                 batchClient.jobOperations().deleteJob(jobId);

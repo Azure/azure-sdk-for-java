@@ -49,8 +49,8 @@ public class JobTests extends BatchTestBase {
             // GET
             CloudJob job = batchClient.jobOperations().getJob(jobId);
             Assert.assertNotNull(job);
-            Assert.assertEquals(job.id(), jobId);
-            Assert.assertEquals(job.priority(), (Integer) 0);
+            Assert.assertEquals(jobId, job.id());
+            Assert.assertEquals((Integer) 0, job.priority());
 
             // LIST
             List<CloudJob> jobs = batchClient.jobOperations().listJobs();
@@ -71,7 +71,7 @@ public class JobTests extends BatchTestBase {
             // UPDATE
             batchClient.jobOperations().updateJob(jobId, poolInfo, 1, null, null, null);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(job.priority(), (Integer) 1);
+            Assert.assertEquals((Integer) 1, job.priority());
 
             // DELETE
             batchClient.jobOperations().deleteJob(jobId);
@@ -108,32 +108,32 @@ public class JobTests extends BatchTestBase {
         try {
             // GET
             CloudJob job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(job.state(), JobState.ACTIVE);
+            Assert.assertEquals(JobState.ACTIVE, job.state());
 
             batchClient.jobOperations().disableJob(jobId, DisableJobOption.REQUEUE.REQUEUE);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(job.state(), JobState.DISABLING);
+            Assert.assertEquals(JobState.DISABLING, job.state());
 
             Thread.sleep(5 * 1000);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(job.state(), JobState.DISABLED);
+            Assert.assertEquals(JobState.DISABLED, job.state());
 
-            Assert.assertEquals(job.onAllTasksComplete(), OnAllTasksComplete.NO_ACTION);
+            Assert.assertEquals(OnAllTasksComplete.NO_ACTION, job.onAllTasksComplete());
             batchClient.jobOperations().patchJob(jobId, OnAllTasksComplete.TERMINATE_JOB);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(job.onAllTasksComplete(), OnAllTasksComplete.TERMINATE_JOB);
+            Assert.assertEquals(OnAllTasksComplete.TERMINATE_JOB, job.onAllTasksComplete());
 
             batchClient.jobOperations().enableJob(jobId);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(job.state(), JobState.ACTIVE);
+            Assert.assertEquals(JobState.ACTIVE, job.state());
 
             batchClient.jobOperations().terminateJob(jobId, "myreason");
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(job.state(), JobState.TERMINATING);
+            Assert.assertEquals(JobState.TERMINATING, job.state());
 
             Thread.sleep(2 * 1000);
             job = batchClient.jobOperations().getJob(jobId);
-            Assert.assertEquals(job.state(), JobState.COMPLETED);
+            Assert.assertEquals(JobState.COMPLETED, job.state());
         }
         finally {
             try {

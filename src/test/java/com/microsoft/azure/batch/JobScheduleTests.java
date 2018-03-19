@@ -56,8 +56,8 @@ public class JobScheduleTests extends BatchTestBase {
 
             CloudJobSchedule jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
             Assert.assertNotNull(jobSchedule);
-            Assert.assertEquals(jobSchedule.id(), jobScheduleId);
-            Assert.assertEquals(jobSchedule.jobSpecification().priority(), (Integer) 100);
+            Assert.assertEquals(jobScheduleId, jobSchedule.id());
+            Assert.assertEquals((Integer) 100, jobSchedule.jobSpecification().priority());
             Assert.assertTrue(jobSchedule.schedule().doNotRunAfter().compareTo(DateTime.now()) > 0);
 
             // LIST
@@ -65,7 +65,7 @@ public class JobScheduleTests extends BatchTestBase {
             Assert.assertNotNull(jobSchedules);
             Assert.assertTrue(jobSchedules.size() > 0);
 
-            Assert.assertEquals(jobSchedules.get(0).id(), jobScheduleId);
+            Assert.assertEquals(jobScheduleId, jobSchedules.get(0).id());
 
             // UPDATE
             LinkedList<MetadataItem> metadata = new LinkedList<MetadataItem>();
@@ -74,7 +74,7 @@ public class JobScheduleTests extends BatchTestBase {
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
             Assert.assertTrue(jobSchedule.metadata().size() == 1);
             Assert.assertTrue(jobSchedule.metadata().get(0).name().equals("key1"));
-            Assert.assertEquals(jobSchedule.jobSpecification().priority(), (Integer) 100);
+            Assert.assertEquals((Integer) 100, jobSchedule.jobSpecification().priority());
 
             // DELETE
             batchClient.jobScheduleOperations().deleteJobSchedule(jobScheduleId);
@@ -111,15 +111,15 @@ public class JobScheduleTests extends BatchTestBase {
         try {
             // GET
             CloudJobSchedule jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertEquals(jobSchedule.state(), JobScheduleState.ACTIVE);
+            Assert.assertEquals(JobScheduleState.ACTIVE, jobSchedule.state());
 
             batchClient.jobScheduleOperations().disableJobSchedule(jobScheduleId);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertEquals(jobSchedule.state(), JobScheduleState.DISABLED);
+            Assert.assertEquals(JobScheduleState.DISABLED, jobSchedule.state());
 
             batchClient.jobScheduleOperations().enableJobSchedule(jobScheduleId);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertEquals(jobSchedule.state(), JobScheduleState.ACTIVE);
+            Assert.assertEquals(JobScheduleState.ACTIVE, jobSchedule.state());
 
             batchClient.jobScheduleOperations().terminateJobSchedule(jobScheduleId);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
@@ -127,7 +127,7 @@ public class JobScheduleTests extends BatchTestBase {
 
             Thread.sleep(2 * 1000);
             jobSchedule = batchClient.jobScheduleOperations().getJobSchedule(jobScheduleId);
-            Assert.assertEquals(jobSchedule.state(), JobScheduleState.COMPLETED);
+            Assert.assertEquals(JobScheduleState.COMPLETED, jobSchedule.state());
 
             batchClient.jobScheduleOperations().deleteJobSchedule(jobScheduleId);
             try {

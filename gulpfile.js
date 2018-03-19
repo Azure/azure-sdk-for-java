@@ -6,7 +6,7 @@ var fs = require('fs');
 
 var mappings = {
     'batchService': {
-        'source': 'specification/batch/data-plane/Microsoft.Batch/2017-09-01.6.0/BatchService.json',
+        'source': 'specification/batch/data-plane/Microsoft.Batch/stable/2018-03-01.6.1/BatchService.json',
         'package': 'com.microsoft.azure.batch.protocol',
         'fluent': false,
         'args': '-FT 1'
@@ -61,16 +61,16 @@ var codegen = function(project, cb) {
     var outputDir = 'src/main/java/' + mappings[project].package.replace(/\./g, '/');
     deleteFolderRecursive(outputDir);
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
-    var generator = 'Azure.Java.Fluent';
+    var generator = '--fluent ';
     if (mappings[project].fluent !== null && mappings[project].fluent === false) {
-        generator = 'Azure.Java';
+        generator = '';
     }
-    cmd = autoRestExe + ' -Modeler ' + modeler + 
-                        ' -CodeGenerator ' + generator + 
-                        ' -Namespace ' + mappings[project].package + 
-                        ' -Input ' + specRoot + '/' + mappings[project].source + 
-                        ' -outputDirectory ' + 'src/main/java/' + mappings[project].package.replace(/\./g, '/') + 
-                        ' -Header MICROSOFT_MIT_NO_CODEGEN' +
+    cmd = autoRestExe + ' --java ' +
+                        ' --azure-arm ' + 
+                        ' --namespace=' + mappings[project].package + 
+                        ' --input-file=' + specRoot + '/' + mappings[project].source + 
+                        ' --java.output-folder=' + 'src/main/java/' + mappings[project].package.replace(/\./g, '/') + 
+                        ' --license-header=MICROSOFT_MIT_NO_CODEGEN' +
                         ' -' + autoRestArgs;
     if (mappings[project].args !== undefined) {
         cmd = cmd + ' ' + mappings[project].args;
