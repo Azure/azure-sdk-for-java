@@ -1,6 +1,6 @@
 # Azure Batch SDK for Java release notes
 
-## Changes in 4.0.0
+## Changes in 3.1.0
 ### Features
  - Added the ability to query pool node counts by state, via the new `listPoolNodeCounts` method on `PoolOperations`.
  - Added the ability to upload Azure Batch node agent logs from a particular node, via the `uploadComputeNodeBatchServiceLogs` method on `ComputeNodeOperations`.
