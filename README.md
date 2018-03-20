@@ -41,24 +41,56 @@ These other Azure SDKs for Java, that are not currently in this repository, can 
 
 The following projects provide Java APIs for [Azure Cognitive Services](https://azure.microsoft.com/en-us/services/cognitive-services/), empowering your applications with intelligent algorithms that enable them to see, hear, speak and understand.
 
-* <a name="search"></a>*Search*
-  * <a name="entity-search"></a>**Entity Search**
-  
-    | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch) | :arrow_down: Download - not yet released | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/bing-entity-search-api/) |
-    | --- | --- | --- | --- |
-
 * <a name="language"></a>*Language*
+  * <a name="spell-check"></a>**Spell Check**
+  
+      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-spellcheck) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-cognitiveservices-spellcheck%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/BingSearchV7)| [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3ASpellCheck) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/spell-check/) |
+      | --- | --- | --- | --- | --- |
   * <a name="text-analytics"></a>**Text Analytics**
   
-      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-language) | :arrow_down: Download - not yet released | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3ATextAnalytics) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) |
-    | --- | --- | --- | --- |
+      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-textanalytics) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-cognitiveservices-language%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/TextAnalytics) |  [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3ATextAnalytics) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/text-analytics/) |
+      | --- | --- | --- | --- | --- |
 
+* <a name="search"></a>*Search*
+  * <a name="custom-search"></a>**Custom Search**
+  
+    | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-customsearch) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-cognitiveservices-customsearch%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/BingSearchV7)| [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3ACustomSearch) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/bing-custom-search-api/) |
+    | --- | --- | --- | --- | --- |
+  * <a name="entity-search"></a>**Entity Search**
+  
+    | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-entitysearch) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-cognitiveservices-entitysearch%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/BingSearchV7)| [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEntitySearch) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/bing-entity-search-api/) |
+    | --- | --- | --- | --- | --- |
+  * <a name="image-search"></a>**Image Search**
+  
+    | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-imagesearch) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-cognitiveservices-imagesearch%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/BingSearchV7)| [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AImageSearch) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/bing-image-search-api/) |
+    | --- | --- | --- | --- | --- |
+  * <a name="news-search"></a>**News Search**
+  
+    | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-newssearch) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-cognitiveservices-newssearch%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/BingSearchV7)| [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3ANewsSearch) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/bing-news-search-api/) |
+    | --- | --- | --- | --- | --- |
+  * <a name="video-search"></a>**Video Search**
+  
+    | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-videosearch) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-cognitiveservices-videosearch%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/BingSearchV7)| [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AVideoSearch) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/bing-video-search-api/) |
+    | --- | --- | --- | --- | --- |
+  * <a name="web-search"></a>**Web Search**
+  
+    | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-websearch) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-cognitiveservices-websearch%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/BingSearchV7)  | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AWebSearch) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/bing-web-search-api/) |
+    | --- | --- | --- | --- | --- |
+	
 * <a name="vision"></a>*Vision*
+   * <a name="computer-vision"></a>**Computer Vision**
+
+      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-computervision) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-computervision%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/ComputerVision) | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AComputerVision) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/computer-vision) |
+      | --- | --- | --- | --- | --- |
+	* <a name="content-moderator"></a>**Content Moderator**
+
+      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-contentmoderator) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-cognitiveservices-contentmoderator%22) | [:pencil: Samples](https://github.com/Azure-Samples/cognitive-services-java-sdk-samples/tree/master/ContentModerator) |  [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AContentModerator) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/content-moderator) |
+      | --- | --- | --- | --- | --- |
   * <a name="face-api"></a>**Face API**
 
-      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision) | :arrow_down: Download - not yet released | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AFaceAPI) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/face/) |
-    | --- | --- | --- | --- |
-
+      | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/cognitiveservices/azure-vision) | [:arrow_down: Download](https://search.maven.org/#search%7Cga%7C1%7Ca%3A%22azure-faceapi%22) | :pencil: Samples | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AFaceAPI) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/cognitive-services/face/) |
+      | --- | --- | --- | --- | --- |
+	
 ## Media Services
 
 This project provides Java APIs for Azure Media Services, enabling you to share media content through premium video workflows:
