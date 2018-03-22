@@ -18,6 +18,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
 public final class JsonWebKeyType {
     /** Static value EC for JsonWebKeyType. */
     public static final JsonWebKeyType EC = new JsonWebKeyType("EC");
+    /** Static value EC-HSM for JsonWebKeyType. */
+    public static final JsonWebKeyType EC_HSM = new JsonWebKeyType("EC-HSM");
 
     /** Static value RSA for JsonWebKeyType. */
     public static final JsonWebKeyType RSA = new JsonWebKeyType("RSA");
@@ -69,5 +71,5 @@ public final class JsonWebKeyType {
      * All the JWK key types.
      */
     public static final List<JsonWebKeyType> ALL_TYPES =
-            Collections.unmodifiableList(Arrays.asList(EC, RSA, RSA_HSM, OCT));
+            Collections.unmodifiableList(Arrays.asList(EC, RSA, RSA_HSM, OCT, EC_HSM));
 }
