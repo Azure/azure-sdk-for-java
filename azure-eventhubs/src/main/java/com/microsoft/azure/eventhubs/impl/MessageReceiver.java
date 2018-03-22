@@ -222,7 +222,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     public void setPrefetchCount(final int value) throws EventHubException {
         final int deltaPrefetchCount;
         synchronized (this.prefetchCountSync) {
-            deltaPrefetchCount = this.prefetchCount - value;
+            deltaPrefetchCount = value - this.prefetchCount;
             this.prefetchCount = value;
         }
 

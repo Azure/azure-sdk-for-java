@@ -28,9 +28,9 @@ public abstract class TestBase {
                     @Override
                     public CompletableFuture<Void> apply(PartitionSender pSender) {
                         @SuppressWarnings("unchecked")
-                        CompletableFuture<Void>[] sends = new CompletableFuture[noOfEvents];
+                        final CompletableFuture<Void>[] sends = new CompletableFuture[noOfEvents];
                         for (int count = 0; count < noOfEvents; count++) {
-                            EventData sendEvent = EventData.create("test string".getBytes());
+                            final EventData sendEvent = EventData.create("test string".getBytes());
                             sends[count] = pSender.send(sendEvent);
                         }
 
