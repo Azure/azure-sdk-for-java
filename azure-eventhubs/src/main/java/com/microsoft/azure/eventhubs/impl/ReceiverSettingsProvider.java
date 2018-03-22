@@ -4,11 +4,11 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.util.Map;
-
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnknownDescribedType;
 import org.apache.qpid.proton.message.Message;
+
+import java.util.Map;
 
 public interface ReceiverSettingsProvider {
     Map<Symbol, UnknownDescribedType> getFilter(final Message lastReceivedMessage);

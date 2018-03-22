@@ -49,7 +49,7 @@ you then create an *EventHubClient* instance, which manages a secure AMQP 1.0 co
 Once you have the client in hands, you can package any arbitrary payload as a plain array of bytes and send it. 
 
 ```Java
-    EventData sendEvent = new EventData(payloadBytes);
+    EventData sendEvent = EventData.create(payloadBytes);
     ehClient.sendSync(sendEvent);
 ```
          

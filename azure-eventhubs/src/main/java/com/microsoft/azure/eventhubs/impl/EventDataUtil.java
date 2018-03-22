@@ -4,15 +4,11 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.util.Collection;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.Set;
-import java.util.function.Consumer;
-
 import com.microsoft.azure.eventhubs.EventData;
 import org.apache.qpid.proton.message.Message;
+
+import java.util.*;
+import java.util.function.Consumer;
 
 /*
  * Internal utility class for EventData

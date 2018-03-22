@@ -14,33 +14,32 @@ import java.util.concurrent.CompletableFuture;
  * The Azure Storage managers use the same storage for both lease and checkpoints, so both
  * interfaces are implemented by the same class. You are free to do the same thing if you have
  * a unified store for both types of data.
- * 
+ *
  * This interface does not specify initialization methods because we have no way of knowing what
  * information your implementation will require. If your implementation needs initialization, you
  * will have to initialize the instance before passing it to the EventProcessorHost constructor.
  */
-public interface ICheckpointManager
-{
-	/***
-	 * Does the checkpoint store exist?
-	 * 
-	 * The returned CompletableFuture completes with true if the checkpoint store exists or false if it
-	 * does not. It completes exceptionally on error.
-	 * 
-	 * @return CompletableFuture {@literal ->} true if it exists, false if not
-	 */
+public interface ICheckpointManager {
+    /***
+     * Does the checkpoint store exist?
+     *
+     * The returned CompletableFuture completes with true if the checkpoint store exists or false if it
+     * does not. It completes exceptionally on error.
+     *
+     * @return CompletableFuture {@literal ->} true if it exists, false if not
+     */
     public CompletableFuture<Boolean> checkpointStoreExists();
 
     /***
      * Create the checkpoint store if it doesn't exist. Do nothing if it does exist.
-     * 
+     *
      * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> createCheckpointStoreIfNotExists();
-    
+
     /**
      * Deletes the checkpoint store.
-     * 
+     *
      * @return CompletableFuture {@literal ->} null on success, completes exceptionally on error.
      */
     public CompletableFuture<Void> deleteCheckpointStore();
@@ -48,24 +47,24 @@ public interface ICheckpointManager
     /***
      * Get the checkpoint data associated with the given partition. Could return null if no checkpoint has
      * been created for that partition.
-     * 
+     *
      * @param partitionId  Id of partition to get checkpoint info for.
-     * 
-     * @return  CompletableFuture {@literal ->} checkpoint info, or null. Completes exceptionally on error.
+     *
+     * @return CompletableFuture {@literal ->} checkpoint info, or null. Completes exceptionally on error.
      */
     public CompletableFuture<Checkpoint> getCheckpoint(String partitionId);
-    
+
     /***
      * If a checkpoint HOLDER for the given partition exists, return the checkpoint if there is one,
      * or null if it has not been initialized. If the HOLDER doesn't exist, create it and return null.
-     * 
+     *
      * The semantics of this are complicated because it is possible to use the same store for both
      * leases and checkpoints (the Azure Storage implementation does so) and it is required to
      * have a lease for every partition but it is not required to have a checkpoint for a partition.
      * It is a valid scenario to never use checkpoints at all, so it is important for the store to
      * distinguish between creating the structure(s) that will hold a checkpoint and actually creating
      * a checkpoint (storing an offset/sequence number pair in the structure).
-     * 
+     *
      * @param partitionId  Id of partition to create the checkpoint HOLDER for.
      * @return CompletableFuture {@literal ->} the checkpoint for the given partition, if one exists, or null. Completes exceptionally on error.
      */
@@ -73,23 +72,23 @@ public interface ICheckpointManager
 
     /***
      * Update the checkpoint in the store with the offset/sequenceNumber in the provided checkpoint.
-     * 
+     *
      * The lease argument is necessary to make the Azure Storage implementation work correctly: the
      * Azure Storage implementation stores the checkpoint as part of the lease and we cannot completely
      * hide the connection between the two. If your implementation does not have this limitation, you are
      * free to ignore the lease argument.
-     * 
-     * @param lease		  lease for the partition to be checkpointed.
+     *
+     * @param lease          lease for the partition to be checkpointed.
      * @param checkpoint  offset/sequenceNumber and partition id to update the store with.
      * @return CompletableFuture {@literal ->} null on success. Completes exceptionally on error.
      */
     public CompletableFuture<Void> updateCheckpoint(Lease lease, Checkpoint checkpoint);
-    
+
     /***
      * Delete the stored checkpoint data for the given partition. If there is no stored checkpoint for the
      * given partition, that is treated as success. Deleting the checkpoint HOLDER is allowed but not required;
      * your implementation is free to do whichever is more convenient. 
-     * 
+     *
      * @param partitionId  id of partition to delete checkpoint from store
      * @return CompletableFuture {@literal ->} null on success. Completes exceptionally on error.
      */

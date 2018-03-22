@@ -4,17 +4,16 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import com.microsoft.azure.eventhubs.*;
+import org.apache.qpid.proton.amqp.Symbol;
+import org.apache.qpid.proton.amqp.transport.ErrorCondition;
+
 import java.io.IOException;
 import java.time.ZonedDateTime;
 import java.util.Locale;
 import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
-
-import com.microsoft.azure.eventhubs.*;
-import org.apache.qpid.proton.amqp.Symbol;
-import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 
 public final class ExceptionUtil {
     static Exception toException(ErrorCondition errorCondition) {
@@ -134,7 +133,7 @@ public final class ExceptionUtil {
             final CompletableFuture<?> exceptionallyCompletedFuture) {
         try {
             exceptionallyCompletedFuture.get();
-        } catch (ExecutionException|InterruptedException exception) {
+        } catch (ExecutionException | InterruptedException exception) {
             final Throwable cause = exception.getCause();
             return (cause == null ? exception : cause);
         } catch (Exception exception) {
@@ -142,26 +141,6 @@ public final class ExceptionUtil {
         }
 
         return null;
-    }
-
-    @FunctionalInterface
-    public interface SyncFactory<T> {
-        T execute() throws EventHubException, ExecutionException, InterruptedException;
-    }
-
-    @FunctionalInterface
-    public interface SyncFactoryWithIOException<T> {
-        T execute() throws IOException, EventHubException, ExecutionException, InterruptedException;
-    }
-
-   @FunctionalInterface
-    public interface SyncFactoryVoid {
-        void execute() throws EventHubException, ExecutionException, InterruptedException;
-    }
-
-    @FunctionalInterface
-    public interface SyncFactoryWithIllegalArgException<T> {
-        T execute() throws IllegalArgumentException, EventHubException, ExecutionException, InterruptedException;
     }
 
     private static void handle(final Exception exception) throws EventHubException {
@@ -215,5 +194,25 @@ public final class ExceptionUtil {
             handle(exception);
             return null;
         }
+    }
+
+    @FunctionalInterface
+    public interface SyncFactory<T> {
+        T execute() throws EventHubException, ExecutionException, InterruptedException;
+    }
+
+    @FunctionalInterface
+    public interface SyncFactoryWithIOException<T> {
+        T execute() throws IOException, EventHubException, ExecutionException, InterruptedException;
+    }
+
+    @FunctionalInterface
+    public interface SyncFactoryVoid {
+        void execute() throws EventHubException, ExecutionException, InterruptedException;
+    }
+
+    @FunctionalInterface
+    public interface SyncFactoryWithIllegalArgException<T> {
+        T execute() throws IllegalArgumentException, EventHubException, ExecutionException, InterruptedException;
     }
 }

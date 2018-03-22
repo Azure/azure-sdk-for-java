@@ -49,9 +49,9 @@ public interface PartitionSender {
      *
      * @param data the {@link EventData} to be sent.
      * @throws PayloadSizeExceededException if the total size of the {@link EventData} exceeds a pre-defined limit set by the service. Default is 256k bytes.
-     * @throws EventHubException          if Service Bus service encountered problems during the operation.
+     * @throws EventHubException            if Service Bus service encountered problems during the operation.
      */
-    default void sendSync(final EventData data) throws EventHubException{
+    default void sendSync(final EventData data) throws EventHubException {
         ExceptionUtil.syncVoid(() -> this.send(data).get());
     }
 
@@ -83,7 +83,7 @@ public interface PartitionSender {
      * @param eventDatas batch of events to send to EventHub
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
-    default void sendSync(final Iterable<EventData> eventDatas) throws EventHubException{
+    default void sendSync(final Iterable<EventData> eventDatas) throws EventHubException {
         ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 
@@ -111,7 +111,7 @@ public interface PartitionSender {
      *     {
      *         PayloadEvent payload = new PayloadEvent(count);
      *         byte[] payloadBytes = gson.toJson(payload).getBytes(Charset.defaultCharset());
-     *         EventData sendEvent = new EventData(payloadBytes);
+     *         EventData sendEvent = EventData.create(payloadBytes);
      *         Map{@literal<}String, String{@literal>} applicationProperties = new HashMap{@literal<}String, String{@literal>}();
      *         applicationProperties.put("from", "javaClient");
      *         sendEvent.setProperties(applicationProperties);
@@ -134,7 +134,7 @@ public interface PartitionSender {
      * @param eventDatas EventDataBatch to send to EventHub
      * @throws EventHubException if Service Bus service encountered problems during the operation.
      */
-    default void sendSync(final EventDataBatch eventDatas) throws EventHubException{
+    default void sendSync(final EventDataBatch eventDatas) throws EventHubException {
         ExceptionUtil.syncVoid(() -> this.send(eventDatas).get());
     }
 

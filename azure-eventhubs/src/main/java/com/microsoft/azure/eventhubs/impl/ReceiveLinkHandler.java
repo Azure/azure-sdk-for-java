@@ -4,15 +4,14 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.util.Locale;
-
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Event;
 import org.apache.qpid.proton.engine.Link;
 import org.apache.qpid.proton.engine.Receiver;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.Locale;
 
 // ServiceBus <-> ProtonReactor interaction 
 // handles all recvLink - reactor events

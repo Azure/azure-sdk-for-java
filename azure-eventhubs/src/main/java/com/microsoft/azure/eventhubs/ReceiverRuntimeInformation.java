@@ -25,6 +25,7 @@ public final class ReceiverRuntimeInformation {
 
     /**
      * The Event Hubs partition id to which this information belongs to
+     *
      * @return the partition identifier
      */
     public String getPartitionId() {
@@ -34,6 +35,7 @@ public final class ReceiverRuntimeInformation {
 
     /**
      * The last enqueued {@link EventData}'s sequence number on this EventHubs Partition
+     *
      * @return last enqueued sequence number
      */
     public long getLastEnqueuedSequenceNumber() {
@@ -43,6 +45,7 @@ public final class ReceiverRuntimeInformation {
 
     /**
      * The last enqueued {@link EventData}'s enqueue time stamp on this EventHubs Partition
+     *
      * @return last enqueued time
      */
     public Instant getLastEnqueuedTime() {
@@ -52,6 +55,7 @@ public final class ReceiverRuntimeInformation {
 
     /**
      * The last enqueued {@link EventData}'s offset on this EventHubs Partition
+     *
      * @return offset
      */
     public String getLastEnqueuedOffset() {
@@ -61,6 +65,7 @@ public final class ReceiverRuntimeInformation {
 
     /**
      * The value indicating when this information was retrieved from the Event Hubs service
+     *
      * @return retrieval time
      */
     public Instant getRetrievalTime() {

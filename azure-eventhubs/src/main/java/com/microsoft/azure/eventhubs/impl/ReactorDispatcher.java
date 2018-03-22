@@ -4,19 +4,19 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
+import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.engine.BaseHandler;
+import org.apache.qpid.proton.engine.Event;
+import org.apache.qpid.proton.reactor.Reactor;
+import org.apache.qpid.proton.reactor.Selectable;
+import org.apache.qpid.proton.reactor.Selectable.Callback;
+
 import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.ClosedChannelException;
 import java.nio.channels.Pipe;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.RejectedExecutionException;
-
-import org.apache.qpid.proton.engine.BaseHandler;
-import org.apache.qpid.proton.engine.Event;
-import org.apache.qpid.proton.Proton;
-import org.apache.qpid.proton.reactor.Reactor;
-import org.apache.qpid.proton.reactor.Selectable;
-import org.apache.qpid.proton.reactor.Selectable.Callback;
 
 /**
  * {@link Reactor} is not thread-safe - all calls to {@link Proton} API's should be - on the Reactor Thread.

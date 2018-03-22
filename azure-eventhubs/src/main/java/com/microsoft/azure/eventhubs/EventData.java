@@ -4,20 +4,15 @@
  */
 package com.microsoft.azure.eventhubs;
 
+import com.microsoft.azure.eventhubs.impl.AmqpConstants;
+import com.microsoft.azure.eventhubs.impl.EventDataImpl;
+import org.apache.qpid.proton.amqp.Binary;
+
 import java.io.Serializable;
 import java.nio.ByteBuffer;
 import java.time.Instant;
+import java.util.*;
 import java.util.concurrent.Executor;
-import java.util.Collections;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.apache.qpid.proton.amqp.Binary;
-
-import com.microsoft.azure.eventhubs.impl.AmqpConstants;
-import com.microsoft.azure.eventhubs.impl.EventDataImpl;
 
 /**
  * The data structure encapsulating the Event being sent-to and received-from EventHubs.
@@ -46,7 +41,7 @@ public interface EventData extends Serializable {
      * </pre>
      * <p> Sample Code:
      * <pre>
-     * EventData eventData = new EventData(telemetryEventBytes);
+     * EventData eventData = EventData.create(telemetryEventBytes);
      * eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
      * partitionSender.Send(eventData);
      * </pre>
@@ -68,7 +63,7 @@ public interface EventData extends Serializable {
      *  </pre>
      * <p> Illustration:
      * <pre> {@code
-     *  EventData eventData = new EventData(telemetryEventBytes, offset, length);
+     *  EventData eventData = EventData.create(telemetryEventBytes, offset, length);
      *  eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
      *  partitionSender.Send(eventData);
      *  }</pre>
@@ -92,7 +87,7 @@ public interface EventData extends Serializable {
      *  </pre>
      * <p> Illustration:
      * <pre> {@code
-     *  EventData eventData = new EventData(telemetryEventByteBuffer);
+     *  EventData eventData = EventData.create(telemetryEventByteBuffer);
      *  eventData.getProperties().put("eventType", "com.microsoft.azure.monitoring.EtlEvent");
      * 	partitionSender.Send(eventData);
      *  }</pre>

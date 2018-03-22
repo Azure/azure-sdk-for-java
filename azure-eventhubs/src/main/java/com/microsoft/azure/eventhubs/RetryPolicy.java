@@ -25,18 +25,6 @@ public abstract class RetryPolicy {
         this.serverBusySync = new Object();
     }
 
-    public void incrementRetryCount(String clientId) {
-        Integer retryCount = this.retryCounts.get(clientId);
-        this.retryCounts.put(clientId, retryCount == null ? 1 : retryCount + 1);
-    }
-
-    public void resetRetryCount(String clientId) {
-        Integer currentRetryCount = this.retryCounts.get(clientId);
-        if (currentRetryCount != null && currentRetryCount.intValue() != 0) {
-            this.retryCounts.put(clientId, 0);
-        }
-    }
-
     public static boolean isRetryableException(Exception exception) {
         if (exception == null) {
             throw new IllegalArgumentException("exception cannot be null");
@@ -59,6 +47,18 @@ public abstract class RetryPolicy {
 
     public static RetryPolicy getNoRetry() {
         return RetryPolicy.NO_RETRY;
+    }
+
+    public void incrementRetryCount(String clientId) {
+        Integer retryCount = this.retryCounts.get(clientId);
+        this.retryCounts.put(clientId, retryCount == null ? 1 : retryCount + 1);
+    }
+
+    public void resetRetryCount(String clientId) {
+        Integer currentRetryCount = this.retryCounts.get(clientId);
+        if (currentRetryCount != null && currentRetryCount.intValue() != 0) {
+            this.retryCounts.put(clientId, 0);
+        }
     }
 
     protected int getRetryCount(String clientId) {

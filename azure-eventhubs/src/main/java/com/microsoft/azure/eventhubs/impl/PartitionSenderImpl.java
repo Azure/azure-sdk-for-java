@@ -27,9 +27,9 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
     }
 
     static CompletableFuture<PartitionSender> Create(final MessagingFactory factory,
-                                                         final String eventHubName,
-                                                         final String partitionId,
-                                                         final Executor executor) throws EventHubException {
+                                                     final String eventHubName,
+                                                     final String partitionId,
+                                                     final Executor executor) throws EventHubException {
         final PartitionSenderImpl sender = new PartitionSenderImpl(factory, eventHubName, partitionId, executor);
         return sender.createInternalSender()
                 .thenApplyAsync(new Function<Void, PartitionSender>() {
@@ -92,7 +92,7 @@ final class PartitionSenderImpl extends ClientEntity implements PartitionSender 
 
         if (!StringUtil.isNullOrEmpty(((EventDataBatchImpl) eventDatas).getPartitionKey())) {
             throw new IllegalArgumentException("A partition key cannot be set when using PartitionSenderImpl. If you'd like to " +
-            "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions");
+                    "continue using PartitionSenderImpl with EventDataBatches, then please do not set a partition key in your BatchOptions");
         }
 
         return this.internalSender.send(EventDataUtil.toAmqpMessages(((EventDataBatchImpl) eventDatas).getInternalIterable()));

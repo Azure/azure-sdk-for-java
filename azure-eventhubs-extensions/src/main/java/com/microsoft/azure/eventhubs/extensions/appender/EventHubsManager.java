@@ -4,53 +4,45 @@
  */
 package com.microsoft.azure.eventhubs.extensions.appender;
 
+import com.microsoft.azure.eventhubs.EventData;
+import com.microsoft.azure.eventhubs.EventHubClient;
+import com.microsoft.azure.eventhubs.EventHubException;
+import org.apache.logging.log4j.core.appender.AbstractManager;
+
 import java.io.*;
 import java.util.*;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-import org.apache.logging.log4j.core.appender.*;
+public final class EventHubsManager extends AbstractManager {
+    private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
+    private final String eventHubConnectionString;
+    private EventHubClient eventHubSender;
 
-import com.microsoft.azure.eventhubs.*;
+    protected EventHubsManager(final String name, final String eventHubConnectionString) {
+        super(name);
+        this.eventHubConnectionString = eventHubConnectionString;
+    }
 
-public final class EventHubsManager extends AbstractManager
-{
-	private final String eventHubConnectionString;
-	private static final ExecutorService EXECUTOR_SERVICE = Executors.newCachedThreadPool();
-	
-	private EventHubClient eventHubSender;
-	
-	protected EventHubsManager(final String name, final String eventHubConnectionString)
-	{
-		super(name);
-		this.eventHubConnectionString = eventHubConnectionString;
-	}
-	
-	public void send(final byte[] msg) throws EventHubException
-	{
-		if (msg != null)
-		{
-			EventData data = EventData.create(msg);
-			this.eventHubSender.sendSync(data);
-		}
-	}
-	
-	public void send(final Iterable<byte[]> messages) throws EventHubException
-	{
-		if (messages != null)
-		{
-			LinkedList<EventData> events = new LinkedList<EventData>();
-			for(byte[] message : messages)
-			{
-				events.add(EventData.create(message));
-			}
-			
-			this.eventHubSender.sendSync(events);
-		}
-	}
+    public void send(final byte[] msg) throws EventHubException {
+        if (msg != null) {
+            EventData data = EventData.create(msg);
+            this.eventHubSender.sendSync(data);
+        }
+    }
 
-	public void startup() throws EventHubException, IOException
-	{
-		this.eventHubSender = EventHubClient.createSync(this.eventHubConnectionString, EXECUTOR_SERVICE);
-	}
+    public void send(final Iterable<byte[]> messages) throws EventHubException {
+        if (messages != null) {
+            LinkedList<EventData> events = new LinkedList<EventData>();
+            for (byte[] message : messages) {
+                events.add(EventData.create(message));
+            }
+
+            this.eventHubSender.sendSync(events);
+        }
+    }
+
+    public void startup() throws EventHubException, IOException {
+        this.eventHubSender = EventHubClient.createSync(this.eventHubConnectionString, EXECUTOR_SERVICE);
+    }
 }

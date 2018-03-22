@@ -78,15 +78,16 @@ public final class ConnectionStringBuilder {
     /**
      * Creates an empty {@link ConnectionStringBuilder}. At minimum, a namespace name, an entity path, SAS key name, and SAS key
      * need to be set before a valid connection string can be built.
-     *
+     * <p>
      * For advanced users, the following replacements can be done:
      * <ul>
-     *     <li>An endpoint can be provided instead of a namespace name.</li>
-     *     <li>A SAS token can be provided instead of a SAS key name and SAS key.</li>
-     *     <li>Optionally, users can set an operation timeout instead of using the default value.</li>
+     * <li>An endpoint can be provided instead of a namespace name.</li>
+     * <li>A SAS token can be provided instead of a SAS key name and SAS key.</li>
+     * <li>Optionally, users can set an operation timeout instead of using the default value.</li>
      * </ul>
      */
-    public ConnectionStringBuilder() {}
+    public ConnectionStringBuilder() {
+    }
 
     /**
      * ConnectionString format:
@@ -127,9 +128,9 @@ public final class ConnectionStringBuilder {
      * @param namespaceName the name of the namespace to connect to.
      * @param domainName    identifies the domain the namespace is located in. For non-public and national clouds,
      *                      the domain will not be "servicebus.windows.net". Available options include:
-     *                          - "servicebus.usgovcloudapi.net"
-     *                          - "servicebus.cloudapi.de"
-     *                          - "servicebus.chinacloudapi.cn"
+     *                      - "servicebus.usgovcloudapi.net"
+     *                      - "servicebus.cloudapi.de"
+     *                      - "servicebus.chinacloudapi.cn"
      * @return the {@link ConnectionStringBuilder} being set.
      */
     public ConnectionStringBuilder setEndpoint(String namespaceName, String domainName) {
@@ -296,7 +297,6 @@ public final class ConnectionStringBuilder {
         connectionStringBuilder.deleteCharAt(connectionStringBuilder.length() - 1);
         return connectionStringBuilder.toString();
     }
-
 
 
     private void parseConnectionString(final String connectionString) {

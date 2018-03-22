@@ -14,6 +14,7 @@ public interface PartitionReceiveHandler {
 
     /**
      * Maximum number of {@link EventData} to supply while invoking {@link #onReceive(Iterable)}
+     *
      * @return value indicating the maximum number of {@link EventData} to supply while invoking {@link #onReceive(Iterable)}
      */
     int getMaxEventCount();

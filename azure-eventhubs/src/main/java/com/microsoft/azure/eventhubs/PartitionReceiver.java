@@ -22,7 +22,7 @@ import java.util.concurrent.CompletableFuture;
  * @see EventHubClient#createReceiver
  * @see EventHubClient#createEpochReceiver
  */
-public interface PartitionReceiver  {
+public interface PartitionReceiver {
 
     int MINIMUM_PREFETCH_COUNT = 10;
     int DEFAULT_PREFETCH_COUNT = 999;
@@ -44,10 +44,6 @@ public interface PartitionReceiver  {
      */
     int getPrefetchCount();
 
-    Duration getReceiveTimeout();
-
-    void setReceiveTimeout(Duration value);
-
     /**
      * Set the number of events that can be pre-fetched and cached at the {@link PartitionReceiver}.
      * <p>By default the value is 300
@@ -56,6 +52,10 @@ public interface PartitionReceiver  {
      * @throws EventHubException if setting prefetchCount encounters error
      */
     void setPrefetchCount(final int prefetchCount) throws EventHubException;
+
+    Duration getReceiveTimeout();
+
+    void setReceiveTimeout(Duration value);
 
     /**
      * Get the epoch value that this receiver is currently using for partition ownership.
@@ -82,7 +82,7 @@ public interface PartitionReceiver  {
      * @return Batch of {@link EventData}'s from the partition on which this receiver is created. Returns 'null' if no {@link EventData} is present.
      * @throws EventHubException if ServiceBus client encountered any unrecoverable/non-transient problems during {@link #receive}
      */
-    default Iterable<EventData> receiveSync(final int maxEventCount) throws EventHubException{
+    default Iterable<EventData> receiveSync(final int maxEventCount) throws EventHubException {
         return ExceptionUtil.sync(() -> this.receive(maxEventCount).get());
     }
 

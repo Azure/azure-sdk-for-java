@@ -7,7 +7,6 @@ package com.microsoft.azure.eventhubs.impl;
 import com.microsoft.azure.eventhubs.EventData;
 import com.microsoft.azure.eventhubs.EventDataBatch;
 import com.microsoft.azure.eventhubs.PayloadSizeExceededException;
-
 import org.apache.qpid.proton.message.Message;
 
 import java.util.Iterator;

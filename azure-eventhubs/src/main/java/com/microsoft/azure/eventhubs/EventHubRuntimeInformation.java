@@ -30,6 +30,7 @@ public final class EventHubRuntimeInformation {
 
     /**
      * Event Hub name
+     *
      * @return name
      */
     public String getPath() {
@@ -38,6 +39,7 @@ public final class EventHubRuntimeInformation {
 
     /**
      * Time at which Event Hub was created at.
+     *
      * @return created time
      */
     public Instant getCreatedAt() {
@@ -46,6 +48,7 @@ public final class EventHubRuntimeInformation {
 
     /**
      * Number of partitions in the Event Hub.
+     *
      * @return partition count
      */
     public int getPartitionCount() {
@@ -54,6 +57,7 @@ public final class EventHubRuntimeInformation {
 
     /**
      * List of Partition identifiers of the Event Hub.
+     *
      * @return partition identifiers
      */
     public String[] getPartitionIds() {

@@ -4,13 +4,13 @@
  */
 package com.microsoft.azure.eventhubs.impl;
 
-import java.util.Map;
-import java.util.HashMap;
-
 import org.apache.qpid.proton.Proton;
+import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.message.Message;
-import org.apache.qpid.proton.amqp.messaging.AmqpValue;
+
+import java.util.HashMap;
+import java.util.Map;
 
 final class CBSChannel {
 
@@ -28,7 +28,7 @@ final class CBSChannel {
 
         RequestResponseCloser closer = new RequestResponseCloser();
         this.innerChannel = new FaultTolerantObject<>(
-        		new RequestResponseOpener(sessionProvider, "cbs-session", "cbs", ClientConstants.CBS_ADDRESS, connection),
+                new RequestResponseOpener(sessionProvider, "cbs-session", "cbs", ClientConstants.CBS_ADDRESS, connection),
                 closer);
         closer.setInnerChannel(this.innerChannel);
     }

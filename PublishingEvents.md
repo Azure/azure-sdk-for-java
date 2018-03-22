@@ -12,7 +12,7 @@ following dependency declaration inside of your Maven project file:
     <dependency> 
    		<groupId>com.microsoft.azure</groupId> 
    		<artifactId>azure-eventhubs</artifactId>
-   		<version>0.15.1</version>
+   		<version>1.0.0</version>
    	</dependency>
  ```
  
@@ -46,7 +46,7 @@ Once you have the client in hands, you can package any arbitrary payload as a pl
 we use to illustrate the functionality send a UTF-8 encoded JSON data, but you can transfer any format you wish. 
 
 ```Java
-    EventData sendEvent = new EventData(payloadBytes);
+    EventData sendEvent = EventData.create(payloadBytes);
     ehClient.sendSync(sendEvent);
 ```
          
@@ -123,7 +123,7 @@ Of the two addressing options, the preferable one is to let the hash algorithm m
 The gesture is a straightforward extra override to the send operation supplying the partition key: 
 
 ```Java
-    EventData sendEvent = new EventData(payloadBytes);
+    EventData sendEvent = EventData.create(payloadBytes);
 >   ehClient.sendSync(sendEvent, partitionKey);
 ```
      
@@ -131,12 +131,12 @@ The gesture is a straightforward extra override to the send operation supplying 
 
 If you indeed need to target a specific partition, for instance because you must use a particular distribution strategy, 
 you can send directly to the partition, but doing so requires an extra gesture so that you don't accidentally choose this
-option. To send to a partition you explicitly need to create a client object that is tued to the partition as shown below:
+option. To send to a partition you explicitly need to create a client object that is tied to the partition as shown below:
 
 ```Java
     EventHubClient ehClient = EventHubClient.createFromConnectionStringSync(str);
 >	EventHubSender sender = ehClient.createPartitionSenderSync("0");
-    EventData sendEvent = new EventData(payloadBytes);
+    EventData sendEvent = EventData.create(payloadBytes);
     sender.sendSync(sendEvent);
 ```
 
