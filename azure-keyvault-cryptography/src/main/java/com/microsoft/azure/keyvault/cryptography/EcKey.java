@@ -11,6 +11,7 @@ import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
@@ -27,7 +28,6 @@ import java.util.UUID;
 
 import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import com.google.common.collect.ImmutableMap;
 import com.google.common.util.concurrent.Futures;
@@ -97,7 +97,7 @@ public class EcKey implements IKey {
 	 * @throws InvalidAlgorithmParameterException
 	 */
 	public EcKey(String kid) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-		this(kid, getDefaultCurve(), new BouncyCastleProvider());
+		this(kid, getDefaultCurve(), Security.getProvider("SunEC"));
 	}
 	
 	/**
@@ -110,7 +110,7 @@ public class EcKey implements IKey {
 	 * @throws InvalidAlgorithmParameterException
 	 */
 	public EcKey(String kid, JsonWebKeyCurveName curve) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-		this(kid, curve, new BouncyCastleProvider());
+		this(kid, curve, Security.getProvider("SunEC"));
 	}
 	
 	/**
@@ -165,7 +165,7 @@ public class EcKey implements IKey {
 	 * @throws InvalidAlgorithmParameterException
 	 */
 	public EcKey(String kid, KeyPair keyPair) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-		this(kid, keyPair, new BouncyCastleProvider());
+		this(kid, keyPair, Security.getProvider("SunEC"));
 	}
 	
 	/**

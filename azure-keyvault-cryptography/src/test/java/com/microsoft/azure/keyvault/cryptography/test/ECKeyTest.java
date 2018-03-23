@@ -11,6 +11,8 @@ import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.Provider;
+import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
@@ -21,7 +23,6 @@ import java.util.Map;
 import java.util.concurrent.ExecutionException;
 
 import org.apache.commons.lang3.tuple.Pair;
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
@@ -32,6 +33,8 @@ import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
 public class ECKeyTest {
+	
+	private static Provider _provider = null;
 
 	// A Content Encryption Key, or Message.
     static final byte[] CEK = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte)0x88, (byte)0x99, (byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD, (byte)0xEE, (byte)0xFF };    
@@ -41,10 +44,15 @@ public class ECKeyTest {
     static KeyPairGenerator EC_KEY_GENERATOR;
     static Map<JsonWebKeyCurveName, MessageDigest> CURVE_TO_DIGEST;
     static List<JsonWebKeyCurveName> CURVE_LIST;
+    
+    protected static void setProvider(Provider provider) {
+    	_provider = provider;
+    }
        
     @BeforeClass
     public static void setUpBeforeClass() throws Exception {
-    	EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", new BouncyCastleProvider());
+    	setProvider(Security.getProvider("SunEC"));
+    	EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
 
     	DIGEST_256 = MessageDigest.getInstance("SHA-256");
     	DIGEST_384 = MessageDigest.getInstance("SHA-384");
@@ -76,13 +84,6 @@ public class ECKeyTest {
     @Test
     public void testDefaultKey() throws Exception {
     	EcKey key = new EcKey("keyId");
-    	doSignVerify(key, DIGEST_256);
-    }
-    
-    @Test
-    public void testWithBCProvider() throws Exception {
-    	// BC provider is the default anyway.
-    	EcKey key = new EcKey("keyId", JsonWebKeyCurveName.P_256, new BouncyCastleProvider());
     	doSignVerify(key, DIGEST_256);
     }
     
