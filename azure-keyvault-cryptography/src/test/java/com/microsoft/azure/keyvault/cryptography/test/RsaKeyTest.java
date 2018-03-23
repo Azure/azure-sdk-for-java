@@ -162,8 +162,11 @@ public class RsaKeyTest {
     public void testToFromJsonWebKey() throws Exception {
     	RsaKey key = getTestRsaKey();
     	JsonWebKey jwk = key.toJsonWebKey();
+    	jwk.withKid("new kid");
+    	//setting kid
     	RsaKey sameKey = RsaKey.fromJsonWebKey(jwk, true, _provider);
     	JsonWebKey jwkSame = sameKey.toJsonWebKey();
+    	jwkSame.withKid("new kid");
     	assertEquals(jwk, jwkSame);
     }
     

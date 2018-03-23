@@ -94,17 +94,6 @@ public class RsaKey implements IKey {
         _keyPair  = generator.generateKeyPair();
         _provider = provider;
     }
-    
-    /**
-     * Constructor.
-     * 
-     * Generates a new RsaKey with the given KeyPair. The kid is not set.
-     * The keyPair must be an RSAKey.
-     * @param keyPair
-     */
-    public RsaKey(KeyPair keyPair) {
-    	this(null, keyPair, null);
-    }
 
     /**
      * Constructor.
@@ -129,6 +118,10 @@ public class RsaKey implements IKey {
      */
     public RsaKey(String kid, KeyPair keyPair, Provider provider) {
 
+    	if (Strings.isNullOrWhiteSpace(kid)) {
+    		throw new IllegalArgumentException("Please provide a kid");
+    	}
+    	
         if (keyPair == null) {
             throw new IllegalArgumentException("Please provide a KeyPair");
         }
@@ -171,7 +164,7 @@ public class RsaKey implements IKey {
 		if (jwk.kid() != null) {
 			return new RsaKey(jwk.kid(), jwk.toRSA(includePrivateParameters, provider));
 		} else {
-			return new RsaKey(jwk.toRSA(includePrivateParameters, provider));
+			throw new IllegalArgumentException("Json Web Key must have a kid");
 		}
 	}
 	
