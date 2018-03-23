@@ -54,11 +54,6 @@
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-keyvault</artifactId>
-            <version>1.1-beta-1</version>
-        </dependency>
-        <dependency>
-            <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-keyvault-webkey</artifactId>
             <version>1.1-beta-1</version>
         </dependency>

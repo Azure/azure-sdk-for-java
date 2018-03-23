@@ -146,19 +146,6 @@ public class EcKey implements IKey {
 	 * 
 	 * Generates a new EcKey with the given keyPair.
 	 * The keyPair must be an ECKey.
-	 * @param keyPair
-	 * @throws NoSuchAlgorithmException
-	 * @throws InvalidAlgorithmParameterException
-	 */
-	public EcKey(KeyPair keyPair) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-		this(null, keyPair);
-	}
-	
-	/**
-	 * Constructor.
-	 * 
-	 * Generates a new EcKey with the given keyPair.
-	 * The keyPair must be an ECKey.
 	 * @param kid
 	 * @param keyPair
 	 * @throws NoSuchAlgorithmException
@@ -181,6 +168,10 @@ public class EcKey implements IKey {
 	 */
 	public EcKey(String kid, KeyPair keyPair, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
 
+		if (Strings.isNullOrWhiteSpace(kid)) {
+			throw new IllegalArgumentException("Please provide a kid");
+		}
+		
         if (keyPair == null) {
             throw new IllegalArgumentException("Please provide an ECKey");
         }
@@ -195,7 +186,7 @@ public class EcKey implements IKey {
         _curve = getCurveFromKeyPair(keyPair);
         _signatureAlgorithm = CURVE_TO_SIGNATURE.get(_curve);
 		if (_signatureAlgorithm == null) {
-			throw new NoSuchAlgorithmException("Curve not supported.");
+			throw new IllegalArgumentException("Curve not supported.");
 		}
 	}
 	
@@ -241,7 +232,7 @@ public class EcKey implements IKey {
 		if (jwk.kid() != null) {
 			return new EcKey(jwk.kid(), jwk.toEC(includePrivateParameters, provider));
 		} else {
-			return new EcKey(jwk.toEC(includePrivateParameters, provider));
+			throw new IllegalArgumentException("Json Web Key should have a kid");
 		}
 	}
 	
@@ -279,7 +270,7 @@ public class EcKey implements IKey {
 		}
 		
 		//Did not find a supported curve.
-		throw new NoSuchAlgorithmException("Curve not supported.");
+		throw new IllegalArgumentException ("Curve not supported.");
 	}
 	
 	/**
