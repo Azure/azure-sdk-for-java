@@ -9,6 +9,7 @@
 package com.microsoft.azure.keyvault;
 
 import com.microsoft.azure.AzureClient;
+import com.microsoft.azure.keyvault.models.BackupCertificateResult;
 import com.microsoft.azure.keyvault.models.BackupKeyResult;
 import com.microsoft.azure.keyvault.models.BackupSecretResult;
 import com.microsoft.azure.keyvault.models.BackupStorageResult;
@@ -3802,6 +3803,92 @@ public interface KeyVaultClientBase {
     Observable<ServiceResponse<CertificateBundle>> mergeCertificateWithServiceResponseAsync(String vaultBaseUrl, String certificateName, List<byte[]> x509Certificates, CertificateAttributes certificateAttributes, Map<String, String> tags);
 
     /**
+     * Backs up the specified certificate.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws KeyVaultErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BackupCertificateResult object if successful.
+     */
+    BackupCertificateResult backupCertificate(String vaultBaseUrl, String certificateName);
+    /**
+     * Backs up the specified certificate.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<BackupCertificateResult> backupCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<BackupCertificateResult> serviceCallback);
+    /**
+     * Backs up the specified certificate.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BackupCertificateResult object
+     */
+    Observable<BackupCertificateResult> backupCertificateAsync(String vaultBaseUrl, String certificateName);
+    /**
+     * Backs up the specified certificate.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BackupCertificateResult object
+     */
+    Observable<ServiceResponse<BackupCertificateResult>> backupCertificateWithServiceResponseAsync(String vaultBaseUrl, String certificateName);
+    /**
+     * Restores a backed up certificate to a vault.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateBundleBackup The backup blob associated with a certificate bundle.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws KeyVaultErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CertificateBundle object if successful.
+     */
+    CertificateBundle restoreCertificate(String vaultBaseUrl, byte[] certificateBundleBackup);
+    /**
+     * Restores a backed up certificate to a vault.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateBundleBackup The backup blob associated with a certificate bundle.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    ServiceFuture<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup, final ServiceCallback<CertificateBundle> serviceCallback);
+    /**
+     * Restores a backed up certificate to a vault.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateBundleBackup The backup blob associated with a certificate bundle.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CertificateBundle object
+     */
+    Observable<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup);
+    /**
+     * Restores a backed up certificate to a vault.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateBundleBackup The backup blob associated with a certificate bundle.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CertificateBundle object
+     */
+    Observable<ServiceResponse<CertificateBundle>> restoreCertificateWithServiceResponseAsync(String vaultBaseUrl, byte[] certificateBundleBackup);
+    /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
      * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
      *
@@ -4261,7 +4348,7 @@ public interface KeyVaultClientBase {
      * @throws KeyVaultErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void purgeDeletedStorgeAccount(String vaultBaseUrl, String storageAccountName);
+    void purgeDeletedStorageAccount(String vaultBaseUrl, String storageAccountName);
 
     /**
      * Permanently deletes the specified storage account.
@@ -4273,7 +4360,7 @@ public interface KeyVaultClientBase {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<Void> purgeDeletedStorgeAccountAsync(String vaultBaseUrl, String storageAccountName, final ServiceCallback<Void> serviceCallback);
+    ServiceFuture<Void> purgeDeletedStorageAccountAsync(String vaultBaseUrl, String storageAccountName, final ServiceCallback<Void> serviceCallback);
 
     /**
      * Permanently deletes the specified storage account.
@@ -4284,7 +4371,7 @@ public interface KeyVaultClientBase {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<Void> purgeDeletedStorgeAccountAsync(String vaultBaseUrl, String storageAccountName);
+    Observable<Void> purgeDeletedStorageAccountAsync(String vaultBaseUrl, String storageAccountName);
 
     /**
      * Permanently deletes the specified storage account.
@@ -4295,7 +4382,7 @@ public interface KeyVaultClientBase {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    Observable<ServiceResponse<Void>> purgeDeletedStorgeAccountWithServiceResponseAsync(String vaultBaseUrl, String storageAccountName);
+    Observable<ServiceResponse<Void>> purgeDeletedStorageAccountWithServiceResponseAsync(String vaultBaseUrl, String storageAccountName);
 
     /**
      * Recovers the deleted storage account.

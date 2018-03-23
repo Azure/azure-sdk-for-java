@@ -14,6 +14,7 @@ import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
 import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.keyvault.KeyVaultClientBase;
+import com.microsoft.azure.keyvault.models.BackupCertificateResult;
 import com.microsoft.azure.keyvault.models.BackupKeyResult;
 import com.microsoft.azure.keyvault.models.BackupSecretResult;
 import com.microsoft.azure.keyvault.models.BackupStorageResult;
@@ -29,6 +30,7 @@ import com.microsoft.azure.keyvault.models.CertificateMergeParameters;
 import com.microsoft.azure.keyvault.models.CertificateOperation;
 import com.microsoft.azure.keyvault.models.CertificateOperationUpdateParameter;
 import com.microsoft.azure.keyvault.models.CertificatePolicy;
+import com.microsoft.azure.keyvault.models.CertificateRestoreParameters;
 import com.microsoft.azure.keyvault.models.CertificateUpdateParameters;
 import com.microsoft.azure.keyvault.models.Contacts;
 import com.microsoft.azure.keyvault.models.DeletedCertificateBundle;
@@ -476,6 +478,12 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
         @POST("certificates/{certificate-name}/pending/merge")
         Observable<Response<ResponseBody>> mergeCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateMergeParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClientBase backupCertificate" })
+        @POST("certificates/{certificate-name}/backup")
+        Observable<Response<ResponseBody>> backupCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClientBase restoreCertificate" })
+        @POST("certificates/restore")
+        Observable<Response<ResponseBody>> restoreCertificate(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateRestoreParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClientBase getDeletedCertificates" })
         @GET("deletedcertificates")
         Observable<Response<ResponseBody>> getDeletedCertificates(@Query("maxresults") Integer maxresults, @Query("includePending") Boolean includePending, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
@@ -504,9 +512,9 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
         @GET("deletedstorage/{storage-account-name}")
         Observable<Response<ResponseBody>> getDeletedStorageAccount(@Path("storage-account-name") String storageAccountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClientBase purgeDeletedStorgeAccount" })
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClientBase purgeDeletedStorageAccount" })
         @HTTP(path = "deletedstorage/{storage-account-name}", method = "DELETE", hasBody = true)
-        Observable<Response<ResponseBody>> purgeDeletedStorgeAccount(@Path("storage-account-name") String storageAccountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> purgeDeletedStorageAccount(@Path("storage-account-name") String storageAccountName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClientBase recoverDeletedStorageAccount" })
         @POST("deletedstorage/{storage-account-name}/recover")
@@ -8096,6 +8104,174 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     }
 
     /**
+     * Backs up the specified certificate.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws KeyVaultErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the BackupCertificateResult object if successful.
+     */
+    public BackupCertificateResult backupCertificate(String vaultBaseUrl, String certificateName) {
+        return backupCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName).toBlocking().single().body();
+    }
+    /**
+     * Backs up the specified certificate.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<BackupCertificateResult> backupCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<BackupCertificateResult> serviceCallback) {
+        return ServiceFuture.fromResponse(backupCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
+    }
+    /**
+     * Backs up the specified certificate.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BackupCertificateResult object
+     */
+    public Observable<BackupCertificateResult> backupCertificateAsync(String vaultBaseUrl, String certificateName) {
+        return backupCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName).map(new Func1<ServiceResponse<BackupCertificateResult>, BackupCertificateResult>() {
+            @Override
+            public BackupCertificateResult call(ServiceResponse<BackupCertificateResult> response) {
+                return response.body();
+            }
+        });
+    }
+    /**
+     * Backs up the specified certificate.
+     * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the BackupCertificateResult object
+     */
+    public Observable<ServiceResponse<BackupCertificateResult>> backupCertificateWithServiceResponseAsync(String vaultBaseUrl, String certificateName) {
+        if (vaultBaseUrl == null) {
+            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
+        }
+        if (certificateName == null) {
+            throw new IllegalArgumentException("Parameter certificateName is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        return service.backupCertificate(certificateName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<BackupCertificateResult>>>() {
+                @Override
+                public Observable<ServiceResponse<BackupCertificateResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<BackupCertificateResult> clientResponse = backupCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+    private ServiceResponse<BackupCertificateResult> backupCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<BackupCertificateResult, KeyVaultErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<BackupCertificateResult>() { }.getType())
+                .registerError(KeyVaultErrorException.class)
+                .build(response);
+    }
+    /**
+     * Restores a backed up certificate to a vault.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateBundleBackup The backup blob associated with a certificate bundle.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws KeyVaultErrorException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the CertificateBundle object if successful.
+     */
+    public CertificateBundle restoreCertificate(String vaultBaseUrl, byte[] certificateBundleBackup) {
+        return restoreCertificateWithServiceResponseAsync(vaultBaseUrl, certificateBundleBackup).toBlocking().single().body();
+    }
+    /**
+     * Restores a backed up certificate to a vault.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateBundleBackup The backup blob associated with a certificate bundle.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup, final ServiceCallback<CertificateBundle> serviceCallback) {
+        return ServiceFuture.fromResponse(restoreCertificateWithServiceResponseAsync(vaultBaseUrl, certificateBundleBackup), serviceCallback);
+    }
+    /**
+     * Restores a backed up certificate to a vault.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateBundleBackup The backup blob associated with a certificate bundle.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup) {
+        return restoreCertificateWithServiceResponseAsync(vaultBaseUrl, certificateBundleBackup).map(new Func1<ServiceResponse<CertificateBundle>, CertificateBundle>() {
+            @Override
+            public CertificateBundle call(ServiceResponse<CertificateBundle> response) {
+                return response.body();
+            }
+        });
+    }
+    /**
+     * Restores a backed up certificate to a vault.
+     * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
+     *
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateBundleBackup The backup blob associated with a certificate bundle.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the CertificateBundle object
+     */
+    public Observable<ServiceResponse<CertificateBundle>> restoreCertificateWithServiceResponseAsync(String vaultBaseUrl, byte[] certificateBundleBackup) {
+        if (vaultBaseUrl == null) {
+            throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
+        }
+        if (this.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
+        }
+        if (certificateBundleBackup == null) {
+            throw new IllegalArgumentException("Parameter certificateBundleBackup is required and cannot be null.");
+        }
+        CertificateRestoreParameters parameters = new CertificateRestoreParameters();
+        parameters.withCertificateBundleBackup(certificateBundleBackup);
+        String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
+        return service.restoreCertificate(this.apiVersion(), this.acceptLanguage(), parameters, parameterizedHost, this.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<CertificateBundle>>>() {
+                @Override
+                public Observable<ServiceResponse<CertificateBundle>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<CertificateBundle> clientResponse = restoreCertificateDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+    private ServiceResponse<CertificateBundle> restoreCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+        return this.restClient().responseBuilderFactory().<CertificateBundle, KeyVaultErrorException>newInstance(this.serializerAdapter())
+                .register(200, new TypeToken<CertificateBundle>() { }.getType())
+                .registerError(KeyVaultErrorException.class)
+                .build(response);
+    }
+    /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
      * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
      *
@@ -9157,8 +9333,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @throws KeyVaultErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    public void purgeDeletedStorgeAccount(String vaultBaseUrl, String storageAccountName) {
-        purgeDeletedStorgeAccountWithServiceResponseAsync(vaultBaseUrl, storageAccountName).toBlocking().single().body();
+    public void purgeDeletedStorageAccount(String vaultBaseUrl, String storageAccountName) {
+        purgeDeletedStorageAccountWithServiceResponseAsync(vaultBaseUrl, storageAccountName).toBlocking().single().body();
     }
 
     /**
@@ -9171,8 +9347,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Void> purgeDeletedStorgeAccountAsync(String vaultBaseUrl, String storageAccountName, final ServiceCallback<Void> serviceCallback) {
-        return ServiceFuture.fromResponse(purgeDeletedStorgeAccountWithServiceResponseAsync(vaultBaseUrl, storageAccountName), serviceCallback);
+    public ServiceFuture<Void> purgeDeletedStorageAccountAsync(String vaultBaseUrl, String storageAccountName, final ServiceCallback<Void> serviceCallback) {
+        return ServiceFuture.fromResponse(purgeDeletedStorageAccountWithServiceResponseAsync(vaultBaseUrl, storageAccountName), serviceCallback);
     }
 
     /**
@@ -9184,8 +9360,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<Void> purgeDeletedStorgeAccountAsync(String vaultBaseUrl, String storageAccountName) {
-        return purgeDeletedStorgeAccountWithServiceResponseAsync(vaultBaseUrl, storageAccountName).map(new Func1<ServiceResponse<Void>, Void>() {
+    public Observable<Void> purgeDeletedStorageAccountAsync(String vaultBaseUrl, String storageAccountName) {
+        return purgeDeletedStorageAccountWithServiceResponseAsync(vaultBaseUrl, storageAccountName).map(new Func1<ServiceResponse<Void>, Void>() {
             @Override
             public Void call(ServiceResponse<Void> response) {
                 return response.body();
@@ -9202,7 +9378,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
-    public Observable<ServiceResponse<Void>> purgeDeletedStorgeAccountWithServiceResponseAsync(String vaultBaseUrl, String storageAccountName) {
+    public Observable<ServiceResponse<Void>> purgeDeletedStorageAccountWithServiceResponseAsync(String vaultBaseUrl, String storageAccountName) {
         if (vaultBaseUrl == null) {
             throw new IllegalArgumentException("Parameter vaultBaseUrl is required and cannot be null.");
         }
@@ -9213,12 +9389,12 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
             throw new IllegalArgumentException("Parameter this.apiVersion() is required and cannot be null.");
         }
         String parameterizedHost = Joiner.on(", ").join("{vaultBaseUrl}", vaultBaseUrl);
-        return service.purgeDeletedStorgeAccount(storageAccountName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
+        return service.purgeDeletedStorageAccount(storageAccountName, this.apiVersion(), this.acceptLanguage(), parameterizedHost, this.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<Void> clientResponse = purgeDeletedStorgeAccountDelegate(response);
+                        ServiceResponse<Void> clientResponse = purgeDeletedStorageAccountDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -9227,7 +9403,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
             });
     }
 
-    private ServiceResponse<Void> purgeDeletedStorgeAccountDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
+    private ServiceResponse<Void> purgeDeletedStorageAccountDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<Void, KeyVaultErrorException>newInstance(this.serializerAdapter())
                 .register(204, new TypeToken<Void>() { }.getType())
                 .registerError(KeyVaultErrorException.class)
