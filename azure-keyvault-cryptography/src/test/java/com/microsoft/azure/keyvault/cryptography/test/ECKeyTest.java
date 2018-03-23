@@ -27,7 +27,7 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.microsoft.azure.keyvault.cryptography.EcKey;
-import com.microsoft.azure.keyvault.models.JsonWebKeyCurveName;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 

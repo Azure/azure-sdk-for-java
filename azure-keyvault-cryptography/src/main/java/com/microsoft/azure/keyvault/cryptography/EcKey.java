@@ -7,6 +7,7 @@ import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.PublicKey;
@@ -37,7 +38,7 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es384;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es512;
-import com.microsoft.azure.keyvault.models.JsonWebKeyCurveName;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
@@ -205,8 +206,9 @@ public class EcKey implements IKey {
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidAlgorithmParameterException
 	 * @throws InvalidKeySpecException
+	 * @throws NoSuchProviderException
 	 */
-	public static EcKey fromJsonWebKey(JsonWebKey jwk) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException {
+	public static EcKey fromJsonWebKey(JsonWebKey jwk) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
 		return fromJsonWebKey(jwk, false, null);
 	}
 	
@@ -218,8 +220,9 @@ public class EcKey implements IKey {
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidAlgorithmParameterException
 	 * @throws InvalidKeySpecException
+	 * @throws NoSuchProviderException
 	 */
-	public static EcKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException {
+	public static EcKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
 		return fromJsonWebKey(jwk, includePrivateParameters, null);
 	}
 	
@@ -232,8 +235,9 @@ public class EcKey implements IKey {
 	 * @throws NoSuchAlgorithmException
 	 * @throws InvalidAlgorithmParameterException
 	 * @throws InvalidKeySpecException
+	 * @throws NoSuchProviderException
 	 */
-	public static EcKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException {
+	public static EcKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
 		if (jwk.kid() != null) {
 			return new EcKey(jwk.kid(), jwk.toEC(includePrivateParameters, provider));
 		} else {
