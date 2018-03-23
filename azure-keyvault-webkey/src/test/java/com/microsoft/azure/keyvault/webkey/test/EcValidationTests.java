@@ -6,12 +6,12 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.Signature;
 import java.security.SignatureException;
 import java.util.Map;
 import java.util.Random;
 
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 import org.junit.Assert;
 import org.junit.Test;
 
@@ -25,7 +25,7 @@ public class EcValidationTests {
 	
 	@Test
     public void ecPublicKeyValidation() throws Exception {
-		
+
 		for (String keyStr : keys.values()) {
 			ObjectMapper mapper = new ObjectMapper();
 			JsonWebKey key = mapper.readValue(keyStr, JsonWebKey.class);
@@ -56,7 +56,7 @@ public class EcValidationTests {
 	}
 	
 	private static void validateEcKey(KeyPair keyPair, JsonWebKey key) throws Exception {
-        JsonWebKey jsonWebKey = JsonWebKey.fromEC(keyPair, new BouncyCastleProvider());
+        JsonWebKey jsonWebKey = JsonWebKey.fromEC(keyPair, Security.getProvider("SunEC"));
         boolean includePrivateKey = keyPair.getPrivate() != null;
         KeyPair keyPair2 = jsonWebKey.toEC(includePrivateKey);
         
@@ -77,7 +77,7 @@ public class EcValidationTests {
 	}
 	
 	private static void signVerify(PublicKey publicKey, PrivateKey privateKey, JsonWebKeyCurveName curve) throws InvalidKeyException, NoSuchAlgorithmException, SignatureException {
-		Signature signature = Signature.getInstance(CURVE_TO_SIGNATURE.get(curve), new BouncyCastleProvider());
+		Signature signature = Signature.getInstance(CURVE_TO_SIGNATURE.get(curve), Security.getProvider("SunEC"));
 		signature.initSign(privateKey);
 		MessageDigest digest = MessageDigest.getInstance(algorithm.get(curve));
         byte[] plaintext = new byte[10];

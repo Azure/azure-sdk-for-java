@@ -14,9 +14,11 @@ import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.PublicKey;
+import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateCrtKey;
@@ -39,8 +41,6 @@ import java.util.Set;
 
 import javax.crypto.SecretKey;
 import javax.crypto.spec.SecretKeySpec;
-
-import org.bouncycastle.jce.provider.BouncyCastleProvider;
 
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -99,31 +99,37 @@ public class JsonWebKey {
     /**
      * RSA Private Key Parameter.
      */
+    @JsonProperty(value = "dp")
     private byte[] dp;
 
     /**
      * RSA Private Key Parameter.
      */
+    @JsonProperty(value = "dq")
     private byte[] dq;
 
     /**
      * RSA Private Key Parameter.
      */
+    @JsonProperty(value = "qi")
     private byte[] qi;
 
     /**
      * RSA secret prime.
      */
+    @JsonProperty(value = "p")
     private byte[] p;
 
     /**
      * RSA secret prime, with p & q.
      */
+    @JsonProperty(value = "q")
     private byte[] q;
 
     /**
      * Symmetric key.
      */
+    @JsonProperty(value = "k")
     private byte[] k;
 
     /**
@@ -569,17 +575,17 @@ public class JsonWebKey {
     }
     
 	
-	private static PublicKey getECPublicKey(ECPoint ecPoint, ECParameterSpec curveSpec, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException {
+	private static PublicKey getECPublicKey(ECPoint ecPoint, ECParameterSpec curveSpec, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
 		// Create public key spec with given point
 		ECPublicKeySpec pubSpec = new ECPublicKeySpec(ecPoint, curveSpec);
-		KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC");
+		KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
 		return (ECPublicKey) kf.generatePublic(pubSpec);
 
 	}
 	
-	private static PrivateKey getECPrivateKey(byte[] d, ECParameterSpec curveSpec, Provider provider) throws NoSuchAlgorithmException, InvalidKeySpecException {
+	private static PrivateKey getECPrivateKey(byte[] d, ECParameterSpec curveSpec, Provider provider) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
 		ECPrivateKeySpec priSpec = new ECPrivateKeySpec(new BigInteger(1, d), curveSpec);
-		KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC");
+		KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
 		return (ECPrivateKey) kf.generatePrivate(priSpec);
 	}
 
@@ -693,8 +699,9 @@ public class JsonWebKey {
     /**
      * Converts JSON web key to EC key pair and include the private key if set to true.
      * @return EC key pair
+     * @throws NoSuchProviderException 
      */
-    public KeyPair toEC() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException {
+    public KeyPair toEC() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
     	return toEC(false, null);
     }
     
@@ -702,8 +709,9 @@ public class JsonWebKey {
      * Converts JSON web key to EC key pair and include the private key if set to true.
      * @param includePrivateParameters true if the EC key pair should include the private key. False otherwise.
      * @return EC key pair
+     * @throws NoSuchProviderException 
      */
-    public KeyPair toEC(boolean includePrivateParameters) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException {
+    public KeyPair toEC(boolean includePrivateParameters) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
     	return toEC(includePrivateParameters, null);
     }
     
@@ -712,12 +720,13 @@ public class JsonWebKey {
      * @param provider the Java security provider.
      * @param includePrivateParameters true if the EC key pair should include the private key. False otherwise.
      * @return EC key pair
+     * @throws NoSuchProviderException 
      */
-    public KeyPair toEC(boolean includePrivateParameters, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException {
+    public KeyPair toEC(boolean includePrivateParameters, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
     	
     	if (provider == null) {
 			//Our default provider for this class
-			provider = new BouncyCastleProvider();
+			provider = Security.getProvider("SunEC");
 		}
 		
 		if (!JsonWebKeyType.EC.equals(kty) && !JsonWebKeyType.EC_HSM.equals(kty)) {
@@ -725,6 +734,7 @@ public class JsonWebKey {
 		}
 		
 		KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
+		
 		ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(crv));
 		kpg.initialize(gps);
 		
