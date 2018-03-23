@@ -52,7 +52,6 @@ import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Objects;
 import com.google.common.collect.ImmutableMap;
-import com.microsoft.azure.keyvault.models.JsonWebKeyCurveName;
 
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.

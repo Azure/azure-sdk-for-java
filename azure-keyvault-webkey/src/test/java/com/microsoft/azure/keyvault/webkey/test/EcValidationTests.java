@@ -17,8 +17,9 @@ import org.junit.Test;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.google.common.collect.ImmutableMap;
-import com.microsoft.azure.keyvault.models.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
+
 
 public class EcValidationTests {
 	
