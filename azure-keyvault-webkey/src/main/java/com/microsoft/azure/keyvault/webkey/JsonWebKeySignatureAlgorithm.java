@@ -16,7 +16,8 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for JsonWebKeySignatureAlgorithm.
  */
 public final class JsonWebKeySignatureAlgorithm {
-    /** Static value PS256 for JsonWebKeySignatureAlgorithm. */
+
+	/** Static value PS256 for JsonWebKeySignatureAlgorithm. */
     public static final JsonWebKeySignatureAlgorithm PS256 = new JsonWebKeySignatureAlgorithm("PS256");
 
     /** Static value PS384 for JsonWebKeySignatureAlgorithm. */
@@ -36,6 +37,14 @@ public final class JsonWebKeySignatureAlgorithm {
 
     /** Static value RSNULL for JsonWebKeySignatureAlgorithm. */
     public static final JsonWebKeySignatureAlgorithm RSNULL = new JsonWebKeySignatureAlgorithm("RSNULL");
+    /** Static value ES256 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm ES256 = new JsonWebKeySignatureAlgorithm("ES256");
+    /** Static value ES384 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm ES384 = new JsonWebKeySignatureAlgorithm("ES384");
+    /** Static value ES512 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm ES512 = new JsonWebKeySignatureAlgorithm("ES512");
+    /** Static value ECDSA256 for JsonWebKeySignatureAlgorithm. */
+    public static final JsonWebKeySignatureAlgorithm ECDSA256 = new JsonWebKeySignatureAlgorithm("ECDSA256");
 
     private String value;
 
@@ -78,5 +87,5 @@ public final class JsonWebKeySignatureAlgorithm {
      * All the JWK signature algorithms.
      */
     public static final List<JsonWebKeySignatureAlgorithm> ALL_ALGORITHMS =
-            Collections.unmodifiableList(Arrays.asList(RS256, RS384, RS512, RSNULL));
+            Collections.unmodifiableList(Arrays.asList(RS256, RS384, RS512, RSNULL, PS256, PS384, PS512, ES256, ES384, ES512, ECDSA256));
 }

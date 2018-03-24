@@ -16,8 +16,12 @@ import com.fasterxml.jackson.annotation.JsonValue;
  * Defines values for JsonWebKeyEncryptionAlgorithm.
  */
 public final class JsonWebKeyEncryptionAlgorithm {
-    /** Static value RSA-OAEP for JsonWebKeyEncryptionAlgorithm. */
+
+	/** Static value RSA-OAEP for JsonWebKeyEncryptionAlgorithm. */
     public static final JsonWebKeyEncryptionAlgorithm RSA_OAEP = new JsonWebKeyEncryptionAlgorithm("RSA-OAEP");
+    
+    /** Static value RSA-OAEP-256 for JsonWebKeyEncryptionAlgorithm. */
+    public static final JsonWebKeyEncryptionAlgorithm RSA_OAEP_256 = new JsonWebKeyEncryptionAlgorithm("RSA-OAEP-256");
 
     /** Static value RSA1_5 for JsonWebKeyEncryptionAlgorithm. */
     public static final JsonWebKeyEncryptionAlgorithm RSA1_5 = new JsonWebKeyEncryptionAlgorithm("RSA1_5");
@@ -63,5 +67,5 @@ public final class JsonWebKeyEncryptionAlgorithm {
      * All the JWK encryption algorithms.
      */
     public static final List<JsonWebKeyEncryptionAlgorithm> ALL_ALGORITHMS =
-            Collections.unmodifiableList(Arrays.asList(RSA_OAEP, RSA1_5));
+            Collections.unmodifiableList(Arrays.asList(RSA_OAEP, RSA1_5, RSA_OAEP_256));
 }

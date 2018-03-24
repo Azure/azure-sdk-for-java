@@ -365,8 +365,8 @@
   <modules>
     <module>./azure-keyvault</module>
     <module>./azure-keyvault-core</module>
+    <module>./azure-keyvault-webkey</module>
     <module>./azure-keyvault-cryptography</module>
     <module>./azure-keyvault-extensions</module>
-    <module>./azure-keyvault-webkey</module>
   </modules>
 </project>

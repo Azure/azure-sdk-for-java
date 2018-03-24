@@ -9,19 +9,34 @@ package com.microsoft.azure.keyvault.webkey;
 import java.io.IOException;
 import java.math.BigInteger;
 import java.security.GeneralSecurityException;
+import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
+import java.security.KeyPairGenerator;
+import java.security.NoSuchAlgorithmException;
+import java.security.NoSuchProviderException;
 import java.security.PrivateKey;
 import java.security.Provider;
 import java.security.PublicKey;
+import java.security.Security;
+import java.security.interfaces.ECPrivateKey;
+import java.security.interfaces.ECPublicKey;
 import java.security.interfaces.RSAPrivateCrtKey;
 import java.security.interfaces.RSAPublicKey;
+import java.security.spec.ECGenParameterSpec;
+import java.security.spec.ECParameterSpec;
+import java.security.spec.ECPoint;
+import java.security.spec.ECPrivateKeySpec;
+import java.security.spec.ECPublicKeySpec;
+import java.security.spec.EllipticCurve;
+import java.security.spec.InvalidKeySpecException;
 import java.security.spec.RSAPrivateCrtKeySpec;
 import java.security.spec.RSAPrivateKeySpec;
 import java.security.spec.RSAPublicKeySpec;
 import java.util.Arrays;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.crypto.SecretKey;
@@ -36,6 +51,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.google.common.base.Objects;
+import com.google.common.collect.ImmutableMap;
 
 /**
  * As of http://tools.ietf.org/html/draft-ietf-jose-json-web-key-18.
@@ -46,73 +62,105 @@ public class JsonWebKey {
     /**
      * Key Identifier.
      */
+	@JsonProperty(value = "kid")
     private String kid;
 
     /**
-     * Key type, usually RSA. Possible values include: 'EC', 'RSA', 'RSA-HSM',
-     * 'oct'.
+     * JsonWebKey key type (kty). Possible values include: 'EC', 'EC-HSM',
+     * 'RSA', 'RSA-HSM', 'oct'.
      */
+    @JsonProperty(value = "kty")
     private JsonWebKeyType kty;
 
     /**
      * The keyOps property.
      */
+    @JsonProperty(value = "key_ops")
     private List<JsonWebKeyOperation> keyOps;
 
     /**
      * RSA modulus.
      */
+    @JsonProperty(value = "n")
     private byte[] n;
 
     /**
      * RSA public exponent.
      */
+    @JsonProperty(value = "e")
     private byte[] e;
 
     /**
-     * RSA private exponent.
+     * RSA private exponent, or the D component of an EC private key.
      */
+    @JsonProperty(value = "d")
     private byte[] d;
 
     /**
      * RSA Private Key Parameter.
      */
+    @JsonProperty(value = "dp")
     private byte[] dp;
 
     /**
      * RSA Private Key Parameter.
      */
+    @JsonProperty(value = "dq")
     private byte[] dq;
 
     /**
      * RSA Private Key Parameter.
      */
+    @JsonProperty(value = "qi")
     private byte[] qi;
 
     /**
      * RSA secret prime.
      */
+    @JsonProperty(value = "p")
     private byte[] p;
 
     /**
-     * RSA secret prime, with p &lt; q.
+     * RSA secret prime, with p & q.
      */
+    @JsonProperty(value = "q")
     private byte[] q;
 
     /**
      * Symmetric key.
      */
+    @JsonProperty(value = "k")
     private byte[] k;
 
     /**
      * HSM Token, used with Bring Your Own Key.
      */
+    @JsonProperty(value = "key_hsm")
     private byte[] t;
+    
+    /**
+     * Elliptic curve name. For valid values, see JsonWebKeyCurveName. Possible
+     * values include: 'P-256', 'P-384', 'P-521', 'SECP256K1'.
+     */
+    @JsonProperty(value = "crv")
+    private JsonWebKeyCurveName crv;
 
     /**
-     * Key Identifier.
+     * X component of an EC public key.
+     */
+    @JsonProperty(value = "x")
+    private byte[] x;
+    
+    /**
+     * Y component of an EC public key.
+     */
+    @JsonProperty(value = "y")
+    private byte[] y;
+    
+    /**
+     * Get the kid value.
      *
-     * @return the kid value.
+     * @return the kid value
      */
     @JsonProperty("kid")
     public String kid() {
@@ -122,7 +170,7 @@ public class JsonWebKey {
     /**
      * Set the key identifier value.
      *
-     * @param kid the key identifier
+     * @param kid the kid value to set
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withKid(String kid) {
@@ -131,10 +179,9 @@ public class JsonWebKey {
     }
 
     /**
-     * Key type, usually RSA. Possible values include: 'EC', 'RSA', 'RSA-HSM',
-     * 'oct'.
+     * Get the kty value.
      *
-     * @return the key type.
+     * @return the kty value
      */
     @JsonProperty("kty")
     public JsonWebKeyType kty() {
@@ -153,9 +200,9 @@ public class JsonWebKey {
     }
 
     /**
-     * Get the key operations.
+     * Get the keyOps value.
      *
-     * @return the key operations.
+     * @return the keyOps value
      */
     @JsonProperty("key_ops")
     public List<JsonWebKeyOperation> keyOps() {
@@ -163,9 +210,9 @@ public class JsonWebKey {
     }
 
     /**
-     * Set the key operations value.
+     * Set the keyOps value.
      *
-     * @param keyOps the key operations value to set
+     * @param keyOps the keyOps value to set
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withKeyOps(List<JsonWebKeyOperation> keyOps) {
@@ -174,9 +221,9 @@ public class JsonWebKey {
     }
 
     /**
-     * Get the RSA modulus value.
+     * Get the n value.
      *
-     * @return the RSA modulus value.
+     * @return the n value
      */
     @JsonProperty("n")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
@@ -186,9 +233,9 @@ public class JsonWebKey {
     }
 
     /**
-     * Set the RSA modulus value.
+     * Set the n value.
      *
-     * @param n the RSA modulus value to set
+     * @param n the n value to set
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withN(byte[] n) {
@@ -197,8 +244,9 @@ public class JsonWebKey {
     }
 
     /**
-     * Get the RSA public exponent value.
-     * @return the RSA public exponent value.
+     * Get the e value.
+     *
+     * @return the e value
      */
     @JsonProperty("e")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
@@ -208,9 +256,9 @@ public class JsonWebKey {
     }
 
     /**
-     * Set the RSA public exponent value.
-     * 
-     * @param e RSA public exponent value to set
+     * Set the e value.
+     *
+     * @param e the e value to set
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withE(byte[] e) {
@@ -219,8 +267,9 @@ public class JsonWebKey {
     }
 
     /**
-     * Get the RSA private exponent value.
-     * @return the RSA private exponent value.
+     * Get the d value.
+     *
+     * @return the d value
      */
     @JsonProperty("d")
     @JsonSerialize(using = Base64UrlJsonSerializer.class)
@@ -230,9 +279,9 @@ public class JsonWebKey {
     }
 
     /**
-     * Set RSA private exponent value.
-     * 
-     * @param d the RSA private exponent value to set.
+     * Set the d value.
+     *
+     * @param d the d value to set
      * @return the JsonWebKey object itself.
      */
     public JsonWebKey withD(byte[] d) {
@@ -402,6 +451,73 @@ public class JsonWebKey {
     }
 
     /**
+     * Get the crv value.
+     *
+     * @return the crv value
+     */
+    @JsonProperty("crv")
+    public JsonWebKeyCurveName crv() {
+        return this.crv;
+    }
+
+    /**
+     * Set the crv value.
+     *
+     * @param crv the crv value to set
+     * @return the JsonWebKey object itself.
+     */
+    public JsonWebKey withCrv(JsonWebKeyCurveName crv) {
+        this.crv = crv;
+        return this;
+    }
+
+    /**
+     * Get the x value.
+     *
+     * @return the x value
+     */
+    @JsonProperty("x")
+    @JsonSerialize(using = Base64UrlJsonSerializer.class)
+    @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
+    public byte[] x() {
+		return this.x;
+    }
+
+    /**
+     * Set the x value.
+     *
+     * @param x the x value to set
+     * @return the JsonWebKey object itself.
+     */
+    public JsonWebKey withX(byte[] x) {
+		this.x = x;
+		return this;
+    }
+
+    /**
+     * Get the y value.
+     *
+     * @return the y value
+     */
+    @JsonProperty("y")
+    @JsonSerialize(using = Base64UrlJsonSerializer.class)
+    @JsonDeserialize(using = Base64UrlJsonDeserializer.class)
+    public byte[] y() {
+		return this.y;
+    }
+
+    /**
+     * Set the y value.
+     *
+     * @param y the y value to set
+     * @return the JsonWebKey object itself.
+     */
+    public JsonWebKey withY(byte[] y) {
+		this.y = y;
+		return this;
+    }
+	
+    /**
      * Get the RSA public key spec value.
      *
      * @return the RSA public key spec value
@@ -457,6 +573,21 @@ public class JsonWebKey {
             throw new IllegalStateException(e);
         }
     }
+    
+	
+	private static PublicKey getECPublicKey(ECPoint ecPoint, ECParameterSpec curveSpec, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
+		// Create public key spec with given point
+		ECPublicKeySpec pubSpec = new ECPublicKeySpec(ecPoint, curveSpec);
+		KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
+		return (ECPublicKey) kf.generatePublic(pubSpec);
+
+	}
+	
+	private static PrivateKey getECPrivateKey(byte[] d, ECParameterSpec curveSpec, Provider provider) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
+		ECPrivateKeySpec priSpec = new ECPrivateKeySpec(new BigInteger(1, d), curveSpec);
+		KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
+		return (ECPrivateKey) kf.generatePrivate(priSpec);
+	}
 
     /**
      * Verifies if the key is an RSA key.
@@ -564,7 +695,128 @@ public class JsonWebKey {
             return new KeyPair(getRSAPublicKey(provider), null);
         }
     }
+    
+    /**
+     * Converts JSON web key to EC key pair and include the private key if set to true.
+     * @return EC key pair
+     * @throws NoSuchProviderException 
+     */
+    public KeyPair toEC() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
+    	return toEC(false, null);
+    }
+    
+    /**
+     * Converts JSON web key to EC key pair and include the private key if set to true.
+     * @param includePrivateParameters true if the EC key pair should include the private key. False otherwise.
+     * @return EC key pair
+     * @throws NoSuchProviderException 
+     */
+    public KeyPair toEC(boolean includePrivateParameters) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
+    	return toEC(includePrivateParameters, null);
+    }
+    
+    /**
+     * Converts JSON web key to EC key pair and include the private key if set to true.
+     * @param provider the Java security provider.
+     * @param includePrivateParameters true if the EC key pair should include the private key. False otherwise.
+     * @return EC key pair
+     * @throws NoSuchProviderException 
+     */
+    public KeyPair toEC(boolean includePrivateParameters, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
+    	
+    	if (provider == null) {
+			//Our default provider for this class
+			provider = Security.getProvider("SunEC");
+		}
+		
+		if (!JsonWebKeyType.EC.equals(kty) && !JsonWebKeyType.EC_HSM.equals(kty)) {
+			throw new IllegalArgumentException("Not an EC key.");
+		}
+		
+		KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
+		
+		ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(crv));
+		kpg.initialize(gps);
+		
+		// Generate dummy keypair to get parameter spec.
+		KeyPair apair = kpg.generateKeyPair();
+		ECPublicKey apub = (ECPublicKey) apair.getPublic();
+		ECParameterSpec aspec = apub.getParams();
+		
+		ECPoint ecPoint = new ECPoint(new BigInteger(1, x), new BigInteger(1, y));
+		
+		KeyPair realKeyPair;
+		
+		if (includePrivateParameters) {
+			realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider), getECPrivateKey(d, aspec, provider));
+		} else {
+			realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider), null);		
+		}
+		
+		return realKeyPair;
+    }
+    
+    /**
+     * Converts EC key pair to JSON web key.
+     * @param keyPair EC key pair
+     * @provider Java security provider
+     * @return the JSON web key, converted from EC key pair.
+     * @throws InvalidAlgorithmParameterException 
+     * @throws NoSuchAlgorithmException 
+     */
+	public static JsonWebKey fromEC(KeyPair keyPair, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
 
+		ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
+		ECPoint point = apub.getW();
+		ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
+
+		if (apriv != null) {
+			return new JsonWebKey()
+					.withKty(JsonWebKeyType.EC)
+					.withCrv(getCurveFromKeyPair(keyPair, provider))
+					.withX(point.getAffineX().toByteArray())
+					.withY(point.getAffineY().toByteArray())
+					.withD(apriv.getS().toByteArray())
+					.withKty(JsonWebKeyType.EC);
+		} else {
+			return new JsonWebKey()
+					.withKty(JsonWebKeyType.EC)
+					.withCrv(getCurveFromKeyPair(keyPair, provider))
+					.withX(point.getAffineX().toByteArray())
+					.withY(point.getAffineY().toByteArray())
+					.withKty(JsonWebKeyType.EC);
+		}
+    }
+    
+	// Matches the curve of the keyPair to supported curves.
+	private static JsonWebKeyCurveName getCurveFromKeyPair(KeyPair keyPair, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+		ECPublicKey key = (ECPublicKey) keyPair.getPublic();
+		ECParameterSpec spec = key.getParams();
+		EllipticCurve crv = spec.getCurve();
+		
+		List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.SECP256K1);
+		
+		for (JsonWebKeyCurveName curve : curveList) {
+			ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
+			kpg.initialize(gps);
+			
+			// Generate dummy keypair to get parameter spec.
+			KeyPair apair = kpg.generateKeyPair();
+			ECPublicKey apub = (ECPublicKey) apair.getPublic();
+			ECParameterSpec aspec = apub.getParams();
+			EllipticCurve acurve = aspec.getCurve();
+			
+			//Matches the parameter spec
+			if (acurve.equals(crv)) {
+				return curve;
+			}
+		}
+		
+		//Did not find a supported curve.
+		throw new NoSuchAlgorithmException("Curve not supported.");
+	}
+	
     /**
      * Converts AES key to JSON web key.
      * @param secretKey AES key
@@ -626,6 +878,10 @@ public class JsonWebKey {
             return false;
         }
         
+        if (!Objects.equal(crv, jwk.crv)) {
+        	return false;
+        }
+        
         if (!Arrays.equals(k, jwk.k)) {
             return false;
         }
@@ -657,6 +913,12 @@ public class JsonWebKey {
         if (!Arrays.equals(q, jwk.q)) {
             return false;
         }
+        if (!Arrays.equals(x, jwk.x)) {
+        	return false;
+        }
+        if (!Arrays.equals(y, jwk.y)) {
+        	return false;
+        }
         
         // HSM token
         if (!Arrays.equals(t, jwk.t)) {
@@ -678,6 +940,10 @@ public class JsonWebKey {
         
         else if (JsonWebKeyType.RSA.equals(kty) || JsonWebKeyType.RSA_HSM.equals(kty)) {
             return (d != null && dp != null && dq != null && qi != null && p != null && q != null);
+        }
+        
+        else if (JsonWebKeyType.EC.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)){
+        	return (d != null);
         }
         
         return false;
@@ -713,6 +979,15 @@ public class JsonWebKey {
         else if (JsonWebKeyType.RSA_HSM.equals(kty)) {
             return isValidRsaHsm();
         }
+        
+        else if (JsonWebKeyType.EC.equals(kty)) {
+        	return isValidEc();
+        }
+        
+        else if (JsonWebKeyType.EC_HSM.equals(kty)) {
+        	return isValidEcHsm();
+        }
+        
         return false;
     }
 
@@ -754,6 +1029,38 @@ public class JsonWebKey {
         return (tokenParameters || publicParameters);
     }
     
+    private boolean isValidEc() {
+    	boolean ecPointParameters = (x != null && y != null);
+    	if (!ecPointParameters || crv == null) {
+    		return false;
+    	}
+    	
+    	return hasPrivateKey() || (d == null);
+    }
+    
+    private boolean isValidEcHsm() {
+    	// MAY have public key parameters
+    	boolean ecPointParameters = (x != null && y != null);
+    	if ((ecPointParameters && crv == null) || (!ecPointParameters && crv != null)) {
+    		return false;
+    	}
+    	
+    	// no private key
+    	if (hasPrivateKey()) {
+    		return false;
+    	}
+    	
+    	// MUST have (T || (ecPointParameters && crv))
+    	boolean publicParameters = (ecPointParameters && crv != null);
+    	boolean tokenParameters = t != null;
+    	
+        if (tokenParameters && publicParameters) {
+            return false;
+        }
+
+        return (tokenParameters || publicParameters);
+    }
+    
     /**
      * Clear key materials.
      */
@@ -768,6 +1075,8 @@ public class JsonWebKey {
         zeroArray(p);  p = null;
         zeroArray(q);  q = null;
         zeroArray(t);  t = null;
+        zeroArray(x);  x = null;
+        zeroArray(y);  y = null;
     }
 
     private static void zeroArray(byte[] bytes) {
@@ -791,7 +1100,13 @@ public class JsonWebKey {
             hashCode += hashCode(n);
         }
         
-        else if (JsonWebKeyType.RSA_HSM.equals(kty)) {
+        else if (JsonWebKeyType.EC.equals(kty)) {
+        	hashCode += hashCode(x);
+        	hashCode += hashCode(y);
+        	hashCode += crv.hashCode();
+        }
+        
+        else if (JsonWebKeyType.RSA_HSM.equals(kty) || JsonWebKeyType.EC_HSM.equals(kty)) {
             hashCode += hashCode(t);
         }
         
@@ -810,4 +1125,11 @@ public class JsonWebKey {
         }
         return hashCode;
     }
+    
+    private final static Map<JsonWebKeyCurveName, String> CURVE_TO_SPEC_NAME = ImmutableMap.<JsonWebKeyCurveName, String>builder()
+			.put(JsonWebKeyCurveName.P_256, "secp256r1")
+			.put(JsonWebKeyCurveName.P_384, "secp384r1")
+			.put(JsonWebKeyCurveName.P_521, "secp521r1")
+			.put(JsonWebKeyCurveName.SECP256K1, "secp256k1")
+			.build();	
 }
