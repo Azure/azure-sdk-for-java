@@ -17,6 +17,7 @@ package com.microsoft.azure.storage.blob;
 import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
@@ -26,7 +27,10 @@ import io.reactivex.functions.Consumer;
 import java.net.HttpURLConnection;
 
 /**
- * Factory for logging requests and responses.
+ * This is a factory which creates policies in an {@link HttpPipeline} for logging requests and responses. In most
+ * cases, it is sufficient to configure an object of the {@link LoggingOptions} type and set those as a field on a
+ * {@link PipelineOptions} structure to configure a default pipeline. The factory and policy must only be used directly
+ * when creating a custom pipeline.
  */
 public final class LoggingFactory implements RequestPolicyFactory {
 
@@ -63,11 +67,11 @@ public final class LoggingFactory implements RequestPolicyFactory {
          * {@link com.microsoft.rest.v2.http.HttpPipeline}.
          *
          * @param nextPolicy
-         *      A {@link RequestPolicy} object.
+         *      {@link RequestPolicy}
          * @param options
-         *      A {@link RequestPolicyOptions} object.
+         *      {@link RequestPolicyOptions}
          * @param factory
-         *      A {@link LoggingFactory} object.
+         *      {@link LoggingFactory}
          */
         private LoggingPolicy(LoggingFactory factory, RequestPolicy nextPolicy, RequestPolicyOptions options) {
             this.factory = factory;

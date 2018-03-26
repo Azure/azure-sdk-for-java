@@ -14,9 +14,8 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.models.*;
+import com.microsoft.azure.storage.blob.models.*;
 import com.microsoft.rest.v2.http.HttpPipeline;
-import com.microsoft.rest.v2.RestResponse;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
@@ -27,17 +26,21 @@ import java.nio.ByteBuffer;
 import java.util.List;
 
 /**
- * Represents a URL to a block blob.
+ * Represents a URL to a block blob. It may be obtained by direct construction or via the create method on a
+ * {@link ContainerURL} object. This class does not hold any state about a particular blob but is instead a convenient
+ * way of sending off appropriate requests to the resource on the service. Please refer to the following for more
+ * information on block blobs:
+ * https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs
  */
 public final class BlockBlobURL extends BlobURL {
 
     /**
-     * Indicates the maximum number of bytes that can be sent in a call to putBlob.
+     * Indicates the maximum number of bytes that can be sent in a call to upload.
      */
     public static final int MAX_PUT_BLOB_BYTES = 256 * Constants.MB;
 
     /**
-     * Indicates the maximum number of bytes that can be sent in a call to putBlock.
+     * Indicates the maximum number of bytes that can be sent in a call to stageBlock.
      */
     public static final int MAX_PUT_BLOCK_BYTES = 100 * Constants.MB;
 
@@ -94,32 +97,31 @@ public final class BlockBlobURL extends BlobURL {
      * Updating an existing block blob overwrites any existing metadata on the blob. Partial updates are not
      * supported with PutBlob; the content of the existing blob is overwritten with the new content. To
      * perform a partial update of a block blob's, use PutBlock and PutBlockList.
-     * For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * @param data
-     *      A {@link Flowable} emitting {@link ByteBuffer} which contain the data to write to the blob.
+     *      The data to write to the blob.
      * @param length
-     *      A {@code long} indicating how long the data is.
+     *      The total length of the data.
      * @param headers
-     *      A {@link BlobHTTPHeaders} object that specifies which properties to set on the blob.
+     *      {@link BlobHTTPHeaders}
      * @param metadata
-     *      A {@link Metadata} object that specifies key value pairs to set on the blob.
+     *      {@link Metadata}
      * @param accessConditions
-     *      A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *      complete.
+     *      {@link BlobAccessConditions}
      * @return
-     *      The {@link Single} which emits a {@link RestResponse} containing the {@link BlobPutHeaders} and a
-     *      {@code Void} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<BlobPutHeaders, Void>> putBlob(
+    public Single<BlockBlobUploadResponse> upload(
             Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         // TODO: Metadata protocol layer broken.
-        return this.storageClient.blobs().putWithRestResponseAsync(length, BlobType.BLOCK_BLOB, data,
-                null, headers.getContentType(), headers.getContentEncoding(),
+        return this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
+                data, length, null, headers.getContentType(), headers.getContentEncoding(),
                 headers.getContentLanguage(), headers.getContentMD5(), headers.getCacheControl(), metadata,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
@@ -127,81 +129,81 @@ public final class BlockBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null, null, null);
+                null);
     }
 
     /**
-     * Uploads the specified block to the block blob's "staging area" to be later commited by a call to
-     * PutBlockList. For more information, see https://docs.microsoft.com/rest/api/storageservices/put-block.
+     * Uploads the specified block to the block blob's "staging area" to be later committed by a call to
+     * commitBlockList. For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block">Azure Docs</a>.
      *
      * @param base64BlockID
-     *      A Base64 encoded {@code String} that specifies the ID for this block.
+     *      A Base64 encoded {@code String} that specifies the ID for this block. Note that all block ids must be the
+     *      same length.
      * @param data
-     *      A {@link Flowable} of {@link ByteBuffer} which contains the data to write to the block.
+     *      The data to write to the block.
      * @param length
-     *      A {@code long} indicating how long the data is.
+     *      The total length of the data.
      * @param leaseAccessConditions
-     *      A {@link LeaseAccessConditions} object that specifies the lease on the blob if there is one.
+     *      {@link LeaseAccessConditions}
      * @return
-     *      The {@link Single} which emits a {@link RestResponse} containing the {@link BlockBlobPutBlockHeaders} and a
-     *      {@code Void} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<BlockBlobPutBlockHeaders, Void>> putBlock(
+    public Single<BlockBlobStageBlockResponse> stageBlock(
             String base64BlockID, Flowable<ByteBuffer> data, long length,
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
-        return this.storageClient.blockBlobs().putBlockWithRestResponseAsync(base64BlockID, length, data,
+        return this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(base64BlockID, length, data,
                 null, leaseAccessConditions.getLeaseId(), null);
     }
 
     /**
-     * Returns the list of blocks that have been uploaded as part of a block blob using the specified block
-     * list filter. For more information, see https://docs.microsoft.com/rest/api/storageservices/get-block-list.
+     * Returns the list of blocks that have been uploaded as part of a block blob using the specified block list filter.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/get-block-list">Azure Docs</a>.
      *
      * @param listType
-     *      A {@link BlockListType} value specifies which type of blocks to return.
+     *      Specifies which type of blocks to return.
      * @param leaseAccessConditions
-     *      A {@link LeaseAccessConditions} object that specifies the lease on the blob if there is one.
+     *      {@link LeaseAccessConditions}
      * @return
-     *      The {@link Single} which emits a {@link RestResponse} containing the {@link BlockBlobGetBlockListHeaders}
-     *      and a {@link BlockList} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<BlockBlobGetBlockListHeaders, BlockList>> getBlockList(
+    public Single<BlockBlobGetBlockListResponse> getBlockList(
             BlockListType listType, LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
-        return this.storageClient.blockBlobs().getBlockListWithRestResponseAsync(listType,
+        return this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(listType,
                 null, null, leaseAccessConditions.getLeaseId(), null);
     }
 
     /**
-     * Writes a blob by specifying the list of block IDs that make up the blob.
+     * Writes a blob by specifying the list of block IDs that are to make up the blob.
      * In order to be written as part of a blob, a block must have been successfully written
-     * to the server in a prior PutBlock operation. You can call PutBlockList to update a blob
+     * to the server in a prior stageBlock operation. You can call commitBlockList to update a blob
      * by uploading only those blocks that have changed, then committing the new and existing
      * blocks together. Any blocks not specified in the block list and permanently deleted.
-     * For more information, see https://docs.microsoft.com/rest/api/storageservices/put-block-list.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
      *
      * @param base64BlockIDs
-     *      A {@code java.util.List} of base64 {@code String} that specifies the block IDs to be committed.
+     *      A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers
-     *      A {@link BlobHTTPHeaders} object that specifies which properties to set on the blob.
+     *      {@link BlobHTTPHeaders}
      * @param metadata
-     *      A {@link Metadata} object that specifies key value pairs to set on the blob.
+     *      {@link Metadata}
      * @param accessConditions
-     *      A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *      complete.
+     *      {@link BlobAccessConditions}
      * @return
-     *      The {@link Single} which emits a {@link RestResponse} containing the {@link BlockBlobPutBlockListHeaders}
-     *      and a {@code Void} body if successful.
+     *      Emits the successful response.
      */
     // TODO: Add Content-Length to swagger once the modeler knows to hide (or whatever solution).
-    public Single<RestResponse<BlockBlobPutBlockListHeaders, Void>> putBlockList(
+    public Single<BlockBlobCommitBlockListResponse> commitBlockList(
             List<String> base64BlockIDs, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        return this.storageClient.blockBlobs().putBlockListWithRestResponseAsync(
+        return this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
                 new BlockLookupList().withLatest(base64BlockIDs), null,
                 headers.getCacheControl(), headers.getContentType(),headers.getContentEncoding(),
                 headers.getContentLanguage(), headers.getContentMD5(), metadata,
@@ -211,4 +213,6 @@ public final class BlockBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null);
     }
+
+    //TODO: stageBlockFromURL
 }

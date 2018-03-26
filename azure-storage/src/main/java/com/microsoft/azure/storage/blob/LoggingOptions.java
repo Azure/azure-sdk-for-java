@@ -14,16 +14,13 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import java.util.logging.Level;
-// TODO: Do we want to be using the HttpPipelineLoggingLevel here instead of that java.util?
-
 /**
- * Options to configure the {@link LoggingFactory}.
+ * Options to configure the {@link LoggingFactory}. Please refer to the Factory for more information.
  */
 public final class LoggingOptions {
 
     /**
-     * An object representing default logging options. {@code MinDurationToLogSlowRequestsInMs} is set to 3000;
+     * Default logging options. {@code MinDurationToLogSlowRequestsInMs} is set to 3000;
      */
     public static final LoggingOptions DEFAULT = new LoggingOptions(3000);
 
@@ -35,7 +32,7 @@ public final class LoggingOptions {
      * Creates a new {@link LoggingOptions} object.
      *
      * @param minDurationToLogSlowRequestsInMs
-     *      A {@code long} representing the minimum duration for a tried operation to log a warning.
+     *      The duration after which a tried operation will be logged as a warning.
      */
     public LoggingOptions(long minDurationToLogSlowRequestsInMs) {
         this.minDurationToLogSlowRequestsInMs = minDurationToLogSlowRequestsInMs;
@@ -43,7 +40,8 @@ public final class LoggingOptions {
 
     /**
      * @return
-     *      A {@code long} representing the minimum duration for a tried operation to log a warning.
+     *      The duration after which a tried operation will be logged as a warning.
+     *
      */
     public long getMinDurationToLogSlowRequestsInMs() {
         return minDurationToLogSlowRequestsInMs;

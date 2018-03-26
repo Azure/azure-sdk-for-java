@@ -14,6 +14,9 @@
  */
 package com.microsoft.azure.storage.blob;
 
+/**
+ * This type holds possible options for retry backoff algorithms. They may be used with {@link RequestRetryOptions}.
+ */
 public enum RetryPolicyType {
     /**
      * Tells the pipeline to use an exponential back-off retry policy.

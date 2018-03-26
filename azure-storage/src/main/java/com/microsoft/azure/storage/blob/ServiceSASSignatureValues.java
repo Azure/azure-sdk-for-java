@@ -14,11 +14,20 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.InvalidKeyException;
-import java.util.Date;
+import java.time.OffsetDateTime;
 
+/**
+ * ServiceSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage service. Once
+ * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
+ * which can actually be applied to blob urls. Note: that both this class and {@link SASQueryParameters} exist because
+ * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
+ * requests.
+ *
+ * Please refer to the following for more conceptual information on SAS:
+ * https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+ * https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+ */
 public final class ServiceSASSignatureValues {
 
     /**
@@ -28,70 +37,71 @@ public final class ServiceSASSignatureValues {
     public String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
     /**
-     * A {@link SASProtocol} value representing the allowed Internet protocols.
+     * {@link SASProtocol}
      */
     public SASProtocol protocol;
 
     /**
-     * A {@code java.util.Date} specifying when the SAS will take effect.
+     * When the SAS will take effect.
      */
-    public Date startTime;
+    public OffsetDateTime startTime;
 
     /**
-     * A {@code java.util.Date} specifying a time after which the SAS will no longer work.
+     * The time after which the SAS will no longer work.
      */
-    public Date expiryTime;
+    public OffsetDateTime expiryTime;
 
     /**
-     * A {@code String} specifying which operations the SAS user may perform. Please refer to either
-     * {@link ContainerSASPermission} or {@link BlobSASPermission} depending on the resource being accessed for help
-     * constructing the permissions string.
+     * Please refer to either {@link ContainerSASPermission} or {@link BlobSASPermission} depending on the resource
+     * being accessed for help constructing the permissions string.
      */
     public String permissions;
 
     /**
-     * An {@link IPRange} object specifying which IP addresses may validly use this SAS.
+     * {@link IPRange}
      */
     public IPRange ipRange;
 
     /**
-     * A {@code String} specifying the name of the container the SAS user may access.
+     * The name of the container the SAS user may access.
      */
     public String containerName;
 
     /**
-     * A {@code String} specifying the name of the container the SAS user may access.
+     * The name of the container the SAS user may access.
      */
     public String blobName;
 
     /**
-     * A {@code String} specifying which access policy on the container this SAS references if any.
+     * The name of the access policy on the container this SAS references if any. Please see
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     * for more information.
      */
     public String identifier;
 
     /**
-     * A {@code String} specifying the control header for the SAS.
+     * The cache-control header for the SAS.
      */
     public String cacheControl;
 
     /**
-     * A {@code String} specifying the content-disposition header for the SAS.
+     * The content-disposition header for the SAS.
      */
     public String contentDisposition;
 
     /**
-     * A {@code String} specifying the content-encoding header for the SAS.
+     * The content-encoding header for the SAS.
      *
      */
     public String contentEncoding;
 
     /**
-     * A {@code String} specifying the content-language header for the SAS.
+     * The content-language header for the SAS.
      */
     public String contentLanguage;
 
     /**
-     * A {@code String} specifying the content-type header for the SAS.
+     * The content-type header for the SAS.
      */
     public String contentType;
 
@@ -107,7 +117,7 @@ public final class ServiceSASSignatureValues {
      * @param sharedKeyCredentials
      *      A {@link SharedKeyCredentials} object used to sign the SAS values.
      * @return
-     *      A {@link SASQueryParameters} object containing the signed query parameters.
+     *      {@link SASQueryParameters}
      */
     public SASQueryParameters GenerateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
         if (sharedKeyCredentials == null) {
@@ -128,8 +138,8 @@ public final class ServiceSASSignatureValues {
         // Signature is generated on the un-url-encoded values.
          String stringToSign = Utility.join(new String[]{
                  verifiedPermissions,
-                 this.startTime == null ? "" : Utility.ISO8601UTCDateFormat.format(this.startTime),
-                 this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormat.format(this.expiryTime),
+                 this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
+                 this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                  getCanonicalName(sharedKeyCredentials.getAccountName()),
                  this.identifier,
                  this.ipRange.toString(),

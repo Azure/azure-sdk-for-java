@@ -23,7 +23,8 @@ import io.reactivex.Single;
 import java.util.concurrent.atomic.AtomicReference;
 
 /**
- * TokenCredentials is a {@link com.microsoft.rest.v2.http.HttpPipeline} and is the TokenCredential's policy factory.
+ * TokenCredentials are a means of authenticating requests to Azure Storage via OAuth user tokens. This is the preferred
+ * way of authenticating with Azure Storage.
  */
 public final class TokenCredentials implements ICredentials{
 

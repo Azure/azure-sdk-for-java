@@ -33,8 +33,8 @@ fun main(args: Array<String>) {
                     Completable.error(throwable)
                 }
             })
-            .andThen(blobURL.putBlob(Flowable.just(data), data.remaining().toLong(), null, null, null))
-            .flatMap { _ -> blobURL.getBlob(BlobRange(0L, data.remaining().toLong()), null, false) }
+            .andThen(blobURL.upload(Flowable.just(data), data.remaining().toLong(), null, null, null))
+            .flatMap { _ -> blobURL.download(BlobRange(0L, data.remaining().toLong()), null, false) }
             .flatMapCompletable({ response ->
                 val outFile = AsynchronousFileChannel.open(Paths.get("myFilePath"))
                 FlowableUtil.writeFile(response.body(), outFile)

@@ -15,7 +15,11 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * Represents possible services to be used for an Account SAS.
+ * This is a helper class to construct a string representing the services accessible by an AccountSAS. Setting a value
+ * to true means that any SAS which uses these permissions will grant access to that service. Once all the
+ * values are set, this should be serialized with toString and set as the services field on an
+ * {@link AccountSASSignatureValues} object. It is possible to construct the services string without this class, but
+ * the order of the services is particular and this class guarantees correctness.
  */
 public final class AccountSASService {
     /**

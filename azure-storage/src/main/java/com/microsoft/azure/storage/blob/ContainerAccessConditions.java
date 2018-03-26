@@ -15,7 +15,10 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * Access conditions specific to containers
+ * This class contains values which will restrict the successful operation of a variety of requests to the conditions
+ * present. These conditions are entirely optional. The entire object or any of its properties may be set to null when
+ * passed to a method to indicate that those conditions are not desired. Please refer to the type of each field for more
+ * information on those particular access conditions.
  */
 public final class ContainerAccessConditions {
 

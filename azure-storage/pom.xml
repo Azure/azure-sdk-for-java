@@ -16,6 +16,15 @@
 
     <repositories>
         <repository>
+            <id>central</id>
+            <name>Central Repository</name>
+            <url>http://repo.maven.apache.org/maven2</url>
+            <layout>default</layout>
+            <snapshots>
+                <enabled>false</enabled>
+            </snapshots>
+        </repository>
+        <repository>
             <id>ossrh</id>
             <name>Sonatype Snapshots</name>
             <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
@@ -24,6 +33,10 @@
                 <enabled>true</enabled>
                 <updatePolicy>always</updatePolicy>
             </snapshots>
+        </repository>
+        <repository>
+            <id>jitpack.io</id>
+            <url>https://jitpack.io</url>
         </repository>
     </repositories>
 
@@ -44,6 +57,17 @@
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.spockframework</groupId>
+            <artifactId>spock-core</artifactId>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>com.github.rickle-msft</groupId>
+            <artifactId>flashback</artifactId>
+            <version>commasInSingleValueHeaders-SNAPSHOT</version>
             <scope>test</scope>
         </dependency>
     </dependencies>

@@ -24,13 +24,20 @@ import io.reactivex.Single;
 
 import javax.crypto.Mac;
 import javax.crypto.spec.SecretKeySpec;
-import javax.xml.bind.DatatypeConverter;
 import java.io.UnsupportedEncodingException;
 import java.net.URL;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.time.OffsetDateTime;
 import java.util.*;
 
+/**
+ * SharedKeyCredentials are a means of signing and authenticating storage requests. The key can be obtained from the
+ * Azure portal. This factory will create policies which take care of all the details of creating strings to sign,
+ * signing them, and setting the Authentication header. While this is a common way of authenticating with the service,
+ * recommended practice is using {@link TokenCredentials}. Pass this as the credentials in the construction of a new
+ * {@link HttpPipeline} via the {@link StorageURL} type.
+ */
 public final class SharedKeyCredentials implements ICredentials {
 
     private final String accountName;
@@ -46,11 +53,11 @@ public final class SharedKeyCredentials implements ICredentials {
      * @param accountName
      *      The account name associated with the request.
      * @param accountKey
-     *      A string that represent the account access accountKey.
+     *      The account access key used to authenticate the request.
      */
     public SharedKeyCredentials(String accountName, String accountKey) throws InvalidKeyException {
         this.accountName = accountName;
-        this.accountKey = DatatypeConverter.parseBase64Binary(accountKey);
+        this.accountKey = Base64.getDecoder().decode(accountKey);
 
         try {
             this.hmacSha256 = Mac.getInstance("HmacSHA256");
@@ -98,7 +105,8 @@ public final class SharedKeyCredentials implements ICredentials {
         @Override
         public Single<HttpResponse> sendAsync(final HttpRequest request) {
             if (request.headers().value(Constants.HeaderConstants.DATE) == null) {
-                request.headers().set(Constants.HeaderConstants.DATE, Utility.RFC1123GMTDateFormat.format(new Date()));
+                request.headers().set(Constants.HeaderConstants.DATE,
+                        Utility.RFC1123GMTDateFormatter.format(OffsetDateTime.now()));
             }
             final String stringToSign = this.factory.buildStringToSign(request);
             try {
@@ -273,10 +281,11 @@ public final class SharedKeyCredentials implements ICredentials {
      */
     String computeHmac256(final String stringToSign) throws InvalidKeyException {
         try {
+            Mac localMac = (Mac) this.hmacSha256.clone();
             byte[] utf8Bytes = stringToSign.getBytes(Constants.UTF8_CHARSET);
-            return DatatypeConverter.printBase64Binary(this.hmacSha256.doFinal(utf8Bytes));
+            return Base64.getEncoder().encodeToString(this.hmacSha256.doFinal(utf8Bytes));
         }
-        catch (final UnsupportedEncodingException e) {
+        catch (final UnsupportedEncodingException | CloneNotSupportedException e) {
             throw new Error(e);
         }
     }

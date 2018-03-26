@@ -29,7 +29,12 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Factory for retrying requests.
+ * This is a factory which creates policies in an {@link HttpPipeline} for retrying a given HTTP request. The request
+ * that is retried will be identical each time it is reissued. In most cases, it is sufficient to configure a
+ * {@link RequestRetryOptions} object and set those as a field on a {@link PipelineOptions} object to configure a
+ * default pipeline. Retries will try against a secondary if one is specified and the type of operation/error indicates
+ * that the secondary can handle the request. Exponential and fixed backoff are supported. The factory and policy must
+ * only be used directly when creating a custom pipeline.
  */
 //TODO: This was retrying when I got the xml bom issue. Investigate that
 public final class RequestRetryFactory implements RequestPolicyFactory {
@@ -40,7 +45,7 @@ public final class RequestRetryFactory implements RequestPolicyFactory {
      * Creates a factory capable of generating RequestRetry policies for the {@link HttpPipeline}.
      *
      * @param requestRetryOptions
-     *      A {@link RequestRetryOptions} object configuring this factory and all its resultant policies.
+     *      {@link RequestRetryOptions}
      */
     public RequestRetryFactory(RequestRetryOptions requestRetryOptions) {
         this.requestRetryOptions = requestRetryOptions == null ? RequestRetryOptions.DEFAULT : requestRetryOptions;

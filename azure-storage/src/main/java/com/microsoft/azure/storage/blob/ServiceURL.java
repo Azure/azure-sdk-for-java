@@ -14,8 +14,7 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.models.*;
-import com.microsoft.rest.v2.RestResponse;
+import com.microsoft.azure.storage.blob.models.*;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import io.reactivex.Single;
 
@@ -23,10 +22,23 @@ import java.net.MalformedURLException;
 import java.net.URL;
 
 /**
- * Represents a URL to an Azure Storage Blob Service.
+ * Represents a URL to a blob service. This class does not hold any state about a particular storage account but is
+ * instead a convenient way of sending off appropriate requests to the resource on the service.
+ * It may also be used to construct URLs to blobs and containers.
+ * Please refer to the following for more information on containers:
+ * https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
  */
 public final class ServiceURL extends StorageURL {
 
+    /**
+     * Creates a {@code ServiceURL} object pointing to the account specified by the URL and using the provided pipeline
+     * to make HTTP requests.
+     * @param url
+     *      A url to an Azure Storage account.
+     * @param pipeline
+     *      A pipeline which configures the behavior of HTTP exchanges. Please refer to the createPipeline method on
+     *      {@link StorageURL} for more information.
+     */
     public ServiceURL(URL url, HttpPipeline pipeline) {
         super(url, pipeline);
     }
@@ -62,62 +74,62 @@ public final class ServiceURL extends StorageURL {
      * Use an empty marker to start enumeration from the beginning. Container names are returned in lexicographic order.
      * After getting a segment, process it, and then call ListContainers again (passing the the previously-returned
      * Marker) to get the next segment. For more information, see
-     * https://docs.microsoft.com/rest/api/storageservices/list-containers2.
+     * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * @param marker
-     *      A {@code String} that identifies the portion of the list of containers to be returned with the next listing
-     *      operation.
+     *      A {@code String} value that identifies the portion of the list to be returned with the next list operation.
+     *      This value is returned in the response of a previous list operation. Set to null if this is the first
+     *      segment.
      * @param options
      *      A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @return
-     *      The {@link Single} which emits a {@link RestResponse} containing the {@link ServiceListContainersHeaders} and a
-     *      {@link ListContainersResponse} body  if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<ServiceListContainersHeaders, ListContainersResponse>> listContainers(
+    public Single<ServiceListContainersSegmentResponse> listContainersSegment(
             String marker, ListContainersOptions options) {
         options = options == null ? ListContainersOptions.DEFAULT : options;
-        return this.storageClient.services().listContainersWithRestResponseAsync(options.getPrefix(), marker,
+        return this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(options.getPrefix(), marker,
                 options.getMaxResults(), options.getDetails().toIncludeType(), null, null);
     }
 
     /**
-     * Gets the properties of a storage account’s Blob service. For more information, see:
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties.
+     * Gets the properties of a storage account’s Blob service. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-properties">Azure Docs</a>.
      *
      * @return
-     *      The {@link Single} which emits a {@link RestResponse} containing the {@link ServiceGetPropertiesHeaders} and a
-     *      {@link StorageServiceProperties} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<ServiceGetPropertiesHeaders, StorageServiceProperties>> getProperties() {
-        return this.storageClient.services().getPropertiesWithRestResponseAsync(null, null);
+    public Single<ServiceGetPropertiesResponse> getProperties() {
+        return this.storageClient.generatedServices().getPropertiesWithRestResponseAsync(null, null);
     }
 
     /**
-     * Sets properties for a storage account's Blob service endpoint. For more information, see:
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties.
+     * Sets properties for a storage account's Blob service endpoint. For more information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
      *
      * @param properties
-     *      A {@link StorageServiceProperties} object containing the configurations for the service.
+     *      Configures the service.
      * @return
-     *      A {@link Single} which emits a {@link RestResponse} containing the {@link ServiceSetPropertiesHeaders} and a
-     *      {@code Void} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<ServiceSetPropertiesHeaders, Void>> setProperties(
+    public Single<ServiceSetPropertiesResponse> setProperties(
             StorageServiceProperties properties) {
-        return this.storageClient.services().setPropertiesWithRestResponseAsync(properties, null,
+        return this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(properties, null,
                 null);
     }
 
     /**
      * Retrieves statistics related to replication for the Blob service. It is only available on the secondary
      * location endpoint when read-access geo-redundant replication is enabled for the storage account. For more
-     * information, see: https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats.
+     * information, see the
+     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/get-blob-service-stats">Azure Docs</a>.
      *
      * @return
-     *      A {@link Single} which emits a {@link RestResponse} containing the {@link ServiceGetStatsHeaders} and a
-     *      {@link StorageServiceStats} body if xssuccessful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<ServiceGetStatsHeaders, StorageServiceStats>> getStats() {
-        return this.storageClient.services().getStatsWithRestResponseAsync(null, null);
+    public Single<ServiceGetStatisticsResponse> getStatistics() {
+        return this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(null, null);
     }
+
+    // TODO: Preflight request
 }

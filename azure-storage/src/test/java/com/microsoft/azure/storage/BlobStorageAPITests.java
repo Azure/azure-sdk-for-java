@@ -1,17 +1,22 @@
 package com.microsoft.azure.storage;
 
+import com.linkedin.flashback.SceneAccessLayer;
+import com.linkedin.flashback.factory.SceneFactory;
+import com.linkedin.flashback.matchrules.CompositeMatchRule;
+import com.linkedin.flashback.matchrules.MatchBody;
+import com.linkedin.flashback.matchrules.MatchRuleUtils;
+import com.linkedin.flashback.scene.SceneConfiguration;
+import com.linkedin.flashback.scene.SceneMode;
+import com.linkedin.flashback.smartproxy.FlashbackRunner;
 import com.microsoft.azure.storage.blob.*;
-import com.microsoft.azure.storage.models.*;
-import com.microsoft.rest.v2.RestResponse;
+import com.microsoft.azure.storage.blob.models.*;
 import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.Flowable;
 import io.reactivex.functions.BiConsumer;
-import org.joda.time.DateTime;
 import org.junit.Assert;
 import org.junit.Test;
 
-import javax.xml.bind.DatatypeConverter;
 import java.io.*;
 import java.net.MalformedURLException;
 import java.net.InetSocketAddress;
@@ -19,6 +24,7 @@ import java.net.Proxy;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
+import java.time.OffsetDateTime;
 import java.util.*;
 import java.util.concurrent.TimeUnit;
 
@@ -59,7 +65,7 @@ public class BlobStorageAPITests {
 
         // Currently only the default PipelineOptions are supported.
         PipelineOptions po = new PipelineOptions();
-        HttpClient.Configuration configuration = new HttpClient.Configuration(
+        HttpClientConfiguration configuration = new HttpClientConfiguration(
                 new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
         po.client = HttpClient.createDefault();//configuration);
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
@@ -90,7 +96,7 @@ public class BlobStorageAPITests {
             List<Container> containerList = new ArrayList<>();
             String marker = null;
             do {
-                RestResponse<ServiceListContainersHeaders, ListContainersResponse> resp = su.listContainers(
+                ServiceListContainersSegmentResponse resp = su.listContainersSegment(
                         marker, new ListContainersOptions(null, "java", null)).blockingGet();
                 containerList.addAll(resp.body().containers());
                 marker = resp.body().marker();
@@ -100,12 +106,12 @@ public class BlobStorageAPITests {
             Assert.assertEquals(1, containerList.size());
             Assert.assertEquals(containerList.get(0).name(), containerName);
 
-            // Create the blob with a single put. See below for the putBlock(List) scenario.
-            bu.putBlob(Flowable.just(ByteBuffer.wrap(new byte[]{0, 0, 0})), 3, null,
+            // Create the blob with a single put. See below for the stageBlock(List) scenario.
+            bu.upload(Flowable.just(ByteBuffer.wrap(new byte[]{0, 0, 0})), 3, null,
                     null,null).blockingGet();
 
             // Download the blob contents.
-            Flowable<ByteBuffer> data = bu.getBlob(new BlobRange(0L, 3L),
+            Flowable<ByteBuffer> data = bu.download(new BlobRange(0L, 3L),
                     null, false).blockingGet().body();
             byte[] dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
             assertArrayEquals(dataByte, new byte[]{0, 0, 0});
@@ -114,8 +120,8 @@ public class BlobStorageAPITests {
             BlobHTTPHeaders headers = new BlobHTTPHeaders("myControl", "myDisposition",
                     "myContentEncoding", "myLanguage", null,
                     "myType");
-            bu.setProperties(headers, null).blockingGet();
-            BlobGetPropertiesHeaders receivedHeaders = bu.getPropertiesAndMetadata(
+            bu.setHTTPHeaders(headers, null).blockingGet();
+            BlobsGetPropertiesHeaders receivedHeaders = bu.getProperties(
                     null).blockingGet().headers();
             Assert.assertEquals(headers.getCacheControl(), receivedHeaders.cacheControl());
             Assert.assertEquals(headers.getContentDisposition(), receivedHeaders.contentDisposition());
@@ -132,14 +138,14 @@ public class BlobStorageAPITests {
             BlockBlobURL buSnapshot = bu.withSnapshot(snapshot);
 
             // Download the contents of the snapshot.
-            data = buSnapshot.getBlob(new BlobRange(0L, 3L),
+            data = buSnapshot.download(new BlobRange(0L, 3L),
                     null, false).blockingGet().body();
             dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
             assertArrayEquals(dataByte, new byte[]{0,0,0});
 
             // Create a reference to another blob within the same container and copies the first blob into this location.
             BlockBlobURL bu2 = cu.createBlockBlobURL("javablob2");
-            bu2.startCopy(bu.toURL(), null, null, null)
+            bu2.startCopyFromURL(bu.toURL(), null, null, null)
                     .blockingGet();
 
             // Simple delay to wait for the copy. Inefficient buf effective. A better method would be to periodically
@@ -147,15 +153,15 @@ public class BlobStorageAPITests {
             TimeUnit.SECONDS.sleep(5);
 
             // Check the existence of the copied blob.
-            receivedHeaders = bu2.getPropertiesAndMetadata(null).blockingGet()
+            receivedHeaders = bu2.getProperties(null).blockingGet()
                     .headers();
             Assert.assertEquals(headers.getContentType(), receivedHeaders.contentType());
 
             // Create a reference to a new blob within the same container to upload blocks. Upload a single block.
             BlockBlobURL bu3 = cu.createBlockBlobURL("javablob3");
             ArrayList<String> blockIDs = new ArrayList<>();
-            blockIDs.add(DatatypeConverter.printBase64Binary(new byte[]{0}));
-            bu3.putBlock(blockIDs.get(0), Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})), 3,
+            blockIDs.add(Base64.getEncoder().encodeToString(new byte[]{0}));
+            bu3.stageBlock(blockIDs.get(0), Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})), 3,
                     null).blockingGet();
 
             // Get the list of blocks on this blob. For demonstration purposes.
@@ -165,15 +171,15 @@ public class BlobStorageAPITests {
 
             // Get a list of blobs in the container including copies, snapshots, and uncommitted blobs.
             // For demonstration purposes.
-            List<Blob> blobs = cu.listBlobs(null,
+            List<Blob> blobs = cu.listBlobsFlatSegment(null,
                     new ListBlobsOptions(new BlobListingDetails(
                             true, false, true, true),
-                            null, null, null)).blockingGet().body().blobs().blob();
+                            null, null)).blockingGet().body().blobs().blob();
             Assert.assertEquals(4, blobs.size());
 
             // Commit the list of blocks. Download the blob to verify.
-            bu3.putBlockList(blockIDs, null, null, null).blockingGet();
-            data = bu3.getBlob(new BlobRange(0L, 3L),
+            bu3.commitBlockList(blockIDs, null, null, null).blockingGet();
+            data = bu3.download(new BlobRange(0L, 3L),
                     null, false).blockingGet().body();
             dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
             assertArrayEquals(dataByte, new byte[]{0,0,0});
@@ -194,7 +200,7 @@ public class BlobStorageAPITests {
             sas.version = "2016-05-31";
             sas.protocol = SASProtocol.HTTPS_HTTP;
             sas.startTime  = null;
-            sas.expiryTime= DateTime.now().plusDays(1).toDate();
+            sas.expiryTime= OffsetDateTime.now().plusDays(1);
             sas.permissions = perms.toString();
             sas.ipRange = null;
             sas.services = service.toString();
@@ -222,7 +228,7 @@ public class BlobStorageAPITests {
 
             // Download the blob using the SAS. To perform other operations, ensure the appropriate permissions are
             // specified above.
-            data = sasBlob.getBlob(new BlobRange(0L, 3L), null, false).blockingGet().body();
+            data = sasBlob.download(new BlobRange(0L, 3L), null, false).blockingGet().body();
             dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
             assertArrayEquals(dataByte, new byte[]{0, 0, 0});
 
@@ -231,7 +237,7 @@ public class BlobStorageAPITests {
             abu.create(null, null, null).blockingGet();
             abu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})), 3,  null).blockingGet();
 
-            data = abu.getBlob(new BlobRange(0L, 3L), null, false).blockingGet().body();
+            data = abu.download(new BlobRange(0L, 3L), null, false).blockingGet().body();
             dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
             assertArrayEquals(dataByte, new byte[]{0, 0, 0});
 
@@ -242,7 +248,7 @@ public class BlobStorageAPITests {
             for(int i=0; i<1024; i++) {
                 os.write(1);
             }
-            pbu.putPages(new PageRange().withStart(0).withEnd(1023), Flowable.just(ByteBuffer.wrap(os.toByteArray())),
+            pbu.uploadPages(new PageRange().withStart(0).withEnd(1023), Flowable.just(ByteBuffer.wrap(os.toByteArray())),
                     null).blockingGet();
             String pageSnap = pbu.createSnapshot(null, null).blockingGet().headers().snapshot();
             pbu.clearPages(new PageRange().withStart(0).withEnd(511), null).blockingGet();
@@ -255,13 +261,13 @@ public class BlobStorageAPITests {
             Assert.assertEquals(cr.end(), 511);
 
             pbu.resize(512L * 4L, null).blockingGet();
-            pbu.setSequenceNumber(SequenceNumberActionType.INCREMENT, null, null, null).blockingGet();
-            BlobGetPropertiesHeaders pageHeaders = pbu.getPropertiesAndMetadata(null).blockingGet().headers();
+            pbu.updateSequenceNumber(SequenceNumberActionType.INCREMENT, null, null).blockingGet();
+            BlobsGetPropertiesHeaders pageHeaders = pbu.getProperties(null).blockingGet().headers();
             Assert.assertEquals(1, pageHeaders.blobSequenceNumber().longValue());
             Assert.assertEquals((long)(512*4), pageHeaders.contentLength().longValue());
 
             PageBlobURL copyPbu = cu.createPageBlobURL("copyPage");
-            CopyStatusType status = copyPbu.startIncrementalCopy(pbu.toURL(), pageSnap, null).blockingGet().headers().copyStatus();
+            CopyStatusType status = copyPbu.copyIncremental(pbu.toURL(), pageSnap, null).blockingGet().headers().copyStatus();
             Assert.assertEquals(CopyStatusType.PENDING, status);
 
             // ACCOUNT----------------------------
@@ -281,7 +287,7 @@ public class BlobStorageAPITests {
             pipeline = StorageURL.createPipeline(creds, new PipelineOptions());
             ServiceURL secondary = new ServiceURL(new URL("http://" + secondaryAccount + ".blob.core.windows.net"),
                     pipeline);
-            secondary.getStats().blockingGet();
+            secondary.getStatistics().blockingGet();
         }
         catch (Exception e) {
             e.printStackTrace();
@@ -308,7 +314,11 @@ public class BlobStorageAPITests {
                 System.getenv().get("ACCOUNT_KEY"));
 
         // Currently only the default PipelineOptions are supported.
-        HttpPipeline pipeline = StorageURL.createPipeline(creds, new PipelineOptions());
+        PipelineOptions po = new PipelineOptions();
+        HttpClientConfiguration configuration = new HttpClientConfiguration(
+                new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
+        po.client = HttpClient.createDefault(configuration);
+        HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
 
         // Create a reference to the service.
         ServiceURL su = new ServiceURL(
@@ -340,7 +350,7 @@ public class BlobStorageAPITests {
 
             // Single shot.
             ByteBuffer data = ByteBuffer.wrap(os.toByteArray());
-            List<ByteBuffer> buffers = Arrays.asList(new ByteBuffer[]{data});
+            List<ByteBuffer> buffers = Arrays.asList(data);
             Highlevel.UploadToBlockBlobOptions options = Highlevel.UploadToBlockBlobOptions.DEFAULT;
             int status = Highlevel.uploadByteBuffersToBlockBlob(buffers, bu, options).blockingGet().response().statusCode();
             assertEquals(201, status);
@@ -358,7 +368,7 @@ public class BlobStorageAPITests {
             assertEquals(201, status);
 
             ArrayList<ByteBuffer> received = new ArrayList<>();
-            bu.getBlob(null, null, false).blockingGet().body()
+            bu.download(null, null, false).blockingGet().body()
                     .collectInto(received, new BiConsumer<ArrayList<ByteBuffer>, ByteBuffer>() {
                         @Override
                         public void accept(ArrayList<ByteBuffer> byteBuffers, ByteBuffer byteBuffer) throws Exception {
@@ -418,7 +428,7 @@ public class BlobStorageAPITests {
 
         // Currently only the default PipelineOptions are supported.
         PipelineOptions po = new PipelineOptions();
-        HttpClient.Configuration configuration = new HttpClient.Configuration(
+        HttpClientConfiguration configuration = new HttpClientConfiguration(
                 new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
         po.client = HttpClient.createDefault(configuration);
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
@@ -449,7 +459,7 @@ public class BlobStorageAPITests {
             Highlevel.uploadFileToBlockBlob(fis.getChannel(), bu, BlockBlobURL.MAX_PUT_BLOCK_BYTES,
                     Highlevel.UploadToBlockBlobOptions.DEFAULT).blockingGet();
             ArrayList<ByteBuffer> received = new ArrayList<>();
-            bu.getBlob(null, null, false).blockingGet().body()
+            bu.download(null, null, false).blockingGet().body()
                     .collectInto(received, new BiConsumer<ArrayList<ByteBuffer>, ByteBuffer>() {
                         @Override
                         public void accept(ArrayList<ByteBuffer> byteBuffers, ByteBuffer byteBuffer) throws Exception {
@@ -497,7 +507,7 @@ public class BlobStorageAPITests {
 
         // Currently only the default PipelineOptions are supported.
         PipelineOptions po = new PipelineOptions();
-        HttpClient.Configuration configuration = new HttpClient.Configuration(
+        HttpClientConfiguration configuration = new HttpClientConfiguration(
                 new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
         po.client = HttpClient.createDefault(configuration);
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
@@ -528,12 +538,74 @@ public class BlobStorageAPITests {
                     Highlevel.UploadToBlockBlobOptions.DEFAULT).blockingGet();
 
             ByteBuffer result = FlowableUtil.collectBytesInBuffer(
-                    bu.getBlob(null, null, false).blockingGet().body())
+                    bu.download(null, null, false).blockingGet().body())
                     .blockingGet();
 
             assertEquals(result.compareTo(data), 0);
         } finally {
             cu.delete(null);
+        }
+    }
+    @Test
+    public void recordingTest() throws IOException, InvalidKeyException, InterruptedException {
+
+        FlashbackRunner flashbackRunner = null;
+        try {
+
+            SharedKeyCredentials creds = new SharedKeyCredentials(System.getenv().get("ACCOUNT_NAME"),
+                    System.getenv().get("ACCOUNT_KEY"));
+
+
+            PipelineOptions po = new PipelineOptions();
+            HttpClientConfiguration configuration = new HttpClientConfiguration(
+                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 1234)));
+            po.client = HttpClient.createDefault(configuration);
+            HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
+
+
+            ServiceURL su = new ServiceURL(
+                    new URL("http://" + System.getenv().get("ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline);
+
+
+            String containerName = "javatestcontainer";
+            ContainerURL cu = su.createContainerURL(containerName);
+
+
+            BlockBlobURL bu = cu.createBlockBlobURL("javatestblob");
+
+            String filePath = "C:\\Users\\frley\\Documents\\azure-storage-java-async\\azure-storage\\src\\test\\resources\\recordings";
+            String sceneName = "TestScene";
+            SceneMode sceneMode = SceneMode.PLAYBACK;
+            String proxyHost = "localhost";
+            int port = 1234;
+
+            CompositeMatchRule rule = new CompositeMatchRule();
+            rule.addRule(new MatchBody());
+            HashSet<String> blacklistHeaders = new HashSet<>();
+            blacklistHeaders.add("Authorization");
+            blacklistHeaders.add("x-ms-date");
+            blacklistHeaders.add("x-ms-client-request-id");
+            rule.addRule(MatchRuleUtils.matchHeadersWithBlacklist(blacklistHeaders));
+            HashSet<String> blacklistQuery = new HashSet<>();
+            blacklistQuery.add("sig");
+            rule.addRule(MatchRuleUtils.matchUriWithQueryBlacklist(blacklistQuery));
+
+            SceneConfiguration sceneConfig = new SceneConfiguration(filePath, sceneMode, sceneName);
+            flashbackRunner = new FlashbackRunner.Builder().host(proxyHost).port(port).mode(sceneMode)
+                    .sceneAccessLayer(new SceneAccessLayer(SceneFactory.create(sceneConfig), rule))
+                    .build();
+            flashbackRunner.start();
+            try {
+                cu.create(null, PublicAccessType.BLOB).blockingGet();
+            }
+            finally {
+                cu.delete(null).blockingGet();
+            }
+        }
+        finally {
+            if (flashbackRunner != null) {
+                flashbackRunner.close();
+            }
         }
     }
 }

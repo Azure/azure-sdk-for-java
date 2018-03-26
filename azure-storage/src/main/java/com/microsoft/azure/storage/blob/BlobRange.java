@@ -17,33 +17,38 @@ package com.microsoft.azure.storage.blob;
 import java.util.Locale;
 
 /**
- * A representation of a range of bytes to retrieve from a blob.
+ * This is a representation of a range of bytes on a blob, typically used during a download operation. This type is
+ * immutable to ensure thread-safety of requests, so changing the values for a different operation requires construction
+ * of a new object. Passing null as a BlobRange value will default to the entire range of the blob.
  */
 public final class BlobRange {
 
     /**
      * An object which reflects the service's default range, which is the whole blob.
      */
-    public static final BlobRange DEFAULT = new BlobRange(0, 0);
+    public static final BlobRange DEFAULT = new BlobRange(0, null);
 
     private final long offset;
 
-    private final long count;
+    private final Long count;
 
     /**
      * A {@code BlobRange} object.
      *
      * @param offset
-     *      A {@code long} that indicates the start of the range.
+     *      The start of the range. Must be greater than or equal to 0.
      * @param count
-     *      A {@code long} that indicates how many bytes to include in the range.
+     *      How many bytes to include in the range. Must be greater than or equal to 0 if specified. If specified,
+     *      offset must also be specified.
      */
-    public BlobRange(long offset, long count) {
+    public BlobRange(long offset, Long count) {
         if (offset < 0) {
-            throw new IllegalArgumentException("BlobRange offset must be greater than or equal to 0 if specified.");
+            throw new IllegalArgumentException("BlobRange offset must be greater than or equal to 0.");
         }
-        if (count < 0) {
-            throw new IllegalArgumentException("BlobRange count must be greater than or equal to 0 if specified.");
+        if (count != null && count < 0) {
+            throw new IllegalArgumentException(
+                    "BlobRange count must be greater than or equal to 0 if specified. Cannot be specified without an " +
+                            "offset.");
         }
         this.offset = offset;
         this.count = count;
@@ -61,7 +66,7 @@ public final class BlobRange {
      * @return
      *      A {@code long} that indicates how many bytes to include in the range.
      */
-    public long getCount() {
+    public Long getCount() {
         return count;
     }
 
@@ -72,7 +77,7 @@ public final class BlobRange {
      */
     public String toString() {
 
-        if (count != 0) {
+        if (count != null) {
             long rangeEnd = this.offset + this.count - 1;
             return String.format(
                     Locale.US, Constants.HeaderConstants.RANGE_HEADER_FORMAT, this.offset, rangeEnd);

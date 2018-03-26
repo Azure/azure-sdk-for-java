@@ -22,9 +22,10 @@ import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import io.reactivex.Single;
 
 /**
- * Anonymous credentials are to be used with with HTTP(S) requests
- * that read blobs from public containers or requests that use a
- * Shared Access Signature (SAS).
+ * Anonymous credentials are to be used with with HTTP(S) requests that read blobs from public containers or requests
+ * that use a Shared Access Signature (SAS). This is because Anonymous credentials will not set an Authorization header.
+ * Pass an instance of this class as the credentials parameter when creating a new pipeline (typically with
+ * {@link StorageURL}).
  */
 public final class AnonymousCredentials implements ICredentials {
 
@@ -37,11 +38,11 @@ public final class AnonymousCredentials implements ICredentials {
      * Creates a new {@code AnonymousCredentialsPolicy}.
      *
      * @param nextRequestPolicy
-     *      The next {@link RequestPolicy} in the pipeline which will be called after this policy completes.
+     *      The next {@code RequestPolicy} in the pipeline which will be called after this policy completes.
      * @param options
      *      Unused.
      * @return
-     *      A {@link RequestPolicy} object to be inserted into the {@link HttpPipeline}.
+     *      A {@code RequestPolicy} object to be inserted into the {@link HttpPipeline}.
      */
     @Override
     public RequestPolicy create(RequestPolicy nextRequestPolicy, RequestPolicyOptions options) {
@@ -49,9 +50,12 @@ public final class AnonymousCredentials implements ICredentials {
     }
 
     /**
-     * Anonymous credentials are to be used with with HTTP(S) requests
-     * that read blobs from public containers or requests that use a
-     * Shared Access Signature (SAS).
+     * This policy will perform an a no-op on the Authorization header. Typically constructing a pipeline will even
+     * ignore constructing this policy if is recognized. Please refer to either {@link AccountSASSignatureValues},
+     * {@link ServiceSASSignatureValues} for more information on SAS requests. Please refer to the following for more
+     * information on anonymous requests:
+     * https://docs.microsoft.com/en-us/azure/storage/blobs/storage-manage-access-to-resources
+     * https://docs.microsoft.com/en-us/rest/api/storageservices/set-container-acl
      */
     private final class AnonymousCredentialsPolicy implements RequestPolicy {
         final RequestPolicy nextPolicy;
