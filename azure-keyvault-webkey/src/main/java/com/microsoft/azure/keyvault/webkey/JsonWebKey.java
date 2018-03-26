@@ -575,18 +575,25 @@ public class JsonWebKey {
     }
     
 	
-	private static PublicKey getECPublicKey(ECPoint ecPoint, ECParameterSpec curveSpec, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
+	private static PublicKey getECPublicKey(ECPoint ecPoint, ECParameterSpec curveSpec, Provider provider) {
 		// Create public key spec with given point
-		ECPublicKeySpec pubSpec = new ECPublicKeySpec(ecPoint, curveSpec);
-		KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
-		return (ECPublicKey) kf.generatePublic(pubSpec);
-
+		try {
+			ECPublicKeySpec pubSpec = new ECPublicKeySpec(ecPoint, curveSpec);
+			KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
+			return (ECPublicKey) kf.generatePublic(pubSpec);
+		} catch (GeneralSecurityException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 	
-	private static PrivateKey getECPrivateKey(byte[] d, ECParameterSpec curveSpec, Provider provider) throws NoSuchAlgorithmException, InvalidKeySpecException, NoSuchProviderException {
-		ECPrivateKeySpec priSpec = new ECPrivateKeySpec(new BigInteger(1, d), curveSpec);
-		KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
-		return (ECPrivateKey) kf.generatePrivate(priSpec);
+	private static PrivateKey getECPrivateKey(byte[] d, ECParameterSpec curveSpec, Provider provider)  {
+		try {
+			ECPrivateKeySpec priSpec = new ECPrivateKeySpec(new BigInteger(1, d), curveSpec);
+			KeyFactory kf = provider != null ? KeyFactory.getInstance("EC", provider) : KeyFactory.getInstance("EC", "SunEC");
+			return (ECPrivateKey) kf.generatePrivate(priSpec);
+		} catch (GeneralSecurityException e) {
+			throw new IllegalStateException(e);
+		}
 	}
 
     /**
@@ -699,9 +706,8 @@ public class JsonWebKey {
     /**
      * Converts JSON web key to EC key pair and include the private key if set to true.
      * @return EC key pair
-     * @throws NoSuchProviderException 
      */
-    public KeyPair toEC() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
+    public KeyPair toEC() {
     	return toEC(false, null);
     }
     
@@ -709,9 +715,8 @@ public class JsonWebKey {
      * Converts JSON web key to EC key pair and include the private key if set to true.
      * @param includePrivateParameters true if the EC key pair should include the private key. False otherwise.
      * @return EC key pair
-     * @throws NoSuchProviderException 
      */
-    public KeyPair toEC(boolean includePrivateParameters) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
+    public KeyPair toEC(boolean includePrivateParameters) {
     	return toEC(includePrivateParameters, null);
     }
     
@@ -719,10 +724,10 @@ public class JsonWebKey {
      * Converts JSON web key to EC key pair and include the private key if set to true.
      * @param provider the Java security provider.
      * @param includePrivateParameters true if the EC key pair should include the private key. False otherwise.
+     * @param provider Java security provider
      * @return EC key pair
-     * @throws NoSuchProviderException 
      */
-    public KeyPair toEC(boolean includePrivateParameters, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
+    public KeyPair toEC(boolean includePrivateParameters, Provider provider) {
     	
     	if (provider == null) {
 			//Our default provider for this class
@@ -733,39 +738,42 @@ public class JsonWebKey {
 			throw new IllegalArgumentException("Not an EC key.");
 		}
 		
-		KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
-		
-		ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(crv));
-		kpg.initialize(gps);
-		
-		// Generate dummy keypair to get parameter spec.
-		KeyPair apair = kpg.generateKeyPair();
-		ECPublicKey apub = (ECPublicKey) apair.getPublic();
-		ECParameterSpec aspec = apub.getParams();
-		
-		ECPoint ecPoint = new ECPoint(new BigInteger(1, x), new BigInteger(1, y));
-		
-		KeyPair realKeyPair;
-		
-		if (includePrivateParameters) {
-			realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider), getECPrivateKey(d, aspec, provider));
-		} else {
-			realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider), null);		
+		try {
+			KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
+			
+			ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(crv));
+			kpg.initialize(gps);
+			
+			
+			// Generate dummy keypair to get parameter spec.
+			KeyPair apair = kpg.generateKeyPair();
+			ECPublicKey apub = (ECPublicKey) apair.getPublic();
+			ECParameterSpec aspec = apub.getParams();
+			
+			ECPoint ecPoint = new ECPoint(new BigInteger(1, x), new BigInteger(1, y));
+			
+			KeyPair realKeyPair;
+			
+			if (includePrivateParameters) {
+				realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider), getECPrivateKey(d, aspec, provider));
+			} else {
+				realKeyPair = new KeyPair(getECPublicKey(ecPoint, aspec, provider), null);		
+			}
+			
+			return realKeyPair;
+		} catch (GeneralSecurityException e) {
+			throw new IllegalStateException(e);
 		}
-		
-		return realKeyPair;
     }
     
     /**
      * Converts EC key pair to JSON web key.
      * @param keyPair EC key pair
-     * @provider Java security provider
+     * @param provider Java security provider
      * @return the JSON web key, converted from EC key pair.
-     * @throws InvalidAlgorithmParameterException 
-     * @throws NoSuchAlgorithmException 
      */
-	public static JsonWebKey fromEC(KeyPair keyPair, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-
+	public static JsonWebKey fromEC(KeyPair keyPair, Provider provider) {
+		
 		ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
 		ECPoint point = apub.getW();
 		ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
@@ -789,32 +797,37 @@ public class JsonWebKey {
     }
     
 	// Matches the curve of the keyPair to supported curves.
-	private static JsonWebKeyCurveName getCurveFromKeyPair(KeyPair keyPair, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-		ECPublicKey key = (ECPublicKey) keyPair.getPublic();
-		ECParameterSpec spec = key.getParams();
-		EllipticCurve crv = spec.getCurve();
+	private static JsonWebKeyCurveName getCurveFromKeyPair(KeyPair keyPair, Provider provider) {
 		
-		List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.SECP256K1);
-		
-		for (JsonWebKeyCurveName curve : curveList) {
-			ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
-			KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
-			kpg.initialize(gps);
+		try {
+			ECPublicKey key = (ECPublicKey) keyPair.getPublic();
+			ECParameterSpec spec = key.getParams();
+			EllipticCurve crv = spec.getCurve();
 			
-			// Generate dummy keypair to get parameter spec.
-			KeyPair apair = kpg.generateKeyPair();
-			ECPublicKey apub = (ECPublicKey) apair.getPublic();
-			ECParameterSpec aspec = apub.getParams();
-			EllipticCurve acurve = aspec.getCurve();
+			List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.SECP256K1);
 			
-			//Matches the parameter spec
-			if (acurve.equals(crv)) {
-				return curve;
+			for (JsonWebKeyCurveName curve : curveList) {
+				ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
+				KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", provider);
+				kpg.initialize(gps);
+				
+				// Generate dummy keypair to get parameter spec.
+				KeyPair apair = kpg.generateKeyPair();
+				ECPublicKey apub = (ECPublicKey) apair.getPublic();
+				ECParameterSpec aspec = apub.getParams();
+				EllipticCurve acurve = aspec.getCurve();
+				
+				//Matches the parameter spec
+				if (acurve.equals(crv)) {
+					return curve;
+				}
 			}
+			
+			//Did not find a supported curve.
+			throw new NoSuchAlgorithmException("Curve not supported.");
+		} catch (GeneralSecurityException e) {
+			throw new IllegalStateException(e);
 		}
-		
-		//Did not find a supported curve.
-		throw new NoSuchAlgorithmException("Curve not supported.");
 	}
 	
     /**

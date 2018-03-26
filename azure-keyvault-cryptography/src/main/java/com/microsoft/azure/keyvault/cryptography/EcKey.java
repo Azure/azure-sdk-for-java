@@ -2,6 +2,7 @@ package com.microsoft.azure.keyvault.cryptography;
 
 import java.io.IOException;
 import java.math.BigInteger;
+import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
 import java.security.KeyFactory;
 import java.security.KeyPair;
@@ -223,16 +224,16 @@ public class EcKey implements IKey {
 	 * @param includePrivateParameters true if the EC key pair should include the private key. False otherwise.
 	 * @param provider the Java Security Provider
 	 * @return EcKey
-	 * @throws NoSuchAlgorithmException
-	 * @throws InvalidAlgorithmParameterException
-	 * @throws InvalidKeySpecException
-	 * @throws NoSuchProviderException
 	 */
-	public static EcKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters, Provider provider) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException, InvalidKeySpecException, NoSuchProviderException {
-		if (jwk.kid() != null) {
-			return new EcKey(jwk.kid(), jwk.toEC(includePrivateParameters, provider));
-		} else {
-			throw new IllegalArgumentException("Json Web Key should have a kid");
+	public static EcKey fromJsonWebKey(JsonWebKey jwk, boolean includePrivateParameters, Provider provider) {
+		try {
+			if (jwk.kid() != null) {
+				return new EcKey(jwk.kid(), jwk.toEC(includePrivateParameters, provider));
+			} else {
+				throw new IllegalArgumentException("Json Web Key should have a kid");
+			}
+		} catch (GeneralSecurityException e) {
+			throw new IllegalStateException(e);
 		}
 	}
 	
@@ -240,37 +241,41 @@ public class EcKey implements IKey {
 	 * Converts EcKey to JSON web key.
 	 * @return
 	 */
-	public JsonWebKey toJsonWebKey() throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
+	public JsonWebKey toJsonWebKey() {
 		return JsonWebKey.fromEC(_keyPair, _provider);
 	}
 	
 	// Matches the curve of the keyPair to supported curves.
-	private JsonWebKeyCurveName getCurveFromKeyPair(KeyPair keyPair) throws NoSuchAlgorithmException, InvalidAlgorithmParameterException {
-		ECPublicKey key = (ECPublicKey) keyPair.getPublic();
-		ECParameterSpec spec = key.getParams();
-		EllipticCurve crv = spec.getCurve();
-		
-		List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.SECP256K1);
-		
-		for (JsonWebKeyCurveName curve : curveList) {
-			ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
-			KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", _provider);
-			kpg.initialize(gps);
+	private JsonWebKeyCurveName getCurveFromKeyPair(KeyPair keyPair) {
+		try {
+			ECPublicKey key = (ECPublicKey) keyPair.getPublic();
+			ECParameterSpec spec = key.getParams();
+			EllipticCurve crv = spec.getCurve();
 			
-			// Generate dummy keypair to get parameter spec.
-			KeyPair apair = kpg.generateKeyPair();
-			ECPublicKey apub = (ECPublicKey) apair.getPublic();
-			ECParameterSpec aspec = apub.getParams();
-			EllipticCurve acurve = aspec.getCurve();
+			List<JsonWebKeyCurveName> curveList = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.SECP256K1);
 			
-			//Matches the parameter spec
-			if (acurve.equals(crv)) {
-				return curve;
+			for (JsonWebKeyCurveName curve : curveList) {
+				ECGenParameterSpec gps = new ECGenParameterSpec(CURVE_TO_SPEC_NAME.get(curve));
+				KeyPairGenerator kpg = KeyPairGenerator.getInstance("EC", _provider);
+				kpg.initialize(gps);
+				
+				// Generate dummy keypair to get parameter spec.
+				KeyPair apair = kpg.generateKeyPair();
+				ECPublicKey apub = (ECPublicKey) apair.getPublic();
+				ECParameterSpec aspec = apub.getParams();
+				EllipticCurve acurve = aspec.getCurve();
+				
+				//Matches the parameter spec
+				if (acurve.equals(crv)) {
+					return curve;
+				}
 			}
+			
+			//Did not find a supported curve.
+			throw new IllegalArgumentException ("Curve not supported.");
+		} catch (GeneralSecurityException e) {
+			throw new IllegalStateException(e);
 		}
-		
-		//Did not find a supported curve.
-		throw new IllegalArgumentException ("Curve not supported.");
 	}
 	
 	/**
