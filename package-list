@@ -15,9 +15,11 @@ com.microsoft.azure.documentdb.internal.query.funcs
 com.microsoft.azure.documentdb.internal.query.orderbyquery
 com.microsoft.azure.documentdb.internal.routing
 com.microsoft.azure.management
+com.microsoft.azure.management.apimanagement
 com.microsoft.azure.management.appservice
 com.microsoft.azure.management.batch
 com.microsoft.azure.management.batchai
+com.microsoft.azure.management.batchai.model
 com.microsoft.azure.management.cdn
 com.microsoft.azure.management.compute
 com.microsoft.azure.management.containerinstance
