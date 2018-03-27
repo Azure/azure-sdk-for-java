@@ -20,6 +20,7 @@ import com.microsoft.rest.v2.http.UrlBuilder;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
 
+import java.lang.Error;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;

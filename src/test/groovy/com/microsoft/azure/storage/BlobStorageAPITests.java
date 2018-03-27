@@ -1,6 +1,7 @@
 package com.microsoft.azure.storage;
 
 import com.microsoft.azure.storage.blob.*;
+import com.microsoft.rest.v2.RestException;
 import com.microsoft.azure.storage.blob.models.*;
 import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.util.FlowableUtil;
@@ -59,7 +60,7 @@ public class BlobStorageAPITests {
         PipelineOptions po = new PipelineOptions();
         HttpClientConfiguration configuration = new HttpClientConfiguration(
                 new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
-        po.client = HttpClient.createDefault();//configuration);
+        po.client = HttpClient.createDefault(configuration);
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
 
         // Create a reference to the service.
@@ -70,7 +71,15 @@ public class BlobStorageAPITests {
         // the container name to the ServiceURL. A ContainerURL may also be created by calling its
         // constructor with a full path to the container and a pipeline.
         String containerName = "javatestcontainer" + System.currentTimeMillis();
-        ContainerURL cu = su.createContainerURL(containerName);
+        //ContainerURL cu = su.createContainerURL(containerName);
+
+        ContainerURL cu = su.createContainerURL("Badname");
+        try{
+            cu.create(null, null).blockingGet();
+        }
+        catch (RestException e) {
+            System.out.println(e);
+        }
 
         // Create a reference to a blob. Same pattern as containers.
         BlockBlobURL bu = cu.createBlockBlobURL("javatestblob");
@@ -82,6 +91,7 @@ public class BlobStorageAPITests {
             // Errors are thrown as exceptions in the synchronous (blockingGet) case.
 
             // Create the container. NOTE: Metadata is not currently supported on any resource.
+
             cu.create(null, PublicAccessType.BLOB).blockingGet();
 
             // Create the blob with a single put. See below for the stageBlock(List) scenario.

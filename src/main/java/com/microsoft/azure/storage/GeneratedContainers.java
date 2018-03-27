@@ -28,6 +28,7 @@ import com.microsoft.azure.storage.blob.models.ListBlobsFlatResponse;
 import com.microsoft.azure.storage.blob.models.ListBlobsHierarchyResponse;
 import com.microsoft.azure.storage.blob.models.ListBlobsIncludeItem;
 import com.microsoft.azure.storage.blob.models.PublicAccessType;
+import com.microsoft.azure.storage.blob.models.ResponseErrorException;
 import com.microsoft.azure.storage.blob.models.SignedIdentifier;
 import com.microsoft.rest.v2.CollectionFormat;
 import com.microsoft.rest.v2.DateTimeRfc1123;
@@ -44,6 +45,7 @@ import com.microsoft.rest.v2.annotations.Host;
 import com.microsoft.rest.v2.annotations.HostParam;
 import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.QueryParam;
+import com.microsoft.rest.v2.annotations.UnexpectedResponseExceptionType;
 import io.reactivex.Completable;
 import io.reactivex.Maybe;
 import io.reactivex.Single;
@@ -87,6 +89,7 @@ public final class GeneratedContainers {
     private interface ContainersService {
         @PUT("{containerName}")
         @ExpectedResponses({201})
+        @UnexpectedResponseExceptionType(ResponseErrorException.class)
         Single<ContainersCreateResponse> create(@HostParam("url") String url, @QueryParam("timeout") Integer timeout, @HeaderParam("x-ms-meta-") Map<String, String> metadata, @HeaderParam("x-ms-blob-public-access") PublicAccessType access, @HeaderParam("x-ms-version") String version, @HeaderParam("x-ms-client-request-id") String requestId, @QueryParam("restype") String restype);
 
         @GET("{containerName}")
@@ -146,6 +149,7 @@ public final class GeneratedContainers {
      * @param access Specifies whether data in the container may be accessed publicly and the level of access. Possible values include: 'container', 'blob'.
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
+     * @throws ResponseErrorException thrown if the request is rejected by server.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
      */
     public void create(Integer timeout, Map<String, String> metadata, PublicAccessType access, String requestId) {
