@@ -24,51 +24,55 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * A BlobURLParts object represents the components that make up an Azure Storage Container/Blob URL. You parse an
- * existing URL into its parts by calling NewBlobURLParts(). You construct a URL from parts by calling toURL().
+ * A BlobURLParts object represents the components that make up an Azure Storage Container/Blob URL. You may parse an
+ * existing URL into its parts with the {@link URLParser} class. You may construct a URL from parts by calling toURL().
+ * It is also possible to use the empty constructor to build a blobURL from scratch.
  * NOTE: Changing any SAS-related field requires computing a new SAS signature.
  */
 public final class BlobURLParts {
 
     /**
-     * A {@code String} representing the scheme. Ex: "https://".
+     * The scheme. Ex: "https://".
      */
     public String scheme;
 
     /**
-     * A {@code String} representing the host. Ex: "account.blob.core.windows.net".
+     * The host. Ex: "account.blob.core.windows.net".
      */
     public String host;
 
     /**
-     * A {@code String} representing the container name or {@code null}.
+     * The container name or {@code null} if a {@link ServiceURL} was parsed.
      */
     public String containerName;
 
     /**
-     * A {@code String} representing the blob name or {@code null}.
+     * The blob name or {@code null} if a {@link ServiceURL} or {@link ContainerURL} was parsed.
      */
     public String blobName;
 
     /**
-     * A {@code java.util.Date} representing the snapshot time or {@code null}.
+     * The snapshot time or {@code null} if anything except a URL to a snapshot was parsed.
      */
     public String snapshot;
 
     /**
-     * A {@link SASQueryParameters} representing the SAS query parameters or {@code null}.
+     * A {@link SASQueryParameters} representing the SAS query parameters or {@code null} if there were no such
+     * parameters.
      */
     public SASQueryParameters sasQueryParameters;
 
     /**
-     * A {@code Map&lt;String, String[]&gt;} representing query parameter vey value pairs aside from SAS parameters
-     * and snapshot time or {@code null}.
+     * The query parameter key value pairs aside from SAS parameters and snapshot time or {@code null} if there were
+     * no such parameters.
      */
     public Map<String, String[]> unparsedParameters;
 
 
     /**
      * Initializes a BlobURLParts object with all fields set to null, except unparsedParameters, which is an empty map.
+     * This may be useful for constructing a URL to a blob storage resource from scratch when the constituent parts are
+     * already known.
      */
     public BlobURLParts() {
         unparsedParameters = new HashMap<>();

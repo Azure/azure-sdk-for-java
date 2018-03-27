@@ -15,7 +15,10 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * Optional access conditions which are specific to blobs.
+ * This class contains values which will restrict the successful operation of a variety of requests to the conditions
+ * present. These conditions are entirely optional. The entire object or any of its properties may be set to null when
+ * passed to a method to indicate that those conditions are not desired. Please refer to the type of each field for more
+ * information on those particular access conditions.
  */
 public final class BlobAccessConditions {
 
@@ -39,17 +42,16 @@ public final class BlobAccessConditions {
     private final PageBlobAccessConditions pageBlobAccessConditions;
 
     /**
-     * Access conditions which are specific to blobs. Passing in null for one of the parameters will set it to a
-     * default value.
+     * Access conditions which are specific to blobs.
      *
      * @param httpAccessConditions
-     *      Optional standard HTTP access conditions.
+     *      {@link HTTPAccessConditions}
      * @param leaseAccessConditions
-     *      Optional access conditions for a lease on a container or blob.
+     *      {@link LeaseAccessConditions}
      * @param appendBlobAccessConditions
-     *      Optional access conditions which are specific to append blobs.
+     *      {@link AppendBlobAccessConditions}
      * @param pageBlobAccessConditions
-     *      Optional access conditions which are specific to page blobs.
+     *      {@link PageBlobAccessConditions}
      */
     public BlobAccessConditions(
             HTTPAccessConditions httpAccessConditions,

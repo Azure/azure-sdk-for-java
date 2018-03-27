@@ -14,7 +14,7 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.models.*;
+import com.microsoft.azure.storage.blob.models.*;
 import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.UrlBuilder;
@@ -27,7 +27,11 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
 /**
- * Represents a URL to a page blob.
+ * Represents a URL to a page blob. It may be obtained by direct construction or via the create method on a
+ * {@link ContainerURL} object. This class does not hold any state about a particular blob but is instead a convenient
+ * way of sending off appropriate requests to the resource on the service. Please refer to the following for more
+ * information on page blobs:
+ * https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs
  */
 public final class PageBlobURL extends BlobURL {
 
@@ -86,7 +90,8 @@ public final class PageBlobURL extends BlobURL {
 
     /**
      * Creates a page blob of the specified length. Call PutPage to upload data data to a page blob.
-     * For more information, see https://docs.microsoft.com/rest/api/storageservices/put-blob.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
      * @param size
      *      Specifies the maximum size for the page blob, up to 8 TB. The page blob size must be aligned to a
@@ -95,17 +100,15 @@ public final class PageBlobURL extends BlobURL {
      *      A user-controlled value that you can use to track requests. The value of the sequence number must be
      *      between 0 and 2^63 - 1.The default value is 0.
      * @param headers
-     *      A {@link BlobHTTPHeaders} object that specifies which properties to set on the blob.
+     *      {@link BlobHTTPHeaders}
      * @param metadata
-     *      A {@link Metadata} object that specifies key value pairs to set on the blob.
+     *      {@link Metadata}
      * @param accessConditions
-     *      A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *      complete.
+     *      {@link BlobAccessConditions}
      * @return
-     *       The {@link Single} which emits a {@link RestResponse} containing the {@link BlobPutHeaders} and a {@code Void}
-     *       body if successful.
+     *       Emits the successful response.
      */
-    public Single<RestResponse<BlobPutHeaders, Void>> create(
+    public Single<PageBlobCreateResponse> create(
             long size, Long sequenceNumber, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
         if (size%PageBlobURL.PAGE_BYTES != 0) {
@@ -123,8 +126,8 @@ public final class PageBlobURL extends BlobURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         // TODO: What if you pass 0 for pageblob size? Validate?
-        return this.storageClient.blobs().putWithRestResponseAsync(0, BlobType.PAGE_BLOB, null,
-                null, headers.getContentType(), headers.getContentEncoding(),
+        return this.storageClient.generatedPageBlobs().createWithRestResponseAsync(
+                0, null, headers.getContentType(), headers.getContentEncoding(),
                 headers.getContentLanguage(), headers.getContentMD5(), headers.getCacheControl(),
                 metadata, accessConditions.getLeaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
@@ -137,20 +140,21 @@ public final class PageBlobURL extends BlobURL {
 
     /**
      * Writes 1 or more pages to the page blob. The start and end offsets must be a multiple of 512.
-     * For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * @param pageRange
-     *      A {@link PageRange} object. Specifies the range of bytes to be written as a page.
+     *      A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset must
+     *      be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are
+     *      0-511, 512-1023, etc.
      * @param body
-     *      A {@link Flowable} of {@link ByteBuffer} that contains the content of the page.
+     *      The data to upload.
      * @param accessConditions
-     *      A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *      complete.
+     *      {@link BlobAccessConditions}
      * @return
-     *      A {@link Single} which emits a {@link RestResponse} containing the {@link PageBlobPutPageHeaders} and a
-     *      {@code Void} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<PageBlobPutPageHeaders, Void>> putPages(
+    public Single<PageBlobUploadPagesResponse> uploadPages(
             PageRange pageRange, Flowable<ByteBuffer> body, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         if (pageRange == null) {
@@ -160,9 +164,9 @@ public final class PageBlobURL extends BlobURL {
         }
         String pageRangeStr = this.pageRangeToString(pageRange);
 
-        return this.storageClient.pageBlobs().putPageWithRestResponseAsync(
-                pageRange.end()-pageRange.start()+1, PageWriteType.UPDATE, body,
-                null, pageRangeStr, accessConditions.getLeaseAccessConditions().getLeaseId(),
+        return this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
+                 body, pageRange.end()-pageRange.start()+1,null, pageRangeStr,
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThanOrEqual(),
                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThan(),
                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberEqual(),
@@ -174,18 +178,19 @@ public final class PageBlobURL extends BlobURL {
 
     /**
      * Frees the specified pages from the page blob.
-     * For more information, see https://docs.microsoft.com/rest/api/storageservices/put-page.
+     * For more information, see the
+     * <a href="https://docs.microsoft.com/rest/api/storageservices/put-page">Azure Docs</a>.
      *
      * @param pageRange
-     *      A {@link PageRange} object. Specifies the range of bytes to be written as a page.
+     *      A {@link PageRange} object. Given that pages must be aligned with 512-byte boundaries, the start offset must
+     *      be a modulus of 512 and the end offset must be a modulus of 512 - 1. Examples of valid byte ranges are
+     *      0-511, 512-1023, etc.
      * @param accessConditions
-     *      A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *      complete.
+     *      {@link BlobAccessConditions}
      * @return
-     *      A {@link Single} which emits a {@link RestResponse} containing the {@link PageBlobPutPageHeaders} and a
-     *      {@code Void} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<PageBlobPutPageHeaders, Void>> clearPages(
+    public Single<PageBlobClearPagesResponse> clearPages(
             PageRange pageRange, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         if (pageRange == null) {
@@ -195,8 +200,9 @@ public final class PageBlobURL extends BlobURL {
         }
         String pageRangeStr = this.pageRangeToString(pageRange);
 
-         return this.storageClient.pageBlobs().putPageWithRestResponseAsync(0, PageWriteType.CLEAR,
-                 null,null, pageRangeStr, accessConditions.getLeaseAccessConditions().getLeaseId(),
+         return this.storageClient.generatedPageBlobs().clearPagesWithRestResponseAsync(
+                 0,null, pageRangeStr,
+                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                  accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThanOrEqual(),
                  accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThan(),
                  accessConditions.getPageBlobAccessConditions().getIfSequenceNumberEqual(),
@@ -208,25 +214,23 @@ public final class PageBlobURL extends BlobURL {
 
     /**
      * Returns the list of valid page ranges for a page blob or snapshot of a page blob.
-     * For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
+     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
      *
      * @param blobRange
-     *      A {@link BlobRange} object specifies the range of bytes over which to list ranges, inclusively. If
-     *      omitted, then all ranges for the blob are returned.
+     *      {@link BlobRange}
      * @param accessConditions
-     *      A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *      complete.
+     *      {@link BlobAccessConditions}
      * @return
-     *      A {@link Single} which emits a {@link RestResponse} containing the {@link PageBlobGetPageRangesHeaders} and
-     *      a {@link PageList} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<PageBlobGetPageRangesHeaders, PageList>> getPageRanges(
+    public Single<PageBlobGetPageRangesResponse> getPageRanges(
             BlobRange blobRange, BlobAccessConditions accessConditions) {
         blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.pageBlobs().getPageRangesWithRestResponseAsync(null, null,
-                null, blobRange.toString(), accessConditions.getLeaseAccessConditions().getLeaseId(),
+        return this.storageClient.generatedPageBlobs().getPageRangesWithRestResponseAsync(
+                null, null, blobRange.toString(),
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
@@ -236,28 +240,31 @@ public final class PageBlobURL extends BlobURL {
 
     /**
      * Gets the collection of page ranges that differ between a specified snapshot and this page blob.
-     * For more information, see https://docs.microsoft.com/rest/api/storageservices/get-page-ranges.
+     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/get-page-ranges">Azure Docs</a>.
      *
      * @param blobRange
-     *     A {@link PageRange} object. Specifies the range of bytes to be written as a page.
+     *     {@link BlobRange}
      * @param prevSnapshot
-     *     A {@code String} specifies that the response will contain only pages that were changed
-     *     between target blob and previous snapshot. Changed pages include both updated and cleared pages. The target
+     *     Specifies that the response will contain only pages that were changed between target blob and previous
+     *     snapshot. Changed pages include both updated and cleared pages. The target
      *     blob may be a snapshot, as long as the snapshot specified by prevsnapshot is the older of the two.
      * @param accessConditions
-     *     A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *     complete.
+     *     {@link BlobAccessConditions}
      * @return
-     *      The {@link Single} which emits a {@link RestResponse} containing the {@link PageBlobGetPageRangesHeaders} and a
-     *      {@link PageList} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<PageBlobGetPageRangesHeaders, PageList>> getPageRangesDiff(
+    public Single<PageBlobGetPageRangesDiffResponse> getPageRangesDiff(
             BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions) {
         blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.pageBlobs().getPageRangesWithRestResponseAsync(null,null,
-                prevSnapshot, blobRange.toString(), accessConditions.getLeaseAccessConditions().getLeaseId(),
+        if (prevSnapshot == null) {
+            throw new IllegalArgumentException("prevSnapshot cannot be null");
+        }
+
+        return this.storageClient.generatedPageBlobs().getPageRangesDiffWithRestResponseAsync(
+                null,null, prevSnapshot, blobRange.toString(),
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
@@ -267,19 +274,17 @@ public final class PageBlobURL extends BlobURL {
 
     /**
      * Resizes the page blob to the specified size (which must be a multiple of 512).
-     * For more information, see https://docs.microsoft.com/rest/api/storageservices/set-blob-properties.
+     * For more information, see the <a href="https://docs.microsoft.com/rest/api/storageservices/set-blob-properties">Azure Docs</a>.
      *
      * @param size
      *      Resizes a page blob to the specified size. If the specified value is less than the current size of the
      *      blob, then all pages above the specified value are cleared.
      * @param accessConditions
-     *      A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *      complete.
+     *      {@link BlobAccessConditions}
      * @return
-     *      The {@link Single} which emits a {@link RestResponse} containing the {@link BlobSetPropertiesHeaders} and a
-     *      {@code Void} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<BlobSetPropertiesHeaders, Void>> resize(
+    public Single<PageBlobResizeResponse> resize(
             long size, BlobAccessConditions accessConditions) {
         if (size%PageBlobURL.PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -288,14 +293,14 @@ public final class PageBlobURL extends BlobURL {
         }
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.blobs().setPropertiesWithRestResponseAsync(null,
-                null, null, null, null,
-                null, accessConditions.getLeaseAccessConditions().getLeaseId(),
+        return this.storageClient.generatedPageBlobs().resizeWithRestResponseAsync(
+                size,null,
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null, size, null, null, null);
+                null);
     }
 
     /**
@@ -306,39 +311,31 @@ public final class PageBlobURL extends BlobURL {
      * @param sequenceNumber
      *      The blob's sequence number. The sequence number is a user-controlled property that you can use to track
      *      requests and manage concurrency issues.
-     * @param headers
-     *      A {@link BlobHTTPHeaders} object that specifies which properties to set on the blob.
      * @param accessConditions
-     *      A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *      complete.
+     *      {@link BlobAccessConditions}
      * @return
-     *      The {@link Single} which emits a {@link RestResponse} containing the {@link BlobSetPropertiesHeaders} and a
-     *      {@code Void} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<BlobSetPropertiesHeaders, Void>> setSequenceNumber(
-            SequenceNumberActionType action, Long sequenceNumber, BlobHTTPHeaders headers,
-            BlobAccessConditions accessConditions) {
+    public Single<PageBlobUpdateSequenceNumberResponse> updateSequenceNumber(
+            SequenceNumberActionType action, Long sequenceNumber, BlobAccessConditions accessConditions) {
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");
         }
-        headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         if(action == SequenceNumberActionType.INCREMENT) {
            sequenceNumber = null;
         }
 
-        return this.storageClient.blobs().setPropertiesWithRestResponseAsync(null,
-                headers.getCacheControl(), headers.getContentType(), headers.getContentMD5(),
-                headers.getContentEncoding(), headers.getContentLanguage(),
+        return this.storageClient.generatedPageBlobs().updateSequenceNumberWithRestResponseAsync(
+                action, null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                headers.getContentDisposition(),
-                null, action, sequenceNumber, null);
+                 sequenceNumber,null);
     }
 
     /**
@@ -346,21 +343,19 @@ public final class PageBlobURL extends BlobURL {
      * blob. The snapshot is copied such that only the differential changes between the previously copied snapshot are
      * transferred to the destination. The copied snapshots are complete copies of the original snapshot and can be read
      * or copied from as usual. For more information, see
-     * https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob and
-     * https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots.
+     * the Azure Docs <a href="https://docs.microsoft.com/rest/api/storageservices/incremental-copy-blob">here</a> and
+     * <a href="https://docs.microsoft.com/en-us/azure/virtual-machines/windows/incremental-snapshots">here</a>.
      *
      * @param source
-     *      A {@code java.net.URL} which specifies the name of the source page blob.
+     *      The source page blob.
      * @param snapshot
-     *      A {@code String} which specifies the snapshot on the copy source.
+     *      The snapshot on the copy source.
      * @param accessConditions
-     *      A {@link BlobAccessConditions} object that specifies under which conditions the operation should
-     *      complete.
+     *      {@link BlobAccessConditions}
      * @return
-     *      A {@link Single} which emits a {@link RestResponse} containing the {@link PageBlobIncrementalCopyHeaders} and a
-     *      {@code Void} body if successful.
+     *      Emits the successful response.
      */
-    public Single<RestResponse<PageBlobIncrementalCopyHeaders, Void>> startIncrementalCopy(
+    public Single<PageBlobCopyIncrementalResponse> copyIncremental(
             URL source, String snapshot, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
@@ -372,7 +367,7 @@ public final class PageBlobURL extends BlobURL {
             // We are parsing a valid url and adding a query parameter. If this fails, we can't recover.
             throw new Error(e);
         }
-        return this.storageClient.pageBlobs().incrementalCopyWithRestResponseAsync(source,
+        return this.storageClient.generatedPageBlobs().copyIncrementalWithRestResponseAsync(source,
                 null, null,
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),

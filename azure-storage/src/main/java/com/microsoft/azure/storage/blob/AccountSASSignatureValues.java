@@ -14,13 +14,19 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
 import java.security.InvalidKeyException;
-import java.util.Date;
+import java.time.OffsetDateTime;
 
 /**
- * AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account.
+ * AccountSASSignatureValues is used to generate a Shared Access Signature (SAS) for an Azure Storage account. Once
+ * all the values here are set appropriately, call generateSASQueryParameters to obtain a representation of the SAS
+ * which can actually be applied to blob urls. Note: that both this class and {@link SASQueryParameters} exist because
+ * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
+ * requests.
+ *
+ * Please refer to the following for more conceptual information on SAS:
+ * https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+ * https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
  */
 public final class AccountSASSignatureValues {
 
@@ -30,19 +36,19 @@ public final class AccountSASSignatureValues {
     public String version = Constants.HeaderConstants.TARGET_STORAGE_VERSION;
 
     /**
-     * A {@link SASProtocol} value representing the allowed Internet protocols.
+     * {@link SASProtocol}
      */
     public SASProtocol protocol;
 
     /**
-     * A {@code java.util.Date} object which contains the shared access signature start time.
+     * When the SAS will take effect.
      */
-    public Date startTime;
+    public OffsetDateTime startTime;
 
     /**
-     * A {@code java.util.Date} object which contains the shared access signature expiry time.
+     * The time after which the SAS will no longer work.
      */
-    public Date expiryTime;
+    public OffsetDateTime expiryTime;
 
     /**
      * A {@code String} specifying which operations the SAS user may perform. Please refer to
@@ -51,36 +57,36 @@ public final class AccountSASSignatureValues {
     public String permissions;
 
     /**
-     * An {@link IPRange} representing the IP addresses permitted to use this SAS.
+     * {@link IPRange}
      */
     public IPRange ipRange;
 
     /**
-     * A {@code String} that contains the values that indicate the services accessible with this SAS. Please refer to
-     * {@link AccountSASService} to construct this value.
+     * The values that indicate the services accessible with this SAS. Please refer to {@link AccountSASService} to
+     * construct this value.
      */
     public String services;
 
     /**
-     * A {@code String} that contains the values that indicate the resource types accessible with this SAS. Please refer
+     * The values that indicate the resource types accessible with this SAS. Please refer
      * to {@link AccountSASResourceType} to construct this value.
      */
     public String resourceTypes;
 
     /**
      * Initializes an {@code AccountSASSignatureValues} object with the version number set to the default and all
-     * other values empty. For more information on how to use this class, please refer to
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
+     * other values empty.
      */
     public AccountSASSignatureValues() { }
 
     /**
-     * Generates {@link SASQueryParameters} object which contains all SAS query parameters.
+     * Generates a {@link SASQueryParameters} object which contains all SAS query parameters needed to make an actual
+     * REST request.
      *
      * @param sharedKeyCredentials
-     *      A {@link SharedKeyCredentials} object for the storage account and corresponding primary or secondary key.
+     *      Credentials for the storage account and corresponding primary or secondary key.
      * @return
-     *      A {@link SASQueryParameters} object which contains all SAS query parameters.
+     *      {@link SASQueryParameters}
      */
     public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
         Utility.assertNotNull("SharedKeyCredentials", sharedKeyCredentials);
@@ -103,8 +109,8 @@ public final class AccountSASSignatureValues {
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
                 resourceTypes,
-                this.startTime == null ? "" : Utility.ISO8601UTCDateFormat.format(this.startTime),
-                this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormat.format(this.expiryTime),
+                this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
+                this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                 ipRange.toString(),
                 this.protocol.toString(),
                 this.version,

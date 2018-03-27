@@ -23,6 +23,11 @@ import java.net.Proxy;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+/**
+ * This type encapsulates all the possible configuration for the default pipeline. It may be passed to the
+ * createPipeline method on {@link StorageURL}. All the options fields have default values if nothing is passed, and
+ * no logger will be used if it is not set. An HttpClient must be set, however.
+ */
 public final class PipelineOptions {
     /*
      PipelineOptions is mutable, but its fields refer to immutable objects. The createPipeline method can pass the

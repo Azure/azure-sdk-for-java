@@ -26,12 +26,13 @@ import java.util.TreeMap;
  */
 public final class URLParser {
 
-    /**URLParser parses a URL initializing BlobURLParts' fields including any SAS-related and snapshot query parameters.
+    /**
+     * URLParser parses a URL initializing BlobURLParts' fields including any SAS-related and snapshot query parameters.
      * Any other query parameters remain in the UnparsedParams field. This method overwrites all fields in the
      * BlobURLParts object.
      *
      * @param url
-     *      The {@code java.net.URL} to be parsed.
+     *      The {@code URL} to be parsed.
      * @return
      *      A {@link BlobURLParts} object containing all the components of a BlobURL.
      * @throws UnknownHostException
@@ -93,7 +94,7 @@ public final class URLParser {
      * @param queryParams
      *      The string of query params to parse.
      * @return
-     *      A {@code HashMap&lt;String, String[]&gt;} of the key values.
+     *      A {@code HashMap<String, String[]>} of the key values.
      */
     private static TreeMap<String, String[]> parseQueryString(String queryParams)
              {

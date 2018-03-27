@@ -15,7 +15,13 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * Access conditions specific to leases on storage objects.
+ * By specifying a leaseID as a member of this class, operations on storage resources will only succeed if the active
+ * lease on the blob matches the string contained here. Some methods do take this structure on its own, but it is most
+ * commonly used as a member of {@link BlobAccessConditions} or {@link ContainerAccessConditions}. Specifying these
+ * conditions is entirely optional, and null may be passed for this structure or any individual field to indicate that
+ * none of the conditions should be set. Please refer to the <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/lease-blob">Azure Docs</a>
+ * for more information.
+ *
  */
 public final class LeaseAccessConditions {
 

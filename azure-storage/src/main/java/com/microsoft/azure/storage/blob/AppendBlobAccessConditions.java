@@ -15,7 +15,12 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * Access conditions specific to append blobs.
+ * This class contains values that restrict the successful completion of AppendBlock operations to certain conditions.
+ * An instance of this class is set as a member of {@link BlobAccessConditions} when needed. It may also be set to null
+ * if no access conditions are desired.
+ *
+ * Please refer to the request header section here for more conceptual information:
+ * https://docs.microsoft.com/en-us/rest/api/storageservices/append-block
  */
 public final class AppendBlobAccessConditions {
 
@@ -49,8 +54,7 @@ public final class AppendBlobAccessConditions {
 
     /**
      * @return
-     *      An {@code Integer} for ensuring that the AppendBlock operation succeeds only if the append position
-     *      is equal to a value.
+     *      Ensures that the AppendBlock operation succeeds only if the append position is equal to the value.
      */
     public Integer getIfAppendPositionEquals() {
         return ifAppendPositionEquals;
@@ -58,8 +62,8 @@ public final class AppendBlobAccessConditions {
 
     /**
      * @return
-     *      An {@code Integer} for ensuring that the AppendBlock operation succeeds only if the append blob's size
-     *      is less than or equal to a value.
+     *      Ensures that the AppendBlock operation succeeds only if the append blob's size is less than or equal to the
+     *      value.
      */
     public Integer getIfMaxSizeLessThanOrEqual() {
         return ifMaxSizeLessThanOrEqual;

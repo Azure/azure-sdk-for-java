@@ -149,7 +149,7 @@ final class Constants {
     public static final int MAX_BLOCKS = 50000;
 
     /**
-     * Specifies the maximum number of bytes that may be put in a single putBlob operation.
+     * Specifies the maximum number of bytes that may be put in a single upload operation.
      */
     public static final int MAX_PUT_BLOB_BYTES = 256 * MB;
 

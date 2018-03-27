@@ -17,7 +17,9 @@ package com.microsoft.azure.storage.blob;
 import java.util.HashMap;
 
 /**
- * Contains metadata key/value pairs
+ * Contains metadata key/value pairs to be associated with a storage resource. The user may store any additional
+ * information about the resource that they like using this map. It is passed to create and setMetadata methods on any
+ * URL type. Null may be passed to set no metadata.
  */
 public final class Metadata extends HashMap<String, String> {
     public static final Metadata NONE = new Metadata();

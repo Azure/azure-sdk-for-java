@@ -15,7 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * Configures the telemetry policy's behavior.
+ * Options for configuring the {@link TelemetryFactory}. Please refer to the Factory for more information.
  */
 public final class TelemetryOptions {
 

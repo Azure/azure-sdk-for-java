@@ -14,6 +14,14 @@
  */
 package com.microsoft.azure.storage.blob;
 
+/**
+ * This class contains values that restrict the successful completion of PageBlob operations to certain conditions.
+ * An instance of this class is set as a member of {@link BlobAccessConditions} when needed. It may also be set to null
+ * if no access conditions are desired.
+ *
+ * Please refer to the request header section here for more conceptual information:
+ * https://docs.microsoft.com/en-us/rest/api/storageservices/put-page
+ */
 public final class PageBlobAccessConditions {
 
     /**

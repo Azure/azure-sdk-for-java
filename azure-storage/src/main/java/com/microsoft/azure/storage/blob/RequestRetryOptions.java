@@ -17,13 +17,13 @@ package com.microsoft.azure.storage.blob;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Options for retrying requests
+ * Options for configuring the {@link RequestRetryFactory}. Please refer to the Factory for more information.
  */
 public final class RequestRetryOptions {
 
     /**
      * An object representing default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4,
-     * maxRetryDelayInMs=120, secondayHost=null.
+     * maxRetryDelayInMs=120000, secondaryHost=null.
      */
     public static final RequestRetryOptions DEFAULT = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 0,
             0,null, null, null);

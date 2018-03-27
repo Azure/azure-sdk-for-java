@@ -15,7 +15,8 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * Specifies the set of possible permissions for a shared access signature protocol.
+ * Specifies the set of possible permissions for a shared access signature protocol. Values of this type can be used
+ * to set the fields on the {@link AccountSASSignatureValues} and {@link ServiceSASSignatureValues} types.
  */
 public enum SASProtocol {
     /**
@@ -30,7 +31,7 @@ public enum SASProtocol {
 
     private final String protocols;
 
-    private SASProtocol(String p) {
+    SASProtocol(String p) {
         this.protocols = p;
     }
 

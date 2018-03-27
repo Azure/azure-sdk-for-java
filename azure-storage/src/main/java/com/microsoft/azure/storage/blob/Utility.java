@@ -16,30 +16,18 @@ package com.microsoft.azure.storage.blob;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
-import java.text.DateFormat;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
+import java.time.OffsetDateTime;
+import java.time.ZoneId;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 final class Utility {
 
-    static final class RFC1123GMTDateFormat extends SimpleDateFormat {
-        RFC1123GMTDateFormat() {
-            super("EEE, dd MMM yyyy HH:mm:ss z", Locale.US);
-            this.setTimeZone(TimeZone.getTimeZone("GMT"));
-        }
-    }
+    static final DateTimeFormatter RFC1123GMTDateFormatter =
+            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.US).withZone(ZoneId.of("GMT"));
 
-    static final class ISO8601UTCDateFormat extends SimpleDateFormat {
-        ISO8601UTCDateFormat() {
-            super("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US);
-            this.setTimeZone(TimeZone.getTimeZone("UTC"));
-        }
-    }
-
-    static final DateFormat RFC1123GMTDateFormat = new RFC1123GMTDateFormat();
-
-    static final DateFormat ISO8601UTCDateFormat = new ISO8601UTCDateFormat();
+    static final DateTimeFormatter ISO8601UTCDateFormatter =
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).withZone(ZoneId.of("UT"));
 
     /**
      * Asserts that a value is not <code>null</code>.
@@ -127,7 +115,7 @@ final class Utility {
     /**
      * Stores a reference to the UTC time zone.
      */
-     static final TimeZone UTC_ZONE = TimeZone.getTimeZone("UTC");
+     static final ZoneId UTC_ZONE = ZoneId.of("UTC");
 
     /**
      * Stores a reference to the date/time pattern with the greatest precision Java.util.Date is capable of expressing.
@@ -159,7 +147,7 @@ final class Utility {
      * @return the corresponding <code>Date</code> object
      */
     // TODO: Get rid of this with Java 8 if possible.
-    public static Date parseDate(String dateString) {
+    public static OffsetDateTime parseDate(String dateString) {
         String pattern = MAX_PRECISION_PATTERN;
         switch(dateString.length()) {
             case 28: // "yyyy-MM-dd'T'HH:mm:ss.SSSSSSS'Z'"-> [2012-01-04T23:21:59.1234567Z] length = 28
@@ -187,14 +175,9 @@ final class Utility {
                 throw new IllegalArgumentException(String.format(SR.INVALID_DATE_STRING, dateString));
         }
 
-        final DateFormat format = new SimpleDateFormat(pattern, Locale.US);
-        format.setTimeZone(UTC_ZONE);
-        try {
-            return format.parse(dateString);
-        }
-        catch (final ParseException e) {
-            throw new IllegalArgumentException(String.format(SR.INVALID_DATE_STRING, dateString), e);
-        }
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
+        formatter.withZone(UTC_ZONE);
+        return OffsetDateTime.parse(dateString, formatter);
     }
 
     /**

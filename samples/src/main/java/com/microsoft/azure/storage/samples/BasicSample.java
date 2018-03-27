@@ -112,14 +112,14 @@ public class BasicSample {
                 }
 
                 // If the error wasn't due to an HTTP 409, the error is considered unrecoverable.
-                // By propagating the exception we received, the workflow completes without performing the putBlob or getBlob.
+                // By propagating the exception we received, the workflow completes without performing the upload or download.
                 return Completable.error(throwable);
             }) // blobURL.putBlobAsync will be performed unless the container create fails with an unrecoverable error.
-            .andThen(blobURL.putBlob(asyncStream, data.length, null, null, null))
+            .andThen(blobURL.upload(asyncStream, data.length, null, null, null))
             .flatMap(putResponse ->
                 // This method is called after the blob is uploaded successfully.
                 // Now let's download the blob.
-                blobURL.getBlob(new BlobRange(0L, data.length), null, false)
+                blobURL.download(new BlobRange(0L, data.length), null, false)
             ).flatMapCompletable(getResponse -> {
                 // This method is called after getBlobAsync response headers have come back from the service.
                 // We now need to download the blob's contents.

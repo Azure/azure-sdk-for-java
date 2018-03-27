@@ -15,7 +15,8 @@
 package com.microsoft.azure.storage.blob;
 
 /**
- * Defines options available when calling listContainers.
+ * Defines options available to configure the behavior of a call to listContainersSegment on a {@link ServiceURL}
+ * object. See the constructor for details on each of the options.
  */
 public final class ListContainersOptions {
 
@@ -35,10 +36,9 @@ public final class ListContainersOptions {
      * A {@link ListContainersOptions} object.
      *
      * @param details
-     *      A {@link ContainerListingDetails} object indicating what additional information the service should return
-     *      with each blob.
+     *      {@link ContainerListingDetails}
      * @param prefix
-     *      A {@code String} that filters the results to return only blobs whose names begin with the specified prefix.
+     *      Filters the results to return only blobs whose names begin with the specified prefix.
      * @param maxResults
      *      Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
      *      specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.
@@ -54,8 +54,7 @@ public final class ListContainersOptions {
 
     /**
      * @return
-     *      A {@link ContainerListingDetails} object indicating what additional information the service should return
-     *      with each blob.
+     *      {@link ContainerListingDetails}
      */
     public ContainerListingDetails getDetails() {
         return this.details;
@@ -63,7 +62,7 @@ public final class ListContainersOptions {
 
     /**
      * @return
-     *      A {@code String} that filters the results to return only blobs whose names begin with the specified prefix.
+     *      Filters the results to return only blobs whose names begin with the specified prefix.
      */
     public String getPrefix() {
         return this.prefix;

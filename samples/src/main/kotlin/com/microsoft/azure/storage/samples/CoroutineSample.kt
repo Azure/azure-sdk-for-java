@@ -14,7 +14,6 @@ import java.nio.channels.AsynchronousFileChannel
 import java.nio.file.Paths
 import java.nio.file.StandardOpenOption
 import java.util.concurrent.TimeUnit
-import kotlin.coroutines.experimental.suspendCoroutine
 
 fun main(args: Array<String>) {
     async {
@@ -47,8 +46,8 @@ suspend fun runSample() {
         } else { }
     }
 
-    blobURL.putBlob(Flowable.just(ByteBuffer.wrap(data)), data.size.toLong(), null, null, null).suspendCoroutine()
-    val getRes = blobURL.getBlob(BlobRange(0L, data.size.toLong()), null, false).suspendCoroutine()
+    blobURL.upload(Flowable.just(ByteBuffer.wrap(data)), data.size.toLong(), null, null, null).suspendCoroutine()
+    val getRes = blobURL.download(BlobRange(0L, data.size.toLong()), null, false).suspendCoroutine()
     val outFile = AsynchronousFileChannel.open(Paths.get("myFilePath"), StandardOpenOption.WRITE, StandardOpenOption.CREATE)
 
     FlowableUtil.writeFile(getRes.body(), outFile)

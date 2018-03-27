@@ -14,7 +14,7 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.implementation.StorageClientImpl;
+import com.microsoft.azure.storage.GeneratedStorageClient;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
@@ -27,15 +27,16 @@ import io.reactivex.Single;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.OffsetDateTime;
 import java.util.ArrayList;
-import java.util.Date;
 
 /**
- * Represents a URL to a Azure storage object.
+ * Represents a URL to a Azure storage object. Typically this class is only needed to generate a new pipeline. In most
+ * cases, one of the other URL types will be more useful.
  */
 public abstract class StorageURL {
 
-    protected final StorageClientImpl storageClient;
+    protected final GeneratedStorageClient storageClient;
 
     protected StorageURL(URL url, HttpPipeline pipeline) {
         if (url == null) {
@@ -45,7 +46,8 @@ public abstract class StorageURL {
             throw new IllegalArgumentException("pipeline cannot be null.");
         }
 
-        this.storageClient = new StorageClientImpl(pipeline).withVersion("2016-05-31");
+        this.storageClient = new GeneratedStorageClient(pipeline)
+                .withVersion(Constants.HeaderConstants.TARGET_STORAGE_VERSION);
         this.storageClient.withUrl(url.toString());
     }
 
@@ -70,11 +72,11 @@ public abstract class StorageURL {
     /**
      * Appends a string to the end of a URL's path (prefixing the string with a '/' if required).
      * @param baseURL
-     *      A {@code java.net.URL} to which the name should be appended.
+     *      The url to which the name should be appended.
      * @param name
-     *      A {@code String} with the name to be appended.
+     *      The name to be appended.
      * @return
-     *      A {@code String} with the name appended to the URL.
+     *      A url with the name appended.
      */
     protected static URL appendToURLPath(URL baseURL, String name) throws MalformedURLException {
         UrlBuilder url = UrlBuilder.parse(baseURL.toString());
@@ -144,7 +146,8 @@ public abstract class StorageURL {
 
             @Override
             public Single<HttpResponse> sendAsync(HttpRequest request) {
-                request.headers().set(Constants.HeaderConstants.DATE, Utility.RFC1123GMTDateFormat.format(new Date()));
+                request.headers().set(Constants.HeaderConstants.DATE,
+                        Utility.RFC1123GMTDateFormatter.format(OffsetDateTime.now()));
                 return this.next.sendAsync(request);
             }
         }
