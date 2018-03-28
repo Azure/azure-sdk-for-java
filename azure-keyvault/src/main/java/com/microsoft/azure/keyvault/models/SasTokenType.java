@@ -8,52 +8,34 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for SasTokenType.
  */
-public final class SasTokenType {
+public final class SasTokenType extends ExpandableStringEnum<SasTokenType> {
     /** Static value account for SasTokenType. */
-    public static final SasTokenType ACCOUNT = new SasTokenType("account");
+    public static final SasTokenType ACCOUNT = fromString("account");
 
     /** Static value service for SasTokenType. */
-    public static final SasTokenType SERVICE = new SasTokenType("service");
-
-    private String value;
+    public static final SasTokenType SERVICE = fromString("service");
 
     /**
-     * Creates a custom value for SasTokenType.
-     * @param value the custom value
+     * Creates or finds a SasTokenType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding SasTokenType
      */
-    public SasTokenType(String value) {
-        this.value = value;
+    @JsonCreator
+    public static SasTokenType fromString(String name) {
+        return fromString(name, SasTokenType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof SasTokenType)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        SasTokenType rhs = (SasTokenType) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known SasTokenType values
+     */
+    public static Collection<SasTokenType> values() {
+        return values(SasTokenType.class);
     }
 }

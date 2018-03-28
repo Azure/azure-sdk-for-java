@@ -1374,9 +1374,9 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * Retrieves a list of individual key versions with the same key name. The full key identifier, attributes, and tags are provided in the response. Authorization: Requires the keys/list permission.
      *
-    ServiceResponse<PageImpl<KeyItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<KeyItem>> * @param keyName The name of the key.
-    ServiceResponse<PageImpl<KeyItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param keyName The name of the key.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @return the PagedList&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<KeyItem>>> getKeyVersionsSinglePageAsync(final String vaultBaseUrl, final String keyName, final Integer maxresults) {
@@ -1589,8 +1589,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List keys in the specified vault.
      *
-    ServiceResponse<PageImpl<KeyItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<KeyItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @return the PagedList&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<KeyItem>>> getKeysSinglePageAsync(final String vaultBaseUrl, final Integer maxresults) {
@@ -3119,8 +3119,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List secrets in a specified key vault.
      *
-    ServiceResponse<PageImpl<SecretItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<SecretItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @return the PagedList&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecretItem>>> getSecretsSinglePageAsync(final String vaultBaseUrl, final Integer maxresults) {
@@ -3342,9 +3342,9 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List the versions of the specified secret.
      *
-    ServiceResponse<PageImpl<SecretItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<SecretItem>> * @param secretName The name of the secret.
-    ServiceResponse<PageImpl<SecretItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param secretName The name of the secret.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @return the PagedList&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecretItem>>> getSecretVersionsSinglePageAsync(final String vaultBaseUrl, final String secretName, final Integer maxresults) {
@@ -3557,8 +3557,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List certificates in a specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<CertificateItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @return the PagedList&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesSinglePageAsync(final String vaultBaseUrl, final Integer maxresults) {
@@ -4067,8 +4067,8 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List certificate issuers for a specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateIssuerItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<CertificateIssuerItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @return the PagedList&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateIssuerItem>>> getCertificateIssuersSinglePageAsync(final String vaultBaseUrl, final Integer maxresults) {
@@ -5192,9 +5192,9 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List the versions of a certificate.
      *
-    ServiceResponse<PageImpl<CertificateItem>> * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    ServiceResponse<PageImpl<CertificateItem>> * @param certificateName The name of the certificate.
-    ServiceResponse<PageImpl<CertificateItem>> * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param certificateName The name of the certificate.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @return the PagedList&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateItem>>> getCertificateVersionsSinglePageAsync(final String vaultBaseUrl, final String certificateName, final Integer maxresults) {
@@ -6167,7 +6167,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * Retrieves a list of individual key versions with the same key name. The full key identifier, attributes, and tags are provided in the response. Authorization: Requires the keys/list permission.
      *
-    ServiceResponse<PageImpl<KeyItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<KeyItem>>> getKeyVersionsNextSinglePageAsync(final String nextPageLink) {
@@ -6271,7 +6271,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List keys in the specified vault.
      *
-    ServiceResponse<PageImpl<KeyItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;KeyItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<KeyItem>>> getKeysNextSinglePageAsync(final String nextPageLink) {
@@ -6375,7 +6375,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List secrets in a specified key vault.
      *
-    ServiceResponse<PageImpl<SecretItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecretItem>>> getSecretsNextSinglePageAsync(final String nextPageLink) {
@@ -6479,7 +6479,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List the versions of the specified secret.
      *
-    ServiceResponse<PageImpl<SecretItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;SecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<SecretItem>>> getSecretVersionsNextSinglePageAsync(final String nextPageLink) {
@@ -6583,7 +6583,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List certificates in a specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateItem>>> getCertificatesNextSinglePageAsync(final String nextPageLink) {
@@ -6687,7 +6687,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List certificate issuers for a specified key vault.
      *
-    ServiceResponse<PageImpl<CertificateIssuerItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateIssuerItem>>> getCertificateIssuersNextSinglePageAsync(final String nextPageLink) {
@@ -6791,7 +6791,7 @@ final class KeyVaultClientImpl extends AzureServiceClient {
     /**
      * List the versions of a certificate.
      *
-    ServiceResponse<PageImpl<CertificateItem>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @return the PagedList&lt;CertificateItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
     public Observable<ServiceResponse<Page<CertificateItem>>> getCertificateVersionsNextSinglePageAsync(final String nextPageLink) {

@@ -46,12 +46,6 @@ public class X509CertificateProperties {
     private Integer validityInMonths;
 
     /**
-     * Indicates if the certificates generated under this policy should be
-     * published to certificate transparency logs.
-     */
-    @JsonProperty(value = "cert_transparency")
-    private Boolean certificateTransparency;
-    /**
      * Get the subject value.
      *
      * @return the subject value
@@ -151,22 +145,4 @@ public class X509CertificateProperties {
         return this;
     }
 
-    /**
-     * Get the certificateTransparency value.
-     *
-     * @return the certificateTransparency value
-     */
-    public Boolean certificateTransparency() {
-        return this.certificateTransparency;
-    }
-    /**
-     * Set the certificateTransparency value.
-     *
-     * @param certificateTransparency the certificateTransparency value to set
-     * @return the X509CertificateProperties object itself.
-     */
-    public X509CertificateProperties withCertificateTransparency(Boolean certificateTransparency) {
-        this.certificateTransparency = certificateTransparency;
-        return this;
-    }
 }

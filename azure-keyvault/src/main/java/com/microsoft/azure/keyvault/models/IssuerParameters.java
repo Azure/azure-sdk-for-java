@@ -28,6 +28,13 @@ public class IssuerParameters {
     private String certificateType;
 
     /**
+     * Indicates if the certificates generated under this policy should be
+     * published to certificate transparency logs.
+     */
+    @JsonProperty(value = "cert_transparency")
+    private Boolean certificateTransparency;
+
+    /**
      * Get the name value.
      *
      * @return the name value
@@ -64,6 +71,26 @@ public class IssuerParameters {
      */
     public IssuerParameters withCertificateType(String certificateType) {
         this.certificateType = certificateType;
+        return this;
+    }
+
+    /**
+     * Get the certificateTransparency value.
+     *
+     * @return the certificateTransparency value
+     */
+    public Boolean certificateTransparency() {
+        return this.certificateTransparency;
+    }
+
+    /**
+     * Set the certificateTransparency value.
+     *
+     * @param certificateTransparency the certificateTransparency value to set
+     * @return the IssuerParameters object itself.
+     */
+    public IssuerParameters withCertificateTransparency(Boolean certificateTransparency) {
+        this.certificateTransparency = certificateTransparency;
         return this;
     }
 

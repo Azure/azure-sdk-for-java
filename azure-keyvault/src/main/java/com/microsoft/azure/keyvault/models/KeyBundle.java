@@ -8,9 +8,9 @@
 
 package com.microsoft.azure.keyvault.models;
 
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
-import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 
 /**
  * A KeyBundle consisting of a WebKey plus its attributes.
