@@ -8,73 +8,55 @@
 
 package com.microsoft.azure.keyvault.models;
 
-import com.fasterxml.jackson.annotation.JsonValue;
+import java.util.Collection;
+import com.fasterxml.jackson.annotation.JsonCreator;
+import com.microsoft.rest.ExpandableStringEnum;
 
 /**
  * Defines values for KeyUsageType.
  */
-public final class KeyUsageType {
+public final class KeyUsageType extends ExpandableStringEnum<KeyUsageType> {
     /** Static value digitalSignature for KeyUsageType. */
-    public static final KeyUsageType DIGITAL_SIGNATURE = new KeyUsageType("digitalSignature");
+    public static final KeyUsageType DIGITAL_SIGNATURE = fromString("digitalSignature");
 
     /** Static value nonRepudiation for KeyUsageType. */
-    public static final KeyUsageType NON_REPUDIATION = new KeyUsageType("nonRepudiation");
+    public static final KeyUsageType NON_REPUDIATION = fromString("nonRepudiation");
 
     /** Static value keyEncipherment for KeyUsageType. */
-    public static final KeyUsageType KEY_ENCIPHERMENT = new KeyUsageType("keyEncipherment");
+    public static final KeyUsageType KEY_ENCIPHERMENT = fromString("keyEncipherment");
 
     /** Static value dataEncipherment for KeyUsageType. */
-    public static final KeyUsageType DATA_ENCIPHERMENT = new KeyUsageType("dataEncipherment");
+    public static final KeyUsageType DATA_ENCIPHERMENT = fromString("dataEncipherment");
 
     /** Static value keyAgreement for KeyUsageType. */
-    public static final KeyUsageType KEY_AGREEMENT = new KeyUsageType("keyAgreement");
+    public static final KeyUsageType KEY_AGREEMENT = fromString("keyAgreement");
 
     /** Static value keyCertSign for KeyUsageType. */
-    public static final KeyUsageType KEY_CERT_SIGN = new KeyUsageType("keyCertSign");
+    public static final KeyUsageType KEY_CERT_SIGN = fromString("keyCertSign");
 
     /** Static value cRLSign for KeyUsageType. */
-    public static final KeyUsageType C_RLSIGN = new KeyUsageType("cRLSign");
+    public static final KeyUsageType C_RLSIGN = fromString("cRLSign");
 
     /** Static value encipherOnly for KeyUsageType. */
-    public static final KeyUsageType ENCIPHER_ONLY = new KeyUsageType("encipherOnly");
+    public static final KeyUsageType ENCIPHER_ONLY = fromString("encipherOnly");
 
     /** Static value decipherOnly for KeyUsageType. */
-    public static final KeyUsageType DECIPHER_ONLY = new KeyUsageType("decipherOnly");
-
-    private String value;
+    public static final KeyUsageType DECIPHER_ONLY = fromString("decipherOnly");
 
     /**
-     * Creates a custom value for KeyUsageType.
-     * @param value the custom value
+     * Creates or finds a KeyUsageType from its string representation.
+     * @param name a name to look for
+     * @return the corresponding KeyUsageType
      */
-    public KeyUsageType(String value) {
-        this.value = value;
+    @JsonCreator
+    public static KeyUsageType fromString(String name) {
+        return fromString(name, KeyUsageType.class);
     }
 
-    @JsonValue
-    @Override
-    public String toString() {
-        return value;
-    }
-
-    @Override
-    public int hashCode() {
-        return value.hashCode();
-    }
-
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof KeyUsageType)) {
-            return false;
-        }
-        if (obj == this) {
-            return true;
-        }
-        KeyUsageType rhs = (KeyUsageType) obj;
-        if (value == null) {
-            return rhs.value == null;
-        } else {
-            return value.equals(rhs.value);
-        }
+    /**
+     * @return known KeyUsageType values
+     */
+    public static Collection<KeyUsageType> values() {
+        return values(KeyUsageType.class);
     }
 }

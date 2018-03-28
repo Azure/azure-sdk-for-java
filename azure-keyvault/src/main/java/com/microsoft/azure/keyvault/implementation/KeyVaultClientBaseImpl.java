@@ -46,7 +46,12 @@ import com.microsoft.azure.keyvault.models.DeletedStorageBundle;
 import com.microsoft.azure.keyvault.models.IssuerAttributes;
 import com.microsoft.azure.keyvault.models.IssuerBundle;
 import com.microsoft.azure.keyvault.models.IssuerCredentials;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.models.JsonWebKeyCurveName;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyCreateParameters;
@@ -108,11 +113,6 @@ import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.keyvault.webkey.JsonWebKey;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
 /**
  * Initializes a new instance of the KeyVaultClientBaseImpl class.
@@ -481,9 +481,11 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClientBase backupCertificate" })
         @POST("certificates/{certificate-name}/backup")
         Observable<Response<ResponseBody>> backupCertificate(@Path("certificate-name") String certificateName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClientBase restoreCertificate" })
         @POST("certificates/restore")
         Observable<Response<ResponseBody>> restoreCertificate(@Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body CertificateRestoreParameters parameters, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.keyvault.KeyVaultClientBase getDeletedCertificates" })
         @GET("deletedcertificates")
         Observable<Response<ResponseBody>> getDeletedCertificates(@Query("maxresults") Integer maxresults, @Query("includePending") Boolean includePending, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
@@ -4597,8 +4599,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * Lists deleted secrets for the specified vault.
      * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete. This operation requires the secrets/list permission.
      *
-    * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedSecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -5853,8 +5855,8 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * List certificate issuers for a specified key vault.
      * The GetCertificateIssuers operation returns the set of certificate issuer resources in the specified key vault. This operation requires the certificates/manageissuers/getissuers permission.
      *
-    * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
-    * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
+     * @param vaultBaseUrl The vault name, for example https://myvault.vault.azure.net.
+     * @param maxresults Maximum number of results to return in a page. If not specified the service will return up to 25 results.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;CertificateIssuerItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */
@@ -8117,6 +8119,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     public BackupCertificateResult backupCertificate(String vaultBaseUrl, String certificateName) {
         return backupCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName).toBlocking().single().body();
     }
+
     /**
      * Backs up the specified certificate.
      * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
@@ -8130,6 +8133,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     public ServiceFuture<BackupCertificateResult> backupCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<BackupCertificateResult> serviceCallback) {
         return ServiceFuture.fromResponse(backupCertificateWithServiceResponseAsync(vaultBaseUrl, certificateName), serviceCallback);
     }
+
     /**
      * Backs up the specified certificate.
      * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
@@ -8147,6 +8151,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
             }
         });
     }
+
     /**
      * Backs up the specified certificate.
      * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
@@ -8180,12 +8185,14 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
                 }
             });
     }
+
     private ServiceResponse<BackupCertificateResult> backupCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<BackupCertificateResult, KeyVaultErrorException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<BackupCertificateResult>() { }.getType())
                 .registerError(KeyVaultErrorException.class)
                 .build(response);
     }
+
     /**
      * Restores a backed up certificate to a vault.
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
@@ -8200,6 +8207,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     public CertificateBundle restoreCertificate(String vaultBaseUrl, byte[] certificateBundleBackup) {
         return restoreCertificateWithServiceResponseAsync(vaultBaseUrl, certificateBundleBackup).toBlocking().single().body();
     }
+
     /**
      * Restores a backed up certificate to a vault.
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
@@ -8213,6 +8221,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
     public ServiceFuture<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup, final ServiceCallback<CertificateBundle> serviceCallback) {
         return ServiceFuture.fromResponse(restoreCertificateWithServiceResponseAsync(vaultBaseUrl, certificateBundleBackup), serviceCallback);
     }
+
     /**
      * Restores a backed up certificate to a vault.
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
@@ -8230,6 +8239,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
             }
         });
     }
+
     /**
      * Restores a backed up certificate to a vault.
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
@@ -8265,12 +8275,14 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
                 }
             });
     }
+
     private ServiceResponse<CertificateBundle> restoreCertificateDelegate(Response<ResponseBody> response) throws KeyVaultErrorException, IOException, IllegalArgumentException {
         return this.restClient().responseBuilderFactory().<CertificateBundle, KeyVaultErrorException>newInstance(this.serializerAdapter())
                 .register(200, new TypeToken<CertificateBundle>() { }.getType())
                 .registerError(KeyVaultErrorException.class)
                 .build(response);
     }
+
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
      * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
@@ -12350,7 +12362,7 @@ public class KeyVaultClientBaseImpl extends AzureServiceClient implements KeyVau
      * Lists deleted secrets for the specified vault.
      * The Get Deleted Secrets operation returns the secrets that have been deleted for a vault enabled for soft-delete. This operation requires the secrets/list permission.
      *
-    * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the PagedList&lt;DeletedSecretItem&gt; object wrapped in {@link ServiceResponse} if successful.
      */

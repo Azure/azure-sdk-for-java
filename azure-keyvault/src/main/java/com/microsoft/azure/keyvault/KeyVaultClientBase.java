@@ -33,7 +33,12 @@ import com.microsoft.azure.keyvault.models.DeletedStorageBundle;
 import com.microsoft.azure.keyvault.models.IssuerAttributes;
 import com.microsoft.azure.keyvault.models.IssuerBundle;
 import com.microsoft.azure.keyvault.models.IssuerCredentials;
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
 import com.microsoft.azure.keyvault.models.JsonWebKeyCurveName;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 import com.microsoft.azure.keyvault.models.KeyAttributes;
 import com.microsoft.azure.keyvault.models.KeyBundle;
 import com.microsoft.azure.keyvault.models.KeyItem;
@@ -62,11 +67,6 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import rx.Observable;
-import com.microsoft.azure.keyvault.webkey.JsonWebKey;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyEncryptionAlgorithm;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyOperation;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeySignatureAlgorithm;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
 /**
  * The interface for KeyVaultClientBase class.
@@ -3814,6 +3814,7 @@ public interface KeyVaultClientBase {
      * @return the BackupCertificateResult object if successful.
      */
     BackupCertificateResult backupCertificate(String vaultBaseUrl, String certificateName);
+
     /**
      * Backs up the specified certificate.
      * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
@@ -3825,6 +3826,7 @@ public interface KeyVaultClientBase {
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<BackupCertificateResult> backupCertificateAsync(String vaultBaseUrl, String certificateName, final ServiceCallback<BackupCertificateResult> serviceCallback);
+
     /**
      * Backs up the specified certificate.
      * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
@@ -3835,6 +3837,7 @@ public interface KeyVaultClientBase {
      * @return the observable to the BackupCertificateResult object
      */
     Observable<BackupCertificateResult> backupCertificateAsync(String vaultBaseUrl, String certificateName);
+
     /**
      * Backs up the specified certificate.
      * Requests that a backup of the specified certificate be downloaded to the client. All versions of the certificate will be downloaded. This operation requires the certificates/backup permission.
@@ -3845,6 +3848,7 @@ public interface KeyVaultClientBase {
      * @return the observable to the BackupCertificateResult object
      */
     Observable<ServiceResponse<BackupCertificateResult>> backupCertificateWithServiceResponseAsync(String vaultBaseUrl, String certificateName);
+
     /**
      * Restores a backed up certificate to a vault.
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
@@ -3857,6 +3861,7 @@ public interface KeyVaultClientBase {
      * @return the CertificateBundle object if successful.
      */
     CertificateBundle restoreCertificate(String vaultBaseUrl, byte[] certificateBundleBackup);
+
     /**
      * Restores a backed up certificate to a vault.
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
@@ -3868,6 +3873,7 @@ public interface KeyVaultClientBase {
      * @return the {@link ServiceFuture} object
      */
     ServiceFuture<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup, final ServiceCallback<CertificateBundle> serviceCallback);
+
     /**
      * Restores a backed up certificate to a vault.
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
@@ -3878,6 +3884,7 @@ public interface KeyVaultClientBase {
      * @return the observable to the CertificateBundle object
      */
     Observable<CertificateBundle> restoreCertificateAsync(String vaultBaseUrl, byte[] certificateBundleBackup);
+
     /**
      * Restores a backed up certificate to a vault.
      * Restores a backed up certificate, and all its versions, to a vault. This operation requires the certificates/restore permission.
@@ -3888,6 +3895,7 @@ public interface KeyVaultClientBase {
      * @return the observable to the CertificateBundle object
      */
     Observable<ServiceResponse<CertificateBundle>> restoreCertificateWithServiceResponseAsync(String vaultBaseUrl, byte[] certificateBundleBackup);
+
     /**
      * Lists the deleted certificates in the specified vault currently available for recovery.
      * The GetDeletedCertificates operation retrieves the certificates in the current vault which are in a deleted state and ready for recovery or purging. This operation includes deletion-specific information. This operation requires the certificates/get/list permission. This operation can only be enabled on soft-delete enabled vaults.
