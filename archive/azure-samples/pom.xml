@@ -170,6 +170,12 @@
             <artifactId>docker-client</artifactId>
             <version>8.9.0</version>
         </dependency>
+        <dependency>
+          <groupId>org.bouncycastle</groupId>
+          <artifactId>bcprov-jdk15on</artifactId>
+          <version>1.59</version>
+          <scope>compile</scope>
+        </dependency>
     </dependencies>
     <build>
         <plugins>
