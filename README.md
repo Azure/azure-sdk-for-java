@@ -15,7 +15,7 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault</artifactId>
-    <version>1.1-alpha-1<</version>
+    <version>1.1-beta-1</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
