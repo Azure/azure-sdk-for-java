@@ -9,6 +9,7 @@ import com.linkedin.flashback.matchrules.MatchRuleUtils
 import com.linkedin.flashback.scene.SceneConfiguration
 import com.linkedin.flashback.scene.SceneMode
 import com.linkedin.flashback.smartproxy.FlashbackRunner
+import com.microsoft.azure.storage.blob.BlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
 import com.microsoft.azure.storage.blob.ETag
 import com.microsoft.azure.storage.blob.ListContainersOptions
@@ -16,6 +17,8 @@ import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.SharedKeyCredentials
 import com.microsoft.azure.storage.blob.StorageURL
+import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.Container
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.rest.v2.http.HttpClient
@@ -299,5 +302,26 @@ class APISpec extends Specification {
     def cleanup() {
         // TODO: Scrub auth header here?
         iterationNo = updateIterationNo(specificationContext, iterationNo)
+    }
+
+    def setupMatchCondition(BlobURL bu, ETag match) {
+        if(match == receivedEtag) {
+            BlobsGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
+            return new ETag(headers.eTag())
+        }
+        else {
+            return match
+        }
+    }
+
+    def setupLeaseCondition(BlobURL bu, String leaseID) {
+        if (leaseID != null && leaseID == receivedLeaseID) {
+            BlobsAcquireLeaseHeaders headers2 =
+                    bu.acquireLease(null, -1, null).blockingGet().headers()
+            return headers2.leaseId()
+        }
+        else {
+            return leaseID
+        }
     }
 }

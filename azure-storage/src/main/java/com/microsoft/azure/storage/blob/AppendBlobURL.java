@@ -127,7 +127,8 @@ public final class AppendBlobURL extends BlobURL {
      * @param data
      *      The data to write to the blob.
      * @param length
-     *      The total length of the data.
+     *      The exact length of the data. It is important that this value match precisely the length of the data
+     *      emitted by the {@code Flowable}.
      * @param accessConditions
      *      {@link BlobAccessConditions}
      * @return
