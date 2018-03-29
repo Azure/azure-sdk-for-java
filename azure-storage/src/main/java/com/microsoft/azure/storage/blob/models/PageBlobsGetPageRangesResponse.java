@@ -14,18 +14,18 @@ import com.microsoft.rest.v2.RestResponse;
 import java.util.Map;
 
 /**
- * Contains all response data for the getBlockList operation.
+ * Contains all response data for the getPageRanges operation.
  */
-public final class BlockBlobGetBlockListResponse extends RestResponse<BlockBlobGetBlockListHeaders, BlockList> {
+public final class PageBlobsGetPageRangesResponse extends RestResponse<PageBlobsGetPageRangesHeaders, PageList> {
     /**
-     * Creates an instance of BlockBlobGetBlockListResponse.
+     * Creates an instance of PageBlobsGetPageRangesResponse.
      *
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public BlockBlobGetBlockListResponse(int statusCode, BlockBlobGetBlockListHeaders headers, Map<String, String> rawHeaders, BlockList body) {
+    public PageBlobsGetPageRangesResponse(int statusCode, PageBlobsGetPageRangesHeaders headers, Map<String, String> rawHeaders, PageList body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -33,7 +33,7 @@ public final class BlockBlobGetBlockListResponse extends RestResponse<BlockBlobG
      * @return the deserialized response headers.
      */
     @Override
-    public BlockBlobGetBlockListHeaders headers() {
+    public PageBlobsGetPageRangesHeaders headers() {
         return super.headers();
     }
 
@@ -41,7 +41,7 @@ public final class BlockBlobGetBlockListResponse extends RestResponse<BlockBlobG
      * @return the deserialized response body.
      */
     @Override
-    public BlockList body() {
+    public PageList body() {
         return super.body();
     }
 }

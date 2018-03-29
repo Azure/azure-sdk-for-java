@@ -17,18 +17,10 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Defines headers for Resize operation.
+ * Defines headers for GetBlockList operation.
  */
-@JacksonXmlRootElement(localName = "PageBlob-Resize-Headers")
-public final class PageBlobResizeHeaders {
-    /**
-     * The ETag contains a value that you can use to perform operations
-     * conditionally. If the request version is 2011-08-18 or newer, the ETag
-     * value will be in quotes.
-     */
-    @JsonProperty(value = "ETag")
-    private String eTag;
-
+@JacksonXmlRootElement(localName = "BlockBlobs-GetBlockList-Headers")
+public final class BlockBlobsGetBlockListHeaders {
     /**
      * Returns the date and time the container was last modified. Any operation
      * that modifies the blob, including an update of the blob's metadata or
@@ -38,11 +30,25 @@ public final class PageBlobResizeHeaders {
     private DateTimeRfc1123 lastModified;
 
     /**
-     * The current sequence number for a page blob. This header is not returned
-     * for block blobs or append blobs.
+     * The ETag contains a value that you can use to perform operations
+     * conditionally. If the request version is 2011-08-18 or newer, the ETag
+     * value will be in quotes.
      */
-    @JsonProperty(value = "x-ms-blob-sequence-number")
-    private String blobSequenceNumber;
+    @JsonProperty(value = "ETag")
+    private String eTag;
+
+    /**
+     * The content type specified for the blob. The default content type is
+     * 'application/octet-stream'.
+     */
+    @JsonProperty(value = "Content-Type")
+    private String contentType;
+
+    /**
+     * The size of the blob in bytes.
+     */
+    @JsonProperty(value = "x-ms-blob-content-length")
+    private Long blobContentLength;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -67,26 +73,6 @@ public final class PageBlobResizeHeaders {
     private DateTimeRfc1123 dateProperty;
 
     /**
-     * Get the eTag value.
-     *
-     * @return the eTag value.
-     */
-    public String eTag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag value.
-     *
-     * @param eTag the eTag value to set.
-     * @return the PageBlobResizeHeaders object itself.
-     */
-    public PageBlobResizeHeaders withETag(String eTag) {
-        this.eTag = eTag;
-        return this;
-    }
-
-    /**
      * Get the lastModified value.
      *
      * @return the lastModified value.
@@ -102,9 +88,9 @@ public final class PageBlobResizeHeaders {
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set.
-     * @return the PageBlobResizeHeaders object itself.
+     * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    public PageBlobResizeHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlockBlobsGetBlockListHeaders withLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -114,22 +100,62 @@ public final class PageBlobResizeHeaders {
     }
 
     /**
-     * Get the blobSequenceNumber value.
+     * Get the eTag value.
      *
-     * @return the blobSequenceNumber value.
+     * @return the eTag value.
      */
-    public String blobSequenceNumber() {
-        return this.blobSequenceNumber;
+    public String eTag() {
+        return this.eTag;
     }
 
     /**
-     * Set the blobSequenceNumber value.
+     * Set the eTag value.
      *
-     * @param blobSequenceNumber the blobSequenceNumber value to set.
-     * @return the PageBlobResizeHeaders object itself.
+     * @param eTag the eTag value to set.
+     * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    public PageBlobResizeHeaders withBlobSequenceNumber(String blobSequenceNumber) {
-        this.blobSequenceNumber = blobSequenceNumber;
+    public BlockBlobsGetBlockListHeaders withETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the contentType value.
+     *
+     * @return the contentType value.
+     */
+    public String contentType() {
+        return this.contentType;
+    }
+
+    /**
+     * Set the contentType value.
+     *
+     * @param contentType the contentType value to set.
+     * @return the BlockBlobsGetBlockListHeaders object itself.
+     */
+    public BlockBlobsGetBlockListHeaders withContentType(String contentType) {
+        this.contentType = contentType;
+        return this;
+    }
+
+    /**
+     * Get the blobContentLength value.
+     *
+     * @return the blobContentLength value.
+     */
+    public Long blobContentLength() {
+        return this.blobContentLength;
+    }
+
+    /**
+     * Set the blobContentLength value.
+     *
+     * @param blobContentLength the blobContentLength value to set.
+     * @return the BlockBlobsGetBlockListHeaders object itself.
+     */
+    public BlockBlobsGetBlockListHeaders withBlobContentLength(Long blobContentLength) {
+        this.blobContentLength = blobContentLength;
         return this;
     }
 
@@ -146,9 +172,9 @@ public final class PageBlobResizeHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the PageBlobResizeHeaders object itself.
+     * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    public PageBlobResizeHeaders withRequestId(String requestId) {
+    public BlockBlobsGetBlockListHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -166,9 +192,9 @@ public final class PageBlobResizeHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the PageBlobResizeHeaders object itself.
+     * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    public PageBlobResizeHeaders withVersion(String version) {
+    public BlockBlobsGetBlockListHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -189,9 +215,9 @@ public final class PageBlobResizeHeaders {
      * Set the dateProperty value.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the PageBlobResizeHeaders object itself.
+     * @return the BlockBlobsGetBlockListHeaders object itself.
      */
-    public PageBlobResizeHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobsGetBlockListHeaders withDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {

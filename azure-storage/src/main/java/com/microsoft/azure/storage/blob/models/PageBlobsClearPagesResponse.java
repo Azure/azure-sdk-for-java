@@ -14,18 +14,18 @@ import com.microsoft.rest.v2.RestResponse;
 import java.util.Map;
 
 /**
- * Contains all response data for the appendBlock operation.
+ * Contains all response data for the clearPages operation.
  */
-public final class AppendBlobAppendBlockResponse extends RestResponse<AppendBlobAppendBlockHeaders, Void> {
+public final class PageBlobsClearPagesResponse extends RestResponse<PageBlobsClearPagesHeaders, Void> {
     /**
-     * Creates an instance of AppendBlobAppendBlockResponse.
+     * Creates an instance of PageBlobsClearPagesResponse.
      *
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public AppendBlobAppendBlockResponse(int statusCode, AppendBlobAppendBlockHeaders headers, Map<String, String> rawHeaders, Void body) {
+    public PageBlobsClearPagesResponse(int statusCode, PageBlobsClearPagesHeaders headers, Map<String, String> rawHeaders, Void body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -33,7 +33,7 @@ public final class AppendBlobAppendBlockResponse extends RestResponse<AppendBlob
      * @return the deserialized response headers.
      */
     @Override
-    public AppendBlobAppendBlockHeaders headers() {
+    public PageBlobsClearPagesHeaders headers() {
         return super.headers();
     }
 }

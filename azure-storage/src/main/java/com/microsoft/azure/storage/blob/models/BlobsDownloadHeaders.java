@@ -71,7 +71,7 @@ public final class BlobsDownloadHeaders {
      * message content integrity.
      */
     @JsonProperty(value = "Content-MD5")
-    private String contentMD5;
+    private byte[] contentMD5;
 
     /**
      * This header returns the value that was specified for the
@@ -252,7 +252,7 @@ public final class BlobsDownloadHeaders {
      * requested range.
      */
     @JsonProperty(value = "x-ms-blob-content-md5")
-    private String blobContentMD5;
+    private byte[] blobContentMD5;
 
     /**
      * Get the lastModified value.
@@ -386,7 +386,7 @@ public final class BlobsDownloadHeaders {
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public byte[] contentMD5() {
         return this.contentMD5;
     }
 
@@ -396,7 +396,7 @@ public final class BlobsDownloadHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
-    public BlobsDownloadHeaders withContentMD5(String contentMD5) {
+    public BlobsDownloadHeaders withContentMD5(byte[] contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -840,7 +840,7 @@ public final class BlobsDownloadHeaders {
      *
      * @return the blobContentMD5 value.
      */
-    public String blobContentMD5() {
+    public byte[] blobContentMD5() {
         return this.blobContentMD5;
     }
 
@@ -850,7 +850,7 @@ public final class BlobsDownloadHeaders {
      * @param blobContentMD5 the blobContentMD5 value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
-    public BlobsDownloadHeaders withBlobContentMD5(String blobContentMD5) {
+    public BlobsDownloadHeaders withBlobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = blobContentMD5;
         return this;
     }

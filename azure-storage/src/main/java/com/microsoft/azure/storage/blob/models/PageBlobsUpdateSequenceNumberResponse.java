@@ -14,18 +14,18 @@ import com.microsoft.rest.v2.RestResponse;
 import java.util.Map;
 
 /**
- * Contains all response data for the create operation.
+ * Contains all response data for the updateSequenceNumber operation.
  */
-public final class PageBlobCreateResponse extends RestResponse<PageBlobCreateHeaders, Void> {
+public final class PageBlobsUpdateSequenceNumberResponse extends RestResponse<PageBlobsUpdateSequenceNumberHeaders, Void> {
     /**
-     * Creates an instance of PageBlobCreateResponse.
+     * Creates an instance of PageBlobsUpdateSequenceNumberResponse.
      *
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public PageBlobCreateResponse(int statusCode, PageBlobCreateHeaders headers, Map<String, String> rawHeaders, Void body) {
+    public PageBlobsUpdateSequenceNumberResponse(int statusCode, PageBlobsUpdateSequenceNumberHeaders headers, Map<String, String> rawHeaders, Void body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -33,7 +33,7 @@ public final class PageBlobCreateResponse extends RestResponse<PageBlobCreateHea
      * @return the deserialized response headers.
      */
     @Override
-    public PageBlobCreateHeaders headers() {
+    public PageBlobsUpdateSequenceNumberHeaders headers() {
         return super.headers();
     }
 }

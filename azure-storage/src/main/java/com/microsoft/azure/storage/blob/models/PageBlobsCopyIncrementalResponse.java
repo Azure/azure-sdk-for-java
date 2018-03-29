@@ -14,18 +14,18 @@ import com.microsoft.rest.v2.RestResponse;
 import java.util.Map;
 
 /**
- * Contains all response data for the resize operation.
+ * Contains all response data for the copyIncremental operation.
  */
-public final class PageBlobResizeResponse extends RestResponse<PageBlobResizeHeaders, Void> {
+public final class PageBlobsCopyIncrementalResponse extends RestResponse<PageBlobsCopyIncrementalHeaders, Void> {
     /**
-     * Creates an instance of PageBlobResizeResponse.
+     * Creates an instance of PageBlobsCopyIncrementalResponse.
      *
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public PageBlobResizeResponse(int statusCode, PageBlobResizeHeaders headers, Map<String, String> rawHeaders, Void body) {
+    public PageBlobsCopyIncrementalResponse(int statusCode, PageBlobsCopyIncrementalHeaders headers, Map<String, String> rawHeaders, Void body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -33,7 +33,7 @@ public final class PageBlobResizeResponse extends RestResponse<PageBlobResizeHea
      * @return the deserialized response headers.
      */
     @Override
-    public PageBlobResizeHeaders headers() {
+    public PageBlobsCopyIncrementalHeaders headers() {
         return super.headers();
     }
 }

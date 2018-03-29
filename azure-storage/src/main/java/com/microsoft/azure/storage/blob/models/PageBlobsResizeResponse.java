@@ -14,18 +14,18 @@ import com.microsoft.rest.v2.RestResponse;
 import java.util.Map;
 
 /**
- * Contains all response data for the getPageRangesDiff operation.
+ * Contains all response data for the resize operation.
  */
-public final class PageBlobGetPageRangesDiffResponse extends RestResponse<PageBlobGetPageRangesDiffHeaders, PageList> {
+public final class PageBlobsResizeResponse extends RestResponse<PageBlobsResizeHeaders, Void> {
     /**
-     * Creates an instance of PageBlobGetPageRangesDiffResponse.
+     * Creates an instance of PageBlobsResizeResponse.
      *
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public PageBlobGetPageRangesDiffResponse(int statusCode, PageBlobGetPageRangesDiffHeaders headers, Map<String, String> rawHeaders, PageList body) {
+    public PageBlobsResizeResponse(int statusCode, PageBlobsResizeHeaders headers, Map<String, String> rawHeaders, Void body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -33,15 +33,7 @@ public final class PageBlobGetPageRangesDiffResponse extends RestResponse<PageBl
      * @return the deserialized response headers.
      */
     @Override
-    public PageBlobGetPageRangesDiffHeaders headers() {
+    public PageBlobsResizeHeaders headers() {
         return super.headers();
-    }
-
-    /**
-     * @return the deserialized response body.
-     */
-    @Override
-    public PageList body() {
-        return super.body();
     }
 }

@@ -61,7 +61,7 @@ public final class BlobProperties {
      * The contentMD5 property.
      */
     @JsonProperty(value = "Content-MD5")
-    private String contentMD5;
+    private byte[] contentMD5;
 
     /**
      * The contentDisposition property.
@@ -324,7 +324,7 @@ public final class BlobProperties {
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public byte[] contentMD5() {
         return this.contentMD5;
     }
 
@@ -334,7 +334,7 @@ public final class BlobProperties {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties withContentMD5(String contentMD5) {
+    public BlobProperties withContentMD5(byte[] contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }

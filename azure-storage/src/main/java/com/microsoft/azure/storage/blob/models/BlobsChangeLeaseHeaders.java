@@ -38,17 +38,17 @@ public final class BlobsChangeLeaseHeaders {
     private DateTimeRfc1123 lastModified;
 
     /**
-     * Uniquely identifies a blob's lease.
-     */
-    @JsonProperty(value = "x-ms-lease-id")
-    private String leaseId;
-
-    /**
      * This header uniquely identifies the request that was made and can be
      * used for troubleshooting the request.
      */
     @JsonProperty(value = "x-ms-request-id")
     private String requestId;
+
+    /**
+     * Uniquely identifies a blobs's lease.
+     */
+    @JsonProperty(value = "x-ms-lease-id")
+    private String leaseId;
 
     /**
      * Indicates the version of the Blob service used to execute the request.
@@ -113,26 +113,6 @@ public final class BlobsChangeLeaseHeaders {
     }
 
     /**
-     * Get the leaseId value.
-     *
-     * @return the leaseId value.
-     */
-    public String leaseId() {
-        return this.leaseId;
-    }
-
-    /**
-     * Set the leaseId value.
-     *
-     * @param leaseId the leaseId value to set.
-     * @return the BlobsChangeLeaseHeaders object itself.
-     */
-    public BlobsChangeLeaseHeaders withLeaseId(String leaseId) {
-        this.leaseId = leaseId;
-        return this;
-    }
-
-    /**
      * Get the requestId value.
      *
      * @return the requestId value.
@@ -149,6 +129,26 @@ public final class BlobsChangeLeaseHeaders {
      */
     public BlobsChangeLeaseHeaders withRequestId(String requestId) {
         this.requestId = requestId;
+        return this;
+    }
+
+    /**
+     * Get the leaseId value.
+     *
+     * @return the leaseId value.
+     */
+    public String leaseId() {
+        return this.leaseId;
+    }
+
+    /**
+     * Set the leaseId value.
+     *
+     * @param leaseId the leaseId value to set.
+     * @return the BlobsChangeLeaseHeaders object itself.
+     */
+    public BlobsChangeLeaseHeaders withLeaseId(String leaseId) {
+        this.leaseId = leaseId;
         return this;
     }
 

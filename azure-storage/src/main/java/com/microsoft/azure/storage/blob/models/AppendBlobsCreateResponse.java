@@ -14,18 +14,18 @@ import com.microsoft.rest.v2.RestResponse;
 import java.util.Map;
 
 /**
- * Contains all response data for the getPageRanges operation.
+ * Contains all response data for the create operation.
  */
-public final class PageBlobGetPageRangesResponse extends RestResponse<PageBlobGetPageRangesHeaders, PageList> {
+public final class AppendBlobsCreateResponse extends RestResponse<AppendBlobsCreateHeaders, Void> {
     /**
-     * Creates an instance of PageBlobGetPageRangesResponse.
+     * Creates an instance of AppendBlobsCreateResponse.
      *
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public PageBlobGetPageRangesResponse(int statusCode, PageBlobGetPageRangesHeaders headers, Map<String, String> rawHeaders, PageList body) {
+    public AppendBlobsCreateResponse(int statusCode, AppendBlobsCreateHeaders headers, Map<String, String> rawHeaders, Void body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -33,15 +33,7 @@ public final class PageBlobGetPageRangesResponse extends RestResponse<PageBlobGe
      * @return the deserialized response headers.
      */
     @Override
-    public PageBlobGetPageRangesHeaders headers() {
+    public AppendBlobsCreateHeaders headers() {
         return super.headers();
-    }
-
-    /**
-     * @return the deserialized response body.
-     */
-    @Override
-    public PageList body() {
-        return super.body();
     }
 }

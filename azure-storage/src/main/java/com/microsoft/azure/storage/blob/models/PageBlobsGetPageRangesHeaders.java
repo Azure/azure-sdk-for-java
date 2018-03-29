@@ -17,18 +17,10 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Defines headers for Create operation.
+ * Defines headers for GetPageRanges operation.
  */
-@JacksonXmlRootElement(localName = "AppendBlob-Create-Headers")
-public final class AppendBlobCreateHeaders {
-    /**
-     * The ETag contains a value that you can use to perform operations
-     * conditionally. If the request version is 2011-08-18 or newer, the ETag
-     * value will be in quotes.
-     */
-    @JsonProperty(value = "ETag")
-    private String eTag;
-
+@JacksonXmlRootElement(localName = "PageBlobs-GetPageRanges-Headers")
+public final class PageBlobsGetPageRangesHeaders {
     /**
      * Returns the date and time the container was last modified. Any operation
      * that modifies the blob, including an update of the blob's metadata or
@@ -38,12 +30,18 @@ public final class AppendBlobCreateHeaders {
     private DateTimeRfc1123 lastModified;
 
     /**
-     * If the blob has an MD5 hash and this operation is to read the full blob,
-     * this response header is returned so that the client can check for
-     * message content integrity.
+     * The ETag contains a value that you can use to perform operations
+     * conditionally. If the request version is 2011-08-18 or newer, the ETag
+     * value will be in quotes.
      */
-    @JsonProperty(value = "Content-MD5")
-    private String contentMD5;
+    @JsonProperty(value = "ETag")
+    private String eTag;
+
+    /**
+     * The size of the blob in bytes.
+     */
+    @JsonProperty(value = "x-ms-blob-content-length")
+    private Long blobContentLength;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -68,34 +66,6 @@ public final class AppendBlobCreateHeaders {
     private DateTimeRfc1123 dateProperty;
 
     /**
-     * The value of this header is set to true if the contents of the request
-     * are successfully encrypted using the specified algorithm, and false
-     * otherwise.
-     */
-    @JsonProperty(value = "x-ms-request-server-encrypted")
-    private Boolean isServerEncrypted;
-
-    /**
-     * Get the eTag value.
-     *
-     * @return the eTag value.
-     */
-    public String eTag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag value.
-     *
-     * @param eTag the eTag value to set.
-     * @return the AppendBlobCreateHeaders object itself.
-     */
-    public AppendBlobCreateHeaders withETag(String eTag) {
-        this.eTag = eTag;
-        return this;
-    }
-
-    /**
      * Get the lastModified value.
      *
      * @return the lastModified value.
@@ -111,9 +81,9 @@ public final class AppendBlobCreateHeaders {
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set.
-     * @return the AppendBlobCreateHeaders object itself.
+     * @return the PageBlobsGetPageRangesHeaders object itself.
      */
-    public AppendBlobCreateHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobsGetPageRangesHeaders withLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -123,22 +93,42 @@ public final class AppendBlobCreateHeaders {
     }
 
     /**
-     * Get the contentMD5 value.
+     * Get the eTag value.
      *
-     * @return the contentMD5 value.
+     * @return the eTag value.
      */
-    public String contentMD5() {
-        return this.contentMD5;
+    public String eTag() {
+        return this.eTag;
     }
 
     /**
-     * Set the contentMD5 value.
+     * Set the eTag value.
      *
-     * @param contentMD5 the contentMD5 value to set.
-     * @return the AppendBlobCreateHeaders object itself.
+     * @param eTag the eTag value to set.
+     * @return the PageBlobsGetPageRangesHeaders object itself.
      */
-    public AppendBlobCreateHeaders withContentMD5(String contentMD5) {
-        this.contentMD5 = contentMD5;
+    public PageBlobsGetPageRangesHeaders withETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the blobContentLength value.
+     *
+     * @return the blobContentLength value.
+     */
+    public Long blobContentLength() {
+        return this.blobContentLength;
+    }
+
+    /**
+     * Set the blobContentLength value.
+     *
+     * @param blobContentLength the blobContentLength value to set.
+     * @return the PageBlobsGetPageRangesHeaders object itself.
+     */
+    public PageBlobsGetPageRangesHeaders withBlobContentLength(Long blobContentLength) {
+        this.blobContentLength = blobContentLength;
         return this;
     }
 
@@ -155,9 +145,9 @@ public final class AppendBlobCreateHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the AppendBlobCreateHeaders object itself.
+     * @return the PageBlobsGetPageRangesHeaders object itself.
      */
-    public AppendBlobCreateHeaders withRequestId(String requestId) {
+    public PageBlobsGetPageRangesHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -175,9 +165,9 @@ public final class AppendBlobCreateHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the AppendBlobCreateHeaders object itself.
+     * @return the PageBlobsGetPageRangesHeaders object itself.
      */
-    public AppendBlobCreateHeaders withVersion(String version) {
+    public PageBlobsGetPageRangesHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -198,34 +188,14 @@ public final class AppendBlobCreateHeaders {
      * Set the dateProperty value.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the AppendBlobCreateHeaders object itself.
+     * @return the PageBlobsGetPageRangesHeaders object itself.
      */
-    public AppendBlobCreateHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobsGetPageRangesHeaders withDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
             this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
-        return this;
-    }
-
-    /**
-     * Get the isServerEncrypted value.
-     *
-     * @return the isServerEncrypted value.
-     */
-    public Boolean isServerEncrypted() {
-        return this.isServerEncrypted;
-    }
-
-    /**
-     * Set the isServerEncrypted value.
-     *
-     * @param isServerEncrypted the isServerEncrypted value to set.
-     * @return the AppendBlobCreateHeaders object itself.
-     */
-    public AppendBlobCreateHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
-        this.isServerEncrypted = isServerEncrypted;
         return this;
     }
 }

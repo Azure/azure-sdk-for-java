@@ -17,18 +17,10 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Defines headers for UpdateSequenceNumber operation.
+ * Defines headers for GetPageRangesDiff operation.
  */
-@JacksonXmlRootElement(localName = "PageBlob-UpdateSequenceNumber-Headers")
-public final class PageBlobUpdateSequenceNumberHeaders {
-    /**
-     * The ETag contains a value that you can use to perform operations
-     * conditionally. If the request version is 2011-08-18 or newer, the ETag
-     * value will be in quotes.
-     */
-    @JsonProperty(value = "ETag")
-    private String eTag;
-
+@JacksonXmlRootElement(localName = "PageBlobs-GetPageRangesDiff-Headers")
+public final class PageBlobsGetPageRangesDiffHeaders {
     /**
      * Returns the date and time the container was last modified. Any operation
      * that modifies the blob, including an update of the blob's metadata or
@@ -38,11 +30,18 @@ public final class PageBlobUpdateSequenceNumberHeaders {
     private DateTimeRfc1123 lastModified;
 
     /**
-     * The current sequence number for a page blob. This header is not returned
-     * for block blobs or append blobs.
+     * The ETag contains a value that you can use to perform operations
+     * conditionally. If the request version is 2011-08-18 or newer, the ETag
+     * value will be in quotes.
      */
-    @JsonProperty(value = "x-ms-blob-sequence-number")
-    private String blobSequenceNumber;
+    @JsonProperty(value = "ETag")
+    private String eTag;
+
+    /**
+     * The size of the blob in bytes.
+     */
+    @JsonProperty(value = "x-ms-blob-content-length")
+    private Long blobContentLength;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -67,26 +66,6 @@ public final class PageBlobUpdateSequenceNumberHeaders {
     private DateTimeRfc1123 dateProperty;
 
     /**
-     * Get the eTag value.
-     *
-     * @return the eTag value.
-     */
-    public String eTag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag value.
-     *
-     * @param eTag the eTag value to set.
-     * @return the PageBlobUpdateSequenceNumberHeaders object itself.
-     */
-    public PageBlobUpdateSequenceNumberHeaders withETag(String eTag) {
-        this.eTag = eTag;
-        return this;
-    }
-
-    /**
      * Get the lastModified value.
      *
      * @return the lastModified value.
@@ -102,9 +81,9 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set.
-     * @return the PageBlobUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobsGetPageRangesDiffHeaders withLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -114,22 +93,42 @@ public final class PageBlobUpdateSequenceNumberHeaders {
     }
 
     /**
-     * Get the blobSequenceNumber value.
+     * Get the eTag value.
      *
-     * @return the blobSequenceNumber value.
+     * @return the eTag value.
      */
-    public String blobSequenceNumber() {
-        return this.blobSequenceNumber;
+    public String eTag() {
+        return this.eTag;
     }
 
     /**
-     * Set the blobSequenceNumber value.
+     * Set the eTag value.
      *
-     * @param blobSequenceNumber the blobSequenceNumber value to set.
-     * @return the PageBlobUpdateSequenceNumberHeaders object itself.
+     * @param eTag the eTag value to set.
+     * @return the PageBlobsGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withBlobSequenceNumber(String blobSequenceNumber) {
-        this.blobSequenceNumber = blobSequenceNumber;
+    public PageBlobsGetPageRangesDiffHeaders withETag(String eTag) {
+        this.eTag = eTag;
+        return this;
+    }
+
+    /**
+     * Get the blobContentLength value.
+     *
+     * @return the blobContentLength value.
+     */
+    public Long blobContentLength() {
+        return this.blobContentLength;
+    }
+
+    /**
+     * Set the blobContentLength value.
+     *
+     * @param blobContentLength the blobContentLength value to set.
+     * @return the PageBlobsGetPageRangesDiffHeaders object itself.
+     */
+    public PageBlobsGetPageRangesDiffHeaders withBlobContentLength(Long blobContentLength) {
+        this.blobContentLength = blobContentLength;
         return this;
     }
 
@@ -146,9 +145,9 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the PageBlobUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withRequestId(String requestId) {
+    public PageBlobsGetPageRangesDiffHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -166,9 +165,9 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the PageBlobUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withVersion(String version) {
+    public PageBlobsGetPageRangesDiffHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -189,9 +188,9 @@ public final class PageBlobUpdateSequenceNumberHeaders {
      * Set the dateProperty value.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the PageBlobUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsGetPageRangesDiffHeaders object itself.
      */
-    public PageBlobUpdateSequenceNumberHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobsGetPageRangesDiffHeaders withDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {

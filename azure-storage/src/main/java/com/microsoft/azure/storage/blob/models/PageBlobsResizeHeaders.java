@@ -17,10 +17,10 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Defines headers for UpdateSequenceNumber operation.
+ * Defines headers for Resize operation.
  */
-@JacksonXmlRootElement(localName = "Blobs-UpdateSequenceNumber-Headers")
-public final class BlobsUpdateSequenceNumberHeaders {
+@JacksonXmlRootElement(localName = "PageBlobs-Resize-Headers")
+public final class PageBlobsResizeHeaders {
     /**
      * The ETag contains a value that you can use to perform operations
      * conditionally. If the request version is 2011-08-18 or newer, the ETag
@@ -79,9 +79,9 @@ public final class BlobsUpdateSequenceNumberHeaders {
      * Set the eTag value.
      *
      * @param eTag the eTag value to set.
-     * @return the BlobsUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsResizeHeaders object itself.
      */
-    public BlobsUpdateSequenceNumberHeaders withETag(String eTag) {
+    public PageBlobsResizeHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -102,9 +102,9 @@ public final class BlobsUpdateSequenceNumberHeaders {
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set.
-     * @return the BlobsUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsResizeHeaders object itself.
      */
-    public BlobsUpdateSequenceNumberHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobsResizeHeaders withLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -126,9 +126,9 @@ public final class BlobsUpdateSequenceNumberHeaders {
      * Set the blobSequenceNumber value.
      *
      * @param blobSequenceNumber the blobSequenceNumber value to set.
-     * @return the BlobsUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsResizeHeaders object itself.
      */
-    public BlobsUpdateSequenceNumberHeaders withBlobSequenceNumber(String blobSequenceNumber) {
+    public PageBlobsResizeHeaders withBlobSequenceNumber(String blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -146,9 +146,9 @@ public final class BlobsUpdateSequenceNumberHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the BlobsUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsResizeHeaders object itself.
      */
-    public BlobsUpdateSequenceNumberHeaders withRequestId(String requestId) {
+    public PageBlobsResizeHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -166,9 +166,9 @@ public final class BlobsUpdateSequenceNumberHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the BlobsUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsResizeHeaders object itself.
      */
-    public BlobsUpdateSequenceNumberHeaders withVersion(String version) {
+    public PageBlobsResizeHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -189,9 +189,9 @@ public final class BlobsUpdateSequenceNumberHeaders {
      * Set the dateProperty value.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the BlobsUpdateSequenceNumberHeaders object itself.
+     * @return the PageBlobsResizeHeaders object itself.
      */
-    public BlobsUpdateSequenceNumberHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobsResizeHeaders withDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {

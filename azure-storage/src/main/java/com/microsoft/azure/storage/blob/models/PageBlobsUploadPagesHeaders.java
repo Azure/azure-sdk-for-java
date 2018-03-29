@@ -19,8 +19,8 @@ import java.time.OffsetDateTime;
 /**
  * Defines headers for UploadPages operation.
  */
-@JacksonXmlRootElement(localName = "PageBlob-UploadPages-Headers")
-public final class PageBlobUploadPagesHeaders {
+@JacksonXmlRootElement(localName = "PageBlobs-UploadPages-Headers")
+public final class PageBlobsUploadPagesHeaders {
     /**
      * The ETag contains a value that you can use to perform operations
      * conditionally. If the request version is 2011-08-18 or newer, the ETag
@@ -43,7 +43,7 @@ public final class PageBlobUploadPagesHeaders {
      * message content integrity.
      */
     @JsonProperty(value = "Content-MD5")
-    private String contentMD5;
+    private byte[] contentMD5;
 
     /**
      * The current sequence number for the page blob.
@@ -94,9 +94,9 @@ public final class PageBlobUploadPagesHeaders {
      * Set the eTag value.
      *
      * @param eTag the eTag value to set.
-     * @return the PageBlobUploadPagesHeaders object itself.
+     * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withETag(String eTag) {
+    public PageBlobsUploadPagesHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -117,9 +117,9 @@ public final class PageBlobUploadPagesHeaders {
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set.
-     * @return the PageBlobUploadPagesHeaders object itself.
+     * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobsUploadPagesHeaders withLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -133,7 +133,7 @@ public final class PageBlobUploadPagesHeaders {
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public byte[] contentMD5() {
         return this.contentMD5;
     }
 
@@ -141,9 +141,9 @@ public final class PageBlobUploadPagesHeaders {
      * Set the contentMD5 value.
      *
      * @param contentMD5 the contentMD5 value to set.
-     * @return the PageBlobUploadPagesHeaders object itself.
+     * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withContentMD5(String contentMD5) {
+    public PageBlobsUploadPagesHeaders withContentMD5(byte[] contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -161,9 +161,9 @@ public final class PageBlobUploadPagesHeaders {
      * Set the blobSequenceNumber value.
      *
      * @param blobSequenceNumber the blobSequenceNumber value to set.
-     * @return the PageBlobUploadPagesHeaders object itself.
+     * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withBlobSequenceNumber(Integer blobSequenceNumber) {
+    public PageBlobsUploadPagesHeaders withBlobSequenceNumber(Integer blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -181,9 +181,9 @@ public final class PageBlobUploadPagesHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the PageBlobUploadPagesHeaders object itself.
+     * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withRequestId(String requestId) {
+    public PageBlobsUploadPagesHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -201,9 +201,9 @@ public final class PageBlobUploadPagesHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the PageBlobUploadPagesHeaders object itself.
+     * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withVersion(String version) {
+    public PageBlobsUploadPagesHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -224,9 +224,9 @@ public final class PageBlobUploadPagesHeaders {
      * Set the dateProperty value.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the PageBlobUploadPagesHeaders object itself.
+     * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobsUploadPagesHeaders withDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -248,9 +248,9 @@ public final class PageBlobUploadPagesHeaders {
      * Set the isServerEncrypted value.
      *
      * @param isServerEncrypted the isServerEncrypted value to set.
-     * @return the PageBlobUploadPagesHeaders object itself.
+     * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobUploadPagesHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public PageBlobsUploadPagesHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }
