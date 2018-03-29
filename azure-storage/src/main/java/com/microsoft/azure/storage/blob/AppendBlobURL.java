@@ -102,7 +102,7 @@ public final class AppendBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<AppendBlobCreateResponse> create(
+    public Single<AppendBlobsCreateResponse> create(
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
@@ -133,7 +133,7 @@ public final class AppendBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<AppendBlobAppendBlockResponse> appendBlock(
+    public Single<AppendBlobsAppendBlockResponse> appendBlock(
             Flowable<ByteBuffer> data, long length, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 

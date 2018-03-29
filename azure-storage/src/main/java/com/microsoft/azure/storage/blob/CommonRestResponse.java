@@ -1,7 +1,7 @@
 package com.microsoft.azure.storage.blob;
 
-import com.microsoft.azure.storage.blob.models.BlockBlobCommitBlockListResponse;
-import com.microsoft.azure.storage.blob.models.BlockBlobUploadResponse;
+import com.microsoft.azure.storage.blob.models.BlockBlobsCommitBlockListResponse;
+import com.microsoft.azure.storage.blob.models.BlockBlobsUploadResponse;
 import com.microsoft.rest.v2.RestResponse;
 
 import java.time.OffsetDateTime;
@@ -13,17 +13,17 @@ import java.time.OffsetDateTime;
  */
 public final class CommonRestResponse {
 
-    private BlockBlobUploadResponse uploadBlobResponse;
+    private BlockBlobsUploadResponse uploadBlobResponse;
 
-    private BlockBlobCommitBlockListResponse commitBlockListResponse;
+    private BlockBlobsCommitBlockListResponse commitBlockListResponse;
 
-    static CommonRestResponse createFromPutBlobResponse(BlockBlobUploadResponse response) {
+    static CommonRestResponse createFromPutBlobResponse(BlockBlobsUploadResponse response) {
         CommonRestResponse commonRestResponse = new CommonRestResponse();
         commonRestResponse.uploadBlobResponse = response;
         return commonRestResponse;
     }
 
-    static CommonRestResponse createFromPutBlockListResponse(BlockBlobCommitBlockListResponse response) {
+    static CommonRestResponse createFromPutBlockListResponse(BlockBlobsCommitBlockListResponse response) {
         CommonRestResponse commonRestResponse = new CommonRestResponse();
         commonRestResponse.commitBlockListResponse = response;
         return commonRestResponse;

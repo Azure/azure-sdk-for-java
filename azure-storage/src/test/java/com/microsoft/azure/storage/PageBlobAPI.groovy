@@ -2,7 +2,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.PageBlobURL
-import com.microsoft.azure.storage.blob.models.PageBlobCreateResponse
+import com.microsoft.azure.storage.blob.models.PageBlobsCreateResponse
 import com.microsoft.azure.storage.blob.models.PageList
 import com.microsoft.azure.storage.blob.models.PageRange
 import com.microsoft.azure.storage.blob.models.PublicAccessType
@@ -22,7 +22,7 @@ class PageBlobAPI extends APISpec {
         bu = cu.createPageBlobURL(generateBlobName())
 
         when:
-        PageBlobCreateResponse response =
+        PageBlobsCreateResponse response =
         bu.create(512, null, null, null, null).blockingGet()
 
         then:

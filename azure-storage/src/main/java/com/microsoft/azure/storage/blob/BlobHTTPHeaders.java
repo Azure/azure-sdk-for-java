@@ -35,7 +35,7 @@ public final class BlobHTTPHeaders {
 
     private final String contentLanguage;
 
-    private final String contentMD5;
+    private final byte[] contentMD5;
 
     private final String contentType;
 
@@ -56,7 +56,7 @@ public final class BlobHTTPHeaders {
      *      The content-type value stored for the blob.
      */
     public BlobHTTPHeaders(String cacheControl, String contentDisposition, String contentEncoding,
-                           String contentLanguage, String contentMD5, String contentType) {
+                           String contentLanguage, byte[] contentMD5, String contentType) {
         this.cacheControl = cacheControl;
         this.contentDisposition = contentDisposition;
         this.contentEncoding = contentEncoding;
@@ -101,7 +101,7 @@ public final class BlobHTTPHeaders {
      * @return
      *      The content-MD5 value stored for the blob.
      */
-    public String getContentMD5() {
+    public byte[] getContentMD5() {
         return contentMD5;
     }
 

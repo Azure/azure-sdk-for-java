@@ -113,7 +113,7 @@ public final class BlockBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobUploadResponse> upload(
+    public Single<BlockBlobsUploadResponse> upload(
             Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
@@ -149,7 +149,7 @@ public final class BlockBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobStageBlockResponse> stageBlock(
+    public Single<BlockBlobsStageBlockResponse> stageBlock(
             String base64BlockID, Flowable<ByteBuffer> data, long length,
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
@@ -169,7 +169,7 @@ public final class BlockBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobGetBlockListResponse> getBlockList(
+    public Single<BlockBlobsGetBlockListResponse> getBlockList(
             BlockListType listType, LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
         return this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(listType,
@@ -197,7 +197,7 @@ public final class BlockBlobURL extends BlobURL {
      *      Emits the successful response.
      */
     // TODO: Add Content-Length to swagger once the modeler knows to hide (or whatever solution).
-    public Single<BlockBlobCommitBlockListResponse> commitBlockList(
+    public Single<BlockBlobsCommitBlockListResponse> commitBlockList(
             List<String> base64BlockIDs, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;

@@ -177,7 +177,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return this.storageClient.generatedContainers().deleteWithRestResponseAsync(null,
-                accessConditions.getLeaseID().getLeaseId(),
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 null);
@@ -226,7 +226,7 @@ public final class ContainerURL extends StorageURL {
 
 
         return this.storageClient.generatedContainers().setMetadataWithRestResponseAsync(null,
-                accessConditions.getLeaseID().getLeaseId(), metadata,
+                accessConditions.getLeaseAccessConditions().getLeaseId(), metadata,
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),null);
     }
 
@@ -272,7 +272,7 @@ public final class ContainerURL extends StorageURL {
 
         // TODO: validate that empty list clears permissions and null list does not change list. Document behavior.
         return this.storageClient.generatedContainers().setAccessPolicyWithRestResponseAsync(identifiers, null,
-                accessConditions.getLeaseID().getLeaseId(), accessType,
+                accessConditions.getLeaseAccessConditions().getLeaseId(), accessType,
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 null);
@@ -293,15 +293,15 @@ public final class ContainerURL extends StorageURL {
      * @param duration
      *      The duration of the lease, in seconds, or negative one (-1) for a lease that never expires.
      *      A non-infinite lease can be between 15 and 60 seconds.
-     * @param httpAccessConditions
+     * @param accessConditions
      *      {@link HTTPAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<ContainersAcquireLeaseResponse> acquireLease(
-            String proposedID, int duration, HTTPAccessConditions httpAccessConditions) {
-        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
-        if (!this.validateLeaseOperationAccessConditions(httpAccessConditions)){
+            String proposedID, int duration, ContainerAccessConditions accessConditions) {
+        accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
+        if (!this.validateLeaseOperationAccessConditions(accessConditions.getHttpAccessConditions())){
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException(
@@ -309,9 +309,9 @@ public final class ContainerURL extends StorageURL {
         }
 
         return this.storageClient.generatedContainers().acquireLeaseWithRestResponseAsync(
-                null, duration, proposedID,
-                httpAccessConditions.getIfModifiedSince(),
-                httpAccessConditions.getIfUnmodifiedSince(),
+                null, accessConditions.getLeaseAccessConditions().getLeaseId(), duration, proposedID,
+                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
+                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 null);
     }
 
