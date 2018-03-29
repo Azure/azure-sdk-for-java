@@ -20,22 +20,22 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-cryptography</artifactId>
-    <version>1.0.0</version>
+    <version>1.1-beta-1</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-extensions</artifactId>
-    <version>1.0.0</version>
+    <version>1.1-beta-1</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-core</artifactId>
-    <version>1.0.0</version>
+    <version>1.1-beta-1</version>
 </dependency>
 <dependency>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-keyvault-webkey</artifactId>
-    <version>1.0.0</version>
+    <version>1.1-beta-1</version>
 </dependency>
 ```
 
