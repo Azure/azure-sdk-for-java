@@ -4,23 +4,36 @@ import com.microsoft.azure.storage.blob.BlobAccessConditions
 import com.microsoft.azure.storage.blob.BlobHTTPHeaders
 import com.microsoft.azure.storage.blob.BlobRange
 import com.microsoft.azure.storage.blob.BlobURL
-
+import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.models.AccessTier
 import com.microsoft.azure.storage.blob.models.BlobType
+import com.microsoft.azure.storage.blob.models.BlobsAbortCopyFromURLHeaders
+import com.microsoft.azure.storage.blob.models.BlobsAbortCopyFromURLResponse
 import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobsBreakLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobsBreakLeaseResponse
+import com.microsoft.azure.storage.blob.models.BlobsChangeLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobsCreateSnapshotHeaders
+import com.microsoft.azure.storage.blob.models.BlobsCreateSnapshotResponse
+import com.microsoft.azure.storage.blob.models.BlobsDeleteHeaders
+import com.microsoft.azure.storage.blob.models.BlobsDeleteResponse
 import com.microsoft.azure.storage.blob.models.BlobsDownloadHeaders
 import com.microsoft.azure.storage.blob.models.BlobsDownloadResponse
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.BlobsReleaseLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobsRenewLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobsSetHTTPHeadersHeaders
 import com.microsoft.azure.storage.blob.models.BlobsSetHTTPHeadersResponse
 import com.microsoft.azure.storage.blob.models.BlobsSetMetadataHeaders
 import com.microsoft.azure.storage.blob.models.BlobsSetMetadataResponse
+import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLHeaders
+import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLResponse
 import com.microsoft.azure.storage.blob.models.CopyStatusType
+import com.microsoft.azure.storage.blob.models.DeleteSnapshotsOptionType
 import com.microsoft.azure.storage.blob.models.LeaseDurationType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.azure.storage.blob.models.LeaseStatusType
@@ -281,14 +294,9 @@ class BlobAPI extends APISpec {
             metadata.put(key2, value2)
         }
 
-        int initialCode = bu.setMetadata(metadata, null).blockingGet().statusCode()
-        Map<String, String> receivedMetadata = bu.getProperties(null).blockingGet().headers()
-                .metadata()
-
         expect:
-        initialCode == statusCode
-        receivedMetadata.get(key1).equals(value1)
-        receivedMetadata.get(key2).equals(value2)
+        bu.setMetadata(metadata, null).blockingGet().statusCode() == statusCode
+        bu.getProperties(null).blockingGet().headers().metadata() == metadata
 
         where:
         key1  | value1 | key2   | value2 || statusCode
@@ -409,11 +417,16 @@ class BlobAPI extends APISpec {
         String leaseID =
                 bu.acquireLease(UUID.randomUUID().toString(), 15, null).blockingGet()
                         .headers().leaseId()
-        bu.releaseLease(leaseID, null).blockingGet()
+        BlobsReleaseLeaseHeaders headers = bu.releaseLease(leaseID, null).blockingGet().headers()
 
         expect:
         bu.getProperties(null).blockingGet().headers().leaseState()
                 .equals(LeaseStateType.AVAILABLE)
+        headers.eTag() != null
+        headers.lastModified() != null
+        headers.requestId() != null
+        headers.version() != null
+        headers.dateProperty() != null
     }
 
     @Unroll
@@ -435,16 +448,48 @@ class BlobAPI extends APISpec {
         null     | null       | null         | garbageEtag
     }
 
+    @Unroll
     def "Blob break lease"() {
         setup:
-        bu.acquireLease(UUID.randomUUID().toString(), -1, null).blockingGet()
+        bu.acquireLease(UUID.randomUUID().toString(), leaseTime, null).blockingGet()
 
-        bu.breakLease(null, null).blockingGet()
+        BlobsBreakLeaseHeaders headers = bu.breakLease(breakPeriod, null).blockingGet().headers()
+        LeaseStateType state = bu.getProperties(null).blockingGet().headers().leaseState()
 
         expect:
-        bu.getProperties(null).blockingGet().headers().leaseState()
-                .equals(LeaseStateType.BROKEN)
+        state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
+        headers.eTag() != null
+        headers.lastModified() != null
+        headers.leaseTime() <= remainingTime
+        headers.requestId() != null
+        headers.version() != null
+        headers.dateProperty() != null
 
+        where:
+        leaseTime | breakPeriod | remainingTime
+        -1        | null        | 0
+        -1        | 20          | 25
+        20        | 15          | 16
+
+    }
+
+    @Unroll
+    def "Blob break lease AC"() {
+        setup:
+        match = setupMatchCondition(bu, match)
+        String leaseID = setupLeaseCondition(bu, receivedLeaseID)
+        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        expect:
+        bu.breakLease(null, hac).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     def "Blob change lease"() {
@@ -452,38 +497,200 @@ class BlobAPI extends APISpec {
         String leaseID =
                 bu.acquireLease(UUID.randomUUID().toString(), 15, null).blockingGet()
                         .headers().leaseId()
-        leaseID = bu.changeLease(leaseID, UUID.randomUUID().toString(), null).blockingGet()
-                .headers().leaseId()
+        BlobsChangeLeaseHeaders headers = bu.changeLease(leaseID, UUID.randomUUID().toString(), null)
+                .blockingGet().headers()
+        leaseID = headers.leaseId()
 
         expect:
         bu.releaseLease(leaseID, null).blockingGet().statusCode() == 200
+        headers.eTag() != null
+        headers.lastModified() != null
+        headers.requestId() != null
+        headers.version() != null
+        headers.dateProperty() != null
+    }
+
+    @Unroll
+    def "Blob change lease AC"() {
+        setup:
+        match = setupMatchCondition(bu, match)
+        String leaseID = setupLeaseCondition(bu, receivedLeaseID)
+        HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
+
+        expect:
+        bu.changeLease(leaseID, UUID.randomUUID().toString(), hac).blockingGet().statusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch
+        null     | null       | null         | null
+        oldDate  | null       | null         | null
+        null     | newDate    | null         | null
+        null     | null       | receivedEtag | null
+        null     | null       | null         | garbageEtag
     }
 
     def "Blob snapshot"() {
         when:
-        String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
+        BlobsCreateSnapshotHeaders headers = bu.createSnapshot(null, null)
+                .blockingGet().headers()
 
         then:
-        bu.withSnapshot(snapshot).getProperties(null).blockingGet().statusCode() == 200
+        bu.withSnapshot(headers.snapshot()).getProperties(null).blockingGet().statusCode() == 200
+        headers.eTag() != null
+        headers.lastModified() != null
+        headers.requestId() != null
+        headers.version() != null
+        headers.dateProperty() != null
+    }
+
+    @Unroll
+    def "Blob snapshot metadata"() {
+        setup:
+        Metadata metadata = new Metadata()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        BlobsCreateSnapshotResponse response = bu.createSnapshot(metadata, null).blockingGet()
+
+        expect:
+        response.statusCode() == 201
+        bu.withSnapshot(response.headers().snapshot())
+                .getProperties(null).blockingGet().headers().metadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 200
+        "foo" | "bar"  | "fizz" | "buzz" || 200
+        // TODO: Support: null  | "bar"  | null   | null   || 200?
+    }
+
+    @Unroll
+    def "Blob snapshot AC"() {
+        setup:
+        match = setupMatchCondition(bu, match)
+        leaseID = setupLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        expect:
+        bu.createSnapshot(null, bac).blockingGet().statusCode() == 201
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
     }
 
     def "Blob copy"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
-        bu2.startCopyFromURL(bu.toURL(), null, null, null).blockingGet()
+        BlobsStartCopyFromURLHeaders headers =
+                bu2.startCopyFromURL(bu.toURL(), null, null, null)
+                        .blockingGet().headers()
 
         when:
         CopyStatusType status = bu2.getProperties(null).blockingGet().headers().copyStatus()
 
         then:
-        status.equals(CopyStatusType.SUCCESS) || status.equals(CopyStatusType.PENDING)
+        status == CopyStatusType.SUCCESS || status == CopyStatusType.PENDING
+        headers.eTag() != null
+        headers.lastModified() != null
+        headers.requestId() != null
+        headers.version() != null
+        headers.dateProperty() != null
+        headers.copyId() != null
+    }
 
+    @Unroll
+    def "Blob copy metadata"() {
+        setup:
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        Metadata metadata = new Metadata()
+        if (key1 != null && value1 != null) {
+            metadata.put(key1, value1)
+        }
+        if (key2 != null && value2 != null) {
+            metadata.put(key2, value2)
+        }
+
+        BlobsStartCopyFromURLResponse response =
+                bu2.startCopyFromURL(bu.toURL(), metadata, null, null)
+                        .blockingGet()
+        waitForCopy(bu2, response)
+
+        expect:
+        bu2.getProperties(null).blockingGet().headers().metadata() == metadata
+
+        where:
+        key1  | value1 | key2   | value2 || statusCode
+        null  | null   | null   | null   || 200
+        "foo" | "bar"  | "fizz" | "buzz" || 200
+    }
+
+    @Unroll
+    def "Blob copy source AC"() {
+        setup:
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        match = setupMatchCondition(bu, match)
+        leaseID = setupLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        expect:
+        bu2.startCopyFromURL(bu.toURL(), null, bac, null).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
+    }
+
+    @Unroll
+    def "Blob copy dest AC"() {
+        setup:
+        BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
+                .blockingGet()
+        match = setupMatchCondition(bu2, match)
+        leaseID = setupLeaseCondition(bu2, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
+        expect:
+        bu2.startCopyFromURL(bu.toURL(), null, null, bac).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
     }
 
     def "Blob abort copy"() {
         setup:
+        // Data has to be large enough and copied between accounts to give us enough time to abort
         ByteBuffer data = getRandomData(8 * 1024 * 1024)
-        bu.toBlockBlobURL().upload(Flowable.just(data), 8 * 1024 * 1024, null, null, null)
+        bu.toBlockBlobURL()
+                .upload(Flowable.just(data), 8 * 1024 * 1024, null, null, null)
+                .blockingGet()
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
 
@@ -492,15 +699,99 @@ class BlobAPI extends APISpec {
         BlobURL bu2 = cu2.createBlobURL(generateBlobName())
 
         when:
-        String copyID = bu2.startCopyFromURL(bu.toURL(), null, null, null)
-                .blockingGet().headers().copyId()
+        String copyID =
+                bu2.startCopyFromURL(bu.toURL(), null, null, null)
+                        .blockingGet().headers().copyId()
+        BlobsAbortCopyFromURLResponse response = bu2.abortCopyFromURL(copyID, null).blockingGet()
+        BlobsAbortCopyFromURLHeaders headers = response.headers()
 
         then:
-        bu2.abortCopyFromURL(copyID, null).blockingGet().statusCode() == 204
+        response.statusCode() == 204
+        headers.requestId() != null
+        headers.version() != null
+        headers.dateProperty() != null
+    }
+
+    def "Blob abort copy lease"() {
+        setup:
+        // Data has to be large enough and copied between accounts to give us enough time to abort
+        ByteBuffer data = getRandomData(8 * 1024 * 1024)
+        bu.toBlockBlobURL()
+                .upload(Flowable.just(data), 8 * 1024 * 1024, null, null, null)
+                .blockingGet()
+        // So we don't have to create a SAS.
+        cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
+
+        ContainerURL cu2 = alternateServiceURL.createContainerURL(generateBlobName())
+        cu2.create(null, null).blockingGet()
+        BlockBlobURL bu2 = cu2.createBlockBlobURL(generateBlobName())
+        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
+                .blockingGet()
+        String leaseID = setupLeaseCondition(bu2, receivedLeaseID)
+
+        when:
+        String copyID =
+                bu2.startCopyFromURL(bu.toURL(), null, null,
+                        new BlobAccessConditions(null, new LeaseAccessConditions(leaseID),
+                                null, null))
+                        .blockingGet().headers().copyId()
+
+        then:
+        bu2.abortCopyFromURL(copyID, new LeaseAccessConditions(leaseID)).blockingGet().statusCode() == 204
     }
 
     def "Blob delete"() {
+        when:
+        BlobsDeleteResponse response = bu.delete(null, null).blockingGet()
+        BlobsDeleteHeaders headers = response.headers()
+
+        then:
+        response.statusCode() == 202
+        headers.requestId() != null
+        headers.version() != null
+        headers.dateProperty() != null
+    }
+
+    @Unroll
+    def "Blob delete options"() {
+        setup:
+        bu.createSnapshot(null, null).blockingGet()
+        // Create an extra blob so the list isn't empty (null) when we delete base blob, too
+        BlockBlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
+        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
+                .blockingGet()
+
+        when:
+        bu.delete(option, null).blockingGet()
+
+        then:
+        cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob().size() == blobsRemaining
+
+        where:
+        option                            | blobsRemaining
+        DeleteSnapshotsOptionType.INCLUDE | 1
+        DeleteSnapshotsOptionType.ONLY    | 2
+    }
+
+    @Unroll
+    def "Blob delete AC"()  {
+        setup:
+        match = setupMatchCondition(bu, match)
+        leaseID = setupLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null, null)
+
         expect:
-        bu.delete(null, null).blockingGet().statusCode() == 202
+        bu.delete(DeleteSnapshotsOptionType.INCLUDE, bac).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
     }
 }

@@ -143,7 +143,7 @@ public class BlobURL extends StorageURL {
             BlobAccessConditions destAccessConditions) {
         metadata = metadata == null ? Metadata.NONE : metadata;
         sourceAccessConditions = sourceAccessConditions == null ? BlobAccessConditions.NONE : sourceAccessConditions;
-        destAccessConditions = destAccessConditions == null ? BlobAccessConditions.NONE : sourceAccessConditions;
+        destAccessConditions = destAccessConditions == null ? BlobAccessConditions.NONE : destAccessConditions;
 
         return this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
                 sourceURL, null, metadata,
@@ -155,8 +155,8 @@ public class BlobURL extends StorageURL {
                 destAccessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 destAccessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 destAccessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                sourceAccessConditions.getLeaseAccessConditions().getLeaseId(),
                 destAccessConditions.getLeaseAccessConditions().getLeaseId(),
+                sourceAccessConditions.getLeaseAccessConditions().getLeaseId(),
                 null);
     }
 

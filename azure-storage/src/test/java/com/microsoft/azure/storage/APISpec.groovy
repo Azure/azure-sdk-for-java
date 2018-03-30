@@ -19,7 +19,9 @@ import com.microsoft.azure.storage.blob.SharedKeyCredentials
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLResponse
 import com.microsoft.azure.storage.blob.models.Container
+import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
@@ -322,6 +324,20 @@ class APISpec extends Specification {
         }
         else {
             return leaseID
+        }
+    }
+
+    def waitForCopy(BlobURL bu, BlobsStartCopyFromURLResponse response) {
+        CopyStatusType status = response.headers().copyStatus()
+
+        OffsetDateTime start = OffsetDateTime.now()
+        while (status != CopyStatusType.SUCCESS) {
+            status = bu.getProperties(null).blockingGet().headers().copyStatus()
+            OffsetDateTime currentTime = OffsetDateTime.now()
+            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
+                throw new Exception("Copy failed or took too long")
+            }
+            sleep(1000)
         }
     }
 }
