@@ -34,9 +34,6 @@ class AppendBlobAPI extends APISpec {
     }
 
     def "Append blob create defaults"() {
-        setup:
-        bu = cu.createAppendBlobURL(generateBlobName())
-
         when:
         AppendBlobsCreateResponse createResponse =
                 bu.create(null, null, null).blockingGet()
@@ -45,7 +42,7 @@ class AppendBlobAPI extends APISpec {
         createResponse.statusCode() == 201
         createResponse.headers().eTag() != null
         createResponse.headers().lastModified() != null
-        createResponse.headers().contentMD5() != null
+        createResponse.headers().contentMD5() == null
         createResponse.headers().requestId() != null
         createResponse.headers().version() != null
         createResponse.headers().dateProperty() != null
@@ -55,7 +52,6 @@ class AppendBlobAPI extends APISpec {
     @Unroll
     def "Append blob create headers"() {
         setup:
-        bu = cu.createAppendBlobURL(generateBlobName())
         BlobHTTPHeaders headers = new BlobHTTPHeaders(cacheControl, contentDisposition, contentEncoding,
                 contentLanguage, contentMD5, contentType)
 
@@ -64,7 +60,6 @@ class AppendBlobAPI extends APISpec {
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
-        response.statusCode() == 200
         response.headers().cacheControl() == cacheControl
         response.headers().contentDisposition() == contentDisposition
         response.headers().contentEncoding() == contentEncoding
@@ -82,7 +77,6 @@ class AppendBlobAPI extends APISpec {
     @Unroll
     def "Append blob create metadata"() {
         setup:
-        bu = cu.createAppendBlobURL(generateBlobName())
         Metadata metadata = new Metadata()
         if (key1 != null) {
             metadata.put(key1, value1)
@@ -134,7 +128,7 @@ class AppendBlobAPI extends APISpec {
         setup:
         AppendBlobsAppendBlockHeaders headers =
                 bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet().headers()
+                        .blockingGet().headers()
 
         expect:
         FlowableUtil.collectBytesInBuffer(bu.download(null, null, false)
