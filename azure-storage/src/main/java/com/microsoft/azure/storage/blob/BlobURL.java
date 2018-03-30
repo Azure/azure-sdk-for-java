@@ -356,14 +356,14 @@ public class BlobURL extends StorageURL {
      * @param duration
      *      The  duration of the lease, in seconds, or negative one (-1) for a lease that
      *      never expires. A non-infinite lease can be between 15 and 60 seconds.
-     * @param accessConditions
+     * @param httpAccessConditions
      *      {@link HTTPAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<BlobsAcquireLeaseResponse> acquireLease(
-            String proposedID, int duration, BlobAccessConditions accessConditions) {
-        accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
+            String proposedID, int duration, HTTPAccessConditions httpAccessConditions) {
+        httpAccessConditions = httpAccessConditions == null ? HTTPAccessConditions.NONE : httpAccessConditions;
         if (!(duration == -1 || (duration >= 15 && duration <=60))) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
@@ -371,12 +371,11 @@ public class BlobURL extends StorageURL {
         }
 
         return this.storageClient.generatedBlobs().acquireLeaseWithRestResponseAsync(
-                null, accessConditions.getLeaseAccessConditions().getLeaseId(),
-                duration, proposedID,
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
+                null, duration, proposedID,
+                httpAccessConditions.getIfModifiedSince(),
+                httpAccessConditions.getIfUnmodifiedSince(),
+                httpAccessConditions.getIfMatch().toString(),
+                httpAccessConditions.getIfNoneMatch().toString(),
                 null);
     }
 

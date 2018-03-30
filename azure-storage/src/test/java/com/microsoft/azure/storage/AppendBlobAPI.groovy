@@ -7,8 +7,10 @@ import com.microsoft.azure.storage.blob.ETag
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
+import com.microsoft.azure.storage.blob.models.AppendBlobsAppendBlockHeaders
 import com.microsoft.azure.storage.blob.models.AppendBlobsCreateResponse
 import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobsDownloadResponse
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
 import com.microsoft.rest.v2.RestException
@@ -42,10 +44,12 @@ class AppendBlobAPI extends APISpec {
         then:
         createResponse.statusCode() == 201
         createResponse.headers().eTag() != null
-        createResponse.headers().dateProperty() != null
         createResponse.headers().lastModified() != null
+        createResponse.headers().contentMD5() != null
         createResponse.headers().requestId() != null
         createResponse.headers().version() != null
+        createResponse.headers().dateProperty() != null
+        createResponse.headers().serverEncrypted != null
     }
 
     @Unroll
@@ -128,29 +132,36 @@ class AppendBlobAPI extends APISpec {
     @Unroll
     def "Append blob append block defaults"() {
         setup:
-        int statusCode
-        ByteBuffer receivedData = null
-        try {
-            statusCode = bu.appendBlock(Flowable.just(inputData), dataSize, null)
-                    .blockingGet().statusCode()
-            receivedData = FlowableUtil.collectBytesInBuffer(
-                    bu.download(null, null, false)
-                            .blockingGet().body()).blockingGet()
-        }
-        catch (TimeoutException | RestException e) {
-            statusCode = -1
-        }
+        AppendBlobsAppendBlockHeaders headers =
+                bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), null)
+                .blockingGet().headers()
 
         expect:
-        statusCode == expectedCode || receivedData == expectedData
-
-        where:
-        inputData   | dataSize                    | expectedData                                       || expectedCode
-        defaultData | defaultData.remaining()     | defaultData                                        || 201
-        defaultData | defaultData.remaining() + 1 | defaultData                                        || -1
-        defaultData | 2                           | ByteBuffer.wrap(defaultText.substring(0, 3).bytes) || -1
-
+        FlowableUtil.collectBytesInBuffer(bu.download(null, null, false)
+                .blockingGet().body()).blockingGet().compareTo(defaultData) == 0
+        headers.eTag() != null
+        headers.lastModified() != null
+        headers.contentMD5() != null
+        headers.requestId() != null
+        headers.version() != null
+        headers.dateProperty() != null
+        headers.blobAppendOffset() != null
+        headers.blobCommittedBlockCount() != null
     }
+    /*
+    TODO: Negative cases
+    defaultData | defaultData.remaining() + 1 | defaultData                                        || -1
+    defaultData | 2                           | ByteBuffer.wrap(defaultText.substring(0, 3).bytes) || -1/*
+    try{
+        statusCode = bu.appendBlock(Flowable.just(inputData), dataSize, null)
+                    .blockingGet().statusCode()
+       }
+    catch (TimeoutException | RestException e) {
+            statusCode = -1
+        }
+        statusCode == expectedCode || receivedData == expectedData
+     */
+
 
     @Unroll
     def "Append blob append block AC"() {
