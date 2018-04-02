@@ -211,7 +211,7 @@ class ContainerAPI extends APISpec {
 
         then:
         blobs.size() == 1
-        blobs.get(0).name().equals(name)
+        blobs.get(0).name() == name
     }
 
     def "container list blobs hierarchy"() {
@@ -231,9 +231,9 @@ class ContainerAPI extends APISpec {
 
         then:
         blobs.size() == 1
-        blobs.get(0).name().equals(name1)
+        blobs.get(0).name() == name1
 
         prefixes.size() == 1
-        prefixes.get(0).name().equals(name2)
+        prefixes.get(0).name() == name2
     }
 }

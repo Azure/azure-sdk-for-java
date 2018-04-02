@@ -159,7 +159,7 @@ class BlobAPI extends APISpec {
         headers.copyProgress() == null
         headers.copySource() == null
         headers.copyStatus() == null
-        headers.incrementalCopy == null
+        headers.isIncrementalCopy() == null
         headers.destinationSnapshot() == null
         headers.leaseDuration() == null
         headers.leaseState() == LeaseStateType.AVAILABLE
@@ -274,6 +274,7 @@ class BlobAPI extends APISpec {
         BlobsSetMetadataHeaders headers = response.headers()
 
         expect:
+        bu.getProperties(null).blockingGet().headers().metadata().size() == 0
         response.statusCode() == 200
         headers.eTag() != null
         headers.lastModified() != null
