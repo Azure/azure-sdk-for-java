@@ -429,12 +429,8 @@ class BlobAPI extends APISpec {
 
         expect:
         state == LeaseStateType.BROKEN || state == LeaseStateType.BREAKING
-        headers.eTag() != null
-        headers.lastModified() != null
         headers.leaseTime() <= remainingTime
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
+        validateBasicHeaders(headers)
 
         where:
         leaseTime | breakPeriod | remainingTime
@@ -474,11 +470,7 @@ class BlobAPI extends APISpec {
 
         expect:
         bu.releaseLease(leaseID, null).blockingGet().statusCode() == 200
-        headers.eTag() != null
-        headers.lastModified() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
+        validateBasicHeaders(headers)
     }
 
     @Unroll
@@ -507,11 +499,7 @@ class BlobAPI extends APISpec {
 
         then:
         bu.withSnapshot(headers.snapshot()).getProperties(null).blockingGet().statusCode() == 200
-        headers.eTag() != null
-        headers.lastModified() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
+        validateBasicHeaders(headers)
     }
 
     @Unroll
@@ -573,11 +561,7 @@ class BlobAPI extends APISpec {
 
         then:
         status == CopyStatusType.SUCCESS || status == CopyStatusType.PENDING
-        headers.eTag() != null
-        headers.lastModified() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
+        validateBasicHeaders(headers)
         headers.copyId() != null
     }
 

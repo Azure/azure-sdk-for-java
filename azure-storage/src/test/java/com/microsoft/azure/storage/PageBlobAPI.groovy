@@ -10,6 +10,7 @@ import com.microsoft.azure.storage.blob.PageBlobAccessConditions
 import com.microsoft.azure.storage.blob.PageBlobURL
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.PageBlobsClearPagesHeaders
+import com.microsoft.azure.storage.blob.models.PageBlobsCopyIncrementalHeaders
 import com.microsoft.azure.storage.blob.models.PageBlobsCreateResponse
 import com.microsoft.azure.storage.blob.models.PageBlobsGetPageRangesDiffHeaders
 import com.microsoft.azure.storage.blob.models.PageBlobsGetPageRangesDiffResponse
@@ -46,12 +47,8 @@ class PageBlobAPI extends APISpec {
 
         then:
         response.statusCode() == 201
-        response.headers().eTag() != null
-        response.headers().dateProperty() != null
+        validateBasicHeaders(response.headers())
         response.headers().contentMD5() == null
-        response.headers().lastModified() != null
-        response.headers().requestId() != null
-        response.headers().version() != null
         response.headers().isServerEncrypted()
     }
 
@@ -144,13 +141,9 @@ class PageBlobAPI extends APISpec {
 
         then:
         response.statusCode() == 201
-        headers.eTag() != null
-        headers.lastModified() != null
+        validateBasicHeaders(headers)
         headers.contentMD5() != null
         headers.blobSequenceNumber() == 0
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
         headers.isServerEncrypted()
     }
 
@@ -193,13 +186,9 @@ class PageBlobAPI extends APISpec {
 
         then:
         bu.getPageRanges(null, null).blockingGet().body().pageRange().size() == 0
-        headers.eTag() != null
-        headers.lastModified() != null
+        validateBasicHeaders(headers)
         headers.contentMD5() == null
         headers.blobSequenceNumber() == 0
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
         headers.isServerEncrypted() == null
     }
 
@@ -244,12 +233,8 @@ class PageBlobAPI extends APISpec {
         then:
         response.statusCode() == 200
         response.body().pageRange().size() == 1
-        headers.lastModified() != null
-        headers.eTag() != null
+        validateBasicHeaders(headers)
         headers.blobContentLength() == 512
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
     }
 
     @Unroll
@@ -291,12 +276,8 @@ class PageBlobAPI extends APISpec {
 
         then:
         response.body().pageRange().size() == 1
-        headers.lastModified() != null
-        headers.eTag() != null
+        validateBasicHeaders(headers)
         headers.blobContentLength() == 512
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
     }
 
     @Unroll
@@ -329,24 +310,76 @@ class PageBlobAPI extends APISpec {
     def "Page blob resize"() {
         setup:
         PageBlobsResizeHeaders headers = bu.resize(1024, null).blockingGet().headers()
-        
+
         expect:
         bu.getProperties(null).blockingGet().headers().contentLength() == 1024
         validateBasicHeaders(headers)
-        headers.eTag() != null
-        headers.lastModified() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
         headers.blobSequenceNumber() != null
+    }
+
+    @Unroll
+    def "Page blob resize AC"() {
+        setup:
+        match = setupMatchCondition(bu, match)
+        leaseID = setupLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null,
+                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+
+        expect:
+        bu.resize(1024, bac).blockingGet().statusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null     | null       | null         | null        | null            | null             | null              | null
+        oldDate  | null       | null         | null        | null            | null             | null              | null
+        null     | newDate    | null         | null        | null            | null             | null              | null
+        null     | null       | receivedEtag | null        | null            | null             | null              | null
+        null     | null       | null         | garbageEtag | null            | null             | null              | null
+        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
+        null     | null       | null         | null        | null            | 5                | null              | null
+        null     | null       | null         | null        | null            | null             | 3                 | null
+        null     | null       | null         | null        | null            | null             | null              | 0
     }
 
     def "Page blob sequence number"() {
         setup:
-        bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 5, null).blockingGet()
+        PageBlobsUpdateSequenceNumberHeaders headers =
+                bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 5, null)
+                        .blockingGet().headers()
 
         expect:
         bu.getProperties(null).blockingGet().headers().blobSequenceNumber() == 5
+        validateBasicHeaders(headers)
+        headers.blobSequenceNumber() == 0
+    }
+
+    @Unroll
+    def "Page blob sequence number AC"() {
+        setup:
+        match = setupMatchCondition(bu, match)
+        leaseID = setupLeaseCondition(bu, leaseID)
+        BlobAccessConditions bac = new BlobAccessConditions(
+                new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
+                null,
+                new PageBlobAccessConditions(sequenceNumberLT, sequenceNumberLTE, sequenceNumberEqual))
+
+        expect:
+        bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 1, bac).blockingGet()
+                .statusCode() == 200
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null     | null       | null         | null        | null            | null             | null              | null
+        oldDate  | null       | null         | null        | null            | null             | null              | null
+        null     | newDate    | null         | null        | null            | null             | null              | null
+        null     | null       | receivedEtag | null        | null            | null             | null              | null
+        null     | null       | null         | garbageEtag | null            | null             | null              | null
+        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
+        null     | null       | null         | null        | null            | 5                | null              | null
+        null     | null       | null         | null        | null            | null             | 3                 | null
+        null     | null       | null         | null        | null            | null             | null              | 0
     }
 
     def "Page blob start incremental copy"() {
@@ -354,10 +387,36 @@ class PageBlobAPI extends APISpec {
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
         PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet()
+        PageBlobsCopyIncrementalHeaders headers = bu2.copyIncremental(bu.toURL(), snapshot, null)
+                .blockingGet().headers()
 
         expect:
         bu2.getProperties(null).blockingGet().headers().isIncrementalCopy()
+        validateBasicHeaders(headers)
+        headers.copyId() != null
+        headers.copyStatus() != null
+    }
 
+    @Unroll
+    def "Page blob start incremental copy AC"() {
+        setup:
+        cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
+        PageBlobURL bu2 = cu.createPageBlobURL(generateBlobName())
+        String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
+
+        expect:
+        bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet().statusCode() == 202
+
+        where:
+        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null     | null       | null         | null        | null            | null             | null              | null
+        oldDate  | null       | null         | null        | null            | null             | null              | null
+        null     | newDate    | null         | null        | null            | null             | null              | null
+        null     | null       | receivedEtag | null        | null            | null             | null              | null
+        null     | null       | null         | garbageEtag | null            | null             | null              | null
+        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
+        null     | null       | null         | null        | null            | 5                | null              | null
+        null     | null       | null         | null        | null            | null             | 3                 | null
+        null     | null       | null         | null        | null            | null             | null              | 0
     }
 }

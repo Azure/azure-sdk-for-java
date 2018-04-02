@@ -70,12 +70,8 @@ class BlockBlobAPI extends APISpec {
 
         then:
         response.statusCode() == 201
-        headers.eTag()
-        headers.lastModified()
+        validateBasicHeaders(headers)
         headers.contentMD5()
-        headers.requestId()
-        headers.version()
-        headers.dateProperty()
         headers.isServerEncrypted()
     }
 
@@ -179,13 +175,9 @@ class BlockBlobAPI extends APISpec {
 
         then:
         response.body().uncommittedBlocks().get(0).name().equals(blockID)
-        response.headers().lastModified() != null
-        response.headers().eTag() != null
+        validateBasicHeaders(response.headers())
         response.headers().contentType() != null
         response.headers().blobContentLength() == (long) defaultText.length()
-        response.headers().requestId() != null
-        response.headers().version() != null
-        response.headers().dateProperty() != null
     }
 
     @Unroll
@@ -236,12 +228,8 @@ class BlockBlobAPI extends APISpec {
         FlowableUtil.collectBytesInBuffer(
                 bu.download(null, null, false).blockingGet().body())
                 .blockingGet() == defaultData
-        headers.eTag() != null
-        headers.lastModified() != null
+        validateBasicHeaders(headers)
         headers.contentMD5() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
         headers.isServerEncrypted()
     }
 
