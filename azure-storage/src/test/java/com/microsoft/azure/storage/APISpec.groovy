@@ -30,6 +30,7 @@ import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
 
+import java.lang.invoke.MethodHandleImpl
 import java.nio.ByteBuffer
 import java.time.OffsetDateTime
 
@@ -339,5 +340,15 @@ class APISpec extends Specification {
             }
             sleep(1000)
         }
+    }
+
+    def validateBasicHeaders(Object headers) {
+        return headers.class.getMethod("eTag").invoke(headers) != null &&
+                headers.class.getMethod("lastModified").invoke(headers) != null &&
+                headers.class.getMethod("requestId").invoke(headers) != null &&
+                headers.class.getMethod("version").invoke(headers) != null &&
+                headers.class.getMethod("dateProperty").invoke(headers) != null
+
+
     }
 }

@@ -162,7 +162,7 @@ public final class PageBlobURL extends BlobURL {
             // subscription.
             new IllegalArgumentException("pageRange cannot be null.");
         }
-        String pageRangeStr = this.pageRangeToString(pageRange);
+        String pageRangeStr = pageRangeToString(pageRange);
 
         return this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
                  body, pageRange.end()-pageRange.start()+1,null, pageRangeStr,
@@ -198,7 +198,7 @@ public final class PageBlobURL extends BlobURL {
             // subscription.
             throw new IllegalArgumentException("pageRange cannot be null.");
         }
-        String pageRangeStr = this.pageRangeToString(pageRange);
+        String pageRangeStr = pageRangeToString(pageRange);
 
          return this.storageClient.generatedPageBlobs().clearPagesWithRestResponseAsync(
                  0,null, pageRangeStr,
@@ -375,7 +375,7 @@ public final class PageBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null);
     }
 
-    private String pageRangeToString(PageRange pageRange) {
+    private static String pageRangeToString(PageRange pageRange) {
         if (pageRange.start() < 0 || pageRange.end() <= 0) {
             throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to " +
                     "0 if specified.");

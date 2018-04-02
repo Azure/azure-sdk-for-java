@@ -63,13 +63,12 @@ class BlobAPI extends APISpec {
         BlobsDownloadHeaders headers = response.headers()
 
         then:
+        validateBasicHeaders(headers)
         body == defaultData
-        headers.lastModified() != null
         headers.metadata().isEmpty()
         headers.contentLength() != null
         headers.contentType() != null
         headers.contentRange() != null
-        headers.eTag() != null
         headers.contentMD5() == null
         headers.contentEncoding() == null
         headers.cacheControl() == null
@@ -86,10 +85,7 @@ class BlobAPI extends APISpec {
         headers.leaseDuration() == null
         headers.leaseState() == LeaseStateType.AVAILABLE
         headers.leaseStatus() == LeaseStatusType.UNLOCKED
-        headers.requestId() != null
-        headers.version() != null
         headers.acceptRanges() == "bytes"
-        headers.dateProperty() != null
         headers.blobCommittedBlockCount() == null
         headers.serverEncrypted
         headers.blobContentMD5() != null
@@ -150,7 +146,7 @@ class BlobAPI extends APISpec {
         BlobsGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
 
         then:
-        headers.lastModified() != null
+        validateBasicHeaders(headers)
         headers.metadata().isEmpty()
         headers.blobType() == BlobType.BLOCK_BLOB
         headers.copyCompletionTime() == null
@@ -166,16 +162,12 @@ class BlobAPI extends APISpec {
         headers.leaseStatus() == LeaseStatusType.UNLOCKED
         headers.contentLength() != null
         headers.contentType() != null
-        headers.eTag() != null
         headers.contentMD5() != null
         headers.contentEncoding() == null
         headers.contentDisposition() == null
         headers.contentLanguage() == null
         headers.cacheControl() == null
         headers.blobSequenceNumber() == null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
         headers.acceptRanges() == "bytes"
         headers.blobCommittedBlockCount() == null
         headers.isServerEncrypted()
@@ -210,16 +202,11 @@ class BlobAPI extends APISpec {
     def "Blob set HTTP headers null"() {
         setup:
         BlobsSetHTTPHeadersResponse response = bu.setHTTPHeaders(null, null).blockingGet()
-        BlobsSetHTTPHeadersHeaders headers = response.headers()
 
         expect:
         response.statusCode() == 200
-        headers.eTag() != null
-        headers.lastModified() != null
-        headers.blobSequenceNumber() == null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
+        validateBasicHeaders(headers)
+        response.headers().blobSequenceNumber() == null
     }
 
     @Unroll
@@ -271,17 +258,12 @@ class BlobAPI extends APISpec {
     def "Blob set metadata all null"() {
         setup:
         BlobsSetMetadataResponse response = bu.setMetadata(null, null).blockingGet()
-        BlobsSetMetadataHeaders headers = response.headers()
 
         expect:
         bu.getProperties(null).blockingGet().headers().metadata().size() == 0
         response.statusCode() == 200
-        headers.eTag() != null
-        headers.lastModified() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
-        headers.isServerEncrypted()
+        validateBasicHeaders(response.headers())
+        response.headers().isServerEncrypted()
     }
 
     @Unroll
@@ -342,12 +324,8 @@ class BlobAPI extends APISpec {
         then:
         properties.leaseState() == LeaseStateType.LEASED
         properties.leaseDuration() == LeaseDurationType.INFINITE
-        headers.eTag() != null
-        headers.lastModified() != null
         headers.leaseId() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
+        validateBasicHeaders(headers)
 
         where:
         proposedID                   | leaseTime || leaseState            | leaseDuration
@@ -386,12 +364,8 @@ class BlobAPI extends APISpec {
         expect:
         bu.getProperties(null).blockingGet().headers().leaseState()
                 .equals(LeaseStateType.LEASED)
-        headers.eTag() != null
-        headers.lastModified() != null
+        validateBasicHeaders(headers)
         headers.leaseId() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
     }
 
     @Unroll
@@ -423,11 +397,7 @@ class BlobAPI extends APISpec {
         expect:
         bu.getProperties(null).blockingGet().headers().leaseState()
                 .equals(LeaseStateType.AVAILABLE)
-        headers.eTag() != null
-        headers.lastModified() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
+        validateBasicHeaders(headers)
     }
 
     @Unroll

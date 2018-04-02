@@ -1,29 +1,20 @@
 package com.microsoft.azure.storage
 
+import com.microsoft.azure.storage.blob.AppendBlobAccessConditions
 import com.microsoft.azure.storage.blob.AppendBlobURL
 import com.microsoft.azure.storage.blob.BlobAccessConditions
 import com.microsoft.azure.storage.blob.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.ETag
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.models.AppendBlobsAppendBlockHeaders
 import com.microsoft.azure.storage.blob.models.AppendBlobsCreateResponse
-import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobsDownloadResponse
-import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
-import com.microsoft.rest.v2.RestException
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
-import io.reactivex.SingleSource
-import io.reactivex.annotations.NonNull
-import io.reactivex.functions.Function
 import spock.lang.Unroll
 
-import java.nio.ByteBuffer
 import java.security.MessageDigest
-import java.util.concurrent.TimeoutException
 
 class AppendBlobAPI extends APISpec {
     AppendBlobURL bu
@@ -40,13 +31,9 @@ class AppendBlobAPI extends APISpec {
 
         then:
         createResponse.statusCode() == 201
-        createResponse.headers().eTag() != null
-        createResponse.headers().lastModified() != null
+        validateBasicHeaders(createResponse.headers())
         createResponse.headers().contentMD5() == null
-        createResponse.headers().requestId() != null
-        createResponse.headers().version() != null
-        createResponse.headers().dateProperty() != null
-        createResponse.headers().serverEncrypted != null
+        createResponse.headers().isServerEncrypted()
     }
 
     @Unroll
@@ -122,8 +109,6 @@ class AppendBlobAPI extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-
-    @Unroll
     def "Append blob append block defaults"() {
         setup:
         AppendBlobsAppendBlockHeaders headers =
@@ -133,17 +118,13 @@ class AppendBlobAPI extends APISpec {
         expect:
         FlowableUtil.collectBytesInBuffer(bu.download(null, null, false)
                 .blockingGet().body()).blockingGet().compareTo(defaultData) == 0
-        headers.eTag() != null
-        headers.lastModified() != null
+        validateBasicHeaders(headers)
         headers.contentMD5() != null
-        headers.requestId() != null
-        headers.version() != null
-        headers.dateProperty() != null
         headers.blobAppendOffset() != null
         headers.blobCommittedBlockCount() != null
     }
     /*
-    TODO: Negative cases
+    TODO: Negative cases where data size does not equal the passed value for length
     defaultData | defaultData.remaining() + 1 | defaultData                                        || -1
     defaultData | 2                           | ByteBuffer.wrap(defaultText.substring(0, 3).bytes) || -1/*
     try{
@@ -164,13 +145,13 @@ class AppendBlobAPI extends APISpec {
         leaseID = setupLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
-                null, null)
+                new AppendBlobAccessConditions(appendPosE, maxSizeLTE), null)
 
         expect:
         bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), bac).blockingGet().statusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | appendPosLTE
+        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
         null     | null       | null         | null        | null            | null       | null
         oldDate  | null       | null         | null        | null            | null       | null
         null     | newDate    | null         | null        | null            | null       | null
@@ -178,6 +159,6 @@ class AppendBlobAPI extends APISpec {
         null     | null       | null         | garbageEtag | null            | null       | null
         null     | null       | null         | null        | receivedLeaseID | null       | null
         null     | null       | null         | null        | null            | 0          | null
-        null     | null       | null         | null        | null            | null       | 0
+        null     | null       | null         | null        | null            | null       | 100
     }
 }
