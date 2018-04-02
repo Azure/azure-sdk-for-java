@@ -115,8 +115,15 @@ import io.reactivex.netty.channel.RxEventLoopProvider;
 import io.reactivex.netty.channel.SingleNioLoopProvider;
 import io.reactivex.netty.client.RxClient;
 import io.reactivex.netty.pipeline.ssl.SSLEngineFactory;
+import io.reactivex.netty.pipeline.PipelineConfigurator;
+import io.reactivex.netty.pipeline.PipelineConfiguratorComposite;
+import io.reactivex.netty.protocol.http.HttpObjectAggregationConfigurator;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
+import io.reactivex.netty.protocol.http.client.HttpClientPipelineConfigurator;
+import io.reactivex.netty.protocol.http.client.HttpClientRequest;
+import io.reactivex.netty.protocol.http.client.HttpClientResponse;
+
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
@@ -231,11 +238,20 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         CompositeHttpClientBuilder<ByteBuf, ByteBuf> builder = new CompositeHttpClientBuilder<ByteBuf, ByteBuf>()
                 .withSslEngineFactory(new DefaultSSLEngineFactory())
                 .withMaxConnections(connectionPolicy.getMaxPoolSize())
-                .withIdleConnectionsTimeoutMillis(this.connectionPolicy.getIdleConnectionTimeoutInMillis());
+                .withIdleConnectionsTimeoutMillis(this.connectionPolicy.getIdleConnectionTimeoutInMillis())
+                .pipelineConfigurator(createClientPipelineConfigurator());
 
         RxClient.ClientConfig config = new RxClient.ClientConfig.Builder()
                 .readTimeout(connectionPolicy.getRequestTimeoutInMillis(), TimeUnit.MILLISECONDS).build();
         return builder.config(config);
+    }
+
+    private PipelineConfigurator createClientPipelineConfigurator() {
+        PipelineConfigurator clientPipelineConfigurator = new PipelineConfiguratorComposite<HttpClientResponse<ByteBuf>,
+                HttpClientRequest<ByteBuf>>(new HttpClientPipelineConfigurator<ByteBuf, ByteBuf>
+                (8192, 32768, 8182, true ),
+                new HttpObjectAggregationConfigurator());
+        return clientPipelineConfigurator;
     }
 
     @Override
