@@ -2,6 +2,10 @@
   <img src="service-bus.png" alt="Microsoft Azure Relay" width="100"/>
 </p>
 
+|Build/Package|Status|
+|------|-------------|
+|master|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-servicebus/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-servicebus)|
+
 # Microsoft Azure Service Bus Client for Java
 
 This is the next generation Service Bus Java client library that focuses on Queues & Topics. If you are looking for Event Hubs, follow this [link](https://github.com/azure/azure-event-hubs-java).
