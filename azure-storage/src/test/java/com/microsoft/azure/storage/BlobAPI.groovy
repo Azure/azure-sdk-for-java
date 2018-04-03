@@ -15,7 +15,6 @@ import com.microsoft.azure.storage.blob.models.BlobsAbortCopyFromURLHeaders
 import com.microsoft.azure.storage.blob.models.BlobsAbortCopyFromURLResponse
 import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobsBreakLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobsBreakLeaseResponse
 import com.microsoft.azure.storage.blob.models.BlobsChangeLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobsCreateSnapshotHeaders
 import com.microsoft.azure.storage.blob.models.BlobsCreateSnapshotResponse
@@ -26,9 +25,7 @@ import com.microsoft.azure.storage.blob.models.BlobsDownloadResponse
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.BlobsReleaseLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobsRenewLeaseHeaders
-import com.microsoft.azure.storage.blob.models.BlobsSetHTTPHeadersHeaders
 import com.microsoft.azure.storage.blob.models.BlobsSetHTTPHeadersResponse
-import com.microsoft.azure.storage.blob.models.BlobsSetMetadataHeaders
 import com.microsoft.azure.storage.blob.models.BlobsSetMetadataResponse
 import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLHeaders
 import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLResponse
@@ -116,8 +113,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob download AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -180,8 +177,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob get properties AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -236,8 +233,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob set HTTP headers AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -292,8 +289,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob set metadata AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -314,7 +311,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob acquire lease"() {
         setup:
-        BlobsAcquireLeaseHeaders headers = bu.acquireLease(UUID.randomUUID().toString(), -1, null)
+        BlobsAcquireLeaseHeaders headers =
+                bu.acquireLease(UUID.randomUUID().toString(), leaseTime, null)
                 .blockingGet().headers()
 
         when:
@@ -322,8 +320,8 @@ class BlobAPI extends APISpec {
                 .headers()
 
         then:
-        properties.leaseState() == LeaseStateType.LEASED
-        properties.leaseDuration() == LeaseDurationType.INFINITE
+        properties.leaseState() == leaseState
+        properties.leaseDuration() == leaseDuration
         headers.leaseId() != null
         validateBasicHeaders(headers)
 
@@ -338,7 +336,7 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob acquire lease AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
+        match = setupBlobMatchCondition(bu, match)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
@@ -355,9 +353,8 @@ class BlobAPI extends APISpec {
 
     def "Blob renew lease"() {
         setup:
-        String leaseID =
-                bu.acquireLease(UUID.randomUUID().toString(), 15, null).blockingGet()
-                        .headers().leaseId()
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
         Thread.sleep(16000) // Wait for the lease to expire to ensure we are actually renewing it
         BlobsRenewLeaseHeaders headers = bu.renewLease(leaseID, null).blockingGet().headers()
 
@@ -371,8 +368,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob renew lease AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        String leaseID = setupLeaseCondition(bu, receivedLeaseID)
+        match = setupBlobMatchCondition(bu, match)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
@@ -389,22 +386,20 @@ class BlobAPI extends APISpec {
 
     def "Blob release lease"() {
         setup:
-        String leaseID =
-                bu.acquireLease(UUID.randomUUID().toString(), 15, null).blockingGet()
-                        .headers().leaseId()
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+
         BlobsReleaseLeaseHeaders headers = bu.releaseLease(leaseID, null).blockingGet().headers()
 
         expect:
-        bu.getProperties(null).blockingGet().headers().leaseState()
-                .equals(LeaseStateType.AVAILABLE)
+        bu.getProperties(null).blockingGet().headers().leaseState() == LeaseStateType.AVAILABLE
         validateBasicHeaders(headers)
     }
 
     @Unroll
     def "Blob release leaseAC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        String leaseID = setupLeaseCondition(bu, receivedLeaseID)
+        match = setupBlobMatchCondition(bu, match)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
@@ -443,8 +438,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob break lease AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        String leaseID = setupLeaseCondition(bu, receivedLeaseID)
+        match = setupBlobMatchCondition(bu, match)
+        setupBlobLeaseCondition(bu, receivedLeaseID)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
@@ -476,8 +471,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob change lease AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        String leaseID = setupLeaseCondition(bu, receivedLeaseID)
+        match = setupBlobMatchCondition(bu, match)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
@@ -530,8 +525,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob snapshot AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -595,8 +590,8 @@ class BlobAPI extends APISpec {
     def "Blob copy source AC"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -620,8 +615,8 @@ class BlobAPI extends APISpec {
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
         bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
                 .blockingGet()
-        match = setupMatchCondition(bu2, match)
-        leaseID = setupLeaseCondition(bu2, leaseID)
+        match = setupBlobMatchCondition(bu2, match)
+        leaseID = setupBlobLeaseCondition(bu2, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -682,7 +677,7 @@ class BlobAPI extends APISpec {
         BlockBlobURL bu2 = cu2.createBlockBlobURL(generateBlobName())
         bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
                 .blockingGet()
-        String leaseID = setupLeaseCondition(bu2, receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
 
         when:
         String copyID =
@@ -731,8 +726,8 @@ class BlobAPI extends APISpec {
     @Unroll
     def "Blob delete AC"()  {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)

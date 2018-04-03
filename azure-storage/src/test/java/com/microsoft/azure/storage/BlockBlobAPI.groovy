@@ -47,7 +47,7 @@ class BlockBlobAPI extends APISpec {
 
     def "Block blob stage block lease"() {
         setup:
-        String leaseID = setupLeaseCondition(bu, receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         expect:
         BlockBlobsStageBlockResponse response = bu.stageBlock(new String(Base64.encoder.encode("0000".bytes)),
@@ -144,8 +144,8 @@ class BlockBlobAPI extends APISpec {
                 .blockingGet()
         ArrayList<String> ids = new ArrayList<>()
         ids.add(blockID)
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -211,7 +211,7 @@ class BlockBlobAPI extends APISpec {
         String blockID = new String(Base64.encoder.encode("0000".bytes))
         bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null)
                 .blockingGet()
-        String leaseID = setupLeaseCondition(bu, receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         expect:
         bu.getBlockList(BlockListType.ALL, new LeaseAccessConditions(leaseID)).blockingGet().statusCode() == 200
@@ -289,8 +289,8 @@ class BlockBlobAPI extends APISpec {
     @Unroll
     def "Block blob upload AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)

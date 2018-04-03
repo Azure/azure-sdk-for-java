@@ -21,6 +21,8 @@ import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLResponse
 import com.microsoft.azure.storage.blob.models.Container
+import com.microsoft.azure.storage.blob.models.ContainersAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainersGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.rest.v2.http.HttpClient
@@ -168,6 +170,7 @@ class APISpec extends Specification {
         }
         else {
             suffix = System.currentTimeMillis()
+            sleep(1) // In case we are generating multiple names quickly
         }
         return prefix + getTestName(specificationContext) + suffix
     }
@@ -307,7 +310,7 @@ class APISpec extends Specification {
         iterationNo = updateIterationNo(specificationContext, iterationNo)
     }
 
-    def setupMatchCondition(BlobURL bu, ETag match) {
+    def setupBlobMatchCondition(BlobURL bu, ETag match) {
         if(match == receivedEtag) {
             BlobsGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
             return new ETag(headers.eTag())
@@ -317,11 +320,32 @@ class APISpec extends Specification {
         }
     }
 
-    def setupLeaseCondition(BlobURL bu, String leaseID) {
-        if (leaseID != null && leaseID == receivedLeaseID) {
-            BlobsAcquireLeaseHeaders headers2 =
+    def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
+        if (leaseID == receivedLeaseID) {
+            BlobsAcquireLeaseHeaders headers =
                     bu.acquireLease(null, -1, null).blockingGet().headers()
-            return headers2.leaseId()
+            return headers.leaseId()
+        }
+        else {
+            return leaseID
+        }
+    }
+
+    def setupContainerMatchCondition(ContainerURL cu, ETag match) {
+        if(match == receivedEtag) {
+            ContainersGetPropertiesHeaders headers = cu.getProperties(null).blockingGet().headers()
+            return new ETag(headers.eTag())
+        }
+        else {
+            return match
+        }
+    }
+
+    def setupContainerLeaseCondition(ContainerURL cu, String leaseID) {
+        if (leaseID == receivedLeaseID) {
+            ContainersAcquireLeaseHeaders headers =
+                    cu.acquireLease(null, -1, null).blockingGet().headers()
+            return headers.leaseId()
         }
         else {
             return leaseID

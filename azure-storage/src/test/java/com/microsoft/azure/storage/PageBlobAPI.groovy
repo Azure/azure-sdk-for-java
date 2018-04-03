@@ -20,7 +20,6 @@ import com.microsoft.azure.storage.blob.models.PageBlobsResizeHeaders
 import com.microsoft.azure.storage.blob.models.PageBlobsUpdateSequenceNumberHeaders
 import com.microsoft.azure.storage.blob.models.PageBlobsUploadPagesHeaders
 import com.microsoft.azure.storage.blob.models.PageBlobsUploadPagesResponse
-import com.microsoft.azure.storage.blob.models.PageList
 import com.microsoft.azure.storage.blob.models.PageRange
 import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.azure.storage.blob.models.SequenceNumberActionType
@@ -113,8 +112,8 @@ class PageBlobAPI extends APISpec {
     @Unroll
     def "Page blob create AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -150,8 +149,8 @@ class PageBlobAPI extends APISpec {
     @Unroll
     def "Page blob upload page AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null,
@@ -197,8 +196,8 @@ class PageBlobAPI extends APISpec {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
                 Flowable.just(getRandomData(512)), null).blockingGet()
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null,
@@ -240,8 +239,8 @@ class PageBlobAPI extends APISpec {
     @Unroll
     def "Page blob get page ranges AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null,
@@ -284,8 +283,8 @@ class PageBlobAPI extends APISpec {
     def "Page blob get page ranges diff AC"() {
         setup:
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null,
@@ -320,8 +319,8 @@ class PageBlobAPI extends APISpec {
     @Unroll
     def "Page blob resize AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null,
@@ -358,8 +357,8 @@ class PageBlobAPI extends APISpec {
     @Unroll
     def "Page blob sequence number AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null,

@@ -77,7 +77,6 @@ class AppendBlobAPI extends APISpec {
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
-        response.statusCode() == 200
         response.headers().metadata() == metadata
 
         where:
@@ -89,8 +88,8 @@ class AppendBlobAPI extends APISpec {
     @Unroll
     def "Append blob create AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 null, null)
@@ -141,8 +140,8 @@ class AppendBlobAPI extends APISpec {
     @Unroll
     def "Append blob append block AC"() {
         setup:
-        match = setupMatchCondition(bu, match)
-        leaseID = setupLeaseCondition(bu, leaseID)
+        match = setupBlobMatchCondition(bu, match)
+        leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, match, noneMatch), new LeaseAccessConditions(leaseID),
                 new AppendBlobAccessConditions(appendPosE, maxSizeLTE), null)

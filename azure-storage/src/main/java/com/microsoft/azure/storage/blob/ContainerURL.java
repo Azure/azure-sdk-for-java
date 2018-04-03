@@ -441,8 +441,8 @@ public final class ContainerURL extends StorageURL {
      *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
-     *      This value is returned in the response of a previous list operation. Set to null if this is the first
-     *      segment.
+     *      This value is returned in the response of a previous list operation as the ListBlobsFlatSegmentResponse->
+     *      body()->nextMarker(). Set to null to list the first segment.
      * @param options
      *      {@link ListBlobsOptions}
      * @return
