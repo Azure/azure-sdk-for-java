@@ -1,5 +1,8 @@
 package com.microsoft.azure.storage
 
+import com.microsoft.azure.storage.blob.AppendBlobURL
+import com.microsoft.azure.storage.blob.BlobURL
+import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.ContainerAccessConditions
 import com.microsoft.azure.storage.blob.ETag
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
@@ -15,6 +18,7 @@ import com.microsoft.azure.storage.blob.models.ContainersGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.ListBlobsResponse
 import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.rest.v2.RestException
+import io.reactivex.Flowable
 import spock.lang.*
 
 class ContainerAPI extends APISpec {
@@ -235,5 +239,38 @@ class ContainerAPI extends APISpec {
 
         prefixes.size() == 1
         prefixes.get(0).name().equals(name2)
+    }
+
+    @Unroll
+    def "Container create URL special chars"() {
+        setup:
+        AppendBlobURL bu2 = cu.createAppendBlobURL(name)
+        PageBlobURL bu3 = cu.createPageBlobURL(name+"2")
+        BlockBlobURL bu4 = cu.createBlockBlobURL(name+"3")
+        BlobURL bu5 = cu.createBlockBlobURL(name)
+
+        expect:
+        bu2.create(null, null, null).blockingGet().statusCode() == 201
+        bu5.getProperties(null).blockingGet().statusCode() == 200
+        bu3.create(512, null, null, null, null).blockingGet()
+                .statusCode() == 201
+        bu4.upload(Flowable.just(defaultData), defaultData.remaining(),
+                null, null, null).blockingGet().statusCode() == 201
+
+        when:
+        List<Blob> blobs = cu.listBlobsFlatSegment(null, null).blockingGet().body().blobs().blob()
+
+        then:
+        blobs.get(0).name() == name
+        blobs.get(1).name() == name+"2"
+        blobs.get(2).name() == name+"3"
+
+        where:
+        name          | _
+        "中文"          | _
+        "az[]"        | _
+        "hello world" | _
+        "hello/world" | _
+        "hello&world" | _
     }
 }

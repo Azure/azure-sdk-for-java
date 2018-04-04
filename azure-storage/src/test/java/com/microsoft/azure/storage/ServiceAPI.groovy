@@ -2,6 +2,7 @@ package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.ListContainersOptions
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
+import spock.lang.Unroll
 
 class ServiceAPI extends APISpec {
     StorageServiceProperties originalProps = primaryServiceURL.getProperties().blockingGet().body()
@@ -9,6 +10,7 @@ class ServiceAPI extends APISpec {
     def cleanup() {
         primaryServiceURL.setProperties(originalProps).blockingGet()
     }
+
     def "Service list containers"() {
         expect:
         primaryServiceURL.listContainersSegment(null, new ListContainersOptions(null,

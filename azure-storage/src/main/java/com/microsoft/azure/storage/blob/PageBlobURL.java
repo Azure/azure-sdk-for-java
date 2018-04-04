@@ -318,7 +318,7 @@ public final class PageBlobURL extends BlobURL {
      */
     public Single<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(
             SequenceNumberActionType action, Long sequenceNumber, BlobAccessConditions accessConditions) {
-        if (sequenceNumber == null || sequenceNumber < 0) {
+        if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
             throw new IllegalArgumentException("SequenceNumber must be greater than or equal to 0.");

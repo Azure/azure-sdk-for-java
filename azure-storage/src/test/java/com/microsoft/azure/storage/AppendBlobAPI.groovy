@@ -3,6 +3,7 @@ package com.microsoft.azure.storage
 import com.microsoft.azure.storage.blob.AppendBlobURL
 import com.microsoft.azure.storage.blob.models.AppendBlobsCreateResponse
 import io.reactivex.Flowable
+import spock.lang.Unroll
 
 class AppendBlobAPI extends APISpec {
     AppendBlobURL bu

@@ -109,7 +109,7 @@ public final class BlobURLParts {
             // The commas are intentionally encoded.
             try {
                 url.setQueryParameter(entry.getKey(), URLEncoder.encode(
-                        Utility.join(entry.getValue(), ','), Constants.UTF8_CHARSET));
+                        String.join(",", entry.getValue()), Constants.UTF8_CHARSET));
             }
             catch (UnsupportedEncodingException e) {
                 throw new Error(e); // If UTF-8 encoding is not supported, we give up.

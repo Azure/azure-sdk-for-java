@@ -138,7 +138,7 @@ public final class ServiceSASSignatureValues {
         }
 
         // Signature is generated on the un-url-encoded values.
-         String stringToSign = Utility.join(new String[]{
+         String stringToSign = String.join("\n", new String[]{
                  verifiedPermissions,
                  this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
                  this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
@@ -152,7 +152,7 @@ public final class ServiceSASSignatureValues {
                  this.contentEncoding,
                  this.contentLanguage,
                  this.contentType
-         }, '\n');
+         });
 
         String signature = null;
         try {

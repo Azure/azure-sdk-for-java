@@ -106,7 +106,7 @@ public final class AccountSASSignatureValues {
         }
 
         // Signature is generated on the un-url-encoded values.
-        String stringToSign = Utility.join(new String[]{
+        String stringToSign = String.join("\n", new String[]{
                 sharedKeyCredentials.getAccountName(),
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
@@ -117,7 +117,7 @@ public final class AccountSASSignatureValues {
                 this.protocol.toString(),
                 this.version,
                 Constants.EMPTY_STRING // Account SAS requires an additional newline character
-        }, '\n');
+        });
 
         String signature;
         try {
