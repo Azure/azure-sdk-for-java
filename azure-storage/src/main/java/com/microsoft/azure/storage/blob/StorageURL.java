@@ -112,6 +112,9 @@ public abstract class StorageURL {
             throw new IllegalArgumentException(
                     "Credentials cannot be null. For anonymous access use Anonymous Credentials.");
         }
+        if (pipelineOptions == null) {
+            throw new IllegalArgumentException("pipelineOptions cannot be null. You must at least specify a client.");
+        }
 
         // Closest to API goes first, closest to wire goes last.
         ArrayList<RequestPolicyFactory> factories = new ArrayList<>();

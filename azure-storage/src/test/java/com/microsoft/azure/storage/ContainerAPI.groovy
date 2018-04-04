@@ -277,7 +277,7 @@ class ContainerAPI extends APISpec {
         ContainerAccessConditions cac = new ContainerAccessConditions(
                 new HTTPAccessConditions(modified, unmodified, null, null),
                 new LeaseAccessConditions(leaseID))
-        
+
         expect:
         cu.delete(cac).blockingGet().statusCode() == 202
 
