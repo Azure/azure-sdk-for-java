@@ -121,7 +121,7 @@ public final class ServiceSASSignatureValues {
      * @return
      *      {@link SASQueryParameters}
      */
-    public SASQueryParameters GenerateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
+    public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
         if (sharedKeyCredentials == null) {
             throw new IllegalArgumentException("SharedKeyCredentials cannot be null.");
         }
@@ -144,8 +144,8 @@ public final class ServiceSASSignatureValues {
                  this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                  getCanonicalName(sharedKeyCredentials.getAccountName()),
                  this.identifier,
-                 this.ipRange.toString(),
-                 this.protocol.toString(),
+                 this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
+                 this.protocol == null ? "" : ipRange.toString(),
                  this.version,
                  this.cacheControl,
                  this.contentDisposition,
