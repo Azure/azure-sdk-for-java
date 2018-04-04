@@ -85,7 +85,7 @@ class ContainerAPI extends APISpec {
     }
 
     @Unroll
-    def "Container get properties AC"(){
+    def "Container get properties AC"() {
         setup:
         ContainersAcquireLeaseHeaders headers =
                 cu.acquireLease(UUID.randomUUID().toString(), -1, null)
@@ -124,8 +124,8 @@ class ContainerAPI extends APISpec {
         cu.setMetadata(metadata, null).blockingGet().statusCode() == statusCode
 
         where:
-        key1    | value1     | key2     | value2    || statusCode
-        "foo"   | "bar"      | "fizz"   | "buzz"    || 200
+        key1  | value1 | key2   | value2 || statusCode
+        "foo" | "bar"  | "fizz" | "buzz" || 200
         //TODO: invalid characters. empty metadata
     }
 
@@ -174,7 +174,7 @@ class ContainerAPI extends APISpec {
 
         int code = 0
         boolean foundErrorMessage = false
-        try{
+        try {
             code = cu.delete(cac).blockingGet().statusCode()
         }
         catch (RestException e) {
@@ -204,6 +204,7 @@ class ContainerAPI extends APISpec {
         null     | null       | null         | null        | garbageLeaseID  || 412        | false
         null     | null       | null         | null        | receivedLeaseID || 202        | false
     }
+
     def "Container list blobs flat"() {
         setup:
         String name = generateBlobName()
@@ -245,8 +246,8 @@ class ContainerAPI extends APISpec {
     def "Container create URL special chars"() {
         setup:
         AppendBlobURL bu2 = cu.createAppendBlobURL(name)
-        PageBlobURL bu3 = cu.createPageBlobURL(name+"2")
-        BlockBlobURL bu4 = cu.createBlockBlobURL(name+"3")
+        PageBlobURL bu3 = cu.createPageBlobURL(name + "2")
+        BlockBlobURL bu4 = cu.createBlockBlobURL(name + "3")
         BlobURL bu5 = cu.createBlockBlobURL(name)
 
         expect:
@@ -262,15 +263,16 @@ class ContainerAPI extends APISpec {
 
         then:
         blobs.get(0).name() == name
-        blobs.get(1).name() == name+"2"
-        blobs.get(2).name() == name+"3"
+        blobs.get(1).name() == name + "2"
+        blobs.get(2).name() == name + "3"
 
         where:
-        name          | _
-        "中文"          | _
-        "az[]"        | _
-        "hello world" | _
-        "hello/world" | _
-        "hello&world" | _
+        name                  | _
+        "中文"                  | _
+        "az[]"                | _
+        "hello world"         | _
+        "hello/world"         | _
+        "hello&world"         | _
+        "!*'();:@&=+\$,/?#[]" | _
     }
 }
