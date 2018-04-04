@@ -351,7 +351,7 @@ class PageBlobAPI extends APISpec {
         expect:
         bu.getProperties(null).blockingGet().headers().blobSequenceNumber() == 5
         validateBasicHeaders(headers)
-        headers.blobSequenceNumber() == 0
+        headers.blobSequenceNumber() == 5.toString()
     }
 
     @Unroll

@@ -431,7 +431,7 @@ class ContainerAPI extends APISpec {
 
         when:
         ContainersListBlobHierarchySegmentResponse response =
-                cu.listBlobsHierarchySegment(null, null, null)
+                cu.listBlobsHierarchySegment(null, "/", null)
                 .blockingGet()
         ContainersListBlobHierarchySegmentHeaders headers = response.headers()
         List<Blob> blobs = response.body().blobs().blob()
@@ -523,7 +523,7 @@ class ContainerAPI extends APISpec {
         true  | false    | true        | null   | 2
     }
 
-    def "List blobs hier delim"() {
+    def "Container list blobs hier delim"() {
         setup:
         AppendBlobURL blob = cu.createAppendBlobURL("a")
         blob.create(null, null, null).blockingGet()
@@ -541,6 +541,26 @@ class ContainerAPI extends APISpec {
         response.body().blobs().blobPrefix().get(0).name() == "b/"
         response.body().blobs().blob().size() == 1
         response.body().blobs().blob().get(0).name() == "a"
+    }
+
+    def "Container list blobs hier marker"() {
+        setup:
+        for (int i=0; i<10; i++) {
+            PageBlobURL bu = cu.createPageBlobURL(generateBlobName())
+            bu.create(512, null, null, null, null).blockingGet()
+        }
+
+        ContainersListBlobHierarchySegmentResponse response = cu.listBlobsHierarchySegment(null, "/",
+                new ListBlobsOptions(null, null, 6))
+                .blockingGet()
+        String marker = response.body().nextMarker()
+        int firstSegmentSize = response.body().blobs().blob().size()
+        response = cu.listBlobsHierarchySegment(marker, "/", null).blockingGet()
+
+        expect:
+        firstSegmentSize == 6
+        response.body().nextMarker() == null
+        response.body().blobs().blob().size() == 4
     }
 
     @Unroll

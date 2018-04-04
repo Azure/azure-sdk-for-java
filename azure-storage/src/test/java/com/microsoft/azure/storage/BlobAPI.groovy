@@ -202,7 +202,7 @@ class BlobAPI extends APISpec {
 
         expect:
         response.statusCode() == 200
-        validateBasicHeaders(headers)
+        validateBasicHeaders(response.headers())
         response.headers().blobSequenceNumber() == null
     }
 

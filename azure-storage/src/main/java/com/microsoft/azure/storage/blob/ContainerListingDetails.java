@@ -36,7 +36,7 @@ public final class ContainerListingDetails {
      * @param metadata
      *      Whether metadata should be returned.
      */
-    ContainerListingDetails(boolean metadata) {
+    public ContainerListingDetails(boolean metadata) {
         this.metadata = metadata;
     }
 
