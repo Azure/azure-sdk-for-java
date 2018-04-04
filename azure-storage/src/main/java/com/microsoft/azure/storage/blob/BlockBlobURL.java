@@ -103,7 +103,8 @@ public final class BlockBlobURL extends BlobURL {
      * @param data
      *      The data to write to the blob.
      * @param length
-     *      The total length of the data.
+     *      The exact length of the data. It is important that this value match precisely the length of the data
+     *      emitted by the {@code Flowable}.
      * @param headers
      *      {@link BlobHTTPHeaders}
      * @param metadata
@@ -119,7 +120,8 @@ public final class BlockBlobURL extends BlobURL {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        // TODO: Metadata protocol layer broken.
+
+        //TODO: runtime flowable wrapper that throws an error if the size doesn't match the data
         return this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
                 data, length, null, headers.getContentType(), headers.getContentEncoding(),
                 headers.getContentLanguage(), headers.getContentMD5(), headers.getCacheControl(), metadata,
@@ -143,7 +145,8 @@ public final class BlockBlobURL extends BlobURL {
      * @param data
      *      The data to write to the block.
      * @param length
-     *      The total length of the data.
+     *      The exact length of the data. It is important that this value match precisely the length of the data
+     *      emitted by the {@code Flowable}.
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
      * @return

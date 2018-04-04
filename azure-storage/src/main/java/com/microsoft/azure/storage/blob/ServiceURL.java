@@ -106,14 +106,15 @@ public final class ServiceURL extends StorageURL {
     /**
      * Sets properties for a storage account's Blob service endpoint. For more information, see the
      * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/set-blob-service-properties">Azure Docs</a>.
+     * Note that setting the default service version has no effect when using this client because this client explicitly
+     * sets the version header on each request, overriding the default.
      *
      * @param properties
      *      Configures the service.
      * @return
      *      Emits the successful response.
      */
-    public Single<ServiceSetPropertiesResponse> setProperties(
-            StorageServiceProperties properties) {
+    public Single<ServiceSetPropertiesResponse> setProperties(StorageServiceProperties properties) {
         return this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(properties, null,
                 null);
     }
@@ -130,6 +131,4 @@ public final class ServiceURL extends StorageURL {
     public Single<ServiceGetStatisticsResponse> getStatistics() {
         return this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(null, null);
     }
-
-    // TODO: Preflight request
 }
