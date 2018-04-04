@@ -16,7 +16,8 @@ package com.microsoft.azure.storage.blob;
 
 /**
  * Defines options available to configure the behavior of a call to listContainersSegment on a {@link ServiceURL}
- * object. See the constructor for details on each of the options.
+ * object. See the constructor for details on each of the options. Null may be passed in place of an object of this
+ * type if no options are desirable.
  */
 public final class ListContainersOptions {
 

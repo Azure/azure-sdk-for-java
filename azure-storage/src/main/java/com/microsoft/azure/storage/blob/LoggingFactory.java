@@ -41,7 +41,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
      * requests and responses.
      *
      * @param loggingOptions
-     *      The configurations for this factory.
+     *      The configurations for this factory. Null will indicate use of the default options.
      */
     public LoggingFactory(LoggingOptions loggingOptions) {
         this.loggingOptions = loggingOptions == null ? LoggingOptions.DEFAULT : loggingOptions;
