@@ -14,12 +14,12 @@
  */
 package com.microsoft.azure.storage.blob;
 
-import java.io.UnsupportedEncodingException;
 import java.net.Inet4Address;
-import java.net.URLEncoder;
 import java.net.UnknownHostException;
 import java.time.OffsetDateTime;
 import java.util.Map;
+
+import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
 
 /**
  * Represents the components that make up an Azure Storage SAS' query parameters. This type is not constructed directly
@@ -321,12 +321,7 @@ public final class SASQueryParameters {
              else {
                  sb.append('&');
              }
-             try {
-                 sb.append(URLEncoder.encode(param, Constants.UTF8_CHARSET))
-                         .append('=').append(URLEncoder.encode(value.toString(), Constants.UTF8_CHARSET));
-             } catch (UnsupportedEncodingException e) {
-                 throw new Error(e); // If we can't encode with UTF-8, we fail.
-             }
+             sb.append(safeURLEncode(param)).append('=').append(safeURLEncode(value.toString()));
          }
     }
     /**
