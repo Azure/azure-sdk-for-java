@@ -12,9 +12,11 @@ public final class MessageHandlerOptions {
     private static final boolean DEFAULT_AUTO_COMPLETE = true;
     private static final int DEFAULT_MAX_CONCURRENT_CALLS = 1;
     private static final int DEFAULT_MAX_RENEW_TIME_MINUTES = 5;
+    private static final int DEFAULT_MESSAGE_WAIT_TIME_MINUTES = 1;
 
     private boolean autoComplete;
     private Duration maxAutoRenewDuration;
+    private Duration messageWaitDuration;
     private int maxConcurrentCalls;
 
     /**
@@ -35,9 +37,22 @@ public final class MessageHandlerOptions {
      * @param maxAutoRenewDuration - Maximum duration within which the client keeps renewing the message lock if the processing of the message is not completed by the handler.
      */
     public MessageHandlerOptions(int maxConcurrentCalls, boolean autoComplete, Duration maxAutoRenewDuration) {
+        this(maxConcurrentCalls, autoComplete, maxAutoRenewDuration, Duration.ofMinutes(DEFAULT_MESSAGE_WAIT_TIME_MINUTES));
+    }
+
+    /**
+     * Create a instance of {@link MessageHandlerOptions}.
+     *
+     * @param maxConcurrentCalls   maximum number of concurrent calls to the onMessage handler
+     * @param autoComplete         true if the pump should automatically complete message after onMessageHandler action is completed. false otherwise.
+     * @param maxAutoRenewDuration - Maximum duration within which the client keeps renewing the message lock if the processing of the message is not completed by the handler.
+     * @param messageWaitDuration  duration to wait for receiving the message
+     */
+    public MessageHandlerOptions(int maxConcurrentCalls, boolean autoComplete, Duration maxAutoRenewDuration, Duration messageWaitDuration) {
         this.autoComplete = autoComplete;
         this.maxAutoRenewDuration = maxAutoRenewDuration;
         this.maxConcurrentCalls = maxConcurrentCalls;
+        this.messageWaitDuration = messageWaitDuration;
     }
 
     /**
@@ -66,6 +81,12 @@ public final class MessageHandlerOptions {
     public Duration getMaxAutoRenewDuration() {
         return this.maxAutoRenewDuration;
     }
+
+    /**
+     * Gets the time to wait for receiving a message. Defaults to 1 minute.
+     * @return The wait duration for receive calls.
+     */
+    public Duration getMessageWaitDuration() { return this.messageWaitDuration; }
 
     @Override
     public String toString() {

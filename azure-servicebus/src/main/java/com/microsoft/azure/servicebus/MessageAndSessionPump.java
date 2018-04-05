@@ -27,8 +27,6 @@ import com.microsoft.azure.servicebus.primitives.TimerType;
 
 class MessageAndSessionPump extends InitializableEntity implements IMessageAndSessionPump {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageAndSessionPump.class);
-    // Larger value means few receive calls to the internal receiver and better.
-    private static final Duration MESSAGE_RECEIVE_TIMEOUT = Duration.ofSeconds(60);
     private static final Duration MINIMUM_MESSAGE_LOCK_VALIDITY = Duration.ofSeconds(4);
     private static final Duration MAXIMUM_RENEW_LOCK_BUFFER = Duration.ofSeconds(10);
     private static final Duration SLEEP_DURATION_ON_ACCEPT_SESSION_EXCEPTION = Duration.ofMinutes(1);
@@ -109,7 +107,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
     private void receiveAndPumpMessage() {
         if (!this.getIsClosingOrClosed()) {
-            CompletableFuture<IMessage> receiveMessageFuture = this.innerReceiver.receiveAsync(MessageAndSessionPump.MESSAGE_RECEIVE_TIMEOUT);
+            CompletableFuture<IMessage> receiveMessageFuture = this.innerReceiver.receiveAsync(this.messageHandlerOptions.getMessageWaitDuration());
             receiveMessageFuture.handleAsync((message, receiveEx) -> {
                 if (receiveEx != null) {
                     receiveEx = ExceptionUtil.extractAsyncCompletionCause(receiveEx);
@@ -260,7 +258,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
     private void receiveFromSessionAndPumpMessage(SessionTracker sessionTracker) {
         if (!this.getIsClosingOrClosed()) {
             IMessageSession session = sessionTracker.getSession();
-            CompletableFuture<IMessage> receiverFuture = session.receiveAsync(MessageAndSessionPump.MESSAGE_RECEIVE_TIMEOUT);
+            CompletableFuture<IMessage> receiverFuture = session.receiveAsync(this.sessionHandlerOptions.getMessageWaitDuration());
             receiverFuture.handleAsync((message, receiveEx) -> {
                 if (receiveEx != null) {
                     receiveEx = ExceptionUtil.extractAsyncCompletionCause(receiveEx);
