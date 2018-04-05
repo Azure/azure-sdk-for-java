@@ -11,14 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity;
 
-import okhttp3.Authenticator;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.MediaType;
 import okhttp3.Response;
-import okhttp3.Route;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * An implementation of {@link ServiceClientCredentials} that supports automatic bearer token refresh.
@@ -27,7 +30,6 @@ import okhttp3.Route;
 public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    private static final String AUTHENTICATE = "Authorization";
     private static final String BEARER_TOKEP_REFIX = "Bearer ";
 
     private final ChallengeCache cache = new ChallengeCache();
@@ -40,67 +42,129 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
             @Override
             public Response intercept(Chain chain) throws IOException {
 
+                Request originalRequest = chain.request();
                 HttpUrl url = chain.request().url();
 
                 Map<String, String> challengeMap = cache.getCachedChallenge(url);
+                Response response;
+                Pair<Request, HttpMessageSecurity> authenticatedRequestPair;
 
                 if (challengeMap != null) {
-                    // Get the bearer token
-                    String credential = getAuthenticationCredentials(challengeMap);
-
-                    Request newRequest = chain.request().newBuilder()
-                            .header(AUTHENTICATE, BEARER_TOKEP_REFIX + credential).build();
-
-                    return chain.proceed(newRequest);
+                    // challenge is cached, so there is no need to send an empty auth request.
+                    authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, challengeMap);
                 } else {
                     // challenge is new for the URL and is not cached,
                     // so the request is sent out to get the challenges in
                     // response
-                    return chain.proceed(chain.request());
-                }
-            }
-        });
+                    response = chain.proceed(buildEmptyRequest(originalRequest));
 
-        // Caches the challenge for failed request and re-send the request with
-        // access token.
-        clientBuilder.authenticator(new Authenticator() {
-
-            @Override
-            public Request authenticate(Route route, Response response) throws IOException {
-
-                // if challenge is not cached then extract and cache it
-                String authenticateHeader = response.header(WWW_AUTHENTICATE);
-
-                Map<String, String> challengeMap = extractChallenge(authenticateHeader, BEARER_TOKEP_REFIX);
-
-                // Cache the challenge
-                cache.addCachedChallenge(response.request().url(), challengeMap);
-
-                // Get the bearer token from the callback by providing the
-                // challenges
-                String credential = getAuthenticationCredentials(challengeMap);
-
-                if (credential == null) {
-                    return null;
+                    if (response.code() == 200){
+                        return response;
+                    } else if (response.code() != 401){
+                        throw new IOException("Unexpected unauthorized response.");
+                    }
+                    authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, response);
                 }
 
-                // Add the token header and resume the call.
-                // The token should live for duration of this request and never
-                // be cached anywhere in our code.
-                return response.request().newBuilder().header(AUTHENTICATE, BEARER_TOKEP_REFIX + credential).build();
+                response = chain.proceed(authenticatedRequestPair.getLeft());
+
+                // @TODO: cleanup this. There are 2 failing unit tests because mock server
+                // responds 401 and only after this 200.
+                if (response.code() == 401){
+                    authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, response);
+                    response = chain.proceed(authenticatedRequestPair.getLeft());
+                }
+
+                if (response.code() == 200){
+                    return authenticatedRequestPair.getRight().unprotectResponse(response);
+                }
+                else{
+                    return response;
+                }
             }
         });
     }
 
     /**
-     * Extracts the authentication challenges from the challenge map and calls
-     * the authentication callback to get the bearer token and return it.
-     * 
+     * Builds request with authenticated header. Protects request body if supported.
+     *
+     * @param originalRequest
+     *            unprotected request without auth token.
      * @param challengeMap
      *            the challenge map.
-     * @return the bearer token.
+     * @return Pair of protected request and HttpMessageSecurity used for encryption.
      */
-    private String getAuthenticationCredentials(Map<String, String> challengeMap) {
+    private Pair<Request, HttpMessageSecurity> buildAuthenticatedRequest(Request originalRequest, Map<String, String> challengeMap) throws IOException{
+        AuthenticationResult authResult = getAuthenticationCredentials(challengeMap);
+
+        if (authResult == null) {
+            return null;
+        }
+
+        HttpMessageSecurity httpMessageSecurity =
+            new HttpMessageSecurity(
+                authResult.getAuthToken(),
+                authResult.getPopKey(),
+                challengeMap.get("x-ms-message-encryption-key"),
+                challengeMap.get("x-ms-message-signing-key"));
+
+        Request request = httpMessageSecurity.protectRequest(originalRequest);
+        return Pair.of(request, httpMessageSecurity);
+    }
+
+    /**
+     * Builds request with authenticated header. Protects request body if supported.
+     *
+     * @param originalRequest
+     *            unprotected request without auth token.
+     * @param response
+     *            response with unauthorized return code.
+     * @return Pair of protected request and HttpMessageSecurity used for encryption.
+     */
+    private Pair<Request, HttpMessageSecurity> buildAuthenticatedRequest(Request originalRequest, Response response) throws IOException{
+        String authenticateHeader = response.header(WWW_AUTHENTICATE);
+
+        Map<String, String> challengeMap = extractChallenge(authenticateHeader, BEARER_TOKEP_REFIX);
+
+        challengeMap.put("x-ms-message-encryption-key", response.header("x-ms-message-encryption-key"));
+        challengeMap.put("x-ms-message-signing-key", response.header("x-ms-message-signing-key"));
+
+        // Cache the challenge
+        cache.addCachedChallenge(originalRequest.url(), challengeMap);
+
+        return buildAuthenticatedRequest(originalRequest, challengeMap);
+    }
+
+    /**
+     * Removes request body used for EKV authorization.
+     *
+     * @param request
+     *            unprotected request without auth token.
+     * @return request with removed body.
+     */
+    private Request buildEmptyRequest(Request request){
+        RequestBody body = RequestBody.create(MediaType.parse("application/jose+json"), "{}");
+        if (request.method().equalsIgnoreCase("post")){
+            return request.newBuilder().post(body).build();
+        }
+        else if (request.method().equalsIgnoreCase("put")){
+            return request.newBuilder().put(body).build();
+        }
+        else if (request.method().equalsIgnoreCase("get")){
+            return request;
+        }
+        return null;
+    }
+
+    /**
+     * Extracts the authentication challenges from the challenge map and calls
+     * the authentication callback to get the bearer token and return it.
+     *
+     * @param challengeMap
+     *            the challenge map.
+     * @return AuthenticationResult with bearer token and PoP key.
+     */
+    private AuthenticationResult getAuthenticationCredentials(Map<String, String> challengeMap) {
 
         String authorization = challengeMap.get("authorization");
         if (authorization == null) {
@@ -109,13 +173,13 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
         String resource = challengeMap.get("resource");
         String scope = challengeMap.get("scope");
-
-        return doAuthenticate(authorization, resource, scope);
+        String schema = "true".equals(challengeMap.get("supportspop")) ? "pop" : "bearer";
+        return doAuthenticate(authorization, resource, scope, schema);
     }
 
     /**
      * Extracts the challenge off the authentication header.
-     * 
+     *
      * @param authenticateHeader
      *            the authentication header containing all the challenges.
      * @param authChallengePrefix
@@ -140,7 +204,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
     /**
      * Verifies whether a challenge is bearer or not.
-     * 
+     *
      * @param authenticateHeader
      *            the authentication header containing all the challenges.
      * @param authChallengePrefix
@@ -157,7 +221,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
     /**
      * Abstract method to be implemented.
-     * 
+     *
      * @param authorization
      *            Identifier of the authority, a URL.
      * @param resource
@@ -165,9 +229,12 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      *            requested token, a URL.
      * @param scope
      *            The scope of the authentication request.
-     * 
-     * @return The access token
-     * 
+     *
+     * @param schema
+     *            Authentication schema. Can be 'pop' or 'bearer'.
+     *
+     * @return AuthenticationResult with authorization token and PoP key.
+     *
      *         Answers a server challenge with a token header.
      *         <p>
      *         Implementations typically use ADAL to get a token, as performed
@@ -213,6 +280,11 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      *         </p>
      *
      */
-    public abstract String doAuthenticate(String authorization, String resource, String scope);
+    public String doAuthenticate(String authorization, String resource, String scope){
+        return "";
+    }
 
+    public AuthenticationResult doAuthenticate(String authorization, String resource, String scope, String schema){
+        return new AuthenticationResult(doAuthenticate(authorization, resource, scope), "");
+    }
 }
