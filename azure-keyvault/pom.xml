@@ -75,6 +75,11 @@
 		</dependency>
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-keyvault-cryptography</artifactId>
+			<version>1.0.0</version>
+		</dependency>
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-keyvault-webkey</artifactId>
 			<version>1.0.0</version>
 		</dependency>
