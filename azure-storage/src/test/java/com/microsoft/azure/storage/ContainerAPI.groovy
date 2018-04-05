@@ -10,8 +10,13 @@ import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.ListBlobsOptions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PageBlobURL
+import com.microsoft.azure.storage.blob.PipelineOptions
+import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.AccessPolicy
+import com.microsoft.azure.storage.blob.models.AppendBlobsCreateResponse
 import com.microsoft.azure.storage.blob.models.Blob
+import com.microsoft.azure.storage.blob.models.BlobType
+import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.ContainersAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainersBreakLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainersChangeLeaseHeaders
@@ -35,6 +40,8 @@ import com.microsoft.azure.storage.blob.models.LeaseStatusType
 import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
 import com.microsoft.rest.v2.RestException
+import com.microsoft.rest.v2.http.HttpClient
+import com.microsoft.rest.v2.http.HttpPipeline
 import io.reactivex.Flowable
 import spock.lang.*
 
@@ -747,5 +754,32 @@ class ContainerAPI extends APISpec {
         "hello/world"         | _
         "hello&world"         | _
         "!*'();:@&=+\$,/?#[]" | _
+    }
+
+    def "Container root explicit"() {
+        setup:
+        cu = primaryServiceURL.createContainerURL("\$root")
+        BlobURL bu = cu.createAppendBlobURL("rootblob")
+
+        expect:
+        bu.create(null, null, null).blockingGet().statusCode() == 201
+    }
+
+    def "Container root implicit"() {
+        setup:
+        PipelineOptions po = new PipelineOptions()
+        po.client = HttpClient.createDefault()
+        HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, po)
+        AppendBlobURL bu = new AppendBlobURL(new URL("http://xclientdev3.blob.core.windows.net/rootblob"), pipeline)
+
+        when:
+        AppendBlobsCreateResponse createResponse = bu.create(null, null, null)
+                .blockingGet()
+        BlobsGetPropertiesResponse propsResponse = bu.getProperties(null).blockingGet()
+
+        then:
+        createResponse.statusCode() == 201
+        propsResponse.statusCode() == 200
+        propsResponse.headers().blobType() == BlobType.APPEND_BLOB
     }
 }

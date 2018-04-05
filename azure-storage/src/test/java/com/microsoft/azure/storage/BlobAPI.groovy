@@ -9,7 +9,6 @@ import com.microsoft.azure.storage.blob.ContainerURL
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.ServiceSASSignatureValues
 import com.microsoft.azure.storage.blob.models.AccessTier
 import com.microsoft.azure.storage.blob.models.BlobType
 import com.microsoft.azure.storage.blob.models.BlobsAbortCopyFromURLHeaders
@@ -42,7 +41,6 @@ import spock.lang.Unroll
 
 import java.nio.ByteBuffer
 import java.security.MessageDigest
-import java.time.OffsetDateTime
 
 
 class BlobAPI extends APISpec {
