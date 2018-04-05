@@ -3,13 +3,16 @@ package com.microsoft.azure.eventgrid;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.microsoft.azure.eventgrid.implementation.*;
-import com.microsoft.azure.eventgrid.models.*;
+import com.microsoft.azure.eventgrid.implementation.TopicCredentials;
+import com.microsoft.azure.eventgrid.implementation.EventGridClientImpl;
+import com.microsoft.azure.eventgrid.models.EventGridEvent;
+import com.microsoft.azure.eventgrid.models.StorageBlobCreatedEventData;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertEquals;
 
 import java.util.ArrayList;
 import java.util.HashMap;
