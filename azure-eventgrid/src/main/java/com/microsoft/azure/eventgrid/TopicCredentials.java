@@ -1,4 +1,4 @@
-package com.microsoft.azure.eventgrid.implementation;
+package com.microsoft.azure.eventgrid;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import okhttp3.Interceptor;

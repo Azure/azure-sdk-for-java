@@ -3,7 +3,7 @@ package com.microsoft.azure.eventgrid;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.datatype.joda.JodaModule;
-import com.microsoft.azure.eventgrid.implementation.TopicCredentials;
+import com.microsoft.azure.eventgrid.TopicCredentials;
 import com.microsoft.azure.eventgrid.implementation.EventGridClientImpl;
 import com.microsoft.azure.eventgrid.models.EventGridEvent;
 import com.microsoft.azure.eventgrid.models.StorageBlobCreatedEventData;
