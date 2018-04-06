@@ -18,6 +18,7 @@ Currently, this repository contains the following Azure SDKs:
     * [Text Analytics](#text-analytics)
   * [Vision](#vision)
     * [Face API](#face-api)
+* [Azure Event Grid](#azure-event-grid)
 
 ## Other Azure SDKs
 
@@ -97,6 +98,13 @@ This project provides Java APIs for Azure Media Services, enabling you to share 
 
 | [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/0.9/services/azure-media) | [:arrow_down: Download](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-media%22) | [:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AMediaServices) | [:book: Learn more...](https://azure.microsoft.com/en-us/services/media-services/) |
 | --- | --- | --- | --- |
+
+## Azure Event Grid
+
+This project provides Java APIs for [Azure Event Grid](https://azure.com/eventgrid), enabling you to build reactive programs and applications in the cloud:
+
+| [:page_facing_up: Sources...](https://github.com/Azure/azure-sdk-for-java/tree/master/azure-eventgrid) | :arrow_down: Download | :pencil: Samples |[:triangular_flag_on_post: Issues](https://github.com/azure/azure-sdk-for-java/issues?q=is%3Aopen+is%3Aissue+label%3AEventGrid) | [:book: Learn more...](https://azure.microsoft.com/services/event-grid/) |
+| --- | --- | --- | --- | --- |
 
 ## Prerequisites
 
