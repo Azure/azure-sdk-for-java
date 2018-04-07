@@ -34,6 +34,7 @@ public class HttpMessageSecurity {
     private static final String AUTHENTICATE = "Authorization";
     private static final String BEARER_TOKEP_REFIX = "Bearer ";
 
+    private boolean testMode = false;
     private String clientSecurityToken;
     private JsonWebKey clientSignatureKey;
     private JsonWebKey clientEncryptionKey;
@@ -42,7 +43,7 @@ public class HttpMessageSecurity {
 
     /**
      * Constructor
-     * 
+     *
      * @param _clientSecurityToken
      *      pop or bearer authentication token.
      * @param _clientSignatureKeyString
@@ -69,11 +70,35 @@ public class HttpMessageSecurity {
     }
 
     /**
+     * Constructor (tests only)
+     *
+     * @param _clientSecurityToken
+     *      pop or bearer authentication token.
+     * @param _clientEncryptionKeyString
+     *      string with client signing key (public + private parts) or null if not supported
+     * @param _clientSignatureKeyString
+     *      string with client signing key (public + private parts) or null if not supported
+     * @param _serverEncryptionKeyString
+     *      string with server encryption key (public only) or null if not supported
+     * @param _serverSignatureKeyString
+     *      string with server signing key (public only) or null if not supported
+     * @param testMode
+     *      true for test mode (uses 0 for timestamp)
+     */
+    public HttpMessageSecurity(String _clientSecurityToken, String _clientEncryptionKeyString, String _clientSignatureKeyString, String _serverEncryptionKeyString, String _serverSignatureKeyString, boolean testMode) throws IOException{
+        this(_clientSecurityToken, _clientSignatureKeyString, _serverEncryptionKeyString, _serverSignatureKeyString);
+        this.testMode = testMode;
+        if (_clientEncryptionKeyString != null && !_clientEncryptionKeyString.equals("")){
+            this.clientEncryptionKey = MessageSecurityHelper.JsonWebKeyFromString(_clientEncryptionKeyString);
+        }
+    }
+
+    /**
      * Protects existing request. Replaces its body with encrypted version.
-     * 
+     *
      * @param request
      *      existing request.
-     * 
+     *
      * @return
      *      new request with encrypted body if supported or existing request.
      */
@@ -96,9 +121,9 @@ public class HttpMessageSecurity {
             JWEObject jweObject = protectPayload(payload);
 
             JWSHeader jwsHeader = new JWSHeader("RS256",
-                    clientEncryptionKey.kid(),
+                    clientSignatureKey.kid(),
                     clientSecurityToken,
-                    System.currentTimeMillis() / 1000,
+                    getCurrentTimestamp(),
                     "PoP",
                     null);
 
@@ -130,10 +155,10 @@ public class HttpMessageSecurity {
 
     /**
      * Unprotects response if needed. Replaces its body with unencrypted version.
-     * 
+     *
      * @param response
      *      server response.
-     * 
+     *
      * @return
      *      new response with unencrypted body if supported or existing response.
      */
@@ -176,8 +201,22 @@ public class HttpMessageSecurity {
     }
 
     /**
+     * Return current timestamp. Returns always 0 for tests.
+     *
+     * @return
+     *      current timestamp or 0 for test mode.
+     */
+    private long getCurrentTimestamp(){
+        if (testMode){
+            return 0;
+        } else {
+            return System.currentTimeMillis() / 1000;
+        }
+    }
+
+    /**
      * Check if HttmMessageSecurity has all required keys.
-     * 
+     *
      * @return
      *      true if there is client signature key and two server keys.
      */
@@ -187,13 +226,13 @@ public class HttpMessageSecurity {
                this.serverEncryptionKey != null;
     }
 
-    
+
     /**
      * Encrypt provided payload and return proper JWEObject.
-     * 
+     *
      * @param payload
      *      string to be encrypted.
-     * 
+     *
      * @return
      *      JWEObject with encrypted payload.
      */
@@ -203,10 +242,17 @@ public class HttpMessageSecurity {
 
             byte[] aesKeyBytes = new byte[32];
             new Random().nextBytes(aesKeyBytes);
+            if (testMode){
+                aesKeyBytes = "TEST1234TEST1234TEST1234TEST1234".getBytes();
+            }
+
             SymmetricKey aesKey = new SymmetricKey(UUID.randomUUID().toString(), aesKeyBytes);
 
             byte[] iv = new byte[16];
             new Random().nextBytes(iv);
+            if (testMode){
+                iv = "TEST1234TEST1234".getBytes();
+            }
 
             RsaKey serverEncryptionRsaKey = new RsaKey(serverEncryptionKey.kid(), serverEncryptionKey.toRSA(false));
             Triple<byte[], byte[], String> encrypted_key = serverEncryptionRsaKey.encryptAsync(aesKeyBytes, null, null, "RSA-OAEP").get();
@@ -218,7 +264,7 @@ public class HttpMessageSecurity {
                     "A128CBC-HS256").get();
 
             JWEObject jweObject = new JWEObject(jweHeader,
-                    MessageSecurityHelper.bytesToBase64Url(encrypted_key.getLeft()),
+                    MessageSecurityHelper.bytesToBase64Url((!testMode) ? encrypted_key.getLeft() : "key".getBytes()),
                     MessageSecurityHelper.bytesToBase64Url(iv),
                     MessageSecurityHelper.bytesToBase64Url(cipher.getLeft()),
                     MessageSecurityHelper.bytesToBase64Url(cipher.getMiddle()));
@@ -238,10 +284,10 @@ public class HttpMessageSecurity {
 
     /**
      * Unencrypt encrypted payload.
-     * 
+     *
      * @param payload
      *      base64url serialized JWEObject.
-     * 
+     *
      * @return
      *      Unencrypted message.
      */
@@ -259,7 +305,7 @@ public class HttpMessageSecurity {
             byte[] key = MessageSecurityHelper.base64UrltoByteArray(jweObject.encryptedKey());
 
             RsaKey clientEncryptionRsaKey = new RsaKey(clientEncryptionKey.kid(), clientEncryptionKey.toRSA(true));
-            byte[] aesKeyBytes = clientEncryptionRsaKey.decryptAsync(key, null, null, null, "RSA-OAEP").get();
+            byte[] aesKeyBytes = (!testMode) ? clientEncryptionRsaKey.decryptAsync(key, null, null, null, "RSA-OAEP").get() : "TEST1234TEST1234TEST1234TEST1234".getBytes();
 
             SymmetricKey aesKey = new SymmetricKey(UUID.randomUUID().toString(), aesKeyBytes);
             byte[] result = aesKey.decryptAsync(MessageSecurityHelper.base64UrltoByteArray(jweObject.cipherText()),

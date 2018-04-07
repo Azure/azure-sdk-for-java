@@ -6,58 +6,149 @@
 
 package com.microsoft.azure.keyvault.test;
 
+
+import com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity;
+import com.microsoft.azure.keyvault.messagesecurity.MessageSecurityHelper;
+
+import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+
 import com.microsoft.azure.keyvault.messagesecurity.JWEObject;
 import com.microsoft.azure.keyvault.messagesecurity.JWEHeader;
 import com.microsoft.azure.keyvault.messagesecurity.JWSHeader;
 import com.microsoft.azure.keyvault.messagesecurity.JWSObject;
 import org.junit.Assert;
 import org.junit.Test;
+import org.apache.commons.codec.binary.Base64;
+
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.MediaType;
+import okhttp3.Response;
+import okhttp3.ResponseBody;
+
+import okio.Buffer;
 
 
-public class EnhancedKeyVaultTest  {
-    
+
+public class EnhancedKeyVaultTest {
+    String clientEncryptionKeyBase64 = "eyJraWQiOiI2NDk2NWRjYi0yZTY0LTRhMjQtYmFjMC1kNWI3NGNiMWY3YzQiLCJrdHkiOiJSU0EiLCJrZXlfb3BzIjpudWxsLCJuIjoici1kbkVZRElaemoxbVc4eXdKamJuV3BWQ2pzRXFjZ3BXTm1yRWdsWW10MUtnZnZpZTAxMEwyX05UTnZnYW5FTWY1Z2I2ZUp0UjZkOE9SN2kybXpIOVpHV1pkbVBfbkstNUJWOG9pRjdEeVpMTXptS0NtQUluazJVZV94Q0dqb0dDOUR4R1pHZWhOUWpJU2J2LURtTW4wY0UzVGh1YTVXRWt3b1h3Xzg4d1VhU2tsMk5EQXUyUjYtY1kwVldkMVFuWldrZE5qRllaZ1Uzc0tnWnRJRFh2b1oxNFBoTGY1T2tXMDlmRkdGQVUxaTRiLXkyWktyNndRQnljTUhmR1pqZ0owYXVrYWVXcTZQMnRwTmVJc1I5SDYxbkZjUkxOamw5dWptVWVNbWd6RWFzN2VtTGhNY1pDVURWbzh4aG8yU1NQTlh6RDVXQUN1MkNYSGxlWGZPSU5RIiwiZSI6IkFRQUIiLCJkIjoiTUZidE1oZ3Itb0hpckdtc2p0VHk5VTExVlR4bXlhbWlBekstR2xUTExyUEZkX2NhaER3Q3c4NTdvcldCOUg1Z3F1ZklNX3Z2Z0JOOHhjM0JGYmx6TWY3eVQ4YjhGVGFfVXJxODUybEFBaWZKM3FmZlVYNlduN28tSmR4cTVmNHdEeXM2Tm9hWUEzU3d1cm1TbEtwc0JKRmx1czE1T3NONkRWWm10WXY4ekRmLUNYem1hSEdaeG00RHZFdGJVYXMyLWo0TWRkN2U3VXNVZlg1ajBQMXNTS2YzS2ZfeGIxSVR2MC1mOFJDTy04SWozcGVQN19sRkVFTTZYRTRPS3JiSFlRc1VDVHhiZHVBMElzTGxNMHp3UFJ1NU04ZnFmLTR5VjRoc3ZMOHNGWElnWHdNRkpWc1hjek5iQldfLWtsVDczdDgxZVVubllJR21qeDQtLVE3clFRIiwiZHAiOiJ4Z1NGRXVMcm5pdHlHVVpxZXpIdjV6SW0yemhsVEpnUGp4UE41ZWJQbjF2S3JhOUxDVTdkRTZWd21WZWhVdnFlMFhIR2IyakNFTXdwQmNURk0xRlBVRERwaTVmdzMtcWkzQ3pWTHdUN2I4M1ZNcVZYYUFHN0h6MjJUWjhFU04ycHFkSVVKNS1yTzY0UGJSMWZRVWNEWkhnOGJnU2Jrc0NRbDduOWxYekE4d0UiLCJkcSI6IkNxTlJKRXc1cEhXWi1xSGwtU09remdveGpfckNiY0JKdE1hMGRTOXpSZ1ptb1N0UkxZM1QyZ1ZPN3R4RzVERkxCNXFqbVdhYUhISWNlQW00U2lXVUliUEZDV0lOWG9IZ0UzaFhqbnVOLUthU2c3UzJRR21tY09BMWN3Z1BFX0ZxNEFlRGhncEJrYjJCeUs0Y0UzN044RmhJdG91OTB0TFp0YzhDWGx6Wm8zMCIsInFpIjoiZzRZb3Z5UnRWMVAtM0tnUnIzRHd6VWxrSFpReUJUS0szVzljOXRnOEhQS2dwT3hoaXpOU29YVjBQT0RLZmRLTmFvSEx5d3AxR3dDMWxueW1ORnNVVTRXMnhDa2FuMmJKMlVRTzh5bnEtNjlRZlY0MmtPcjhNQm5vNXQ5MVdXTjJwV2NSRnZVVFNya2VaZkZJY3RxcFVtY0hQNUN2SWc2Z2xnTXVCaWlVa0FnIiwicCI6IjFIQnNjOE5oT201TXVkVmZGYldldjE4akRuclcyZ25GOXNMV1JKemE0VFJYZVZZeVpDWDZQb0I4dFp1cmJTUklNbjNqTEZFMGFCOWFsXzYwZDdhRi1VdTl2VGtfSUxPMU15aVNTWmpyYjNvd0FxaTk4WjlUYWxBRHpXWWdXZjJIbTZ5VWp1YTcyMXkxOUtldHlrQmphdHhWTGtUMzZ1NExYY2dJNm1MSzlqayIsInEiOiIwX2tpSThGQ21qWGxaZ2hNTkI2cHBfZmZ5aW5BWHR2cmlNbllTNllPNTAwSHJCYnBHejRrNGNfNDJqQTlEekUxaXVqNkFvR2lyZWF5YU9fQ0NHVmM5UVItZm4wM3Noc2h6cTlkWTN0bmRYN2lYYzhkdmlUTl9pNjU5NDQyb19XaVBreG1QYURhMzFDdGxrcWZfNW45NlBwbWZ1Z2lJc1JYaWI4Wlp6bjh3ZDAiLCJrIjpudWxsLCJrZXlfaHNtIjpudWxsfQ==";
+    String clientSignatureKeyBase64 = "eyJraWQiOiI2NDk2NWRjYi0yZTY0LTRhMjQtYmFjMC1kNWI3NGNiMWY3YzQiLCJrdHkiOiJSU0EiLCJrZXlfb3BzIjpudWxsLCJuIjoici1kbkVZRElaemoxbVc4eXdKamJuV3BWQ2pzRXFjZ3BXTm1yRWdsWW10MUtnZnZpZTAxMEwyX05UTnZnYW5FTWY1Z2I2ZUp0UjZkOE9SN2kybXpIOVpHV1pkbVBfbkstNUJWOG9pRjdEeVpMTXptS0NtQUluazJVZV94Q0dqb0dDOUR4R1pHZWhOUWpJU2J2LURtTW4wY0UzVGh1YTVXRWt3b1h3Xzg4d1VhU2tsMk5EQXUyUjYtY1kwVldkMVFuWldrZE5qRllaZ1Uzc0tnWnRJRFh2b1oxNFBoTGY1T2tXMDlmRkdGQVUxaTRiLXkyWktyNndRQnljTUhmR1pqZ0owYXVrYWVXcTZQMnRwTmVJc1I5SDYxbkZjUkxOamw5dWptVWVNbWd6RWFzN2VtTGhNY1pDVURWbzh4aG8yU1NQTlh6RDVXQUN1MkNYSGxlWGZPSU5RIiwiZSI6IkFRQUIiLCJkIjoiTUZidE1oZ3Itb0hpckdtc2p0VHk5VTExVlR4bXlhbWlBekstR2xUTExyUEZkX2NhaER3Q3c4NTdvcldCOUg1Z3F1ZklNX3Z2Z0JOOHhjM0JGYmx6TWY3eVQ4YjhGVGFfVXJxODUybEFBaWZKM3FmZlVYNlduN28tSmR4cTVmNHdEeXM2Tm9hWUEzU3d1cm1TbEtwc0JKRmx1czE1T3NONkRWWm10WXY4ekRmLUNYem1hSEdaeG00RHZFdGJVYXMyLWo0TWRkN2U3VXNVZlg1ajBQMXNTS2YzS2ZfeGIxSVR2MC1mOFJDTy04SWozcGVQN19sRkVFTTZYRTRPS3JiSFlRc1VDVHhiZHVBMElzTGxNMHp3UFJ1NU04ZnFmLTR5VjRoc3ZMOHNGWElnWHdNRkpWc1hjek5iQldfLWtsVDczdDgxZVVubllJR21qeDQtLVE3clFRIiwiZHAiOiJ4Z1NGRXVMcm5pdHlHVVpxZXpIdjV6SW0yemhsVEpnUGp4UE41ZWJQbjF2S3JhOUxDVTdkRTZWd21WZWhVdnFlMFhIR2IyakNFTXdwQmNURk0xRlBVRERwaTVmdzMtcWkzQ3pWTHdUN2I4M1ZNcVZYYUFHN0h6MjJUWjhFU04ycHFkSVVKNS1yTzY0UGJSMWZRVWNEWkhnOGJnU2Jrc0NRbDduOWxYekE4d0UiLCJkcSI6IkNxTlJKRXc1cEhXWi1xSGwtU09remdveGpfckNiY0JKdE1hMGRTOXpSZ1ptb1N0UkxZM1QyZ1ZPN3R4RzVERkxCNXFqbVdhYUhISWNlQW00U2lXVUliUEZDV0lOWG9IZ0UzaFhqbnVOLUthU2c3UzJRR21tY09BMWN3Z1BFX0ZxNEFlRGhncEJrYjJCeUs0Y0UzN044RmhJdG91OTB0TFp0YzhDWGx6Wm8zMCIsInFpIjoiZzRZb3Z5UnRWMVAtM0tnUnIzRHd6VWxrSFpReUJUS0szVzljOXRnOEhQS2dwT3hoaXpOU29YVjBQT0RLZmRLTmFvSEx5d3AxR3dDMWxueW1ORnNVVTRXMnhDa2FuMmJKMlVRTzh5bnEtNjlRZlY0MmtPcjhNQm5vNXQ5MVdXTjJwV2NSRnZVVFNya2VaZkZJY3RxcFVtY0hQNUN2SWc2Z2xnTXVCaWlVa0FnIiwicCI6IjFIQnNjOE5oT201TXVkVmZGYldldjE4akRuclcyZ25GOXNMV1JKemE0VFJYZVZZeVpDWDZQb0I4dFp1cmJTUklNbjNqTEZFMGFCOWFsXzYwZDdhRi1VdTl2VGtfSUxPMU15aVNTWmpyYjNvd0FxaTk4WjlUYWxBRHpXWWdXZjJIbTZ5VWp1YTcyMXkxOUtldHlrQmphdHhWTGtUMzZ1NExYY2dJNm1MSzlqayIsInEiOiIwX2tpSThGQ21qWGxaZ2hNTkI2cHBfZmZ5aW5BWHR2cmlNbllTNllPNTAwSHJCYnBHejRrNGNfNDJqQTlEekUxaXVqNkFvR2lyZWF5YU9fQ0NHVmM5UVItZm4wM3Noc2h6cTlkWTN0bmRYN2lYYzhkdmlUTl9pNjU5NDQyb19XaVBreG1QYURhMzFDdGxrcWZfNW45NlBwbWZ1Z2lJc1JYaWI4Wlp6bjh3ZDAiLCJrIjpudWxsLCJrZXlfaHNtIjpudWxsfQ==";
+    String serverEncryptionKeyBase64 = "eyJraWQiOiIwMzZhOTQ2MS01NDAxLTQzNTItYjQ0Ni02ZWNmNGQyNmUwOGEiLCJrdHkiOiJSU0EiLCJrZXlfb3BzIjpudWxsLCJuIjoiaHlmZjlHVVZSRzJnQ1Z6MnhUUTAzYlA1dzVCS2FEenRMYmhHT0REeExJaDRVSGU5VWVpSWJiZ1FKd3lTMHZKWHNaRjVTRDRPamo2WlNOQXhwbkRYdVdXcHI4Yk0xWWFMaklVYldtUTc3ZVBWT0o5bVExak1DdnlSVkJ4RVNtQUo2MVdtTjhQZ012SDBhVjJ6SFZQSXpPS0ZCLVFGQkNkZjJWaEprYlRjcF9wd25wVGZnRVlTdzNWYXdyM0RfZExIWHFMWE9HRGRQUDM4NHluTS1LSEZqMmplZ3NjaThEek9XcmtNbVdoM2tYSHU4WVFwVnBsb0hpdkVjRGM1QkNXQ2Q2NlFHZ1hkcEFzSnJfNVN2SEhsLVZJOXM3UDN1dlNraExJRGRNYWZqWm1NTURRa1pselZZWXRMQk1iVDB2NmhRVVZSaTQ2RVNkQUNMNVE5aVpGR3dRIiwiZSI6IkFRQUIiLCJkIjoiREVLZ3ZUSENPUl9jcVp6R1FlTlhmRmtNS2lKWHJaY0JTT2x6YlR0N1ZUZlgtaXl5ZnRDaU41bV8xVnI5b3FjYkwxOXI2aEtfRFVZLWIyMTdZNGJPLXVGdkFDUF9oc3NhczVlTGdLcWhDUlptekNraGhMQjBhZmE1VkREd1BQTHpVMmJFbWtCcGdSV1R2MDhocFdKcFQ3U29ycXVQak8zcGN2VGdUNWhoZjlkRkZqbjlVUkxMWGltejlnLW9KaDdETVdvVnBkS2hnU1FFR0FUUGVFelBYZFlrd3pXYml2VGRoV3hiZ2pLQjE4Y3VNaDNrTU9TYXZzbl8tU3JTdjJLTW4xWjBLTldvbHFHN1JDaWZNelZlS29pcWtKLWVUZ0ttbGtHVU8tcksxT05uM1A3VUJSZG1mNjRaZjNISTVRdERQSXJCNURnRzBHUDNrVXZvZENQWU5RIiwiZHAiOiJrOTVGRTJpZDVMMGdwWTBwUGFyQjV6d3QtS2lvbG1FcTJlMjhVaVZiSHJYRmEwbVdsMjlrak5SUi10MTk0WUNwMFd5c2VHako3Qjd3a0U3TFM4TEszaHoxelUwLU9CM3VJdmdMbHZYNk05MHgtZF81S0p3WFB0eHk1ZVdYTndGMVg5Q1ZybUNZUGlKNDFoUXY5aE40b293aEJ4dnV2MldGTS1VRkZYbS03UDAiLCJkcSI6ImtLcmRtN0pkWl9SSkMtTjJBLUw3dEo1M3RfNjlweUZkYXdwS1RlNlNGeGNabkRHSGRUNDZXdDM3dzBFZ0tGdlRYWlVzXzB3M2doUDg4YVJBLUFDb1FqdUFReWkwVVNfZUlzUWRnQ21jZ2pHOU1uVWJXYW9LeEg0eGJNNUxmYlJCMDJRdGRnWkZKdm5nWkp3R0VLZjJOVVZwM2dTNXFEZmZIMllSUUpoSnZScyIsInFpIjoibVNEV2lvaDMyblRlRWdOTTNPZ09kWXBZbmhuMjdrVE1peGNNaElKeEdnWFFER0IxNmFzTjlaZ3dLdThIMVA1TkJfVG5CUHlWUmh6ZmtEd1dVM2hjc0lRMTFxbHFNbjdaaU1Vbm81NWtNNUZENzBsaXltZVNSc3AzVTZnNnVfOEc2MXhpWFdkeHZoLVFXaEhxQnZFdWE5aXdVcUxxbXZKTnNxT3phUFBjMGFZIiwicCI6Ino2NkFVbW0zYWNmZlJjNWdLQ015ajdVbTdKVURoRlBLXzJ2eTlzZ0RudzA0X0hOUFFwcG53ZVo0cTk3cE5GMG5MQ0phdWc2Yk0wMGhNQkV1U1FBdDA0UTFIcE1fcUxtd2YzMmpjOGViaTdBYnNJYVZiVk45T1VPUlJ6UVNHNkhzZERXMUx3SUFHazRZeDJ1WXlHdkpla1ZqVHVNQ2drLXA4SFFCeFBCX2ZtcyIsInEiOiJwcG05Sl9vc3pqdVNpNlJVdXFjS3gtajgxdmFNR1EtTFlwS0U3ZE5ydldrd2dOQUYzRU5pWmcxdEZCa3dQajFyaUNXVkV5NmpmZFR0aGZ0Rk9paURpLWRwOW9mYnppaVFTT3VjSXZVb1NFcGlDZ3Ewa2RPamZQVG03UVViWmxubk1iWkJ4SVZVUS12dksweVB2SHFmSFVLdEVic2NJZjh5UWVnMDBzUTBRb00iLCJrIjpudWxsLCJrZXlfaHNtIjpudWxsfQ==";
+    String serverSignatureKeyBase64 = "eyJraWQiOiI0Yjg2NGRiZi02NGRkLTQ1Y2EtOGI2OS1jZmVjMDQ1NjRiNTAiLCJrdHkiOiJSU0EiLCJrZXlfb3BzIjpudWxsLCJuIjoib1hsOS1hd2xtODNFRUhrOEVpS3dFRUJLMmhPZVMzYnVQdjVDX2xqdW9TVHZGLVlwSUdoclZEZ1hjTEF4ZmFLT0ZKS0FTUUFJTWhDSlI2a2owWGdEend1NUdrMkNmQXFuS0RMc050MHVJZEZLMFprcmJHU01RNkRyUW8zUHRaTl9Ja2N6Yi1ZeVlLQ05aMXJKZTRmRjE5VlZlT05jNTkwcTM1M21CX3UtTDFPTWZtSGNnNTM5aHdBT3JqWjhjdXIzZkotSW1NOW9naFJXLVp2UE94eXJ0Mmpsak9NancycDgzN09kdUQ0UGx5NG02RmY0c0pDUFNwYjVUUDV3OWdzeFdxQVVucjlmLTYzanYyX2RZdXZVOUpBQnB2MEprQTRSeHp5MWpJQlJoemNMWFp2TnZDSllPOFlBaGpSOGJzSEpBa0FLMXVDRFhzeXhEUFRnS0VPNXFRIiwiZSI6IkFRQUIiLCJkIjoiRWRzTWFpSjJHaTk3d2RLV0tPODdCdUVGSmU1TGI4N2I4NDFNUFRINldVbHJRdnBKaV9MZ0EzVWNhbktoVm1JMlVlSU5XNFVzWXRUZlNWUlR5S0w3ME5aY0JxT1JqVVBrVGhhcmRqbXBFMFpBZnNMd1FWRXhEWDFxNW5ZbUJNOGxuTlhBdzF2eU1Dc3cxN183VGJTcTFQNGJNSDM3MVF2bzVNZGlHM25rQXZtTnB5VVFqX1VWeVJSM3dJaEUwNnJPV0VOem83VnVQdUZvMl9OZWZtZC1WcWRMMVNDS2lPS1hiMGNOd29nTHRrMV9BVWhNNXVWY1dEU0poVmhTTzFxcEJFOHlOQ2xTR25YdWtQYlp6N3lLTnJLRUc2djBiWEJXV3d3SmRlUnhoZ0pjMFI4blVYWi14ZDlnTXhwVWM0eFU2ZmNHU3k3WHpfUzBlcVRuNGRhOVBRIiwiZHAiOiJKZHc4Mm1SM1N6X1Y4Vk8ySlRiVXpLektHTEpicUx4LWhTcFRxSktZYm5qS3NPd1R0RG1NZkFGY1VBRzZ5enJlbC02ZW50dWd0Y0o1bVZGVnVKQW44Vm1Yd2VSeFNBN3hLdUJoYUtqOWdjRTh2UzlHc21nWjF5MGZYT0VNcjBmMUFXdlV1V3RqZFh0RHdtSDQyVU03QWJILXlFaGNwRlA5aVlMOC1sUVFYYzAiLCJkcSI6Ikp2X0R5RlIzdXFxNlBkSFBrSTNBcHpKVzNmTkdrSGM4aGhUU01wd1ZzcmYyTHdKMGh5dVc2aVFnc1RaS1RoUmpyMUFZMjE1VGJsVWd1OV9rd3dEb2tnZU5LZmZwam9VTFBUSGdMOEN3c0ZKQ3A5UTE1Wl9GSEZtQzBiM291bDIzMjY1bVVFMHJwZjRZZFZLX29DWVBuRUJ4T2t6MnN6bDA3VUtlNEJzMWVGTSIsInFpIjoiaFNUWnBMM2NUSUJGaFlGUkFCd1V5QU16eVJrWExhdVVHQjRZelJEY0hvQzBBMUNXZ3k4eU1GbW1ZUWVTNlFwNUZaemV3Vy1zUnhyTkZJSFZOZTVHOE81dnhQSUFpMXF5Sk8wRWJIRHpPT0NiYXpaX2pRRXZtS0dPWGRqN2NqMDdlM2Rkdkp2cFl6UF85cDVFVGVVbEE0Q1IzMjNjbjhaNzVCY0FCTkFCamljIiwicCI6IjdlVkRqLW1vSDVlUlNJdVl2VGF2aDk1a2tqTGRkOVNXUU9xcW0xLVo2N1VGTWtsQm83NDg2S0UzZElucFB3V3dwSHA5dEZ3VXBzajBqcUJfZTJnNmpSNjFPWDBDaEE0cTh0VkFGajlIc0QtVkpLdUR2MTZBc2ExbGF4TFc2NlRNb3pGakpFZVg4OHRvS0pjVDNNR0VIeVdwd2RVRlJQeGROVVpPeFhaU2F0cyIsInEiOiJyY05nZ2pCSDFIWmRlSDJ1NXZwbVA5czFXV2lPZ0lLTXIwQUFJUnVnUVdaRUdrRy0xTzBuRVdleEphQzRiQ21YbXBCYXM3UGpNSjYyQ0I4UGRBZGZQRDBLVF9sZ3l2ckIwWXpGejVpeUdUZk1QYnNTX0Rlci1WekVsZ212V214VURXZmk0Snh0MTJpZ0NqaE5VMWdDYUVDelBoV2lNYXkwb21pOTB2V0lXc3MiLCJrIjpudWxsLCJrZXlfaHNtIjpudWxsfQ==";
+
     @Test
     public void equalityTest() throws Exception {
-        JWEObject jweObject1 = new JWEObject(new JWEHeader("test alg","test kid","test enc"),"test enc key","test iv","test cipher","test tag");
-        JWEObject jweObject2 = new JWEObject(new JWEHeader("test alg","test kid","test enc"),"test enc key","test iv","test cipher","test tag");
-        JWEObject jweObject3 = new JWEObject(new JWEHeader("different alg","different kid","test enc"),"different enc key","different iv","different cipher","different tag");
+        JWEObject jweObject1 = new JWEObject(new JWEHeader("alg","kid","enc"),"enc key","iv","cipher","tag");
+        JWEObject jweObject2 = new JWEObject(new JWEHeader("alg","kid","enc"),"enc key","iv","cipher","tag");
+        JWEObject jweObject3 = new JWEObject(new JWEHeader("alg2","kid2","enc2"),"enc key2","iv2","cipher2","tag2");
 
         Assert.assertTrue(jweObject1.equals(jweObject2));
         Assert.assertFalse(jweObject1.equals(jweObject3));
 
-        JWSObject jwsObject1 = new JWSObject(new JWSHeader("test alg","test kid","test at",1,"test p","test typ"),"test payload","test signature");
-        JWSObject jwsObject2 = new JWSObject(new JWSHeader("test alg","test kid","test at",1,"test p","test typ"),"test payload","test signature");
-        JWSObject jwsObject3 = new JWSObject(new JWSHeader("different alg","different kid","different at",2,"different p","different typ"),"different payload","different signature");
+        JWSObject jwsObject1 = new JWSObject(new JWSHeader("alg","kid","at",1,"p","typ"),"payload","signature");
+        JWSObject jwsObject2 = new JWSObject(new JWSHeader("alg","kid","at",1,"p","typ"),"payload","signature");
+        JWSObject jwsObject3 = new JWSObject(new JWSHeader("alg2","kid2","at2",2,"p2","typ2"),"payload2","signature2");
 
         Assert.assertTrue(jwsObject1.equals(jwsObject2));
         Assert.assertFalse(jwsObject1.equals(jwsObject3));
-
-        jweObject1 = new JWEObject(new JWEHeader("test alg","test kid","test enc"),"test enc key","test iv","test cipher","test tag");
-        jweObject2 = new JWEObject(new JWEHeader("different alg","test kid","test enc"),"test enc key","test iv","test cipher","test tag");
-
-        Assert.assertFalse(jweObject1.equals(jweObject2));
-
-        jwsObject1 = new JWSObject(new JWSHeader("test alg","test kid","test at",1,"test p","test typ"),"test payload","test signature");
-        jwsObject2 = new JWSObject(new JWSHeader("different alg","test kid","test at",1,"test p","test typ"),"test payload","test signature");
-
-        Assert.assertFalse(jwsObject1.equals(jwsObject2));
     }
 
     @Test
     public void serializationTest() throws Exception {
-        JWEObject jweObject1 = new JWEObject(new JWEHeader("test alg","test kid","test enc"),"test enc key","test iv","test cipher","test tag");
+        String serializedJweObject = "eyJwcm90ZWN0ZWQiOiJleUpoYkdjaU9pSmhiR2NpTENKcmFXUWlPaUpyYVdRaUxDSmxibU1pT2lKbGJtTWlmUSIsImVuY3J5cHRlZF9rZXkiOiJlbmMga2V5IiwiaXYiOiJpdiIsImNpcGhlcnRleHQiOiJjaXBoZXIiLCJ0YWciOiJ0YWcifQ==";
+        JWEObject jweObject1 = new JWEObject(new JWEHeader("alg", "kid", "enc"), "enc key", "iv", "cipher", "tag");
         String serialized = jweObject1.serialize();
         JWEObject jweObject2 = JWEObject.deserialize(serialized);
+        Assert.assertTrue(serialized.equals(new String(Base64.decodeBase64(serializedJweObject))));
         Assert.assertTrue(jweObject1.equals(jweObject2));
 
-        JWSObject jwsObject1 = new JWSObject(new JWSHeader("test alg","test kid","test at",1,"test p","test typ"),"test payload","test signature");
+        String serializedJwsObject = "eyJwcm90ZWN0ZWQiOiJleUpoYkdjaU9pSmhiR2NpTENKcmFXUWlPaUpyYVdRaUxDSmhkQ0k2SW1GMElpd2lkSE1pT2pFc0luQWlPaUowZVhBaUxDSjBlWEFpT2lKd0luMCIsInBheWxvYWQiOiJwYXlsb2FkIiwic2lnbmF0dXJlIjoic2lnbmF0dXJlIn0=";
+        JWSObject jwsObject1 = new JWSObject(new JWSHeader("alg", "kid", "at", 1, "p", "typ"), "payload", "signature");
         serialized = jwsObject1.serialize();
         JWSObject jwsObject2 = JWSObject.deserialize(serialized);
+
+        Assert.assertTrue(serialized.equals(new String(Base64.decodeBase64(serializedJwsObject))));
         Assert.assertTrue(jwsObject1.equals(jwsObject2));
     }
 
     @Test
-    public void payloadTests() throws Exception {
+    public void protectRequestEmptyKeysTest() throws Exception{
+        HttpMessageSecurity messagesecurity = getMessageSecurityWithoutKeys();
 
+        Request request =  getRequest();
+        Request protectedRequest = messagesecurity.protectRequest(request);
+
+        Assert.assertTrue(getRequestBody(protectedRequest).equals(getRequestBody(request)));
+        Assert.assertTrue(protectedRequest.method().equals(request.method()));
+
+        Assert.assertTrue("Bearer Token".equals(protectedRequest.header("Authorization")));
+    }
+
+    @Test
+    public void unprotectRequestEmptyKeysTest() throws Exception{
+        HttpMessageSecurity messagesecurity = new HttpMessageSecurity("Token", "", "", null, "", true);
+
+        Request request =  getRequest();
+        Response response = getResponse();
+
+        Response unprotectedResponse = messagesecurity.unprotectResponse(response);
+
+        Assert.assertTrue(response.body().equals(unprotectedResponse.body()));
+    }
+
+    @Test
+    public void protectRequestTest() throws Exception{
+        String expectedEncryptedRequestBody = new String(Base64.decodeBase64("eyJwcm90ZWN0ZWQiOiJleUpoYkdjaU9pSlNVekkxTmlJc0ltdHBaQ0k2SWpZME9UWTFaR05pTFRKbE5qUXROR0V5TkMxaVlXTXdMV1ExWWpjMFkySXhaamRqTkNJc0ltRjBJam9pVkc5clpXNGlMQ0owY3lJNk1Dd2ljQ0k2Ym5Wc2JDd2lkSGx3SWpvaVVHOVFJbjAiLCJwYXlsb2FkIjoiZXlKd2NtOTBaV04wWldRaU9pSmxlVXBvWWtkamFVOXBTbE5WTUVWMFZEQkdSbFZEU1hOSmJYUndXa05KTmtscVFYcE9iVVUxVGtSWmVFeFVWVEJOUkVWMFRrUk5NVTFwTVdsT1JGRXlURlJhYkZreVdUQmFSRWt5V2xSQk5GbFRTWE5KYlZaMVdYbEpOa2xyUlhoTmFtaEVVV3ROZEZOR1RYbE9WRmxwWmxFaUxDSmxibU55ZVhCMFpXUmZhMlY1SWpvaVlUSldOU0lzSW1sMklqb2lWa1ZXVkZaRVJYbE5lbEpWVWxaT1ZVMVVTWHBPUVNJc0ltTnBjR2hsY25SbGVIUWlPaUpsYmpGTGRYZ3pSSE40ZERNellqbEtaRlI2UzNweVEzcGhlVkpsWldoR2VqaGZiMVpoUzE5V1QwVnphMEpUV214a1N6WmFieTFsVDJGblNVaFNha3BKY1VacllXcDFWblYwU0ZkUFkwaE5jV0Z3UVdjMGJtaE9kV1kxYlhKcFIzbFVRbWgxYTJWNFUzWlZNeTFaY0dGMVF6RkhXbGhhUjI1dFp6SjFOazVZYVVaVWEwVlZUWEpNUVcwdE5GWkRiWEZtUlhRdFFtSjRZMXBIWVdKMVJtNXlWVGxIUlhWTk5sWmpSVFZvVUZSNWFGUjFZelZoYkU1S1NpMXBNMFpQTW05dFdGUm5iUzFuVXpSUVVYRTVaRjk0U0VaQlVrcHZRM2gxTVdkSFJVcHFZbG8xUlRkeVNGZ3dRak5yV2xKaE1uUlJabXBmV1d0MFFqVTFVbmMzWW1SVlIxZDNSa05wWlhaWE9GVmhjakpJYms1dVZrWnRhWFpmUWpFeGVsUnVhRVp4VTFkd2VtbFdVV1JRVmprNE0wMVRNR2N4U2sxYVdERktWbTlVTFcxMFJWODRMWGhxTlhOTVdVZFBkbmxGTm5JdFprUlRPRFZoUTFOUlNtRkRVMUJ0TkVWM1JIbGlOVVZNUVc5WGFXTjJWMFpsVWtVNFdVZG9jekIzWDFSYVdqZENPSFk0VUdKTE1uWnFiRW8wUlc1ME4yRm1kMHRKVkd0bVRrMTZUM1pyWWprM1JWVjRSVkZRWlVOSWFYZFVUbHBRY1dGalUwUktOMEpWV0d4cFlVcE9WSGRXUkhaSFEzVlVTVE0wZUhOdVNYUkhlVXREUldocFRXbDRVR3B2ZWpaSmRYcFBTMTk1V0RWWWNrbEZMVXRmVVVSdVFYcEhkVmhVTUdkWFRYWkZVSFZJWjJScVZYbDVWSFpJWDFOWGEwcDBVelZZUzJOZmFIZExRVGRpTTNsSVpUTm1lbGRTWDNCc05GZEhhbmgxWlZKbmNFd3dUSFpQV1doMWVqZERibE5hVlZFNVpHcHRiMUJCU0VkUlowbHFhWGM0YTA5S2FHNHRVbEZoVHpoRVlXdGtkMUJKVmxKc2RYSlBRbU5qU21kT2IybEhWR0pDY2pRM1VIQTNTVE5NWlZSb1YyNVJObmwwVGtWdk5YTktZVk5SWlU1aFUwODRPV3hQVWpGRVpIUk5SRTF6VDBWc1ZXZFNRbE5vUTJWWFZta3hNalJwTUdOZlUzbFVSV1l5UkRVeFpYVXRNbFY2V1MxSU4wVTJiWGREYmxWamEzVlBkRkE0Ums5NVJrUXpVM0YzWXpCSWRGZHhaMmhMUVdvNVEyMU1UVTQyVFRoSWRXVnhRbEpTVEVNaUxDSjBZV2NpT2lKMVFtTnhMVk13UTNOMlNVNTNOVnBvYlhkQlpXaEJJbjAiLCJzaWduYXR1cmUiOiJZNmt6eHpEN0JqZzlZellXeW1rT2NsakpDSGNtMlJLUlpSQjQyQ21IY3Zuc19fakVWd3pTZ2xRUDhadEZCMmxVZk5iZDVCS01OdHNZd3FpUkp6Q1l3Wk05SmRPX0w4VnJWdTVvOWFvTkNRbmRTc2w3S01hUUlFZXg0OFA3LVNIcHg0b3E5VUk4bG9XRVY5Vy16Z19EdjlZYmYta3BmT1NjOTBsNEJCaGZuQkFHa3RpU0FUbTl0NHEzaTVmSzdPSTlUNllwM1hQTndxMHVyakQyX1dlQ1ZXS0NfRnRVbUVJZjlENXc5NmhTajdnMVN5VjQ4WXBfcmJKMWpMUFhjQzJwaW5zNDJBb0czMzU4LXFqR1NPanc4T2hQdXZ3ajZsaFk1TUlEeGFSQ042VlZETzNZb01ra0YyMlU3Znh4VE1WdG54YVRXUWpkMEZrR3l4SzR3RkR3c0EifQ=="));
+        HttpMessageSecurity messagesecurity = getMessageSecurityWithKeys();
+
+        Request request =  getRequest();
+        Request protectedRequest = messagesecurity.protectRequest(request);
+
+        Assert.assertTrue(getRequestBody(protectedRequest).equals(expectedEncryptedRequestBody));
+        Assert.assertTrue(protectedRequest.method().equals(request.method()));
+
+        Assert.assertTrue("Bearer Token".equals(protectedRequest.header("Authorization")));
+    }
+
+    @Test 
+    public void unprotectResponseTest() throws Exception{
+        String expectedResponse = new String(Base64.decodeBase64("eyJraWQiOiJ0ZXN0IiwicmVrIjp7Imp3ayI6eyJraWQiOiIwMzZhOTQ2MS01NDAxLTQzNTItYjQ0Ni02ZWNmNGQyNmUwOGEiLCJrdHkiOiJSU0EiLCJrZXlfb3BzIjpbImVuY3J5cHQiLCJ3cmFwS2V5IiwidmVyaWZ5Il0sIm4iOiJoeWZmOUdVVlJHMmdDVnoyeFRRMDNiUDV3NUJLYUR6dExiaEdPRER4TEloNFVIZTlVZWlJYmJnUUp3eVMwdkpYc1pGNVNENE9qajZaU05BeHBuRFh1V1dwcjhiTTFZYUxqSVViV21RNzdlUFZPSjltUTFqTUN2eVJWQnhFU21BSjYxV21OOFBnTXZIMGFWMnpIVlBJek9LRkItUUZCQ2RmMlZoSmtiVGNwX3B3bnBUZmdFWVN3M1Zhd3IzRF9kTEhYcUxYT0dEZFBQMzg0eW5NLUtIRmoyamVnc2NpOER6T1dya01tV2gza1hIdThZUXBWcGxvSGl2RWNEYzVCQ1dDZDY2UUdnWGRwQXNKcl81U3ZISGwtVkk5czdQM3V2U2toTElEZE1hZmpabU1NRFFrWmx6VllZdExCTWJUMHY2aFFVVlJpNDZFU2RBQ0w1UTlpWkZHd1EiLCJlIjoiQVFBQiIsImQiOm51bGwsImRwIjpudWxsLCJkcSI6bnVsbCwicWkiOm51bGwsInAiOm51bGwsInEiOm51bGwsImsiOm51bGwsImtleV9oc20iOm51bGx9fX0="));
+        HttpMessageSecurity messagesecurity = getMessageSecurityWithKeys();
+        Response response = getResponse();
+
+        Response unprotectedResponse = messagesecurity.unprotectResponse(response);
+
+        Assert.assertTrue(expectedResponse.equals(unprotectedResponse.body().string()));
+    }
+
+    private HttpMessageSecurity getMessageSecurityWithoutKeys() throws Exception{
+        return new HttpMessageSecurity("Token", "", "", "", "", true);
+    }
+
+    private HttpMessageSecurity getMessageSecurityWithKeys() throws Exception{
+        return new HttpMessageSecurity("Token",
+                                       new String(Base64.decodeBase64(clientEncryptionKeyBase64)),
+                                       new String(Base64.decodeBase64(clientSignatureKeyBase64)),
+                                       new String(Base64.decodeBase64(serverEncryptionKeyBase64)),
+                                       new String(Base64.decodeBase64(serverSignatureKeyBase64)),
+                                       true);
+    }
+
+    private Request getRequest(){
+        RequestBody requestBody = RequestBody.create(MediaType.parse("application/jose+json"), "{\"kid\":\"test\"}");
+        return (new Request.Builder()).url("http://www.contoso.com").post(requestBody).build();
+    }
+
+    private Response getResponse(){
+        String responseBodyString = new String(Base64.decodeBase64("eyJwcm90ZWN0ZWQiOiJleUpoYkdjaU9pSlNVekkxTmlJc0ltdHBaQ0k2SWpSaU9EWTBaR0ptTFRZMFpHUXRORFZqWVMwNFlqWTVMV05tWldNd05EVTJOR0kxTUNJc0ltRjBJam9pVkc5clpXNGlMQ0owY3lJNk1Dd2ljQ0k2Ym5Wc2JDd2lkSGx3SWpvaVVHOVFJbjAiLCJwYXlsb2FkIjoiZXlKd2NtOTBaV04wWldRaU9pSmxlVXBvWWtkamFVOXBTbE5WTUVWMFZEQkdSbFZEU1hOSmJYUndXa05KTmtscVdUQlBWRmt4V2tkT2FVeFVTbXhPYWxGMFRrZEZlVTVETVdsWlYwMTNURmRSTVZscVl6QlpNa2w0V21wa2FrNURTWE5KYlZaMVdYbEpOa2xyUlhoTmFtaEVVV3ROZEZOR1RYbE9WRmxwWmxFaUxDSmxibU55ZVhCMFpXUmZhMlY1SWpvaVlUSldOU0lzSW1sMklqb2lWa1ZXVkZaRVJYbE5lbEpWVWxaT1ZVMVVTWHBPUVNJc0ltTnBjR2hsY25SbGVIUWlPaUpsYmpGTGRYZ3pSSE40ZERNellqbEtaRlI2UzNweVEzcGhlVkpsWldoR2VqaGZiMVpoUzE5V1QwVjFaSEZxTTNVNU1HSlZZMm8xV0hscGExRmhSMHRrTW1KQk1EaDVZbnA0YlU0MVMwMUhaa3hTZEVKbk5FNHpkRWd3WVZnNVJGOHlTVGRMVlZCVFVYSnhRbGhUU1dSMVpsZzVZVnBFYjJSUGNYcHRkV2xSWTNWMFUxSkZVMFpoUVU1SlVsOHdTbXBVU1RSWVRWSmtOalp3TUcwMFNsZFBUV0p5WDNSVWNFOTZWVzVwUjFodllXaG1OVEpTVFhWck5WVXdWMHBQVG1SM2FtVjZiMk01Y0Zkd1NqQmtURlZGWW1rNFQxZHJOamgxUm5jM2NDMDFiRVI2VTBaWmNXRnpRbXBZYWxoMFNsbHVZMU54YjA1dWVIRkJOWHBqZEVSNVlrWnpPRXR5TFZSM1FXaE9TbTF3YTAxdVlteFlUSHBMT0ZOSldHUnVZMVE1YTBGd1JHRlNWMDkyUWxKRE1YbG1la0V6WVdzNE0xWTJTVUU0T0VOSk1tRTFhM055YUhveFIyTnlXV0ZGUTNWeGVYVXpkRXBZTFMxRWRtVjBSRzlDV1haZk4yVmZjbk14YkZkVWQxaERiemhMWnkxRmJETk9VMUJEYTNONVJEazFWMDF4UjBWSmMzRk1ZakZsV0ZaTmRHRnNZVFphWDE5TGRsTlVXRTFKTTJKQ1ZHdzRTMFJ6U0RORFJUSnhPWEJMWlVacWFDMHpibEp3Ykc1WU5HbGxhMXBVZFVKcFpFOW1UbWR3U25SVE1ETlVkeloxVVVKdExXTTJXRTVFVWtoak5UQlhORWMyTlRjM05WOWlObWhIWDNKNE5XeFVWbkYwTjJZM1VEUlJjakpoYWpoelVEQnFZa1YyVEVSUVYyVnlXbHB1YzA0emNqaEphMjlLV1RsT1NqaFVjMFp4TTBjM05rOWZVbDlsYXpCVlQzQklhSGt0TlZScWJVSnFUR2x5WmtkSFdYcDBPR3cyUTNVNE1YTkNMUzFIWmtSeGRGUXpPVTlUTm1kM2FHcE5RVk5TZURSdU5Hd3dWWFJKVW05bVFXRmpNRWQyUW1sQlpGcFVOVWQ2UkY4eFdHaGtiWGhTY1RKM2JsWk9NVEZvZUVjdFVqQmZYMEZ3VWxGQmVXRnFZbkJRYW10aGRWOWZhelkxYW01dFZXcFJhWEZwYkhOMWNVUlhSbTFHTW5KRkxWVk5ORUZoUzBWVWVqQmxiVVpzTUc0eGNtRTFSVWwxU1ZoTU4wMUhPVjlwZWxObGIwVTJUbUZXYlhkclJtY3laV1l6YlRKek5XTlNka3hZTVVjaUxDSjBZV2NpT2lKaFIyTk5NMUpHYXpScFQwNXlYM2hVZEV4U1QxcG5JbjAiLCJzaWduYXR1cmUiOiJDRmZBNjJfcjdTVndhSWkzWTN0S19SMmc2MXhBNzhya3dKcXU2S0V1czktNVBnTXJiVVFYWXp2OTVxY1AwcEgzTzl4dnRONkVmY3lNcERQZjlTal9TN2djSENNSWhreVVNSVdoSnVHdk1kUGo1QVVhZmlaRGNjcE95OW4yb1d6NHNYVzNNeUJKR2FOa1JJVGJmTnVwQ1ZEWWRkeXdWVjdldlc2Ui16SS1rOVNIRUlfcUpRZ3Q4RFBoN1V6YTgzWG5mNWVlV0xpMF9qZTVrcEVHb2N0TGRaV1p2TV9RUk5zeVdHMHZUZ0NZWTBUbGFlVGhXOW11aU9idDFFdDRVN0dBMUg1TGp4UHMwdll6MVM0UlFyd1lPMm81VzJXb2pGcG5BSkMwY05TcDNWbmJQc0M0YTBPSTdQcFhkUHl1bml0SVJYNFBlRDB4S1BaVmZsdlR0UUpld0EifQ=="));
+       
+        ResponseBody responseBody = ResponseBody.create(MediaType.parse("application/jose+json"), responseBodyString);
+        return (new Response.Builder()).body(responseBody).request(getRequest()).protocol(okhttp3.Protocol.HTTP_2).code(200).build();
+    }
+
+    private String getRequestBody(Request request) throws Exception{
+        Buffer buffer = new Buffer();
+        request.body().writeTo(buffer);
+        return buffer.readUtf8();
     }
 }
