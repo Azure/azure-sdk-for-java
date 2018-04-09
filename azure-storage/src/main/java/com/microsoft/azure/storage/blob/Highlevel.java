@@ -44,7 +44,7 @@ public class Highlevel {
          *
          * @param progressReceiver
          *      An object that implements the {@link IProgressReceiver} interface which will be invoked periodically as
-         *      bytes are sent in a PutBlock call to the BlockBlobURL.
+         *      bytes are sent in a PutBlock call to the BlockBlobURL. May be null if no progress reports are desired.
          * @param httpHeaders
          *      {@link BlobHTTPHeaders}
          * @param metadata

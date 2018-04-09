@@ -352,7 +352,7 @@ public class BlobURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/lease-blob">Azure Docs</a>.
      *
      * @param proposedID
-     *      A {@code String} in any valid GUID format.
+     *      A {@code String} in any valid GUID format. May be null.
      * @param duration
      *      The  duration of the lease, in seconds, or negative one (-1) for a lease that
      *      never expires. A non-infinite lease can be between 15 and 60 seconds.

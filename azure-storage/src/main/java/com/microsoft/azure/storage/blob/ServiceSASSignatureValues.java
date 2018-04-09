@@ -26,6 +26,8 @@ import java.time.OffsetDateTime;
  *
  * Please refer to the following for more conceptual information on SAS:
  * https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+ *
+ * Please refer to the following for more details on each value, including which are required:
  * https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
  */
 public final class ServiceSASSignatureValues {

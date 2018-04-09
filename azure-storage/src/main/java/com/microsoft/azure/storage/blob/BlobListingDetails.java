@@ -21,7 +21,8 @@ import java.util.ArrayList;
 /**
  * This type allows users to specify additional information the service should return with each blob when listing blobs
  * in a container (via a {@link ContainerURL} object). This type is immutable to ensure thread-safety of requests, so
- * changing the details for a different listing operation requires construction of a new object.
+ * changing the details for a different listing operation requires construction of a new object. Null may be passed if
+ * none of the options are desirable.
  */
 public final class BlobListingDetails {
 

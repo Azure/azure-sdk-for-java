@@ -259,7 +259,7 @@ public final class ContainerURL extends StorageURL {
      * @param identifiers
      *      A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
      *      <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     *      for more information.
+     *      for more information. Passing null will clear all access policies.
      * @param accessConditions
      *      {@link ContainerAccessConditions}
      * @return

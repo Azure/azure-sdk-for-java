@@ -16,7 +16,7 @@ package com.microsoft.azure.storage.blob;
 
 /**
  * An HTTP ETag. An object of this type may be set as a field on an {@link HTTPAccessConditions} object to specify that
- * a request should use ETag conditions.
+ * a request should use ETag conditions. Null may be passed if no ETag condition is required.
  */
 public final class ETag {
 
