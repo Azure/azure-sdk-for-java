@@ -52,7 +52,7 @@
 			<layout>default</layout>
 			<snapshots>
 				<enabled>true</enabled>
-				<updatePolicy>always</updatePolicy>
+				<updatePolicy>daily</updatePolicy>
 			</snapshots>
 		</repository>
 	</repositories>
@@ -76,7 +76,9 @@
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-keyvault-cryptography</artifactId>
-			<version>1.0.0</version>
+			<version>1.0.1-SNAPSHOT</version>
+			<scope>system</scope>
+			<systemPath>${basedir}\..\azure-keyvault-cryptography\target\azure-keyvault-cryptography-1.0.1-SNAPSHOT.jar</systemPath>
 		</dependency>
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
