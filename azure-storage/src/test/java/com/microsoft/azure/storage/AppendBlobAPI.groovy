@@ -13,7 +13,6 @@ import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
 import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
-
 import java.security.MessageDigest
 
 class AppendBlobAPI extends APISpec {

@@ -285,7 +285,6 @@ class BlobAPI extends APISpec {
         // TODO: Support: null  | "bar"  | null   | null   || 200?
     }
 
-
     @Unroll
     def "Blob set metadata AC"() {
         setup:
@@ -313,7 +312,7 @@ class BlobAPI extends APISpec {
         setup:
         BlobsAcquireLeaseHeaders headers =
                 bu.acquireLease(UUID.randomUUID().toString(), leaseTime, null)
-                .blockingGet().headers()
+                        .blockingGet().headers()
 
         when:
         BlobsGetPropertiesHeaders properties = bu.getProperties(null).blockingGet()
@@ -724,7 +723,7 @@ class BlobAPI extends APISpec {
     }
 
     @Unroll
-    def "Blob delete AC"()  {
+    def "Blob delete AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)

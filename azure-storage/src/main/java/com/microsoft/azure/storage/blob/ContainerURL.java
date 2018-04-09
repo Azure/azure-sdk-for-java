@@ -22,6 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
+
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
  * {@link ServiceURL} object. This class does not hold any state about a particular blob but is instead a convenient way
@@ -64,6 +66,7 @@ public final class ContainerURL extends StorageURL {
      *      A new {@link BlockBlobURL} object which references the blob with the specified name in this container.
      */
     public BlockBlobURL createBlockBlobURL(String blobName) {
+        blobName = safeURLEncode(blobName);
         try {
             return new BlockBlobURL(StorageURL.appendToURLPath(new URL(this.storageClient.url()), blobName),
                     this.storageClient.httpPipeline());
@@ -85,6 +88,7 @@ public final class ContainerURL extends StorageURL {
      *      A new {@link PageBlobURL} object which references the blob with the specified name in this container.
      */
     public PageBlobURL createPageBlobURL(String blobName) {
+        blobName = safeURLEncode(blobName);
         try {
             return new PageBlobURL(StorageURL.appendToURLPath(new URL(this.storageClient.url()), blobName),
                     this.storageClient.httpPipeline());
@@ -106,6 +110,7 @@ public final class ContainerURL extends StorageURL {
      *      A new {@link AppendBlobURL} object which references the blob with the specified name in this container.
      */
     public AppendBlobURL createAppendBlobURL(String blobName) {
+        blobName = safeURLEncode(blobName);
         try {
             return new AppendBlobURL(StorageURL.appendToURLPath(new URL(this.storageClient.url()), blobName),
                     this.storageClient.httpPipeline());
@@ -127,6 +132,7 @@ public final class ContainerURL extends StorageURL {
      *      A new {@link BlobURL} object which references the blob with the specified name in this container.
      */
     public BlobURL createBlobURL(String blobName) {
+        blobName = safeURLEncode(blobName);
         try {
             return new BlobURL(StorageURL.appendToURLPath(new URL(this.storageClient.url()), blobName),
                     this.storageClient.httpPipeline());

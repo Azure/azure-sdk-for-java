@@ -18,6 +18,7 @@ import com.microsoft.azure.storage.blob.models.ServiceGetStatisticsResponse
 import com.microsoft.azure.storage.blob.models.ServiceListContainersSegmentResponse
 import com.microsoft.azure.storage.blob.models.ServiceSetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.StorageServiceProperties
+import spock.lang.Unroll
 
 class ServiceAPI extends APISpec {
     StorageServiceProperties originalProps = primaryServiceURL.getProperties().blockingGet().body()

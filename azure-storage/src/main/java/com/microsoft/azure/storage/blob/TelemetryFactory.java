@@ -42,6 +42,7 @@ public final class TelemetryFactory implements RequestPolicyFactory {
      *      {@link TelemetryOptions}
      */
     public TelemetryFactory(TelemetryOptions telemetryOptions) {
+        telemetryOptions = telemetryOptions == null ? TelemetryOptions.DEFAULT : telemetryOptions;
         String userAgentPrefix = telemetryOptions.getUserAgentPrefix() == null ?
                 Constants.EMPTY_STRING : telemetryOptions.getUserAgentPrefix();
         this.userAgent = userAgentPrefix + ' ' +

@@ -151,7 +151,7 @@ public final class SharedKeyCredentials implements ICredentials {
         String contentLength = getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_LENGTH);
         contentLength = contentLength.equals("0") ? Constants.EMPTY_STRING : contentLength;
 
-        return Utility.join(new String[]{
+        return String.join("\n", new String[]{
                         request.httpMethod().toString(),
                         getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_ENCODING),
                         getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_LANGUAGE),
@@ -167,7 +167,7 @@ public final class SharedKeyCredentials implements ICredentials {
                         getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.RANGE),
                         getAdditionalXmsHeaders(httpHeaders),
                         getCanonicalizedResource(request.url())
-                }, '\n');
+        });
     }
 
     private void appendCanonicalizedElement(final StringBuilder builder, final String element) {
@@ -242,7 +242,7 @@ public final class SharedKeyCredentials implements ICredentials {
         for (String queryParamName : queryParamNames) {
             final List<String> queryParamValues = queryParams.get(queryParamName);
             Collections.sort(queryParamValues);
-            String queryParamValuesStr = Utility.join(queryParamValues.toArray(new String[]{}), ',');
+            String queryParamValuesStr = String.join(",", queryParamValues.toArray(new String[]{}));
             canonicalizedResource.append("\n").append(queryParamName.toLowerCase(Locale.US)).append(":")
                     .append(queryParamValuesStr);
         }
