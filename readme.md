@@ -14,8 +14,8 @@
 
 |Branch|Status|
 |------|-------------|
-|master|[![Build status](https://ci.appveyor.com/api/projects/status/3prh8sm3stn4o5vj/branch/master?svg=true)](https://ci.appveyor.com/project/sabeegrewal/azure-event-hubs-java/branch/master)|
-|dev|[![Build status](https://ci.appveyor.com/api/projects/status/3prh8sm3stn4o5vj/branch/dev?svg=true)](https://ci.appveyor.com/project/sabeegrewal/azure-event-hubs-java/branch/dev)|
+|master|[![Build status](https://ci.appveyor.com/api/projects/status/dq8qyu2k3wu2uexd/branch/master?svg=true)](https://ci.appveyor.com/project/sabeegrewal/azure-event-hubs-java/branch/master)|
+|dev|[![Build status](https://ci.appveyor.com/api/projects/status/dq8qyu2k3wu2uexd/branch/dev?svg=true)](https://ci.appveyor.com/project/sabeegrewal/azure-event-hubs-java/branch/dev)|
 
 Azure Event Hubs is a hyper-scale data ingestion service, fully-managed by Microsoft, that enables you to collect, store and process trillions of events from websites, apps, IoT devices, and any stream of data.
 
