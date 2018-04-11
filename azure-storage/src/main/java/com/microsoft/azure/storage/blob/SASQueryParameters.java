@@ -214,8 +214,7 @@ public final class SASQueryParameters {
 
         queryValue = queryParamsMap.get("sip");
         if (queryValue != null) {
-            this.ipRange = new IPRange();
-            this.ipRange.ipMin = (Inet4Address)(Inet4Address.getByName(queryValue[0]));
+            this.ipRange = IPRange.parse(queryValue[0]);
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("sip");
             }

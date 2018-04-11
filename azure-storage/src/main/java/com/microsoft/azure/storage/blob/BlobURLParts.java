@@ -98,10 +98,13 @@ public final class BlobURLParts {
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
         }
-        String encodedSAS = this.sasQueryParameters.encode();
-        if (encodedSAS.length() != 0) {
-            url.withQuery(encodedSAS);
+        if (this.sasQueryParameters != null) {
+            String encodedSAS = this.sasQueryParameters.encode();
+            if (encodedSAS.length() != 0) {
+                url.withQuery(encodedSAS);
+            }
         }
+
         for (Map.Entry<String, String[]> entry : this.unparsedParameters.entrySet()) {
             // TODO: Test this is the proper encoding
             // The commas are intentionally encoded.

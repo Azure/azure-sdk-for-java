@@ -17,8 +17,10 @@ package com.microsoft.azure.storage.blob;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
+import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -177,8 +179,7 @@ final class Utility {
         }
 
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
-        formatter.withZone(UTC_ZONE);
-        return OffsetDateTime.parse(dateString, formatter);
+        return LocalDateTime.parse(dateString, formatter).atZone(UTC_ZONE).toOffsetDateTime();
     }
 
     /**

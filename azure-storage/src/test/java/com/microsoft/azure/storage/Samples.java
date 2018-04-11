@@ -12,6 +12,7 @@ import org.junit.Test;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.util.logging.Level;
@@ -263,16 +264,50 @@ public class Samples {
     This example shows how to break a URL into its parts so you can examine and/or change some of its values and then
     construct a new URL.
      */
-    public void exampleBlobURLParts() throws MalformedURLException {
+    public void exampleBlobURLParts() throws MalformedURLException, UnknownHostException {
         /*
          Start with a URL that identifies a snapshot of a blob in a container and includes a Shared Access Signature
          (SAS).
          */
         URL u = new URL("https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
-                "snapshot=2011-03-09T01:42:34.9360000Z" +
-                "sv=2015-02-21&sr=b&st=2111-01-09T01:42:34.936Z&se=2222-03-09T01:42:34.936Z&sp=rw" +
+                "snapshot=2011-03-09T01:42:34.9360000Z&" +
+                "sv=2015-02-21&sr=b&st=2111-01-09T01:42:34Z&se=2222-03-09T01:42:34Z&sp=rw" +
                 "&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s" +
                 "&sig=92836758923659283652983562==");
+
+        // You can parse this URL into its constituent parts:
+        BlobURLParts parts = URLParser.parse(u);
+
+        // Now, we access the parts (this example prints them).
+        System.out.println(String.join("\n",
+                new String[]{parts.host,
+                        parts.containerName,
+                        parts.blobName,
+                        parts.snapshot}));
+        System.out.println("");
+        SASQueryParameters sas = parts.sasQueryParameters;
+        System.out.println(String.join("\n",
+                new String[]{sas.getVersion(),
+                sas.getResource(),
+                sas.getStartTime().toString(),
+                sas.getExpiryTime().toString(),
+                sas.getPermissions(),
+                sas.getIpRange().toString(),
+                sas.getProtocol().toString(),
+                sas.getIdentifier(),
+                sas.getServices(),
+                sas.getSignature()}));
+
+        // You can then change some of the fields and construct a new URL.
+        parts.sasQueryParameters = null; // Remove the SAS query parameters.
+        parts.snapshot = null; // Remove the snapshot timestamp.
+        parts.containerName = "othercontainer"; // Change the container name.
+        // In this example, we'll keep the blob name as it is.
+
+        // Construct a new URL from the parts:
+        URL newURL = parts.toURL();
+        System.out.println(newURL);
+        // NOTE: You can pass the new URL to the constructor for any XxxURL to manipulate the resource.
     }
 }
 
