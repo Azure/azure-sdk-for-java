@@ -471,8 +471,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * @param marker
-     *      Identifies the portion of the list to be returned with the next list operation. This value is returned in
-     *      the response of a previous list operation. Set to null if this is the first segment.
+     *      Identifies the portion of the list to be returned with the next list operation.
+     *      This value is returned in the response of a previous list operation as the
+     *      ListBlobsHierarchySegmentResponse->body()->nextMarker(). Set to null to list the first segment.
      * @param delimiter
      *      The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
      *      whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may

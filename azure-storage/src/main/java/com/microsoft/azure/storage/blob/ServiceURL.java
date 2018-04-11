@@ -77,9 +77,9 @@ public final class ServiceURL extends StorageURL {
      * the <a href="https://docs.microsoft.com/rest/api/storageservices/list-containers2">Azure Docs</a>.
      *
      * @param marker
-     *      A {@code String} value that identifies the portion of the list to be returned with the next list operation.
-     *      This value is returned in the response of a previous list operation. Set to null if this is the first
-     *      segment.
+     *      Identifies the portion of the list to be returned with the next list operation.
+     *      This value is returned in the response of a previous list operation as the ListContainersSegmentResponse->
+     *      body()->nextMarker(). Set to null to list the first segment.
      * @param options
      *      A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @return
