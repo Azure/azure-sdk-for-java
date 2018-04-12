@@ -102,7 +102,7 @@ public final class AzureAsyncOperationPollStrategy extends PollStrategy {
                         Single<HttpResponse> result;
                         if (!data.pollingCompleted) {
                             final HttpResponse bufferedHttpPollResponse = response.buffer();
-                            result = bufferedHttpPollResponse.bodyAsStringAsync()
+                            result = bufferedHttpPollResponse.bodyAsString()
                                     .map(new Function<String, HttpResponse>() {
                                         @Override
                                         public HttpResponse apply(String bodyString) {

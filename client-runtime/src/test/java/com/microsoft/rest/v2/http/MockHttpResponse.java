@@ -81,17 +81,17 @@ public class MockHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<byte[]> bodyAsByteArrayAsync() {
+    public Single<byte[]> bodyAsByteArray() {
         return Single.just(bodyBytes);
     }
 
     @Override
-    public Flowable<ByteBuffer> streamBodyAsync() {
+    public Flowable<ByteBuffer> body() {
         return Flowable.just(ByteBuffer.wrap(bodyBytes));
     }
 
     @Override
-    public Single<String> bodyAsStringAsync() {
+    public Single<String> bodyAsString() {
         return Single.just(bodyBytes == null ? "" : new String(bodyBytes));
     }
 }

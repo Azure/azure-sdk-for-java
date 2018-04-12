@@ -46,9 +46,9 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<byte[]> bodyAsByteArrayAsync() {
+    public Single<byte[]> bodyAsByteArray() {
         if (body == null) {
-            body = innerHttpResponse.bodyAsByteArrayAsync()
+            body = innerHttpResponse.bodyAsByteArray()
                     .map(new Function<byte[], byte[]>() {
                         @Override
                         public byte[] apply(byte[] bytes) {
@@ -61,8 +61,8 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Flowable<ByteBuffer> streamBodyAsync() {
-        return bodyAsByteArrayAsync().flatMapPublisher(new Function<byte[], Publisher<? extends ByteBuffer>>() {
+    public Flowable<ByteBuffer> body() {
+        return bodyAsByteArray().flatMapPublisher(new Function<byte[], Publisher<? extends ByteBuffer>>() {
             @Override
             public Publisher<? extends ByteBuffer> apply(byte[] bytes) throws Exception {
                 return Flowable.just(ByteBuffer.wrap(bytes));
@@ -71,8 +71,8 @@ public final class BufferedHttpResponse extends HttpResponse {
     }
 
     @Override
-    public Single<String> bodyAsStringAsync() {
-        return bodyAsByteArrayAsync()
+    public Single<String> bodyAsString() {
+        return bodyAsByteArray()
                 .map(new Function<byte[], String>() {
                     @Override
                     public String apply(byte[] bytes) {

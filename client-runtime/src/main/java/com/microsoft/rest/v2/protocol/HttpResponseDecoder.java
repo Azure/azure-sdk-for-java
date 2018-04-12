@@ -92,7 +92,7 @@ public final class HttpResponseDecoder {
         Single<HttpResponse> result;
         if (isErrorStatus) {
             final HttpResponse bufferedResponse = response.buffer();
-            result = bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
+            result = bufferedResponse.bodyAsString().map(new Function<String, HttpResponse>() {
                 @Override
                 public HttpResponse apply(String bodyString) throws Exception {
                     bufferedResponse.withDeserializedHeaders(deserializedHeaders);
@@ -110,7 +110,7 @@ public final class HttpResponseDecoder {
             });
         } else if (isSerializableBody) {
             final HttpResponse bufferedResponse = response.buffer();
-            result = bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
+            result = bufferedResponse.bodyAsString().map(new Function<String, HttpResponse>() {
                 @Override
                 public HttpResponse apply(String bodyString) throws Exception {
                     try {

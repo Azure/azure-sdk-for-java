@@ -39,17 +39,17 @@ public class RequestIdPolicyTests {
         }
 
         @Override
-        public Single<byte[]> bodyAsByteArrayAsync() {
+        public Single<byte[]> bodyAsByteArray() {
             return Single.just(new byte[0]);
         }
 
         @Override
-        public Flowable<ByteBuffer> streamBodyAsync() {
+        public Flowable<ByteBuffer> body() {
             return Flowable.just(ByteBuffer.allocate(0));
         }
 
         @Override
-        public Single<String> bodyAsStringAsync() {
+        public Single<String> bodyAsString() {
             return Single.just("");
         }
     };

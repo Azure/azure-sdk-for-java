@@ -17,15 +17,19 @@ import com.microsoft.rest.v2.annotations.PathParam;
 import com.microsoft.rest.v2.http.ContentType;
 import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipeline;
+import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
 import com.microsoft.rest.v2.policy.AddHeadersPolicyFactory;
+import com.microsoft.rest.v2.policy.HostPolicyFactory;
 import com.microsoft.rest.v2.policy.HttpLogDetailLevel;
 import com.microsoft.rest.v2.policy.HttpLoggingPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicy;
 import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import com.microsoft.rest.v2.util.FlowableUtil;
+import io.netty.util.ResourceLeak;
+import io.netty.util.ResourceLeakDetector;
 import io.reactivex.Completable;
 import io.reactivex.CompletableSource;
 import io.reactivex.Flowable;
@@ -34,6 +38,9 @@ import io.reactivex.SingleSource;
 import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.Functions;
+import io.reactivex.schedulers.Schedulers;
+
+import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
 import org.slf4j.LoggerFactory;
@@ -42,6 +49,7 @@ import java.io.IOException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.FileVisitResult;
 import java.nio.file.Files;
 import java.nio.file.NoSuchFileException;
@@ -65,9 +73,39 @@ import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
 
 import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertTrue;
 
 @Ignore("Should only be run manually")
 public class RestProxyStressTests {
+    private static IOService service;
+
+    @BeforeClass
+    public static void setup() {
+        ResourceLeakDetector.setLevel(ResourceLeakDetector.Level.PARANOID);
+        LoggerFactory.getLogger(RestProxyStressTests.class).info("ResourceLeakDetector level: " + ResourceLeakDetector.getLevel());
+
+        HttpHeaders headers = new HttpHeaders()
+                .set("x-ms-version", "2017-04-17");
+        HttpPipelineBuilder builder = new HttpPipelineBuilder()
+                .withRequestPolicy(new AddDatePolicyFactory())
+                .withRequestPolicy(new AddHeadersPolicyFactory(headers))
+                .withRequestPolicy(new ThrottlingRetryPolicyFactory());
+
+        String liveStressTests = System.getenv("JAVA_SDK_TEST_SAS");
+        if (liveStressTests == null || liveStressTests.isEmpty()) {
+            builder.withRequestPolicy(new HostPolicyFactory("http://localhost:11081"));
+        }
+
+        builder.withHttpLoggingPolicy(HttpLogDetailLevel.BASIC);
+
+        service = RestProxy.create(IOService.class, builder.build());
+
+        String tempFolderPath = System.getenv("JAVA_STRESS_TEST_TEMP_PATH");
+        if (tempFolderPath == null || tempFolderPath.isEmpty()) {
+            tempFolderPath = "temp";
+        }
+        TEMP_FOLDER_PATH = Paths.get(tempFolderPath);
+    }
 
     private static final class AddDatePolicyFactory implements RequestPolicyFactory {
         @Override
@@ -159,7 +197,7 @@ public class RestProxyStressTests {
         Single<VoidResponse> deleteContainer(@PathParam("id") String id, @PathParam(value = "sas", encoded = true) String sas);
     }
 
-    private static final Path TEMP_FOLDER_PATH = Paths.get("temp");
+    private static Path TEMP_FOLDER_PATH;
     private static final int NUM_FILES = 100;
     private static final int FILE_SIZE = 1024 * 1024 * 100;
     private static final int CHUNK_SIZE = 8192;
@@ -232,18 +270,7 @@ public class RestProxyStressTests {
 
     @Test
     public void upload100MParallelTest() throws Exception {
-        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
-
-        HttpPipeline pipeline = HttpPipeline.build(
-                new AddDatePolicyFactory(),
-                new AddHeadersPolicyFactory(headers),
-                new ThrottlingRetryPolicyFactory(),
-                new HttpLoggingPolicyFactory(HttpLogDetailLevel.BASIC));
-
-        final IOService service = RestProxy.create(IOService.class, pipeline);
-
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
         List<byte[]> md5s = Flowable.range(0, NUM_FILES)
                 .map(integer -> {
                     final Path filePath = TEMP_FOLDER_PATH.resolve("100m-" + integer + "-md5.dat");
@@ -254,8 +281,7 @@ public class RestProxyStressTests {
         Flowable.range(0, NUM_FILES)
                 .zipWith(md5s, (id, md5) -> {
                     final AsynchronousFileChannel fileStream = AsynchronousFileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"));
-                    Flowable<ByteBuffer> stream = FlowableUtil.readFile(fileStream);
-                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", stream, FILE_SIZE).flatMapCompletable(response -> {
+                    return service.upload100MB(String.valueOf(id), sas, "BlockBlob", FlowableUtil.readFile(fileStream), FILE_SIZE).flatMapCompletable(response -> {
                         String base64MD5 = response.rawHeaders().get("Content-MD5");
                         byte[] receivedMD5 = Base64.getDecoder().decode(base64MD5);
                         assertArrayEquals(md5, receivedMD5);
@@ -268,17 +294,7 @@ public class RestProxyStressTests {
 
     @Test
     public void uploadMemoryMappedTest() throws Exception {
-        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
-
-        HttpPipeline pipeline = HttpPipeline.build(
-                new AddDatePolicyFactory(),
-                new AddHeadersPolicyFactory(headers),
-                new ThrottlingRetryPolicyFactory(),
-                new HttpLoggingPolicyFactory(HttpLogDetailLevel.BASIC));
-
-        final IOService service = RestProxy.create(IOService.class, pipeline);
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         List<byte[]> md5s = Flowable.range(0, NUM_FILES)
                 .map(integer -> {
@@ -290,6 +306,7 @@ public class RestProxyStressTests {
         Flowable.range(0, NUM_FILES)
                 .zipWith(md5s, (id, md5) -> {
                     final FileChannel fileStream = FileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"), StandardOpenOption.READ);
+
                     Flowable<ByteBuffer> stream = FlowableUtil.split(fileStream.map(FileChannel.MapMode.READ_ONLY, 0, fileStream.size()), CHUNK_SIZE);
                     return service.upload100MB(String.valueOf(id), sas, "BlockBlob", stream, FILE_SIZE).flatMapCompletable(response -> {
                         String base64MD5 = response.rawHeaders().get("Content-MD5");
@@ -307,18 +324,9 @@ public class RestProxyStressTests {
      * Run after running one of the corresponding upload tests.
      */
     @Test
-    public void download100MParallelTest() throws Exception {
-        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
-
-        HttpPipeline pipeline = HttpPipeline.build(
-                new AddDatePolicyFactory(),
-                new AddHeadersPolicyFactory(headers),
-                new ThrottlingRetryPolicyFactory(),
-                new HttpLoggingPolicyFactory(HttpLogDetailLevel.BASIC));
-
-        final IOService service = RestProxy.create(IOService.class, pipeline);
+    public void download100MParallelTest() {
+        while (true) {
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         List<byte[]> md5s = Flowable.range(0, NUM_FILES)
                 .map(integer -> {
@@ -327,36 +335,29 @@ public class RestProxyStressTests {
                 }).toList().blockingGet();
 
         Instant downloadStart = Instant.now();
-        Flowable.range(0, NUM_FILES)
+        boolean result = Flowable.range(0, NUM_FILES)
                 .zipWith(md5s, (id, md5) ->
                         service.download100M(String.valueOf(id), sas).flatMapCompletable(response -> {
                             final MessageDigest messageDigest = MessageDigest.getInstance("MD5");
-                            Flowable<ByteBuffer> content = response.body().doOnNext(messageDigest::update);
+                            Flowable<ByteBuffer> content = response.body()
+                                    .doOnNext(buf -> messageDigest.update(buf.slice()));
 
-                            AsynchronousFileChannel file = AsynchronousFileChannel.open(TEMP_FOLDER_PATH.resolve("100m-" + id + ".dat"), StandardOpenOption.WRITE);
-                            return FlowableUtil.writeFile(content, file).doOnComplete(() -> {
+                            return content.lastOrError().toCompletable().doOnComplete(() -> {
                                 assertArrayEquals(md5, messageDigest.digest());
                                 LoggerFactory.getLogger(getClass()).info("Finished downloading and MD5 validated for " + id);
                             });
                         }))
-                .flatMapCompletable(Functions.identity()).blockingAwait();
+                .flatMapCompletable(Functions.identity())
+                .blockingAwait(90, TimeUnit.SECONDS);
+        assertTrue(result);
         long durationMilliseconds = Duration.between(downloadStart, Instant.now()).toMillis();
         LoggerFactory.getLogger(getClass()).info("Download took " + durationMilliseconds + " milliseconds.");
+        }
     }
 
     @Test
     public void downloadUploadStreamingTest() {
-        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
-
-        HttpPipeline pipeline = HttpPipeline.build(
-                new AddDatePolicyFactory(),
-                new AddHeadersPolicyFactory(headers),
-                new ThrottlingRetryPolicyFactory(),
-                new HttpLoggingPolicyFactory(HttpLogDetailLevel.BASIC));
-
-        final IOService service = RestProxy.create(IOService.class, pipeline);
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         List<byte[]> diskMd5s = Flowable.range(0, NUM_FILES)
                 .map(integer -> {
@@ -388,17 +389,7 @@ public class RestProxyStressTests {
 
     @Test
     public void cancellationTest() throws Exception {
-        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
-
-        HttpPipeline pipeline = HttpPipeline.build(
-                new AddDatePolicyFactory(),
-                new AddHeadersPolicyFactory(headers),
-                new ThrottlingRetryPolicyFactory(),
-                new HttpLoggingPolicyFactory(HttpLogDetailLevel.BASIC));
-
-        final IOService service = RestProxy.create(IOService.class, pipeline);
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
         final Disposable d = Flowable.range(0, NUM_FILES)
                 .flatMap(integer ->
@@ -417,16 +408,8 @@ public class RestProxyStressTests {
 
     @Test
     public void testHighParallelism() throws Exception {
-        final String sas = System.getenv("JAVA_SDK_TEST_SAS");
-        HttpHeaders headers = new HttpHeaders()
-                .set("x-ms-version", "2017-04-17");
+        final String sas = System.getenv("JAVA_SDK_TEST_SAS") == null ? "" : System.getenv("JAVA_SDK_TEST_SAS");
 
-        HttpPipeline pipeline = HttpPipeline.build(
-                new AddDatePolicyFactory(),
-                new AddHeadersPolicyFactory(headers),
-                new HttpLoggingPolicyFactory(HttpLogDetailLevel.BASIC));
-
-        final IOService service = RestProxy.create(IOService.class, pipeline);
         Flowable.range(0, 10000)
                 .flatMapCompletable(integer ->
                         service.createContainer(integer.toString(), sas).toCompletable()

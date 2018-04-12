@@ -41,10 +41,33 @@ public abstract class HttpResponse implements Closeable {
     public abstract HttpHeaders headers();
 
     /**
-     * Stream this response's body content.
-     * @return This response's body as an asynchronous sequence of byte[].
+     * <p>
+     * Returns a stream of the response's body content. Emissions may occur on the
+     * Netty EventLoop threads which are shared across channels and should not be
+     * blocked. Blocking should be avoided as much as possible/practical in reactive
+     * programming but if you do use methods like {@code blockingSubscribe} or {@code blockingGet}
+     * on the stream then be sure to use {@code subscribeOn} and {@code observeOn}
+     * before the blocking call. For example:
+     * 
+     * <pre>
+     * {@code
+     *   response.body()
+     *     .map(bb -> bb.limit())
+     *     .reduce((x,y) -> x + y)
+     *     .subscribeOn(Schedulers.io())
+     *     .observeOn(Schedulers.io())
+     *     .blockingGet();
+     * }
+     * </pre>
+     * 
+     * <p>
+     * The above code is a simplistic example and would probably run fine without
+     * the `subscribeOn` and `observeOn` but should be considered a template for
+     * more complex situations.
+     * 
+     * @return The response's body as a stream of {@link ByteBuffer}.
      */
-    public abstract Flowable<ByteBuffer> streamBodyAsync();
+    public abstract Flowable<ByteBuffer> body();
 
     /**
      * Get this response object's body as a byte[]. If this response object doesn't have a body,
@@ -52,7 +75,7 @@ public abstract class HttpResponse implements Closeable {
      * @return This response object's body as a byte[]. If this response object doesn't have a body,
      * then null will be returned.
      */
-    public abstract Single<byte[]> bodyAsByteArrayAsync();
+    public abstract Single<byte[]> bodyAsByteArray();
 
     /**
      * Get this response object's body as a string. If this response object doesn't have a body,
@@ -60,7 +83,7 @@ public abstract class HttpResponse implements Closeable {
      * @return This response object's body as a string. If this response object doesn't have a body,
      * then null will be returned.
      */
-    public abstract Single<String> bodyAsStringAsync();
+    public abstract Single<String> bodyAsString();
 
     /**
      * Buffers the HTTP response body into memory, allowing the content to be inspected and replayed.

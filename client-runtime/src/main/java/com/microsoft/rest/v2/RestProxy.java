@@ -363,7 +363,7 @@ public class RestProxy implements InvocationHandler {
         final int responseStatusCode = response.statusCode();
         final Single<HttpResponse> asyncResult;
         if (!methodParser.isExpectedResponseStatusCode(responseStatusCode, additionalAllowedStatusCodes)) {
-            asyncResult = response.bodyAsStringAsync().flatMap(new Function<String, Single<HttpResponse>>() {
+            asyncResult = response.bodyAsString().flatMap(new Function<String, Single<HttpResponse>>() {
                 @Override
                 public Single<HttpResponse> apply(String responseBody) throws Exception {
                     return Single.error(instantiateUnexpectedException(methodParser, response, responseBody));
@@ -420,7 +420,7 @@ public class RestProxy implements InvocationHandler {
 
                 final TypeToken bodyTypeToken = TypeToken.of(bodyType);
                 if (bodyTypeToken.isSubtypeOf(Void.class)) {
-                    asyncResult = response.streamBodyAsync().lastElement().ignoreElement()
+                    asyncResult = response.body().lastElement().ignoreElement()
                             .andThen(Single.just(responseConstructor.newInstance(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
                 } else {
                     final Map<String, String> rawHeaders = responseHeaders.toMap();
@@ -455,7 +455,7 @@ public class RestProxy implements InvocationHandler {
             boolean isSuccess = (responseStatusCode / 100) == 2;
             asyncResult = Maybe.just(isSuccess);
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
-            Maybe<byte[]> responseBodyBytesAsync = response.bodyAsByteArrayAsync().toMaybe();
+            Maybe<byte[]> responseBodyBytesAsync = response.bodyAsByteArray().toMaybe();
             if (returnValueWireType == Base64Url.class) {
                 responseBodyBytesAsync = responseBodyBytesAsync.map(new Function<byte[], byte[]>() {
                     @Override
@@ -466,7 +466,7 @@ public class RestProxy implements InvocationHandler {
             }
             asyncResult = responseBodyBytesAsync;
         } else if (FlowableUtil.isFlowableByteBuffer(entityTypeToken)) {
-            asyncResult = Maybe.just(response.streamBodyAsync());
+            asyncResult = Maybe.just(response.body());
         } else {
             Object result = response.deserializedBody();
             if (result == null) {
@@ -533,7 +533,7 @@ public class RestProxy implements InvocationHandler {
             result = asyncExpectedResponse.flatMapPublisher(new Function<HttpResponse, Publisher<?>>() {
                 @Override
                 public Publisher<?> apply(HttpResponse httpResponse) throws Exception {
-                    return httpResponse.streamBodyAsync();
+                    return httpResponse.body();
                 }
             });
         }

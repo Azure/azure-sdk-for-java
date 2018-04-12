@@ -178,7 +178,7 @@ public class HttpLoggingPolicyFactory implements RequestPolicyFactory {
                 if ((contentTypeHeader == null || !"application/octet-stream".equalsIgnoreCase(contentTypeHeader))
                         && contentLength != 0 && contentLength < MAX_BODY_LOG_SIZE) {
                     final HttpResponse bufferedResponse = response.buffer();
-                    return bufferedResponse.bodyAsStringAsync().map(new Function<String, HttpResponse>() {
+                    return bufferedResponse.bodyAsString().map(new Function<String, HttpResponse>() {
                         @Override
                         public HttpResponse apply(String s) {
                             s = prettyPrintIfNeeded(logger, contentTypeHeader, s);

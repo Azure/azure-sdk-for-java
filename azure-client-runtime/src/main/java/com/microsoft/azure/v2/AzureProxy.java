@@ -396,7 +396,7 @@ public final class AzureProxy extends RestProxy {
                     new CompletedPollStrategy.CompletedPollStrategyData(AzureProxy.this, methodParser, httpResponse)));
         } else {
             final HttpResponse bufferedOriginalHttpResponse = httpResponse.buffer();
-            result = bufferedOriginalHttpResponse.bodyAsStringAsync()
+            result = bufferedOriginalHttpResponse.bodyAsString()
                     .map(new Function<String, PollStrategy>() {
                         @Override
                         public PollStrategy apply(String originalHttpResponseBody) {

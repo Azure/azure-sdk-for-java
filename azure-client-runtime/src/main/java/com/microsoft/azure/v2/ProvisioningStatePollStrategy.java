@@ -76,7 +76,7 @@ public final class ProvisioningStatePollStrategy extends PollStrategy {
                     @Override
                     public Single<HttpResponse> apply(HttpResponse response) {
                         final HttpResponse bufferedHttpPollResponse = response.buffer();
-                        return bufferedHttpPollResponse.bodyAsStringAsync()
+                        return bufferedHttpPollResponse.bodyAsString()
                                 .map(new Function<String, HttpResponse>() {
                                     @Override
                                     public HttpResponse apply(String responseBody) {
