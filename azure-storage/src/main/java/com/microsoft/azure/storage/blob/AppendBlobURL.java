@@ -129,17 +129,21 @@ public final class AppendBlobURL extends BlobURL {
      * @param length
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
+     * @param contentMD5
+     *      An optional hash used to verify the integrity of the page during transport. When specified, the service
+     *      compares the hash of the content that has arrived with this value. If the two hashes do not match, the
+     *      operation will fail with error code 400 (Bad Request).
      * @param accessConditions
      *      {@link BlobAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<AppendBlobsAppendBlockResponse> appendBlock(
-            Flowable<ByteBuffer> data, long length, BlobAccessConditions accessConditions) {
+            Flowable<ByteBuffer> data, long length, byte[] contentMD5, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(data, length, null,
-                accessConditions.getLeaseAccessConditions().getLeaseId(),
+                contentMD5, accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getAppendBlobAccessConditions().getIfMaxSizeLessThanOrEqual(),
                 accessConditions.getAppendBlobAccessConditions().getIfAppendPositionEquals(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),

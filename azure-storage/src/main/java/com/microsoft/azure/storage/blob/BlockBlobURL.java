@@ -105,6 +105,10 @@ public final class BlockBlobURL extends BlobURL {
      * @param length
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
+     * @param contentMD5
+     *      An optional hash used to verify the integrity of the page during transport. When specified, the service
+     *      compares the hash of the content that has arrived with this value. If the two hashes do not match, the
+     *      operation will fail with error code 400 (Bad Request).
      * @param headers
      *      {@link BlobHTTPHeaders}
      * @param metadata
@@ -115,7 +119,7 @@ public final class BlockBlobURL extends BlobURL {
      *      Emits the successful response.
      */
     public Single<BlockBlobsUploadResponse> upload(
-            Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers, Metadata metadata,
+            Flowable<ByteBuffer> data, long length, byte[] contentMD5, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
@@ -124,7 +128,7 @@ public final class BlockBlobURL extends BlobURL {
         //TODO: runtime flowable wrapper that throws an error if the size doesn't match the data
         return this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
                 data, length, null, headers.getContentType(), headers.getContentEncoding(),
-                headers.getContentLanguage(), headers.getContentMD5(), headers.getCacheControl(), metadata,
+                headers.getContentLanguage(), contentMD5, headers.getContentMD5(), headers.getCacheControl(), metadata,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
@@ -147,17 +151,21 @@ public final class BlockBlobURL extends BlobURL {
      * @param length
      *      The exact length of the data. It is important that this value match precisely the length of the data
      *      emitted by the {@code Flowable}.
+     * @param contentMD5
+     *      An optional hash used to verify the integrity of the page during transport. When specified, the service
+     *      compares the hash of the content that has arrived with this value. If the two hashes do not match, the
+     *      operation will fail with error code 400 (Bad Request).
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<BlockBlobsStageBlockResponse> stageBlock(
-            String base64BlockID, Flowable<ByteBuffer> data, long length,
+            String base64BlockID, Flowable<ByteBuffer> data, long length, byte[] contentMD5,
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
         return this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(base64BlockID, length, data,
-                null, leaseAccessConditions.getLeaseId(), null);
+                contentMD5, null, leaseAccessConditions.getLeaseId(), null);
     }
 
     /**

@@ -99,7 +99,7 @@ var activeTableTab = "activeTableTab";
 <li>java.lang.Object</li>
 <li>
 <ul class="inheritance">
-<li>com.microsoft.azure.storage.blob.Highlevel</li>
+<li>com.microsoft.azure.storage.blob.TransferManager</li>
 </ul>
 </li>
 </ul>
@@ -166,7 +166,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i0" class="altColor">
 <td class="colFirst"><code>static io.reactivex.Single&lt;<a href="../../../../../com/microsoft/azure/storage/blob/CommonRestResponse.html" title="class in com.microsoft.azure.storage.blob">CommonRestResponse</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/microsoft/azure/storage/blob/Highlevel.html#uploadByteBuffersToBlockBlob-java.lang.Iterable-com.microsoft.azure.storage.blob.BlockBlobURL-com.microsoft.azure.storage.blob.Highlevel.UploadToBlockBlobOptions-">uploadByteBuffersToBlockBlob</a></span>(java.lang.Iterable&lt;java.nio.ByteBuffer&gt;&nbsp;data,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/microsoft/azure/storage/blob/Highlevel.html#uploadByteBuffersToBlockBlob-java.lang.Iterable-com.microsoft.azure.storage.blob.BlockBlobURL-com.microsoft.azure.storage.blob.TransferManager.UploadToBlockBlobOptions-">uploadByteBuffersToBlockBlob</a></span>(java.lang.Iterable&lt;java.nio.ByteBuffer&gt;&nbsp;data,
                             <a href="../../../../../com/microsoft/azure/storage/blob/BlockBlobURL.html" title="class in com.microsoft.azure.storage.blob">BlockBlobURL</a>&nbsp;blockBlobURL,
                             <a href="../../../../../com/microsoft/azure/storage/blob/Highlevel.UploadToBlockBlobOptions.html" title="class in com.microsoft.azure.storage.blob">Highlevel.UploadToBlockBlobOptions</a>&nbsp;options)</code>
 <div class="block">Uploads an iterable of ByteBuffers to a block blob.</div>
@@ -174,7 +174,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i1" class="rowColor">
 <td class="colFirst"><code>static io.reactivex.Single&lt;<a href="../../../../../com/microsoft/azure/storage/blob/CommonRestResponse.html" title="class in com.microsoft.azure.storage.blob">CommonRestResponse</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/microsoft/azure/storage/blob/Highlevel.html#uploadByteBufferToBlockBlob-java.nio.ByteBuffer-com.microsoft.azure.storage.blob.BlockBlobURL-int-com.microsoft.azure.storage.blob.Highlevel.UploadToBlockBlobOptions-">uploadByteBufferToBlockBlob</a></span>(java.nio.ByteBuffer&nbsp;data,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/microsoft/azure/storage/blob/Highlevel.html#uploadByteBufferToBlockBlob-java.nio.ByteBuffer-com.microsoft.azure.storage.blob.BlockBlobURL-int-com.microsoft.azure.storage.blob.TransferManager.UploadToBlockBlobOptions-">uploadByteBufferToBlockBlob</a></span>(java.nio.ByteBuffer&nbsp;data,
                            <a href="../../../../../com/microsoft/azure/storage/blob/BlockBlobURL.html" title="class in com.microsoft.azure.storage.blob">BlockBlobURL</a>&nbsp;blockBlobURL,
                            int&nbsp;blockLength,
                            <a href="../../../../../com/microsoft/azure/storage/blob/Highlevel.UploadToBlockBlobOptions.html" title="class in com.microsoft.azure.storage.blob">Highlevel.UploadToBlockBlobOptions</a>&nbsp;options)</code>
@@ -183,7 +183,7 @@ extends java.lang.Object</pre>
 </tr>
 <tr id="i2" class="altColor">
 <td class="colFirst"><code>static io.reactivex.Single&lt;<a href="../../../../../com/microsoft/azure/storage/blob/CommonRestResponse.html" title="class in com.microsoft.azure.storage.blob">CommonRestResponse</a>&gt;</code></td>
-<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/microsoft/azure/storage/blob/Highlevel.html#uploadFileToBlockBlob-java.nio.channels.FileChannel-com.microsoft.azure.storage.blob.BlockBlobURL-int-com.microsoft.azure.storage.blob.Highlevel.UploadToBlockBlobOptions-">uploadFileToBlockBlob</a></span>(java.nio.channels.FileChannel&nbsp;file,
+<td class="colLast"><code><span class="memberNameLink"><a href="../../../../../com/microsoft/azure/storage/blob/Highlevel.html#uploadFileToBlockBlob-java.nio.channels.FileChannel-com.microsoft.azure.storage.blob.BlockBlobURL-int-com.microsoft.azure.storage.blob.TransferManager.UploadToBlockBlobOptions-">uploadFileToBlockBlob</a></span>(java.nio.channels.FileChannel&nbsp;file,
                      <a href="../../../../../com/microsoft/azure/storage/blob/BlockBlobURL.html" title="class in com.microsoft.azure.storage.blob">BlockBlobURL</a>&nbsp;blockBlobURL,
                      int&nbsp;blockLength,
                      <a href="../../../../../com/microsoft/azure/storage/blob/Highlevel.UploadToBlockBlobOptions.html" title="class in com.microsoft.azure.storage.blob">Highlevel.UploadToBlockBlobOptions</a>&nbsp;options)</code>
@@ -229,7 +229,7 @@ extends java.lang.Object</pre>
 <!--   -->
 </a>
 <h3>Method Detail</h3>
-<a name="uploadFileToBlockBlob-java.nio.channels.FileChannel-com.microsoft.azure.storage.blob.BlockBlobURL-int-com.microsoft.azure.storage.blob.Highlevel.UploadToBlockBlobOptions-">
+<a name="uploadFileToBlockBlob-java.nio.channels.FileChannel-com.microsoft.azure.storage.blob.BlockBlobURL-int-com.microsoft.azure.storage.blob.TransferManager.UploadToBlockBlobOptions-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -253,7 +253,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a name="uploadByteBufferToBlockBlob-java.nio.ByteBuffer-com.microsoft.azure.storage.blob.BlockBlobURL-int-com.microsoft.azure.storage.blob.Highlevel.UploadToBlockBlobOptions-">
+<a name="uploadByteBufferToBlockBlob-java.nio.ByteBuffer-com.microsoft.azure.storage.blob.BlockBlobURL-int-com.microsoft.azure.storage.blob.TransferManager.UploadToBlockBlobOptions-">
 <!--   -->
 </a>
 <ul class="blockList">
@@ -277,7 +277,7 @@ extends java.lang.Object</pre>
 </dl>
 </li>
 </ul>
-<a name="uploadByteBuffersToBlockBlob-java.lang.Iterable-com.microsoft.azure.storage.blob.BlockBlobURL-com.microsoft.azure.storage.blob.Highlevel.UploadToBlockBlobOptions-">
+<a name="uploadByteBuffersToBlockBlob-java.lang.Iterable-com.microsoft.azure.storage.blob.BlockBlobURL-com.microsoft.azure.storage.blob.TransferManager.UploadToBlockBlobOptions-">
 <!--   -->
 </a>
 <ul class="blockListLast">

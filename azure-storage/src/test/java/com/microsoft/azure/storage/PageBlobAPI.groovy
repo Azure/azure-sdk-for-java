@@ -26,6 +26,7 @@ import com.microsoft.azure.storage.blob.models.SequenceNumberActionType
 import io.reactivex.Flowable
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.security.MessageDigest
 
 class PageBlobAPI extends APISpec {
@@ -135,7 +136,7 @@ class PageBlobAPI extends APISpec {
     def "Page blob upload page"() {
         when:
         PageBlobsUploadPagesResponse response = bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null).blockingGet()
+                Flowable.just(getRandomData(512)), null, null).blockingGet()
         PageBlobsUploadPagesHeaders headers = response.headers()
 
         then:
@@ -144,6 +145,16 @@ class PageBlobAPI extends APISpec {
         headers.contentMD5() != null
         headers.blobSequenceNumber() == 0
         headers.isServerEncrypted()
+    }
+
+    def "Page blob upload page md5"() {
+        setup:
+        ByteBuffer data = getRandomData(512)
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.array())
+
+        expect:
+        bu.uploadPages(new PageRange().withStart(0).withEnd(511), Flowable.just(data), md5,
+                null).blockingGet()
     }
 
     @Unroll
@@ -158,7 +169,7 @@ class PageBlobAPI extends APISpec {
 
         expect:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), bac).blockingGet().statusCode() == 201
+                Flowable.just(getRandomData(512)), null,  bac).blockingGet().statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -176,7 +187,7 @@ class PageBlobAPI extends APISpec {
     def "Page blob clear page"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null).blockingGet()
+                Flowable.just(getRandomData(512)), null, null).blockingGet()
 
         when:
         PageBlobsClearPagesHeaders headers =
@@ -188,14 +199,13 @@ class PageBlobAPI extends APISpec {
         validateBasicHeaders(headers)
         headers.contentMD5() == null
         headers.blobSequenceNumber() == 0
-        headers.isServerEncrypted() == null
     }
 
     @Unroll
     def "Page blob clear pages AC"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null).blockingGet()
+                Flowable.just(getRandomData(512)), null, null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
@@ -222,7 +232,7 @@ class PageBlobAPI extends APISpec {
     def "Page blob get page ranges"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null).blockingGet()
+                Flowable.just(getRandomData(512)), null, null).blockingGet()
 
         when:
         PageBlobsGetPageRangesResponse response =
@@ -266,7 +276,7 @@ class PageBlobAPI extends APISpec {
         setup:
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null).blockingGet()
+                Flowable.just(getRandomData(512)), null, null).blockingGet()
 
         when:
         PageBlobsGetPageRangesDiffResponse response =
@@ -351,7 +361,7 @@ class PageBlobAPI extends APISpec {
         expect:
         bu.getProperties(null).blockingGet().headers().blobSequenceNumber() == 5
         validateBasicHeaders(headers)
-        headers.blobSequenceNumber() == 5.toString()
+        headers.blobSequenceNumber() == 5
     }
 
     @Unroll

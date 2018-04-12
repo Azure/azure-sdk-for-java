@@ -107,7 +107,7 @@ public class BlobStorageAPITests {
             Assert.assertEquals(containerList.get(0).name(), containerName);
 
             // Create the blob with a single put. See below for the stageBlock(List) scenario.
-            bu.upload(Flowable.just(ByteBuffer.wrap(new byte[]{0, 0, 0})), 3, null,
+            bu.upload(Flowable.just(ByteBuffer.wrap(new byte[]{0, 0, 0})), 3, null,null,
                     null,null).blockingGet();
 
             // Download the blob contents.
@@ -161,8 +161,8 @@ public class BlobStorageAPITests {
             BlockBlobURL bu3 = cu.createBlockBlobURL("javablob3");
             ArrayList<String> blockIDs = new ArrayList<>();
             blockIDs.add(Base64.getEncoder().encodeToString(new byte[]{0}));
-            bu3.stageBlock(blockIDs.get(0), Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})), 3,
-                    null).blockingGet();
+            bu3.stageBlock(blockIDs.get(0), Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})),
+                    3, null,null).blockingGet();
 
             // Get the list of blocks on this blob. For demonstration purposes.
             BlockList blockList = bu3.getBlockList(BlockListType.ALL, null)
@@ -235,7 +235,8 @@ public class BlobStorageAPITests {
             // --------------APPEND BLOBS-------------
             AppendBlobURL abu = cu.createAppendBlobURL("appendblob");
             abu.create(null, null, null).blockingGet();
-            abu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})), 3,  null).blockingGet();
+            abu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})), 3, null,
+                    null).blockingGet();
 
             data = abu.download(new BlobRange(0L, 3L), null, false).blockingGet().body();
             dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
@@ -249,7 +250,7 @@ public class BlobStorageAPITests {
                 os.write(1);
             }
             pbu.uploadPages(new PageRange().withStart(0).withEnd(1023), Flowable.just(ByteBuffer.wrap(os.toByteArray())),
-                    null).blockingGet();
+                    null, null).blockingGet();
             String pageSnap = pbu.createSnapshot(null, null).blockingGet().headers().snapshot();
             pbu.clearPages(new PageRange().withStart(0).withEnd(511), null).blockingGet();
             PageRange pr = pbu.getPageRanges(new BlobRange(0L, (512L * 3L)), null).blockingGet()
@@ -351,8 +352,8 @@ public class BlobStorageAPITests {
             // Single shot.
             ByteBuffer data = ByteBuffer.wrap(os.toByteArray());
             List<ByteBuffer> buffers = Arrays.asList(data);
-            Highlevel.UploadToBlockBlobOptions options = Highlevel.UploadToBlockBlobOptions.DEFAULT;
-            int status = Highlevel.uploadByteBuffersToBlockBlob(buffers, bu, options).blockingGet().response().statusCode();
+            TransferManager.UploadToBlockBlobOptions options = TransferManager.UploadToBlockBlobOptions.DEFAULT;
+            int status = TransferManager.uploadByteBuffersToBlockBlob(buffers, bu, options).blockingGet().response().statusCode();
             assertEquals(201, status);
 
             // Parallel.
@@ -364,7 +365,7 @@ public class BlobStorageAPITests {
                 }
                 buffers.add(ByteBuffer.wrap(os.toByteArray()));
             }
-            status = Highlevel.uploadByteBuffersToBlockBlob(buffers, bu, options).blockingGet().response().statusCode();
+            status = TransferManager.uploadByteBuffersToBlockBlob(buffers, bu, options).blockingGet().response().statusCode();
             assertEquals(201, status);
 
             ArrayList<ByteBuffer> received = new ArrayList<>();
@@ -456,8 +457,8 @@ public class BlobStorageAPITests {
             // Create the container. NOTE: Metadata is not currently supported on any resource.
             cu.create(null, PublicAccessType.BLOB).blockingGet();
             FileInputStream fis = new FileInputStream(file);
-            Highlevel.uploadFileToBlockBlob(fis.getChannel(), bu, BlockBlobURL.MAX_PUT_BLOCK_BYTES,
-                    Highlevel.UploadToBlockBlobOptions.DEFAULT).blockingGet();
+            TransferManager.uploadFileToBlockBlob(fis.getChannel(), bu, BlockBlobURL.MAX_PUT_BLOCK_BYTES,
+                    TransferManager.UploadToBlockBlobOptions.DEFAULT).blockingGet();
             ArrayList<ByteBuffer> received = new ArrayList<>();
             bu.download(null, null, false).blockingGet().body()
                     .collectInto(received, new BiConsumer<ArrayList<ByteBuffer>, ByteBuffer>() {
@@ -534,8 +535,8 @@ public class BlobStorageAPITests {
 
             // Create the container. NOTE: Metadata is not currently supported on any resource.
             cu.create(null, PublicAccessType.BLOB).blockingGet();
-            Highlevel.uploadByteBufferToBlockBlob(data, bu, 5,
-                    Highlevel.UploadToBlockBlobOptions.DEFAULT).blockingGet();
+            TransferManager.uploadByteBufferToBlockBlob(data, bu, 5,
+                    TransferManager.UploadToBlockBlobOptions.DEFAULT).blockingGet();
 
             ByteBuffer result = FlowableUtil.collectBytesInBuffer(
                     bu.download(null, null, false).blockingGet().body())

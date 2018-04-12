@@ -110,7 +110,7 @@ public final class BlobsDownloadHeaders {
      * for block blobs or append blobs.
      */
     @JsonProperty(value = "x-ms-blob-sequence-number")
-    private String blobSequenceNumber;
+    private Long blobSequenceNumber;
 
     /**
      * The blob's type. Possible values include: 'BlockBlob', 'PageBlob',
@@ -233,7 +233,7 @@ public final class BlobsDownloadHeaders {
      * returned only for append blobs.
      */
     @JsonProperty(value = "x-ms-blob-committed-block-count")
-    private String blobCommittedBlockCount;
+    private Integer blobCommittedBlockCount;
 
     /**
      * The value of this header is set to true if the blob data and application
@@ -486,7 +486,7 @@ public final class BlobsDownloadHeaders {
      *
      * @return the blobSequenceNumber value.
      */
-    public String blobSequenceNumber() {
+    public Long blobSequenceNumber() {
         return this.blobSequenceNumber;
     }
 
@@ -496,7 +496,7 @@ public final class BlobsDownloadHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
-    public BlobsDownloadHeaders withBlobSequenceNumber(String blobSequenceNumber) {
+    public BlobsDownloadHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -800,7 +800,7 @@ public final class BlobsDownloadHeaders {
      *
      * @return the blobCommittedBlockCount value.
      */
-    public String blobCommittedBlockCount() {
+    public Integer blobCommittedBlockCount() {
         return this.blobCommittedBlockCount;
     }
 
@@ -810,7 +810,7 @@ public final class BlobsDownloadHeaders {
      * @param blobCommittedBlockCount the blobCommittedBlockCount value to set.
      * @return the BlobsDownloadHeaders object itself.
      */
-    public BlobsDownloadHeaders withBlobCommittedBlockCount(String blobCommittedBlockCount) {
+    public BlobsDownloadHeaders withBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
         return this;
     }

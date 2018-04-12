@@ -18,7 +18,7 @@ import java.util.UUID;
  * operations. Further, we will make our own assumptions and optimizations for common cases that may not be ideal for
  * rarer cases.
  */
-public class Highlevel {
+public class TransferManager {
 
     public static class UploadToBlockBlobOptions {
 
@@ -240,8 +240,8 @@ public class Highlevel {
                      that it was successful, emit the blockId for this request. These will be collected below. Turn that
                      into an Observable which emits one item to comply with the signature of concatMapEager.
                      */
-                    return blockBlobURL.stageBlock(blockId, Flowable.just(blockData), blockData.remaining(),
-                            options.accessConditions.getLeaseAccessConditions())
+                    return blockBlobURL.stageBlock(blockId, Flowable.just(blockData),
+                            blockData.remaining(), null, options.accessConditions.getLeaseAccessConditions())
                             .map(x -> blockId).toObservable();
 
                 /*
@@ -281,7 +281,7 @@ public class Highlevel {
         }
 
         // Transform the specific RestResponse into a CommonRestResponse.
-        return blockBlobURL.upload(data, size, options.httpHeaders,
+        return blockBlobURL.upload(data, size, null, options.httpHeaders,
                 options.metadata, options.accessConditions)
                 .map(CommonRestResponse::createFromPutBlobResponse);
     }
