@@ -19,9 +19,10 @@ import org.apache.commons.lang3.tuple.Pair;
 import org.apache.commons.lang3.tuple.Triple;
 
 import java.io.IOException;
+import java.security.MessageDigest;
+import java.security.SecureRandom;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
-import java.util.Random;
 import java.util.concurrent.ExecutionException;
 
 import okio.Buffer;
@@ -116,7 +117,7 @@ public class HttpMessageSecurity {
 
             JsonWebKey clientPublicEncryptionKey = MessageSecurityHelper.GetJwkWithPublicKeyOnly(clientEncryptionKey);
 
-            String payload = currentbody.replace("}", ",\"rek\":{\"jwk\":" + clientPublicEncryptionKey.toString() + "}}");
+            String payload = currentbody.substring(0, currentbody.length() - 1) + ",\"rek\":{\"jwk\":" + clientPublicEncryptionKey.toString() + "}}";
 
             JWEObject jweObject = protectPayload(payload);
 
@@ -132,7 +133,7 @@ public class HttpMessageSecurity {
             byte[] data = (jwsHeaderJsonb64 + "." + protectedPayload).getBytes();
 
             RsaKey clientSignatureRsaKey = new RsaKey(clientSignatureKey.kid(), clientSignatureKey.toRSA(true));
-            Pair<byte[], String> signature = clientSignatureRsaKey.signAsync(data, "RS256").get();
+            Pair<byte[], String> signature = clientSignatureRsaKey.signAsync(getSha256(data), "RS256").get();
 
             JWSObject jwsObject = new JWSObject(jwsHeader,
                     protectedPayload,
@@ -140,7 +141,7 @@ public class HttpMessageSecurity {
 
             RequestBody body = RequestBody.create(MediaType.parse("application/jose+json"), jwsObject.serialize());
 
-            return result.newBuilder().post(body).build();
+            return result.newBuilder().method(request.method(), body).build();
         } catch (ExecutionException e){
             // unexpected;
             return null;
@@ -178,7 +179,7 @@ public class HttpMessageSecurity {
             byte[] signature = MessageSecurityHelper.base64UrltoByteArray(jwsObject.signature());
 
             RsaKey serverSignatureRsaKey = new RsaKey(serverSignatureKey.kid(), serverSignatureKey.toRSA(false));
-            boolean signed = serverSignatureRsaKey.verifyAsync(data, signature, "RS256").get();
+            boolean signed = serverSignatureRsaKey.verifyAsync(getSha256(data), signature, "RS256").get();
             if (!signed){
                 throw new IOException("Wrong signature.");
             }
@@ -240,19 +241,11 @@ public class HttpMessageSecurity {
         try{
             JWEHeader jweHeader = new JWEHeader("RSA-OAEP", serverEncryptionKey.kid(), "A128CBC-HS256");
 
-            byte[] aesKeyBytes = new byte[32];
-            new Random().nextBytes(aesKeyBytes);
-            if (testMode){
-                aesKeyBytes = "TEST1234TEST1234TEST1234TEST1234".getBytes();
-            }
+            byte[] aesKeyBytes = generateAesKey();
 
             SymmetricKey aesKey = new SymmetricKey(UUID.randomUUID().toString(), aesKeyBytes);
 
-            byte[] iv = new byte[16];
-            new Random().nextBytes(iv);
-            if (testMode){
-                iv = "TEST1234TEST1234".getBytes();
-            }
+            byte[] iv = generateAesIv();
 
             RsaKey serverEncryptionRsaKey = new RsaKey(serverEncryptionKey.kid(), serverEncryptionKey.toRSA(false));
             Triple<byte[], byte[], String> encrypted_key = serverEncryptionRsaKey.encryptAsync(aesKeyBytes, null, null, "RSA-OAEP").get();
@@ -325,6 +318,53 @@ public class HttpMessageSecurity {
             // unexpected;
             return null;
         }
+    }
 
+    /**
+     * Get SHA256 hash for byte array.
+     *
+     * @param data
+     *      byte array.
+     *
+     * @return
+     *      byte array with sha256 hash.
+     */
+    private byte[] getSha256(byte[] data) throws NoSuchAlgorithmException{
+        MessageDigest digest = MessageDigest.getInstance("SHA-256");
+        return digest.digest(data);
+    }
+
+    /**
+     * Generates AES key.
+     *
+     * @return
+     *      Random AES key or pre-defined value for test mode.
+     */
+    private byte[] generateAesKey(){
+        byte[] bytes = new byte[32];
+        if (!testMode){
+            SecureRandom random = new SecureRandom();
+            random.nextBytes(bytes);
+        } else {
+            bytes = "TEST1234TEST1234TEST1234TEST1234".getBytes();
+        }
+        return bytes;
+    }
+
+    /**
+     * Generates initialization vector for AES encryption.
+     *
+     * @return
+     *      Random IV or pre-defined value for test mode.
+     */
+    private byte[] generateAesIv(){
+        byte[] bytes = new byte[16];
+        if (!testMode){
+            SecureRandom random = new SecureRandom();
+            random.nextBytes(bytes);
+        } else {
+            bytes = "TEST1234TEST1234".getBytes();
+        }
+        return bytes;
     }
 }

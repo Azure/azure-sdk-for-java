@@ -12,6 +12,8 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.interfaces.RSAPrivateKey;
 import java.security.interfaces.RSAPublicKey;
+import java.util.Arrays;
+
 import com.microsoft.azure.keyvault.cryptography.AsymmetricSignatureAlgorithm;
 import com.microsoft.azure.keyvault.cryptography.ISignatureTransform;
 import com.microsoft.azure.keyvault.cryptography.Strings;
@@ -57,8 +59,15 @@ public abstract class RsaSignature extends AsymmetricSignatureAlgorithm {
     	if ( x.compareTo( twoFiveSix.pow(xLen) ) == 1 ) {
     		throw new IllegalArgumentException("integer too large");
     	}
-    	
-    	byte[] bytes  = x.toByteArray();
+
+    	// Even if x is less than 256^xLen, sometiems x.toByteArray() returns 257 bytes with leading zero
+    	byte[] bigEndianBytes = x.toByteArray();
+    	byte[] bytes;
+    	if (bigEndianBytes.length == 257 && bigEndianBytes[0] == 0) {
+    		bytes = Arrays.copyOfRange(bigEndianBytes, 1, 257);
+    	} else {
+    		bytes = bigEndianBytes;
+    	}
     	
     	if ( bytes.length > xLen ) {
     		throw new IllegalArgumentException("integer too large");

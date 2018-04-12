@@ -27,7 +27,7 @@ public class RsaKeyTest {
     // unit test cases to enable cross platform testing.
     static final byte[] CEK                    = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte)0x88, (byte)0x99, (byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD, (byte)0xEE, (byte)0xFF };
     static final String CrossPlatformHash      = "qPrtarvzXBKksm5A9v6xnXNtkARcg7n5ox9jjTI+aBE=";
-    static final String CrossPlatformSignature = "KGFvfuMGpmBTBO1FteruMiZgBI3x4kr9eUt3EBuxQl9z9pTliRQYu/srb7WbViNmh/LD/AvOM/hSO6NrYc/XL27Gs2TYvTFJDCxsY0tB0T0TBJTurT2ECn5RWu+m2lu1kj2OsO0Oq+hWN5x3OU7Vt7X8m8tI4M2vgZxWbAMp5Lpw5wkGzkizy4I6IZTNWFgDvgJiEhNK0RriRy5jnH1qAylJidis148JfQRk4bJXSyeZBPSSwpofRt4gQ6lFIbk4hMhKTx9J3RgtUiG8adzQYJOYBCR/6FLqvmeuU+mPIBJxDwSGXxstQ9b/PkYE9iu2qPpQxi71qOyuzk244vwJIg==";
+    static final String CrossPlatformSignature = "RaNc+8WcWxplS8I7ynJLSoLJKz+dgBvrZhIGH3VFlTTyzu7b9d+lpaV9IKhzCNBsgSysKhgL7EZwVCOTBZ4m6xvKSXqVFXYaBPyBTD7VoKPMYMW6ai5x6xV5XAMaZPfMkff3Deg/RXcc8xQ28FhYuUa8yly01GySY4Hk55anEvb2wBxSy1UGun/0LE1lYH3C3XEgSry4cEkJHDJl1hp+wB4J/noXOqn5ECGU+/4ehBJOyW1gtUH0/gRe8yXnDH0AXepHRyH8iBHLWlKX1r+1/OrMulqOoi82RZzJlTyEz9X+bsQhllqGF6n3hdLS6toH9o7wUtwYNqSx82JuQT6iMg==";
 
     private Provider _provider = null;
 

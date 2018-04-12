@@ -144,16 +144,12 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      */
     private Request buildEmptyRequest(Request request){
         RequestBody body = RequestBody.create(MediaType.parse("application/jose+json"), "{}");
-        if (request.method().equalsIgnoreCase("post")){
-            return request.newBuilder().post(body).build();
-        }
-        else if (request.method().equalsIgnoreCase("put")){
-            return request.newBuilder().put(body).build();
-        }
-        else if (request.method().equalsIgnoreCase("get")){
+        if (request.method().equalsIgnoreCase("get")){
             return request;
         }
-        return null;
+        else {
+            return request.newBuilder().method(request.method(), body).build();
+        }
     }
 
     /**
