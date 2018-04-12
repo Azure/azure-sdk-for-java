@@ -37,7 +37,6 @@ import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.pool.AbstractChannelPoolHandler;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
-import io.netty.handler.codec.EncoderException;
 import io.netty.handler.codec.http.DefaultHttpRequest;
 import io.netty.handler.codec.http.DefaultLastHttpContent;
 import io.netty.handler.codec.http.HttpClientCodec;
@@ -198,14 +197,6 @@ public final class NettyClient extends HttpClient {
                 AcquisitionListener listener = new AcquisitionListener(channelPool, request, responseEmitter);
                 responseEmitter.setDisposable(listener);
                 channelPool.acquire(channelAddress).addListener(listener);
-            }).onErrorResumeNext((Throwable throwable) -> {
-                if (throwable instanceof EncoderException) {
-                    LoggerFactory.getLogger(getClass()).warn("Got EncoderException: " + throwable.getMessage());
-                    //TODO what is this, a retry? Should have a time delay? Max number of retries?
-                    return sendRequestInternalAsync(request, proxy);
-                } else {
-                    return Single.error(throwable);
-                }
             });
         }
     }
@@ -255,15 +246,9 @@ public final class NettyClient extends HttpClient {
 
         //synchronized by `state`
         private ResponseContentFlowable content;
-        
-        private final AtomicInteger writing = new AtomicInteger();
+
+        private volatile boolean finishedWritingRequestBody;
         private volatile RequestSubscriber requestSubscriber;
-        
-        private static final int WRITE_COMPLETED_WRITABLE = 0;
-        private static final int WRITING_WRITABLE = 1;
-        private static final int WRITE_COMPLETED_NOT_WRITABLE = 2;
-        private static final int WRITING_NOT_WRITABLE = 3;
-        
 
         AcquisitionListener(SharedChannelPool channelPool, final HttpRequest request,
                 SingleEmitter<HttpResponse> responseEmitter) {
@@ -487,6 +472,7 @@ public final class NettyClient extends HttpClient {
                     .writeAndFlush(DefaultLastHttpContent.EMPTY_LAST_CONTENT) //
                     .addListener((Future<Void> future) -> {
                         if (future.isSuccess()) {
+                            finishedWritingRequestBody = true;
                             // reads the response status code and headers and may also read some of the
                             // response body which will be buffered in ResponseContentFlowable
                             channel.read();
@@ -554,23 +540,29 @@ public final class NettyClient extends HttpClient {
             }
         }
 
+        private void releaseChannel(boolean cancelled) {
+            if (!cancelled && finishedWritingRequestBody) {
+                channelPool.release(channel);
+            } else {
+                closeAndReleaseChannel();
+            }
+        }
+
         /**
          * Is called when content flowable terminates or is cancelled.
          *
          **/
-        void contentDone() {
+        void contentDone(boolean cancelled) {
             while (true) {
                 int s = state.get();
                 if (s == ACQUIRED_CONTENT_SUBSCRIBED) {
                     if (transition(ACQUIRED_CONTENT_SUBSCRIBED, CHANNEL_RELEASED)) {
-                        // Even though we have received a complete ok response
-                        // from the request it is still possible that the request has not finished!
-                        closeAndReleaseChannel();
+                        releaseChannel(cancelled);
                         return;
                     }
                 } else if (s == ACQUIRED_DISPOSED_CONTENT_SUBSCRIBED) {
                     if (transition(ACQUIRED_DISPOSED_CONTENT_SUBSCRIBED, CHANNEL_RELEASED)) {
-                        closeAndReleaseChannel();
+                        releaseChannel(cancelled);
                         return;
                     }
                 } else {
@@ -794,7 +786,7 @@ public final class NettyClient extends HttpClient {
                 // need to check cancelled even if there are no requests
                 if (cancelled) {
                     releaseQueue();
-                    acquisitionListener.contentDone();
+                    acquisitionListener.contentDone(true);
                     return;
                 }
                 int missed = 1;
@@ -810,7 +802,7 @@ public final class NettyClient extends HttpClient {
                             releaseQueue();
                             channelSubscription.cancel();
                             subscriber.onError(error);
-                            acquisitionListener.contentDone();
+                            acquisitionListener.contentDone(true);
                             return;
                         }
                         HttpContent o = queue.poll();
@@ -830,7 +822,7 @@ public final class NettyClient extends HttpClient {
                         }
                         if (cancelled) {
                             releaseQueue();
-                            acquisitionListener.contentDone();
+                            acquisitionListener.contentDone(true);
                             return;
                         }
                     }
@@ -856,9 +848,8 @@ public final class NettyClient extends HttpClient {
                 // release queue defensively (event serialization and the done flag
                 // should mean there are no more items on the queue)
                 releaseQueue();
-                channelSubscription.cancel();
                 subscriber.onComplete();
-                acquisitionListener.contentDone();
+                acquisitionListener.contentDone(false);
                 return true;
             } else {
                 return false;
@@ -898,7 +889,7 @@ public final class NettyClient extends HttpClient {
 
         @Override
         public void cancel() {
-            acquisitionListener.contentDone();
+            acquisitionListener.contentDone(true);
         }
     }
 
@@ -941,8 +932,6 @@ public final class NettyClient extends HttpClient {
                 // It doesn't seem like this should be possible since we set this volatile field
                 // before we begin writing request content, but it can happen under high load
                 contentEmitter.chunkCompleted();
-            } else {
-                LoggerFactory.getLogger(getClass()).warn("contentEmitter was null!");
             }
         }
 
@@ -964,16 +953,15 @@ public final class NettyClient extends HttpClient {
 
                 responseEmitter.onSuccess(new NettyResponse(response, contentEmitter));
             }
-
-            if (msg instanceof HttpContent) {
+            else if (msg instanceof HttpContent) {
                 HttpContent content = (HttpContent) msg;
 
-                // channelRead can still come through even after a Subscription.cancel event
                 contentEmitter.onReceivedContent(content);
-            }
-
-            if (msg instanceof LastHttpContent) {
-                acquisitionListener.contentDone();
+                if (msg instanceof LastHttpContent) {
+                    acquisitionListener.contentDone(false);
+                }
+            } else {
+                exceptionCaught(ctx, new IllegalStateException("Unexpected message type: " + msg.getClass().getName()));
             }
         }
 

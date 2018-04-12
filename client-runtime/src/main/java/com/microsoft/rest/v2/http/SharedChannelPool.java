@@ -137,14 +137,15 @@ public class SharedChannelPool implements ChannelPool {
                             channelFuture.channel().pipeline().addFirst(sslContext.newHandler(channelFuture.channel().alloc(), request.uri.getHost(), port));
                         }
 
+                        leased.put(request.uri, channelFuture.channel());
                         channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
                             @Override
                             public void operationComplete(Future<? super Void> future) throws Exception {
                                 if (channelFuture.isSuccess()) {
                                     handler.channelAcquired(channelFuture.channel());
-                                    leased.put(request.uri, channelFuture.channel());
                                     request.promise.setSuccess(channelFuture.channel());
                                 } else {
+                                    leased.remove(request.uri, channelFuture.channel());
                                     request.promise.setFailure(channelFuture.cause());
                                 }
                             }

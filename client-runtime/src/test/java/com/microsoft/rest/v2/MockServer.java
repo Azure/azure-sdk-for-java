@@ -51,7 +51,7 @@ public class MockServer {
                     // Appears to be necessary to read all the request content to prevent hangs
                     // Would like to be able to test scenarios where the server drops the connection
                     // when we're in the middle of sending request content.
-                    while (is.read(buf) != -1);
+                    while (is.read(buf) != -1) ;
 
                     return;
                 }
@@ -59,13 +59,24 @@ public class MockServer {
 
             byte[] md5Digest = md5.digest();
             String encodedMD5 = Base64.getEncoder().encodeToString(md5Digest);
-            response.setStatus(201);
+            if (request.getMethod().equals("DELETE")) {
+                response.setStatus(202);
+            } else {
+                response.setStatus(201);
+            }
             response.setHeader("Content-MD5", encodedMD5);
+            LoggerFactory.getLogger(getClass()).info("Finished handling request " + baseRequest.getRequestURL());
         }
     }
 
     public static void main(String[] args) throws Exception {
-        Server server = new Server(11081);
+        int port = 8080;
+        String portString = System.getenv("JAVA_SDK_TEST_PORT");
+        if (portString != null) {
+            port = Integer.parseInt(portString, 10);
+        }
+
+        Server server = new Server(port);
         ResourceHandler resourceHandler = new ResourceHandler();
         resourceHandler.setDirectoriesListed(true);
 
