@@ -16,6 +16,7 @@ package com.microsoft.azure.storage.blob;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
 import java.time.format.DateTimeFormatter;
@@ -27,7 +28,7 @@ final class Utility {
             DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.US).withZone(ZoneId.of("GMT"));
 
     static final DateTimeFormatter ISO8601UTCDateFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).withZone(ZoneId.of("UT"));
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).withZone(ZoneId.of("UTC"));
 
     /**
      * Asserts that a value is not <code>null</code>.
@@ -58,7 +59,7 @@ final class Utility {
     }
 
     /**
-     * Performs safe decoding of the specified string, taking care to preserve each <code>+</code> character, rather
+     * Performs safe decoding of the specified string, taking care to preserve each + character, rather
      * than replacing it with a space character.
      *
      * @param stringToDecode
@@ -199,22 +200,52 @@ final class Utility {
         }
     }
 
-    /*
-    Note that this join method will treat null as an empty string instead of "null". This is because our use cases for
-    this are building strings to sign, which want empty instead of "null".
+    /**
+     * Performs safe encoding of the specified string, taking care to insert %20 for each space character,
+     * instead of inserting the + character.
      */
-
-    public static String join(String[] components, char delimiter) {
-        StringBuilder result = new StringBuilder();
-        for (String component : components) {
-            if (component == null) {
-                result.append("");
-            } else {
-                result.append(component);
-            }
-            result.append(delimiter);
+    static String safeURLEncode(final String stringToEncode)  {
+        if (stringToEncode == null) {
+            return null;
         }
-        result.deleteCharAt(result.length() - 1); // Delete the extra delimiter.
-        return result.toString();
+        if (stringToEncode.length() == 0) {
+            return Constants.EMPTY_STRING;
+        }
+
+        try {
+            final String tString = URLEncoder.encode(stringToEncode, Constants.UTF8_CHARSET);
+
+            if (stringToEncode.contains(" ")) {
+                final StringBuilder outBuilder = new StringBuilder();
+
+                int startDex = 0;
+                for (int m = 0; m < stringToEncode.length(); m++) {
+                    if (stringToEncode.charAt(m) == ' ') {
+                        if (m > startDex) {
+                            outBuilder.append(URLEncoder.encode(stringToEncode.substring(startDex, m),
+                                    Constants.UTF8_CHARSET));
+                        }
+
+                        outBuilder.append("%20");
+                        startDex = m + 1;
+                    }
+                }
+
+                if (startDex != stringToEncode.length()) {
+                    outBuilder.append(URLEncoder.encode(stringToEncode.substring(startDex, stringToEncode.length()),
+                            Constants.UTF8_CHARSET));
+                }
+
+                return outBuilder.toString();
+            }
+            else {
+                return tString;
+            }
+
+        }
+        catch (final UnsupportedEncodingException e) {
+            throw new Error(e); // If we can't encode UTF-8, we fail.
+        }
     }
+
 }

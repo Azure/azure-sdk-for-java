@@ -9,6 +9,7 @@ import com.linkedin.flashback.matchrules.MatchRuleUtils
 import com.linkedin.flashback.scene.SceneConfiguration
 import com.linkedin.flashback.scene.SceneMode
 import com.linkedin.flashback.smartproxy.FlashbackRunner
+import com.microsoft.azure.storage.blob.BlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
 import com.microsoft.azure.storage.blob.ETag
 import com.microsoft.azure.storage.blob.ListContainersOptions
@@ -16,7 +17,13 @@ import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.ServiceURL
 import com.microsoft.azure.storage.blob.SharedKeyCredentials
 import com.microsoft.azure.storage.blob.StorageURL
+import com.microsoft.azure.storage.blob.models.BlobsAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.BlobsStartCopyFromURLResponse
 import com.microsoft.azure.storage.blob.models.Container
+import com.microsoft.azure.storage.blob.models.ContainersAcquireLeaseHeaders
+import com.microsoft.azure.storage.blob.models.ContainersGetPropertiesHeaders
+import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
@@ -25,6 +32,7 @@ import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
 
+import java.lang.invoke.MethodHandleImpl
 import java.nio.ByteBuffer
 import java.time.OffsetDateTime
 
@@ -162,6 +170,7 @@ class APISpec extends Specification {
         }
         else {
             suffix = System.currentTimeMillis()
+            sleep(1) // In case we are generating multiple names quickly
         }
         return prefix + getTestName(specificationContext) + suffix
     }
@@ -299,5 +308,71 @@ class APISpec extends Specification {
     def cleanup() {
         // TODO: Scrub auth header here?
         iterationNo = updateIterationNo(specificationContext, iterationNo)
+    }
+
+    def setupBlobMatchCondition(BlobURL bu, ETag match) {
+        if(match == receivedEtag) {
+            BlobsGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
+            return new ETag(headers.eTag())
+        }
+        else {
+            return match
+        }
+    }
+
+    def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
+        if (leaseID == receivedLeaseID) {
+            BlobsAcquireLeaseHeaders headers =
+                    bu.acquireLease(null, -1, null).blockingGet().headers()
+            return headers.leaseId()
+        }
+        else {
+            return leaseID
+        }
+    }
+
+    def setupContainerMatchCondition(ContainerURL cu, ETag match) {
+        if(match == receivedEtag) {
+            ContainersGetPropertiesHeaders headers = cu.getProperties(null).blockingGet().headers()
+            return new ETag(headers.eTag())
+        }
+        else {
+            return match
+        }
+    }
+
+    def setupContainerLeaseCondition(ContainerURL cu, String leaseID) {
+        if (leaseID == receivedLeaseID) {
+            ContainersAcquireLeaseHeaders headers =
+                    cu.acquireLease(null, -1, null).blockingGet().headers()
+            return headers.leaseId()
+        }
+        else {
+            return leaseID
+        }
+    }
+
+    def waitForCopy(BlobURL bu, BlobsStartCopyFromURLResponse response) {
+        CopyStatusType status = response.headers().copyStatus()
+
+        OffsetDateTime start = OffsetDateTime.now()
+        while (status != CopyStatusType.SUCCESS) {
+            status = bu.getProperties(null).blockingGet().headers().copyStatus()
+            OffsetDateTime currentTime = OffsetDateTime.now()
+            if (status == CopyStatusType.FAILED || currentTime.minusMinutes(1) == start) {
+                throw new Exception("Copy failed or took too long")
+            }
+            sleep(1000)
+        }
+    }
+
+    def validateBasicHeaders(Object headers) {
+        return headers.class.getMethod("eTag").invoke(headers) != null &&
+                headers.class.getMethod("lastModified").invoke(headers) != null &&
+                headers.class.getMethod("requestId").invoke(headers) != null &&
+                headers.class.getMethod("version").invoke(headers) != null &&
+                headers.class.getMethod("dateProperty").invoke(headers) != null
+
+
     }
 }

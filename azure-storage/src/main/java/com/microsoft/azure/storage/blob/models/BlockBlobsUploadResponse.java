@@ -14,18 +14,18 @@ import com.microsoft.rest.v2.RestResponse;
 import java.util.Map;
 
 /**
- * Contains all response data for the clearPages operation.
+ * Contains all response data for the upload operation.
  */
-public final class PageBlobClearPagesResponse extends RestResponse<PageBlobClearPagesHeaders, Void> {
+public final class BlockBlobsUploadResponse extends RestResponse<BlockBlobsUploadHeaders, Void> {
     /**
-     * Creates an instance of PageBlobClearPagesResponse.
+     * Creates an instance of BlockBlobsUploadResponse.
      *
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public PageBlobClearPagesResponse(int statusCode, PageBlobClearPagesHeaders headers, Map<String, String> rawHeaders, Void body) {
+    public BlockBlobsUploadResponse(int statusCode, BlockBlobsUploadHeaders headers, Map<String, String> rawHeaders, Void body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -33,7 +33,7 @@ public final class PageBlobClearPagesResponse extends RestResponse<PageBlobClear
      * @return the deserialized response headers.
      */
     @Override
-    public PageBlobClearPagesHeaders headers() {
+    public BlockBlobsUploadHeaders headers() {
         return super.headers();
     }
 }

@@ -26,6 +26,8 @@ import java.time.OffsetDateTime;
  *
  * Please refer to the following for more conceptual information on SAS:
  * https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+ *
+ * Please refer to the following for more details on each value, including which are required:
  * https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
  */
 public final class ServiceSASSignatureValues {
@@ -119,7 +121,7 @@ public final class ServiceSASSignatureValues {
      * @return
      *      {@link SASQueryParameters}
      */
-    public SASQueryParameters GenerateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
+    public SASQueryParameters generateSASQueryParameters(SharedKeyCredentials sharedKeyCredentials) {
         if (sharedKeyCredentials == null) {
             throw new IllegalArgumentException("SharedKeyCredentials cannot be null.");
         }
@@ -136,21 +138,21 @@ public final class ServiceSASSignatureValues {
         }
 
         // Signature is generated on the un-url-encoded values.
-         String stringToSign = Utility.join(new String[]{
+         String stringToSign = String.join("\n", new String[]{
                  verifiedPermissions,
                  this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
                  this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                  getCanonicalName(sharedKeyCredentials.getAccountName()),
                  this.identifier,
-                 this.ipRange.toString(),
-                 this.protocol.toString(),
+                 this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
+                 this.protocol == null ? "" : ipRange.toString(),
                  this.version,
                  this.cacheControl,
                  this.contentDisposition,
                  this.contentEncoding,
                  this.contentLanguage,
                  this.contentType
-         }, '\n');
+         });
 
         String signature = null;
         try {

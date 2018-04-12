@@ -57,7 +57,7 @@ public final class ContainerAccessConditions {
      * @return
      *      A {@link LeaseAccessConditions} object
      */
-    public LeaseAccessConditions getLeaseID() {
+    public LeaseAccessConditions getLeaseAccessConditions() {
         return leaseID;
     }
 }

@@ -102,7 +102,7 @@ public final class AppendBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<AppendBlobCreateResponse> create(
+    public Single<AppendBlobsCreateResponse> create(
             BlobHTTPHeaders headers, Metadata metadata, BlobAccessConditions accessConditions) {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
@@ -127,13 +127,14 @@ public final class AppendBlobURL extends BlobURL {
      * @param data
      *      The data to write to the blob.
      * @param length
-     *      The total length of the data.
+     *      The exact length of the data. It is important that this value match precisely the length of the data
+     *      emitted by the {@code Flowable}.
      * @param accessConditions
      *      {@link BlobAccessConditions}
      * @return
      *      Emits the successful response.
      */
-    public Single<AppendBlobAppendBlockResponse> appendBlock(
+    public Single<AppendBlobsAppendBlockResponse> appendBlock(
             Flowable<ByteBuffer> data, long length, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 

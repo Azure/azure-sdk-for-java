@@ -22,6 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.util.List;
 
+import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
+
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
  * {@link ServiceURL} object. This class does not hold any state about a particular blob but is instead a convenient way
@@ -64,6 +66,7 @@ public final class ContainerURL extends StorageURL {
      *      A new {@link BlockBlobURL} object which references the blob with the specified name in this container.
      */
     public BlockBlobURL createBlockBlobURL(String blobName) {
+        blobName = safeURLEncode(blobName);
         try {
             return new BlockBlobURL(StorageURL.appendToURLPath(new URL(this.storageClient.url()), blobName),
                     this.storageClient.httpPipeline());
@@ -85,6 +88,7 @@ public final class ContainerURL extends StorageURL {
      *      A new {@link PageBlobURL} object which references the blob with the specified name in this container.
      */
     public PageBlobURL createPageBlobURL(String blobName) {
+        blobName = safeURLEncode(blobName);
         try {
             return new PageBlobURL(StorageURL.appendToURLPath(new URL(this.storageClient.url()), blobName),
                     this.storageClient.httpPipeline());
@@ -106,6 +110,7 @@ public final class ContainerURL extends StorageURL {
      *      A new {@link AppendBlobURL} object which references the blob with the specified name in this container.
      */
     public AppendBlobURL createAppendBlobURL(String blobName) {
+        blobName = safeURLEncode(blobName);
         try {
             return new AppendBlobURL(StorageURL.appendToURLPath(new URL(this.storageClient.url()), blobName),
                     this.storageClient.httpPipeline());
@@ -127,6 +132,7 @@ public final class ContainerURL extends StorageURL {
      *      A new {@link BlobURL} object which references the blob with the specified name in this container.
      */
     public BlobURL createBlobURL(String blobName) {
+        blobName = safeURLEncode(blobName);
         try {
             return new BlobURL(StorageURL.appendToURLPath(new URL(this.storageClient.url()), blobName),
                     this.storageClient.httpPipeline());
@@ -177,7 +183,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return this.storageClient.generatedContainers().deleteWithRestResponseAsync(null,
-                accessConditions.getLeaseID().getLeaseId(),
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 null);
@@ -226,7 +232,7 @@ public final class ContainerURL extends StorageURL {
 
 
         return this.storageClient.generatedContainers().setMetadataWithRestResponseAsync(null,
-                accessConditions.getLeaseID().getLeaseId(), metadata,
+                accessConditions.getLeaseAccessConditions().getLeaseId(), metadata,
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),null);
     }
 
@@ -259,7 +265,7 @@ public final class ContainerURL extends StorageURL {
      * @param identifiers
      *      A list of {@link SignedIdentifier} objects that specify the permissions for the container. Please see
      *      <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     *      for more information.
+     *      for more information. Passing null will clear all access policies.
      * @param accessConditions
      *      {@link ContainerAccessConditions}
      * @return
@@ -272,7 +278,7 @@ public final class ContainerURL extends StorageURL {
 
         // TODO: validate that empty list clears permissions and null list does not change list. Document behavior.
         return this.storageClient.generatedContainers().setAccessPolicyWithRestResponseAsync(identifiers, null,
-                accessConditions.getLeaseID().getLeaseId(), accessType,
+                accessConditions.getLeaseAccessConditions().getLeaseId(), accessType,
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 null);
@@ -309,7 +315,7 @@ public final class ContainerURL extends StorageURL {
         }
 
         return this.storageClient.generatedContainers().acquireLeaseWithRestResponseAsync(
-                null, duration, proposedID,
+                null,  duration, proposedID,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
                 null);
@@ -441,8 +447,8 @@ public final class ContainerURL extends StorageURL {
      *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
-     *      This value is returned in the response of a previous list operation. Set to null if this is the first
-     *      segment.
+     *      This value is returned in the response of a previous list operation as the ListBlobsFlatSegmentResponse->
+     *      body()->nextMarker(). Set to null to list the first segment.
      * @param options
      *      {@link ListBlobsOptions}
      * @return

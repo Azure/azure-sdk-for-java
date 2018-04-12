@@ -166,7 +166,7 @@ public final class BlobsGetPropertiesHeaders {
      * message content integrity.
      */
     @JsonProperty(value = "Content-MD5")
-    private String contentMD5;
+    private byte[] contentMD5;
 
     /**
      * This header returns the value that was specified for the
@@ -637,7 +637,7 @@ public final class BlobsGetPropertiesHeaders {
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public byte[] contentMD5() {
         return this.contentMD5;
     }
 
@@ -647,7 +647,7 @@ public final class BlobsGetPropertiesHeaders {
      * @param contentMD5 the contentMD5 value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    public BlobsGetPropertiesHeaders withContentMD5(String contentMD5) {
+    public BlobsGetPropertiesHeaders withContentMD5(byte[] contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }

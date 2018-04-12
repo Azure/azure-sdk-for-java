@@ -16,10 +16,8 @@ package com.microsoft.azure.storage.blob;
 
 import com.microsoft.rest.v2.http.UrlBuilder;
 
-import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -107,13 +105,8 @@ public final class BlobURLParts {
         for (Map.Entry<String, String[]> entry : this.unparsedParameters.entrySet()) {
             // TODO: Test this is the proper encoding
             // The commas are intentionally encoded.
-            try {
-                url.setQueryParameter(entry.getKey(), URLEncoder.encode(
-                        Utility.join(entry.getValue(), ','), Constants.UTF8_CHARSET));
-            }
-            catch (UnsupportedEncodingException e) {
-                throw new Error(e); // If UTF-8 encoding is not supported, we give up.
-            }
+            url.setQueryParameter(entry.getKey(),
+                    Utility.safeURLEncode(String.join(",", entry.getValue())));
         }
 
         return url.toURL();

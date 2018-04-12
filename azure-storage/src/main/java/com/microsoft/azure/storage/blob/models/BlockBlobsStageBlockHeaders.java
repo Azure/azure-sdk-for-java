@@ -17,39 +17,17 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Defines headers for ClearPages operation.
+ * Defines headers for StageBlock operation.
  */
-@JacksonXmlRootElement(localName = "PageBlob-ClearPages-Headers")
-public final class PageBlobClearPagesHeaders {
-    /**
-     * The ETag contains a value that you can use to perform operations
-     * conditionally. If the request version is 2011-08-18 or newer, the ETag
-     * value will be in quotes.
-     */
-    @JsonProperty(value = "ETag")
-    private String eTag;
-
-    /**
-     * Returns the date and time the container was last modified. Any operation
-     * that modifies the blob, including an update of the blob's metadata or
-     * properties, changes the last-modified time of the blob.
-     */
-    @JsonProperty(value = "Last-Modified")
-    private DateTimeRfc1123 lastModified;
-
+@JacksonXmlRootElement(localName = "BlockBlobs-StageBlock-Headers")
+public final class BlockBlobsStageBlockHeaders {
     /**
      * If the blob has an MD5 hash and this operation is to read the full blob,
      * this response header is returned so that the client can check for
      * message content integrity.
      */
     @JsonProperty(value = "Content-MD5")
-    private String contentMD5;
-
-    /**
-     * The current sequence number for the page blob.
-     */
-    @JsonProperty(value = "x-ms-blob-sequence-number")
-    private Integer blobSequenceNumber;
+    private byte[] contentMD5;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -82,58 +60,11 @@ public final class PageBlobClearPagesHeaders {
     private Boolean isServerEncrypted;
 
     /**
-     * Get the eTag value.
-     *
-     * @return the eTag value.
-     */
-    public String eTag() {
-        return this.eTag;
-    }
-
-    /**
-     * Set the eTag value.
-     *
-     * @param eTag the eTag value to set.
-     * @return the PageBlobClearPagesHeaders object itself.
-     */
-    public PageBlobClearPagesHeaders withETag(String eTag) {
-        this.eTag = eTag;
-        return this;
-    }
-
-    /**
-     * Get the lastModified value.
-     *
-     * @return the lastModified value.
-     */
-    public OffsetDateTime lastModified() {
-        if (this.lastModified == null) {
-            return null;
-        }
-        return this.lastModified.dateTime();
-    }
-
-    /**
-     * Set the lastModified value.
-     *
-     * @param lastModified the lastModified value to set.
-     * @return the PageBlobClearPagesHeaders object itself.
-     */
-    public PageBlobClearPagesHeaders withLastModified(OffsetDateTime lastModified) {
-        if (lastModified == null) {
-            this.lastModified = null;
-        } else {
-            this.lastModified = new DateTimeRfc1123(lastModified);
-        }
-        return this;
-    }
-
-    /**
      * Get the contentMD5 value.
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public byte[] contentMD5() {
         return this.contentMD5;
     }
 
@@ -141,30 +72,10 @@ public final class PageBlobClearPagesHeaders {
      * Set the contentMD5 value.
      *
      * @param contentMD5 the contentMD5 value to set.
-     * @return the PageBlobClearPagesHeaders object itself.
+     * @return the BlockBlobsStageBlockHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withContentMD5(String contentMD5) {
+    public BlockBlobsStageBlockHeaders withContentMD5(byte[] contentMD5) {
         this.contentMD5 = contentMD5;
-        return this;
-    }
-
-    /**
-     * Get the blobSequenceNumber value.
-     *
-     * @return the blobSequenceNumber value.
-     */
-    public Integer blobSequenceNumber() {
-        return this.blobSequenceNumber;
-    }
-
-    /**
-     * Set the blobSequenceNumber value.
-     *
-     * @param blobSequenceNumber the blobSequenceNumber value to set.
-     * @return the PageBlobClearPagesHeaders object itself.
-     */
-    public PageBlobClearPagesHeaders withBlobSequenceNumber(Integer blobSequenceNumber) {
-        this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
 
@@ -181,9 +92,9 @@ public final class PageBlobClearPagesHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the PageBlobClearPagesHeaders object itself.
+     * @return the BlockBlobsStageBlockHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withRequestId(String requestId) {
+    public BlockBlobsStageBlockHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -201,9 +112,9 @@ public final class PageBlobClearPagesHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the PageBlobClearPagesHeaders object itself.
+     * @return the BlockBlobsStageBlockHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withVersion(String version) {
+    public BlockBlobsStageBlockHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -224,9 +135,9 @@ public final class PageBlobClearPagesHeaders {
      * Set the dateProperty value.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the PageBlobClearPagesHeaders object itself.
+     * @return the BlockBlobsStageBlockHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobsStageBlockHeaders withDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -248,9 +159,9 @@ public final class PageBlobClearPagesHeaders {
      * Set the isServerEncrypted value.
      *
      * @param isServerEncrypted the isServerEncrypted value to set.
-     * @return the PageBlobClearPagesHeaders object itself.
+     * @return the BlockBlobsStageBlockHeaders object itself.
      */
-    public PageBlobClearPagesHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public BlockBlobsStageBlockHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }

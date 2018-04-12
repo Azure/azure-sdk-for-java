@@ -26,6 +26,8 @@ import java.time.OffsetDateTime;
  *
  * Please refer to the following for more conceptual information on SAS:
  * https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+ *
+ * Please refer to the following for further descriptions of the parameters, including which are required:
  * https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
  */
 public final class AccountSASSignatureValues {
@@ -95,27 +97,19 @@ public final class AccountSASSignatureValues {
         Utility.assertNotNull("expiryTime", this.expiryTime);
         Utility.assertNotNull("permissions", this.permissions);
 
-        IPRange ipRange;
-        if (this.ipRange == null) {
-            ipRange = IPRange.DEFAULT;
-        }
-        else {
-            ipRange = this.ipRange;
-        }
-
         // Signature is generated on the un-url-encoded values.
-        String stringToSign = Utility.join(new String[]{
+        String stringToSign = String.join("\n", new String[]{
                 sharedKeyCredentials.getAccountName(),
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
                 resourceTypes,
                 this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
                 this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
-                ipRange.toString(),
-                this.protocol.toString(),
+                this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
+                this.protocol == null ? "" : this.protocol.toString(),
                 this.version,
                 Constants.EMPTY_STRING // Account SAS requires an additional newline character
-        }, '\n');
+        });
 
         String signature;
         try {

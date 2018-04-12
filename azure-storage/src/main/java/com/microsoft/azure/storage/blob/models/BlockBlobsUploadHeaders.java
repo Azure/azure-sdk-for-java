@@ -17,10 +17,10 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Defines headers for CopyIncremental operation.
+ * Defines headers for Upload operation.
  */
-@JacksonXmlRootElement(localName = "PageBlob-CopyIncremental-Headers")
-public final class PageBlobCopyIncrementalHeaders {
+@JacksonXmlRootElement(localName = "BlockBlobs-Upload-Headers")
+public final class BlockBlobsUploadHeaders {
     /**
      * The ETag contains a value that you can use to perform operations
      * conditionally. If the request version is 2011-08-18 or newer, the ETag
@@ -36,6 +36,14 @@ public final class PageBlobCopyIncrementalHeaders {
      */
     @JsonProperty(value = "Last-Modified")
     private DateTimeRfc1123 lastModified;
+
+    /**
+     * If the blob has an MD5 hash and this operation is to read the full blob,
+     * this response header is returned so that the client can check for
+     * message content integrity.
+     */
+    @JsonProperty(value = "Content-MD5")
+    private byte[] contentMD5;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -60,19 +68,12 @@ public final class PageBlobCopyIncrementalHeaders {
     private DateTimeRfc1123 dateProperty;
 
     /**
-     * String identifier for this copy operation. Use with Get Blob Properties
-     * to check the status of this copy operation, or pass to Abort Copy Blob
-     * to abort a pending copy.
+     * The value of this header is set to true if the contents of the request
+     * are successfully encrypted using the specified algorithm, and false
+     * otherwise.
      */
-    @JsonProperty(value = "x-ms-copy-id")
-    private String copyId;
-
-    /**
-     * State of the copy operation identified by x-ms-copy-id. Possible values
-     * include: 'pending', 'success', 'aborted', 'failed'.
-     */
-    @JsonProperty(value = "x-ms-copy-status")
-    private CopyStatusType copyStatus;
+    @JsonProperty(value = "x-ms-request-server-encrypted")
+    private Boolean isServerEncrypted;
 
     /**
      * Get the eTag value.
@@ -87,9 +88,9 @@ public final class PageBlobCopyIncrementalHeaders {
      * Set the eTag value.
      *
      * @param eTag the eTag value to set.
-     * @return the PageBlobCopyIncrementalHeaders object itself.
+     * @return the BlockBlobsUploadHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withETag(String eTag) {
+    public BlockBlobsUploadHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -110,14 +111,34 @@ public final class PageBlobCopyIncrementalHeaders {
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set.
-     * @return the PageBlobCopyIncrementalHeaders object itself.
+     * @return the BlockBlobsUploadHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withLastModified(OffsetDateTime lastModified) {
+    public BlockBlobsUploadHeaders withLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
             this.lastModified = new DateTimeRfc1123(lastModified);
         }
+        return this;
+    }
+
+    /**
+     * Get the contentMD5 value.
+     *
+     * @return the contentMD5 value.
+     */
+    public byte[] contentMD5() {
+        return this.contentMD5;
+    }
+
+    /**
+     * Set the contentMD5 value.
+     *
+     * @param contentMD5 the contentMD5 value to set.
+     * @return the BlockBlobsUploadHeaders object itself.
+     */
+    public BlockBlobsUploadHeaders withContentMD5(byte[] contentMD5) {
+        this.contentMD5 = contentMD5;
         return this;
     }
 
@@ -134,9 +155,9 @@ public final class PageBlobCopyIncrementalHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the PageBlobCopyIncrementalHeaders object itself.
+     * @return the BlockBlobsUploadHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withRequestId(String requestId) {
+    public BlockBlobsUploadHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -154,9 +175,9 @@ public final class PageBlobCopyIncrementalHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the PageBlobCopyIncrementalHeaders object itself.
+     * @return the BlockBlobsUploadHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withVersion(String version) {
+    public BlockBlobsUploadHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -177,9 +198,9 @@ public final class PageBlobCopyIncrementalHeaders {
      * Set the dateProperty value.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the PageBlobCopyIncrementalHeaders object itself.
+     * @return the BlockBlobsUploadHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public BlockBlobsUploadHeaders withDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -189,42 +210,22 @@ public final class PageBlobCopyIncrementalHeaders {
     }
 
     /**
-     * Get the copyId value.
+     * Get the isServerEncrypted value.
      *
-     * @return the copyId value.
+     * @return the isServerEncrypted value.
      */
-    public String copyId() {
-        return this.copyId;
+    public Boolean isServerEncrypted() {
+        return this.isServerEncrypted;
     }
 
     /**
-     * Set the copyId value.
+     * Set the isServerEncrypted value.
      *
-     * @param copyId the copyId value to set.
-     * @return the PageBlobCopyIncrementalHeaders object itself.
+     * @param isServerEncrypted the isServerEncrypted value to set.
+     * @return the BlockBlobsUploadHeaders object itself.
      */
-    public PageBlobCopyIncrementalHeaders withCopyId(String copyId) {
-        this.copyId = copyId;
-        return this;
-    }
-
-    /**
-     * Get the copyStatus value.
-     *
-     * @return the copyStatus value.
-     */
-    public CopyStatusType copyStatus() {
-        return this.copyStatus;
-    }
-
-    /**
-     * Set the copyStatus value.
-     *
-     * @param copyStatus the copyStatus value to set.
-     * @return the PageBlobCopyIncrementalHeaders object itself.
-     */
-    public PageBlobCopyIncrementalHeaders withCopyStatus(CopyStatusType copyStatus) {
-        this.copyStatus = copyStatus;
+    public BlockBlobsUploadHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+        this.isServerEncrypted = isServerEncrypted;
         return this;
     }
 }

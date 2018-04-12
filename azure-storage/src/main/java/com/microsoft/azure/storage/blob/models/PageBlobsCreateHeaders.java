@@ -17,10 +17,10 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Defines headers for Upload operation.
+ * Defines headers for Create operation.
  */
-@JacksonXmlRootElement(localName = "BlockBlob-Upload-Headers")
-public final class BlockBlobUploadHeaders {
+@JacksonXmlRootElement(localName = "PageBlobs-Create-Headers")
+public final class PageBlobsCreateHeaders {
     /**
      * The ETag contains a value that you can use to perform operations
      * conditionally. If the request version is 2011-08-18 or newer, the ETag
@@ -43,7 +43,7 @@ public final class BlockBlobUploadHeaders {
      * message content integrity.
      */
     @JsonProperty(value = "Content-MD5")
-    private String contentMD5;
+    private byte[] contentMD5;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -88,9 +88,9 @@ public final class BlockBlobUploadHeaders {
      * Set the eTag value.
      *
      * @param eTag the eTag value to set.
-     * @return the BlockBlobUploadHeaders object itself.
+     * @return the PageBlobsCreateHeaders object itself.
      */
-    public BlockBlobUploadHeaders withETag(String eTag) {
+    public PageBlobsCreateHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -111,9 +111,9 @@ public final class BlockBlobUploadHeaders {
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set.
-     * @return the BlockBlobUploadHeaders object itself.
+     * @return the PageBlobsCreateHeaders object itself.
      */
-    public BlockBlobUploadHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobsCreateHeaders withLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -127,7 +127,7 @@ public final class BlockBlobUploadHeaders {
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public byte[] contentMD5() {
         return this.contentMD5;
     }
 
@@ -135,9 +135,9 @@ public final class BlockBlobUploadHeaders {
      * Set the contentMD5 value.
      *
      * @param contentMD5 the contentMD5 value to set.
-     * @return the BlockBlobUploadHeaders object itself.
+     * @return the PageBlobsCreateHeaders object itself.
      */
-    public BlockBlobUploadHeaders withContentMD5(String contentMD5) {
+    public PageBlobsCreateHeaders withContentMD5(byte[] contentMD5) {
         this.contentMD5 = contentMD5;
         return this;
     }
@@ -155,9 +155,9 @@ public final class BlockBlobUploadHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the BlockBlobUploadHeaders object itself.
+     * @return the PageBlobsCreateHeaders object itself.
      */
-    public BlockBlobUploadHeaders withRequestId(String requestId) {
+    public PageBlobsCreateHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -175,9 +175,9 @@ public final class BlockBlobUploadHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the BlockBlobUploadHeaders object itself.
+     * @return the PageBlobsCreateHeaders object itself.
      */
-    public BlockBlobUploadHeaders withVersion(String version) {
+    public PageBlobsCreateHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -198,9 +198,9 @@ public final class BlockBlobUploadHeaders {
      * Set the dateProperty value.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the BlockBlobUploadHeaders object itself.
+     * @return the PageBlobsCreateHeaders object itself.
      */
-    public BlockBlobUploadHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobsCreateHeaders withDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -222,9 +222,9 @@ public final class BlockBlobUploadHeaders {
      * Set the isServerEncrypted value.
      *
      * @param isServerEncrypted the isServerEncrypted value to set.
-     * @return the BlockBlobUploadHeaders object itself.
+     * @return the PageBlobsCreateHeaders object itself.
      */
-    public BlockBlobUploadHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public PageBlobsCreateHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }

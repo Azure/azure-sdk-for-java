@@ -40,7 +40,8 @@ public final class ListBlobsOptions {
      * @param details
      *      {@link BlobListingDetails}
      * @param prefix
-     *      Filters the results to return only blobs whose names begin with the specified prefix.
+     *      Filters the results to return only blobs whose names begin with the specified prefix. May be null to return
+     *      all blobs.
      * @param maxResults
      *      Specifies the maximum number of blobs to return, including all BlobPrefix elements. If the request does not
      *      specify maxResults or specifies a value greater than 5,000, the server will return up to 5,000 items.

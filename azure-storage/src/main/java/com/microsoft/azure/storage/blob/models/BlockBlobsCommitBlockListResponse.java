@@ -16,16 +16,16 @@ import java.util.Map;
 /**
  * Contains all response data for the commitBlockList operation.
  */
-public final class BlockBlobCommitBlockListResponse extends RestResponse<BlockBlobCommitBlockListHeaders, Void> {
+public final class BlockBlobsCommitBlockListResponse extends RestResponse<BlockBlobsCommitBlockListHeaders, Void> {
     /**
-     * Creates an instance of BlockBlobCommitBlockListResponse.
+     * Creates an instance of BlockBlobsCommitBlockListResponse.
      *
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public BlockBlobCommitBlockListResponse(int statusCode, BlockBlobCommitBlockListHeaders headers, Map<String, String> rawHeaders, Void body) {
+    public BlockBlobsCommitBlockListResponse(int statusCode, BlockBlobsCommitBlockListHeaders headers, Map<String, String> rawHeaders, Void body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -33,7 +33,7 @@ public final class BlockBlobCommitBlockListResponse extends RestResponse<BlockBl
      * @return the deserialized response headers.
      */
     @Override
-    public BlockBlobCommitBlockListHeaders headers() {
+    public BlockBlobsCommitBlockListHeaders headers() {
         return super.headers();
     }
 }

@@ -101,7 +101,7 @@ final class Constants {
         /**
          * The current storage version header value.
          */
-        static final String TARGET_STORAGE_VERSION = "2017-04-17";
+        static final String TARGET_STORAGE_VERSION = "2017-07-29";
 
         /**
          * The UserAgent header.
@@ -116,7 +116,7 @@ final class Constants {
         /**
          * Specifies the value to use for UserAgent header.
          */
-        static final String USER_AGENT_VERSION = "1.0.0";
+        static final String USER_AGENT_VERSION = "0.0.0";
 
         private HeaderConstants() {
             // Private to prevent construction.

@@ -19,7 +19,8 @@ import com.microsoft.azure.storage.blob.models.ListContainersIncludeType;
 /**
  * This type allows users to specify additional information the service should return with each container when listing
  * containers in an account (via a {@link ServiceURL} object). This type is immutable to ensure thread-safety of
- * requests, so changing the details for a different listing operation requires construction of a new object.
+ * requests, so changing the details for a different listing operation requires construction of a new object. Null may
+ * be passed if none of the options are desirable.
  */
 public final class ContainerListingDetails {
 
@@ -36,7 +37,7 @@ public final class ContainerListingDetails {
      * @param metadata
      *      Whether metadata should be returned.
      */
-    ContainerListingDetails(boolean metadata) {
+    public ContainerListingDetails(boolean metadata) {
         this.metadata = metadata;
     }
 

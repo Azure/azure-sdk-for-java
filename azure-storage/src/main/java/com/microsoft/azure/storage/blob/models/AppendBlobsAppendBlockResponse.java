@@ -14,18 +14,18 @@ import com.microsoft.rest.v2.RestResponse;
 import java.util.Map;
 
 /**
- * Contains all response data for the create operation.
+ * Contains all response data for the appendBlock operation.
  */
-public final class AppendBlobCreateResponse extends RestResponse<AppendBlobCreateHeaders, Void> {
+public final class AppendBlobsAppendBlockResponse extends RestResponse<AppendBlobsAppendBlockHeaders, Void> {
     /**
-     * Creates an instance of AppendBlobCreateResponse.
+     * Creates an instance of AppendBlobsAppendBlockResponse.
      *
      * @param statusCode the status code of the HTTP response.
      * @param headers the deserialized headers of the HTTP response.
      * @param rawHeaders the raw headers of the HTTP response.
      * @param body the deserialized body of the HTTP response.
      */
-    public AppendBlobCreateResponse(int statusCode, AppendBlobCreateHeaders headers, Map<String, String> rawHeaders, Void body) {
+    public AppendBlobsAppendBlockResponse(int statusCode, AppendBlobsAppendBlockHeaders headers, Map<String, String> rawHeaders, Void body) {
         super(statusCode, headers, rawHeaders, body);
     }
 
@@ -33,7 +33,7 @@ public final class AppendBlobCreateResponse extends RestResponse<AppendBlobCreat
      * @return the deserialized response headers.
      */
     @Override
-    public AppendBlobCreateHeaders headers() {
+    public AppendBlobsAppendBlockHeaders headers() {
         return super.headers();
     }
 }

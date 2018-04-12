@@ -108,7 +108,7 @@ public final class PageBlobURL extends BlobURL {
      * @return
      *       Emits the successful response.
      */
-    public Single<PageBlobCreateResponse> create(
+    public Single<PageBlobsCreateResponse> create(
             long size, Long sequenceNumber, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
         if (size%PageBlobURL.PAGE_BYTES != 0) {
@@ -154,7 +154,7 @@ public final class PageBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobUploadPagesResponse> uploadPages(
+    public Single<PageBlobsUploadPagesResponse> uploadPages(
             PageRange pageRange, Flowable<ByteBuffer> body, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         if (pageRange == null) {
@@ -162,7 +162,7 @@ public final class PageBlobURL extends BlobURL {
             // subscription.
             new IllegalArgumentException("pageRange cannot be null.");
         }
-        String pageRangeStr = this.pageRangeToString(pageRange);
+        String pageRangeStr = pageRangeToString(pageRange);
 
         return this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
                  body, pageRange.end()-pageRange.start()+1,null, pageRangeStr,
@@ -190,7 +190,7 @@ public final class PageBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobClearPagesResponse> clearPages(
+    public Single<PageBlobsClearPagesResponse> clearPages(
             PageRange pageRange, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         if (pageRange == null) {
@@ -198,7 +198,7 @@ public final class PageBlobURL extends BlobURL {
             // subscription.
             throw new IllegalArgumentException("pageRange cannot be null.");
         }
-        String pageRangeStr = this.pageRangeToString(pageRange);
+        String pageRangeStr = pageRangeToString(pageRange);
 
          return this.storageClient.generatedPageBlobs().clearPagesWithRestResponseAsync(
                  0,null, pageRangeStr,
@@ -223,7 +223,7 @@ public final class PageBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobGetPageRangesResponse> getPageRanges(
+    public Single<PageBlobsGetPageRangesResponse> getPageRanges(
             BlobRange blobRange, BlobAccessConditions accessConditions) {
         blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
@@ -253,7 +253,7 @@ public final class PageBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobGetPageRangesDiffResponse> getPageRangesDiff(
+    public Single<PageBlobsGetPageRangesDiffResponse> getPageRangesDiff(
             BlobRange blobRange, String prevSnapshot, BlobAccessConditions accessConditions) {
         blobRange = blobRange == null ? BlobRange.DEFAULT : blobRange;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
@@ -284,7 +284,7 @@ public final class PageBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobResizeResponse> resize(
+    public Single<PageBlobsResizeResponse> resize(
             long size, BlobAccessConditions accessConditions) {
         if (size%PageBlobURL.PAGE_BYTES != 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -316,7 +316,7 @@ public final class PageBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobUpdateSequenceNumberResponse> updateSequenceNumber(
+    public Single<PageBlobsUpdateSequenceNumberResponse> updateSequenceNumber(
             SequenceNumberActionType action, Long sequenceNumber, BlobAccessConditions accessConditions) {
         if (sequenceNumber != null && sequenceNumber < 0) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
@@ -355,7 +355,7 @@ public final class PageBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<PageBlobCopyIncrementalResponse> copyIncremental(
+    public Single<PageBlobsCopyIncrementalResponse> copyIncremental(
             URL source, String snapshot, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
@@ -375,7 +375,7 @@ public final class PageBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null);
     }
 
-    private String pageRangeToString(PageRange pageRange) {
+    private static String pageRangeToString(PageRange pageRange) {
         if (pageRange.start() < 0 || pageRange.end() <= 0) {
             throw new IllegalArgumentException("PageRange's start and end values must be greater than or equal to " +
                     "0 if specified.");

@@ -17,10 +17,10 @@ import com.microsoft.rest.v2.DateTimeRfc1123;
 import java.time.OffsetDateTime;
 
 /**
- * Defines headers for CommitBlockList operation.
+ * Defines headers for ClearPages operation.
  */
-@JacksonXmlRootElement(localName = "BlockBlob-CommitBlockList-Headers")
-public final class BlockBlobCommitBlockListHeaders {
+@JacksonXmlRootElement(localName = "PageBlobs-ClearPages-Headers")
+public final class PageBlobsClearPagesHeaders {
     /**
      * The ETag contains a value that you can use to perform operations
      * conditionally. If the request version is 2011-08-18 or newer, the ETag
@@ -43,7 +43,13 @@ public final class BlockBlobCommitBlockListHeaders {
      * message content integrity.
      */
     @JsonProperty(value = "Content-MD5")
-    private String contentMD5;
+    private byte[] contentMD5;
+
+    /**
+     * The current sequence number for the page blob.
+     */
+    @JsonProperty(value = "x-ms-blob-sequence-number")
+    private Integer blobSequenceNumber;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -88,9 +94,9 @@ public final class BlockBlobCommitBlockListHeaders {
      * Set the eTag value.
      *
      * @param eTag the eTag value to set.
-     * @return the BlockBlobCommitBlockListHeaders object itself.
+     * @return the PageBlobsClearPagesHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withETag(String eTag) {
+    public PageBlobsClearPagesHeaders withETag(String eTag) {
         this.eTag = eTag;
         return this;
     }
@@ -111,9 +117,9 @@ public final class BlockBlobCommitBlockListHeaders {
      * Set the lastModified value.
      *
      * @param lastModified the lastModified value to set.
-     * @return the BlockBlobCommitBlockListHeaders object itself.
+     * @return the PageBlobsClearPagesHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withLastModified(OffsetDateTime lastModified) {
+    public PageBlobsClearPagesHeaders withLastModified(OffsetDateTime lastModified) {
         if (lastModified == null) {
             this.lastModified = null;
         } else {
@@ -127,7 +133,7 @@ public final class BlockBlobCommitBlockListHeaders {
      *
      * @return the contentMD5 value.
      */
-    public String contentMD5() {
+    public byte[] contentMD5() {
         return this.contentMD5;
     }
 
@@ -135,10 +141,30 @@ public final class BlockBlobCommitBlockListHeaders {
      * Set the contentMD5 value.
      *
      * @param contentMD5 the contentMD5 value to set.
-     * @return the BlockBlobCommitBlockListHeaders object itself.
+     * @return the PageBlobsClearPagesHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withContentMD5(String contentMD5) {
+    public PageBlobsClearPagesHeaders withContentMD5(byte[] contentMD5) {
         this.contentMD5 = contentMD5;
+        return this;
+    }
+
+    /**
+     * Get the blobSequenceNumber value.
+     *
+     * @return the blobSequenceNumber value.
+     */
+    public Integer blobSequenceNumber() {
+        return this.blobSequenceNumber;
+    }
+
+    /**
+     * Set the blobSequenceNumber value.
+     *
+     * @param blobSequenceNumber the blobSequenceNumber value to set.
+     * @return the PageBlobsClearPagesHeaders object itself.
+     */
+    public PageBlobsClearPagesHeaders withBlobSequenceNumber(Integer blobSequenceNumber) {
+        this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
 
@@ -155,9 +181,9 @@ public final class BlockBlobCommitBlockListHeaders {
      * Set the requestId value.
      *
      * @param requestId the requestId value to set.
-     * @return the BlockBlobCommitBlockListHeaders object itself.
+     * @return the PageBlobsClearPagesHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withRequestId(String requestId) {
+    public PageBlobsClearPagesHeaders withRequestId(String requestId) {
         this.requestId = requestId;
         return this;
     }
@@ -175,9 +201,9 @@ public final class BlockBlobCommitBlockListHeaders {
      * Set the version value.
      *
      * @param version the version value to set.
-     * @return the BlockBlobCommitBlockListHeaders object itself.
+     * @return the PageBlobsClearPagesHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withVersion(String version) {
+    public PageBlobsClearPagesHeaders withVersion(String version) {
         this.version = version;
         return this;
     }
@@ -198,9 +224,9 @@ public final class BlockBlobCommitBlockListHeaders {
      * Set the dateProperty value.
      *
      * @param dateProperty the dateProperty value to set.
-     * @return the BlockBlobCommitBlockListHeaders object itself.
+     * @return the PageBlobsClearPagesHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withDateProperty(OffsetDateTime dateProperty) {
+    public PageBlobsClearPagesHeaders withDateProperty(OffsetDateTime dateProperty) {
         if (dateProperty == null) {
             this.dateProperty = null;
         } else {
@@ -222,9 +248,9 @@ public final class BlockBlobCommitBlockListHeaders {
      * Set the isServerEncrypted value.
      *
      * @param isServerEncrypted the isServerEncrypted value to set.
-     * @return the BlockBlobCommitBlockListHeaders object itself.
+     * @return the PageBlobsClearPagesHeaders object itself.
      */
-    public BlockBlobCommitBlockListHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
+    public PageBlobsClearPagesHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
         return this;
     }

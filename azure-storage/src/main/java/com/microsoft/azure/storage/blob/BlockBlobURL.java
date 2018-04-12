@@ -103,7 +103,8 @@ public final class BlockBlobURL extends BlobURL {
      * @param data
      *      The data to write to the blob.
      * @param length
-     *      The total length of the data.
+     *      The exact length of the data. It is important that this value match precisely the length of the data
+     *      emitted by the {@code Flowable}.
      * @param headers
      *      {@link BlobHTTPHeaders}
      * @param metadata
@@ -113,13 +114,14 @@ public final class BlockBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobUploadResponse> upload(
+    public Single<BlockBlobsUploadResponse> upload(
             Flowable<ByteBuffer> data, long length, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        // TODO: Metadata protocol layer broken.
+
+        //TODO: runtime flowable wrapper that throws an error if the size doesn't match the data
         return this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
                 data, length, null, headers.getContentType(), headers.getContentEncoding(),
                 headers.getContentLanguage(), headers.getContentMD5(), headers.getCacheControl(), metadata,
@@ -143,13 +145,14 @@ public final class BlockBlobURL extends BlobURL {
      * @param data
      *      The data to write to the block.
      * @param length
-     *      The total length of the data.
+     *      The exact length of the data. It is important that this value match precisely the length of the data
+     *      emitted by the {@code Flowable}.
      * @param leaseAccessConditions
      *      {@link LeaseAccessConditions}
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobStageBlockResponse> stageBlock(
+    public Single<BlockBlobsStageBlockResponse> stageBlock(
             String base64BlockID, Flowable<ByteBuffer> data, long length,
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
@@ -169,7 +172,7 @@ public final class BlockBlobURL extends BlobURL {
      * @return
      *      Emits the successful response.
      */
-    public Single<BlockBlobGetBlockListResponse> getBlockList(
+    public Single<BlockBlobsGetBlockListResponse> getBlockList(
             BlockListType listType, LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
         return this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(listType,
@@ -197,7 +200,7 @@ public final class BlockBlobURL extends BlobURL {
      *      Emits the successful response.
      */
     // TODO: Add Content-Length to swagger once the modeler knows to hide (or whatever solution).
-    public Single<BlockBlobCommitBlockListResponse> commitBlockList(
+    public Single<BlockBlobsCommitBlockListResponse> commitBlockList(
             List<String> base64BlockIDs, BlobHTTPHeaders headers, Metadata metadata,
             BlobAccessConditions accessConditions) {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
