@@ -298,7 +298,7 @@ public class HttpMessageSecurity {
             byte[] key = MessageSecurityHelper.base64UrltoByteArray(jweObject.encryptedKey());
 
             RsaKey clientEncryptionRsaKey = new RsaKey(clientEncryptionKey.kid(), clientEncryptionKey.toRSA(true));
-            byte[] aesKeyBytes = (!testMode) ? clientEncryptionRsaKey.decryptAsync(key, null, null, null, "RSA-OAEP").get() : "TEST1234TEST1234TEST1234TEST1234".getBytes();
+            byte[] aesKeyBytes = clientEncryptionRsaKey.decryptAsync(key, null, null, null, "RSA-OAEP").get();
 
             SymmetricKey aesKey = new SymmetricKey(UUID.randomUUID().toString(), aesKeyBytes);
             byte[] result = aesKey.decryptAsync(MessageSecurityHelper.base64UrltoByteArray(jweObject.cipherText()),
