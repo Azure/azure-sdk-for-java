@@ -26,14 +26,15 @@ class BlockBlobAPI extends APISpec {
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
-        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
-                .blockingGet()
+        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null, null,
+                null).blockingGet()
     }
 
     def "Block blob stage block"() {
         setup:
         BlockBlobsStageBlockResponse response = bu.stageBlock(new String(Base64.encoder.encode("0000".bytes)),
-                Flowable.just(defaultData), defaultData.remaining(), null).blockingGet()
+                Flowable.just(defaultData), defaultData.remaining(), null, null)
+                .blockingGet()
         BlockBlobsStageBlockHeaders headers = response.headers()
 
         expect:
@@ -45,21 +46,30 @@ class BlockBlobAPI extends APISpec {
         headers.isServerEncrypted()
     }
 
+    def "Block blob stage block MD5"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+
+        expect:
+        bu.stageBlock(new String(Base64.encoder.encode("0000".bytes)), Flowable.just(defaultData),
+                defaultData.remaining(), md5, null).blockingGet().statusCode() == 201
+    }
+
     def "Block blob stage block lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         expect:
         BlockBlobsStageBlockResponse response = bu.stageBlock(new String(Base64.encoder.encode("0000".bytes)),
-                Flowable.just(defaultData), defaultData.remaining(),
+                Flowable.just(defaultData), defaultData.remaining(), null,
                 new LeaseAccessConditions(leaseID)).blockingGet()
     }
 
     def "Block blob commit block list"() {
         setup:
         String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet()
+        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null,
+                null).blockingGet()
         ArrayList<String> ids = new ArrayList<>()
         ids.add(blockID)
 
@@ -79,8 +89,8 @@ class BlockBlobAPI extends APISpec {
     def "Block blob commit block list headers"() {
         setup:
         String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet()
+        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null,
+                null).blockingGet()
         ArrayList<String> ids = new ArrayList<>()
         ids.add(blockID)
         BlobHTTPHeaders headers = new BlobHTTPHeaders(cacheControl, contentDisposition, contentEncoding,
@@ -117,8 +127,8 @@ class BlockBlobAPI extends APISpec {
             metadata.put(key2, value2)
         }
         String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet()
+        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null,
+                null).blockingGet()
         ArrayList<String> ids = new ArrayList<>()
         ids.add(blockID)
 
@@ -140,8 +150,8 @@ class BlockBlobAPI extends APISpec {
     def "Block blob commit block list AC"() {
         setup:
         String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet()
+        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null,
+                null).blockingGet()
         ArrayList<String> ids = new ArrayList<>()
         ids.add(blockID)
         match = setupBlobMatchCondition(bu, match)
@@ -166,8 +176,8 @@ class BlockBlobAPI extends APISpec {
     def "Block blob get block list"() {
         setup:
         String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet()
+        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null,
+                null).blockingGet()
 
         when:
         BlockBlobsGetBlockListResponse response = bu.getBlockList(BlockListType.ALL, null)
@@ -184,13 +194,14 @@ class BlockBlobAPI extends APISpec {
     def "Block blob get block list type"() {
         setup:
         String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet()
+        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null,
+                null).blockingGet()
         ArrayList<String> ids = new ArrayList<>()
         ids.add(blockID)
         bu.commitBlockList(ids, null, null, null).blockingGet()
         blockID = new String(Base64.encoder.encode("0001".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultText.length(), null).blockingGet()
+        bu.stageBlock(blockID, Flowable.just(defaultData), defaultText.length(), null,
+                null).blockingGet()
 
         when:
         BlockBlobsGetBlockListResponse response = bu.getBlockList(type, null).blockingGet()
@@ -209,8 +220,8 @@ class BlockBlobAPI extends APISpec {
     def "Block blob get block list lease"() {
         setup:
         String blockID = new String(Base64.encoder.encode("0000".bytes))
-        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet()
+        bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(), null,
+                null).blockingGet()
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         expect:
@@ -220,7 +231,7 @@ class BlockBlobAPI extends APISpec {
     def "Block blob upload"() {
         when:
         BlockBlobsUploadResponse response = bu.upload(Flowable.just(defaultData), defaultData.remaining(),
-                null, null, null).blockingGet()
+                null,null, null, null).blockingGet()
         BlockBlobsUploadHeaders headers = response.headers()
 
         then:
@@ -233,6 +244,15 @@ class BlockBlobAPI extends APISpec {
         headers.isServerEncrypted()
     }
 
+    def "Block blob upload md5"() {
+        setup:
+        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
+
+        expect:
+        bu.upload(Flowable.just(defaultData), defaultData.remaining(), md5, null, null,
+                null).blockingGet().statusCode() == 201
+    }
+
     @Unroll
     def "Block blob upload headers"() {
         setup:
@@ -240,7 +260,7 @@ class BlockBlobAPI extends APISpec {
                 contentLanguage, contentMD5, contentType)
 
         when:
-        bu.upload(Flowable.just(defaultData), defaultData.remaining(),
+        bu.upload(Flowable.just(defaultData), defaultData.remaining(), null,
                 headers, null, null).blockingGet()
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
@@ -272,7 +292,7 @@ class BlockBlobAPI extends APISpec {
         }
 
         when:
-        bu.upload(Flowable.just(defaultData), defaultData.remaining(),
+        bu.upload(Flowable.just(defaultData), defaultData.remaining(), null,
                 null, metadata, null).blockingGet()
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
@@ -296,7 +316,7 @@ class BlockBlobAPI extends APISpec {
                 null, null)
 
         expect:
-        bu.upload(Flowable.just(defaultData), defaultData.remaining(),
+        bu.upload(Flowable.just(defaultData), defaultData.remaining(), null,
                 null, null, bac).blockingGet()
 
 

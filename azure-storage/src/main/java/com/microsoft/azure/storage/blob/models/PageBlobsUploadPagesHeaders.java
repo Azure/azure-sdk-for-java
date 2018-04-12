@@ -49,7 +49,7 @@ public final class PageBlobsUploadPagesHeaders {
      * The current sequence number for the page blob.
      */
     @JsonProperty(value = "x-ms-blob-sequence-number")
-    private Integer blobSequenceNumber;
+    private Long blobSequenceNumber;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -153,7 +153,7 @@ public final class PageBlobsUploadPagesHeaders {
      *
      * @return the blobSequenceNumber value.
      */
-    public Integer blobSequenceNumber() {
+    public Long blobSequenceNumber() {
         return this.blobSequenceNumber;
     }
 
@@ -163,7 +163,7 @@ public final class PageBlobsUploadPagesHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobsUploadPagesHeaders object itself.
      */
-    public PageBlobsUploadPagesHeaders withBlobSequenceNumber(Integer blobSequenceNumber) {
+    public PageBlobsUploadPagesHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }

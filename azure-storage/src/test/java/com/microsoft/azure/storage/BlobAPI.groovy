@@ -48,8 +48,8 @@ class BlobAPI extends APISpec {
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
-        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
-                .blockingGet()
+        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null, null,
+                null).blockingGet()
     }
 
     def "Blob download all null"() {
@@ -204,6 +204,7 @@ class BlobAPI extends APISpec {
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
         response.headers().blobSequenceNumber() == null
+        // TODO: Try with a pageBlob to check sequence number
     }
 
     @Unroll
@@ -612,8 +613,8 @@ class BlobAPI extends APISpec {
     def "Blob copy dest AC"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
-        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
-                .blockingGet()
+        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null,
+                null).blockingGet()
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(

@@ -7,7 +7,7 @@ import com.microsoft.rest.v2.RestResponse;
 import java.time.OffsetDateTime;
 
 /**
- * A generic wrapper for any type of blob REST API response. Used and returned by methods in the {@link Highlevel}
+ * A generic wrapper for any type of blob REST API response. Used and returned by methods in the {@link TransferManager}
  * class. The methods there return this type because they represent composite operations which may conclude with any of
  * several possible REST calls depending on the data provided.
  */

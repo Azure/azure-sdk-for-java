@@ -24,8 +24,9 @@ import com.microsoft.azure.storage.blob.models.ContainersReleaseLeaseResponse;
 import com.microsoft.azure.storage.blob.models.ContainersRenewLeaseResponse;
 import com.microsoft.azure.storage.blob.models.ContainersSetAccessPolicyResponse;
 import com.microsoft.azure.storage.blob.models.ContainersSetMetadataResponse;
+import com.microsoft.azure.storage.blob.models.ListBlobsFlatResponse;
+import com.microsoft.azure.storage.blob.models.ListBlobsHierarchyResponse;
 import com.microsoft.azure.storage.blob.models.ListBlobsIncludeItem;
-import com.microsoft.azure.storage.blob.models.ListBlobsResponse;
 import com.microsoft.azure.storage.blob.models.PublicAccessType;
 import com.microsoft.azure.storage.blob.models.SignedIdentifier;
 import com.microsoft.rest.v2.CollectionFormat;
@@ -992,9 +993,9 @@ public final class GeneratedContainers {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ListBlobsResponse object if successful.
+     * @return the ListBlobsFlatResponse object if successful.
      */
-    public ListBlobsResponse listBlobFlatSegment(String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
+    public ListBlobsFlatResponse listBlobFlatSegment(String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         return listBlobFlatSegmentAsync(prefix, marker, maxresults, include, timeout, requestId).blockingGet();
     }
 
@@ -1011,7 +1012,7 @@ public final class GeneratedContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<ListBlobsResponse> listBlobFlatSegmentAsync(String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, ServiceCallback<ListBlobsResponse> serviceCallback) {
+    public ServiceFuture<ListBlobsFlatResponse> listBlobFlatSegmentAsync(String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, ServiceCallback<ListBlobsFlatResponse> serviceCallback) {
         return ServiceFuture.fromBody(listBlobFlatSegmentAsync(prefix, marker, maxresults, include, timeout, requestId), serviceCallback);
     }
 
@@ -1053,7 +1054,7 @@ public final class GeneratedContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Maybe<ListBlobsResponse> listBlobFlatSegmentAsync(String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
+    public Maybe<ListBlobsFlatResponse> listBlobFlatSegmentAsync(String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         return listBlobFlatSegmentWithRestResponseAsync(prefix, marker, maxresults, include, timeout, requestId)
             .flatMapMaybe((ContainersListBlobFlatSegmentResponse res) -> res.body() == null ? Maybe.empty() : Maybe.just(res.body()));
     }
@@ -1070,9 +1071,9 @@ public final class GeneratedContainers {
      * @param requestId Provides a client-generated, opaque value with a 1 KB character limit that is recorded in the analytics logs when storage analytics logging is enabled.
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent.
-     * @return the ListBlobsResponse object if successful.
+     * @return the ListBlobsHierarchyResponse object if successful.
      */
-    public ListBlobsResponse listBlobHierarchySegment(@NonNull String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
+    public ListBlobsHierarchyResponse listBlobHierarchySegment(@NonNull String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         return listBlobHierarchySegmentAsync(delimiter, prefix, marker, maxresults, include, timeout, requestId).blockingGet();
     }
 
@@ -1090,7 +1091,7 @@ public final class GeneratedContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a ServiceFuture which will be completed with the result of the network request.
      */
-    public ServiceFuture<ListBlobsResponse> listBlobHierarchySegmentAsync(@NonNull String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, ServiceCallback<ListBlobsResponse> serviceCallback) {
+    public ServiceFuture<ListBlobsHierarchyResponse> listBlobHierarchySegmentAsync(@NonNull String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId, ServiceCallback<ListBlobsHierarchyResponse> serviceCallback) {
         return ServiceFuture.fromBody(listBlobHierarchySegmentAsync(delimiter, prefix, marker, maxresults, include, timeout, requestId), serviceCallback);
     }
 
@@ -1137,7 +1138,7 @@ public final class GeneratedContainers {
      * @throws IllegalArgumentException thrown if parameters fail the validation.
      * @return a Single which performs the network request upon subscription.
      */
-    public Maybe<ListBlobsResponse> listBlobHierarchySegmentAsync(@NonNull String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
+    public Maybe<ListBlobsHierarchyResponse> listBlobHierarchySegmentAsync(@NonNull String delimiter, String prefix, String marker, Integer maxresults, List<ListBlobsIncludeItem> include, Integer timeout, String requestId) {
         return listBlobHierarchySegmentWithRestResponseAsync(delimiter, prefix, marker, maxresults, include, timeout, requestId)
             .flatMapMaybe((ContainersListBlobHierarchySegmentResponse res) -> res.body() == null ? Maybe.empty() : Maybe.just(res.body()));
     }

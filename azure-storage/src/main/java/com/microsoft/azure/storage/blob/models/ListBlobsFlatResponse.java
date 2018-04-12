@@ -18,7 +18,7 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
  * An enumeration of blobs.
  */
 @JacksonXmlRootElement(localName = "EnumerationResults")
-public final class ListBlobsResponse {
+public final class ListBlobsFlatResponse {
     /**
      * The serviceEndpoint property.
      */
@@ -59,7 +59,7 @@ public final class ListBlobsResponse {
      * The blobs property.
      */
     @JsonProperty(value = "Blobs", required = true)
-    private BlobList blobs;
+    private BlobFlatList blobs;
 
     /**
      * The nextMarker property.
@@ -80,9 +80,9 @@ public final class ListBlobsResponse {
      * Set the serviceEndpoint value.
      *
      * @param serviceEndpoint the serviceEndpoint value to set.
-     * @return the ListBlobsResponse object itself.
+     * @return the ListBlobsFlatResponse object itself.
      */
-    public ListBlobsResponse withServiceEndpoint(String serviceEndpoint) {
+    public ListBlobsFlatResponse withServiceEndpoint(String serviceEndpoint) {
         this.serviceEndpoint = serviceEndpoint;
         return this;
     }
@@ -100,9 +100,9 @@ public final class ListBlobsResponse {
      * Set the containerName value.
      *
      * @param containerName the containerName value to set.
-     * @return the ListBlobsResponse object itself.
+     * @return the ListBlobsFlatResponse object itself.
      */
-    public ListBlobsResponse withContainerName(String containerName) {
+    public ListBlobsFlatResponse withContainerName(String containerName) {
         this.containerName = containerName;
         return this;
     }
@@ -120,9 +120,9 @@ public final class ListBlobsResponse {
      * Set the prefix value.
      *
      * @param prefix the prefix value to set.
-     * @return the ListBlobsResponse object itself.
+     * @return the ListBlobsFlatResponse object itself.
      */
-    public ListBlobsResponse withPrefix(String prefix) {
+    public ListBlobsFlatResponse withPrefix(String prefix) {
         this.prefix = prefix;
         return this;
     }
@@ -140,9 +140,9 @@ public final class ListBlobsResponse {
      * Set the marker value.
      *
      * @param marker the marker value to set.
-     * @return the ListBlobsResponse object itself.
+     * @return the ListBlobsFlatResponse object itself.
      */
-    public ListBlobsResponse withMarker(String marker) {
+    public ListBlobsFlatResponse withMarker(String marker) {
         this.marker = marker;
         return this;
     }
@@ -160,9 +160,9 @@ public final class ListBlobsResponse {
      * Set the maxResults value.
      *
      * @param maxResults the maxResults value to set.
-     * @return the ListBlobsResponse object itself.
+     * @return the ListBlobsFlatResponse object itself.
      */
-    public ListBlobsResponse withMaxResults(int maxResults) {
+    public ListBlobsFlatResponse withMaxResults(int maxResults) {
         this.maxResults = maxResults;
         return this;
     }
@@ -180,9 +180,9 @@ public final class ListBlobsResponse {
      * Set the delimiter value.
      *
      * @param delimiter the delimiter value to set.
-     * @return the ListBlobsResponse object itself.
+     * @return the ListBlobsFlatResponse object itself.
      */
-    public ListBlobsResponse withDelimiter(String delimiter) {
+    public ListBlobsFlatResponse withDelimiter(String delimiter) {
         this.delimiter = delimiter;
         return this;
     }
@@ -192,7 +192,7 @@ public final class ListBlobsResponse {
      *
      * @return the blobs value.
      */
-    public BlobList blobs() {
+    public BlobFlatList blobs() {
         return this.blobs;
     }
 
@@ -200,9 +200,9 @@ public final class ListBlobsResponse {
      * Set the blobs value.
      *
      * @param blobs the blobs value to set.
-     * @return the ListBlobsResponse object itself.
+     * @return the ListBlobsFlatResponse object itself.
      */
-    public ListBlobsResponse withBlobs(BlobList blobs) {
+    public ListBlobsFlatResponse withBlobs(BlobFlatList blobs) {
         this.blobs = blobs;
         return this;
     }
@@ -220,9 +220,9 @@ public final class ListBlobsResponse {
      * Set the nextMarker value.
      *
      * @param nextMarker the nextMarker value to set.
-     * @return the ListBlobsResponse object itself.
+     * @return the ListBlobsFlatResponse object itself.
      */
-    public ListBlobsResponse withNextMarker(String nextMarker) {
+    public ListBlobsFlatResponse withNextMarker(String nextMarker) {
         this.nextMarker = nextMarker;
         return this;
     }

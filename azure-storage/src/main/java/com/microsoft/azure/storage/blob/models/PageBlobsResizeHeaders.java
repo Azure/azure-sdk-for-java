@@ -42,7 +42,7 @@ public final class PageBlobsResizeHeaders {
      * for block blobs or append blobs.
      */
     @JsonProperty(value = "x-ms-blob-sequence-number")
-    private String blobSequenceNumber;
+    private Long blobSequenceNumber;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -118,7 +118,7 @@ public final class PageBlobsResizeHeaders {
      *
      * @return the blobSequenceNumber value.
      */
-    public String blobSequenceNumber() {
+    public Long blobSequenceNumber() {
         return this.blobSequenceNumber;
     }
 
@@ -128,7 +128,7 @@ public final class PageBlobsResizeHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobsResizeHeaders object itself.
      */
-    public PageBlobsResizeHeaders withBlobSequenceNumber(String blobSequenceNumber) {
+    public PageBlobsResizeHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }

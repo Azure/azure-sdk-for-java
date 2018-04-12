@@ -79,7 +79,7 @@ public final class AppendBlobsAppendBlockHeaders {
      * returned only for append blobs.
      */
     @JsonProperty(value = "x-ms-blob-committed-block-count")
-    private String blobCommittedBlockCount;
+    private Integer blobCommittedBlockCount;
 
     /**
      * Get the eTag value.
@@ -240,7 +240,7 @@ public final class AppendBlobsAppendBlockHeaders {
      *
      * @return the blobCommittedBlockCount value.
      */
-    public String blobCommittedBlockCount() {
+    public Integer blobCommittedBlockCount() {
         return this.blobCommittedBlockCount;
     }
 
@@ -250,7 +250,7 @@ public final class AppendBlobsAppendBlockHeaders {
      * @param blobCommittedBlockCount the blobCommittedBlockCount value to set.
      * @return the AppendBlobsAppendBlockHeaders object itself.
      */
-    public AppendBlobsAppendBlockHeaders withBlobCommittedBlockCount(String blobCommittedBlockCount) {
+    public AppendBlobsAppendBlockHeaders withBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
         return this;
     }

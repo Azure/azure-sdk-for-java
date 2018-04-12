@@ -345,7 +345,7 @@ class ContainerAPI extends APISpec {
         String uncommittedName = "u" + generateBlobName()
         BlockBlobURL uncommittedBlob = cu.createBlockBlobURL(uncommittedName)
         uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining(),
-                null).blockingGet()
+                null,null).blockingGet()
 
         when:
         List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
@@ -445,6 +445,7 @@ class ContainerAPI extends APISpec {
     @Unroll
     def "Container list blobs hier options"(){
         setup:
+        // Listing with a delimiter is mutually exclusive to including snapshots.
         ListBlobsOptions options = new ListBlobsOptions(
                 new BlobListingDetails(copy, metadata, false, uncommitted),
                 prefix, maxResults)
@@ -470,7 +471,7 @@ class ContainerAPI extends APISpec {
         String uncommittedName = "u" + generateBlobName()
         BlockBlobURL uncommittedBlob = cu.createBlockBlobURL(uncommittedName)
         uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining(),
-                null).blockingGet()
+                null,null).blockingGet()
 
         when:
         List<Blob> blobs = cu.listBlobsHierarchySegment(null, "none", options).blockingGet()
@@ -735,7 +736,7 @@ class ContainerAPI extends APISpec {
         bu5.getProperties(null).blockingGet().statusCode() == 200
         bu3.create(512, null, null, null, null).blockingGet()
                 .statusCode() == 201
-        bu4.upload(Flowable.just(defaultData), defaultData.remaining(),
+        bu4.upload(Flowable.just(defaultData), defaultData.remaining(), null,
                 null, null, null).blockingGet().statusCode() == 201
 
         when:

@@ -79,7 +79,7 @@ public final class BlobProperties {
      * The blobSequenceNumber property.
      */
     @JsonProperty(value = "x-ms-blob-sequence-number")
-    private Integer blobSequenceNumber;
+    private Long blobSequenceNumber;
 
     /**
      * Possible values include: 'BlockBlob', 'PageBlob', 'AppendBlob'.
@@ -384,7 +384,7 @@ public final class BlobProperties {
      *
      * @return the blobSequenceNumber value.
      */
-    public Integer blobSequenceNumber() {
+    public Long blobSequenceNumber() {
         return this.blobSequenceNumber;
     }
 
@@ -394,7 +394,7 @@ public final class BlobProperties {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the BlobProperties object itself.
      */
-    public BlobProperties withBlobSequenceNumber(Integer blobSequenceNumber) {
+    public BlobProperties withBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }

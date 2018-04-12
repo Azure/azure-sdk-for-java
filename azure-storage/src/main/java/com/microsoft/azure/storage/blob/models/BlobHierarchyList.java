@@ -17,10 +17,10 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The BlobList model.
+ * The BlobHierarchyList model.
  */
-@JacksonXmlRootElement(localName = "BlobList")
-public final class BlobList {
+@JacksonXmlRootElement(localName = "BlobHierarchyList")
+public final class BlobHierarchyList {
     /**
      * The blobPrefix property.
      */
@@ -46,9 +46,9 @@ public final class BlobList {
      * Set the blobPrefix value.
      *
      * @param blobPrefix the blobPrefix value to set.
-     * @return the BlobList object itself.
+     * @return the BlobHierarchyList object itself.
      */
-    public BlobList withBlobPrefix(List<BlobPrefix> blobPrefix) {
+    public BlobHierarchyList withBlobPrefix(List<BlobPrefix> blobPrefix) {
         this.blobPrefix = blobPrefix;
         return this;
     }
@@ -66,9 +66,9 @@ public final class BlobList {
      * Set the blob value.
      *
      * @param blob the blob value to set.
-     * @return the BlobList object itself.
+     * @return the BlobHierarchyList object itself.
      */
-    public BlobList withBlob(List<Blob> blob) {
+    public BlobHierarchyList withBlob(List<Blob> blob) {
         this.blob = blob;
         return this;
     }
