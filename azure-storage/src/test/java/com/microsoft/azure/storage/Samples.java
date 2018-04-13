@@ -8,6 +8,7 @@ import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpPipelineLogger;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.*;
+import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
 import org.junit.Test;
@@ -18,6 +19,10 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Base64;
+import java.util.UUID;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -81,6 +86,10 @@ public class Samples {
         // Create the container on the service (with no metadata and no public access)
         containerURL.create(null, null)
                 .flatMap(containersCreateResponse ->
+                        /*
+                         Create the blob with string (plain text) content.
+                         NOTE: It is imperative that the provided length matches the actual length exactly.
+                         */
                         blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
                                 null, null, null, null)
                 )
@@ -612,13 +621,291 @@ public class Samples {
                                 null,
                                 null,
                                 null)
-                                )
-                        )
-                .flatMap( blobsDeleteResponse -> {
+                )
+        )
+                .flatMap(blobsDeleteResponse -> {
                     System.out.println("Success: " + blobsDeleteResponse.statusCode());
                     return containerURL.delete(null);
                 })
                 /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+    }
+
+    // This example shows how to create a container with metadata and then how to read & update the metadata.
+    @Test
+    public void exampleMetadata_containers() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a ContainerURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+
+        /*
+         Create a container with some metadata (string key/value pairs).
+         NOTE: Metadata key names are always converted to lowercase before being sent to the Storage Service. Therefore,
+         you should always use lowercase letters; especially when querying a map for a metadata key.
+         */
+        Metadata metadata = new Metadata();
+        metadata.put("createdby", "Rick");
+        metadata.put("createdon", "4/13/18");
+        containerURL.create(metadata, null)
+                .flatMap(containersCreateResponse ->
+                        // Query the container's metadata.
+                        containerURL.getProperties(null)
+                )
+                .flatMap(containersGetPropertiesResponse -> {
+                    Metadata receivedMetadata = new Metadata(containersGetPropertiesResponse.headers().metadata());
+
+                    // Show the container's metadata.
+                    System.out.println(receivedMetadata);
+
+                    // Update the metadata and write it back to the container.
+                    receivedMetadata.put("createdby", "Mary"); // NOTE: The keyname is in all lowercase.
+                    return containerURL.setMetadata(receivedMetadata, null);
+                })
+                .flatMap(response -> containerURL.delete(null))
+                /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+
+        // NOTE: The SetMetadata & SetProperties methods update the container's ETag & LastModified properties.
+    }
+
+    /*
+    This example shows how to create a blob with metadata and then how to read & update the blob's read-only properties
+    and metadata.
+     */
+    @Test
+    public void exampleMetadata_blob() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
+
+        // Create the container.
+        containerURL.create(null, null)
+                .flatMap(containersCreateResponse -> {
+                    /*
+                    Create the blob with metadata (string key/value pairs).
+                    NOTE: Metadata key names are always converted to lowercase before being sent to the Storage
+                    Service. Therefore, you should always use lowercase letters; especially when querying a map for
+                    a metadata key.
+                     */
+                    Metadata metadata = new Metadata();
+                    metadata.put("createdby", "Rick");
+                    metadata.put("createdon", "4/13/18");
+                    return blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-1".getBytes())), "Text-1".length(),
+                            null, null, metadata, null);
+                })
+                .flatMap(response ->
+                        // Query the blob's properties and metadata.
+                        blobURL.getProperties(null))
+                .flatMap(response -> {
+                    // Show some of the blob's read-only properties.
+                    System.out.println(response.headers().blobType());
+                    System.out.println(response.headers().eTag());
+                    System.out.println(response.headers().lastModified());
+
+                    // Show the blob's metadata.
+                    System.out.println(response.headers().metadata());
+
+                    // Update the blob's metadata and write it back to the blob.
+                    Metadata receivedMetadata = new Metadata(response.headers().metadata());
+                    receivedMetadata.put("createdby", "Joseph");
+                    return blobURL.setMetadata(receivedMetadata, null);
+                })
+                .flatMap(response ->
+                        // Delete the container.
+                        containerURL.delete(null)
+                )
+                 /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+
+        // NOTE: The SetMetadata method updates the blob's ETag & LastModified properties.
+    }
+
+    // This example shows how to create a blob with HTTP Headers and then how to read & update the blob's HTTP Headers.
+    @Test
+    public void exampleBlobHTTPHeaders() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
+
+        // Create the container.
+        containerURL.create(null, null)
+                .flatMap(containersCreateResponse -> {
+                    /*
+                    Create the blob with HTTP headers.
+                     */
+                    BlobHTTPHeaders headers = new BlobHTTPHeaders(
+                            null,
+                            "attachment",
+                            null,
+                            null,
+                            null,
+                            "text/html; charset=utf-8");
+                    return blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-1".getBytes())), "Text-1".length(),
+                            null, headers, null, null);
+                })
+                .flatMap(response ->
+                        // Query the blob's properties and metadata.
+                        blobURL.getProperties(null))
+                .flatMap(response -> {
+                    // Show some of the blob's read-only properties.
+                    System.out.println(response.headers().blobType());
+                    System.out.println(response.headers().eTag());
+                    System.out.println(response.headers().lastModified());
+
+                    // Show the blob's HTTP headers..
+                    System.out.println(response.headers().contentType());
+                    System.out.println(response.headers().contentDisposition());
+
+                    /*
+                     Update the blob's properties and write it back to the blob.
+                     NOTE: If one of the HTTP properties is updated, any that are not included in the update request
+                     will be cleared. In order to preserve the existing HTTP properties, they must be re-set along with
+                     the added or updated properties.
+                     */
+                    BlobHTTPHeaders headers = new BlobHTTPHeaders(
+                            null,
+                            null,
+                            null,
+                            null,
+                            null,
+                            "text/plain"
+                    );
+                    return blobURL.setHTTPHeaders(headers, null);
+                })
+                .flatMap(response ->
+                        // Delete the container.
+                        containerURL.delete(null)
+                )
+                 /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+
+        // NOTE: The SetHTTPHeaders method updates the blob's ETag & LastModified properties.
+    }
+
+    /*
+    This example shows how to upload a lot of data (in blocks) to a blob. A block blob can have a maximum of 50,000
+    blocks; each block can have a maximum of 100MB. Therefore, the maximum size ofa  block blob is slightly more than
+    4.75TB (100MB X 50,000 blocks).
+    NOTE: The TransferManager class contains methods which will upload large blobs in parallel using
+    stageBlock/commitBlockList. We recommend you use those methods if possible.
+     */
+    @Test
+    public void exampleBlockBlobURL() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
+
+        String[] data = {"Michael", "Gabriel", "Raphael", "John"};
+
+        // Create the container. We convert to an Observable to be able to work with the block list effectively.
+        containerURL.create(null, null).toObservable()
+                .flatMap(response->
+                        // Create an Observable that will yield each of the Strings one at a time.
+                        Observable.fromIterable(Arrays.asList(data))
+                )
+                // Items emitted by an Observable that results from a concatMap call will preserve the original order.
+                .concatMap(block -> {
+                    /*
+                     Generate a base64 encoded blockID. Note that all blockIDs must be the same length. It is generally
+                     considered best practice to use UUIDs for the blockID.
+                     */
+                    String blockId = Base64.getEncoder().encodeToString(
+                            UUID.randomUUID().toString().getBytes());
+
+                    /*
+                     Upload a block to this blob specifying the BlockID and its content (up to 100MB); this block is
+                     uncommitted.
+                     NOTE: It is imperative that the provided length match the actual length of the data exactly.
+                     */
+                    return blobURL.stageBlock(blockId, Flowable.just(ByteBuffer.wrap(block.getBytes())),
+                            block.length(), null, null)
+                            /*
+                             We do not care for any data on the response object, but we do want to keep track of the
+                             ID.
+                             */
+                            .map(x -> blockId).toObservable();
+                })
+                // Gather all of the IDs emitted by the previous observable into a single list.
+                .collectInto(new ArrayList<>(data.length), (BiConsumer<ArrayList<String>, String>) ArrayList::add)
+                .flatMap(idList ->
+                        /*
+                        By this point, all the blocks are upload and we have an ordered list of their IDs. Here, we
+                        atomically commit the whole list.
+                        NOTE: The block list order need not match the order in which the blocks were uploaded. The order
+                        of IDs in the commitBlockList call will determine the structure of the blob.
+                         */
+                        blobURL.commitBlockList(idList, null, null, null))
+                .flatMap(response ->
+                        /*
+                         For the blob, show each block (ID and size) that is a committed part of it. It is also possible
+                         to include blocks that have been staged but not committed.
+                         */
+                        blobURL.getBlockList(BlockListType.ALL, null))
+                .flatMap(response -> {
+                    for (Block block : response.body().committedBlocks()) {
+                        System.out.println(String.format("Block ID=%s, Size=%d", block.name(), block.size()));
+                    }
+
+                    /*
+                     Download the blob in its entirety; download operations do not take blocks into account.
+                     NOTE: For really large blobs, downloading them like this allocates a lot of memory.
+                     */
+                    return blobURL.download(null, null, false);
+                })
+                .flatMap(response ->
+                        // Print out the data.
+                        FlowableUtil.collectBytesInBuffer(response.body())
+                                .doOnSuccess(bytes ->
+                                        System.out.println(new String(bytes.array())))
+                )
+                .flatMap(response ->
+                        // Delete the container.
+                        containerURL.delete(null)
+                )
+                 /*
                 This will synchronize all the above operations. This is strongly discouraged for use in production as
                 it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
                 demonstrate its effectiveness.
