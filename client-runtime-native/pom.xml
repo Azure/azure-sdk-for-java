@@ -22,6 +22,15 @@
     <properties>
         <netty-boringssl.version>2.0.7.Final</netty-boringssl.version>
     </properties>
+    <build>
+        <extensions>
+            <extension>
+                <groupId>kr.motd.maven</groupId>
+                <artifactId>os-maven-plugin</artifactId>
+                <version>1.5.0.Final</version>
+            </extension>
+        </extensions>
+    </build>
     <profiles>
         <profile>
             <id>boringssl</id>
