@@ -912,5 +912,58 @@ public class Samples {
                  */
                 .blockingGet();
     }
+
+    /*
+    This example shows how to append data (in blocks) to an append blob. An append blob can have a maximum of 50,000
+    blocks; each block can have a maximum of 100MB. Therefore, the maximum size of an append blob is slightly more than
+    4.75TB (100MB X 50,000 blocks).
+     */
+    @Test
+    public void exmapleAppendBlobURL() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        AppendBlobURL blobURL = containerURL.createAppendBlobURL("Data.txt");
+
+        // Create the container.
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        // Create the append blob. This creates a zero-length blob that we can now append to.
+                        blobURL.create(null, null, null))
+                .toObservable()
+                .flatMap(response ->
+                        // This range will act as our for loop to create 5 blocks
+                        Observable.range(0, 5))
+                .concatMapCompletable(i -> {
+                    String text = String.format("Appending block #%d\n", i);
+                    return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
+                            null, null).toCompletable();
+                })
+                // Download the blob.
+                .andThen(blobURL.download(null, null, false))
+                .flatMap(response ->
+                        // Print out the data.
+                        FlowableUtil.collectBytesInBuffer(response.body())
+                                .doOnSuccess(bytes ->
+                                        System.out.println(new String(bytes.array())))
+                )
+                .flatMap(response ->
+                        // Delete the container.
+                        containerURL.delete(null)
+                )
+                 /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+
+    }
 }
 
