@@ -2,12 +2,14 @@ package com.microsoft.azure.storage;
 
 import com.microsoft.azure.storage.blob.*;
 import com.microsoft.azure.storage.blob.models.*;
+import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpPipelineLogger;
 import com.microsoft.rest.v2.util.FlowableUtil;
-import io.reactivex.Flowable;
-import io.reactivex.Single;
+import io.reactivex.*;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import org.junit.Test;
 
 import java.net.MalformedURLException;
@@ -15,6 +17,7 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
+import java.time.OffsetDateTime;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -68,7 +71,7 @@ public class Samples {
 
         /*
         Create a URL that references a to-be-created blob in your Azure Storage account's container.
-        This returns a BlockBlobURL objec that wraps the blob's URl and a request pipeline
+        This returns a BlockBlobURL object that wraps the blob's URl and a request pipeline
         (inherited from containerURL). Note that blob names can be mixed case.
          */
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("HelloWorld.txt");
@@ -77,10 +80,10 @@ public class Samples {
 
         // Create the container on the service (with no metadata and no public access)
         containerURL.create(null, null)
-                .flatMap(containersCreateResponse -> {
-                    return blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
-                            null, null, null);
-                })
+                .flatMap(containersCreateResponse ->
+                        blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
+                                null, null, null, null)
+                )
                 .flatMap(blobsDownloadResponse ->
                         // Download the blob's content.
                         blobURL.download(null, null, false))
@@ -145,8 +148,8 @@ public class Samples {
         }
     }
 
-    @Test
     // This example shows how you can configure a pipeline for making HTTP requests to the Azure Storage blob Service.
+    @Test
     public void exampleNewPipeline() throws MalformedURLException {
         // This shows how to wire in your own logging mechanism. Here we use the built in java logger.
         Logger logger = Logger.getGlobal();
@@ -190,14 +193,11 @@ public class Samples {
                 Level level = null;
                 if (httpPipelineLogLevel == HttpPipelineLogLevel.ERROR) {
                     level = Level.SEVERE;
-                }
-                else if (httpPipelineLogLevel == HttpPipelineLogLevel.WARNING) {
+                } else if (httpPipelineLogLevel == HttpPipelineLogLevel.WARNING) {
                     level = Level.WARNING;
-                }
-                else if (httpPipelineLogLevel == HttpPipelineLogLevel.INFO) {
+                } else if (httpPipelineLogLevel == HttpPipelineLogLevel.INFO) {
                     level = Level.INFO;
-                }
-                else if (httpPipelineLogLevel == HttpPipelineLogLevel.OFF) {
+                } else if (httpPipelineLogLevel == HttpPipelineLogLevel.OFF) {
                     level = Level.OFF;
                 }
                 logger.log(level, s);
@@ -259,11 +259,11 @@ public class Samples {
         // TODO: Once we add better error code support.
     }
 
-    @Test
     /*
     This example shows how to break a URL into its parts so you can examine and/or change some of its values and then
     construct a new URL.
      */
+    @Test
     public void exampleBlobURLParts() throws MalformedURLException, UnknownHostException {
         /*
          Start with a URL that identifies a snapshot of a blob in a container and includes a Shared Access Signature
@@ -288,15 +288,15 @@ public class Samples {
         SASQueryParameters sas = parts.sasQueryParameters;
         System.out.println(String.join("\n",
                 new String[]{sas.getVersion(),
-                sas.getResource(),
-                sas.getStartTime().toString(),
-                sas.getExpiryTime().toString(),
-                sas.getPermissions(),
-                sas.getIpRange().toString(),
-                sas.getProtocol().toString(),
-                sas.getIdentifier(),
-                sas.getServices(),
-                sas.getSignature()}));
+                        sas.getResource(),
+                        sas.getStartTime().toString(),
+                        sas.getExpiryTime().toString(),
+                        sas.getPermissions(),
+                        sas.getIpRange().toString(),
+                        sas.getProtocol().toString(),
+                        sas.getIdentifier(),
+                        sas.getServices(),
+                        sas.getSignature()}));
 
         // You can then change some of the fields and construct a new URL.
         parts.sasQueryParameters = null; // Remove the SAS query parameters.
@@ -308,6 +308,322 @@ public class Samples {
         URL newURL = parts.toURL();
         System.out.println(newURL);
         // NOTE: You can pass the new URL to the constructor for any XxxURL to manipulate the resource.
+    }
+
+    // This example shows how to create and use an Azure Storage account Shared Access Signature(SAS).
+    @Test
+    public void exampleAccountSASSignatureValues() throws InvalidKeyException, MalformedURLException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Use your Storage account's name and key to create a credential object; this is required to sign a SAS.
+        SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
+
+        /*
+        Set the desired SAS signature values and sign them with the shared key credentials to get the SAS query
+        parameters.
+         */
+        AccountSASSignatureValues values = new AccountSASSignatureValues();
+        values.protocol = SASProtocol.HTTPS_ONLY; // Users MUST use HTTPS (not HTTP).
+        values.expiryTime = OffsetDateTime.now().plusDays(2); // 2 days before expiration.
+
+        AccountSASPermission permission = new AccountSASPermission();
+        permission.read = true;
+        permission.list = true;
+        values.permissions = permission.toString();
+
+        AccountSASService service = new AccountSASService();
+        service.blob = true;
+        values.services = service.toString();
+
+        AccountSASResourceType resourceType = new AccountSASResourceType();
+        resourceType.container = true;
+        resourceType.object = true;
+        values.resourceTypes = resourceType.toString();
+
+        SASQueryParameters params = values.generateSASQueryParameters(credential);
+
+        // Calling encode will generate the query string.
+        String encodedParams = params.encode();
+
+        String urlToSendToSomeone = String.format("https://%s.blob.core.windows.net?%s", accountName, encodedParams);
+        // At this point, you can send the urlToSendSomeone to someone via email or any other mechanism you choose.
+
+        // ***************************************************************************************************
+
+        // When someone receives the URL, the access the SAS-protected resource with code like this:
+        URL u = new URL(urlToSendToSomeone);
+
+        /*
+         Create a ServiceURL object that wraps the serviceURL (and its SAS) and a pipeline. When using SAS URLs,
+         AnonymousCredentials are required.
+         */
+        ServiceURL serviceURL = new ServiceURL(u,
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
+        // Now, you can use this serviceURL just like any other to make requests of the resource.
+    }
+
+    // This example shows how to create and use a Blob Service Shared Access Signature (SAS).
+    @Test
+    public void exampleBlobSASSignatureValues() throws InvalidKeyException, MalformedURLException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Use your Storage account's name and key to create a credential object; this is required to sign a SAS.
+        SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
+
+        // This is the name of the container and blob that we're creating a SAS to.
+        String containerName = "mycontainer"; // Container names require lowercase.
+        String blobName = "HelloWorld.txt"; // Blob names can be mixed case.
+
+        /*
+        Set the desired SAS signature values and sign them with the shared key credentials to get the SAS query
+        parameters.
+         */
+        ServiceSASSignatureValues values = new ServiceSASSignatureValues();
+        values.protocol = SASProtocol.HTTPS_ONLY; // Users MUST use HTTPS (not HTTP).
+        values.expiryTime = OffsetDateTime.now().plusDays(2); // 2 days before expiration.
+        values.containerName = containerName;
+        values.blobName = blobName;
+
+        /*
+        To produce a container SAS (as opposed to a blob SAS), assign to Permissions using ContainerSASPermissions, and
+        make sure the blobName field is null (the default).
+         */
+        BlobSASPermission permission = new BlobSASPermission();
+        permission.read = true;
+        permission.add = true;
+        permission.write = true;
+        values.permissions = permission.toString();
+
+        SASQueryParameters params = values.generateSASQueryParameters(credential);
+
+        // Calling encode will generate the query string.
+        String encodedParams = params.encode();
+
+        String urlToSendToSomeone = String.format("https://%s.blob.core.windows.net/%s/%s?%s", accountName,
+                containerName, blobName, encodedParams);
+        // At this point, you can send the urlToSendSomeone to someone via email or any other mechanism you choose.
+
+        // ***************************************************************************************************
+
+        // When someone receives the URL, the access the SAS-protected resource with code like this:
+        URL u = new URL(urlToSendToSomeone);
+
+        /*
+         Create a BlobURL object that wraps the blobURL (and its SAS) and a pipeline. When using SAS URLs,
+         AnonymousCredentials are required.
+         */
+        BlobURL blobURL = new BlobURL(u,
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
+        // Now, you can use this blobURL just like any other to make requests of the resource.
+    }
+
+    // This example shows how to manipulate a container's permissions.
+    @Test
+    public void exampleContainerURL_SetPermissions() throws InvalidKeyException, MalformedURLException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Use your Storage account's name and key to create a credential object; this is required to sign a SAS.
+        SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
+
+        // Create a containerURL object that wraps the container's URL and a default pipeline.
+        URL u = new URL(String.format("https://%s.blob.core.windows.net/myjavacontainer", accountName));
+        ContainerURL containerURL = new ContainerURL(u, StorageURL.createPipeline(credential, new PipelineOptions()));
+
+        /*
+         Create a URL that references a to-be-created blob in your Azure Storage account's container. This returns a
+         BlockBlobURL object that wraps the blob's URL and a request pipeline (inherited from containerURL).
+         */
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("HelloWorld.txt");
+
+        // A blob URL with anonymous credentials to demonstrate public access.
+        BlobURL anonymousURL = new BlobURL(blobURL.toURL(),
+                StorageURL.createPipeline(new AnonymousCredentials(), new PipelineOptions()));
+
+        String data = "Hello World!";
+
+        // Create the container (with no metadata and no public access)
+        containerURL.create(null, null)
+                .flatMap(containersCreateResponse ->
+                        blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
+                                null, null, null, null)
+                )
+                .flatMap(blockBlobsUploadResponse ->
+                        // Attempt to read the blob with anonymous credentials.
+                        anonymousURL.download(null, null, false)
+                )
+                .onErrorResumeNext(throwable -> {
+                    /*
+                    We expected this error because the service returns an HTTP 404 status code when a blob exists but
+                    the request does not have permission to access it.
+                     */
+                    if (throwable instanceof RestException &&
+                            ((RestException) throwable).response().statusCode() == 404) {
+                        // This is how we change the container's permission to allow public/anonymous access.
+                        return containerURL.setAccessPolicy(PublicAccessType.BLOB, null, null)
+                                .flatMap(containersSetAccessPolicyResponse ->
+                                        // Now this will work.
+                                        anonymousURL.download(null, null,
+                                                false));
+                    } else {
+                        return Single.error(throwable);
+                    }
+                })
+                .flatMap((Function<BlobsDownloadResponse, SingleSource<?>>) blobsDownloadResponse ->
+                        // Delete the container and the blob within in.
+                        containerURL.delete(null))
+                /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+    }
+
+    // This example shows how to perform operations on blobs conditionally.
+    @Test
+    public void exampleBlobAccessConditions() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
+
+        // Create the container (unconditionally; succeeds)
+        containerURL.create(null, null)
+                .flatMap(containersCreateResponse ->
+                        // Create the blob (unconditionally; succeeds)
+                        blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-1".getBytes())), "Text-1".length(),
+                                null, null, null, null))
+                .flatMap(blockBlobsUploadResponse -> {
+                    System.out.println("Success: " + blockBlobsUploadResponse.statusCode());
+
+                    // Download blob content if the blob has been modified since we uploaded it (fails).
+                    return blobURL.download(null,
+                            new BlobAccessConditions(
+                                    new HTTPAccessConditions(
+                                            blockBlobsUploadResponse.headers().lastModified(),
+                                            null,
+                                            null,
+                                            null),
+                                    null,
+                                    null,
+                                    null),
+                            false);
+                })
+                .onErrorResumeNext(throwable -> {
+                    if (throwable instanceof RestException) {
+                        System.out.println("Failure: " + ((RestException) throwable).response().statusCode());
+                    } else {
+                        return Single.error(throwable); // Network failure.
+                    }
+                    // Download the blob content if the blob hasn't been modified in the last 24 hours (fails):
+                    return blobURL.download(null,
+                            new BlobAccessConditions(
+                                    new HTTPAccessConditions(
+                                            null,
+                                            OffsetDateTime.now().minusDays(1),
+                                            null,
+                                            null),
+                                    null,
+                                    null,
+                                    null),
+                            false);
+                })
+                /*
+                 onErrorResume next expects to return a Single of the same type. Here, we are changing operations, which
+                 means we will get a different return type and cannot directly recover from the error. To solve this,
+                 we go through a completable which will give us more flexibility with types.
+                 */
+                .toCompletable()
+                .onErrorResumeNext(throwable -> {
+                    if (throwable instanceof RestException) {
+                        System.out.println("Failure: " + ((RestException) throwable).response().statusCode());
+                    } else {
+                        return Completable.error(throwable);
+                    }
+                    // We've logged the error, and now returning an empty Completable allows us to change course.
+                    return Completable.complete();
+                })
+                // Get the blob properties to retrieve the current ETag.
+                .andThen(blobURL.getProperties(null))
+                .flatMap(getPropertiesResponse ->
+                        /*
+                         Upload new content if the blob hasn't changed since the version identified by the ETag
+                         (succeeds).
+                         */
+                        blobURL.upload(Flowable.just(ByteBuffer.wrap("Text-2".getBytes())), "Text-2".length(),
+                                null, null, null,
+                                new BlobAccessConditions(
+                                        new HTTPAccessConditions(
+                                                null,
+                                                null,
+                                                new ETag(getPropertiesResponse.headers().eTag()),
+                                                null),
+                                        null,
+                                        null,
+                                        null))
+                )
+                .flatMap(blockBlobsUploadResponse -> {
+                    System.out.println("Success: " + blockBlobsUploadResponse.statusCode());
+
+                    // Download content if it has changed since the version identified by ETag (fails):
+                    return blobURL.download(null,
+                            new BlobAccessConditions(
+                                    new HTTPAccessConditions(
+                                            null,
+                                            null,
+                                            null,
+                                            new ETag(blockBlobsUploadResponse.headers().eTag())
+                                    ),
+                                    null,
+                                    null,
+                                    null
+                            ), false);
+                })
+                .toCompletable()
+                .onErrorResumeNext(throwable -> {
+                    if (throwable instanceof RestException) {
+                        System.out.println("Failure: " + ((RestException) throwable).response().statusCode());
+                    } else {
+                        return Completable.error(throwable);
+                    }
+                    // We've logged the error, and now returning an empty Completable allows us to change course.
+                    return Completable.complete();
+                }).andThen(
+                // Delete the blob if it exists (succeeds).
+                blobURL.delete(DeleteSnapshotsOptionType.INCLUDE,
+                        new BlobAccessConditions(
+                                new HTTPAccessConditions(
+                                        null,
+                                        null,
+                                        ETag.ANY,
+                                        null),
+                                null,
+                                null,
+                                null)
+                                )
+                        )
+                .flatMap( blobsDeleteResponse -> {
+                    System.out.println("Success: " + blobsDeleteResponse.statusCode());
+                    return containerURL.delete(null);
+                })
+                /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
     }
 }
 

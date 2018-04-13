@@ -20,6 +20,7 @@ import io.reactivex.Single;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
@@ -256,7 +257,8 @@ public final class ContainerURL extends StorageURL {
 
     /**
      * Sets the container's permissions. The permissions indicate whether blobs in a container may be accessed publicly.
-     * For more information, see the
+     * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
+     * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
      *
      * @param accessType
@@ -275,6 +277,19 @@ public final class ContainerURL extends StorageURL {
             PublicAccessType accessType, List<SignedIdentifier> identifiers,
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
+
+        if (identifiers != null) {
+            for (SignedIdentifier identifier : identifiers) {
+                if (identifier.accessPolicy() != null && identifier.accessPolicy().start() != null) {
+                    identifier.accessPolicy().withStart(
+                            identifier.accessPolicy().start().truncatedTo(ChronoUnit.SECONDS));
+                }
+                if (identifier.accessPolicy() != null && identifier.accessPolicy().expiry() != null) {
+                    identifier.accessPolicy().withExpiry(
+                            identifier.accessPolicy().expiry().truncatedTo(ChronoUnit.SECONDS));
+                }
+            }
+        }
 
         // TODO: validate that empty list clears permissions and null list does not change list. Document behavior.
         return this.storageClient.generatedContainers().setAccessPolicyWithRestResponseAsync(identifiers, null,

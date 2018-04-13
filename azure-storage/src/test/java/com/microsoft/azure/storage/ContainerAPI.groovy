@@ -198,8 +198,8 @@ class ContainerAPI extends APISpec {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
                 .withId("0000")
-                .withAccessPolicy(new AccessPolicy().withStart(OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS))
-                .withExpiry(OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusDays(1))
+                .withAccessPolicy(new AccessPolicy().withStart(OffsetDateTime.now())
+                .withExpiry(OffsetDateTime.now().plusDays(1))
                 .withPermission("r"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
