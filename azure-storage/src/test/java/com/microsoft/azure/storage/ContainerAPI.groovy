@@ -39,7 +39,6 @@ import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.azure.storage.blob.models.LeaseStatusType
 import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
-import com.microsoft.rest.v2.RestException
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpPipeline
 import io.reactivex.Flowable
@@ -344,8 +343,8 @@ class ContainerAPI extends APISpec {
 
         String uncommittedName = "u" + generateBlobName()
         BlockBlobURL uncommittedBlob = cu.createBlockBlobURL(uncommittedName)
-        uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining(),
-                null,null).blockingGet()
+        uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining()
+                , null).blockingGet()
 
         when:
         List<Blob> blobs = cu.listBlobsFlatSegment(null, options).blockingGet().body().blobs().blob()
@@ -470,8 +469,8 @@ class ContainerAPI extends APISpec {
 
         String uncommittedName = "u" + generateBlobName()
         BlockBlobURL uncommittedBlob = cu.createBlockBlobURL(uncommittedName)
-        uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining(),
-                null,null).blockingGet()
+        uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining()
+                , null).blockingGet()
 
         when:
         List<Blob> blobs = cu.listBlobsHierarchySegment(null, "none", options).blockingGet()
@@ -736,7 +735,7 @@ class ContainerAPI extends APISpec {
         bu5.getProperties(null).blockingGet().statusCode() == 200
         bu3.create(512, null, null, null, null).blockingGet()
                 .statusCode() == 201
-        bu4.upload(Flowable.just(defaultData), defaultData.remaining(), null,
+        bu4.upload(Flowable.just(defaultData), defaultData.remaining(),
                 null, null, null).blockingGet().statusCode() == 201
 
         when:

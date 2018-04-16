@@ -107,7 +107,7 @@ public class BlobStorageAPITests {
             Assert.assertEquals(containerList.get(0).name(), containerName);
 
             // Create the blob with a single put. See below for the stageBlock(List) scenario.
-            bu.upload(Flowable.just(ByteBuffer.wrap(new byte[]{0, 0, 0})), 3, null,null,
+            bu.upload(Flowable.just(ByteBuffer.wrap(new byte[]{0, 0, 0})), 3, null,
                     null,null).blockingGet();
 
             // Download the blob contents.
@@ -162,7 +162,7 @@ public class BlobStorageAPITests {
             ArrayList<String> blockIDs = new ArrayList<>();
             blockIDs.add(Base64.getEncoder().encodeToString(new byte[]{0}));
             bu3.stageBlock(blockIDs.get(0), Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})),
-                    3, null,null).blockingGet();
+                    3, null).blockingGet();
 
             // Get the list of blocks on this blob. For demonstration purposes.
             BlockList blockList = bu3.getBlockList(BlockListType.ALL, null)
@@ -235,7 +235,7 @@ public class BlobStorageAPITests {
             // --------------APPEND BLOBS-------------
             AppendBlobURL abu = cu.createAppendBlobURL("appendblob");
             abu.create(null, null, null).blockingGet();
-            abu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})), 3, null,
+            abu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})), 3,
                     null).blockingGet();
 
             data = abu.download(new BlobRange(0L, 3L), null, false).blockingGet().body();
@@ -250,7 +250,7 @@ public class BlobStorageAPITests {
                 os.write(1);
             }
             pbu.uploadPages(new PageRange().withStart(0).withEnd(1023), Flowable.just(ByteBuffer.wrap(os.toByteArray())),
-                    null, null).blockingGet();
+                    null).blockingGet();
             String pageSnap = pbu.createSnapshot(null, null).blockingGet().headers().snapshot();
             pbu.clearPages(new PageRange().withStart(0).withEnd(511), null).blockingGet();
             PageRange pr = pbu.getPageRanges(new BlobRange(0L, (512L * 3L)), null).blockingGet()

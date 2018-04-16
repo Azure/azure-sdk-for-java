@@ -136,7 +136,7 @@ class PageBlobAPI extends APISpec {
     def "Page blob upload page"() {
         when:
         PageBlobsUploadPagesResponse response = bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null, null).blockingGet()
+                Flowable.just(getRandomData(512)), null).blockingGet()
         PageBlobsUploadPagesHeaders headers = response.headers()
 
         then:
@@ -153,7 +153,7 @@ class PageBlobAPI extends APISpec {
         byte[] md5 = MessageDigest.getInstance("MD5").digest(data.array())
 
         expect:
-        bu.uploadPages(new PageRange().withStart(0).withEnd(511), Flowable.just(data), md5,
+        bu.uploadPages(new PageRange().withStart(0).withEnd(511), Flowable.just(data),
                 null).blockingGet()
     }
 
@@ -169,7 +169,7 @@ class PageBlobAPI extends APISpec {
 
         expect:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null,  bac).blockingGet().statusCode() == 201
+                Flowable.just(getRandomData(512)), bac).blockingGet().statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
@@ -187,7 +187,7 @@ class PageBlobAPI extends APISpec {
     def "Page blob clear page"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null, null).blockingGet()
+                Flowable.just(getRandomData(512)), null).blockingGet()
 
         when:
         PageBlobsClearPagesHeaders headers =
@@ -205,7 +205,7 @@ class PageBlobAPI extends APISpec {
     def "Page blob clear pages AC"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null, null).blockingGet()
+                Flowable.just(getRandomData(512)), null).blockingGet()
         match = setupBlobMatchCondition(bu, match)
         leaseID = setupBlobLeaseCondition(bu, leaseID)
         BlobAccessConditions bac = new BlobAccessConditions(
@@ -232,7 +232,7 @@ class PageBlobAPI extends APISpec {
     def "Page blob get page ranges"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null, null).blockingGet()
+                Flowable.just(getRandomData(512)), null).blockingGet()
 
         when:
         PageBlobsGetPageRangesResponse response =
@@ -276,7 +276,7 @@ class PageBlobAPI extends APISpec {
         setup:
         String snapshot = bu.createSnapshot(null, null).blockingGet().headers().snapshot()
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
-                Flowable.just(getRandomData(512)), null, null).blockingGet()
+                Flowable.just(getRandomData(512)), null).blockingGet()
 
         when:
         PageBlobsGetPageRangesDiffResponse response =
