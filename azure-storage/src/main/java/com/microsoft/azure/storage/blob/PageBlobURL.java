@@ -15,7 +15,6 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.*;
-import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import io.reactivex.Flowable;
@@ -149,28 +148,23 @@ public final class PageBlobURL extends BlobURL {
      *      0-511, 512-1023, etc.
      * @param body
      *      The data to upload.
-     * @param contentMD5
-     *      An optional hash used to verify the integrity of the page during transport. When specified, the service
-     *      compares the hash of the content that has arrived with this value. If the two hashes do not match, the
-     *      operation will fail with error code 400 (Bad Request).
      * @param accessConditions
      *      {@link BlobAccessConditions}
      * @return
      *      Emits the successful response.
      */
     public Single<PageBlobsUploadPagesResponse> uploadPages(
-            PageRange pageRange, Flowable<ByteBuffer> body, byte[] contentMD5, BlobAccessConditions accessConditions) {
+            PageRange pageRange, Flowable<ByteBuffer> body, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            new IllegalArgumentException("pageRange cannot be null.");
+            throw new IllegalArgumentException("pageRange cannot be null.");
         }
         String pageRangeStr = pageRangeToString(pageRange);
 
         return this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
-                 body, pageRange.end()-pageRange.start()+1, null,
-                null, pageRangeStr,
+                 body, pageRange.end()-pageRange.start()+1, null, pageRangeStr,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThanOrEqual(),
                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThan(),

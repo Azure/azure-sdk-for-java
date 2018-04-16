@@ -110,7 +110,7 @@ class AppendBlobAPI extends APISpec {
     def "Append blob append block defaults"() {
         setup:
         AppendBlobsAppendBlockHeaders headers =
-                bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), null,
+                bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(),
                         null).blockingGet().headers()
 
         expect:
@@ -140,7 +140,7 @@ class AppendBlobAPI extends APISpec {
         byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
 
         expect:
-        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), md5, null).blockingGet()
+        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), null).blockingGet()
                 .statusCode() == 201
     }
 
@@ -154,7 +154,7 @@ class AppendBlobAPI extends APISpec {
                 new AppendBlobAccessConditions(appendPosE, maxSizeLTE), null)
 
         expect:
-        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), null, bac)
+        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), bac)
                 .blockingGet().statusCode() == 201
 
         where:

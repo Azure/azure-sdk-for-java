@@ -241,7 +241,7 @@ public class TransferManager {
                      into an Observable which emits one item to comply with the signature of concatMapEager.
                      */
                     return blockBlobURL.stageBlock(blockId, Flowable.just(blockData),
-                            blockData.remaining(), null, options.accessConditions.getLeaseAccessConditions())
+                            blockData.remaining(), options.accessConditions.getLeaseAccessConditions())
                             .map(x -> blockId).toObservable();
 
                 /*
@@ -281,7 +281,7 @@ public class TransferManager {
         }
 
         // Transform the specific RestResponse into a CommonRestResponse.
-        return blockBlobURL.upload(data, size, null, options.httpHeaders,
+        return blockBlobURL.upload(data, size, options.httpHeaders,
                 options.metadata, options.accessConditions)
                 .map(CommonRestResponse::createFromPutBlobResponse);
     }

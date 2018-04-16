@@ -48,7 +48,7 @@ class BlobAPI extends APISpec {
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
-        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null, null,
+        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null,
                 null).blockingGet()
     }
 
@@ -613,7 +613,7 @@ class BlobAPI extends APISpec {
     def "Blob copy dest AC"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
-        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null,
+        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null,
                 null).blockingGet()
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
