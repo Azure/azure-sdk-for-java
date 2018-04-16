@@ -8,6 +8,7 @@ import com.microsoft.rest.v2.http.HttpPipelineLogLevel;
 import com.microsoft.rest.v2.http.HttpPipelineLogger;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.*;
+import io.reactivex.Observable;
 import io.reactivex.functions.BiConsumer;
 import io.reactivex.functions.Consumer;
 import io.reactivex.functions.Function;
@@ -19,10 +20,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Base64;
-import java.util.UUID;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -964,6 +962,91 @@ public class Samples {
                  */
                 .blockingGet();
 
+    }
+
+    // This example shows how to work with Page Blobs.
+    @Test
+    public void examplePageBlobURL() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        PageBlobURL blobURL = containerURL.createPageBlobURL("Data.txt");
+
+        // Create the container.
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        // Create the page blob with 4 512-byte pages.
+                        blobURL.create(4 * PageBlobURL.PAGE_BYTES, null, null,
+                                null, null))
+                .flatMap(response -> {
+                    /*
+                     Upload data to a page.
+                     NOTE: The page range must start on a multiple of the page size and end on
+                     (multiple of page size) - 1.
+                     */
+                    byte[] data = new byte[PageBlobURL.PAGE_BYTES];
+                    for (int i=0; i < PageBlobURL.PAGE_BYTES; i++) {
+                        data[i] = 1;
+                    }
+                    return blobURL.uploadPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES - 1),
+                            Flowable.just(ByteBuffer.wrap(data)), null, null);
+                })
+                .flatMap(response -> {
+                    // Upload data to the third page in the blob.
+                    byte[] data = new byte[PageBlobURL.PAGE_BYTES];
+                    for (int i=0; i < PageBlobURL.PAGE_BYTES; i++) {
+                        data[i] = 2;
+                    }
+                    return blobURL.uploadPages(new PageRange().withStart(2*PageBlobURL.PAGE_BYTES)
+                                    .withEnd(3*PageBlobURL.PAGE_BYTES - 1),
+                            Flowable.just(ByteBuffer.wrap(data)), null, null);
+                })
+                .flatMap(response ->
+                        // Get the page ranges which have valid data.
+                        blobURL.getPageRanges(null, null))
+                .flatMap(response -> {
+                    // Print the pages that are valid.
+                    for(PageRange range : response.body().pageRange()) {
+                        System.out.println(String.format("Start=%d, End=%d\n", range.start(), range.end()));
+                    }
+
+                    // Clear and invalidate the first range.
+                    return blobURL.clearPages(new PageRange().withStart(0).withEnd(PageBlobURL.PAGE_BYTES-1),
+                            null);
+                })
+                .flatMap(response ->
+                        // Get the page ranges which have valid data.
+                        blobURL.getPageRanges(null, null))
+                .flatMap(response -> {
+                    // Print the pages that are valid.
+                    for(PageRange range : response.body().pageRange()) {
+                        System.out.println(String.format("Start=%d, End=%d\n", range.start(), range.end()));
+                    }
+
+                    // Get the content of the whole blob.
+                    return blobURL.download(null, null, false);
+                })
+                .flatMap(response -> {
+                    // Print the received content.
+                    FlowableUtil.collectBytesInBuffer(response.body())
+                            .doOnSuccess(data ->
+                                    System.out.println(new String(data.array())));
+
+                    // Delete the container.
+                    return containerURL.delete(null);
+                })
+                 /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
     }
 }
 
