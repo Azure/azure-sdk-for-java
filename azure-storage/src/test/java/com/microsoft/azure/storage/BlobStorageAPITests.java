@@ -1,13 +1,5 @@
 package com.microsoft.azure.storage;
 
-import com.linkedin.flashback.SceneAccessLayer;
-import com.linkedin.flashback.factory.SceneFactory;
-import com.linkedin.flashback.matchrules.CompositeMatchRule;
-import com.linkedin.flashback.matchrules.MatchBody;
-import com.linkedin.flashback.matchrules.MatchRuleUtils;
-import com.linkedin.flashback.scene.SceneConfiguration;
-import com.linkedin.flashback.scene.SceneMode;
-import com.linkedin.flashback.smartproxy.FlashbackRunner;
 import com.microsoft.azure.storage.blob.*;
 import com.microsoft.azure.storage.blob.models.*;
 import com.microsoft.rest.v2.http.*;
@@ -545,68 +537,6 @@ public class BlobStorageAPITests {
             assertEquals(result.compareTo(data), 0);
         } finally {
             cu.delete(null);
-        }
-    }
-    @Test
-    public void recordingTest() throws IOException, InvalidKeyException, InterruptedException {
-
-        FlashbackRunner flashbackRunner = null;
-        try {
-
-            SharedKeyCredentials creds = new SharedKeyCredentials(System.getenv().get("ACCOUNT_NAME"),
-                    System.getenv().get("ACCOUNT_KEY"));
-
-
-            PipelineOptions po = new PipelineOptions();
-            HttpClientConfiguration configuration = new HttpClientConfiguration(
-                    new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 1234)));
-            po.client = HttpClient.createDefault(configuration);
-            HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
-
-
-            ServiceURL su = new ServiceURL(
-                    new URL("http://" + System.getenv().get("ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline);
-
-
-            String containerName = "javatestcontainer";
-            ContainerURL cu = su.createContainerURL(containerName);
-
-
-            BlockBlobURL bu = cu.createBlockBlobURL("javatestblob");
-
-            String filePath = "C:\\Users\\frley\\Documents\\azure-storage-java-async\\azure-storage\\src\\test\\resources\\recordings";
-            String sceneName = "TestScene";
-            SceneMode sceneMode = SceneMode.PLAYBACK;
-            String proxyHost = "localhost";
-            int port = 1234;
-
-            CompositeMatchRule rule = new CompositeMatchRule();
-            rule.addRule(new MatchBody());
-            HashSet<String> blacklistHeaders = new HashSet<>();
-            blacklistHeaders.add("Authorization");
-            blacklistHeaders.add("x-ms-date");
-            blacklistHeaders.add("x-ms-client-request-id");
-            rule.addRule(MatchRuleUtils.matchHeadersWithBlacklist(blacklistHeaders));
-            HashSet<String> blacklistQuery = new HashSet<>();
-            blacklistQuery.add("sig");
-            rule.addRule(MatchRuleUtils.matchUriWithQueryBlacklist(blacklistQuery));
-
-            SceneConfiguration sceneConfig = new SceneConfiguration(filePath, sceneMode, sceneName);
-            flashbackRunner = new FlashbackRunner.Builder().host(proxyHost).port(port).mode(sceneMode)
-                    .sceneAccessLayer(new SceneAccessLayer(SceneFactory.create(sceneConfig), rule))
-                    .build();
-            flashbackRunner.start();
-            try {
-                cu.create(null, PublicAccessType.BLOB).blockingGet();
-            }
-            finally {
-                cu.delete(null).blockingGet();
-            }
-        }
-        finally {
-            if (flashbackRunner != null) {
-                flashbackRunner.close();
-            }
         }
     }
 }

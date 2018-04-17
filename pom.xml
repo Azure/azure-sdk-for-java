@@ -7,13 +7,13 @@
     <modelVersion>4.0.0</modelVersion>
 
     <groupId>com.microsoft.azure</groupId>
-    <artifactId>azure-storage-java-async-parent</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <artifactId>azure-storage-java-blob</artifactId>
+    <version>10-Preview</version>
     <packaging>pom</packaging>
 
-    <name>Azure Storage Java Async Parent</name>
-    <description>Parent module for the Azure Storage Java Async library.</description>
-    <url>https://github.com/Azure/azure-storage-java-async</url>
+    <name>Azure Storage Java Blob</name>
+    <description>The Azure Storage Java Blob library.</description>
+    <url>https://github.com/Azure/azure-storage-java</url>
 
     <licenses>
         <license>
@@ -24,8 +24,8 @@
     </licenses>
 
     <scm>
-        <url>scm:git:https://github.com/Azure/azure-storage-java-async</url>
-        <connection>scm:git:git@github.com:Azure/azure-storage-java-async.git</connection>
+        <url>scm:git:https://github.com/Azure/azure-storage-java</url>
+        <connection>scm:git:git@github.com:Azure/azure-storage-java.git</connection>
         <tag>HEAD</tag>
     </scm>
 
@@ -124,9 +124,4 @@
             </plugins>
         </pluginManagement>
     </build>
-
-    <modules>
-        <module>azure-storage</module>
-        <module>samples</module>
-    </modules>
 </project>
