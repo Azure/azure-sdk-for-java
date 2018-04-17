@@ -19,8 +19,9 @@ package com.microsoft.azure.storage.blob;
  * An instance of this class is set as a member of {@link BlobAccessConditions} when needed. Any field may be set to
  * null if no access conditions are desired.
  *
- * Please refer to the request header section here for more conceptual information:
- * https://docs.microsoft.com/en-us/rest/api/storageservices/append-block
+ * Please refer to the request header section
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/append-block>here</a> for more conceptual
+ * information.
  */
 public final class AppendBlobAccessConditions {
 

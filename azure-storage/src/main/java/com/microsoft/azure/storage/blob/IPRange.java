@@ -64,16 +64,22 @@ public final class IPRange {
      *
      * @param rangeStr
      *      The {@code String} representation of the {@code IPRange}.
+     *
      * @return
      *      The {@code IPRange} generated from the {@code String}.
      */
-    public static IPRange parse(String rangeStr) throws UnknownHostException {
-        String[] addrs = rangeStr.split("-");
-        IPRange range = new IPRange();
-        range.ipMin = (Inet4Address)(Inet4Address.getByName(addrs[0]));
-        if (addrs.length > 1) {
-            range.ipMax = (Inet4Address)(Inet4Address.getByName(addrs[1]));
+    public static IPRange parse(String rangeStr) {
+        try {
+            String[] addrs = rangeStr.split("-");
+            IPRange range = new IPRange();
+            range.ipMin = (Inet4Address) (Inet4Address.getByName(addrs[0]));
+            if (addrs.length > 1) {
+                range.ipMax = (Inet4Address) (Inet4Address.getByName(addrs[1]));
+            }
+            return range;
         }
-        return range;
+        catch (UnknownHostException e) {
+            throw new Error("Invalid host. Host names may not be used with IPRange.");
+        }
     }
 }

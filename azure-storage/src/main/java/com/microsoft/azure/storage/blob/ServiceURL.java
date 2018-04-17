@@ -25,8 +25,8 @@ import java.net.URL;
  * Represents a URL to a blob service. This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
  * It may also be used to construct URLs to blobs and containers.
- * Please refer to the following for more information on containers:
- * https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
+ * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>here</a> for more
+ * information on containers.
  */
 public final class ServiceURL extends StorageURL {
 
@@ -78,8 +78,8 @@ public final class ServiceURL extends StorageURL {
      *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
-     *      This value is returned in the response of a previous list operation as the ListContainersSegmentResponse->
-     *      body()->nextMarker(). Set to null to list the first segment.
+     *      This value is returned in the response of a previous list operation as the
+     *      ListContainersSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *      A {@link ListContainersOptions} which specifies what data should be returned by the service.
      * @return
@@ -88,8 +88,8 @@ public final class ServiceURL extends StorageURL {
     public Single<ServiceListContainersSegmentResponse> listContainersSegment(
             String marker, ListContainersOptions options) {
         options = options == null ? ListContainersOptions.DEFAULT : options;
-        return this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(options.getPrefix(), marker,
-                options.getMaxResults(), options.getDetails().toIncludeType(), null, null);
+        return this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(options.getPrefix(),
+                marker, options.getMaxResults(), options.getDetails().toIncludeType(), null, null);
     }
 
     /**

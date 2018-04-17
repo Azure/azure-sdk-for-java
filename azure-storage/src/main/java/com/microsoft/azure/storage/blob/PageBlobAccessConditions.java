@@ -19,8 +19,8 @@ package com.microsoft.azure.storage.blob;
  * An instance of this class is set as a member of {@link BlobAccessConditions} when needed. It may also be set to null
  * if no access conditions are desired.
  *
- * Please refer to the request header section here for more conceptual information:
- * https://docs.microsoft.com/en-us/rest/api/storageservices/put-page
+ * Please refer to the request header section
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/put-page>here</a> for more conceptual information.
  */
 public final class PageBlobAccessConditions {
 

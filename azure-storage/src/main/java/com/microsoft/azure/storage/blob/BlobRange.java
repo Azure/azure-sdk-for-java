@@ -56,7 +56,7 @@ public final class BlobRange {
 
     /**
      * @return
-     *      A {@code long} that indicates the start of the range.
+     *      Indicates the start of the range.
      */
     public long getOffset() {
         return offset;
@@ -64,7 +64,7 @@ public final class BlobRange {
 
     /**
      * @return
-     *      A {@code long} that indicates how many bytes to include in the range.
+     *      Indicates how many bytes to include in the range.
      */
     public Long getCount() {
         return count;

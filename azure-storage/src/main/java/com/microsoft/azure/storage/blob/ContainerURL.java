@@ -29,8 +29,9 @@ import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
  * {@link ServiceURL} object. This class does not hold any state about a particular blob but is instead a convenient way
  * of sending off appropriate requests to the resource on the service. It may also be used to construct URLs to blobs.
- * Please refer to the following for more information on containers:
- * https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
+ * Please refer to the
+ * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
+ * for more information on containers.
  */
 public final class ContainerURL extends StorageURL {
 
@@ -462,8 +463,8 @@ public final class ContainerURL extends StorageURL {
      *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
-     *      This value is returned in the response of a previous list operation as the ListBlobsFlatSegmentResponse->
-     *      body()->nextMarker(). Set to null to list the first segment.
+     *      This value is returned in the response of a previous list operation as the
+     *      ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *      {@link ListBlobsOptions}
      * @return
@@ -488,7 +489,7 @@ public final class ContainerURL extends StorageURL {
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
      *      This value is returned in the response of a previous list operation as the
-     *      ListBlobsHierarchySegmentResponse->body()->nextMarker(). Set to null to list the first segment.
+     *      ListBlobsHierarchySegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param delimiter
      *      The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
      *      whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may

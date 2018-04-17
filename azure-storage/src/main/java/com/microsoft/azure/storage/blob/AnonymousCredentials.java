@@ -54,8 +54,8 @@ public final class AnonymousCredentials implements ICredentials {
      * ignore constructing this policy if is recognized. Please refer to either {@link AccountSASSignatureValues},
      * {@link ServiceSASSignatureValues} for more information on SAS requests. Please refer to the following for more
      * information on anonymous requests:
-     * https://docs.microsoft.com/en-us/azure/storage/blobs/storage-manage-access-to-resources
-     * https://docs.microsoft.com/en-us/rest/api/storageservices/set-container-acl
+     * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-manage-access-to-resources>Manage Access to Storage Resources</a>
+     * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/set-container-acl>Set Container Permissions</a>
      */
     private final class AnonymousCredentialsPolicy implements RequestPolicy {
         final RequestPolicy nextPolicy;

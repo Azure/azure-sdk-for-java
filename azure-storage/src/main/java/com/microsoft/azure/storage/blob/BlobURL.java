@@ -26,8 +26,8 @@ import java.net.UnknownHostException;
  * Represents a URL to a blob of any type: block, append, or page. It may be obtained by direct construction or via the
  * create method on a {@link ContainerURL} object. This class does not hold any state about a particular blob but is
  * instead a convenient way of sending off appropriate requests to the resource on the service. Please refer to the
- * following for more information on blobs:
- * https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ * for more information.
  */
 public class BlobURL extends StorageURL {
 
@@ -65,6 +65,10 @@ public class BlobURL extends StorageURL {
      *
      * @param snapshot
      *      A {@code String} to set.
+     * @throws MalformedURLException
+     *      Appending the specified snapshot produced an invalid URL.
+     * @throws UnknownHostException
+     *      If the url contains an improperly formatted ipaddress or unknown host address.
      * @return
      *      A {@link BlobURL} object with the given pipeline.
      */

@@ -68,8 +68,9 @@ public final class RequestRetryOptions {
      * @param secondaryHost
      *      If a secondaryHost is specified, retries will be tried against this host. If secondaryHost is {@code null}
      *      (the default) then operations are not retried against another host. NOTE: Before setting this field, make
-     *      sure you understand the issues around reading stale and potentially-inconsistent data at this webpage:
-     *      https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs
+     *      sure you understand the issues around reading stale and potentially-inconsistent data at
+     *      <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>this webpage</a>
+     *      this webpage.
      */
     public RequestRetryOptions(RetryPolicyType retryPolicyType, int maxTries, int tryTimeout,
                                Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
@@ -140,8 +141,8 @@ public final class RequestRetryOptions {
      * @return
      *      If a secondaryHost is specified, retries will be tried against this host. If secondaryHost is {@code null}
      *      (the default) then operations are not retried against another host. NOTE: Before setting this field, make
-     *      sure you understand the issues around reading stale and potentially-inconsistent data at this webpage:
-     *      https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs
+     *      sure you understand the issues around reading stale and potentially-inconsistent data at
+     *      <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>this webpage</a>.
      */
     public String getSecondaryHost() {
         return this.secondaryHost;
