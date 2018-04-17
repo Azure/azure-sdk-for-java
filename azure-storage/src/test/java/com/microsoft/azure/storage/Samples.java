@@ -1197,12 +1197,23 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
         ContainerURL containerURL = s.createContainerURL("myjavacontainer");
-        BlockBlobURL blobURL = containerURL.createBlockBlobURL("CopiedBlob.bin");
-
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("BigFile.bin");
         FileInputStream fis = new FileInputStream("BigFile.bin");
-        TransferManager.uploadFileToBlockBlob(fis.getChannel(), blobURL, BlockBlobURL.MAX_PUT_BLOCK_BYTES,
-                null);
 
+        // Create the container.
+        containerURL.create(null, null)
+                .flatMap(response ->
+                        TransferManager.uploadFileToBlockBlob(fis.getChannel(), blobURL,
+                                BlockBlobURL.MAX_PUT_BLOCK_BYTES,null))
+                .flatMap(response ->
+                        // Delete the container.
+                        containerURL.delete(null))
+                /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
 
         fis.close();
     }
@@ -1217,6 +1228,6 @@ public class Samples {
         // TODO
     }
 
-    // Lease? Root container?
+    // TODO: Lease? Root container?
 }
 
