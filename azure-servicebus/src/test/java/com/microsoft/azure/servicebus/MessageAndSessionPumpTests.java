@@ -274,7 +274,7 @@ public class MessageAndSessionPumpTests {
 				message.setSessionId(sessionId);
 				sender.send(message);
 			}			
-		}		
+		}
 		
 		boolean autoComplete = true;
 		int sleepMinutes = 2; // This should be less than message lock duration of the queue or subscription
