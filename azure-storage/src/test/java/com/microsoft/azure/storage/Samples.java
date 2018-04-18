@@ -21,6 +21,7 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
+import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.nio.file.StandardOpenOption;
 import java.security.InvalidKeyException;
@@ -1220,27 +1221,22 @@ public class Samples {
         ContainerURL containerURL = s.createContainerURL("myjavacontainerparallelupload");
         String filename = "BigFile.bin";
         BlockBlobURL blobURL = containerURL.createBlockBlobURL(filename);
+        File tempFile = File.createTempFile("BigFile", ".bin");
+        tempFile.deleteOnExit();
 
         // Create the container.
         containerURL.create(null, null)
                 .flatMap(response -> {
                     AsynchronousFileChannel channel =
-                            AsynchronousFileChannel.open(Paths.get(filename), StandardOpenOption.CREATE,
-                                    StandardOpenOption.WRITE);
+                            AsynchronousFileChannel.open(tempFile.toPath(), StandardOpenOption.WRITE);
                     return Single.fromFuture(channel.write(ByteBuffer.wrap("Big data".getBytes()), 0))
                             .doAfterTerminate(channel::close);
                 })
                 .flatMap(response -> {
-                    FileChannel channel = FileChannel.open(Paths.get(filename), StandardOpenOption.READ);
+                    FileChannel channel = FileChannel.open(tempFile.toPath(), StandardOpenOption.READ);
                     return TransferManager.uploadFileToBlockBlob(channel, blobURL,
                             BlockBlobURL.MAX_PUT_BLOCK_BYTES, null)
-                            .doAfterTerminate(() -> {
-                                channel.close();
-                                File f = new File(filename);
-                                if (!f.delete()) {
-                                    throw new Error("Could not delete file");
-                                }
-                            });
+                            .doAfterTerminate(channel::close);
                 })
                 .flatMap(response ->
                         blobURL.download(null, null, false))

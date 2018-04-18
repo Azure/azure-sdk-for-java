@@ -266,7 +266,8 @@ public class BlobStorageAPITests {
     @Test
     public void TestPutBlobParallelFile() throws IOException, InvalidKeyException {
         int fileLength = 100;
-        File file = new File("testUpload");
+        File file = File.createTempFile("testUpload", ".txt");
+        file.deleteOnExit();
         FileOutputStream fos = new FileOutputStream(file);
         Random rand = new Random();
         for (int i=0; i< fileLength; i++) {
