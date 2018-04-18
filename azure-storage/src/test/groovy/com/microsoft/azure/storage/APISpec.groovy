@@ -42,7 +42,7 @@ class APISpec extends Specification {
     ByteBuffer defaultData = ByteBuffer.wrap(defaultText.bytes)
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static final boolean enableDebugging = true
+    static final boolean enableDebugging = false
 
     static final String containerPrefix = "javatestcontainer"
 
@@ -114,8 +114,8 @@ class APISpec extends Specification {
     static String generateResourceName(ISpecificationContext specificationContext, String prefix, int iterationNo,
                                        int entityNo) {
         String suffix = ""
-        suffix += iterationNo
-        suffix += entityNo
+        suffix += System.currentTimeMillis() // For uniqueness between runs.
+        suffix += entityNo // For easy identification of which call created this resource.
         return prefix + getTestName(specificationContext) + suffix
     }
 

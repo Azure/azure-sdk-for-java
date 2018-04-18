@@ -21,21 +21,21 @@ import com.microsoft.azure.storage.blob.models.StorageServiceProperties
 import spock.lang.Unroll
 
 class ServiceAPITest extends APISpec {
-    StorageServiceProperties originalProps = APISpec.primaryServiceURL.getProperties().blockingGet().body()
+    StorageServiceProperties originalProps = primaryServiceURL.getProperties().blockingGet().body()
 
     def cleanup() {
-        APISpec.primaryServiceURL.setProperties(originalProps).blockingGet()
+        primaryServiceURL.setProperties(originalProps).blockingGet()
     }
 
     def "Service list containers"() {
         setup:
         ServiceListContainersSegmentResponse response =
-                APISpec.primaryServiceURL.listContainersSegment(null, new ListContainersOptions(null,
-                APISpec.containerPrefix, null)).blockingGet()
+                primaryServiceURL.listContainersSegment(null, new ListContainersOptions(null,
+                containerPrefix, null)).blockingGet()
 
         expect:
         for (Container c : response.body().containers()) {
-            c.name().startsWith(APISpec.containerPrefix)
+            c.name().startsWith(containerPrefix)
         }
         response.headers().requestId() != null
         response.headers().version() != null
@@ -44,16 +44,16 @@ class ServiceAPITest extends APISpec {
     def "Service list containers marker"() {
         setup:
         for (int i=0; i<10; i++) {
-            ContainerURL cu = APISpec.primaryServiceURL.createContainerURL(generateContainerName())
+            ContainerURL cu = primaryServiceURL.createContainerURL(generateContainerName())
             cu.create(null, null).blockingGet()
         }
 
         ServiceListContainersSegmentResponse response =
-                APISpec.primaryServiceURL.listContainersSegment(null,
+                primaryServiceURL.listContainersSegment(null,
                 new ListContainersOptions(null, null, 5)).blockingGet()
         String marker = response.body().nextMarker()
         String firstContainerName = response.body().containers().get(0).name()
-        response = APISpec.primaryServiceURL.listContainersSegment(marker,
+        response = primaryServiceURL.listContainersSegment(marker,
                 new ListContainersOptions(null, null, 5)).blockingGet()
 
         expect:
@@ -65,19 +65,21 @@ class ServiceAPITest extends APISpec {
         setup:
         Metadata metadata = new Metadata()
         metadata.put("foo", "bar")
-        cu = APISpec.primaryServiceURL.createContainerURL("aaa"+generateContainerName())
+        cu = primaryServiceURL.createContainerURL("aaa"+generateContainerName())
         cu.create(metadata, null).blockingGet()
 
         expect:
-        APISpec.primaryServiceURL.listContainersSegment(null,
+        primaryServiceURL.listContainersSegment(null,
                 new ListContainersOptions(new ContainerListingDetails(true),
-                        "aaa"+APISpec.containerPrefix, null)).blockingGet().body().containers()
+                        "aaa"+containerPrefix, null)).blockingGet().body().containers()
                 .get(0).metadata() == metadata
+        // Container with prefix "aaa" will not be cleaned up by normal test cleanup.
+        cu.delete(null).blockingGet().statusCode() == 202
     }
 
     def "Service list containers maxResults"() {
         expect:
-        APISpec.primaryServiceURL.listContainersSegment(null,
+        primaryServiceURL.listContainersSegment(null,
                 new ListContainersOptions(null, null, 10))
                 .blockingGet().body().containers().size() == 10
     }
@@ -99,10 +101,10 @@ class ServiceAPITest extends APISpec {
         Metrics minuteMetrics = new Metrics().withEnabled(true).withVersion("1.0")
                 .withRetentionPolicy(retentionPolicy).withIncludeAPIs(true)
 
-        ServiceSetPropertiesHeaders headers = APISpec.primaryServiceURL.setProperties(new StorageServiceProperties()
+        ServiceSetPropertiesHeaders headers = primaryServiceURL.setProperties(new StorageServiceProperties()
                 .withLogging(logging).withCors(corsRules).withDefaultServiceVersion(defaultServiceVersion)
                 .withMinuteMetrics(minuteMetrics).withHourMetrics(hourMetrics)).blockingGet().headers()
-        StorageServiceProperties receivedProperties = APISpec.primaryServiceURL.getProperties()
+        StorageServiceProperties receivedProperties = primaryServiceURL.getProperties()
                 .blockingGet().body()
 
         expect:
@@ -140,10 +142,10 @@ class ServiceAPITest extends APISpec {
 
     def "Service get stats"() {
         setup:
-        BlobURLParts parts = URLParser.parse(APISpec.primaryServiceURL.toURL())
+        BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
         parts.host = "xclientdev3-secondary.blob.core.windows.net"
         ServiceURL secondary = new ServiceURL(parts.toURL(),
-                StorageURL.createPipeline(APISpec.primaryCreds, new PipelineOptions()))
+                StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
         ServiceGetStatisticsResponse response = secondary.getStatistics().blockingGet()
 
         expect:

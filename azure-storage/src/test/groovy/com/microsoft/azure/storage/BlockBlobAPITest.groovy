@@ -57,7 +57,7 @@ class BlockBlobAPITest extends APISpec {
 
     def "Block blob stage block lease"() {
         setup:
-        String leaseID = setupBlobLeaseCondition(bu, APISpec.receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         expect:
         BlockBlobsStageBlockResponse response = bu.stageBlock(new String(Base64.encoder.encode("0000".bytes)),
@@ -164,13 +164,13 @@ class BlockBlobAPITest extends APISpec {
         bu.commitBlockList(ids, null, null, bac).blockingGet().statusCode() == 201
 
         where:
-        modified        | unmodified      | match                | noneMatch           | leaseID
-        null            | null            | null                 | null                | null
-        APISpec.oldDate | null            | null                 | null                | null
-        null            | APISpec.newDate | null                 | null                | null
-        null            | null            | APISpec.receivedEtag | null                | null
-        null            | null            | null                 | APISpec.garbageEtag | null
-        null            | null            | null                 | null                | APISpec.receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
     }
 
     def "Block blob get block list"() {
@@ -222,7 +222,7 @@ class BlockBlobAPITest extends APISpec {
         String blockID = new String(Base64.encoder.encode("0000".bytes))
         bu.stageBlock(blockID, Flowable.just(defaultData), defaultData.remaining(),
                 null).blockingGet()
-        String leaseID = setupBlobLeaseCondition(bu, APISpec.receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
 
         expect:
         bu.getBlockList(BlockListType.ALL, new LeaseAccessConditions(leaseID)).blockingGet().statusCode() == 200
@@ -321,13 +321,13 @@ class BlockBlobAPITest extends APISpec {
 
 
         where:
-        modified        | unmodified      | match                | noneMatch           | leaseID
-        null            | null            | null                 | null                | null
-        APISpec.oldDate | null            | null                 | null                | null
-        null            | APISpec.newDate | null                 | null                | null
-        null            | null            | APISpec.receivedEtag | null                | null
-        null            | null            | null                 | APISpec.garbageEtag | null
-        null            | null            | null                 | null                | APISpec.receivedLeaseID
+        modified | unmodified | match        | noneMatch   | leaseID
+        null     | null       | null         | null        | null
+        oldDate  | null       | null         | null        | null
+        null     | newDate    | null         | null        | null
+        null     | null       | receivedEtag | null        | null
+        null     | null       | null         | garbageEtag | null
+        null     | null       | null         | null        | receivedLeaseID
 
     }
 }

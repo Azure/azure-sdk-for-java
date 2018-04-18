@@ -9,9 +9,11 @@ import com.microsoft.rest.v2.http.HttpPipelineLogger;
 import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.*;
 import io.reactivex.Observable;
+import io.reactivex.functions.Action;
 import io.reactivex.functions.BiConsumer;
 import org.junit.Test;
 
+import java.io.File;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
@@ -1216,22 +1218,30 @@ public class Samples {
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
         ContainerURL containerURL = s.createContainerURL("myjavacontainerparallelupload");
-        BlockBlobURL blobURL = containerURL.createBlockBlobURL("BigFile.bin");
+        String filename = "BigFile.bin";
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL(filename);
 
         // Create the container.
         containerURL.create(null, null)
                 .flatMap(response -> {
                     AsynchronousFileChannel channel =
-                            AsynchronousFileChannel.open(Paths.get("BigFile.bin"), StandardOpenOption.CREATE,
+                            AsynchronousFileChannel.open(Paths.get(filename), StandardOpenOption.CREATE,
                                     StandardOpenOption.WRITE);
                     return Single.fromFuture(channel.write(ByteBuffer.wrap("Big data".getBytes()), 0))
                             .doAfterTerminate(channel::close);
                 })
                 .flatMap(response -> {
-                    FileChannel channel = FileChannel.open(Paths.get("BigFile.bin"), StandardOpenOption.READ);
+                    FileChannel channel = FileChannel.open(Paths.get(filename), StandardOpenOption.READ);
                     return TransferManager.uploadFileToBlockBlob(channel, blobURL,
                             BlockBlobURL.MAX_PUT_BLOCK_BYTES, null)
-                            .doAfterTerminate(channel::close);
+                            .doAfterTerminate(new Action() {
+                                @Override
+                                public void run() throws Exception {
+                                    channel.close();
+                                    File f = new File(filename);
+                                    f.delete();
+                                }
+                            });
                 })
                 .flatMap(response ->
                         blobURL.download(null, null, false))
