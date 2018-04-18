@@ -1234,12 +1234,11 @@ public class Samples {
                     FileChannel channel = FileChannel.open(Paths.get(filename), StandardOpenOption.READ);
                     return TransferManager.uploadFileToBlockBlob(channel, blobURL,
                             BlockBlobURL.MAX_PUT_BLOCK_BYTES, null)
-                            .doAfterTerminate(new Action() {
-                                @Override
-                                public void run() throws Exception {
-                                    channel.close();
-                                    File f = new File(filename);
-                                    f.delete();
+                            .doAfterTerminate(() -> {
+                                channel.close();
+                                File f = new File(filename);
+                                if (!f.delete()) {
+                                    throw new Error("Could not delete file");
                                 }
                             });
                 })
