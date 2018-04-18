@@ -141,63 +141,7 @@ public class BlobStorageAPITests {
             dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
             assertArrayEquals(dataByte, new byte[]{0, 0, 0});
 
-            // --------------APPEND BLOBS-------------
-            AppendBlobURL abu = cu.createAppendBlobURL("appendblob");
-            abu.create(null, null, null).blockingGet();
-            abu.appendBlock(Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})), 3,
-                    null).blockingGet();
 
-            data = abu.download(new BlobRange(0L, 3L), null, false).blockingGet().body();
-            dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
-            assertArrayEquals(dataByte, new byte[]{0, 0, 0});
-
-            // ---------------PAGE BLOBS-------------
-            PageBlobURL pbu = cu.createPageBlobURL("pageblob");
-            pbu.create((512L * 3L), null, null, null, null).blockingGet();
-            ByteArrayOutputStream os = new ByteArrayOutputStream();
-            for(int i=0; i<1024; i++) {
-                os.write(1);
-            }
-            pbu.uploadPages(new PageRange().withStart(0).withEnd(1023), Flowable.just(ByteBuffer.wrap(os.toByteArray())),
-                    null).blockingGet();
-            String pageSnap = pbu.createSnapshot(null, null).blockingGet().headers().snapshot();
-            pbu.clearPages(new PageRange().withStart(0).withEnd(511), null).blockingGet();
-            PageRange pr = pbu.getPageRanges(new BlobRange(0L, (512L * 3L)), null).blockingGet()
-                    .body().pageRange().get(0);
-            Assert.assertEquals(pr.start(), 512);
-            Assert.assertEquals(pr.end(), 1023);
-            ClearRange cr = pbu.getPageRangesDiff(null, pageSnap, null).blockingGet().body().clearRange().get(0);
-            Assert.assertEquals(cr.start(), 0);
-            Assert.assertEquals(cr.end(), 511);
-
-            pbu.resize(512L * 4L, null).blockingGet();
-            pbu.updateSequenceNumber(SequenceNumberActionType.INCREMENT, null, null).blockingGet();
-            BlobsGetPropertiesHeaders pageHeaders = pbu.getProperties(null).blockingGet().headers();
-            Assert.assertEquals(1, pageHeaders.blobSequenceNumber().longValue());
-            Assert.assertEquals((long)(512*4), pageHeaders.contentLength().longValue());
-
-            PageBlobURL copyPbu = cu.createPageBlobURL("copyPage");
-            CopyStatusType status = copyPbu.copyIncremental(pbu.toURL(), pageSnap, null).blockingGet().headers().copyStatus();
-            Assert.assertEquals(CopyStatusType.PENDING, status);
-
-            // ACCOUNT----------------------------
-            StorageServiceProperties props = new StorageServiceProperties();
-            Logging logging = new Logging().withRead(true).withVersion("1.0").
-                    withRetentionPolicy(new RetentionPolicy().withDays(1).withEnabled(true));
-            props = props.withLogging(logging);
-            su.setProperties(props).blockingGet();
-
-            StorageServiceProperties receivedProps = su.getProperties().blockingGet().body();
-            Assert.assertEquals(receivedProps.logging().read(), props.logging().read());
-
-            su.setProperties(props.withLogging(logging.withRead(false).withRetentionPolicy(new RetentionPolicy()
-                    .withEnabled(false)))).blockingGet();
-
-            String secondaryAccount = System.getenv("ACCOUNT_NAME") + "-secondary";
-            pipeline = StorageURL.createPipeline(creds, new PipelineOptions());
-            ServiceURL secondary = new ServiceURL(new URL("http://" + secondaryAccount + ".blob.core.windows.net"),
-                    pipeline);
-            secondary.getStatistics().blockingGet();
         }
         catch (Exception e) {
             e.printStackTrace();
