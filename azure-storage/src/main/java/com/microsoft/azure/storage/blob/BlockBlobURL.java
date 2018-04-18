@@ -124,8 +124,13 @@ public final class BlockBlobURL extends BlobURL {
 
         //TODO: runtime flowable wrapper that throws an error if the size doesn't match the data
         return this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
-                data, length, null, headers.getContentType(), headers.getContentEncoding(),
-                headers.getContentLanguage(), headers.getContentMD5(), headers.getCacheControl(), metadata,
+                data, length, null,
+                headers.getContentType(),
+                headers.getContentEncoding(),
+                headers.getContentLanguage(),
+                headers.getContentMD5(),
+                headers.getCacheControl(),
+                metadata,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
@@ -208,9 +213,14 @@ public final class BlockBlobURL extends BlobURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         return this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
                 new BlockLookupList().withLatest(base64BlockIDs), null,
-                headers.getCacheControl(), headers.getContentType(),headers.getContentEncoding(),
-                headers.getContentLanguage(), headers.getContentMD5(), metadata,
-                accessConditions.getLeaseAccessConditions().getLeaseId(), headers.getContentDisposition(),
+                headers.getCacheControl(),
+                headers.getContentType(),
+                headers.getContentEncoding(),
+                headers.getContentLanguage(),
+                headers.getContentMD5(),
+                metadata,
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
+                headers.getContentDisposition(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),

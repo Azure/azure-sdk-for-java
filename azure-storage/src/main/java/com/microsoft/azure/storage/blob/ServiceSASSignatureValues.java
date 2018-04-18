@@ -138,21 +138,21 @@ public final class ServiceSASSignatureValues {
         }
 
         // Signature is generated on the un-url-encoded values.
-         String stringToSign = String.join("\n", new String[]{
+         String stringToSign = String.join("\n",
                  verifiedPermissions,
                  this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
                  this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                  getCanonicalName(sharedKeyCredentials.getAccountName()),
                  this.identifier,
                  this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
-                 this.protocol == null ? "" : ipRange.toString(),
+                 this.protocol == null ? "" : protocol.toString(),
                  this.version,
                  this.cacheControl,
                  this.contentDisposition,
                  this.contentEncoding,
                  this.contentLanguage,
                  this.contentType
-         });
+         );
 
         String signature = null;
         try {

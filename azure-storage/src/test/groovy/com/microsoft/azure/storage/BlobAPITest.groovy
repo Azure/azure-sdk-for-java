@@ -43,7 +43,7 @@ import java.nio.ByteBuffer
 import java.security.MessageDigest
 
 
-class BlobAPI extends APISpec {
+class BlobAPITest extends APISpec {
     BlobURL bu
 
     def setup() {
@@ -123,13 +123,13 @@ class BlobAPI extends APISpec {
         bu.download(null, bac, false).blockingGet().statusCode() == 206
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 
     def "Blob download md5"() {
@@ -187,13 +187,13 @@ class BlobAPI extends APISpec {
         bu.getProperties(bac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 
     def "Blob set HTTP headers null"() {
@@ -244,13 +244,13 @@ class BlobAPI extends APISpec {
         bu.setHTTPHeaders(null, bac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 
     def "Blob set metadata all null"() {
@@ -299,13 +299,13 @@ class BlobAPI extends APISpec {
         bu.setMetadata(null, bac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 
     @Unroll
@@ -343,17 +343,17 @@ class BlobAPI extends APISpec {
         bu.acquireLease(null, -1, hac).blockingGet().statusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch
-        null     | null       | null         | null
-        oldDate  | null       | null         | null
-        null     | newDate    | null         | null
-        null     | null       | receivedEtag | null
-        null     | null       | null         | garbageEtag
+        modified        | unmodified      | match                | noneMatch
+        null            | null            | null                 | null
+        APISpec.oldDate | null            | null                 | null
+        null            | APISpec.newDate | null                 | null
+        null            | null            | APISpec.receivedEtag | null
+        null            | null            | null                 | APISpec.garbageEtag
     }
 
     def "Blob renew lease"() {
         setup:
-        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu, APISpec.receivedLeaseID)
 
         Thread.sleep(16000) // Wait for the lease to expire to ensure we are actually renewing it
         BlobsRenewLeaseHeaders headers = bu.renewLease(leaseID, null).blockingGet().headers()
@@ -369,24 +369,24 @@ class BlobAPI extends APISpec {
     def "Blob renew lease AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
-        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu, APISpec.receivedLeaseID)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
         bu.renewLease(leaseID, hac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch
-        null     | null       | null         | null
-        oldDate  | null       | null         | null
-        null     | newDate    | null         | null
-        null     | null       | receivedEtag | null
-        null     | null       | null         | garbageEtag
+        modified        | unmodified      | match                | noneMatch
+        null            | null            | null                 | null
+        APISpec.oldDate | null            | null                 | null
+        null            | APISpec.newDate | null                 | null
+        null            | null            | APISpec.receivedEtag | null
+        null            | null            | null                 | APISpec.garbageEtag
     }
 
     def "Blob release lease"() {
         setup:
-        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu, APISpec.receivedLeaseID)
 
         BlobsReleaseLeaseHeaders headers = bu.releaseLease(leaseID, null).blockingGet().headers()
 
@@ -399,19 +399,19 @@ class BlobAPI extends APISpec {
     def "Blob release leaseAC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
-        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu, APISpec.receivedLeaseID)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
         bu.releaseLease(leaseID, hac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch
-        null     | null       | null         | null
-        oldDate  | null       | null         | null
-        null     | newDate    | null         | null
-        null     | null       | receivedEtag | null
-        null     | null       | null         | garbageEtag
+        modified        | unmodified      | match                | noneMatch
+        null            | null            | null                 | null
+        APISpec.oldDate | null            | null                 | null
+        null            | APISpec.newDate | null                 | null
+        null            | null            | APISpec.receivedEtag | null
+        null            | null            | null                 | APISpec.garbageEtag
     }
 
     @Unroll
@@ -439,19 +439,19 @@ class BlobAPI extends APISpec {
     def "Blob break lease AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
-        setupBlobLeaseCondition(bu, receivedLeaseID)
+        setupBlobLeaseCondition(bu, APISpec.receivedLeaseID)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
         bu.breakLease(null, hac).blockingGet().statusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch
-        null     | null       | null         | null
-        oldDate  | null       | null         | null
-        null     | newDate    | null         | null
-        null     | null       | receivedEtag | null
-        null     | null       | null         | garbageEtag
+        modified        | unmodified      | match                | noneMatch
+        null            | null            | null                 | null
+        APISpec.oldDate | null            | null                 | null
+        null            | APISpec.newDate | null                 | null
+        null            | null            | APISpec.receivedEtag | null
+        null            | null            | null                 | APISpec.garbageEtag
     }
 
     def "Blob change lease"() {
@@ -472,19 +472,19 @@ class BlobAPI extends APISpec {
     def "Blob change lease AC"() {
         setup:
         match = setupBlobMatchCondition(bu, match)
-        String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu, APISpec.receivedLeaseID)
         HTTPAccessConditions hac = new HTTPAccessConditions(modified, unmodified, match, noneMatch)
 
         expect:
         bu.changeLease(leaseID, UUID.randomUUID().toString(), hac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch
-        null     | null       | null         | null
-        oldDate  | null       | null         | null
-        null     | newDate    | null         | null
-        null     | null       | receivedEtag | null
-        null     | null       | null         | garbageEtag
+        modified        | unmodified      | match                | noneMatch
+        null            | null            | null                 | null
+        APISpec.oldDate | null            | null                 | null
+        null            | APISpec.newDate | null                 | null
+        null            | null            | APISpec.receivedEtag | null
+        null            | null            | null                 | APISpec.garbageEtag
     }
 
     def "Blob snapshot"() {
@@ -535,13 +535,13 @@ class BlobAPI extends APISpec {
         bu.createSnapshot(null, bac).blockingGet().statusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 
     def "Blob copy"() {
@@ -600,13 +600,13 @@ class BlobAPI extends APISpec {
         bu2.startCopyFromURL(bu.toURL(), null, bac, null).blockingGet().statusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 
     @Unroll
@@ -625,13 +625,13 @@ class BlobAPI extends APISpec {
         bu2.startCopyFromURL(bu.toURL(), null, null, bac).blockingGet().statusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 
     def "Blob abort copy"() {
@@ -644,7 +644,7 @@ class BlobAPI extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
 
-        ContainerURL cu2 = alternateServiceURL.createContainerURL(generateBlobName())
+        ContainerURL cu2 = APISpec.alternateServiceURL.createContainerURL(generateBlobName())
         cu2.create(null, null).blockingGet()
         BlobURL bu2 = cu2.createBlobURL(generateBlobName())
 
@@ -672,12 +672,12 @@ class BlobAPI extends APISpec {
         // So we don't have to create a SAS.
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
 
-        ContainerURL cu2 = alternateServiceURL.createContainerURL(generateBlobName())
+        ContainerURL cu2 = APISpec.alternateServiceURL.createContainerURL(generateBlobName())
         cu2.create(null, null).blockingGet()
         BlockBlobURL bu2 = cu2.createBlockBlobURL(generateBlobName())
         bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
                 .blockingGet()
-        String leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
+        String leaseID = setupBlobLeaseCondition(bu2, APISpec.receivedLeaseID)
 
         when:
         String copyID =
@@ -736,12 +736,12 @@ class BlobAPI extends APISpec {
         bu.delete(DeleteSnapshotsOptionType.INCLUDE, bac).blockingGet().statusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 }

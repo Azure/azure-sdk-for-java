@@ -14,6 +14,8 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import java.util.Locale;
+
 /**
  * This is a helper class to construct a string representing the services accessible by an AccountSAS. Setting a value
  * to true means that any SAS which uses these permissions will grant access to that service. Once all the
@@ -105,7 +107,8 @@ public final class AccountSASService {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        String.format(SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Services", servicesString, c));
+                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Services",
+                                servicesString, c));
             }
         }
         return services;

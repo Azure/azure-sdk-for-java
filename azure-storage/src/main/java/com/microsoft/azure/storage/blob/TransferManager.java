@@ -94,15 +94,15 @@ public class TransferManager {
             final UploadToBlockBlobOptions options) {
         Utility.assertNotNull("file", file);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
-        Utility.assertNotNull("options", options);
         Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_PUT_BLOCK_BYTES);
+        UploadToBlockBlobOptions optionsReal = options == null ? UploadToBlockBlobOptions.DEFAULT : options;
 
         try {
             // If the size of the file can fit in a single upload, do it this way.
             if (file.size() < BlockBlobURL.MAX_PUT_BLOB_BYTES) {
                 return doSingleShotUpload(
                         Flowable.just(file.map(FileChannel.MapMode.READ_ONLY, 0, file.size())), file.size(),
-                        blockBlobURL, options);
+                        blockBlobURL, optionsReal);
             }
             // Can successfully cast to an int because MaxBlockSize is an int, which this expression must be less than.
             int numBlocks = (int)(file.size()/blockLength);
@@ -121,7 +121,7 @@ public class TransferManager {
                             (BiConsumer<ArrayList<ByteBuffer>, ByteBuffer>) ArrayList::add)
                     // Turn the list into a call to uploadByteBuffersToBlockBlob and return that result.
                     .flatMap((Function<ArrayList<ByteBuffer>, SingleSource<CommonRestResponse>>) blocks ->
-                            uploadByteBuffersToBlockBlob(blocks, blockBlobURL, options));
+                            uploadByteBuffersToBlockBlob(blocks, blockBlobURL, optionsReal));
         }
         catch (IOException e) {
             throw new Error(e);

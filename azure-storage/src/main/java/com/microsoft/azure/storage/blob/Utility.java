@@ -27,10 +27,10 @@ import java.util.*;
 final class Utility {
 
     static final DateTimeFormatter RFC1123GMTDateFormatter =
-            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.US).withZone(ZoneId.of("GMT"));
+            DateTimeFormatter.ofPattern("EEE, dd MMM yyyy HH:mm:ss z", Locale.ROOT).withZone(ZoneId.of("GMT"));
 
     static final DateTimeFormatter ISO8601UTCDateFormatter =
-            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.US).withZone(ZoneId.of("UTC"));
+            DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss'Z'", Locale.ROOT).withZone(ZoneId.of("UTC"));
 
     /**
      * Asserts that a value is not <code>null</code>.
@@ -44,7 +44,7 @@ final class Utility {
      */
     static void assertNotNull(final String param, final Object value) {
         if (value == null) {
-            throw new IllegalArgumentException(String.format(Locale.US, SR.ARGUMENT_NULL_OR_EMPTY, param));
+            throw new IllegalArgumentException(String.format(Locale.ROOT, SR.ARGUMENT_NULL_OR_EMPTY, param));
         }
     }
 
@@ -175,10 +175,10 @@ final class Utility {
                 pattern = Utility.ISO8601_PATTERN_NO_SECONDS;
                 break;
             default:
-                throw new IllegalArgumentException(String.format(SR.INVALID_DATE_STRING, dateString));
+                throw new IllegalArgumentException(String.format(Locale.ROOT, SR.INVALID_DATE_STRING, dateString));
         }
 
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.US);
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern(pattern, Locale.ROOT);
         return LocalDateTime.parse(dateString, formatter).atZone(UTC_ZONE).toOffsetDateTime();
     }
 
@@ -197,7 +197,7 @@ final class Utility {
      */
     public static void assertInBounds(final String param, final long value, final long min, final long max) {
         if (value < min || value > max) {
-            throw new IllegalArgumentException(String.format(SR.PARAMETER_NOT_IN_RANGE, param, min, max));
+            throw new IllegalArgumentException(String.format(Locale.ROOT, SR.PARAMETER_NOT_IN_RANGE, param, min, max));
         }
     }
 

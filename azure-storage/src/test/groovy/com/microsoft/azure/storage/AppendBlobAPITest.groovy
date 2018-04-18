@@ -15,7 +15,7 @@ import io.reactivex.Flowable
 import spock.lang.Unroll
 import java.security.MessageDigest
 
-class AppendBlobAPI extends APISpec {
+class AppendBlobAPITest extends APISpec {
     AppendBlobURL bu
 
     def setup() {
@@ -98,13 +98,13 @@ class AppendBlobAPI extends APISpec {
         bu.create(null, null, bac).blockingGet().statusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 
     def "Append blob append block defaults"() {
@@ -158,14 +158,14 @@ class AppendBlobAPI extends APISpec {
                 .blockingGet().statusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | appendPosE | maxSizeLTE
-        null     | null       | null         | null        | null            | null       | null
-        oldDate  | null       | null         | null        | null            | null       | null
-        null     | newDate    | null         | null        | null            | null       | null
-        null     | null       | receivedEtag | null        | null            | null       | null
-        null     | null       | null         | garbageEtag | null            | null       | null
-        null     | null       | null         | null        | receivedLeaseID | null       | null
-        null     | null       | null         | null        | null            | 0          | null
-        null     | null       | null         | null        | null            | null       | 100
+        modified        | unmodified      | match                | noneMatch           | leaseID                 | appendPosE | maxSizeLTE
+        null            | null            | null                 | null                | null                    | null       | null
+        APISpec.oldDate | null            | null                 | null                | null                    | null       | null
+        null            | APISpec.newDate | null                 | null                | null                    | null       | null
+        null            | null            | APISpec.receivedEtag | null                | null                    | null       | null
+        null            | null            | null                 | APISpec.garbageEtag | null                    | null       | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID | null       | null
+        null            | null            | null                 | null                | null                    | 0          | null
+        null            | null            | null                 | null                | null                    | null       | 100
     }
 }

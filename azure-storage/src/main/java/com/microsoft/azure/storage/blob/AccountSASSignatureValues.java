@@ -102,7 +102,7 @@ public final class AccountSASSignatureValues {
         Utility.assertNotNull("permissions", this.permissions);
 
         // Signature is generated on the un-url-encoded values.
-        String stringToSign = String.join("\n", new String[]{
+        String stringToSign = String.join("\n",
                 sharedKeyCredentials.getAccountName(),
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
@@ -113,7 +113,7 @@ public final class AccountSASSignatureValues {
                 this.protocol == null ? "" : this.protocol.toString(),
                 this.version,
                 Constants.EMPTY_STRING // Account SAS requires an additional newline character
-        });
+        );
 
         String signature;
         try {

@@ -84,97 +84,14 @@ public class BlobStorageAPITests {
             // Create the container. NOTE: Metadata is not currently supported on any resource.
             cu.create(null, PublicAccessType.BLOB).blockingGet();
 
-            // List the containers in the account.
-            List<Container> containerList = new ArrayList<>();
-            String marker = null;
-            do {
-                ServiceListContainersSegmentResponse resp = su.listContainersSegment(
-                        marker, new ListContainersOptions(null, "java", null)).blockingGet();
-                containerList.addAll(resp.body().containers());
-                marker = resp.body().marker();
-            } while(marker != null);
-
-            // NOTE: Assert statements are only for test purposes and should not be used in production.
-            Assert.assertEquals(1, containerList.size());
-            Assert.assertEquals(containerList.get(0).name(), containerName);
-
             // Create the blob with a single put. See below for the stageBlock(List) scenario.
             bu.upload(Flowable.just(ByteBuffer.wrap(new byte[]{0, 0, 0})), 3, null,
                     null,null).blockingGet();
 
             // Download the blob contents.
-            Flowable<ByteBuffer> data = bu.download(new BlobRange(0L, 3L),
-                    null, false).blockingGet().body();
-            byte[] dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
-            assertArrayEquals(dataByte, new byte[]{0, 0, 0});
+            Flowable<ByteBuffer> data;
+            byte[] dataByte;
 
-            // Set and retrieve the blob properties. Metadata is not yet supported.
-            BlobHTTPHeaders headers = new BlobHTTPHeaders("myControl", "myDisposition",
-                    "myContentEncoding", "myLanguage", null,
-                    "myType");
-            bu.setHTTPHeaders(headers, null).blockingGet();
-            BlobsGetPropertiesHeaders receivedHeaders = bu.getProperties(
-                    null).blockingGet().headers();
-            Assert.assertEquals(headers.getCacheControl(), receivedHeaders.cacheControl());
-            Assert.assertEquals(headers.getContentDisposition(), receivedHeaders.contentDisposition());
-            Assert.assertEquals(headers.getContentEncoding(), receivedHeaders.contentEncoding());
-            Assert.assertEquals(headers.getContentLanguage(), receivedHeaders.contentLanguage());
-            Assert.assertEquals(headers.getContentType(), receivedHeaders.contentType());
-
-            // Create a snapshot of the blob and pull the snapshot ID out of the headers.
-            String snapshot = bu.createSnapshot(null, null).blockingGet()
-                    .headers().snapshot().toString();
-
-            // Create a reference to the blob snapshot. This returns a new BlockBlobURL object that references the same
-            // path as the base blob with the query string including the snapshot value appended to the end.
-            BlockBlobURL buSnapshot = bu.withSnapshot(snapshot);
-
-            // Download the contents of the snapshot.
-            data = buSnapshot.download(new BlobRange(0L, 3L),
-                    null, false).blockingGet().body();
-            dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
-            assertArrayEquals(dataByte, new byte[]{0,0,0});
-
-            // Create a reference to another blob within the same container and copies the first blob into this location.
-            BlockBlobURL bu2 = cu.createBlockBlobURL("javablob2");
-            bu2.startCopyFromURL(bu.toURL(), null, null, null)
-                    .blockingGet();
-
-            // Simple delay to wait for the copy. Inefficient buf effective. A better method would be to periodically
-            // poll the blob.
-            TimeUnit.SECONDS.sleep(5);
-
-            // Check the existence of the copied blob.
-            receivedHeaders = bu2.getProperties(null).blockingGet()
-                    .headers();
-            Assert.assertEquals(headers.getContentType(), receivedHeaders.contentType());
-
-            // Create a reference to a new blob within the same container to upload blocks. Upload a single block.
-            BlockBlobURL bu3 = cu.createBlockBlobURL("javablob3");
-            ArrayList<String> blockIDs = new ArrayList<>();
-            blockIDs.add(Base64.getEncoder().encodeToString(new byte[]{0}));
-            bu3.stageBlock(blockIDs.get(0), Flowable.just(ByteBuffer.wrap(new byte[]{0,0,0})),
-                    3, null).blockingGet();
-
-            // Get the list of blocks on this blob. For demonstration purposes.
-            BlockList blockList = bu3.getBlockList(BlockListType.ALL, null)
-                    .blockingGet().body();
-            Assert.assertEquals(blockIDs.get(0), blockList.uncommittedBlocks().get(0).name());
-
-            // Get a list of blobs in the container including copies, snapshots, and uncommitted blobs.
-            // For demonstration purposes.
-            List<Blob> blobs = cu.listBlobsFlatSegment(null,
-                    new ListBlobsOptions(new BlobListingDetails(
-                            true, false, true, true),
-                            null, null)).blockingGet().body().blobs().blob();
-            Assert.assertEquals(4, blobs.size());
-
-            // Commit the list of blocks. Download the blob to verify.
-            bu3.commitBlockList(blockIDs, null, null, null).blockingGet();
-            data = bu3.download(new BlobRange(0L, 3L),
-                    null, false).blockingGet().body();
-            dataByte = FlowableUtil.collectBytesInArray(data).blockingGet();
-            assertArrayEquals(dataByte, new byte[]{0,0,0});
 
             // SAS -----------------------------
             // Parses a URL into its constituent components. This structure's URL fields may be modified.

@@ -8,7 +8,7 @@
 
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-storage-java-blob</artifactId>
-    <version>10-Preview</version>
+    <version>10.0.0-Preview</version>
     <packaging>pom</packaging>
 
     <name>Azure Storage Java Blob</name>
@@ -96,32 +96,46 @@
                         <compilerArgument>-Xlint:unchecked</compilerArgument>
                     </configuration>
                 </plugin>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
                     <version>2.18.1</version>
                     <configuration>
                         <includes>
-                            <include>**/Test*.java</include>
-                            <include>**/*Test.java</include>
-                            <include>**/*Tests.java</include>
-                            <include>**/*TestCase.java</include>
+                            <include>**/Test*.*</include>
+                            <include>**/*Test.*</include>
+                            <include>**/*Tests.*</include>
+                            <include>**/*Samples*.*</include>
                         </includes>
                     </configuration>
                 </plugin>
-
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-release-plugin</artifactId>
                     <version>2.5.2</version>
                 </plugin>
-
                 <plugin>
                     <groupId>org.codehaus.mojo</groupId>
                     <artifactId>build-helper-maven-plugin</artifactId>
                 </plugin>
+                <!-- Groovy compilation -->
+                <plugin>
+                    <groupId>org.codehaus.gmaven</groupId>
+                    <artifactId>gmaven-plugin</artifactId>
+                    <version>1.5</version>
+                    <executions>
+                        <execution>
+                            <goals>
+                                <goal>compile</goal>
+                                <goal>testCompile</goal>
+                            </goals>
+                        </execution>
+                    </executions>
+                </plugin>
             </plugins>
         </pluginManagement>
     </build>
+    <modules>
+        <module>azure-storage</module>
+    </modules>
 </project>

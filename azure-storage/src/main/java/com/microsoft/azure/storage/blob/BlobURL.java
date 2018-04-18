@@ -210,7 +210,8 @@ public class BlobURL extends StorageURL {
         return this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
                 null, null, range.toString(),
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
-                getMD5, accessConditions.getHttpAccessConditions().getIfModifiedSince(),
+                getMD5,
+                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
@@ -286,8 +287,11 @@ public class BlobURL extends StorageURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return this.storageClient.generatedBlobs().setHTTPHeadersWithRestResponseAsync(
-                null, headers.getCacheControl(), headers.getContentType(),
-                headers.getContentMD5(), headers.getContentEncoding(),
+                null,
+                headers.getCacheControl(),
+                headers.getContentType(),
+                headers.getContentMD5(),
+                headers.getContentEncoding(),
                 headers.getContentLanguage(),
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),

@@ -25,6 +25,7 @@ import io.reactivex.Single;
 import io.reactivex.functions.Consumer;
 
 import java.net.HttpURLConnection;
+import java.util.Locale;
 
 /**
  * This is a factory which creates policies in an {@link HttpPipeline} for logging requests and responses. In most
@@ -136,7 +137,8 @@ public final class LoggingFactory implements RequestPolicyFactory {
                                 // Log a warning if the try duration exceeded the specified threshold.
                                 if (options.shouldLog(HttpPipelineLogLevel.WARNING)) {
                                     currentLevel = HttpPipelineLogLevel.WARNING;
-                                    logMessage = String.format("SLOW OPERATION. Duration > %d ms.%n",
+                                    logMessage = String.format(Locale.ROOT,
+                                            "SLOW OPERATION. Duration > %d ms.%n",
                                             factory.loggingOptions.getMinDurationToLogSlowRequestsInMs());
                                 }
                             }
@@ -148,7 +150,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
                                             response.statusCode() != HttpURLConnection.HTTP_PRECON_FAILED &&
                                             response.statusCode() != 416
                                             /* 416 is missing from the Enum but it is Range Not Satisfiable */)) {
-                                String errorString = String.format(
+                                String errorString = String.format(Locale.ROOT,
                                         "REQUEST ERROR%nHTTP request failed with status code:'%d'%n",
                                         response.statusCode());
                                 if (currentLevel == HttpPipelineLogLevel.WARNING) {
@@ -163,7 +165,7 @@ public final class LoggingFactory implements RequestPolicyFactory {
                             }
 
                             if (options.shouldLog(currentLevel)) {
-                                String messageInfo = String.format(
+                                String messageInfo = String.format(Locale.ROOT,
                                         "Request try:'%d', request duration:'%d' ms, operation duration:'%d' ms%n",
                                         tryCount, requestCompletionTime, operationDuration);
                                 options.log(HttpPipelineLogLevel.INFO, logMessage + messageInfo);

@@ -10,21 +10,23 @@ import com.microsoft.rest.v2.util.FlowableUtil;
 import io.reactivex.*;
 import io.reactivex.Observable;
 import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.Function;
 import org.junit.Test;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
+import java.nio.channels.AsynchronousFileChannel;
+import java.nio.channels.FileChannel;
+import java.nio.file.Paths;
+import java.nio.file.StandardOpenOption;
 import java.security.InvalidKeyException;
 import java.time.OffsetDateTime;
 import java.util.*;
+import java.util.concurrent.TimeUnit;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import java.io.FileInputStream;
 
 public class Samples {
     private String getAccountName() {
@@ -58,7 +60,7 @@ public class Samples {
         From the Azure portal, get your Storage account blob service URL endpoint.
         The URL typically looks like this:
          */
-        URL u = new URL(String.format("https://%s.blob.core.windows.net", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName));
 
         // Create a ServiceURL objet that wraps the service URL and a request pipeline.
         ServiceURL serviceURL = new ServiceURL(u, pipeline);
@@ -72,7 +74,7 @@ public class Samples {
         ContainerURL object that wraps the container's URL and a request pipeline (inherited from serviceURL).
         Note that container names require lowercase.
          */
-        ContainerURL containerURL = serviceURL.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = serviceURL.createContainerURL("myjavacontainerbasic");
 
         /*
         Create a URL that references a to-be-created blob in your Azure Storage account's container.
@@ -109,7 +111,8 @@ public class Samples {
                          List the blob(s) in our container; since a container may hold millions of blobs, this is done
                          one segment at a time.
                          */
-                        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions(null, null, 1)))
+                        containerURL.listBlobsFlatSegment(null, new ListBlobsOptions(null, null,
+                                1)))
                 .flatMap(containersListBlobFlatSegmentResponse ->
                         // The asynchronous requests require we use recursion to continue our listing.
                         listBlobsHelper(containerURL, containersListBlobFlatSegmentResponse))
@@ -155,7 +158,8 @@ public class Samples {
             The presence of the marker indicates that there are more blobs to list, so we make another call to
             listBlobsFlatSegment and pass the result through this helper function.
              */
-            return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions(null, null, 1))
+            return containerURL.listBlobsFlatSegment(nextMarker, new ListBlobsOptions(null, null,
+                    1))
                     .flatMap(containersListBlobFlatSegmentResponse ->
                             listBlobsHelper(containerURL, containersListBlobFlatSegmentResponse));
         }
@@ -283,8 +287,8 @@ public class Samples {
          (SAS).
          */
         URL u = new URL("https://myaccount.blob.core.windows.net/mycontainter/ReadMe.txt?" +
-                "snapshot=2011-03-09T01:42:34.9360000Z&" +
-                "sv=2015-02-21&sr=b&st=2111-01-09T01:42:34Z&se=2222-03-09T01:42:34Z&sp=rw" +
+                "snapshot=2011-03-09T01:42:34.9360000Z" +
+                "&sv=2015-02-21&sr=b&st=2111-01-09T01:42:34Z&se=2222-03-09T01:42:34Z&sp=rw" +
                 "&sip=168.1.5.60-168.1.5.70&spr=https,http&si=myIdentifier&ss=bf&srt=s" +
                 "&sig=92836758923659283652983562==");
 
@@ -293,23 +297,23 @@ public class Samples {
 
         // Now, we access the parts (this example prints them).
         System.out.println(String.join("\n",
-                new String[]{parts.host,
-                        parts.containerName,
-                        parts.blobName,
-                        parts.snapshot}));
+                parts.host,
+                parts.containerName,
+                parts.blobName,
+                parts.snapshot));
         System.out.println("");
         SASQueryParameters sas = parts.sasQueryParameters;
         System.out.println(String.join("\n",
-                new String[]{sas.getVersion(),
-                        sas.getResource(),
-                        sas.getStartTime().toString(),
-                        sas.getExpiryTime().toString(),
-                        sas.getPermissions(),
-                        sas.getIpRange().toString(),
-                        sas.getProtocol().toString(),
-                        sas.getIdentifier(),
-                        sas.getServices(),
-                        sas.getSignature()}));
+                sas.getVersion(),
+                sas.getResource(),
+                sas.getStartTime().toString(),
+                sas.getExpiryTime().toString(),
+                sas.getPermissions(),
+                sas.getIpRange().toString(),
+                sas.getProtocol().toString(),
+                sas.getIdentifier(),
+                sas.getServices(),
+                sas.getSignature()));
 
         // You can then change some of the fields and construct a new URL.
         parts.sasQueryParameters = null; // Remove the SAS query parameters.
@@ -360,7 +364,8 @@ public class Samples {
         // Calling encode will generate the query string.
         String encodedParams = params.encode();
 
-        String urlToSendToSomeone = String.format("https://%s.blob.core.windows.net?%s", accountName, encodedParams);
+        String urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net?%s",
+                accountName, encodedParams);
         // At this point, you can send the urlToSendSomeone to someone via email or any other mechanism you choose.
 
         // ***************************************************************************************************
@@ -416,8 +421,8 @@ public class Samples {
         // Calling encode will generate the query string.
         String encodedParams = params.encode();
 
-        String urlToSendToSomeone = String.format("https://%s.blob.core.windows.net/%s/%s?%s", accountName,
-                containerName, blobName, encodedParams);
+        String urlToSendToSomeone = String.format(Locale.ROOT, "https://%s.blob.core.windows.net/%s/%s?%s",
+                accountName, containerName, blobName, encodedParams);
         // At this point, you can send the urlToSendSomeone to someone via email or any other mechanism you choose.
 
         // ***************************************************************************************************
@@ -445,7 +450,8 @@ public class Samples {
         SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
 
         // Create a containerURL object that wraps the container's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/myjavacontainer", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/myjavacontainerpermissions",
+                accountName));
         ContainerURL containerURL = new ContainerURL(u, StorageURL.createPipeline(credential, new PipelineOptions()));
 
         /*
@@ -470,6 +476,7 @@ public class Samples {
                         // Attempt to read the blob with anonymous credentials.
                         anonymousURL.download(null, null, false)
                 )
+                .toCompletable()
                 .onErrorResumeNext(throwable -> {
                     /*
                     We expected this error because the service returns an HTTP 404 status code when a blob exists but
@@ -479,15 +486,21 @@ public class Samples {
                             ((RestException) throwable).response().statusCode() == 404) {
                         // This is how we change the container's permission to allow public/anonymous access.
                         return containerURL.setAccessPolicy(PublicAccessType.BLOB, null, null)
-                                .flatMap(containersSetAccessPolicyResponse ->
-                                        // Now this will work.
-                                        anonymousURL.download(null, null,
-                                                false));
+                                .toCompletable();
                     } else {
-                        return Single.error(throwable);
+                        return Completable.error(throwable);
                     }
                 })
-                .flatMap((Function<BlobsDownloadResponse, SingleSource<?>>) blobsDownloadResponse ->
+                /*
+                 Container property changes may take up to 15 seconds to take effect. It would also be possible to poll
+                 the container properties to check for the access policy to be updated. See the startCopy example for
+                 an example of this pattern.
+                 */
+                .delay(31, TimeUnit.SECONDS)
+                // Now this will work.
+                .andThen(anonymousURL.download(null, null,
+                                false))
+                .flatMap(blobsDownloadResponse ->
                         // Delete the container and the blob within in.
                         containerURL.delete(null))
                 /*
@@ -506,10 +519,10 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontaineraccessconditions");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container (unconditionally; succeeds)
@@ -647,10 +660,10 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a ContainerURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainercontainermetadata");
 
         /*
          Create a container with some metadata (string key/value pairs).
@@ -697,10 +710,10 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerblobmetadata");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container.
@@ -757,10 +770,10 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerheaders");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         // Create the container.
@@ -836,10 +849,10 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerblock");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Data.txt");
 
         String[] data = {"Michael", "Gabriel", "Raphael", "John"};
@@ -890,7 +903,8 @@ public class Samples {
                         blobURL.getBlockList(BlockListType.ALL, null))
                 .flatMap(response -> {
                     for (Block block : response.body().committedBlocks()) {
-                        System.out.println(String.format("Block ID=%s, Size=%d", block.name(), block.size()));
+                        System.out.println(String.format(Locale.ROOT, "Block ID=%s, Size=%d", block.name(),
+                                block.size()));
                     }
 
                     /*
@@ -929,10 +943,10 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerappend");
         AppendBlobURL blobURL = containerURL.createAppendBlobURL("Data.txt");
 
         // Create the container.
@@ -945,7 +959,7 @@ public class Samples {
                         // This range will act as our for loop to create 5 blocks
                         Observable.range(0, 5))
                 .concatMapCompletable(i -> {
-                    String text = String.format("Appending block #%d\n", i);
+                    String text = String.format(Locale.ROOT, "Appending block #%d\n", i);
                     return blobURL.appendBlock(Flowable.just(ByteBuffer.wrap(text.getBytes())), text.length(),
                             null).toCompletable();
                 })
@@ -978,10 +992,10 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerpage");
         PageBlobURL blobURL = containerURL.createPageBlobURL("Data.txt");
 
         // Create the container.
@@ -1019,7 +1033,8 @@ public class Samples {
                 .flatMap(response -> {
                     // Print the pages that are valid.
                     for (PageRange range : response.body().pageRange()) {
-                        System.out.println(String.format("Start=%d, End=%d\n", range.start(), range.end()));
+                        System.out.println(String.format(Locale.ROOT, "Start=%d, End=%d\n", range.start(),
+                                range.end()));
                     }
 
                     // Clear and invalidate the first range.
@@ -1032,7 +1047,8 @@ public class Samples {
                 .flatMap(response -> {
                     // Print the pages that are valid.
                     for (PageRange range : response.body().pageRange()) {
-                        System.out.println(String.format("Start=%d, End=%d\n", range.start(), range.end()));
+                        System.out.println(String.format(Locale.ROOT, "Start=%d, End=%d\n", range.start(),
+                                range.end()));
                     }
 
                     // Get the content of the whole blob.
@@ -1066,10 +1082,10 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainersnapshot");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("Original.txt");
 
         // Create the container.
@@ -1146,10 +1162,10 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainercopy");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("CopiedBlob.bin");
 
         // Create the container.
@@ -1174,15 +1190,18 @@ public class Samples {
 
     }
 
-    public Single<BlobsGetPropertiesResponse> waitForCopyHelper(BlobURL blobURL, BlobsGetPropertiesResponse response) {
+    public Single<BlobsGetPropertiesResponse> waitForCopyHelper(BlobURL blobURL, BlobsGetPropertiesResponse response)
+            throws InterruptedException {
+        System.out.println(response.headers().copyStatus());
         if (response.headers().copyStatus() == CopyStatusType.SUCCESS) {
-            System.out.println("Copy successful");
             return Single.just(response);
         }
 
+        Thread.sleep(2000);
         return blobURL.getProperties(null)
                 .flatMap(response1 ->
-                        waitForCopyHelper(blobURL, response1));
+                    waitForCopyHelper(blobURL, response1));
+
     }
 
     // This example shows how to copy a large stream in blocks (chunks) to a block blob.
@@ -1193,18 +1212,35 @@ public class Samples {
         String accountKey = getAccountKey();
 
         // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
-        URL u = new URL(String.format("https://%s.blob.core.windows.net/", accountName));
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
         ServiceURL s = new ServiceURL(u,
                 StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
-        ContainerURL containerURL = s.createContainerURL("myjavacontainer");
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerparallelupload");
         BlockBlobURL blobURL = containerURL.createBlockBlobURL("BigFile.bin");
-        FileInputStream fis = new FileInputStream("BigFile.bin");
 
         // Create the container.
         containerURL.create(null, null)
+                .flatMap(response -> {
+                    AsynchronousFileChannel channel =
+                            AsynchronousFileChannel.open(Paths.get("BigFile.bin"), StandardOpenOption.CREATE,
+                                    StandardOpenOption.WRITE);
+                    return Single.fromFuture(channel.write(ByteBuffer.wrap("Big data".getBytes()), 0))
+                            .doAfterTerminate(channel::close);
+                })
+                .flatMap(response -> {
+                    FileChannel channel = FileChannel.open(Paths.get("BigFile.bin"), StandardOpenOption.READ);
+                    return TransferManager.uploadFileToBlockBlob(channel, blobURL,
+                            BlockBlobURL.MAX_PUT_BLOCK_BYTES, null)
+                            .doAfterTerminate(channel::close);
+                })
                 .flatMap(response ->
-                        TransferManager.uploadFileToBlockBlob(fis.getChannel(), blobURL,
-                                BlockBlobURL.MAX_PUT_BLOCK_BYTES,null))
+                        blobURL.download(null, null, false))
+                .flatMap(response ->
+                        // Print out the data.
+                        FlowableUtil.collectBytesInBuffer(response.body())
+                                .doOnSuccess(bytes ->
+                                        System.out.println(new String(bytes.array())))
+                )
                 .flatMap(response ->
                         // Delete the container.
                         containerURL.delete(null))
@@ -1214,8 +1250,6 @@ public class Samples {
                 demonstrate its effectiveness.
                  */
                 .blockingGet();
-
-        fis.close();
     }
 
     /*

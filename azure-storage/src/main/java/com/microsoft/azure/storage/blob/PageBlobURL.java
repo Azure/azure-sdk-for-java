@@ -126,9 +126,14 @@ public final class PageBlobURL extends BlobURL {
 
         // TODO: What if you pass 0 for pageblob size? Validate?
         return this.storageClient.generatedPageBlobs().createWithRestResponseAsync(
-                0, null, headers.getContentType(), headers.getContentEncoding(),
-                headers.getContentLanguage(), headers.getContentMD5(), headers.getCacheControl(),
-                metadata, accessConditions.getLeaseAccessConditions().getLeaseId(),
+                0, null,
+                headers.getContentType(),
+                headers.getContentEncoding(),
+                headers.getContentLanguage(),
+                headers.getContentMD5(),
+                headers.getCacheControl(),
+                metadata,
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
@@ -334,7 +339,7 @@ public final class PageBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                 sequenceNumber,null);
+                sequenceNumber,null);
     }
 
     /**
@@ -388,8 +393,6 @@ public final class PageBlobURL extends BlobURL {
         if (pageRange.end() <= pageRange.start()) {
             throw new IllegalArgumentException("PageRange's End value must be after the start.");
         }
-
-        StringBuilder range = new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end());
-        return range.toString();
+        return new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end()).toString();
     }
 }

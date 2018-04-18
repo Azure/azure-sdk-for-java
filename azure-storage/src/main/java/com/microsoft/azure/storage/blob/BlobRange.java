@@ -80,10 +80,10 @@ public final class BlobRange {
         if (count != null) {
             long rangeEnd = this.offset + this.count - 1;
             return String.format(
-                    Locale.US, Constants.HeaderConstants.RANGE_HEADER_FORMAT, this.offset, rangeEnd);
+                    Locale.ROOT, Constants.HeaderConstants.RANGE_HEADER_FORMAT, this.offset, rangeEnd);
         }
 
         return String.format(
-                Locale.US, Constants.HeaderConstants.BEGIN_RANGE_HEADER_FORMAT, this.offset);
+                Locale.ROOT, Constants.HeaderConstants.BEGIN_RANGE_HEADER_FORMAT, this.offset);
     }
 }

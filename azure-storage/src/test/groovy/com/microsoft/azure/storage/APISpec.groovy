@@ -48,9 +48,6 @@ class APISpec extends Specification {
 
     static final String blobPrefix = "javablob"
 
-    static final String sceneDir =
-            "C:\\Users\\frley\\Documents\\azure-storage-java-async\\azure-storage\\src\\test\\resources\\recordings\\"
-
     /*
     The values below are used to create data-driven tests for access conditions.
      */
@@ -143,13 +140,7 @@ class APISpec extends Specification {
     }
 
     static void scrubAuthHeader(String sceneName) {
-        /*try (Scanner scanner = new Scanner(new FileInputStream(sceneDir + sceneName))) {
-            while(scanner.hasNext("\"Authorization\" :")) {
 
-            }
-        } catch (IOException e) {
-
-        }*/
     }
 
     static getGenericCreds(String accountType) {

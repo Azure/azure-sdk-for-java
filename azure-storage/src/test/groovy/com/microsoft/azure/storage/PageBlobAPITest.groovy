@@ -29,7 +29,7 @@ import spock.lang.Unroll
 import java.nio.ByteBuffer
 import java.security.MessageDigest
 
-class PageBlobAPI extends APISpec {
+class PageBlobAPITest extends APISpec {
     PageBlobURL bu
 
     def setup() {
@@ -124,13 +124,13 @@ class PageBlobAPI extends APISpec {
         bu.create(512, null, null, null, bac).blockingGet().statusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID
-        null     | null       | null         | null        | null
-        oldDate  | null       | null         | null        | null
-        null     | newDate    | null         | null        | null
-        null     | null       | receivedEtag | null        | null
-        null     | null       | null         | garbageEtag | null
-        null     | null       | null         | null        | receivedLeaseID
+        modified        | unmodified      | match                | noneMatch           | leaseID
+        null            | null            | null                 | null                | null
+        APISpec.oldDate | null            | null                 | null                | null
+        null            | APISpec.newDate | null                 | null                | null
+        null            | null            | APISpec.receivedEtag | null                | null
+        null            | null            | null                 | APISpec.garbageEtag | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID
     }
 
     def "Page blob upload page"() {
@@ -172,16 +172,16 @@ class PageBlobAPI extends APISpec {
                 Flowable.just(getRandomData(512)), bac).blockingGet().statusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified        | unmodified      | match                | noneMatch           | leaseID                 | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null            | null            | null                 | null                | null                    | null             | null              | null
+        APISpec.oldDate | null            | null                 | null                | null                    | null             | null              | null
+        null            | APISpec.newDate | null                 | null                | null                    | null             | null              | null
+        null            | null            | APISpec.receivedEtag | null                | null                    | null             | null              | null
+        null            | null            | null                 | APISpec.garbageEtag | null                    | null             | null              | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID | null             | null              | null
+        null            | null            | null                 | null                | null                    | 5                | null              | null
+        null            | null            | null                 | null                | null                    | null             | 3                 | null
+        null            | null            | null                 | null                | null                    | null             | null              | 0
     }
 
     def "Page blob clear page"() {
@@ -217,16 +217,16 @@ class PageBlobAPI extends APISpec {
         bu.clearPages(new PageRange().withStart(0).withEnd(511), bac).blockingGet().statusCode() == 201
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified        | unmodified      | match                | noneMatch           | leaseID                 | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null            | null            | null                 | null                | null                    | null             | null              | null
+        APISpec.oldDate | null            | null                 | null                | null                    | null             | null              | null
+        null            | APISpec.newDate | null                 | null                | null                    | null             | null              | null
+        null            | null            | APISpec.receivedEtag | null                | null                    | null             | null              | null
+        null            | null            | null                 | APISpec.garbageEtag | null                    | null             | null              | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID | null             | null              | null
+        null            | null            | null                 | null                | null                    | 5                | null              | null
+        null            | null            | null                 | null                | null                    | null             | 3                 | null
+        null            | null            | null                 | null                | null                    | null             | null              | 0
     }
 
     def "Page blob get page ranges"() {
@@ -260,16 +260,16 @@ class PageBlobAPI extends APISpec {
         bu.getPageRanges(new BlobRange(0, 512), bac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified        | unmodified      | match                | noneMatch           | leaseID                 | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null            | null            | null                 | null                | null                    | null             | null              | null
+        APISpec.oldDate | null            | null                 | null                | null                    | null             | null              | null
+        null            | APISpec.newDate | null                 | null                | null                    | null             | null              | null
+        null            | null            | APISpec.receivedEtag | null                | null                    | null             | null              | null
+        null            | null            | null                 | APISpec.garbageEtag | null                    | null             | null              | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID | null             | null              | null
+        null            | null            | null                 | null                | null                    | 5                | null              | null
+        null            | null            | null                 | null                | null                    | null             | 3                 | null
+        null            | null            | null                 | null                | null                    | null             | null              | 0
     }
 
     def "Page blob get page ranges diff"() {
@@ -304,16 +304,16 @@ class PageBlobAPI extends APISpec {
         bu.getPageRangesDiff(new BlobRange(0, 512), snapshot, bac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified        | unmodified      | match                | noneMatch           | leaseID                 | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null            | null            | null                 | null                | null                    | null             | null              | null
+        APISpec.oldDate | null            | null                 | null                | null                    | null             | null              | null
+        null            | APISpec.newDate | null                 | null                | null                    | null             | null              | null
+        null            | null            | APISpec.receivedEtag | null                | null                    | null             | null              | null
+        null            | null            | null                 | APISpec.garbageEtag | null                    | null             | null              | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID | null             | null              | null
+        null            | null            | null                 | null                | null                    | 5                | null              | null
+        null            | null            | null                 | null                | null                    | null             | 3                 | null
+        null            | null            | null                 | null                | null                    | null             | null              | 0
     }
 
     def "Page blob resize"() {
@@ -340,16 +340,16 @@ class PageBlobAPI extends APISpec {
         bu.resize(1024, bac).blockingGet().statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified        | unmodified      | match                | noneMatch           | leaseID                 | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null            | null            | null                 | null                | null                    | null             | null              | null
+        APISpec.oldDate | null            | null                 | null                | null                    | null             | null              | null
+        null            | APISpec.newDate | null                 | null                | null                    | null             | null              | null
+        null            | null            | APISpec.receivedEtag | null                | null                    | null             | null              | null
+        null            | null            | null                 | APISpec.garbageEtag | null                    | null             | null              | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID | null             | null              | null
+        null            | null            | null                 | null                | null                    | 5                | null              | null
+        null            | null            | null                 | null                | null                    | null             | 3                 | null
+        null            | null            | null                 | null                | null                    | null             | null              | 0
     }
 
     def "Page blob sequence number"() {
@@ -379,16 +379,16 @@ class PageBlobAPI extends APISpec {
                 .statusCode() == 200
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified        | unmodified      | match                | noneMatch           | leaseID                 | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null            | null            | null                 | null                | null                    | null             | null              | null
+        APISpec.oldDate | null            | null                 | null                | null                    | null             | null              | null
+        null            | APISpec.newDate | null                 | null                | null                    | null             | null              | null
+        null            | null            | APISpec.receivedEtag | null                | null                    | null             | null              | null
+        null            | null            | null                 | APISpec.garbageEtag | null                    | null             | null              | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID | null             | null              | null
+        null            | null            | null                 | null                | null                    | 5                | null              | null
+        null            | null            | null                 | null                | null                    | null             | 3                 | null
+        null            | null            | null                 | null                | null                    | null             | null              | 0
     }
 
     def "Page blob start incremental copy"() {
@@ -417,15 +417,15 @@ class PageBlobAPI extends APISpec {
         bu2.copyIncremental(bu.toURL(), snapshot, null).blockingGet().statusCode() == 202
 
         where:
-        modified | unmodified | match        | noneMatch   | leaseID         | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
-        null     | null       | null         | null        | null            | null             | null              | null
-        oldDate  | null       | null         | null        | null            | null             | null              | null
-        null     | newDate    | null         | null        | null            | null             | null              | null
-        null     | null       | receivedEtag | null        | null            | null             | null              | null
-        null     | null       | null         | garbageEtag | null            | null             | null              | null
-        null     | null       | null         | null        | receivedLeaseID | null             | null              | null
-        null     | null       | null         | null        | null            | 5                | null              | null
-        null     | null       | null         | null        | null            | null             | 3                 | null
-        null     | null       | null         | null        | null            | null             | null              | 0
+        modified        | unmodified      | match                | noneMatch           | leaseID                 | sequenceNumberLT | sequenceNumberLTE | sequenceNumberEqual
+        null            | null            | null                 | null                | null                    | null             | null              | null
+        APISpec.oldDate | null            | null                 | null                | null                    | null             | null              | null
+        null            | APISpec.newDate | null                 | null                | null                    | null             | null              | null
+        null            | null            | APISpec.receivedEtag | null                | null                    | null             | null              | null
+        null            | null            | null                 | APISpec.garbageEtag | null                    | null             | null              | null
+        null            | null            | null                 | null                | APISpec.receivedLeaseID | null             | null              | null
+        null            | null            | null                 | null                | null                    | 5                | null              | null
+        null            | null            | null                 | null                | null                    | null             | 3                 | null
+        null            | null            | null                 | null                | null                    | null             | null              | 0
     }
 }
