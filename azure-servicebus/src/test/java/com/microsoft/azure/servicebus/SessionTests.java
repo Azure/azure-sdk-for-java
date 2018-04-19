@@ -4,6 +4,8 @@ import java.net.URI;
 import java.time.Duration;
 import java.time.Instant;
 import java.util.concurrent.ExecutionException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 import org.junit.After;
 import org.junit.AfterClass;

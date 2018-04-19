@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="service-bus.png" alt="Microsoft Azure Relay" width="100"/>
+  <img src="service-bus.png" alt="Microsoft Azure Service Bus" width="100"/>
 </p>
 
 |Build/Package|Status|
