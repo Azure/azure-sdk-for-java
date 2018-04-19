@@ -147,16 +147,6 @@ class PageBlobAPITest extends APISpec {
         headers.isServerEncrypted()
     }
 
-    def "Page blob upload page md5"() {
-        setup:
-        ByteBuffer data = getRandomData(512)
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(data.array())
-
-        expect:
-        bu.uploadPages(new PageRange().withStart(0).withEnd(511), Flowable.just(data),
-                null).blockingGet()
-    }
-
     @Unroll
     def "Page blob upload page AC"() {
         setup:

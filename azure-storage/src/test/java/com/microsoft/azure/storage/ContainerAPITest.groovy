@@ -211,8 +211,8 @@ class ContainerAPITest extends APISpec {
         then:
         response.statusCode() == 200
         validateBasicHeaders(response.headers())
-        receivedIdentifier.accessPolicy().expiry().compareTo(identifier.accessPolicy().expiry())
-        receivedIdentifier.accessPolicy().start().compareTo(identifier.accessPolicy().start())
+        receivedIdentifier.accessPolicy().expiry() == identifier.accessPolicy().expiry()
+        receivedIdentifier.accessPolicy().start() == identifier.accessPolicy().start()
         receivedIdentifier.accessPolicy().permission() == identifier.accessPolicy().permission()
     }
     // TODO: Fix nanosecond resolution issue
@@ -252,8 +252,8 @@ class ContainerAPITest extends APISpec {
         response.statusCode() == 200
         response.headers().blobPublicAccess() == PublicAccessType.BLOB
         validateBasicHeaders(response.headers())
-        response.body().get(0).accessPolicy().expiry().compareTo(identifier.accessPolicy().expiry())
-        response.body().get(0).accessPolicy().start().compareTo(identifier.accessPolicy().start())
+        response.body().get(0).accessPolicy().expiry() == identifier.accessPolicy().expiry()
+        response.body().get(0).accessPolicy().start() == identifier.accessPolicy().start()
         response.body().get(0).accessPolicy().permission() == identifier.accessPolicy().permission()
     }
 

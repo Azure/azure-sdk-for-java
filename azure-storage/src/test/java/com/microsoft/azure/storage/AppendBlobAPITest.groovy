@@ -135,15 +135,6 @@ public class AppendBlobAPITest extends APISpec {
         statusCode == expectedCode || receivedData == expectedData
      */
 
-    def "Append blob append block md5"() {
-        setup:
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
-
-        expect:
-        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), null).blockingGet()
-                .statusCode() == 201
-    }
-
     @Unroll
     def "Append blob append block AC"() {
         setup:

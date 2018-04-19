@@ -84,8 +84,41 @@ class ServiceAPITest extends APISpec {
                 .blockingGet().body().containers().size() == 10
     }
 
+    def validatePropsSet(ServiceSetPropertiesHeaders headers, StorageServiceProperties receivedProperties) {
+        return headers.requestId() != null &&
+        headers.version() != null &&
+
+        receivedProperties.logging().read() &&
+        !receivedProperties.logging().delete() &&
+        !receivedProperties.logging().write() &&
+        receivedProperties.logging().version() == "1.0" &&
+        receivedProperties.logging().retentionPolicy().days() == 5 &&
+        receivedProperties.logging().retentionPolicy().enabled() &&
+
+        receivedProperties.cors().size() == 1 &&
+        receivedProperties.cors().get(0).allowedMethods() == "GET,PUT,HEAD" &&
+        receivedProperties.cors().get(0).allowedHeaders() == "x-ms-version" &&
+        receivedProperties.cors().get(0).allowedOrigins() == "*" &&
+        receivedProperties.cors().get(0).exposedHeaders() == "x-ms-client-request-id" &&
+        receivedProperties.cors().get(0).maxAgeInSeconds() == 10 &&
+
+        receivedProperties.defaultServiceVersion() == "2016-05-31" &&
+
+        receivedProperties.hourMetrics().enabled() &&
+        receivedProperties.hourMetrics().includeAPIs() &&
+        receivedProperties.hourMetrics().retentionPolicy().enabled() &&
+        receivedProperties.hourMetrics().retentionPolicy().days() == 5 &&
+        receivedProperties.hourMetrics().version() == "1.0" &&
+
+        receivedProperties.minuteMetrics().enabled() &&
+        receivedProperties.minuteMetrics().includeAPIs() &&
+        receivedProperties.minuteMetrics().retentionPolicy().enabled() &&
+        receivedProperties.minuteMetrics().retentionPolicy().days() == 5 &&
+        receivedProperties.minuteMetrics().version() == "1.0"
+    }
+
     def "Service set get properties"() {
-        setup:
+        when:
         RetentionPolicy retentionPolicy = new RetentionPolicy().withDays(5).withEnabled(true)
         Logging logging = new Logging().withRead(true).withVersion("1.0")
                 .withRetentionPolicy(retentionPolicy)
@@ -107,37 +140,12 @@ class ServiceAPITest extends APISpec {
         StorageServiceProperties receivedProperties = primaryServiceURL.getProperties()
                 .blockingGet().body()
 
-        expect:
-        headers.requestId() != null
-        headers.version() != null
-
-        receivedProperties.logging().read()
-        !receivedProperties.logging().delete()
-        !receivedProperties.logging().write()
-        receivedProperties.logging().version() == "1.0"
-        receivedProperties.logging().retentionPolicy().days() == 5
-        receivedProperties.logging().retentionPolicy().enabled()
-
-        receivedProperties.cors().size() == 1
-        receivedProperties.cors().get(0).allowedMethods() == "GET,PUT,HEAD"
-        receivedProperties.cors().get(0).allowedHeaders() == "x-ms-version"
-        receivedProperties.cors().get(0).allowedOrigins() == "*"
-        receivedProperties.cors().get(0).exposedHeaders() == "x-ms-client-request-id"
-        receivedProperties.cors().get(0).maxAgeInSeconds() == 10
-
-        receivedProperties.defaultServiceVersion() == "2016-05-31"
-
-        receivedProperties.hourMetrics().enabled()
-        receivedProperties.hourMetrics().includeAPIs()
-        receivedProperties.hourMetrics().retentionPolicy().enabled()
-        receivedProperties.hourMetrics().retentionPolicy().days() == 5
-        receivedProperties.hourMetrics().version() == "1.0"
-
-        receivedProperties.minuteMetrics().enabled()
-        receivedProperties.minuteMetrics().includeAPIs()
-        receivedProperties.minuteMetrics().retentionPolicy().enabled()
-        receivedProperties.minuteMetrics().retentionPolicy().days() == 5
-        receivedProperties.minuteMetrics().version() == "1.0"
+        then:
+        if (!validatePropsSet(headers, receivedProperties)) {
+            // Service properties may take up to 30s to take effect. If they weren't already in place, wait.
+            sleep(30*1000)
+            validatePropsSet(headers, receivedProperties)
+        }
     }
 
     def "Service get stats"() {

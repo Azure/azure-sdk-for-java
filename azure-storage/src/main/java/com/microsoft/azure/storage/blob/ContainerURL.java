@@ -279,6 +279,12 @@ public final class ContainerURL extends StorageURL {
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
 
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
         if (identifiers != null) {
             for (SignedIdentifier identifier : identifiers) {
                 if (identifier.accessPolicy() != null && identifier.accessPolicy().start() != null) {

@@ -46,15 +46,6 @@ class BlockBlobAPITest extends APISpec {
         headers.isServerEncrypted()
     }
 
-    def "Block blob stage block MD5"() {
-        setup:
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
-
-        expect:
-        bu.stageBlock(new String(Base64.encoder.encode("0000".bytes)), Flowable.just(defaultData),
-                defaultData.remaining(), null).blockingGet().statusCode() == 201
-    }
-
     def "Block blob stage block lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -242,15 +233,6 @@ class BlockBlobAPITest extends APISpec {
         validateBasicHeaders(headers)
         headers.contentMD5() != null
         headers.isServerEncrypted()
-    }
-
-    def "Block blob upload md5"() {
-        setup:
-        byte[] md5 = MessageDigest.getInstance("MD5").digest(defaultData.array())
-
-        expect:
-        bu.upload(Flowable.just(defaultData), defaultData.remaining(), null, null,
-                null).blockingGet().statusCode() == 201
     }
 
     @Unroll
