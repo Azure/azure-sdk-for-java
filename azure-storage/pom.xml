@@ -59,7 +59,7 @@
     </dependencies>
 
     <build>
-        <testSourceDirectory>src/test/java</testSourceDirectory>
+        <testSourceDirectory>src/test/groovy</testSourceDirectory>
         <plugins>
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
@@ -88,7 +88,7 @@
                         <include>**/Test*.*</include>
                         <include>**/*Test.*</include>
                         <include>**/*Tests.*</include>
-                        <!--include>**/*Samples*.*</include-->
+                        <include>**/*Samples*.*</include>
                     </includes>
                 </configuration>
             </plugin>
