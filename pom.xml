@@ -111,7 +111,7 @@
                             <include>**/Test*.*</include>
                             <include>**/*Test.*</include>
                             <include>**/*Tests.*</include>
-                            <include>**/*Samples*.*</include>
+                            <!--include>**/*Samples*.*</include-->
                         </includes>
                     </configuration>
                 </plugin>
