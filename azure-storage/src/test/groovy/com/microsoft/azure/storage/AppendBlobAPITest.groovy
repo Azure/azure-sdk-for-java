@@ -15,7 +15,7 @@ import io.reactivex.Flowable
 import spock.lang.Unroll
 import java.security.MessageDigest
 
-class AppendBlobAPITest extends APISpec {
+public class AppendBlobAPITest extends APISpec {
     AppendBlobURL bu
 
     def setup() {
