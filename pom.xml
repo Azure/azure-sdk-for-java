@@ -88,7 +88,7 @@
     </dependencyManagement>
 
     <build>
-        <testSourceDirectory>src/test/*</testSourceDirectory>
+        <testSourceDirectory>azure-storage/src/test/*</testSourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
