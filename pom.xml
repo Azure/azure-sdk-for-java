@@ -80,7 +80,7 @@
             </dependency>
             <dependency>
                 <groupId>org.codehaus.groovy</groupId>
-                <artifactId>groovy</artifactId>
+                <artifactId>groovy-all</artifactId>
                 <version>2.4.13</version>
                 <scope>test</scope>
             </dependency>
@@ -105,8 +105,10 @@
                 <plugin>
                     <groupId>org.apache.maven.plugins</groupId>
                     <artifactId>maven-surefire-plugin</artifactId>
-                    <version>2.18.1</version>
+                    <version>2.20.1</version>
                     <configuration>
+                        <testSourceDirectory>src/test/groovy</testSourceDirectory>
+                        <testSourceDirectory>src/test/java</testSourceDirectory>
                         <includes>
                             <include>**/Test*.*</include>
                             <include>**/*Test.*</include>
@@ -126,9 +128,9 @@
                 </plugin>
                 <!-- Groovy compilation -->
                 <plugin>
-                    <groupId>org.codehaus.gmaven</groupId>
-                    <artifactId>gmaven-plugin</artifactId>
-                    <version>1.5</version>
+                    <groupId>org.codehaus.gmavenplus</groupId>
+                    <artifactId>gmavenplus-plugin</artifactId>
+                    <version>1.6</version>
                     <executions>
                         <execution>
                             <goals>
@@ -137,6 +139,16 @@
                             </goals>
                         </execution>
                     </executions>
+                    <configuration>
+                        <testSources>
+                            <testSource>
+                                <directory>${project.basedir}/src/test/groovy</directory>
+                                <includes>
+                                    <include>**/*Test.*</include>
+                                </includes>
+                            </testSource>
+                        </testSources>
+                    </configuration>
                 </plugin>
             </plugins>
         </pluginManagement>
