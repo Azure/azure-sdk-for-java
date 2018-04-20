@@ -141,7 +141,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
                                 documentProducers.subList(1, documentProducers.size())
                                 .stream()
                                 .map(producer -> toOrderByQueryResultObservable(resourceType, producer, tracker))
-                                .collect(Collectors.toList()), consumeComparer))
+                                .collect(Collectors.toList()), consumeComparer, false, 1))
                 .map(orderByQueryResult -> orderByQueryResult.getPayload());
     }
 
@@ -163,10 +163,11 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
 
         @Override
         public Observable<OrderByRowResult<T>> call(Observable<FeedResponse<T>> source) {
-            return source.flatMap(page -> {
-                tracker.addCharge(page.getRequestCharge());
-                return Observable.from(page.getResults());
-            }).map(r -> new OrderByRowResult<T>(klass, r.toJson(), producer.getTargetPartitionKeyRange()));
+            return source
+                    .flatMap(page -> {
+                        tracker.addCharge(page.getRequestCharge());
+                        return Observable.from(page.getResults()); }, 1)
+                    .map(r -> new OrderByRowResult<T>(klass, r.toJson(), producer.getTargetPartitionKeyRange()));
         }
     }
 
@@ -189,10 +190,10 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
             return source
                     // .windows: creates an observable of observable where inner observable
                     // emits max maxPageSize elements 
-                    .window(maxPageSize) 
+                    .window(maxPageSize)
                     .map(o -> o.toList())
                     // flattens the observable<Observable<List<T>>> to Observable<List<T>>
-                    .flatMap(resultListObs -> resultListObs) 
+                    .flatMap(resultListObs -> resultListObs, 1)
                     // translates Observable<List<T>> to Observable<FeedResponsePage<T>>>
                     .map(resultList -> { 
                         // construct a page from result of 

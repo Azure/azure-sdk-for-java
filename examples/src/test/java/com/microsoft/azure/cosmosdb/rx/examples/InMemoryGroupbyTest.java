@@ -40,7 +40,6 @@ import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.ResourceResponse;
 import com.microsoft.azure.cosmosdb.SqlParameter;
 import com.microsoft.azure.cosmosdb.SqlParameterCollection;
 import com.microsoft.azure.cosmosdb.SqlQuerySpec;
@@ -55,7 +54,7 @@ public class InMemoryGroupbyTest {
     private static final String DATABASE_ID = "in-memory-groupby";
 
     private AsyncDocumentClient asyncClient;
-
+    private Database createdDatabase;
     private DocumentCollection createdCollection;
 
     @Before
@@ -77,14 +76,12 @@ public class InMemoryGroupbyTest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
 
-        // create database
-        ResourceResponse<Database> databaseCreationResponse = asyncClient.createDatabase(databaseDefinition, null)
-                .toBlocking().single();
+        // Create database
+        createdDatabase = asyncClient.createDatabase(databaseDefinition, null).toBlocking().single().getResource();
 
-
-        // create collection
+        // Create collection
         createdCollection = asyncClient
-                .createCollection(databaseCreationResponse.getResource().getSelfLink(), collectionDefinition, null)
+                .createCollection("dbs/" + createdDatabase.getId(), collectionDefinition, null)
                 .toBlocking().single().getResource();
 
         int numberOfPayers = 10;
@@ -102,7 +99,7 @@ public class InMemoryGroupbyTest {
                         + "'payer_id': %d, "
                         + " 'created_time' : %d "
                         + "}", UUID.randomUUID().toString(), i, currentTime.getSecond()));
-                asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, true).toBlocking().single();
+                asyncClient.createDocument(getCollectionLink(), doc, null, true).toBlocking().single();
 
                 Thread.sleep(100);
             }
@@ -116,20 +113,19 @@ public class InMemoryGroupbyTest {
     }
 
     /**
+     * Queries Documents and performs Group by operation after fetching the Documents.
      * If you want to understand the steps in more details see {@link #groupByInMemory_MoreDetail()}
      * @throws Exception
      */
     @Test
     public void groupByInMemory() throws Exception {
-
-        // if you want to understand the steps in more details see groupByInMemoryMoreDetail()
-
+        // If you want to understand the steps in more details see groupByInMemoryMoreDetail()
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
 
         Observable<Document> documentsObservable = asyncClient
-                .queryDocuments(createdCollection.getSelfLink(),
+                .queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterCollection(new SqlParameter("@site_id", "ABC"))),
                         options)
@@ -162,7 +158,7 @@ public class InMemoryGroupbyTest {
 
 
         Observable<Document> documentsObservable = asyncClient
-                .queryDocuments(createdCollection.getSelfLink(),
+                .queryDocuments(getCollectionLink(),
                         new SqlQuerySpec("SELECT * FROM root r WHERE r.site_id=@site_id",
                                 new SqlParameterCollection(new SqlParameter("@site_id", "ABC"))),
                         options)
@@ -186,6 +182,10 @@ public class InMemoryGroupbyTest {
         }
     }
 
+    private String getCollectionLink() {
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
+    }
+
     private void cleanUpGeneratedDatabases() throws DocumentClientException {
         LOGGER.info("cleanup databases invoked");
 
@@ -201,7 +201,7 @@ public class InMemoryGroupbyTest {
                 if (!feedResponsePages.get(0).getResults().isEmpty()) {
                     Database res = feedResponsePages.get(0).getResults().get(0);
                     LOGGER.info("deleting a database " + feedResponsePages.get(0));
-                    asyncClient.deleteDatabase(res.getSelfLink(), null).toBlocking().single();
+                    asyncClient.deleteDatabase("dbs/" + res.getId(), null).toBlocking().single();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

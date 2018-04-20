@@ -93,7 +93,7 @@ public class DocumentProducer<T extends Resource> {
 
         // TODO: add retry here
 
-        return Paginator.getPatinatedQueryResultAsObservable(feedOptions, createRequestFunc, 
+        return Paginator.getPaginatedQueryResultAsObservable(feedOptions, createRequestFunc,
                 executeRequestFunc, resourceType, top, pageSize); 
     }
 }

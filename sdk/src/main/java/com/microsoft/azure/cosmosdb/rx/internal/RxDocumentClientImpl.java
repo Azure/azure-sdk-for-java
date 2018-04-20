@@ -22,9 +22,6 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
-import javax.net.ssl.SSLEngine;
-import javax.net.ssl.SSLException;
-
 import static com.microsoft.azure.cosmosdb.BridgeInternal.documentFromObject;
 import static com.microsoft.azure.cosmosdb.BridgeInternal.toDatabaseAccount;
 import static com.microsoft.azure.cosmosdb.BridgeInternal.toFeedResponsePage;
@@ -42,6 +39,9 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
+
+import javax.net.ssl.SSLEngine;
+import javax.net.ssl.SSLException;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.JSONObject;
@@ -114,16 +114,13 @@ import io.reactivex.netty.RxNetty;
 import io.reactivex.netty.channel.RxEventLoopProvider;
 import io.reactivex.netty.channel.SingleNioLoopProvider;
 import io.reactivex.netty.client.RxClient;
-import io.reactivex.netty.pipeline.ssl.SSLEngineFactory;
 import io.reactivex.netty.pipeline.PipelineConfigurator;
 import io.reactivex.netty.pipeline.PipelineConfiguratorComposite;
+import io.reactivex.netty.pipeline.ssl.SSLEngineFactory;
 import io.reactivex.netty.protocol.http.HttpObjectAggregationConfigurator;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
 import io.reactivex.netty.protocol.http.client.CompositeHttpClientBuilder;
 import io.reactivex.netty.protocol.http.client.HttpClientPipelineConfigurator;
-import io.reactivex.netty.protocol.http.client.HttpClientRequest;
-import io.reactivex.netty.protocol.http.client.HttpClientResponse;
-
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
@@ -135,6 +132,9 @@ import rx.functions.Func2;
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
 
+    // we may have ~14K continuation token from a single partition
+    private final static int MAX_REQUEST_HEADER_SIZE = 32 * 1024;
+
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKey;
     private final URI serviceEndpoint;
@@ -143,6 +143,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final ConsistencyLevel consistencyLevel;
     private final BaseAuthorizationTokenProvider authorizationTokenProvider;
     private final RxClientCollectionCache collectionCache;
+    private final RxPartitionKeyRangeCache partitionKeyRangeCache;
     private final RxGatewayStoreModel gatewayProxy;
     private Map<String, String> resourceTokens;
     /**
@@ -206,14 +207,31 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
         this.retryPolicy = new RetryPolicy(this.globalEndpointManager, this.connectionPolicy);
 
-        this.gatewayProxy = new RxGatewayStoreModel(this.connectionPolicy, consistencyLevel, this.queryCompatibilityMode,
+        this.gatewayProxy = createRxGatewayProxy(this.connectionPolicy, consistencyLevel, this.queryCompatibilityMode,
                 this.masterKey, this.resourceTokens, userAgentContainer, this.globalEndpointManager, this.rxClient);
 
         this.collectionCache = new RxClientCollectionCache(this.gatewayProxy, this, this.retryPolicy);
+        
+        this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(
+                RxDocumentClientImpl.this, 
+                collectionCache);
 
         if (this.connectionPolicy.getConnectionMode() == ConnectionMode.DirectHttps) {
             throw new UnsupportedOperationException("Direct Https is not supported");
         }   
+    }
+
+    RxGatewayStoreModel createRxGatewayProxy(ConnectionPolicy connectionPolicy,
+                                             ConsistencyLevel consistencyLevel,
+                                             QueryCompatibilityMode queryCompatibilityMode,
+                                             String masterKey,
+                                             Map<String, String> resourceTokens,
+                                             UserAgentContainer userAgentContainer,
+                                             EndpointManager globalEndpointManager,
+                                             CompositeHttpClient<ByteBuf, ByteBuf> rxClient) {
+        return new RxGatewayStoreModel(connectionPolicy,
+                consistencyLevel, queryCompatibilityMode, masterKey,
+                resourceTokens, userAgentContainer, globalEndpointManager, rxClient);
     }
 
     private CompositeHttpClientBuilder<ByteBuf, ByteBuf> httpClientBuilder() {
@@ -247,10 +265,13 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     }
 
     private PipelineConfigurator createClientPipelineConfigurator() {
-        PipelineConfigurator clientPipelineConfigurator = new PipelineConfiguratorComposite<HttpClientResponse<ByteBuf>,
-                HttpClientRequest<ByteBuf>>(new HttpClientPipelineConfigurator<ByteBuf, ByteBuf>
-                (8192, 32768, 8182, true ),
-                new HttpObjectAggregationConfigurator());
+        PipelineConfigurator clientPipelineConfigurator = new PipelineConfiguratorComposite(
+                new HttpClientPipelineConfigurator<ByteBuf, ByteBuf>(
+                        HttpClientPipelineConfigurator.MAX_INITIAL_LINE_LENGTH_DEFAULT,
+                        MAX_REQUEST_HEADER_SIZE,
+                        HttpClientPipelineConfigurator.MAX_CHUNK_SIZE_DEFAULT,
+                        true),
+                new HttpObjectAggregationConfigurator<>());
         return clientPipelineConfigurator;
     }
 
@@ -878,6 +899,9 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private void applySessionToken(RxDocumentServiceRequest request) {
         Map<String, String> headers = request.getHeaders();
         if (headers != null && !StringUtils.isEmpty(headers.get(HttpConstants.HttpHeaders.SESSION_TOKEN))) {
+            if (request.getResourceType().isMasterResource()) {
+                headers.remove(HttpConstants.HttpHeaders.SESSION_TOKEN);
+            }
             return; // User is explicitly controlling the session.
         }
 
@@ -885,7 +909,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         boolean sessionConsistency = this.consistencyLevel == ConsistencyLevel.Session
                 || (!StringUtils.isEmpty(requestConsistency)
                         && StringUtils.equalsIgnoreCase(requestConsistency, ConsistencyLevel.Session.toString()));
-        if (!sessionConsistency) {
+        if (!sessionConsistency || request.getResourceType().isMasterResource()) {
             return; // Only apply the session token in case of session consistency
         }
 
@@ -1190,9 +1214,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public RxPartitionKeyRangeCache getPartitionKeyRangeCache() {
-                return new RxPartitionKeyRangeCache(
-                        RxDocumentClientImpl.this, 
-                        collectionCache);
+                return RxDocumentClientImpl.this.partitionKeyRangeCache;
             }
 
             @Override
@@ -2627,7 +2649,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             }, retryPolicy.getRequestPolicy());
         };
 
-        return Paginator.getPatinatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
+        return Paginator.getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
     }
 
     private <T extends Resource> Observable<FeedResponse<T>> readFeed(FeedOptions options, ResourceType resourceType, Class<T> klass, String resourceLink) {
@@ -2652,7 +2674,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     retryPolicy.getRequestPolicy());
         };
 
-        return Paginator.getPatinatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
+        return Paginator.getPaginatedQueryResultAsObservable(options, createRequestFunc, executeFunc, klass, maxPageSize);
     }
     
     @Override

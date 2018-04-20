@@ -62,10 +62,10 @@ import rx.observable.ListenableFutureObservable;
 
 /**
  * This integration test class demonstrates how to use Async API to create,
- * delete, replace, and upsert. If you are interested in examples for querying
- * for documents please see {@link DocumentQueryAsyncAPITest}
+ * delete, replace, and upsert Documents. If you are interested in examples for
+ * querying for documents please see {@link DocumentQueryAsyncAPITest}
  * 
- * NOTE: you can use rxJava based async api with java8 lambda expression. Using
+ * NOTE: you can use rxJava based async api with java8 lambda expression. Use
  * of rxJava based async APIs with java8 lambda expressions is much prettier.
  * 
  * You can also use the async API without java8 lambda expression.
@@ -75,8 +75,8 @@ import rx.observable.ListenableFutureObservable;
  * <li>{@link #testCreateDocument_Async()} demonstrates how to use async api
  * with java8 lambda expression.
  * 
- * <li>{@link #testCreateDocument_Async_withoutLambda()} demonstrates how to the same
- * thing without lambda expression.
+ * <li>{@link #testCreateDocument_Async_withoutLambda()} demonstrates how to do
+ * the same thing without lambda expression.
  * </ul>
  * 
  * Also if you need to work with Future or ListenableFuture it is possible to
@@ -91,19 +91,21 @@ public class DocumentCRUDAsyncAPITest {
     private static final String DATABASE_ID = "async-test-db";
 
     private AsyncDocumentClient asyncClient;
+    private Database createdDatabase;
     private DocumentCollection createdCollection;
 
     @Before
     public void setUp() throws DocumentClientException {
 
-        // sets up the requirements for each test
-        
+        // Sets up the requirements for each test
+
         asyncClient = new AsyncDocumentClient.Builder()
                 .withServiceEndpoint(TestConfigurations.HOST)
                 .withMasterKey(TestConfigurations.MASTER_KEY)
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
+
         // Clean up the database.
         this.cleanUpGeneratedDatabases();
 
@@ -113,13 +115,13 @@ public class DocumentCRUDAsyncAPITest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
 
-        // create database
-        ResourceResponse<Database> databaseCreationResponse = asyncClient.createDatabase(databaseDefinition, null)
-                .toBlocking().single();
-        
-        // create collection
+        // Create database
+        createdDatabase = asyncClient.createDatabase(databaseDefinition, null)
+                .toBlocking().single().getResource();
+
+        // Create collection
         createdCollection = asyncClient
-                .createCollection(databaseCreationResponse.getResource().getSelfLink(), collectionDefinition, null)
+                .createCollection("dbs/" + createdDatabase.getId(), collectionDefinition, null)
                 .toBlocking().single().getResource();
     }
 
@@ -128,319 +130,359 @@ public class DocumentCRUDAsyncAPITest {
         asyncClient.close();
     }
 
+    /**
+     * Create a document using java8 lambda expressions
+     */
     @Test
     public void testCreateDocument_Async() throws Exception {
-   
-        // create a document
         Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, true);
+        Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
+                .createDocument(getCollectionLink(), doc, null, true);
 
-        final CountDownLatch doneLatch = new CountDownLatch(1);
+        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
-        // subscribe to events emitted by the observable
-        createDocumentObservable
-            .single()           // we know there will be one response
-            .subscribe(
-                
-                documentResourceResponse -> {
+        // Subscribe to Document resource response emitted by the observable
+        createDocumentObservable.single() // We know there will be one response
+                .subscribe(documentResourceResponse -> {
                     System.out.println(documentResourceResponse.getActivityId());
-                    doneLatch.countDown();
-                },
-
-                error -> {
-                    System.err.println("an error happened in document creation: actual cause: " + error.getMessage());
+                    successfulCompletionLatch.countDown();
+                }, error -> {
+                    System.err.println(
+                            "an error occurred while creating the document: actual cause: " + error.getMessage());
                 });
 
-        // wait till document creation completes
-        doneLatch.await();
+        // Wait till document creation completes
+        successfulCompletionLatch.await();
     }
-    
+
+    /**
+     * Create a document without java8 lambda expressions
+     */
     @Test
     public void testCreateDocument_Async_withoutLambda() throws Exception {
-        
-        // create a document in without java8 lambda expressions        
         Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, true);
+        Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
+                .createDocument(getCollectionLink(), doc, null, true);
 
-        final CountDownLatch doneLatch = new CountDownLatch(1);
-        
+        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+
         Action1<ResourceResponse<Document>> onNext = new Action1<ResourceResponse<Document>>() {
 
             @Override
             public void call(ResourceResponse<Document> documentResourceResponse) {
                 System.out.println(documentResourceResponse.getActivityId());
-                doneLatch.countDown();                
+                successfulCompletionLatch.countDown();
             }
         };
-        
+
         Action1<Throwable> onError = new Action1<Throwable>() {
 
             @Override
             public void call(Throwable error) {
-                System.err.println("an error happened in document creation: actual cause: " + error.getMessage());                
+                System.err
+                        .println("an error occurred while creating the document: actual cause: " + error.getMessage());
             }
         };
-        
-        // subscribe to events emitted by the observable
-        createDocumentObservable
-            .single()            // we know there will be one response
-            .subscribe(onNext, onError);
 
-        // wait till document creation completes
-        doneLatch.await();
+        // Subscribe to Document resource response emitted by the observable
+        createDocumentObservable.single() // We know there will be one response
+                .subscribe(onNext, onError);
+
+        // Wait till document creation completes
+        successfulCompletionLatch.await();
     }
-    
+
+    /**
+     * Create a document in a blocking manner
+     */
     @Test
     public void testCreateDocument_toBlocking() throws DocumentClientException {
-        
-        // create a document
-        // toBlocking() converts the observable to a blocking observable
         Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        Observable<ResourceResponse<Document>> createDocumentObservable =
-                asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, true);
+        Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
+                .createDocument(getCollectionLink(), doc, null, true);
 
-        
-        // toBlocking() converts to a blocking observable
-        // single() gets the only result
-        createDocumentObservable
-            .toBlocking()           //converts the observable to a blocking observable
-            .single();              //gets the single result
+        // toBlocking() converts to a blocking observable.
+        // single() gets the only result.
+        createDocumentObservable.toBlocking().single();
     }
-    
+
+    /**
+     * Create a document with a programmatically set definition, in an Async manner
+     */
+    @Test
+    public void createDocumentWithProgrammableDocumentDefinition() throws Exception {
+        Document documentDefinition = new Document();
+        documentDefinition.setId("test-document");
+        documentDefinition.set("counter", 1);
+
+        // Create a document
+        Document createdDocument = asyncClient
+                .createDocument(getCollectionLink(), documentDefinition, null, false).toBlocking().single()
+                .getResource();
+
+        // Read the created document
+        Observable<ResourceResponse<Document>> readDocumentObservable = asyncClient
+                .readDocument(getDocumentLink(createdDocument), null);
+
+        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+
+        readDocumentObservable.subscribe(documentResourceResponse -> {
+            Document readDocument = documentResourceResponse.getResource();
+
+            // The read document must be the same as the written document
+            assertThat(readDocument.getId(), equalTo("test-document"));
+            assertThat(readDocument.getInt("counter"), equalTo(1));
+            System.out.println(documentResourceResponse.getActivityId());
+            successfulCompletionLatch.countDown();
+        }, error -> {
+            System.err.println("an error occured while creating the document: actual cause: " + error.getMessage());
+        });
+
+        successfulCompletionLatch.await();
+    }
+
+    /**
+     * Create 10 documents and sum up all the documents creation request charges
+     */
     @Test
     public void testDocumentCreation_SumUpRequestCharge() throws Exception {
-        
-        // create 10 documents and sum up all the documents creation request charges
-
-        // create 10 documents
+        // Create 10 documents
         List<Observable<ResourceResponse<Document>>> listOfCreateDocumentObservables = new ArrayList<>();
-        for(int i = 0; i < 10; i++) {
+        for (int i = 0; i < 10; i++) {
             Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", i, i));
 
-            Observable<ResourceResponse<Document>> createDocumentObservable = 
-                    asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, false);
+            Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
+                    .createDocument(getCollectionLink(), doc, null, false);
             listOfCreateDocumentObservables.add(createDocumentObservable);
         }
-        
-        // merge all document creation observables into one observable
-        Observable<ResourceResponse<Document>> mergedObservable = Observable.merge(listOfCreateDocumentObservables);
-        
-        // create a new observable emitting the total charge of creating all 10 documents
-        Observable<Double> totalChargeObservable = mergedObservable
-                .map(ResourceResponse::getRequestCharge)                //map to request charge
-                .reduce((totalCharge, charge) -> totalCharge + charge); //sum up all the charges
-        
-        final CountDownLatch doneLatch = new CountDownLatch(1);
 
-        // subscribe to the total request charge observable
+        // Merge all document creation observables into one observable
+        Observable<ResourceResponse<Document>> mergedObservable = Observable.merge(listOfCreateDocumentObservables);
+
+        // Create a new observable emitting the total charge of creating all 10
+        // documents.
+        Observable<Double> totalChargeObservable = mergedObservable
+                .map(ResourceResponse::getRequestCharge)
+                // Map to request charge
+                .reduce((totalCharge, charge) -> totalCharge + charge);
+                // Sum up all the charges
+
+        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
+
+        // Subscribe to the total request charge observable
         totalChargeObservable.subscribe(totalCharge -> {
-            // print the total charge
+            // Print the total charge
             System.out.println(totalCharge);
-            doneLatch.countDown();
+            successfulCompletionLatch.countDown();
         });
-        
-        doneLatch.await();
+
+        successfulCompletionLatch.await();
     }
 
+    /**
+     * Attempt to create a document which already exists
+     * - First create a document
+     * - Using the async api generate an async document creation observable
+     * - Converts the Observable to blocking using Observable.toBlocking() api
+     * - Catch already exist failure (409)
+     */
     @Test
     public void testCreateDocument_toBlocking_DocumentAlreadyExists_Fails() throws DocumentClientException {
-
-        // attempt to create a document which already exists
-        // - first create a document
-        // - Using the async api generate an async document creation observable
-        // - Converts the Observable to blocking using Observable.toBlocking() api
-        // - catch already exist failure (409)
         Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, false).toBlocking().single();
+        asyncClient.createDocument(getCollectionLink(), doc, null, false).toBlocking().single();
 
         // Create the document
         Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
-                .createDocument(createdCollection.getSelfLink(), doc, null, false);
+                .createDocument(getCollectionLink(), doc, null, false);
 
         try {
-            createDocumentObservable
-                .toBlocking()           //converts the observable to a blocking observable
-                .single();              //gets the single result
+            createDocumentObservable.toBlocking() // Converts the observable to a blocking observable
+                    .single(); // Gets the single result
             Assert.fail("Document Already Exists. Document Creation must fail");
         } catch (Exception e) {
-            assertThat("Document already exists.", 
-                    ((DocumentClientException) e.getCause()).getStatusCode(), equalTo(409));
+            assertThat("Document already exists.", ((DocumentClientException) e.getCause()).getStatusCode(),
+                    equalTo(409));
         }
     }
-    
+
+    /**
+     * Attempt to create a document which already exists
+     * - First create a document
+     * - Using the async api generate an async document creation observable
+     * - Converts the Observable to blocking using Observable.toBlocking() api
+     * - Catch already exist failure (409)
+     */
     @Test
     public void testCreateDocument_Async_DocumentAlreadyExists_Fails() throws Exception {
-
-        // attempt to create a document which already exists
-        // - first create a document
-        // - Using the async api generate an async document creation observable
-        // - Converts the Observable to blocking using Observable.toBlocking() api
-        // - catch already exist failure (409)
         Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, false).toBlocking().single();
+        asyncClient.createDocument(getCollectionLink(), doc, null, false).toBlocking().single();
 
         // Create the document
         Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
-                .createDocument(createdCollection.getSelfLink(), doc, null, false);
+                .createDocument(getCollectionLink(), doc, null, false);
 
         List<Throwable> errorList = Collections.synchronizedList(new ArrayList<Throwable>());
 
-        createDocumentObservable.subscribe(
-            resourceResponse -> {},
-                
-            error -> {
-                errorList.add(error);
-                System.err.println("failed to create a document due to: " + error.getMessage());
-            }
-        );
-        
+        createDocumentObservable.subscribe(resourceResponse -> {
+        }, error -> {
+            errorList.add(error);
+            System.err.println("failed to create a document due to: " + error.getMessage());
+        });
+
         Thread.sleep(2000);
         assertThat(errorList, hasSize(1));
         assertThat(errorList.get(0), is(instanceOf(DocumentClientException.class)));
         assertThat(((DocumentClientException) errorList.get(0)).getStatusCode(), equalTo(409));
     }
-    
+
+    /**
+     * Replace a document
+     */
     @Test
     public void testDocumentReplace_Async() throws Exception {
+        // Create a document
+        Document createdDocument = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        createdDocument = asyncClient.createDocument(getCollectionLink(), createdDocument, null, false).toBlocking()
+                .single().getResource();
 
-        // replace a document
-        
-        // create a document 
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        String documentLink = asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, false).toBlocking().single().getResource().getSelfLink();
-        
-        // try to replace the existing document
-        Document replacingDocument = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d', 'new-prop' : '2'}", 1, 1));
+        // Try to replace the existing document
+        Document replacingDocument = new Document(
+                String.format("{ 'id': 'doc%d', 'counter': '%d', 'new-prop' : '2'}", 1, 1));
         Observable<ResourceResponse<Document>> replaceDocumentObservable = asyncClient
-                .replaceDocument(documentLink, replacingDocument, null);
+                .replaceDocument(getDocumentLink(createdDocument), replacingDocument, null);
 
-        List<ResourceResponse<Document>> capturedResponse = Collections.synchronizedList(new ArrayList<ResourceResponse<Document>>()); 
-        
-        replaceDocumentObservable.subscribe(
-            resourceResponse -> {
-                capturedResponse.add(resourceResponse);
-            }
+        List<ResourceResponse<Document>> capturedResponse = Collections
+                .synchronizedList(new ArrayList<ResourceResponse<Document>>());
 
-        );
-        
+        replaceDocumentObservable.subscribe(resourceResponse -> {
+            capturedResponse.add(resourceResponse);
+        });
+
         Thread.sleep(2000);
 
         assertThat(capturedResponse, hasSize(1));
         assertThat(capturedResponse.get(0).getResource().get("new-prop"), equalTo("2"));
     }
-    
+
+    /**
+     *  Upsert a document
+     */
     @Test
     public void testDocumentUpsert_Async() throws Exception {
-
-        // upsert a document
-        
-        // create a document
+        // Create a document
         Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, false).toBlocking().single();
-        
-        // upsert the existing document
-        Document upsertingDocument = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d', 'new-prop' : '2'}", 1, 1));
+        asyncClient.createDocument(getCollectionLink(), doc, null, false).toBlocking().single();
+
+        // Upsert the existing document
+        Document upsertingDocument = new Document(
+                String.format("{ 'id': 'doc%d', 'counter': '%d', 'new-prop' : '2'}", 1, 1));
         Observable<ResourceResponse<Document>> upsertDocumentObservable = asyncClient
-                .upsertDocument(createdCollection.getSelfLink(), upsertingDocument, null, false);
+                .upsertDocument(getCollectionLink(), upsertingDocument, null, false);
 
-        List<ResourceResponse<Document>> capturedResponse = Collections.synchronizedList(new ArrayList<ResourceResponse<Document>>()); 
-        
-        upsertDocumentObservable.subscribe(
-            resourceResponse -> {
-                capturedResponse.add(resourceResponse);
-            }
+        List<ResourceResponse<Document>> capturedResponse = Collections
+                .synchronizedList(new ArrayList<ResourceResponse<Document>>());
 
-        );
-        
+        upsertDocumentObservable.subscribe(resourceResponse -> {
+            capturedResponse.add(resourceResponse);
+        });
+
         Thread.sleep(4000);
 
         assertThat(capturedResponse, hasSize(1));
         assertThat(capturedResponse.get(0).getResource().get("new-prop"), equalTo("2"));
     }
-    
+
+    /**
+     * Delete a document
+     */
     @Test
     public void testDocumentDelete_Async() throws Exception {
+        // Create a document
+        Document createdDocument = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        createdDocument = asyncClient.createDocument(getCollectionLink(), createdDocument, null, false).toBlocking()
+                .single().getResource();
 
-        // delete a document
-        
-        // create a document
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        String documentLink = asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, false).toBlocking().single().getResource().getSelfLink();
-        
-        // delete the existing document
+        // Delete the existing document
         Observable<ResourceResponse<Document>> deleteDocumentObservable = asyncClient
-                .deleteDocument(documentLink, null);
+                .deleteDocument(getDocumentLink(createdDocument), null);
 
-        List<ResourceResponse<Document>> capturedResponse = Collections.synchronizedList(new ArrayList<ResourceResponse<Document>>()); 
-        
-        deleteDocumentObservable.subscribe(
-            resourceResponse -> {
-                capturedResponse.add(resourceResponse);
-            }
+        List<ResourceResponse<Document>> capturedResponse = Collections
+                .synchronizedList(new ArrayList<ResourceResponse<Document>>());
 
-        );
-        
+        deleteDocumentObservable.subscribe(resourceResponse -> {
+            capturedResponse.add(resourceResponse);
+        });
+
         Thread.sleep(2000);
 
         assertThat(capturedResponse, hasSize(1));
-        
-        // assert document is deleted
+
+        // Assert document is deleted
         List<Document> listOfDocuments = asyncClient
-                .queryDocuments(createdCollection.getSelfLink(), "SELECT * FROM root", null)
-                .map(FeedResponse::getResults)              //map page to its list of documents
-                .concatMap(Observable::from)                //flatten the observable
-                .toList()                                   //transform to a observable
-                .toBlocking()                               //block
-                .single();                                  //gets the List<Document>
-        
-        // assert that there is no document found
+                .queryDocuments(getCollectionLink(), "SELECT * FROM root", null)
+                .map(FeedResponse::getResults) // Map page to its list of documents
+                .concatMap(Observable::from) // Flatten the observable
+                .toList() // Transform to a observable
+                .toBlocking() // Block
+                .single(); // Gets the List<Document>
+
+        // Assert that there is no document found
         assertThat(listOfDocuments, hasSize(0));
     }
-    
+
+    /**
+     * Read a document
+     */
     @Test
     public void testDocumentRead_Async() throws Exception {
+        // Create a document
+        Document createdDocument = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        createdDocument = asyncClient.createDocument(getCollectionLink(), createdDocument, null, false).toBlocking()
+                .single().getResource();
 
-        // read a document
-        
-        //create a document
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
-        String documentLink = asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, false).toBlocking().single().getResource().getSelfLink();
-        
-        // read the document
+        // Read the document
         Observable<ResourceResponse<Document>> readDocumentObservable = asyncClient
-                .readDocument(documentLink, null);
+                .readDocument(getDocumentLink(createdDocument), null);
 
-        List<ResourceResponse<Document>> capturedResponse = Collections.synchronizedList(new ArrayList<ResourceResponse<Document>>()); 
-        
-        readDocumentObservable.subscribe(
-            resourceResponse -> {
-                capturedResponse.add(resourceResponse);
-            }
+        List<ResourceResponse<Document>> capturedResponse = Collections
+                .synchronizedList(new ArrayList<ResourceResponse<Document>>());
 
-        );
-        
+        readDocumentObservable.subscribe(resourceResponse -> {
+            capturedResponse.add(resourceResponse);
+        });
+
         Thread.sleep(2000);
 
-        // assert document is retrieved
+        // Assert document is retrieved
         assertThat(capturedResponse, hasSize(1));
     }
-    
+
+    /**
+     * You can convert an Observable to a ListenableFuture.
+     * ListenableFuture (part of google guava library) is a popular extension
+     * of Java's Future which allows registering listener callbacks:
+     * https://github.com/google/guava/wiki/ListenableFutureExplained
+     */
     @Test
     public void testTransformObservableToGoogleGuavaListenableFuture() throws Exception {
-        
-        // You can convert an Observable to a ListenableFuture.
-        // ListenableFuture (part of google guava library) is a popular extension
-        // of Java's Future which allows registering listener callbacks:
-        // https://github.com/google/guava/wiki/ListenableFutureExplained
         Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
         Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
-                .createDocument(createdCollection.getSelfLink(), doc, null, false);
-        ListenableFuture<ResourceResponse<Document>> listenableFuture = ListenableFutureObservable.to(createDocumentObservable);
+                .createDocument(getCollectionLink(), doc, null, false);
+        ListenableFuture<ResourceResponse<Document>> listenableFuture = ListenableFutureObservable
+                .to(createDocumentObservable);
 
         ResourceResponse<Document> rrd = listenableFuture.get();
-        
+
         assertThat(rrd.getRequestCharge(), greaterThan((double) 0));
         System.out.print(rrd.getRequestCharge());
+    }
+
+    private String getCollectionLink() {
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
+    }
+
+    private String getDocumentLink(Document createdDocument) {
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId() + "/docs/" + createdDocument.getId();
     }
 
     private void cleanUpGeneratedDatabases() throws DocumentClientException {
@@ -452,13 +494,13 @@ public class DocumentCRUDAsyncAPITest {
             try {
                 List<FeedResponse<Database>> feedResponsePages = asyncClient
                         .queryDatabases(new SqlQuerySpec("SELECT * FROM root r WHERE r.id=@id",
-                                new SqlParameterCollection(new SqlParameter("@id", id))), null).toList().toBlocking().single();
-                
-                
+                                new SqlParameterCollection(new SqlParameter("@id", id))), null)
+                        .toList().toBlocking().single();
+
                 if (!feedResponsePages.get(0).getResults().isEmpty()) {
                     Database res = feedResponsePages.get(0).getResults().get(0);
                     LOGGER.info("deleting a database " + feedResponsePages.get(0));
-                    asyncClient.deleteDatabase(res.getSelfLink(), null).toBlocking().single();
+                    asyncClient.deleteDatabase("dbs/" + res.getId(), null).toBlocking().single();
                 }
             } catch (Exception e) {
                 e.printStackTrace();

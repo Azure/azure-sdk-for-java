@@ -47,12 +47,13 @@ import com.microsoft.azure.cosmosdb.PartitionKey;
 import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
 import com.microsoft.azure.cosmosdb.RequestOptions;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
 
 public class ChangeFeedTest extends TestSuiteBase {
+
+    private static final int SETUP_TIMEOUT = 40000;
 
     public static final String DATABASE_ID = getDatabaseId(ChangeFeedTest.class);
     private static final String PartitionKeyFieldName = "mypk";
@@ -86,7 +87,6 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void changeFeed_fromBeginning() throws Exception {
-
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
         Collection<Document> expectedDocuments = partitionKeyToDocuments.get(partitionKey);
 
@@ -111,15 +111,19 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(count).as("the number of changes").isEqualTo(expectedDocuments.size());
     }
 
-
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void changesFromParitionKeyRangeId_FromBeginning() throws Exception {
-
-        String pkRangeId = client.readPartitionKeyRanges(getCollectionLink(), null)
+        List<String> partitionKeyRangeIds = client.readPartitionKeyRanges(getCollectionLink(), null)
+                .flatMap(p -> Observable.from(p.getResults()), 1)
+                .map(pkr -> pkr.getId())
+                .toList()
                 .toBlocking()
-                .first().getResults().get(0)
-                .getId();
+                .single();
+        
+        assertThat(partitionKeyRangeIds.size()).isGreaterThan(1);
 
+        String pkRangeId = partitionKeyRangeIds.get(0);
+        
         ChangeFeedOptions changeFeedOption = new ChangeFeedOptions();
         changeFeedOption.setMaxItemCount(3);
         changeFeedOption.setPartitionKeyRangeId(pkRangeId);
@@ -139,17 +143,14 @@ public class ChangeFeedTest extends TestSuiteBase {
    
             assertThat(changeFeedPage.getResponseContinuation()).as("Response continuation should not be null").isNotNull();
             assertThat(changeFeedPage.getResponseContinuation()).as("Response continuation should not be empty").isNotEmpty();
-
         }
         assertThat(changeFeedResultList.size()).as("has at least one page").isGreaterThanOrEqualTo(1);
         assertThat(count).as("the number of changes").isGreaterThan(0);
         assertThat(count).as("the number of changes").isLessThan(partitionKeyToDocuments.size());
-
     }
     
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void changeFeed_fromNow() throws Exception {
-
         // Read change feed from current.
         ChangeFeedOptions changeFeedOption = new ChangeFeedOptions();
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
@@ -162,10 +163,8 @@ public class ChangeFeedTest extends TestSuiteBase {
         assertThat(changeFeedResults.getResponseContinuation()).as("Response continuation should not be null").isNotNull();
     }
 
-
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void changesFromPartitionKey_AfterInsertingNewDocuments() throws Exception {
-
         ChangeFeedOptions changeFeedOption = new ChangeFeedOptions();
         changeFeedOption.setMaxItemCount(3);
         String partitionKey = partitionKeyToDocuments.keySet().iterator().next();
@@ -225,13 +224,13 @@ public class ChangeFeedTest extends TestSuiteBase {
         partitionKeyToDocuments.clear();
 
         RequestOptions options = new RequestOptions();
-        options.setOfferThroughput(2000);
+        options.setOfferThroughput(10100);
         createdCollection = createCollection(client, createdDatabase.getId(), getCollectionDefinition(), options);
 
-
         List<Document> docs = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            String partitionKey = String.valueOf(i);
+        
+        for (int i = 0; i < 200; i++) {
+            String partitionKey = UUID.randomUUID().toString();
             for(int j = 0; j < 7; j++) {
                 docs.add(getDocumentDefinition(partitionKey));
             }
@@ -260,13 +259,10 @@ public class ChangeFeedTest extends TestSuiteBase {
 
     private static Document getDocumentDefinition(String partitionKey) {
         String uuid = UUID.randomUUID().toString();
-        Document doc = new Document(String.format("{ "
-                + "\"id\": \"%s\", "
-                + "\"prop\" : %s, "
-                + "\"mypk\": \"%s\", "
-                + "\"sgmts\": [[6519456, 1471916863], [2498434, 1455671440]]"
-                + "}"
-                , uuid, uuid, partitionKey));
+        Document doc = new Document();
+        doc.setId(uuid);
+        doc.set("mypk", partitionKey);
+        doc.set("prop", uuid);
         return doc;
     }
 }

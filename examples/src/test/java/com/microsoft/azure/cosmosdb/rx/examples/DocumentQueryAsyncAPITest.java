@@ -68,10 +68,10 @@ import rx.observable.ListenableFutureObservable;
 
 /**
  * This integration test class demonstrates how to use Async API to query for
- * documents.
+ * Documents.
  * 
- * NOTE: you can use rxJava based async api with java8 lambda expression. Using of
- * rxJava based async APIs with java8 lambda expressions is much prettier.
+ * NOTE: you can use rxJava based async api with java8 lambda expression. Use
+ * of rxJava based async APIs with java8 lambda expressions is much prettier.
  * 
  * You can also use the async API without java8 lambda expression.
  * 
@@ -80,12 +80,13 @@ import rx.observable.ListenableFutureObservable;
  * <li>{@link #testQueryDocuments_Async()} demonstrates how to use async api
  * with java8 lambda expression.
  * 
- * <li>{@link #testQueryDocuments_Async_withoutLambda()} demonstrates how to the same
- * thing without lambda expression.
+ * <li>{@link #testQueryDocuments_Async_withoutLambda()} demonstrates how to do
+ * the same thing without lambda expression.
  * </ul>
  * 
- * Also if you need to work with Future or ListenableFuture it is possible to transform
- * an observable to ListenableFuture. Please see {@link #testTransformObservableToGoogleGuavaListenableFuture()}
+ * Also if you need to work with Future or ListenableFuture it is possible to
+ * transform an observable to ListenableFuture. Please see
+ * {@link #testTransformObservableToGoogleGuavaListenableFuture()}
  * 
  */
 public class DocumentQueryAsyncAPITest {
@@ -110,7 +111,7 @@ public class DocumentQueryAsyncAPITest {
                 .withConnectionPolicy(ConnectionPolicy.GetDefault())
                 .withConsistencyLevel(ConsistencyLevel.Session)
                 .build();
-        
+
         // Clean up the database.
         this.cleanUpGeneratedDatabases();
 
@@ -120,22 +121,22 @@ public class DocumentQueryAsyncAPITest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(UUID.randomUUID().toString());
 
-        // create database
+        // Create database
         ResourceResponse<Database> databaseCreationResponse = asyncClient.createDatabase(databaseDefinition, null)
                 .toBlocking().single();
 
         createdDatabase = databaseCreationResponse.getResource();
-        
-        // create collection
+
+        // Create collection
         createdCollection = asyncClient
-                .createCollection(databaseCreationResponse.getResource().getSelfLink(), collectionDefinition, null)
+                .createCollection("dbs/" + createdDatabase.getId(), collectionDefinition, null)
                 .toBlocking().single().getResource();
 
         numberOfDocuments = 20;
-        // add documents
+        // Add documents
         for (int i = 0; i < numberOfDocuments; i++) {
             Document doc = new Document(String.format("{ 'id': 'loc%d', 'counter': %d}", i, i));
-            asyncClient.createDocument(createdCollection.getSelfLink(), doc, null, true).toBlocking().single();
+            asyncClient.createDocument(getCollectionLink(), doc, null, true).toBlocking().single();
         }
     }
 
@@ -144,43 +145,42 @@ public class DocumentQueryAsyncAPITest {
         asyncClient.close();
     }
 
+    /**
+     * Query for documents using java8 lambda expressions
+     * Creates a document query observable and verifies the async behavior
+     * of document query observable
+     */
     @Test
     public void testQueryDocuments_Async() throws Exception {
-
-        // query for documents
-        // creates a document query observable and verifies the async behavior
-        // of document query observable
-
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
 
         Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
-                .queryDocuments(createdCollection.getSelfLink(), "SELECT * FROM root", options);
+                .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         final CountDownLatch mainThreadBarrier = new CountDownLatch(1);
 
         final CountDownLatch resultsCountDown = new CountDownLatch(numberOfDocuments);
 
         // forEach(.) is an alias for subscribe(.)
-        
         documentQueryObservable.forEach(page -> {
             try {
-                // waits on the barrier
+                // Waits on the barrier
                 mainThreadBarrier.await();
             } catch (InterruptedException e) {
             }
 
-            for (@SuppressWarnings("unused") Document d : page.getResults()) {
+            for (@SuppressWarnings("unused")
+            Document d : page.getResults()) {
                 resultsCountDown.countDown();
             }
         });
-        
-        // The following code will run concurrently
 
+        // The following code will run concurrently
         System.out.println("action is subscribed to the observable");
 
-        // release main thread barrier
+        // Release main thread barrier
         System.out.println("after main thread barrier is released, subscribed observable action can continue");
         mainThreadBarrier.countDown();
 
@@ -189,21 +189,21 @@ public class DocumentQueryAsyncAPITest {
         resultsCountDown.await();
     }
 
+    /**
+     * Query for documents, without using java8 lambda expressions
+     * Creates a document query observable and verifies the async behavior
+     * of document query observable
+     * NOTE: does the same thing as testQueryDocuments_Async without java8 lambda
+     * expression
+     */
     @Test
     public void testQueryDocuments_Async_withoutLambda() throws Exception {
-
-        // query for documents
-        // creates a document query observable and verifies the async behavior
-        // of document query observable
-        
-        // NOTE: does the same thing as testQueryDocuments_Async without java8 lambda expression
-
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
 
         Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
-                .queryDocuments(createdCollection.getSelfLink(), "SELECT * FROM root", options);
+                .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         final CountDownLatch mainThreadBarrier = new CountDownLatch(1);
 
@@ -229,11 +229,11 @@ public class DocumentQueryAsyncAPITest {
 
         // forEach(.) is an alias for subscribe(.)
         documentQueryObservable.forEach(actionPerPage);
-        // the following code will run concurrently
+        // The following code will run concurrently
 
         System.out.println("action is subscribed to the observable");
 
-        // release main thread barrier
+        // Release main thread barrier
         System.out.println("after main thread barrier is released, subscribed observable action can continue");
         mainThreadBarrier.countDown();
 
@@ -242,47 +242,48 @@ public class DocumentQueryAsyncAPITest {
         resultsCountDown.await();
     }
 
+    /**
+     * Queries for documents and sum up the total request charge
+     */
     @Test
     public void testQueryDocuments_findTotalRequestCharge() throws Exception {
-
-        // queries for documents and sum up the total request charge
-
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
 
         Observable<Double> totalChargeObservable = asyncClient
-                .queryDocuments(createdCollection.getSelfLink(), "SELECT * FROM root", options)
-                .map(FeedResponse::getRequestCharge)                          // map the page to its request charge
-                .reduce((totalCharge, charge) -> totalCharge + charge);       // sum up all the request charges
+                .queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
+                .map(FeedResponse::getRequestCharge) // Map the page to its request charge
+                .reduce((totalCharge, charge) -> totalCharge + charge); // Sum up all the request charges
 
-        final CountDownLatch doneLatch = new CountDownLatch(1);
+        final CountDownLatch successfulCompletionLatch = new CountDownLatch(1);
 
         // subscribe(.) is the same as forEach(.)
         totalChargeObservable.subscribe(totalCharge -> {
             System.out.println(totalCharge);
-            doneLatch.countDown();
+            successfulCompletionLatch.countDown();
         });
-        
-        doneLatch.await();
+
+        successfulCompletionLatch.await();
     }
-    
+
+    /**
+     * Subscriber unsubscribes after first page
+     */
     @Test
     public void testQueryDocuments_unsubscribeAfterFirstPage() throws Exception {
-
-        // subscriber unsubscribes after first page
-
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
 
         Observable<FeedResponse<Document>> requestChargeObservable = asyncClient
-                .queryDocuments(createdCollection.getSelfLink(), "SELECT * FROM root", options);
+                .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
 
         AtomicInteger onNextCounter = new AtomicInteger();
         AtomicInteger onCompletedCounter = new AtomicInteger();
         AtomicInteger onErrorCounter = new AtomicInteger();
 
+        // Subscribe to the pages of Documents emitted by the observable
         requestChargeObservable.subscribe(new Subscriber<FeedResponse<Document>>() {
 
             @Override
@@ -297,23 +298,24 @@ public class DocumentQueryAsyncAPITest {
 
             @Override
             public void onNext(FeedResponse<Document> page) {
-                onNextCounter.incrementAndGet();    
+                onNextCounter.incrementAndGet();
                 unsubscribe();
             }
         });
-        
+
         Thread.sleep(4000);
-        
-        // after subscriber unsubscribes, it doesn't receive any more events.
+
+        // After subscriber unsubscribes, it doesn't receive any more pages.
         assertThat(onNextCounter.get(), equalTo(1));
         assertThat(onCompletedCounter.get(), equalTo(0));
         assertThat(onErrorCounter.get(), equalTo(0));
     }
 
+    /**
+     * Queries for documents and filter out the fetched results
+     */
     @Test
     public void testQueryDocuments_filterFetchedResults() throws Exception {
-        // queries for documents and filter out the fetched results
-
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
@@ -323,33 +325,34 @@ public class DocumentQueryAsyncAPITest {
             @Override
             public Boolean call(Document doc) {
                 int n = doc.getInt("counter");
-                if (n <= 1) return false;
-                for(int i = 2; 2*i < n; i++) {
-                    if(n % i == 0)
+                if (n <= 1)
+                    return false;
+                for (int i = 2; 2 * i < n; i++) {
+                    if (n % i == 0)
                         return false;
                 }
                 return true;
             }
         };
-        
+
         List<Document> resultList = Collections.synchronizedList(new ArrayList<Document>());
-        
-        asyncClient
-            .queryDocuments(createdCollection.getSelfLink(), "SELECT * FROM root", options)
-            .map(FeedResponse::getResults)              // map the page to the list of documents
-            .concatMap(Observable::from)                    // flatten the observable<list<document>> to observable<document>
-            .filter(isPrimeNumber)                          // filter documents using isPrimeNumber predicate
-            .subscribe(doc -> resultList.add(doc));         // collect the results
-        
+
+        asyncClient.queryDocuments(getCollectionLink(), "SELECT * FROM root", options)
+                .map(FeedResponse::getResults) // Map the page to the list of documents
+                .concatMap(Observable::from) // Flatten the observable<list<document>> to observable<document>
+                .filter(isPrimeNumber) // Filter documents using isPrimeNumber predicate
+                .subscribe(doc -> resultList.add(doc)); // Collect the results
+
         Thread.sleep(4000);
-        
+
         int expectedNumberOfPrimes = 0;
-        // find all the documents with prime number counter
-        for(int i = 0; i < numberOfDocuments; i++) {
+        // Find all the documents with prime number counter
+        for (int i = 0; i < numberOfDocuments; i++) {
             boolean isPrime = true;
-            if (i <= 1) isPrime = false;
-            for(int j = 2; 2*j < i; j++) {
-                if(i % j == 0) {
+            if (i <= 1)
+                isPrime = false;
+            for (int j = 2; 2 * j < i; j++) {
+                if (i % j == 0) {
                     isPrime = false;
                     break;
                 }
@@ -359,27 +362,28 @@ public class DocumentQueryAsyncAPITest {
                 expectedNumberOfPrimes++;
             }
         }
-        
-        // assert that we only collected what's expected
+
+        // Assert that we only collected what's expected
         assertThat(resultList, hasSize(expectedNumberOfPrimes));
     }
-    
+
+    /**
+     * Queries for documents
+     * Converts the document query observable to blocking observable and
+     * uses that to find all documents
+     */
     @Test
     public void testQueryDocuments_toBlocking_toIterator() throws DocumentClientException {
-
-        // queries for documents
-        // converts the document query observable to blocking observable and
-        // uses that to find all documents
-
-        // query for documents
+        // Query for documents
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
 
         Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
-                .queryDocuments(createdCollection.getSelfLink(), "SELECT * FROM root", options);
-        
-        // covert the observable to a blocking observable, then convert the blocking observable to an iterator
+                .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
+
+        // Covert the observable to a blocking observable, then convert the blocking
+        // observable to an iterator
         Iterator<FeedResponse<Document>> it = documentQueryObservable.toBlocking().getIterator();
 
         int pageCounter = 0;
@@ -398,80 +402,94 @@ public class DocumentQueryAsyncAPITest {
         assertThat("number of result pages", pageCounter,
                 equalTo((numberOfDocuments + requestPageSize - 1) / requestPageSize));
     }
-    
+
+    /**
+     * Queries for documents using an Orderby query.
+     */
     @Test
     public void testOrderBy_Async() throws Exception {
-        // create a partitioned collection
+        // Create a partitioned collection
         String collectionId = UUID.randomUUID().toString();
-        DocumentCollection multiPartitionCollection = createMultiPartitionCollection(createdDatabase.getSelfLink(), collectionId, "/key");
+        DocumentCollection multiPartitionCollection = createMultiPartitionCollection("dbs/" + createdDatabase.getId(),
+                collectionId, "/key");
 
-        // insert documents
+        // Insert documents
         int totalNumberOfDocumentsInMultiPartitionCollection = 10;
         for (int i = 0; i < totalNumberOfDocumentsInMultiPartitionCollection; i++) {
-            
-            Document doc = new Document(String.format( "{\"id\":\"documentId%d\",\"key\":\"%s\",\"prop\":%d}", 
-                    i, RandomStringUtils.randomAlphabetic(2), i));
-            asyncClient.createDocument(multiPartitionCollection.getSelfLink(), doc, null, true).toBlocking().single();
+
+            Document doc = new Document(String.format("{\"id\":\"documentId%d\",\"key\":\"%s\",\"prop\":%d}", i,
+                    RandomStringUtils.randomAlphabetic(2), i));
+            asyncClient.createDocument("dbs/" + createdDatabase.getId() + "/colls/" + multiPartitionCollection.getId(),
+                    doc, null, true).toBlocking().single();
         }
-        
-        // query for the documents order by the prop field
+
+        // Query for the documents order by the prop field
         SqlQuerySpec query = new SqlQuerySpec("SELECT r.id FROM r ORDER BY r.prop", new SqlParameterCollection());
         FeedOptions options = new FeedOptions();
         options.setEnableCrossPartitionQuery(true);
-        options.setMaxItemCount(1);
+        options.setMaxItemCount(5);
 
-        // get the observable order by query documents
-        Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
-                .queryDocuments(multiPartitionCollection.getSelfLink(), query, options);        
-        
+        // Max degree of parallelism determines the number of partitions that
+        // the SDK establishes simultaneous connections to.
+        options.setMaxDegreeOfParallelism(2);
+
+        // Get the observable order by query documents
+        Observable<FeedResponse<Document>> documentQueryObservable = asyncClient.queryDocuments(
+                "dbs/" + createdDatabase.getId() + "/colls/" + multiPartitionCollection.getId(), query, options);
+
         List<String> resultList = (List<String>) Collections.synchronizedList(new ArrayList<String>());
-        
-        documentQueryObservable
-                .map(FeedResponse::getResults)          // map the logical page to the list of documents in the page
-                .concatMap(Observable::from)                // flatten the list of documents
-                .map(doc -> doc.getId())                    // map to the document Id
-                .forEach(docId -> resultList.add(docId));   // add each document Id to the resultList
+
+        documentQueryObservable.map(FeedResponse::getResults)
+                // Map the logical page to the list of documents in the page
+                .concatMap(Observable::from) // Flatten the list of documents
+                .map(doc -> doc.getId()) // Map to the document Id
+                .forEach(docId -> resultList.add(docId)); // Add each document Id to the resultList
 
         Thread.sleep(4000);
 
-        // assert we found all the results
+        // Assert we found all the results
         assertThat(resultList, hasSize(totalNumberOfDocumentsInMultiPartitionCollection));
-        for(int i = 0; i < totalNumberOfDocumentsInMultiPartitionCollection; i++) {
+        for (int i = 0; i < totalNumberOfDocumentsInMultiPartitionCollection; i++) {
             String docId = resultList.get(i);
-            // assert that the order of the documents are valid
+            // Assert that the order of the documents are valid
             assertThat(docId, equalTo("documentId" + i));
         }
     }
-    
+
+    /**
+     * You can convert an Observable to a ListenableFuture.
+     * ListenableFuture (part of google guava library) is a popular extension
+     * of Java's Future which allows registering listener callbacks:
+     * https://github.com/google/guava/wiki/ListenableFutureExplained
+     */
     @Test
     public void testTransformObservableToGoogleGuavaListenableFuture() throws Exception {
-        // You can convert an Observable to a ListenableFuture.
-        // ListenableFuture (part of google guava library) is a popular extension
-        // of Java's Future which allows registering listener callbacks:
-        // https://github.com/google/guava/wiki/ListenableFutureExplained
-
         int requestPageSize = 3;
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(requestPageSize);
 
         Observable<FeedResponse<Document>> documentQueryObservable = asyncClient
-                .queryDocuments(createdCollection.getSelfLink(), "SELECT * FROM root", options);
-        
-        // convert to observable of list of pages
+                .queryDocuments(getCollectionLink(), "SELECT * FROM root", options);
+
+        // Convert to observable of list of pages
         Observable<List<FeedResponse<Document>>> allPagesObservable = documentQueryObservable.toList();
-        
-        // convert the observable of list of pages to a Future
+
+        // Convert the observable of list of pages to a Future
         ListenableFuture<List<FeedResponse<Document>>> future = ListenableFutureObservable.to(allPagesObservable);
 
         List<FeedResponse<Document>> pageList = future.get();
-        
+
         int totalNumberOfRetrievedDocuments = 0;
-        for(FeedResponse<Document> page: pageList) {
+        for (FeedResponse<Document> page : pageList) {
             totalNumberOfRetrievedDocuments += page.getResults().size();
         }
         assertThat(numberOfDocuments, equalTo(totalNumberOfRetrievedDocuments));
     }
-    
+
+    private String getCollectionLink() {
+        return "dbs/" + createdDatabase.getId() + "/colls/" + createdCollection.getId();
+    }
+
     private void cleanUpGeneratedDatabases() throws DocumentClientException {
         LOGGER.info("cleanup databases invoked");
 
@@ -487,14 +505,14 @@ public class DocumentQueryAsyncAPITest {
                 if (!feedResponsePages.get(0).getResults().isEmpty()) {
                     Database res = feedResponsePages.get(0).getResults().get(0);
                     LOGGER.info("deleting a database " + feedResponsePages.get(0));
-                    asyncClient.deleteDatabase(res.getSelfLink(), null).toBlocking().single();
+                    asyncClient.deleteDatabase("dbs/" + res.getId(), null).toBlocking().single();
                 }
             } catch (Exception e) {
                 e.printStackTrace();
             }
         }
     }
-    
+
     private DocumentCollection createMultiPartitionCollection(String databaseLink, String collectionId,
             String partitionKeyPath) throws DocumentClientException {
         PartitionKeyDefinition partitionKeyDef = new PartitionKeyDefinition();
@@ -507,8 +525,8 @@ public class DocumentQueryAsyncAPITest {
         DocumentCollection collectionDefinition = new DocumentCollection();
         collectionDefinition.setId(collectionId);
         collectionDefinition.setPartitionKey(partitionKeyDef);
-        DocumentCollection createdCollection = asyncClient
-                .createCollection(databaseLink, collectionDefinition, options).toBlocking().single().getResource();
+        DocumentCollection createdCollection = asyncClient.createCollection(databaseLink, collectionDefinition, options)
+                .toBlocking().single().getResource();
 
         return createdCollection;
     }
