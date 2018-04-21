@@ -1,112 +1,67 @@
+/*
+ * The MIT License (MIT)
+ * Copyright (c) 2018 Microsoft Corporation
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.microsoft.azure.cosmosdb.benchmark;
 
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.Semaphore;
-
-import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.PartitionKey;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
-public class AsyncQuerySinglePartitionMultiple implements AsyncBenchmark {
+class AsyncQuerySinglePartitionMultiple extends AsyncBenchmark<FeedResponse<Document>> {
 
-    private AsyncDocumentClient client;
-    private DocumentCollection collection;
-    private Database database;
-    private Configuration cfg;
-    private CountDownLatch latch;
+    private static final String SQL_QUERY = "Select * from c where c.pk = \"pk\"";
+    private FeedOptions options;
+    private int pageCount = 0;
 
     public AsyncQuerySinglePartitionMultiple(Configuration cfg) {
-
-        client = new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(cfg.getServiceEndpoint())
-                .withMasterKey(cfg.getMasterKey())
-                .withConnectionPolicy(cfg.getConnectionPolicy())
-                .withConsistencyLevel(cfg.getConsistencyLevel())
-                .build();
-
-        database = DocDBUtils.getDatabase(client, cfg.getDatabaseId());
-        collection = DocDBUtils.getCollection(client, database.getSelfLink(),
-                cfg.getCollectionId());
-        this.cfg = cfg;
-        this.latch = new CountDownLatch(cfg.getNumberOfOperations());
-    }
-
-    @Override
-    public void run() throws InterruptedException {
-
-        Semaphore sem = new Semaphore(cfg.getConnectionPolicy().getMaxPoolSize());
-        Observable<FeedResponse<Document>> obs = null;
-        FeedOptions options = new FeedOptions();
+        super(cfg);
+        options = new FeedOptions();
         options.setPartitionKey(new PartitionKey("pk"));
         options.setMaxItemCount(10);
-        String sqlQuery = "Select * from c where c.pk = \"pk\"";
-
-        long startTime = System.currentTimeMillis();
-        for(long i = 0; i < cfg.getNumberOfOperations(); i++) {
-            Subscriber<FeedResponse<Document>> subs = new Subscriber<FeedResponse<Document>>() {
-
-                long start;
-                @Override
-                public void onStart() {
-                    start = System.currentTimeMillis();
-                }
-
-                @Override
-                public void onCompleted() {
-                    sem.release();
-                    latch.countDown();
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    System.err.println(Thread.currentThread().getName());
-                    System.err.println("sem is " + sem.availablePermits());
-
-                    sem.release();
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onNext(FeedResponse<Document> r) {
-                    if(r.getResults().size() > 0)
-                        System.out.println(r.getResults().size());
-                    System.out.println(r.getRequestCharge());
-                    long now = System.currentTimeMillis();
-                    System.out.println((now - this.start) + "\n");
-                    this.start = now;
-                }
-            };
-
-            if (i % 100000  == 0) {
-                if (i == 0) {
-                    continue;
-                }
-                System.out.println("total single partition queries so far: " + i);
-                long now = System.currentTimeMillis();
-                System.out.println("total time (ms) so far: " + (now - startTime) + " rate " + i * 1000 / (now - startTime));
-            }
-
-            sem.acquire();
-            obs =  client.queryDocuments(collection.getSelfLink(), sqlQuery, options);
-            obs.subscribeOn(Schedulers.computation()).subscribe(subs);
-        }
-
-        latch.await();
-        long endTime = System.currentTimeMillis();
-
-        System.out.println(String.format("It took [%d] seconds to perform %s operations [%d] times.", (int) ((endTime - startTime)/1000), cfg.getOperationType(), cfg.getNumberOfOperations()));
     }
 
     @Override
-    public void shutdown() {
-        client.close();
+    protected void onNextLogging() {
+        pageCount++;
+        if (pageCount % 10000 == 0) {
+            if (pageCount == 0) {
+                return;
+            }
+            System.out.println("total pages so far: " + pageCount);
+        }
+    };
+
+    @Override
+    protected void performWorkload(Subscriber<FeedResponse<Document>> subs, long i) throws InterruptedException {
+        Observable<FeedResponse<Document>> obs = client.queryDocuments(collection.getSelfLink(), SQL_QUERY, options);
+
+        concurrencyControlSemaphore.acquire();
+
+        obs.subscribeOn(Schedulers.computation()).subscribe(subs);
     }
 }

@@ -29,13 +29,13 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmosdb-parent</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
   </parent>
   
   <artifactId>azure-cosmosdb-benchmark</artifactId>
-  <name>Async SDK for SQL API of Azure Cosmos DB Service - Benchmarking tool</name>
-  <description>Benchmarking tool for Async SDK for SQL API of Azure Cosmos DB Service</description>
-  <url>https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-async-java</url>
+  <name>Async SDK for Document API of Azure Cosmos DB Service - Benchmarking tool</name>
+  <description>Benchmarking tool for Async SDK for Document API of Azure Cosmos DB Service</description>
+
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <slf4j.version>1.7.6</slf4j.version>
@@ -103,18 +103,12 @@
       <groupId>com.microsoft.azure</groupId>
       <artifactId>azure-cosmosdb</artifactId>
     </dependency>
-    <!--dependency>
-      <groupId>io.netty</groupId>
-      <artifactId>netty-transport-native-epoll</artifactId>
-      <version>4.1.20.Final</version>
-      <classifier>linux-x86_64</classifier>
-    </dependency -->
-    <!-- dependency>
+    <dependency>
       <groupId>io.netty</groupId>
       <artifactId>netty-tcnative</artifactId>
       <version>2.0.7.Final</version>
       <classifier>linux-x86_64</classifier>
-    </dependency-->
+    </dependency>
     <dependency>
       <groupId>com.google.guava</groupId>
       <artifactId>guava</artifactId>

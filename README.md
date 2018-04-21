@@ -47,7 +47,7 @@ Useful links:
 - [Sample Get Started APP](https://github.com/Azure-Samples/azure-cosmos-db-sql-api-async-java-getting-started)
 - [Introduction to Resource Model of Azure Cosmos DB Service]( https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-resources)
 - [Introduction to SQL API of Azure Cosmos DB Service](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query)
-- [SDK JavaDoc API](https://azure.github.io/azure-cosmosdb-java)
+- [SDK JavaDoc API](https://azure.github.io/azure-cosmosdb-java/1.0.1/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html)
 - [RxJava Observable JavaDoc API](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html)
 - [SDK FAQ](faq/)
 
@@ -62,7 +62,7 @@ SLF4J is only needed if you plan to use logging, please also download an SLF4J b
 
 
 ## API Documentation
-Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java).
+Javadoc is available [here](https://azure.github.io/azure-cosmosdb-java/1.0.1/com/microsoft/azure/cosmosdb/rx/AsyncDocumentClient.html).
 
 The SDK provide Reactive Extension Observable based async API. You can read more about RxJava and [Observable APIs here](http://reactivex.io/RxJava/1.x/javadoc/rx/Observable.html).
 

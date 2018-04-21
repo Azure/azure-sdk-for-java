@@ -1,107 +1,105 @@
+/*
+ * The MIT License (MIT)
+ * Copyright (c) 2018 Microsoft Corporation
+ * 
+ * Permission is hereby granted, free of charge, to any person obtaining a copy
+ * of this software and associated documentation files (the "Software"), to deal
+ * in the Software without restriction, including without limitation the rights
+ * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+ * copies of the Software, and to permit persons to whom the Software is
+ * furnished to do so, subject to the following conditions:
+ * 
+ * The above copyright notice and this permission notice shall be included in all
+ * copies or substantial portions of the Software.
+ * 
+ * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+ * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+ * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+ * AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+ * LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+ * OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
+ * SOFTWARE.
+ */
+
 package com.microsoft.azure.cosmosdb.benchmark;
 
 import java.util.UUID;
-import java.util.concurrent.Semaphore;
 
 import org.apache.commons.lang3.RandomStringUtils;
 
-import com.microsoft.azure.cosmosdb.Database;
+import com.codahale.metrics.Timer;
 import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
 import com.microsoft.azure.cosmosdb.ResourceResponse;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmosdb.benchmark.Configuration.Operation;
 
 import rx.Observable;
 import rx.Subscriber;
 import rx.schedulers.Schedulers;
 
-public class AsyncWriteBenchmark implements AsyncBenchmark {
+class AsyncWriteBenchmark extends AsyncBenchmark<ResourceResponse<Document>> {
 
-    private AsyncDocumentClient client;
-    private DocumentCollection collection;
-    private Database database;
-    private String partitionKey;
-    private Configuration cfg;
+    private static final int NANOS_TO_MILLIS = 1000000;
 
-    public AsyncWriteBenchmark(Configuration cfg) {
+    private final String uuid;
+    private final String dataFieldValue;
 
-        client = new AsyncDocumentClient.Builder()
-                .withServiceEndpoint(cfg.getServiceEndpoint())
-                .withMasterKey(cfg.getMasterKey())
-                .withConnectionPolicy(cfg.getConnectionPolicy())
-                .withConsistencyLevel(cfg.getConsistencyLevel())
-                .build();
+    class LatencySubscriber<T> extends Subscriber<T> {
 
-        database = DocDBUtils.getDatabase(client, cfg.getDatabaseId());
-        collection = DocDBUtils.getCollection(client, database.getSelfLink(),
-                cfg.getCollectionId());
-        partitionKey = collection.getPartitionKey().getPaths().iterator().next();
-        this.cfg = cfg;
-    }
+        Timer.Context context;
+        Subscriber<T> subscriber;
 
-    @Override
-    public void run() throws InterruptedException {
-        Semaphore sem = new Semaphore(cfg.getConcurrency());
-        String uuid = UUID.randomUUID().toString();
-        String dataFieldValue = RandomStringUtils.randomAlphabetic(cfg.getDocumentDataFieldSize());
-
-        long startTime = System.currentTimeMillis();
-        for(long i = 0; i < cfg.getNumberOfOperations(); i++) {
-            Subscriber<ResourceResponse<Document>> subs = new Subscriber<ResourceResponse<Document>>() {
-
-                @Override
-                public void onStart() {
-                }
-
-                @Override
-                public void onCompleted() {
-                    sem.release();
-                }
-
-                @Override
-                public void onError(Throwable e) {
-                    System.err.println(Thread.currentThread().getName());
-                    System.err.println("sem is " + sem.availablePermits());
-
-                    sem.release();
-                    e.printStackTrace();
-                }
-
-                @Override
-                public void onNext(ResourceResponse<Document> r) {
-                }
-            };
-
-            if (i % 100000  == 0) {
-                if (i == 0) {
-                    continue;
-                }
-                System.out.println("total writes so far: " + i);
-                long now = System.currentTimeMillis();
-                System.out.println("total time (ms) so far: " + (now - startTime) + " rate " + i * 1000 / (now - startTime));
-            }
-
-            String idString = uuid + i;
-            Document newDoc = new Document();
-            newDoc.setId(idString);
-            newDoc.set(partitionKey, idString);
-            newDoc.set("dataField1", dataFieldValue);
-            newDoc.set("dataField2", dataFieldValue);
-            newDoc.set("dataField3", dataFieldValue);
-            newDoc.set("dataField4", dataFieldValue);
-            newDoc.set("dataField5", dataFieldValue);
-            sem.acquire();
-
-            Observable<ResourceResponse<Document>> obs = client.createDocument(collection.getSelfLink(), newDoc, null, false);
-            obs.subscribeOn(Schedulers.computation()).subscribe(subs);
+        public LatencySubscriber(Subscriber<T> subscriber) {
+            this.subscriber = subscriber;
         }
 
-        long endTime = System.currentTimeMillis();
-        System.out.println(String.format("It took [%d] seconds to writes [%d] documents.", (int) ((endTime - startTime)/1000), cfg.getNumberOfOperations()));
+        @Override
+        public void onCompleted() {
+            context.stop();
+            subscriber.onCompleted();
+        }
+
+        @Override
+        public void onError(Throwable e) {
+            context.stop();
+            subscriber.onError(e);
+        }
+
+        @Override
+        public void onNext(T t) {
+            subscriber.onNext(t);
+        }
+    }
+
+    public AsyncWriteBenchmark(Configuration cfg) {
+        super(cfg);
+        uuid = UUID.randomUUID().toString();
+        dataFieldValue = RandomStringUtils.randomAlphabetic(configuration.getDocumentDataFieldSize());
     }
 
     @Override
-    public void shutdown() {
-        client.close();
+    protected void performWorkload(Subscriber<ResourceResponse<Document>> subs, long i) throws InterruptedException {
+
+        String idString = uuid + i;
+        Document newDoc = new Document();
+        newDoc.setId(idString);
+        newDoc.set(partitionKey, idString);
+        newDoc.set("dataField1", dataFieldValue);
+        newDoc.set("dataField2", dataFieldValue);
+        newDoc.set("dataField3", dataFieldValue);
+        newDoc.set("dataField4", dataFieldValue);
+        newDoc.set("dataField5", dataFieldValue);
+        Observable<ResourceResponse<Document>> obs = client.createDocument(collection.getSelfLink(), newDoc, null,
+                false);
+
+        concurrencyControlSemaphore.acquire();
+
+        if (configuration.getOperationType() == Operation.WriteThroughput) {
+            obs.subscribeOn(Schedulers.computation()).subscribe(subs);
+        } else {
+            LatencySubscriber<ResourceResponse<Document>> latencySubscriber = new LatencySubscriber<ResourceResponse<Document>>(
+                    subs);
+            latencySubscriber.context = latency.time();
+            obs.subscribeOn(Schedulers.computation()).subscribe(latencySubscriber);
+        }
     }
 }

@@ -25,11 +25,15 @@ package com.microsoft.azure.cosmosdb.rx.internal;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.Mockito.doAnswer;
 
+import java.net.URI;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
+import java.util.concurrent.TimeUnit;
 
+import org.mockito.ArgumentCaptor;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -39,18 +43,32 @@ import org.testng.annotations.BeforeClass;
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.Test;
 
+import com.microsoft.azure.cosmosdb.ConnectionPolicy;
+import com.microsoft.azure.cosmosdb.ConsistencyLevel;
 import com.microsoft.azure.cosmosdb.Database;
 import com.microsoft.azure.cosmosdb.Document;
 import com.microsoft.azure.cosmosdb.DocumentClientException;
 import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.PartitionKey;
+import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
+import com.microsoft.azure.cosmosdb.RequestOptions;
+import com.microsoft.azure.cosmosdb.Resource;
+import com.microsoft.azure.cosmosdb.internal.EndpointManager;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
+import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmosdb.rx.TestConfigurations;
 import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentClientImpl;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceResponse;
+
+import io.netty.buffer.ByteBuf;
+import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
+import rx.Observable;
+import rx.observers.TestSubscriber;
 
 public class SessionTest extends TestSuiteBase {
+    protected static final int TIMEOUT = 20000;
+
     public final static String DATABASE_ID = getDatabaseId(SessionTest.class);
 
     private AsyncDocumentClient houseKeepingClient;
@@ -64,14 +82,38 @@ public class SessionTest extends TestSuiteBase {
         return createdCollection.getSelfLink();
     }
 
+    public class DocumentClientUnderTest extends RxDocumentClientImpl {
+
+        private RxGatewayStoreModel rxGatewayStoreModelSpy;
+
+        public DocumentClientUnderTest(URI serviceEndpoint, String masterKey) {
+            super(serviceEndpoint, masterKey, new ConnectionPolicy(), ConsistencyLevel.Session, -1);
+        }
+
+        RxGatewayStoreModel createRxGatewayProxy(ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel,
+                QueryCompatibilityMode queryCompatibilityMode, String masterKey, Map<String, String> resourceTokens,
+                UserAgentContainer userAgentContainer, EndpointManager globalEndpointManager,
+                CompositeHttpClient<ByteBuf, ByteBuf> rxClient) {
+
+            this.rxGatewayStoreModelSpy = Mockito
+                    .spy(new RxGatewayStoreModel(connectionPolicy, consistencyLevel, queryCompatibilityMode, masterKey,
+                            resourceTokens, userAgentContainer, globalEndpointManager, rxClient));
+
+            return this.rxGatewayStoreModelSpy;
+        }
+
+        public RxGatewayStoreModel getRxGatewayStoreModelSpy() {
+            return this.rxGatewayStoreModelSpy;
+        }
+    }
+
     @BeforeClass(groups = { "internal" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() {
-
         houseKeepingClient = createGatewayRxDocumentClient().build();
         Database d = new Database();
         d.setId(DATABASE_ID);
         createdDatabase = safeCreateDatabase(houseKeepingClient, d);
-        
+
         DocumentCollection cl = new DocumentCollection();
         cl.setId(UUID.randomUUID().toString());
         createdCollection = createCollection(houseKeepingClient, createdDatabase.getId(), cl);
@@ -103,33 +145,33 @@ public class SessionTest extends TestSuiteBase {
         List<String> capturedResponseSessionTokenList = Collections.synchronizedList(new ArrayList<String>());
 
         clientUnderTest.readCollection(getCollectionLink(), null).toBlocking().single();
-        clientUnderTest.createDocument(
-                getCollectionLink(), new Document(), null, false).toBlocking().single();
+        clientUnderTest.createDocument(getCollectionLink(), new Document(), null, false).toBlocking().single();
 
         setupSpySession(capturedRequestSessionTokenList, capturedResponseSessionTokenList, clientUnderTest, client1);
 
         for (int i = 0; i < 10; i++) {
 
-            Document documentCreated = clientUnderTest.createDocument(
-                    getCollectionLink(), new Document(), null, false).toBlocking().single().getResource();
+            Document documentCreated = clientUnderTest.createDocument(getCollectionLink(), new Document(), null, false)
+                    .toBlocking().single().getResource();
 
-            assertThat(capturedRequestSessionTokenList).hasSize(3*i+1);
-            assertThat(capturedRequestSessionTokenList.get(3*i+0)).isNotEmpty();
-
-            clientUnderTest.readDocument(documentCreated.getSelfLink(), null).toBlocking().single();
-
-            assertThat(capturedRequestSessionTokenList).hasSize(3*i+2);
-            assertThat(capturedRequestSessionTokenList.get(3*i+1)).isNotEmpty();
+            assertThat(capturedRequestSessionTokenList).hasSize(3 * i + 1);
+            assertThat(capturedRequestSessionTokenList.get(3 * i + 0)).isNotEmpty();
 
             clientUnderTest.readDocument(documentCreated.getSelfLink(), null).toBlocking().single();
 
-            assertThat(capturedRequestSessionTokenList).hasSize(3*i+3);
-            assertThat(capturedRequestSessionTokenList.get(3*i+2)).isNotEmpty();
+            assertThat(capturedRequestSessionTokenList).hasSize(3 * i + 2);
+            assertThat(capturedRequestSessionTokenList.get(3 * i + 1)).isNotEmpty();
+
+            clientUnderTest.readDocument(documentCreated.getSelfLink(), null).toBlocking().single();
+
+            assertThat(capturedRequestSessionTokenList).hasSize(3 * i + 3);
+            assertThat(capturedRequestSessionTokenList.get(3 * i + 2)).isNotEmpty();
         }
     }
 
-    private void setupSpySession(final List<String> capturedRequestSessionTokenList, final List<String> capturedResponseSessionTokenList, 
-            RxDocumentClientImpl spyClient, final RxDocumentClientImpl origClient) throws DocumentClientException {
+    private void setupSpySession(final List<String> capturedRequestSessionTokenList,
+            final List<String> capturedResponseSessionTokenList, RxDocumentClientImpl spyClient,
+            final RxDocumentClientImpl origClient) throws DocumentClientException {
 
         Mockito.reset(spyClient);
         doAnswer(new Answer<Void>() {
@@ -139,13 +181,50 @@ public class SessionTest extends TestSuiteBase {
                 RxDocumentServiceResponse resp = (RxDocumentServiceResponse) args[1];
 
                 capturedRequestSessionTokenList.add(req.getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
-                capturedResponseSessionTokenList.add(resp.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
+                capturedResponseSessionTokenList
+                        .add(resp.getResponseHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN));
 
                 origClient.captureSessionToken(req, resp);
 
                 return null;
-            }})
-        .when(spyClient).captureSessionToken(Mockito.any(RxDocumentServiceRequest.class), Mockito.any(RxDocumentServiceResponse.class));
+            }
+        }).when(spyClient).captureSessionToken(Mockito.any(RxDocumentServiceRequest.class),
+                Mockito.any(RxDocumentServiceResponse.class));
     }
 
+    @Test(groups = { "internal" }, timeOut = TIMEOUT)
+    public void testSessionTokenInDocumentRead() throws Exception {
+        DocumentClientUnderTest client = new DocumentClientUnderTest(new URI(TestConfigurations.HOST),
+                TestConfigurations.MASTER_KEY);
+
+        ArgumentCaptor<RxDocumentServiceRequest> request = ArgumentCaptor.forClass(RxDocumentServiceRequest.class);
+
+        Document document = new Document();
+        document.setId("1");
+        document.set("pk", "pk");
+        document = client.createDocument(getCollectionLink(), document, null, false).toBlocking().single()
+                .getResource();
+
+        client.readDocument(document.getSelfLink(), null).toBlocking().single()
+                .getResource();
+
+        Mockito.verify(client.getRxGatewayStoreModelSpy(), Mockito.times(3)).processMessage(request.capture());
+        List<RxDocumentServiceRequest> allValues = request.getAllValues();
+        assertThat(allValues.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNullOrEmpty();
+        assertThat(allValues.get(1).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNullOrEmpty();
+    }
+    
+    @Test(groups = { "internal" }, timeOut = TIMEOUT)
+    public void testSessionTokenRemovedForMasterResource() throws Exception {
+        DocumentClientUnderTest client = new DocumentClientUnderTest(new URI(TestConfigurations.HOST),
+                TestConfigurations.MASTER_KEY);
+
+        client.readCollection(getCollectionLink(), null).toBlocking().single();
+
+        ArgumentCaptor<RxDocumentServiceRequest> request = ArgumentCaptor.forClass(RxDocumentServiceRequest.class);
+
+        Mockito.verify(client.getRxGatewayStoreModelSpy(), Mockito.times(1)).processMessage(request.capture());
+        List<RxDocumentServiceRequest> allValues = request.getAllValues();
+        assertThat(allValues.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+    }
 }

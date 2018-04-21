@@ -98,13 +98,13 @@ public interface AsyncDocumentClient {
      * }
      * </pre>
      */
-    public static class Builder {
+    class Builder {
 
-        private String masterKey;
-        private ConnectionPolicy connectionPolicy;
-        private ConsistencyLevel desiredConsistencyLevel;
-        private URI serviceEndpoint;
-        private int eventLoopSize = -1;
+        String masterKey;
+        ConnectionPolicy connectionPolicy;
+        ConsistencyLevel desiredConsistencyLevel;
+        URI serviceEndpoint;
+        int eventLoopSize = -1;
 
         public Builder withServiceEndpoint(String serviceEndpoint) {
             try {

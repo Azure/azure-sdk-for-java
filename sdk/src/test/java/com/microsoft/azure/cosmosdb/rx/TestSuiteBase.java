@@ -77,6 +77,18 @@ public class TestSuiteBase {
         return client.createDocument(Utils.getCollectionNameLink(databaseId, collectionId), document, null, false).toBlocking().single().getResource();
     }
 
+    public Observable<ResourceResponse<Document>> bulkInsert(AsyncDocumentClient client,
+                                                             String collectionLink,
+                                                             List<Document> documentDefinitionList,
+                                                             int concurrencyLevel) {
+        ArrayList<Observable<ResourceResponse<Document>>> result = new ArrayList<Observable<ResourceResponse<Document>>>(documentDefinitionList.size());
+        for (Document docDef : documentDefinitionList) {
+            result.add(client.createDocument(collectionLink, docDef, null, false));
+        }
+
+        return Observable.merge(result, concurrencyLevel);
+    }
+
     public static User createUser(AsyncDocumentClient client, String databaseId, User user) {
         return client.createUser("dbs/" + databaseId, user, null).toBlocking().single().getResource();
     }

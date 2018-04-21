@@ -15,6 +15,7 @@ hs_err_pid*
 .settings
 .classpath
 .idea
+*.iml
 
 doc
 docs

@@ -32,8 +32,8 @@ import rx.functions.Func1;
 
 public class TopDocumentQueryExecutionContext <T extends Resource> implements IDocumentQueryExecutionComponent<T>{
 
-    private IDocumentQueryExecutionComponent<T> component;
-    private int top;
+    private final IDocumentQueryExecutionComponent<T> component;
+    private final int top;
 
     public TopDocumentQueryExecutionContext(IDocumentQueryExecutionComponent<T> component, int top) {
         this.component = component;
@@ -44,14 +44,12 @@ public class TopDocumentQueryExecutionContext <T extends Resource> implements ID
             Observable<IDocumentQueryExecutionComponent<T>> observableComponent, int top) {
 
         return observableComponent.map( component -> {
-           return new TopDocumentQueryExecutionContext<T>(component, top); 
+           return new TopDocumentQueryExecutionContext<T>(component, top);
         });
     }
 
-
     @Override
     public Observable<FeedResponse<T>> drainAsync(int maxPageSize) {
-        
         ParallelDocumentQueryExecutionContextBase<T> context;
         
         if (this.component instanceof AggregateDocumentQueryExecutionContext<?>) {
@@ -64,40 +62,39 @@ public class TopDocumentQueryExecutionContext <T extends Resource> implements ID
         context.setTop(this.top);
 
         return this.component.drainAsync(maxPageSize)
-                .takeWhile(new Func1<FeedResponse<T>, Boolean>() {
+                .takeUntil(new Func1<FeedResponse<T>, Boolean>() {
 
-                    int innerTop = top;
-                    boolean isLastPage = false;
-                    
-                    //if top number of documents are contained in n pages,
-                    //return false on n + 1 th page
+                    private volatile int fetchedItems = 0;
+
                     @Override
                     public Boolean call(FeedResponse<T> frp) {
-                        
-                        innerTop -= frp.getResults().size();
-                        
-                        if (innerTop <= 0) {
-                            isLastPage = !isLastPage;
-                        }
-                        
-                        return innerTop > 0  || isLastPage;
+
+                        fetchedItems += frp.getResults().size();
+
+                        // take until we have at least top many elements fetched
+                        return fetchedItems >= top;
                     }
                 })
                 .map(new Func1<FeedResponse<T>, FeedResponse<T>>(){
 
-                    int innerTop = top;
+                    private volatile int collectedItems = 0;
+                    private volatile boolean lastPage = false;
+
                     @Override
                     public FeedResponse<T> call(FeedResponse<T> t) {
-                        int size = Math.min(innerTop, t.getResults().size());
-                        innerTop -= t.getResults().size();
-                        
-                        if (innerTop > 0) {
+
+                        if (collectedItems + t.getResults().size() <= top) {
+                            collectedItems += t.getResults().size();
                             return t;
                         } else {
-                            return BridgeInternal.createFeedResponse(t.getResults().subList(0, size), t.getResponseHeaders());
+                            assert lastPage == false;
+                            lastPage = true;
+                            int lastPageSize = top - collectedItems;
+                            collectedItems += lastPageSize;
+                            return BridgeInternal.createFeedResponse(t.getResults().subList(0,
+                                    lastPageSize), t.getResponseHeaders());
                         }
                     }
                 });
     }
-
 }

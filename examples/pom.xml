@@ -29,14 +29,12 @@
   <parent>
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-cosmosdb-parent</artifactId>
-    <version>1.0.1-SNAPSHOT</version>
+    <version>1.0.1</version>
   </parent>
 
   <artifactId>azure-cosmosdb-examples</artifactId>
-  <name>Async SDK for SQL API of Azure Cosmos DB Service - Examples</name>
-  <description>Examples for Async SDK for SQL API of Azure Cosmos DB Service</description>
-  <url>https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sdk-async-java</url>
-  <packaging>pom</packaging>
+  <name>Async SDK for Document API of Azure Cosmos DB Service - Examples</name>
+  <description>Examples for Async SDK for Document API of Azure Cosmos DB Service</description>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>

@@ -177,6 +177,26 @@ public class ParallelDocumentQueryTest extends TestSuiteBase {
         validateQueryFailure(queryObservable, validator);
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void partitionKeyRangeId() {
+        int sum = 0;
+        for(String partitionKeyRangeId: client.readPartitionKeyRanges(getCollectionLink(), null)
+                .flatMap(p -> Observable.from(p.getResults()))
+                .map(pkr -> pkr.getId()).toList().toBlocking().single()) {
+            String query = "SELECT * from root";
+            FeedOptions options = new FeedOptions();
+            options.setPartitionKeyRangeIdInternal(partitionKeyRangeId);
+            int queryResultCount = client
+                    .queryDocuments(getCollectionLink(), query, options)
+                    .flatMap(p -> Observable.from(p.getResults()))
+                    .toList().toBlocking().single().size();
+
+            sum += queryResultCount;
+        }
+
+        assertThat(sum).isEqualTo(createdDocuments.size());
+    }
+
     public Document createDocument(AsyncDocumentClient client, int cnt) throws DocumentClientException {
 
         Document docDefinition = getDocumentDefinition(cnt);

@@ -36,6 +36,7 @@ import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.internal.PathsHelper;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
+import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyRangeIdentity;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
 import com.microsoft.azure.cosmosdb.rx.internal.BackoffRetryUtility;
 import com.microsoft.azure.cosmosdb.rx.internal.IDocumentClientRetryPolicy;
@@ -46,6 +47,7 @@ import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxCollectionCache;
 import com.microsoft.azure.cosmosdb.rx.internal.caches.RxPartitionKeyRangeCache;
 
+import org.apache.commons.lang3.StringUtils;
 import rx.Observable;
 import rx.Single;
 import rx.functions.Func1;
@@ -93,7 +95,7 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         // TODO: clean up if we want to use single vs observable.
         Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc = executeInternalAyncFunc();
 
-        return Paginator.getPatinatedQueryResultAsObservable(feedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
+        return Paginator.getPaginatedQueryResultAsObservable(feedOptions, createRequestFunc, executeFunc, resourceType, maxPageSize);
     }
 
     public Single<List<PartitionKeyRange>> getTargetPartitionKeyRanges(String resourceId, List<Range<String>> queryRanges) {
@@ -171,10 +173,16 @@ public class DefaultDocumentQueryExecutionContext<T extends Resource> extends Do
         // TODO: add support for simple continuation for single partition query
         //requestHeaders.put(keyHttpConstants.HttpHeaders.IsContinuationExpected, isContinuationExpected.ToString())
 
-        return this.createDocumentServiceRequest(
+        RxDocumentServiceRequest request = this.createDocumentServiceRequest(
                 requestHeaders,
                 this.query,
                 this.getPartitionKeyInternal());
+
+        if (!StringUtils.isEmpty(feedOptions.getPartitionKeyRangeIdInternal())) {
+            request.routeTo(new PartitionKeyRangeIdentity(feedOptions.getPartitionKeyRangeIdInternal()));
+        }
+
+        return request;
     }
 }
 
