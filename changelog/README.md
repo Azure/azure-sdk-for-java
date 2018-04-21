@@ -1,5 +1,14 @@
 ## Changelog
 
+### 1.0.1
+- Added back-pressure support in query.
+- Added support for partition key range id in query.
+- Changed to allow larger continuation token in request header (bugfix github #24).
+- netty dependency upgraded to 4.1.22.Final to ensure JVM shuts down after main thread finishes.
+- Changed to avoid passing session token when reading master resources.
+- Added more examples.
+- Added more benchmarking scenarios.
+- Fixed java header files for proper javadoc generation.
 
 ### 1.0.0
 - Release 1.0.0 has fully end to end support for non-blocking IO using netty library in Gateway mode.
