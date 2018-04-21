@@ -29,7 +29,7 @@
 This project provides a SDK library in Java for interacting with [SQL API](https://docs.microsoft.com/en-us/azure/cosmos-db/sql-api-sql-query) of [Azure Cosmos DB
 Database Service](https://azure.microsoft.com/en-us/services/cosmos-db/). This project also includes samples, tools, and utilities.
 
-Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/1.0.0).
+Jar dependency binary information for maven and gradle can be found here at [maven]( https://mvnrepository.com/artifact/com.microsoft.azure/azure-cosmosdb/1.0.1).
 
 For example, using maven, you can add the following dependency to your maven pom file:
 
@@ -37,7 +37,7 @@ For example, using maven, you can add the following dependency to your maven pom
 <dependency>
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-cosmosdb</artifactId>
-  <version>1.0.0</version>
+  <version>1.0.1</version>
 </dependency>
 ```
 
