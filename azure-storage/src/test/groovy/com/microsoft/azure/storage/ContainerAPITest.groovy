@@ -45,6 +45,7 @@ import io.reactivex.Flowable
 import spock.lang.*
 
 import java.time.OffsetDateTime
+import java.time.ZoneId
 import java.time.temporal.ChronoUnit
 
 class ContainerAPITest extends APISpec {
@@ -197,8 +198,10 @@ class ContainerAPITest extends APISpec {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
                 .withId("0000")
-                .withAccessPolicy(new AccessPolicy().withStart(OffsetDateTime.now())
-                .withExpiry(OffsetDateTime.now().plusDays(1))
+                .withAccessPolicy(new AccessPolicy()
+                .withStart(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .withExpiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                .plusDays(1))
                 .withPermission("r"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
@@ -239,8 +242,10 @@ class ContainerAPITest extends APISpec {
         setup:
         SignedIdentifier identifier = new SignedIdentifier()
                 .withId("0000")
-                .withAccessPolicy(new AccessPolicy().withStart(OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS))
-                .withExpiry(OffsetDateTime.now().truncatedTo(ChronoUnit.SECONDS).plusDays(1))
+                .withAccessPolicy(new AccessPolicy()
+                .withStart(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime())
+                .withExpiry(OffsetDateTime.now().atZoneSameInstant(ZoneId.of("UTC")).toOffsetDateTime()
+                .plusDays(1))
                 .withPermission("r"))
         List<SignedIdentifier> ids = new ArrayList<>()
         ids.push(identifier)
