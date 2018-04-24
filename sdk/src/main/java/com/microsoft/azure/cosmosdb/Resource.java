@@ -133,7 +133,8 @@ public class Resource extends JsonSerializable {
     public Date getTimestamp() {
         Double millisec = super.getDouble(Constants.Properties.LAST_MODIFIED);
         if (millisec == null) return null;
-        return new Date(millisec.longValue());
+        // Multiply the existing 10 digit long value by 1000 to pass to Date. 
+        return new Date(millisec.longValue() * 1000);
     }
 
     /**
