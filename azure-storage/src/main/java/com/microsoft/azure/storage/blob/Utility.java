@@ -149,7 +149,6 @@ final class Utility {
      *
      * @return the corresponding <code>Date</code> object
      */
-    // TODO: Get rid of this with Java 8 if possible.
     public static OffsetDateTime parseDate(String dateString) {
         String pattern = MAX_PRECISION_PATTERN;
         switch(dateString.length()) {

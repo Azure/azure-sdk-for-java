@@ -215,7 +215,6 @@ class ContainerAPITest extends APISpec {
         receivedIdentifier.accessPolicy().start() == identifier.accessPolicy().start()
         receivedIdentifier.accessPolicy().permission() == identifier.accessPolicy().permission()
     }
-    // TODO: Fix nanosecond resolution issue
 
     @Unroll
     def "Container set access policy AC"() {

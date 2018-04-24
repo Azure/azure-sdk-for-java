@@ -202,7 +202,6 @@ public class BlobURL extends StorageURL {
     public Single<BlobsDownloadResponse> download(
             BlobRange range, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
 
-        // TODO: Are there other places for this? Should this be in the swagger?
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         range = range == null ? BlobRange.DEFAULT : range;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;

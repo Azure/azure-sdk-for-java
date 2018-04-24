@@ -25,7 +25,6 @@ import java.util.Map;
 public final class Metadata extends HashMap<String, String> {
     public static final Metadata NONE = new Metadata();
 
-    // TODO Add other constructors
     public Metadata() {
         super();
     }

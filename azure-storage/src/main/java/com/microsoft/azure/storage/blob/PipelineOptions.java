@@ -61,8 +61,6 @@ public final class PipelineOptions {
      */
     public TelemetryOptions telemetryOptions = TelemetryOptions.DEFAULT;
 
-    // TODO:
-
     /**
      * Returns a {@code PipelineOptions} object with default values for each of the options fields. An
      * {@link HttpClient} must still be set explicitly, however.

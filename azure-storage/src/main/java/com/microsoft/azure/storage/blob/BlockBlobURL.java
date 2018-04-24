@@ -101,6 +101,8 @@ public final class BlockBlobURL extends BlobURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
+     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
+     *
      * @param data
      *      The data to write to the blob.
      * @param length
@@ -192,6 +194,8 @@ public final class BlockBlobURL extends BlobURL {
      * blocks together. Any blocks not specified in the block list and permanently deleted.
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
+     *
+     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
      *
      * @param base64BlockIDs
      *      A list of base64 encode {@code String}s that specifies the block IDs to be committed.

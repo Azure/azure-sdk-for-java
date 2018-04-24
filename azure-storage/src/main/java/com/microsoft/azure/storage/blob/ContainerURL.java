@@ -508,6 +508,9 @@ public final class ContainerURL extends StorageURL {
     public Single<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(
             String marker, String delimiter, ListBlobsOptions options) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
+        if (options.getDetails().getSnapshots()) {
+            throw new IllegalArgumentException("Including snapshots in a hierarchical listing is not supported.");
+        }
 
         return this.storageClient.generatedContainers().listBlobHierarchySegmentWithRestResponseAsync(
                 delimiter, options.getPrefix(), marker, options.getMaxResults(),

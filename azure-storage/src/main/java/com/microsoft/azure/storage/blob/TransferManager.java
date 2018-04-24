@@ -229,12 +229,6 @@ public class TransferManager {
                     final String blockId = Base64.getEncoder().encodeToString(
                             UUID.randomUUID().toString().getBytes());
 
-
-                    // TODO: What happens if one of the calls fails? It seems like this single/observable
-                    // will emit an error, which will halt the collecting into a list. Will the list still
-                    // be emitted or will it emit an error? In the latter, it'll just propagate. In the former,
-                    // we should check the size of the blockList equals numBlocks before sending it up.
-
                     /*
                      Make a call to stageBlock. Instead of emitting the response, which we don't care about other than
                      that it was successful, emit the blockId for this request. These will be collected below. Turn that

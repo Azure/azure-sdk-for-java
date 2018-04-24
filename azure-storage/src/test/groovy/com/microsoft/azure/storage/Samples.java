@@ -11,6 +11,7 @@ import io.reactivex.*;
 import io.reactivex.Observable;
 import io.reactivex.functions.Action;
 import io.reactivex.functions.BiConsumer;
+import io.reactivex.functions.Function;
 import org.junit.Test;
 
 import java.io.File;
@@ -1268,5 +1269,136 @@ public class Samples {
     }
 
     // TODO: Lease? Root container?
+
+    /*
+    This example demonstrates two common patterns: 1. Creating a container if it does not exist and continuing normally
+    if it does already exist. 2. Deleting a container if it does exist and continuing normally if it does not.
+     */
+    @Test
+    public void exampleCreateContainerIfNotExists() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainercreateifnotexist");
+
+        createContainerIfNotExists(containerURL)
+                .flatMap(r -> {
+                    System.out.println("Container created: " + r.toString());
+                    return createContainerIfNotExists(containerURL);
+                })
+                .flatMap(r -> {
+                    System.out.println("Container created: " + r.toString());
+                    return deleteContainerIfExists(containerURL);
+                })
+                .flatMap(r -> {
+                    System.out.println("Container deleted: " + r.toString());
+                    return deleteContainerIfExists(containerURL);
+                })
+                .doOnSuccess(r -> System.out.println("Container deleted: " + r.toString()))
+                /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+    }
+
+    public static Single<Boolean> createContainerIfNotExists(ContainerURL containerURL)
+    {
+        return containerURL.create(null, null).map((r) -> true).onErrorResumeNext((e) -> {
+            if (e instanceof RestException) {
+                RestException re = (RestException)e;
+                if (re.getMessage().contains("ContainerAlreadyExists")) {
+                    return Single.just(false);
+                }
+            }
+
+            return Single.error(e);
+        });
+    }
+
+    public static Single<Boolean> deleteContainerIfExists(ContainerURL containerURL)
+    {
+        return containerURL.delete(null).map((r) -> true).onErrorResumeNext((e) -> {
+            if (e instanceof RestException)
+            {
+                RestException re = (RestException)e;
+                if (re.getMessage().contains("ContainerNotFound"))
+                {
+                    return Single.just(false);
+                }
+            }
+
+            return Single.error(e);
+        });
+    }
+
+    /*
+    The following example demonstrates a useful scenario in which it is desirable to receive listed elements as
+    individual items in an observable rather than a seqeuence of lists.
+     */
+    @Test
+    public void exampleLazyEnumeration() throws MalformedURLException, InvalidKeyException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
+
+        // Create a BlockBlobURL object that wraps a blob's URL and a default pipeline.
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net/", accountName));
+        ServiceURL s = new ServiceURL(u,
+                StorageURL.createPipeline(new SharedKeyCredentials(accountName, accountKey), new PipelineOptions()));
+        ContainerURL containerURL = s.createContainerURL("myjavacontainerlistlazy");
+
+        containerURL.create(null, null).toCompletable()
+                .andThen(Observable.range(0, 5))
+                .flatMap(integer -> {
+                    AppendBlobURL bu = containerURL.createAppendBlobURL(integer.toString());
+                    return bu.create(null, null, null).toObservable();
+                })
+                .ignoreElements()
+                .andThen(listBlobsLazy(containerURL, null))
+                .doOnNext(b -> System.out.println("Blob: " + b.name()))
+                .ignoreElements()
+                .andThen(containerURL.delete(null))
+                /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+    }
+
+    public static Observable<Blob> listBlobsLazy(ContainerURL containerURL, ListBlobsOptions listBlobsOptions)
+    {
+        return containerURL.listBlobsFlatSegment(null, listBlobsOptions)
+                .flatMapObservable((r) -> listContainersResultToContainerObservable(containerURL, listBlobsOptions, r));
+    }
+
+    private static Observable<Blob> listContainersResultToContainerObservable(
+            ContainerURL containerURL, ListBlobsOptions listBlobsOptions,
+            ContainersListBlobFlatSegmentResponse response)
+    {
+        Observable<Blob> result = Observable.fromIterable(response.body().blobs().blob());
+
+        System.out.println("!!! count: " + response.body().blobs().blob().size());
+
+        if (response.body().nextMarker() != null)
+        {
+            System.out.println("Hit continuation in listing at " + response.body().blobs().blob().get(
+                    response.body().blobs().blob().size()-1).name());
+            // Recursively add the continuation items to the observable.
+            result = result.concatWith(containerURL.listBlobsFlatSegment(response.body().nextMarker(), listBlobsOptions)
+                    .flatMapObservable((r) ->
+                            listContainersResultToContainerObservable(containerURL, listBlobsOptions, r)));
+        }
+
+        return result;
+    }
+
 }
 
