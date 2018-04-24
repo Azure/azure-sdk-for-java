@@ -1,2 +1,2 @@
 com.microsoft.azure.storage.blob
-com.microsoft.azure.storage.models
+com.microsoft.azure.storage.blob.models

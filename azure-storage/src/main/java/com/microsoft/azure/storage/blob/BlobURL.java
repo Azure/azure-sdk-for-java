@@ -26,8 +26,8 @@ import java.net.UnknownHostException;
  * Represents a URL to a blob of any type: block, append, or page. It may be obtained by direct construction or via the
  * create method on a {@link ContainerURL} object. This class does not hold any state about a particular blob but is
  * instead a convenient way of sending off appropriate requests to the resource on the service. Please refer to the
- * following for more information on blobs:
- * https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ * for more information.
  */
 public class BlobURL extends StorageURL {
 
@@ -65,6 +65,10 @@ public class BlobURL extends StorageURL {
      *
      * @param snapshot
      *      A {@code String} to set.
+     * @throws MalformedURLException
+     *      Appending the specified snapshot produced an invalid URL.
+     * @throws UnknownHostException
+     *      If the url contains an improperly formatted ipaddress or unknown host address.
      * @return
      *      A {@link BlobURL} object with the given pipeline.
      */
@@ -198,7 +202,6 @@ public class BlobURL extends StorageURL {
     public Single<BlobsDownloadResponse> download(
             BlobRange range, BlobAccessConditions accessConditions, boolean rangeGetContentMD5) {
 
-        // TODO: Are there other places for this? Should this be in the swagger?
         Boolean getMD5 = rangeGetContentMD5 ? rangeGetContentMD5 : null;
         range = range == null ? BlobRange.DEFAULT : range;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
@@ -206,7 +209,8 @@ public class BlobURL extends StorageURL {
         return this.storageClient.generatedBlobs().downloadWithRestResponseAsync(
                 null, null, range.toString(),
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
-                getMD5, accessConditions.getHttpAccessConditions().getIfModifiedSince(),
+                getMD5,
+                accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
@@ -282,8 +286,11 @@ public class BlobURL extends StorageURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         return this.storageClient.generatedBlobs().setHTTPHeadersWithRestResponseAsync(
-                null, headers.getCacheControl(), headers.getContentType(),
-                headers.getContentMD5(), headers.getContentEncoding(),
+                null,
+                headers.getCacheControl(),
+                headers.getContentType(),
+                headers.getContentMD5(),
+                headers.getContentEncoding(),
                 headers.getContentLanguage(),
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),

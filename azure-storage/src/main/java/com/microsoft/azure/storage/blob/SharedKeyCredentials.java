@@ -54,6 +54,8 @@ public final class SharedKeyCredentials implements ICredentials {
      *      The account name associated with the request.
      * @param accountKey
      *      The account access key used to authenticate the request.
+     * @throws InvalidKeyException
+     *      Thrown when the accountKey is ill-formatted.
      */
     public SharedKeyCredentials(String accountName, String accountKey) throws InvalidKeyException {
         this.accountName = accountName;
@@ -151,23 +153,23 @@ public final class SharedKeyCredentials implements ICredentials {
         String contentLength = getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_LENGTH);
         contentLength = contentLength.equals("0") ? Constants.EMPTY_STRING : contentLength;
 
-        return String.join("\n", new String[]{
-                        request.httpMethod().toString(),
-                        getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_ENCODING),
-                        getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_LANGUAGE),
-                        contentLength,
-                        getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_MD5),
-                        getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_TYPE),
-                        // x-ms-date header exists, so don't sign date header
-                        Constants.EMPTY_STRING,
-                        getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.IF_MODIFIED_SINCE),
-                        getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.IF_MATCH),
-                        getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.IF_NONE_MATCH),
-                        getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.IF_UNMODIFIED_SINCE),
-                        getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.RANGE),
-                        getAdditionalXmsHeaders(httpHeaders),
-                        getCanonicalizedResource(request.url())
-        });
+        return String.join("\n",
+                request.httpMethod().toString(),
+                getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_ENCODING),
+                getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_LANGUAGE),
+                contentLength,
+                getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_MD5),
+                getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.CONTENT_TYPE),
+                // x-ms-date header exists, so don't sign date header
+                Constants.EMPTY_STRING,
+                getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.IF_MODIFIED_SINCE),
+                getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.IF_MATCH),
+                getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.IF_NONE_MATCH),
+                getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.IF_UNMODIFIED_SINCE),
+                getStandardHeaderValue(httpHeaders, Constants.HeaderConstants.RANGE),
+                getAdditionalXmsHeaders(httpHeaders),
+                getCanonicalizedResource(request.url())
+        );
     }
 
     private void appendCanonicalizedElement(final StringBuilder builder, final String element) {
@@ -179,7 +181,7 @@ public final class SharedKeyCredentials implements ICredentials {
         // Add only headers that begin with 'x-ms-'
         final ArrayList<String> xmsHeaderNameArray = new ArrayList<String>();
         for (HttpHeader header : headers) {
-            String lowerCaseHeader = header.name().toLowerCase(Locale.US);
+            String lowerCaseHeader = header.name().toLowerCase(Locale.ROOT);
             if (lowerCaseHeader.startsWith(Constants.PREFIX_FOR_STORAGE_HEADER)) {
                 xmsHeaderNameArray.add(lowerCaseHeader);
             }
@@ -243,7 +245,7 @@ public final class SharedKeyCredentials implements ICredentials {
             final List<String> queryParamValues = queryParams.get(queryParamName);
             Collections.sort(queryParamValues);
             String queryParamValuesStr = String.join(",", queryParamValues.toArray(new String[]{}));
-            canonicalizedResource.append("\n").append(queryParamName.toLowerCase(Locale.US)).append(":")
+            canonicalizedResource.append("\n").append(queryParamName.toLowerCase(Locale.ROOT)).append(":")
                     .append(queryParamValuesStr);
         }
 

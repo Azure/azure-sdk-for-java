@@ -15,6 +15,8 @@
 package com.microsoft.azure.storage.blob;
 
 
+import java.util.Locale;
+
 /**
  * This is a helper class to construct a string representing the permissions granted by a ServiceSAS to a container.
  * Setting a value to true means that any SAS which uses these permissions will grant permissions for that operation.
@@ -134,7 +136,7 @@ public final class ContainerSASPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                        String.format(SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+                        String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
             }
         }
         return permissions;

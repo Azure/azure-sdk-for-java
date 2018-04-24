@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 import java.net.Inet4Address;
+import java.net.UnknownHostException;
 
 /**
  * This type specifies a continuous range of IP addresses. It is used to limit permissions on SAS tokens. Null may be
@@ -49,12 +50,36 @@ public final class IPRange {
             return "";
         }
         this.ipMax = this.ipMax == null ? this.ipMin : this.ipMax;
-        StringBuilder str = new StringBuilder(this.ipMin.toString());
+        StringBuilder str = new StringBuilder(this.ipMin.getHostAddress());
         if (!this.ipMin.equals(this.ipMax)) {
             str.append('-');
-            str.append(this.ipMax.toString());
+            str.append(this.ipMax.getHostAddress());
         }
 
         return str.toString();
+    }
+
+    /**
+     * Creates a {@code IPRange} from the specified string.
+     *
+     * @param rangeStr
+     *      The {@code String} representation of the {@code IPRange}.
+     *
+     * @return
+     *      The {@code IPRange} generated from the {@code String}.
+     */
+    public static IPRange parse(String rangeStr) {
+        try {
+            String[] addrs = rangeStr.split("-");
+            IPRange range = new IPRange();
+            range.ipMin = (Inet4Address) (Inet4Address.getByName(addrs[0]));
+            if (addrs.length > 1) {
+                range.ipMax = (Inet4Address) (Inet4Address.getByName(addrs[1]));
+            }
+            return range;
+        }
+        catch (UnknownHostException e) {
+            throw new Error("Invalid host. Host names may not be used with IPRange.");
+        }
     }
 }

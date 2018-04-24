@@ -41,7 +41,6 @@ public final class LoggingOptions {
     /**
      * @return
      *      The duration after which a tried operation will be logged as a warning.
-     *
      */
     public long getMinDurationToLogSlowRequestsInMs() {
         return minDurationToLogSlowRequestsInMs;

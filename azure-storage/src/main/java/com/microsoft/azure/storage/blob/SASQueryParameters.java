@@ -54,82 +54,93 @@ public final class SASQueryParameters {
     private final String signature;
 
     /**
-     * The storage version
+     * @return
+     *      The storage version
      */
     public String getVersion() {
         return version;
     }
 
     /**
-     * The storage services being accessed (only for Account SAS). Please refer to {@link AccountSASService} for
-     * more details.
+     * @return
+     *      The storage services being accessed (only for Account SAS). Please refer to {@link AccountSASService} for
+     *      more details.
      */
     public String getServices() {
         return services;
     }
 
     /**
-     * The storage resource types being accessed (only for Account SAS). Please refer to {@link AccountSASResourceType}
-     * for more details.
+     * @return
+     *      The storage resource types being accessed (only for Account SAS). Please refer to {@link AccountSASResourceType}
+     *      for more details.
      */
     public String getResourceTypes() {
         return resourceTypes;
     }
 
     /**
-     * The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SASProtocol} for more details.
+     * @return
+     *      The allowed HTTP protocol(s) or {@code null}. Please refer to {@link SASProtocol} for more details.
      */
     public SASProtocol getProtocol() {
         return protocol;
     }
 
     /**
-     * The start time for this SAS token or {@code null}.
+     * @return
+     *      The start time for this SAS token or {@code null}.
      */
     public OffsetDateTime getStartTime() {
         return startTime;
     }
 
     /**
-     * The expiry time for this SAS token.
+     * @return
+     *      The expiry time for this SAS token.
      */
     public OffsetDateTime getExpiryTime() {
         return expiryTime;
     }
 
     /**
-     * {@link IPRange}
+     * @return
+     *      {@link IPRange}
      */
     public IPRange getIpRange() {
         return ipRange;
     }
 
     /**
-     * The signed identifier (only for {@link ServiceSASSignatureValues}) or {@code null}. Please see
-     * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
-     * for more information.
+     * @return
+     *      The signed identifier (only for {@link ServiceSASSignatureValues}) or {@code null}. Please see
+     *      <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/establishing-a-stored-access-policy">here</a>
+     *      for more information.
      */
     public String getIdentifier() {
         return identifier;
     }
 
     /**
-     * The storage container or blob (only for {@link ServiceSASSignatureValues}).
+     * @return
+     *      The storage container or blob (only for {@link ServiceSASSignatureValues}).
      */
     public String getResource() {
         return resource;
     }
 
     /**
-     * Please refer to {@link AccountSASPermission}, {@link BlobSASPermission}, or {@link ContainerSASPermission} for
-     * more details.
+     * @return
+     *      Please refer to {@link AccountSASPermission}, {@link BlobSASPermission}, or {@link ContainerSASPermission} for
+     *      more details.
      */
     public String getPermissions() {
         return permissions;
     }
 
     /**
-     * The signature for the SAS token.
+     * @return
+     *      The signature for the SAS token.
      */
     public String getSignature() {
         return signature;
@@ -214,8 +225,7 @@ public final class SASQueryParameters {
 
         queryValue = queryParamsMap.get("sip");
         if (queryValue != null) {
-            this.ipRange = new IPRange();
-            this.ipRange.ipMin = (Inet4Address)(Inet4Address.getByName(queryValue[0]));
+            this.ipRange = IPRange.parse(queryValue[0]);
             if (removeSASParametersFromMap) {
                 queryParamsMap.remove("sip");
             }

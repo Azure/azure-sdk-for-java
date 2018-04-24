@@ -117,7 +117,7 @@ public final class URLParser {
         for (int m = 0; m < valuePairs.length; m++) {
             // Getting key and value for a single query parameter
             final int equalDex = valuePairs[m].indexOf("=");
-            String key = Utility.safeURLDecode(valuePairs[m].substring(0, equalDex)).toLowerCase(Locale.US);
+            String key = Utility.safeURLDecode(valuePairs[m].substring(0, equalDex)).toLowerCase(Locale.ROOT);
             String value = Utility.safeURLDecode(valuePairs[m].substring(equalDex + 1));
 
             // add to map

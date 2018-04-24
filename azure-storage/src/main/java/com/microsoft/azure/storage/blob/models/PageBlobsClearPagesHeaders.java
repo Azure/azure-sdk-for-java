@@ -49,7 +49,7 @@ public final class PageBlobsClearPagesHeaders {
      * The current sequence number for the page blob.
      */
     @JsonProperty(value = "x-ms-blob-sequence-number")
-    private Integer blobSequenceNumber;
+    private Long blobSequenceNumber;
 
     /**
      * This header uniquely identifies the request that was made and can be
@@ -72,14 +72,6 @@ public final class PageBlobsClearPagesHeaders {
      */
     @JsonProperty(value = "Date")
     private DateTimeRfc1123 dateProperty;
-
-    /**
-     * The value of this header is set to true if the contents of the request
-     * are successfully encrypted using the specified algorithm, and false
-     * otherwise.
-     */
-    @JsonProperty(value = "x-ms-request-server-encrypted")
-    private Boolean isServerEncrypted;
 
     /**
      * Get the eTag value.
@@ -153,7 +145,7 @@ public final class PageBlobsClearPagesHeaders {
      *
      * @return the blobSequenceNumber value.
      */
-    public Integer blobSequenceNumber() {
+    public Long blobSequenceNumber() {
         return this.blobSequenceNumber;
     }
 
@@ -163,7 +155,7 @@ public final class PageBlobsClearPagesHeaders {
      * @param blobSequenceNumber the blobSequenceNumber value to set.
      * @return the PageBlobsClearPagesHeaders object itself.
      */
-    public PageBlobsClearPagesHeaders withBlobSequenceNumber(Integer blobSequenceNumber) {
+    public PageBlobsClearPagesHeaders withBlobSequenceNumber(Long blobSequenceNumber) {
         this.blobSequenceNumber = blobSequenceNumber;
         return this;
     }
@@ -232,26 +224,6 @@ public final class PageBlobsClearPagesHeaders {
         } else {
             this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
-        return this;
-    }
-
-    /**
-     * Get the isServerEncrypted value.
-     *
-     * @return the isServerEncrypted value.
-     */
-    public Boolean isServerEncrypted() {
-        return this.isServerEncrypted;
-    }
-
-    /**
-     * Set the isServerEncrypted value.
-     *
-     * @param isServerEncrypted the isServerEncrypted value to set.
-     * @return the PageBlobsClearPagesHeaders object itself.
-     */
-    public PageBlobsClearPagesHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
-        this.isServerEncrypted = isServerEncrypted;
         return this;
     }
 }

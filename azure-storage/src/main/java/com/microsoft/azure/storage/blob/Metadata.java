@@ -15,6 +15,7 @@
 package com.microsoft.azure.storage.blob;
 
 import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Contains metadata key/value pairs to be associated with a storage resource. The user may store any additional
@@ -24,8 +25,11 @@ import java.util.HashMap;
 public final class Metadata extends HashMap<String, String> {
     public static final Metadata NONE = new Metadata();
 
-    // TODO Add other constructors
     public Metadata() {
         super();
+    }
+
+    public Metadata(Map<? extends String, ? extends String> m) {
+        super(m);
     }
 }

@@ -240,7 +240,7 @@ public final class BlobsGetPropertiesHeaders {
      * returned only for append blobs.
      */
     @JsonProperty(value = "x-ms-blob-committed-block-count")
-    private String blobCommittedBlockCount;
+    private Integer blobCommittedBlockCount;
 
     /**
      * The value of this header is set to true if the blob data and application
@@ -844,7 +844,7 @@ public final class BlobsGetPropertiesHeaders {
      *
      * @return the blobCommittedBlockCount value.
      */
-    public String blobCommittedBlockCount() {
+    public Integer blobCommittedBlockCount() {
         return this.blobCommittedBlockCount;
     }
 
@@ -854,7 +854,7 @@ public final class BlobsGetPropertiesHeaders {
      * @param blobCommittedBlockCount the blobCommittedBlockCount value to set.
      * @return the BlobsGetPropertiesHeaders object itself.
      */
-    public BlobsGetPropertiesHeaders withBlobCommittedBlockCount(String blobCommittedBlockCount) {
+    public BlobsGetPropertiesHeaders withBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
         return this;
     }

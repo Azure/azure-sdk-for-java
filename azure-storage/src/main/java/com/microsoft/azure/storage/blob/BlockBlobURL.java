@@ -28,9 +28,10 @@ import java.util.List;
 /**
  * Represents a URL to a block blob. It may be obtained by direct construction or via the create method on a
  * {@link ContainerURL} object. This class does not hold any state about a particular blob but is instead a convenient
- * way of sending off appropriate requests to the resource on the service. Please refer to the following for more
- * information on block blobs:
- * https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs
+ * way of sending off appropriate requests to the resource on the service. Please refer to the
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ * for more information on block blobs.
+ *
  */
 public final class BlockBlobURL extends BlobURL {
 
@@ -100,6 +101,8 @@ public final class BlockBlobURL extends BlobURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-blob">Azure Docs</a>.
      *
+     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
+     *
      * @param data
      *      The data to write to the blob.
      * @param length
@@ -123,8 +126,13 @@ public final class BlockBlobURL extends BlobURL {
 
         //TODO: runtime flowable wrapper that throws an error if the size doesn't match the data
         return this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
-                data, length, null, headers.getContentType(), headers.getContentEncoding(),
-                headers.getContentLanguage(), headers.getContentMD5(), headers.getCacheControl(), metadata,
+                data, length, null,
+                headers.getContentType(),
+                headers.getContentEncoding(),
+                headers.getContentLanguage(),
+                headers.getContentMD5(),
+                headers.getCacheControl(),
+                metadata,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
@@ -153,8 +161,7 @@ public final class BlockBlobURL extends BlobURL {
      *      Emits the successful response.
      */
     public Single<BlockBlobsStageBlockResponse> stageBlock(
-            String base64BlockID, Flowable<ByteBuffer> data, long length,
-            LeaseAccessConditions leaseAccessConditions) {
+            String base64BlockID, Flowable<ByteBuffer> data, long length, LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
         return this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(base64BlockID, length, data,
                 null, leaseAccessConditions.getLeaseId(), null);
@@ -188,6 +195,8 @@ public final class BlockBlobURL extends BlobURL {
      * For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/put-block-list">Azure Docs</a>.
      *
+     * For more efficient bulk-upload scenarios, please refer to the {@link TransferManager} for convenience methods.
+     *
      * @param base64BlockIDs
      *      A list of base64 encode {@code String}s that specifies the block IDs to be committed.
      * @param headers
@@ -208,9 +217,14 @@ public final class BlockBlobURL extends BlobURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
         return this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
                 new BlockLookupList().withLatest(base64BlockIDs), null,
-                headers.getCacheControl(), headers.getContentType(),headers.getContentEncoding(),
-                headers.getContentLanguage(), headers.getContentMD5(), metadata,
-                accessConditions.getLeaseAccessConditions().getLeaseId(), headers.getContentDisposition(),
+                headers.getCacheControl(),
+                headers.getContentType(),
+                headers.getContentEncoding(),
+                headers.getContentLanguage(),
+                headers.getContentMD5(),
+                metadata,
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
+                headers.getContentDisposition(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),

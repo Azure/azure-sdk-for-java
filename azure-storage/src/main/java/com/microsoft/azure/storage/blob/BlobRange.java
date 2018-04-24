@@ -56,7 +56,7 @@ public final class BlobRange {
 
     /**
      * @return
-     *      A {@code long} that indicates the start of the range.
+     *      Indicates the start of the range.
      */
     public long getOffset() {
         return offset;
@@ -64,7 +64,7 @@ public final class BlobRange {
 
     /**
      * @return
-     *      A {@code long} that indicates how many bytes to include in the range.
+     *      Indicates how many bytes to include in the range.
      */
     public Long getCount() {
         return count;
@@ -80,10 +80,10 @@ public final class BlobRange {
         if (count != null) {
             long rangeEnd = this.offset + this.count - 1;
             return String.format(
-                    Locale.US, Constants.HeaderConstants.RANGE_HEADER_FORMAT, this.offset, rangeEnd);
+                    Locale.ROOT, Constants.HeaderConstants.RANGE_HEADER_FORMAT, this.offset, rangeEnd);
         }
 
         return String.format(
-                Locale.US, Constants.HeaderConstants.BEGIN_RANGE_HEADER_FORMAT, this.offset);
+                Locale.ROOT, Constants.HeaderConstants.BEGIN_RANGE_HEADER_FORMAT, this.offset);
     }
 }

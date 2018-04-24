@@ -24,11 +24,15 @@ import java.time.OffsetDateTime;
  * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
  * requests.
  *
- * Please refer to the following for more conceptual information on SAS:
- * https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+ * Please see
+ * <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
+ * for more conceptual information on SAS:
  *
- * Please refer to the following for further descriptions of the parameters, including which are required:
- * https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas
+ *
+ * Please see
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-an-account-sas>here</a> for further
+ * descriptions of the parameters, including which are required:
+ *
  */
 public final class AccountSASSignatureValues {
 
@@ -53,8 +57,8 @@ public final class AccountSASSignatureValues {
     public OffsetDateTime expiryTime;
 
     /**
-     * A {@code String} specifying which operations the SAS user may perform. Please refer to
-     * {@link AccountSASPermission} for help constructing the permissions string.
+     * Specifies which operations the SAS user may perform. Please refer to {@link AccountSASPermission} for help
+     * constructing the permissions string.
      */
     public String permissions;
 
@@ -98,7 +102,7 @@ public final class AccountSASSignatureValues {
         Utility.assertNotNull("permissions", this.permissions);
 
         // Signature is generated on the un-url-encoded values.
-        String stringToSign = String.join("\n", new String[]{
+        String stringToSign = String.join("\n",
                 sharedKeyCredentials.getAccountName(),
                 AccountSASPermission.parse(this.permissions).toString(), // guarantees ordering
                 this.services,
@@ -109,7 +113,7 @@ public final class AccountSASSignatureValues {
                 this.protocol == null ? "" : this.protocol.toString(),
                 this.version,
                 Constants.EMPTY_STRING // Account SAS requires an additional newline character
-        });
+        );
 
         String signature;
         try {

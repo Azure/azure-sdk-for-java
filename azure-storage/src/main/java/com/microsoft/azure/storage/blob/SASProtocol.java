@@ -14,6 +14,8 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import java.util.Locale;
+
 /**
  * Specifies the set of possible permissions for a shared access signature protocol. Values of this type can be used
  * to set the fields on the {@link AccountSASSignatureValues} and {@link ServiceSASSignatureValues} types.
@@ -55,6 +57,7 @@ public enum SASProtocol {
         else if (str.equals(Constants.HTTPS_HTTP)) {
             return SASProtocol.HTTPS_HTTP;
         }
-        throw new IllegalArgumentException(String.format("%s could not be parsed into a SASProtocl value.", str));
+        throw new IllegalArgumentException(String.format(Locale.ROOT,
+                "%s could not be parsed into a SASProtocl value.", str));
     }
 }

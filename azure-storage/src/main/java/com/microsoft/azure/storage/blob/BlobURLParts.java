@@ -79,6 +79,9 @@ public final class BlobURLParts {
     /**
      * Converts the blob URL parts to a {@link URL}.
      *
+     * @throws MalformedURLException
+     *      The fields present on the BlobURLParts object were insufficient to construct a valid URL or were
+     *      ill-formatted.
      * @return
      *      A {@code java.net.URL} to the blob resource composed of all the elements in the object.
      */
@@ -98,10 +101,13 @@ public final class BlobURLParts {
         if (this.snapshot != null) {
             url.setQueryParameter(Constants.SNAPSHOT_QUERY_PARAMETER, this.snapshot);
         }
-        String encodedSAS = this.sasQueryParameters.encode();
-        if (encodedSAS.length() != 0) {
-            url.withQuery(encodedSAS);
+        if (this.sasQueryParameters != null) {
+            String encodedSAS = this.sasQueryParameters.encode();
+            if (encodedSAS.length() != 0) {
+                url.withQuery(encodedSAS);
+            }
         }
+
         for (Map.Entry<String, String[]> entry : this.unparsedParameters.entrySet()) {
             // TODO: Test this is the proper encoding
             // The commas are intentionally encoded.

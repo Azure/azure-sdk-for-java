@@ -15,7 +15,6 @@
 package com.microsoft.azure.storage.blob;
 
 import com.microsoft.azure.storage.blob.models.*;
-import com.microsoft.rest.v2.RestResponse;
 import com.microsoft.rest.v2.http.HttpPipeline;
 import com.microsoft.rest.v2.http.UrlBuilder;
 import io.reactivex.Flowable;
@@ -29,9 +28,9 @@ import java.nio.ByteBuffer;
 /**
  * Represents a URL to a page blob. It may be obtained by direct construction or via the create method on a
  * {@link ContainerURL} object. This class does not hold any state about a particular blob but is instead a convenient
- * way of sending off appropriate requests to the resource on the service. Please refer to the following for more
- * information on page blobs:
- * https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs
+ * way of sending off appropriate requests to the resource on the service. Please refer to the
+ * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/understanding-block-blobs--append-blobs--and-page-blobs>Azure Docs</a>
+ * for more information.
  */
 public final class PageBlobURL extends BlobURL {
 
@@ -127,9 +126,14 @@ public final class PageBlobURL extends BlobURL {
 
         // TODO: What if you pass 0 for pageblob size? Validate?
         return this.storageClient.generatedPageBlobs().createWithRestResponseAsync(
-                0, null, headers.getContentType(), headers.getContentEncoding(),
-                headers.getContentLanguage(), headers.getContentMD5(), headers.getCacheControl(),
-                metadata, accessConditions.getLeaseAccessConditions().getLeaseId(),
+                0, null,
+                headers.getContentType(),
+                headers.getContentEncoding(),
+                headers.getContentLanguage(),
+                headers.getContentMD5(),
+                headers.getCacheControl(),
+                metadata,
+                accessConditions.getLeaseAccessConditions().getLeaseId(),
                 headers.getContentDisposition(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
@@ -160,12 +164,12 @@ public final class PageBlobURL extends BlobURL {
         if (pageRange == null) {
             // Throwing is preferred to Single.error because this will error out immediately instead of waiting until
             // subscription.
-            new IllegalArgumentException("pageRange cannot be null.");
+            throw new IllegalArgumentException("pageRange cannot be null.");
         }
         String pageRangeStr = pageRangeToString(pageRange);
 
         return this.storageClient.generatedPageBlobs().uploadPagesWithRestResponseAsync(
-                 body, pageRange.end()-pageRange.start()+1,null, pageRangeStr,
+                 body, pageRange.end()-pageRange.start()+1, null, pageRangeStr,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThanOrEqual(),
                 accessConditions.getPageBlobAccessConditions().getIfSequenceNumberLessThan(),
@@ -335,7 +339,7 @@ public final class PageBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                 sequenceNumber,null);
+                sequenceNumber,null);
     }
 
     /**
@@ -389,8 +393,6 @@ public final class PageBlobURL extends BlobURL {
         if (pageRange.end() <= pageRange.start()) {
             throw new IllegalArgumentException("PageRange's End value must be after the start.");
         }
-
-        StringBuilder range = new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end());
-        return range.toString();
+        return new StringBuilder("bytes=").append(pageRange.start()).append('-').append(pageRange.end()).toString();
     }
 }

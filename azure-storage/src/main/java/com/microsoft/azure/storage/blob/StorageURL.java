@@ -75,6 +75,8 @@ public abstract class StorageURL {
      *      The url to which the name should be appended.
      * @param name
      *      The name to be appended.
+     * @throws MalformedURLException
+     *      Appending the specified name produced an invalid URL.
      * @return
      *      A url with the name appended.
      */

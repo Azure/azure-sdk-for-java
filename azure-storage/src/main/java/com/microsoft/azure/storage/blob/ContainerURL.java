@@ -20,6 +20,7 @@ import io.reactivex.Single;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
@@ -28,8 +29,9 @@ import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
  * {@link ServiceURL} object. This class does not hold any state about a particular blob but is instead a convenient way
  * of sending off appropriate requests to the resource on the service. It may also be used to construct URLs to blobs.
- * Please refer to the following for more information on containers:
- * https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction
+ * Please refer to the
+ * <a href=https://docs.microsoft.com/en-us/azure/storage/blobs/storage-blobs-introduction>Azure Docs</a>
+ * for more information on containers.
  */
 public final class ContainerURL extends StorageURL {
 
@@ -256,7 +258,8 @@ public final class ContainerURL extends StorageURL {
 
     /**
      * Sets the container's permissions. The permissions indicate whether blobs in a container may be accessed publicly.
-     * For more information, see the
+     * Note that, for each signed identifier, we will truncate the start and expiry times to the nearest second to
+     * ensure the time formatting is compatible with the service. For more information, see the
      * <a href="https://docs.microsoft.com/rest/api/storageservices/set-container-acl">Azure Docs</a>.
      *
      * @param accessType
@@ -275,6 +278,25 @@ public final class ContainerURL extends StorageURL {
             PublicAccessType accessType, List<SignedIdentifier> identifiers,
             ContainerAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? ContainerAccessConditions.NONE : accessConditions;
+
+        /*
+        We truncate to seconds because the service only supports nanoseconds or seconds, but doing an
+        OffsetDateTime.now will only give back milliseconds (more precise fields are zeroed and not serialized). This
+        allows for proper serialization with no real detriment to users as sub-second precision on active time for
+        signed identifiers is not really necessary.
+         */
+        if (identifiers != null) {
+            for (SignedIdentifier identifier : identifiers) {
+                if (identifier.accessPolicy() != null && identifier.accessPolicy().start() != null) {
+                    identifier.accessPolicy().withStart(
+                            identifier.accessPolicy().start().truncatedTo(ChronoUnit.SECONDS));
+                }
+                if (identifier.accessPolicy() != null && identifier.accessPolicy().expiry() != null) {
+                    identifier.accessPolicy().withExpiry(
+                            identifier.accessPolicy().expiry().truncatedTo(ChronoUnit.SECONDS));
+                }
+            }
+        }
 
         // TODO: validate that empty list clears permissions and null list does not change list. Document behavior.
         return this.storageClient.generatedContainers().setAccessPolicyWithRestResponseAsync(identifiers, null,
@@ -447,8 +469,8 @@ public final class ContainerURL extends StorageURL {
      *
      * @param marker
      *      Identifies the portion of the list to be returned with the next list operation.
-     *      This value is returned in the response of a previous list operation as the ListBlobsFlatSegmentResponse->
-     *      body()->nextMarker(). Set to null to list the first segment.
+     *      This value is returned in the response of a previous list operation as the
+     *      ListBlobsFlatSegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param options
      *      {@link ListBlobsOptions}
      * @return
@@ -471,8 +493,9 @@ public final class ContainerURL extends StorageURL {
      * <a href="https://docs.microsoft.com/rest/api/storageservices/list-blobs">Azure Docs</a>.
      *
      * @param marker
-     *      Identifies the portion of the list to be returned with the next list operation. This value is returned in
-     *      the response of a previous list operation. Set to null if this is the first segment.
+     *      Identifies the portion of the list to be returned with the next list operation.
+     *      This value is returned in the response of a previous list operation as the
+     *      ListBlobsHierarchySegmentResponse.body().nextMarker(). Set to null to list the first segment.
      * @param delimiter
      *      The operation returns a BlobPrefix element in the response body that acts as a placeholder for all blobs
      *      whose names begin with the same substring up to the appearance of the delimiter character. The delimiter may
@@ -485,6 +508,9 @@ public final class ContainerURL extends StorageURL {
     public Single<ContainersListBlobHierarchySegmentResponse> listBlobsHierarchySegment(
             String marker, String delimiter, ListBlobsOptions options) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
+        if (options.getDetails().getSnapshots()) {
+            throw new IllegalArgumentException("Including snapshots in a hierarchical listing is not supported.");
+        }
 
         return this.storageClient.generatedContainers().listBlobHierarchySegmentWithRestResponseAsync(
                 delimiter, options.getPrefix(), marker, options.getMaxResults(),

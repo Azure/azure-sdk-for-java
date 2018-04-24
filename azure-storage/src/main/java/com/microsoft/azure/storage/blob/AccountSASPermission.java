@@ -14,6 +14,8 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import java.util.Locale;
+
 /**
  * This is a helper class to construct a string representing the permissions granted by an AccountSAS. Setting a value
  * to true means that any SAS which uses these permissions will grant permissions for that operation. Once all the
@@ -156,7 +158,7 @@ public final class AccountSASPermission {
                     break;
                 default:
                     throw new IllegalArgumentException(
-                            String.format(SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
+                            String.format(Locale.ROOT, SR.ENUM_COULD_NOT_BE_PARSED_INVALID_VALUE, "Permissions", permString, c));
             }
         }
         return permissions;

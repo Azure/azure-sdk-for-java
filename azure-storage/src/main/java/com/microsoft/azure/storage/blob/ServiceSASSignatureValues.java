@@ -24,11 +24,11 @@ import java.time.OffsetDateTime;
  * the former is mutable and a logical representation while the latter is immutable and used to generate actual REST
  * requests.
  *
- * Please refer to the following for more conceptual information on SAS:
- * https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1
+ * Please see <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-dotnet-shared-access-signature-part-1>here</a>
+ * for more conceptual information on SAS.
  *
- * Please refer to the following for more details on each value, including which are required:
- * https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas
+ * Please see <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/constructing-a-service-sas>here </a> for
+ * more details on each value, including which are required.
  */
 public final class ServiceSASSignatureValues {
 
@@ -138,21 +138,21 @@ public final class ServiceSASSignatureValues {
         }
 
         // Signature is generated on the un-url-encoded values.
-         String stringToSign = String.join("\n", new String[]{
+         String stringToSign = String.join("\n",
                  verifiedPermissions,
                  this.startTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.startTime),
                  this.expiryTime == null ? "" : Utility.ISO8601UTCDateFormatter.format(this.expiryTime),
                  getCanonicalName(sharedKeyCredentials.getAccountName()),
                  this.identifier,
                  this.ipRange == null ? IPRange.DEFAULT.toString() : this.ipRange.toString(),
-                 this.protocol == null ? "" : ipRange.toString(),
+                 this.protocol == null ? "" : protocol.toString(),
                  this.version,
                  this.cacheControl,
                  this.contentDisposition,
                  this.contentEncoding,
                  this.contentLanguage,
                  this.contentType
-         });
+         );
 
         String signature = null;
         try {

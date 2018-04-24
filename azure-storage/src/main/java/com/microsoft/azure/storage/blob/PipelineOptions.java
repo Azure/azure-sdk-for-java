@@ -20,6 +20,7 @@ import com.microsoft.rest.v2.http.HttpPipelineLogger;
 
 import java.net.InetSocketAddress;
 import java.net.Proxy;
+import java.util.Locale;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
@@ -60,8 +61,6 @@ public final class PipelineOptions {
      */
     public TelemetryOptions telemetryOptions = TelemetryOptions.DEFAULT;
 
-    // TODO:
-
     /**
      * Returns a {@code PipelineOptions} object with default values for each of the options fields. An
      * {@link HttpClient} must still be set explicitly, however.
@@ -77,11 +76,11 @@ public final class PipelineOptions {
             @Override
             public void log(HttpPipelineLogLevel logLevel, String s, Object... objects) {
                 if (logLevel == HttpPipelineLogLevel.INFO) {
-                    Logger.getGlobal().info(String.format(s, objects));
+                    Logger.getGlobal().info(String.format(Locale.ROOT, s, objects));
                 } else if (logLevel == HttpPipelineLogLevel.WARNING) {
-                    Logger.getGlobal().warning(String.format(s, objects));
+                    Logger.getGlobal().warning(String.format(Locale.ROOT, s, objects));
                 } else if (logLevel == HttpPipelineLogLevel.ERROR) {
-                    Logger.getGlobal().severe(String.format(s, objects));
+                    Logger.getGlobal().severe(String.format(Locale.ROOT, s, objects));
                 }
             }
         };
