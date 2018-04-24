@@ -6,7 +6,8 @@
 
 package com.microsoft.rest.v2.credentials;
 
-import com.google.common.io.BaseEncoding;
+import com.microsoft.rest.v2.util.Base64Util;
+
 import java.io.UnsupportedEncodingException;
 
 /**
@@ -39,7 +40,7 @@ public class BasicAuthenticationCredentials implements ServiceClientCredentials 
         String credential = userName + ":" + password;
         String encodedCredential;
         try {
-            encodedCredential = BaseEncoding.base64().encode(credential.getBytes("UTF8"));
+            encodedCredential = Base64Util.encodeToString(credential.getBytes("UTF8"));
         } catch (UnsupportedEncodingException e) {
             // The encoding is hard-coded, so if it's unsupported, it needs to be fixed right here.
             throw new RuntimeException(e);

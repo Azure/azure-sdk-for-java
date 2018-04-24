@@ -220,10 +220,12 @@ public final class HttpPipelineBuilder {
      * Adds a RequestPolicy which retries a failed request up to the given
      * number of times.
      * @param maxRetries The maximum number of times to retry failed requests.
+     * @param delayTime the delay between retries
+     * @param timeUnit the time unit of the delay
      * @return This HttpPipeline builder.
      */
-    public HttpPipelineBuilder withRetryPolicy(int maxRetries) {
-        return withRequestPolicy(new RetryPolicyFactory(maxRetries));
+    public HttpPipelineBuilder withRetryPolicy(int maxRetries, long delayTime, TimeUnit timeUnit) {
+        return withRequestPolicy(new RetryPolicyFactory(maxRetries, delayTime, timeUnit));
     }
 
     /**

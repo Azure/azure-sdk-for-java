@@ -33,12 +33,30 @@ The runtime libraries for [AutoRest](https://github.com/azure/autorest) generate
       <version>2.0.0-beta1</version>
     </dependency>
     
-    <!-- Optional dependency which adds high-performance native libraries  -->
+    <!-- Below are optional high-performance native dependencies  -->
+
+    <!-- Available on Windows/Mac/Linux x86_64 -->
     <dependency>
-      <groupId>com.microsoft.rest.v2</groupId>
-      <artifactId>client-runtime-native</artifactId>
-      <version>2.0.0-SNAPSHOT</version>
-      <type>pom</type>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-tcnative-boringssl-static</artifactId>
+      <version>2.0.8.Final</version>
+      <classifier>${os.detected.classifier}</classifier>
+    </dependency>
+
+    <!-- Only available on Linux -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-epoll</artifactId>
+      <version>4.1.23.Final</version>
+      <classifier>${os.detected.classifier}</classifier>
+    </dependency>
+
+    <!-- Only available on macOS/BSD -->
+    <dependency>
+      <groupId>io.netty</groupId>
+      <artifactId>netty-transport-native-kqueue</artifactId>
+      <version>4.1.23.Final</version>
+      <classifier>${os.detected.classifier}</classifier>
     </dependency>
 </dependencies>
 ```

@@ -12,6 +12,8 @@ import com.microsoft.rest.v2.policy.RequestPolicyFactory;
 import com.microsoft.rest.v2.policy.RequestPolicyOptions;
 import io.reactivex.Single;
 
+import java.util.Arrays;
+
 /**
  * A collection of RequestPolicies that will be applied to a HTTP request before it is sent and will
  * be applied to a HTTP response when it is received.
@@ -70,6 +72,15 @@ public final class HttpPipeline {
      * @param requestPolicyFactories The RequestPolicy factories to use.
      * @return The built HttpPipeline.
      */
+    public static HttpPipeline build(Iterable<RequestPolicyFactory> requestPolicyFactories) {
+        return build(null, requestPolicyFactories);
+    }
+
+    /**
+     * Build a new HttpPipeline that will use the provided RequestPolicy factories.
+     * @param requestPolicyFactories The RequestPolicy factories to use.
+     * @return The built HttpPipeline.
+     */
     public static HttpPipeline build(RequestPolicyFactory... requestPolicyFactories) {
         return build((HttpPipelineOptions) null, requestPolicyFactories);
     }
@@ -91,6 +102,16 @@ public final class HttpPipeline {
      * @return The built HttpPipeline.
      */
     public static HttpPipeline build(HttpPipelineOptions pipelineOptions, RequestPolicyFactory... requestPolicyFactories) {
+        return build(pipelineOptions, Arrays.asList(requestPolicyFactories));
+    }
+
+    /**
+     * Build a new HttpPipeline that will use the provided HttpClient and RequestPolicy factories.
+     * @param pipelineOptions The optional properties that can be set on the created HttpPipeline.
+     * @param requestPolicyFactories The RequestPolicy factories to use.
+     * @return The built HttpPipeline.
+     */
+    public static HttpPipeline build(HttpPipelineOptions pipelineOptions, Iterable<RequestPolicyFactory> requestPolicyFactories) {
         final HttpPipelineBuilder builder = new HttpPipelineBuilder(pipelineOptions);
         if (requestPolicyFactories != null) {
             for (final RequestPolicyFactory requestPolicyFactory : requestPolicyFactories) {

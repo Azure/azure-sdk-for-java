@@ -6,18 +6,19 @@
 
 package com.microsoft.azure.v2.credentials;
 
-import com.google.common.io.BaseEncoding;
 import com.microsoft.aad.adal4j.AsymmetricKeyCredential;
 import com.microsoft.aad.adal4j.AuthenticationContext;
 import com.microsoft.aad.adal4j.AuthenticationException;
 import com.microsoft.aad.adal4j.AuthenticationResult;
 import com.microsoft.aad.adal4j.ClientCredential;
 import com.microsoft.azure.v2.AzureEnvironment;
+import com.microsoft.rest.v2.util.Base64Util;
 
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.StandardCharsets;
 import java.security.KeyFactory;
 import java.security.NoSuchAlgorithmException;
 import java.security.PrivateKey;
@@ -171,7 +172,7 @@ public class ApplicationTokenCredentials extends AzureTokenCredentials {
                 .replace("-----END PRIVATE KEY-----", "")
                 .replace("\n", "")
                 .replace("\r", "");
-        byte[] key = BaseEncoding.base64().decode(base64);
+        byte[] key = Base64Util.decode(base64.getBytes(StandardCharsets.UTF_8));
         PKCS8EncodedKeySpec spec = new PKCS8EncodedKeySpec(key);
         try {
             KeyFactory kf = KeyFactory.getInstance("RSA");

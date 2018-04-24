@@ -2,12 +2,14 @@ package com.microsoft.rest.v2.util;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.OutputStream;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.charset.StandardCharsets;
@@ -23,49 +25,51 @@ import com.google.common.io.Files;
 import io.reactivex.schedulers.Schedulers;
 
 public class FlowableUtilTests {
-
     @Test
     public void testCanReadSlice() throws IOException {
         File file = new File("target/test1");
         Files.write("hello there".getBytes(StandardCharsets.UTF_8), file);
-        AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        byte[] bytes = FlowableUtil.readFile(channel, 1, 3) //
-                .map(bb -> toBytes(bb)) //
-                .collectInto(new ByteArrayOutputStream(), (bos, b) -> bos.write(b)) //
-                .blockingGet().toByteArray();
-        assertEquals("ell", new String(bytes, StandardCharsets.UTF_8));
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+            byte[] bytes = FlowableUtil.readFile(channel, 1, 3) //
+                    .map(bb -> toBytes(bb)) //
+                    .collectInto(new ByteArrayOutputStream(), (bos, b) -> bos.write(b)) //
+                    .blockingGet().toByteArray();
+            assertEquals("ell", new String(bytes, StandardCharsets.UTF_8));
+        }
     }
 
     @Test
     public void testCanReadEmptyFile() throws IOException {
         File file = new File("target/test2");
-        file.delete();
         file.createNewFile();
-        AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        byte[] bytes = FlowableUtil.readFile(channel, 1, 3) //
-                .map(bb -> toBytes(bb)) //
-                .collectInto(new ByteArrayOutputStream(), (bos, b) -> bos.write(b)) //
-                .blockingGet().toByteArray();
-        assertEquals(0, bytes.length);
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+            byte[] bytes = FlowableUtil.readFile(channel, 1, 3) //
+                    .map(bb -> toBytes(bb)) //
+                    .collectInto(new ByteArrayOutputStream(), OutputStream::write) //
+                    .blockingGet().toByteArray();
+            assertEquals(0, bytes.length);
+        }
+        assertTrue(file.delete());
     }
 
     @Test
     public void testAsynchronyShortInput() throws IOException {
         File file = new File("target/test3");
         Files.write("hello there".getBytes(StandardCharsets.UTF_8), file);
-        AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        byte[] bytes = FlowableUtil.readFile(channel) //
-                .map(bb -> toBytes(bb)) //
-                .rebatchRequests(1) //
-                .subscribeOn(Schedulers.io()) //
-                .observeOn(Schedulers.io()) //
-                .collectInto(new ByteArrayOutputStream(), (bos, b) -> bos.write(b)) //
-                .blockingGet() //
-                .toByteArray();
-        assertEquals("hello there", new String(bytes, StandardCharsets.UTF_8));
-        file.delete();
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+            byte[] bytes = FlowableUtil.readFile(channel) //
+                    .map(bb -> toBytes(bb)) //
+                    .rebatchRequests(1) //
+                    .subscribeOn(Schedulers.io()) //
+                    .observeOn(Schedulers.io()) //
+                    .collectInto(new ByteArrayOutputStream(), (bos, b) -> bos.write(b)) //
+                    .blockingGet() //
+                    .toByteArray();
+            assertEquals("hello there", new String(bytes, StandardCharsets.UTF_8));
+        }
+        assertTrue(file.delete());
     }
-    
+
     private static final int NUM_CHUNKS_IN_LONG_INPUT = 10_000_000;
 
     @Test
@@ -82,17 +86,18 @@ public class FlowableUtilTests {
         System.out.println("long input file size="+ file.length()/(1024*1024) + "MB");
         byte[] expected = digest.digest();
         digest.reset();
-        AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        FlowableUtil.readFile(channel) //
-                .rebatchRequests(1) //
-                .subscribeOn(Schedulers.io()) //
-                .observeOn(Schedulers.io()) //
-                .blockingForEach(bb -> digest.update(bb));
-                
-        assertArrayEquals(expected, digest.digest());
-        file.delete();
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+            FlowableUtil.readFile(channel) //
+                    .rebatchRequests(1) //
+                    .subscribeOn(Schedulers.io()) //
+                    .observeOn(Schedulers.io()) //
+                    .blockingForEach(bb -> digest.update(bb));
+
+            assertArrayEquals(expected, digest.digest());
+        }
+        assertTrue(file.delete());
     }
-    
+
     @Test
     public void testBackpressureLongInput() throws IOException, NoSuchAlgorithmException {
         File file = new File("target/test4");
@@ -106,26 +111,28 @@ public class FlowableUtilTests {
         }
         byte[] expected = digest.digest();
         digest.reset();
-        AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ);
-        FlowableUtil.readFile(channel) //
-                .rebatchRequests(1) //
-                .subscribeOn(Schedulers.io()) //
-                .observeOn(Schedulers.io()) //
-                .doOnNext(bb -> digest.update(bb)) //
-                .test(0) //
-                .assertNoValues() //
-                .requestMore(1) //
-                .awaitCount(1) //
-                .assertValueCount(1) 
-                .requestMore(1) //
-                .awaitCount(2) //
-                .assertValueCount(2) //
-                .requestMore(Long.MAX_VALUE) //
-                .awaitDone(20, TimeUnit.SECONDS) //
-                .assertComplete();
-                
+
+        try (AsynchronousFileChannel channel = AsynchronousFileChannel.open(file.toPath(), StandardOpenOption.READ)) {
+            FlowableUtil.readFile(channel) //
+                    .rebatchRequests(1) //
+                    .subscribeOn(Schedulers.io()) //
+                    .observeOn(Schedulers.io()) //
+                    .doOnNext(bb -> digest.update(bb)) //
+                    .test(0) //
+                    .assertNoValues() //
+                    .requestMore(1) //
+                    .awaitCount(1) //
+                    .assertValueCount(1)
+                    .requestMore(1) //
+                    .awaitCount(2) //
+                    .assertValueCount(2) //
+                    .requestMore(Long.MAX_VALUE) //
+                    .awaitDone(20, TimeUnit.SECONDS) //
+                    .assertComplete();
+        }
+
         assertArrayEquals(expected, digest.digest());
-        file.delete();
+        assertTrue(file.delete());
     }
     
     @Test
@@ -152,7 +159,7 @@ public class FlowableUtilTests {
     }
     
     @Test
-    public void testSplitOnEmptyContent() throws NoSuchAlgorithmException {
+    public void testSplitOnEmptyContent() {
         ByteBuffer bb = ByteBuffer.allocateDirect(16);
         bb.flip();
         FlowableUtil //

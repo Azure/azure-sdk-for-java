@@ -1400,6 +1400,37 @@ public abstract class RestProxyTests {
         assertEquals("45", resultHeaders.value("ABC123"));
     }
 
+    @Host("http://httpbin.org")
+    interface Service25 {
+        @GET("anything")
+        HttpBinJSON get();
+
+        @GET("anything")
+        Single<HttpBinJSON> getAsync();
+
+        @GET("anything")
+        Single<BodyResponse<HttpBinJSON>> getBodyResponseAsync();
+    }
+
+    @Test(expected = RestException.class)
+    public void testMissingDecodingPolicyCausesException() {
+        Service25 service = RestProxy.create(Service25.class, HttpPipeline.build());
+        service.get();
+    }
+
+    @Test(expected = RestException.class)
+    public void testSingleMissingDecodingPolicyCausesException() {
+        Service25 service = RestProxy.create(Service25.class, HttpPipeline.build());
+        service.getAsync().blockingGet();
+        service.getBodyResponseAsync().blockingGet();
+    }
+
+    @Test(expected = RestException.class)
+    public void testSingleBodyResponseMissingDecodingPolicyCausesException() {
+        Service25 service = RestProxy.create(Service25.class, HttpPipeline.build());
+        service.getBodyResponseAsync().blockingGet();
+    }
+
     // Helpers
     protected <T> T createService(Class<T> serviceClass) {
         final HttpClient httpClient = createHttpClient();

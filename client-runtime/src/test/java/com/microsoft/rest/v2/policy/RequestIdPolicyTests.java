@@ -20,6 +20,7 @@ import org.junit.Test;
 
 import java.net.URL;
 import java.nio.ByteBuffer;
+import java.util.concurrent.TimeUnit;
 
 public class RequestIdPolicyTests {
     private final HttpResponse mockResponse = new HttpResponse() {
@@ -105,7 +106,7 @@ public class RequestIdPolicyTests {
                 }
             },
             new RequestIdPolicyFactory(),
-            new RetryPolicyFactory(1));
+            new RetryPolicyFactory(1, 0, TimeUnit.SECONDS));
 
         pipeline.sendRequestAsync(new HttpRequest("sameRequestIdForRetry", HttpMethod.GET, new URL("http://localhost/"), null)).blockingGet();
     }

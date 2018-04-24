@@ -12,27 +12,38 @@ import io.reactivex.Single;
 import io.reactivex.functions.Function;
 
 import java.net.HttpURLConnection;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Creates a RequestPolicy which retries when a recoverable HTTP error occurs.
  */
 public class RetryPolicyFactory implements RequestPolicyFactory {
     private static final int DEFAULT_MAX_RETRIES = 3;
+    private static final int DEFAULT_DELAY = 0;
+    private static final TimeUnit DEFAULT_TIME_UNIT = TimeUnit.MILLISECONDS;
     private final int maxRetries;
+    private final long delayTime;
+    private final TimeUnit timeUnit;
 
     /**
-     * Creates a Factory with the default number of retry attempts.
+     * Creates a RetryPolicyFactory with the default number of retry attempts and delay between retries.
      */
     public RetryPolicyFactory() {
         maxRetries = DEFAULT_MAX_RETRIES;
+        delayTime = DEFAULT_DELAY;
+        timeUnit = DEFAULT_TIME_UNIT;
     }
 
     /**
-     * Creates a Factory.
+     * Creates a RetryPolicyFactory.
      * @param maxRetries The maximum number of retries to attempt.
+     * @param delayTime the delay between retries
+     * @param timeUnit the time unit of the delay
      */
-    public RetryPolicyFactory(int maxRetries) {
+    public RetryPolicyFactory(int maxRetries, long delayTime, TimeUnit timeUnit) {
         this.maxRetries = maxRetries;
+        this.delayTime = delayTime;
+        this.timeUnit = timeUnit;
     }
 
     @Override
@@ -52,20 +63,17 @@ public class RetryPolicyFactory implements RequestPolicyFactory {
         }
 
         private Single<HttpResponse> attemptAsync(final HttpRequest request, final int tryCount) {
-            Single<HttpResponse> result = next.sendAsync(request.buffer())
-                    .flatMap(new Function<HttpResponse, Single<? extends HttpResponse>>() {
-                        @Override
-                        public Single<HttpResponse> apply(HttpResponse httpResponse) throws Exception {
-                            Single<HttpResponse> result;
-                            if (shouldRetry(httpResponse, tryCount)) {
-                                result = attemptAsync(request, tryCount + 1);
-                            } else {
-                                result = Single.just(httpResponse);
-                            }
-                            return result;
+            return next.sendAsync(request.buffer())
+                    .flatMap((Function<HttpResponse, Single<? extends HttpResponse>>) httpResponse -> {
+                        if (shouldRetry(httpResponse, tryCount)) {
+                            return attemptAsync(request, tryCount + 1).delaySubscription(delayTime, timeUnit);
+                        } else {
+                            return Single.just(httpResponse);
                         }
-                    });
-            return result;
+                    }).onErrorResumeNext(err ->
+                                    tryCount < maxRetries
+                                            ? attemptAsync(request, tryCount + 1).delaySubscription(delayTime, timeUnit)
+                                            : Single.error(err));
         }
 
         private boolean shouldRetry(HttpResponse response, int tryCount) {

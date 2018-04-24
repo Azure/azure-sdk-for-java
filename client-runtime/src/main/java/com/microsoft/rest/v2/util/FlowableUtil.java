@@ -6,20 +6,14 @@
 
 package com.microsoft.rest.v2.util;
 
-import com.google.common.io.ByteArrayDataOutput;
-import com.google.common.io.ByteStreams;
 import com.google.common.reflect.TypeToken;
 
+import io.netty.buffer.ByteBuf;
+import io.netty.buffer.Unpooled;
 import io.reactivex.Completable;
-import io.reactivex.CompletableEmitter;
-import io.reactivex.CompletableOnSubscribe;
-import io.reactivex.Emitter;
 import io.reactivex.Flowable;
 import io.reactivex.FlowableSubscriber;
 import io.reactivex.Single;
-import io.reactivex.functions.BiConsumer;
-import io.reactivex.functions.BiFunction;
-import io.reactivex.functions.Function;
 import io.reactivex.internal.subscriptions.SubscriptionHelper;
 import io.reactivex.internal.util.BackpressureHelper;
 import org.reactivestreams.Subscriber;
@@ -31,7 +25,6 @@ import java.lang.reflect.Type;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.CompletionHandler;
-import java.util.concurrent.Callable;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.atomic.AtomicLong;
 
@@ -62,19 +55,19 @@ public final class FlowableUtil {
      * @return A Single which emits the concatenation of all the byte buffers given by the source Flowable.
      */
     public static Single<byte[]> collectBytesInArray(Flowable<ByteBuffer> content) {
-        return content.collectInto(ByteStreams.newDataOutput(), new BiConsumer<ByteArrayDataOutput, ByteBuffer>() {
-            @Override
-            public void accept(ByteArrayDataOutput out, ByteBuffer chunk) throws Exception {
-                // TODO: Would be nice to reduce copying here
-                byte[] arrayChunk = new byte[chunk.remaining()];
-                chunk.get(arrayChunk);
-                out.write(arrayChunk);
+        return content.collectInto(Unpooled.buffer(), ByteBuf::writeBytes).map(out -> {
+            try {
+                if (out.array().length == out.readableBytes()) {
+                    return out.array();
+                } else {
+                    byte[] arr = new byte[out.readableBytes()];
+                    out.readBytes(arr);
+                    return arr;
+                }
+            } finally {
+                out.release();
             }
-        }).map(new Function<ByteArrayDataOutput, byte[]>() {
-            @Override
-            public byte[] apply(ByteArrayDataOutput out) throws Exception {
-                return out.toByteArray();
-            }
+
         });
     }
 
@@ -84,116 +77,141 @@ public final class FlowableUtil {
      * @return A Single which emits the concatenation of all the byte buffers given by the source Flowable.
      */
     public static Single<ByteBuffer> collectBytesInBuffer(Flowable<ByteBuffer> content) {
-        return collectBytesInArray(content)
-            .map(new Function<byte[], ByteBuffer>() {
-                @Override
-                public ByteBuffer apply(byte[] bytes) throws Exception {
-                    return ByteBuffer.wrap(bytes);
-                }
-            });
+        return collectBytesInArray(content).map(ByteBuffer::wrap);
     }
 
     /**
      * Writes the bytes emitted by a Flowable to an AsynchronousFileChannel.
+     *
      * @param content the Flowable content
-     * @param fileChannel the file channel
+     * @param outFile the file channel
      * @return a Completable which performs the write operation when subscribed
      */
-    public static Completable writeFile(final Flowable<ByteBuffer> content, final AsynchronousFileChannel fileChannel) {
-        return Completable.create(new CompletableOnSubscribe() {
-            @Override
-            public void subscribe(final CompletableEmitter emitter) throws Exception {
-                content.subscribe(new FlowableSubscriber<ByteBuffer>() {
-                    // volatile ensures that writes to these fields by one thread will be immediately visible to other threads.
-                    // An I/O pool thread will write to isWriting and read isCompleted,
-                    // while another thread may read isWriting and write to isCompleted.
-                    volatile boolean isWriting = false;
-                    volatile boolean isCompleted = false;
-                    volatile Subscription subscription;
-                    volatile long position = 0;
-
-                    @Override
-                    public void onSubscribe(Subscription s) {
-                        subscription = s;
-                        s.request(1);
-                    }
-
-                    @Override
-                    public void onNext(ByteBuffer bytes) {
-                        isWriting = true;
-                        fileChannel.write(bytes, position, null, onWriteCompleted);
-                    }
-
-
-                    CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
-                        @Override
-                        public void completed(Integer bytesWritten, Object attachment) {
-                            isWriting = false;
-                            if (isCompleted) {
-                                emitter.onComplete();
-                            }
-                            //noinspection NonAtomicOperationOnVolatileField
-                            position += bytesWritten;
-                            subscription.request(1);
-                        }
-
-                        @Override
-                        public void failed(Throwable exc, Object attachment) {
-                            subscription.cancel();
-                            emitter.onError(exc);
-                        }
-                    };
-
-                    @Override
-                    public void onError(Throwable throwable) {
-                        subscription.cancel();
-                        emitter.onError(throwable);
-                    }
-
-                    @Override
-                    public void onComplete() {
-                        isCompleted = true;
-                        if (!isWriting) {
-                            emitter.onComplete();
-                        }
-                    }
-                });
-            }
-        });
+    public static Completable writeFile(Flowable<ByteBuffer> content, AsynchronousFileChannel outFile) {
+        return writeFile(content, outFile, 0);
     }
 
     /**
-     * Creates a {@link Flowable} from an {@link AsynchronousFileChannel} which reads part of a file.
+     * Writes the bytes emitted by a Flowable to an AsynchronousFileChannel
+     * starting at the given position in the file.
+     *
+     * @param content the Flowable content
+     * @param outFile the file channel
+     * @param position the position in the file to begin writing
+     * @return a Completable which performs the write operation when subscribed
+     */
+    public static Completable writeFile(Flowable<ByteBuffer> content, AsynchronousFileChannel outFile, long position) {
+        return Completable.create(emitter -> content.subscribe(new FlowableSubscriber<ByteBuffer>() {
+            // volatile ensures that writes to these fields by one thread will be immediately visible to other threads.
+            // An I/O pool thread will write to isWriting and read isCompleted,
+            // while another thread may read isWriting and write to isCompleted.
+            volatile boolean isWriting = false;
+            volatile boolean isCompleted = false;
+            volatile Subscription subscription;
+            volatile long pos = position;
+
+            @Override
+            public void onSubscribe(Subscription s) {
+                subscription = s;
+                s.request(1);
+            }
+
+            @Override
+            public void onNext(ByteBuffer bytes) {
+                isWriting = true;
+                outFile.write(bytes, pos, null, onWriteCompleted);
+            }
+
+
+            CompletionHandler<Integer, Object> onWriteCompleted = new CompletionHandler<Integer, Object>() {
+                @Override
+                public void completed(Integer bytesWritten, Object attachment) {
+                    isWriting = false;
+                    if (isCompleted) {
+                        emitter.onComplete();
+                    }
+                    //noinspection NonAtomicOperationOnVolatileField
+                    pos += bytesWritten;
+                    subscription.request(1);
+                }
+
+                @Override
+                public void failed(Throwable exc, Object attachment) {
+                    subscription.cancel();
+                    emitter.onError(exc);
+                }
+            };
+
+            @Override
+            public void onError(Throwable throwable) {
+                subscription.cancel();
+                emitter.onError(throwable);
+            }
+
+            @Override
+            public void onComplete() {
+                isCompleted = true;
+                if (!isWriting) {
+                    emitter.onComplete();
+                }
+            }
+        }));
+    }
+
+    /**
+     * Creates a {@link Flowable} from an {@link AsynchronousFileChannel}
+     * which reads part of a file into chunks of the given size.
+     *
+     * @param fileChannel The file channel.
+     * @param chunkSize the size of file chunks to read.
+     * @param offset The offset in the file to begin reading.
+     * @param length The number of bytes to read from the file.
+     * @return the Flowable.
+     */
+    public static Flowable<ByteBuffer> readFile(AsynchronousFileChannel fileChannel, int chunkSize, long offset, long length) {
+        return new FileReadFlowable(fileChannel, chunkSize, offset, length);
+    }
+
+    /**
+     * Creates a {@link Flowable} from an {@link AsynchronousFileChannel}
+     * which reads part of a file.
      *
      * @param fileChannel The file channel.
      * @param offset The offset in the file to begin reading.
      * @param length The number of bytes to read from the file.
      * @return the Flowable.
      */
-    public static Flowable<ByteBuffer> readFile(final AsynchronousFileChannel fileChannel, final long offset, final long length) {
-        return new FileReadFlowable(fileChannel, offset, length);
+    public static Flowable<ByteBuffer> readFile(AsynchronousFileChannel fileChannel, long offset, long length) {
+        return readFile(fileChannel, DEFAULT_CHUNK_SIZE, offset, length);
     }
 
     /**
-     * Creates a {@link Flowable} from an {@link AsynchronousFileChannel} which reads the entire file.
+     * Creates a {@link Flowable} from an {@link AsynchronousFileChannel}
+     * which reads the entire file.
+     *
      * @param fileChannel The file channel.
-     * @throws IOException if an error occurs when determining file size
      * @return The AsyncInputStream.
      */
-    public static Flowable<ByteBuffer> readFile(AsynchronousFileChannel fileChannel) throws IOException {
-        long size = fileChannel.size();
-        return readFile(fileChannel, 0, size);
+    public static Flowable<ByteBuffer> readFile(AsynchronousFileChannel fileChannel) {
+        try {
+            long size = fileChannel.size();
+            return readFile(fileChannel, DEFAULT_CHUNK_SIZE, 0, size);
+        } catch (IOException e) {
+            return Flowable.error(e);
+        }
     }
 
-    private static final int CHUNK_SIZE = 8192;
+    private static final int DEFAULT_CHUNK_SIZE = 1024 * 64;
     
     private static final class FileReadFlowable extends Flowable<ByteBuffer> {
         private final AsynchronousFileChannel fileChannel;
+        private final int chunkSize;
         private final long offset;
         private final long length;
 
-        FileReadFlowable(AsynchronousFileChannel fileChannel, long offset, long length) {
+        FileReadFlowable(AsynchronousFileChannel fileChannel, int chunkSize, long offset, long length) {
             this.fileChannel = fileChannel;
+            this.chunkSize = chunkSize;
             this.offset = offset;
             this.length = length;
         }
@@ -291,7 +309,7 @@ public final class FlowableUtil {
             private void doRead() {
                 // use local variable to limit volatile reads
                 long pos = position;
-                ByteBuffer innerBuf = ByteBuffer.allocate(Math.min(CHUNK_SIZE, maxRequired(pos)));
+                ByteBuffer innerBuf = ByteBuffer.allocate(Math.min(chunkSize, maxRequired(pos)));
                 fileChannel.read(innerBuf, pos, innerBuf, this);
             }
 
@@ -359,24 +377,16 @@ public final class FlowableUtil {
      * @return A stream that emits chunks of the original whole ByteBuffer
      */
     public static Flowable<ByteBuffer> split(final ByteBuffer whole, final int chunkSize) {
-        return Flowable.generate(new Callable<Integer>() {
-            @Override
-            public Integer call() throws Exception {
-                return whole.position();
+        return Flowable.generate(whole::position, (position, emitter) -> {
+            int newLimit = Math.min(whole.limit(), position + chunkSize);
+            if (position >= whole.limit()) {
+                emitter.onComplete();
+            } else {
+                ByteBuffer chunk = whole.duplicate();
+                chunk.position(position).limit(newLimit);
+                emitter.onNext(chunk);
             }
-        }, new BiFunction<Integer, Emitter<ByteBuffer>, Integer>() {
-            @Override
-            public Integer apply(Integer position, Emitter<ByteBuffer> emitter) throws Exception {
-                int newLimit = Math.min(whole.limit(), position + chunkSize);
-                if (position >= whole.limit()) {
-                    emitter.onComplete();
-                } else {
-                    ByteBuffer chunk = whole.duplicate();
-                    chunk.position(position).limit(newLimit);
-                    emitter.onNext(chunk);
-                }
-                return newLimit;
-            }
+            return newLimit;
         });
     }
 

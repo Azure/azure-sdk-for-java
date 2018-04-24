@@ -6,7 +6,7 @@
 
 package com.microsoft.rest.v2;
 
-import com.google.common.io.BaseEncoding;
+import com.microsoft.rest.v2.util.Base64Util;
 
 import java.util.Arrays;
 
@@ -73,7 +73,7 @@ public final class Base64Url {
         if (bytes == null) {
             return new Base64Url((String) null);
         } else {
-            return new Base64Url(BaseEncoding.base64Url().omitPadding().encode(bytes));
+            return new Base64Url(Base64Util.encodeURLWithoutPadding(bytes));
         }
     }
 
@@ -95,8 +95,8 @@ public final class Base64Url {
         if (this.bytes == null) {
             return null;
         }
-        final String bytesString = new String(bytes);
-        final byte[] decodedBytes = BaseEncoding.base64Url().decode(bytesString);
+
+        final byte[] decodedBytes = Base64Util.decodeURL(bytes);
         return decodedBytes;
     }
 

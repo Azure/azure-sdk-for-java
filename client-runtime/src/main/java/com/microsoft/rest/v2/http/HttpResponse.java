@@ -12,6 +12,8 @@ import io.reactivex.Single;
 import java.io.Closeable;
 import java.nio.ByteBuffer;
 
+import com.microsoft.rest.v2.policy.DecodingPolicyFactory;
+
 /**
  * This class contains all of the details necessary for reacting to a HTTP response from a
  * HttpResponse.
@@ -19,6 +21,7 @@ import java.nio.ByteBuffer;
 public abstract class HttpResponse implements Closeable {
     private Object deserializedHeaders;
     private Object deserializedBody;
+    private boolean isDecoded;
 
     /**
      * Get this response object's HTTP status code.
@@ -98,6 +101,24 @@ public abstract class HttpResponse implements Closeable {
      */
     public void close() {
         // no-op
+    }
+
+    /**
+     * Returns a value indicating whether this HttpResponse has been decoded by a {@link DecodingPolicyFactory}.
+     * @return whether this HttpResponse has been decoded
+     */
+    public boolean isDecoded() {
+        return isDecoded;
+    }
+
+    /**
+     * Sets the flag indicating whether this HttpResponse has been decoded by a {@link DecodingPolicyFactory}.
+     * @param isDecoded whether this HttpResponse has been decoded
+     * @return this HTTP repsonse
+     */
+    public boolean withIsDecoded(boolean isDecoded) {
+        this.isDecoded = isDecoded;
+        return isDecoded;
     }
 
     /**

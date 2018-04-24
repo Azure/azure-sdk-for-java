@@ -16,7 +16,6 @@ import io.netty.handler.ssl.SslContext;
 import io.netty.handler.ssl.SslContextBuilder;
 import io.netty.util.AttributeKey;
 import io.netty.util.concurrent.Future;
-import io.netty.util.concurrent.GenericFutureListener;
 import io.netty.util.concurrent.Promise;
 import io.reactivex.exceptions.Exceptions;
 
@@ -138,16 +137,14 @@ public class SharedChannelPool implements ChannelPool {
                         }
 
                         leased.put(request.uri, channelFuture.channel());
-                        channelFuture.addListener(new GenericFutureListener<Future<? super Void>>() {
-                            @Override
-                            public void operationComplete(Future<? super Void> future) throws Exception {
-                                if (channelFuture.isSuccess()) {
-                                    handler.channelAcquired(channelFuture.channel());
-                                    request.promise.setSuccess(channelFuture.channel());
-                                } else {
-                                    leased.remove(request.uri, channelFuture.channel());
-                                    request.promise.setFailure(channelFuture.cause());
-                                }
+                        channelFuture.addListener((ChannelFuture future) -> {
+                            if (future.isSuccess()) {
+                                handler.channelAcquired(future.channel());
+                                request.promise.setSuccess(future.channel());
+                            } else {
+                                leased.remove(request.uri, future.channel());
+
+                                request.promise.setFailure(future.cause());
                             }
                         });
                     }

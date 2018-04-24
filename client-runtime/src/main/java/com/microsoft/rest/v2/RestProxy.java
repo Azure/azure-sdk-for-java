@@ -36,7 +36,6 @@ import io.reactivex.Observable;
 import io.reactivex.Single;
 import io.reactivex.exceptions.Exceptions;
 import io.reactivex.functions.Function;
-import org.reactivestreams.Publisher;
 
 import java.io.IOException;
 import java.lang.reflect.Constructor;
@@ -48,7 +47,6 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.nio.ByteBuffer;
 import java.util.Map;
-import java.util.NoSuchElementException;
 
 /**
  * This class can be used to create a proxy implementation for a provided Swagger generated
@@ -409,16 +407,17 @@ public class RestProxy implements InvocationHandler {
         final int responseStatusCode = response.statusCode();
 
         try {
-            final Single<?> asyncResult;
+            Single<?> asyncResult;
             if (entityTypeToken.isSubtypeOf(RestResponse.class)) {
-                final Constructor<? extends RestResponse<?, ?>> responseConstructor = getRestResponseConstructor(entityTypeToken);
+                Constructor<? extends RestResponse<?, ?>> responseConstructor = getRestResponseConstructor(entityTypeToken);
 
-                final Type[] deserializedTypes = getTypeArguments(entityTypeToken.getSupertype(RestResponse.class).getType());
-                final Type bodyType = deserializedTypes[1];
-                final HttpHeaders responseHeaders = response.headers();
-                final Object deserializedHeaders = response.deserializedHeaders();
+                Type[] deserializedTypes = getTypeArguments(entityTypeToken.getSupertype(RestResponse.class).getType());
 
-                final TypeToken bodyTypeToken = TypeToken.of(bodyType);
+                HttpHeaders responseHeaders = response.headers();
+                Object deserializedHeaders = response.deserializedHeaders();
+
+                Type bodyType = deserializedTypes[1];
+                TypeToken bodyTypeToken = TypeToken.of(bodyType);
                 if (bodyTypeToken.isSubtypeOf(Void.class)) {
                     asyncResult = response.body().lastElement().ignoreElement()
                             .andThen(Single.just(responseConstructor.newInstance(responseStatusCode, deserializedHeaders, responseHeaders.toMap(), null)));
@@ -426,17 +425,22 @@ public class RestProxy implements InvocationHandler {
                     final Map<String, String> rawHeaders = responseHeaders.toMap();
 
                     asyncResult = handleBodyReturnTypeAsync(response, methodParser, bodyType)
-                            .map(new Function<Object, RestResponse<?, ?>>() {
-                                @Override
-                                public RestResponse<?, ?> apply(Object body) throws Exception {
-                                    return responseConstructor.newInstance(responseStatusCode, deserializedHeaders, rawHeaders, body);
-                                }
-                            }).toSingle(responseConstructor.newInstance(responseStatusCode, deserializedHeaders, rawHeaders, null));
+                            .map((Function<Object, RestResponse<?, ?>>) body -> responseConstructor.newInstance(responseStatusCode, deserializedHeaders, rawHeaders, body))
+                            .toSingle(responseConstructor.newInstance(responseStatusCode, deserializedHeaders, rawHeaders, null));
+                }
+
+                Type headersType = deserializedTypes[0];
+                if (!response.isDecoded() && !TypeToken.of(headersType).isSubtypeOf(Void.class)) {
+                    asyncResult = asyncResult.toCompletable().andThen(Single.error(new RestException(
+                            "No deserialized headers were found. Please add a DecodingPolicyFactory to the HttpPipeline.",
+                            response,
+                            (Object) null)));
                 }
             } else {
                 // For now we're just throwing if the Maybe didn't emit a value.
                 asyncResult = handleBodyReturnTypeAsync(response, methodParser, entityType).toSingle();
             }
+
             return asyncResult;
         } catch (ReflectiveOperationException e) {
             throw new RuntimeException(e);
@@ -457,16 +461,16 @@ public class RestProxy implements InvocationHandler {
         } else if (entityTypeToken.isSubtypeOf(byte[].class)) {
             Maybe<byte[]> responseBodyBytesAsync = response.bodyAsByteArray().toMaybe();
             if (returnValueWireType == Base64Url.class) {
-                responseBodyBytesAsync = responseBodyBytesAsync.map(new Function<byte[], byte[]>() {
-                    @Override
-                    public byte[] apply(byte[] base64UrlBytes) {
-                        return new Base64Url(base64UrlBytes).decodedBytes();
-                    }
-                });
+                responseBodyBytesAsync = responseBodyBytesAsync.map(base64UrlBytes -> new Base64Url(base64UrlBytes).decodedBytes());
             }
             asyncResult = responseBodyBytesAsync;
         } else if (FlowableUtil.isFlowableByteBuffer(entityTypeToken)) {
             asyncResult = Maybe.just(response.body());
+        } else if (!response.isDecoded()) {
+            asyncResult = Maybe.error(new RestException(
+                    "No deserialized response body was found. Please add a DecodingPolicyFactory to the HttpPipeline.",
+                    response,
+                    (Object) null));
         } else {
             Object result = response.deserializedBody();
             if (result == null) {
@@ -488,17 +492,6 @@ public class RestProxy implements InvocationHandler {
         throw new Exception("The resume operation is not avaiable in the base RestProxy class.");
     }
 
-    private static final Function<Throwable, Single<?>> WARN_MISSING_DECODING = new Function<Throwable, Single<?>>() {
-        @Override
-        public Single<?> apply(Throwable throwable) throws Exception {
-            if (throwable instanceof NoSuchElementException) {
-                return Single.error(new IllegalStateException("No decoded response body was found. DecodingPolicyFactory may be missing from the pipeline.", throwable));
-            } else {
-                return Single.error(throwable);
-            }
-        }
-    };
-
     /**
      * Handle the provided asynchronous HTTP response and return the deserialized value.
      * @param httpRequest The original HTTP request.
@@ -519,23 +512,14 @@ public class RestProxy implements InvocationHandler {
         }
         else if (returnTypeToken.isSubtypeOf(Single.class)) {
             final Type singleTypeParam = getTypeArgument(returnType);
-            result = asyncExpectedResponse.flatMap(new Function<HttpResponse, Single<?>>() {
-                @Override
-                public Single<?> apply(HttpResponse response) throws Exception {
-                    return handleRestResponseReturnTypeAsync(response, methodParser, singleTypeParam);
-                }
-            }).onErrorResumeNext(WARN_MISSING_DECODING);
+            result = asyncExpectedResponse.flatMap(response ->
+                    handleRestResponseReturnTypeAsync(response, methodParser, singleTypeParam));
         }
         else if (returnTypeToken.isSubtypeOf(Observable.class)) {
             throw new InvalidReturnTypeException("RestProxy does not support swagger interface methods (such as " + methodParser.fullyQualifiedMethodName() + "()) with a return type of " + returnType.toString());
         }
         else if (FlowableUtil.isFlowableByteBuffer(returnTypeToken)) {
-            result = asyncExpectedResponse.flatMapPublisher(new Function<HttpResponse, Publisher<?>>() {
-                @Override
-                public Publisher<?> apply(HttpResponse httpResponse) throws Exception {
-                    return httpResponse.body();
-                }
-            });
+            result = asyncExpectedResponse.flatMapPublisher(HttpResponse::body);
         }
         else if (returnTypeToken.isSubtypeOf(void.class) || returnTypeToken.isSubtypeOf(Void.class)) {
             asyncExpectedResponse.blockingGet();
@@ -544,12 +528,9 @@ public class RestProxy implements InvocationHandler {
             // The return value is not an asynchronous type (Completable, Single, or Observable), so
             // block the deserialization until a value is received.
             result = asyncExpectedResponse
-                    .flatMap(new Function<HttpResponse, Single<?>>() {
-                        @Override
-                        public Single<?> apply(HttpResponse httpResponse) throws Exception {
-                            return handleRestResponseReturnTypeAsync(httpResponse, methodParser, returnType);
-                        }
-                    }).onErrorResumeNext(WARN_MISSING_DECODING).blockingGet();
+                    .flatMap(httpResponse ->
+                            handleRestResponseReturnTypeAsync(httpResponse, methodParser, returnType))
+                    .blockingGet();
         }
 
         return result;

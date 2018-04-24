@@ -59,6 +59,8 @@ public final class HttpResponseDecoder {
      * @return A {@link Single} containing either the decoded HttpResponse or an error
      */
     public Single<HttpResponse> decode(final HttpResponse response) {
+        response.withIsDecoded(true);
+
         final Object deserializedHeaders;
         try {
             deserializedHeaders = deserializeHeaders(response.headers());

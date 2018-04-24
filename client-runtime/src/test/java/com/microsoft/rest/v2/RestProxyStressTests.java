@@ -19,6 +19,7 @@ import com.microsoft.rest.v2.http.HttpHeaders;
 import com.microsoft.rest.v2.http.HttpPipelineBuilder;
 import com.microsoft.rest.v2.http.HttpRequest;
 import com.microsoft.rest.v2.http.HttpResponse;
+import com.microsoft.rest.v2.policy.AddDatePolicyFactory;
 import com.microsoft.rest.v2.policy.AddHeadersPolicyFactory;
 import com.microsoft.rest.v2.policy.HostPolicyFactory;
 import com.microsoft.rest.v2.policy.HttpLogDetailLevel;
@@ -36,26 +37,16 @@ import io.reactivex.disposables.Disposable;
 import io.reactivex.functions.Function;
 import io.reactivex.internal.functions.Functions;
 
-import org.hamcrest.CoreMatchers;
-import org.junit.After;
 import org.junit.AfterClass;
-import org.junit.Assert;
 import org.junit.Assume;
-import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Ignore;
 import org.junit.Test;
-import org.junit.runner.Result;
-import org.junit.runner.notification.RunListener;
-import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.BufferedReader;
 import java.io.File;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.lang.ProcessBuilder.Redirect;
-import java.lang.Thread.UncaughtExceptionHandler;
 import java.nio.ByteBuffer;
 import java.nio.channels.AsynchronousFileChannel;
 import java.nio.channels.FileChannel;
@@ -70,18 +61,12 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.security.MessageDigest;
 import java.time.Duration;
 import java.time.Instant;
-import java.time.OffsetDateTime;
-import java.time.ZoneId;
-import java.time.format.DateTimeFormatter;
 import java.util.Base64;
 import java.util.List;
-import java.util.Locale;
 import java.util.Random;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ThreadLocalRandom;
 import java.util.concurrent.TimeUnit;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import static org.junit.Assert.assertArrayEquals;
 import static org.junit.Assert.assertTrue;
@@ -153,32 +138,6 @@ public class RestProxyStressTests {
     public static void afterClass() throws Exception {
         if (testServer != null) {
             testServer.destroy();
-        }
-    }
-
-    private static final class AddDatePolicyFactory implements RequestPolicyFactory {
-        @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
-            return new AddDatePolicy(next);
-        }
-
-        private static final class AddDatePolicy implements RequestPolicy {
-            private final DateTimeFormatter format = DateTimeFormatter
-                    .ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'")
-                    .withZone(ZoneId.of("UTC"))
-                    .withLocale(Locale.US);
-
-            private final RequestPolicy next;
-
-            AddDatePolicy(RequestPolicy next) {
-                this.next = next;
-            }
-
-            @Override
-            public Single<HttpResponse> sendAsync(HttpRequest request) {
-                request.headers().set("Date", format.format(OffsetDateTime.now()));
-                return next.sendAsync(request);
-            }
         }
     }
 

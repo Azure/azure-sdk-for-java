@@ -14,6 +14,7 @@ import org.junit.Test;
 import io.reactivex.Single;
 
 import java.net.URL;
+import java.util.concurrent.TimeUnit;
 
 public class RetryPolicyTests {
     @Test
@@ -28,7 +29,7 @@ public class RetryPolicyTests {
                     return Single.<HttpResponse>just(new MockHttpResponse(codes[count++]));
                 }
             },
-            new RetryPolicyFactory(3));
+            new RetryPolicyFactory(3, 0, TimeUnit.MILLISECONDS));
 
         HttpResponse response = pipeline.sendRequestAsync(
                 new HttpRequest(
@@ -52,7 +53,7 @@ public class RetryPolicyTests {
                     return Single.<HttpResponse>just(new MockHttpResponse(500));
                 }
             },
-            new RetryPolicyFactory(maxRetries));
+            new RetryPolicyFactory(maxRetries, 0, TimeUnit.MILLISECONDS));
 
         HttpResponse response = pipeline.sendRequestAsync(
                 new HttpRequest(
