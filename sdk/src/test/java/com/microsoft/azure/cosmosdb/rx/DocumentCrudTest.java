@@ -26,6 +26,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
 
+import org.apache.commons.lang3.StringUtils;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.Factory;
@@ -42,6 +43,8 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
+
+import static org.apache.commons.io.FileUtils.ONE_MB;
 
 public class DocumentCrudTest extends TestSuiteBase {
 
@@ -61,6 +64,24 @@ public class DocumentCrudTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void createDocument() throws Exception {
         Document docDefinition = getDocumentDefinition();
+
+        Observable<ResourceResponse<Document>> createObservable = client
+                .createDocument(getCollectionLink(), docDefinition, null, false);
+
+        ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
+                .withId(docDefinition.getId())
+                .build();
+
+        validateSuccess(createObservable, validator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void createLargeDocument() throws Exception {
+        Document docDefinition = getDocumentDefinition();
+
+        //Keep size as ~ 1.5MB to account for size of other props
+        int size = (int) (ONE_MB * 1.5);
+        docDefinition.set("largeString", StringUtils.repeat("x", size));
 
         Observable<ResourceResponse<Document>> createObservable = client
                 .createDocument(getCollectionLink(), docDefinition, null, false);
