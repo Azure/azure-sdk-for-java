@@ -33,6 +33,8 @@ import org.apache.qpid.proton.amqp.messaging.ApplicationProperties;
 import org.apache.qpid.proton.amqp.messaging.Data;
 import org.apache.qpid.proton.amqp.messaging.MessageAnnotations;
 import org.apache.qpid.proton.amqp.messaging.Section;
+import org.apache.qpid.proton.amqp.transaction.Declare;
+import org.apache.qpid.proton.amqp.transaction.Discharge;
 import org.apache.qpid.proton.engine.Delivery;
 import org.apache.qpid.proton.engine.Receiver;
 import org.apache.qpid.proton.message.Message;
@@ -128,6 +130,18 @@ public class Util
 		if (obj instanceof Binary)
 		{
 			return ((Binary)obj).getLength();
+		}
+
+		if (obj instanceof Declare)
+		{
+			// Empty declare command takes up 7 bytes.
+			return 7;
+		}
+
+		if (obj instanceof Discharge)
+		{
+			Discharge discharge = (Discharge) obj;
+			return 12 + discharge.getTxnId().getLength();
 		}
 		
 		if (obj instanceof Map)
@@ -382,7 +396,7 @@ public class Util
 	}
 
 	// Pass little less than client timeout to the server so client doesn't time out before server times out
-	static Duration adjustServerTimeout(Duration clientTimeout)
+	public static Duration adjustServerTimeout(Duration clientTimeout)
 	{
 		return clientTimeout.minusMillis(100);
 	}

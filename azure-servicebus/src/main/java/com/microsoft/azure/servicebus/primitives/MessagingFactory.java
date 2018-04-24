@@ -16,6 +16,9 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.ScheduledFuture;
 
+import com.microsoft.azure.servicebus.TransactionContext;
+import com.microsoft.azure.servicebus.Utils;
+import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.engine.BaseHandler;
 import org.apache.qpid.proton.engine.Connection;
@@ -41,8 +44,9 @@ import com.microsoft.azure.servicebus.amqp.ReactorHandler;
 import com.microsoft.azure.servicebus.security.SecurityToken;
 
 /**
- * Abstracts all AMQP related details and encapsulates an AMQP connection and manages its life cycle. Each instance of this class represent one AMQP connection to the namespace.
- * If an application creates multiple senders, receivers or clients using the same MessagingFacotry instance, all those senders, receivers or clients will share the same connection to the namespace.
+ * Abstracts all AMQP related details and encapsulates an AMQP connection and manages its life cycle. Each instance of
+ * this class represent one AMQP connection to the namespace. If an application creates multiple senders, receivers
+ * or clients using the same MessagingFactory instance, all those senders, receivers or clients will share the same connection to the namespace.
  * @since 1.0
  */
 public class MessagingFactory extends ClientEntity implements IAmqpConnection
@@ -57,11 +61,12 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	private final ReactorHandler reactorHandler;
 	private final LinkedList<Link> registeredLinks;
 	private final Object reactorLock;
-	private final RequestResponseLinkcache managementLinksCache;
+	private final RequestResponseLinkCache managementLinksCache;
 	
 	private Reactor reactor;
 	private ReactorDispatcher reactorScheduler;
 	private Connection connection;
+    private Controller controller;
 
 	private CompletableFuture<MessagingFactory> factoryOpenFuture;
 	private CompletableFuture<Void> cbsLinkCreationFuture;
@@ -71,7 +76,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	
 	private final ClientSettings clientSettings;
 	private final URI namespaceEndpointUri;
-	
+
 	private MessagingFactory(URI namespaceEndpointUri, ClientSettings clientSettings)
 	{
 	    super("MessagingFactory".concat(StringUtil.getShortRandomString()));
@@ -85,7 +90,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
         this.connectionHandler = new ConnectionHandler(this);
         this.factoryOpenFuture = new CompletableFuture<MessagingFactory>();
         this.cbsLinkCreationFuture = new CompletableFuture<Void>();
-        this.managementLinksCache = new RequestResponseLinkcache(this);
+        this.managementLinksCache = new RequestResponseLinkCache(this);
         this.reactorHandler = new ReactorHandler()
         {
             @Override
@@ -100,6 +105,79 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
         };
         Timer.register(this.getClientId());
 	}
+
+	/**
+	 * Starts a new service side transaction. The {@link TransactionContext} should be passed to all operations that
+	 * needs to be in this transaction.
+	 * @return a new transaction
+	 * @throws ServiceBusException
+	 * @throws InterruptedException
+	 */
+	public TransactionContext startTransaction() throws ServiceBusException, InterruptedException {
+		return Utils.completeFuture(this.startTransactionAsync());
+	}
+
+	/**
+	 * Starts a new service side transaction. The {@link TransactionContext} should be passed to all operations that
+	 * needs to be in this transaction.
+	 * @return A <code>CompletableFuture</code> which returns a new transaction
+	 */
+	public CompletableFuture<TransactionContext> startTransactionAsync() {
+        return this.getController()
+                .thenCompose(controller -> controller.declareAsync()
+                        .thenApply(binary -> new TransactionContext(binary.asByteBuffer(), this)));
+    }
+
+	/**
+	 * Ends a transaction that was initiated using {@link MessagingFactory#startTransactionAsync()}.
+	 * @param transaction The transaction object.
+	 * @param commit A boolean value of <code>true</code> indicates transaction to be committed. A value of
+	 *                  <code>false</code> indicates a transaction rollback.
+	 * @throws ServiceBusException
+	 * @throws InterruptedException
+	 */
+    public void endTransaction(TransactionContext transaction, boolean commit) throws ServiceBusException, InterruptedException {
+		Utils.completeFuture(this.endTransactionAsync(transaction, commit));
+	}
+
+	/**
+	 * Ends a transaction that was initiated using {@link MessagingFactory#startTransactionAsync()}.
+	 * @param transaction The transaction object.
+	 * @param commit A boolean value of <code>true</code> indicates transaction to be committed. A value of
+	 *                  <code>false</code> indicates a transaction rollback.
+	 * @return A <code>CompletableFuture</code>
+	 */
+    public CompletableFuture<Void> endTransactionAsync(TransactionContext transaction, boolean commit) {
+        if (transaction == null) {
+            CompletableFuture<Void> exceptionCompletion = new CompletableFuture<>();
+            exceptionCompletion.completeExceptionally(new ServiceBusException(false, "Transaction cannot not be null"));
+            return exceptionCompletion;
+        }
+
+        return this.getController()
+                .thenCompose(controller -> controller.dischargeAsync(new Binary(transaction.getTransactionId().array()), commit)
+				.thenRun(() -> transaction.notifyTransactionCompletion(commit)));
+    }
+
+	private CompletableFuture<Controller> getController() {
+	    if (this.controller != null) {
+	        return CompletableFuture.completedFuture(this.controller);
+        }
+
+        return createController();
+    }
+
+	private synchronized CompletableFuture<Controller> createController() {
+	    if (this.controller != null) {
+	        return CompletableFuture.completedFuture(this.controller);
+        }
+
+	    Controller controller = new Controller(this.namespaceEndpointUri, this, this.clientSettings);
+	    return controller.initializeAsync().thenApply(v -> {
+	        this.controller = controller;
+	        return controller;
+        });
+    }
 
 	String getHostName()
 	{
@@ -137,7 +215,7 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 		reactorThread.start();
 		TRACE_LOGGER.info("Started reactor");
 	}
-	
+
 	Connection getConnection()
 	{
 		if (this.connection == null || this.connection.getLocalState() == EndpointState.CLOSED || this.connection.getRemoteState() == EndpointState.CLOSED)

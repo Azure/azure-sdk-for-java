@@ -22,7 +22,6 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import com.microsoft.azure.servicebus.primitives.ClientConstants;
-import com.microsoft.azure.servicebus.primitives.ConnectionStringBuilder;
 import com.microsoft.azure.servicebus.primitives.CoreMessageReceiver;
 import com.microsoft.azure.servicebus.primitives.MessageWithDeliveryTag;
 import com.microsoft.azure.servicebus.primitives.MessageWithLockToken;
@@ -34,7 +33,6 @@ import com.microsoft.azure.servicebus.primitives.Timer;
 import com.microsoft.azure.servicebus.primitives.TimerType;
 import com.microsoft.azure.servicebus.primitives.Util;
 
-// TODO As part of receive, don't return messages whose lock is already expired. Can happen because of delay between prefetch and actual receive from client.
 class MessageReceiver extends InitializableEntity implements IMessageReceiver, IMessageBrowser {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageReceiver.class);
     // Using 0 pre-fetch count for both receive modes, to avoid message lock lost exceptions in application receiving messages at a slow rate.
@@ -189,31 +187,57 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     }
 
     @Override
+    public void abandon(UUID lockToken, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.abandonAsync(lockToken, transaction));
+    }
+
+    @Override
     public void abandon(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
         Utils.completeFuture(this.abandonAsync(lockToken, propertiesToModify));
     }
 
     @Override
+    public void abandon(UUID lockToken, Map<String, Object> propertiesToModify, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.abandonAsync(lockToken, propertiesToModify, transaction));
+    }
+
+    @Override
     public CompletableFuture<Void> abandonAsync(UUID lockToken) {
-        return this.abandonAsync(lockToken, null);
+        return this.abandonAsync(lockToken, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> abandonAsync(UUID lockToken, TransactionContext transaction) {
+        return this.abandonAsync(lockToken, null, transaction);
     }
 
     @Override
     public CompletableFuture<Void> abandonAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
+        return this.abandonAsync(lockToken, propertiesToModify, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> abandonAsync(UUID lockToken, Map<String, Object> propertiesToModify, TransactionContext transaction) {
         this.ensurePeekLockReceiveMode();
         TRACE_LOGGER.debug("Abandoning message with lock token '{}'", lockToken);
         return this.checkIfValidRequestResponseLockTokenAsync(lockToken).thenCompose((requestResponseLocked) -> {
             if (requestResponseLocked) {
-                return this.internalReceiver.abandonMessageAsync(lockToken, propertiesToModify).thenRun(() -> MessageReceiver.this.requestResponseLockTokensToLockTimesMap.remove(lockToken));
+                return this.internalReceiver.abandonMessageAsync(lockToken, propertiesToModify, transaction)
+                        .thenRun( () -> this.disposeLockToken(lockToken, transaction));
             } else {
-                return this.internalReceiver.abandonMessageAsync(Util.convertUUIDToDotNetBytes(lockToken), propertiesToModify);
+                return this.internalReceiver.abandonMessageAsync(Util.convertUUIDToDotNetBytes(lockToken), propertiesToModify, transaction);
             }
         });
     }
 
     @Override
     public void complete(UUID lockToken) throws InterruptedException, ServiceBusException {
-        Utils.completeFuture(this.completeAsync(lockToken));
+        this.complete(lockToken, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public void complete(UUID lockToken, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.completeAsync(lockToken, transaction));
     }
 
 	/*
@@ -222,15 +246,21 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
 	}
 	*/
 
-    @Override
+	@Override
     public CompletableFuture<Void> completeAsync(UUID lockToken) {
+	    return this.completeAsync(lockToken, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> completeAsync(UUID lockToken, TransactionContext transaction) {
         this.ensurePeekLockReceiveMode();
         TRACE_LOGGER.debug("Completing message with lock token '{}'", lockToken);
         return this.checkIfValidRequestResponseLockTokenAsync(lockToken).thenCompose((requestResponseLocked) -> {
             if (requestResponseLocked) {
-                return this.internalReceiver.completeMessageAsync(lockToken).thenRun(() -> MessageReceiver.this.requestResponseLockTokensToLockTimesMap.remove(lockToken));
+                return this.internalReceiver.completeMessageAsync(lockToken, transaction)
+                        .thenRun( () -> this.disposeLockToken(lockToken, transaction));
             } else {
-                return this.internalReceiver.completeMessageAsync(Util.convertUUIDToDotNetBytes(lockToken));
+                return this.internalReceiver.completeMessageAsync(Util.convertUUIDToDotNetBytes(lockToken), transaction);
             }
         });
     }
@@ -249,24 +279,45 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     }
 
     @Override
+    public void defer(UUID lockToken, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.deferAsync(lockToken, transaction));
+    }
+
+    @Override
     public void defer(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
         Utils.completeFuture(this.deferAsync(lockToken, propertiesToModify));
     }
 
     @Override
+    public void defer(UUID lockToken, Map<String, Object> propertiesToModify, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.deferAsync(lockToken, propertiesToModify, transaction));
+    }
+
+    @Override
     public CompletableFuture<Void> deferAsync(UUID lockToken) {
-        return this.deferAsync(lockToken, null);
+        return this.deferAsync(lockToken, null, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> deferAsync(UUID lockToken, TransactionContext transaction) {
+        return this.deferAsync(lockToken, null, transaction);
     }
 
     @Override
     public CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
+        return this.deferAsync(lockToken, propertiesToModify, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> deferAsync(UUID lockToken, Map<String, Object> propertiesToModify, TransactionContext transaction) {
         this.ensurePeekLockReceiveMode();
         TRACE_LOGGER.debug("Deferring message with lock token '{}'", lockToken);
         return this.checkIfValidRequestResponseLockTokenAsync(lockToken).thenCompose((requestResponseLocked) -> {
             if (requestResponseLocked) {
-                return this.internalReceiver.deferMessageAsync(lockToken, propertiesToModify).thenRun(() -> MessageReceiver.this.requestResponseLockTokensToLockTimesMap.remove(lockToken));
+                return this.internalReceiver.deferMessageAsync(lockToken, propertiesToModify, transaction)
+                        .thenRun( () -> this.disposeLockToken(lockToken, transaction));
             } else {
-                return this.internalReceiver.deferMessageAsync(Util.convertUUIDToDotNetBytes(lockToken), propertiesToModify);
+                return this.internalReceiver.deferMessageAsync(Util.convertUUIDToDotNetBytes(lockToken), propertiesToModify, transaction);
             }
         });
     }
@@ -277,8 +328,18 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     }
 
     @Override
+    public void deadLetter(UUID lockToken, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.deadLetterAsync(lockToken, transaction));
+    }
+
+    @Override
     public void deadLetter(UUID lockToken, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
         Utils.completeFuture(this.deadLetterAsync(lockToken, propertiesToModify));
+    }
+
+    @Override
+    public void deadLetter(UUID lockToken, Map<String, Object> propertiesToModify, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.deadLetterAsync(lockToken, propertiesToModify, transaction));
     }
 
     @Override
@@ -287,34 +348,80 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     }
 
     @Override
+    public void deadLetter(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, transaction));
+    }
+
+    @Override
     public void deadLetter(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) throws InterruptedException, ServiceBusException {
         Utils.completeFuture(this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, propertiesToModify));
     }
 
     @Override
+    public void deadLetter(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, propertiesToModify, transaction));
+    }
+
+    @Override
     public CompletableFuture<Void> deadLetterAsync(UUID lockToken) {
-        return this.deadLetterAsync(lockToken, null, null, null);
+        return this.deadLetterAsync(lockToken, null, null, null, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> deadLetterAsync(UUID lockToken, TransactionContext transaction) {
+        return this.deadLetterAsync(lockToken, null, null, null, transaction);
     }
 
     @Override
     public CompletableFuture<Void> deadLetterAsync(UUID lockToken, Map<String, Object> propertiesToModify) {
-        return this.deadLetterAsync(lockToken, null, null, propertiesToModify);
+        return this.deadLetterAsync(lockToken, null, null, propertiesToModify, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> deadLetterAsync(UUID lockToken, Map<String, Object> propertiesToModify, TransactionContext transaction) {
+        return this.deadLetterAsync(lockToken, null, null, propertiesToModify, transaction);
     }
 
     @Override
     public CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription) {
-        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, null);
+        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, null, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, TransactionContext transaction) {
+        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, null, TransactionContext.NULL_TXN);
     }
 
     @Override
     public CompletableFuture<Void> deadLetterAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify) {
+        return this.deadLetterAsync(lockToken, deadLetterReason, deadLetterErrorDescription, propertiesToModify, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> deadLetterAsync(
+            UUID lockToken,
+            String deadLetterReason,
+            String deadLetterErrorDescription,
+            Map<String, Object> propertiesToModify,
+            TransactionContext transaction) {
         this.ensurePeekLockReceiveMode();
         TRACE_LOGGER.debug("Deadlettering message with lock token '{}'", lockToken);
         return this.checkIfValidRequestResponseLockTokenAsync(lockToken).thenCompose((requestResponseLocked) -> {
             if (requestResponseLocked) {
-                return this.internalReceiver.deadLetterMessageAsync(lockToken, deadLetterReason, deadLetterErrorDescription, propertiesToModify).thenRun(() -> MessageReceiver.this.requestResponseLockTokensToLockTimesMap.remove(lockToken));
+                return this.internalReceiver.deadLetterMessageAsync(
+                        lockToken,
+                        deadLetterReason,
+                        deadLetterErrorDescription,
+                        propertiesToModify,
+                        transaction)
+                        .thenRun( () -> this.disposeLockToken(lockToken, transaction));
             } else {
-                return this.internalReceiver.deadLetterMessageAsync(Util.convertUUIDToDotNetBytes(lockToken), deadLetterReason, deadLetterErrorDescription, propertiesToModify);
+                return this.internalReceiver.deadLetterMessageAsync(
+                        Util.convertUUIDToDotNetBytes(lockToken),
+                        deadLetterReason,
+                        deadLetterErrorDescription,
+                        propertiesToModify,
+                        transaction);
             }
         });
     }
@@ -330,7 +437,7 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
     }
 
     @Override
-    public IMessage receiveDeferredMessage(long sequenceNumber) throws InterruptedException, ServiceBusException {
+    public IMessage receiveDeferredMessage(long sequenceNumber) throws ServiceBusException, InterruptedException {
         return Utils.completeFuture(this.receiveDeferredMessageAsync(sequenceNumber));
     }
 
@@ -462,6 +569,18 @@ class MessageReceiver extends InitializableEntity implements IMessageReceiver, I
             }
 
             this.internalReceiver.setPrefetchCount(prefetchCount);
+        }
+    }
+
+    private void disposeLockToken(UUID lockToken, TransactionContext transaction) {
+        if (transaction != TransactionContext.NULL_TXN) {
+            transaction.registerHandler((commit) -> {
+                if (commit) {
+                    MessageReceiver.this.requestResponseLockTokensToLockTimesMap.remove(lockToken);
+                }
+            });
+        } else {
+            MessageReceiver.this.requestResponseLockTokensToLockTimesMap.remove(lockToken);
         }
     }
 

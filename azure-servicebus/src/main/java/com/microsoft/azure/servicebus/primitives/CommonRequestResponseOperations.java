@@ -8,6 +8,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.servicebus.TransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.messaging.AmqpValue;
 import org.apache.qpid.proton.message.Message;
@@ -29,7 +30,7 @@ final class CommonRequestResponseOperations {
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, sessionId);
 		}
 		Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_PEEK_OPERATION, requestBodyMap, Util.adjustServerTimeout(operationTimeout), associatedLinkName);
-		CompletableFuture<Message> responseFuture = requestResponseLink.requestAysnc(requestMessage, operationTimeout);
+		CompletableFuture<Message> responseFuture = requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, operationTimeout);
 		return responseFuture.thenComposeAsync((responseMessage) -> {
 			CompletableFuture<Collection<Message>> returningFuture = new CompletableFuture<Collection<Message>>();
 			int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -81,7 +82,7 @@ final class CommonRequestResponseOperations {
         requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_TYPE, securityToken.getTokenType().toString());
         requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_AUDIENCE, securityToken.getTokenAudience());
         requestMessage.getApplicationProperties().getValue().put(ClientConstants.REQUEST_RESPONSE_PUT_TOKEN_EXPIRATION, securityToken.getValidUntil().toEpochMilli());
-        CompletableFuture<Message> responseFuture = requestResponseLink.requestAysnc(requestMessage, operationTimeout);
+        CompletableFuture<Message> responseFuture = requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, operationTimeout);
         return responseFuture.thenComposeAsync((responseMessage) -> {
             CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
             int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);

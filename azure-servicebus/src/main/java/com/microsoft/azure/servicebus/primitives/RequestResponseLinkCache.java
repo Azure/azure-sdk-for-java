@@ -7,15 +7,15 @@ import java.util.concurrent.CompletableFuture;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-class RequestResponseLinkcache 
+class RequestResponseLinkCache
 {
-    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseLinkcache.class);
+    private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(RequestResponseLinkCache.class);
     
     private Object lock = new Object();
     private final MessagingFactory underlyingFactory;    
     private HashMap<String, RequestResponseLinkWrapper> pathToRRLinkMap;
     
-    public RequestResponseLinkcache(MessagingFactory underlyingFactory)
+    public RequestResponseLinkCache(MessagingFactory underlyingFactory)
     {
         this.underlyingFactory = underlyingFactory;
         this.pathToRRLinkMap = new HashMap<>();
@@ -112,7 +112,7 @@ class RequestResponseLinkcache
                     {
                         Throwable cause = ExceptionUtil.extractAsyncCompletionCause(ex);
                         TRACE_LOGGER.error("Creating requestresponselink to '{}' failed.", requestResponseLinkPath, cause);
-                        RequestResponseLinkcache.this.removeWrapperFromCache(this.entityPath);
+                        RequestResponseLinkCache.this.removeWrapperFromCache(this.entityPath);
                         for(CompletableFuture<RequestResponseLink> waiter : this.waiters)
                         {
                             waiter.completeExceptionally(cause);
@@ -148,7 +148,7 @@ class RequestResponseLinkcache
             {
                 if(--this.referenceCount == 0)
                 {
-                    RequestResponseLinkcache.this.removeWrapperFromCache(this.entityPath);
+                    RequestResponseLinkCache.this.removeWrapperFromCache(this.entityPath);
                     TRACE_LOGGER.info("Closing requestresponselink to '{}'", this.requestResponseLink.getLinkPath());
                     this.requestResponseLink.closeAsync();
                 }

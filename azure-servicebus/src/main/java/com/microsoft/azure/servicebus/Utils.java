@@ -8,9 +8,9 @@ import java.util.concurrent.ExecutionException;
 
 import com.microsoft.azure.servicebus.primitives.ServiceBusException;
 
-final class Utils {
+public final class Utils {
 
-    static <T> T completeFuture(CompletableFuture<T> future) throws InterruptedException, ServiceBusException {
+    public static <T> T completeFuture(CompletableFuture<T> future) throws InterruptedException, ServiceBusException {
         try {
             return future.get();
         } catch (InterruptedException ie) {

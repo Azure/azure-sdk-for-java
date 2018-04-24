@@ -8,18 +8,18 @@ import com.microsoft.azure.servicebus.primitives.Util;
 
 public class TestUtils {
 	
-	private static final String NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME = "AZURE_SERVICEBUS_JAVA_CLIENT_TEST_CONNECTION_STRING";	
-	public static final String FIRST_SUBSCRIPTION_NAME = "subscription1";	
+	private static final String NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME = "AZURE_SERVICEBUS_JAVA_CLIENT_TEST_CONNECTION_STRING";
+    public static final String FIRST_SUBSCRIPTION_NAME = "subscription1";
 	private static String namespaceConnectionString;
 	private static ConnectionStringBuilder namespaceConnectionStringBuilder;
 	
 	static
 	{
 		// Read connection string
-		namespaceConnectionString = System.getenv(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME);
+        namespaceConnectionString = System.getenv(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME);
 		if(namespaceConnectionString == null || namespaceConnectionString.isEmpty())
 		{			
-			System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connecto to any service bus entity.");
+			System.err.println(NAMESPACE_CONNECTION_STRING_ENVIRONMENT_VARIABLE_NAME + " environment variable not set. Tests will not be able to connect to to any service bus entity.");
 		}
 		namespaceConnectionStringBuilder = new ConnectionStringBuilder(namespaceConnectionString);
 	}

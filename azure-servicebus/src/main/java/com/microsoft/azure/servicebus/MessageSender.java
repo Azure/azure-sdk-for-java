@@ -107,7 +107,12 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
 
     @Override
     public void send(IMessage message) throws InterruptedException, ServiceBusException {
-        Utils.completeFuture(this.sendAsync(message));
+        this.send(message, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public void send(IMessage message, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.sendAsync(message, transaction));
     }
 
     @Override
@@ -116,19 +121,34 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
     }
 
     @Override
+    public void sendBatch(Collection<? extends IMessage> message, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.sendBatchAsync(message, transaction));
+    }
+
+    @Override
     public CompletableFuture<Void> sendAsync(IMessage message) {
+        return this.sendAsync(message, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> sendAsync(IMessage message, TransactionContext transaction) {
         org.apache.qpid.proton.message.Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage((Message) message);
-        return this.internalSender.sendAsync(amqpMessage);
+        return this.internalSender.sendAsync(amqpMessage, transaction);
     }
 
     @Override
     public CompletableFuture<Void> sendBatchAsync(Collection<? extends IMessage> messages) {
+        return this.sendBatchAsync(messages, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> sendBatchAsync(Collection<? extends IMessage> messages, TransactionContext transaction) {
         ArrayList<org.apache.qpid.proton.message.Message> convertedMessages = new ArrayList<org.apache.qpid.proton.message.Message>();
         for (IMessage message : messages) {
             convertedMessages.add(MessageConverter.convertBrokeredMessageToAmqpMessage((Message) message));
         }
 
-        return this.internalSender.sendAsync(convertedMessages);
+        return this.internalSender.sendAsync(convertedMessages, transaction);
     }
 
     @Override
@@ -160,14 +180,30 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
 
     @Override
     public CompletableFuture<Long> scheduleMessageAsync(IMessage message, Instant scheduledEnqueueTimeUtc) {
+        return this.scheduleMessageAsync(message, scheduledEnqueueTimeUtc, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Long> scheduleMessageAsync(IMessage message, Instant scheduledEnqueueTimeUtc, TransactionContext transaction) {
         message.setScheduledEnqueuedTimeUtc(scheduledEnqueueTimeUtc);
         org.apache.qpid.proton.message.Message amqpMessage = MessageConverter.convertBrokeredMessageToAmqpMessage((Message) message);
-        return this.internalSender.scheduleMessageAsync(new org.apache.qpid.proton.message.Message[]{amqpMessage}, this.messagingFactory.getClientSetttings().getOperationTimeout()).thenApply(sequenceNumbers -> sequenceNumbers[0]);
+        return this.internalSender.scheduleMessageAsync(
+                new org.apache.qpid.proton.message.Message[]{amqpMessage},
+                transaction,
+                this.messagingFactory.getClientSetttings().getOperationTimeout()).thenApply(sequenceNumbers -> sequenceNumbers[0]);
     }
 
     @Override
     public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber) {
-        return this.internalSender.cancelScheduledMessageAsync(new Long[]{sequenceNumber}, this.messagingFactory.getClientSetttings().getOperationTimeout());
+        return this.cancelScheduledMessageAsync(sequenceNumber, TransactionContext.NULL_TXN);
+    }
+
+    @Override
+    public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber, TransactionContext transaction) {
+        return this.internalSender.cancelScheduledMessageAsync(
+                new Long[]{sequenceNumber},
+                transaction,
+                this.messagingFactory.getClientSetttings().getOperationTimeout());
     }
 
     @Override
@@ -176,8 +212,18 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
     }
 
     @Override
+    public long scheduleMessage(IMessage message, Instant scheduledEnqueueTimeUtc, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        return Utils.completeFuture(this.scheduleMessageAsync(message, scheduledEnqueueTimeUtc, transaction));
+    }
+
+    @Override
     public void cancelScheduledMessage(long sequenceNumber) throws InterruptedException, ServiceBusException {
         Utils.completeFuture(this.cancelScheduledMessageAsync(sequenceNumber));
+    }
+
+    @Override
+    public void cancelScheduledMessage(long sequenceNumber, TransactionContext transaction) throws InterruptedException, ServiceBusException {
+        Utils.completeFuture(this.cancelScheduledMessageAsync(sequenceNumber, transaction));
     }
 
     MessagingFactory getMessagingFactory() {

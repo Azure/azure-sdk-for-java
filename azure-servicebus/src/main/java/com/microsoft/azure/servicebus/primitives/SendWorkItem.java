@@ -4,6 +4,8 @@
  */
 package com.microsoft.azure.servicebus.primitives;
 
+import com.microsoft.azure.servicebus.TransactionContext;
+
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
@@ -14,25 +16,27 @@ class SendWorkItem<T> extends WorkItem<T>
 	private int encodedMessageSize;
 	private boolean waitingForAck;
 	private String deliveryTag;
+	private TransactionContext transaction;
 	
-	public SendWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, CompletableFuture<T> completableFuture, Duration timeout)
+	public SendWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, TransactionContext transaction, CompletableFuture<T> completableFuture, Duration timeout)
 	{
 		super(completableFuture, timeout);
-		this.initialize(amqpMessage, encodedMessageSize, messageFormat, deliveryTag);
+		this.initialize(amqpMessage, encodedMessageSize, messageFormat, deliveryTag, transaction);
 	}
 
-	public SendWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, CompletableFuture<T> completableFuture, TimeoutTracker timeout)
+	public SendWorkItem(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, TransactionContext transaction, CompletableFuture<T> completableFuture, TimeoutTracker timeout)
 	{
 		super(completableFuture, timeout);
-		this.initialize(amqpMessage, encodedMessageSize, messageFormat, deliveryTag);
+		this.initialize(amqpMessage, encodedMessageSize, messageFormat, deliveryTag, transaction);
 	}
 
-	private void initialize(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag)
+	private void initialize(byte[] amqpMessage, int encodedMessageSize, int messageFormat, String deliveryTag, TransactionContext transaction)
 	{
 		this.amqpMessage = amqpMessage;
 		this.messageFormat = messageFormat;
 		this.encodedMessageSize = encodedMessageSize;
 		this.deliveryTag = deliveryTag;
+		this.transaction = transaction;
 	}
 
 	public byte[] getMessage()
@@ -69,4 +73,8 @@ class SendWorkItem<T> extends WorkItem<T>
 	{
 	    this.deliveryTag = deliveryTag;
 	}
+
+	public TransactionContext getTransaction() { return this.transaction; }
+
+	public void setTransaction(TransactionContext txnId) { this.transaction = txnId; }
 }

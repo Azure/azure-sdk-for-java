@@ -3,6 +3,7 @@ package com.microsoft.azure.servicebus.primitives;
 import java.util.*;
 import java.util.concurrent.CompletableFuture;
 
+import com.microsoft.azure.servicebus.TransactionContext;
 import org.apache.qpid.proton.amqp.DescribedType;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
@@ -106,7 +107,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 			}
 			
 			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_GET_MESSAGE_SESSIONS_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.underlyingFactory.getOperationTimeout());
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, this.underlyingFactory.getOperationTimeout());
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Pair<String[], Integer>> returningFuture = new CompletableFuture<Pair<String[], Integer>>();
 				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -143,7 +144,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_RULENAME, ruleName);
 			
 			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_REMOVE_RULE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.underlyingFactory.getOperationTimeout());
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, this.underlyingFactory.getOperationTimeout());
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
 				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -172,7 +173,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_RULEDESCRIPTION, RequestResponseUtils.encodeRuleDescriptionToMap(ruleDescription));
 			
 			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_ADD_RULE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.underlyingFactory.getOperationTimeout());
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, this.underlyingFactory.getOperationTimeout());
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
 				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -204,7 +205,7 @@ public final class MiscRequestResponseOperationHandler extends ClientEntity
 					ClientConstants.REQUEST_RESPONSE_GET_RULES_OPERATION,
 					requestBodyMap,
 					Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()));
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.underlyingFactory.getOperationTimeout());
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, this.underlyingFactory.getOperationTimeout());
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Collection<RuleDescription>> returningFuture = new CompletableFuture<>();
 

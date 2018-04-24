@@ -6,22 +6,22 @@ package com.microsoft.azure.servicebus.primitives;
 import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 
-import org.apache.qpid.proton.amqp.messaging.Outcome;
+import org.apache.qpid.proton.amqp.transport.DeliveryState;
 
 class UpdateStateWorkItem extends WorkItem<Void> {
-    final Outcome outcome;
+    final DeliveryState deliveryState;
 
-    public UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, Outcome expectedOutcome, Duration timeout) {
+    public UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, Duration timeout) {
         super(completableFuture, new TimeoutTracker(timeout, true));
-        this.outcome = expectedOutcome;
+        this.deliveryState = expectedOutcome;
     }
 
-    public UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, Outcome expectedOutcome, final TimeoutTracker tracker) {
+    public UpdateStateWorkItem(final CompletableFuture<Void> completableFuture, DeliveryState expectedOutcome, final TimeoutTracker tracker) {
         super(completableFuture, tracker);
-        this.outcome = expectedOutcome;
+        this.deliveryState = expectedOutcome;
     }
 
-    public Outcome getOutcome() {
-        return this.outcome;
+    public DeliveryState getDeliveryState() {
+        return this.deliveryState;
     }
 }

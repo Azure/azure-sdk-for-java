@@ -26,6 +26,7 @@ import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.stream.Collectors;
 
+import com.microsoft.azure.servicebus.TransactionContext;
 import org.apache.qpid.proton.amqp.Binary;
 import org.apache.qpid.proton.amqp.Symbol;
 import org.apache.qpid.proton.amqp.UnsignedInteger;
@@ -37,6 +38,7 @@ import org.apache.qpid.proton.amqp.messaging.Rejected;
 import org.apache.qpid.proton.amqp.messaging.Released;
 import org.apache.qpid.proton.amqp.messaging.Source;
 import org.apache.qpid.proton.amqp.messaging.Target;
+import org.apache.qpid.proton.amqp.transaction.TransactionalState;
 import org.apache.qpid.proton.amqp.transport.DeliveryState;
 import org.apache.qpid.proton.amqp.transport.ErrorCondition;
 import org.apache.qpid.proton.amqp.transport.ReceiverSettleMode;
@@ -449,7 +451,6 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			return this.prefetchCount;
 		}
 	}
-	
 
 	public String getSessionId()
 	{
@@ -673,14 +674,26 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		{
 			DeliveryState remoteState = delivery.getRemoteState();
 			TRACE_LOGGER.debug("Received a delivery '{}' with state '{}' from '{}'", deliveryTagAsString, remoteState, this.receivePath);
-			if(remoteState instanceof Outcome)
+
+			Outcome remoteOutcome = null;
+			if (remoteState instanceof Outcome) {
+				remoteOutcome = (Outcome)remoteState;
+			} else if (remoteState instanceof TransactionalState) {
+				remoteOutcome = ((TransactionalState)remoteState).getOutcome();
+			}
+
+			if(remoteOutcome != null)
 			{
-				Outcome remoteOutcome = (Outcome)remoteState;
 				UpdateStateWorkItem matchingUpdateStateWorkItem = this.pendingUpdateStateRequests.get(deliveryTagAsString);
 				if(matchingUpdateStateWorkItem != null)
 				{
+					DeliveryState matchingUpdateWorkItemDeliveryState = matchingUpdateStateWorkItem.getDeliveryState();
+					if (matchingUpdateWorkItemDeliveryState instanceof TransactionalState) {
+						matchingUpdateWorkItemDeliveryState = (DeliveryState)((TransactionalState) matchingUpdateWorkItemDeliveryState).getOutcome();
+					}
+
 					// This comparison is ugly. Using it for the lack of equals operation on Outcome classes
-					if(remoteOutcome.getClass().getName().equals(matchingUpdateStateWorkItem.outcome.getClass().getName()))
+					if(remoteOutcome.getClass().getName().equals(matchingUpdateWorkItemDeliveryState.getClass().getName()))
 					{
 					    TRACE_LOGGER.debug("Completing a pending updateState operation for delivery '{}' from '{}'", deliveryTagAsString, this.receivePath);
 						this.completePendingUpdateStateWorkItem(delivery, deliveryTagAsString, matchingUpdateStateWorkItem, null);						
@@ -689,7 +702,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 					{
 //						if(matchingUpdateStateWorkItem.expectedOutcome instanceof Accepted)
 //						{
-					        TRACE_LOGGER.warn("Received delivery '{}' state '{}' doesn't match expected state '{}'", deliveryTagAsString, remoteState, matchingUpdateStateWorkItem.outcome);
+					        TRACE_LOGGER.warn("Received delivery '{}' state '{}' doesn't match expected state '{}'", deliveryTagAsString, remoteState, matchingUpdateStateWorkItem.deliveryState);
 							// Complete requests
 							if(remoteOutcome instanceof Rejected)
 							{
@@ -722,7 +735,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 													@Override
 													public void onEvent()
 													{
-														delivery.disposition((DeliveryState)matchingUpdateStateWorkItem.getOutcome());
+														delivery.disposition(matchingUpdateStateWorkItem.getDeliveryState());
 													}
 												});
 									}
@@ -1008,34 +1021,52 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
             this.returnMessagesLoopRunner.cancel(false);
         }
 	}
-	
-	public CompletableFuture<Void> completeMessageAsync(byte[] deliveryTag)
+
+	/*
+	This is to be used for messages which are received on receiveLink.
+	 */
+	public CompletableFuture<Void> completeMessageAsync(byte[] deliveryTag, TransactionContext transaction)
 	{		
 		Outcome outcome = Accepted.getInstance();
-		return this.updateMessageStateAsync(deliveryTag, outcome);
+		return this.updateMessageStateAsync(deliveryTag, outcome, transaction);
 	}
-	
-	public CompletableFuture<Void> completeMessageAsync(UUID lockToken)
+
+	/*
+	This is to be used for messages which are received on RequestResponseLink
+	 */
+	public CompletableFuture<Void> completeMessageAsync(UUID lockToken, TransactionContext transaction)
 	{		
-		return this.updateDispositionAsync(new UUID[]{lockToken}, ClientConstants.DISPOSITION_STATUS_COMPLETED, null, null, null);
+		return this.updateDispositionAsync(
+				new UUID[]{lockToken},
+				ClientConstants.DISPOSITION_STATUS_COMPLETED,
+				null,
+				null,
+				null,
+				transaction);
 	}
 	
-	public CompletableFuture<Void> abandonMessageAsync(byte[] deliveryTag, Map<String, Object> propertiesToModify)
+	public CompletableFuture<Void> abandonMessageAsync(byte[] deliveryTag, Map<String, Object> propertiesToModify, TransactionContext transaction)
 	{		
 		Modified outcome = new Modified();
 		if(propertiesToModify != null)
 		{
 			outcome.setMessageAnnotations(propertiesToModify);
 		}		
-		return this.updateMessageStateAsync(deliveryTag, outcome);
+		return this.updateMessageStateAsync(deliveryTag, outcome, transaction);
 	}
 	
-	public CompletableFuture<Void> abandonMessageAsync(UUID lockToken, Map<String, Object> propertiesToModify)
+	public CompletableFuture<Void> abandonMessageAsync(UUID lockToken, Map<String, Object> propertiesToModify, TransactionContext transaction)
 	{
-		return this.updateDispositionAsync(new UUID[]{lockToken}, ClientConstants.DISPOSITION_STATUS_ABANDONED, null, null, propertiesToModify);
+		return this.updateDispositionAsync(
+				new UUID[]{lockToken},
+				ClientConstants.DISPOSITION_STATUS_ABANDONED,
+				null
+				, null,
+				propertiesToModify,
+				transaction);
 	}
 	
-	public CompletableFuture<Void> deferMessageAsync(byte[] deliveryTag, Map<String, Object> propertiesToModify)
+	public CompletableFuture<Void> deferMessageAsync(byte[] deliveryTag, Map<String, Object> propertiesToModify, TransactionContext transaction)
 	{		
 		Modified outcome = new Modified();
 		outcome.setUndeliverableHere(true);
@@ -1043,15 +1074,26 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		{
 			outcome.setMessageAnnotations(propertiesToModify);
 		}
-		return this.updateMessageStateAsync(deliveryTag, outcome);
+		return this.updateMessageStateAsync(deliveryTag, outcome, transaction);
 	}
 	
-	public CompletableFuture<Void> deferMessageAsync(UUID lockToken, Map<String, Object> propertiesToModify)
+	public CompletableFuture<Void> deferMessageAsync(UUID lockToken, Map<String, Object> propertiesToModify, TransactionContext transaction)
 	{		
-		return this.updateDispositionAsync(new UUID[]{lockToken}, ClientConstants.DISPOSITION_STATUS_DEFERED, null, null, propertiesToModify);
+		return this.updateDispositionAsync(
+				new UUID[]{lockToken},
+				ClientConstants.DISPOSITION_STATUS_DEFERED,
+				null,
+				null,
+				propertiesToModify,
+				transaction);
 	}
 	
-	public CompletableFuture<Void> deadLetterMessageAsync(byte[] deliveryTag, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify)
+	public CompletableFuture<Void> deadLetterMessageAsync(
+			byte[] deliveryTag,
+			String deadLetterReason,
+			String deadLetterErrorDescription,
+			Map<String, Object> propertiesToModify,
+			TransactionContext transaction)
 	{
 		Rejected outcome = new Rejected();
 		ErrorCondition error = new ErrorCondition(ClientConstants.DEADLETTERNAME, null);
@@ -1071,15 +1113,26 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		error.setInfo(errorInfo);
 		outcome.setError(error);
 		
-		return this.updateMessageStateAsync(deliveryTag, outcome);
+		return this.updateMessageStateAsync(deliveryTag, outcome, transaction);
 	}
 	
-	public CompletableFuture<Void> deadLetterMessageAsync(UUID lockToken, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify)
+	public CompletableFuture<Void> deadLetterMessageAsync(
+			UUID lockToken,
+			String deadLetterReason,
+			String deadLetterErrorDescription,
+			Map<String, Object> propertiesToModify,
+			TransactionContext transaction)
 	{
-		return this.updateDispositionAsync(new UUID[]{lockToken}, ClientConstants.DISPOSITION_STATUS_SUSPENDED, deadLetterReason, deadLetterErrorDescription, propertiesToModify);
+		return this.updateDispositionAsync(
+				new UUID[]{lockToken},
+				ClientConstants.DISPOSITION_STATUS_SUSPENDED,
+				deadLetterReason,
+				deadLetterErrorDescription,
+				propertiesToModify,
+				transaction);
 	}
 	
-	private CompletableFuture<Void> updateMessageStateAsync(byte[] deliveryTag, Outcome outcome)
+	private CompletableFuture<Void> updateMessageStateAsync(byte[] deliveryTag, Outcome outcome, TransactionContext transaction)
 	{
 	    this.throwIfInUnusableState();
 		CompletableFuture<Void> completeMessageFuture = new CompletableFuture<Void>();
@@ -1094,7 +1147,16 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
         }
         else
         {
-            final UpdateStateWorkItem workItem = new UpdateStateWorkItem(completeMessageFuture, outcome, CoreMessageReceiver.this.factoryRceiveTimeout);
+        	DeliveryState state;
+        	if (transaction != TransactionContext.NULL_TXN) {
+        		state = new TransactionalState();
+				((TransactionalState)state).setTxnId(new Binary(transaction.getTransactionId().array()));
+				((TransactionalState)state).setOutcome(outcome);
+			} else {
+        		state = (DeliveryState) outcome;
+			}
+
+            final UpdateStateWorkItem workItem = new UpdateStateWorkItem(completeMessageFuture, state, CoreMessageReceiver.this.factoryRceiveTimeout);
             CoreMessageReceiver.this.pendingUpdateStateRequests.put(deliveryTagAsString, workItem);
             
             CoreMessageReceiver.this.ensureLinkIsOpen().thenRunAsync(() -> {
@@ -1104,8 +1166,8 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
                     {
                         @Override
                         public void onEvent()
-                        { 
-                            delivery.disposition((DeliveryState)outcome);
+                        {
+                        	delivery.disposition(state);
                         }
                     });
                 }
@@ -1183,7 +1245,11 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 	
 	private void completePendingUpdateStateWorkItem(Delivery delivery, String deliveryTagAsString, UpdateStateWorkItem workItem, Exception exception)
 	{
-		delivery.settle();
+		boolean isSettled = delivery.remotelySettled();
+		if (isSettled) {
+			delivery.settle();
+		}
+
 		if(exception == null)
 		{  
 			AsyncUtil.completeFuture(workItem.getWork(), null);
@@ -1191,10 +1257,12 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		else
 		{
 			ExceptionUtil.completeExceptionally(workItem.getWork(), exception, this, true);
-		}	
-		
-		this.tagsToDeliveriesMap.remove(deliveryTagAsString);
-		this.pendingUpdateStateRequests.remove(deliveryTagAsString);
+		}
+
+		if (isSettled) {
+			this.tagsToDeliveriesMap.remove(deliveryTagAsString);
+			this.pendingUpdateStateRequests.remove(deliveryTagAsString);
+		}
 	}
 	
 	private void clearAllPendingWorkItems(Exception exception)
@@ -1255,7 +1323,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			}
 			
 			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_RENEWLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout), this.receiveLink.getName());
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Collection<Instant>> returningFuture = new CompletableFuture<Collection<Instant>>();
 				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -1298,7 +1366,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			}
 			
 			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_RECEIVE_BY_SEQUENCE_NUMBER, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout), this.receiveLink.getName());
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Collection<MessageWithLockToken>> returningFuture = new CompletableFuture<Collection<MessageWithLockToken>>();
 				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -1347,7 +1415,13 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 		});		
 	}
 	
-	public CompletableFuture<Void> updateDispositionAsync(UUID[] lockTokens, String dispositionStatus, String deadLetterReason, String deadLetterErrorDescription, Map<String, Object> propertiesToModify)
+	public CompletableFuture<Void> updateDispositionAsync(
+			UUID[] lockTokens,
+			String dispositionStatus,
+			String deadLetterReason,
+			String deadLetterErrorDescription,
+			Map<String, Object> propertiesToModify,
+			TransactionContext transaction)
 	{
 	    this.throwIfInUnusableState();
 	    if(TRACE_LOGGER.isDebugEnabled())
@@ -1380,7 +1454,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			}
 			
 			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_UPDATE_DISPOSTION_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout), this.receiveLink.getName());
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, transaction, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
 				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -1413,7 +1487,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());
 			
 			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_RENEW_SESSIONLOCK_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout), this.receiveLink.getName());
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
 				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -1445,7 +1519,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSIONID, this.getSessionId());		
 			
 			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_GET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout), this.receiveLink.getName());
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<byte[]> returningFuture = new CompletableFuture<byte[]>();
 				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
@@ -1488,7 +1562,7 @@ public class CoreMessageReceiver extends ClientEntity implements IAmqpReceiver, 
 			requestBodyMap.put(ClientConstants.REQUEST_RESPONSE_SESSION_STATE, sessionState == null ? null : new Binary(sessionState));
 			
 			Message requestMessage = RequestResponseUtils.createRequestMessageFromPropertyBag(ClientConstants.REQUEST_RESPONSE_SET_SESSION_STATE_OPERATION, requestBodyMap, Util.adjustServerTimeout(this.operationTimeout), this.receiveLink.getName());
-			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, this.operationTimeout);
+			CompletableFuture<Message> responseFuture = this.requestResponseLink.requestAysnc(requestMessage, TransactionContext.NULL_TXN, this.operationTimeout);
 			return responseFuture.thenComposeAsync((responseMessage) -> {
 				CompletableFuture<Void> returningFuture = new CompletableFuture<Void>();
 				int statusCode = RequestResponseUtils.getResponseStatusCode(responseMessage);
