@@ -27,6 +27,7 @@ import static com.microsoft.azure.cosmosdb.BridgeInternal.toDatabaseAccount;
 import static com.microsoft.azure.cosmosdb.BridgeInternal.toFeedResponsePage;
 import static com.microsoft.azure.cosmosdb.BridgeInternal.toResourceResponse;
 import static com.microsoft.azure.cosmosdb.BridgeInternal.toStoredProcedureResponse;
+import static org.apache.commons.io.FileUtils.ONE_MB;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -271,7 +272,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                         MAX_REQUEST_HEADER_SIZE,
                         HttpClientPipelineConfigurator.MAX_CHUNK_SIZE_DEFAULT,
                         true),
-                new HttpObjectAggregationConfigurator<>());
+                new HttpObjectAggregationConfigurator((int)(ONE_MB * 2)));
         return clientPipelineConfigurator;
     }
 
