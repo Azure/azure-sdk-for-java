@@ -1,0 +1,8 @@
+{
+  "storage": {
+    "apiVersion": "v2017_10_01",
+    "package": "com.microsoft.azure.management.storage",
+    "source": "specification/storage/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=2 --tag=package-2017-10"
+  }
+}
