@@ -4,5 +4,11 @@
     "package": "com.microsoft.azure.management.storage",
     "source": "specification/storage/resource-manager/readme.md",
     "args": "--payload-flattening-threshold=2 --tag=package-2017-10"
+  },
+  "mediaservices": {
+    "apiVersion": "v2018_03_30_preview",
+    "package": "com.microsoft.azure.management.mediaservices",
+    "source": "specification/mediaservices/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
   }
 }
