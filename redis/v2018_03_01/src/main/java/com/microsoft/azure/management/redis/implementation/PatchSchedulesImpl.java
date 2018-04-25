@@ -14,6 +14,7 @@ import com.microsoft.azure.management.redis.PatchSchedules;
 import rx.Completable;
 import rx.Observable;
 import com.microsoft.azure.management.redis.RedisPatchSchedule;
+import rx.functions.Func1;
 
 class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements PatchSchedules {
     private final CacheManager manager;

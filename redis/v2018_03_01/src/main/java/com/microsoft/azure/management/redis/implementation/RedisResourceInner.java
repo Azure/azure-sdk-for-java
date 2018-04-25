@@ -9,6 +9,8 @@
 package com.microsoft.azure.management.redis.implementation;
 
 import java.util.Map;
+
+import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.redis.TlsVersion;
 import com.microsoft.azure.management.redis.Sku;
 import com.microsoft.azure.management.redis.ProvisioningState;
@@ -21,7 +23,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * A single Redis item in List or Get Operation.
  */
 @JsonFlatten
-public class RedisResourceInner extends TrackedResourceInner {
+public class RedisResourceInner extends Resource {
     /**
      * All Redis Settings. Few possible keys:
      * rdb-backup-enabled,rdb-storage-connection-string,rdb-backup-frequency,maxmemory-delta,maxmemory-policy,notify-keyspace-events,maxmemory-samples,slowlog-log-slower-than,slowlog-max-len,list-max-ziplist-entries,list-max-ziplist-value,hash-max-ziplist-entries,hash-max-ziplist-value,set-max-intset-entries,zset-max-ziplist-entries,zset-max-ziplist-value
