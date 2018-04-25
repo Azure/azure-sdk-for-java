@@ -12,6 +12,14 @@ public class AuthenticationResult{
     private String authToken;
     private String popKey;
 
+    /**
+     * Constructor
+     *
+     * @param authToken
+     *      authentication token string.
+     * @param popKey
+     *      serialized json web key used for pop authentication.
+     */
     public AuthenticationResult(String authToken, String popKey){
         this.authToken = authToken;
         this.popKey = popKey;

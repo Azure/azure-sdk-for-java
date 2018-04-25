@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Json Web Encryption Header class.
  */
-public class JWEHeader {
+class JWEHeader {
 
     private String alg;
     private String kid;

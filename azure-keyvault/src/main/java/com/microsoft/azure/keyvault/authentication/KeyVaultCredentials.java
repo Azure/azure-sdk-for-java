@@ -223,11 +223,6 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      * @param resource
      *            Identifier of the target resource that is the recipient of the
      *            requested token, a URL.
-     * @param scope
-     *            The scope of the authentication request.
-     *
-     * @param schema
-     *            Authentication schema. Can be 'pop' or 'bearer'.
      *
      * @return AuthenticationResult with authorization token and PoP key.
      *
@@ -280,6 +275,93 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
         return "";
     }
 
+    /**
+     * Method to be implemented.
+     *
+     * @param authorization
+     *            Identifier of the authority, a URL.
+     * @param resource
+     *            Identifier of the target resource that is the recipient of the
+     *            requested token, a URL.
+     * @param scope
+     *            The scope of the authentication request.
+     *
+     * @param schema
+     *            Authentication schema. Can be 'pop' or 'bearer'.
+     *
+     * @return AuthenticationResult with authorization token and PoP key.
+     *
+     *         Answers a server challenge with a token header.
+     *         <p>
+     *         Implementations sends POST request to receive authentication token like in example below.
+     *         ADAL currently doesn't support POP authentication.
+     *         </p>
+     *
+     *         <pre>
+     *  public AuthenticationResult doAuthenticate(String authorization, String resource, String scope, String schema) {
+     *      JsonWebKey clientJwk = GenerateJsonWebKey();
+     *      JsonWebKey clientPublicJwk = GetJwkWithPublicKeyOnly(clientJwk);
+     *      String token = GetAccessToken(authorization, resource, "pop".equals(schema), clientPublicJwk);
+     *
+     *      return new AuthenticationResult(token, clientJwk.toString());
+     *  }
+     *
+     *  private JsonWebKey GenerateJsonWebKey()
+     *  {
+     *      final KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+     *      generator.initialize(2048);
+     *      KeyPair clientRsaKeyPair  = generator.generateKeyPair();
+     *      JsonWebKey result = JsonWebKey.fromRSA(clientRsaKeyPair);
+     *      result.withKid(UUID.randomUUID().toString());
+     *      return result;
+     *  }
+     *
+     *  public static JsonWebKey GetJwkWithPublicKeyOnly(JsonWebKey jwk){
+     *      KeyPair publicOnly = jwk.toRSA(false);
+     *      JsonWebKey jsonkeyPublic = JsonWebKey.fromRSA(publicOnly);
+     *      jsonkeyPublic.withKid(jwk.kid());
+     *      jsonkeyPublic.withKeyOps(Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.WRAP_KEY, JsonWebKeyOperation.VERIFY));
+     *      return jsonkeyPublic;
+     *  }
+     *
+     *  private String GetAccessToken(String authorization, String resource, boolean supportspop, JsonWebKey jwkPublic){
+     *      CloseableHttpClient  httpclient = HttpClients.createDefault();
+     *      HttpPost httppost = new HttpPost(authorization + "/oauth2/token");
+     *      
+     *      // Request parameters and other properties.
+     *      List<NameValuePair> params = new ArrayList<NameValuePair>(2);
+     *      params.add(new BasicNameValuePair("resource", resource));
+     *      params.add(new BasicNameValuePair("response_type", "token"));
+     *      params.add(new BasicNameValuePair("grant_type", "client_credentials"));
+     *      params.add(new BasicNameValuePair("client_id", this.getApplicationId()));
+     *      params.add(new BasicNameValuePair("client_secret", this.getApplicationSecret()));
+     *
+     *      if (supportspop)
+     *      {
+     *          params.add(new BasicNameValuePair("pop_jwk", jwkPublic.toString()));
+     *      }
+     *
+     *      httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+     *
+     *      HttpResponse response = httpclient.execute(httppost);
+     *      HttpEntity entity = response.getEntity();
+     *
+     *      // Read the contents of an entity and return it as a String.
+     *      String content = EntityUtils.toString(entity);
+     *
+     *      ObjectMapper mapper = new ObjectMapper();
+     *      authreply reply = mapper.readValue(content, authreply.class);
+     *
+     *      return reply.access_token;
+     *  }
+     *  /pre>
+     *
+     *         <p>
+     *         <b>Note: The client key must be securely stored. It's advised to
+     *         use two client applications - one for development and other for
+     *         production - managed by separate parties.</b>
+     *         </p>
+     */
     public AuthenticationResult doAuthenticate(String authorization, String resource, String scope, String schema){
         return new AuthenticationResult(doAuthenticate(authorization, resource, scope), "");
     }
