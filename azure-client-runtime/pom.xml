@@ -8,7 +8,7 @@
   <parent>
     <groupId>com.microsoft.azure.v2</groupId>
     <artifactId>autorest-clientruntime-for-java</artifactId>
-    <version>2.0.0-beta2</version>
+    <version>2.0.0-SNAPSHOT</version>
     <relativePath>../pom.xml</relativePath>
   </parent>
 
@@ -30,7 +30,7 @@
   <scm>
     <url>scm:git:https://github.com/Azure/autorest-clientruntime-for-java</url>
     <connection>scm:git:git@github.com:Azure/autorest-clientruntime-for-java.git</connection>
-    <tag>v2.0.0-beta2</tag>
+    <tag>HEAD</tag>
   </scm>
 
   <properties>
@@ -49,7 +49,7 @@
     <dependency>
       <groupId>com.microsoft.rest.v2</groupId>
       <artifactId>client-runtime</artifactId>
-      <version>2.0.0-beta2</version>
+      <version>2.0.0-SNAPSHOT</version>
     </dependency>
     <dependency>
       <groupId>junit</groupId>
