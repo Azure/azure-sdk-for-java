@@ -97,8 +97,7 @@ public class Samples {
                          NOTE: It is imperative that the provided length matches the actual length exactly.
                          */
                         blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
-                                null, null, null)
-                )
+                                null, null, null))
                 .flatMap(blobsDownloadResponse ->
                         // Download the blob's content.
                         blobURL.download(null, null, false))

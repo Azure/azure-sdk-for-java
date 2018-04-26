@@ -19,6 +19,7 @@ import com.microsoft.rest.v2.util.FlowableUtil
 import io.reactivex.Flowable
 import spock.lang.Unroll
 
+import java.nio.ByteBuffer
 import java.security.MessageDigest
 
 class BlockBlobAPITest extends APISpec {
@@ -221,8 +222,8 @@ class BlockBlobAPITest extends APISpec {
 
     def "Block blob upload"() {
         when:
-        BlockBlobsUploadResponse response = bu.upload(Flowable.just(defaultData), defaultData.remaining()
-                , null, null, null).blockingGet()
+        BlockBlobsUploadResponse response = bu.upload(Flowable.just(defaultData), defaultData.remaining(),
+                null, null, null).blockingGet()
         BlockBlobsUploadHeaders headers = response.headers()
 
         then:
