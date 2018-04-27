@@ -6,7 +6,7 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.microsoft.azure</groupId>
-  <version>0.0.1-beta-SNAPSHOT</version>
+  <version>0.0.1-beta</version>
   <artifactId>azure-arm-parent</artifactId>
   <packaging>pom</packaging>
 
@@ -42,29 +42,6 @@
     </developer>
   </developers>
 
-  <repositories>
-    <repository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <distributionManagement>
-    <snapshotRepository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <uniqueVersion>true</uniqueVersion>
-      <layout>default</layout>
-    </snapshotRepository>
-  </distributionManagement>
-
   <dependencyManagement>
     <dependencies>
       <dependency>
@@ -94,13 +71,19 @@
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-arm-client-runtime</artifactId>
+        <version>1.5.0</version>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-runtime</artifactId>
-        <version>1.4.1-SNAPSHOT</version>
+        <version>1.5.0</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-authentication</artifactId>
-        <version>1.4.1-SNAPSHOT</version>
+        <version>1.5.0</version>
+        <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -353,7 +336,7 @@
         <plugin>
           <groupId>com.microsoft.azure</groupId>
           <artifactId>bundler-maven-plugin</artifactId>
-          <version>0.0.2</version>
+          <version>0.0.3</version>
         </plugin>
       </plugins>
     </pluginManagement>
