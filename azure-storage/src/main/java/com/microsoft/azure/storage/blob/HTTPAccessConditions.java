@@ -21,7 +21,7 @@ import java.time.OffsetDateTime;
  * commonly used as a member of {@link BlobAccessConditions} or {@link ContainerAccessConditions}. Specifying these
  * conditions is entirely optional, and null may be passed for this structure or any individual field to indicate that
  * none of the conditions should be set. Please refer to the
- * <a href=https://docs.microsoft.com/en-us/rest/api/storageservices/Specifying-Conditional-Headers-for-Blob-Service-Operations?redirectedfrom=MSDN>Azure Docs</a>
+ * <a href="https://docs.microsoft.com/en-us/rest/api/storageservices/Specifying-Conditional-Headers-for-Blob-Service-Operations?redirectedfrom=MSDN">Azure Docs</a>
  * for more information.
  */
 public final class HTTPAccessConditions {

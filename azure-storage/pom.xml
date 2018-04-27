@@ -6,7 +6,7 @@
 
     <parent>
         <groupId>com.microsoft.azure</groupId>
-        <artifactId>azure-storage-java-blob</artifactId>
+        <artifactId>azure-storage-blob</artifactId>
         <version>10.0.0-Preview</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
