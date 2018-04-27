@@ -42,7 +42,7 @@ class TransformsImpl extends WrapperImpl<TransformsInner> implements Transforms 
     }
 
     private TransformImpl wrapModel(TransformInner inner) {
-        return  new TransformImpl(inner, this.manager());
+        return  new TransformImpl(inner, manager());
     }
 
     private Observable<Page<TransformInner>> listByMediaserviceNextInnerPageAsync(String nextLink) {

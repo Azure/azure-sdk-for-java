@@ -35,7 +35,7 @@ class LiveOutputsImpl extends WrapperImpl<LiveOutputsInner> implements LiveOutpu
     }
 
     private LiveOutputImpl wrapModel(LiveOutputInner inner) {
-        return  new LiveOutputImpl(inner, this.manager());
+        return  new LiveOutputImpl(inner, manager());
     }
 
     private Observable<Page<LiveOutputInner>> listByLiveEventNextInnerPageAsync(String nextLink) {

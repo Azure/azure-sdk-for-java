@@ -13,7 +13,9 @@
         <version>0.0.1-beta-SNAPSHOT</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-media-v2018_03_30_preview</artifactId>
+    <groupId>com.microsoft.azure.media-2018-03-30-preview</groupId>
+    <artifactId>azure-mgmt-media</artifactId>
+    <version>0.0.1-beta-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Media Management</name>
     <description>This package contains Microsoft Media Management SDK.</description>
@@ -46,10 +48,10 @@
             <artifactId>azure-client-runtime</artifactId>
         </dependency>
             <dependency>
-            <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-arm-client-runtime</artifactId>
-            <version>1.4.1-SNAPSHOT</version>
-        </dependency>
+                <groupId>com.microsoft.azure</groupId>
+                <artifactId>azure-arm-client-runtime</artifactId>
+                <version>1.4.1-SNAPSHOT</version>
+            </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
