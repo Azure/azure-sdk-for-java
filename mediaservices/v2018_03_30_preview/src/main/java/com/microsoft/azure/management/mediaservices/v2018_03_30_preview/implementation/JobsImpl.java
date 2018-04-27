@@ -35,7 +35,7 @@ class JobsImpl extends WrapperImpl<JobsInner> implements Jobs {
     }
 
     private JobImpl wrapModel(JobInner inner) {
-        return  new JobImpl(inner, this.manager());
+        return  new JobImpl(inner, manager());
     }
 
     @Override

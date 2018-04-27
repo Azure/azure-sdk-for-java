@@ -35,7 +35,7 @@ class StreamingPoliciesImpl extends WrapperImpl<StreamingPoliciesInner> implemen
     }
 
     private StreamingPolicyImpl wrapModel(StreamingPolicyInner inner) {
-        return  new StreamingPolicyImpl(inner, this.manager());
+        return  new StreamingPolicyImpl(inner, manager());
     }
 
     private Observable<Page<StreamingPolicyInner>> listByMediaserviceNextInnerPageAsync(String nextLink) {

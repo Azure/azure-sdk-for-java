@@ -42,7 +42,7 @@ class LiveEventsImpl extends WrapperImpl<LiveEventsInner> implements LiveEvents 
     }
 
     private LiveEventImpl wrapModel(LiveEventInner inner) {
-        return  new LiveEventImpl(inner, this.manager());
+        return  new LiveEventImpl(inner, manager());
     }
 
     @Override

@@ -791,13 +791,13 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;MediaServiceInner&gt; object if successful.
+     * @return the PagedList&lt;SubscriptionMediaServiceInner&gt; object if successful.
      */
-    public PagedList<MediaServiceInner> list() {
-        ServiceResponse<Page<MediaServiceInner>> response = listSinglePageAsync().toBlocking().single();
-        return new PagedList<MediaServiceInner>(response.body()) {
+    public PagedList<SubscriptionMediaServiceInner> list() {
+        ServiceResponse<Page<SubscriptionMediaServiceInner>> response = listSinglePageAsync().toBlocking().single();
+        return new PagedList<SubscriptionMediaServiceInner>(response.body()) {
             @Override
-            public Page<MediaServiceInner> nextPage(String nextPageLink) {
+            public Page<SubscriptionMediaServiceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -811,12 +811,12 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<MediaServiceInner>> listAsync(final ListOperationCallback<MediaServiceInner> serviceCallback) {
+    public ServiceFuture<List<SubscriptionMediaServiceInner>> listAsync(final ListOperationCallback<SubscriptionMediaServiceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listSinglePageAsync(),
-            new Func1<String, Observable<ServiceResponse<Page<MediaServiceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MediaServiceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -828,13 +828,13 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * List Media Services accounts in the subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;MediaServiceInner&gt; object
+     * @return the observable to the PagedList&lt;SubscriptionMediaServiceInner&gt; object
      */
-    public Observable<Page<MediaServiceInner>> listAsync() {
+    public Observable<Page<SubscriptionMediaServiceInner>> listAsync() {
         return listWithServiceResponseAsync()
-            .map(new Func1<ServiceResponse<Page<MediaServiceInner>>, Page<MediaServiceInner>>() {
+            .map(new Func1<ServiceResponse<Page<SubscriptionMediaServiceInner>>, Page<SubscriptionMediaServiceInner>>() {
                 @Override
-                public Page<MediaServiceInner> call(ServiceResponse<Page<MediaServiceInner>> response) {
+                public Page<SubscriptionMediaServiceInner> call(ServiceResponse<Page<SubscriptionMediaServiceInner>> response) {
                     return response.body();
                 }
             });
@@ -845,13 +845,13 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * List Media Services accounts in the subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;MediaServiceInner&gt; object
+     * @return the observable to the PagedList&lt;SubscriptionMediaServiceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MediaServiceInner>>> listWithServiceResponseAsync() {
+    public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> listWithServiceResponseAsync() {
         return listSinglePageAsync()
-            .concatMap(new Func1<ServiceResponse<Page<MediaServiceInner>>, Observable<ServiceResponse<Page<MediaServiceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<SubscriptionMediaServiceInner>>, Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MediaServiceInner>>> call(ServiceResponse<Page<MediaServiceInner>> page) {
+                public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> call(ServiceResponse<Page<SubscriptionMediaServiceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -866,9 +866,9 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * List Media Services accounts in the subscription.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;MediaServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SubscriptionMediaServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<MediaServiceInner>>> listSinglePageAsync() {
+    public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> listSinglePageAsync() {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -876,12 +876,12 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.list(this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MediaServiceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MediaServiceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<MediaServiceInner>> result = listDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<MediaServiceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<SubscriptionMediaServiceInner>> result = listDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SubscriptionMediaServiceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -889,9 +889,9 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
             });
     }
 
-    private ServiceResponse<PageImpl<MediaServiceInner>> listDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<MediaServiceInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<MediaServiceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SubscriptionMediaServiceInner>> listDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SubscriptionMediaServiceInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SubscriptionMediaServiceInner>>() { }.getType())
                 .registerError(ApiErrorException.class)
                 .build(response);
     }
@@ -904,9 +904,9 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the MediaServiceInner object if successful.
+     * @return the SubscriptionMediaServiceInner object if successful.
      */
-    public MediaServiceInner getBySubscription(String accountName) {
+    public SubscriptionMediaServiceInner getBySubscription(String accountName) {
         return getBySubscriptionWithServiceResponseAsync(accountName).toBlocking().single().body();
     }
 
@@ -919,7 +919,7 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<MediaServiceInner> getBySubscriptionAsync(String accountName, final ServiceCallback<MediaServiceInner> serviceCallback) {
+    public ServiceFuture<SubscriptionMediaServiceInner> getBySubscriptionAsync(String accountName, final ServiceCallback<SubscriptionMediaServiceInner> serviceCallback) {
         return ServiceFuture.fromResponse(getBySubscriptionWithServiceResponseAsync(accountName), serviceCallback);
     }
 
@@ -929,12 +929,12 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      *
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MediaServiceInner object
+     * @return the observable to the SubscriptionMediaServiceInner object
      */
-    public Observable<MediaServiceInner> getBySubscriptionAsync(String accountName) {
-        return getBySubscriptionWithServiceResponseAsync(accountName).map(new Func1<ServiceResponse<MediaServiceInner>, MediaServiceInner>() {
+    public Observable<SubscriptionMediaServiceInner> getBySubscriptionAsync(String accountName) {
+        return getBySubscriptionWithServiceResponseAsync(accountName).map(new Func1<ServiceResponse<SubscriptionMediaServiceInner>, SubscriptionMediaServiceInner>() {
             @Override
-            public MediaServiceInner call(ServiceResponse<MediaServiceInner> response) {
+            public SubscriptionMediaServiceInner call(ServiceResponse<SubscriptionMediaServiceInner> response) {
                 return response.body();
             }
         });
@@ -946,9 +946,9 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      *
      * @param accountName The Media Services account name.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MediaServiceInner object
+     * @return the observable to the SubscriptionMediaServiceInner object
      */
-    public Observable<ServiceResponse<MediaServiceInner>> getBySubscriptionWithServiceResponseAsync(String accountName) {
+    public Observable<ServiceResponse<SubscriptionMediaServiceInner>> getBySubscriptionWithServiceResponseAsync(String accountName) {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
@@ -959,11 +959,11 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
         return service.getBySubscription(this.client.subscriptionId(), accountName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<MediaServiceInner>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SubscriptionMediaServiceInner>>>() {
                 @Override
-                public Observable<ServiceResponse<MediaServiceInner>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<SubscriptionMediaServiceInner>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<MediaServiceInner> clientResponse = getBySubscriptionDelegate(response);
+                        ServiceResponse<SubscriptionMediaServiceInner> clientResponse = getBySubscriptionDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -972,9 +972,9 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
             });
     }
 
-    private ServiceResponse<MediaServiceInner> getBySubscriptionDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<MediaServiceInner, ApiErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<MediaServiceInner>() { }.getType())
+    private ServiceResponse<SubscriptionMediaServiceInner> getBySubscriptionDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<SubscriptionMediaServiceInner, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<SubscriptionMediaServiceInner>() { }.getType())
                 .registerError(ApiErrorException.class)
                 .build(response);
     }
@@ -1103,13 +1103,13 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ApiErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the PagedList&lt;MediaServiceInner&gt; object if successful.
+     * @return the PagedList&lt;SubscriptionMediaServiceInner&gt; object if successful.
      */
-    public PagedList<MediaServiceInner> listNext(final String nextPageLink) {
-        ServiceResponse<Page<MediaServiceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
-        return new PagedList<MediaServiceInner>(response.body()) {
+    public PagedList<SubscriptionMediaServiceInner> listNext(final String nextPageLink) {
+        ServiceResponse<Page<SubscriptionMediaServiceInner>> response = listNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<SubscriptionMediaServiceInner>(response.body()) {
             @Override
-            public Page<MediaServiceInner> nextPage(String nextPageLink) {
+            public Page<SubscriptionMediaServiceInner> nextPage(String nextPageLink) {
                 return listNextSinglePageAsync(nextPageLink).toBlocking().single().body();
             }
         };
@@ -1125,12 +1125,12 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<List<MediaServiceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<MediaServiceInner>> serviceFuture, final ListOperationCallback<MediaServiceInner> serviceCallback) {
+    public ServiceFuture<List<SubscriptionMediaServiceInner>> listNextAsync(final String nextPageLink, final ServiceFuture<List<SubscriptionMediaServiceInner>> serviceFuture, final ListOperationCallback<SubscriptionMediaServiceInner> serviceCallback) {
         return AzureServiceFuture.fromPageResponse(
             listNextSinglePageAsync(nextPageLink),
-            new Func1<String, Observable<ServiceResponse<Page<MediaServiceInner>>>>() {
+            new Func1<String, Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MediaServiceInner>>> call(String nextPageLink) {
+                public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> call(String nextPageLink) {
                     return listNextSinglePageAsync(nextPageLink);
                 }
             },
@@ -1143,13 +1143,13 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;MediaServiceInner&gt; object
+     * @return the observable to the PagedList&lt;SubscriptionMediaServiceInner&gt; object
      */
-    public Observable<Page<MediaServiceInner>> listNextAsync(final String nextPageLink) {
+    public Observable<Page<SubscriptionMediaServiceInner>> listNextAsync(final String nextPageLink) {
         return listNextWithServiceResponseAsync(nextPageLink)
-            .map(new Func1<ServiceResponse<Page<MediaServiceInner>>, Page<MediaServiceInner>>() {
+            .map(new Func1<ServiceResponse<Page<SubscriptionMediaServiceInner>>, Page<SubscriptionMediaServiceInner>>() {
                 @Override
-                public Page<MediaServiceInner> call(ServiceResponse<Page<MediaServiceInner>> response) {
+                public Page<SubscriptionMediaServiceInner> call(ServiceResponse<Page<SubscriptionMediaServiceInner>> response) {
                     return response.body();
                 }
             });
@@ -1161,13 +1161,13 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      *
      * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the PagedList&lt;MediaServiceInner&gt; object
+     * @return the observable to the PagedList&lt;SubscriptionMediaServiceInner&gt; object
      */
-    public Observable<ServiceResponse<Page<MediaServiceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> listNextWithServiceResponseAsync(final String nextPageLink) {
         return listNextSinglePageAsync(nextPageLink)
-            .concatMap(new Func1<ServiceResponse<Page<MediaServiceInner>>, Observable<ServiceResponse<Page<MediaServiceInner>>>>() {
+            .concatMap(new Func1<ServiceResponse<Page<SubscriptionMediaServiceInner>>, Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MediaServiceInner>>> call(ServiceResponse<Page<MediaServiceInner>> page) {
+                public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> call(ServiceResponse<Page<SubscriptionMediaServiceInner>> page) {
                     String nextPageLink = page.body().nextPageLink();
                     if (nextPageLink == null) {
                         return Observable.just(page);
@@ -1181,22 +1181,22 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
      * List Media Services accounts.
      * List Media Services accounts in the subscription.
      *
-    ServiceResponse<PageImpl<MediaServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+    ServiceResponse<PageImpl<SubscriptionMediaServiceInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the PagedList&lt;MediaServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     * @return the PagedList&lt;SubscriptionMediaServiceInner&gt; object wrapped in {@link ServiceResponse} if successful.
      */
-    public Observable<ServiceResponse<Page<MediaServiceInner>>> listNextSinglePageAsync(final String nextPageLink) {
+    public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> listNextSinglePageAsync(final String nextPageLink) {
         if (nextPageLink == null) {
             throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
         }
         String nextUrl = String.format("%s", nextPageLink);
         return service.listNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<MediaServiceInner>>>>() {
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>>>() {
                 @Override
-                public Observable<ServiceResponse<Page<MediaServiceInner>>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<Page<SubscriptionMediaServiceInner>>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<PageImpl<MediaServiceInner>> result = listNextDelegate(response);
-                        return Observable.just(new ServiceResponse<Page<MediaServiceInner>>(result.body(), result.response()));
+                        ServiceResponse<PageImpl<SubscriptionMediaServiceInner>> result = listNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<SubscriptionMediaServiceInner>>(result.body(), result.response()));
                     } catch (Throwable t) {
                         return Observable.error(t);
                     }
@@ -1204,9 +1204,9 @@ public class MediaservicesInner implements InnerSupportsGet<MediaServiceInner>, 
             });
     }
 
-    private ServiceResponse<PageImpl<MediaServiceInner>> listNextDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<PageImpl<MediaServiceInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<PageImpl<MediaServiceInner>>() { }.getType())
+    private ServiceResponse<PageImpl<SubscriptionMediaServiceInner>> listNextDelegate(Response<ResponseBody> response) throws ApiErrorException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<SubscriptionMediaServiceInner>, ApiErrorException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<SubscriptionMediaServiceInner>>() { }.getType())
                 .registerError(ApiErrorException.class)
                 .build(response);
     }

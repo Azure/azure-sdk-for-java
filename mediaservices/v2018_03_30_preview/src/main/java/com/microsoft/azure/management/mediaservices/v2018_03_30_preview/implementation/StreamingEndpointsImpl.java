@@ -35,7 +35,7 @@ class StreamingEndpointsImpl extends WrapperImpl<StreamingEndpointsInner> implem
     }
 
     private StreamingEndpointImpl wrapModel(StreamingEndpointInner inner) {
-        return  new StreamingEndpointImpl(inner, this.manager());
+        return  new StreamingEndpointImpl(inner, manager());
     }
 
     @Override
