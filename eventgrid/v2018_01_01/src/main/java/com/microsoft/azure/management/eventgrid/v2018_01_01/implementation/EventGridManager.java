@@ -14,6 +14,7 @@ import com.microsoft.azure.credentials.AzureTokenCredentials;
 import com.microsoft.azure.management.apigeneration.Beta;
 import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
+import com.microsoft.azure.management.eventgrid.v2018_01_01.EventSubscriptions;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.eventgrid.v2018_01_01.TopicTypeEventTypes;
@@ -35,6 +36,8 @@ public final class EventGridManager extends ManagerCore<EventGridManager, EventG
     private Providers providers;
     private TopicTypes topicTypes;
     private Topics topics;
+    private EventSubscriptions eventSubscriptions;
+
     /**
     * Get a Configurable instance that can be used to create EventGridManager with optional configuration.
     *
@@ -80,6 +83,16 @@ public final class EventGridManager extends ManagerCore<EventGridManager, EventG
         * @return the interface exposing EventGrid management API entry points that work across subscriptions
         */
         EventGridManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+    }
+
+    /**
+     * @return Entry point to manage EventSubscriptions.
+     */
+    public EventSubscriptions eventSubscriptions() {
+        if (this.eventSubscriptions == null) {
+            this.eventSubscriptions = new EventSubscriptionsImpl(this);
+        }
+        return this.eventSubscriptions;
     }
 
     /**
