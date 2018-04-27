@@ -97,10 +97,14 @@ var handleInput = function(projects, cb) {
     }
 }
 
+var normalizeApiVersion = function(ver) {
+    return "v" + ver.replace(/-/g, '_');
+}
+
 var codegen = function(project, cb) {
     var packageNamespace = mappings[project].package;
     if (mappings[project].apiVersion !== undefined) {
-        packageNamespace = packageNamespace + "." + mappings[project].apiVersion;
+        packageNamespace = packageNamespace + "." + normalizeApiVersion(mappings[project].apiVersion);
     }
 
     if (mappings[project].dir == undefined && mappings[project].apiVersion == undefined) {
@@ -112,11 +116,11 @@ var codegen = function(project, cb) {
     if (mappings[project].dir !== undefined) {
         rootDir = mappings[project].dir;
         if (mappings[project].apiVersion !== undefined) {
-            rootDir = rootDir + "-" + mappings[project].apiVersion;
+            rootDir = rootDir + "-" + normalizeApiVersion(mappings[project].apiVersion);
             rootDir = path.join(project, rootDir);
         }
     } else {
-        rootDir = mappings[project].apiVersion;
+        rootDir = normalizeApiVersion(mappings[project].apiVersion);
         rootDir = path.join(project, rootDir);
     }
 
@@ -149,7 +153,7 @@ var codegen = function(project, cb) {
                         ' --java ' +
                         ' --azure-arm ' +
                         generator +
-                        ` --namespace=${packageNamespace} ` +
+                        ` --java.namespace=${packageNamespace} ` +
                         ` --java.output-folder=${path.resolve(rootDir)} ` +
                         ` --license-header=MICROSOFT_MIT_NO_CODEGEN ` +
                         generatorPath +
