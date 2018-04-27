@@ -76,7 +76,7 @@ Please refer to CONTRIBUTING.md for information on how to run the tests.
 
 ## Migrating to V10
 
-Migrating to the newest version of the SDK will require a substantial rewrite of any component that interfaces with Azure Storage. Despite this, we feel the benefits offered by this new design are worth it, and we are happy to help with the transition!
+Migrating to the newest version of the SDK will require a substantial rewrite of any component that interfaces with Azure Storage. Despite this, we feel the benefits offered by this new design are worth it, and we are happy to help with the transition! Please refer to the wiki for information on the core ideas behind the new design and best practices on how to use it effectively.
 
 # Need Help?
 
