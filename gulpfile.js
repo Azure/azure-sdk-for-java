@@ -145,7 +145,7 @@ var codegen = function(project, cb) {
 
     var apiVersion;
     if (mappings[project].apiVersion !== undefined) {
-        apiVersion = " --api-version=" + mappings[project].apiVersion + ' ';
+        apiVersion = " --api-version='" + mappings[project].apiVersion + "'" + ' ';
     }
 
     // path.join won't work if specRoot is a URL
