@@ -24,6 +24,7 @@ import com.microsoft.rest.v2.annotations.Host;
 import com.microsoft.rest.v2.annotations.HostParam;
 import com.microsoft.rest.v2.annotations.PUT;
 import com.microsoft.rest.v2.annotations.QueryParam;
+import com.microsoft.rest.v2.util.Base64Util;
 import io.reactivex.Completable;
 import io.reactivex.Flowable;
 import io.reactivex.Single;
@@ -32,7 +33,6 @@ import java.nio.ByteBuffer;
 import java.time.OffsetDateTime;
 import java.util.HashMap;
 import java.util.Map;
-import org.apache.commons.codec.binary.Base64;
 
 /**
  * An instance of this class provides access to all the operations defined in
@@ -155,7 +155,7 @@ public final class GeneratedAppendBlobs {
         }
         Validator.validate(metadata);
         final String blobType = "AppendBlob";
-        String blobContentMD5Converted = Base64.encodeBase64String(blobContentMD5);
+        String blobContentMD5Converted = Base64Util.encodeToString(blobContentMD5);
         DateTimeRfc1123 ifModifiedSinceConverted = null;
         if (ifModifiedSince != null) {
             ifModifiedSinceConverted = new DateTimeRfc1123(ifModifiedSince);
