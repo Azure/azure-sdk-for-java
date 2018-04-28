@@ -2,7 +2,7 @@
 
 ## Azure Batch Libraries for Java
 
-This README is based on the latest released version Azure Batch SDK (3.1.0). If you are looking for other releases, see [More Information](#more information)
+This README is based on the latest released version Azure Batch SDK (3.1.0). If you are looking for other releases, see the [More Information](#more-information) section below.
 
 The Azure Batch Libraries for Java is a higher-level, object-oriented API for interacting with the Azure Batch service.
 
