@@ -54,7 +54,7 @@ public abstract class RxCollectionCache {
      * Resolves a request to a collection in a sticky manner.
      * Unless request.ForceNameCacheRefresh is equal to true, it will return the same collection.
      * @param request Request to resolve.
-     * @return an instance of Single<DocumentCollection>
+     * @return an instance of Single&lt;DocumentCollection&gt;
      */
     public Single<DocumentCollection> resolveCollectionAsync(
             RxDocumentServiceRequest request) {
