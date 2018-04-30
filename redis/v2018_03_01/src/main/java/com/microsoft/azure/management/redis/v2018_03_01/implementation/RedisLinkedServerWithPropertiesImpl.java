@@ -128,7 +128,7 @@ class RedisLinkedServerWithPropertiesImpl extends CreatableUpdatableImpl<RedisLi
     }
 
     @Override
-    public RedisLinkedServerWithPropertiesImpl withExistingRedi(String resourceGroupName, String name) {
+    public RedisLinkedServerWithPropertiesImpl withExistingRedis(String resourceGroupName, String name) {
         this.resourceGroupName = resourceGroupName;
         this.name = name;
         return this;

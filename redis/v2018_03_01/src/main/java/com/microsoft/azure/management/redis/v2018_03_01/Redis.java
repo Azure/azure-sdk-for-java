@@ -25,22 +25,22 @@ import com.microsoft.azure.arm.model.HasInner;
 public interface Redis extends SupportsCreating<RedisResource.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<RedisResource>, SupportsListingByResourceGroup<RedisResource>, SupportsListing<RedisResource>, HasInner<RedisInner> {
 
     /**
-     * @return Entry point to manage Redi ListUpgradeNotification.
+     * @return Entry point to manage Redis ListUpgradeNotification.
      */
     ListUpgradeNotifications listUpgradeNotifications();
 
     /**
-     * @return Entry point to manage Redi FirewallRule.
+     * @return Entry point to manage Redis FirewallRule.
      */
     FirewallRules firewallRules();
 
     /**
-     * @return Entry point to manage Redi PatchSchedule.
+     * @return Entry point to manage Redis PatchSchedule.
      */
     PatchSchedules patchSchedules();
 
     /**
-     * @return Entry point to manage Redi LinkedServer.
+     * @return Entry point to manage Redis LinkedServer.
      */
     LinkedServers linkedServers();
     /**

@@ -92,7 +92,7 @@ class RedisPatchScheduleImpl extends CreatableUpdatableImpl<RedisPatchSchedule, 
     }
 
     @Override
-    public RedisPatchScheduleImpl withExistingRedi(String resourceGroupName, String name) {
+    public RedisPatchScheduleImpl withExistingRedis(String resourceGroupName, String name) {
         this.resourceGroupName = resourceGroupName;
         this.name = name;
         return this;

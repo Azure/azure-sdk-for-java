@@ -117,7 +117,7 @@ class RedisFirewallRuleImpl extends CreatableUpdatableImpl<RedisFirewallRule, Re
     }
 
     @Override
-    public RedisFirewallRuleImpl withExistingRedi(String resourceGroupName, String cacheName) {
+    public RedisFirewallRuleImpl withExistingRedis(String resourceGroupName, String cacheName) {
         this.resourceGroupName = resourceGroupName;
         this.cacheName = cacheName;
         return this;

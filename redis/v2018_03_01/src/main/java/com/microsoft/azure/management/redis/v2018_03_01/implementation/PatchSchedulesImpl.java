@@ -38,7 +38,7 @@ class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements Pat
     }
 
     @Override
-    public Observable<RedisPatchSchedule> getByRediAsync(String resourceGroupName, String name) {
+    public Observable<RedisPatchSchedule> getByRedisAsync(String resourceGroupName, String name) {
         PatchSchedulesInner client = this.inner();
         return client.getAsync(resourceGroupName, name)
         .map(new Func1<RedisPatchScheduleInner, RedisPatchSchedule>() {
@@ -50,7 +50,7 @@ class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements Pat
     }
 
     @Override
-    public Completable deleteByRediAsync(String resourceGroupName, String name) {
+    public Completable deleteByRedisAsync(String resourceGroupName, String name) {
         PatchSchedulesInner client = this.inner();
         return client.deleteAsync(resourceGroupName, name).toCompletable();
     }

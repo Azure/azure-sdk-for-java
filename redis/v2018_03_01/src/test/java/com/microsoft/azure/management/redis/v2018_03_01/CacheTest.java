@@ -125,12 +125,12 @@ public class  CacheTest extends TestBase {
                 .last();
         Assert.assertNotNull(rfResp);
 
-        RedisFirewallRule fRule = manager.redis().firewallRules().listByRediAsync(RC_NAME, RC_NAME)
+        RedisFirewallRule fRule = manager.redis().firewallRules().listByRedisAsync(RC_NAME, RC_NAME)
                 .toBlocking()
                 .last();
         Assert.assertNotNull(fRule);
 
-        RedisLinkedServerWithProperties fServers = manager.redis().linkedServers().listByRediAsync(RC_NAME, RC_NAME)
+        RedisLinkedServerWithProperties fServers = manager.redis().linkedServers().listByRedisAsync(RC_NAME, RC_NAME)
                 .toBlocking()
                 .last();
         Assert.assertNotNull(fServers);
@@ -165,7 +165,7 @@ public class  CacheTest extends TestBase {
 
         RedisPatchSchedule patchSchedules = manager.patchSchedules()
                 .define(RC_PATCH_NAME)
-                .withExistingRedi(RG_NAME, RC_NAME)
+                .withExistingRedis(RG_NAME, RC_NAME)
                 .withScheduleEntries(scheduleEntries)
                 .create();
 

@@ -46,7 +46,7 @@ public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, I
     /**
      * The entirety of the RedisPatchSchedule definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedi, DefinitionStages.WithScheduleEntries, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedis, DefinitionStages.WithScheduleEntries, DefinitionStages.WithCreate {
     }
 
     /**
@@ -56,17 +56,17 @@ public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, I
         /**
          * The first stage of a RedisPatchSchedule definition.
          */
-        interface Blank extends WithRedi {
+        interface Blank extends WithRedis {
         }
 
         /**
-         * The stage of the redispatchschedule definition allowing to specify Redi.
+         * The stage of the redispatchschedule definition allowing to specify Redis.
          */
-        interface WithRedi {
+        interface WithRedis {
            /**
             * Specifies resourceGroupName, name.
             */
-            WithScheduleEntries withExistingRedi(String resourceGroupName, String name);
+            WithScheduleEntries withExistingRedis(String resourceGroupName, String name);
         }
 
         /**

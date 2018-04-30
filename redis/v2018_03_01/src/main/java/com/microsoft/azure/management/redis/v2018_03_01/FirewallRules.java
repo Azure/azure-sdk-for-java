@@ -27,7 +27,7 @@ public interface FirewallRules extends SupportsCreating<RedisFirewallRule.Defini
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RedisFirewallRule> listByRediAsync(final String resourceGroupName, final String cacheName);
+    Observable<RedisFirewallRule> listByRedisAsync(final String resourceGroupName, final String cacheName);
 
     /**
      * Gets a single firewall rule in a specified redis cache.
@@ -38,7 +38,7 @@ public interface FirewallRules extends SupportsCreating<RedisFirewallRule.Defini
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RedisFirewallRule> getByRediAsync(String resourceGroupName, String cacheName, String ruleName);
+    Observable<RedisFirewallRule> getByRedisAsync(String resourceGroupName, String cacheName, String ruleName);
 
     /**
      * Deletes a single firewall rule in a specified redis cache.
@@ -49,5 +49,5 @@ public interface FirewallRules extends SupportsCreating<RedisFirewallRule.Defini
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByRediAsync(String resourceGroupName, String cacheName, String ruleName);
+    Completable deleteByRedisAsync(String resourceGroupName, String cacheName, String ruleName);
 }

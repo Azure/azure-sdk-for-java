@@ -50,7 +50,7 @@ public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Ind
     /**
      * The entirety of the RedisFirewallRule definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedi, DefinitionStages.WithEndIP, DefinitionStages.WithStartIP, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedis, DefinitionStages.WithEndIP, DefinitionStages.WithStartIP, DefinitionStages.WithCreate {
     }
 
     /**
@@ -60,17 +60,17 @@ public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Ind
         /**
          * The first stage of a RedisFirewallRule definition.
          */
-        interface Blank extends WithRedi {
+        interface Blank extends WithRedis {
         }
 
         /**
-         * The stage of the redisfirewallrule definition allowing to specify Redi.
+         * The stage of the redisfirewallrule definition allowing to specify Redis.
          */
-        interface WithRedi {
+        interface WithRedis {
            /**
             * Specifies resourceGroupName, cacheName.
             */
-            WithEndIP withExistingRedi(String resourceGroupName, String cacheName);
+            WithEndIP withExistingRedis(String resourceGroupName, String cacheName);
         }
 
         /**

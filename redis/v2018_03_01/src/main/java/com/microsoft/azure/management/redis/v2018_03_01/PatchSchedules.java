@@ -27,7 +27,7 @@ public interface PatchSchedules extends SupportsCreating<RedisPatchSchedule.Defi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RedisPatchSchedule> getByRediAsync(String resourceGroupName, String name);
+    Observable<RedisPatchSchedule> getByRedisAsync(String resourceGroupName, String name);
 
     /**
      * Deletes the patching schedule of a redis cache (requires Premium SKU).
@@ -37,5 +37,5 @@ public interface PatchSchedules extends SupportsCreating<RedisPatchSchedule.Defi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByRediAsync(String resourceGroupName, String name);
+    Completable deleteByRedisAsync(String resourceGroupName, String name);
 }

@@ -38,7 +38,7 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
         return  new RedisFirewallRuleImpl(inner, manager());
     }
 
-    private Observable<Page<RedisFirewallRuleInner>> listByRediNextInnerPageAsync(String nextLink) {
+    private Observable<Page<RedisFirewallRuleInner>> listByRedisNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -47,18 +47,18 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
         .flatMap(new Func1<Page<RedisFirewallRuleInner>, Observable<Page<RedisFirewallRuleInner>>>() {
             @Override
             public Observable<Page<RedisFirewallRuleInner>> call(Page<RedisFirewallRuleInner> page) {
-                return Observable.just(page).concatWith(listByRediNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listByRedisNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<RedisFirewallRule> listByRediAsync(final String resourceGroupName, final String cacheName) {
+    public Observable<RedisFirewallRule> listByRedisAsync(final String resourceGroupName, final String cacheName) {
         FirewallRulesInner client = this.inner();
         return client.listByRedisResourceAsync(resourceGroupName, cacheName)
         .flatMap(new Func1<Page<RedisFirewallRuleInner>, Observable<Page<RedisFirewallRuleInner>>>() {
             @Override
             public Observable<Page<RedisFirewallRuleInner>> call(Page<RedisFirewallRuleInner> page) {
-                return listByRediNextInnerPageAsync(page.nextPageLink());
+                return listByRedisNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<RedisFirewallRuleInner>, Iterable<RedisFirewallRuleInner>>() {
@@ -76,7 +76,7 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
     }
 
     @Override
-    public Observable<RedisFirewallRule> getByRediAsync(String resourceGroupName, String cacheName, String ruleName) {
+    public Observable<RedisFirewallRule> getByRedisAsync(String resourceGroupName, String cacheName, String ruleName) {
         FirewallRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, cacheName, ruleName)
         .map(new Func1<RedisFirewallRuleInner, RedisFirewallRule>() {
@@ -88,7 +88,7 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
     }
 
     @Override
-    public Completable deleteByRediAsync(String resourceGroupName, String cacheName, String ruleName) {
+    public Completable deleteByRedisAsync(String resourceGroupName, String cacheName, String ruleName) {
         FirewallRulesInner client = this.inner();
         return client.deleteAsync(resourceGroupName, cacheName, ruleName).toCompletable();
     }

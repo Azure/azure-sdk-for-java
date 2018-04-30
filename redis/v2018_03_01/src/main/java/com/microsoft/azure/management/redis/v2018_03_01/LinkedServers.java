@@ -27,7 +27,7 @@ public interface LinkedServers extends SupportsCreating<RedisLinkedServerWithPro
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RedisLinkedServerWithProperties> listByRediAsync(final String resourceGroupName, final String name);
+    Observable<RedisLinkedServerWithProperties> listByRedisAsync(final String resourceGroupName, final String name);
 
     /**
      * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
@@ -38,7 +38,7 @@ public interface LinkedServers extends SupportsCreating<RedisLinkedServerWithPro
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RedisLinkedServerWithProperties> getByRediAsync(String resourceGroupName, String name, String linkedServerName);
+    Observable<RedisLinkedServerWithProperties> getByRedisAsync(String resourceGroupName, String name, String linkedServerName);
 
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
@@ -49,5 +49,5 @@ public interface LinkedServers extends SupportsCreating<RedisLinkedServerWithPro
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByRediAsync(String resourceGroupName, String name, String linkedServerName);
+    Completable deleteByRedisAsync(String resourceGroupName, String name, String linkedServerName);
 }

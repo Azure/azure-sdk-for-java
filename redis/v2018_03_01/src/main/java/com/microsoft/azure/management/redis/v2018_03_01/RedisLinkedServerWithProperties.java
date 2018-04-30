@@ -60,7 +60,7 @@ public interface RedisLinkedServerWithProperties extends HasInner<RedisLinkedSer
     /**
      * The entirety of the RedisLinkedServerWithProperties definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedi, DefinitionStages.WithLinkedRedisCacheId, DefinitionStages.WithLinkedRedisCacheLocation, DefinitionStages.WithServerRole, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithRedis, DefinitionStages.WithLinkedRedisCacheId, DefinitionStages.WithLinkedRedisCacheLocation, DefinitionStages.WithServerRole, DefinitionStages.WithCreate {
     }
 
     /**
@@ -70,17 +70,17 @@ public interface RedisLinkedServerWithProperties extends HasInner<RedisLinkedSer
         /**
          * The first stage of a RedisLinkedServerWithProperties definition.
          */
-        interface Blank extends WithRedi {
+        interface Blank extends WithRedis {
         }
 
         /**
-         * The stage of the redislinkedserverwithproperties definition allowing to specify Redi.
+         * The stage of the redislinkedserverwithproperties definition allowing to specify Redis.
          */
-        interface WithRedi {
+        interface WithRedis {
            /**
             * Specifies resourceGroupName, name.
             */
-            WithLinkedRedisCacheId withExistingRedi(String resourceGroupName, String name);
+            WithLinkedRedisCacheId withExistingRedis(String resourceGroupName, String name);
         }
 
         /**
