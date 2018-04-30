@@ -8,6 +8,7 @@ package com.microsoft.azure.eventprocessorhost;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
@@ -86,31 +87,24 @@ public class InMemoryCheckpointManager implements ICheckpointManager {
     }
 
     @Override
-    public CompletableFuture<Checkpoint> createCheckpointIfNotExists(String partitionId) {
-        Checkpoint checkpointInStore = InMemoryCheckpointStore.singleton.getCheckpoint(partitionId);
-        Checkpoint returnCheckpoint = null;
-        if (checkpointInStore != null) {
-            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId,
-                    "createCheckpointIfNotExists() found existing checkpoint, OK"));
-            if (checkpointInStore.getSequenceNumber() != -1) {
-                returnCheckpoint = new Checkpoint(checkpointInStore);
-            } else {
-                // The checkpoint is uninitialized so return null to match the behavior of AzureStorageCheckpointLeaseMananger.
-                returnCheckpoint = null;
-            }
-        } else {
-            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(partitionId,
-                    "createCheckpointIfNotExists() creating new checkpoint"));
-            Checkpoint newStoreCheckpoint = new Checkpoint(partitionId);
-            newStoreCheckpoint.setOffset(null);
-            newStoreCheckpoint.setSequenceNumber(-1);
-            InMemoryCheckpointStore.singleton.setOrReplaceCheckpoint(newStoreCheckpoint);
-            // This API actually creates the holder, not the checkpoint itself. In this implementation, we do create a Checkpoint object
-            // and put it in the store, but the values are set to indicate that it is not initialized. Meanwhile, return null to match the
-            // behavior of AzureStorageCheckpointLeaseMananger.
-            returnCheckpoint = null;
-        }
-        return CompletableFuture.completedFuture(returnCheckpoint);
+    public CompletableFuture<Void> createAllCheckpointsIfNotExists(List<String> partitionIds) {
+    	for (String id : partitionIds) {
+	        Checkpoint checkpointInStore = InMemoryCheckpointStore.singleton.getCheckpoint(id);
+	        if (checkpointInStore != null) {
+	            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(id,
+	                    "createCheckpointIfNotExists() found existing checkpoint, OK"));
+	        } else {
+	            TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(id,
+	                    "createCheckpointIfNotExists() creating new checkpoint"));
+	            Checkpoint newStoreCheckpoint = new Checkpoint(id);
+	            // This API actually creates the holder, not the checkpoint itself. In this implementation, we do create a Checkpoint object
+	            // and put it in the store, but the values are set to indicate that it is not initialized.
+	            newStoreCheckpoint.setOffset(null);
+	            newStoreCheckpoint.setSequenceNumber(-1);
+	            InMemoryCheckpointStore.singleton.setOrReplaceCheckpoint(newStoreCheckpoint);
+	        }
+    	}
+        return CompletableFuture.completedFuture(null);
     }
 
     @Override

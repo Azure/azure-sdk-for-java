@@ -5,8 +5,6 @@
 
 package com.microsoft.azure.eventprocessorhost;
 
-import java.util.concurrent.CompletableFuture;
-
 /**
  * Lease class is public so that advanced users can implement an ILeaseManager.
  * Unless you are implementing ILeaseManager you should not have to deal with objects
@@ -153,17 +151,6 @@ public class Lease {
      */
     public void setToken(String token) {
         this.token = token;
-    }
-
-    /**
-     * A class derived from Lease should override this function to inspect the lease and return whether it has expired.
-     * Uses CompletableFuture because determining whether a lease is expired may involve I/O.
-     *
-     * @return CompletableFuture {@literal ->} true if the lease is expired, false if it is still valid, completes exceptionally on error.
-     */
-    public CompletableFuture<Boolean> isExpired() {
-        // this function is meaningless in the base class
-        return CompletableFuture.completedFuture(false);
     }
 
     String getStateDebug() {

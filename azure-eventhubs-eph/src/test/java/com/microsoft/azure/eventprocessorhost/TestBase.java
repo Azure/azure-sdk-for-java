@@ -180,7 +180,7 @@ public class TestBase {
         }
 
         @Override
-        public CompletableFuture<Checkpoint> createCheckpointIfNotExists(String partitionId) {
+        public CompletableFuture<Void> createAllCheckpointsIfNotExists(List<String> partitionIds) {
             return CompletableFuture.completedFuture(null);
         }
 
@@ -196,11 +196,6 @@ public class TestBase {
     }
 
     class BogusLeaseManager implements ILeaseManager {
-        @Override
-        public int getLeaseRenewIntervalInMilliseconds() {
-            return 0;
-        }
-
         @Override
         public int getLeaseDurationInMilliseconds() {
             return 0;
@@ -222,12 +217,17 @@ public class TestBase {
         }
 
         @Override
-        public CompletableFuture<List<Lease>> getAllLeases() {
+        public CompletableFuture<Lease> getLease(String partitionId) {
             return CompletableFuture.completedFuture(null);
         }
 
         @Override
-        public CompletableFuture<Lease> createLeaseIfNotExists(String partitionId) {
+        public CompletableFuture<List<LeaseStateInfo>> getAllLeasesStateInfo() {
+            return CompletableFuture.completedFuture(null);
+        }
+
+        @Override
+        public CompletableFuture<Void> createAllLeasesIfNotExists(List<String> partitionIds) {
             return CompletableFuture.completedFuture(null);
         }
 

@@ -25,7 +25,7 @@ public final class EventProcessorHost {
     // weOwnExecutor exists to support user-supplied thread pools.
     private final boolean weOwnExecutor;
     private final ScheduledExecutorService executorService;
-    private final int executorServicePoolSize = 8;
+    private final int executorServicePoolSize = 16;
     private final HostContext hostContext;
     private boolean initializeLeaseManager = false;
     private boolean unregistered = false;
@@ -162,7 +162,6 @@ public final class EventProcessorHost {
         this(hostName, eventHubPath, consumerGroupName, eventHubConnectionString, combinedManager, combinedManager, executorService, null);
     }
 
-
     /**
      * Create a new host to process events from an Event Hub.
      * <p>
@@ -215,7 +214,6 @@ public final class EventProcessorHost {
         }
 
         // eventHubPath is allowed to be null or empty if it is provided in the connection string. That will be checked later.
-
         if ((consumerGroupName == null) || consumerGroupName.isEmpty()) {
             throw new IllegalArgumentException("consumerGroupName argument must not be null or empty");
         }

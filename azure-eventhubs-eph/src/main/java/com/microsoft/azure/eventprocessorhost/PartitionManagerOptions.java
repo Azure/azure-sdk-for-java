@@ -27,9 +27,17 @@ public class PartitionManagerOptions {
      */
     public final static int DefaultCheckpointTimeoutInSeconds = 120;
 
+    public final static int DefaultStartupScanDelayInSeconds = 30;
+    public final static int DefaultFastScanIntervalInSeconds = 3;
+    public final static int DefaultSlowScanIntervalInSeconds = 5;
+
     protected int leaseDurationInSeconds = PartitionManagerOptions.DefaultLeaseDurationInSeconds;
     protected int leaseRenewIntervalInSeconds = PartitionManagerOptions.DefaultLeaseRenewIntervalInSeconds;
     protected int checkpointTimeoutInSeconds = PartitionManagerOptions.DefaultCheckpointTimeoutInSeconds;
+
+    protected int startupScanDelayInSeconds = PartitionManagerOptions.DefaultStartupScanDelayInSeconds;
+    protected int fastScanIntervalInSeconds = PartitionManagerOptions.DefaultFastScanIntervalInSeconds;
+    protected int slowScanIntervalInSeconds = PartitionManagerOptions.DefaultSlowScanIntervalInSeconds;
 
     /***
      * The base class automatically sets members to the static defaults.
@@ -101,5 +109,38 @@ public class PartitionManagerOptions {
             throw new IllegalArgumentException("Checkpoint timeout must be greater than 0");
         }
         this.checkpointTimeoutInSeconds = timeout;
+    }
+
+    public int getStartupScanDelayInSeconds() {
+        return this.startupScanDelayInSeconds;
+    }
+
+    public void setStartupScanDelayInSeconds(int delay) {
+        if (delay <= 0) {
+            throw new IllegalArgumentException("Startup scan delay must be greater than 0");
+        }
+        this.startupScanDelayInSeconds = delay;
+    }
+
+    public int getFastScanIntervalInSeconds() {
+        return this.fastScanIntervalInSeconds;
+    }
+
+    public void setFastScanIntervalInSeconds(int interval) {
+        if (interval <= 0) {
+            throw new IllegalArgumentException("Fast scan interval must be greater than 0");
+        }
+        this.fastScanIntervalInSeconds = interval;
+    }
+
+    public int getSlowScanIntervalInSeconds() {
+        return this.slowScanIntervalInSeconds;
+    }
+
+    public void setSlowScanIntervalInSeconds(int interval) {
+        if (interval <= 0) {
+            throw new IllegalArgumentException("Slow scan interval must be greater than 0");
+        }
+        this.slowScanIntervalInSeconds = interval;
     }
 }

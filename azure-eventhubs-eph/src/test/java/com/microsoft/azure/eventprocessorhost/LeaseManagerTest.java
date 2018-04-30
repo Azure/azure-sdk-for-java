@@ -8,16 +8,14 @@ package com.microsoft.azure.eventprocessorhost;
 import com.microsoft.azure.eventhubs.EventHubClient;
 import org.junit.Test;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 import static org.junit.Assert.*;
 
 public class LeaseManagerTest {
-    private String azureStorageConnectionString = TestUtilities.getStorageConnectionString();
-
     private ILeaseManager[] leaseManagers;
     private EventProcessorHost[] hosts;
 
@@ -28,8 +26,7 @@ public class LeaseManagerTest {
 
     @Test
     public void singleManagerAzureLeaseSmokeTest() throws Exception {
-        RealEventHubUtilities rUtils = new RealEventHubUtilities();
-        singleManagerLeaseSmokeTest(true, rUtils.getPartitionIdsForTest().size());
+        singleManagerLeaseSmokeTest(true, 8);
     }
 
     @Test
@@ -61,14 +58,20 @@ public class LeaseManagerTest {
         boolret = this.leaseManagers[0].leaseStoreExists().get();
         assertTrue("lease store should exist but does not", boolret);
 
-        Lease[] leases = new Lease[partitionCount];
-        TestUtilities.log("Creating leases for all partitions");
+        ArrayList<String> partitionIds = new ArrayList<String>();
         for (int i = 0; i < partitionCount; i++) {
-            Lease createdLease = this.leaseManagers[0].createLeaseIfNotExists(String.valueOf(i)).get();
-            leases[i] = createdLease;
-            assertNotNull("failed creating lease for " + i, createdLease);
+        	partitionIds.add(String.valueOf(i));
         }
+        TestUtilities.log("Creating leases for all partitions");
+        this.leaseManagers[0].createAllLeasesIfNotExists(partitionIds).get(); // throws on failure
 
+        Lease[] leases = new Lease[partitionCount];
+        TestUtilities.log("Getting leases for all partitions");
+        for (int i = 0; i < partitionIds.size(); i++) {
+        	leases[i] = this.leaseManagers[0].getLease(partitionIds.get(i)).get();
+        	assertNotNull("getLease returned null", leases[i]);
+        }
+        
         TestUtilities.log("Acquiring leases for all partitions");
         for (int i = 0; i < partitionCount; i++) {
             TestUtilities.logConditional(useAzureStorage, "Partition " + i + " state before acquire: " + leases[i].getStateDebug());
@@ -78,6 +81,12 @@ public class LeaseManagerTest {
         }
 
         Thread.sleep(5000);
+        
+        TestUtilities.log("Getting state for all leases");
+        List<LeaseStateInfo> states = this.leaseManagers[0].getAllLeasesStateInfo().get(); // throws on failure
+        for (LeaseStateInfo s : states) {
+        	TestUtilities.log("Partition " + s.getPartitionId() + " owned by " + s.getOwner() + " isowned: " + s.isOwned());
+        }
 
         TestUtilities.log("Renewing leases for all partitions");
         for (int i = 0; i < partitionCount; i++) {
@@ -88,7 +97,7 @@ public class LeaseManagerTest {
         }
 
         int x = 1;
-        while (!leases[0].isExpired().get()) {
+        while (getOneState(leases[0].getPartitionId(), this.leaseManagers[0]).isOwned()) {
             Thread.sleep(5000);
             TestUtilities.log("Still waiting for lease on 0 to expire: " + (5 * x));
             assertFalse("lease 0 expiration is overdue", (5000 * x) > (this.leaseManagers[0].getLeaseDurationInMilliseconds() + 10000));
@@ -107,7 +116,7 @@ public class LeaseManagerTest {
         }
         boolret = this.leaseManagers[0].updateLease(leases[1]).get();
         assertTrue("failed to update lease for 1", boolret);
-        Lease retrievedLease = getOneLease("1", this.leaseManagers[0]).get();
+        Lease retrievedLease = this.leaseManagers[0].getLease("1").get();
         assertNotNull("failed to get lease for 1", retrievedLease);
         assertEquals("epoch was not persisted, expected " + leases[1].getEpoch() + " got " + retrievedLease.getEpoch(), leases[1].getEpoch(), retrievedLease.getEpoch());
         if (!useAzureStorage) {
@@ -170,13 +179,18 @@ public class LeaseManagerTest {
         boolret = this.leaseManagers[1].leaseStoreExists().get();
         assertTrue("second manager cannot see lease store", boolret);
 
-        TestUtilities.log("Creating lease for partition 0");
-        Lease mgr1Lease = this.leaseManagers[0].createLeaseIfNotExists("0").get();
-        assertNotNull("first manager failed creating lease for 0", mgr1Lease);
+        TestUtilities.log("First manager creating lease for partition 0");
+        ArrayList<String> partitionIds = new ArrayList<String>();
+        partitionIds.add("0");
+        this.leaseManagers[0].createAllLeasesIfNotExists(partitionIds).get();
 
         TestUtilities.log("Checking whether second manager can see lease 0");
-        Lease mgr2Lease = getOneLease("0", this.leaseManagers[1]).get();
+        Lease mgr2Lease = this.leaseManagers[1].getLease("0").get();
         assertNotNull("second manager cannot see lease for 0", mgr2Lease);
+
+        TestUtilities.log("Checking whether first manager can see lease 0");
+        Lease mgr1Lease = this.leaseManagers[0].getLease("0").get();
+        assertNotNull("second manager cannot see lease for 0", mgr1Lease);
 
         TestUtilities.log("First manager acquiring lease 0");
         boolret = this.leaseManagers[0].acquireLease(mgr1Lease).get();
@@ -184,7 +198,7 @@ public class LeaseManagerTest {
         TestUtilities.logConditional(useAzureStorage, "Lease token is " + mgr1Lease.getToken());
 
         int x = 0;
-        while (!mgr1Lease.isExpired().get()) {
+        while (getOneState("0", this.leaseManagers[0]).isOwned()) {
             assertFalse("lease 0 expiration is overdue", (5000 * x) > (this.leaseManagers[0].getLeaseDurationInMilliseconds() + 10000));
             Thread.sleep(5000);
             TestUtilities.log("Still waiting for lease on 0 to expire: " + (5 * ++x));
@@ -200,7 +214,7 @@ public class LeaseManagerTest {
         assertFalse("first manager unexpected success renewing lease for 0", boolret);
 
         TestUtilities.log("First manager getting lease 0");
-        mgr1Lease = getOneLease(mgr1Lease.getPartitionId(), this.leaseManagers[0]).get();
+        mgr1Lease = this.leaseManagers[0].getLease("0").get();
         assertNotNull("first manager cannot see lease for 0", mgr1Lease);
 
         TestUtilities.log("First manager stealing lease 0");
@@ -209,7 +223,7 @@ public class LeaseManagerTest {
         TestUtilities.logConditional(useAzureStorage, "Lease token is " + mgr1Lease.getToken());
 
         TestUtilities.log("Second mananger getting lease 0");
-        mgr2Lease = getOneLease("0", this.leaseManagers[1]).get();
+        mgr2Lease = this.leaseManagers[1].getLease("0").get();
         assertNotNull("second manager cannot see lease for 0", mgr2Lease);
 
         TestUtilities.log("Second mananger stealing lease 0");
@@ -240,18 +254,17 @@ public class LeaseManagerTest {
         containerName.append(UUID.randomUUID().toString());
         return containerName.toString();
     }
-
-    private CompletableFuture<Lease> getOneLease(String partitionId, ILeaseManager leaseMgr) throws InterruptedException, ExecutionException {
-        List<Lease> leaseList = leaseMgr.getAllLeases().get();
-        Lease returnLease = null;
-        for (int i = 0; i < leaseList.size(); i++) {
-            Lease l = leaseList.get(i);
-            if (l.getPartitionId().compareTo(partitionId) == 0) {
-                returnLease = l;
-                break;
-            }
-        }
-        return CompletableFuture.completedFuture(returnLease);
+    
+    private LeaseStateInfo getOneState(String partitionId, ILeaseManager leaseMgr) throws InterruptedException, ExecutionException {
+    	List<LeaseStateInfo> states = leaseMgr.getAllLeasesStateInfo().get();
+    	LeaseStateInfo returnState = null;
+    	for (LeaseStateInfo s : states) {
+    		if (s.getPartitionId().compareTo(partitionId) == 0) {
+    			returnState = s;
+    			break;
+    		}
+    	}
+    	return returnState;
     }
 
     private void setupOneManager(boolean useAzureStorage, int index, String suffix, String containerName) throws Exception {
@@ -263,7 +276,8 @@ public class LeaseManagerTest {
             checkpointMgr = new InMemoryCheckpointManager();
         } else {
             TestUtilities.log("Container name: " + containerName);
-            AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(this.azureStorageConnectionString, containerName);
+            String azureStorageConnectionString = TestUtilities.getStorageConnectionString();
+            AzureStorageCheckpointLeaseManager azMgr = new AzureStorageCheckpointLeaseManager(azureStorageConnectionString, containerName);
             leaseMgr = azMgr;
             checkpointMgr = azMgr;
         }
