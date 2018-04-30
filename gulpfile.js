@@ -146,6 +146,15 @@ var codegen = function(project, cb) {
     var apiVersion;
     if (mappings[project].apiVersion !== undefined) {
         apiVersion = " --api-version='" + mappings[project].apiVersion + "'" + ' ';
+    } else {
+        apiVersion = '';
+    }
+
+    var fconfig; 
+    if (mappings[project].fconfig !== undefined) {
+        fconfig = " --fconfig='" + JSON.stringify(mappings[project].fconfig) + "'" + ' ';
+    } else {
+        fconfig = '';
     }
 
     // path.join won't work if specRoot is a URL
@@ -160,6 +169,7 @@ var codegen = function(project, cb) {
                         regenManager +
                         genInterface +
                         apiVersion +
+                        fconfig + 
                         autoRestArgs;
 
     if (mappings[project].args !== undefined) {
