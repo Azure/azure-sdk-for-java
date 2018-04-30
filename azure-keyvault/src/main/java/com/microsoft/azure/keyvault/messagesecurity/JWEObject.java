@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Json Web Encryption object class.
  */
-public class JWEObject {
+class JWEObject {
     private JWEHeader jweHeader;
     private String original_protected;
     private String encryptedKey;

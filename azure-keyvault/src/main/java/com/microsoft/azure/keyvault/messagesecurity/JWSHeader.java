@@ -15,7 +15,7 @@ import java.io.IOException;
 /**
  * Json Web Signature header class.
  */
-public class JWSHeader {
+class JWSHeader {
 
     private String alg;
     private String kid;

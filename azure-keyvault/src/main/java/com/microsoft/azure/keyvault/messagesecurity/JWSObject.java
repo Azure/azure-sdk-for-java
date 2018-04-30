@@ -16,7 +16,7 @@ import java.io.IOException;
 /**
  * Json Web Signature object class.
  */
-public class JWSObject {
+class JWSObject {
     private JWSHeader jwsHeader;
     private String original_protected;
     private String payload;
