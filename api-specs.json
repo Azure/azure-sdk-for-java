@@ -12,10 +12,15 @@
     "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
   },
   "redis": {
-    "apiVersion": "v2018_03_01",
+    "apiVersion": "2018-03-01",
     "package": "com.microsoft.azure.management.redis",
     "source": "specification/redis/resource-manager/readme.md",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-03"
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-03",
+    "fconfig": {
+      "\"knownPlurals\"": ["\"redis\""],
+      "\"knownSingulars\"": ["\"redis\""]
+    }
+
   },
   "storage": {
     "apiVersion": "2017-10-01",
