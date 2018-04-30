@@ -37,7 +37,7 @@ class StreamingLocatorsImpl extends WrapperImpl<StreamingLocatorsInner> implemen
     }
 
     private StreamingLocatorImpl wrapModel(StreamingLocatorInner inner) {
-        return  new StreamingLocatorImpl(inner, this.manager());
+        return  new StreamingLocatorImpl(inner, manager());
     }
 
     @Override

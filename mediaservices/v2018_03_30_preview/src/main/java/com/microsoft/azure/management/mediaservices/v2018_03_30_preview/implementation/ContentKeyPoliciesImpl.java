@@ -36,7 +36,7 @@ class ContentKeyPoliciesImpl extends WrapperImpl<ContentKeyPoliciesInner> implem
     }
 
     private ContentKeyPolicyImpl wrapModel(ContentKeyPolicyInner inner) {
-        return  new ContentKeyPolicyImpl(inner, this.manager());
+        return  new ContentKeyPolicyImpl(inner, manager());
     }
 
     @Override

@@ -22,6 +22,7 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.mediaservices.v2018_03_30_preview.SubscriptionMediaService;
 import com.microsoft.azure.management.mediaservices.v2018_03_30_preview.Assets;
 import com.microsoft.azure.management.mediaservices.v2018_03_30_preview.ContentKeyPolicies;
 import com.microsoft.azure.management.mediaservices.v2018_03_30_preview.Transforms;
@@ -29,6 +30,7 @@ import com.microsoft.azure.management.mediaservices.v2018_03_30_preview.Streamin
 import com.microsoft.azure.management.mediaservices.v2018_03_30_preview.StreamingLocators;
 import com.microsoft.azure.management.mediaservices.v2018_03_30_preview.LiveEvents;
 import com.microsoft.azure.management.mediaservices.v2018_03_30_preview.StreamingEndpoints;
+import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class MediaservicesImpl extends GroupableResourcesCoreImpl<MediaService, MediaServiceImpl, MediaServiceInner, MediaservicesInner, MediaManager>  implements Mediaservices {
     protected MediaservicesImpl(MediaManager manager) {
@@ -167,18 +169,37 @@ class MediaservicesImpl extends GroupableResourcesCoreImpl<MediaService, MediaSe
     @Override
     public PagedList<MediaService> list() {
         MediaservicesInner client = this.inner();
-        return this.wrapList(client.list());
+        PagedListConverter<SubscriptionMediaServiceInner, MediaService> converter =
+            new PagedListConverter<SubscriptionMediaServiceInner, MediaService>() {
+            @Override
+            public Observable<MediaService> typeConvertAsync(SubscriptionMediaServiceInner inner) {
+                 return Observable.just(inner)
+                        .flatMap(new Func1<SubscriptionMediaServiceInner, Observable<MediaServiceInner>>() {
+                            @Override
+                            public Observable<MediaServiceInner> call(SubscriptionMediaServiceInner inner) {
+                                return getInnerAsync(ResourceUtilsCore.groupFromResourceId(inner.id()), ResourceUtilsCore.nameFromResourceId(inner.id()));
+                            }
+                        })
+                        .map(new Func1<MediaServiceInner, MediaService>() {
+                            @Override
+                            public MediaService call(MediaServiceInner inner) {
+                                return wrapModel(inner);
+                            }
+                        });
+                }
+            };
+        return converter.convert(client.list());
     }
 
-    private Observable<Page<MediaServiceInner>> listNextInnerPageAsync(String nextLink) {
+    private Observable<Page<SubscriptionMediaServiceInner>> listNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
         MediaservicesInner client = this.inner();
         return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<MediaServiceInner>, Observable<Page<MediaServiceInner>>>() {
+        .flatMap(new Func1<Page<SubscriptionMediaServiceInner>, Observable<Page<SubscriptionMediaServiceInner>>>() {
             @Override
-            public Observable<Page<MediaServiceInner>> call(Page<MediaServiceInner> page) {
+            public Observable<Page<SubscriptionMediaServiceInner>> call(Page<SubscriptionMediaServiceInner> page) {
                 return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
             }
         });
@@ -187,18 +208,24 @@ class MediaservicesImpl extends GroupableResourcesCoreImpl<MediaService, MediaSe
     public Observable<MediaService> listAsync() {
         MediaservicesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<MediaServiceInner>, Observable<Page<MediaServiceInner>>>() {
+        .flatMap(new Func1<Page<SubscriptionMediaServiceInner>, Observable<Page<SubscriptionMediaServiceInner>>>() {
             @Override
-            public Observable<Page<MediaServiceInner>> call(Page<MediaServiceInner> page) {
+            public Observable<Page<SubscriptionMediaServiceInner>> call(Page<SubscriptionMediaServiceInner> page) {
                 return listNextInnerPageAsync(page.nextPageLink());
             }
         })
-        .flatMapIterable(new Func1<Page<MediaServiceInner>, Iterable<MediaServiceInner>>() {
+        .flatMapIterable(new Func1<Page<SubscriptionMediaServiceInner>, Iterable<SubscriptionMediaServiceInner>>() {
             @Override
-            public Iterable<MediaServiceInner> call(Page<MediaServiceInner> page) {
+            public Iterable<SubscriptionMediaServiceInner> call(Page<SubscriptionMediaServiceInner> page) {
                 return page.items();
             }
        })
+        .flatMap(new Func1<SubscriptionMediaServiceInner, Observable<MediaServiceInner>>() {
+            @Override
+            public Observable<MediaServiceInner> call(SubscriptionMediaServiceInner inner) {
+                return getInnerAsync(ResourceUtilsCore.groupFromResourceId(inner.id()), ResourceUtilsCore.nameFromResourceId(inner.id()));
+            }
+        })
         .map(new Func1<MediaServiceInner, MediaService>() {
             @Override
             public MediaService call(MediaServiceInner inner) {
@@ -219,30 +246,25 @@ class MediaservicesImpl extends GroupableResourcesCoreImpl<MediaService, MediaSe
     }
 
     @Override
-    public Observable<MediaService> getBySubscriptionAsync(String accountName) {
+    public Observable<SubscriptionMediaService> getBySubscriptionAsync(String accountName) {
         MediaservicesInner client = this.inner();
         return client.getBySubscriptionAsync(accountName)
-        .map(new Func1<MediaServiceInner, MediaService>() {
+        .map(new Func1<SubscriptionMediaServiceInner, SubscriptionMediaService>() {
             @Override
-            public MediaService call(MediaServiceInner inner) {
-                return new MediaServiceImpl(inner.name(), inner, manager());
+            public SubscriptionMediaService call(SubscriptionMediaServiceInner inner) {
+                return new SubscriptionMediaServiceImpl(inner, manager());
             }
         });
     }
 
     @Override
     protected MediaServiceImpl wrapModel(MediaServiceInner inner) {
-        return  new MediaServiceImpl(inner.name(), inner, this.manager());
+        return  new MediaServiceImpl(inner.name(), inner, manager());
     }
 
     @Override
     protected MediaServiceImpl wrapModel(String name) {
         return new MediaServiceImpl(name, new MediaServiceInner(), this.manager());
-    }
-
-    private MediaService wrapModel(SubscriptionMediaServiceInner inner) {
-        MediaServiceInner standardInnerModel = new MediaServiceInner();
-        return wrapModel(standardInnerModel);
     }
 
 }

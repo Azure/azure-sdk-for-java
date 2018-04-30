@@ -38,7 +38,7 @@ class AssetsImpl extends WrapperImpl<AssetsInner> implements Assets {
     }
 
     private AssetImpl wrapModel(AssetInner inner) {
-        return  new AssetImpl(inner, this.manager());
+        return  new AssetImpl(inner, manager());
     }
 
     @Override

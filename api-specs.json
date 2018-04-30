@@ -1,6 +1,12 @@
 {
+  "eventgrid": {
+    "apiVersion": "2018-01-01",
+    "package": "com.microsoft.azure.management.eventgrid",
+    "source": "specification/eventgrid/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-01"
+  },
   "mediaservices": {
-    "apiVersion": "v2018_03_30_preview",
+    "apiVersion": "2018-03-30-preview",
     "package": "com.microsoft.azure.management.mediaservices",
     "source": "specification/mediaservices/resource-manager/readme.md",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
@@ -12,7 +18,7 @@
     "args": "--payload-flattening-threshold=1 --tag=package-2018-03"
   },
   "storage": {
-    "apiVersion": "v2017_10_01",
+    "apiVersion": "2017-10-01",
     "package": "com.microsoft.azure.management.storage",
     "source": "specification/storage/resource-manager/readme.md",
     "args": "--payload-flattening-threshold=2 --tag=package-2017-10"
