@@ -68,8 +68,8 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
                 response = chain.proceed(authenticatedRequestPair.getLeft());
 
-                // @TODO: cleanup this. There are 2 failing unit tests because mock server
-                // responds 401 and only after this 200.
+                // Mock server used in tests always responds with 401 first, even if 'token' was saved
+                // from the previous connection.
                 if (response.code() == 401){
                     authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, response);
                     response = chain.proceed(authenticatedRequestPair.getLeft());
