@@ -12,7 +12,7 @@
     </parent>
 
     <artifactId>azure-storage</artifactId>
-    <version>10-Preview</version>
+    <version>10.0.0-Preview</version>
 
     <repositories>
         <repository>
