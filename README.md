@@ -4,7 +4,9 @@
 
 |Build/Package|Status|
 |------|-------------|
-|master|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-servicebus/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-servicebus)|
+|master|[![Build status](https://ci.appveyor.com/api/projects/status/vx6o2sckac0p4jti?svg=true)](https://ci.appveyor.com/project/vinaysurya/azure-service-bus-java/branch/master) |
+|dev|[![Build status](https://ci.appveyor.com/api/projects/status/vx6o2sckac0p4jti/branch/dev?svg=true)](https://ci.appveyor.com/project/vinaysurya/azure-service-bus-java/branch/dev) |
+|maven|[![Maven Central](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-servicebus/badge.svg)](https://maven-badges.herokuapp.com/maven-central/com.microsoft.azure/azure-servicebus)|
 
 # Microsoft Azure Service Bus Client for Java
 
