@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.language.spellcheck;
 
-import com.microsoft.azure.cognitiveservices.language.spellcheck.models.SpellCheckMethodOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.spellcheck.models.SpellCheckerOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.spellcheck.models.ActionType;
 import com.microsoft.azure.cognitiveservices.language.spellcheck.models.ErrorResponseException;
 import com.microsoft.azure.cognitiveservices.language.spellcheck.models.SpellCheck;
@@ -27,34 +27,34 @@ public interface BingSpellCheckOperations {
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param spellCheckMethodOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param spellCheckerOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SpellCheck object if successful.
      */
-    SpellCheck spellCheckMethod(String text, SpellCheckMethodOptionalParameter spellCheckMethodOptionalParameter);
+    SpellCheck spellChecker(String text, SpellCheckerOptionalParameter spellCheckerOptionalParameter);
 
     /**
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param spellCheckMethodOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param spellCheckerOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    ServiceFuture<SpellCheck> spellCheckMethodAsync(String text, SpellCheckMethodOptionalParameter spellCheckMethodOptionalParameter, final ServiceCallback<SpellCheck> serviceCallback);
+    ServiceFuture<SpellCheck> spellCheckerAsync(String text, SpellCheckerOptionalParameter spellCheckerOptionalParameter, final ServiceCallback<SpellCheck> serviceCallback);
 
     /**
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param spellCheckMethodOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param spellCheckerOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SpellCheck object
      */
-    Observable<SpellCheck> spellCheckMethodAsync(String text, SpellCheckMethodOptionalParameter spellCheckMethodOptionalParameter);
+    Observable<SpellCheck> spellCheckerAsync(String text, SpellCheckerOptionalParameter spellCheckerOptionalParameter);
 
     /**
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
@@ -81,6 +81,6 @@ public interface BingSpellCheckOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SpellCheck object
      */
-    Observable<ServiceResponse<SpellCheck>> spellCheckMethodWithServiceResponseAsync(String text, String acceptLanguage, String pragma, String userAgent, String clientId, String clientIp, String location, ActionType actionType, String appName, String countryCode, String clientMachineName, String docId, String market, String sessionId, String setLang, String userId, String mode, String preContextText, String postContextText);
+    Observable<ServiceResponse<SpellCheck>> spellCheckerWithServiceResponseAsync(String text, String acceptLanguage, String pragma, String userAgent, String clientId, String clientIp, String location, ActionType actionType, String appName, String countryCode, String clientMachineName, String docId, String market, String sessionId, String setLang, String userId, String mode, String preContextText, String postContextText);
 
 }

@@ -8,7 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.language.spellcheck.implementation;
 
-import com.microsoft.azure.cognitiveservices.language.spellcheck.models.SpellCheckMethodOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.spellcheck.models.SpellCheckerOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.spellcheck.BingSpellCheckOperations;
 import com.google.common.reflect.TypeToken;
@@ -57,7 +57,7 @@ public class BingSpellCheckOperationsImpl implements BingSpellCheckOperations {
     interface BingSpellCheckOperationsService {
         @Multipart
         @POST("spellcheck")
-        Observable<Response<ResponseBody>> spellCheckMethod(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Pragma") String pragma, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Query("ActionType") ActionType actionType, @Query("AppName") String appName, @Query("cc") String countryCode, @Query("ClientMachineName") String clientMachineName, @Query("DocId") String docId, @Query("mkt") String market, @Query("SessionId") String sessionId, @Query("SetLang") String setLang, @Query("UserId") String userId, @Part("Mode") String mode, @Part("PreContextText") String preContextText, @Part("PostContextText") String postContextText, @Part("Text") String text);
+        Observable<Response<ResponseBody>> spellChecker(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Pragma") String pragma, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Query("ActionType") ActionType actionType, @Query("AppName") String appName, @Query("cc") String countryCode, @Query("ClientMachineName") String clientMachineName, @Query("DocId") String docId, @Query("mkt") String market, @Query("SessionId") String sessionId, @Query("SetLang") String setLang, @Query("UserId") String userId, @Part("Mode") String mode, @Part("PreContextText") String preContextText, @Part("PostContextText") String postContextText, @Part("Text") String text);
 
     }
 
@@ -66,39 +66,39 @@ public class BingSpellCheckOperationsImpl implements BingSpellCheckOperations {
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param spellCheckMethodOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param spellCheckerOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the SpellCheck object if successful.
      */
-    public SpellCheck spellCheckMethod(String text, SpellCheckMethodOptionalParameter spellCheckMethodOptionalParameter) {
-        return spellCheckMethodWithServiceResponseAsync(text, spellCheckMethodOptionalParameter).toBlocking().single().body();
+    public SpellCheck spellChecker(String text, SpellCheckerOptionalParameter spellCheckerOptionalParameter) {
+        return spellCheckerWithServiceResponseAsync(text, spellCheckerOptionalParameter).toBlocking().single().body();
     }
 
     /**
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param spellCheckMethodOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param spellCheckerOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<SpellCheck> spellCheckMethodAsync(String text, SpellCheckMethodOptionalParameter spellCheckMethodOptionalParameter, final ServiceCallback<SpellCheck> serviceCallback) {
-        return ServiceFuture.fromResponse(spellCheckMethodWithServiceResponseAsync(text, spellCheckMethodOptionalParameter), serviceCallback);
+    public ServiceFuture<SpellCheck> spellCheckerAsync(String text, SpellCheckerOptionalParameter spellCheckerOptionalParameter, final ServiceCallback<SpellCheck> serviceCallback) {
+        return ServiceFuture.fromResponse(spellCheckerWithServiceResponseAsync(text, spellCheckerOptionalParameter), serviceCallback);
     }
 
     /**
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param spellCheckMethodOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param spellCheckerOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SpellCheck object
      */
-    public Observable<SpellCheck> spellCheckMethodAsync(String text, SpellCheckMethodOptionalParameter spellCheckMethodOptionalParameter) {
-        return spellCheckMethodWithServiceResponseAsync(text, spellCheckMethodOptionalParameter).map(new Func1<ServiceResponse<SpellCheck>, SpellCheck>() {
+    public Observable<SpellCheck> spellCheckerAsync(String text, SpellCheckerOptionalParameter spellCheckerOptionalParameter) {
+        return spellCheckerWithServiceResponseAsync(text, spellCheckerOptionalParameter).map(new Func1<ServiceResponse<SpellCheck>, SpellCheck>() {
             @Override
             public SpellCheck call(ServiceResponse<SpellCheck> response) {
                 return response.body();
@@ -110,35 +110,35 @@ public class BingSpellCheckOperationsImpl implements BingSpellCheckOperations {
      * The Bing Spell Check API lets you perform contextual grammar and spell checking. Bing has developed a web-based spell-checker that leverages machine learning and statistical machine translation to dynamically train a constantly evolving and highly contextual algorithm. The spell-checker is based on a massive corpus of web searches and documents.
      *
      * @param text The text string to check for spelling and grammar errors. The combined length of the text string, preContextText string, and postContextText string may not exceed 10,000 characters. You may specify this parameter in the query string of a GET request or in the body of a POST request. Because of the query string length limit, you'll typically use a POST request unless you're checking only short strings.
-     * @param spellCheckMethodOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param spellCheckerOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SpellCheck object
      */
-    public Observable<ServiceResponse<SpellCheck>> spellCheckMethodWithServiceResponseAsync(String text, SpellCheckMethodOptionalParameter spellCheckMethodOptionalParameter) {
+    public Observable<ServiceResponse<SpellCheck>> spellCheckerWithServiceResponseAsync(String text, SpellCheckerOptionalParameter spellCheckerOptionalParameter) {
         if (text == null) {
             throw new IllegalArgumentException("Parameter text is required and cannot be null.");
         }
         final String xBingApisSDK = "true";
-        final String acceptLanguage = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.acceptLanguage() : null;
-        final String pragma = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.pragma() : null;
-        final String userAgent = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.userAgent() : this.client.userAgent();
-        final String clientId = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.clientId() : null;
-        final String clientIp = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.clientIp() : null;
-        final String location = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.location() : null;
-        final ActionType actionType = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.actionType() : null;
-        final String appName = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.appName() : null;
-        final String countryCode = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.countryCode() : null;
-        final String clientMachineName = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.clientMachineName() : null;
-        final String docId = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.docId() : null;
-        final String market = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.market() : null;
-        final String sessionId = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.sessionId() : null;
-        final String setLang = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.setLang() : null;
-        final String userId = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.userId() : null;
-        final String mode = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.mode() : null;
-        final String preContextText = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.preContextText() : null;
-        final String postContextText = spellCheckMethodOptionalParameter != null ? spellCheckMethodOptionalParameter.postContextText() : null;
+        final String acceptLanguage = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.acceptLanguage() : null;
+        final String pragma = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.pragma() : null;
+        final String userAgent = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.userAgent() : this.client.userAgent();
+        final String clientId = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.clientId() : null;
+        final String clientIp = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.clientIp() : null;
+        final String location = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.location() : null;
+        final ActionType actionType = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.actionType() : null;
+        final String appName = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.appName() : null;
+        final String countryCode = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.countryCode() : null;
+        final String clientMachineName = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.clientMachineName() : null;
+        final String docId = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.docId() : null;
+        final String market = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.market() : null;
+        final String sessionId = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.sessionId() : null;
+        final String setLang = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.setLang() : null;
+        final String userId = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.userId() : null;
+        final String mode = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.mode() : null;
+        final String preContextText = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.preContextText() : null;
+        final String postContextText = spellCheckerOptionalParameter != null ? spellCheckerOptionalParameter.postContextText() : null;
 
-        return spellCheckMethodWithServiceResponseAsync(text, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId, mode, preContextText, postContextText);
+        return spellCheckerWithServiceResponseAsync(text, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId, mode, preContextText, postContextText);
     }
 
     /**
@@ -166,17 +166,17 @@ public class BingSpellCheckOperationsImpl implements BingSpellCheckOperations {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SpellCheck object
      */
-    public Observable<ServiceResponse<SpellCheck>> spellCheckMethodWithServiceResponseAsync(String text, String acceptLanguage, String pragma, String userAgent, String clientId, String clientIp, String location, ActionType actionType, String appName, String countryCode, String clientMachineName, String docId, String market, String sessionId, String setLang, String userId, String mode, String preContextText, String postContextText) {
+    public Observable<ServiceResponse<SpellCheck>> spellCheckerWithServiceResponseAsync(String text, String acceptLanguage, String pragma, String userAgent, String clientId, String clientIp, String location, ActionType actionType, String appName, String countryCode, String clientMachineName, String docId, String market, String sessionId, String setLang, String userId, String mode, String preContextText, String postContextText) {
         if (text == null) {
             throw new IllegalArgumentException("Parameter text is required and cannot be null.");
         }
         final String xBingApisSDK = "true";
-        return service.spellCheckMethod(xBingApisSDK, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId, mode, preContextText, postContextText, text)
+        return service.spellChecker(xBingApisSDK, acceptLanguage, pragma, userAgent, clientId, clientIp, location, actionType, appName, countryCode, clientMachineName, docId, market, sessionId, setLang, userId, mode, preContextText, postContextText, text)
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SpellCheck>>>() {
                 @Override
                 public Observable<ServiceResponse<SpellCheck>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<SpellCheck> clientResponse = spellCheckMethodDelegate(response);
+                        ServiceResponse<SpellCheck> clientResponse = spellCheckerDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -185,7 +185,7 @@ public class BingSpellCheckOperationsImpl implements BingSpellCheckOperations {
             });
     }
 
-    private ServiceResponse<SpellCheck> spellCheckMethodDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+    private ServiceResponse<SpellCheck> spellCheckerDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<SpellCheck, ErrorResponseException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<SpellCheck>() { }.getType())
                 .registerError(ErrorResponseException.class)
