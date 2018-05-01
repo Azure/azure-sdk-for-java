@@ -211,8 +211,10 @@ public class KeyVaultClientIntegrationTestBase {
 			}
 			mavenProps.load(in);
 			String port = mavenProps.getProperty("playbackServerPort");
-			playbackUri = PLAYBACK_URI_BASE + port;
-			alternativePlaybackUri = PLAYBACK_URI_BASE + mavenProps.getProperty("alternativePlaybackServerPort");
+
+			// 11080 and 11081 needs to be in sync with values in jetty.xml file
+			playbackUri = PLAYBACK_URI_BASE + "11080";
+			alternativePlaybackUri = PLAYBACK_URI_BASE + "11081";
 		} else {
 			playbackUri = PLAYBACK_URI_BASE + "1234";
 		}

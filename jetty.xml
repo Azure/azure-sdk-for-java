@@ -14,9 +14,7 @@
                         </Item>
                     </Array>
                 </Arg>
-                <Set name="port">
-                    <Property name="jetty.port" default="11080" />
-                </Set>
+                <Set name="port">11080</Set>
             </New>
         </Arg>
     </Call>
@@ -33,9 +31,7 @@
                         </Item>
                     </Array>
                 </Arg>
-                <Set name="port">
-                    <Property name="jetty.port" default="11081" />
-                </Set>
+                <Set name="port">11081</Set>
             </New>
         </Arg>
     </Call>
