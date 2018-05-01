@@ -122,7 +122,9 @@ public class CloudJobSchedule {
     private List<MetadataItem> metadata;
 
     /**
-     * The lifetime resource usage statistics for the job schedule.
+     * The lifetime resource usage statistics for the job schedule. The
+     * statistics may not be immediately available. The Batch service performs
+     * periodic roll-up of statistics. The typical delay is about 30 minutes.
      */
     @JsonProperty(value = "stats")
     private JobScheduleStatistics stats;

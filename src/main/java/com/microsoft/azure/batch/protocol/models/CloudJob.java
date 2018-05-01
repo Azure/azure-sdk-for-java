@@ -188,7 +188,9 @@ public class CloudJob {
     private JobExecutionInformation executionInfo;
 
     /**
-     * Resource usage statistics for the entire lifetime of the job.
+     * Resource usage statistics for the entire lifetime of the job. The
+     * statistics may not be immediately available. The Batch service performs
+     * periodic roll-up of statistics. The typical delay is about 30 minutes.
      */
     @JsonProperty(value = "stats")
     private JobStatistics stats;

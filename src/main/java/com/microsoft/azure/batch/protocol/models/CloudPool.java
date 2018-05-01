@@ -100,7 +100,7 @@ public class CloudPool {
      * For information about available sizes of virtual machines for Cloud
      * Services pools (pools created with cloudServiceConfiguration), see Sizes
      * for Cloud Services
-     * (http://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
+     * (https://azure.microsoft.com/documentation/articles/cloud-services-sizes-specs/).
      * Batch supports all Cloud Services VM sizes except ExtraSmall, A1V2 and
      * A2V2. For information about available VM sizes for pools using images
      * from the Virtual Machines Marketplace (pools created with
@@ -291,7 +291,9 @@ public class CloudPool {
 
     /**
      * Utilization and resource usage statistics for the entire lifetime of the
-     * pool.
+     * pool. The statistics may not be immediately available. The Batch service
+     * performs periodic roll-up of statistics. The typical delay is about 30
+     * minutes.
      */
     @JsonProperty(value = "stats")
     private PoolStatistics stats;

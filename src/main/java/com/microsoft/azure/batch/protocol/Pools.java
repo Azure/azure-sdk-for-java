@@ -153,7 +153,7 @@ public interface Pools {
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
-     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws BatchErrorException thrown if the request is rejected by server
@@ -164,7 +164,7 @@ public interface Pools {
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
-     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -174,7 +174,7 @@ public interface Pools {
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
-     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PoolStatistics object
@@ -183,7 +183,7 @@ public interface Pools {
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
-     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the PoolStatistics object
@@ -191,7 +191,7 @@ public interface Pools {
     Observable<ServiceResponseWithHeaders<PoolStatistics, PoolGetAllLifetimeStatisticsHeaders>> getAllLifetimeStatisticsWithServiceResponseAsync();
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
-     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
      * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -203,7 +203,7 @@ public interface Pools {
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
-     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
      * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
@@ -214,7 +214,7 @@ public interface Pools {
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
-     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
      * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -224,7 +224,7 @@ public interface Pools {
 
     /**
      * Gets lifetime summary statistics for all of the pools in the specified account.
-     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics.
+     * Statistics are aggregated across all pools that have ever existed in the account, from account creation to the last update time of the statistics. The statistics may not be immediately available. The Batch service performs periodic roll-up of statistics. The typical delay is about 30 minutes.
      *
      * @param poolGetAllLifetimeStatisticsOptions Additional parameters for the operation
      * @throws IllegalArgumentException thrown if parameters fail the validation

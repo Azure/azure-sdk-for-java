@@ -1,5 +1,10 @@
 # Azure Batch SDK for Java release notes
 
+## Changes in 3.2.0
+### Features
+ - Update comments for some classes and properties.
+ - Added the `leavingPool` property to `NodeCounts` class.
+
 ## Changes in 3.1.0
 ### Features
  - Added the ability to query pool node counts by state, via the new `listPoolNodeCounts` method on `PoolOperations`.

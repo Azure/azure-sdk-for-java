@@ -71,6 +71,12 @@ public class NodeCounts {
     private int startTaskFailed;
 
     /**
+     * The number of nodes in the leavingPool state.
+     */
+    @JsonProperty(value = "leavingPool", required = true)
+    private int leavingPool;
+
+    /**
      * The number of nodes in the unknown state.
      */
     @JsonProperty(value = "unknown", required = true)
@@ -271,6 +277,26 @@ public class NodeCounts {
      */
     public NodeCounts withStartTaskFailed(int startTaskFailed) {
         this.startTaskFailed = startTaskFailed;
+        return this;
+    }
+
+    /**
+     * Get the leavingPool value.
+     *
+     * @return the leavingPool value
+     */
+    public int leavingPool() {
+        return this.leavingPool;
+    }
+
+    /**
+     * Set the leavingPool value.
+     *
+     * @param leavingPool the leavingPool value to set
+     * @return the NodeCounts object itself.
+     */
+    public NodeCounts withLeavingPool(int leavingPool) {
+        this.leavingPool = leavingPool;
         return this;
     }
 
