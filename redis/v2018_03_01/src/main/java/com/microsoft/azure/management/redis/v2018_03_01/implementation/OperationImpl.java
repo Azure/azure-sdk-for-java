@@ -13,14 +13,14 @@ import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.redis.v2018_03_01.OperationDisplay;
 
 class OperationImpl extends WrapperImpl<OperationInner> implements Operation {
-    private final CacheManager manager;
-    OperationImpl(OperationInner inner, CacheManager manager) {
+    private final RedisManager manager;
+    OperationImpl(OperationInner inner, RedisManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CacheManager manager() {
+    public RedisManager manager() {
         return this.manager;
     }
 

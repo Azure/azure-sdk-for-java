@@ -17,14 +17,14 @@ import com.microsoft.azure.Page;
 import com.microsoft.azure.management.redis.v2018_03_01.Operation;
 
 class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations {
-    private final CacheManager manager;
+    private final RedisManager manager;
 
-    OperationsImpl(CacheManager manager) {
+    OperationsImpl(RedisManager manager) {
         super(manager.inner().operations());
         this.manager = manager;
     }
 
-    public CacheManager manager() {
+    public RedisManager manager() {
         return this.manager;
     }
 

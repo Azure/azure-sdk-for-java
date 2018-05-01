@@ -16,13 +16,13 @@ import com.microsoft.azure.management.redis.v2018_03_01.ReplicationRole;
 import rx.functions.Func1;
 
 class RedisLinkedServerWithPropertiesImpl extends CreatableUpdatableImpl<RedisLinkedServerWithProperties, RedisLinkedServerWithPropertiesInner, RedisLinkedServerWithPropertiesImpl> implements RedisLinkedServerWithProperties, RedisLinkedServerWithProperties.Definition, RedisLinkedServerWithProperties.Update {
-    private final CacheManager manager;
+    private final RedisManager manager;
     private String resourceGroupName;
     private String name;
     private String linkedServerName;
     private RedisLinkedServerCreateParameters createOrUpdateParameter;
 
-    RedisLinkedServerWithPropertiesImpl(String name, CacheManager manager) {
+    RedisLinkedServerWithPropertiesImpl(String name, RedisManager manager) {
         super(name, new RedisLinkedServerWithPropertiesInner());
         this.manager = manager;
         // Set resource name
@@ -31,7 +31,7 @@ class RedisLinkedServerWithPropertiesImpl extends CreatableUpdatableImpl<RedisLi
         this.createOrUpdateParameter = new RedisLinkedServerCreateParameters();
     }
 
-    RedisLinkedServerWithPropertiesImpl(RedisLinkedServerWithPropertiesInner inner, CacheManager manager) {
+    RedisLinkedServerWithPropertiesImpl(RedisLinkedServerWithPropertiesInner inner, RedisManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -45,7 +45,7 @@ class RedisLinkedServerWithPropertiesImpl extends CreatableUpdatableImpl<RedisLi
     }
 
     @Override
-    public CacheManager manager() {
+    public RedisManager manager() {
         return this.manager;
     }
 

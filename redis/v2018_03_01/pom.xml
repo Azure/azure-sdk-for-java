@@ -14,7 +14,7 @@
         <version>0.0.1-beta</version>
         <relativePath>../../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-cache</artifactId>
+    <artifactId>azure-mgmt-redis</artifactId>
     <version>0.0.1-beta-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cache Management</name>

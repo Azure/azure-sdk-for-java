@@ -8,8 +8,7 @@
 
 package com.microsoft.azure.management.redis.v2018_03_01;
 import com.microsoft.azure.arm.core.TestBase;
-import com.microsoft.azure.credentials.ApplicationTokenCredentials;
-import com.microsoft.azure.management.redis.v2018_03_01.implementation. CacheManager;
+import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.arm.utils.SdkContext;
@@ -20,43 +19,32 @@ import com.microsoft.azure.arm.resources.Region;
 import com.microsoft.azure.management.resources.ResourceGroup;
 import rx.functions.Func1;
 
-import java.io.File;
-import java.io.IOException;
 import java.net.InetSocketAddress;
 import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.List;
 
-public class  CacheTest extends TestBase {
+public class  RedisTest extends TestBase {
     protected static ResourceManager resourceManager;
-    protected static CacheManager manager;
-    private static String rgName;
+    protected static RedisManager redisManager;
     protected static String RG_NAME = "";
     protected static String RC_NAME = "";
     protected static String RC_PATCH_NAME = "";
-
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        final File credFile = new File(System.getenv("AZURE_AUTH_LOCATION"));
-        try {
-            ApplicationTokenCredentials credentials = ApplicationTokenCredentials.fromFile(credFile);
+        resourceManager = ResourceManager
+                .authenticate(restClient)
+                .withSubscription(defaultSubscription);
+        redisManager = RedisManager
+                .authenticate(restClient, defaultSubscription);
 
-            resourceManager = ResourceManager
-                    .authenticate(restClient)
-                    .withSubscription(defaultSubscription);
-
-            manager = CacheManager
-                    .authenticate(restClient, defaultSubscription);
-
-            RG_NAME = generateRandomResourceName("fl-redis-rg", 20);
-            RC_NAME = generateRandomResourceName("fl-redis", 15);
-            RC_PATCH_NAME = generateRandomResourceName("fl-rp", 15);
-        } catch(IOException ex) {
-        }
+        RG_NAME = generateRandomResourceName("fl-redis-rg", 20);
+        RC_NAME = generateRandomResourceName("fl-redis", 15);
+        RC_PATCH_NAME = generateRandomResourceName("fl-rp", 15);
     }
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().beginDeleteByName(rgName);
+        resourceManager.resourceGroups().beginDeleteByName(RG_NAME);
     }
 
     @Override
@@ -76,7 +64,7 @@ public class  CacheTest extends TestBase {
         zones.add(com.microsoft.azure.arm.resources.Region.US_CENTRAL.toString());
 
         // redis
-        RedisResource rc = manager.redis()
+        RedisResource rc = redisManager.redis()
                 .define(RC_NAME)
                 .withRegion(com.microsoft.azure.arm.resources.Region.US_CENTRAL)
                 .withExistingResourceGroup(RG_NAME)
@@ -114,7 +102,7 @@ public class  CacheTest extends TestBase {
         Assert.assertEquals(1, rcUpdated.tags().size());
         Assert.assertEquals("value2", rcUpdated.tags().get("tag1"));
 
-        RedisAccessKeys rak = manager.redis().listKeysAsync(RC_NAME, RC_NAME)
+        RedisAccessKeys rak = redisManager.redis().listKeysAsync(RC_NAME, RC_NAME)
                 .toBlocking()
                 .last();
         Assert.assertNotNull(rak);
@@ -125,35 +113,35 @@ public class  CacheTest extends TestBase {
         Assert.assertNotNull(rc.accessKeys().primaryKey());
         Assert.assertNotNull(rc.accessKeys().secondaryKey());
 
-        manager.redis().checkNameAvailabilityAsync( new CheckNameAvailabilityParameters()
+        redisManager.redis().checkNameAvailabilityAsync( new CheckNameAvailabilityParameters()
                 .withName("dummyName")
                 .withType(rcUpdated.type()))
                 .wait();
 
-        RedisForceRebootResponse rfResp = manager.redis().forceRebootAsync(RC_NAME, RC_NAME, new RedisRebootParameters()
+        RedisForceRebootResponse rfResp = redisManager.redis().forceRebootAsync(RC_NAME, RC_NAME, new RedisRebootParameters()
                 .withRebootType(RebootType.ALL_NODES))
                 .toBlocking()
                 .last();
         Assert.assertNotNull(rfResp);
 
-        RedisFirewallRule fRule = manager.redis().firewallRules().listByRedisAsync(RC_NAME, RC_NAME)
+        RedisFirewallRule fRule = redisManager.redis().firewallRules().listByRedisAsync(RC_NAME, RC_NAME)
                 .toBlocking()
                 .last();
         Assert.assertNotNull(fRule);
 
-        RedisLinkedServerWithProperties fServers = manager.redis().linkedServers().listByRedisAsync(RC_NAME, RC_NAME)
+        RedisLinkedServerWithProperties fServers = redisManager.redis().linkedServers().listByRedisAsync(RC_NAME, RC_NAME)
                 .toBlocking()
                 .last();
         Assert.assertNotNull(fServers);
 
-        NotificationListResponse nlr = manager.redis().listUpgradeNotifications().listUpgradeNotificationsAsync(RC_NAME, RC_NAME, 2000)
+        NotificationListResponse nlr = redisManager.redis().listUpgradeNotifications().listUpgradeNotificationsAsync(RC_NAME, RC_NAME, 2000)
                 .toBlocking()
                 .last();
         Assert.assertNotNull(nlr);
 
         // operations
         final List<Operation> operations = new ArrayList<>();
-        manager.operations().listAsync().map(new Func1<Operation, Operation>() {
+        redisManager.operations().listAsync().map(new Func1<Operation, Operation>() {
             @Override
             public Operation call(Operation operation) {
                 operations.add(operation);
@@ -169,7 +157,7 @@ public class  CacheTest extends TestBase {
                 .withDayOfWeek(DayOfWeek.SATURDAY)
                 .withStartHourUtc(4));
 
-        RedisPatchSchedule patchSchedules = manager.patchSchedules()
+        RedisPatchSchedule patchSchedules = redisManager.patchSchedules()
                 .define(RC_PATCH_NAME)
                 .withExistingRedis(RG_NAME, RC_NAME)
                 .withScheduleEntries(scheduleEntries)
@@ -177,6 +165,6 @@ public class  CacheTest extends TestBase {
 
         Assert.assertNotNull(patchSchedules);
 
-        manager.redis().deleteByResourceGroup(RG_NAME, RC_NAME);
+        redisManager.redis().deleteByResourceGroup(RG_NAME, RC_NAME);
     }
 }

@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.redis.v2018_03_01.implementation.CacheManager;
+import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisManager;
 
 /**
  * Type representing RedisFirewallRule.
  */
-public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Indexable, Refreshable<RedisFirewallRule>, Updatable<RedisFirewallRule.Update>, HasManager<CacheManager> {
+public interface RedisFirewallRule extends HasInner<RedisFirewallRuleInner>, Indexable, Refreshable<RedisFirewallRule>, Updatable<RedisFirewallRule.Update>, HasManager<RedisManager> {
     /**
      * @return the endIP value.
      */

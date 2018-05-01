@@ -12,14 +12,14 @@ import com.microsoft.azure.management.redis.v2018_03_01.RedisAccessKeys;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 
 class RedisAccessKeysImpl extends WrapperImpl<RedisAccessKeysInner> implements RedisAccessKeys {
-    private final CacheManager manager;
-    RedisAccessKeysImpl(RedisAccessKeysInner inner, CacheManager manager) {
+    private final RedisManager manager;
+    RedisAccessKeysImpl(RedisAccessKeysInner inner, RedisManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CacheManager manager() {
+    public RedisManager manager() {
         return this.manager;
     }
 

@@ -34,8 +34,8 @@ import com.microsoft.azure.management.redis.v2018_03_01.FirewallRules;
 import com.microsoft.azure.management.redis.v2018_03_01.PatchSchedules;
 import com.microsoft.azure.management.redis.v2018_03_01.LinkedServers;
 
-class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceImpl, RedisResourceInner, RedisInner, CacheManager>  implements Redis {
-    protected RedisImpl(CacheManager manager) {
+class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceImpl, RedisResourceInner, RedisInner, RedisManager>  implements Redis {
+    protected RedisImpl(RedisManager manager) {
         super(manager.inner().redis(), manager);
     }
 

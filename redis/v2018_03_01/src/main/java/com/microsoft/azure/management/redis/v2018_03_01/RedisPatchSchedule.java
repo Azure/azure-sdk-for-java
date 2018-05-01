@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.redis.v2018_03_01.implementation.CacheManager;
+import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisManager;
 import java.util.List;
 
 /**
  * Type representing RedisPatchSchedule.
  */
-public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, Indexable, Refreshable<RedisPatchSchedule>, Updatable<RedisPatchSchedule.Update>, HasManager<CacheManager> {
+public interface RedisPatchSchedule extends HasInner<RedisPatchScheduleInner>, Indexable, Refreshable<RedisPatchSchedule>, Updatable<RedisPatchSchedule.Update>, HasManager<RedisManager> {
     /**
      * @return the id value.
      */

@@ -15,13 +15,13 @@ import java.util.List;
 import com.microsoft.azure.management.redis.v2018_03_01.ScheduleEntry;
 
 class RedisPatchScheduleImpl extends CreatableUpdatableImpl<RedisPatchSchedule, RedisPatchScheduleInner, RedisPatchScheduleImpl> implements RedisPatchSchedule, RedisPatchSchedule.Definition, RedisPatchSchedule.Update {
-    private final CacheManager manager;
+    private final RedisManager manager;
     private String resourceGroupName;
     private String name;
     private List<ScheduleEntry> cscheduleEntries;
     private List<ScheduleEntry> uscheduleEntries;
 
-    RedisPatchScheduleImpl(String name, CacheManager manager) {
+    RedisPatchScheduleImpl(String name, RedisManager manager) {
         super(name, new RedisPatchScheduleInner());
         this.manager = manager;
         // Set resource name
@@ -29,7 +29,7 @@ class RedisPatchScheduleImpl extends CreatableUpdatableImpl<RedisPatchSchedule, 
         //
     }
 
-    RedisPatchScheduleImpl(RedisPatchScheduleInner inner, CacheManager manager) {
+    RedisPatchScheduleImpl(RedisPatchScheduleInner inner, RedisManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -41,7 +41,7 @@ class RedisPatchScheduleImpl extends CreatableUpdatableImpl<RedisPatchSchedule, 
     }
 
     @Override
-    public CacheManager manager() {
+    public RedisManager manager() {
         return this.manager;
     }
 

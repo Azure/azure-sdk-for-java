@@ -16,14 +16,14 @@ import rx.Observable;
 import com.microsoft.azure.management.redis.v2018_03_01.NotificationListResponse;
 
 class ListUpgradeNotificationsImpl extends WrapperImpl<RedisInner> implements ListUpgradeNotifications {
-    private final CacheManager manager;
+    private final RedisManager manager;
 
-    ListUpgradeNotificationsImpl(CacheManager manager) {
+    ListUpgradeNotificationsImpl(RedisManager manager) {
         super(manager.inner().redis());
         this.manager = manager;
     }
 
-    public CacheManager manager() {
+    public RedisManager manager() {
         return this.manager;
     }
 

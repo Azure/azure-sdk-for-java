@@ -14,14 +14,14 @@ import java.util.List;
 import com.microsoft.azure.management.redis.v2018_03_01.UpgradeNotification;
 
 class NotificationListResponseImpl extends WrapperImpl<NotificationListResponseInner> implements NotificationListResponse {
-    private final CacheManager manager;
-    NotificationListResponseImpl(NotificationListResponseInner inner, CacheManager manager) {
+    private final RedisManager manager;
+    NotificationListResponseImpl(NotificationListResponseInner inner, RedisManager manager) {
         super(inner);
         this.manager = manager;
     }
 
     @Override
-    public CacheManager manager() {
+    public RedisManager manager() {
         return this.manager;
     }
 

@@ -15,13 +15,13 @@ import com.microsoft.azure.management.redis.v2018_03_01.RedisFirewallRuleCreateP
 import rx.functions.Func1;
 
 class RedisFirewallRuleImpl extends CreatableUpdatableImpl<RedisFirewallRule, RedisFirewallRuleInner, RedisFirewallRuleImpl> implements RedisFirewallRule, RedisFirewallRule.Definition, RedisFirewallRule.Update {
-    private final CacheManager manager;
+    private final RedisManager manager;
     private String resourceGroupName;
     private String cacheName;
     private String ruleName;
     private RedisFirewallRuleCreateParameters createOrUpdateParameter;
 
-    RedisFirewallRuleImpl(String name, CacheManager manager) {
+    RedisFirewallRuleImpl(String name, RedisManager manager) {
         super(name, new RedisFirewallRuleInner());
         this.manager = manager;
         // Set resource name
@@ -30,7 +30,7 @@ class RedisFirewallRuleImpl extends CreatableUpdatableImpl<RedisFirewallRule, Re
         this.createOrUpdateParameter = new RedisFirewallRuleCreateParameters();
     }
 
-    RedisFirewallRuleImpl(RedisFirewallRuleInner inner, CacheManager manager) {
+    RedisFirewallRuleImpl(RedisFirewallRuleInner inner, RedisManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -44,7 +44,7 @@ class RedisFirewallRuleImpl extends CreatableUpdatableImpl<RedisFirewallRule, Re
     }
 
     @Override
-    public CacheManager manager() {
+    public RedisManager manager() {
         return this.manager;
     }
 

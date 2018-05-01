@@ -16,12 +16,12 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.redis.v2018_03_01.implementation.CacheManager;
+import com.microsoft.azure.management.redis.v2018_03_01.implementation.RedisManager;
 
 /**
  * Type representing RedisLinkedServerWithProperties.
  */
-public interface RedisLinkedServerWithProperties extends HasInner<RedisLinkedServerWithPropertiesInner>, Indexable, Refreshable<RedisLinkedServerWithProperties>, Updatable<RedisLinkedServerWithProperties.Update>, HasManager<CacheManager> {
+public interface RedisLinkedServerWithProperties extends HasInner<RedisLinkedServerWithPropertiesInner>, Indexable, Refreshable<RedisLinkedServerWithProperties>, Updatable<RedisLinkedServerWithProperties.Update>, HasManager<RedisManager> {
     /**
      * @return the id value.
      */
