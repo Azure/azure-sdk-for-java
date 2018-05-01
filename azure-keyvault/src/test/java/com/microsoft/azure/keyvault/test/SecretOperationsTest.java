@@ -55,7 +55,7 @@ public class SecretOperationsTest extends KeyVaultClientIntegrationTestBase {
 		// Create a secret on a different vault. Secret Vault Data Plane returns
 		// 401, which must be transparently handled by KeyVaultCredentials.
 		{
-			SecretBundle secret = keyVaultClient
+			SecretBundle secret = alternativeKeyVaultClient
 					.setSecret(new SetSecretRequest.Builder(getSecondaryVaultUri(), SECRET_NAME, SECRET_VALUE).build());
 			validateSecret(secret, getSecondaryVaultUri(), SECRET_NAME, SECRET_VALUE, null, null);
 		}

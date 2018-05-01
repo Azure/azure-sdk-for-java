@@ -47,11 +47,13 @@ public class KeyVaultClientIntegrationTestBase {
 	}
 
 	protected static KeyVaultClient keyVaultClient;
+	protected static KeyVaultClient alternativeKeyVaultClient;
 
 	protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
 	protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
 	private static final String PLAYBACK_URI_BASE = "http://localhost:";
 	protected static String playbackUri = null;
+	protected static String alternativePlaybackUri = null;
 
 	private final RunCondition runCondition;
 
@@ -165,22 +167,6 @@ public class KeyVaultClientIntegrationTestBase {
 		};
 	}
 
-	protected void initializeClients(RestClient restClient, String s, String s1) throws IOException {
-		try {
-			RestClient restClientWithTimeout = buildRestClient(new RestClient.Builder()
-					.withBaseUrl("https://{vaultBaseUrl}").withSerializerAdapter(new AzureJacksonAdapter())
-					.withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-					.withCredentials(createTestCredentials()).withLogLevel(LogLevel.BODY_AND_HEADERS)
-					.withNetworkInterceptor(interceptorManager.initInterceptor()));
-			createTestCredentials();
-			keyVaultClient = new KeyVaultClient(restClientWithTimeout);
-
-			// keyVaultClient = new KeyVaultClient(restClient);
-		} catch (Exception e) {
-			e.printStackTrace();
-		}
-	}
-
 	public static String generateRandomResourceName(String prefix, int maxLen) {
 		return SdkContext.randomResourceName(prefix, maxLen);
 	}
@@ -226,6 +212,7 @@ public class KeyVaultClientIntegrationTestBase {
 			mavenProps.load(in);
 			String port = mavenProps.getProperty("playbackServerPort");
 			playbackUri = PLAYBACK_URI_BASE + port;
+			alternativePlaybackUri = PLAYBACK_URI_BASE + mavenProps.getProperty("alternativePlaybackServerPort");
 		} else {
 			playbackUri = PLAYBACK_URI_BASE + "1234";
 		}
@@ -264,8 +251,10 @@ public class KeyVaultClientIntegrationTestBase {
 		initPlaybackUri();
 	}
 
+
+
 	@Before
-	public void beforeTest() throws Exception {
+	public void beforeMethod() throws Exception {
 		printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
 		final String skipMessage = shouldCancelTest(isPlaybackMode());
 		Assume.assumeTrue(skipMessage, skipMessage == null);
@@ -290,15 +279,8 @@ public class KeyVaultClientIntegrationTestBase {
 			interceptorManager.addTextReplacementRule("https://graph.windows.net/", playbackUri + "/");
 
 			keyVaultClient = new KeyVaultClient(restClient);
+			alternativeKeyVaultClient = keyVaultClient;
 		} else { // is Playback Mode
-
-			restClient = buildRestClient(new RestClient.Builder().withBaseUrl(playbackUri + "/")
-					.withSerializerAdapter(new AzureJacksonAdapter())
-					.withResponseBuilderFactory(new AzureResponseBuilder.Factory()).withCredentials(credentials)
-					.withLogLevel(LogLevel.NONE)
-					.withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
-					.withNetworkInterceptor(interceptorManager.initInterceptor())
-					.withInterceptor(new ResourceManagerThrottlingInterceptor()));
 			defaultSubscription = ZERO_SUBSCRIPTION;
 
 			out = System.out;
@@ -308,7 +290,8 @@ public class KeyVaultClientIntegrationTestBase {
 				}
 			}));
 
-			keyVaultClient = new KeyVaultClient(restClient);
+			keyVaultClient = new KeyVaultClient(buildPlaybackRestClient(credentials, playbackUri + "/"));
+			alternativeKeyVaultClient = new KeyVaultClient(buildPlaybackRestClient(credentials, alternativePlaybackUri + "/"));
 		}
 
 	}
@@ -367,7 +350,7 @@ public class KeyVaultClientIntegrationTestBase {
 	}
 
 	@After
-	public void afterTest() throws IOException {
+	public void afterMethod() throws IOException {
 
 		if (shouldCancelTest(isPlaybackMode()) != null) {
 			return;
@@ -378,5 +361,15 @@ public class KeyVaultClientIntegrationTestBase {
 
 	protected RestClient buildRestClient(RestClient.Builder builder) {
 		return builder.build();
+	}
+
+	protected RestClient buildPlaybackRestClient(ServiceClientCredentials credentials, String baseUrl) throws IOException {
+		return buildRestClient(new RestClient.Builder().withBaseUrl(baseUrl)
+					.withSerializerAdapter(new AzureJacksonAdapter())
+					.withResponseBuilderFactory(new AzureResponseBuilder.Factory()).withCredentials(credentials)
+					.withLogLevel(LogLevel.NONE)
+					.withNetworkInterceptor(new LoggingInterceptor(LogLevel.BODY_AND_HEADERS))
+					.withNetworkInterceptor(interceptorManager.initInterceptor())
+					.withInterceptor(new ResourceManagerThrottlingInterceptor()));
 	}
 }

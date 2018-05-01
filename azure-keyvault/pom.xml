@@ -117,12 +117,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.2.22.v20170606</version>
 				<configuration>
-					<scanIntervalSeconds>0</scanIntervalSeconds>
-					<stopPort>11079</stopPort>
-					<stopKey>STOP</stopKey>
-					<httpConnector>
-						<port>${playbackServerPort}</port>
-					</httpConnector>
+					<jettyXml>../jetty.xml,../jetty-http.xml</jettyXml>
 				</configuration>
 			</plugin>
 			<plugin>
