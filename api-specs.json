@@ -1,9 +1,9 @@
 {
-  "storage": {
-    "apiVersion": "2017-10-01",
-    "package": "com.microsoft.azure.management.storage",
-    "source": "specification/storage/resource-manager/readme.md",
-    "args": "--payload-flattening-threshold=2 --tag=package-2017-10"
+  "eventgrid": {
+    "apiVersion": "2018-01-01",
+    "package": "com.microsoft.azure.management.eventgrid",
+    "source": "specification/eventgrid/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-01"
   },
   "mediaservices": {
     "apiVersion": "2018-03-30-preview",
@@ -11,10 +11,21 @@
     "source": "specification/mediaservices/resource-manager/readme.md",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
   },
-  "eventgrid": {
-    "apiVersion": "2018-01-01",
-    "package": "com.microsoft.azure.management.eventgrid",
-    "source": "specification/eventgrid/resource-manager/readme.md",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-01"
+  "redis": {
+    "apiVersion": "2018-03-01",
+    "package": "com.microsoft.azure.management.redis",
+    "source": "specification/redis/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-03",
+    "fconfig": {
+      "\"moduleName\"": "\"Redis\"",
+      "\"knownPlurals\"": ["\"redis\""],
+      "\"knownSingulars\"": ["\"redis\""]
+    }
+  },
+  "storage": {
+    "apiVersion": "2017-10-01",
+    "package": "com.microsoft.azure.management.storage",
+    "source": "specification/storage/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=2 --tag=package-2017-10"
   }
 }
