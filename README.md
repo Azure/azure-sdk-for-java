@@ -59,6 +59,17 @@ The runtime libraries for [AutoRest](https://github.com/azure/autorest) generate
       <classifier>${os.detected.classifier}</classifier>
     </dependency>
 </dependencies>
+
+<!-- Allows automatic detection of OS for native modules -->
+<build>
+  <extensions>
+    <extension>
+      <groupId>kr.motd.maven</groupId>
+      <artifactId>os-maven-plugin</artifactId>
+      <version>1.6.0</version>
+    </extension>
+  </extensions>
+</build>
 ```
 
 ### Usage
