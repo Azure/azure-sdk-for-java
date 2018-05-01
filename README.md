@@ -17,20 +17,20 @@ The runtime libraries for [AutoRest](https://github.com/azure/autorest) generate
     <dependency>
       <groupId>com.microsoft.rest.v2</groupId>
       <artifactId>client-runtime</artifactId>
-      <version>2.0.0-beta1</version>
+      <version>2.0.0-beta2</version>
     </dependency>
     
     <!-- For Azure Resource Management users -->
     <dependency>
       <groupId>com.microsoft.azure.v2</groupId>
       <artifactId>azure-client-runtime</artifactId>
-      <version>2.0.0-beta1</version>
+      <version>2.0.0-beta2</version>
     </dependency>
     
     <dependency>
       <groupId>com.microsoft.azure.v2</groupId>
       <artifactId>azure-client-authentication</artifactId>
-      <version>2.0.0-beta1</version>
+      <version>2.0.0-beta2</version>
     </dependency>
     
     <!-- Below are optional high-performance native dependencies  -->
