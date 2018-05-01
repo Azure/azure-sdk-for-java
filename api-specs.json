@@ -11,6 +11,15 @@
     "source": "specification/mediaservices/resource-manager/readme.md",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
   },
+  "monitor": {
+    "apiVersion": "2018-03",
+    "package": "com.microsoft.azure.management.monitor",
+    "source": "specification/monitor/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-03",
+    "fconfig": {
+      "\"moduleName\"": "\"Monitor\""
+    }
+  },
   "redis": {
     "apiVersion": "2018-03-01",
     "package": "com.microsoft.azure.management.redis",
