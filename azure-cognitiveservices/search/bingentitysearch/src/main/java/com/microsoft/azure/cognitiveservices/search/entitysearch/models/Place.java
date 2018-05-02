@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * Defines information about a local entity, such as a restaurant or hotel.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = Place.class)
 @JsonTypeName("Place")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "CivicStructure", value = CivicStructure.class),

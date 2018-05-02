@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The ContractualRulesContractualRule model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ContractualRulesContractualRule.class)
 @JsonTypeName("ContractualRules/ContractualRule")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ContractualRules/Attribution", value = ContractualRulesAttribution.class)

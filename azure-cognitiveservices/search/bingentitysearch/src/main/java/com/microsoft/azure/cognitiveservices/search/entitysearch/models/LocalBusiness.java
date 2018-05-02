@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The LocalBusiness model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = LocalBusiness.class)
 @JsonTypeName("LocalBusiness")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "EntertainmentBusiness", value = EntertainmentBusiness.class),

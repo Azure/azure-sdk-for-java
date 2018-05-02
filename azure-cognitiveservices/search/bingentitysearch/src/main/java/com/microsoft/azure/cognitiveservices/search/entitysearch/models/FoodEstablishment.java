@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The FoodEstablishment model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = FoodEstablishment.class)
 @JsonTypeName("FoodEstablishment")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "Restaurant", value = Restaurant.class)

@@ -323,6 +323,7 @@
   </build>
   <modules>
     <module>./language/bingspellcheck</module>
+    <module>./search/bingcustomsearch</module>
     <module>./search/bingentitysearch</module>
     <module>./search/bingimagesearch</module>
     <module>./search/bingnewssearch</module>

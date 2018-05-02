@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The ContractualRulesAttribution model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ContractualRulesAttribution.class)
 @JsonTypeName("ContractualRules/Attribution")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ContractualRules/LicenseAttribution", value = ContractualRulesLicenseAttribution.class),
