@@ -61,32 +61,6 @@
     "Response" : {
       "date" : "Fri, 09 Mar 2018 15:53:58 GMT",
       "server" : "Microsoft-IIS/8.5",
-      "content-length" : "0",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
-      "www-authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
-      "retry-after" : "0",
-      "StatusCode" : "401",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "x-ms-keyvault-region" : "West US",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "c92cc65f-c724-4ae3-a11b-36c64801d5fc",
-      "x-ms-keyvault-service-version" : "1.0.0.841",
-      "Body" : ""
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/keys/JavaExtensionKey1/?api-version=7.0-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (KeyVaultClientBase, 7.0-preview)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 09 Mar 2018 15:53:58 GMT",
-      "server" : "Microsoft-IIS/8.5",
       "content-length" : "674",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -102,32 +76,6 @@
       "x-ms-request-id" : "adc6a92b-cb0c-4492-adb0-2d4d9a3fda95",
       "x-ms-keyvault-service-version" : "1.0.0.841",
       "Body" : "{\"key\":{\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/JavaExtensionKey1/29587f1903e14fdbb0fb421cfd25980c\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"tILrzug757_es-kZHwD9eNRs-1nzKLY-iNrYWndXuq3bVxGSOXRy14zxfTMWEtYSMkgOxRXvstpMUZMJ4g2hAdPh_BsxWcBMIJ8f7iTkat26yHGJ9IgphrhwVQH9RmCKeyTd7POY7xMCc5VpGzaezRR3lk4RMe8FK1dzO9mSOsWCBUoxpDnPOGoz2QP_0jPmyQJtI40z3tq1MGkPqRnhVtuT_GK7DCvB1sSzqv1RV24zDAXeD6cDAsikjsxUKVZKAbBWoOKhPAxFJ1h1oeUAM223mRcrIbPNpQI4sg6ECghCGpeyEZ461gpZIrxyuxCYdHoKay02VoA06C1poFtrJQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1520610837,\"updated\":1520610837,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/keys/JavaExtensionKey1/29587f1903e14fdbb0fb421cfd25980c?api-version=7.0-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (KeyVaultClientBase, 7.0-preview)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 09 Mar 2018 15:53:58 GMT",
-      "server" : "Microsoft-IIS/8.5",
-      "content-length" : "0",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
-      "www-authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
-      "retry-after" : "0",
-      "StatusCode" : "401",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "x-ms-keyvault-region" : "West US",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "dcac0144-2f4a-49d8-8a62-dd103b4c13bd",
-      "x-ms-keyvault-service-version" : "1.0.0.841",
-      "Body" : ""
     }
   }, {
     "Method" : "GET",
@@ -165,32 +113,6 @@
     "Response" : {
       "date" : "Fri, 09 Mar 2018 15:53:58 GMT",
       "server" : "Microsoft-IIS/8.5",
-      "content-length" : "0",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
-      "www-authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
-      "retry-after" : "0",
-      "StatusCode" : "401",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "x-ms-keyvault-region" : "West US",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "b2f53636-9b9d-4ebe-9e0e-780d40188a59",
-      "x-ms-keyvault-service-version" : "1.0.0.841",
-      "Body" : ""
-    }
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/keys/JavaExtensionKey1?api-version=7.0-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (KeyVaultClientBase, 7.0-preview)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 09 Mar 2018 15:53:58 GMT",
-      "server" : "Microsoft-IIS/8.5",
       "content-length" : "823",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -206,32 +128,6 @@
       "x-ms-request-id" : "00280cfc-e83a-4fe9-913a-db36b2670d91",
       "x-ms-keyvault-service-version" : "1.0.0.841",
       "Body" : "{\"recoveryId\":\"https://tifchen-keyvault-fancy.vault.azure.net/deletedkeys/JavaExtensionKey1\",\"deletedDate\":1520610838,\"scheduledPurgeDate\":1528386838,\"key\":{\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/JavaExtensionKey1/29587f1903e14fdbb0fb421cfd25980c\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"tILrzug757_es-kZHwD9eNRs-1nzKLY-iNrYWndXuq3bVxGSOXRy14zxfTMWEtYSMkgOxRXvstpMUZMJ4g2hAdPh_BsxWcBMIJ8f7iTkat26yHGJ9IgphrhwVQH9RmCKeyTd7POY7xMCc5VpGzaezRR3lk4RMe8FK1dzO9mSOsWCBUoxpDnPOGoz2QP_0jPmyQJtI40z3tq1MGkPqRnhVtuT_GK7DCvB1sSzqv1RV24zDAXeD6cDAsikjsxUKVZKAbBWoOKhPAxFJ1h1oeUAM223mRcrIbPNpQI4sg6ECghCGpeyEZ461gpZIrxyuxCYdHoKay02VoA06C1poFtrJQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1520610837,\"updated\":1520610837,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedkeys/JavaExtensionKey1?api-version=7.0-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (KeyVaultClientBase, 7.0-preview)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 09 Mar 2018 15:53:58 GMT",
-      "server" : "Microsoft-IIS/8.5",
-      "content-length" : "0",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
-      "www-authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
-      "retry-after" : "0",
-      "StatusCode" : "401",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "x-ms-keyvault-region" : "West US",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "881c71e5-353d-4fd4-8891-8a4f9bcd0b5c",
-      "x-ms-keyvault-service-version" : "1.0.0.841",
-      "Body" : ""
     }
   }, {
     "Method" : "GET",
@@ -269,32 +165,6 @@
     "Response" : {
       "date" : "Fri, 09 Mar 2018 15:54:09 GMT",
       "server" : "Microsoft-IIS/8.5",
-      "content-length" : "0",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
-      "www-authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
-      "retry-after" : "0",
-      "StatusCode" : "401",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "x-ms-keyvault-region" : "West US",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "176e4b9d-44ff-4e28-b8ad-a175238357dc",
-      "x-ms-keyvault-service-version" : "1.0.0.841",
-      "Body" : ""
-    }
-  }, {
-    "Method" : "GET",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedkeys/JavaExtensionKey1?api-version=7.0-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (KeyVaultClientBase, 7.0-preview)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 09 Mar 2018 15:54:09 GMT",
-      "server" : "Microsoft-IIS/8.5",
       "content-length" : "823",
       "expires" : "-1",
       "x-aspnet-version" : "4.0.30319",
@@ -310,32 +180,6 @@
       "x-ms-request-id" : "f54ba99f-711c-4343-8c09-f10258012079",
       "x-ms-keyvault-service-version" : "1.0.0.841",
       "Body" : "{\"recoveryId\":\"https://tifchen-keyvault-fancy.vault.azure.net/deletedkeys/JavaExtensionKey1\",\"deletedDate\":1520610838,\"scheduledPurgeDate\":1528386838,\"key\":{\"kid\":\"https://tifchen-keyvault-fancy.vault.azure.net/keys/JavaExtensionKey1/29587f1903e14fdbb0fb421cfd25980c\",\"kty\":\"RSA\",\"key_ops\":[\"encrypt\",\"decrypt\",\"sign\",\"verify\",\"wrapKey\",\"unwrapKey\"],\"n\":\"tILrzug757_es-kZHwD9eNRs-1nzKLY-iNrYWndXuq3bVxGSOXRy14zxfTMWEtYSMkgOxRXvstpMUZMJ4g2hAdPh_BsxWcBMIJ8f7iTkat26yHGJ9IgphrhwVQH9RmCKeyTd7POY7xMCc5VpGzaezRR3lk4RMe8FK1dzO9mSOsWCBUoxpDnPOGoz2QP_0jPmyQJtI40z3tq1MGkPqRnhVtuT_GK7DCvB1sSzqv1RV24zDAXeD6cDAsikjsxUKVZKAbBWoOKhPAxFJ1h1oeUAM223mRcrIbPNpQI4sg6ECghCGpeyEZ461gpZIrxyuxCYdHoKay02VoA06C1poFtrJQ\",\"e\":\"AQAB\"},\"attributes\":{\"enabled\":true,\"created\":1520610837,\"updated\":1520610837,\"recoveryLevel\":\"Recoverable+Purgeable\"}}"
-    }
-  }, {
-    "Method" : "DELETE",
-    "Uri" : "https://tifchen-keyvault-fancy.vault.azure.net/deletedkeys/JavaExtensionKey1?api-version=7.0-preview",
-    "Headers" : {
-      "User-Agent" : "Azure-SDK-For-Java/null (KeyVaultClientBase, 7.0-preview)",
-      "Content-Type" : "application/json; charset=utf-8"
-    },
-    "Response" : {
-      "date" : "Fri, 09 Mar 2018 15:54:09 GMT",
-      "server" : "Microsoft-IIS/8.5",
-      "content-length" : "0",
-      "expires" : "-1",
-      "x-aspnet-version" : "4.0.30319",
-      "www-authenticate" : "Bearer authorization=\"https://login.windows.net/72f988bf-86f1-41af-91ab-2d7cd011db47\", resource=\"https://vault.azure.net\"",
-      "retry-after" : "0",
-      "StatusCode" : "401",
-      "pragma" : "no-cache",
-      "strict-transport-security" : "max-age=31536000;includeSubDomains",
-      "x-content-type-options" : "nosniff",
-      "x-powered-by" : "ASP.NET",
-      "x-ms-keyvault-region" : "West US",
-      "cache-control" : "no-cache",
-      "x-ms-request-id" : "b598cfca-e1bb-4f78-9a49-002b266c7128",
-      "x-ms-keyvault-service-version" : "1.0.0.841",
-      "Body" : ""
     }
   }, {
     "Method" : "DELETE",
