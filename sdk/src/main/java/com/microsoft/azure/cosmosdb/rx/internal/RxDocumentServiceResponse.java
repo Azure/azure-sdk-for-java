@@ -30,9 +30,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
 
 import com.microsoft.azure.cosmosdb.Attachment;
 import com.microsoft.azure.cosmosdb.Conflict;
@@ -146,26 +147,26 @@ public class RxDocumentServiceResponse {
             return new ArrayList<T>();
         }
 
-        JSONObject jobject = new JSONObject(responseBody);
+        JsonNode jobject = com.microsoft.azure.cosmosdb.internal.Utils.fromJson(responseBody);
         String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
-        JSONArray jTokenArray = jobject.getJSONArray(resourceKey);
+        ArrayNode jTokenArray = (ArrayNode) jobject.get(resourceKey);
 
         // Aggregate queries may return a nested array
-        JSONArray innerArray;
-        while (jTokenArray != null && jTokenArray.length() == 1 && (innerArray = jTokenArray.optJSONArray(0)) != null) {
+        ArrayNode innerArray;
+        while (jTokenArray != null && jTokenArray.size() == 1 && (innerArray = optJSONArray(jTokenArray.get(0))) != null) {
             jTokenArray = innerArray;
         }
 
         List<T> queryResults = new ArrayList<T>();
 
         if (jTokenArray != null) {
-            for (int i = 0; i < jTokenArray.length(); ++i) {
-                Object jToken = jTokenArray.get(i);
+            for (int i = 0; i < jTokenArray.size(); ++i) {
+                JsonNode jToken = jTokenArray.get(i);
                 // Aggregate on single partition collection may return the aggregated value only
                 // In that case it needs to encapsulated in a special document
-                String resourceJson = jToken instanceof Number || jToken instanceof Boolean
-                        ? String.format("{\"%s\": %s}", Constants.Properties.AGGREGATE, jToken.toString())
-                                : jToken.toString();
+                String resourceJson = jToken.isNumber() || jToken.isBoolean()
+                        ? String.format("{\"%s\": %s}", Constants.Properties.AGGREGATE, jToken.asText())
+                                : com.microsoft.azure.cosmosdb.internal.Utils.toJson(jToken);
                         T resource = null;
                         try {
                             resource = c.getConstructor(String.class).newInstance(resourceJson);
@@ -179,6 +180,14 @@ public class RxDocumentServiceResponse {
         }
 
         return queryResults;
+    }
+
+    private ArrayNode optJSONArray(JsonNode n) {
+        if (n.isArray()) {
+            return (ArrayNode) n;
+        } else {
+            return null;
+        }
     }
 
     public InputStream getContentStream() {
