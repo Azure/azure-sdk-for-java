@@ -395,6 +395,15 @@ public final class Utils {
         }
     }
 
+    public static String toPrettyJson(Object object){
+        try {
+            return getSimpleObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            //Should not happen while reading from String
+            throw new RuntimeException(e);
+        }
+    }
+
     /**
      * Returns Current Time in RFC 1123 format, e.g, 
      * Fri, 01 Dec 2017 19:22:30 GMT.
