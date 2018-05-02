@@ -19,12 +19,11 @@ import com.microsoft.azure.cognitiveservices.search.visualsearch.models.ImageKno
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import java.io.InputStream;
 import java.io.IOException;
 import okhttp3.ResponseBody;
+import retrofit2.http.Field;
+import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
-import retrofit2.http.Multipart;
-import retrofit2.http.Part;
 import retrofit2.http.POST;
 import retrofit2.Response;
 import rx.functions.Func1;
@@ -56,9 +55,9 @@ public class BingImagesImpl implements BingImages {
      * used by Retrofit to perform actually REST calls.
      */
     interface BingImagesService {
-        @Multipart
+        @FormUrlEncoded
         @POST("images/visualsearch")
-        Observable<Response<ResponseBody>> visualSearch(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Content-Type") String contentType, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Part("knowledgeRequest") String knowledgeRequest, @Part("image") RequestBody image);
+        Observable<Response<ResponseBody>> visualSearch(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Content-Type") String contentType, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Field("knowledgeRequest") String knowledgeRequest, @Field("image") RequestBody image);
 
     }
 
