@@ -14,7 +14,7 @@ This is the next generation Service Bus Java client library that focuses on Queu
 * [Event Hubs](https://github.com/azure/azure-event-hubs-dotnet)
 * [Relay](https://github.com/azure/azure-relay-dotnet)
 
-Azure Service Bus is an asynchronous messaging cloud platform that enables you to send messages between decoupled systems. Microsoft offers this feature as a service, which means that you do not need to host any of your own hardware in order to use it.
+Azure Service Bus is an asynchronous messaging cloud platform that enables you to send and receive messages between decoupled systems. Microsoft offers this feature as a service, which means that you do not need to host any of your own hardware in order to use it.
 
 Refer to [azure.com](https://azure.microsoft.com/services/service-bus/) to learn more about Service Bus.
 
@@ -27,6 +27,14 @@ This library is build using:
 * Junit 4.12
 
 The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus%22)
+
+```
+<dependency> 
+  <groupId>com.microsoft.azure</groupId> 
+  <artifactId>azure-servicebus-parent</artifactId> 
+  <version>1.2.5</version>
+</dependency>
+```
 
 ## How to provide feedback
 
