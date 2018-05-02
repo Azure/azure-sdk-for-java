@@ -46,7 +46,7 @@ public class SearchOptionalParameter {
         /**
         * The number of videos to return in the response. The actual number delivered may be less than requested. The default is 35. The maximum is 105. You may use this parameter along with the offset parameter to page results. For example, if your user interface presents 20 videos per page, set count to 20 and offset to 0 to get the first page of results. For each subsequent page, increment offset by 20 (for example, 0, 20, 40). Use this parameter only with the Video Search API. Do not specify this parameter when calling the Trending Videos API or the Web Search API.
         */
-        private int count;
+        private Integer count;
 
         /**
         * Filter videos by the date and time that Bing discovered the video. The following are the possible filter values. Day: Return videos discovered within the last 24 hours. Week: Return videos discovered within the last 7 days. Month: Return videos discovered within the last 30 days. Possible values include: 'Day', 'Week', 'Month'.
@@ -71,7 +71,7 @@ public class SearchOptionalParameter {
         /**
         * The zero-based offset that indicates the number of videos to skip before returning videos. The default is 0. The offset should be less than ([totalEstimatedMatches](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-video-api-v7-reference#videos-totalmatches) - count). Use this parameter along with the count parameter to page results. For example, if your user interface displays 20 videos per page, set count to 20 and offset to 0 to get the first page of results. For each subsequent page, increment offset by 20 (for example, 0, 20, 40). It is possible for multiple pages to include some overlap in results. To prevent duplicates, see [nextOffset](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-video-api-v7-reference#videos-nextoffset). Use this parameter only with the Video Search API.
         */
-        private int offset;
+        private Integer offset;
 
         /**
         * Filter videos by the following pricing options: Free: Return videos that are free to view. Paid: Return videos that require a subscription or payment to view. All: Do not filter by pricing.Specifying this value is the same as not specifying the pricing parameter. Possible values include: 'All', 'Free', 'Paid'.
@@ -96,7 +96,7 @@ public class SearchOptionalParameter {
         /**
         * A Boolean value that determines whether display strings contain decoration markers such as hit highlighting characters. If true, the strings may include markers. The default is false. To specify whether to use Unicode characters or HTML tags as the markers, see the [textFormat](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-video-api-v7-reference#textformat) query parameter. For information about hit highlighting, see [Hit Highlighting](https://docs.microsoft.com/azure/cognitive-services/bing-news-search/hit-highlighting).
         */
-        private boolean textDecorations;
+        private Boolean textDecorations;
 
         /**
         * The type of markers to use for text decorations (see the textDecorations query parameter). Possible values are Raw—Use Unicode characters to mark content that needs special formatting. The Unicode characters are in the range E000 through E019. For example, Bing uses E000 and E001 to mark the beginning and end of query terms for hit highlighting. HTML—Use HTML tags to mark content that needs special formatting. For example, use &lt;b&gt; tags to highlight query terms in display strings. The default is Raw. For display strings that contain escapable HTML characters such as &lt;, &gt;, and &amp;, if textFormat is set to HTML, Bing escapes the characters as appropriate (for example, &lt; is escaped to &amp;lt;). Possible values include: 'Raw', 'Html'.
@@ -162,7 +162,7 @@ public class SearchOptionalParameter {
         *
         * @return the count value
         */
-        public int count() {
+        public Integer count() {
             return this.count;
         }
 
@@ -207,7 +207,7 @@ public class SearchOptionalParameter {
         *
         * @return the offset value
         */
-        public int offset() {
+        public Integer offset() {
             return this.offset;
         }
 
@@ -252,7 +252,7 @@ public class SearchOptionalParameter {
         *
         * @return the textDecorations value
         */
-        public boolean textDecorations() {
+        public Boolean textDecorations() {
             return this.textDecorations;
         }
 

@@ -16,14 +16,14 @@ public class AddVideoFrameOptionalParameter {
         /**
         * Timescale of the video you are adding frames to.
         */
-        private int timescale;
+        private Integer timescale;
 
         /**
         * Get the timescale value.
         *
         * @return the timescale value
         */
-        public int timescale() {
+        public Integer timescale() {
             return this.timescale;
         }
 

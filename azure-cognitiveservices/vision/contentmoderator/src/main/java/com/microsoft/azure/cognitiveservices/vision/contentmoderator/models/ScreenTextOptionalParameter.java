@@ -21,12 +21,12 @@ public class ScreenTextOptionalParameter {
         /**
         * Autocorrect text.
         */
-        private boolean autocorrect;
+        private Boolean autocorrect;
 
         /**
         * Detect personal identifiable information.
         */
-        private boolean pII;
+        private Boolean pII;
 
         /**
         * The list Id.
@@ -36,7 +36,7 @@ public class ScreenTextOptionalParameter {
         /**
         * Classify input.
         */
-        private boolean classify;
+        private Boolean classify;
 
         /**
         * Get the language value.
@@ -52,7 +52,7 @@ public class ScreenTextOptionalParameter {
         *
         * @return the autocorrect value
         */
-        public boolean autocorrect() {
+        public Boolean autocorrect() {
             return this.autocorrect;
         }
 
@@ -61,7 +61,7 @@ public class ScreenTextOptionalParameter {
         *
         * @return the pII value
         */
-        public boolean pII() {
+        public Boolean pII() {
             return this.pII;
         }
 
@@ -79,7 +79,7 @@ public class ScreenTextOptionalParameter {
         *
         * @return the classify value
         */
-        public boolean classify() {
+        public Boolean classify() {
             return this.classify;
         }
 

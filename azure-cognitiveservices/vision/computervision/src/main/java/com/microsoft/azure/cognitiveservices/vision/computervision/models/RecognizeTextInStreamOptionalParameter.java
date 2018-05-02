@@ -16,14 +16,14 @@ public class RecognizeTextInStreamOptionalParameter {
         /**
         * If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified, printed text recognition is performed.
         */
-        private boolean detectHandwriting;
+        private Boolean detectHandwriting;
 
         /**
         * Get the detectHandwriting value.
         *
         * @return the detectHandwriting value
         */
-        public boolean detectHandwriting() {
+        public Boolean detectHandwriting() {
             return this.detectHandwriting;
         }
 

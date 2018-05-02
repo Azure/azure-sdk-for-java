@@ -47,22 +47,22 @@ public class DetailsOptionalParameter {
         /**
         * The bottom coordinate of the region to crop. The coordinate is a fractional value of the original image's height and is measured from the top, left corner of the image. Specify the coordinate as a value from 0.0 through 1.0. Use this parameter only with the Insights API. Do not specify this parameter when calling the Images, Trending Images, or Web Search APIs.
         */
-        private double cropBottom;
+        private Double cropBottom;
 
         /**
         * The left coordinate of the region to crop. The coordinate is a fractional value of the original image's height and is measured from the top, left corner of the image. Specify the coordinate as a value from 0.0 through 1.0. Use this parameter only with the Insights API. Do not specify this parameter when calling the Images, Trending Images, or Web Search APIs.
         */
-        private double cropLeft;
+        private Double cropLeft;
 
         /**
         * The right coordinate of the region to crop. The coordinate is a fractional value of the original image's height and is measured from the top, left corner of the image. Specify the coordinate as a value from 0.0 through 1.0. Use this parameter only with the Insights API. Do not specify this parameter when calling the Images, Trending Images, or Web Search APIs.
         */
-        private double cropRight;
+        private Double cropRight;
 
         /**
         * The top coordinate of the region to crop. The coordinate is a fractional value of the original image's height and is measured from the top, left corner of the image. Specify the coordinate as a value from 0.0 through 1.0. Use this parameter only with the Insights API. Do not specify this parameter when calling the Images, Trending Images, or Web Search APIs.
         */
-        private double cropTop;
+        private Double cropTop;
 
         /**
         * The crop type to use when cropping the image based on the coordinates specified in the cal, cat, car, and cab parameters. The following are the possible values. 0: Rectangular (default). Use this parameter only with the Insights API. Do not specify this parameter when calling the Images, Trending Images, or Web Search APIs. Possible values include: 'Rectangular'.
@@ -168,7 +168,7 @@ public class DetailsOptionalParameter {
         *
         * @return the cropBottom value
         */
-        public double cropBottom() {
+        public Double cropBottom() {
             return this.cropBottom;
         }
 
@@ -177,7 +177,7 @@ public class DetailsOptionalParameter {
         *
         * @return the cropLeft value
         */
-        public double cropLeft() {
+        public Double cropLeft() {
             return this.cropLeft;
         }
 
@@ -186,7 +186,7 @@ public class DetailsOptionalParameter {
         *
         * @return the cropRight value
         */
-        public double cropRight() {
+        public Double cropRight() {
             return this.cropRight;
         }
 
@@ -195,7 +195,7 @@ public class DetailsOptionalParameter {
         *
         * @return the cropTop value
         */
-        public double cropTop() {
+        public Double cropTop() {
             return this.cropTop;
         }
 

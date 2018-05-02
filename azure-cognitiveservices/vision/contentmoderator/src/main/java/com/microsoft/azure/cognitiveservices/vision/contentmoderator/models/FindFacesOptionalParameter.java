@@ -16,14 +16,14 @@ public class FindFacesOptionalParameter {
         /**
         * Whether to retain the submitted image for future use; defaults to false if omitted.
         */
-        private boolean cacheImage;
+        private Boolean cacheImage;
 
         /**
         * Get the cacheImage value.
         *
         * @return the cacheImage value
         */
-        public boolean cacheImage() {
+        public Boolean cacheImage() {
             return this.cacheImage;
         }
 

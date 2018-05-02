@@ -56,7 +56,7 @@ public class SearchOptionalParameter {
         /**
         * The number of images to return in the response. The actual number delivered may be less than requested. The default is 35. The maximum value is 150. You use this parameter along with the offset parameter to page results.For example, if your user interface displays 20 images per page, set count to 20 and offset to 0 to get the first page of results.For each subsequent page, increment offset by 20 (for example, 0, 20, 40). Use this parameter only with the Image Search API.Do not specify this parameter when calling the Insights, Trending Images, or Web Search APIs.
         */
-        private int count;
+        private Integer count;
 
         /**
         * Filter images by the following discovery options. Day: Return images discovered by Bing within the last 24 hours. Week: Return images discovered by Bing within the last 7 days. Month: Return images discovered by Bing within the last 30 days. Possible values include: 'Day', 'Week', 'Month'.
@@ -66,7 +66,7 @@ public class SearchOptionalParameter {
         /**
         * Filter images that have the specified height, in pixels. You may use this filter with the size filter to return small images that have a height of 150 pixels.
         */
-        private int height;
+        private Integer height;
 
         /**
         * An ID that uniquely identifies an image. Use this parameter to ensure that the specified image is the first image in the list of images that Bing returns. The [Image](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#image) object's imageId field contains the ID that you set this parameter to.
@@ -96,37 +96,37 @@ public class SearchOptionalParameter {
         /**
         * Filter images that are less than or equal to the specified file size. The maximum file size that you may specify is 520,192 bytes. If you specify a larger value, the API uses 520,192. It is possible that the response may include images that are slightly larger than the specified maximum. You may specify this filter and minFileSize to filter images within a range of file sizes.
         */
-        private long maxFileSize;
+        private Long maxFileSize;
 
         /**
         * Filter images that have a height that is less than or equal to the specified height. Specify the height in pixels. You may specify this filter and minHeight to filter images within a range of heights. This filter and the height filter are mutually exclusive.
         */
-        private long maxHeight;
+        private Long maxHeight;
 
         /**
         * Filter images that have a width that is less than or equal to the specified width. Specify the width in pixels. You may specify this filter and maxWidth to filter images within a range of widths. This filter and the width filter are mutually exclusive.
         */
-        private long maxWidth;
+        private Long maxWidth;
 
         /**
         * Filter images that are greater than or equal to the specified file size. The maximum file size that you may specify is 520,192 bytes. If you specify a larger value, the API uses 520,192. It is possible that the response may include images that are slightly smaller than the specified minimum. You may specify this filter and maxFileSize to filter images within a range of file sizes.
         */
-        private long minFileSize;
+        private Long minFileSize;
 
         /**
         * Filter images that have a height that is greater than or equal to the specified height. Specify the height in pixels. You may specify this filter and maxHeight to filter images within a range of heights. This filter and the height filter are mutually exclusive.
         */
-        private long minHeight;
+        private Long minHeight;
 
         /**
         * Filter images that have a width that is greater than or equal to the specified width. Specify the width in pixels. You may specify this filter and maxWidth to filter images within a range of widths. This filter and the width filter are mutually exclusive.
         */
-        private long minWidth;
+        private Long minWidth;
 
         /**
         * The zero-based offset that indicates the number of images to skip before returning images. The default is 0. The offset should be less than ([totalEstimatedMatches](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#totalestimatedmatches) - count). Use this parameter along with the count parameter to page results. For example, if your user interface displays 20 images per page, set count to 20 and offset to 0 to get the first page of results. For each subsequent page, increment offset by 20 (for example, 0, 20, 40). It is possible for multiple pages to include some overlap in results. To prevent duplicates, see [nextOffset](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#nextoffset). Use this parameter only with the Image API. Do not specify this parameter when calling the Trending Images API or the Web Search API.
         */
-        private long offset;
+        private Long offset;
 
         /**
         * Filter images for adult content. The following are the possible filter values. Off: May return images with adult content. If the request is through the Image Search API, the response includes thumbnail images that are clear (non-fuzzy). However, if the request is through the Web Search API, the response includes thumbnail images that are pixelated (fuzzy). Moderate: If the request is through the Image Search API, the response doesn't include images with adult content. If the request is through the Web Search API, the response may include images with adult content (the thumbnail images are pixelated (fuzzy)). Strict: Do not return images with adult content. The default is Moderate. If the request comes from a market that Bing's adult policy requires that safeSearch is set to Strict, Bing ignores the safeSearch value and uses Strict. If you use the site: query operator, there is the chance that the response may contain adult content regardless of what the safeSearch query parameter is set to. Use site: only if you are aware of the content on the site and your scenario supports the possibility of adult content. Possible values include: 'Off', 'Moderate', 'Strict'.
@@ -146,7 +146,7 @@ public class SearchOptionalParameter {
         /**
         * Filter images that have the specified width, in pixels. You may use this filter with the size filter to return small images that have a width of 150 pixels.
         */
-        private int width;
+        private Integer width;
 
         /**
         * Get the acceptLanguage value.
@@ -225,7 +225,7 @@ public class SearchOptionalParameter {
         *
         * @return the count value
         */
-        public int count() {
+        public Integer count() {
             return this.count;
         }
 
@@ -243,7 +243,7 @@ public class SearchOptionalParameter {
         *
         * @return the height value
         */
-        public int height() {
+        public Integer height() {
             return this.height;
         }
 
@@ -297,7 +297,7 @@ public class SearchOptionalParameter {
         *
         * @return the maxFileSize value
         */
-        public long maxFileSize() {
+        public Long maxFileSize() {
             return this.maxFileSize;
         }
 
@@ -306,7 +306,7 @@ public class SearchOptionalParameter {
         *
         * @return the maxHeight value
         */
-        public long maxHeight() {
+        public Long maxHeight() {
             return this.maxHeight;
         }
 
@@ -315,7 +315,7 @@ public class SearchOptionalParameter {
         *
         * @return the maxWidth value
         */
-        public long maxWidth() {
+        public Long maxWidth() {
             return this.maxWidth;
         }
 
@@ -324,7 +324,7 @@ public class SearchOptionalParameter {
         *
         * @return the minFileSize value
         */
-        public long minFileSize() {
+        public Long minFileSize() {
             return this.minFileSize;
         }
 
@@ -333,7 +333,7 @@ public class SearchOptionalParameter {
         *
         * @return the minHeight value
         */
-        public long minHeight() {
+        public Long minHeight() {
             return this.minHeight;
         }
 
@@ -342,7 +342,7 @@ public class SearchOptionalParameter {
         *
         * @return the minWidth value
         */
-        public long minWidth() {
+        public Long minWidth() {
             return this.minWidth;
         }
 
@@ -351,7 +351,7 @@ public class SearchOptionalParameter {
         *
         * @return the offset value
         */
-        public long offset() {
+        public Long offset() {
             return this.offset;
         }
 
@@ -387,7 +387,7 @@ public class SearchOptionalParameter {
         *
         * @return the width value
         */
-        public int width() {
+        public Integer width() {
             return this.width;
         }
 

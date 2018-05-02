@@ -16,21 +16,21 @@ public class OCRMethodOptionalParameter {
         /**
         * Whether to retain the submitted image for future use; defaults to false if omitted.
         */
-        private boolean cacheImage;
+        private Boolean cacheImage;
 
         /**
         * When set to True, the image goes through additional processing to come with additional candidates.
         image/tiff is not supported when enhanced is set to true
         Note: This impacts the response time.
         */
-        private boolean enhanced;
+        private Boolean enhanced;
 
         /**
         * Get the cacheImage value.
         *
         * @return the cacheImage value
         */
-        public boolean cacheImage() {
+        public Boolean cacheImage() {
             return this.cacheImage;
         }
 
@@ -39,7 +39,7 @@ public class OCRMethodOptionalParameter {
         *
         * @return the enhanced value
         */
-        public boolean enhanced() {
+        public Boolean enhanced() {
             return this.enhanced;
         }
 

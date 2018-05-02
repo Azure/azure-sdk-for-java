@@ -46,7 +46,7 @@ public class SearchOptionalParameter {
         /**
         * The number of news articles to return in the response. The actual number delivered may be less than requested. The default is 10 and the maximum value is 100. The actual number delivered may be less than requested.You may use this parameter along with the offset parameter to page results. For example, if your user interface displays 20 articles per page, set count to 20 and offset to 0 to get the first page of results. For each subsequent page, increment offset by 20 (for example, 0, 20, 40). It is possible for multiple pages to include some overlap in results.
         */
-        private int count;
+        private Integer count;
 
         /**
         * Filter news by the date and time that Bing discovered the news. The following are the possible filter values. Day: Return news discovered within the last 24 hours. Week: Return news discovered within the last 7 days. Month: Return news discovered within the last 30 days. Use this parameter only with the News Search API. Do not specify this parameter when calling the News Category API or the Trending Topics API. Possible values include: 'Day', 'Week', 'Month'.
@@ -61,12 +61,12 @@ public class SearchOptionalParameter {
         /**
         * The zero-based offset that indicates the number of news to skip before returning news. The default is 0. The offset should be less than ([totalEstimatedMatches](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-news-api-v7-reference#news-totalmatches) - count). Use this parameter along with the count parameter to page results. For example, if your user interface displays 20 news per page, set count to 20 and offset to 0 to get the first page of results. For each subsequent page, increment offset by 20 (for example, 0, 20, 40). It is possible for multiple pages to include some overlap in results.
         */
-        private int offset;
+        private Integer offset;
 
         /**
         * A Boolean value that determines whether the image's contentUrl contains a URL that points to a thumbnail of the original article's image or the image itself. If the article includes an image, and this parameter is set to true, the image's contentUrl property contains a URL that you may use to download the original image from the publisher's website. Otherwise, if this parameter is false, the image's contentUrl and thumbnailUrl URLs both point to the same thumbnail image. Use this parameter only with the News Search API. Do not specify this parameter when calling the Trending Topics API or News Category API.
         */
-        private boolean originalImage;
+        private Boolean originalImage;
 
         /**
         * Filter news for adult content. The following are the possible filter values. Off: Return news articles with adult text, images, or videos. Moderate: Return news articles with adult text but not adult images or videos. Strict: Do not return news articles with adult text, images, or videos. If the request comes from a market that Bing's adult policy requires that safeSearch is set to Strict, Bing ignores the safeSearch value and uses Strict. If you use the site: query operator, there is the chance that the response may contain adult content regardless of what the safeSearch query parameter is set to. Use site: only if you are aware of the content on the site and your scenario supports the possibility of adult content. Possible values include: 'Off', 'Moderate', 'Strict'.
@@ -86,7 +86,7 @@ public class SearchOptionalParameter {
         /**
         * A Boolean value that determines whether display strings contain decoration markers such as hit highlighting characters. If true, the strings may include markers. The default is false. To specify whether to use Unicode characters or HTML tags as the markers, see the [textFormat](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-news-api-v7-reference#textformat) query parameter. For information about hit highlighting, see [Hit Highlighting](https://docs.microsoft.com/azure/cognitive-services/bing-news-search/hit-highlighting).
         */
-        private boolean textDecorations;
+        private Boolean textDecorations;
 
         /**
         * The type of markers to use for text decorations (see the textDecorations query parameter). Possible values are Raw—Use Unicode characters to mark content that needs special formatting. The Unicode characters are in the range E000 through E019. For example, Bing uses E000 and E001 to mark the beginning and end of query terms for hit highlighting. HTML—Use HTML tags to mark content that needs special formatting. For example, use &lt;b&gt; tags to highlight query terms in display strings. The default is Raw. For display strings that contain escapable HTML characters such as &lt;, &gt;, and &amp;, if textFormat is set to HTML, Bing escapes the characters as appropriate (for example, &lt; is escaped to &amp;lt;). Possible values include: 'Raw', 'Html'.
@@ -152,7 +152,7 @@ public class SearchOptionalParameter {
         *
         * @return the count value
         */
-        public int count() {
+        public Integer count() {
             return this.count;
         }
 
@@ -179,7 +179,7 @@ public class SearchOptionalParameter {
         *
         * @return the offset value
         */
-        public int offset() {
+        public Integer offset() {
             return this.offset;
         }
 
@@ -188,7 +188,7 @@ public class SearchOptionalParameter {
         *
         * @return the originalImage value
         */
-        public boolean originalImage() {
+        public Boolean originalImage() {
             return this.originalImage;
         }
 
@@ -224,7 +224,7 @@ public class SearchOptionalParameter {
         *
         * @return the textDecorations value
         */
-        public boolean textDecorations() {
+        public Boolean textDecorations() {
             return this.textDecorations;
         }
 

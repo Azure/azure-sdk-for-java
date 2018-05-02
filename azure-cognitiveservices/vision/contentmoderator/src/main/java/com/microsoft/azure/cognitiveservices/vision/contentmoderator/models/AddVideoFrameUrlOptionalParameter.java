@@ -17,14 +17,14 @@ public class AddVideoFrameUrlOptionalParameter {
         /**
         * Timescale of the video.
         */
-        private int timescale;
+        private Integer timescale;
 
         /**
         * Get the timescale value.
         *
         * @return the timescale value
         */
-        public int timescale() {
+        public Integer timescale() {
             return this.timescale;
         }
 

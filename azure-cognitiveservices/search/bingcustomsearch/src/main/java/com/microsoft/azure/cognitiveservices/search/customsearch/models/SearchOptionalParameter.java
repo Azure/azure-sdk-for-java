@@ -46,7 +46,7 @@ public class SearchOptionalParameter {
         /**
         * The number of search results to return in the response. The default is 10 and the maximum value is 50. The actual number delivered may be less than requested.Use this parameter along with the offset parameter to page results.For example, if your user interface displays 10 search results per page, set count to 10 and offset to 0 to get the first page of results. For each subsequent page, increment offset by 10 (for example, 0, 10, 20). It is possible for multiple pages to include some overlap in results.
         */
-        private int count;
+        private Integer count;
 
         /**
         * The market where the results come from. Typically, mkt is the country where the user is making the request from. However, it could be a different country if the user is not located in a country where Bing delivers results. The market must be in the form &lt;language code&gt;-&lt;country code&gt;. For example, en-US. The string is case insensitive. If known, you are encouraged to always specify the market. Specifying the market helps Bing route the request and return an appropriate and optimal response. If you specify a market that is not listed in Market Codes, Bing uses a best fit market code based on an internal mapping that is subject to change. This parameter and the cc query parameter are mutually exclusive—do not specify both.
@@ -56,7 +56,7 @@ public class SearchOptionalParameter {
         /**
         * The zero-based offset that indicates the number of search results to skip before returning results. The default is 0. The offset should be less than (totalEstimatedMatches - count). Use this parameter along with the count parameter to page results. For example, if your user interface displays 10 search results per page, set count to 10 and offset to 0 to get the first page of results. For each subsequent page, increment offset by 10 (for example, 0, 10, 20). it is possible for multiple pages to include some overlap in results.
         */
-        private int offset;
+        private Integer offset;
 
         /**
         * A filter used to filter adult content. Off: Return webpages with adult text, images, or videos. Moderate: Return webpages with adult text, but not adult images or videos. Strict: Do not return webpages with adult text, images, or videos. The default is Moderate. If the request comes from a market that Bing's adult policy requires that safeSearch is set to Strict, Bing ignores the safeSearch value and uses Strict. If you use the site: query operator, there is the chance that the response may contain adult content regardless of what the safeSearch query parameter is set to. Use site: only if you are aware of the content on the site and your scenario supports the possibility of adult content. Possible values include: 'Off', 'Moderate', 'Strict'.
@@ -71,7 +71,7 @@ public class SearchOptionalParameter {
         /**
         * A Boolean value that determines whether display strings should contain decoration markers such as hit highlighting characters. If true, the strings may include markers. The default is false. To specify whether to use Unicode characters or HTML tags as the markers, see the textFormat query parameter.
         */
-        private boolean textDecorations;
+        private Boolean textDecorations;
 
         /**
         * The type of markers to use for text decorations (see the textDecorations query parameter). Possible values are Raw—Use Unicode characters to mark content that needs special formatting. The Unicode characters are in the range E000 through E019. For example, Bing uses E000 and E001 to mark the beginning and end of query terms for hit highlighting. HTML—Use HTML tags to mark content that needs special formatting. For example, use &lt;b&gt; tags to highlight query terms in display strings. The default is Raw. For display strings that contain escapable HTML characters such as &lt;, &gt;, and &amp;, if textFormat is set to HTML, Bing escapes the characters as appropriate (for example, &lt; is escaped to &amp;lt;). Possible values include: 'Raw', 'Html'.
@@ -137,7 +137,7 @@ public class SearchOptionalParameter {
         *
         * @return the count value
         */
-        public int count() {
+        public Integer count() {
             return this.count;
         }
 
@@ -155,7 +155,7 @@ public class SearchOptionalParameter {
         *
         * @return the offset value
         */
-        public int offset() {
+        public Integer offset() {
             return this.offset;
         }
 
@@ -182,7 +182,7 @@ public class SearchOptionalParameter {
         *
         * @return the textDecorations value
         */
-        public boolean textDecorations() {
+        public Boolean textDecorations() {
             return this.textDecorations;
         }
 

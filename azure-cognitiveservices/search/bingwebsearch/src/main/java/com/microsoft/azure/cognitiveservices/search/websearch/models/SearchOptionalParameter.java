@@ -47,7 +47,7 @@ public class SearchOptionalParameter {
         /**
         * The number of answers that you want the response to include. The answers that Bing returns are based on ranking. For example, if Bing returns webpages, images, videos, and relatedSearches for a request and you set this parameter to two (2), the response includes webpages and images.If you included the responseFilter query parameter in the same request and set it to webpages and news, the response would include only webpages.
         */
-        private int answerCount;
+        private Integer answerCount;
 
         /**
         * A 2-character country code of the country where the results come from. This API supports only the United States market. If you specify this query parameter, it must be set to us. If you set this parameter, you must also specify the Accept-Language header. Bing uses the first supported language it finds from the languages list, and combine that language with the country code that you specify to determine the market to return results for. If the languages list does not include a supported language, Bing finds the closest language and market that supports the request, or it may use an aggregated or default market for the results instead of a specified one. You should use this query parameter and the Accept-Language query parameter only if you specify multiple languages; otherwise, you should use the mkt and setLang query parameters. This parameter and the mkt query parameter are mutually exclusive—do not specify both.
@@ -57,7 +57,7 @@ public class SearchOptionalParameter {
         /**
         * The number of search results to return in the response. The default is 10 and the maximum value is 50. The actual number delivered may be less than requested.Use this parameter along with the offset parameter to page results.For example, if your user interface displays 10 search results per page, set count to 10 and offset to 0 to get the first page of results. For each subsequent page, increment offset by 10 (for example, 0, 10, 20). It is possible for multiple pages to include some overlap in results.
         */
-        private int count;
+        private Integer count;
 
         /**
         * Filter search results by the following age values: Day—Return webpages that Bing discovered within the last 24 hours. Week—Return webpages that Bing discovered within the last 7 days. Month—Return webpages that discovered within the last 30 days. This filter applies only to webpage results and not to the other results such as news and images. Possible values include: 'Day', 'Week', 'Month'.
@@ -72,7 +72,7 @@ public class SearchOptionalParameter {
         /**
         * The zero-based offset that indicates the number of search results to skip before returning results. The default is 0. The offset should be less than (totalEstimatedMatches - count). Use this parameter along with the count parameter to page results. For example, if your user interface displays 10 search results per page, set count to 10 and offset to 0 to get the first page of results. For each subsequent page, increment offset by 10 (for example, 0, 10, 20). it is possible for multiple pages to include some overlap in results.
         */
-        private int offset;
+        private Integer offset;
 
         /**
         * A comma-delimited list of answers that you want the response to include regardless of their ranking. For example, if you set answerCount) to two (2) so Bing returns the top two ranked answers, but you also want the response to include news, you'd set promote to news. If the top ranked answers are webpages, images, videos, and relatedSearches, the response includes webpages and images because news is not a ranked answer. But if you set promote to video, Bing would promote the video answer into the response and return webpages, images, and videos. The answers that you want to promote do not count against the answerCount limit. For example, if the ranked answers are news, images, and videos, and you set answerCount to 1 and promote to news, the response contains news and images. Or, if the ranked answers are videos, images, and news, the response contains videos and news. Possible values are Computation, Images, News, RelatedSearches, SpellSuggestions, TimeZone, Videos, Webpages. Use only if you specify answerCount.
@@ -97,7 +97,7 @@ public class SearchOptionalParameter {
         /**
         * A Boolean value that determines whether display strings should contain decoration markers such as hit highlighting characters. If true, the strings may include markers. The default is false. To specify whether to use Unicode characters or HTML tags as the markers, see the textFormat query parameter.
         */
-        private boolean textDecorations;
+        private Boolean textDecorations;
 
         /**
         * The type of markers to use for text decorations (see the textDecorations query parameter). Possible values are Raw—Use Unicode characters to mark content that needs special formatting. The Unicode characters are in the range E000 through E019. For example, Bing uses E000 and E001 to mark the beginning and end of query terms for hit highlighting. HTML—Use HTML tags to mark content that needs special formatting. For example, use &lt;b&gt; tags to highlight query terms in display strings. The default is Raw. For display strings that contain escapable HTML characters such as &lt;, &gt;, and &amp;, if textFormat is set to HTML, Bing escapes the characters as appropriate (for example, &lt; is escaped to &amp;lt;). Possible values include: 'Raw', 'Html'.
@@ -163,7 +163,7 @@ public class SearchOptionalParameter {
         *
         * @return the answerCount value
         */
-        public int answerCount() {
+        public Integer answerCount() {
             return this.answerCount;
         }
 
@@ -181,7 +181,7 @@ public class SearchOptionalParameter {
         *
         * @return the count value
         */
-        public int count() {
+        public Integer count() {
             return this.count;
         }
 
@@ -208,7 +208,7 @@ public class SearchOptionalParameter {
         *
         * @return the offset value
         */
-        public int offset() {
+        public Integer offset() {
             return this.offset;
         }
 
@@ -253,7 +253,7 @@ public class SearchOptionalParameter {
         *
         * @return the textDecorations value
         */
-        public boolean textDecorations() {
+        public Boolean textDecorations() {
             return this.textDecorations;
         }
 

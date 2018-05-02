@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 
+
 /**
  * The "visualSearch operation optional parameters class.
  */

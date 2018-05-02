@@ -16,12 +16,12 @@ public class GetVideoFramesOptionalParameter {
         /**
         * Time stamp of the frame from where you want to start fetching the frames.
         */
-        private int startSeed;
+        private Integer startSeed;
 
         /**
         * Number of frames to fetch.
         */
-        private int noOfRecords;
+        private Integer noOfRecords;
 
         /**
         * Get frames filtered by tags.
@@ -33,7 +33,7 @@ public class GetVideoFramesOptionalParameter {
         *
         * @return the startSeed value
         */
-        public int startSeed() {
+        public Integer startSeed() {
             return this.startSeed;
         }
 
@@ -42,7 +42,7 @@ public class GetVideoFramesOptionalParameter {
         *
         * @return the noOfRecords value
         */
-        public int noOfRecords() {
+        public Integer noOfRecords() {
             return this.noOfRecords;
         }
 

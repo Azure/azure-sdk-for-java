@@ -16,19 +16,19 @@ public class GetAllTermsOptionalParameter {
         /**
         * The pagination start index.
         */
-        private int offset;
+        private Integer offset;
 
         /**
         * The max limit.
         */
-        private int limit;
+        private Integer limit;
 
         /**
         * Get the offset value.
         *
         * @return the offset value
         */
-        public int offset() {
+        public Integer offset() {
             return this.offset;
         }
 
@@ -37,7 +37,7 @@ public class GetAllTermsOptionalParameter {
         *
         * @return the limit value
         */
-        public int limit() {
+        public Integer limit() {
             return this.limit;
         }
 

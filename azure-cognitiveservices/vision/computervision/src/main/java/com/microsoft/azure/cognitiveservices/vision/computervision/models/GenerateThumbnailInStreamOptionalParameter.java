@@ -16,14 +16,14 @@ public class GenerateThumbnailInStreamOptionalParameter {
         /**
         * Boolean flag for enabling smart cropping.
         */
-        private boolean smartCropping;
+        private Boolean smartCropping;
 
         /**
         * Get the smartCropping value.
         *
         * @return the smartCropping value
         */
-        public boolean smartCropping() {
+        public Boolean smartCropping() {
             return this.smartCropping;
         }
 

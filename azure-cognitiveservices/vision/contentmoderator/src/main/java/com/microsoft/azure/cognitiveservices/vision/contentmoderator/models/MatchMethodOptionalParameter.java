@@ -21,7 +21,7 @@ public class MatchMethodOptionalParameter {
         /**
         * Whether to retain the submitted image for future use; defaults to false if omitted.
         */
-        private boolean cacheImage;
+        private Boolean cacheImage;
 
         /**
         * Get the listId value.
@@ -37,7 +37,7 @@ public class MatchMethodOptionalParameter {
         *
         * @return the cacheImage value
         */
-        public boolean cacheImage() {
+        public Boolean cacheImage() {
             return this.cacheImage;
         }
 

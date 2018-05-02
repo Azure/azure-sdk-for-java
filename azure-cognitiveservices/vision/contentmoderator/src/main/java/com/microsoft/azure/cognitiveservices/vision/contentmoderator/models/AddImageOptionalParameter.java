@@ -16,7 +16,7 @@ public class AddImageOptionalParameter {
         /**
         * Tag for the image.
         */
-        private int tag;
+        private Integer tag;
 
         /**
         * The image label.
@@ -28,7 +28,7 @@ public class AddImageOptionalParameter {
         *
         * @return the tag value
         */
-        public int tag() {
+        public Integer tag() {
             return this.tag;
         }
 
