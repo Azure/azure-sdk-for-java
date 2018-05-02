@@ -25,8 +25,8 @@ package com.microsoft.azure.cosmosdb;
 
 import java.util.ArrayList;
 
-import org.json.JSONArray;
-
+import com.fasterxml.jackson.databind.JsonNode;
+import com.microsoft.azure.cosmosdb.internal.Utils;
 import com.microsoft.azure.cosmosdb.internal.routing.PartitionKeyInternal;
 
 /**
@@ -47,8 +47,7 @@ public class PartitionKey {
     @SuppressWarnings("serial")
     public PartitionKey(final Object key) {
         this.key = new Object[] {key};
-        JSONArray array = new JSONArray(this.key);
-        this.keyString = array.toString();
+        this.keyString = Utils.toJson(Utils.getSimpleObjectMapper().valueToTree(this.key));
         this.internalPartitionKey = PartitionKeyInternal.fromObjectArray(new ArrayList<Object>() {{ add(key); }}, true);
     }
 
@@ -59,8 +58,8 @@ public class PartitionKey {
      * @return the PartitionKey instance.
      */
     public static PartitionKey FromJsonString(String jsonString) {
-        JSONArray array = new JSONArray(jsonString);
-        PartitionKey key = new PartitionKey(array.get(0));
+        JsonNode node = Utils.fromJson(jsonString);
+        PartitionKey key = new PartitionKey(node.get(0));
 
         return key;
     }
