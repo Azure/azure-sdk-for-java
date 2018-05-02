@@ -386,9 +386,9 @@ public final class Utils {
         }
     }
 
-    public static String toJson(JsonNode node){
+    public static String toJson(Object object){
         try {
-            return getSimpleObjectMapper().writeValueAsString(node);
+            return getSimpleObjectMapper().writeValueAsString(object);
         } catch (JsonProcessingException e) {
             //Should not happen while reading from String
             throw new RuntimeException(e);

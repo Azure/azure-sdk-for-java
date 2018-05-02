@@ -36,7 +36,6 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -268,7 +267,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
                 .build();
         validateQueryFailure(queryObservable, validator);
     }
-    
+
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryScopedToSinglePartition_StartWithContinuationToken() throws Exception {
         String query = "SELECT * FROM r ORDER BY r.propScopedPartitionInt ASC";
@@ -278,24 +277,24 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         Observable<FeedResponse<Document>> queryObservable = client
                 .queryDocuments(getCollectionLink(), query, options);
 
-        
+
         TestSubscriber<FeedResponse<Document>> subscriber = new TestSubscriber<>();
         queryObservable.first().subscribe(subscriber);
-        
+
         subscriber.awaitTerminalEvent();
         subscriber.assertCompleted();
         subscriber.assertNoErrors();
         assertThat(subscriber.getValueCount()).isEqualTo(1);
         FeedResponse<Document> page = subscriber.getOnNextEvents().get(0);
         assertThat(page.getResults()).hasSize(3);
-        
+
         assertThat(page.getResponseContinuation()).isNotEmpty();
-        
-        
+
+
         options.setRequestContinuation(page.getResponseContinuation());
         queryObservable = client
                 .queryDocuments(getCollectionLink(), query, options);
-        
+
 
         List<Document> expectedDocs = createdDocuments.stream()
                 .filter(d -> (StringUtils.equals("duplicateParitionKeyValue", d.getString("mypk"))))
@@ -303,7 +302,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
 
         assertThat(expectedDocs).hasSize(10 - 3);
-        
+
         FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
                 .containsExactly(expectedDocs.stream()
                         .sorted((e1, e2) -> Integer.compare(e1.getInt("propScopedPartitionInt"), e2.getInt("propScopedPartitionInt")))
@@ -371,15 +370,15 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         createdDocuments = bulkInsert(client, keyValuePropsList);
 
-        
+
         for(int i = 0; i < 10; i++) {
             Map<String, Object> p = new HashMap<>();
             p.put("propScopedPartitionInt", i);
             Document doc = getDocumentDefinition("duplicateParitionKeyValue", UUID.randomUUID().toString(), p);
             createdDocuments.add(client.createDocument(getCollectionLink(), doc, options, false).toBlocking().single().getResource());
-            
+
         }
-        
+
         numberOfPartitions = client
                 .readPartitionKeyRanges(getCollectionLink(), null)
                 .flatMap(p -> Observable.from(p.getResults())).toList().toBlocking().single().size();
@@ -403,7 +402,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             if (val == null) {
                 sb.append("null");
             } else {
-                sb.append(JSONObject.valueToString(val));
+                sb.append(com.microsoft.azure.cosmosdb.internal.Utils.toJson(val));
             }
             sb.append(",\n");
         }
@@ -414,8 +413,8 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
 
         return new Document(sb.toString());
     }
-    
-    
+
+
     private static Document getDocumentDefinition(Map<String, Object> keyValuePair) {
         String uuid = UUID.randomUUID().toString();
         return getDocumentDefinition(uuid, uuid, keyValuePair);
