@@ -196,7 +196,7 @@ public class JsonSerializable implements Serializable {
      */
     public Object get(String propertyName) {
         if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            return this.propertyBag.get(propertyName);
+            return getValue(this.propertyBag.get(propertyName));
         } else {
             return null;
         }
@@ -284,7 +284,7 @@ public class JsonSerializable implements Serializable {
     public <T> T getObject(String propertyName, Class<T> c) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             try {
-                Utils.getSimpleObjectMapper().treeToValue(propertyBag.get(propertyName), c);
+                return Utils.getSimpleObjectMapper().treeToValue(propertyBag.get(propertyName), c);
             } catch (JsonProcessingException e) {
                 throw new IllegalStateException("Failed to get POJO.", e);
             }
@@ -359,7 +359,7 @@ public class JsonSerializable implements Serializable {
      */
     public Object getObjectByPath(Collection<String> propertyNames) {
         ObjectNode propBag = this.propertyBag;
-        Object value = null;
+        JsonNode value = null;
         String propertyName = null;
         Integer matchedProperties = 0;
         Iterator<String> iterator = propertyNames.iterator();
@@ -369,7 +369,7 @@ public class JsonSerializable implements Serializable {
                 if (propBag.has(propertyName)) {
                     matchedProperties++;
                     value = propBag.get(propertyName);
-                    if (!((JsonNode) value).isObject()) {
+                    if (!value.isObject()) {
                         break;
                     }
                     propBag = (ObjectNode) value;
@@ -379,13 +379,33 @@ public class JsonSerializable implements Serializable {
             } while (iterator.hasNext());
             
             if (value != null && matchedProperties == propertyNames.size()) {
-                return value;
+                return getValue(value);
             }
         }
         
         return null;
     }
-    
+
+    private Object getValue(JsonNode value) {
+        if (value.isValueNode()) {
+            switch (value.getNodeType()) {
+                case BOOLEAN:
+                    return value.asBoolean();
+                case NUMBER:
+                    if (value.isInt()) {
+                        return value.asInt();
+                    } else if (value.isLong()) {
+                        return value.asLong();
+                    } else if (value.isDouble()) {
+                        return value.asDouble();
+                    }
+                case STRING :
+                    return value.asText();
+            }
+        }
+        return value;
+    }
+
     /**
      * Converts to an Object (only POJOs and JSONObject are supported).
      * 
