@@ -17,7 +17,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * Defines a region of the image where an entity was found and a list of
  * entities that might match it.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = RecognizedEntityRegion.class)
 @JsonTypeName("RecognizedEntityRegion")
 public class RecognizedEntityRegion extends Response {
     /**

@@ -16,7 +16,7 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 /**
  * The ImageAction model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageAction.class)
 @JsonTypeName("ImageAction")
 @JsonSubTypes({
     @JsonSubTypes.Type(name = "ImageEntityAction", value = ImageEntityAction.class),

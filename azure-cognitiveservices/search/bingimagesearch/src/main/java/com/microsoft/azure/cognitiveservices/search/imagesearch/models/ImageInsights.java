@@ -21,7 +21,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
  * [modules](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#modulesrequested)
  * to only Caption, then this object includes only the imageCaption field.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageInsights.class)
 @JsonTypeName("ImageInsights")
 public class ImageInsights extends Response {
     /**

@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonTypeName;
 /**
  * The ImageRelatedSearchesAction model.
  */
-@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type")
+@JsonTypeInfo(use = JsonTypeInfo.Id.NAME, include = JsonTypeInfo.As.PROPERTY, property = "_type", defaultImpl = ImageRelatedSearchesAction.class)
 @JsonTypeName("ImageRelatedSearchesAction")
 public class ImageRelatedSearchesAction extends ImageAction {
     /**

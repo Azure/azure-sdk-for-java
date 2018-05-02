@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.cognitiveservices.search.newssearch.models;
 
+
 /**
  * The "category operation optional parameters class.
  */
