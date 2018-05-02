@@ -36,6 +36,7 @@ import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
 import com.fasterxml.jackson.databind.DeserializationFeature;
@@ -370,6 +371,10 @@ public final class Utils {
 
     public static ObjectMapper getSimpleObjectMapper() {
         return Utils.simpleObjectMapper;
+    }
+
+    public static ObjectNode newObjectNode() {
+        return Utils.simpleObjectMapper.createObjectNode();
     }
 
     public static JsonNode fromJson(String json){
