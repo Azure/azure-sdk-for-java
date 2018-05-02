@@ -29,7 +29,7 @@ This library is build using:
 The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav%7C1%7Cg%3A%22com.microsoft.azure%22%20AND%20a%3A%22azure-servicebus%22)
 
 ```
-<dependency>
+<dependency> 
   <groupId>com.microsoft.azure</groupId> 
   <artifactId>azure-servicebus-parent</artifactId> 
   <version>1.2.5</version>
