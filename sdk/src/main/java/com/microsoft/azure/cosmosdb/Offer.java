@@ -24,7 +24,7 @@
 package com.microsoft.azure.cosmosdb;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -66,7 +66,7 @@ public class Offer extends Resource {
      *
      * @param jsonObject the json object that represents the offer.
      */
-    public Offer(JSONObject jsonObject) {
+    public Offer(ObjectNode jsonObject) {
         super(jsonObject);
     }
 
@@ -151,7 +151,7 @@ public class Offer extends Resource {
      *
      * @return the offer content.
      */
-    public JSONObject getContent() {
+    public ObjectNode getContent() {
         return super.getObject(Constants.Properties.OFFER_CONTENT);
     }
 
@@ -160,7 +160,7 @@ public class Offer extends Resource {
      *
      * @param offerContent the content object.
      */
-    public void setContent(JSONObject offerContent) {
+    public void setContent(ObjectNode offerContent) {
         super.set(Constants.Properties.OFFER_CONTENT, offerContent);
     }
 }
