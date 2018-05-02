@@ -23,7 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -54,7 +54,7 @@ public class ExcludedPath extends JsonSerializable {
      *
      * @param jsonObject the json object that represents the excluded path.
      */
-    public ExcludedPath(JSONObject jsonObject) {
+    public ExcludedPath(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

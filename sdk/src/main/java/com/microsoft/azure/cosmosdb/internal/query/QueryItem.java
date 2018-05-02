@@ -24,7 +24,7 @@
 
 package com.microsoft.azure.cosmosdb.internal.query;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.JsonSerializable;
 import com.microsoft.azure.cosmosdb.Undefined;
@@ -40,7 +40,7 @@ public final class QueryItem extends JsonSerializable {
         super(jsonString);
     }
 
-    public QueryItem(JSONObject jsonObject) {
+    public QueryItem(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

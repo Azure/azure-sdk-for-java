@@ -25,7 +25,7 @@ package com.microsoft.azure.cosmosdb.internal.query;
 
 import java.util.List;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.microsoft.azure.cosmosdb.JsonSerializable;
@@ -55,7 +55,7 @@ public final class PartitionedQueryExecutionInfoInternal extends JsonSerializabl
         super(jsonString);
     }
 
-    public PartitionedQueryExecutionInfoInternal(JSONObject jsonObject) {
+    public PartitionedQueryExecutionInfoInternal(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

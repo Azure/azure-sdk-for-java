@@ -23,7 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -52,7 +52,7 @@ public class ReplicationPolicy extends JsonSerializable {
      *
      * @param jsonObject the json object that represents the replication policy.
      */
-    public ReplicationPolicy(JSONObject jsonObject) {
+    public ReplicationPolicy(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

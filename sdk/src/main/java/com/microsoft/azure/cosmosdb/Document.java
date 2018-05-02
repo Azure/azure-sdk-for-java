@@ -25,9 +25,8 @@ package com.microsoft.azure.cosmosdb;
 
 import java.io.IOException;
 
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -71,7 +70,7 @@ public class Document extends Resource {
      *
      * @param jsonObject the json object that represents the document object.
      */
-    public Document(JSONObject jsonObject) {
+    public Document(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

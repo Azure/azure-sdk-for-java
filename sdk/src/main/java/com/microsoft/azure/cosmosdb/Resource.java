@@ -26,9 +26,8 @@ package com.microsoft.azure.cosmosdb;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -68,7 +67,7 @@ public class Resource extends JsonSerializable {
      *
      * @param jsonObject the json object that represents the resource.
      */
-    protected Resource(JSONObject jsonObject) {
+    protected Resource(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

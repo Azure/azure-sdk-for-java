@@ -23,8 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
-
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -58,7 +57,7 @@ public class StoredProcedure extends Resource {
      *
      * @param jsonObject the json object that represents the stored procedure.
      */
-    public StoredProcedure(JSONObject jsonObject) {
+    public StoredProcedure(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

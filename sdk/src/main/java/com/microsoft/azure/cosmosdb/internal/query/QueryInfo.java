@@ -26,7 +26,7 @@ package com.microsoft.azure.cosmosdb.internal.query;
 import java.util.Collection;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.JsonSerializable;
 import com.microsoft.azure.cosmosdb.internal.query.aggregation.AggregateOperator;
@@ -48,7 +48,7 @@ public final class QueryInfo extends JsonSerializable {
         super(jsonString);
     }
 
-    public QueryInfo(JSONObject jsonObject) {
+    public QueryInfo(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

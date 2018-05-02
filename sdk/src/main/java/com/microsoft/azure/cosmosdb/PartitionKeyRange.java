@@ -25,7 +25,7 @@ package com.microsoft.azure.cosmosdb;
 
 import java.util.Collection;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
@@ -64,7 +64,7 @@ public class PartitionKeyRange extends Resource {
      *            the json object that represents the partition key range
      *            object.
      */
-    public PartitionKeyRange(JSONObject jsonObject) {
+    public PartitionKeyRange(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

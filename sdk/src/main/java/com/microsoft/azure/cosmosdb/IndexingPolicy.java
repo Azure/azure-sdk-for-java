@@ -28,7 +28,7 @@ import java.util.Arrays;
 import java.util.Collection;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -104,7 +104,7 @@ public final class IndexingPolicy extends JsonSerializable {
      *
      * @param jsonObject the json object that represents the indexing policy.
      */
-    public IndexingPolicy(JSONObject jsonObject) {
+    public IndexingPolicy(ObjectNode jsonObject) {
         super(jsonObject);
     }
 
