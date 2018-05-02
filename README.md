@@ -31,7 +31,7 @@ The package can be downloaded from [Maven](http://search.maven.org/#search%7Cgav
 ```
 <dependency> 
   <groupId>com.microsoft.azure</groupId> 
-  <artifactId>azure-servicebus-parent</artifactId> 
+  <artifactId>azure-servicebus</artifactId> 
   <version>1.2.5</version>
 </dependency>
 ```
