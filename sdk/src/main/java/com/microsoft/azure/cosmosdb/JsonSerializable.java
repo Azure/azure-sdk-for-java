@@ -27,15 +27,13 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.reflect.Array;
+import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -51,7 +49,6 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @SuppressWarnings("serial")
 public class JsonSerializable implements Serializable {
-    private final static int INDENT_FACTOR = 4;
     private final static Logger logger = LoggerFactory.getLogger(JsonSerializable.class);
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     static {
@@ -100,21 +97,6 @@ public class JsonSerializable implements Serializable {
         
     private static HashMap<String, Object> toMap(ObjectNode object) {
        return OBJECT_MAPPER.convertValue(object, HashMap.class);
-    }
-
-
-    private static Object[] convertToObjectArray(Object array) {
-        Class<?> ofArray = array.getClass().getComponentType();
-        if (ofArray.isPrimitive()) {
-            List<Object> ar = new ArrayList<Object>();
-            int length = Array.getLength(array);
-            for (int i = 0; i < length; i++) {
-                ar.add(Array.get(array, i));
-            }
-            return ar.toArray();
-        } else {
-            return (Object[]) array;
-        }
     }
 
     private static void checkForValidPOJO(Class<?> c) {
@@ -283,10 +265,33 @@ public class JsonSerializable implements Serializable {
      */
     public <T> T getObject(String propertyName, Class<T> c) {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
-            try {
-                return Utils.getSimpleObjectMapper().treeToValue(propertyBag.get(propertyName), c);
-            } catch (JsonProcessingException e) {
-                throw new IllegalStateException("Failed to get POJO.", e);
+            JsonNode jsonObj = propertyBag.get(propertyName);
+            if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
+                    || Boolean.class.isAssignableFrom(c) || Object.class == c) {
+                // Number, String, Boolean
+                return c.cast(getValue(jsonObj));
+            } else if (Enum.class.isAssignableFrom(c)) {
+                try {
+                    c.cast(c.getMethod("valueOf", String.class).invoke(null, String.class.cast(getValue(jsonObj))));
+                } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                        | NoSuchMethodException | SecurityException e) {
+                    throw new IllegalStateException("Failed to create enum.", e);
+                }
+            } else if (JsonSerializable.class.isAssignableFrom(c)) {
+                try {
+                    return c.getConstructor(String.class).newInstance(Utils.toJson(jsonObj));
+                } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                        | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                    throw new IllegalStateException("Failed to instantiate class object.", e);
+                }
+            } else {
+                // POJO
+                JsonSerializable.checkForValidPOJO(c);
+                try {
+                    return this.getMapper().treeToValue(jsonObj, c);
+                } catch (IOException e) {
+                    throw new IllegalStateException("Failed to get POJO.", e);
+                }
             }
         }
 
@@ -306,11 +311,50 @@ public class JsonSerializable implements Serializable {
         if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
             ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
             ArrayList<T> result = new ArrayList<T>();
+
+            boolean isBaseClass = false;
+            boolean isEnumClass = false;
+            boolean isJsonSerializable = false;
+
+            // Check once.
+            if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
+                    || Boolean.class.isAssignableFrom(c) || Object.class == c) {
+                isBaseClass = true;
+            } else if (Enum.class.isAssignableFrom(c)) {
+                isEnumClass = true;
+            } else if (JsonSerializable.class.isAssignableFrom(c)) {
+                isJsonSerializable = true;
+            } else {
+                JsonSerializable.checkForValidPOJO(c);
+            }
+
             for (JsonNode n : jsonArray) {
-                try {
-                    result.add( Utils.getSimpleObjectMapper().treeToValue(n, c));
-                } catch (JsonProcessingException e) {
-                    throw new IllegalStateException("Failed to get POJO.", e);
+                if (isBaseClass) {
+                    // Number, String, Boolean
+                    result.add(c.cast(getValue(n)));
+                } else if (isEnumClass) {
+                    try {
+                        result.add(c.cast(c.getMethod("valueOf", String.class).invoke(null,
+                                String.class.cast(getValue(n)))));
+                    } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
+                            | NoSuchMethodException | SecurityException e) {
+                        throw new IllegalStateException("Failed to create enum.", e);
+                    }
+                } else if (isJsonSerializable) {
+                    // JsonSerializable
+                    try {
+                        result.add(c.getConstructor(String.class).newInstance(Utils.toJson(n)));
+                    } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
+                            | InvocationTargetException | NoSuchMethodException | SecurityException e) {
+                        throw new IllegalStateException("Failed to instantiate class object.", e);
+                    }
+                } else {
+                    // POJO
+                    try {
+                        result.add(this.getMapper().treeToValue(n, c));
+                    } catch (IOException e) {
+                        throw new IllegalStateException("Failed to get POJO.", e);
+                    }
                 }
             }
             return result;
