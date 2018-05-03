@@ -34,7 +34,7 @@
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
     <azure.core.version>0.9.8</azure.core.version>
-    <azure.runtime.version>1.2.0</azure.runtime.version>
+    <azure.runtime.version>1.4.0</azure.runtime.version>
     <azure.annotations.version>1.4.0</azure.annotations.version>
     <commons.io.version>2.4</commons.io.version>
     <commons.codec.version>1.10</commons.codec.version>
@@ -51,32 +51,6 @@
       <name>Microsoft</name>
     </developer>
   </developers>
-
-  <repositories>
-    <repository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </repository>
-  </repositories>
-
-  <pluginRepositories>
-    <pluginRepository>
-      <id>ossrh</id>
-      <name>Sonatype Snapshots</name>
-      <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-      <layout>default</layout>
-      <snapshots>
-        <enabled>true</enabled>
-        <updatePolicy>always</updatePolicy>
-      </snapshots>
-    </pluginRepository>
-  </pluginRepositories>
 
   <distributionManagement>
     <snapshotRepository>
