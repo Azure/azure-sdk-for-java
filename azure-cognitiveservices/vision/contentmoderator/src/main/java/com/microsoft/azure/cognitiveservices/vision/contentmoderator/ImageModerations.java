@@ -26,9 +26,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Eval
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.FoundFaces;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchResponse;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.OCR;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 
 /**
@@ -51,32 +48,14 @@ public interface ImageModerations {
      * Returns the list of faces found.
      *
      * @param findFacesOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<FoundFaces> findFacesAsync(FindFacesOptionalParameter findFacesOptionalParameter, final ServiceCallback<FoundFaces> serviceCallback);
-
-    /**
-     * Returns the list of faces found.
-     *
-     * @param findFacesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FoundFaces object
      */
     Observable<FoundFaces> findFacesAsync(FindFacesOptionalParameter findFacesOptionalParameter);
 
     /**
-     * Returns the list of faces found.
-     *
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FoundFaces object
-     */
-    Observable<ServiceResponse<FoundFaces>> findFacesWithServiceResponseAsync(Boolean cacheImage);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     * Returns any text found in the image for the language specified. If no language is specified in input then
+     *  the detection defaults to English.
      *
      * @param language Language of the terms.
      * @param oCRMethodOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -88,18 +67,8 @@ public interface ImageModerations {
     OCR oCRMethod(String language, OCRMethodOptionalParameter oCRMethodOptionalParameter);
 
     /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
-     *
-     * @param language Language of the terms.
-     * @param oCRMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<OCR> oCRMethodAsync(String language, OCRMethodOptionalParameter oCRMethodOptionalParameter, final ServiceCallback<OCR> serviceCallback);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     * Returns any text found in the image for the language specified. If no language is specified in input then
+     *  the detection defaults to English.
      *
      * @param language Language of the terms.
      * @param oCRMethodOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -107,19 +76,6 @@ public interface ImageModerations {
      * @return the observable to the OCR object
      */
     Observable<OCR> oCRMethodAsync(String language, OCRMethodOptionalParameter oCRMethodOptionalParameter);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
-     *
-     * @param language Language of the terms.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
-     image/tiff is not supported when enhanced is set to true
-     Note: This impacts the response time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OCR object
-     */
-    Observable<ServiceResponse<OCR>> oCRMethodWithServiceResponseAsync(String language, Boolean cacheImage, Boolean enhanced);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -136,35 +92,19 @@ public interface ImageModerations {
      * Returns probabilities of the image containing racy or adult content.
      *
      * @param evaluateMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Evaluate> evaluateMethodAsync(EvaluateMethodOptionalParameter evaluateMethodOptionalParameter, final ServiceCallback<Evaluate> serviceCallback);
-
-    /**
-     * Returns probabilities of the image containing racy or adult content.
-     *
-     * @param evaluateMethodOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Evaluate object
      */
     Observable<Evaluate> evaluateMethodAsync(EvaluateMethodOptionalParameter evaluateMethodOptionalParameter);
 
     /**
-     * Returns probabilities of the image containing racy or adult content.
-     *
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Evaluate object
-     */
-    Observable<ServiceResponse<Evaluate>> evaluateMethodWithServiceResponseAsync(Boolean cacheImage);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
+     *  lists using &lt;a
+     *  href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *  Returns ID and tags of matching image.&lt;br/&gt;
+     *  &lt;br/&gt;
+     *  Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
+     *  in the response.
      *
      * @param matchMethodOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -175,42 +115,19 @@ public interface ImageModerations {
     MatchResponse matchMethod(MatchMethodOptionalParameter matchMethodOptionalParameter);
 
     /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
-     *
-     * @param matchMethodOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<MatchResponse> matchMethodAsync(MatchMethodOptionalParameter matchMethodOptionalParameter, final ServiceCallback<MatchResponse> serviceCallback);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
+     *  lists using &lt;a
+     *  href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *  Returns ID and tags of matching image.&lt;br/&gt;
+     *  &lt;br/&gt;
+     *  Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
+     *  in the response.
      *
      * @param matchMethodOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the MatchResponse object
      */
     Observable<MatchResponse> matchMethodAsync(MatchMethodOptionalParameter matchMethodOptionalParameter);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
-     *
-     * @param listId The list Id.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MatchResponse object
-     */
-    Observable<ServiceResponse<MatchResponse>> matchMethodWithServiceResponseAsync(String listId, Boolean cacheImage);
 
     /**
      * Returns the list of faces found.
@@ -229,31 +146,10 @@ public interface ImageModerations {
      *
      * @param imageStream The image file.
      * @param findFacesFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<FoundFaces> findFacesFileInputAsync(byte[] imageStream, FindFacesFileInputOptionalParameter findFacesFileInputOptionalParameter, final ServiceCallback<FoundFaces> serviceCallback);
-
-    /**
-     * Returns the list of faces found.
-     *
-     * @param imageStream The image file.
-     * @param findFacesFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FoundFaces object
      */
     Observable<FoundFaces> findFacesFileInputAsync(byte[] imageStream, FindFacesFileInputOptionalParameter findFacesFileInputOptionalParameter);
-
-    /**
-     * Returns the list of faces found.
-     *
-     * @param imageStream The image file.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FoundFaces object
-     */
-    Observable<ServiceResponse<FoundFaces>> findFacesFileInputWithServiceResponseAsync(byte[] imageStream, Boolean cacheImage);
 
     /**
      * Returns the list of faces found.
@@ -274,36 +170,14 @@ public interface ImageModerations {
      * @param contentType The content type.
      * @param imageUrl The image url.
      * @param findFacesUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<FoundFaces> findFacesUrlInputAsync(String contentType, BodyModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter, final ServiceCallback<FoundFaces> serviceCallback);
-
-    /**
-     * Returns the list of faces found.
-     *
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param findFacesUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the FoundFaces object
      */
     Observable<FoundFaces> findFacesUrlInputAsync(String contentType, BodyModel imageUrl, FindFacesUrlInputOptionalParameter findFacesUrlInputOptionalParameter);
 
     /**
-     * Returns the list of faces found.
-     *
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the FoundFaces object
-     */
-    Observable<ServiceResponse<FoundFaces>> findFacesUrlInputWithServiceResponseAsync(String contentType, BodyModel imageUrl, Boolean cacheImage);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     * Returns any text found in the image for the language specified. If no language is specified in input then
+     *  the detection defaults to English.
      *
      * @param language Language of the terms.
      * @param contentType The content type.
@@ -317,20 +191,8 @@ public interface ImageModerations {
     OCR oCRUrlInput(String language, String contentType, BodyModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter);
 
     /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
-     *
-     * @param language Language of the terms.
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param oCRUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<OCR> oCRUrlInputAsync(String language, String contentType, BodyModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter, final ServiceCallback<OCR> serviceCallback);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     * Returns any text found in the image for the language specified. If no language is specified in input then
+     *  the detection defaults to English.
      *
      * @param language Language of the terms.
      * @param contentType The content type.
@@ -342,22 +204,8 @@ public interface ImageModerations {
     Observable<OCR> oCRUrlInputAsync(String language, String contentType, BodyModel imageUrl, OCRUrlInputOptionalParameter oCRUrlInputOptionalParameter);
 
     /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
-     *
-     * @param language Language of the terms.
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
-     image/tiff is not supported when enhanced is set to true
-     Note: This impacts the response time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OCR object
-     */
-    Observable<ServiceResponse<OCR>> oCRUrlInputWithServiceResponseAsync(String language, String contentType, BodyModel imageUrl, Boolean cacheImage, Boolean enhanced);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     * Returns any text found in the image for the language specified. If no language is specified in input then
+     *  the detection defaults to English.
      *
      * @param language Language of the terms.
      * @param imageStream The image file.
@@ -370,19 +218,8 @@ public interface ImageModerations {
     OCR oCRFileInput(String language, byte[] imageStream, OCRFileInputOptionalParameter oCRFileInputOptionalParameter);
 
     /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
-     *
-     * @param language Language of the terms.
-     * @param imageStream The image file.
-     * @param oCRFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<OCR> oCRFileInputAsync(String language, byte[] imageStream, OCRFileInputOptionalParameter oCRFileInputOptionalParameter, final ServiceCallback<OCR> serviceCallback);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
+     * Returns any text found in the image for the language specified. If no language is specified in input then
+     *  the detection defaults to English.
      *
      * @param language Language of the terms.
      * @param imageStream The image file.
@@ -391,20 +228,6 @@ public interface ImageModerations {
      * @return the observable to the OCR object
      */
     Observable<OCR> oCRFileInputAsync(String language, byte[] imageStream, OCRFileInputOptionalParameter oCRFileInputOptionalParameter);
-
-    /**
-     * Returns any text found in the image for the language specified. If no language is specified in input then the detection defaults to English.
-     *
-     * @param language Language of the terms.
-     * @param imageStream The image file.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @param enhanced When set to True, the image goes through additional processing to come with additional candidates.
-     image/tiff is not supported when enhanced is set to true
-     Note: This impacts the response time.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the OCR object
-     */
-    Observable<ServiceResponse<OCR>> oCRFileInputWithServiceResponseAsync(String language, byte[] imageStream, Boolean cacheImage, Boolean enhanced);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -423,31 +246,10 @@ public interface ImageModerations {
      *
      * @param imageStream The image file.
      * @param evaluateFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Evaluate> evaluateFileInputAsync(byte[] imageStream, EvaluateFileInputOptionalParameter evaluateFileInputOptionalParameter, final ServiceCallback<Evaluate> serviceCallback);
-
-    /**
-     * Returns probabilities of the image containing racy or adult content.
-     *
-     * @param imageStream The image file.
-     * @param evaluateFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Evaluate object
      */
     Observable<Evaluate> evaluateFileInputAsync(byte[] imageStream, EvaluateFileInputOptionalParameter evaluateFileInputOptionalParameter);
-
-    /**
-     * Returns probabilities of the image containing racy or adult content.
-     *
-     * @param imageStream The image file.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Evaluate object
-     */
-    Observable<ServiceResponse<Evaluate>> evaluateFileInputWithServiceResponseAsync(byte[] imageStream, Boolean cacheImage);
 
     /**
      * Returns probabilities of the image containing racy or adult content.
@@ -468,39 +270,19 @@ public interface ImageModerations {
      * @param contentType The content type.
      * @param imageUrl The image url.
      * @param evaluateUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Evaluate> evaluateUrlInputAsync(String contentType, BodyModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter, final ServiceCallback<Evaluate> serviceCallback);
-
-    /**
-     * Returns probabilities of the image containing racy or adult content.
-     *
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param evaluateUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Evaluate object
      */
     Observable<Evaluate> evaluateUrlInputAsync(String contentType, BodyModel imageUrl, EvaluateUrlInputOptionalParameter evaluateUrlInputOptionalParameter);
 
     /**
-     * Returns probabilities of the image containing racy or adult content.
-     *
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Evaluate object
-     */
-    Observable<ServiceResponse<Evaluate>> evaluateUrlInputWithServiceResponseAsync(String contentType, BodyModel imageUrl, Boolean cacheImage);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
+     *  lists using &lt;a
+     *  href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *  Returns ID and tags of matching image.&lt;br/&gt;
+     *  &lt;br/&gt;
+     *  Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
+     *  in the response.
      *
      * @param contentType The content type.
      * @param imageUrl The image url.
@@ -513,25 +295,13 @@ public interface ImageModerations {
     MatchResponse matchUrlInput(String contentType, BodyModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter);
 
     /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
-     *
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param matchUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<MatchResponse> matchUrlInputAsync(String contentType, BodyModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter, final ServiceCallback<MatchResponse> serviceCallback);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
+     *  lists using &lt;a
+     *  href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *  Returns ID and tags of matching image.&lt;br/&gt;
+     *  &lt;br/&gt;
+     *  Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
+     *  in the response.
      *
      * @param contentType The content type.
      * @param imageUrl The image url.
@@ -542,25 +312,13 @@ public interface ImageModerations {
     Observable<MatchResponse> matchUrlInputAsync(String contentType, BodyModel imageUrl, MatchUrlInputOptionalParameter matchUrlInputOptionalParameter);
 
     /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
-     *
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param listId The list Id.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MatchResponse object
-     */
-    Observable<ServiceResponse<MatchResponse>> matchUrlInputWithServiceResponseAsync(String contentType, BodyModel imageUrl, String listId, Boolean cacheImage);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
+     *  lists using &lt;a
+     *  href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *  Returns ID and tags of matching image.&lt;br/&gt;
+     *  &lt;br/&gt;
+     *  Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
+     *  in the response.
      *
      * @param imageStream The image file.
      * @param matchFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -572,24 +330,13 @@ public interface ImageModerations {
     MatchResponse matchFileInput(byte[] imageStream, MatchFileInputOptionalParameter matchFileInputOptionalParameter);
 
     /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
-     *
-     * @param imageStream The image file.
-     * @param matchFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<MatchResponse> matchFileInputAsync(byte[] imageStream, MatchFileInputOptionalParameter matchFileInputOptionalParameter, final ServiceCallback<MatchResponse> serviceCallback);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
+     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image
+     *  lists using &lt;a
+     *  href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
+     *  Returns ID and tags of matching image.&lt;br/&gt;
+     *  &lt;br/&gt;
+     *  Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected
+     *  in the response.
      *
      * @param imageStream The image file.
      * @param matchFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -597,19 +344,5 @@ public interface ImageModerations {
      * @return the observable to the MatchResponse object
      */
     Observable<MatchResponse> matchFileInputAsync(byte[] imageStream, MatchFileInputOptionalParameter matchFileInputOptionalParameter);
-
-    /**
-     * Fuzzily match an image against one of your custom Image Lists. You can create and manage your custom image lists using &lt;a href="/docs/services/578ff44d2703741568569ab9/operations/578ff7b12703741568569abe"&gt;this&lt;/a&gt; API.
-     Returns ID and tags of matching image.&lt;br/&gt;
-     &lt;br/&gt;
-     Note: Refresh Index must be run on the corresponding Image List before additions and removals are reflected in the response.
-     *
-     * @param imageStream The image file.
-     * @param listId The list Id.
-     * @param cacheImage Whether to retain the submitted image for future use; defaults to false if omitted.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the MatchResponse object
-     */
-    Observable<ServiceResponse<MatchResponse>> matchFileInputWithServiceResponseAsync(byte[] imageStream, String listId, Boolean cacheImage);
 
 }

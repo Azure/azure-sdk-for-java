@@ -15,9 +15,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIE
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageIds;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 
 /**
@@ -42,32 +39,10 @@ public interface ListManagementImages {
      *
      * @param listId List Id of the image list.
      * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Image> addImageAsync(String listId, AddImageOptionalParameter addImageOptionalParameter, final ServiceCallback<Image> serviceCallback);
-
-    /**
-     * Add an image to the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param addImageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
     Observable<Image> addImageAsync(String listId, AddImageOptionalParameter addImageOptionalParameter);
-
-    /**
-     * Add an image to the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param tag Tag for the image.
-     * @param label The image label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Image object
-     */
-    Observable<ServiceResponse<Image>> addImageWithServiceResponseAsync(String listId, Integer tag, String label);
 
     /**
      * Deletes all images from the list with list Id equal to list Id passed.
@@ -84,29 +59,10 @@ public interface ListManagementImages {
      * Deletes all images from the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<String> deleteAllImagesAsync(String listId, final ServiceCallback<String> serviceCallback);
-
-    /**
-     * Deletes all images from the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     Observable<String> deleteAllImagesAsync(String listId);
-
-    /**
-     * Deletes all images from the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    Observable<ServiceResponse<String>> deleteAllImagesWithServiceResponseAsync(String listId);
 
     /**
      * Gets all image Ids from the list with list Id equal to list Id passed.
@@ -123,29 +79,10 @@ public interface ListManagementImages {
      * Gets all image Ids from the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ImageIds> getAllImageIdsAsync(String listId, final ServiceCallback<ImageIds> serviceCallback);
-
-    /**
-     * Gets all image Ids from the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageIds object
      */
     Observable<ImageIds> getAllImageIdsAsync(String listId);
-
-    /**
-     * Gets all image Ids from the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageIds object
-     */
-    Observable<ServiceResponse<ImageIds>> getAllImageIdsWithServiceResponseAsync(String listId);
 
     /**
      * Deletes an image from the list with list Id and image Id passed.
@@ -164,31 +101,10 @@ public interface ListManagementImages {
      *
      * @param listId List Id of the image list.
      * @param imageId Id of the image.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<String> deleteImageAsync(String listId, String imageId, final ServiceCallback<String> serviceCallback);
-
-    /**
-     * Deletes an image from the list with list Id and image Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param imageId Id of the image.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     Observable<String> deleteImageAsync(String listId, String imageId);
-
-    /**
-     * Deletes an image from the list with list Id and image Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param imageId Id of the image.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    Observable<ServiceResponse<String>> deleteImageWithServiceResponseAsync(String listId, String imageId);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -211,36 +127,10 @@ public interface ListManagementImages {
      * @param contentType The content type.
      * @param imageUrl The image url.
      * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter, final ServiceCallback<Image> serviceCallback);
-
-    /**
-     * Add an image to the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param addImageUrlInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
     Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
-
-    /**
-     * Add an image to the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param contentType The content type.
-     * @param imageUrl The image url.
-     * @param tag Tag for the image.
-     * @param label The image label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Image object
-     */
-    Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModel imageUrl, Integer tag, String label);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -261,33 +151,9 @@ public interface ListManagementImages {
      * @param listId List Id of the image list.
      * @param imageStream The image file.
      * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Image> addImageFileInputAsync(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter, final ServiceCallback<Image> serviceCallback);
-
-    /**
-     * Add an image to the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param imageStream The image file.
-     * @param addImageFileInputOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
     Observable<Image> addImageFileInputAsync(String listId, byte[] imageStream, AddImageFileInputOptionalParameter addImageFileInputOptionalParameter);
-
-    /**
-     * Add an image to the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param imageStream The image file.
-     * @param tag Tag for the image.
-     * @param label The image label.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Image object
-     */
-    Observable<ServiceResponse<Image>> addImageFileInputWithServiceResponseAsync(String listId, byte[] imageStream, Integer tag, String label);
 
 }

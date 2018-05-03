@@ -12,9 +12,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIE
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Body;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.RefreshIndex;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.TermList;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
 import java.util.List;
 import rx.Observable;
 
@@ -38,29 +35,10 @@ public interface ListManagementTermLists {
      * Returns list Id details of the term list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<TermList> getDetailsAsync(String listId, final ServiceCallback<TermList> serviceCallback);
-
-    /**
-     * Returns list Id details of the term list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TermList object
      */
     Observable<TermList> getDetailsAsync(String listId);
-
-    /**
-     * Returns list Id details of the term list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
-     */
-    Observable<ServiceResponse<TermList>> getDetailsWithServiceResponseAsync(String listId);
 
     /**
      * Deletes term list with the list Id equal to list Id passed.
@@ -77,29 +55,10 @@ public interface ListManagementTermLists {
      * Deletes term list with the list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<String> deleteAsync(String listId, final ServiceCallback<String> serviceCallback);
-
-    /**
-     * Deletes term list with the list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     Observable<String> deleteAsync(String listId);
-
-    /**
-     * Deletes term list with the list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    Observable<ServiceResponse<String>> deleteWithServiceResponseAsync(String listId);
 
     /**
      * Updates an Term List.
@@ -120,33 +79,10 @@ public interface ListManagementTermLists {
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param body Schema of the body.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<TermList> updateAsync(String listId, String contentType, Body body, final ServiceCallback<TermList> serviceCallback);
-
-    /**
-     * Updates an Term List.
-     *
-     * @param listId List Id of the image list.
-     * @param contentType The content type.
-     * @param body Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TermList object
      */
     Observable<TermList> updateAsync(String listId, String contentType, Body body);
-
-    /**
-     * Updates an Term List.
-     *
-     * @param listId List Id of the image list.
-     * @param contentType The content type.
-     * @param body Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
-     */
-    Observable<ServiceResponse<TermList>> updateWithServiceResponseAsync(String listId, String contentType, Body body);
 
     /**
      * Creates a Term List.
@@ -165,31 +101,10 @@ public interface ListManagementTermLists {
      *
      * @param contentType The content type.
      * @param body Schema of the body.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<TermList> createAsync(String contentType, Body body, final ServiceCallback<TermList> serviceCallback);
-
-    /**
-     * Creates a Term List.
-     *
-     * @param contentType The content type.
-     * @param body Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TermList object
      */
     Observable<TermList> createAsync(String contentType, Body body);
-
-    /**
-     * Creates a Term List.
-     *
-     * @param contentType The content type.
-     * @param body Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the TermList object
-     */
-    Observable<ServiceResponse<TermList>> createWithServiceResponseAsync(String contentType, Body body);
 
     /**
      * gets all the Term Lists.
@@ -204,27 +119,10 @@ public interface ListManagementTermLists {
     /**
      * gets all the Term Lists.
      *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<List<TermList>> getAllTermListsAsync(final ServiceCallback<List<TermList>> serviceCallback);
-
-    /**
-     * gets all the Term Lists.
-     *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;TermList&gt; object
      */
     Observable<List<TermList>> getAllTermListsAsync();
-
-    /**
-     * gets all the Term Lists.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;TermList&gt; object
-     */
-    Observable<ServiceResponse<List<TermList>>> getAllTermListsWithServiceResponseAsync();
 
     /**
      * Refreshes the index of the list with list Id equal to list ID passed.
@@ -243,30 +141,8 @@ public interface ListManagementTermLists {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<RefreshIndex> refreshIndexMethodAsync(String listId, String language, final ServiceCallback<RefreshIndex> serviceCallback);
-
-    /**
-     * Refreshes the index of the list with list Id equal to list ID passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RefreshIndex object
      */
     Observable<RefreshIndex> refreshIndexMethodAsync(String listId, String language);
-
-    /**
-     * Refreshes the index of the list with list Id equal to list ID passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RefreshIndex object
-     */
-    Observable<ServiceResponse<RefreshIndex>> refreshIndexMethodWithServiceResponseAsync(String listId, String language);
-
 }

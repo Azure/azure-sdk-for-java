@@ -11,9 +11,6 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.GetAllTermsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Terms;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
 import rx.Observable;
 
 /**
@@ -40,33 +37,10 @@ public interface ListManagementTerms {
      * @param listId List Id of the image list.
      * @param term Term to be deleted
      * @param language Language of the terms.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Object> addTermAsync(String listId, String term, String language, final ServiceCallback<Object> serviceCallback);
-
-    /**
-     * Add a term to the term list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param term Term to be deleted
-     * @param language Language of the terms.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Object object
      */
     Observable<Object> addTermAsync(String listId, String term, String language);
-
-    /**
-     * Add a term to the term list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param term Term to be deleted
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Object object
-     */
-    Observable<ServiceResponse<Object>> addTermWithServiceResponseAsync(String listId, String term, String language);
 
     /**
      * Deletes a term from the list with list Id equal to the list Id passed.
@@ -87,33 +61,10 @@ public interface ListManagementTerms {
      * @param listId List Id of the image list.
      * @param term Term to be deleted
      * @param language Language of the terms.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<String> deleteTermAsync(String listId, String term, String language, final ServiceCallback<String> serviceCallback);
-
-    /**
-     * Deletes a term from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param term Term to be deleted
-     * @param language Language of the terms.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     Observable<String> deleteTermAsync(String listId, String term, String language);
-
-    /**
-     * Deletes a term from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param term Term to be deleted
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    Observable<ServiceResponse<String>> deleteTermWithServiceResponseAsync(String listId, String term, String language);
 
     /**
      * Gets all terms from the list with list Id equal to the list Id passed.
@@ -134,34 +85,10 @@ public interface ListManagementTerms {
      * @param listId List Id of the image list.
      * @param language Language of the terms.
      * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter, final ServiceCallback<Terms> serviceCallback);
-
-    /**
-     * Gets all terms from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @param getAllTermsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Terms object
      */
     Observable<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter);
-
-    /**
-     * Gets all terms from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @param offset The pagination start index.
-     * @param limit The max limit.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the Terms object
-     */
-    Observable<ServiceResponse<Terms>> getAllTermsWithServiceResponseAsync(String listId, String language, Integer offset, Integer limit);
 
     /**
      * Deletes all terms from the list with list Id equal to the list Id passed.
@@ -180,30 +107,8 @@ public interface ListManagementTerms {
      *
      * @param listId List Id of the image list.
      * @param language Language of the terms.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<String> deleteAllTermsAsync(String listId, String language, final ServiceCallback<String> serviceCallback);
-
-    /**
-     * Deletes all terms from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     Observable<String> deleteAllTermsAsync(String listId, String language);
-
-    /**
-     * Deletes all terms from the list with list Id equal to the list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param language Language of the terms.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    Observable<ServiceResponse<String>> deleteAllTermsWithServiceResponseAsync(String listId, String language);
-
 }

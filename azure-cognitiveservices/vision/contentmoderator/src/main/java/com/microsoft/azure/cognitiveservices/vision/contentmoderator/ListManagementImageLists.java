@@ -12,9 +12,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIE
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Body;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageList;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.RefreshIndex;
-import com.microsoft.rest.ServiceCallback;
-import com.microsoft.rest.ServiceFuture;
-import com.microsoft.rest.ServiceResponse;
 import java.util.List;
 import rx.Observable;
 
@@ -38,29 +35,10 @@ public interface ListManagementImageLists {
      * Returns the details of the image list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ImageList> getDetailsAsync(String listId, final ServiceCallback<ImageList> serviceCallback);
-
-    /**
-     * Returns the details of the image list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageList object
      */
     Observable<ImageList> getDetailsAsync(String listId);
-
-    /**
-     * Returns the details of the image list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageList object
-     */
-    Observable<ServiceResponse<ImageList>> getDetailsWithServiceResponseAsync(String listId);
 
     /**
      * Deletes image list with the list Id equal to list Id passed.
@@ -77,29 +55,10 @@ public interface ListManagementImageLists {
      * Deletes image list with the list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<String> deleteAsync(String listId, final ServiceCallback<String> serviceCallback);
-
-    /**
-     * Deletes image list with the list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the String object
      */
     Observable<String> deleteAsync(String listId);
-
-    /**
-     * Deletes image list with the list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the String object
-     */
-    Observable<ServiceResponse<String>> deleteWithServiceResponseAsync(String listId);
 
     /**
      * Updates an image list with list Id equal to list Id passed.
@@ -120,33 +79,10 @@ public interface ListManagementImageLists {
      * @param listId List Id of the image list.
      * @param contentType The content type.
      * @param body Schema of the body.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ImageList> updateAsync(String listId, String contentType, Body body, final ServiceCallback<ImageList> serviceCallback);
-
-    /**
-     * Updates an image list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param contentType The content type.
-     * @param body Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageList object
      */
     Observable<ImageList> updateAsync(String listId, String contentType, Body body);
-
-    /**
-     * Updates an image list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @param contentType The content type.
-     * @param body Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageList object
-     */
-    Observable<ServiceResponse<ImageList>> updateWithServiceResponseAsync(String listId, String contentType, Body body);
 
     /**
      * Creates an image list.
@@ -165,31 +101,10 @@ public interface ListManagementImageLists {
      *
      * @param contentType The content type.
      * @param body Schema of the body.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<ImageList> createAsync(String contentType, Body body, final ServiceCallback<ImageList> serviceCallback);
-
-    /**
-     * Creates an image list.
-     *
-     * @param contentType The content type.
-     * @param body Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageList object
      */
     Observable<ImageList> createAsync(String contentType, Body body);
-
-    /**
-     * Creates an image list.
-     *
-     * @param contentType The content type.
-     * @param body Schema of the body.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the ImageList object
-     */
-    Observable<ServiceResponse<ImageList>> createWithServiceResponseAsync(String contentType, Body body);
 
     /**
      * Gets all the Image Lists.
@@ -204,27 +119,10 @@ public interface ListManagementImageLists {
     /**
      * Gets all the Image Lists.
      *
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<List<ImageList>> getAllImageListsAsync(final ServiceCallback<List<ImageList>> serviceCallback);
-
-    /**
-     * Gets all the Image Lists.
-     *
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;ImageList&gt; object
      */
     Observable<List<ImageList>> getAllImageListsAsync();
-
-    /**
-     * Gets all the Image Lists.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the List&lt;ImageList&gt; object
-     */
-    Observable<ServiceResponse<List<ImageList>>> getAllImageListsWithServiceResponseAsync();
 
     /**
      * Refreshes the index of the list with list Id equal to list Id passed.
@@ -241,28 +139,9 @@ public interface ListManagementImageLists {
      * Refreshes the index of the list with list Id equal to list Id passed.
      *
      * @param listId List Id of the image list.
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    ServiceFuture<RefreshIndex> refreshIndexMethodAsync(String listId, final ServiceCallback<RefreshIndex> serviceCallback);
-
-    /**
-     * Refreshes the index of the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the RefreshIndex object
      */
     Observable<RefreshIndex> refreshIndexMethodAsync(String listId);
-
-    /**
-     * Refreshes the index of the list with list Id equal to list Id passed.
-     *
-     * @param listId List Id of the image list.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the RefreshIndex object
-     */
-    Observable<ServiceResponse<RefreshIndex>> refreshIndexMethodWithServiceResponseAsync(String listId);
 
 }
