@@ -157,16 +157,49 @@ public class JsonSerializable implements Serializable {
         if (value == null) {
             // Sets null.
             this.propertyBag.putNull(propertyName);
+        } else if (value instanceof Collection) {
+            // Collection.
+            ArrayNode jsonArray = propertyBag.arrayNode();
+            this.internalSetCollection(propertyName, (Collection) value, jsonArray);
+            this.propertyBag.set(propertyName, jsonArray);
         } else if (value instanceof JsonNode) {
             this.propertyBag.set(propertyName, (JsonNode) value);
         }  else if (value instanceof JsonSerializable) {
             // JsonSerializable
             JsonSerializable castedValue = (JsonSerializable) value;
-            castedValue.populatePropertyBag();
-            this.propertyBag.set(propertyName, castedValue.propertyBag);
+            if (castedValue != null) {
+                castedValue.populatePropertyBag();
+            }
+            this.propertyBag.put(propertyName, castedValue != null ? castedValue.propertyBag : null);
         } else {
             // POJO
             this.propertyBag.set(propertyName, OBJECT_MAPPER.valueToTree(value));
+        }
+    }
+
+    @SuppressWarnings({"unchecked", "rawtypes"})
+    private <T> void internalSetCollection(String propertyName, Collection<T> collection, ArrayNode targetArray) {
+        for (T childValue : collection) {
+            if (childValue == null) {
+                // Sets null.
+                targetArray.addNull();
+            } else if (childValue instanceof Collection) {
+                // When T is also a Collection, use recursion.
+                ArrayNode childArray = targetArray.addArray();
+                this.internalSetCollection(propertyName, (Collection) childValue, childArray);
+            } else if (childValue instanceof JsonNode) {
+                // JSONObject, Number (includes Int, Float, Double etc),
+                // Boolean, and String.
+                targetArray.add((JsonNode) childValue);
+            } else if (childValue instanceof JsonSerializable) {
+                // JsonSerializable
+                JsonSerializable castedValue = (JsonSerializable) childValue;
+                castedValue.populatePropertyBag();
+                targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag : this.getMapper().createObjectNode());
+            } else {
+                // POJO
+                targetArray.add(this.getMapper().valueToTree(childValue));
+            }
         }
     }
 
