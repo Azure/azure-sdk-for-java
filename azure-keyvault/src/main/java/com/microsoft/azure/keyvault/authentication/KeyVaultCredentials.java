@@ -9,6 +9,8 @@ package com.microsoft.azure.keyvault.authentication;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Arrays;
+import java.util.List;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity;
@@ -31,6 +33,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
     private static final String BEARER_TOKEP_REFIX = "Bearer ";
+    private List<String> supportedMethods = Arrays.asList("sign", "verify", "encrypt", "decrypt", "wrapkey", "unwrapkey");
 
     private final ChallengeCache cache = new ChallengeCache();
 
@@ -88,7 +91,9 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      * @return Pair of protected request and HttpMessageSecurity used for encryption.
      */
     private Pair<Request, HttpMessageSecurity> buildAuthenticatedRequest(Request originalRequest, Map<String, String> challengeMap) throws IOException{
-        AuthenticationResult authResult = getAuthenticationCredentials(challengeMap);
+
+        Boolean supportsPop = supportsMessageProtection(originalRequest.url().toString(), challengeMap);
+        AuthenticationResult authResult = getAuthenticationCredentials(supportsPop, challengeMap);
 
         if (authResult == null) {
             return null;
@@ -97,9 +102,9 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
         HttpMessageSecurity httpMessageSecurity =
             new HttpMessageSecurity(
                 authResult.getAuthToken(),
-                authResult.getPopKey(),
-                challengeMap.get("x-ms-message-encryption-key"),
-                challengeMap.get("x-ms-message-signing-key"));
+                supportsPop ? authResult.getPopKey() : "",
+                supportsPop ? challengeMap.get("x-ms-message-encryption-key") : "",
+                supportsPop ? challengeMap.get("x-ms-message-signing-key") : "");
 
         Request request = httpMessageSecurity.protectRequest(originalRequest);
         return Pair.of(request, httpMessageSecurity);
@@ -136,7 +141,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      * @return request with removed body.
      */
     private Request buildEmptyRequest(Request request){
-        RequestBody body = RequestBody.create(MediaType.parse("application/jose+json"), "{}");
+        RequestBody body = RequestBody.create(MediaType.parse("application/json"), "{}");
         if (request.method().equalsIgnoreCase("get")){
             return request;
         }
@@ -146,14 +151,40 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
     }
 
     /**
+     * Checks if resource supports message protection.
+     *
+     * @param url
+     *            resource url.
+     * @param challengeMap
+     *            the challenge map.
+     * @return true if message protection is supported.
+     */
+    private Boolean supportsMessageProtection(String url, Map<String, String> challengeMap) {
+
+        if (!"true".equals(challengeMap.get("supportspop"))){
+            return false;
+        }
+
+        // Message protection is enabled only for subset of keys operations.
+        if (!url.toLowerCase().contains("/keys/")){
+            return false;
+        }
+
+        String[] tokens = url.split("\\?")[0].split("/");
+        return supportedMethods.contains(tokens[tokens.length - 1]);
+    }
+
+    /**
      * Extracts the authentication challenges from the challenge map and calls
      * the authentication callback to get the bearer token and return it.
      *
+     * @param supportsPop
+     *            is resource supports pop authentication.
      * @param challengeMap
      *            the challenge map.
      * @return AuthenticationResult with bearer token and PoP key.
      */
-    private AuthenticationResult getAuthenticationCredentials(Map<String, String> challengeMap) {
+    private AuthenticationResult getAuthenticationCredentials(Boolean supportsPop, Map<String, String> challengeMap) {
 
         String authorization = challengeMap.get("authorization");
         if (authorization == null) {
@@ -162,7 +193,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
         String resource = challengeMap.get("resource");
         String scope = challengeMap.get("scope");
-        String schema = "true".equals(challengeMap.get("supportspop")) ? "pop" : "bearer";
+        String schema = supportsPop ? "pop" : "bearer";
         return doAuthenticate(authorization, resource, scope, schema);
     }
 
