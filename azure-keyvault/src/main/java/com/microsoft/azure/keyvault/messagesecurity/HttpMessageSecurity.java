@@ -24,6 +24,7 @@ import java.security.SecureRandom;
 import java.security.NoSuchAlgorithmException;
 import java.util.UUID;
 import java.util.concurrent.ExecutionException;
+import okhttp3.internal.http.HttpHeaders;
 
 import okio.Buffer;
 
@@ -55,6 +56,7 @@ public class HttpMessageSecurity {
      *      string with server signing key (public only) or null if not supported
      */
     public HttpMessageSecurity(String _clientSecurityToken, String _clientSignatureKeyString, String _serverEncryptionKeyString, String _serverSignatureKeyString) throws IOException{
+
         this.clientSecurityToken = _clientSecurityToken;
 
         if (_clientSignatureKeyString != null && !_clientSignatureKeyString.equals("")){
@@ -115,6 +117,10 @@ public class HttpMessageSecurity {
             request.body().writeTo(buffer);
             String currentbody = buffer.readUtf8();
 
+            if (currentbody == null || currentbody.length() == 0){
+                return result;
+            }
+
             JsonWebKey clientPublicEncryptionKey = MessageSecurityHelper.GetJwkWithPublicKeyOnly(clientEncryptionKey);
 
             String payload = currentbody.substring(0, currentbody.length() - 1) + ",\"rek\":{\"jwk\":" + clientPublicEncryptionKey.toString() + "}}";
@@ -165,8 +171,13 @@ public class HttpMessageSecurity {
      */
     public Response unprotectResponse(Response response) throws IOException{
         try{
-            if (!supportsProtection())
+            if (!supportsProtection() || !HttpHeaders.hasBody(response)){
                 return response;
+            }
+
+            if (!response.header("content-type").toLowerCase().contains("application/jose+json")){
+                return response;
+            }
 
             JWSObject jwsObject = JWSObject.deserialize(response.body().string());
             JWSHeader jwsHeader = jwsObject.jwsHeader();
