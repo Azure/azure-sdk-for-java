@@ -132,7 +132,7 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
                         "  \"body\":" +
                         "    \"function () {" +
                         "      for (var i = 0; i < 10; i++) {" +
-                        "        getContext().getResponse().appendValue(\"Body\", i);" +
+                        "        getContext().getResponse().appendValue('Body', i);" +
                         "      }" +
                         "    }\"" +
                         "}");
