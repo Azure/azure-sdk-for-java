@@ -24,7 +24,7 @@ public class BingWebSearchManager {
      * Initializes an instance of Bing Web Search API client.
      *
      * @param subscriptionKey the Bing Search API key
-     * @return the Bing News Search API client
+     * @return the Bing Web Search API client
      */
     public static BingWebSearchAPI authenticate(String subscriptionKey) {
         return authenticate("https://api.cognitive.microsoft.com/bing/v7.0/", subscriptionKey);
@@ -33,6 +33,7 @@ public class BingWebSearchManager {
     /**
      * Initializes an instance of Bing Web Search API client.
      *
+     * @param baseUrl  the URL of the service
      * @param subscriptionKey the Bing Search API key
      * @return the Bing News Search API client
      */
@@ -62,7 +63,7 @@ public class BingWebSearchManager {
      * Initializes an instance of Bing Web Search API client.
      *
      * @param credentials the management credentials for Azure
-     * @return the Bing News Search API client
+     * @return the Bing Web Search API client
      */
     public static BingWebSearchAPI authenticate(ServiceClientCredentials credentials) {
         return authenticate("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);
@@ -71,8 +72,9 @@ public class BingWebSearchManager {
     /**
      * Initializes an instance of Bing Web Search API client.
      *
-     * @param baseUrl the base URL of the
+     * @param baseUrl the base URL of the service
      * @param credentials the management credentials for Azure
+     * @return the Bing Web Search API client
      */
     public static BingWebSearchAPI authenticate(String baseUrl, ServiceClientCredentials credentials) {
         return new BingWebSearchAPIImpl(baseUrl, credentials);
@@ -82,6 +84,7 @@ public class BingWebSearchManager {
      * Initializes an instance of Bing Web Search API client.
      *
      * @param restClient the REST client to connect to Azure.
+     * @return the Bing Web Search API client
      */
     public static BingWebSearchAPI authenticate(RestClient restClient) {
         return new BingWebSearchAPIImpl(restClient);

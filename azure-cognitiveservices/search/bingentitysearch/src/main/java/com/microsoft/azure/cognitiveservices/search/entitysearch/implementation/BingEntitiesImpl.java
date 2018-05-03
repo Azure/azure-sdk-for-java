@@ -135,7 +135,8 @@ public class BingEntitiesImpl implements BingEntities {
         final List<ResponseFormat> responseFormat = searchOptionalParameter != null ? searchOptionalParameter.responseFormat() : null;
         final SafeSearch safeSearch = searchOptionalParameter != null ? searchOptionalParameter.safeSearch() : null;
         final String setLang = searchOptionalParameter != null ? searchOptionalParameter.setLang() : null;
-        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);String responseFormatConverted = this.client.serializerAdapter().serializeList(responseFormat, CollectionFormat.CSV);
+        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);
+        String responseFormatConverted = this.client.serializerAdapter().serializeList(responseFormat, CollectionFormat.CSV);
 
         return searchWithServiceResponseAsync(query, acceptLanguage, pragma, userAgent, clientId, clientIp, location, countryCode, market, responseFilter, responseFormat, safeSearch, setLang);
     }
@@ -166,7 +167,8 @@ public class BingEntitiesImpl implements BingEntities {
         Validator.validate(responseFilter);
         Validator.validate(responseFormat);
         final String xBingApisSDK = "true";
-        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);String responseFormatConverted = this.client.serializerAdapter().serializeList(responseFormat, CollectionFormat.CSV);
+        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);
+        String responseFormatConverted = this.client.serializerAdapter().serializeList(responseFormat, CollectionFormat.CSV);
         return service.search(xBingApisSDK, acceptLanguage, pragma, userAgent, clientId, clientIp, location, countryCode, market, query, responseFilterConverted, responseFormatConverted, safeSearch, setLang)
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchResponse>>>() {
                 @Override

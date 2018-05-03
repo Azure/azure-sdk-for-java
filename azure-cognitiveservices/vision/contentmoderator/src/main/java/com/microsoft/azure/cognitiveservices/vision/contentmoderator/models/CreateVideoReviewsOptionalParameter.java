@@ -8,8 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import java.util.List;
-
 /**
  * The "createVideoReviews operation optional parameters class.
  */

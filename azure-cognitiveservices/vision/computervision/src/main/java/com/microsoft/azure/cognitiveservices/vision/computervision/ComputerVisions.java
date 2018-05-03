@@ -19,7 +19,6 @@ import com.microsoft.azure.cognitiveservices.vision.computervision.models.Recogn
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.DescribeImageInStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.RecognizeTextInStreamOptionalParameter;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionRecognizeTextHeaders;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionRecognizeTextInStreamHeaders;
@@ -40,7 +39,6 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import com.microsoft.rest.ServiceResponseWithHeaders;
 import java.io.InputStream;
-import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 

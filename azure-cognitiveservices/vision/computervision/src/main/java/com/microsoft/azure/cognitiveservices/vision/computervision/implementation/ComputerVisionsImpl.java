@@ -23,7 +23,6 @@ import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisio
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.CloudException;
-import com.microsoft.azure.cognitiveservices.vision.computervision.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionErrorException;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionRecognizeTextHeaders;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.ComputerVisionRecognizeTextInStreamHeaders;
@@ -294,7 +293,8 @@ public class ComputerVisionsImpl implements ComputerVisions {
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);String detailsConverted = this.client.serializerAdapter().serializeList(details, CollectionFormat.CSV);
+        String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
+        String detailsConverted = this.client.serializerAdapter().serializeList(details, CollectionFormat.CSV);
 
         return analyzeImageWithServiceResponseAsync(url, visualFeatures, details, language);
     }
@@ -321,7 +321,8 @@ public class ComputerVisionsImpl implements ComputerVisions {
         ImageUrl imageUrl = new ImageUrl();
         imageUrl.withUrl(url);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);String detailsConverted = this.client.serializerAdapter().serializeList(details, CollectionFormat.CSV);
+        String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
+        String detailsConverted = this.client.serializerAdapter().serializeList(details, CollectionFormat.CSV);
         return service.analyzeImage(visualFeaturesConverted, detailsConverted, language, this.client.acceptLanguage(), imageUrl, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysis>>>() {
                 @Override
@@ -1091,7 +1092,8 @@ public class ComputerVisionsImpl implements ComputerVisions {
         final String details = analyzeImageInStreamOptionalParameter != null ? analyzeImageInStreamOptionalParameter.details() : null;
         final String language = analyzeImageInStreamOptionalParameter != null ? analyzeImageInStreamOptionalParameter.language() : null;
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
+        String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
+        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
 
         return analyzeImageInStreamWithServiceResponseAsync(image, visualFeatures, details, language);
     }
@@ -1115,7 +1117,8 @@ public class ComputerVisionsImpl implements ComputerVisions {
         }
         Validator.validate(visualFeatures);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
+        String visualFeaturesConverted = this.client.serializerAdapter().serializeList(visualFeatures, CollectionFormat.CSV);
+        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
         return service.analyzeImageInStream(visualFeaturesConverted, details, language, imageConverted, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ImageAnalysis>>>() {
                 @Override

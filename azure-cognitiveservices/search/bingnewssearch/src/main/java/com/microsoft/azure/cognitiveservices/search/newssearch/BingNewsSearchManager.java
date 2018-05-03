@@ -33,6 +33,7 @@ public class BingNewsSearchManager {
     /**
      * Initializes an instance of Bing News Search API client.
      *
+     * @param baseUrl the base URL of the service
      * @param subscriptionKey the Bing Search API key
      * @return the Bing News Search API client
      */
@@ -71,8 +72,9 @@ public class BingNewsSearchManager {
     /**
      * Initializes an instance of Bing News Search API client.
      *
-     * @param baseUrl the base URL of the
+     * @param baseUrl the base URL of the service
      * @param credentials the management credentials for Azure
+     * @return the Bing News Search API client
      */
     public static BingNewsSearchAPI authenticate(String baseUrl, ServiceClientCredentials credentials) {
         return new BingNewsSearchAPIImpl(baseUrl, credentials);
@@ -82,6 +84,7 @@ public class BingNewsSearchManager {
      * Initializes an instance of Bing News Search API client.
      *
      * @param restClient the REST client to connect to Azure.
+     * @return the Bing News Search API client
      */
     public static BingNewsSearchAPI authenticate(RestClient restClient) {
         return new BingNewsSearchAPIImpl(restClient);

@@ -180,7 +180,8 @@ public class BingWebSearchImpl implements BingWebSearch {
         Validator.validate(promote);
         Validator.validate(responseFilter);
         final String xBingApisSDK = "true";
-        String promoteConverted = this.client.serializerAdapter().serializeList(promote, CollectionFormat.CSV);String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);
+        String promoteConverted = this.client.serializerAdapter().serializeList(promote, CollectionFormat.CSV);
+        String responseFilterConverted = this.client.serializerAdapter().serializeList(responseFilter, CollectionFormat.CSV);
         return service.search(xBingApisSDK, acceptLanguage, pragma, userAgent, clientId, clientIp, location, answerCount, countryCode, count, freshness, market, offset, promoteConverted, query, responseFilterConverted, safeSearch, setLang, textDecorations, textFormat)
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<SearchResponse>>>() {
                 @Override

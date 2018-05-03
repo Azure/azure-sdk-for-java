@@ -33,6 +33,7 @@ public class BingSpellCheckManager {
     /**
      * Initializes an instance of Bing Spell Check API client.
      *
+     * @param baseUrl the base URL of the service
      * @param subscriptionKey the Bing Search API key
      * @return the Bing News Search API client
      */
@@ -71,8 +72,9 @@ public class BingSpellCheckManager {
     /**
      * Initializes an instance of Bing Spell Check API client.
      *
-     * @param baseUrl the base URL of the
+     * @param baseUrl the base URL of the service
      * @param credentials the management credentials for Azure
+     * @return the Bing Spell Check API client
      */
     public static BingSpellCheckAPI authenticate(String baseUrl, ServiceClientCredentials credentials) {
         return new BingSpellCheckAPIImpl(baseUrl, credentials);
@@ -82,6 +84,7 @@ public class BingSpellCheckManager {
      * Initializes an instance of Bing Spell Check API client.
      *
      * @param restClient the REST client to connect to Azure.
+     * @return the Bing Spell Check API client
      */
     public static BingSpellCheckAPI authenticate(RestClient restClient) {
         return new BingSpellCheckAPIImpl(restClient);

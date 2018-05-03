@@ -10,13 +10,11 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator;
 
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ScreenTextOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AzureRegionBaseUrl;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.DetectedLanguage;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Screen;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
 import rx.Observable;
 
 /**

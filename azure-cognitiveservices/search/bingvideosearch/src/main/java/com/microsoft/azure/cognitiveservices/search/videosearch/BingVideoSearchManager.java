@@ -24,7 +24,7 @@ public class BingVideoSearchManager {
      * Initializes an instance of Bing Video Search API client.
      *
      * @param subscriptionKey the Bing Search API key
-     * @return the Bing News Search API client
+     * @return the Bing Video Search API client
      */
     public static BingVideoSearchAPI authenticate(String subscriptionKey) {
         return authenticate("https://api.cognitive.microsoft.com/bing/v7.0/", subscriptionKey);
@@ -33,8 +33,9 @@ public class BingVideoSearchManager {
     /**
      * Initializes an instance of Bing Video Search API client.
      *
+     * @param baseUrl the URL of the service
      * @param subscriptionKey the Bing Search API key
-     * @return the Bing News Search API client
+     * @return the Bing Video Search API client
      */
     public static BingVideoSearchAPI authenticate(String baseUrl, final String subscriptionKey) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
@@ -62,7 +63,7 @@ public class BingVideoSearchManager {
      * Initializes an instance of Bing Video Search API client.
      *
      * @param credentials the management credentials for Azure
-     * @return the Bing News Search API client
+     * @return the Bing Video Search API client
      */
     public static BingVideoSearchAPI authenticate(ServiceClientCredentials credentials) {
         return authenticate("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);
@@ -73,6 +74,7 @@ public class BingVideoSearchManager {
      *
      * @param baseUrl the base URL of the
      * @param credentials the management credentials for Azure
+     * @return the Bing Video Search API client
      */
     public static BingVideoSearchAPI authenticate(String baseUrl, ServiceClientCredentials credentials) {
         return new BingVideoSearchAPIImpl(baseUrl, credentials);
@@ -82,6 +84,7 @@ public class BingVideoSearchManager {
      * Initializes an instance of Bing Video Search API client.
      *
      * @param restClient the REST client to connect to Azure.
+     * @return the Bing Video Search API client
      */
     public static BingVideoSearchAPI authenticate(RestClient restClient) {
         return new BingVideoSearchAPIImpl(restClient);

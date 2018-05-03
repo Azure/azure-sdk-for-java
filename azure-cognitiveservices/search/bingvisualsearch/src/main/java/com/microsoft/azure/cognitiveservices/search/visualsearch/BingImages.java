@@ -14,7 +14,6 @@ import com.microsoft.azure.cognitiveservices.search.visualsearch.models.ImageKno
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
 import rx.Observable;
 
 /**

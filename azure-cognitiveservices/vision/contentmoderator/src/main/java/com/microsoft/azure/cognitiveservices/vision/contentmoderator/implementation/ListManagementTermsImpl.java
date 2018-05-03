@@ -14,7 +14,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagem
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AzureRegionBaseUrl;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Terms;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;

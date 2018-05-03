@@ -24,7 +24,7 @@ public class BingCustomSearchManager {
      * Initializes an instance of Bing Custom Search API client.
      *
      * @param subscriptionKey the Bing Search API key
-     * @return the Bing News Search API client
+     * @return the Bing Custom Search API client
      */
     public static BingCustomSearchAPI authenticate(String subscriptionKey) {
         return authenticate("https://api.cognitive.microsoft.com/bing/v7.0/", subscriptionKey);
@@ -33,8 +33,9 @@ public class BingCustomSearchManager {
     /**
      * Initializes an instance of Bing Custom Search API client.
      *
+     * @param baseUrl the base URL of the service
      * @param subscriptionKey the Bing Search API key
-     * @return the Bing News Search API client
+     * @return the Bing Custom Search API client
      */
     public static BingCustomSearchAPI authenticate(String baseUrl, final String subscriptionKey) {
         ServiceClientCredentials serviceClientCredentials = new ServiceClientCredentials() {
@@ -62,7 +63,7 @@ public class BingCustomSearchManager {
      * Initializes an instance of Bing Custom Search API client.
      *
      * @param credentials the management credentials for Azure
-     * @return the Bing News Search API client
+     * @return the Bing Custom Search API client
      */
     public static BingCustomSearchAPI authenticate(ServiceClientCredentials credentials) {
         return authenticate("https://api.cognitive.microsoft.com/bing/v7.0/", credentials);
@@ -71,8 +72,9 @@ public class BingCustomSearchManager {
     /**
      * Initializes an instance of Bing Custom Search API client.
      *
-     * @param baseUrl the base URL of the
+     * @param baseUrl the base URL of the service
      * @param credentials the management credentials for Azure
+     * @return the Bing Custom Search API client
      */
     public static BingCustomSearchAPI authenticate(String baseUrl, ServiceClientCredentials credentials) {
         return new BingCustomSearchAPIImpl(baseUrl, credentials);
@@ -82,6 +84,7 @@ public class BingCustomSearchManager {
      * Initializes an instance of Bing Custom Search API client.
      *
      * @param restClient the REST client to connect to Azure.
+     * @return the Bing Custom Search API client
      */
     public static BingCustomSearchAPI authenticate(RestClient restClient) {
         return new BingCustomSearchAPIImpl(restClient);

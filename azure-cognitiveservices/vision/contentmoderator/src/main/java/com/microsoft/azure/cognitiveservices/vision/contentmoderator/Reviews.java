@@ -16,7 +16,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Crea
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddVideoFrameUrlOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddVideoFrameStreamOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AzureRegionBaseUrl;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.CreateReviewBodyItem;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.CreateVideoReviewsBodyItem;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Frames;
@@ -28,7 +27,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Vide
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
 import java.util.List;
 import rx.Observable;
 

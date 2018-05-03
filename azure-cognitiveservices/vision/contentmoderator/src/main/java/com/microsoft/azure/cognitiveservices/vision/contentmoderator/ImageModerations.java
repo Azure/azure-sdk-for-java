@@ -21,7 +21,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Eval
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchUrlInputOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.MatchFileInputOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AzureRegionBaseUrl;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Evaluate;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.FoundFaces;
@@ -30,7 +29,6 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.OCR;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
-import java.io.IOException;
 import rx.Observable;
 
 /**
