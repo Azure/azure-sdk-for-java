@@ -199,12 +199,12 @@ public class AttachmentQueryTest extends TestSuiteBase {
     private static Attachment getAttachmentDefinition() {
         return new Attachment(String.format(
                     "{" +
-                    "  'id': '%s'," +
-                    "  'media': 'http://xstore.'," +
-                    "  'MediaType': 'Book'," +
-                    "  'Author': 'My Book Author'," +
-                    "  'Title': 'My Book Title'," +
-                    "  'contentType': '%s'" +
+                    "  \"id\": \"%s\"," +
+                    "  \"media\": \"http://xstore.\"," +
+                    "  \"MediaType\": \"Book\"," +
+                    "  \"Author\": \"My Book Author\"," +
+                    "  \"Title\": \"My Book Title\"," +
+                    "  \"contentType\": \"%s\"" +
                     "}", UUID.randomUUID().toString(), "application/text"));
     }
 }

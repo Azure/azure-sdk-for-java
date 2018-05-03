@@ -234,12 +234,12 @@ public class ReadFeedAttachmentsTest extends TestSuiteBase {
         String type = "application/text";
         return new Attachment(String.format(
                     "{" +
-                    "  'id': '%s'," +
-                    "  'media': 'http://xstore.'," +
-                    "  'MediaType': 'Book'," +
-                    "  'Author': 'My Book Author'," +
-                    "  'Title': 'My Book Title'," +
-                    "  'contentType': '%s'" +
+                    "  \"id\": \"%s\"," +
+                    "  \"media\": \"http://xstore.\"," +
+                    "  \"MediaType\": \"Book\"," +
+                    "  \"Author\": \"My Book Author\"," +
+                    "  \"Title\": \"My Book Title\"," +
+                    "  \"contentType\": \"%s\"" +
                     "}", uuid, type));
     }
 }
