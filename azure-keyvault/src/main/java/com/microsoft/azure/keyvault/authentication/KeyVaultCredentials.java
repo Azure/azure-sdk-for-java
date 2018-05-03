@@ -11,14 +11,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.microsoft.rest.credentials.ServiceClientCredentials;
+import com.microsoft.azure.keyvault.messagesecurity.HttpMessageSecurity;
 
-import okhttp3.Authenticator;
 import okhttp3.HttpUrl;
 import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.MediaType;
 import okhttp3.Response;
-import okhttp3.Route;
+
+import org.apache.commons.lang3.tuple.Pair;
 
 /**
  * An implementation of {@link ServiceClientCredentials} that supports automatic bearer token refresh.
@@ -27,7 +30,6 @@ import okhttp3.Route;
 public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
     private static final String WWW_AUTHENTICATE = "WWW-Authenticate";
-    private static final String AUTHENTICATE = "Authorization";
     private static final String BEARER_TOKEP_REFIX = "Bearer ";
 
     private final ChallengeCache cache = new ChallengeCache();
@@ -40,67 +42,118 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
             @Override
             public Response intercept(Chain chain) throws IOException {
 
+                Request originalRequest = chain.request();
                 HttpUrl url = chain.request().url();
 
                 Map<String, String> challengeMap = cache.getCachedChallenge(url);
+                Response response;
+                Pair<Request, HttpMessageSecurity> authenticatedRequestPair;
 
                 if (challengeMap != null) {
-                    // Get the bearer token
-                    String credential = getAuthenticationCredentials(challengeMap);
-
-                    Request newRequest = chain.request().newBuilder()
-                            .header(AUTHENTICATE, BEARER_TOKEP_REFIX + credential).build();
-
-                    return chain.proceed(newRequest);
+                    // challenge is cached, so there is no need to send an empty auth request.
+                    authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, challengeMap);
                 } else {
                     // challenge is new for the URL and is not cached,
                     // so the request is sent out to get the challenges in
                     // response
-                    return chain.proceed(chain.request());
-                }
-            }
-        });
+                    response = chain.proceed(buildEmptyRequest(originalRequest));
 
-        // Caches the challenge for failed request and re-send the request with
-        // access token.
-        clientBuilder.authenticator(new Authenticator() {
-
-            @Override
-            public Request authenticate(Route route, Response response) throws IOException {
-
-                // if challenge is not cached then extract and cache it
-                String authenticateHeader = response.header(WWW_AUTHENTICATE);
-
-                Map<String, String> challengeMap = extractChallenge(authenticateHeader, BEARER_TOKEP_REFIX);
-
-                // Cache the challenge
-                cache.addCachedChallenge(response.request().url(), challengeMap);
-
-                // Get the bearer token from the callback by providing the
-                // challenges
-                String credential = getAuthenticationCredentials(challengeMap);
-
-                if (credential == null) {
-                    return null;
+                    if (response.code() == 200){
+                        return response;
+                    } else if (response.code() != 401){
+                        throw new IOException("Unexpected unauthorized response.");
+                    }
+                    authenticatedRequestPair = buildAuthenticatedRequest(originalRequest, response);
                 }
 
-                // Add the token header and resume the call.
-                // The token should live for duration of this request and never
-                // be cached anywhere in our code.
-                return response.request().newBuilder().header(AUTHENTICATE, BEARER_TOKEP_REFIX + credential).build();
+                response = chain.proceed(authenticatedRequestPair.getLeft());
+
+                if (response.code() == 200){
+                    return authenticatedRequestPair.getRight().unprotectResponse(response);
+                }
+                else{
+                    return response;
+                }
             }
         });
     }
 
     /**
-     * Extracts the authentication challenges from the challenge map and calls
-     * the authentication callback to get the bearer token and return it.
-     * 
+     * Builds request with authenticated header. Protects request body if supported.
+     *
+     * @param originalRequest
+     *            unprotected request without auth token.
      * @param challengeMap
      *            the challenge map.
-     * @return the bearer token.
+     * @return Pair of protected request and HttpMessageSecurity used for encryption.
      */
-    private String getAuthenticationCredentials(Map<String, String> challengeMap) {
+    private Pair<Request, HttpMessageSecurity> buildAuthenticatedRequest(Request originalRequest, Map<String, String> challengeMap) throws IOException{
+        AuthenticationResult authResult = getAuthenticationCredentials(challengeMap);
+
+        if (authResult == null) {
+            return null;
+        }
+
+        HttpMessageSecurity httpMessageSecurity =
+            new HttpMessageSecurity(
+                authResult.getAuthToken(),
+                authResult.getPopKey(),
+                challengeMap.get("x-ms-message-encryption-key"),
+                challengeMap.get("x-ms-message-signing-key"));
+
+        Request request = httpMessageSecurity.protectRequest(originalRequest);
+        return Pair.of(request, httpMessageSecurity);
+    }
+
+    /**
+     * Builds request with authenticated header. Protects request body if supported.
+     *
+     * @param originalRequest
+     *            unprotected request without auth token.
+     * @param response
+     *            response with unauthorized return code.
+     * @return Pair of protected request and HttpMessageSecurity used for encryption.
+     */
+    private Pair<Request, HttpMessageSecurity> buildAuthenticatedRequest(Request originalRequest, Response response) throws IOException{
+        String authenticateHeader = response.header(WWW_AUTHENTICATE);
+
+        Map<String, String> challengeMap = extractChallenge(authenticateHeader, BEARER_TOKEP_REFIX);
+
+        challengeMap.put("x-ms-message-encryption-key", response.header("x-ms-message-encryption-key"));
+        challengeMap.put("x-ms-message-signing-key", response.header("x-ms-message-signing-key"));
+
+        // Cache the challenge
+        cache.addCachedChallenge(originalRequest.url(), challengeMap);
+
+        return buildAuthenticatedRequest(originalRequest, challengeMap);
+    }
+
+    /**
+     * Removes request body used for EKV authorization.
+     *
+     * @param request
+     *            unprotected request without auth token.
+     * @return request with removed body.
+     */
+    private Request buildEmptyRequest(Request request){
+        RequestBody body = RequestBody.create(MediaType.parse("application/jose+json"), "{}");
+        if (request.method().equalsIgnoreCase("get")){
+            return request;
+        }
+        else {
+            return request.newBuilder().method(request.method(), body).build();
+        }
+    }
+
+    /**
+     * Extracts the authentication challenges from the challenge map and calls
+     * the authentication callback to get the bearer token and return it.
+     *
+     * @param challengeMap
+     *            the challenge map.
+     * @return AuthenticationResult with bearer token and PoP key.
+     */
+    private AuthenticationResult getAuthenticationCredentials(Map<String, String> challengeMap) {
 
         String authorization = challengeMap.get("authorization");
         if (authorization == null) {
@@ -109,13 +162,13 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
         String resource = challengeMap.get("resource");
         String scope = challengeMap.get("scope");
-
-        return doAuthenticate(authorization, resource, scope);
+        String schema = "true".equals(challengeMap.get("supportspop")) ? "pop" : "bearer";
+        return doAuthenticate(authorization, resource, scope, schema);
     }
 
     /**
      * Extracts the challenge off the authentication header.
-     * 
+     *
      * @param authenticateHeader
      *            the authentication header containing all the challenges.
      * @param authChallengePrefix
@@ -140,7 +193,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
     /**
      * Verifies whether a challenge is bearer or not.
-     * 
+     *
      * @param authenticateHeader
      *            the authentication header containing all the challenges.
      * @param authChallengePrefix
@@ -157,17 +210,15 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
 
     /**
      * Abstract method to be implemented.
-     * 
+     *
      * @param authorization
      *            Identifier of the authority, a URL.
      * @param resource
      *            Identifier of the target resource that is the recipient of the
      *            requested token, a URL.
-     * @param scope
-     *            The scope of the authentication request.
-     * 
-     * @return The access token
-     * 
+     *
+     * @return AuthenticationResult with authorization token and PoP key.
+     *
      *         Answers a server challenge with a token header.
      *         <p>
      *         Implementations typically use ADAL to get a token, as performed
@@ -213,6 +264,98 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      *         </p>
      *
      */
-    public abstract String doAuthenticate(String authorization, String resource, String scope);
+    public String doAuthenticate(String authorization, String resource, String scope){
+        return "";
+    }
 
+    /**
+     * Method to be implemented.
+     *
+     * @param authorization
+     *            Identifier of the authority, a URL.
+     * @param resource
+     *            Identifier of the target resource that is the recipient of the
+     *            requested token, a URL.
+     * @param scope
+     *            The scope of the authentication request.
+     *
+     * @param schema
+     *            Authentication schema. Can be 'pop' or 'bearer'.
+     *
+     * @return AuthenticationResult with authorization token and PoP key.
+     *
+     *         Answers a server challenge with a token header.
+     *         <p>
+     *         Implementations sends POST request to receive authentication token like in example below.
+     *         ADAL currently doesn't support POP authentication.
+     *         </p>
+     *
+     *         <pre>
+     *  public AuthenticationResult doAuthenticate(String authorization, String resource, String scope, String schema) {
+     *      JsonWebKey clientJwk = GenerateJsonWebKey();
+     *      JsonWebKey clientPublicJwk = GetJwkWithPublicKeyOnly(clientJwk);
+     *      String token = GetAccessToken(authorization, resource, "pop".equals(schema), clientPublicJwk);
+     *
+     *      return new AuthenticationResult(token, clientJwk.toString());
+     *  }
+     *
+     *  private JsonWebKey GenerateJsonWebKey()
+     *  {
+     *      final KeyPairGenerator generator = KeyPairGenerator.getInstance("RSA");
+     *      generator.initialize(2048);
+     *      KeyPair clientRsaKeyPair  = generator.generateKeyPair();
+     *      JsonWebKey result = JsonWebKey.fromRSA(clientRsaKeyPair);
+     *      result.withKid(UUID.randomUUID().toString());
+     *      return result;
+     *  }
+     *
+     *  public static JsonWebKey GetJwkWithPublicKeyOnly(JsonWebKey jwk){
+     *      KeyPair publicOnly = jwk.toRSA(false);
+     *      JsonWebKey jsonkeyPublic = JsonWebKey.fromRSA(publicOnly);
+     *      jsonkeyPublic.withKid(jwk.kid());
+     *      jsonkeyPublic.withKeyOps(Arrays.asList(JsonWebKeyOperation.ENCRYPT, JsonWebKeyOperation.WRAP_KEY, JsonWebKeyOperation.VERIFY));
+     *      return jsonkeyPublic;
+     *  }
+     *
+     *  private String GetAccessToken(String authorization, String resource, boolean supportspop, JsonWebKey jwkPublic){
+     *      CloseableHttpClient  httpclient = HttpClients.createDefault();
+     *      HttpPost httppost = new HttpPost(authorization + "/oauth2/token");
+     *      
+     *      // Request parameters and other properties.
+     *      List<NameValuePair> params = new ArrayList<NameValuePair>(2);
+     *      params.add(new BasicNameValuePair("resource", resource));
+     *      params.add(new BasicNameValuePair("response_type", "token"));
+     *      params.add(new BasicNameValuePair("grant_type", "client_credentials"));
+     *      params.add(new BasicNameValuePair("client_id", this.getApplicationId()));
+     *      params.add(new BasicNameValuePair("client_secret", this.getApplicationSecret()));
+     *
+     *      if (supportspop)
+     *      {
+     *          params.add(new BasicNameValuePair("pop_jwk", jwkPublic.toString()));
+     *      }
+     *
+     *      httppost.setEntity(new UrlEncodedFormEntity(params, "UTF-8"));
+     *
+     *      HttpResponse response = httpclient.execute(httppost);
+     *      HttpEntity entity = response.getEntity();
+     *
+     *      // Read the contents of an entity and return it as a String.
+     *      String content = EntityUtils.toString(entity);
+     *
+     *      ObjectMapper mapper = new ObjectMapper();
+     *      authreply reply = mapper.readValue(content, authreply.class);
+     *
+     *      return reply.access_token;
+     *  }
+     *  /pre>
+     *
+     *         <p>
+     *         <b>Note: The client key must be securely stored. It's advised to
+     *         use two client applications - one for development and other for
+     *         production - managed by separate parties.</b>
+     *         </p>
+     */
+    public AuthenticationResult doAuthenticate(String authorization, String resource, String scope, String schema){
+        return new AuthenticationResult(doAuthenticate(authorization, resource, scope), "");
+    }
 }

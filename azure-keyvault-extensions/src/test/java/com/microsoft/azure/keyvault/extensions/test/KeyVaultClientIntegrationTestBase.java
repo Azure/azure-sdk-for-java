@@ -265,7 +265,7 @@ public class KeyVaultClientIntegrationTestBase {
 	}
 
 	@Before
-	public void beforeTest() throws Exception {
+	public void beforeMethod() throws Exception {
 		printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
 		final String skipMessage = shouldCancelTest(isPlaybackMode());
 		Assume.assumeTrue(skipMessage, skipMessage == null);
@@ -368,7 +368,7 @@ public class KeyVaultClientIntegrationTestBase {
 
 
 	@After
-	public void afterTest() throws IOException {
+	public void afterMethod() throws IOException {
 		if (shouldCancelTest(isPlaybackMode()) != null) {
 			return;
 		}

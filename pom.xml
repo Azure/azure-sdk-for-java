@@ -33,7 +33,7 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
-
+    <alternativePlaybackServerPort>11081</alternativePlaybackServerPort>
   </properties>
 
   <developers>
@@ -192,21 +192,14 @@
         <version>2.5.3</version>
       </plugin>
 
-    <plugin>
-  <groupId>org.eclipse.jetty</groupId>
-  <artifactId>jetty-maven-plugin</artifactId>
-  <version>9.2.22.v20170606</version>
-  <configuration>
-          <scanIntervalSeconds>0</scanIntervalSeconds>
-          <stopPort>11079</stopPort>
-          <stopKey>STOP</stopKey>
-          <httpConnector>
-            <port>${playbackServerPort}</port>
-          </httpConnector>
-
+      <plugin>
+        <groupId>org.eclipse.jetty</groupId>
+        <artifactId>jetty-maven-plugin</artifactId>
+        <version>9.2.22.v20170606</version>
+        <configuration>
+          <jettyXml>jetty.xml</jettyXml>
         </configuration>
-
-</plugin>
+      </plugin>
     </plugins>
 
     <pluginManagement>

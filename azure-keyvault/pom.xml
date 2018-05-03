@@ -75,6 +75,13 @@
 		</dependency>
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
+			<artifactId>azure-keyvault-cryptography</artifactId>
+			<version>1.1-beta-1</version>
+			<scope>system</scope>
+			<systemPath>${basedir}/../azure-keyvault-cryptography/target/azure-keyvault-cryptography-1.1-beta-1.jar</systemPath>
+		</dependency>
+		<dependency>
+			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-keyvault-webkey</artifactId>
 			<version>1.0.0</version>
 		</dependency>
@@ -110,12 +117,7 @@
 				<artifactId>jetty-maven-plugin</artifactId>
 				<version>9.2.22.v20170606</version>
 				<configuration>
-					<scanIntervalSeconds>0</scanIntervalSeconds>
-					<stopPort>11079</stopPort>
-					<stopKey>STOP</stopKey>
-					<httpConnector>
-						<port>${playbackServerPort}</port>
-					</httpConnector>
+					<jettyXml>../jetty.xml,../jetty-http.xml</jettyXml>
 				</configuration>
 			</plugin>
 			<plugin>
