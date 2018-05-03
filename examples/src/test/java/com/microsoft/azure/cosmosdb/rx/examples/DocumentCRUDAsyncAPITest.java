@@ -135,7 +135,7 @@ public class DocumentCRUDAsyncAPITest {
      */
     @Test
     public void testCreateDocument_Async() throws Exception {
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document doc = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
                 .createDocument(getCollectionLink(), doc, null, true);
 
@@ -160,7 +160,7 @@ public class DocumentCRUDAsyncAPITest {
      */
     @Test
     public void testCreateDocument_Async_withoutLambda() throws Exception {
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document doc = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
                 .createDocument(getCollectionLink(), doc, null, true);
 
@@ -197,7 +197,7 @@ public class DocumentCRUDAsyncAPITest {
      */
     @Test
     public void testCreateDocument_toBlocking() throws DocumentClientException {
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document doc = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
                 .createDocument(getCollectionLink(), doc, null, true);
 
@@ -249,7 +249,7 @@ public class DocumentCRUDAsyncAPITest {
         // Create 10 documents
         List<Observable<ResourceResponse<Document>>> listOfCreateDocumentObservables = new ArrayList<>();
         for (int i = 0; i < 10; i++) {
-            Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", i, i));
+            Document doc = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", i, i));
 
             Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
                     .createDocument(getCollectionLink(), doc, null, false);
@@ -288,7 +288,7 @@ public class DocumentCRUDAsyncAPITest {
      */
     @Test
     public void testCreateDocument_toBlocking_DocumentAlreadyExists_Fails() throws DocumentClientException {
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document doc = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         asyncClient.createDocument(getCollectionLink(), doc, null, false).toBlocking().single();
 
         // Create the document
@@ -314,7 +314,7 @@ public class DocumentCRUDAsyncAPITest {
      */
     @Test
     public void testCreateDocument_Async_DocumentAlreadyExists_Fails() throws Exception {
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document doc = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         asyncClient.createDocument(getCollectionLink(), doc, null, false).toBlocking().single();
 
         // Create the document
@@ -341,13 +341,13 @@ public class DocumentCRUDAsyncAPITest {
     @Test
     public void testDocumentReplace_Async() throws Exception {
         // Create a document
-        Document createdDocument = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document createdDocument = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         createdDocument = asyncClient.createDocument(getCollectionLink(), createdDocument, null, false).toBlocking()
                 .single().getResource();
 
         // Try to replace the existing document
         Document replacingDocument = new Document(
-                String.format("{ 'id': 'doc%d', 'counter': '%d', 'new-prop' : '2'}", 1, 1));
+                String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\", \"new-prop\" : \"2\"}", 1, 1));
         Observable<ResourceResponse<Document>> replaceDocumentObservable = asyncClient
                 .replaceDocument(getDocumentLink(createdDocument), replacingDocument, null);
 
@@ -370,12 +370,12 @@ public class DocumentCRUDAsyncAPITest {
     @Test
     public void testDocumentUpsert_Async() throws Exception {
         // Create a document
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document doc = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         asyncClient.createDocument(getCollectionLink(), doc, null, false).toBlocking().single();
 
         // Upsert the existing document
         Document upsertingDocument = new Document(
-                String.format("{ 'id': 'doc%d', 'counter': '%d', 'new-prop' : '2'}", 1, 1));
+                String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\", \"new-prop\" : \"2\"}", 1, 1));
         Observable<ResourceResponse<Document>> upsertDocumentObservable = asyncClient
                 .upsertDocument(getCollectionLink(), upsertingDocument, null, false);
 
@@ -398,7 +398,7 @@ public class DocumentCRUDAsyncAPITest {
     @Test
     public void testDocumentDelete_Async() throws Exception {
         // Create a document
-        Document createdDocument = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document createdDocument = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         createdDocument = asyncClient.createDocument(getCollectionLink(), createdDocument, null, false).toBlocking()
                 .single().getResource();
 
@@ -436,7 +436,7 @@ public class DocumentCRUDAsyncAPITest {
     @Test
     public void testDocumentRead_Async() throws Exception {
         // Create a document
-        Document createdDocument = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document createdDocument = new Document(String.format("{ \"id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         createdDocument = asyncClient.createDocument(getCollectionLink(), createdDocument, null, false).toBlocking()
                 .single().getResource();
 
@@ -465,7 +465,7 @@ public class DocumentCRUDAsyncAPITest {
      */
     @Test
     public void testTransformObservableToGoogleGuavaListenableFuture() throws Exception {
-        Document doc = new Document(String.format("{ 'id': 'doc%d', 'counter': '%d'}", 1, 1));
+        Document doc = new Document(String.format("{ \":id\": \"doc%d\", \"counter\": \"%d\"}", 1, 1));
         Observable<ResourceResponse<Document>> createDocumentObservable = asyncClient
                 .createDocument(getCollectionLink(), doc, null, false);
         ListenableFuture<ResourceResponse<Document>> listenableFuture = ListenableFutureObservable

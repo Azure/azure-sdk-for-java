@@ -135,7 +135,7 @@ public class DocumentQueryAsyncAPITest {
         numberOfDocuments = 20;
         // Add documents
         for (int i = 0; i < numberOfDocuments; i++) {
-            Document doc = new Document(String.format("{ 'id': 'loc%d', 'counter': %d}", i, i));
+            Document doc = new Document(String.format("{ \"id\": \"loc%d\", \"counter\": %d}", i, i));
             asyncClient.createDocument(getCollectionLink(), doc, null, true).toBlocking().single();
         }
     }
@@ -305,7 +305,7 @@ public class DocumentQueryAsyncAPITest {
 
         Thread.sleep(4000);
 
-        // After subscriber unsubscribes, it doesn't receive any more pages.
+        // After subscriber unsubscribes, it doesn\"t receive any more pages.
         assertThat(onNextCounter.get(), equalTo(1));
         assertThat(onCompletedCounter.get(), equalTo(0));
         assertThat(onErrorCounter.get(), equalTo(0));
