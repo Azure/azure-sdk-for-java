@@ -76,7 +76,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Get An unique identifier for the event.
+     * Get an unique identifier for the event.
      *
      * @return the id value
      */
@@ -85,7 +85,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Get The resource path of the event source.
+     * Get the resource path of the event source.
      *
      * @return the topic value
      */
@@ -94,7 +94,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Set The resource path of the event source.
+     * Set the resource path of the event source.
      *
      * @param topic the topic value to set
      * @return the EventGridEvent object itself.
@@ -105,7 +105,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Get A resource path relative to the topic path.
+     * Get a resource path relative to the topic path.
      *
      * @return the subject value
      */
@@ -114,7 +114,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Get Event data specific to the event type.
+     * Get event data specific to the event type.
      *
      * @return the data value
      */
@@ -123,7 +123,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Get The type of the event that occurred.
+     * Get the type of the event that occurred.
      *
      * @return the eventType value
      */
@@ -132,7 +132,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Get The time (in UTC) the event was generated.
+     * Get the time (in UTC) the event was generated.
      *
      * @return the eventTime value
      */
@@ -141,7 +141,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Get The schema version of the event metadata.
+     * Get the schema version of the event metadata.
      *
      * @return the metadataVersion value
      */
@@ -150,7 +150,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Get The schema version of the data object.
+     * Get the schema version of the data object.
      *
      * @return the dataVersion value
      */

@@ -48,7 +48,7 @@ public class ContainerRegistryEventRequest {
     private String useragent;
 
     /**
-     * Get The ID of the request that initiated the event.
+     * Get the ID of the request that initiated the event.
      *
      * @return the id value
      */
@@ -57,7 +57,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set The ID of the request that initiated the event.
+     * Set the ID of the request that initiated the event.
      *
      * @param id the id value to set
      * @return the ContainerRegistryEventRequest object itself.
@@ -68,7 +68,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Get The IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr from the standard http request.
+     * Get the IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr from the standard http request.
      *
      * @return the addr value
      */
@@ -77,7 +77,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set The IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr from the standard http request.
+     * Set the IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr from the standard http request.
      *
      * @param addr the addr value to set
      * @return the ContainerRegistryEventRequest object itself.
@@ -88,7 +88,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Get The externally accessible hostname of the registry instance, as specified by the http host header on incoming requests.
+     * Get the externally accessible hostname of the registry instance, as specified by the http host header on incoming requests.
      *
      * @return the host value
      */
@@ -97,7 +97,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set The externally accessible hostname of the registry instance, as specified by the http host header on incoming requests.
+     * Set the externally accessible hostname of the registry instance, as specified by the http host header on incoming requests.
      *
      * @param host the host value to set
      * @return the ContainerRegistryEventRequest object itself.
@@ -108,7 +108,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Get The request method that generated the event.
+     * Get the request method that generated the event.
      *
      * @return the method value
      */
@@ -117,7 +117,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set The request method that generated the event.
+     * Set the request method that generated the event.
      *
      * @param method the method value to set
      * @return the ContainerRegistryEventRequest object itself.
@@ -128,7 +128,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Get The user agent header of the request.
+     * Get the user agent header of the request.
      *
      * @return the useragent value
      */
@@ -137,7 +137,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set The user agent header of the request.
+     * Set the user agent header of the request.
      *
      * @param useragent the useragent value to set
      * @return the ContainerRegistryEventRequest object itself.

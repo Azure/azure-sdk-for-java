@@ -29,7 +29,7 @@ public class DeviceTwinInfoProperties {
     private DeviceTwinProperties reported;
 
     /**
-     * Get A portion of the properties that can be written only by the application back-end, and read by the device.
+     * Get a portion of the properties that can be written only by the application back-end, and read by the device.
      *
      * @return the desired value
      */
@@ -38,7 +38,7 @@ public class DeviceTwinInfoProperties {
     }
 
     /**
-     * Set A portion of the properties that can be written only by the application back-end, and read by the device.
+     * Set a portion of the properties that can be written only by the application back-end, and read by the device.
      *
      * @param desired the desired value to set
      * @return the DeviceTwinInfoProperties object itself.
@@ -49,7 +49,7 @@ public class DeviceTwinInfoProperties {
     }
 
     /**
-     * Get A portion of the properties that can be written only by the device, and read by the application back-end.
+     * Get a portion of the properties that can be written only by the device, and read by the application back-end.
      *
      * @return the reported value
      */
@@ -58,7 +58,7 @@ public class DeviceTwinInfoProperties {
     }
 
     /**
-     * Set A portion of the properties that can be written only by the device, and read by the application back-end.
+     * Set a portion of the properties that can be written only by the device, and read by the application back-end.
      *
      * @param reported the reported value to set
      * @return the DeviceTwinInfoProperties object itself.

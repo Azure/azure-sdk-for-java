@@ -83,7 +83,7 @@ public class ResourceDeleteSuccessData {
     private String httpRequest;
 
     /**
-     * Get The tenant ID of the resource.
+     * Get the tenant ID of the resource.
      *
      * @return the tenantId value
      */
@@ -92,7 +92,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The tenant ID of the resource.
+     * Set the tenant ID of the resource.
      *
      * @param tenantId the tenantId value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -103,7 +103,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get The subscription ID of the resource.
+     * Get the subscription ID of the resource.
      *
      * @return the subscriptionId value
      */
@@ -112,7 +112,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The subscription ID of the resource.
+     * Set the subscription ID of the resource.
      *
      * @param subscriptionId the subscriptionId value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -123,7 +123,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get The resource group of the resource.
+     * Get the resource group of the resource.
      *
      * @return the resourceGroup value
      */
@@ -132,7 +132,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The resource group of the resource.
+     * Set the resource group of the resource.
      *
      * @param resourceGroup the resourceGroup value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -143,7 +143,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get The resource provider performing the operation.
+     * Get the resource provider performing the operation.
      *
      * @return the resourceProvider value
      */
@@ -152,7 +152,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The resource provider performing the operation.
+     * Set the resource provider performing the operation.
      *
      * @param resourceProvider the resourceProvider value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -163,7 +163,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get The URI of the resource in the operation.
+     * Get the URI of the resource in the operation.
      *
      * @return the resourceUri value
      */
@@ -172,7 +172,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The URI of the resource in the operation.
+     * Set the URI of the resource in the operation.
      *
      * @param resourceUri the resourceUri value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -183,7 +183,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get The operation that was performed.
+     * Get the operation that was performed.
      *
      * @return the operationName value
      */
@@ -192,7 +192,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The operation that was performed.
+     * Set the operation that was performed.
      *
      * @param operationName the operationName value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -203,7 +203,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get The status of the operation.
+     * Get the status of the operation.
      *
      * @return the status value
      */
@@ -212,7 +212,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The status of the operation.
+     * Set the status of the operation.
      *
      * @param status the status value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -223,7 +223,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get The requested authorization for the operation.
+     * Get the requested authorization for the operation.
      *
      * @return the authorization value
      */
@@ -232,7 +232,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The requested authorization for the operation.
+     * Set the requested authorization for the operation.
      *
      * @param authorization the authorization value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -243,7 +243,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get The properties of the claims.
+     * Get the properties of the claims.
      *
      * @return the claims value
      */
@@ -252,7 +252,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The properties of the claims.
+     * Set the properties of the claims.
      *
      * @param claims the claims value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -263,7 +263,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get An operation ID used for troubleshooting.
+     * Get an operation ID used for troubleshooting.
      *
      * @return the correlationId value
      */
@@ -272,7 +272,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set An operation ID used for troubleshooting.
+     * Set an operation ID used for troubleshooting.
      *
      * @param correlationId the correlationId value to set
      * @return the ResourceDeleteSuccessData object itself.
@@ -283,7 +283,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Get The details of the operation.
+     * Get the details of the operation.
      *
      * @return the httpRequest value
      */
@@ -292,7 +292,7 @@ public class ResourceDeleteSuccessData {
     }
 
     /**
-     * Set The details of the operation.
+     * Set the details of the operation.
      *
      * @param httpRequest the httpRequest value to set
      * @return the ResourceDeleteSuccessData object itself.

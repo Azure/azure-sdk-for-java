@@ -50,7 +50,7 @@ public class DeviceLifeCycleEventProperties {
     private DeviceTwinInfo twin;
 
     /**
-     * Get The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ # * ? ! ( ) , = @ ; $ '.
+     * Get the unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ # * ? ! ( ) , = @ ; $ '.
      *
      * @return the deviceId value
      */
@@ -59,7 +59,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Set The unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ # * ? ! ( ) , = @ ; $ '.
+     * Set the unique identifier of the device. This case-sensitive string can be up to 128 characters long, and supports ASCII 7-bit alphanumeric characters plus the following special characters: - : . + % _ # * ? ! ( ) , = @ ; $ '.
      *
      * @param deviceId the deviceId value to set
      * @return the DeviceLifeCycleEventProperties object itself.
@@ -70,7 +70,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Get Name of the IoT Hub where the device was created or deleted.
+     * Get name of the IoT Hub where the device was created or deleted.
      *
      * @return the hubName value
      */
@@ -79,7 +79,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Set Name of the IoT Hub where the device was created or deleted.
+     * Set name of the IoT Hub where the device was created or deleted.
      *
      * @param hubName the hubName value to set
      * @return the DeviceLifeCycleEventProperties object itself.
@@ -90,7 +90,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Get The event type specified for this operation by the IoT Hub.
+     * Get the event type specified for this operation by the IoT Hub.
      *
      * @return the opType value
      */
@@ -99,7 +99,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Set The event type specified for this operation by the IoT Hub.
+     * Set the event type specified for this operation by the IoT Hub.
      *
      * @param opType the opType value to set
      * @return the DeviceLifeCycleEventProperties object itself.
@@ -110,7 +110,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Get The ISO8601 timestamp of the operation.
+     * Get the ISO8601 timestamp of the operation.
      *
      * @return the operationTimestamp value
      */
@@ -119,7 +119,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Set The ISO8601 timestamp of the operation.
+     * Set the ISO8601 timestamp of the operation.
      *
      * @param operationTimestamp the operationTimestamp value to set
      * @return the DeviceLifeCycleEventProperties object itself.
@@ -130,7 +130,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Get Information about the device twin, which is the cloud represenation of application device metadata.
+     * Get information about the device twin, which is the cloud represenation of application device metadata.
      *
      * @return the twin value
      */
@@ -139,7 +139,7 @@ public class DeviceLifeCycleEventProperties {
     }
 
     /**
-     * Set Information about the device twin, which is the cloud represenation of application device metadata.
+     * Set information about the device twin, which is the cloud represenation of application device metadata.
      *
      * @param twin the twin value to set
      * @return the DeviceLifeCycleEventProperties object itself.

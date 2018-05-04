@@ -58,7 +58,7 @@ public class ContainerRegistryEventTarget {
     private String tag;
 
     /**
-     * Get The MIME type of the referenced object.
+     * Get the MIME type of the referenced object.
      *
      * @return the mediaType value
      */
@@ -67,7 +67,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Set The MIME type of the referenced object.
+     * Set the MIME type of the referenced object.
      *
      * @param mediaType the mediaType value to set
      * @return the ContainerRegistryEventTarget object itself.
@@ -78,7 +78,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Get The number of bytes of the content. Same as Length field.
+     * Get the number of bytes of the content. Same as Length field.
      *
      * @return the size value
      */
@@ -87,7 +87,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Set The number of bytes of the content. Same as Length field.
+     * Set the number of bytes of the content. Same as Length field.
      *
      * @param size the size value to set
      * @return the ContainerRegistryEventTarget object itself.
@@ -98,7 +98,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Get The digest of the content, as defined by the Registry V2 HTTP API Specification.
+     * Get the digest of the content, as defined by the Registry V2 HTTP API Specification.
      *
      * @return the digest value
      */
@@ -107,7 +107,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Set The digest of the content, as defined by the Registry V2 HTTP API Specification.
+     * Set the digest of the content, as defined by the Registry V2 HTTP API Specification.
      *
      * @param digest the digest value to set
      * @return the ContainerRegistryEventTarget object itself.
@@ -118,7 +118,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Get The number of bytes of the content. Same as Size field.
+     * Get the number of bytes of the content. Same as Size field.
      *
      * @return the length value
      */
@@ -127,7 +127,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Set The number of bytes of the content. Same as Size field.
+     * Set the number of bytes of the content. Same as Size field.
      *
      * @param length the length value to set
      * @return the ContainerRegistryEventTarget object itself.
@@ -138,7 +138,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Get The repository name.
+     * Get the repository name.
      *
      * @return the repository value
      */
@@ -147,7 +147,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Set The repository name.
+     * Set the repository name.
      *
      * @param repository the repository value to set
      * @return the ContainerRegistryEventTarget object itself.
@@ -158,7 +158,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Get The direct URL to the content.
+     * Get the direct URL to the content.
      *
      * @return the url value
      */
@@ -167,7 +167,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Set The direct URL to the content.
+     * Set the direct URL to the content.
      *
      * @param url the url value to set
      * @return the ContainerRegistryEventTarget object itself.
@@ -178,7 +178,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Get The tag name.
+     * Get the tag name.
      *
      * @return the tag value
      */
@@ -187,7 +187,7 @@ public class ContainerRegistryEventTarget {
     }
 
     /**
-     * Set The tag name.
+     * Set the tag name.
      *
      * @param tag the tag value to set
      * @return the ContainerRegistryEventTarget object itself.

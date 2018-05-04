@@ -21,7 +21,7 @@ public class DeviceTwinMetadata {
     private String lastUpdated;
 
     /**
-     * Get The ISO8601 timestamp of the last time the properties were updated.
+     * Get the ISO8601 timestamp of the last time the properties were updated.
      *
      * @return the lastUpdated value
      */
@@ -30,7 +30,7 @@ public class DeviceTwinMetadata {
     }
 
     /**
-     * Set The ISO8601 timestamp of the last time the properties were updated.
+     * Set the ISO8601 timestamp of the last time the properties were updated.
      *
      * @param lastUpdated the lastUpdated value to set
      * @return the DeviceTwinMetadata object itself.

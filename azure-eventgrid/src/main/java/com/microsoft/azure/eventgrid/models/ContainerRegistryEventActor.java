@@ -23,7 +23,7 @@ public class ContainerRegistryEventActor {
     private String name;
 
     /**
-     * Get The subject or username associated with the request context that generated the event.
+     * Get the subject or username associated with the request context that generated the event.
      *
      * @return the name value
      */
@@ -32,7 +32,7 @@ public class ContainerRegistryEventActor {
     }
 
     /**
-     * Set The subject or username associated with the request context that generated the event.
+     * Set the subject or username associated with the request context that generated the event.
      *
      * @param name the name value to set
      * @return the ContainerRegistryEventActor object itself.
