@@ -88,7 +88,7 @@ public class DeviceTwinInfo {
     private DeviceTwinInfoX509Thumbprint x509Thumbprint;
 
     /**
-     * Get the authenticationType value.
+     * Get authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
      *
      * @return the authenticationType value
      */
@@ -97,7 +97,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the authenticationType value.
+     * Set authentication type used for this device: either SAS, SelfSigned, or CertificateAuthority.
      *
      * @param authenticationType the authenticationType value to set
      * @return the DeviceTwinInfo object itself.
@@ -108,7 +108,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the cloudToDeviceMessageCount value.
+     * Get count of cloud to device messages sent to this device.
      *
      * @return the cloudToDeviceMessageCount value
      */
@@ -117,7 +117,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the cloudToDeviceMessageCount value.
+     * Set count of cloud to device messages sent to this device.
      *
      * @param cloudToDeviceMessageCount the cloudToDeviceMessageCount value to set
      * @return the DeviceTwinInfo object itself.
@@ -128,7 +128,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the connectionState value.
+     * Get whether the device is connected or disconnected.
      *
      * @return the connectionState value
      */
@@ -137,7 +137,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the connectionState value.
+     * Set whether the device is connected or disconnected.
      *
      * @param connectionState the connectionState value to set
      * @return the DeviceTwinInfo object itself.
@@ -148,7 +148,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the deviceId value.
+     * Get the unique identifier of the device twin.
      *
      * @return the deviceId value
      */
@@ -157,7 +157,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the deviceId value.
+     * Set the unique identifier of the device twin.
      *
      * @param deviceId the deviceId value to set
      * @return the DeviceTwinInfo object itself.
@@ -168,7 +168,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the etag value.
+     * Get a piece of information that describes the content of the device twin. Each etag is guaranteed to be unique per device twin.
      *
      * @return the etag value
      */
@@ -177,7 +177,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the etag value.
+     * Set a piece of information that describes the content of the device twin. Each etag is guaranteed to be unique per device twin.
      *
      * @param etag the etag value to set
      * @return the DeviceTwinInfo object itself.
@@ -188,7 +188,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the lastActivityTime value.
+     * Get the ISO8601 timestamp of the last activity.
      *
      * @return the lastActivityTime value
      */
@@ -197,7 +197,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the lastActivityTime value.
+     * Set the ISO8601 timestamp of the last activity.
      *
      * @param lastActivityTime the lastActivityTime value to set
      * @return the DeviceTwinInfo object itself.
@@ -208,7 +208,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the properties value.
+     * Get properties JSON element.
      *
      * @return the properties value
      */
@@ -217,7 +217,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the properties value.
+     * Set properties JSON element.
      *
      * @param properties the properties value to set
      * @return the DeviceTwinInfo object itself.
@@ -228,7 +228,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the status value.
+     * Get whether the device twin is enabled or disabled.
      *
      * @return the status value
      */
@@ -237,7 +237,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the status value.
+     * Set whether the device twin is enabled or disabled.
      *
      * @param status the status value to set
      * @return the DeviceTwinInfo object itself.
@@ -248,7 +248,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the statusUpdateTime value.
+     * Get the ISO8601 timestamp of the last device twin status update.
      *
      * @return the statusUpdateTime value
      */
@@ -257,7 +257,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the statusUpdateTime value.
+     * Set the ISO8601 timestamp of the last device twin status update.
      *
      * @param statusUpdateTime the statusUpdateTime value to set
      * @return the DeviceTwinInfo object itself.
@@ -268,7 +268,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the version value.
+     * Get an integer that is incremented by one each time the device twin is updated.
      *
      * @return the version value
      */
@@ -277,7 +277,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the version value.
+     * Set an integer that is incremented by one each time the device twin is updated.
      *
      * @param version the version value to set
      * @return the DeviceTwinInfo object itself.
@@ -288,7 +288,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Get the x509Thumbprint value.
+     * Get the thumbprint is a unique value for the x509 certificate, commonly used to find a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically exist in the certificate.
      *
      * @return the x509Thumbprint value
      */
@@ -297,7 +297,7 @@ public class DeviceTwinInfo {
     }
 
     /**
-     * Set the x509Thumbprint value.
+     * Set the thumbprint is a unique value for the x509 certificate, commonly used to find a particular certificate in a certificate store. The thumbprint is dynamically generated using the SHA1 algorithm, and does not physically exist in the certificate.
      *
      * @param x509Thumbprint the x509Thumbprint value to set
      * @return the DeviceTwinInfo object itself.

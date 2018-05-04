@@ -60,7 +60,7 @@ public class ContainerRegistryEventData {
     private ContainerRegistryEventSource source;
 
     /**
-     * Get the id value.
+     * Get the event ID.
      *
      * @return the id value
      */
@@ -69,7 +69,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Set the id value.
+     * Set the event ID.
      *
      * @param id the id value to set
      * @return the ContainerRegistryEventData object itself.
@@ -80,7 +80,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Get the timestamp value.
+     * Get the time at which the event occurred.
      *
      * @return the timestamp value
      */
@@ -89,7 +89,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Set the timestamp value.
+     * Set the time at which the event occurred.
      *
      * @param timestamp the timestamp value to set
      * @return the ContainerRegistryEventData object itself.
@@ -100,7 +100,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Get the action value.
+     * Get the action that encompasses the provided event.
      *
      * @return the action value
      */
@@ -109,7 +109,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Set the action value.
+     * Set the action that encompasses the provided event.
      *
      * @param action the action value to set
      * @return the ContainerRegistryEventData object itself.
@@ -120,7 +120,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Get the target value.
+     * Get the target of the event.
      *
      * @return the target value
      */
@@ -129,7 +129,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Set the target value.
+     * Set the target of the event.
      *
      * @param target the target value to set
      * @return the ContainerRegistryEventData object itself.
@@ -140,7 +140,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Get the request value.
+     * Get the request that generated the event.
      *
      * @return the request value
      */
@@ -149,7 +149,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Set the request value.
+     * Set the request that generated the event.
      *
      * @param request the request value to set
      * @return the ContainerRegistryEventData object itself.
@@ -160,7 +160,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Get the actor value.
+     * Get the agent that initiated the event. For most situations, this could be from the authorization context of the request.
      *
      * @return the actor value
      */
@@ -169,7 +169,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Set the actor value.
+     * Set the agent that initiated the event. For most situations, this could be from the authorization context of the request.
      *
      * @param actor the actor value to set
      * @return the ContainerRegistryEventData object itself.
@@ -180,7 +180,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Get the source value.
+     * Get the registry node that generated the event. Put differently, while the actor initiates the event, the source generates it.
      *
      * @return the source value
      */
@@ -189,7 +189,7 @@ public class ContainerRegistryEventData {
     }
 
     /**
-     * Set the source value.
+     * Set the registry node that generated the event. Put differently, while the actor initiates the event, the source generates it.
      *
      * @param source the source value to set
      * @return the ContainerRegistryEventData object itself.

@@ -48,7 +48,7 @@ public class ContainerRegistryEventRequest {
     private String useragent;
 
     /**
-     * Get the id value.
+     * Get the ID of the request that initiated the event.
      *
      * @return the id value
      */
@@ -57,7 +57,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set the id value.
+     * Set the ID of the request that initiated the event.
      *
      * @param id the id value to set
      * @return the ContainerRegistryEventRequest object itself.
@@ -68,7 +68,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Get the addr value.
+     * Get the IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr from the standard http request.
      *
      * @return the addr value
      */
@@ -77,7 +77,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set the addr value.
+     * Set the IP or hostname and possibly port of the client connection that initiated the event. This is the RemoteAddr from the standard http request.
      *
      * @param addr the addr value to set
      * @return the ContainerRegistryEventRequest object itself.
@@ -88,7 +88,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Get the host value.
+     * Get the externally accessible hostname of the registry instance, as specified by the http host header on incoming requests.
      *
      * @return the host value
      */
@@ -97,7 +97,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set the host value.
+     * Set the externally accessible hostname of the registry instance, as specified by the http host header on incoming requests.
      *
      * @param host the host value to set
      * @return the ContainerRegistryEventRequest object itself.
@@ -108,7 +108,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Get the method value.
+     * Get the request method that generated the event.
      *
      * @return the method value
      */
@@ -117,7 +117,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set the method value.
+     * Set the request method that generated the event.
      *
      * @param method the method value to set
      * @return the ContainerRegistryEventRequest object itself.
@@ -128,7 +128,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Get the useragent value.
+     * Get the user agent header of the request.
      *
      * @return the useragent value
      */
@@ -137,7 +137,7 @@ public class ContainerRegistryEventRequest {
     }
 
     /**
-     * Set the useragent value.
+     * Set the user agent header of the request.
      *
      * @param useragent the useragent value to set
      * @return the ContainerRegistryEventRequest object itself.

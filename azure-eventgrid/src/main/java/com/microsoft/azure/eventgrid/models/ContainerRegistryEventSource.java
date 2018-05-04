@@ -30,7 +30,7 @@ public class ContainerRegistryEventSource {
     private String instanceID;
 
     /**
-     * Get the addr value.
+     * Get the IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved by os.Hostname() along with the running port.
      *
      * @return the addr value
      */
@@ -39,7 +39,7 @@ public class ContainerRegistryEventSource {
     }
 
     /**
-     * Set the addr value.
+     * Set the IP or hostname and the port of the registry node that generated the event. Generally, this will be resolved by os.Hostname() along with the running port.
      *
      * @param addr the addr value to set
      * @return the ContainerRegistryEventSource object itself.
@@ -50,7 +50,7 @@ public class ContainerRegistryEventSource {
     }
 
     /**
-     * Get the instanceID value.
+     * Get the running instance of an application. Changes after each restart.
      *
      * @return the instanceID value
      */
@@ -59,7 +59,7 @@ public class ContainerRegistryEventSource {
     }
 
     /**
-     * Set the instanceID value.
+     * Set the running instance of an application. Changes after each restart.
      *
      * @param instanceID the instanceID value to set
      * @return the ContainerRegistryEventSource object itself.

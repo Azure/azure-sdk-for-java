@@ -64,7 +64,19 @@ public class EventGridEvent {
     private String dataVersion;
 
     /**
-     * Get the id value.
+     * Creates an instance of EventGridEvent class.
+     */
+    public EventGridEvent(String id, String subject, Object data, String eventType, DateTime eventTime, String dataVersion) {
+        this.id = id;
+        this.subject = subject;
+        this.data = data;
+        this.eventType = eventType;
+        this.eventTime = eventTime;
+        this.dataVersion = dataVersion;
+    }
+
+    /**
+     * Get an unique identifier for the event.
      *
      * @return the id value
      */
@@ -73,18 +85,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the EventGridEvent object itself.
-     */
-    public EventGridEvent withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the topic value.
+     * Get the resource path of the event source.
      *
      * @return the topic value
      */
@@ -93,7 +94,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Set the topic value.
+     * Set the resource path of the event source.
      *
      * @param topic the topic value to set
      * @return the EventGridEvent object itself.
@@ -104,7 +105,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Get the subject value.
+     * Get a resource path relative to the topic path.
      *
      * @return the subject value
      */
@@ -113,18 +114,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Set the subject value.
-     *
-     * @param subject the subject value to set
-     * @return the EventGridEvent object itself.
-     */
-    public EventGridEvent withSubject(String subject) {
-        this.subject = subject;
-        return this;
-    }
-
-    /**
-     * Get the data value.
+     * Get event data specific to the event type.
      *
      * @return the data value
      */
@@ -133,18 +123,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Set the data value.
-     *
-     * @param data the data value to set
-     * @return the EventGridEvent object itself.
-     */
-    public EventGridEvent withData(Object data) {
-        this.data = data;
-        return this;
-    }
-
-    /**
-     * Get the eventType value.
+     * Get the type of the event that occurred.
      *
      * @return the eventType value
      */
@@ -153,18 +132,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Set the eventType value.
-     *
-     * @param eventType the eventType value to set
-     * @return the EventGridEvent object itself.
-     */
-    public EventGridEvent withEventType(String eventType) {
-        this.eventType = eventType;
-        return this;
-    }
-
-    /**
-     * Get the eventTime value.
+     * Get the time (in UTC) the event was generated.
      *
      * @return the eventTime value
      */
@@ -173,18 +141,7 @@ public class EventGridEvent {
     }
 
     /**
-     * Set the eventTime value.
-     *
-     * @param eventTime the eventTime value to set
-     * @return the EventGridEvent object itself.
-     */
-    public EventGridEvent withEventTime(DateTime eventTime) {
-        this.eventTime = eventTime;
-        return this;
-    }
-
-    /**
-     * Get the metadataVersion value.
+     * Get the schema version of the event metadata.
      *
      * @return the metadataVersion value
      */
@@ -193,23 +150,12 @@ public class EventGridEvent {
     }
 
     /**
-     * Get the dataVersion value.
+     * Get the schema version of the data object.
      *
      * @return the dataVersion value
      */
     public String dataVersion() {
         return this.dataVersion;
-    }
-
-    /**
-     * Set the dataVersion value.
-     *
-     * @param dataVersion the dataVersion value to set
-     * @return the EventGridEvent object itself.
-     */
-    public EventGridEvent withDataVersion(String dataVersion) {
-        this.dataVersion = dataVersion;
-        return this;
     }
 
 }
