@@ -65,6 +65,12 @@ public class EventGridEvent {
 
     /**
      * Creates an instance of EventGridEvent class.
+     * @param id an unique identifier for the event.
+     * @param subject a resource path relative to the topic path.
+     * @param data event data specific to the event type.
+     * @param eventType the type of the event that occurred.
+     * @param eventTime the time (in UTC) the event was generated.
+     * @param dataVersion the schema version of the data object.
      */
     public EventGridEvent(String id, String subject, Object data, String eventType, DateTime eventTime, String dataVersion) {
         this.id = id;
