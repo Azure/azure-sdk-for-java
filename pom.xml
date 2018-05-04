@@ -14,9 +14,8 @@
     <groupId>com.microsoft.azure</groupId>
     <artifactId>azure-storage-blob</artifactId>
     <version>10.0.0-Preview</version>
-    <packaging>pom</packaging>
 
-    <name>Azure Storage Java Blob</name>
+    <name>Azure Storage Blob</name>
     <description>The Azure Storage Java Blob library.</description>
     <url>https://github.com/Azure/azure-storage-java</url>
 
@@ -46,20 +45,6 @@
         </developer>
     </developers>
 
-    <repositories>
-        <repository>
-            <id>ossrh</id>
-            <name>Sonatype Snapshots</name>
-            <url>https://oss.sonatype.org/content/repositories/snapshots/</url>
-            <layout>default</layout>
-            <snapshots>
-                <enabled>true</enabled>
-                <updatePolicy>always</updatePolicy>
-            </snapshots>
-        </repository>
-    </repositories>
-
-    <dependencyManagement>
         <dependencies>
             <dependency>
                 <groupId>com.microsoft.rest.v2</groupId>
@@ -79,21 +64,15 @@
                 <version>1.1-groovy-2.4</version>
             </dependency>
             <dependency>
-                <groupId>commons-codec</groupId>
-                <artifactId>commons-codec</artifactId>
-                <version>1.10</version>
-            </dependency>
-            <dependency>
                 <groupId>org.codehaus.groovy</groupId>
                 <artifactId>groovy-all</artifactId>
                 <version>2.4.13</version>
                 <scope>test</scope>
             </dependency>
         </dependencies>
-    </dependencyManagement>
 
     <build>
-        <testSourceDirectory>azure-storage/src/test/*</testSourceDirectory>
+        <testSourceDirectory>src/test/groovy</testSourceDirectory>
         <pluginManagement>
             <plugins>
                 <plugin>
@@ -133,7 +112,4 @@
             </plugins>
         </pluginManagement>
     </build>
-    <modules>
-        <module>azure-storage</module>
-    </modules>
 </project>

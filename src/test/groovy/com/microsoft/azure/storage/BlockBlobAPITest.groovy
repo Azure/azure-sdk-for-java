@@ -311,6 +311,5 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | receivedEtag | null        | null
         null     | null       | null         | garbageEtag | null
         null     | null       | null         | null        | receivedLeaseID
-
     }
 }
