@@ -23,8 +23,7 @@ The Azure Storage development team uses Intellij. However, any preferred IDE or 
 The only step to configure testing is to set the appropriate environment variable. Create environment variables named "ACCOUNT_NAME", "ACCOUNT_KEY", "SECONDARY_ACCOUNT_NAME", and "SECONDARY_ACCOUNT_KEY". The first two will be used for most requests. The second two will only be used for tests requiring two accounts.
 
 ### Running
-To actually run tests, right click on the test class in the Package Explorer or the individual test in the Outline and select Run As->GroovyTest. 
-
+To actually run tests, right click on the test class in the Package Explorer or the individual test in the Outline and select Run As->GroovyTest. Alternatively, run mvn test from the command line.
 ### Testing Features
 As you develop a feature, you'll need to write tests to ensure quality. You should also run existing tests related to your change to address any unexpected breaks.
 

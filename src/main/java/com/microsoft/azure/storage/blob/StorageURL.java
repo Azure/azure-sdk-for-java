@@ -123,7 +123,6 @@ public abstract class StorageURL {
         factories.add(new TelemetryFactory(pipelineOptions.telemetryOptions));
         factories.add(new RequestIDFactory());
         factories.add(new RequestRetryFactory(pipelineOptions.requestRetryOptions));
-        factories.add(new AddDatePolicy());
         if (!(credentials instanceof AnonymousCredentials)) {
             factories.add(credentials);
         }
@@ -132,29 +131,5 @@ public abstract class StorageURL {
 
         return HttpPipeline.build(pipelineOptions.client,
                 factories.toArray(new RequestPolicyFactory[factories.size()]));
-    }
-
-    // TODO: revisit.
-    private static class AddDatePolicy implements RequestPolicyFactory {
-
-        @Override
-        public RequestPolicy create(RequestPolicy next, RequestPolicyOptions options) {
-            return new AddDate(next);
-        }
-
-        public final class AddDate implements RequestPolicy {
-
-            private final RequestPolicy next;
-            public AddDate(RequestPolicy next) {
-                this.next = next;
-            }
-
-            @Override
-            public Single<HttpResponse> sendAsync(HttpRequest request) {
-                request.headers().set(Constants.HeaderConstants.DATE,
-                        Utility.RFC1123GMTDateFormatter.format(OffsetDateTime.now()));
-                return this.next.sendAsync(request);
-            }
-        }
     }
 }
