@@ -76,6 +76,12 @@ public class EventGridEvent {
     }
 
     /**
+     * Private constructor for deserialization.
+     */
+    private EventGridEvent() {
+    }
+
+    /**
      * Get an unique identifier for the event.
      *
      * @return the id value
