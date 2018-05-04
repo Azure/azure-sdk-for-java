@@ -127,7 +127,7 @@ public class VisualSearchOptionalParameter {
     * to specify an image. You may specify knowledgeRequest form data and image form data in the same request only if
     * knowledgeRequest form data specifies the cropArea field only  (it must not include an insights token or URL).
     */
-    private InputStream image;
+    private byte[] image;
 
     /**
     * Get the acceptLanguage value.
@@ -197,7 +197,7 @@ public class VisualSearchOptionalParameter {
     *
     * @return the image value
     */
-    public InputStream image() {
+    public byte[] image() {
         return this.image;
     }
 
@@ -376,7 +376,7 @@ public class VisualSearchOptionalParameter {
     * @param image the image value to set
     * @return the visualSearchOptionalParameter object itself.
     */
-    public VisualSearchOptionalParameter withImage(InputStream image) {
+    public VisualSearchOptionalParameter withImage(byte[] image) {
         this.image = image;
         return this;
     }
