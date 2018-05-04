@@ -10,61 +10,61 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The "matchUrlInput operation optional parameters class.
+ * The optional parameters class for "matchUrlInput" method.
  */
 public class MatchUrlInputOptionalParameter {
-        /**
-        * The list Id.
-        */
-        private String listId;
+    /**
+    * The list Id.
+    */
+    private String listId;
 
-        /**
-        * Whether to retain the submitted image for future use; defaults to false if omitted.
-        */
-        private Boolean cacheImage;
+    /**
+    * Whether to retain the submitted image for future use; defaults to false if omitted.
+    */
+    private Boolean cacheImage;
 
-        /**
-        * Get the listId value.
-        *
-        * @return the listId value
-        */
-        public String listId() {
-            return this.listId;
-        }
+    /**
+    * Get the listId value.
+    *
+    * @return the listId value
+    */
+    public String listId() {
+        return this.listId;
+    }
 
-        /**
-        * Get the cacheImage value.
-        *
-        * @return the cacheImage value
-        */
-        public Boolean cacheImage() {
-            return this.cacheImage;
-        }
+    /**
+    * Get the cacheImage value.
+    *
+    * @return the cacheImage value
+    */
+    public Boolean cacheImage() {
+        return this.cacheImage;
+    }
 
-        /**
-        * Set the listId value.
-        * <p>
-        * The list Id.
-        *
-        * @param listId the listId value to set
-        * @return the matchUrlInputOptionalParameter object itself.
-        */
-        public MatchUrlInputOptionalParameter withListId(String listId) {
-            this.listId = listId;
-            return this;
-        }
+    /**
+    * Set the listId value.
+    * <p>
+    * The list Id.
+    *
+    * @param listId the listId value to set
+    * @return the matchUrlInputOptionalParameter object itself.
+    */
+    public MatchUrlInputOptionalParameter withListId(String listId) {
+        this.listId = listId;
+        return this;
+    }
 
-        /**
-        * Set the cacheImage value.
-        * <p>
-        * Whether to retain the submitted image for future use; defaults to false if omitted.
-        *
-        * @param cacheImage the cacheImage value to set
-        * @return the matchUrlInputOptionalParameter object itself.
-        */
-        public MatchUrlInputOptionalParameter withCacheImage(boolean cacheImage) {
-            this.cacheImage = cacheImage;
-            return this;
-        }
+    /**
+    * Set the cacheImage value.
+    * <p>
+    * Whether to retain the submitted image for future use; defaults to false if omitted.
+    *
+    * @param cacheImage the cacheImage value to set
+    * @return the matchUrlInputOptionalParameter object itself.
+    */
+    public MatchUrlInputOptionalParameter withCacheImage(boolean cacheImage) {
+        this.cacheImage = cacheImage;
+        return this;
+    }
 
     }

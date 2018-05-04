@@ -10,34 +10,34 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The "findFaces operation optional parameters class.
+ * The optional parameters class for "findFaces" method.
  */
 public class FindFacesOptionalParameter {
-        /**
-        * Whether to retain the submitted image for future use; defaults to false if omitted.
-        */
-        private Boolean cacheImage;
+    /**
+    * Whether to retain the submitted image for future use; defaults to false if omitted.
+    */
+    private Boolean cacheImage;
 
-        /**
-        * Get the cacheImage value.
-        *
-        * @return the cacheImage value
-        */
-        public Boolean cacheImage() {
-            return this.cacheImage;
-        }
+    /**
+    * Get the cacheImage value.
+    *
+    * @return the cacheImage value
+    */
+    public Boolean cacheImage() {
+        return this.cacheImage;
+    }
 
-        /**
-        * Set the cacheImage value.
-        * <p>
-        * Whether to retain the submitted image for future use; defaults to false if omitted.
-        *
-        * @param cacheImage the cacheImage value to set
-        * @return the findFacesOptionalParameter object itself.
-        */
-        public FindFacesOptionalParameter withCacheImage(boolean cacheImage) {
-            this.cacheImage = cacheImage;
-            return this;
-        }
+    /**
+    * Set the cacheImage value.
+    * <p>
+    * Whether to retain the submitted image for future use; defaults to false if omitted.
+    *
+    * @param cacheImage the cacheImage value to set
+    * @return the findFacesOptionalParameter object itself.
+    */
+    public FindFacesOptionalParameter withCacheImage(boolean cacheImage) {
+        this.cacheImage = cacheImage;
+        return this;
+    }
 
     }

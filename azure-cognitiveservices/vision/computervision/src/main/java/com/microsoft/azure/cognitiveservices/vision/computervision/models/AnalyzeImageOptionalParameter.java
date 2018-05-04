@@ -11,88 +11,106 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 import java.util.List;
 
 /**
- * The "analyzeImage operation optional parameters class.
+ * The optional parameters class for "analyzeImage" method.
  */
 public class AnalyzeImageOptionalParameter {
-        /**
-        * A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-        */
-        private List<VisualFeatureTypes> visualFeatures;
+    /**
+    * A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual
+    * feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags -
+    * tags the image with a detailed list of words related to the image content. Description - describes the image content
+    * with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and
+    * age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color,
+    * and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex
+    * act).  Sexually suggestive content is also detected.
+    */
+    private List<VisualFeatureTypes> visualFeatures;
 
-        /**
-        * A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
-        */
-        private List<Details> details;
+    /**
+    * A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual
+    * feature types include:Celebrities - identifies celebrities if detected in the image.
+    */
+    private List<Details> details;
 
-        /**
-        * A string indicating which language to return. The service will return recognition results in specified language. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'.
-        */
-        private Language1 language;
+    /**
+    * A string indicating which language to return. The service will return recognition results in specified language. If
+    * this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English,
+    * Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'.
+    */
+    private Language1 language;
 
-        /**
-        * Get the visualFeatures value.
-        *
-        * @return the visualFeatures value
-        */
-        public List<VisualFeatureTypes> visualFeatures() {
-            return this.visualFeatures;
-        }
+    /**
+    * Get the visualFeatures value.
+    *
+    * @return the visualFeatures value
+    */
+    public List<VisualFeatureTypes> visualFeatures() {
+        return this.visualFeatures;
+    }
 
-        /**
-        * Get the details value.
-        *
-        * @return the details value
-        */
-        public List<Details> details() {
-            return this.details;
-        }
+    /**
+    * Get the details value.
+    *
+    * @return the details value
+    */
+    public List<Details> details() {
+        return this.details;
+    }
 
-        /**
-        * Get the language value.
-        *
-        * @return the language value
-        */
-        public Language1 language() {
-            return this.language;
-        }
+    /**
+    * Get the language value.
+    *
+    * @return the language value
+    */
+    public Language1 language() {
+        return this.language;
+    }
 
-        /**
-        * Set the visualFeatures value.
-        * <p>
-        * A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags - tags the image with a detailed list of words related to the image content. Description - describes the image content with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color, and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex act).  Sexually suggestive content is also detected.
-        *
-        * @param visualFeatures the visualFeatures value to set
-        * @return the analyzeImageOptionalParameter object itself.
-        */
-        public AnalyzeImageOptionalParameter withVisualFeatures(List<VisualFeatureTypes> visualFeatures) {
-            this.visualFeatures = visualFeatures;
-            return this;
-        }
+    /**
+    * Set the visualFeatures value.
+    * <p>
+    * A string indicating what visual feature types to return. Multiple values should be comma-separated. Valid visual
+    * feature types include:Categories - categorizes image content according to a taxonomy defined in documentation. Tags -
+    * tags the image with a detailed list of words related to the image content. Description - describes the image content
+    * with a complete English sentence. Faces - detects if faces are present. If present, generate coordinates, gender and
+    * age. ImageType - detects if image is clipart or a line drawing. Color - determines the accent color, dominant color,
+    * and whether an image is black&amp;white.Adult - detects if the image is pornographic in nature (depicts nudity or a sex
+    * act).  Sexually suggestive content is also detected.
+    *
+    * @param visualFeatures the visualFeatures value to set
+    * @return the analyzeImageOptionalParameter object itself.
+    */
+    public AnalyzeImageOptionalParameter withVisualFeatures(List<VisualFeatureTypes> visualFeatures) {
+        this.visualFeatures = visualFeatures;
+        return this;
+    }
 
-        /**
-        * Set the details value.
-        * <p>
-        * A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual feature types include:Celebrities - identifies celebrities if detected in the image.
-        *
-        * @param details the details value to set
-        * @return the analyzeImageOptionalParameter object itself.
-        */
-        public AnalyzeImageOptionalParameter withDetails(List<Details> details) {
-            this.details = details;
-            return this;
-        }
+    /**
+    * Set the details value.
+    * <p>
+    * A string indicating which domain-specific details to return. Multiple values should be comma-separated. Valid visual
+    * feature types include:Celebrities - identifies celebrities if detected in the image.
+    *
+    * @param details the details value to set
+    * @return the analyzeImageOptionalParameter object itself.
+    */
+    public AnalyzeImageOptionalParameter withDetails(List<Details> details) {
+        this.details = details;
+        return this;
+    }
 
-        /**
-        * Set the language value.
-        * <p>
-        * A string indicating which language to return. The service will return recognition results in specified language. If this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English, Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'.
-        *
-        * @param language the language value to set
-        * @return the analyzeImageOptionalParameter object itself.
-        */
-        public AnalyzeImageOptionalParameter withLanguage(Language1 language) {
-            this.language = language;
-            return this;
-        }
+    /**
+    * Set the language value.
+    * <p>
+    * A string indicating which language to return. The service will return recognition results in specified language. If
+    * this parameter is not specified, the default value is &amp;quot;en&amp;quot;.Supported languages:en - English,
+    * Default.zh - Simplified Chinese. Possible values include: 'en', 'zh'.
+    *
+    * @param language the language value to set
+    * @return the analyzeImageOptionalParameter object itself.
+    */
+    public AnalyzeImageOptionalParameter withLanguage(Language1 language) {
+        this.language = language;
+        return this;
+    }
 
     }

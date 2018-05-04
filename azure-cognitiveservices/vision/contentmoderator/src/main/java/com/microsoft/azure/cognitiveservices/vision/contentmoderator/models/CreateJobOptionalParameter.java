@@ -10,34 +10,34 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The "createJob operation optional parameters class.
+ * The optional parameters class for "createJob" method.
  */
 public class CreateJobOptionalParameter {
-        /**
-        * Callback endpoint for posting the create job result.
-        */
-        private String callBackEndpoint;
+    /**
+    * Callback endpoint for posting the create job result.
+    */
+    private String callBackEndpoint;
 
-        /**
-        * Get the callBackEndpoint value.
-        *
-        * @return the callBackEndpoint value
-        */
-        public String callBackEndpoint() {
-            return this.callBackEndpoint;
-        }
+    /**
+    * Get the callBackEndpoint value.
+    *
+    * @return the callBackEndpoint value
+    */
+    public String callBackEndpoint() {
+        return this.callBackEndpoint;
+    }
 
-        /**
-        * Set the callBackEndpoint value.
-        * <p>
-        * Callback endpoint for posting the create job result.
-        *
-        * @param callBackEndpoint the callBackEndpoint value to set
-        * @return the createJobOptionalParameter object itself.
-        */
-        public CreateJobOptionalParameter withCallBackEndpoint(String callBackEndpoint) {
-            this.callBackEndpoint = callBackEndpoint;
-            return this;
-        }
+    /**
+    * Set the callBackEndpoint value.
+    * <p>
+    * Callback endpoint for posting the create job result.
+    *
+    * @param callBackEndpoint the callBackEndpoint value to set
+    * @return the createJobOptionalParameter object itself.
+    */
+    public CreateJobOptionalParameter withCallBackEndpoint(String callBackEndpoint) {
+        this.callBackEndpoint = callBackEndpoint;
+        return this;
+    }
 
     }

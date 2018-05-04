@@ -10,34 +10,36 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
 
 /**
- * The "recognizeText operation optional parameters class.
+ * The optional parameters class for "recognizeText" method.
  */
 public class RecognizeTextOptionalParameter {
-        /**
-        * If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified, printed text recognition is performed.
-        */
-        private Boolean detectHandwriting;
+    /**
+    * If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified,
+    * printed text recognition is performed.
+    */
+    private Boolean detectHandwriting;
 
-        /**
-        * Get the detectHandwriting value.
-        *
-        * @return the detectHandwriting value
-        */
-        public Boolean detectHandwriting() {
-            return this.detectHandwriting;
-        }
+    /**
+    * Get the detectHandwriting value.
+    *
+    * @return the detectHandwriting value
+    */
+    public Boolean detectHandwriting() {
+        return this.detectHandwriting;
+    }
 
-        /**
-        * Set the detectHandwriting value.
-        * <p>
-        * If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified, printed text recognition is performed.
-        *
-        * @param detectHandwriting the detectHandwriting value to set
-        * @return the recognizeTextOptionalParameter object itself.
-        */
-        public RecognizeTextOptionalParameter withDetectHandwriting(boolean detectHandwriting) {
-            this.detectHandwriting = detectHandwriting;
-            return this;
-        }
+    /**
+    * Set the detectHandwriting value.
+    * <p>
+    * If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified,
+    * printed text recognition is performed.
+    *
+    * @param detectHandwriting the detectHandwriting value to set
+    * @return the recognizeTextOptionalParameter object itself.
+    */
+    public RecognizeTextOptionalParameter withDetectHandwriting(boolean detectHandwriting) {
+        this.detectHandwriting = detectHandwriting;
+        return this;
+    }
 
     }

@@ -10,34 +10,34 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
 
 /**
- * The "describeImageInStream operation optional parameters class.
+ * The optional parameters class for "describeImageInStream" method.
  */
 public class DescribeImageInStreamOptionalParameter {
-        /**
-        * Maximum number of candidate descriptions to be returned.  The default is 1.
-        */
-        private String maxCandidates;
+    /**
+    * Maximum number of candidate descriptions to be returned.  The default is 1.
+    */
+    private String maxCandidates;
 
-        /**
-        * Get the maxCandidates value.
-        *
-        * @return the maxCandidates value
-        */
-        public String maxCandidates() {
-            return this.maxCandidates;
-        }
+    /**
+    * Get the maxCandidates value.
+    *
+    * @return the maxCandidates value
+    */
+    public String maxCandidates() {
+        return this.maxCandidates;
+    }
 
-        /**
-        * Set the maxCandidates value.
-        * <p>
-        * Maximum number of candidate descriptions to be returned.  The default is 1.
-        *
-        * @param maxCandidates the maxCandidates value to set
-        * @return the describeImageInStreamOptionalParameter object itself.
-        */
-        public DescribeImageInStreamOptionalParameter withMaxCandidates(String maxCandidates) {
-            this.maxCandidates = maxCandidates;
-            return this;
-        }
+    /**
+    * Set the maxCandidates value.
+    * <p>
+    * Maximum number of candidate descriptions to be returned.  The default is 1.
+    *
+    * @param maxCandidates the maxCandidates value to set
+    * @return the describeImageInStreamOptionalParameter object itself.
+    */
+    public DescribeImageInStreamOptionalParameter withMaxCandidates(String maxCandidates) {
+        this.maxCandidates = maxCandidates;
+        return this;
+    }
 
     }

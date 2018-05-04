@@ -10,34 +10,34 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The "addVideoFrame operation optional parameters class.
+ * The optional parameters class for "addVideoFrame" method.
  */
 public class AddVideoFrameOptionalParameter {
-        /**
-        * Timescale of the video you are adding frames to.
-        */
-        private Integer timescale;
+    /**
+    * Timescale of the video you are adding frames to.
+    */
+    private Integer timescale;
 
-        /**
-        * Get the timescale value.
-        *
-        * @return the timescale value
-        */
-        public Integer timescale() {
-            return this.timescale;
-        }
+    /**
+    * Get the timescale value.
+    *
+    * @return the timescale value
+    */
+    public Integer timescale() {
+        return this.timescale;
+    }
 
-        /**
-        * Set the timescale value.
-        * <p>
-        * Timescale of the video you are adding frames to.
-        *
-        * @param timescale the timescale value to set
-        * @return the addVideoFrameOptionalParameter object itself.
-        */
-        public AddVideoFrameOptionalParameter withTimescale(int timescale) {
-            this.timescale = timescale;
-            return this;
-        }
+    /**
+    * Set the timescale value.
+    * <p>
+    * Timescale of the video you are adding frames to.
+    *
+    * @param timescale the timescale value to set
+    * @return the addVideoFrameOptionalParameter object itself.
+    */
+    public AddVideoFrameOptionalParameter withTimescale(int timescale) {
+        this.timescale = timescale;
+        return this;
+    }
 
     }

@@ -10,61 +10,61 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The "addImageFileInput operation optional parameters class.
+ * The optional parameters class for "addImageFileInput" method.
  */
 public class AddImageFileInputOptionalParameter {
-        /**
-        * Tag for the image.
-        */
-        private Integer tag;
+    /**
+    * Tag for the image.
+    */
+    private Integer tag;
 
-        /**
-        * The image label.
-        */
-        private String label;
+    /**
+    * The image label.
+    */
+    private String label;
 
-        /**
-        * Get the tag value.
-        *
-        * @return the tag value
-        */
-        public Integer tag() {
-            return this.tag;
-        }
+    /**
+    * Get the tag value.
+    *
+    * @return the tag value
+    */
+    public Integer tag() {
+        return this.tag;
+    }
 
-        /**
-        * Get the label value.
-        *
-        * @return the label value
-        */
-        public String label() {
-            return this.label;
-        }
+    /**
+    * Get the label value.
+    *
+    * @return the label value
+    */
+    public String label() {
+        return this.label;
+    }
 
-        /**
-        * Set the tag value.
-        * <p>
-        * Tag for the image.
-        *
-        * @param tag the tag value to set
-        * @return the addImageFileInputOptionalParameter object itself.
-        */
-        public AddImageFileInputOptionalParameter withTag(int tag) {
-            this.tag = tag;
-            return this;
-        }
+    /**
+    * Set the tag value.
+    * <p>
+    * Tag for the image.
+    *
+    * @param tag the tag value to set
+    * @return the addImageFileInputOptionalParameter object itself.
+    */
+    public AddImageFileInputOptionalParameter withTag(int tag) {
+        this.tag = tag;
+        return this;
+    }
 
-        /**
-        * Set the label value.
-        * <p>
-        * The image label.
-        *
-        * @param label the label value to set
-        * @return the addImageFileInputOptionalParameter object itself.
-        */
-        public AddImageFileInputOptionalParameter withLabel(String label) {
-            this.label = label;
-            return this;
-        }
+    /**
+    * Set the label value.
+    * <p>
+    * The image label.
+    *
+    * @param label the label value to set
+    * @return the addImageFileInputOptionalParameter object itself.
+    */
+    public AddImageFileInputOptionalParameter withLabel(String label) {
+        this.label = label;
+        return this;
+    }
 
     }

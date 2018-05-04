@@ -9,34 +9,34 @@
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 /**
- * The "createVideoReviews operation optional parameters class.
+ * The optional parameters class for "createVideoReviews" method.
  */
 public class CreateVideoReviewsOptionalParameter {
-        /**
-        * SubTeam of your team, you want to assign the created review to.
-        */
-        private String subTeam;
+    /**
+    * SubTeam of your team, you want to assign the created review to.
+    */
+    private String subTeam;
 
-        /**
-        * Get the subTeam value.
-        *
-        * @return the subTeam value
-        */
-        public String subTeam() {
-            return this.subTeam;
-        }
+    /**
+    * Get the subTeam value.
+    *
+    * @return the subTeam value
+    */
+    public String subTeam() {
+        return this.subTeam;
+    }
 
-        /**
-        * Set the subTeam value.
-        * <p>
-        * SubTeam of your team, you want to assign the created review to.
-        *
-        * @param subTeam the subTeam value to set
-        * @return the createVideoReviewsOptionalParameter object itself.
-        */
-        public CreateVideoReviewsOptionalParameter withSubTeam(String subTeam) {
-            this.subTeam = subTeam;
-            return this;
-        }
+    /**
+    * Set the subTeam value.
+    * <p>
+    * SubTeam of your team, you want to assign the created review to.
+    *
+    * @param subTeam the subTeam value to set
+    * @return the createVideoReviewsOptionalParameter object itself.
+    */
+    public CreateVideoReviewsOptionalParameter withSubTeam(String subTeam) {
+        this.subTeam = subTeam;
+        return this;
+    }
 
     }

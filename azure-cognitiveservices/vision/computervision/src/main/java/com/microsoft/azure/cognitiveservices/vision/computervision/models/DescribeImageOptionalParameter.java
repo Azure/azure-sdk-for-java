@@ -10,34 +10,34 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 
 
 /**
- * The "describeImage operation optional parameters class.
+ * The optional parameters class for "describeImage" method.
  */
 public class DescribeImageOptionalParameter {
-        /**
-        * Maximum number of candidate descriptions to be returned.  The default is 1.
-        */
-        private String maxCandidates;
+    /**
+    * Maximum number of candidate descriptions to be returned.  The default is 1.
+    */
+    private String maxCandidates;
 
-        /**
-        * Get the maxCandidates value.
-        *
-        * @return the maxCandidates value
-        */
-        public String maxCandidates() {
-            return this.maxCandidates;
-        }
+    /**
+    * Get the maxCandidates value.
+    *
+    * @return the maxCandidates value
+    */
+    public String maxCandidates() {
+        return this.maxCandidates;
+    }
 
-        /**
-        * Set the maxCandidates value.
-        * <p>
-        * Maximum number of candidate descriptions to be returned.  The default is 1.
-        *
-        * @param maxCandidates the maxCandidates value to set
-        * @return the describeImageOptionalParameter object itself.
-        */
-        public DescribeImageOptionalParameter withMaxCandidates(String maxCandidates) {
-            this.maxCandidates = maxCandidates;
-            return this;
-        }
+    /**
+    * Set the maxCandidates value.
+    * <p>
+    * Maximum number of candidate descriptions to be returned.  The default is 1.
+    *
+    * @param maxCandidates the maxCandidates value to set
+    * @return the describeImageOptionalParameter object itself.
+    */
+    public DescribeImageOptionalParameter withMaxCandidates(String maxCandidates) {
+        this.maxCandidates = maxCandidates;
+        return this;
+    }
 
     }
