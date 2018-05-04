@@ -55,17 +55,17 @@ public class EventGridTests {
 
         for (int i = 0; i < 10; i++)
         {
-            eventsList.add(new EventGridEvent()
-                    .withId(UUID.randomUUID().toString())
-                    .withData(new HashMap<String, String>() {{
+            eventsList.add(new EventGridEvent(
+                    UUID.randomUUID().toString(),
+                    "TestSubject",
+                    new HashMap<String, String>() {{
                         put("Field1", "Value1");
                         put("Field2", "Value2");
                         put("Field3", "Value3");
-                    }})
-                    .withEventTime(DateTime.now())
-                    .withEventType("Microsoft.MockPublisher.TestEvent")
-                    .withSubject("TestSubject")
-                    .withDataVersion("1.0"));
+                    }},
+                    "Microsoft.MockPublisher.TestEvent",
+                    DateTime.now(),
+                    "1.0"));
         }
         return eventsList;
     }
