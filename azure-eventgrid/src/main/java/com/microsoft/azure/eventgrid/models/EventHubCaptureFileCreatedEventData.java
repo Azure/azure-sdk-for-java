@@ -71,7 +71,7 @@ public class EventHubCaptureFileCreatedEventData {
     private DateTime lastEnqueueTime;
 
     /**
-     * Get the fileurl value.
+     * Get The path to the capture file.
      *
      * @return the fileurl value
      */
@@ -80,7 +80,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Set the fileurl value.
+     * Set The path to the capture file.
      *
      * @param fileurl the fileurl value to set
      * @return the EventHubCaptureFileCreatedEventData object itself.
@@ -91,7 +91,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Get the fileType value.
+     * Get The file type of the capture file.
      *
      * @return the fileType value
      */
@@ -100,7 +100,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Set the fileType value.
+     * Set The file type of the capture file.
      *
      * @param fileType the fileType value to set
      * @return the EventHubCaptureFileCreatedEventData object itself.
@@ -111,7 +111,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Get the partitionId value.
+     * Get The shard ID.
      *
      * @return the partitionId value
      */
@@ -120,7 +120,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Set the partitionId value.
+     * Set The shard ID.
      *
      * @param partitionId the partitionId value to set
      * @return the EventHubCaptureFileCreatedEventData object itself.
@@ -131,7 +131,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Get the sizeInBytes value.
+     * Get The file size.
      *
      * @return the sizeInBytes value
      */
@@ -140,7 +140,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Set the sizeInBytes value.
+     * Set The file size.
      *
      * @param sizeInBytes the sizeInBytes value to set
      * @return the EventHubCaptureFileCreatedEventData object itself.
@@ -151,7 +151,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Get the eventCount value.
+     * Get The number of events in the file.
      *
      * @return the eventCount value
      */
@@ -160,7 +160,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Set the eventCount value.
+     * Set The number of events in the file.
      *
      * @param eventCount the eventCount value to set
      * @return the EventHubCaptureFileCreatedEventData object itself.
@@ -171,7 +171,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Get the firstSequenceNumber value.
+     * Get The smallest sequence number from the queue.
      *
      * @return the firstSequenceNumber value
      */
@@ -180,7 +180,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Set the firstSequenceNumber value.
+     * Set The smallest sequence number from the queue.
      *
      * @param firstSequenceNumber the firstSequenceNumber value to set
      * @return the EventHubCaptureFileCreatedEventData object itself.
@@ -191,7 +191,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Get the lastSequenceNumber value.
+     * Get The last sequence number from the queue.
      *
      * @return the lastSequenceNumber value
      */
@@ -200,7 +200,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Set the lastSequenceNumber value.
+     * Set The last sequence number from the queue.
      *
      * @param lastSequenceNumber the lastSequenceNumber value to set
      * @return the EventHubCaptureFileCreatedEventData object itself.
@@ -211,7 +211,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Get the firstEnqueueTime value.
+     * Get The first time from the queue.
      *
      * @return the firstEnqueueTime value
      */
@@ -220,7 +220,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Set the firstEnqueueTime value.
+     * Set The first time from the queue.
      *
      * @param firstEnqueueTime the firstEnqueueTime value to set
      * @return the EventHubCaptureFileCreatedEventData object itself.
@@ -231,7 +231,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Get the lastEnqueueTime value.
+     * Get The last time from the queue.
      *
      * @return the lastEnqueueTime value
      */
@@ -240,7 +240,7 @@ public class EventHubCaptureFileCreatedEventData {
     }
 
     /**
-     * Set the lastEnqueueTime value.
+     * Set The last time from the queue.
      *
      * @param lastEnqueueTime the lastEnqueueTime value to set
      * @return the EventHubCaptureFileCreatedEventData object itself.

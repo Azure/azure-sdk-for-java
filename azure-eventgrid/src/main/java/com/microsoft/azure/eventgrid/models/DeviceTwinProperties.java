@@ -28,7 +28,7 @@ public class DeviceTwinProperties {
     private Double version;
 
     /**
-     * Get the metadata value.
+     * Get Metadata information for the properties JSON document.
      *
      * @return the metadata value
      */
@@ -37,7 +37,7 @@ public class DeviceTwinProperties {
     }
 
     /**
-     * Set the metadata value.
+     * Set Metadata information for the properties JSON document.
      *
      * @param metadata the metadata value to set
      * @return the DeviceTwinProperties object itself.
@@ -48,7 +48,7 @@ public class DeviceTwinProperties {
     }
 
     /**
-     * Get the version value.
+     * Get Version of device twin properties.
      *
      * @return the version value
      */
@@ -57,7 +57,7 @@ public class DeviceTwinProperties {
     }
 
     /**
-     * Set the version value.
+     * Set Version of device twin properties.
      *
      * @param version the version value to set
      * @return the DeviceTwinProperties object itself.

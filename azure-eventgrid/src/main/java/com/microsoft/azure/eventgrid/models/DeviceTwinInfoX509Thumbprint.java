@@ -30,7 +30,7 @@ public class DeviceTwinInfoX509Thumbprint {
     private String secondaryThumbprint;
 
     /**
-     * Get the primaryThumbprint value.
+     * Get Primary thumbprint for the x509 certificate.
      *
      * @return the primaryThumbprint value
      */
@@ -39,7 +39,7 @@ public class DeviceTwinInfoX509Thumbprint {
     }
 
     /**
-     * Set the primaryThumbprint value.
+     * Set Primary thumbprint for the x509 certificate.
      *
      * @param primaryThumbprint the primaryThumbprint value to set
      * @return the DeviceTwinInfoX509Thumbprint object itself.
@@ -50,7 +50,7 @@ public class DeviceTwinInfoX509Thumbprint {
     }
 
     /**
-     * Get the secondaryThumbprint value.
+     * Get Secondary thumbprint for the x509 certificate.
      *
      * @return the secondaryThumbprint value
      */
@@ -59,7 +59,7 @@ public class DeviceTwinInfoX509Thumbprint {
     }
 
     /**
-     * Set the secondaryThumbprint value.
+     * Set Secondary thumbprint for the x509 certificate.
      *
      * @param secondaryThumbprint the secondaryThumbprint value to set
      * @return the DeviceTwinInfoX509Thumbprint object itself.

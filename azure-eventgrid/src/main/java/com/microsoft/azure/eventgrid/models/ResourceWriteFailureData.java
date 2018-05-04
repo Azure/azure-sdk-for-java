@@ -83,7 +83,7 @@ public class ResourceWriteFailureData {
     private String httpRequest;
 
     /**
-     * Get the tenantId value.
+     * Get The tenant ID of the resource.
      *
      * @return the tenantId value
      */
@@ -92,7 +92,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the tenantId value.
+     * Set The tenant ID of the resource.
      *
      * @param tenantId the tenantId value to set
      * @return the ResourceWriteFailureData object itself.
@@ -103,7 +103,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the subscriptionId value.
+     * Get The subscription ID of the resource.
      *
      * @return the subscriptionId value
      */
@@ -112,7 +112,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the subscriptionId value.
+     * Set The subscription ID of the resource.
      *
      * @param subscriptionId the subscriptionId value to set
      * @return the ResourceWriteFailureData object itself.
@@ -123,7 +123,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the resourceGroup value.
+     * Get The resource group of the resource.
      *
      * @return the resourceGroup value
      */
@@ -132,7 +132,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the resourceGroup value.
+     * Set The resource group of the resource.
      *
      * @param resourceGroup the resourceGroup value to set
      * @return the ResourceWriteFailureData object itself.
@@ -143,7 +143,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the resourceProvider value.
+     * Get The resource provider performing the operation.
      *
      * @return the resourceProvider value
      */
@@ -152,7 +152,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the resourceProvider value.
+     * Set The resource provider performing the operation.
      *
      * @param resourceProvider the resourceProvider value to set
      * @return the ResourceWriteFailureData object itself.
@@ -163,7 +163,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the resourceUri value.
+     * Get The URI of the resource in the operation.
      *
      * @return the resourceUri value
      */
@@ -172,7 +172,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the resourceUri value.
+     * Set The URI of the resource in the operation.
      *
      * @param resourceUri the resourceUri value to set
      * @return the ResourceWriteFailureData object itself.
@@ -183,7 +183,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the operationName value.
+     * Get The operation that was performed.
      *
      * @return the operationName value
      */
@@ -192,7 +192,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the operationName value.
+     * Set The operation that was performed.
      *
      * @param operationName the operationName value to set
      * @return the ResourceWriteFailureData object itself.
@@ -203,7 +203,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the status value.
+     * Get The status of the operation.
      *
      * @return the status value
      */
@@ -212,7 +212,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the status value.
+     * Set The status of the operation.
      *
      * @param status the status value to set
      * @return the ResourceWriteFailureData object itself.
@@ -223,7 +223,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the authorization value.
+     * Get The requested authorization for the operation.
      *
      * @return the authorization value
      */
@@ -232,7 +232,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the authorization value.
+     * Set The requested authorization for the operation.
      *
      * @param authorization the authorization value to set
      * @return the ResourceWriteFailureData object itself.
@@ -243,7 +243,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the claims value.
+     * Get The properties of the claims.
      *
      * @return the claims value
      */
@@ -252,7 +252,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the claims value.
+     * Set The properties of the claims.
      *
      * @param claims the claims value to set
      * @return the ResourceWriteFailureData object itself.
@@ -263,7 +263,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the correlationId value.
+     * Get An operation ID used for troubleshooting.
      *
      * @return the correlationId value
      */
@@ -272,7 +272,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the correlationId value.
+     * Set An operation ID used for troubleshooting.
      *
      * @param correlationId the correlationId value to set
      * @return the ResourceWriteFailureData object itself.
@@ -283,7 +283,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Get the httpRequest value.
+     * Get The details of the operation.
      *
      * @return the httpRequest value
      */
@@ -292,7 +292,7 @@ public class ResourceWriteFailureData {
     }
 
     /**
-     * Set the httpRequest value.
+     * Set The details of the operation.
      *
      * @param httpRequest the httpRequest value to set
      * @return the ResourceWriteFailureData object itself.
