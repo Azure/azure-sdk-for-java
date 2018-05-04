@@ -1,23 +1,24 @@
 # Microsoft Azure Storage SDK for Java
 
-This project provides a client library in Java that makes it easy to consume Microsoft Azure Storage services. For documentation please see the Microsoft Azure [Java Developer Center](http://azure.microsoft.com/en-us/develop/java/) and the [JavaDocs](http://azure.github.io/azure-storage-java/).
+This project provides a client library in Java that makes it easy to consume Microsoft Azure Storage services. For documentation please see the [Storage API doc page](https://docs.microsoft.com/en-us/java/api/overview/azure/storage) and the generated [javadoc](http://azure.github.io/azure-storage-java/).
+Please note that this version of the library is a compete overhaul of the current Azure Storage Java Client Library, and is based on the new Storage SDK architecture, also referred to as V10.
 
 > If you are looking for the Azure Storage Android SDK, please visit [https://github.com/Azure/azure-storage-android](https://github.com/Azure/azure-storage-android).
+
+## Migrating to V10
+
+Migrating to the newest version of the SDK will require a substantial rewrite of any component that interfaces with Azure Storage. Despite this, we feel the benefits offered by this new design are worth it, and we are happy to help with the transition! Please refer to the wiki for information on the core ideas behind the new design and best practices on how to use it effectively.
 
 # Features
   * Blob
       * Create/Read/Update/Delete containers
       * Create/Read/Update/Delete blobs
-      * Advanced Blob Operations
-  * Queue
-      * Create/Delete Queues
-      * Insert/Peek Queue Messages
-      * Advanced Queue Operations
-  * Table
-      * Create/Read/Update/Delete tables
-      * Create/Read/Update/Delete entities
-      * Batch operations
-      * Advanced Table Operations
+      * Advanced Blob Operations wrapped in the TransferManager class
+  * Features new to V10
+      * Asynchronous I/O for all operations using the [ReactiveX](https://github.com/ReactiveX/RxJava) framework
+      * HttpPipeline which enables a high degree of per-request configurability and guaranteed thread safety
+          * Please see the wiki for more information
+      * 1-to-1 correlation with the Storage REST API for clarity and simplicity
 
 # Getting Started
 
@@ -29,8 +30,8 @@ To get the binaries of this library as distributed by Microsoft, ready for use w
 ```xml
 <dependency>
 	<groupId>com.microsoft.azure</groupId>
-	<artifactId>azure-storage</artifactId>
-	<version>7.0.0</version>
+	<artifactId>azure-storage-blob</artifactId>
+	<version>10.0.0-Preview</version>
 </dependency>
 ```
 
@@ -40,82 +41,126 @@ To get the source code of the SDK via git just type:
 
     git clone git://github.com/Azure/azure-storage-java.git
     cd ./azure-storage-java
+    git checkout New-Storage-SDK-V10-Preview
     mvn compile
 
 ### Option 3: Source Zip
 
-To download a copy of the source code, click "Download ZIP" on the right side of the page or click [here](https://github.com/Azure/azure-storage-java/archive/master.zip). Unzip and navigate to the microsoft-azure-storage folder.
+To download a copy of the source code, use the drop down menu on the left to select the branch New-Storage-SDK-V10-Preview and click "Download ZIP" on the right side of the page or click [here](https://github.com/Azure/azure-storage-java/archive/master.zip). Unzip and navigate to the microsoft-azure-storage folder.
 
 ## Minimum Requirements
 
-* Java 1.6+
-* [Jackson-Core](https://github.com/FasterXML/jackson-core) is used for JSON parsing. 
-* (Optional) [SLF4J](http://www.slf4j.org/) is a logging facade.
-* (Optional) [SLF4J binding](http://www.slf4j.org/manual.html) is used to associate a specific logging framework with SLF4J.
+* Java 1.8+
+* [Jackson-Core](https://github.com/FasterXML/jackson-core) is used for JSON and XML parsing. 
+* [ReactiveX](https://github.com/ReactiveX/RxJava) is used for reactive, asynchronous IO operations.
+* [Autorest-runtime](https://github.com/Azure/autorest-clientruntime-for-java) is used to interact with auto-generated code.
 * (Optional) Maven
 
-The two dependencies, [Jackson-Core](https://github.com/FasterXML/jackson-core) and [SLF4J](http://www.slf4j.org/), will be added automatically if Maven is used. Otherwise, please download the jars and add them to your build path. 
-
-SLF4J is only needed if you enable logging through the OperationContext class. If you plan to use logging, please also download an [SLF4J binding](http://repo2.maven.org/maven2/org/slf4j/) which will link the SLF4J API with the logging implementation of your choice. Simple is a good default. See the [SLF4J user manual](http://www.slf4j.org/manual.html) for more information.
+The three dependencies, [Jackson-Core](https://github.com/FasterXML/jackson-core), [ReactiveX](https://github.com/ReactiveX/RxJava), and [Autorest-runtime](https://github.com/Azure/autorest-clientruntime-for-java), will be added automatically if Maven is used. Otherwise, please download the jars and add them to your build path. 
 
 ## Usage
 
-To use this SDK to call Microsoft Azure storage services, you need to first [create an account](https://account.windowsazure.com/signup).
+To use this SDK to call Microsoft Azure storage services, you need to first [create an account](https://azure.microsoft.com/free).
 
-Samples are provided in the microsoft-azure-storage-samples folder. The unit tests in microsoft-azure-storage-test can also be helpful.
+Samples are provided in azure-storage/src/test/groovy/com/microsoft/azure/storage/Samples.java. The unit tests in the same directory can also be helpful.
 
 ## Code Sample
 
-The following is a quick example on how to upload a file to azure blob and download it back. You may also download and view the samples in the microsoft-azure-storage-samples folder. For additional information on using the client libraries to access Azure services see the How To guides for [blobs](http://azure.microsoft.com/en-us/documentation/articles/storage-java-how-to-use-blob-storage/), [queues](http://azure.microsoft.com/en-us/documentation/articles/storage-java-how-to-use-queue-storage/), [tables](http://azure.microsoft.com/en-us/documentation/articles/storage-java-how-to-use-table-storage/) and the [general documentation](http://azure.microsoft.com/en-us/develop/java/).
+The following is a quick example on how to upload some data to an azure blob and download it back. You may also run the samples in azure-storage/src/test/groovy/com/microsoft/azure/storage/Samples.java. For additional information on using the client libraries to access Azure services see the How To guides for [blobs](http://azure.microsoft.com/en-us/documentation/articles/storage-java-how-to-use-blob-storage/) and the [general documentation](http://azure.microsoft.com/en-us/develop/java/).
 
 ```java
-import java.io.*;
+public class Sample {
+    /**
+     * This example shows how to start using the Azure Storage Blob SDK for Java.
+     */
+    public void basicExample() throws InvalidKeyException, MalformedURLException {
+        // From the Azure portal, get your Storage account's name and account key.
+        String accountName = getAccountName();
+        String accountKey = getAccountKey();
 
-import com.microsoft.azure.storage.*;
-import com.microsoft.azure.storage.blob.*;
+        // Use your Storage account's name and key to create a credential object; this is used to access your account.
+        SharedKeyCredentials credential = new SharedKeyCredentials(accountName, accountKey);
 
-public class BlobSample {
-	public static final String storageConnectionString =
-		"DefaultEndpointsProtocol=http;"
-		+ "AccountName=your_account_name;"
-		+ "AccountKey= your_account_key";
+        /*
+        Create a request pipeline that is used to process HTTP(S) requests and responses. It requires your accont
+        credentials. In more advanced scenarios, you can configure telemetry, retry policies, logging, and other
+        options. Also you can configure multiple pipelines for different scenarios.
+         */
+        HttpPipeline pipeline = StorageURL.createPipeline(credential, new PipelineOptions());
 
-	public static void main(String[] args) {
-		try {
-			CloudStorageAccount account = CloudStorageAccount.parse(storageConnectionString);
-            CloudBlobClient serviceClient = account.createCloudBlobClient();
+        /*
+        From the Azure portal, get your Storage account blob service URL endpoint.
+        The URL typically looks like this:
+         */
+        URL u = new URL(String.format(Locale.ROOT, "https://%s.blob.core.windows.net", accountName));
 
-            // Container name must be lower case.
-            CloudBlobContainer container = serviceClient.getContainerReference("myimages");
-            container.createIfNotExists();
+        // Create a ServiceURL objet that wraps the service URL and a request pipeline.
+        ServiceURL serviceURL = new ServiceURL(u, pipeline);
 
-            // Upload an image file.
-            CloudBlockBlob blob = container.getBlockBlobReference("image1.jpg");
-            File sourceFile = new File("c:\\myimages\\image1.jpg");
-            blob.upload(new FileInputStream(sourceFile), sourceFile.length());
+        // Now you can use the ServiceURL to perform various container and blob operations.
 
-            // Download the image file.
-            File destinationFile = new File(sourceFile.getParentFile(), "image1Download.tmp");
-            blob.downloadToFile(destinationFile.getAbsolutePath());
-        }
-        catch (FileNotFoundException fileNotFoundException) {
-            System.out.print("FileNotFoundException encountered: ");
-            System.out.println(fileNotFoundException.getMessage());
-            System.exit(-1);
-        }
-        catch (StorageException storageException) {
-            System.out.print("StorageException encountered: ");
-            System.out.println(storageException.getMessage());
-            System.exit(-1);
-        }
-        catch (Exception e) {
-            System.out.print("Exception encountered: ");
-            System.out.println(e.getMessage());
-            System.exit(-1);
-        }
-	}
+        // This example shows several common operations just to get you started.
+
+        /*
+        Create a URL that references a to-be-created container in your Azure Storage account. This returns a
+        ContainerURL object that wraps the container's URL and a request pipeline (inherited from serviceURL).
+        Note that container names require lowercase.
+         */
+        ContainerURL containerURL = serviceURL.createContainerURL("myjavacontainerbasic");
+
+        /*
+        Create a URL that references a to-be-created blob in your Azure Storage account's container.
+        This returns a BlockBlobURL object that wraps the blob's URl and a request pipeline
+        (inherited from containerURL). Note that blob names can be mixed case.
+         */
+        BlockBlobURL blobURL = containerURL.createBlockBlobURL("HelloWorld.txt");
+
+        String data = "Hello world!";
+
+        // Create the container on the service (with no metadata and no public access)
+        containerURL.create(null, null)
+                .flatMap(containersCreateResponse ->
+                        /*
+                         Create the blob with string (plain text) content.
+                         NOTE: It is imperative that the provided length matches the actual length exactly.
+                         */
+                        blobURL.upload(Flowable.just(ByteBuffer.wrap(data.getBytes())), data.length(),
+                                null, null, null))
+                .flatMap(blobsDownloadResponse ->
+                        // Download the blob's content.
+                        blobURL.download(null, null, false))
+                .flatMap(blobsDownloadResponse ->
+                        // Verify that the blob data round-tripped correctly.
+                        FlowableUtil.collectBytesInBuffer(blobsDownloadResponse.body())
+                                .doOnSuccess(byteBuffer -> {
+                                    if (byteBuffer.compareTo(ByteBuffer.wrap(data.getBytes())) != 0) {
+                                        throw new Exception("The downloaded data does not match the uploaded data.");
+                                    }
+                                }))
+                .flatMap(byteBuffer ->
+                        // Delete the blob we created earlier.
+                        blobURL.delete(null, null))
+                .flatMap(blobsDeleteResponse ->
+                        // Delete the container we created earlier.
+                        containerURL.delete(null))
+                /*
+                This will synchronize all the above operations. This is strongly discouraged for use in production as
+                it eliminates the benefits of asynchronous IO. We use it here to enable the sample to complete and
+                demonstrate its effectiveness.
+                 */
+                .blockingGet();
+    }
 }
 ```
+## Building
+
+If building from sources, run mvn compile to build. No build steps are necessary if including the package as a maven dependency.
+
+## Running tests
+
+Please refer to CONTRIBUTING.md for information on how to run the tests.
+
+
 
 # Need Help?
 
@@ -131,7 +176,7 @@ When sending pull requests, please send non-breaking PRs to the dev branch and b
 
 # Learn More
 
-* [Azure Developer Center](http://azure.microsoft.com/en-us/develop/java/)
+* [Java on Azure Developer Center](http://azure.microsoft.com/en-us/java/azure)
 * [Azure Storage Service](http://azure.microsoft.com/en-us/documentation/services/storage/)
 * [Azure Storage Team Blog](http://blogs.msdn.com/b/windowsazurestorage/)
-* [JavaDocs](http://azure.github.io/azure-storage-java/)
+* [Javadoc](http://azure.github.io/azure-storage-java/)

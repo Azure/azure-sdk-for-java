@@ -1,9 +1,10 @@
-If you intend to contribute to the project, please make sure you've followed the instructions provided in the [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/).
+Hello! Thank you for being interested in contributing to our project! 
+Please make sure you've followed the instructions provided in the [Azure Projects Contribution Guidelines](http://azure.github.io/guidelines/).
 ## Project Setup
 The Azure Storage development team uses Intellij. However, any preferred IDE or other toolset should be usable.
 
 ### Install
-* Java SE 6+
+* Java SE 8+
 * [Maven](https://maven.apache.org/install.html)
 * Clone the source code from GitHub
 
@@ -19,12 +20,10 @@ The Azure Storage development team uses Intellij. However, any preferred IDE or 
 ## Tests
 
 ### Configuration
-The only step to configure testing is to setup a configuration file or connection string via environment variables. To use the connection string route, create an environment variable named "storageConnection". To use the configuration file route, create an environment variable named "storageTestConfiguration" with the path to a TestConfigurations.xml file with this [template](https://github.com/Azure/azure-storage-java/blob/master/microsoft-azure-storage-test/res/TestConfigurations.xml).
-Alternatively, you can fill in microsoft-azure-storage-test/res/TestConfigurations.xml with the appropriate information.
+The only step to configure testing is to set the appropriate environment variable. Create environment variables named "ACCOUNT_NAME", "ACCOUNT_KEY", "SECONDARY_ACCOUNT_NAME", and "SECONDARY_ACCOUNT_KEY". The first two will be used for most requests. The second two will only be used for tests requiring two accounts.
 
 ### Running
-To actually run tests, right click on the test class in the Package Explorer or the individual test in the Outline and select Run As->JUnitTest. All tests or tests grouped by service can be run using the test runners in the com.microsoft.azure.storage package TestRunners file. Running all tests from the top of the package explorer will result in each test being run multiple times as the package explorer will also run every test runner.
-
+To actually run tests, right click on the test class in the Package Explorer or the individual test in the Outline and select Run As->GroovyTest. Alternatively, run mvn test from the command line.
 ### Testing Features
 As you develop a feature, you'll need to write tests to ensure quality. You should also run existing tests related to your change to address any unexpected breaks.
 
@@ -45,8 +44,8 @@ The following are the minimum requirements for any pull request that must be met
 ### Branching Policy
 Changes should be based on the **dev** branch for non-breaking changes and **dev_breaking** for breaking changes. Do not submit pull requests against master as master is considered publicly released code. Each breaking change should be recorded in [BreakingChanges.md](BreakingChanges.md). 
 
-### Adding Features for Java 6+
-We strive to release each new feature in a backward compatible manner. Therefore, we ask that all contributions be written to work in Java 6, 7 and 8.
+### Adding Features for Java 8+
+We strive to release each new feature in a backward compatible manner. Therefore, we ask that all contributions be written to work in Java 8 and 9.
 
 ### Review Process
 We expect all guidelines to be met before accepting a pull request. As such, we will work with you to address issues we find by leaving comments in your code. Please understand that it may take a few iterations before the code is accepted as we maintain high standards on code quality. Once we feel comfortable with a contribution, we will validate the change and accept the pull request.
