@@ -5,17 +5,18 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.microsoft.azure.cognitiveservices</groupId>
-    <artifactId>azure-cognitiveservices-parent</artifactId>
-    <version>1.0.0-SNAPSHOT</version>
-    <relativePath>../../pom.xml</relativePath>
-  </parent>
-    <artifactId>azure-cognitiveservices-customsearch</artifactId>
+    <parent>
+      <groupId>com.microsoft.azure.cognitiveservices</groupId>
+      <artifactId>azure-cognitiveservices-parent</artifactId>
+      <version>1.0.0-SNAPSHOT</version>
+      <relativePath>../../pom.xml</relativePath>
+    </parent>
+    <artifactId>azure-cognitiveservices-luis-programatic</artifactId>
+    <version>1.0.0-beta-SNAPSHOT</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Cognitive Service Custom Search</name>
-    <description>This package contains Microsoft Cognitive Service Custom Search SDK.</description>
-    <url>https://github.com/Azure/azure-sdk-for-java/azure-cognitiveservices/search/bingcustomsearch</url>
+    <name>Microsoft Azure SDK for Cognitive Service Language Understanding (LUIS)</name>
+    <description>This package contains Microsoft Cognitive Service Language Understanding (LUIS).</description>
+    <url>https://github.com/Azure/azure-sdk-for-java/azure-cognitiveservices/language/luis/programmatic</url>
     <licenses>
         <license>
             <name>The MIT License (MIT)</name>

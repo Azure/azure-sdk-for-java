@@ -306,7 +306,9 @@
     <module>./search/bingwebsearch</module>
     <module>./vision/computervision</module>
     <module>./vision/contentmoderator</module>
+    <module>./vision/faceapi</module>
     <!--
+    <module>./vision/faceapi</module>
     <module>./azure-customsearch</module>
     <module>./azure-faceapi</module>
     <module>./azure-textanalytics</module>
