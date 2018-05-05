@@ -32,7 +32,7 @@ import rx.Single;
  * This is meant to be internally used only by our sdk.
  **/
 public interface ICollectionRoutingMapCache {
-    public Single<CollectionRoutingMap> tryLookupAsync(
+    Single<CollectionRoutingMap> tryLookupAsync(
             String collectionRid,
             CollectionRoutingMap previousValue);
 }

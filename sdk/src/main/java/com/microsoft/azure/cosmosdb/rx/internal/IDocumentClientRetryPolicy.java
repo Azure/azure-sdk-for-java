@@ -44,10 +44,10 @@ public interface IDocumentClientRetryPolicy extends IRetryPolicy {
     /// </remarks>
 
     // TODO: I need to investigate what's the right contract here and/or if/how this is useful
-    public void onBeforeSendRequest(RxDocumentServiceRequest request);
+    void onBeforeSendRequest(RxDocumentServiceRequest request);
 
 
-    public static class NoRetry implements IDocumentClientRetryPolicy {
+    class NoRetry implements IDocumentClientRetryPolicy {
 
         private static NoRetry instance = new NoRetry();
 

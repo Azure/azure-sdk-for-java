@@ -22,12 +22,11 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
-import java.net.URI;
-
 import com.microsoft.azure.cosmosdb.ConnectionPolicy;
 import com.microsoft.azure.cosmosdb.DatabaseAccount;
-
 import rx.Observable;
+
+import java.net.URI;
 
 interface DatabaseAccountManagerInternal {
     
@@ -36,18 +35,18 @@ interface DatabaseAccountManagerInternal {
      * @param endpoint the endpoint from which gets the database account
      * @return the database account.
      */
-    public Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint);
+    Observable<DatabaseAccount> getDatabaseAccountFromEndpoint(URI endpoint);
     
     /**
      * Gets the connection policy
      * @return connection policy
      */
-    public ConnectionPolicy getConnectionPolicy();
+    ConnectionPolicy getConnectionPolicy();
     
     /**
      * Gets the service endpoint
      * @return service endpoint
      */
-    public URI getServiceEndpoint();
+    URI getServiceEndpoint();
 
 }
