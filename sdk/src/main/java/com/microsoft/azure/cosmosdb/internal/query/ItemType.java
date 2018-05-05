@@ -28,7 +28,7 @@ public enum ItemType {
 
     private final int val;
 
-    private ItemType(int val) {
+    ItemType(int val) {
         this.val = val;
     }
 

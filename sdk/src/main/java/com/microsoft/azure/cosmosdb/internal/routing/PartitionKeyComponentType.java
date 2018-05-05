@@ -38,7 +38,7 @@ enum PartitionKeyComponentType {
 
     private byte value;
 
-    private PartitionKeyComponentType(byte value) {
+    PartitionKeyComponentType(byte value) {
         this.value = value;
     }
 

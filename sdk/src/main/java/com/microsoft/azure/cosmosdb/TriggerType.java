@@ -39,7 +39,7 @@ public enum TriggerType {
 
     private int value;
 
-    private TriggerType(int value) {
+    TriggerType(int value) {
         this.value = value;
     }
 

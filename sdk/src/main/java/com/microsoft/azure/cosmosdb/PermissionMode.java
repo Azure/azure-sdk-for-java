@@ -39,7 +39,7 @@ public enum PermissionMode {
 
     private int value;
 
-    private PermissionMode(int value) {
+    PermissionMode(int value) {
         this.value = value;
     }
 

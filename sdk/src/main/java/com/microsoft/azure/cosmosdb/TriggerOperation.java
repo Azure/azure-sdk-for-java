@@ -54,7 +54,7 @@ public enum TriggerOperation {
 
     private int value;
 
-    private TriggerOperation(int value) {
+    TriggerOperation(int value) {
         this.value = value;
     }
 
