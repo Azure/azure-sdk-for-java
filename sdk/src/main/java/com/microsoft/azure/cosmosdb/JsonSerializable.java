@@ -199,7 +199,7 @@ public class JsonSerializable implements Serializable {
      * @param value        the value of the property.
      */
     @SuppressWarnings({"unchecked", "rawtypes"})
-    public <T extends Object> void set(String propertyName, T value) {
+    public <T> void set(String propertyName, T value) {
         if (value == null) {
             // Sets null.
             this.propertyBag.put(propertyName, JSONObject.NULL);
@@ -363,7 +363,7 @@ public class JsonSerializable implements Serializable {
      *                     and a static one.
      * @return the object value.
      */
-    public <T extends Object> T getObject(String propertyName, Class<T> c) {
+    public <T> T getObject(String propertyName, Class<T> c) {
         if (this.propertyBag.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
             JSONObject jsonObj = this.propertyBag.getJSONObject(propertyName);
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
@@ -407,7 +407,7 @@ public class JsonSerializable implements Serializable {
      *                     and a static one.
      * @return the object collection.
      */
-    public <T extends Object> Collection<T> getCollection(String propertyName, Class<T> c) {
+    public <T> Collection<T> getCollection(String propertyName, Class<T> c) {
         if (this.propertyBag.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
             JSONArray jsonArray = this.propertyBag.getJSONArray(propertyName);
             Collection<T> result = new ArrayList<T>();
@@ -543,7 +543,7 @@ public class JsonSerializable implements Serializable {
      *            (and not an anonymous or local) and a static one.
      * @return the POJO.
      */
-    public <T extends Object> T toObject(Class<T> c) {
+    public <T> T toObject(Class<T> c) {
         if (JsonSerializable.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
                 || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)) {
             throw new IllegalArgumentException("c can only be a POJO class or JSONObject");
