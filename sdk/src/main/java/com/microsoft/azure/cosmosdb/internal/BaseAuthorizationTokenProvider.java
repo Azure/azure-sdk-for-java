@@ -25,6 +25,7 @@ package com.microsoft.azure.cosmosdb.internal;
 
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Collections;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Map;
@@ -207,9 +208,7 @@ public class BaseAuthorizationTokenProvider implements AuthorizationTokenProvide
             String[] resourceTypes = {"dbs", "colls", "docs", "sprocs", "udfs", "triggers", "users", "permissions",
                     "attachments", "media", "conflicts"};
             HashSet<String> resourceTypesSet = new HashSet<String>();
-            for (String resourceType : resourceTypes) {
-                resourceTypesSet.add(resourceType);
-            }
+            Collections.addAll(resourceTypesSet, resourceTypes);
 
             for (int i = pathParts.length - 1; i >= 0; --i) {
 
