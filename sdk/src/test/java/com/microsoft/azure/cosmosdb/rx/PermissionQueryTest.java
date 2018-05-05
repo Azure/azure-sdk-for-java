@@ -148,7 +148,7 @@ public class PermissionQueryTest extends TestSuiteBase {
 
     @BeforeClass(groups = { "simple" }, timeOut = SETUP_TIMEOUT)
     public void beforeClass() throws DocumentClientException {
-        client = clientBuilder.build();;       
+        client = clientBuilder.build();
         Database d = new Database();
         d.setId(DATABASE_ID);
         createdDatabase = safeCreateDatabase(client, d);
