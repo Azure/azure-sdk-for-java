@@ -93,7 +93,7 @@ public class UserQueryTest extends TestSuiteBase {
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void queryAllUsers() throws Exception {
 
-        String query = String.format("SELECT * from c");
+        String query = "SELECT * from c";
 
         FeedOptions options = new FeedOptions();
         options.setMaxItemCount(2);

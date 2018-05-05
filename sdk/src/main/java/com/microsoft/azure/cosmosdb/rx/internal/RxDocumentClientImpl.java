@@ -799,7 +799,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for (int i = 0; i < partitionKeyJson.length(); i++) {
             int val = partitionKeyJson.charAt(i);
             if (val > 127) {
-                sb.append("\\u" + String.format("%04X", val));
+                sb.append("\\u").append(String.format("%04X", val));
             } else {
                 sb.append(partitionKeyJson.charAt(i));
             }
