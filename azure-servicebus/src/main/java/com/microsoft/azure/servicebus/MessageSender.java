@@ -22,6 +22,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(MessageSender.class);
     private boolean ownsMessagingFactory;
     private String entityPath = null;
+    private String transferDestinationPath = null;
     private MessagingFactory messagingFactory = null;
     private CoreMessageSender internalSender = null;
     private boolean isInitialized = false;
@@ -32,24 +33,30 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
         super(StringUtil.getShortRandomString());
     }
 
-    MessageSender(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings) {
+    MessageSender(URI namespaceEndpointURI, String entityPath, String transferDestinationPath, ClientSettings clientSettings) {
         this();
 
         this.namespaceEndpointURI = namespaceEndpointURI;
+        this.transferDestinationPath = transferDestinationPath;
         this.entityPath = entityPath;
         this.clientSettings = clientSettings;
         this.ownsMessagingFactory = true;
     }
 
     MessageSender(MessagingFactory messagingFactory, String entityPath) {
-        this(messagingFactory, entityPath, false);
+        this(messagingFactory, entityPath, null, false);
     }
 
-    private MessageSender(MessagingFactory messagingFactory, String entityPath, boolean ownsMessagingFactory) {
+    MessageSender(MessagingFactory messagingFactory, String entityPath, String transferDestinationPath) {
+        this(messagingFactory, entityPath, transferDestinationPath, false);
+    }
+
+    private MessageSender(MessagingFactory messagingFactory, String entityPath, String transferDestinationPath, boolean ownsMessagingFactory) {
         this();
 
         this.messagingFactory = messagingFactory;
         this.entityPath = entityPath;
+        this.transferDestinationPath = transferDestinationPath;
         this.ownsMessagingFactory = ownsMessagingFactory;
     }
 
@@ -77,7 +84,7 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
             return factoryFuture.thenComposeAsync((v) ->
             {
                 TRACE_LOGGER.info("Creating MessageSender to entity '{}'", this.entityPath);
-                CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath);
+                CompletableFuture<CoreMessageSender> senderFuture = CoreMessageSender.create(this.messagingFactory, StringUtil.getShortRandomString(), this.entityPath, this.transferDestinationPath);
                 CompletableFuture<Void> postSenderCreationFuture = new CompletableFuture<Void>();
                 senderFuture.handleAsync((s, coreSenderCreationEx) -> {
                     if (coreSenderCreationEx == null) {
@@ -195,14 +202,8 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
 
     @Override
     public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber) {
-        return this.cancelScheduledMessageAsync(sequenceNumber, TransactionContext.NULL_TXN);
-    }
-
-    @Override
-    public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber, TransactionContext transaction) {
         return this.internalSender.cancelScheduledMessageAsync(
                 new Long[]{sequenceNumber},
-                transaction,
                 this.messagingFactory.getClientSetttings().getOperationTimeout());
     }
 
@@ -219,11 +220,6 @@ final class MessageSender extends InitializableEntity implements IMessageSender 
     @Override
     public void cancelScheduledMessage(long sequenceNumber) throws InterruptedException, ServiceBusException {
         Utils.completeFuture(this.cancelScheduledMessageAsync(sequenceNumber));
-    }
-
-    @Override
-    public void cancelScheduledMessage(long sequenceNumber, TransactionContext transaction) throws InterruptedException, ServiceBusException {
-        Utils.completeFuture(this.cancelScheduledMessageAsync(sequenceNumber, transaction));
     }
 
     MessagingFactory getMessagingFactory() {

@@ -15,7 +15,6 @@ import org.apache.qpid.proton.engine.impl.DeliveryImpl;
 import org.apache.qpid.proton.message.Message;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
 
 import java.net.URI;
 import java.util.HashMap;
@@ -83,12 +82,7 @@ class Controller {
                 encodedPair.getSecondItem(),
                 DeliveryImpl.DEFAULT_MESSAGE_FORMAT,
                 TransactionContext.NULL_TXN)
-                .handleAsync((state, ex) -> {
-                    if (ex != null) {
-                        TRACE_LOGGER.warn("Exception received in controller: {}", ex.getMessage());
-                        throw new NotImplementedException();
-                    }
-
+                .thenApply( state -> {
                     Binary txnId = null;
                     if (state instanceof Declared) {
                         Declared declared = (Declared) state;
@@ -96,7 +90,7 @@ class Controller {
                         TRACE_LOGGER.debug("New TX started: {}", txnId);
                     } else {
                         CompletableFuture<String> exceptionFuture = new CompletableFuture<>();
-                        exceptionFuture.completeExceptionally(new NotImplementedException());
+                        exceptionFuture.completeExceptionally(new UnsupportedOperationException("Received unknown state: " + state.toString()));
                     }
 
                     return txnId;
@@ -131,7 +125,7 @@ class Controller {
                     }
                     else {
                         CompletableFuture<Void> returnTask = new CompletableFuture<>();
-                        returnTask.completeExceptionally(new NotImplementedException());
+                        returnTask.completeExceptionally(new UnsupportedOperationException("Received unknown state: " + state.toString()));
                         return returnTask;
                     }
                 });

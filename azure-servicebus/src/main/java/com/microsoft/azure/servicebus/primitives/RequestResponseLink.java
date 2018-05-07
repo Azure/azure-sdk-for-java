@@ -3,11 +3,7 @@ package com.microsoft.azure.servicebus.primitives;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.ZonedDateTime;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.Locale;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.ScheduledFuture;
@@ -52,6 +48,7 @@ class RequestResponseLink extends ClientEntity{
 	private final MessagingFactory underlyingFactory;
 	private final String linkPath;
 	private final String sasTokenAudienceURI;
+	private final String additionalAudienceURI;
 	private final CompletableFuture<RequestResponseLink> createFuture;
 	private final ConcurrentHashMap<String, RequestResponseWorkItem> pendingRequests;
     private final AtomicInteger requestCounter;
@@ -61,10 +58,23 @@ class RequestResponseLink extends ClientEntity{
 	private InternalReceiver amqpReceiver;
 	private InternalSender amqpSender;
 	private boolean isRecreateLinksInProgress;
+	private Map<Symbol, Object> additionalProperties;
 	
-	public static CompletableFuture<RequestResponseLink> createAsync(MessagingFactory messagingFactory, String linkName, String linkPath, String sasTokenAudienceURI)
+	public static CompletableFuture<RequestResponseLink> createAsync(
+			MessagingFactory messagingFactory,
+			String linkName,
+			String linkPath,
+			String sasTokenAudienceURI,
+			String additionalAudience,
+			Map<Symbol, Object> additionalProperties)
 	{
-		final RequestResponseLink requestReponseLink = new RequestResponseLink(messagingFactory, linkName, linkPath, sasTokenAudienceURI);
+		final RequestResponseLink requestReponseLink = new RequestResponseLink(
+				messagingFactory,
+				linkName,
+				linkPath,
+				sasTokenAudienceURI,
+				additionalAudience,
+				additionalProperties);
 		
 		Timer.schedule(
 				new Runnable()
@@ -146,7 +156,13 @@ class RequestResponseLink extends ClientEntity{
         return AmqpConstants.CBS_NODE_ADDRESS_SEGMENT;
     }
 	
-	private RequestResponseLink(MessagingFactory messagingFactory, String linkName, String linkPath, String sasTokenAudienceURI)
+	private RequestResponseLink(
+			MessagingFactory messagingFactory,
+			String linkName,
+			String linkPath,
+			String sasTokenAudienceURI,
+			String additionalAudience,
+			Map<Symbol, Object> additionalProperties)
 	{
 		super(linkName);
 		
@@ -155,6 +171,8 @@ class RequestResponseLink extends ClientEntity{
 		this.underlyingFactory = messagingFactory;
 		this.linkPath = linkPath;
 		this.sasTokenAudienceURI = sasTokenAudienceURI;
+		this.additionalAudienceURI = additionalAudience;
+		this.additionalProperties = additionalProperties;
 		this.amqpSender = new InternalSender(linkName + ":internalSender", this, null);
 		this.amqpReceiver = new InternalReceiver(linkName + ":interalReceiver", this);
 		this.pendingRequests = new ConcurrentHashMap<>();
@@ -177,7 +195,14 @@ class RequestResponseLink extends ClientEntity{
         else
         {
             CompletableFuture<ScheduledFuture<?>> sendTokenFuture = this.underlyingFactory.sendSecurityTokenAndSetRenewTimer(this.sasTokenAudienceURI, retryOnFailure, () -> this.sendTokenAndSetRenewTimer(true));
-            return sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Set SAS Token renew timer");});
+			CompletableFuture<Void> sasTokenFuture = sendTokenFuture.thenAccept((f) -> {this.sasTokenRenewTimerFuture = f; TRACE_LOGGER.debug("Set SAS Token renew timer");});
+
+			if (additionalAudienceURI != null) {
+				CompletableFuture<Void> transferSendTokenFuture = this.underlyingFactory.sendSecurityToken(this.additionalAudienceURI);
+				return CompletableFuture.allOf(sasTokenFuture, transferSendTokenFuture);
+			}
+
+            return sasTokenFuture;
         }
     }
 	
@@ -195,7 +220,10 @@ class RequestResponseLink extends ClientEntity{
 		Map<Symbol, Object> commonLinkProperties = new HashMap<>();
 		// ServiceBus expects timeout to be of type unsignedint
 		commonLinkProperties.put(ClientConstants.LINK_TIMEOUT_PROPERTY, UnsignedInteger.valueOf(Util.adjustServerTimeout(this.underlyingFactory.getOperationTimeout()).toMillis()));
-		
+		if (this.additionalProperties != null) {
+			commonLinkProperties.putAll(this.additionalProperties);
+		}
+
 		// Create send link
 		final Connection connection = this.underlyingFactory.getConnection();
 

@@ -2,8 +2,10 @@ package com.microsoft.azure.servicebus.primitives;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 
+import org.apache.qpid.proton.amqp.Symbol;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -21,27 +23,47 @@ class RequestResponseLinkCache
         this.pathToRRLinkMap = new HashMap<>();
     }
     
-    public CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath)
+    public CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, String transferEntityPath)
     {
         RequestResponseLinkWrapper wrapper;
+        String mapKey;
+        if (transferEntityPath != null)
+        {
+            mapKey = entityPath + ":" + transferEntityPath;
+        }
+        else
+        {
+            mapKey = entityPath;
+        }
+        
         synchronized (lock)
         {
-            wrapper = this.pathToRRLinkMap.get(entityPath);
+            wrapper = this.pathToRRLinkMap.get(mapKey);
             if(wrapper == null)
             {
-                wrapper = new RequestResponseLinkWrapper(this.underlyingFactory, entityPath);
-                this.pathToRRLinkMap.put(entityPath, wrapper);
+                wrapper = new RequestResponseLinkWrapper(this.underlyingFactory, entityPath, transferEntityPath);
+                this.pathToRRLinkMap.put(mapKey, wrapper);
             }
         }
         return wrapper.acquireReferenceAsync();
     }
     
-    public void releaseRequestResponseLink(String entityPath)
+    public void releaseRequestResponseLink(String entityPath, String transferEntityPath)
     {
+        String mapKey;
+        if (transferEntityPath != null)
+        {
+            mapKey = entityPath + ":" + transferEntityPath;
+        }
+        else
+        {
+            mapKey = entityPath;
+        }
+
         RequestResponseLinkWrapper wrapper;
         synchronized (lock)
         {
-            wrapper = this.pathToRRLinkMap.get(entityPath);
+            wrapper = this.pathToRRLinkMap.get(mapKey);
         }
         if(wrapper != null)
         {
@@ -75,14 +97,16 @@ class RequestResponseLinkCache
         private Object lock = new Object();
         private final MessagingFactory underlyingFactory;
         private final String entityPath;
+        private final String transferEntityPath;
         private RequestResponseLink requestResponseLink;
         private int referenceCount;
         private ArrayList<CompletableFuture<RequestResponseLink>> waiters;
         
-        public RequestResponseLinkWrapper(MessagingFactory underlyingFactory, String entityPath)
+        public RequestResponseLinkWrapper(MessagingFactory underlyingFactory, String entityPath, String transferEntityPath)
         {
             this.underlyingFactory = underlyingFactory;
             this.entityPath = entityPath;
+            this.transferEntityPath = transferEntityPath;
             this.requestResponseLink = null;
             this.referenceCount = 0;
             this.waiters = new ArrayList<>();
@@ -93,8 +117,24 @@ class RequestResponseLinkCache
         {
             String requestResponseLinkPath = RequestResponseLink.getManagementNodeLinkPath(this.entityPath);
             String sasTokenAudienceURI = String.format(ClientConstants.SAS_TOKEN_AUDIENCE_FORMAT, this.underlyingFactory.getHostName(), this.entityPath);
+
+            String transferDestinationSasTokenAudienceURI = null;
+            Map<Symbol, Object> additionalProperties = null;
+            if (this.transferEntityPath != null) {
+                transferDestinationSasTokenAudienceURI = String.format(ClientConstants.SAS_TOKEN_AUDIENCE_FORMAT, this.underlyingFactory.getHostName(), this.transferEntityPath);
+                additionalProperties = new HashMap<>();
+                additionalProperties.put(ClientConstants.LINK_TRANSFER_DESTINATION_PROPERTY, this.transferEntityPath);
+            }
+
             TRACE_LOGGER.debug("Creating requestresponselink to '{}'", requestResponseLinkPath);
-            RequestResponseLink.createAsync(this.underlyingFactory, StringUtil.getShortRandomString() + "-RequestResponse", requestResponseLinkPath, sasTokenAudienceURI).handleAsync((rrlink, ex) ->
+            RequestResponseLink.createAsync(
+                    this.underlyingFactory,
+                    StringUtil.getShortRandomString() + "-RequestResponse",
+                    requestResponseLinkPath,
+                    sasTokenAudienceURI,
+                    transferDestinationSasTokenAudienceURI,
+                    additionalProperties)
+                    .handleAsync((rrlink, ex) ->
             {
                 synchronized (this.lock)
                 {

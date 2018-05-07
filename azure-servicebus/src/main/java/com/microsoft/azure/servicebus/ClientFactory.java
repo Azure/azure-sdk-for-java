@@ -87,6 +87,25 @@ public final class ClientFactory {
     }
 
     /**
+     * Creates a transfer message sender. This sender sends message to destination entity via another entity.
+     *
+     * This is mainly to be used when sending messages in a transaction.
+     * When messages need to be sent across entities in a single transaction, this can be used to ensure
+     * all the messages land initially in the same entity/partition for local transactions, and then
+     * let service bus handle transferring the message to the actual destination.
+     * @param messagingFactory messaging factory (which represents a connection) on which sender needs to be created.
+     * @param entityPath path of the final destination of the message.
+     * @param viaEntityPath The initial destination of the message.
+     * @return IMessageSender instance
+     * @throws InterruptedException if the current thread was interrupted while waiting
+     * @throws ServiceBusException if the sender cannot be created
+     */
+    public static IMessageSender createTransferMessageSenderFromEntityPath(MessagingFactory messagingFactory, String entityPath, String viaEntityPath)  throws InterruptedException, ServiceBusException
+    {
+        return Utils.completeFuture(createTransferMessageSenderFromEntityPathAsync(messagingFactory, entityPath, viaEntityPath));
+    }
+
+    /**
      * Create message sender asynchronously from connection string with <a href="https://docs.microsoft.com/en-us/azure/service-bus-messaging/service-bus-sas">Shared Access Signatures</a>
      *
      * @param amqpConnectionString the connection string
@@ -132,7 +151,7 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(URI namespaceEndpointURI, String entityPath, ClientSettings clientSettings)
     {
         Utils.assertNonNull("namespaceEndpointURI", namespaceEndpointURI);
-        MessageSender sender = new MessageSender(namespaceEndpointURI, entityPath, clientSettings);
+        MessageSender sender = new MessageSender(namespaceEndpointURI, entityPath, null, clientSettings);
         return sender.initializeAsync().thenApply((v) -> sender);
     }
 
@@ -145,6 +164,25 @@ public final class ClientFactory {
     public static CompletableFuture<IMessageSender> createMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
         MessageSender sender = new MessageSender(messagingFactory, entityPath);
+        return sender.initializeAsync().thenApply((v) -> sender);
+    }
+
+    /**
+     * Creates a transfer message sender asynchronously. This sender sends message to destination entity via another entity.
+     *
+     * This is mainly to be used when sending messages in a transaction.
+     * When messages need to be sent across entities in a single transaction, this can be used to ensure
+     * all the messages land initially in the same entity/partition for local transactions, and then
+     * let service bus handle transferring the message to the actual destination.
+     * @param messagingFactory messaging factory (which represents a connection) on which sender needs to be created.
+     * @param entityPath path of the final destination of the message.
+     * @param viaEntityPath The initial destination of the message.
+     * @return a CompletableFuture representing the pending creating of IMessageSender instance.
+     */
+    public static CompletableFuture<IMessageSender> createTransferMessageSenderFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String viaEntityPath)
+    {
+        Utils.assertNonNull("messagingFactory", messagingFactory);
+        MessageSender sender = new MessageSender(messagingFactory, viaEntityPath, entityPath);
         return sender.initializeAsync().thenApply((v) -> sender);
     }
 

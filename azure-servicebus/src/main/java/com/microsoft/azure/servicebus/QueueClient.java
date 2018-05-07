@@ -207,14 +207,9 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
 
     @Override
     public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber) {
-        return this.cancelScheduledMessageAsync(sequenceNumber, TransactionContext.NULL_TXN);
-    }
-
-    @Override
-    public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber, TransactionContext transaction) {
         return this.createSenderAsync().thenComposeAsync((v) ->
         {
-            return this.sender.cancelScheduledMessageAsync(sequenceNumber, transaction);
+            return this.sender.cancelScheduledMessageAsync(sequenceNumber);
         });
     }
 
@@ -231,11 +226,6 @@ public final class QueueClient extends InitializableEntity implements IQueueClie
     @Override
     public void cancelScheduledMessage(long sequenceNumber) throws InterruptedException, ServiceBusException {
         Utils.completeFuture(this.cancelScheduledMessageAsync(sequenceNumber));
-    }
-
-    @Override
-    public void cancelScheduledMessage(long sequenceNumber, TransactionContext transaction) throws InterruptedException, ServiceBusException {
-        Utils.completeFuture(this.cancelScheduledMessageAsync(sequenceNumber, transaction));
     }
 
     @Override

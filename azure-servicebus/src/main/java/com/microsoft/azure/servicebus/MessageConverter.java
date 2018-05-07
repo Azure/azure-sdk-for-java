@@ -59,6 +59,11 @@ class MessageConverter
 		{
 			messageAnnotationsMap.put(Symbol.valueOf(ClientConstants.PARTITIONKEYNAME), brokeredMessage.getPartitionKey());
 		}
+
+		if(!StringUtil.isNullOrEmpty(brokeredMessage.getViaPartitionKey()))
+		{
+			messageAnnotationsMap.put(Symbol.valueOf(ClientConstants.VIAPARTITIONKEYNAME), brokeredMessage.getViaPartitionKey());
+		}
 		
 		amqpMessage.setMessageAnnotations(new MessageAnnotations(messageAnnotationsMap));
 		
@@ -169,6 +174,9 @@ class MessageConverter
 	                    case ClientConstants.PARTITIONKEYNAME:
 	                        brokeredMessage.setPartitionKey((String)entry.getValue());
 	                        break;
+						case ClientConstants.VIAPARTITIONKEYNAME:
+							brokeredMessage.setViaPartitionKey((String)entry.getValue());
+							break;
 	                    case ClientConstants.DEADLETTERSOURCENAME:
 	                        brokeredMessage.setDeadLetterSource((String)entry.getValue());
 	                        break;

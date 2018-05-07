@@ -333,6 +333,26 @@ public interface IMessage {
     public void setPartitionKey(String partitionKey);
 
     /**
+     * Gets the partition key for sending a message to a entity via another partitioned transfer entity.
+     *
+     * If a message is sent via a transfer queue in the scope of a transaction, this value selects the
+     * transfer queue partition: This is functionally equivalent to {@link #getPartitionKey()} and ensures that
+     * messages are kept together and in order as they are transferred.
+     *
+     * @return partition key on the via queue.
+     * @see <a href="https://docs.microsoft.com/azure/service-bus-messaging/service-bus-transactions#transfers-and-send-via">Transfers and Send Via</a>.
+     */
+    public String getViaPartitionKey();
+
+    /**
+     * Sets a via-partition key for sending a message to a destination entity via another partitioned entity
+     *
+     * @param viaPartitionKey via-partition key of this message
+     * @see #getViaPartitionKey()
+     */
+    public void setViaPartitionKey(String viaPartitionKey);
+
+    /**
      * Gets the name of the queue or subscription that this message was enqueued on, before it was deadlettered.
      * 
      * This value is only set in messages that have been dead-lettered and subsequently auto-forwarded from the 

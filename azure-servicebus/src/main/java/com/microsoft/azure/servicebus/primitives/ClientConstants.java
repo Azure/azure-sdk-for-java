@@ -37,6 +37,7 @@ public final class ClientConstants
 	//public static final String LOCKTOKENNAME = "x-opt-lock-token";
 	public static final String LOCKEDUNTILNAME = "x-opt-locked-until";
 	public static final String PARTITIONKEYNAME = "x-opt-partition-key";
+	public static final String VIAPARTITIONKEYNAME = "x-opt-via-partition-key";
 	public static final String DEADLETTERSOURCENAME = "x-opt-deadletter-source";
 	public static final UUID ZEROLOCKTOKEN = new UUID(0l, 0l);	
 
@@ -52,6 +53,7 @@ public final class ClientConstants
 	public final static Symbol PUBLISHER_REVOKED_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":publisher-revoked");
 	public final static Symbol TIMEOUT_ERROR = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
 	public final static Symbol LINK_TIMEOUT_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":timeout");
+    public final static Symbol LINK_TRANSFER_DESTINATION_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":transfer-destination-address");
 	public final static Symbol LINK_PEEKMODE_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":peek-mode");
 	public final static Symbol TRACKING_ID_PROPERTY = Symbol.getSymbol(AmqpConstants.VENDOR + ":tracking-id");
 	public static final Symbol DEADLETTERNAME = Symbol.valueOf(AmqpConstants.VENDOR + ":dead-letter");
@@ -118,6 +120,7 @@ public final class ClientConstants
 	public static final String REQUEST_RESPONSE_MESSAGE_ID = "message-id";
 	public static final String REQUEST_RESPONSE_SESSION_ID = "session-id";
 	public static final String REQUEST_RESPONSE_PARTITION_KEY = "partition-key";
+    public static final String REQUEST_RESPONSE_VIA_PARTITION_KEY = "via-partition-key";
 	public static final String REQUEST_RESPONSE_FROM_SEQUENCE_NUMER = "from-sequence-number";
 	public static final String REQUEST_RESPONSE_MESSAGE_COUNT = "message-count";
 	public static final String REQUEST_RESPONSE_STATUS_CODE = "statusCode";

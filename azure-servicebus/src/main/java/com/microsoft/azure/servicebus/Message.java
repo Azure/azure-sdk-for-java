@@ -58,6 +58,8 @@ final public class Message implements Serializable, IMessage {
 	private String replyTo;
 	
 	private String partitionKey;
+
+	private String viaPartitionKey;
 	
 	private String deadLetterSource;
 	
@@ -272,7 +274,17 @@ final public class Message implements Serializable, IMessage {
 	@Override
 	public void setPartitionKey(String partitionKey) {
 		this.partitionKey = partitionKey;		
-	}	
+	}
+
+	@Override
+	public String getViaPartitionKey() {
+        return this.viaPartitionKey;
+    }
+
+    @Override
+    public void setViaPartitionKey(String partitionKey) {
+        this.viaPartitionKey = partitionKey;
+    }
 
 	@Override
 	public String getDeadLetterSource() {

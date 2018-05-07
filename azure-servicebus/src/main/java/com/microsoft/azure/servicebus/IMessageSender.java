@@ -123,15 +123,6 @@ public interface IMessageSender extends IMessageEntityClient {
     CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber);
 
     /**
-     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued. This is an asynchronous method returning a CompletableFuture which completes when the message is cancelled.
-     *
-     * @param sequenceNumber sequence number of the scheduled message
-     * @param transaction {@link TransactionContext} which this operation should enlist to.
-     * @return a CompletableFuture representing the pending cancellation
-     */
-    CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber, TransactionContext transaction);
-
-    /**
      * Sends a scheduled message to the Azure Service Bus entity this sender is connected to. A scheduled message is enqueued and made available to receivers only at the scheduled enqueue time.
      * This method blocks until the message is sent to the entity. Calling this method is equivalent to calling <code>scheduleMessageAsync(message, scheduledEnqueueTimeUtc).get()</code>. For better performance, use async methods.
      *
@@ -165,15 +156,4 @@ public interface IMessageSender extends IMessageEntityClient {
      * @throws ServiceBusException  if scheduled message couldn't be cancelled
      */
     void cancelScheduledMessage(long sequenceNumber) throws InterruptedException, ServiceBusException;
-
-    /**
-     * Cancels the enqueuing of an already sent scheduled message, if it was not already enqueued. This method blocks until the message is sent to the entity. Calling this method is equivalent to calling <code>cancelScheduledMessageAsync(sequenceNumber).get()</code>.
-     * For better performance, use async methods.
-     *
-     * @param sequenceNumber sequence number of the scheduled message
-     * @param transaction {@link TransactionContext} which this operation should enlist to.
-     * @throws InterruptedException if the current thread was interrupted while waiting
-     * @throws ServiceBusException  if scheduled message couldn't be cancelled
-     */
-    void cancelScheduledMessage(long sequenceNumber, TransactionContext transaction) throws InterruptedException, ServiceBusException;
 }

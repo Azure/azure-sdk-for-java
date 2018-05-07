@@ -156,23 +156,7 @@ public abstract class SessionTests extends Tests {
 		this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
 		TestCommons.testBasicReceiveAndDeadLetter(this.sender, sessionId, this.session);
 	}
-	
-	@Test
-	public void testBasicReceiveAndRenewLock() throws InterruptedException, ServiceBusException, ExecutionException
-	{
-		String sessionId = TestUtils.getRandomString();
-		this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
-		TestCommons.testBasicReceiveAndRenewLock(this.sender, sessionId, this.session);
-	}
-	
-	@Test
-	public void testBasicReceiveAndRenewLockBatch() throws InterruptedException, ServiceBusException, ExecutionException
-	{
-		String sessionId = TestUtils.getRandomString();
-		this.session = ClientFactory.acceptSessionFromEntityPath(this.factory, this.receiveEntityPath, sessionId, ReceiveMode.PEEKLOCK);
-		TestCommons.testBasicReceiveAndRenewLockBatch(this.sender, sessionId, this.session);
-	}
-	
+
 	@Test
 	public void testBasicReceiveBatchAndComplete() throws InterruptedException, ServiceBusException, ExecutionException
 	{

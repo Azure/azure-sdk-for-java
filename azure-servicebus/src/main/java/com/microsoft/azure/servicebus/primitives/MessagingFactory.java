@@ -630,7 +630,24 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	{
 		this.getReactorScheduler().invoke(delay, handler);
 	}
-	
+
+	CompletableFuture<Void> sendSecurityToken(String sasTokenAudienceUri)
+	{
+		TRACE_LOGGER.debug("Sending token for {}", sasTokenAudienceUri);
+		CompletableFuture<SecurityToken> tokenFuture = this.clientSettings.getTokenProvider().getSecurityTokenAsync(sasTokenAudienceUri);
+		return tokenFuture.thenComposeAsync((t) ->
+		{
+			SecurityToken generatedSecurityToken = t;
+			CompletableFuture<Void> sendTokenFuture = this.cbsLinkCreationFuture.thenComposeAsync((v) -> {
+				return CommonRequestResponseOperations.sendCBSTokenAsync(this.cbsLink, Util.adjustServerTimeout(this.clientSettings.getOperationTimeout()), generatedSecurityToken);
+			});
+
+			return sendTokenFuture.thenAccept((v) -> {
+				TRACE_LOGGER.debug("Sent token for {}", sasTokenAudienceUri);});
+
+		});
+	}
+
 	CompletableFuture<ScheduledFuture<?>> sendSecurityTokenAndSetRenewTimer(String sasTokenAudienceURI, boolean retryOnFailure, Runnable validityRenewer)
     {
 	    TRACE_LOGGER.debug("Sending token for {}", sasTokenAudienceURI);
@@ -679,16 +696,30 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath)
 	{
 	    this.throwIfClosed(null);
-	    return this.managementLinksCache.obtainRequestResponseLinkAsync(entityPath);
+	    return this.managementLinksCache.obtainRequestResponseLinkAsync(entityPath, null);
 	}
+
+    CompletableFuture<RequestResponseLink> obtainRequestResponseLinkAsync(String entityPath, String transferDestinationPath)
+    {
+        this.throwIfClosed(null);
+        return this.managementLinksCache.obtainRequestResponseLinkAsync(entityPath, transferDestinationPath);
+    }
 	
 	void releaseRequestResponseLink(String entityPath)
 	{
 	    if(!this.getIsClosed())
 	    {
-	        this.managementLinksCache.releaseRequestResponseLink(entityPath);
+	        this.managementLinksCache.releaseRequestResponseLink(entityPath, null);
 	    }	    
 	}
+
+    void releaseRequestResponseLink(String entityPath, String transferDestinationPath)
+    {
+        if(!this.getIsClosed())
+        {
+            this.managementLinksCache.releaseRequestResponseLink(entityPath, transferDestinationPath);
+        }
+    }
 	
 	private CompletableFuture<Void> createCBSLinkAsync()
     {
@@ -703,7 +734,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	        String requestResponseLinkPath = RequestResponseLink.getCBSNodeLinkPath();
 	        TRACE_LOGGER.info("Creating CBS link to {}", requestResponseLinkPath);
 	        CompletableFuture<Void> crateAndAssignRequestResponseLink =
-	                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath, null).handleAsync((cbsLink, ex) ->
+	                        RequestResponseLink.createAsync(this, this.getClientId() + "-cbs", requestResponseLinkPath, null, null, null)
+                                    .handleAsync((cbsLink, ex) ->
 	                        {
 	                            if(ex == null)
 	                            {

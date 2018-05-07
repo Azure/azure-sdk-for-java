@@ -116,11 +116,6 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
     }
 
     @Override
-    public CompletableFuture<Void> cancelScheduledMessageAsync(long sequenceNumber, TransactionContext transaction) {
-        return this.sender.cancelScheduledMessageAsync(sequenceNumber, transaction);
-    }
-
-    @Override
     public long scheduleMessage(IMessage message, Instant scheduledEnqueueTimeUtc) throws InterruptedException, ServiceBusException {
         return this.sender.scheduleMessage(message, scheduledEnqueueTimeUtc);
     }
@@ -133,11 +128,6 @@ public final class TopicClient extends InitializableEntity implements ITopicClie
     @Override
     public void cancelScheduledMessage(long sequenceNumber) throws InterruptedException, ServiceBusException {
         this.sender.cancelScheduledMessage(sequenceNumber);
-    }
-
-    @Override
-    public void cancelScheduledMessage(long sequenceNumber, TransactionContext transaction) throws InterruptedException, ServiceBusException {
-        this.sender.cancelScheduledMessage(sequenceNumber, transaction);
     }
 
     @Override

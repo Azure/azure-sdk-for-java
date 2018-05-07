@@ -61,7 +61,7 @@ class MessageAndSessionPump extends InitializableEntity implements IMessageAndSe
 
     @Override
     public void registerMessageHandler(IMessageHandler handler, MessageHandlerOptions handlerOptions) throws InterruptedException, ServiceBusException {
-        TRACE_LOGGER.info("Registering message handler on entity '{}' with '{}'", this.entityPath, handlerOptions);
+        TRACE_LOGGER.info("Registering message handler on entity '{}' with '{}'.", this.entityPath, handlerOptions);
         this.setHandlerRegistered();
         this.messageHandler = handler;
         this.messageHandlerOptions = handlerOptions;
