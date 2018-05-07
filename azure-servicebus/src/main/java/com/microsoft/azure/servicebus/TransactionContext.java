@@ -39,8 +39,8 @@ public class TransactionContext {
 
     /**
      * Commits the transaction
-     * @throws ServiceBusException
-     * @throws InterruptedException
+     * @throws ServiceBusException if Commit failed
+     * @throws InterruptedException if the current thread was interrupted while waiting
      */
     public void commit() throws ServiceBusException, InterruptedException {
         if (this.messagingFactory == null) {
@@ -52,6 +52,7 @@ public class TransactionContext {
 
     /**
      * Asynchronously commits the transaction
+     * @return a CompletableFuture for the commit operation
      */
     public CompletableFuture<Void> commitAsync() {
         if (this.messagingFactory == null) {
@@ -65,8 +66,8 @@ public class TransactionContext {
 
     /**
      * Rollback the transaction
-     * @throws ServiceBusException
-     * @throws InterruptedException
+     * @throws ServiceBusException if rollback failed
+     * @throws InterruptedException if the current thread was interrupted while waiting
      */
     public void rollback() throws ServiceBusException, InterruptedException {
         if (this.messagingFactory == null) {
@@ -78,6 +79,7 @@ public class TransactionContext {
 
     /**
      * Asynchronously rollback the transaction.
+     * @return a CompletableFuture for the rollback operation
      */
     public CompletableFuture<Void> rollbackAsync() {
         if (this.messagingFactory == null) {
@@ -91,6 +93,7 @@ public class TransactionContext {
 
     /**
      * This is not to be called by the user.
+     * @param commit true indicates success and false for rollback
      */
     public void notifyTransactionCompletion(boolean commit) {
         if (txnHandler != null) {

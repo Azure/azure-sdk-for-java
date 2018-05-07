@@ -110,8 +110,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	 * Starts a new service side transaction. The {@link TransactionContext} should be passed to all operations that
 	 * needs to be in this transaction.
 	 * @return a new transaction
-	 * @throws ServiceBusException
-	 * @throws InterruptedException
+	 * @throws ServiceBusException if transaction fails to start
+	 * @throws InterruptedException if the current thread was interrupted while waiting
 	 */
 	public TransactionContext startTransaction() throws ServiceBusException, InterruptedException {
 		return Utils.completeFuture(this.startTransactionAsync());
@@ -133,8 +133,8 @@ public class MessagingFactory extends ClientEntity implements IAmqpConnection
 	 * @param transaction The transaction object.
 	 * @param commit A boolean value of <code>true</code> indicates transaction to be committed. A value of
 	 *                  <code>false</code> indicates a transaction rollback.
-	 * @throws ServiceBusException
-	 * @throws InterruptedException
+	 * @throws ServiceBusException if transaction fails to end
+	 * @throws InterruptedException if the current thread was interrupted while waiting
 	 */
     public void endTransaction(TransactionContext transaction, boolean commit) throws ServiceBusException, InterruptedException {
 		Utils.completeFuture(this.endTransactionAsync(transaction, commit));

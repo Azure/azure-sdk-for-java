@@ -685,8 +685,6 @@ public final class ClientFactory {
      * @param entityPath path of entity
      * @param sessionId session id, if null, service will return the first available session, otherwise, service will return specified session
      * @return a CompletableFuture representing the pending session accepting
-     * @throws InterruptedException if the current thread was interrupted while waiting
-     * @throws ServiceBusException if the session cannot be accepted
      */
     public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId) {
         return acceptSessionFromEntityPathAsync(messagingFactory, entityPath, sessionId, DEFAULTRECEIVEMODE);
@@ -699,8 +697,6 @@ public final class ClientFactory {
      * @param sessionId session id, if null, service will return the first available session, otherwise, service will return specified session
      * @param receiveMode PeekLock or ReceiveAndDelete
      * @return a CompletableFuture representing the pending session accepting
-     * @throws InterruptedException if the current thread was interrupted while waiting
-     * @throws ServiceBusException if the session cannot be accepted
      */
     public static CompletableFuture<IMessageSession> acceptSessionFromEntityPathAsync(MessagingFactory messagingFactory, String entityPath, String sessionId, ReceiveMode receiveMode) {
         Utils.assertNonNull("messagingFactory", messagingFactory);
