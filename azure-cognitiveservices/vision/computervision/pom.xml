@@ -14,7 +14,7 @@
     <relativePath>../../pom.xml</relativePath>
   </parent>
     <artifactId>azure-cognitiveservices-computervision</artifactId>
-    <version>1.0.0-beta-SNAPSHOT</version>
+    <version>1.0.0-beta</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Cognitive Service Computer Vision</name>
     <description>This package contains Microsoft Cognitive Service Computer Vision SDK.</description>
