@@ -33,5 +33,16 @@
     "package": "com.microsoft.azure.management.batchai",
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-05"
+  },
+  "signalr": {
+    "apiVersion": "2018-03-01-preview",
+    "package": "com.microsoft.azure.management.signalr",
+    "source": "specification/signalr/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-01-preview",
+    "fconfig": {
+      "\"moduleName\"": "\"SignalR\"",
+      "\"knownPlurals\"": ["\"signalr\""],
+      "\"knownSingulars\"": ["\"signalr\""]
+    }
   }
 }
