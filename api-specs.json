@@ -50,5 +50,14 @@
     "package": "com.microsoft.azure.management.logic",
     "source": "specification/logic/resource-manager/readme.md",
     "args": "--payload-flattening-threshold=1 --tag=package-2016-06"
+  },
+  "iothub": {
+    "apiVersion": "2018-04-01",
+    "package": "com.microsoft.azure.management.iothub",
+    "source": "specification/iothub/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2018-04",
+    "fconfig": {
+      "\"moduleName\"": "\"IoTHub\""
+    }
   }
 }
