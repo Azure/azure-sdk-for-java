@@ -44,5 +44,11 @@
       "\"knownPlurals\"": ["\"signalr\""],
       "\"knownSingulars\"": ["\"signalr\""]
     }
+  },
+  "logic": {
+    "apiVersion": "2016-06-01",
+    "package": "com.microsoft.azure.management.logic",
+    "source": "specification/logic/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-06"
   }
 }
