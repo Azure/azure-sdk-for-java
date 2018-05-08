@@ -11,7 +11,7 @@
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
         <version>0.0.1-beta-SNAPSHOT</version>
-        <relativePath>../../pom.xml</relativePath>
+        <relativePath>../../../pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-storage-v2017_10_01</artifactId>
     <packaging>jar</packaging>
