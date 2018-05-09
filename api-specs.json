@@ -59,5 +59,11 @@
     "fconfig": {
       "\"moduleName\"": "\"IoTHub\""
     }
+  },
+  "scheduler": {
+    "apiVersion": "2016-03-01",
+    "package": "com.microsoft.azure.management.scheduler",
+    "source": "specification/scheduler/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-03"
   }
 }
