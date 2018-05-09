@@ -82,7 +82,6 @@ public class ECKeyTest {
         Path byte_location = Paths.get("src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/byte_array.bin");
         CEK = Files.readAllBytes(byte_location);
 
-    	
     	FACTORY = KeyFactory.getInstance("EC", _provider);
     	
     	DIGEST_256 = MessageDigest.getInstance("SHA-256");
@@ -274,7 +273,6 @@ public class ECKeyTest {
     			.withY(point.getAffineY().toByteArray())
     			.withD(apriv.getS().toByteArray())
     			.withKty(JsonWebKeyType.EC);
-    	System.out.println(jwk);
     	
     	EcKey newKey = new EcKey("kid", keyPair);
     	
@@ -288,10 +286,7 @@ public class ECKeyTest {
     //Checks validity of verify by
     //Externally signing a byte_array with openssl
     //Verifying with SDK
-    private void doVerify(EcKey key, MessageDigest digest, byte[] preGenSignature) throws IOException, NoSuchAlgorithmException, InterruptedException, ExecutionException {
-        System.out.println(digest.getAlgorithm());
-        System.out.println(key.getCurve());
-        
+    private void doVerify(EcKey key, MessageDigest digest, byte[] preGenSignature) throws IOException, NoSuchAlgorithmException, InterruptedException, ExecutionException {        
         byte[] hash = digest.digest(CEK);
         
         //Use sign and verify to test each other.
@@ -309,9 +304,7 @@ public class ECKeyTest {
     }
     
     private void doSignVerify(EcKey key, MessageDigest digest) throws IOException, NoSuchAlgorithmException, InterruptedException, ExecutionException {
-    	System.out.println(digest.getAlgorithm());
-    	System.out.println(key.getCurve());
-    
+
     	byte[] hash = digest.digest(CEK);
 
     	//Use sign and verify to test each other.
