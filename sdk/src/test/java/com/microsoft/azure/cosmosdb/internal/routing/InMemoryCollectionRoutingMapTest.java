@@ -119,7 +119,7 @@ public class InMemoryCollectionRoutingMapTest {
                                 2)),
                         StringUtils.EMPTY);
 
-        assertThat(routingMap).isNull();;
+        assertThat(routingMap).isNull();
 
         routingMap = InMemoryCollectionRoutingMap.tryCreateCompleteRoutingMap(Arrays.asList(
                 new ImmutablePair<PartitionKeyRange, Integer>(new PartitionKeyRange("2", "", "0000000030"), 2),

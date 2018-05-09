@@ -40,14 +40,14 @@ public interface EndpointManager {
      *
      * @return the write endpoint URI
      */
-    public URI getWriteEndpoint();
+    URI getWriteEndpoint();
 
     /**
      * Returns the current read region endpoint.
      *
      * @return the read endpoint URI
      */
-    public URI getReadEndpoint();
+    URI getReadEndpoint();
 
     /**
      * Returns the target endpoint for a given request.
@@ -55,34 +55,34 @@ public interface EndpointManager {
      * @param operationType the operation type
      * @return the service endpoint URI
      */
-    public URI resolveServiceEndpoint(OperationType operationType);
+    URI resolveServiceEndpoint(OperationType operationType);
 
     /**
      * Refreshes the client side endpoint cache.
      */
-    public void refreshEndpointList();
+    void refreshEndpointList();
 
     /**
      * Gets the Database Account resource
      *
      * @return the database account
      */
-    public Observable<DatabaseAccount> getDatabaseAccountFromAnyEndpoint();
+    Observable<DatabaseAccount> getDatabaseAccountFromAnyEndpoint();
 
     /**
      * Mark the current endpoint as unavailable
      */
-    public void markEndpointUnavailable();
+    void markEndpointUnavailable();
 
     /**
      * Close the endpoint manager
      */
-    public void close();
+    void close();
 
     /**
      * Gets a boolean value indicating whether the endpoint manager has been closed.
      *
      * @return true if the endpoint manager has been closed
      */
-    public boolean isClosed();
+    boolean isClosed();
 }

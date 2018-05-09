@@ -74,7 +74,7 @@ public final class SqlParameter extends JsonSerializable {
      * @param <T>  the type of the parameter
      * @return     the value of the parameter.
      */
-    public <T extends Object> Object getValue(Class<T> c) {
+    public <T> Object getValue(Class<T> c) {
         return super.getObject("value", c);
     }
 

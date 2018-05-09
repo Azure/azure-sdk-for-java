@@ -42,9 +42,9 @@ public interface IRetryPolicy  {
     /// <param name="exception">Exception during the callback method invocation</param>
     /// <param name="cancellationToken"></param>
     /// <returns>If the retry needs to be attempted or not</returns>
-    public Single<ShouldRetryResult> shouldRetry(Exception e);
+    Single<ShouldRetryResult> shouldRetry(Exception e);
 
-    public static class ShouldRetryResult {
+    class ShouldRetryResult {
         /// <summary>
         /// How long to wait before next retry. 0 indicates retry immediately.
         /// </summary>
