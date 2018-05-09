@@ -4,19 +4,29 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.math.BigInteger;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.security.InvalidAlgorithmParameterException;
+import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.PrivateKey;
 import java.security.Provider;
+import java.security.PublicKey;
 import java.security.Security;
 import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECPoint;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.PKCS8EncodedKeySpec;
+import java.security.spec.X509EncodedKeySpec;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -28,16 +38,17 @@ import org.junit.Test;
 
 import com.google.common.collect.ImmutableMap;
 import com.microsoft.azure.keyvault.cryptography.EcKey;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
+import com.microsoft.azure.keyvault.cryptography.test.resources.PemFile;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
 
 public class ECKeyTest {
 	
 	private static Provider _provider = null;
-
-	// A Content Encryption Key, or Message.
-    static final byte[] CEK = { 0x00, 0x11, 0x22, 0x33, 0x44, 0x55, 0x66, 0x77, (byte)0x88, (byte)0x99, (byte)0xAA, (byte)0xBB, (byte)0xCC, (byte)0xDD, (byte)0xEE, (byte)0xFF };    
+    
+    static byte[] CEK;
+    static KeyFactory FACTORY;
     static MessageDigest DIGEST_256;
     static MessageDigest DIGEST_384;
     static MessageDigest DIGEST_512;
@@ -45,6 +56,20 @@ public class ECKeyTest {
     static Map<JsonWebKeyCurveName, MessageDigest> CURVE_TO_DIGEST;
     static List<JsonWebKeyCurveName> CURVE_LIST;
     
+//    To create keys and signatures used in this class with openssl:
+//        
+//    Create key
+//        openssl ecparam -name {curve_name} -genkey > {key_name}.pem
+//        openssl pkcs8 -topk8 -nocrypt -in {key_name}.pem -out {key_name}pkcs8.pem
+//        openssl ec -in {key_name}pkcs8.pem -pubout -out {key_name}pkcs8pub.pem
+//        
+//    Sign key
+//        openssl dgst -{sha_digest} -sign {key_name}pkcs8.pem -out {signature} <file>
+//    
+//    Verify key
+//        openssl dgst -{sha_digest} -verify {key_name}pkcs8pub.pem -signature {signature} <file>
+    
+
     protected static void setProvider(Provider provider) {
     	_provider = provider;
     }
@@ -53,7 +78,13 @@ public class ECKeyTest {
     public static void setUpBeforeClass() throws Exception {
     	setProvider(Security.getProvider("SunEC"));
     	EC_KEY_GENERATOR = KeyPairGenerator.getInstance("EC", _provider);
+    	
+        Path byte_location = Paths.get("src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/byte_array.bin");
+        CEK = Files.readAllBytes(byte_location);
 
+    	
+    	FACTORY = KeyFactory.getInstance("EC", _provider);
+    	
     	DIGEST_256 = MessageDigest.getInstance("SHA-256");
     	DIGEST_384 = MessageDigest.getInstance("SHA-384");
     	DIGEST_512 = MessageDigest.getInstance("SHA-512");
@@ -64,7 +95,7 @@ public class ECKeyTest {
 			.put(JsonWebKeyCurveName.P_521, DIGEST_512)
 			.put(JsonWebKeyCurveName.SECP256K1, DIGEST_256)
 			.build();
-    	
+    	//JsonWebKeyCurveName.SECP256K1)
     	CURVE_LIST = Arrays.asList(JsonWebKeyCurveName.P_256, JsonWebKeyCurveName.P_384, JsonWebKeyCurveName.P_521, JsonWebKeyCurveName.SECP256K1);
     }
     
@@ -102,7 +133,7 @@ public class ECKeyTest {
     	}
     }
     
-    @Test(expected = IllegalArgumentException.class)
+    @Test(expected = InvalidAlgorithmParameterException.class)
     public void testWithNotCurveKeyPair() throws Exception {
     	ECGenParameterSpec gps = new ECGenParameterSpec("secp192k1");
     	EC_KEY_GENERATOR.initialize(gps);
@@ -137,27 +168,93 @@ public class ECKeyTest {
     
     @Test
     public void testFromJsonWebKey() throws Exception {
-    	ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.P384);
-    	EC_KEY_GENERATOR.initialize(gps);
-    	KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
-    	
-    	ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
-    	ECPoint point = apub.getW();
-    	ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
-    	
-    	JsonWebKey jwk = new JsonWebKey()
-    			.withKid("kid")
-    			.withCrv(JsonWebKeyCurveName.P_384)
-    			.withX(point.getAffineX().toByteArray())
-    			.withY(point.getAffineY().toByteArray())
-    			.withD(apriv.getS().toByteArray())
-    			.withKty(JsonWebKeyType.EC);
+        ECGenParameterSpec gps = new ECGenParameterSpec(EcKey.P384);
+        EC_KEY_GENERATOR.initialize(gps);
+        KeyPair keyPair = EC_KEY_GENERATOR.generateKeyPair();
+        
+        ECPublicKey apub = (ECPublicKey) keyPair.getPublic();
+        ECPoint point = apub.getW();
+        ECPrivateKey apriv = (ECPrivateKey) keyPair.getPrivate();
+        
+        JsonWebKey jwk = new JsonWebKey()
+                .withKid("kid")
+                .withCrv(JsonWebKeyCurveName.P_384)
+                .withX(point.getAffineX().toByteArray())
+                .withY(point.getAffineY().toByteArray())
+                .withD(apriv.getS().toByteArray())
+                .withKty(JsonWebKeyType.EC);
     
-    	assertTrue(jwk.hasPrivateKey());
-    	
-    	EcKey newKey = EcKey.fromJsonWebKey(jwk, true);
-    	assertEquals("kid", newKey.getKid());
-    	doSignVerify(newKey, DIGEST_384);
+        assertTrue(jwk.hasPrivateKey());
+        
+        EcKey newKey = EcKey.fromJsonWebKey(jwk, true);
+        assertEquals("kid", newKey.getKid());
+        doSignVerify(newKey, DIGEST_384);
+    }
+    
+    private static PrivateKey generatePrivateKey(KeyFactory factory, String filename) throws InvalidKeySpecException, FileNotFoundException, IOException {
+        PemFile pemFile = new PemFile(filename);
+        byte[] content = pemFile.getPemObject().getContent();
+        PKCS8EncodedKeySpec privKeySpec = new PKCS8EncodedKeySpec(content);
+        return factory.generatePrivate(privKeySpec);
+    }
+    
+    private static PublicKey generatePublicKey(KeyFactory factory, String filename) throws InvalidKeySpecException, FileNotFoundException, IOException {
+        PemFile pemFile = new PemFile(filename);
+        byte[] content = pemFile.getPemObject().getContent();
+        X509EncodedKeySpec pubKeySpec = new X509EncodedKeySpec(content);
+        return factory.generatePublic(pubKeySpec);
+    }
+    
+    private KeyPair getKeyFromFile(String privateKeyPath, String publicKeyPath) throws InvalidKeySpecException, FileNotFoundException, IOException {
+        PrivateKey priv = generatePrivateKey(FACTORY, privateKeyPath);
+        PublicKey pub = generatePublicKey(FACTORY, publicKeyPath);
+        ECPublicKey apub = (ECPublicKey) pub;
+        ECPrivateKey apriv = (ECPrivateKey) priv;
+        
+        KeyPair keyPair = new KeyPair(apub, apriv);
+        return keyPair;
+    }
+    
+    private void testFromFile(String keyType, MessageDigest digest) throws Exception {
+        String privateKeyPath = "src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "keynew.pem";
+        String publicKeyPath = "src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "keypubnew.pem";
+        
+        EcKey newKey = new EcKey("akey", getKeyFromFile(privateKeyPath, publicKeyPath));
+        
+        Path signatureLocation = Paths.get("src/test/java/com/microsoft/azure/keyvault/cryptography/test/resources/" + keyType + "sig.der");
+        byte[] signature = Files.readAllBytes(signatureLocation);
+   
+        doVerify(newKey, digest, signature);
+    }
+    
+    @Test
+    public void testCreateSECP256K1Key() throws Exception {
+        ECGenParameterSpec gps = new ECGenParameterSpec("secp256k1");
+        Provider myprov = Security.getProvider("BC");
+        final KeyPairGenerator generator = KeyPairGenerator.getInstance("EC");
+
+        generator.initialize(gps);
+        EcKey key = new EcKey("akey", JsonWebKeyCurveName.SECP256K1);
+    }
+    
+    @Test
+    public void testFromP384File() throws Exception {
+        testFromFile("p384", DIGEST_384);
+    }
+    
+    @Test
+    public void testFromP521File() throws Exception {
+        testFromFile("p521", DIGEST_512);
+    }
+    
+    @Test
+    public void testFromP256File() throws Exception {
+        testFromFile("p256", DIGEST_256);
+    }
+    
+    @Test
+    public void testFromSEC256File() throws Exception{
+        testFromFile("secp256", DIGEST_256);
     }
     
     @Test
@@ -177,6 +274,7 @@ public class ECKeyTest {
     			.withY(point.getAffineY().toByteArray())
     			.withD(apriv.getS().toByteArray())
     			.withKty(JsonWebKeyType.EC);
+    	System.out.println(jwk);
     	
     	EcKey newKey = new EcKey("kid", keyPair);
     	
@@ -187,21 +285,45 @@ public class ECKeyTest {
     	assertEquals(jwk, newJwk);	
     }
     
+    //Checks validity of verify by
+    //Externally signing a byte_array with openssl
+    //Verifying with SDK
+    private void doVerify(EcKey key, MessageDigest digest, byte[] preGenSignature) throws IOException, NoSuchAlgorithmException, InterruptedException, ExecutionException {
+        System.out.println(digest.getAlgorithm());
+        System.out.println(key.getCurve());
+        
+        byte[] hash = digest.digest(CEK);
+        
+        //Use sign and verify to test each other.
+        boolean result = key.verifyAsync(hash, preGenSignature, key.getDefaultSignatureAlgorithm()).get();
+        assertTrue(result);
+            
+        //Check that key denies invalid digest.
+        BigInteger bigInt = new BigInteger(hash);
+        BigInteger shiftInt = bigInt.shiftRight(4);
+        byte [] shifted = shiftInt.toByteArray();
+        boolean incorrectResult = key.verifyAsync(shifted, preGenSignature, key.getDefaultSignatureAlgorithm()).get();
+        assertFalse(incorrectResult);
+   
+        key.close();
+    }
+    
     private void doSignVerify(EcKey key, MessageDigest digest) throws IOException, NoSuchAlgorithmException, InterruptedException, ExecutionException {
-    	String algorithm = key.getDefaultSignatureAlgorithm();
+    	System.out.println(digest.getAlgorithm());
+    	System.out.println(key.getCurve());
+    
     	byte[] hash = digest.digest(CEK);
-    	
+
     	//Use sign and verify to test each other.
-    	Pair<byte[], String> signature = key.signAsync(hash, algorithm).get();
-    	assertEquals(signature.getRight(), algorithm);
-    	boolean result = key.verifyAsync(hash, signature.getLeft(), algorithm).get();
+    	Pair<byte[], String> signature = key.signAsync(hash, key.getDefaultSignatureAlgorithm()).get();
+    	boolean result = key.verifyAsync(hash, signature.getLeft(), key.getDefaultSignatureAlgorithm()).get();
     	assertTrue(result);
-    	
+    	    
     	//Check that key denies invalid digest.
     	BigInteger bigInt = new BigInteger(hash);
     	BigInteger shiftInt = bigInt.shiftRight(4);
        	byte [] shifted = shiftInt.toByteArray();
-    	boolean incorrectResult = key.verifyAsync(shifted, signature.getLeft(), algorithm).get();
+    	boolean incorrectResult = key.verifyAsync(shifted, signature.getLeft(), key.getDefaultSignatureAlgorithm()).get();
     	assertFalse(incorrectResult);
    
     	key.close();
