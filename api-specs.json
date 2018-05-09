@@ -74,5 +74,14 @@
     "fconfig": {
       "\"moduleName\"": "\"MySQL\""
     }
+  },
+  "postgresql": {
+    "apiVersion": "2017-12-01",
+    "package": "com.microsoft.azure.management.postgresql",
+    "source": "specification/postgresql/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-12-01",
+    "fconfig": {
+      "\"moduleName\"": "\"PostgreSQL\""
+    }
   }
 }
