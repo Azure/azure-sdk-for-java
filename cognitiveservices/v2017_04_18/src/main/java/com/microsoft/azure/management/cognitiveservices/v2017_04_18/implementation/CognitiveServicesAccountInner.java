@@ -8,9 +8,9 @@
 
 package com.microsoft.azure.management.cognitiveservices.v2017_04_18.implementation;
 
+import com.microsoft.azure.Resource;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ProvisioningState;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Sku;
-import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -19,7 +19,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * account, its type, location and SKU.
  */
 @JsonFlatten
-public class CognitiveServicesAccountInner {
+public class CognitiveServicesAccountInner extends Resource {
     /**
      * Entity Tag.
      */
@@ -27,28 +27,10 @@ public class CognitiveServicesAccountInner {
     private String etag;
 
     /**
-     * The id of the created account.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /**
      * Type of cognitive service account.
      */
     @JsonProperty(value = "kind")
     private String kind;
-
-    /**
-     * The location of the resource.
-     */
-    @JsonProperty(value = "location")
-    private String location;
-
-    /**
-     * The name of the created account.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
 
     /**
      * Gets the status of the cognitive services account at the time the
@@ -77,22 +59,6 @@ public class CognitiveServicesAccountInner {
     private Sku sku;
 
     /**
-     * Gets or sets a list of key value pairs that describe the resource. These
-     * tags can be used in viewing and grouping this resource (across resource
-     * groups). A maximum of 15 tags can be provided for a resource. Each tag
-     * must have a key no greater than 128 characters and value no greater than
-     * 256 characters.
-     */
-    @JsonProperty(value = "tags")
-    private Map<String, String> tags;
-
-    /**
-     * Resource type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
-    /**
      * Get the etag value.
      *
      * @return the etag value
@@ -113,15 +79,6 @@ public class CognitiveServicesAccountInner {
     }
 
     /**
-     * Get the id value.
-     *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
      * Get the kind value.
      *
      * @return the kind value
@@ -139,35 +96,6 @@ public class CognitiveServicesAccountInner {
     public CognitiveServicesAccountInner withKind(String kind) {
         this.kind = kind;
         return this;
-    }
-
-    /**
-     * Get the location value.
-     *
-     * @return the location value
-     */
-    public String location() {
-        return this.location;
-    }
-
-    /**
-     * Set the location value.
-     *
-     * @param location the location value to set
-     * @return the CognitiveServicesAccountInner object itself.
-     */
-    public CognitiveServicesAccountInner withLocation(String location) {
-        this.location = location;
-        return this;
-    }
-
-    /**
-     * Get the name value.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
     }
 
     /**
@@ -238,34 +166,4 @@ public class CognitiveServicesAccountInner {
         this.sku = sku;
         return this;
     }
-
-    /**
-     * Get the tags value.
-     *
-     * @return the tags value
-     */
-    public Map<String, String> tags() {
-        return this.tags;
-    }
-
-    /**
-     * Set the tags value.
-     *
-     * @param tags the tags value to set
-     * @return the CognitiveServicesAccountInner object itself.
-     */
-    public CognitiveServicesAccountInner withTags(Map<String, String> tags) {
-        this.tags = tags;
-        return this;
-    }
-
-    /**
-     * Get the type value.
-     *
-     * @return the type value
-     */
-    public String type() {
-        return this.type;
-    }
-
 }
