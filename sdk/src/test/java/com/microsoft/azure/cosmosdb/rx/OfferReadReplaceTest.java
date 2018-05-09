@@ -83,7 +83,7 @@ public class OfferReadReplaceTest extends TestSuiteBase {
                 int newThroughput = oldThroughput + 100;
                 
                 JSONObject modifiedContent = new JSONObject(
-                        "{\"offerThroughput\":" + new Integer(newThroughput).toString() + "}");
+                        "{\"offerThroughput\":" +  Integer.toString(newThroughput) + "}");
                 offers.get(i).setContent(modifiedContent);
                 Observable<ResourceResponse<Offer>> replaceObservable = client.replaceOffer(offers.get(i));
 

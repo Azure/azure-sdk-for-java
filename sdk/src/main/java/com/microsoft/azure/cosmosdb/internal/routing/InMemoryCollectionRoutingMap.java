@@ -186,7 +186,7 @@ public class InMemoryCollectionRoutingMap<TPartitionInfo> implements CollectionR
 
     @Override
     public Collection<PartitionKeyRange> getOverlappingRanges(Range<String> range) {
-        return this.getOverlappingRanges(Arrays.asList(range));
+        return this.getOverlappingRanges(Collections.singletonList(range));
     }
 
     @Override

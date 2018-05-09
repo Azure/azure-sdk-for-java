@@ -35,6 +35,7 @@ import java.net.URI;
 import java.net.URLEncoder;
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
@@ -797,7 +798,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         for (int i = 0; i < partitionKeyJson.length(); i++) {
             int val = partitionKeyJson.charAt(i);
             if (val > 127) {
-                sb.append("\\u" + String.format("%04X", val));
+                sb.append("\\u").append(String.format("%04X", val));
             } else {
                 sb.append(partitionKeyJson.charAt(i));
             }
@@ -817,7 +818,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                     value = Undefined.Value();
                 }
 
-                return PartitionKeyInternal.fromObjectArray(Arrays.asList(value), false);
+                return PartitionKeyInternal.fromObjectArray(Collections.singletonList(value), false);
             }
         }
 

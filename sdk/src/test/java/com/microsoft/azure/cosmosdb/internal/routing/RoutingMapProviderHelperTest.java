@@ -23,25 +23,20 @@
 
 package com.microsoft.azure.cosmosdb.internal.routing;
 
-import static org.assertj.core.api.Assertions.assertThat;
-
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.List;
-import java.util.function.Function;
-import java.util.stream.Collectors;
-
+import com.microsoft.azure.cosmosdb.PartitionKeyRange;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.tuple.ImmutablePair;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.PartitionKeyRange;
-import com.microsoft.azure.cosmosdb.internal.routing.CollectionRoutingMap;
-import com.microsoft.azure.cosmosdb.internal.routing.InMemoryCollectionRoutingMap;
-import com.microsoft.azure.cosmosdb.internal.routing.Range;
-import com.microsoft.azure.cosmosdb.internal.routing.RoutingMapProvider;
-import com.microsoft.azure.cosmosdb.internal.routing.RoutingMapProviderHelper;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+import java.util.List;
+import java.util.function.Function;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class RoutingMapProviderHelperTest {
     private static final MockRoutingMapProvider ROUTING_MAP_PROVIDER = new MockRoutingMapProvider(
@@ -117,25 +112,25 @@ public class RoutingMapProviderHelperTest {
 
         // query for minimal point
         ranges = RoutingMapProviderHelper.getOverlappingRanges(ROUTING_MAP_PROVIDER, "dbs/db1/colls/coll1",
-                Arrays.asList(new Range<String>("", "", true, true)));
+                Collections.singletonList(new Range<String>("", "", true, true)));
 
         assertThat("0").isEqualTo(ranges.stream().map(func).collect(Collectors.joining(",")));
 
         // query for empty range
         ranges = RoutingMapProviderHelper.getOverlappingRanges(ROUTING_MAP_PROVIDER, "dbs/db1/colls/coll1",
-                Arrays.asList(new Range<String>("", "", true, false)));
+                Collections.singletonList(new Range<String>("", "", true, false)));
 
         assertThat(0).isEqualTo(ranges.size());
 
         // entire range
         ranges = RoutingMapProviderHelper.getOverlappingRanges(ROUTING_MAP_PROVIDER, "dbs/db1/colls/coll1",
-                Arrays.asList(new Range<String>("", "FF", true, false)));
+                Collections.singletonList(new Range<String>("", "FF", true, false)));
 
         assertThat("0,1,2,3,4,5,6").isEqualTo(ranges.stream().map(func).collect(Collectors.joining(",")));
 
         // matching range
         ranges = RoutingMapProviderHelper.getOverlappingRanges(ROUTING_MAP_PROVIDER, "dbs/db1/colls/coll1",
-                Arrays.asList(new Range<String>("0012", "0015", true, false)));
+                Collections.singletonList(new Range<String>("0012", "0015", true, false)));
 
         assertThat("3").isEqualTo(ranges.stream().map(func).collect(Collectors.joining(",")));
 
@@ -147,7 +142,7 @@ public class RoutingMapProviderHelperTest {
 
         // matching range and a little bit more.
         ranges = RoutingMapProviderHelper.getOverlappingRanges(ROUTING_MAP_PROVIDER, "dbs/db1/colls/coll1",
-                Arrays.asList(new Range<String>("0012", "0015", false, true)));
+                Collections.singletonList(new Range<String>("0012", "0015", false, true)));
 
         assertThat("3,4").isEqualTo(ranges.stream().map(func).collect(Collectors.joining(",")));
     }

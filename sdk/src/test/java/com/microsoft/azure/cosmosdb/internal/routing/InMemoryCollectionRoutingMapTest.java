@@ -27,6 +27,7 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.Iterator;
 
 import org.apache.commons.lang3.StringUtils;
@@ -72,19 +73,17 @@ public class InMemoryCollectionRoutingMapTest {
 
         assertThat(4).isEqualTo(
                 routingMap
-                        .getOverlappingRanges(Arrays
-                                .asList(new Range<String>(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY,
-                                        PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY, true, false)))
+                        .getOverlappingRanges(Collections.singletonList(new Range<String>(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY,
+                                PartitionKeyRange.MAXIMUM_EXCLUSIVE_EFFECTIVE_PARTITION_KEY, true, false)))
                         .size());
         assertThat(0).isEqualTo(
                 routingMap
-                        .getOverlappingRanges(Arrays
-                                .asList(new Range<String>(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY,
-                                        PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY, false, false)))
+                        .getOverlappingRanges(Collections.singletonList(new Range<String>(PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY,
+                                PartitionKeyRange.MINIMUM_INCLUSIVE_EFFECTIVE_PARTITION_KEY, false, false)))
                         .size());
 
         Collection<PartitionKeyRange> partitionKeyRanges = routingMap
-                .getOverlappingRanges(Arrays.asList(new Range<String>("0000000040", "0000000040", true, true)));
+                .getOverlappingRanges(Collections.singletonList(new Range<String>("0000000040", "0000000040", true, true)));
 
         assertThat(1).isEqualTo(partitionKeyRanges.size());
         Iterator<PartitionKeyRange> iterator = partitionKeyRanges.iterator();
