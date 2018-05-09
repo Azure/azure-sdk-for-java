@@ -65,5 +65,14 @@
     "package": "com.microsoft.azure.management.scheduler",
     "source": "specification/scheduler/resource-manager/readme.md",
     "args": "--payload-flattening-threshold=1 --tag=package-2016-03"
+  },
+  "mysql": {
+    "apiVersion": "2017-12-01",
+    "package": "com.microsoft.azure.management.mysql",
+    "source": "specification/mysql/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2017-12-01",
+    "fconfig": {
+      "\"moduleName\"": "\"MySQL\""
+    }
   }
 }
