@@ -133,7 +133,7 @@ public class ECKeyTest {
     	}
     }
     
-    @Test(expected = InvalidAlgorithmParameterException.class)
+    @Test(expected = IllegalArgumentException.class)
     public void testWithNotCurveKeyPair() throws Exception {
     	ECGenParameterSpec gps = new ECGenParameterSpec("secp192k1");
     	EC_KEY_GENERATOR.initialize(gps);
