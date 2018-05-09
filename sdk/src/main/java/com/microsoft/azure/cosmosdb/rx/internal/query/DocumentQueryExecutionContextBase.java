@@ -197,36 +197,10 @@ implements IDocumentQueryExecutionContext<T> {
                     Strings.toString(this.feedOptions.getEnableCrossPartitionQuery()));
         }
 
-        // TODO: add what's related to java
-        // if (this.feedOptions.EmitVerboseTracesInQuery != null)
-        // {
-        // requestHeaders[HttpConstants.HttpHeaders.EmitVerboseTracesInQuery] =
-        // this.feedOptions.EmitVerboseTracesInQuery.ToString();
-        // }
-
-        // if (this.feedOptions.EnableLowPrecisionOrderBy != null)
-        // {
-        // requestHeaders[HttpConstants.HttpHeaders.EnableLowPrecisionOrderBy] =
-        // this.feedOptions.EnableLowPrecisionOrderBy.ToString();
-        // }
-
-        // if (!Strings.isNullOrEmpty(this.feedOptions.FilterBySchemaResourceId))
-        // {
-        // requestHeaders[HttpConstants.HttpHeaders.FilterBySchemaResourceId] =
-        // this.feedOptions.FilterBySchemaResourceId;
-        // }
-
-        // if (this.feedOptions.ResponseContinuationTokenLimitInKb != null)
-        // {
-        // requestHeaders[HttpConstants.HttpHeaders.ResponseContinuationTokenLimitInKB]
-        // = this.feedOptions.ResponseContinuationTokenLimitInKb.ToString();
-        // }
-
-        // if (this.feedOptions.DisableRUPerMinuteUsage)
-        // {
-        // requestHeaders[HttpConstants.HttpHeaders.DisableRUPerMinuteUsage] =
-        // bool.TrueString;
-        // }
+        if (this.feedOptions.getResponseContinuationTokenLimitInKb() > 0) {
+            requestHeaders.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
+                    Strings.toString(feedOptions.getResponseContinuationTokenLimitInKb()));
+        }
 
         return requestHeaders;
     }

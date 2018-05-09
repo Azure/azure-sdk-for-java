@@ -365,14 +365,14 @@ public class JsonSerializable implements Serializable {
      */
     public <T extends Object> T getObject(String propertyName, Class<T> c) {
         if (this.propertyBag.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            JSONObject jsonObj = this.propertyBag.getJSONObject(propertyName);
+            Object jsonObj = this.propertyBag.get(propertyName);
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
                     || Boolean.class.isAssignableFrom(c) || Object.class == c) {
                 // Number, String, Boolean
                 return c.cast(jsonObj);
             } else if (Enum.class.isAssignableFrom(c)) {
                 try {
-                    c.cast(c.getMethod("valueOf", String.class).invoke(null, String.class.cast(jsonObj)));
+                    return c.cast(c.getMethod("valueOf", String.class).invoke(null, String.class.cast(jsonObj)));
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                         | NoSuchMethodException | SecurityException | JSONException e) {
                     throw new IllegalStateException("Failed to create enum.", e);

@@ -33,6 +33,7 @@ import java.util.Map;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceResponse;
+import com.microsoft.azure.cosmosdb.rx.internal.Strings;
 
 
 /**
@@ -136,6 +137,11 @@ public class BridgeInternal {
 
             if (feedOptions.getMaxDegreeOfParallelism() != 0) {
                 headers.put(HttpConstants.HttpHeaders.PARALLELIZE_CROSS_PARTITION_QUERY, Boolean.TRUE.toString());
+            }
+
+            if (feedOptions.getResponseContinuationTokenLimitInKb() > 0) {
+                headers.put(HttpConstants.HttpHeaders.RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB,
+                        Strings.toString(feedOptions.getResponseContinuationTokenLimitInKb()));
             }
         }
 

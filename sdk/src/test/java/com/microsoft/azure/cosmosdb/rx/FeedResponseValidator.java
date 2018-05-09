@@ -32,11 +32,11 @@ import com.microsoft.azure.cosmosdb.FeedResponse;
 import com.microsoft.azure.cosmosdb.Resource;
 import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 
-interface FeedResponseValidator<T extends Resource> {
+public interface FeedResponseValidator<T extends Resource> {
     
     void validate(FeedResponse<T> feedList);
 
-    class Builder<T extends Resource> {
+    public class Builder<T extends Resource> {
         private List<FeedResponseValidator<? extends Resource>> validators = new ArrayList<>();
 
         public FeedResponseValidator<T> build() {

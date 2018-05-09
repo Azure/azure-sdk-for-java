@@ -22,6 +22,7 @@
  */
 package com.microsoft.azure.cosmosdb.rx;
 
+import java.util.Date;
 import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.TimeoutException;
@@ -45,6 +46,7 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 import rx.Observable;
 
 import static org.apache.commons.io.FileUtils.ONE_MB;
+import static org.assertj.core.api.Assertions.assertThat;
 
 public class DocumentCrudTest extends TestSuiteBase {
 
@@ -135,6 +137,25 @@ public class DocumentCrudTest extends TestSuiteBase {
                 .withId(document.getId())
                 .build();
         validateSuccess(readObservable, validator);
+    }
+
+    @Test(groups = { "simple" }, timeOut = TIMEOUT)
+    public void timestamp() throws Exception {
+        Date before = new Date();
+        Document docDefinition = getDocumentDefinition();
+        Thread.sleep(1000);
+        Document document = client
+                .createDocument(getCollectionLink(), docDefinition, null, false).toBlocking().single().getResource();
+
+        RequestOptions options = new RequestOptions();
+        options.setPartitionKey(new PartitionKey(document.get("mypk")));
+        Observable<ResourceResponse<Document>> readObservable = client.readDocument(document.getSelfLink(), options);
+        Document readDocument = readObservable.toBlocking().single().getResource();
+        Thread.sleep(1000);
+        Date after = new Date();
+
+        assertThat(readDocument.getTimestamp()).isAfterOrEqualsTo(before);
+        assertThat(readDocument.getTimestamp()).isBeforeOrEqualsTo(after);
     }
 
     @Test(groups = { "simple" }, timeOut = TIMEOUT)

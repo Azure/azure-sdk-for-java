@@ -27,7 +27,6 @@ import static com.microsoft.azure.cosmosdb.BridgeInternal.toDatabaseAccount;
 import static com.microsoft.azure.cosmosdb.BridgeInternal.toFeedResponsePage;
 import static com.microsoft.azure.cosmosdb.BridgeInternal.toResourceResponse;
 import static com.microsoft.azure.cosmosdb.BridgeInternal.toStoredProcedureResponse;
-import static org.apache.commons.io.FileUtils.ONE_MB;
 
 import java.io.IOException;
 import java.io.InputStream;
@@ -132,10 +131,6 @@ import rx.functions.Func2;
  * This is meant to be internally used only by our sdk.
  */
 public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorizationTokenProvider {
-
-    // we may have ~14K continuation token from a single partition
-    private final static int MAX_REQUEST_HEADER_SIZE = 32 * 1024;
-
     private final Logger logger = LoggerFactory.getLogger(RxDocumentClientImpl.class);
     private final String masterKey;
     private final URI serviceEndpoint;
@@ -157,6 +152,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final EndpointManager globalEndpointManager;
     private RetryPolicy retryPolicy;
     private static final ObjectMapper mapper = new ObjectMapper();
+
+    private Configs config = new Configs();
 
     public RxDocumentClientImpl(URI serviceEndpoint, String masterKey, ConnectionPolicy connectionPolicy,
             ConsistencyLevel consistencyLevel, int eventLoopSize) {
@@ -222,6 +219,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }   
     }
 
+
     RxGatewayStoreModel createRxGatewayProxy(ConnectionPolicy connectionPolicy,
                                              ConsistencyLevel consistencyLevel,
                                              QueryCompatibilityMode queryCompatibilityMode,
@@ -260,6 +258,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 .withIdleConnectionsTimeoutMillis(this.connectionPolicy.getIdleConnectionTimeoutInMillis())
                 .pipelineConfigurator(createClientPipelineConfigurator());
 
+
         RxClient.ClientConfig config = new RxClient.ClientConfig.Builder()
                 .readTimeout(connectionPolicy.getRequestTimeoutInMillis(), TimeUnit.MILLISECONDS).build();
         return builder.config(config);
@@ -268,11 +267,11 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private PipelineConfigurator createClientPipelineConfigurator() {
         PipelineConfigurator clientPipelineConfigurator = new PipelineConfiguratorComposite(
                 new HttpClientPipelineConfigurator<ByteBuf, ByteBuf>(
-                        HttpClientPipelineConfigurator.MAX_INITIAL_LINE_LENGTH_DEFAULT,
-                        MAX_REQUEST_HEADER_SIZE,
-                        HttpClientPipelineConfigurator.MAX_CHUNK_SIZE_DEFAULT,
+                        config.getMaxHttpInitialLineLength(),
+                        config.getMaxHttpHeaderSize(),
+                        config.getMaxHttpChunkSize(),
                         true),
-                new HttpObjectAggregationConfigurator((int)(ONE_MB * 2)));
+                new HttpObjectAggregationConfigurator(config.getMaxHttpBodyLength()));
         return clientPipelineConfigurator;
     }
 
@@ -2661,7 +2660,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         int maxPageSize = options.getMaxItemCount() != null ? options.getMaxItemCount() : -1;
         
         Func2<String, Integer, RxDocumentServiceRequest> createRequestFunc = (continuationToken, pageSize) -> {
-            Map<String, String> requestHeaders = new HashMap<>(10);
+            Map<String, String> requestHeaders = new HashMap<>();
             if (continuationToken != null) {
                 requestHeaders.put(HttpConstants.HttpHeaders.CONTINUATION, continuationToken);
             }

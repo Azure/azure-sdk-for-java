@@ -34,6 +34,7 @@ public final class FeedOptions extends FeedOptionsBase {
     private Boolean enableCrossPartitionQuery;
     private int maxDegreeOfParallelism;
     private int maxBufferedItemCount;
+    private int responseContinuationTokenLimitInKb;
 
     public FeedOptions() {}
 
@@ -46,6 +47,7 @@ public final class FeedOptions extends FeedOptionsBase {
         this.enableCrossPartitionQuery = options.enableCrossPartitionQuery;
         this.maxDegreeOfParallelism = options.maxDegreeOfParallelism;
         this.maxBufferedItemCount = options.maxBufferedItemCount;
+        this.responseContinuationTokenLimitInKb = options.responseContinuationTokenLimitInKb;
     }
 
     /**
@@ -193,5 +195,38 @@ public final class FeedOptions extends FeedOptionsBase {
      */
     public void setMaxBufferedItemCount(int maxBufferedItemCount) {
         this.maxBufferedItemCount = maxBufferedItemCount;
+    }
+
+    /**
+     * Sets the ResponseContinuationTokenLimitInKb request option for document query requests
+     * in the Azure Cosmos DB service.
+     *
+     * ResponseContinuationTokenLimitInKb is used to limit the length of continuation token in the query response.
+     * Valid values are &gt;= 1.
+     *
+     * The continuation token contains both required and optional fields.
+     * The required fields are necessary for resuming the execution from where it was stooped.
+     * The optional fields may contain serialized index lookup work that was done but not yet utilized.
+     * This avoids redoing the work again in subsequent continuations and hence improve the query performance.
+     * Setting the maximum continuation size to 1KB, the Azure Cosmos DB service will only serialize required fields.
+     * Starting from 2KB, the Azure Cosmos DB service would serialize as much as it could fit till it reaches the maximum specified size.
+     *
+     * @param limitInKb continuation token size limit.
+     */
+    public void setResponseContinuationTokenLimitInKb(int limitInKb) {
+        this.responseContinuationTokenLimitInKb = limitInKb;
+    }
+
+    /**
+     * Gets the ResponseContinuationTokenLimitInKb request option for document query requests
+     * in the Azure Cosmos DB service. If not already set returns 0.
+     *
+     * ResponseContinuationTokenLimitInKb is used to limit the length of continuation token in the query response.
+     * Valid values are &gt;= 1.
+     *
+     * @return return set ResponseContinuationTokenLimitInKb, or 0 if not set
+     */
+    public int getResponseContinuationTokenLimitInKb() {
+        return responseContinuationTokenLimitInKb;
     }
 }

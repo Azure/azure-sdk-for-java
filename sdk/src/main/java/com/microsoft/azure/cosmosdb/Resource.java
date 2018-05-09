@@ -24,6 +24,7 @@
 package com.microsoft.azure.cosmosdb;
 
 import java.util.Date;
+import java.util.concurrent.TimeUnit;
 
 import org.json.JSONObject;
 
@@ -131,10 +132,9 @@ public class Resource extends JsonSerializable {
      * @return the timestamp.
      */
     public Date getTimestamp() {
-        Double millisec = super.getDouble(Constants.Properties.LAST_MODIFIED);
-        if (millisec == null) return null;
-        // Multiply the existing 10 digit long value by 1000 to pass to Date. 
-        return new Date(millisec.longValue() * 1000);
+        Double seconds = super.getDouble(Constants.Properties.LAST_MODIFIED);
+        if (seconds == null) return null;
+        return new Date(TimeUnit.SECONDS.toMillis(seconds.longValue()));
     }
 
     /**
@@ -144,7 +144,7 @@ public class Resource extends JsonSerializable {
      */
     void setTimestamp(Date timestamp) {
         double millisec = timestamp.getTime();
-        super.set(Constants.Properties.LAST_MODIFIED, millisec);
+        super.set(Constants.Properties.LAST_MODIFIED, TimeUnit.MILLISECONDS.toSeconds((long) millisec));
     }
 
     /**

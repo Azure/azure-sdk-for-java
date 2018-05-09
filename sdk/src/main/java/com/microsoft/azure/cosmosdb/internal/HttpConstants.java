@@ -101,6 +101,7 @@ public class HttpConstants {
         // Our custom DocDB headers
         public static final String CONTINUATION = "x-ms-continuation";
         public static final String PAGE_SIZE = "x-ms-max-item-count";
+        public static final String RESPONSE_CONTINUATION_TOKEN_LIMIT_IN_KB = "x-ms-documentdb-responsecontinuationtokenlimitinkb";
 
         // Request sender generated. Simply echoed by backend.
         public static final String ACTIVITY_ID = "x-ms-activity-id";
