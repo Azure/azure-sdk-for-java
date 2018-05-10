@@ -7,7 +7,7 @@ public class Es384 extends Ecdsa {
     @Override
     public void checkDigestLength(byte[] digest) {
         if (digest.length != 48) {
-            throw new IllegalArgumentException("Please check the hash of the digest.");
+            throw new IllegalArgumentException("Invalid digest length.");
         }
     }
 }
