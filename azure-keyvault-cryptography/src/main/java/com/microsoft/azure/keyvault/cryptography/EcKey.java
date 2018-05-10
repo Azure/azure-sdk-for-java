@@ -1,25 +1,17 @@
 package com.microsoft.azure.keyvault.cryptography;
 
 import java.io.IOException;
-import java.math.BigInteger;
 import java.security.GeneralSecurityException;
 import java.security.InvalidAlgorithmParameterException;
-import java.security.KeyFactory;
 import java.security.KeyPair;
 import java.security.KeyPairGenerator;
 import java.security.NoSuchAlgorithmException;
 import java.security.NoSuchProviderException;
-import java.security.PrivateKey;
 import java.security.Provider;
-import java.security.PublicKey;
 import java.security.Security;
-import java.security.interfaces.ECPrivateKey;
 import java.security.interfaces.ECPublicKey;
 import java.security.spec.ECGenParameterSpec;
 import java.security.spec.ECParameterSpec;
-import java.security.spec.ECPoint;
-import java.security.spec.ECPrivateKeySpec;
-import java.security.spec.ECPublicKeySpec;
 import java.security.spec.EllipticCurve;
 import java.security.spec.InvalidKeySpecException;
 import java.util.Arrays;
@@ -39,9 +31,8 @@ import com.microsoft.azure.keyvault.cryptography.algorithms.Ecdsa256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es256;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es384;
 import com.microsoft.azure.keyvault.cryptography.algorithms.Es512;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
 import com.microsoft.azure.keyvault.webkey.JsonWebKey;
-import com.microsoft.azure.keyvault.webkey.JsonWebKeyType;
+import com.microsoft.azure.keyvault.webkey.JsonWebKeyCurveName;
 
 
 public class EcKey implements IKey {
@@ -365,7 +356,7 @@ public class EcKey implements IKey {
         }
        
 		Ecdsa algo = (Ecdsa) baseAlgorithm;
-		ISignatureTransform signer = algo.createSignatureTransform(_keyPair, algo.getName(), _provider);
+		ISignatureTransform signer = algo.createSignatureTransform(_keyPair, _provider);
 		
 		try {
 			return Futures.immediateFuture(Pair.of(signer.sign(digest), algorithm));
@@ -394,7 +385,7 @@ public class EcKey implements IKey {
         
         Ecdsa algo = (Ecdsa) baseAlgorithm;
 
-        ISignatureTransform signer = algo.createSignatureTransform(_keyPair, algo.getName(), _provider);
+        ISignatureTransform signer = algo.createSignatureTransform(_keyPair, _provider);
         
         try {
 			return Futures.immediateFuture(signer.verify(digest, signature));
