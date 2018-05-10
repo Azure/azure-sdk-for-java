@@ -34,6 +34,12 @@
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--payload-flattening-threshold=1 --tag=package-2018-05"
   },
+  "keyvault": {
+    "apiVersion": "2016-10-01",
+    "package": "com.microsoft.azure.management.keyvault",
+    "source": "specification/keyvault/resource-manager/readme.md",
+    "args": "--payload-flattening-threshold=1 --tag=package-2016-10"
+  },
   "signalr": {
     "apiVersion": "2018-03-01-preview",
     "package": "com.microsoft.azure.management.signalr",
