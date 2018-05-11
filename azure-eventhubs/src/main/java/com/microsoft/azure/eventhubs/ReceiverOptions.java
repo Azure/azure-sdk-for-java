@@ -39,7 +39,13 @@ public final class ReceiverOptions {
      * Knob to enable/disable runtime metric of the receiver. If this is set to true and is passed to {@link EventHubClient#createReceiver},
      * after the first {@link PartitionReceiver#receive(int)} call, {@link PartitionReceiver#getRuntimeInformation()} is populated.
      * <p>
-     * Enabling this knob will add 3 additional properties to all {@link EventData}'s received on the {@link EventHubClient#createReceiver}.
+     * This knob facilitates for an optimization where the Consumer of Event Hub has the end of stream details at the disposal,
+     * without making any additional {@link EventHubClient#getPartitionRuntimeInformation(String)} call to Event Hubs service.
+     * To achieve this, behind the scenes, along with the actual {@link EventData}, that the Event Hubs {@link PartitionReceiver}
+     * delivers, it includes extra information about the Event Hubs partitions end of stream details on every event.
+     * In summary, enabling this knob will
+     * help users to save an extra call to Event Hubs service to fetch Event Hubs partition information and as a result, will add that information as
+     * header to each {@link EventData} received by the client.
      *
      * @param value the {@link boolean} to indicate, whether, the runtime metric of the receiver should be enabled
      */
