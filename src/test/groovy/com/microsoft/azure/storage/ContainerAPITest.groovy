@@ -11,6 +11,7 @@ import com.microsoft.azure.storage.blob.ListBlobsOptions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PageBlobURL
 import com.microsoft.azure.storage.blob.PipelineOptions
+import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.models.AccessPolicy
 import com.microsoft.azure.storage.blob.models.AppendBlobsCreateResponse
@@ -61,6 +62,18 @@ class ContainerAPITest extends APISpec {
         then:
         response.statusCode() == 201
         validateBasicHeaders(response.headers())
+    }
+
+    def "Container create exception"() {
+        when:
+        cu.create(null, null).blockingGet()
+
+        then:
+        def e = thrown(StorageException)
+        e.body().code() == "ContainerAlreadyExists"
+        e.response().statusCode() == 409
+        e.errorCode() == "ContainerAlreadyExists"
+        e.body().message().contains("The specified container already exists.")
     }
 
     @Unroll

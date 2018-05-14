@@ -24,6 +24,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
+import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
 
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
@@ -159,8 +160,9 @@ public final class ContainerURL extends StorageURL {
     public Single<ContainersCreateResponse> create(
             Metadata metadata, PublicAccessType accessType) {
         metadata = metadata == null ? Metadata.NONE : metadata;
-        return this.storageClient.generatedContainers().createWithRestResponseAsync(
-                null, metadata, accessType, null);
+            return addErrorWrappingToSingle(this.storageClient.generatedContainers().createWithRestResponseAsync(
+                    null, metadata, accessType, null));
+
     }
 
     /**

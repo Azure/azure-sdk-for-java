@@ -24,6 +24,8 @@ import java.net.URL;
 import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 
+import static com.microsoft.azure.storage.blob.Utility.*;
+
 
 /**
  * Represents a URL to an append blob. It may be obtained by direct construction or via the create method on a
@@ -107,7 +109,7 @@ public final class AppendBlobURL extends BlobURL {
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().createWithRestResponseAsync(
                 0, null,
                 headers.getContentType(),
                 headers.getContentEncoding(),
@@ -121,7 +123,7 @@ public final class AppendBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     /**
@@ -142,7 +144,7 @@ public final class AppendBlobURL extends BlobURL {
             Flowable<ByteBuffer> data, long length, BlobAccessConditions accessConditions) {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
-        return this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedAppendBlobs().appendBlockWithRestResponseAsync(
                 data, length, null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getAppendBlobAccessConditions().getIfMaxSizeLessThanOrEqual(),
@@ -151,6 +153,6 @@ public final class AppendBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null);
+                null));
     }
 }
