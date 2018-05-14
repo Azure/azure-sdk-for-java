@@ -353,7 +353,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      *      HttpPost httppost = new HttpPost(authorization + "/oauth2/token");
      *      
      *      // Request parameters and other properties.
-     *      List<NameValuePair> params = new ArrayList<NameValuePair>(2);
+     *      List&lt;NameValuePair&gt; params = new ArrayList&lt;NameValuePair&gt;(2);
      *      params.add(new BasicNameValuePair("resource", resource));
      *      params.add(new BasicNameValuePair("response_type", "token"));
      *      params.add(new BasicNameValuePair("grant_type", "client_credentials"));
@@ -378,7 +378,7 @@ public abstract class KeyVaultCredentials implements ServiceClientCredentials {
      *
      *      return reply.access_token;
      *  }
-     *  /pre>
+     *  </pre>
      *
      *         <p>
      *         <b>Note: The client key must be securely stored. It's advised to
