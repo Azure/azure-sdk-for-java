@@ -22,13 +22,13 @@ public final class ResponseError {
     /**
      * The code property.
      */
-    @JsonProperty(value = "Code", required = true)
+    @JsonProperty(value = "Code")
     private String code;
 
     /**
      * The message property.
      */
-    @JsonProperty(value = "Message", required = true)
+    @JsonProperty(value = "Message")
     private String message;
 
     /**

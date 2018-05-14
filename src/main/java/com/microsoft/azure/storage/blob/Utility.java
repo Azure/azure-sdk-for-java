@@ -14,6 +14,11 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.BlobsSetTierHeaders;
+import com.microsoft.azure.storage.blob.models.ResponseErrorException;
+import com.microsoft.rest.v2.RestResponse;
+import io.reactivex.Single;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
@@ -248,4 +253,12 @@ final class Utility {
         }
     }
 
+    static <T> Single<T> addErrorWrappingToSingle(Single<T> s) {
+        return s.onErrorResumeNext(e -> {
+            if (e instanceof ResponseErrorException) {
+                return Single.error(new StorageException((ResponseErrorException)e));
+            }
+            return Single.error(e);
+        });
+    }
 }

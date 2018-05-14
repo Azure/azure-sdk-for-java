@@ -22,6 +22,8 @@ import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.UnknownHostException;
 
+import static com.microsoft.azure.storage.blob.Utility.*;
+
 /**
  * Represents a URL to a blob of any type: block, append, or page. It may be obtained by direct construction or via the
  * create method on a {@link ContainerURL} object. This class does not hold any state about a particular blob but is
@@ -149,7 +151,7 @@ public class BlobURL extends StorageURL {
         sourceAccessConditions = sourceAccessConditions == null ? BlobAccessConditions.NONE : sourceAccessConditions;
         destAccessConditions = destAccessConditions == null ? BlobAccessConditions.NONE : destAccessConditions;
 
-        return this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlobs().startCopyFromURLWithRestResponseAsync(
                 sourceURL, null, metadata,
                 sourceAccessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 sourceAccessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
@@ -161,7 +163,7 @@ public class BlobURL extends StorageURL {
                 destAccessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
                 destAccessConditions.getLeaseAccessConditions().getLeaseId(),
                 sourceAccessConditions.getLeaseAccessConditions().getLeaseId(),
-                null);
+                null));
     }
 
     /**
