@@ -35,6 +35,12 @@ public final class ServiceGetPropertiesHeaders {
     private String version;
 
     /**
+     * The errorCode property.
+     */
+    @JsonProperty(value = "x-ms-error-code")
+    private String errorCode;
+
+    /**
      * Get the requestId value.
      *
      * @return the requestId value.
@@ -71,6 +77,26 @@ public final class ServiceGetPropertiesHeaders {
      */
     public ServiceGetPropertiesHeaders withVersion(String version) {
         this.version = version;
+        return this;
+    }
+
+    /**
+     * Get the errorCode value.
+     *
+     * @return the errorCode value.
+     */
+    public String errorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Set the errorCode value.
+     *
+     * @param errorCode the errorCode value to set.
+     * @return the ServiceGetPropertiesHeaders object itself.
+     */
+    public ServiceGetPropertiesHeaders withErrorCode(String errorCode) {
+        this.errorCode = errorCode;
         return this;
     }
 }

@@ -279,6 +279,12 @@ public final class BlobsGetPropertiesHeaders {
     private String archiveStatus;
 
     /**
+     * The errorCode property.
+     */
+    @JsonProperty(value = "x-ms-error-code")
+    private String errorCode;
+
+    /**
      * Get the lastModified value.
      *
      * @return the lastModified value.
@@ -936,6 +942,26 @@ public final class BlobsGetPropertiesHeaders {
      */
     public BlobsGetPropertiesHeaders withArchiveStatus(String archiveStatus) {
         this.archiveStatus = archiveStatus;
+        return this;
+    }
+
+    /**
+     * Get the errorCode value.
+     *
+     * @return the errorCode value.
+     */
+    public String errorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Set the errorCode value.
+     *
+     * @param errorCode the errorCode value to set.
+     * @return the BlobsGetPropertiesHeaders object itself.
+     */
+    public BlobsGetPropertiesHeaders withErrorCode(String errorCode) {
+        this.errorCode = errorCode;
         return this;
     }
 }

@@ -96,6 +96,12 @@ public final class ContainersGetPropertiesHeaders {
     private PublicAccessType blobPublicAccess;
 
     /**
+     * The errorCode property.
+     */
+    @JsonProperty(value = "x-ms-error-code")
+    private String errorCode;
+
+    /**
      * Get the metadata value.
      *
      * @return the metadata value.
@@ -306,6 +312,26 @@ public final class ContainersGetPropertiesHeaders {
      */
     public ContainersGetPropertiesHeaders withBlobPublicAccess(PublicAccessType blobPublicAccess) {
         this.blobPublicAccess = blobPublicAccess;
+        return this;
+    }
+
+    /**
+     * Get the errorCode value.
+     *
+     * @return the errorCode value.
+     */
+    public String errorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Set the errorCode value.
+     *
+     * @param errorCode the errorCode value to set.
+     * @return the ContainersGetPropertiesHeaders object itself.
+     */
+    public ContainersGetPropertiesHeaders withErrorCode(String errorCode) {
+        this.errorCode = errorCode;
         return this;
     }
 }
