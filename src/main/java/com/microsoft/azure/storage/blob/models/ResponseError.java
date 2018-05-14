@@ -22,14 +22,80 @@ public final class ResponseError {
     /**
      * The code property.
      */
-    @JsonProperty(value = "Code")
+    @JsonProperty(value = "code")
     private String code;
 
     /**
      * The message property.
      */
-    @JsonProperty(value = "Message")
+    @JsonProperty(value = "message")
     private String message;
+
+    /**
+     * The authenticationErrorDetail property.
+     */
+    @JsonProperty(value = "authenticationErrorDetail")
+    private String authenticationErrorDetail;
+
+    /**
+     * The headerName property.
+     */
+    @JsonProperty(value = "headerName")
+    private String headerName;
+
+    /**
+     * The headerValue property.
+     */
+    @JsonProperty(value = "headerValue")
+    private String headerValue;
+
+    /**
+     * The metadataValue property.
+     */
+    @JsonProperty(value = "metadataValue")
+    private String metadataValue;
+
+    /**
+     * The minimumAllowed property.
+     */
+    @JsonProperty(value = "minimumAllowed")
+    private String minimumAllowed;
+
+    /**
+     * The maximumAllowed property.
+     */
+    @JsonProperty(value = "maximumAllowed")
+    private String maximumAllowed;
+
+    /**
+     * The queryParameterName property.
+     */
+    @JsonProperty(value = "queryParameterName")
+    private String queryParameterName;
+
+    /**
+     * The queryParameterVale property.
+     */
+    @JsonProperty(value = "queryParameterVale")
+    private String queryParameterVale;
+
+    /**
+     * The reason property.
+     */
+    @JsonProperty(value = "reason")
+    private String reason;
+
+    /**
+     * The xmlNodeName property.
+     */
+    @JsonProperty(value = "xmlNodeName")
+    private String xmlNodeName;
+
+    /**
+     * The xmlNodeValue property.
+     */
+    @JsonProperty(value = "xmlNodeValue")
+    private String xmlNodeValue;
 
     /**
      * Get the code value.
@@ -68,6 +134,227 @@ public final class ResponseError {
      */
     public ResponseError withMessage(String message) {
         this.message = message;
+        return this;
+    }
+
+    /**
+     * Get the authenticationErrorDetail value.
+     *
+     * @return the authenticationErrorDetail value.
+     */
+    public String authenticationErrorDetail() {
+        return this.authenticationErrorDetail;
+    }
+
+    /**
+     * Set the authenticationErrorDetail value.
+     *
+     * @param authenticationErrorDetail the authenticationErrorDetail value to
+     * set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withAuthenticationErrorDetail(String authenticationErrorDetail) {
+        this.authenticationErrorDetail = authenticationErrorDetail;
+        return this;
+    }
+
+    /**
+     * Get the headerName value.
+     *
+     * @return the headerName value.
+     */
+    public String headerName() {
+        return this.headerName;
+    }
+
+    /**
+     * Set the headerName value.
+     *
+     * @param headerName the headerName value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withHeaderName(String headerName) {
+        this.headerName = headerName;
+        return this;
+    }
+
+    /**
+     * Get the headerValue value.
+     *
+     * @return the headerValue value.
+     */
+    public String headerValue() {
+        return this.headerValue;
+    }
+
+    /**
+     * Set the headerValue value.
+     *
+     * @param headerValue the headerValue value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withHeaderValue(String headerValue) {
+        this.headerValue = headerValue;
+        return this;
+    }
+
+    /**
+     * Get the metadataValue value.
+     *
+     * @return the metadataValue value.
+     */
+    public String metadataValue() {
+        return this.metadataValue;
+    }
+
+    /**
+     * Set the metadataValue value.
+     *
+     * @param metadataValue the metadataValue value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withMetadataValue(String metadataValue) {
+        this.metadataValue = metadataValue;
+        return this;
+    }
+
+    /**
+     * Get the minimumAllowed value.
+     *
+     * @return the minimumAllowed value.
+     */
+    public String minimumAllowed() {
+        return this.minimumAllowed;
+    }
+
+    /**
+     * Set the minimumAllowed value.
+     *
+     * @param minimumAllowed the minimumAllowed value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withMinimumAllowed(String minimumAllowed) {
+        this.minimumAllowed = minimumAllowed;
+        return this;
+    }
+
+    /**
+     * Get the maximumAllowed value.
+     *
+     * @return the maximumAllowed value.
+     */
+    public String maximumAllowed() {
+        return this.maximumAllowed;
+    }
+
+    /**
+     * Set the maximumAllowed value.
+     *
+     * @param maximumAllowed the maximumAllowed value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withMaximumAllowed(String maximumAllowed) {
+        this.maximumAllowed = maximumAllowed;
+        return this;
+    }
+
+    /**
+     * Get the queryParameterName value.
+     *
+     * @return the queryParameterName value.
+     */
+    public String queryParameterName() {
+        return this.queryParameterName;
+    }
+
+    /**
+     * Set the queryParameterName value.
+     *
+     * @param queryParameterName the queryParameterName value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withQueryParameterName(String queryParameterName) {
+        this.queryParameterName = queryParameterName;
+        return this;
+    }
+
+    /**
+     * Get the queryParameterVale value.
+     *
+     * @return the queryParameterVale value.
+     */
+    public String queryParameterVale() {
+        return this.queryParameterVale;
+    }
+
+    /**
+     * Set the queryParameterVale value.
+     *
+     * @param queryParameterVale the queryParameterVale value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withQueryParameterVale(String queryParameterVale) {
+        this.queryParameterVale = queryParameterVale;
+        return this;
+    }
+
+    /**
+     * Get the reason value.
+     *
+     * @return the reason value.
+     */
+    public String reason() {
+        return this.reason;
+    }
+
+    /**
+     * Set the reason value.
+     *
+     * @param reason the reason value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withReason(String reason) {
+        this.reason = reason;
+        return this;
+    }
+
+    /**
+     * Get the xmlNodeName value.
+     *
+     * @return the xmlNodeName value.
+     */
+    public String xmlNodeName() {
+        return this.xmlNodeName;
+    }
+
+    /**
+     * Set the xmlNodeName value.
+     *
+     * @param xmlNodeName the xmlNodeName value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withXmlNodeName(String xmlNodeName) {
+        this.xmlNodeName = xmlNodeName;
+        return this;
+    }
+
+    /**
+     * Get the xmlNodeValue value.
+     *
+     * @return the xmlNodeValue value.
+     */
+    public String xmlNodeValue() {
+        return this.xmlNodeValue;
+    }
+
+    /**
+     * Set the xmlNodeValue value.
+     *
+     * @param xmlNodeValue the xmlNodeValue value to set.
+     * @return the ResponseError object itself.
+     */
+    public ResponseError withXmlNodeValue(String xmlNodeValue) {
+        this.xmlNodeValue = xmlNodeValue;
         return this;
     }
 }

@@ -76,6 +76,12 @@ public final class BlockBlobsUploadHeaders {
     private Boolean isServerEncrypted;
 
     /**
+     * The errorCode property.
+     */
+    @JsonProperty(value = "x-ms-error-code")
+    private String errorCode;
+
+    /**
      * Get the eTag value.
      *
      * @return the eTag value.
@@ -226,6 +232,26 @@ public final class BlockBlobsUploadHeaders {
      */
     public BlockBlobsUploadHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
+        return this;
+    }
+
+    /**
+     * Get the errorCode value.
+     *
+     * @return the errorCode value.
+     */
+    public String errorCode() {
+        return this.errorCode;
+    }
+
+    /**
+     * Set the errorCode value.
+     *
+     * @param errorCode the errorCode value to set.
+     * @return the BlockBlobsUploadHeaders object itself.
+     */
+    public BlockBlobsUploadHeaders withErrorCode(String errorCode) {
+        this.errorCode = errorCode;
         return this;
     }
 }
