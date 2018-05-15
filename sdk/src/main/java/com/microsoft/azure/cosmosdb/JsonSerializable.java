@@ -123,7 +123,7 @@ public class JsonSerializable implements Serializable {
      * @return the HashMap.
      */
     public HashMap<String, Object> getHashMap() {
-        return JsonSerializable.toMap(this.propertyBag);
+        return getMapper().convertValue(this.propertyBag, HashMap.class);
     }
 
     /**
@@ -173,7 +173,7 @@ public class JsonSerializable implements Serializable {
             this.propertyBag.put(propertyName, castedValue != null ? castedValue.propertyBag : null);
         } else {
             // POJO
-            this.propertyBag.set(propertyName, OBJECT_MAPPER.valueToTree(value));
+            this.propertyBag.set(propertyName, getMapper().valueToTree(value));
         }
     }
 
