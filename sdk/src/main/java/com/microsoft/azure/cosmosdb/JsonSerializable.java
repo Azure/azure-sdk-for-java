@@ -305,7 +305,7 @@ public class JsonSerializable implements Serializable {
                 return c.cast(getValue(jsonObj));
             } else if (Enum.class.isAssignableFrom(c)) {
                 try {
-                    c.cast(c.getMethod("valueOf", String.class).invoke(null, String.class.cast(getValue(jsonObj))));
+                    return c.cast(c.getMethod("valueOf", String.class).invoke(null, String.class.cast(getValue(jsonObj))));
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
                         | NoSuchMethodException | SecurityException e) {
                     throw new IllegalStateException("Failed to create enum.", e);
