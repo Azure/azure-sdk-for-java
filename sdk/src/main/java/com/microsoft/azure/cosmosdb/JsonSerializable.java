@@ -34,6 +34,7 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -53,6 +54,8 @@ public class JsonSerializable implements Serializable {
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     static {
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        OBJECT_MAPPER.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        OBJECT_MAPPER.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
     }
     private ObjectMapper om;
     transient ObjectNode propertyBag = null;
