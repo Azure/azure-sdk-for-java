@@ -42,7 +42,7 @@ class APISpec extends Specification {
     ByteBuffer defaultData = ByteBuffer.wrap(defaultText.bytes)
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static final boolean enableDebugging = true
+    static final boolean enableDebugging = false
 
     static final String containerPrefix = "javatestcontainer"
 
