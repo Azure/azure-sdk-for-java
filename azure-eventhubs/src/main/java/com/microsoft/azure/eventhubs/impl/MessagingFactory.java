@@ -173,7 +173,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     public CBSChannel getCBSChannel() {
         synchronized (this.cbsChannelCreateLock) {
             if (this.cbsChannel == null) {
-                this.cbsChannel = new CBSChannel(this, this, "cbs-link");
+                this.cbsChannel = new CBSChannel(this, this);
             }
         }
 
@@ -183,7 +183,7 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
     public ManagementChannel getManagementChannel() {
         synchronized (this.mgmtChannelCreateLock) {
             if (this.mgmtChannel == null) {
-                this.mgmtChannel = new ManagementChannel(this, this, "mgmt-link");
+                this.mgmtChannel = new ManagementChannel(this, this);
             }
         }
 

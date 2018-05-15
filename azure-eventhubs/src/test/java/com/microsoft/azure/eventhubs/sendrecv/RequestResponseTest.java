@@ -21,6 +21,8 @@ import org.junit.BeforeClass;
 import org.junit.Test;
 
 import java.io.IOException;
+import java.lang.reflect.*;
+import java.time.Duration;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
@@ -235,6 +237,31 @@ public class RequestResponseTest extends ApiTestBase {
         }
 
         ehc.closeSync();
+    }
+
+    @Test
+    public void testGetRuntimeInfoCallTimesout() throws Exception {
+        final EventHubClientImpl eventHubClient = (EventHubClientImpl) EventHubClient.createSync(connectionString.toString(), TestContext.EXECUTOR_SERVICE);
+
+        // set operation timeout to 5ms - so that the actual operation doesn't event start
+        final Field factoryField = EventHubClientImpl.class.getDeclaredField("underlyingFactory");
+        factoryField.setAccessible(true);
+        final MessagingFactory factory = (MessagingFactory)factoryField.get(eventHubClient);
+
+        final Field timeoutField = MessagingFactory.class.getDeclaredField("operationTimeout");
+        timeoutField.setAccessible(true);
+        final Duration originalTimeout = factory.getOperationTimeout();
+        timeoutField.set(factory, Duration.ofMillis(ClientConstants.MGMT_CHANNEL_MIN_RETRY_IN_MILLIS));
+
+        try {
+            eventHubClient.getPartitionRuntimeInformation("0").get();
+            Assert.assertTrue(false); // exception should be thrown
+        } catch (ExecutionException exception) {
+            Assert.assertTrue(exception.getCause() instanceof TimeoutException);
+        } finally {
+            timeoutField.set(factory, originalTimeout);
+            eventHubClient.closeSync();
+        }
     }
 
     @Test

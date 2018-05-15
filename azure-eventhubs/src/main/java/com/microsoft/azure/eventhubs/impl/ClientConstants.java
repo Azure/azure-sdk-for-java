@@ -33,6 +33,7 @@ public final class ClientConstants {
     public final static int SESSION_OPEN_TIMEOUT_IN_MS = 15000;
     public final static int REACTOR_IO_POLL_TIMEOUT = 20;
     public final static int SERVER_BUSY_BASE_SLEEP_TIME_IN_SECS = 4;
+    public final static int MGMT_CHANNEL_MIN_RETRY_IN_MILLIS = 5;
     public final static String NO_RETRY = "NoRetry";
     public final static String DEFAULT_RETRY = "Default";
     public final static String PRODUCT_NAME = "MSJavaClient";
