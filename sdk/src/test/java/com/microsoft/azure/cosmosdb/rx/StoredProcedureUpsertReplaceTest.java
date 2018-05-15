@@ -128,13 +128,13 @@ public class StoredProcedureUpsertReplaceTest extends TestSuiteBase {
         // create a stored procedure
         StoredProcedure storedProcedureDef = new StoredProcedure(
                 "{" +
-                        "  \"id\": \"" +UUID.randomUUID().toString() + "\"," +
-                        "  \"body\":" +
-                        "    \"function () {" +
+                        "  'id': '" +UUID.randomUUID().toString() + "'," +
+                        "  'body':" +
+                        "    'function () {" +
                         "      for (var i = 0; i < 10; i++) {" +
-                        "        getContext().getResponse().appendValue('Body', i);" +
+                        "        getContext().getResponse().appendValue(\"Body\", i);" +
                         "      }" +
-                        "    }\"" +
+                        "    }'" +
                         "}");
         
         StoredProcedure storedProcedure = client.createStoredProcedure(getCollectionLink(), storedProcedureDef, null).toBlocking().single().getResource();

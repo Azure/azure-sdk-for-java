@@ -94,10 +94,10 @@ public class InMemoryGroupbyTest {
                 LocalDateTime currentTime = LocalDateTime.now();
 
                 Document doc = new Document(String.format("{ "
-                        + "\"id\" : \"%s\","
-                        + "\"site_id\": \"ABC\", "
-                        + "\"payer_id\": %d, "
-                        + " \"created_time\" : %d "
+                        + "'id' : '%s',"
+                        + "'site_id': 'ABC', "
+                        + "'payer_id': %d, "
+                        + " 'created_time' : %d "
                         + "}", UUID.randomUUID().toString(), i, currentTime.getSecond()));
                 asyncClient.createDocument(getCollectionLink(), doc, null, true).toBlocking().single();
 

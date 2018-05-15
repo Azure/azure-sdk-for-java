@@ -109,19 +109,19 @@ public class StoredProcedureAsyncAPITest {
         // Create a stored procedure
         StoredProcedure storedProcedure = new StoredProcedure( 
                 "{" +
-                "  \"id\":\"storedProcedureSample\"," +
-                "  \"body\":" +
-                "    \"function() {" +
-                "        var mytext = 'x';" +
+                "  'id':'storedProcedureSample'," +
+                "  'body':" +
+                "    'function() {" +
+                "        var mytext = \"x\";" +
                 "        var myval = 1;" +
                 "        try {" +
-                "            console.log('The value of %s is %s.', mytext, myval);" +
-                "            getContext().getResponse().setBody('Success!');" +
+                "            console.log(\"The value of %s is %s.\", mytext, myval);" +
+                "            getContext().getResponse().setBody(\"Success!\");" +
                 "        }" +
                 "        catch(err) {" +
-                "            getContext().getResponse().setBody('inline err: [' + err.number + '] ' + err);" +
+                "            getContext().getResponse().setBody(\"inline err: [\" + err.number + \"] \" + err);" +
                 "        }" +
-                "    }\"" +
+                "    }'" +
                 "}");
 
         storedProcedure = asyncClient.createStoredProcedure(getCollectionLink(), storedProcedure, null)
@@ -162,12 +162,12 @@ public class StoredProcedureAsyncAPITest {
         // Create stored procedure
         StoredProcedure storedProcedure = new StoredProcedure(
                 "{" +
-                        "  \"id\": \"multiplySample\"," +
-                        "  \"body\":" +
-                        "    \"function (value, num) {" +
+                        "  'id': 'multiplySample'," +
+                        "  'body':" +
+                        "    'function (value, num) {" +
                         "      getContext().getResponse().setBody(" +
-                        "          '2*' + value + ' is ' + num * 2 );" +
-                        "    }\"" +
+                        "          \"2*\" + value + \" is \" + num * 2 );" +
+                        "    }'" +
                 "}");
 
         storedProcedure = asyncClient.createStoredProcedure(getCollectionLink(), storedProcedure, null)
@@ -202,12 +202,12 @@ public class StoredProcedureAsyncAPITest {
         // create stored procedure
         StoredProcedure storedProcedure = new StoredProcedure(
                 "{" +
-                        "  \"id\": \"storedProcedurePojoSample\"," +
-                        "  \"body\":" +
-                        "    \"function (value) {" +
+                        "  'id': 'storedProcedurePojoSample'," +
+                        "  'body':" +
+                        "    'function (value) {" +
                         "      getContext().getResponse().setBody(" +
-                        "          'a is ' + value.temp);" +
-                        "    }\"" +
+                        "          \"a is \" + value.temp);" +
+                        "    }'" +
                 "}");
 
         storedProcedure = asyncClient.createStoredProcedure(getCollectionLink(), storedProcedure, null)
