@@ -15,10 +15,10 @@ import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlProperty;
 import com.fasterxml.jackson.dataformat.xml.annotation.JacksonXmlRootElement;
 
 /**
- * The ResponseError model.
+ * The ResponseErrorDetail model.
  */
-@JacksonXmlRootElement(localName = "ResponseError")
-public final class ResponseError {
+@JacksonXmlRootElement(localName = "ResponseErrorDetail")
+public final class ResponseErrorDetail {
     /**
      * The code property.
      */
@@ -59,13 +59,13 @@ public final class ResponseError {
      * The minimumAllowed property.
      */
     @JsonProperty(value = "MinimumAllowed")
-    private Integer minimumAllowed;
+    private String minimumAllowed;
 
     /**
      * The maximumAllowed property.
      */
     @JsonProperty(value = "MaximumAllowed")
-    private Long maximumAllowed;
+    private String maximumAllowed;
 
     /**
      * The queryParameterName property.
@@ -74,10 +74,10 @@ public final class ResponseError {
     private String queryParameterName;
 
     /**
-     * The queryParameterValue property.
+     * The queryParameterVale property.
      */
-    @JsonProperty(value = "QueryParameterValue")
-    private String queryParameterValue;
+    @JsonProperty(value = "QueryParameterVale")
+    private String queryParameterVale;
 
     /**
      * The reason property.
@@ -98,24 +98,6 @@ public final class ResponseError {
     private String xmlNodeValue;
 
     /**
-     * The lineNumber property.
-     */
-    @JsonProperty(value = "LineNumber")
-    private Integer lineNumber;
-
-    /**
-     * The linePosition property.
-     */
-    @JsonProperty(value = "LinePosition")
-    private Integer linePosition;
-
-    /**
-     * The invalidBlockId property.
-     */
-    @JsonProperty(value = "InvalidBlockId")
-    private String invalidBlockId;
-
-    /**
      * Get the code value.
      *
      * @return the code value.
@@ -128,9 +110,9 @@ public final class ResponseError {
      * Set the code value.
      *
      * @param code the code value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withCode(String code) {
+    public ResponseErrorDetail withCode(String code) {
         this.code = code;
         return this;
     }
@@ -148,9 +130,9 @@ public final class ResponseError {
      * Set the message value.
      *
      * @param message the message value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withMessage(String message) {
+    public ResponseErrorDetail withMessage(String message) {
         this.message = message;
         return this;
     }
@@ -169,9 +151,9 @@ public final class ResponseError {
      *
      * @param authenticationErrorDetail the authenticationErrorDetail value to
      * set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withAuthenticationErrorDetail(String authenticationErrorDetail) {
+    public ResponseErrorDetail withAuthenticationErrorDetail(String authenticationErrorDetail) {
         this.authenticationErrorDetail = authenticationErrorDetail;
         return this;
     }
@@ -189,9 +171,9 @@ public final class ResponseError {
      * Set the headerName value.
      *
      * @param headerName the headerName value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withHeaderName(String headerName) {
+    public ResponseErrorDetail withHeaderName(String headerName) {
         this.headerName = headerName;
         return this;
     }
@@ -209,9 +191,9 @@ public final class ResponseError {
      * Set the headerValue value.
      *
      * @param headerValue the headerValue value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withHeaderValue(String headerValue) {
+    public ResponseErrorDetail withHeaderValue(String headerValue) {
         this.headerValue = headerValue;
         return this;
     }
@@ -229,9 +211,9 @@ public final class ResponseError {
      * Set the metadataValue value.
      *
      * @param metadataValue the metadataValue value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withMetadataValue(String metadataValue) {
+    public ResponseErrorDetail withMetadataValue(String metadataValue) {
         this.metadataValue = metadataValue;
         return this;
     }
@@ -241,7 +223,7 @@ public final class ResponseError {
      *
      * @return the minimumAllowed value.
      */
-    public Integer minimumAllowed() {
+    public String minimumAllowed() {
         return this.minimumAllowed;
     }
 
@@ -249,9 +231,9 @@ public final class ResponseError {
      * Set the minimumAllowed value.
      *
      * @param minimumAllowed the minimumAllowed value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withMinimumAllowed(Integer minimumAllowed) {
+    public ResponseErrorDetail withMinimumAllowed(String minimumAllowed) {
         this.minimumAllowed = minimumAllowed;
         return this;
     }
@@ -261,7 +243,7 @@ public final class ResponseError {
      *
      * @return the maximumAllowed value.
      */
-    public Long maximumAllowed() {
+    public String maximumAllowed() {
         return this.maximumAllowed;
     }
 
@@ -269,9 +251,9 @@ public final class ResponseError {
      * Set the maximumAllowed value.
      *
      * @param maximumAllowed the maximumAllowed value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withMaximumAllowed(Long maximumAllowed) {
+    public ResponseErrorDetail withMaximumAllowed(String maximumAllowed) {
         this.maximumAllowed = maximumAllowed;
         return this;
     }
@@ -289,30 +271,30 @@ public final class ResponseError {
      * Set the queryParameterName value.
      *
      * @param queryParameterName the queryParameterName value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withQueryParameterName(String queryParameterName) {
+    public ResponseErrorDetail withQueryParameterName(String queryParameterName) {
         this.queryParameterName = queryParameterName;
         return this;
     }
 
     /**
-     * Get the queryParameterValue value.
+     * Get the queryParameterVale value.
      *
-     * @return the queryParameterValue value.
+     * @return the queryParameterVale value.
      */
-    public String queryParameterValue() {
-        return this.queryParameterValue;
+    public String queryParameterVale() {
+        return this.queryParameterVale;
     }
 
     /**
-     * Set the queryParameterValue value.
+     * Set the queryParameterVale value.
      *
-     * @param queryParameterValue the queryParameterValue value to set.
-     * @return the ResponseError object itself.
+     * @param queryParameterVale the queryParameterVale value to set.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withQueryParameterValue(String queryParameterValue) {
-        this.queryParameterValue = queryParameterValue;
+    public ResponseErrorDetail withQueryParameterVale(String queryParameterVale) {
+        this.queryParameterVale = queryParameterVale;
         return this;
     }
 
@@ -329,9 +311,9 @@ public final class ResponseError {
      * Set the reason value.
      *
      * @param reason the reason value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withReason(String reason) {
+    public ResponseErrorDetail withReason(String reason) {
         this.reason = reason;
         return this;
     }
@@ -349,9 +331,9 @@ public final class ResponseError {
      * Set the xmlNodeName value.
      *
      * @param xmlNodeName the xmlNodeName value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withXmlNodeName(String xmlNodeName) {
+    public ResponseErrorDetail withXmlNodeName(String xmlNodeName) {
         this.xmlNodeName = xmlNodeName;
         return this;
     }
@@ -369,70 +351,10 @@ public final class ResponseError {
      * Set the xmlNodeValue value.
      *
      * @param xmlNodeValue the xmlNodeValue value to set.
-     * @return the ResponseError object itself.
+     * @return the ResponseErrorDetail object itself.
      */
-    public ResponseError withXmlNodeValue(String xmlNodeValue) {
+    public ResponseErrorDetail withXmlNodeValue(String xmlNodeValue) {
         this.xmlNodeValue = xmlNodeValue;
-        return this;
-    }
-
-    /**
-     * Get the lineNumber value.
-     *
-     * @return the lineNumber value.
-     */
-    public Integer lineNumber() {
-        return this.lineNumber;
-    }
-
-    /**
-     * Set the lineNumber value.
-     *
-     * @param lineNumber the lineNumber value to set.
-     * @return the ResponseError object itself.
-     */
-    public ResponseError withLineNumber(Integer lineNumber) {
-        this.lineNumber = lineNumber;
-        return this;
-    }
-
-    /**
-     * Get the linePosition value.
-     *
-     * @return the linePosition value.
-     */
-    public Integer linePosition() {
-        return this.linePosition;
-    }
-
-    /**
-     * Set the linePosition value.
-     *
-     * @param linePosition the linePosition value to set.
-     * @return the ResponseError object itself.
-     */
-    public ResponseError withLinePosition(Integer linePosition) {
-        this.linePosition = linePosition;
-        return this;
-    }
-
-    /**
-     * Get the invalidBlockId value.
-     *
-     * @return the invalidBlockId value.
-     */
-    public String invalidBlockId() {
-        return this.invalidBlockId;
-    }
-
-    /**
-     * Set the invalidBlockId value.
-     *
-     * @param invalidBlockId the invalidBlockId value to set.
-     * @return the ResponseError object itself.
-     */
-    public ResponseError withInvalidBlockId(String invalidBlockId) {
-        this.invalidBlockId = invalidBlockId;
         return this;
     }
 }
