@@ -98,10 +98,6 @@ public class JsonSerializable implements Serializable {
         return OBJECT_MAPPER;
     }
         
-    private static HashMap<String, Object> toMap(ObjectNode object) {
-       return OBJECT_MAPPER.convertValue(object, HashMap.class);
-    }
-
     private static void checkForValidPOJO(Class<?> c) {
         if (c.isAnonymousClass() || c.isLocalClass()) {
             throw new IllegalArgumentException(
