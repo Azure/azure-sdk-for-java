@@ -60,12 +60,6 @@ public final class BlockBlobsStageBlockHeaders {
     private Boolean isServerEncrypted;
 
     /**
-     * The errorCode property.
-     */
-    @JsonProperty(value = "x-ms-error-code")
-    private String errorCode;
-
-    /**
      * Get the contentMD5 value.
      *
      * @return the contentMD5 value.
@@ -169,26 +163,6 @@ public final class BlockBlobsStageBlockHeaders {
      */
     public BlockBlobsStageBlockHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the errorCode value.
-     *
-     * @return the errorCode value.
-     */
-    public String errorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Set the errorCode value.
-     *
-     * @param errorCode the errorCode value to set.
-     * @return the BlockBlobsStageBlockHeaders object itself.
-     */
-    public BlockBlobsStageBlockHeaders withErrorCode(String errorCode) {
-        this.errorCode = errorCode;
         return this;
     }
 }

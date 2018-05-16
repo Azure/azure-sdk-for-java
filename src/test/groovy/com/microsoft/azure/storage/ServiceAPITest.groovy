@@ -7,6 +7,7 @@ import com.microsoft.azure.storage.blob.ListContainersOptions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.ServiceURL
+import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
 import com.microsoft.azure.storage.blob.URLParser
 import com.microsoft.azure.storage.blob.models.Container
@@ -84,6 +85,14 @@ class ServiceAPITest extends APISpec {
                 .blockingGet().body().containers().size() == 10
     }
 
+    def "Service list containers error"() {
+        when:
+        primaryServiceURL.listContainersSegment("garbage", null).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
     def validatePropsSet(ServiceSetPropertiesHeaders headers, StorageServiceProperties receivedProperties) {
         return headers.requestId() != null &&
         headers.version() != null &&
@@ -148,6 +157,25 @@ class ServiceAPITest extends APISpec {
         }
     }
 
+    def "Service set props error"() {
+        when:
+        new ServiceURL(new URL("https://error.blob.core.windows.net"),
+                StorageURL.createPipeline(primaryCreds, new PipelineOptions()))
+                .setProperties(new StorageServiceProperties()).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
+    def "service get props error"() {
+        when:
+        new ServiceURL(new URL("https://error.blob.core.windows.net"),
+                StorageURL.createPipeline(primaryCreds, new PipelineOptions())).getProperties().blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
     def "Service get stats"() {
         setup:
         BlobURLParts parts = URLParser.parse(primaryServiceURL.toURL())
@@ -162,5 +190,13 @@ class ServiceAPITest extends APISpec {
         response.headers().dateProperty() != null
         response.body().geoReplication().status() != null
         response.body().geoReplication().lastSyncTime() != null
+    }
+
+    def "Service get stats error"() {
+        when:
+        primaryServiceURL.getStatistics().blockingGet()
+
+        then:
+        thrown(StorageException)
     }
 }

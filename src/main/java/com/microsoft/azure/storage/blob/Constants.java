@@ -69,6 +69,11 @@ final class Constants {
         static final String DATE = PREFIX_FOR_STORAGE_HEADER + "date";
 
         /**
+         * The header that specifies the error code on unsuccessful responses.
+         */
+        static final String ERROR_CODE = PREFIX_FOR_STORAGE_HEADER + "error-code";
+
+        /**
          * The IfMatch header.
          */
         static final String IF_MATCH = "If-Match";

@@ -76,12 +76,6 @@ public final class PageBlobsCreateHeaders {
     private Boolean isServerEncrypted;
 
     /**
-     * The errorCode property.
-     */
-    @JsonProperty(value = "x-ms-error-code")
-    private String errorCode;
-
-    /**
      * Get the eTag value.
      *
      * @return the eTag value.
@@ -232,26 +226,6 @@ public final class PageBlobsCreateHeaders {
      */
     public PageBlobsCreateHeaders withIsServerEncrypted(Boolean isServerEncrypted) {
         this.isServerEncrypted = isServerEncrypted;
-        return this;
-    }
-
-    /**
-     * Get the errorCode value.
-     *
-     * @return the errorCode value.
-     */
-    public String errorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Set the errorCode value.
-     *
-     * @param errorCode the errorCode value to set.
-     * @return the PageBlobsCreateHeaders object itself.
-     */
-    public PageBlobsCreateHeaders withErrorCode(String errorCode) {
-        this.errorCode = errorCode;
         return this;
     }
 }

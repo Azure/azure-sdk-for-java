@@ -255,12 +255,6 @@ public final class BlobsDownloadHeaders {
     private byte[] blobContentMD5;
 
     /**
-     * The errorCode property.
-     */
-    @JsonProperty(value = "x-ms-error-code")
-    private String errorCode;
-
-    /**
      * Get the lastModified value.
      *
      * @return the lastModified value.
@@ -858,26 +852,6 @@ public final class BlobsDownloadHeaders {
      */
     public BlobsDownloadHeaders withBlobContentMD5(byte[] blobContentMD5) {
         this.blobContentMD5 = blobContentMD5;
-        return this;
-    }
-
-    /**
-     * Get the errorCode value.
-     *
-     * @return the errorCode value.
-     */
-    public String errorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Set the errorCode value.
-     *
-     * @param errorCode the errorCode value to set.
-     * @return the BlobsDownloadHeaders object itself.
-     */
-    public BlobsDownloadHeaders withErrorCode(String errorCode) {
-        this.errorCode = errorCode;
         return this;
     }
 }

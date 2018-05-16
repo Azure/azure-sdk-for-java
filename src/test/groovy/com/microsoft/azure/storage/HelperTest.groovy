@@ -1,21 +1,14 @@
 package com.microsoft.azure.storage
 
 import com.microsoft.azure.storage.blob.AnonymousCredentials
-import com.microsoft.azure.storage.blob.BlobHTTPHeaders
 import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.ContainerURL
-import com.microsoft.azure.storage.blob.ListBlobsOptions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PipelineOptions
 import com.microsoft.azure.storage.blob.ServiceSASSignatureValues
 import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.StorageURL
-import com.microsoft.azure.storage.blob.models.CorsRule
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
-import com.microsoft.azure.storage.blob.models.StorageServiceProperties
-import com.microsoft.rest.v2.http.HttpClient
-import com.microsoft.rest.v2.http.HttpClientConfiguration
-import io.reactivex.Flowable
 
 import java.time.OffsetDateTime
 
@@ -112,7 +105,7 @@ class HelperTest extends APISpec {
     /*
      MinimumAllowed and MaximumAllowed are not testable because the protocol layer will perform client-side validation
      in all cases where the service will return these elements.
-     Unable to force service to return XmlNodeName and XmlNodeValue for a similar reason
+     Unable to force service to return XmlNodeName and XmlNodeValue for a similar reason.
      */
 
 }
