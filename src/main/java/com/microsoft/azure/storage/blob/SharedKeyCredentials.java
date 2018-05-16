@@ -44,8 +44,6 @@ public final class SharedKeyCredentials implements ICredentials {
 
     private final byte[] accountKey;
 
-    private final Mac hmacSha256;
-
     /**
      * Initializes a new instance of SharedKeyCredentials contains an account's name and its primary or secondary
      * accountKey.
@@ -60,15 +58,6 @@ public final class SharedKeyCredentials implements ICredentials {
     public SharedKeyCredentials(String accountName, String accountKey) throws InvalidKeyException {
         this.accountName = accountName;
         this.accountKey = Base64.getDecoder().decode(accountKey);
-
-        try {
-            this.hmacSha256 = Mac.getInstance("HmacSHA256");
-        }
-        catch (final NoSuchAlgorithmException e) {
-            throw new Error(e);
-        }
-
-        this.hmacSha256.init(new SecretKeySpec(this.accountKey, "HmacSHA256"));
     }
 
     /**
@@ -283,11 +272,17 @@ public final class SharedKeyCredentials implements ICredentials {
      */
     String computeHmac256(final String stringToSign) throws InvalidKeyException {
         try {
-            Mac localMac = (Mac) this.hmacSha256.clone();
+            /*
+            We must get a new instance of the Mac calculator for each signature calculated because the instances are
+            not threadsafe and there is some suggestion online that they may not even be safe for reuse, so we use a
+            new one each time to be sure.
+             */
+            Mac hmacSha256 = Mac.getInstance("HmacSHA256");
+            hmacSha256.init(new SecretKeySpec(this.accountKey, "HmacSHA256"));
             byte[] utf8Bytes = stringToSign.getBytes(Constants.UTF8_CHARSET);
-            return Base64.getEncoder().encodeToString(localMac.doFinal(utf8Bytes));
+            return Base64.getEncoder().encodeToString(hmacSha256.doFinal(utf8Bytes));
         }
-        catch (final UnsupportedEncodingException | CloneNotSupportedException e) {
+        catch (final UnsupportedEncodingException | NoSuchAlgorithmException e) {
             throw new Error(e);
         }
     }
