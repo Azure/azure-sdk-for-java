@@ -23,6 +23,7 @@
 
 package com.microsoft.azure.cosmosdb.rx.internal;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -30,9 +31,10 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
-import com.fasterxml.jackson.databind.node.ObjectNode;
+import com.microsoft.azure.cosmosdb.internal.Utils;
 import org.apache.commons.lang3.StringUtils;
 
 import com.microsoft.azure.cosmosdb.Attachment;
@@ -147,7 +149,7 @@ public class RxDocumentServiceResponse {
             return new ArrayList<T>();
         }
 
-        JsonNode jobject = com.microsoft.azure.cosmosdb.internal.Utils.fromJson(responseBody);
+        JsonNode jobject = fromJson(responseBody);
         String resourceKey = RxDocumentServiceResponse.getResourceKey(c);
         ArrayNode jTokenArray = (ArrayNode) jobject.get(resourceKey);
 
@@ -166,7 +168,7 @@ public class RxDocumentServiceResponse {
                 // In that case it needs to encapsulated in a special document
                 String resourceJson = jToken.isNumber() || jToken.isBoolean()
                         ? String.format("{\"%s\": %s}", Constants.Properties.AGGREGATE, jToken.asText())
-                                : com.microsoft.azure.cosmosdb.internal.Utils.toJson(jToken);
+                                : toJson(jToken);
                         T resource = null;
                         try {
                             resource = c.getConstructor(String.class).newInstance(resourceJson);
@@ -187,6 +189,23 @@ public class RxDocumentServiceResponse {
             return (ArrayNode) n;
         } else {
             return null;
+        }
+    }
+
+    private static JsonNode fromJson(String json){
+        try {
+            return Utils.getSimpleObjectMapper().readTree(json);
+        } catch (IOException e) {
+            //Should not happen while reading from String
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private static String toJson(Object object){
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
         }
     }
 

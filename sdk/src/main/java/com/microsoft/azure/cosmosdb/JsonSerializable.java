@@ -35,10 +35,10 @@ import java.util.HashMap;
 import java.util.Iterator;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
-import com.microsoft.azure.cosmosdb.internal.Utils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -71,7 +71,7 @@ public class JsonSerializable implements Serializable {
      * @param objectMapper the custom object mapper
      */
     protected JsonSerializable(String jsonString, ObjectMapper objectMapper) {
-        this.propertyBag = (ObjectNode) Utils.fromJson(jsonString);
+        this.propertyBag = (ObjectNode) fromJson(jsonString);
         this.om = objectMapper;
     }
     
@@ -81,7 +81,7 @@ public class JsonSerializable implements Serializable {
      * @param jsonString the json string that represents the JsonSerializable.
      */
     protected JsonSerializable(String jsonString) {
-        this.propertyBag = (ObjectNode) Utils.fromJson(jsonString);
+        this.propertyBag = (ObjectNode) fromJson(jsonString);
     }
 
     /**
@@ -311,7 +311,7 @@ public class JsonSerializable implements Serializable {
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 try {
-                    return c.getConstructor(String.class).newInstance(Utils.toJson(jsonObj));
+                    return c.getConstructor(String.class).newInstance(toJson(jsonObj));
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                     throw new IllegalStateException("Failed to instantiate class object.", e);
@@ -375,7 +375,7 @@ public class JsonSerializable implements Serializable {
                 } else if (isJsonSerializable) {
                     // JsonSerializable
                     try {
-                        result.add(c.getConstructor(String.class).newInstance(Utils.toJson(n)));
+                        result.add(c.getConstructor(String.class).newInstance(toJson(n)));
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                             | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                         throw new IllegalStateException("Failed to instantiate class object.", e);
@@ -482,6 +482,31 @@ public class JsonSerializable implements Serializable {
         return value;
     }
 
+    private JsonNode fromJson(String json){
+        try {
+            return getMapper().readTree(json);
+        } catch (IOException e) {
+            //Should not happen while reading from String
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private String toJson(Object object){
+        try {
+            return getMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private String toPrettyJson(Object object){
+        try {
+            return getMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     /**
      * Converts to an Object (only POJOs and JSONObject are supported).
      * 
@@ -530,9 +555,9 @@ public class JsonSerializable implements Serializable {
     public String toJson(SerializationFormattingPolicy formattingPolicy) {
         this.populatePropertyBag();
         if (SerializationFormattingPolicy.Indented.equals(formattingPolicy) ) {
-            return Utils.toPrettyJson(propertyBag);
+            return toPrettyJson(propertyBag);
         } else {
-            return Utils.toJson(propertyBag);
+            return toJson(propertyBag);
         }
     }
 
@@ -545,16 +570,16 @@ public class JsonSerializable implements Serializable {
      * @return string representation of property bag.
      */
     public String toString() {
-        return Utils.toJson(propertyBag);
+        return toJson(propertyBag);
     }
 
     private void writeObject(ObjectOutputStream outputStream) throws IOException {
         outputStream.defaultWriteObject();
-        outputStream.writeObject(Utils.toJson(propertyBag));
+        outputStream.writeObject(toJson(propertyBag));
     }
 
     private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
         inputStream.defaultReadObject();
-        propertyBag = (ObjectNode) Utils.fromJson((String) inputStream.readObject());
+        propertyBag = (ObjectNode) fromJson((String) inputStream.readObject());
     }
 }

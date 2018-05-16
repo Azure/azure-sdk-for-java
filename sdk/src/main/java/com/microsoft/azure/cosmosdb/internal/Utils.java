@@ -23,7 +23,6 @@
 
 package com.microsoft.azure.cosmosdb.internal;
 
-import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URI;
 import java.net.URISyntaxException;
@@ -35,8 +34,6 @@ import java.util.Base64;
 import java.util.UUID;
 
 import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
 
@@ -378,33 +375,6 @@ public final class Utils {
 
     public static ObjectNode newObjectNode() {
         return Utils.simpleObjectMapper.createObjectNode();
-    }
-
-    public static JsonNode fromJson(String json){
-        try {
-            return getSimpleObjectMapper().readTree(json);
-        } catch (IOException e) {
-            //Should not happen while reading from String
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static String toJson(Object object){
-        try {
-            return getSimpleObjectMapper().writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            //Should not happen while reading from String
-            throw new RuntimeException(e);
-        }
-    }
-
-    public static String toPrettyJson(Object object){
-        try {
-            return getSimpleObjectMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
-        } catch (JsonProcessingException e) {
-            //Should not happen while reading from String
-            throw new RuntimeException(e);
-        }
     }
 
     /**

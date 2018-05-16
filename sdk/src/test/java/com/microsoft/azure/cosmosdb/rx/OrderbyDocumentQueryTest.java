@@ -36,6 +36,8 @@ import java.util.function.Function;
 import java.util.stream.Collectors;
 
 import org.apache.commons.lang3.StringUtils;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.testng.annotations.AfterClass;
 import org.testng.annotations.BeforeClass;
 import org.testng.annotations.DataProvider;
@@ -402,7 +404,7 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
             if (val == null) {
                 sb.append("null");
             } else {
-                sb.append(com.microsoft.azure.cosmosdb.internal.Utils.toJson(val));
+                sb.append(toJson(val));
             }
             sb.append(",\n");
         }
@@ -451,5 +453,13 @@ public class OrderbyDocumentQueryTest extends TestSuiteBase {
         collectionDefinition.setPartitionKey(partitionKeyDef);
 
         return collectionDefinition;
+    }
+
+    private static String toJson(Object object){
+        try {
+            return com.microsoft.azure.cosmosdb.internal.Utils.getSimpleObjectMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
     }
 }

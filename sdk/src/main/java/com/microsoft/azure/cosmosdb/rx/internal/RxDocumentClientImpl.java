@@ -44,6 +44,7 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
@@ -644,7 +645,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             if (object instanceof JsonSerializable) {
                 stringArray[i] = ((JsonSerializable) object).toJson();
             } else if (object instanceof ObjectNode) {
-                stringArray[i] = Utils.toJson((JsonNode) object);
+                stringArray[i] = toJson(object);
             } else {
 
                 // POJO, number, String or Boolean
@@ -657,6 +658,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         return String.format("[%s]", StringUtils.join(stringArray, ","));
+    }
+
+    private static String toJson(Object object){
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     private static void validateResource(Resource resource) {
