@@ -156,7 +156,7 @@ public class SessionHandler extends BaseHandler {
                 }
 
                 session.close();
-                onRemoteSessionOpenError.accept(null, new EventHubException(false, "session creation timedout."));
+                onRemoteSessionOpenError.accept(null, new EventHubException(true, "session creation timedout."));
             }
         }
     }
