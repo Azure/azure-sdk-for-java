@@ -14,32 +14,32 @@ import com.microsoft.rest.v2.RestException;
 import com.microsoft.rest.v2.http.HttpResponse;
 
 /**
- * Exception thrown for an invalid response with ResponseError information.
+ * Exception thrown for an invalid response with StorageError information.
  */
-public final class ResponseErrorException extends RestException {
+public final class StorageErrorException extends RestException {
     /**
-     * Initializes a new instance of the ResponseErrorException class.
+     * Initializes a new instance of the StorageErrorException class.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      */
-    public ResponseErrorException(String message, HttpResponse response) {
+    public StorageErrorException(String message, HttpResponse response) {
         super(message, response);
     }
 
     /**
-     * Initializes a new instance of the ResponseErrorException class.
+     * Initializes a new instance of the StorageErrorException class.
      *
      * @param message the exception message or the response content if a message is not available.
      * @param response the HTTP response.
      * @param body the deserialized response body.
      */
-    public ResponseErrorException(String message, HttpResponse response, ResponseError body) {
+    public StorageErrorException(String message, HttpResponse response, StorageError body) {
         super(message, response, body);
     }
 
     @Override
-    public ResponseError body() {
-        return (ResponseError) super.body();
+    public StorageError body() {
+        return (StorageError) super.body();
     }
 }
