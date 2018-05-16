@@ -35,12 +35,6 @@ public final class BlobsSetTierHeaders {
     private String version;
 
     /**
-     * The errorCode property.
-     */
-    @JsonProperty(value = "x-ms-error-code")
-    private String errorCode;
-
-    /**
      * Get the requestId value.
      *
      * @return the requestId value.
@@ -77,26 +71,6 @@ public final class BlobsSetTierHeaders {
      */
     public BlobsSetTierHeaders withVersion(String version) {
         this.version = version;
-        return this;
-    }
-
-    /**
-     * Get the errorCode value.
-     *
-     * @return the errorCode value.
-     */
-    public String errorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Set the errorCode value.
-     *
-     * @param errorCode the errorCode value to set.
-     * @return the BlobsSetTierHeaders object itself.
-     */
-    public BlobsSetTierHeaders withErrorCode(String errorCode) {
-        this.errorCode = errorCode;
         return this;
     }
 }

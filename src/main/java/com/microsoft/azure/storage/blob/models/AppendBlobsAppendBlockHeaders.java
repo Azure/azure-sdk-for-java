@@ -82,12 +82,6 @@ public final class AppendBlobsAppendBlockHeaders {
     private Integer blobCommittedBlockCount;
 
     /**
-     * The errorCode property.
-     */
-    @JsonProperty(value = "x-ms-error-code")
-    private String errorCode;
-
-    /**
      * Get the eTag value.
      *
      * @return the eTag value.
@@ -258,26 +252,6 @@ public final class AppendBlobsAppendBlockHeaders {
      */
     public AppendBlobsAppendBlockHeaders withBlobCommittedBlockCount(Integer blobCommittedBlockCount) {
         this.blobCommittedBlockCount = blobCommittedBlockCount;
-        return this;
-    }
-
-    /**
-     * Get the errorCode value.
-     *
-     * @return the errorCode value.
-     */
-    public String errorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Set the errorCode value.
-     *
-     * @param errorCode the errorCode value to set.
-     * @return the AppendBlobsAppendBlockHeaders object itself.
-     */
-    public AppendBlobsAppendBlockHeaders withErrorCode(String errorCode) {
-        this.errorCode = errorCode;
         return this;
     }
 }

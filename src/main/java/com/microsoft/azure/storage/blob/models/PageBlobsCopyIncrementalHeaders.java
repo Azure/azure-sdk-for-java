@@ -75,12 +75,6 @@ public final class PageBlobsCopyIncrementalHeaders {
     private CopyStatusType copyStatus;
 
     /**
-     * The errorCode property.
-     */
-    @JsonProperty(value = "x-ms-error-code")
-    private String errorCode;
-
-    /**
      * Get the eTag value.
      *
      * @return the eTag value.
@@ -231,26 +225,6 @@ public final class PageBlobsCopyIncrementalHeaders {
      */
     public PageBlobsCopyIncrementalHeaders withCopyStatus(CopyStatusType copyStatus) {
         this.copyStatus = copyStatus;
-        return this;
-    }
-
-    /**
-     * Get the errorCode value.
-     *
-     * @return the errorCode value.
-     */
-    public String errorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Set the errorCode value.
-     *
-     * @param errorCode the errorCode value to set.
-     * @return the PageBlobsCopyIncrementalHeaders object itself.
-     */
-    public PageBlobsCopyIncrementalHeaders withErrorCode(String errorCode) {
-        this.errorCode = errorCode;
         return this;
     }
 }

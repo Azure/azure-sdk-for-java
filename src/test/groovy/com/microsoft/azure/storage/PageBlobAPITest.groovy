@@ -8,6 +8,8 @@ import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
 import com.microsoft.azure.storage.blob.PageBlobAccessConditions
 import com.microsoft.azure.storage.blob.PageBlobURL
+import com.microsoft.azure.storage.blob.StorageException
+import com.microsoft.azure.storage.blob.models.Blob
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.PageBlobsClearPagesHeaders
 import com.microsoft.azure.storage.blob.models.PageBlobsCopyIncrementalHeaders
@@ -133,6 +135,16 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
+    def "Page blob create error"() {
+        when:
+        bu.create(512, null, null, null,
+                new BlobAccessConditions(null, new LeaseAccessConditions("id"),
+                        null,null)).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
     def "Page blob upload page"() {
         when:
         PageBlobsUploadPagesResponse response = bu.uploadPages(new PageRange().withStart(0).withEnd(511),
@@ -172,6 +184,20 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | 5                | null              | null
         null     | null       | null         | null        | null            | null             | 3                 | null
         null     | null       | null         | null        | null            | null             | null              | 0
+    }
+
+    def "Page blob upload page error"() {
+        setup:
+        bu = cu.createPageBlobURL(generateBlobName())
+
+        when:
+        bu.uploadPages(new PageRange().withStart(0).withEnd(511), Flowable.just(getRandomData(512)),
+                new BlobAccessConditions(null, new LeaseAccessConditions("id"),
+                        null, null))
+                .blockingGet()
+
+        then:
+        thrown(StorageException)
     }
 
     def "Page blob clear page"() {
@@ -219,6 +245,17 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | null             | null              | 0
     }
 
+    def "Page blob clear page error"() {
+        setup:
+        bu = cu.createPageBlobURL(generateBlobName())
+
+        when:
+        bu.clearPages(new PageRange().withStart(0).withEnd(511), null).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
     def "Page blob get page ranges"() {
         setup:
         bu.uploadPages(new PageRange().withStart(0).withEnd(511),
@@ -260,6 +297,17 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | 5                | null              | null
         null     | null       | null         | null        | null            | null             | 3                 | null
         null     | null       | null         | null        | null            | null             | null              | 0
+    }
+
+    def "Page blob get page ranges error"() {
+        setup:
+        bu = cu.createPageBlobURL(generateBlobName())
+
+        when:
+        bu.getPageRanges(null, null).blockingGet()
+
+        then:
+        thrown(StorageException)
     }
 
     def "Page blob get page ranges diff"() {
@@ -306,6 +354,17 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | null             | null              | 0
     }
 
+    def "Page blob get page ranges diff error"() {
+        setup:
+        bu = cu.createPageBlobURL(generateBlobName())
+
+        when:
+        bu.getPageRangesDiff(null, "snapshot", null).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
     def "Page blob resize"() {
         setup:
         PageBlobsResizeHeaders headers = bu.resize(1024, null).blockingGet().headers()
@@ -340,6 +399,17 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | 5                | null              | null
         null     | null       | null         | null        | null            | null             | 3                 | null
         null     | null       | null         | null        | null            | null             | null              | 0
+    }
+
+    def "Page blob resize error"() {
+        setup:
+        bu = cu.createPageBlobURL(generateBlobName())
+
+        when:
+        bu.resize(0, null).blockingGet()
+
+        then:
+        thrown(StorageException)
     }
 
     def "Page blob sequence number"() {
@@ -381,6 +451,17 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | null             | null              | 0
     }
 
+    def "Page blob sequence number error"() {
+        setup:
+        bu = cu.createPageBlobURL(generateBlobName())
+
+        when:
+        bu.updateSequenceNumber(SequenceNumberActionType.UPDATE, 0, null).blockingGet()
+
+        then:
+        thrown(StorageException)
+    }
+
     def "Page blob start incremental copy"() {
         setup:
         cu.setAccessPolicy(PublicAccessType.BLOB, null, null).blockingGet()
@@ -417,5 +498,17 @@ class PageBlobAPITest extends APISpec {
         null     | null       | null         | null        | null            | 5                | null              | null
         null     | null       | null         | null        | null            | null             | 3                 | null
         null     | null       | null         | null        | null            | null             | null              | 0
+    }
+
+    def "Page blob start incremental copy er"() {
+        setup:
+        bu = cu.createPageBlobURL(generateBlobName())
+
+        when:
+        bu.copyIncremental(new URL("https://www.error.com"), "snapshot", null)
+                .blockingGet()
+
+        then:
+        thrown(StorageException)
     }
 }

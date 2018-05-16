@@ -67,12 +67,6 @@ public final class ContainersGetAccessPolicyHeaders {
     private DateTimeRfc1123 dateProperty;
 
     /**
-     * The errorCode property.
-     */
-    @JsonProperty(value = "x-ms-error-code")
-    private String errorCode;
-
-    /**
      * Get the blobPublicAccess value.
      *
      * @return the blobPublicAccess value.
@@ -203,26 +197,6 @@ public final class ContainersGetAccessPolicyHeaders {
         } else {
             this.dateProperty = new DateTimeRfc1123(dateProperty);
         }
-        return this;
-    }
-
-    /**
-     * Get the errorCode value.
-     *
-     * @return the errorCode value.
-     */
-    public String errorCode() {
-        return this.errorCode;
-    }
-
-    /**
-     * Set the errorCode value.
-     *
-     * @param errorCode the errorCode value to set.
-     * @return the ContainersGetAccessPolicyHeaders object itself.
-     */
-    public ContainersGetAccessPolicyHeaders withErrorCode(String errorCode) {
-        this.errorCode = errorCode;
         return this;
     }
 }
