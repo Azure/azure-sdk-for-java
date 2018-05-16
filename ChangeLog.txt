@@ -1,2 +1,5 @@
+XXXX.XX.XX Version XX.X.X-Preview
+* Fixed a bug that caused generation of signatures to fail at high levels of parallelism.
+
 2018.04.27 Version 10.0.0-preview
 * Initial Release. Please see the README and wiki for information on the new design.
