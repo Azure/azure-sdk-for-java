@@ -116,7 +116,7 @@ public class Permission extends Resource {
         Object value = super.get(Constants.Properties.RESOURCE_PARTITION_KEY);
         if (value != null) {
             ArrayNode arrayValue = (ArrayNode) value;
-            key = new PartitionKey(arrayValue.get(0));
+            key = new PartitionKey(getValue(arrayValue.get(0)));
         }
 
         return key;

@@ -462,7 +462,7 @@ public class JsonSerializable implements Serializable {
         return null;
     }
 
-    private Object getValue(JsonNode value) {
+    public static Object getValue(JsonNode value) {
         if (value.isValueNode()) {
             switch (value.getNodeType()) {
                 case BOOLEAN:
