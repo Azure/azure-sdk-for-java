@@ -24,13 +24,22 @@ Currently, this repository contains the following Azure SDKs:
 
 These other Azure SDKs for Java, that are not currently in this repository, can be found as follows:
 
+* [Azure ActiveDirectory Authentication Library (ADAL)](https://github.com/AzureAD/azure-activedirectory-library-for-java)
 * [Azure Batch SDK for Java](https://github.com/azure/azure-batch-sdk-for-java)
 * [Azure Data Lake Store Client for Java](https://github.com/Azure/azure-data-lake-store-java)
-* [Azure DocumentDB SDK for Java](https://github.com/Azure/azure-documentdb-java)
+* [Azure DocumentDB (CosmosDB) SDK for Java](https://github.com/Azure/azure-documentdb-java)
+* [Azure CosmosDB Async SDK for Java](https://github.com/Azure/azure-cosmosdb-java)
 * [Azure Key Vault SDK for Java](https://github.com/Azure/azure-keyvault-java)
-* [Azure Management Libraries for Java](https://github.com/azure/azure-libraries-for-java)
 * [Azure Service Bus SDK for Java](https://github.com/Azure/azure-service-bus-java)
 * [Azure Storage SDK for Java](https://github.com/Azure/azure-storage-java)
+* [Azure Storage SDK Async for Java](https://github.com/Azure/azure-storage-java-async)
+* [Azure Functions SDK for Java](https://github.com/Azure/azure-functions-java-worker)
+* [Azure IoT SDK for Java](https://github.com/Azure/azure-iot-sdk-java)
+* [Azure Event Hub SDK for Java]()
+* [Azure Notification Hubs for Java](https://github.com/Azure/azure-notificationhubs-java-backend)
+* [Azure Management Libraries for Java](https://github.com/azure/azure-libraries-for-java)
+
+Other libraries:
 * [Microsoft JDBC Driver for SQL Server](https://github.com/Microsoft/mssql-jdbc)
 
 ## General Information
