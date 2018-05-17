@@ -45,8 +45,11 @@ public interface TextModerations {
      */
     Observable<Screen> screenTextAsync(String textContentType, byte[] textContent, ScreenTextOptionalParameter screenTextOptionalParameter);
 
+
     /**
-     * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
+     * This operation will detect the language of given input content. Returns the
+      *  &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the
+      *  predominant language comprising the submitted text. Over 110 languages supported.
      *
      * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
      * @param textContent Content to screen.
@@ -58,7 +61,9 @@ public interface TextModerations {
     DetectedLanguage detectLanguage(String textContentType, byte[] textContent);
 
     /**
-     * This operation will detect the language of given input content. Returns the &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the predominant language comprising the submitted text. Over 110 languages supported.
+     * This operation will detect the language of given input content. Returns the
+      *  &lt;a href="http://www-01.sil.org/iso639-3/codes.asp"&gt;ISO 639-3 code&lt;/a&gt; for the
+      *  predominant language comprising the submitted text. Over 110 languages supported.
      *
      * @param textContentType The content type. Possible values include: 'text/plain', 'text/html', 'text/xml', 'text/markdown'
      * @param textContent Content to screen.
@@ -66,5 +71,6 @@ public interface TextModerations {
      * @return the observable to the DetectedLanguage object
      */
     Observable<DetectedLanguage> detectLanguageAsync(String textContentType, byte[] textContent);
+
 
 }

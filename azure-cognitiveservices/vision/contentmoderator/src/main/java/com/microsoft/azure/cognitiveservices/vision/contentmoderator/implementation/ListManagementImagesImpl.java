@@ -16,7 +16,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagem
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModelModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageIds;
 import com.microsoft.rest.ServiceCallback;
@@ -83,7 +83,7 @@ public class ListManagementImagesImpl implements ListManagementImages {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementImages addImageUrlInput" })
         @POST("contentmoderator/lists/v1.0/imagelists/{listId}/images")
-        Observable<Response<ResponseBody>> addImageUrlInput(@Path("listId") String listId, @Query("tag") Integer tag, @Query("label") String label, @Header("Content-Type") String contentType, @Body BodyModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> addImageUrlInput(@Path("listId") String listId, @Query("tag") Integer tag, @Query("label") String label, @Header("Content-Type") String contentType, @Body BodyModelModel imageUrl, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: image/gif", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementImages addImageFileInput" })
         @POST("contentmoderator/lists/v1.0/imagelists/{listId}/images")
@@ -153,7 +153,6 @@ public class ListManagementImagesImpl implements ListManagementImages {
         }
         final Integer tag = addImageOptionalParameter != null ? addImageOptionalParameter.tag() : null;
         final String label = addImageOptionalParameter != null ? addImageOptionalParameter.label() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return addImageWithServiceResponseAsync(listId, tag, label);
     }
@@ -447,7 +446,7 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    public Image addImageUrlInput(String listId, String contentType, BodyModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter) {
+    public Image addImageUrlInput(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter) {
         return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, addImageUrlInputOptionalParameter).toBlocking().single().body();
     }
 
@@ -462,7 +461,7 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter, final ServiceCallback<Image> serviceCallback) {
+    public ServiceFuture<Image> addImageUrlInputAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter, final ServiceCallback<Image> serviceCallback) {
         return ServiceFuture.fromResponse(addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, addImageUrlInputOptionalParameter), serviceCallback);
     }
 
@@ -476,7 +475,7 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter) {
+    public Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter) {
         return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, addImageUrlInputOptionalParameter).map(new Func1<ServiceResponse<Image>, Image>() {
             @Override
             public Image call(ServiceResponse<Image> response) {
@@ -495,7 +494,7 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter) {
+    public Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -511,7 +510,6 @@ public class ListManagementImagesImpl implements ListManagementImages {
         Validator.validate(imageUrl);
         final Integer tag = addImageUrlInputOptionalParameter != null ? addImageUrlInputOptionalParameter.tag() : null;
         final String label = addImageUrlInputOptionalParameter != null ? addImageUrlInputOptionalParameter.label() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return addImageUrlInputWithServiceResponseAsync(listId, contentType, imageUrl, tag, label);
     }
@@ -527,7 +525,7 @@ public class ListManagementImagesImpl implements ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    public Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModel imageUrl, Integer tag, String label) {
+    public Observable<ServiceResponse<Image>> addImageUrlInputWithServiceResponseAsync(String listId, String contentType, BodyModelModel imageUrl, Integer tag, String label) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -632,8 +630,6 @@ public class ListManagementImagesImpl implements ListManagementImages {
         }
         final Integer tag = addImageFileInputOptionalParameter != null ? addImageFileInputOptionalParameter.tag() : null;
         final String label = addImageFileInputOptionalParameter != null ? addImageFileInputOptionalParameter.label() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody imageStreamConverted = RequestBody.create(MediaType.parse("image/gif"), imageStream);
 
         return addImageFileInputWithServiceResponseAsync(listId, imageStream, tag, label);
     }

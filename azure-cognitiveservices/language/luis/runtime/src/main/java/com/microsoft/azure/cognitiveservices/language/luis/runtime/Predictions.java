@@ -10,9 +10,7 @@ package com.microsoft.azure.cognitiveservices.language.luis.runtime;
 
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.ResolveOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.LuisResult;
-import java.io.IOException;
 import rx.Observable;
 
 /**
@@ -22,7 +20,7 @@ import rx.Observable;
 public interface Predictions {
     /**
      * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
-     *  is 500 characters.
+     *   is 500 characters.
      *
      * @param appId The LUIS application ID (Guid).
      * @param query The utterance to predict.
@@ -36,7 +34,7 @@ public interface Predictions {
 
     /**
      * Gets predictions for a given utterance, in the form of intents and entities. The current maximum query size
-     *  is 500 characters.
+     *   is 500 characters.
      *
      * @param appId The LUIS application ID (Guid).
      * @param query The utterance to predict.

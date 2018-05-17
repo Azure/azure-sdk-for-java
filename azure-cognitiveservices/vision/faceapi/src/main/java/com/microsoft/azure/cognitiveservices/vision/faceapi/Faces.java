@@ -31,7 +31,7 @@ public interface Faces {
      * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this
-     *  faceId is not persisted and will expire 24 hours after the detection call
+     *   faceId is not persisted and will expire 24 hours after the detection call
      * @param findSimilarOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -44,7 +44,7 @@ public interface Faces {
      * Given query face's faceId, find the similar-looking faces from a faceId array or a faceListId.
      *
      * @param faceId FaceId of the query face. User needs to call Face - Detect first to get a valid faceId. Note that this
-     *  faceId is not persisted and will expire 24 hours after the detection call
+     *   faceId is not persisted and will expire 24 hours after the detection call
      * @param findSimilarOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;SimilarFace&gt; object
@@ -78,7 +78,7 @@ public interface Faces {
      *
      * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently.
-     *  The valid number of faceIds is between [1, 10].
+     *   The valid number of faceIds is between [1, 10].
      * @param identifyOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -92,7 +92,7 @@ public interface Faces {
      *
      * @param personGroupId PersonGroupId of the target person group, created by PersonGroups.Create
      * @param faceIds Array of query faces faceIds, created by the Face - Detect. Each of the faces are identified independently.
-     *  The valid number of faceIds is between [1, 10].
+     *   The valid number of faceIds is between [1, 10].
      * @param identifyOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;IdentifyResult&gt; object
@@ -125,7 +125,7 @@ public interface Faces {
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *  attributes.
+     *   attributes.
      *
      * @param url the String value
      * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -138,7 +138,7 @@ public interface Faces {
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *  attributes.
+     *   attributes.
      *
      * @param url the String value
      * @param detectWithUrlOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -152,7 +152,8 @@ public interface Faces {
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
      * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is
+      *  created in Person Groups.Create.
      * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
@@ -165,7 +166,8 @@ public interface Faces {
      * Verify whether two faces belong to a same person. Compares a face Id with a Person Id.
      *
      * @param faceId FaceId the face, comes from Face - Detect
-     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is created in Person Groups.Create.
+     * @param personGroupId Using existing personGroupId and personId for fast loading a specified person. personGroupId is
+      *  created in Person Groups.Create.
      * @param personId Specify a certain person in a person group. personId is created in Persons.Create.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the VerifyResult object
@@ -175,7 +177,7 @@ public interface Faces {
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *  attributes.
+     *   attributes.
      *
      * @param image An image stream.
      * @param detectWithStreamOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -188,7 +190,7 @@ public interface Faces {
 
     /**
      * Detect human faces in an image and returns face locations, and optionally with faceIds, landmarks, and
-     *  attributes.
+     *   attributes.
      *
      * @param image An image stream.
      * @param detectWithStreamOptionalParameter the object representing the optional parameters to be set before calling this API

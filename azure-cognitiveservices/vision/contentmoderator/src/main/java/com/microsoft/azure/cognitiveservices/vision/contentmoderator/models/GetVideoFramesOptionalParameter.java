@@ -10,88 +10,108 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The optional parameters class for "getVideoFrames" method.
+ * The GetVideoFramesOptionalParameter model.
  */
 public class GetVideoFramesOptionalParameter {
     /**
-    * Time stamp of the frame from where you want to start fetching the frames.
-    */
+     * Time stamp of the frame from where you want to start fetching the
+     * frames.
+     */
     private Integer startSeed;
 
     /**
-    * Number of frames to fetch.
-    */
+     * Number of frames to fetch.
+     */
     private Integer noOfRecords;
 
     /**
-    * Get frames filtered by tags.
-    */
+     * Get frames filtered by tags.
+     */
     private String filter;
 
     /**
-    * Get the startSeed value.
-    *
-    * @return the startSeed value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String acceptLanguage;
+
+    /**
+     * Get the startSeed value.
+     *
+     * @return the startSeed value
+     */
     public Integer startSeed() {
         return this.startSeed;
     }
 
     /**
-    * Get the noOfRecords value.
-    *
-    * @return the noOfRecords value
-    */
-    public Integer noOfRecords() {
-        return this.noOfRecords;
-    }
-
-    /**
-    * Get the filter value.
-    *
-    * @return the filter value
-    */
-    public String filter() {
-        return this.filter;
-    }
-
-    /**
-    * Set the startSeed value.
-    * <p>
-    * Time stamp of the frame from where you want to start fetching the frames.
-    *
-    * @param startSeed the startSeed value to set
-    * @return the getVideoFramesOptionalParameter object itself.
-    */
-    public GetVideoFramesOptionalParameter withStartSeed(int startSeed) {
+     * Set the startSeed value.
+     *
+     * @param startSeed the startSeed value to set
+     * @return the GetVideoFramesOptionalParameter object itself.
+     */
+    public GetVideoFramesOptionalParameter withStartSeed(Integer startSeed) {
         this.startSeed = startSeed;
         return this;
     }
 
     /**
-    * Set the noOfRecords value.
-    * <p>
-    * Number of frames to fetch.
-    *
-    * @param noOfRecords the noOfRecords value to set
-    * @return the getVideoFramesOptionalParameter object itself.
-    */
-    public GetVideoFramesOptionalParameter withNoOfRecords(int noOfRecords) {
+     * Get the noOfRecords value.
+     *
+     * @return the noOfRecords value
+     */
+    public Integer noOfRecords() {
+        return this.noOfRecords;
+    }
+
+    /**
+     * Set the noOfRecords value.
+     *
+     * @param noOfRecords the noOfRecords value to set
+     * @return the GetVideoFramesOptionalParameter object itself.
+     */
+    public GetVideoFramesOptionalParameter withNoOfRecords(Integer noOfRecords) {
         this.noOfRecords = noOfRecords;
         return this;
     }
 
     /**
-    * Set the filter value.
-    * <p>
-    * Get frames filtered by tags.
-    *
-    * @param filter the filter value to set
-    * @return the getVideoFramesOptionalParameter object itself.
-    */
+     * Get the filter value.
+     *
+     * @return the filter value
+     */
+    public String filter() {
+        return this.filter;
+    }
+
+    /**
+     * Set the filter value.
+     *
+     * @param filter the filter value to set
+     * @return the GetVideoFramesOptionalParameter object itself.
+     */
     public GetVideoFramesOptionalParameter withFilter(String filter) {
         this.filter = filter;
         return this;
     }
 
+    /**
+     * Get the acceptLanguage value.
+     *
+     * @return the acceptLanguage value
+     */
+    public String acceptLanguage() {
+        return this.acceptLanguage;
     }
+
+    /**
+     * Set the acceptLanguage value.
+     *
+     * @param acceptLanguage the acceptLanguage value to set
+     * @return the GetVideoFramesOptionalParameter object itself.
+     */
+    public GetVideoFramesOptionalParameter withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+}

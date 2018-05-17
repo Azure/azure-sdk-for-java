@@ -11,26 +11,35 @@ package com.microsoft.azure.cognitiveservices.search.visualsearch.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * A JSON object containing information about the image. The image and
- * imageInsightsToken fields are mutually exclusive – the body of the request
- * must include only one of them.
+ * A JSON object containing information about the request, such as filters for
+ * the resulting actions.
  */
 public class KnowledgeRequest {
     /**
-     * A JSON object containing information about the image. The image and
-     * imageInsightsToken fields are mutually exclusive – the body of the
-     * request must include only one of them.
+     * A key-value object consisting of filters that may be specified to limit
+     * the results returned by the API.
      */
-    @JsonProperty(value = "imageInfo", access = JsonProperty.Access.WRITE_ONLY)
-    private ImageInfo imageInfo;
+    @JsonProperty(value = "filters")
+    private Filters filters;
 
     /**
-     * Get the imageInfo value.
+     * Get the filters value.
      *
-     * @return the imageInfo value
+     * @return the filters value
      */
-    public ImageInfo imageInfo() {
-        return this.imageInfo;
+    public Filters filters() {
+        return this.filters;
+    }
+
+    /**
+     * Set the filters value.
+     *
+     * @param filters the filters value to set
+     * @return the KnowledgeRequest object itself.
+     */
+    public KnowledgeRequest withFilters(Filters filters) {
+        this.filters = filters;
+        return this;
     }
 
 }

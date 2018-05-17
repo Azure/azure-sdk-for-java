@@ -20,11 +20,11 @@ import rx.Observable;
 public interface BingCustomInstances {
     /**
      * The Custom Search API lets you send a search query to Bing and get back web pages found in your custom view
-     *  of the web.
+     *   of the web.
      *
      * @param customConfig The identifier for the custom search configuration
      * @param query The user's search query term. The term may not be empty. The term may contain Bing Advanced Operators. For
-     *  example, to limit results to a specific domain, use the site: operator.
+     *   example, to limit results to a specific domain, use the site: operator.
      * @param searchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -35,11 +35,11 @@ public interface BingCustomInstances {
 
     /**
      * The Custom Search API lets you send a search query to Bing and get back web pages found in your custom view
-     *  of the web.
+     *   of the web.
      *
      * @param customConfig The identifier for the custom search configuration
      * @param query The user's search query term. The term may not be empty. The term may contain Bing Advanced Operators. For
-     *  example, to limit results to a specific domain, use the site: operator.
+     *   example, to limit results to a specific domain, use the site: operator.
      * @param searchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the SearchResponse object

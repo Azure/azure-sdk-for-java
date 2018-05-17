@@ -456,7 +456,6 @@ public class ReviewsImpl implements Reviews {
         }
         Validator.validate(createReviewBody);
         final String subTeam = createReviewsOptionalParameter != null ? createReviewsOptionalParameter.subTeam() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return createReviewsWithServiceResponseAsync(teamName, urlContentType, createReviewBody, subTeam);
     }
@@ -784,9 +783,6 @@ public class ReviewsImpl implements Reviews {
             throw new IllegalArgumentException("Parameter contentValue is required and cannot be null.");
         }
         final String callBackEndpoint = createJobOptionalParameter != null ? createJobOptionalParameter.callBackEndpoint() : null;
-        Content content = new Content();
-        content.withContentValue(contentValue);
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return createJobWithServiceResponseAsync(teamName, contentType, contentId, workflowName, jobContentType, contentValue, callBackEndpoint);
     }
@@ -1041,7 +1037,6 @@ public class ReviewsImpl implements Reviews {
             throw new IllegalArgumentException("Parameter reviewId is required and cannot be null.");
         }
         final Integer timescale = addVideoFrameOptionalParameter != null ? addVideoFrameOptionalParameter.timescale() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return addVideoFrameWithServiceResponseAsync(teamName, reviewId, timescale);
     }
@@ -1262,7 +1257,6 @@ public class ReviewsImpl implements Reviews {
         final Integer startSeed = getVideoFramesOptionalParameter != null ? getVideoFramesOptionalParameter.startSeed() : null;
         final Integer noOfRecords = getVideoFramesOptionalParameter != null ? getVideoFramesOptionalParameter.noOfRecords() : null;
         final String filter = getVideoFramesOptionalParameter != null ? getVideoFramesOptionalParameter.filter() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return getVideoFramesWithServiceResponseAsync(teamName, reviewId, startSeed, noOfRecords, filter);
     }
@@ -1764,7 +1758,6 @@ public class ReviewsImpl implements Reviews {
         }
         Validator.validate(createVideoReviewsBody);
         final String subTeam = createVideoReviewsOptionalParameter != null ? createVideoReviewsOptionalParameter.subTeam() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return createVideoReviewsWithServiceResponseAsync(teamName, contentType, createVideoReviewsBody, subTeam);
     }
@@ -1918,7 +1911,6 @@ public class ReviewsImpl implements Reviews {
         }
         Validator.validate(videoFrameBody);
         final Integer timescale = addVideoFrameUrlOptionalParameter != null ? addVideoFrameUrlOptionalParameter.timescale() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return addVideoFrameUrlWithServiceResponseAsync(teamName, reviewId, contentType, videoFrameBody, timescale);
     }
@@ -2061,8 +2053,6 @@ public class ReviewsImpl implements Reviews {
             throw new IllegalArgumentException("Parameter frameMetadata is required and cannot be null.");
         }
         final Integer timescale = addVideoFrameStreamOptionalParameter != null ? addVideoFrameStreamOptionalParameter.timescale() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody frameImageZipConverted = RequestBody.create(MediaType.parse("multipart/form-data"), frameImageZip);
 
         return addVideoFrameStreamWithServiceResponseAsync(teamName, reviewId, contentType, frameImageZip, frameMetadata, timescale);
     }

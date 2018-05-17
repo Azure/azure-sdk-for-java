@@ -10,34 +10,57 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The optional parameters class for "addVideoFrame" method.
+ * The AddVideoFrameOptionalParameter model.
  */
 public class AddVideoFrameOptionalParameter {
     /**
-    * Timescale of the video you are adding frames to.
-    */
+     * Timescale of the video you are adding frames to.
+     */
     private Integer timescale;
 
     /**
-    * Get the timescale value.
-    *
-    * @return the timescale value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String acceptLanguage;
+
+    /**
+     * Get the timescale value.
+     *
+     * @return the timescale value
+     */
     public Integer timescale() {
         return this.timescale;
     }
 
     /**
-    * Set the timescale value.
-    * <p>
-    * Timescale of the video you are adding frames to.
-    *
-    * @param timescale the timescale value to set
-    * @return the addVideoFrameOptionalParameter object itself.
-    */
-    public AddVideoFrameOptionalParameter withTimescale(int timescale) {
+     * Set the timescale value.
+     *
+     * @param timescale the timescale value to set
+     * @return the AddVideoFrameOptionalParameter object itself.
+     */
+    public AddVideoFrameOptionalParameter withTimescale(Integer timescale) {
         this.timescale = timescale;
         return this;
     }
 
+    /**
+     * Get the acceptLanguage value.
+     *
+     * @return the acceptLanguage value
+     */
+    public String acceptLanguage() {
+        return this.acceptLanguage;
     }
+
+    /**
+     * Set the acceptLanguage value.
+     *
+     * @param acceptLanguage the acceptLanguage value to set
+     * @return the AddVideoFrameOptionalParameter object itself.
+     */
+    public AddVideoFrameOptionalParameter withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+}

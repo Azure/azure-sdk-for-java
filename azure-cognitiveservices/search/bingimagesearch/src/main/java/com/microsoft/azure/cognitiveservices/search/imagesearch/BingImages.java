@@ -24,17 +24,17 @@ import rx.Observable;
 public interface BingImages {
     /**
      * The Image Search API lets you send a search query to Bing and get back a list of relevant images. This
-     *  section provides technical details about the query parameters and headers that you use to request images and
-     *  the JSON response objects that contain them. For examples that show how to make requests, see [Searching the
-     *  Web for Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
+     *   section provides technical details about the query parameters and headers that you use to request images and
+     *   the JSON response objects that contain them. For examples that show how to make requests, see [Searching the
+     *   Web for Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
      *
      * @param query The user's search query term. The term cannot be empty. The term may contain [Bing Advanced
-     *  Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
-     *  domain, use the [site:](http://msdn.microsoft.com/library/ff795613.aspx) operator. To help improve relevance
-     *  of an insights query (see
-     [insightsToke*  n](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#insightstoken)),
-     *  you should always include the user's query term. Use this parameter only with the Image Search API.Do not
-     *  specify this parameter when calling the Trending Images API.
+     *   Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
+     *   domain, use the [site:](http://msdn.microsoft.com/library/ff795613.aspx) operator. To help improve relevance
+     *   of an insights query (see
+     [insightsToke*   n](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#insightstoken)),
+     *   you should always include the user's query term. Use this parameter only with the Image Search API.Do not
+     *   specify this parameter when calling the Trending Images API.
      * @param searchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -45,17 +45,17 @@ public interface BingImages {
 
     /**
      * The Image Search API lets you send a search query to Bing and get back a list of relevant images. This
-     *  section provides technical details about the query parameters and headers that you use to request images and
-     *  the JSON response objects that contain them. For examples that show how to make requests, see [Searching the
-     *  Web for Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
+     *   section provides technical details about the query parameters and headers that you use to request images and
+     *   the JSON response objects that contain them. For examples that show how to make requests, see [Searching the
+     *   Web for Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
      *
      * @param query The user's search query term. The term cannot be empty. The term may contain [Bing Advanced
-     *  Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
-     *  domain, use the [site:](http://msdn.microsoft.com/library/ff795613.aspx) operator. To help improve relevance
-     *  of an insights query (see
-     [insightsToke*  n](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#insightstoken)),
-     *  you should always include the user's query term. Use this parameter only with the Image Search API.Do not
-     *  specify this parameter when calling the Trending Images API.
+     *   Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
+     *   domain, use the [site:](http://msdn.microsoft.com/library/ff795613.aspx) operator. To help improve relevance
+     *   of an insights query (see
+     [insightsToke*   n](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#insightstoken)),
+     *   you should always include the user's query term. Use this parameter only with the Image Search API.Do not
+     *   specify this parameter when calling the Trending Images API.
      * @param searchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImagesModel object
@@ -64,18 +64,18 @@ public interface BingImages {
 
     /**
      * The Image Detail Search API lets you search on Bing and get back insights about an image, such as webpages
-     *  that include the image. This section provides technical details about the query parameters and headers that
-     *  you use to request insights of images and the JSON response objects that contain them. For examples that
-     *  show how to make requests, see [Searching the Web for
-     *  Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
+     *   that include the image. This section provides technical details about the query parameters and headers that
+     *   you use to request insights of images and the JSON response objects that contain them. For examples that
+     *   show how to make requests, see [Searching the Web for
+     *   Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
      *
      * @param query The user's search query term. The term cannot be empty. The term may contain [Bing Advanced
-     *  Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
-     *  domain, use the [site:](http://msdn.microsoft.com/library/ff795613.aspx) operator. To help improve relevance
-     *  of an insights query (see
-     [insightsToke*  n](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#insightstoken)),
-     *  you should always include the user's query term. Use this parameter only with the Image Search API.Do not
-     *  specify this parameter when calling the Trending Images API.
+     *   Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
+     *   domain, use the [site:](http://msdn.microsoft.com/library/ff795613.aspx) operator. To help improve relevance
+     *   of an insights query (see
+     [insightsToke*   n](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#insightstoken)),
+     *   you should always include the user's query term. Use this parameter only with the Image Search API.Do not
+     *   specify this parameter when calling the Trending Images API.
      * @param detailsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
@@ -86,18 +86,18 @@ public interface BingImages {
 
     /**
      * The Image Detail Search API lets you search on Bing and get back insights about an image, such as webpages
-     *  that include the image. This section provides technical details about the query parameters and headers that
-     *  you use to request insights of images and the JSON response objects that contain them. For examples that
-     *  show how to make requests, see [Searching the Web for
-     *  Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
+     *   that include the image. This section provides technical details about the query parameters and headers that
+     *   you use to request insights of images and the JSON response objects that contain them. For examples that
+     *   show how to make requests, see [Searching the Web for
+     *   Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
      *
      * @param query The user's search query term. The term cannot be empty. The term may contain [Bing Advanced
-     *  Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
-     *  domain, use the [site:](http://msdn.microsoft.com/library/ff795613.aspx) operator. To help improve relevance
-     *  of an insights query (see
-     [insightsToke*  n](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#insightstoken)),
-     *  you should always include the user's query term. Use this parameter only with the Image Search API.Do not
-     *  specify this parameter when calling the Trending Images API.
+     *   Operators](http://msdn.microsoft.com/library/ff795620.aspx). For example, to limit images to a specific
+     *   domain, use the [site:](http://msdn.microsoft.com/library/ff795613.aspx) operator. To help improve relevance
+     *   of an insights query (see
+     [insightsToke*   n](https://docs.microsoft.com/en-us/rest/api/cognitiveservices/bing-images-api-v7-reference#insightstoken)),
+     *   you should always include the user's query term. Use this parameter only with the Image Search API.Do not
+     *   specify this parameter when calling the Trending Images API.
      * @param detailsOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ImageInsights object
@@ -106,9 +106,9 @@ public interface BingImages {
 
     /**
      * The Image Trending Search API lets you search on Bing and get back a list of images that are trending based
-     *  on search requests made by others. The images are broken out into different categories. For example, Popular
-     *  People Searches. For a list of markets that support trending images, see [Trending
-     *  Images](https://docs.microsoft.com/en-us/azure/cognitive-services/bing-image-search/trending-images).
+     *   on search requests made by others. The images are broken out into different categories. For example, Popular
+     *   People Searches. For a list of markets that support trending images, see [Trending
+     *   Images](https://docs.microsoft.com/en-us/azure/cognitive-services/bing-image-search/trending-images).
      *
      * @param trendingOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -120,9 +120,9 @@ public interface BingImages {
 
     /**
      * The Image Trending Search API lets you search on Bing and get back a list of images that are trending based
-     *  on search requests made by others. The images are broken out into different categories. For example, Popular
-     *  People Searches. For a list of markets that support trending images, see [Trending
-     *  Images](https://docs.microsoft.com/en-us/azure/cognitive-services/bing-image-search/trending-images).
+     *   on search requests made by others. The images are broken out into different categories. For example, Popular
+     *   People Searches. For a list of markets that support trending images, see [Trending
+     *   Images](https://docs.microsoft.com/en-us/azure/cognitive-services/bing-image-search/trending-images).
      *
      * @param trendingOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation

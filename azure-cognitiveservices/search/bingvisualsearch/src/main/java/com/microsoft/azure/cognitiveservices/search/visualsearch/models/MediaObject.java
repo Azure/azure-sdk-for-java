@@ -23,8 +23,8 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
 })
 public class MediaObject extends CreativeWork {
     /**
-     * Original URL to retrieve the source (file) for the media object (e.g the
-     * source URL for the image).
+     * Original URL to retrieve the source (file) for the media object (e.g.,
+     * the source URL for the image).
      */
     @JsonProperty(value = "contentUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String contentUrl;
@@ -36,13 +36,14 @@ public class MediaObject extends CreativeWork {
     private String hostPageUrl;
 
     /**
-     * Size of the media object content (use format "value unit" e.g "1024 B").
+     * Size of the media object content. Use format "value unit" (e.g., "1024
+     * B").
      */
     @JsonProperty(value = "contentSize", access = JsonProperty.Access.WRITE_ONLY)
     private String contentSize;
 
     /**
-     * Encoding format (e.g mp3, mp4, jpeg, etc).
+     * Encoding format (e.g., mp3, mp4, jpeg, etc).
      */
     @JsonProperty(value = "encodingFormat", access = JsonProperty.Access.WRITE_ONLY)
     private String encodingFormat;

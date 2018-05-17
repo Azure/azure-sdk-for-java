@@ -18,6 +18,7 @@ import rx.Observable;
  * in ListManagementTerms.
  */
 public interface ListManagementTerms {
+
     /**
      * Add a term to the term list with list Id equal to list Id passed.
      *
@@ -41,6 +42,8 @@ public interface ListManagementTerms {
      * @return the observable to the Object object
      */
     Observable<Object> addTermAsync(String listId, String term, String language);
+
+
 
     /**
      * Deletes a term from the list with list Id equal to the list Id passed.
@@ -66,6 +69,7 @@ public interface ListManagementTerms {
      */
     Observable<String> deleteTermAsync(String listId, String term, String language);
 
+
     /**
      * Gets all terms from the list with list Id equal to the list Id passed.
      *
@@ -90,6 +94,7 @@ public interface ListManagementTerms {
      */
     Observable<Terms> getAllTermsAsync(String listId, String language, GetAllTermsOptionalParameter getAllTermsOptionalParameter);
 
+
     /**
      * Deletes all terms from the list with list Id equal to the list Id passed.
      *
@@ -111,4 +116,6 @@ public interface ListManagementTerms {
      * @return the observable to the String object
      */
     Observable<String> deleteAllTermsAsync(String listId, String language);
+
+
 }

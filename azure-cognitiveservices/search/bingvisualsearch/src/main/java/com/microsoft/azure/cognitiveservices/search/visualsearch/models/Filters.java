@@ -19,7 +19,7 @@ public class Filters {
      * The URL of the site to return similar images and similar products from.
      * (e.g., "www.bing.com", "bing.com").
      */
-    @JsonProperty(value = "site", access = JsonProperty.Access.WRITE_ONLY)
+    @JsonProperty(value = "site")
     private String site;
 
     /**
@@ -29,6 +29,17 @@ public class Filters {
      */
     public String site() {
         return this.site;
+    }
+
+    /**
+     * Set the site value.
+     *
+     * @param site the site value to set
+     * @return the Filters object itself.
+     */
+    public Filters withSite(String site) {
+        this.site = site;
+        return this;
     }
 
 }

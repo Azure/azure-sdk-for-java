@@ -10,65 +10,88 @@ package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
 
 /**
- * The optional parameters class for "oCRUrlInput" method.
+ * The OCRUrlInputOptionalParameter model.
  */
 public class OCRUrlInputOptionalParameter {
     /**
-    * Whether to retain the submitted image for future use; defaults to false if omitted.
-    */
+     * Whether to retain the submitted image for future use; defaults to false
+     * if omitted.
+     */
     private Boolean cacheImage;
 
     /**
-    * When set to True, the image goes through additional processing to come with additional candidates.
-    * image/tiff is not supported when enhanced is set to true
-    * Note: This impacts the response time.
-    */
+     * When set to True, the image goes through additional processing to come
+     * with additional candidates.
+     *
+     * image/tiff is not supported when enhanced is set to true
+     *
+     * Note: This impacts the response time.
+     */
     private Boolean enhanced;
 
     /**
-    * Get the cacheImage value.
-    *
-    * @return the cacheImage value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    private String acceptLanguage;
+
+    /**
+     * Get the cacheImage value.
+     *
+     * @return the cacheImage value
+     */
     public Boolean cacheImage() {
         return this.cacheImage;
     }
 
     /**
-    * Get the enhanced value.
-    *
-    * @return the enhanced value
-    */
-    public Boolean enhanced() {
-        return this.enhanced;
-    }
-
-    /**
-    * Set the cacheImage value.
-    * <p>
-    * Whether to retain the submitted image for future use; defaults to false if omitted.
-    *
-    * @param cacheImage the cacheImage value to set
-    * @return the oCRUrlInputOptionalParameter object itself.
-    */
-    public OCRUrlInputOptionalParameter withCacheImage(boolean cacheImage) {
+     * Set the cacheImage value.
+     *
+     * @param cacheImage the cacheImage value to set
+     * @return the OCRUrlInputOptionalParameter object itself.
+     */
+    public OCRUrlInputOptionalParameter withCacheImage(Boolean cacheImage) {
         this.cacheImage = cacheImage;
         return this;
     }
 
     /**
-    * Set the enhanced value.
-    * <p>
-    * When set to True, the image goes through additional processing to come with additional candidates.
-    * image/tiff is not supported when enhanced is set to true
-    * Note: This impacts the response time.
-    *
-    * @param enhanced the enhanced value to set
-    * @return the oCRUrlInputOptionalParameter object itself.
-    */
-    public OCRUrlInputOptionalParameter withEnhanced(boolean enhanced) {
+     * Get the enhanced value.
+     *
+     * @return the enhanced value
+     */
+    public Boolean enhanced() {
+        return this.enhanced;
+    }
+
+    /**
+     * Set the enhanced value.
+     *
+     * @param enhanced the enhanced value to set
+     * @return the OCRUrlInputOptionalParameter object itself.
+     */
+    public OCRUrlInputOptionalParameter withEnhanced(Boolean enhanced) {
         this.enhanced = enhanced;
         return this;
     }
 
+    /**
+     * Get the acceptLanguage value.
+     *
+     * @return the acceptLanguage value
+     */
+    public String acceptLanguage() {
+        return this.acceptLanguage;
     }
+
+    /**
+     * Set the acceptLanguage value.
+     *
+     * @param acceptLanguage the acceptLanguage value to set
+     * @return the OCRUrlInputOptionalParameter object itself.
+     */
+    public OCRUrlInputOptionalParameter withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+}

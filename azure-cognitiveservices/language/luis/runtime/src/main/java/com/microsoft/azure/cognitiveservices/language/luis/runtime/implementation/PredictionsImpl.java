@@ -14,7 +14,6 @@ import com.microsoft.azure.cognitiveservices.language.luis.runtime.Predictions;
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.AzureRegions;
 import com.microsoft.azure.cognitiveservices.language.luis.runtime.models.LuisResult;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
@@ -39,7 +38,7 @@ public class PredictionsImpl implements Predictions {
     /** The Retrofit service to perform REST calls. */
     private PredictionsService service;
     /** The service client containing this operation class. */
-    private LanguageUnderstandingIntelligentServiceLUISEndpointAPIforrunningpredictionsandextractinguserintentionsandentitiesfromutterancesImpl client;
+    private LuisRuntimeAPIImpl client;
 
     /**
      * Initializes an instance of PredictionsImpl.
@@ -47,7 +46,7 @@ public class PredictionsImpl implements Predictions {
      * @param retrofit the Retrofit instance built from a Retrofit Builder.
      * @param client the instance of the service client containing this operation class.
      */
-    public PredictionsImpl(Retrofit retrofit, LanguageUnderstandingIntelligentServiceLUISEndpointAPIforrunningpredictionsandextractinguserintentionsandentitiesfromutterancesImpl client) {
+    public PredictionsImpl(Retrofit retrofit, LuisRuntimeAPIImpl client) {
         this.service = retrofit.create(PredictionsService.class);
         this.client = client;
     }
@@ -136,7 +135,6 @@ public class PredictionsImpl implements Predictions {
         final Boolean spellCheck = resolveOptionalParameter != null ? resolveOptionalParameter.spellCheck() : null;
         final String bingSpellCheckSubscriptionKey = resolveOptionalParameter != null ? resolveOptionalParameter.bingSpellCheckSubscriptionKey() : null;
         final Boolean log = resolveOptionalParameter != null ? resolveOptionalParameter.log() : null;
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return resolveWithServiceResponseAsync(appId, query, timezoneOffset, verbose, staging, spellCheck, bingSpellCheckSubscriptionKey, log);
     }

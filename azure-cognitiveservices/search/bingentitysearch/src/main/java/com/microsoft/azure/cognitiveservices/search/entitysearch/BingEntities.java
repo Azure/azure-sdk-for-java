@@ -20,10 +20,10 @@ import rx.Observable;
 public interface BingEntities {
     /**
      * The Entity Search API lets you send a search query to Bing and get back search results that include entities
-     *  and places. Place results include restaurants, hotel, or other local businesses. For places, the query can
-     *  specify the name of the local business or it can ask for a list (for example, restaurants near me). Entity
-     *  results include persons, places, or things. Place in this context is tourist attractions, states, countries,
-     *  etc.
+     *   and places. Place results include restaurants, hotel, or other local businesses. For places, the query can
+     *   specify the name of the local business or it can ask for a list (for example, restaurants near me). Entity
+     *   results include persons, places, or things. Place in this context is tourist attractions, states, countries,
+     *   etc.
      *
      * @param query The user's search term.
      * @param searchOptionalParameter the object representing the optional parameters to be set before calling this API
@@ -36,10 +36,10 @@ public interface BingEntities {
 
     /**
      * The Entity Search API lets you send a search query to Bing and get back search results that include entities
-     *  and places. Place results include restaurants, hotel, or other local businesses. For places, the query can
-     *  specify the name of the local business or it can ask for a list (for example, restaurants near me). Entity
-     *  results include persons, places, or things. Place in this context is tourist attractions, states, countries,
-     *  etc.
+     *   and places. Place results include restaurants, hotel, or other local businesses. For places, the query can
+     *   specify the name of the local business or it can ask for a list (for example, restaurants near me). Entity
+     *   results include persons, places, or things. Place in this context is tourist attractions, states, countries,
+     *   etc.
      *
      * @param query The user's search term.
      * @param searchOptionalParameter the object representing the optional parameters to be set before calling this API

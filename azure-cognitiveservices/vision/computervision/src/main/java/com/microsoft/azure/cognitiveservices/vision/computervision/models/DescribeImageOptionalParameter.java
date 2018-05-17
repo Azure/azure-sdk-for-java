@@ -33,11 +33,11 @@ public class DescribeImageOptionalParameter {
     * Maximum number of candidate descriptions to be returned.  The default is 1.
     *
     * @param maxCandidates the maxCandidates value to set
-    * @return the describeImageOptionalParameter object itself.
+    * @return the DescribeImageOptionalParameter object itself.
     */
     public DescribeImageOptionalParameter withMaxCandidates(String maxCandidates) {
         this.maxCandidates = maxCandidates;
         return this;
     }
 
-    }
+}
