@@ -8,9 +8,9 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupPersonsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupPersonsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupPersonsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdateFaceOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddPersonFaceFromUrlOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.AddPersonFaceFromStreamOptionalParameter;
@@ -30,51 +30,52 @@ public interface PersonGroupPersons {
      * Create a new person in a specified person group.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createPersonOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Person object if successful.
      */
-    Person createPerson(String personGroupId, CreatePersonOptionalParameter createPersonOptionalParameter);
+    Person create(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter);
 
     /**
      * Create a new person in a specified person group.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createPersonOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Person object
      */
-    Observable<Person> createPersonAsync(String personGroupId, CreatePersonOptionalParameter createPersonOptionalParameter);
+    Observable<Person> createAsync(String personGroupId, CreatePersonGroupPersonsOptionalParameter createOptionalParameter);
 
     /**
      * List all persons in a person group, and retrieve person information (including personId, name, userData and
-     *  persistedFaceIds of registered faces of the person).
+     *   persistedFaceIds of registered faces of the person).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param listPersonOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;Person&gt; object if successful.
      */
-    List<Person> listPerson(String personGroupId, ListPersonOptionalParameter listPersonOptionalParameter);
+    List<Person> list(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter);
 
     /**
      * List all persons in a person group, and retrieve person information (including personId, name, userData and
-     *  persistedFaceIds of registered faces of the person).
+     *   persistedFaceIds of registered faces of the person).
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param listPersonOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;Person&gt; object
      */
-    Observable<List<Person>> listPersonAsync(String personGroupId, ListPersonOptionalParameter listPersonOptionalParameter);
+    Observable<List<Person>> listAsync(String personGroupId, ListPersonGroupPersonsOptionalParameter listOptionalParameter);
 
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. Persisted face images of the person will also be
+      *  deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -85,7 +86,8 @@ public interface PersonGroupPersons {
     void delete(String personGroupId, UUID personId);
 
     /**
-     * Delete an existing person from a person group. Persisted face images of the person will also be deleted.
+     * Delete an existing person from a person group. Persisted face images of the person will also be
+      *  deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -124,23 +126,23 @@ public interface PersonGroupPersons {
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param updatePersonOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void updatePerson(String personGroupId, UUID personId, UpdatePersonOptionalParameter updatePersonOptionalParameter);
+    void update(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter);
 
     /**
      * Update name or userData of a person.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
-     * @param updatePersonOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    Observable<Void> updatePersonAsync(String personGroupId, UUID personId, UpdatePersonOptionalParameter updatePersonOptionalParameter);
+    Observable<Void> updateAsync(String personGroupId, UUID personId, UpdatePersonGroupPersonsOptionalParameter updateOptionalParameter);
 
 
     /**
@@ -169,7 +171,8 @@ public interface PersonGroupPersons {
 
 
     /**
-     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging personGroupId).
+     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its
+      *  belonging personGroupId).
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -182,7 +185,8 @@ public interface PersonGroupPersons {
     PersistedFace getFace(String personGroupId, UUID personId, UUID persistedFaceId);
 
     /**
-     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its belonging personGroupId).
+     * Retrieve information about a persisted face (specified by persistedFaceId, personId and its
+      *  belonging personGroupId).
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -220,7 +224,7 @@ public interface PersonGroupPersons {
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a
-     *  targetFace rectangle.
+     *   targetFace rectangle.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -235,7 +239,7 @@ public interface PersonGroupPersons {
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a
-     *  targetFace rectangle.
+     *   targetFace rectangle.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -248,7 +252,7 @@ public interface PersonGroupPersons {
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a
-     *  targetFace rectangle.
+     *   targetFace rectangle.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.
@@ -263,7 +267,7 @@ public interface PersonGroupPersons {
 
     /**
      * Add a representative face to a person for identification. The input face is specified as an image with a
-     *  targetFace rectangle.
+     *   targetFace rectangle.
      *
      * @param personGroupId Id referencing a particular person group.
      * @param personId Id referencing a particular person.

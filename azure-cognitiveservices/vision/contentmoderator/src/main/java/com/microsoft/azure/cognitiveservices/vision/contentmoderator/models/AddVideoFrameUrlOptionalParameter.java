@@ -8,35 +8,62 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
- * The optional parameters class for "addVideoFrameUrl" method.
+ * The AddVideoFrameUrlOptionalParameter model.
  */
 public class AddVideoFrameUrlOptionalParameter {
     /**
-    * Timescale of the video.
-    */
+     * Timescale of the video.
+     */
+    @JsonProperty(value = "timescale")
     private Integer timescale;
 
     /**
-    * Get the timescale value.
-    *
-    * @return the timescale value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
+    private String acceptLanguage;
+
+    /**
+     * Get the timescale value.
+     *
+     * @return the timescale value
+     */
     public Integer timescale() {
         return this.timescale;
     }
 
     /**
-    * Set the timescale value.
-    * <p>
-    * Timescale of the video.
-    *
-    * @param timescale the timescale value to set
-    * @return the addVideoFrameUrlOptionalParameter object itself.
-    */
-    public AddVideoFrameUrlOptionalParameter withTimescale(int timescale) {
+     * Set the timescale value.
+     *
+     * @param timescale the timescale value to set
+     * @return the AddVideoFrameUrlOptionalParameter object itself.
+     */
+    public AddVideoFrameUrlOptionalParameter withTimescale(Integer timescale) {
         this.timescale = timescale;
         return this;
     }
 
+    /**
+     * Get the acceptLanguage value.
+     *
+     * @return the acceptLanguage value
+     */
+    public String acceptLanguage() {
+        return this.acceptLanguage;
     }
+
+    /**
+     * Set the acceptLanguage value.
+     *
+     * @param acceptLanguage the acceptLanguage value to set
+     * @return the AddVideoFrameUrlOptionalParameter object itself.
+     */
+    public AddVideoFrameUrlOptionalParameter withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+}

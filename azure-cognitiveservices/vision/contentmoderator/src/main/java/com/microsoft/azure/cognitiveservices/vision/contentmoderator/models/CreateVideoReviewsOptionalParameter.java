@@ -8,35 +8,62 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
+
 /**
- * The optional parameters class for "createVideoReviews" method.
+ * The CreateVideoReviewsOptionalParameter model.
  */
 public class CreateVideoReviewsOptionalParameter {
     /**
-    * SubTeam of your team, you want to assign the created review to.
-    */
+     * SubTeam of your team, you want to assign the created review to.
+     */
+    @JsonProperty(value = "subTeam")
     private String subTeam;
 
     /**
-    * Get the subTeam value.
-    *
-    * @return the subTeam value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
+    private String acceptLanguage;
+
+    /**
+     * Get the subTeam value.
+     *
+     * @return the subTeam value
+     */
     public String subTeam() {
         return this.subTeam;
     }
 
     /**
-    * Set the subTeam value.
-    * <p>
-    * SubTeam of your team, you want to assign the created review to.
-    *
-    * @param subTeam the subTeam value to set
-    * @return the createVideoReviewsOptionalParameter object itself.
-    */
+     * Set the subTeam value.
+     *
+     * @param subTeam the subTeam value to set
+     * @return the CreateVideoReviewsOptionalParameter object itself.
+     */
     public CreateVideoReviewsOptionalParameter withSubTeam(String subTeam) {
         this.subTeam = subTeam;
         return this;
     }
 
+    /**
+     * Get the acceptLanguage value.
+     *
+     * @return the acceptLanguage value
+     */
+    public String acceptLanguage() {
+        return this.acceptLanguage;
     }
+
+    /**
+     * Set the acceptLanguage value.
+     *
+     * @param acceptLanguage the acceptLanguage value to set
+     * @return the CreateVideoReviewsOptionalParameter object itself.
+     */
+    public CreateVideoReviewsOptionalParameter withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+}

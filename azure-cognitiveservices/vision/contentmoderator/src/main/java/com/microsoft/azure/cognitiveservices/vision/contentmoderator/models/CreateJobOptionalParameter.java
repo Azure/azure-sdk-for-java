@@ -8,36 +8,62 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The optional parameters class for "createJob" method.
+ * The CreateJobOptionalParameter model.
  */
 public class CreateJobOptionalParameter {
     /**
-    * Callback endpoint for posting the create job result.
-    */
+     * Callback endpoint for posting the create job result.
+     */
+    @JsonProperty(value = "callBackEndpoint")
     private String callBackEndpoint;
 
     /**
-    * Get the callBackEndpoint value.
-    *
-    * @return the callBackEndpoint value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
+    private String acceptLanguage;
+
+    /**
+     * Get the callBackEndpoint value.
+     *
+     * @return the callBackEndpoint value
+     */
     public String callBackEndpoint() {
         return this.callBackEndpoint;
     }
 
     /**
-    * Set the callBackEndpoint value.
-    * <p>
-    * Callback endpoint for posting the create job result.
-    *
-    * @param callBackEndpoint the callBackEndpoint value to set
-    * @return the createJobOptionalParameter object itself.
-    */
+     * Set the callBackEndpoint value.
+     *
+     * @param callBackEndpoint the callBackEndpoint value to set
+     * @return the CreateJobOptionalParameter object itself.
+     */
     public CreateJobOptionalParameter withCallBackEndpoint(String callBackEndpoint) {
         this.callBackEndpoint = callBackEndpoint;
         return this;
     }
 
+    /**
+     * Get the acceptLanguage value.
+     *
+     * @return the acceptLanguage value
+     */
+    public String acceptLanguage() {
+        return this.acceptLanguage;
     }
+
+    /**
+     * Set the acceptLanguage value.
+     *
+     * @param acceptLanguage the acceptLanguage value to set
+     * @return the CreateJobOptionalParameter object itself.
+     */
+    public CreateJobOptionalParameter withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+}

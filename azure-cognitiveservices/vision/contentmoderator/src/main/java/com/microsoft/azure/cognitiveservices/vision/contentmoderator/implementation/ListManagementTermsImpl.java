@@ -326,7 +326,6 @@ public class ListManagementTermsImpl implements ListManagementTerms {
         }
         final Integer offset = getAllTermsOptionalParameter != null ? getAllTermsOptionalParameter.offset() : null;
         final Integer limit = getAllTermsOptionalParameter != null ? getAllTermsOptionalParameter.limit() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
 
         return getAllTermsWithServiceResponseAsync(listId, language, offset, limit);
     }

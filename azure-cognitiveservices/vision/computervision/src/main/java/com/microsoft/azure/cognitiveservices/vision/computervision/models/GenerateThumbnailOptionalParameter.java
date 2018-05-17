@@ -33,11 +33,11 @@ public class GenerateThumbnailOptionalParameter {
     * Boolean flag for enabling smart cropping.
     *
     * @param smartCropping the smartCropping value to set
-    * @return the generateThumbnailOptionalParameter object itself.
+    * @return the GenerateThumbnailOptionalParameter object itself.
     */
-    public GenerateThumbnailOptionalParameter withSmartCropping(boolean smartCropping) {
+    public GenerateThumbnailOptionalParameter withSmartCropping(Boolean smartCropping) {
         this.smartCropping = smartCropping;
         return this;
     }
 
-    }
+}

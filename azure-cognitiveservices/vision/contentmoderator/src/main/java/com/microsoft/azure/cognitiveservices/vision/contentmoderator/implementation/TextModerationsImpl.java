@@ -144,8 +144,6 @@ public class TextModerationsImpl implements TextModerations {
         final Boolean pII = screenTextOptionalParameter != null ? screenTextOptionalParameter.pII() : null;
         final String listId = screenTextOptionalParameter != null ? screenTextOptionalParameter.listId() : null;
         final Boolean classify = screenTextOptionalParameter != null ? screenTextOptionalParameter.classify() : null;
-        String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        RequestBody textContentConverted = RequestBody.create(MediaType.parse("text/plain"), textContent);
 
         return screenTextWithServiceResponseAsync(textContentType, textContent, language, autocorrect, pII, listId, classify);
     }

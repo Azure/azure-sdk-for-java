@@ -9,94 +9,120 @@
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
 import java.util.List;
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The optional parameters class for "detectWithUrl" method.
+ * The DetectWithUrlOptionalParameter model.
  */
 public class DetectWithUrlOptionalParameter {
     /**
-    * A value indicating whether the operation should return faceIds of detected faces.
-    */
+     * A value indicating whether the operation should return faceIds of
+     * detected faces.
+     */
+    @JsonProperty(value = "returnFaceId")
     private Boolean returnFaceId;
 
     /**
-    * A value indicating whether the operation should return landmarks of the detected faces.
-    */
+     * A value indicating whether the operation should return landmarks of the
+     * detected faces.
+     */
+    @JsonProperty(value = "returnFaceLandmarks")
     private Boolean returnFaceLandmarks;
 
     /**
-    * Analyze and return the one or more specified face attributes in the comma-separated string like
-    * "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses
-    * and emotion. Note that each face attribute analysis has additional computational and time cost.
-    */
+     * Analyze and return the one or more specified face attributes in the
+     * comma-separated string like "returnFaceAttributes=age,gender". Supported
+     * face attributes include age, gender, headPose, smile, facialHair,
+     * glasses and emotion. Note that each face attribute analysis has
+     * additional computational and time cost.
+     */
+    @JsonProperty(value = "returnFaceAttributes")
     private List<FaceAttributeType> returnFaceAttributes;
 
     /**
-    * Get the returnFaceId value.
-    *
-    * @return the returnFaceId value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
+    private String acceptLanguage;
+
+    /**
+     * Get the returnFaceId value.
+     *
+     * @return the returnFaceId value
+     */
     public Boolean returnFaceId() {
         return this.returnFaceId;
     }
 
     /**
-    * Get the returnFaceLandmarks value.
-    *
-    * @return the returnFaceLandmarks value
-    */
-    public Boolean returnFaceLandmarks() {
-        return this.returnFaceLandmarks;
-    }
-
-    /**
-    * Get the returnFaceAttributes value.
-    *
-    * @return the returnFaceAttributes value
-    */
-    public List<FaceAttributeType> returnFaceAttributes() {
-        return this.returnFaceAttributes;
-    }
-
-    /**
-    * Set the returnFaceId value.
-    * <p>
-    * A value indicating whether the operation should return faceIds of detected faces.
-    *
-    * @param returnFaceId the returnFaceId value to set
-    * @return the detectWithUrlOptionalParameter object itself.
-    */
-    public DetectWithUrlOptionalParameter withReturnFaceId(boolean returnFaceId) {
+     * Set the returnFaceId value.
+     *
+     * @param returnFaceId the returnFaceId value to set
+     * @return the DetectWithUrlOptionalParameter object itself.
+     */
+    public DetectWithUrlOptionalParameter withReturnFaceId(Boolean returnFaceId) {
         this.returnFaceId = returnFaceId;
         return this;
     }
 
     /**
-    * Set the returnFaceLandmarks value.
-    * <p>
-    * A value indicating whether the operation should return landmarks of the detected faces.
-    *
-    * @param returnFaceLandmarks the returnFaceLandmarks value to set
-    * @return the detectWithUrlOptionalParameter object itself.
-    */
-    public DetectWithUrlOptionalParameter withReturnFaceLandmarks(boolean returnFaceLandmarks) {
+     * Get the returnFaceLandmarks value.
+     *
+     * @return the returnFaceLandmarks value
+     */
+    public Boolean returnFaceLandmarks() {
+        return this.returnFaceLandmarks;
+    }
+
+    /**
+     * Set the returnFaceLandmarks value.
+     *
+     * @param returnFaceLandmarks the returnFaceLandmarks value to set
+     * @return the DetectWithUrlOptionalParameter object itself.
+     */
+    public DetectWithUrlOptionalParameter withReturnFaceLandmarks(Boolean returnFaceLandmarks) {
         this.returnFaceLandmarks = returnFaceLandmarks;
         return this;
     }
 
     /**
-    * Set the returnFaceAttributes value.
-    * <p>
-    * Analyze and return the one or more specified face attributes in the comma-separated string like
-    * "returnFaceAttributes=age,gender". Supported face attributes include age, gender, headPose, smile, facialHair, glasses
-    * and emotion. Note that each face attribute analysis has additional computational and time cost.
-    *
-    * @param returnFaceAttributes the returnFaceAttributes value to set
-    * @return the detectWithUrlOptionalParameter object itself.
-    */
+     * Get the returnFaceAttributes value.
+     *
+     * @return the returnFaceAttributes value
+     */
+    public List<FaceAttributeType> returnFaceAttributes() {
+        return this.returnFaceAttributes;
+    }
+
+    /**
+     * Set the returnFaceAttributes value.
+     *
+     * @param returnFaceAttributes the returnFaceAttributes value to set
+     * @return the DetectWithUrlOptionalParameter object itself.
+     */
     public DetectWithUrlOptionalParameter withReturnFaceAttributes(List<FaceAttributeType> returnFaceAttributes) {
         this.returnFaceAttributes = returnFaceAttributes;
         return this;
     }
 
+    /**
+     * Get the acceptLanguage value.
+     *
+     * @return the acceptLanguage value
+     */
+    public String acceptLanguage() {
+        return this.acceptLanguage;
     }
+
+    /**
+     * Set the acceptLanguage value.
+     *
+     * @param acceptLanguage the acceptLanguage value to set
+     * @return the DetectWithUrlOptionalParameter object itself.
+     */
+    public DetectWithUrlOptionalParameter withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+}

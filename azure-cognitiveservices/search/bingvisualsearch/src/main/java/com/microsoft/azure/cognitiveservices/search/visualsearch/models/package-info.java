@@ -6,6 +6,6 @@
 
 /**
  * This package contains the models classes for BingVisualSearchAPI.
- * The Image Visual Search API lets you send an image to Bing and get back a list of relevant tags. Each tag contains potential actions a user might be interested in. This section provides technical details about the request format and headers that you use to request actions and the JSON response objects that contain them. For examples that show how to make requests, see [Searching the Web for Images](https://docs.microsoft.com/azure/cognitive-services/bing-image-search/search-the-web).
+ * Visual Search API lets you discover insights about an image such as visually similar images, shopping sources, and related searches. The API can also perform text recognition, identify entities (people, places, things), return other topical content for the user to explore, and more. For more information, see [Visual Search Overview](https://docs.microsoft.com/azure/cognitive-services/bing-visual-search/overview).
  */
 package com.microsoft.azure.cognitiveservices.search.visualsearch.models;

@@ -15,8 +15,8 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 public class RecognizePrintedTextInStreamOptionalParameter {
     /**
     * The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include:
-    * 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt',
-    * 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
+    *  'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt',
+    *  'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
     */
     private OcrLanguages language;
 
@@ -33,15 +33,15 @@ public class RecognizePrintedTextInStreamOptionalParameter {
     * Set the language value.
     * <p>
     * The BCP-47 language code of the text to be detected in the image. The default value is 'unk'. Possible values include:
-    * 'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt',
-    * 'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
+    *  'unk', 'zh-Hans', 'zh-Hant', 'cs', 'da', 'nl', 'en', 'fi', 'fr', 'de', 'el', 'hu', 'it', 'ja', 'ko', 'nb', 'pl', 'pt',
+    *  'ru', 'es', 'sv', 'tr', 'ar', 'ro', 'sr-Cyrl', 'sr-Latn', 'sk'.
     *
     * @param language the language value to set
-    * @return the recognizePrintedTextInStreamOptionalParameter object itself.
+    * @return the RecognizePrintedTextInStreamOptionalParameter object itself.
     */
     public RecognizePrintedTextInStreamOptionalParameter withLanguage(OcrLanguages language) {
         this.language = language;
         return this;
     }
 
-    }
+}

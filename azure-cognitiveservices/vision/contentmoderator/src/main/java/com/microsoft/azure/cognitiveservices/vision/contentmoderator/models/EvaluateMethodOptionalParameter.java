@@ -8,36 +8,63 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The optional parameters class for "evaluateMethod" method.
+ * The EvaluateMethodOptionalParameter model.
  */
 public class EvaluateMethodOptionalParameter {
     /**
-    * Whether to retain the submitted image for future use; defaults to false if omitted.
-    */
+     * Whether to retain the submitted image for future use; defaults to false
+     * if omitted.
+     */
+    @JsonProperty(value = "cacheImage")
     private Boolean cacheImage;
 
     /**
-    * Get the cacheImage value.
-    *
-    * @return the cacheImage value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
+    private String acceptLanguage;
+
+    /**
+     * Get the cacheImage value.
+     *
+     * @return the cacheImage value
+     */
     public Boolean cacheImage() {
         return this.cacheImage;
     }
 
     /**
-    * Set the cacheImage value.
-    * <p>
-    * Whether to retain the submitted image for future use; defaults to false if omitted.
-    *
-    * @param cacheImage the cacheImage value to set
-    * @return the evaluateMethodOptionalParameter object itself.
-    */
-    public EvaluateMethodOptionalParameter withCacheImage(boolean cacheImage) {
+     * Set the cacheImage value.
+     *
+     * @param cacheImage the cacheImage value to set
+     * @return the EvaluateMethodOptionalParameter object itself.
+     */
+    public EvaluateMethodOptionalParameter withCacheImage(Boolean cacheImage) {
         this.cacheImage = cacheImage;
         return this;
     }
 
+    /**
+     * Get the acceptLanguage value.
+     *
+     * @return the acceptLanguage value
+     */
+    public String acceptLanguage() {
+        return this.acceptLanguage;
     }
+
+    /**
+     * Set the acceptLanguage value.
+     *
+     * @param acceptLanguage the acceptLanguage value to set
+     * @return the EvaluateMethodOptionalParameter object itself.
+     */
+    public EvaluateMethodOptionalParameter withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+}

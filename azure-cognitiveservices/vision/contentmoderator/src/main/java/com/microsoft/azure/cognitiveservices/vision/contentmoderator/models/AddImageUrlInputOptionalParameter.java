@@ -8,63 +8,88 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
+import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * The optional parameters class for "addImageUrlInput" method.
+ * The AddImageUrlInputOptionalParameter model.
  */
 public class AddImageUrlInputOptionalParameter {
     /**
-    * Tag for the image.
-    */
+     * Tag for the image.
+     */
+    @JsonProperty(value = "tag")
     private Integer tag;
 
     /**
-    * The image label.
-    */
+     * The image label.
+     */
+    @JsonProperty(value = "label")
     private String label;
 
     /**
-    * Get the tag value.
-    *
-    * @return the tag value
-    */
+     * Gets or sets the preferred language for the response.
+     */
+    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
+    private String acceptLanguage;
+
+    /**
+     * Get the tag value.
+     *
+     * @return the tag value
+     */
     public Integer tag() {
         return this.tag;
     }
 
     /**
-    * Get the label value.
-    *
-    * @return the label value
-    */
-    public String label() {
-        return this.label;
-    }
-
-    /**
-    * Set the tag value.
-    * <p>
-    * Tag for the image.
-    *
-    * @param tag the tag value to set
-    * @return the addImageUrlInputOptionalParameter object itself.
-    */
-    public AddImageUrlInputOptionalParameter withTag(int tag) {
+     * Set the tag value.
+     *
+     * @param tag the tag value to set
+     * @return the AddImageUrlInputOptionalParameter object itself.
+     */
+    public AddImageUrlInputOptionalParameter withTag(Integer tag) {
         this.tag = tag;
         return this;
     }
 
     /**
-    * Set the label value.
-    * <p>
-    * The image label.
-    *
-    * @param label the label value to set
-    * @return the addImageUrlInputOptionalParameter object itself.
-    */
+     * Get the label value.
+     *
+     * @return the label value
+     */
+    public String label() {
+        return this.label;
+    }
+
+    /**
+     * Set the label value.
+     *
+     * @param label the label value to set
+     * @return the AddImageUrlInputOptionalParameter object itself.
+     */
     public AddImageUrlInputOptionalParameter withLabel(String label) {
         this.label = label;
         return this;
     }
 
+    /**
+     * Get the acceptLanguage value.
+     *
+     * @return the acceptLanguage value
+     */
+    public String acceptLanguage() {
+        return this.acceptLanguage;
     }
+
+    /**
+     * Set the acceptLanguage value.
+     *
+     * @param acceptLanguage the acceptLanguage value to set
+     * @return the AddImageUrlInputOptionalParameter object itself.
+     */
+    public AddImageUrlInputOptionalParameter withAcceptLanguage(String acceptLanguage) {
+        this.acceptLanguage = acceptLanguage;
+        return this;
+    }
+
+}

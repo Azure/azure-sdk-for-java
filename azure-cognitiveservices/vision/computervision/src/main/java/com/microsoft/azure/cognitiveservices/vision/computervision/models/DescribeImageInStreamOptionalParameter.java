@@ -33,11 +33,11 @@ public class DescribeImageInStreamOptionalParameter {
     * Maximum number of candidate descriptions to be returned.  The default is 1.
     *
     * @param maxCandidates the maxCandidates value to set
-    * @return the describeImageInStreamOptionalParameter object itself.
+    * @return the DescribeImageInStreamOptionalParameter object itself.
     */
     public DescribeImageInStreamOptionalParameter withMaxCandidates(String maxCandidates) {
         this.maxCandidates = maxCandidates;
         return this;
     }
 
-    }
+}

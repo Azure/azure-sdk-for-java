@@ -10,8 +10,8 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.implementati
 
 import com.microsoft.azure.AzureClient;
 import com.microsoft.azure.AzureServiceClient;
+import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVision;
 import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisionAPI;
-import com.microsoft.azure.cognitiveservices.vision.computervision.ComputerVisions;
 import com.microsoft.azure.cognitiveservices.vision.computervision.models.AzureRegions;
 import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.RestClient;
@@ -124,16 +124,16 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
     }
 
     /**
-     * The ComputerVisions object to access its operations.
+     * The ComputerVision object to access its operations.
      */
-    private ComputerVisions computerVisions;
+    private ComputerVision computerVision;
 
     /**
-     * Gets the ComputerVisions object to access its operations.
-     * @return the ComputerVisions object.
+     * Gets the ComputerVision object to access its operations.
+     * @return the ComputerVision object.
      */
-    public ComputerVisions computerVisions() {
-        return this.computerVisions;
+    public ComputerVision computerVision() {
+        return this.computerVision;
     }
 
     /**
@@ -151,7 +151,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    private ComputerVisionAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public ComputerVisionAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }
@@ -170,7 +170,7 @@ public class ComputerVisionAPIImpl extends AzureServiceClient implements Compute
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
-        this.computerVisions = new ComputerVisionsImpl(restClient().retrofit(), this);
+        this.computerVision = new ComputerVisionImpl(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }
 

@@ -13,7 +13,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagem
 import com.google.common.base.Joiner;
 import com.google.common.reflect.TypeToken;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Body;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.RefreshIndex;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.TermList;
 import com.microsoft.rest.ServiceCallback;
@@ -23,6 +23,7 @@ import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
+import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -71,11 +72,11 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists update" })
         @PUT("contentmoderator/lists/v1.0/termlists/{listId}")
-        Observable<Response<ResponseBody>> update(@Path("listId") String listId, @Header("Content-Type") String contentType, @retrofit2.http.Body Body body, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> update(@Path("listId") String listId, @Header("Content-Type") String contentType, @Body BodyModel bodyParameter, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists create" })
         @POST("contentmoderator/lists/v1.0/termlists")
-        Observable<Response<ResponseBody>> create(@Header("Content-Type") String contentType, @retrofit2.http.Body Body body, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Header("Content-Type") String contentType, @Body BodyModel bodyParameter, @Header("accept-language") String acceptLanguage, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.contentmoderator.ListManagementTermLists getAllTermLists" })
         @GET("contentmoderator/lists/v1.0/termlists")
@@ -246,14 +247,14 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TermList object if successful.
      */
-    public TermList update(String listId, String contentType, Body body) {
-        return updateWithServiceResponseAsync(listId, contentType, body).toBlocking().single().body();
+    public TermList update(String listId, String contentType, BodyModel bodyParameter) {
+        return updateWithServiceResponseAsync(listId, contentType, bodyParameter).toBlocking().single().body();
     }
 
     /**
@@ -261,13 +262,13 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TermList> updateAsync(String listId, String contentType, Body body, final ServiceCallback<TermList> serviceCallback) {
-        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(listId, contentType, body), serviceCallback);
+    public ServiceFuture<TermList> updateAsync(String listId, String contentType, BodyModel bodyParameter, final ServiceCallback<TermList> serviceCallback) {
+        return ServiceFuture.fromResponse(updateWithServiceResponseAsync(listId, contentType, bodyParameter), serviceCallback);
     }
 
     /**
@@ -275,12 +276,12 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TermList object
      */
-    public Observable<TermList> updateAsync(String listId, String contentType, Body body) {
-        return updateWithServiceResponseAsync(listId, contentType, body).map(new Func1<ServiceResponse<TermList>, TermList>() {
+    public Observable<TermList> updateAsync(String listId, String contentType, BodyModel bodyParameter) {
+        return updateWithServiceResponseAsync(listId, contentType, bodyParameter).map(new Func1<ServiceResponse<TermList>, TermList>() {
             @Override
             public TermList call(ServiceResponse<TermList> response) {
                 return response.body();
@@ -293,11 +294,11 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      *
      * @param listId List Id of the image list.
      * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TermList object
      */
-    public Observable<ServiceResponse<TermList>> updateWithServiceResponseAsync(String listId, String contentType, Body body) {
+    public Observable<ServiceResponse<TermList>> updateWithServiceResponseAsync(String listId, String contentType, BodyModel bodyParameter) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
@@ -307,12 +308,12 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
         if (contentType == null) {
             throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
+        if (bodyParameter == null) {
+            throw new IllegalArgumentException("Parameter bodyParameter is required and cannot be null.");
         }
-        Validator.validate(body);
+        Validator.validate(bodyParameter);
         String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.update(listId, contentType, body, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.update(listId, contentType, bodyParameter, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TermList>>>() {
                 @Override
                 public Observable<ServiceResponse<TermList>> call(Response<ResponseBody> response) {
@@ -337,39 +338,39 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      * Creates a Term List.
      *
      * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the TermList object if successful.
      */
-    public TermList create(String contentType, Body body) {
-        return createWithServiceResponseAsync(contentType, body).toBlocking().single().body();
+    public TermList create(String contentType, BodyModel bodyParameter) {
+        return createWithServiceResponseAsync(contentType, bodyParameter).toBlocking().single().body();
     }
 
     /**
      * Creates a Term List.
      *
      * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<TermList> createAsync(String contentType, Body body, final ServiceCallback<TermList> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(contentType, body), serviceCallback);
+    public ServiceFuture<TermList> createAsync(String contentType, BodyModel bodyParameter, final ServiceCallback<TermList> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(contentType, bodyParameter), serviceCallback);
     }
 
     /**
      * Creates a Term List.
      *
      * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TermList object
      */
-    public Observable<TermList> createAsync(String contentType, Body body) {
-        return createWithServiceResponseAsync(contentType, body).map(new Func1<ServiceResponse<TermList>, TermList>() {
+    public Observable<TermList> createAsync(String contentType, BodyModel bodyParameter) {
+        return createWithServiceResponseAsync(contentType, bodyParameter).map(new Func1<ServiceResponse<TermList>, TermList>() {
             @Override
             public TermList call(ServiceResponse<TermList> response) {
                 return response.body();
@@ -381,23 +382,23 @@ public class ListManagementTermListsImpl implements ListManagementTermLists {
      * Creates a Term List.
      *
      * @param contentType The content type.
-     * @param body Schema of the body.
+     * @param bodyParameter Schema of the body.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the TermList object
      */
-    public Observable<ServiceResponse<TermList>> createWithServiceResponseAsync(String contentType, Body body) {
+    public Observable<ServiceResponse<TermList>> createWithServiceResponseAsync(String contentType, BodyModel bodyParameter) {
         if (this.client.baseUrl() == null) {
             throw new IllegalArgumentException("Parameter this.client.baseUrl() is required and cannot be null.");
         }
         if (contentType == null) {
             throw new IllegalArgumentException("Parameter contentType is required and cannot be null.");
         }
-        if (body == null) {
-            throw new IllegalArgumentException("Parameter body is required and cannot be null.");
+        if (bodyParameter == null) {
+            throw new IllegalArgumentException("Parameter bodyParameter is required and cannot be null.");
         }
-        Validator.validate(body);
+        Validator.validate(bodyParameter);
         String parameterizedHost = Joiner.on(", ").join("{baseUrl}", this.client.baseUrl());
-        return service.create(contentType, body, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
+        return service.create(contentType, bodyParameter, this.client.acceptLanguage(), parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<TermList>>>() {
                 @Override
                 public Observable<ServiceResponse<TermList>> call(Response<ResponseBody> response) {

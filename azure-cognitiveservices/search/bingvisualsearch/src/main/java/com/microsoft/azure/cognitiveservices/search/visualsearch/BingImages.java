@@ -20,9 +20,9 @@ import rx.Observable;
 public interface BingImages {
     /**
      * Visual Search API lets you discover insights about an image such as visually similar images, shopping
-     *  sources, and related searches. The API can also perform text recognition, identify entities (people, places,
-     *  things), return other topical content for the user to explore, and more. For more information, see [Visual
-     *  Search Overview](https://docs.microsoft.com/azure/cognitive-services/bing-visual-search/overview).
+     *   sources, and related searches. The API can also perform text recognition, identify entities (people, places,
+     *   things), return other topical content for the user to explore, and more. For more information, see [Visual
+     *   Search Overview](https://docs.microsoft.com/azure/cognitive-services/bing-visual-search/overview).
      *
      * @param visualSearchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -34,9 +34,9 @@ public interface BingImages {
 
     /**
      * Visual Search API lets you discover insights about an image such as visually similar images, shopping
-     *  sources, and related searches. The API can also perform text recognition, identify entities (people, places,
-     *  things), return other topical content for the user to explore, and more. For more information, see [Visual
-     *  Search Overview](https://docs.microsoft.com/azure/cognitive-services/bing-visual-search/overview).
+     *   sources, and related searches. The API can also perform text recognition, identify entities (people, places,
+     *   things), return other topical content for the user to explore, and more. For more information, see [Visual
+     *   Search Overview](https://docs.microsoft.com/azure/cognitive-services/bing-visual-search/overview).
      *
      * @param visualSearchOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation

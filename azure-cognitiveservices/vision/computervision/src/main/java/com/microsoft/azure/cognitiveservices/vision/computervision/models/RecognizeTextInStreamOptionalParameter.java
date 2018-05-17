@@ -15,7 +15,7 @@ package com.microsoft.azure.cognitiveservices.vision.computervision.models;
 public class RecognizeTextInStreamOptionalParameter {
     /**
     * If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified,
-    * printed text recognition is performed.
+    *  printed text recognition is performed.
     */
     private Boolean detectHandwriting;
 
@@ -32,14 +32,14 @@ public class RecognizeTextInStreamOptionalParameter {
     * Set the detectHandwriting value.
     * <p>
     * If “true” is specified, handwriting recognition is performed. If this parameter is set to “false” or is not specified,
-    * printed text recognition is performed.
+    *  printed text recognition is performed.
     *
     * @param detectHandwriting the detectHandwriting value to set
-    * @return the recognizeTextInStreamOptionalParameter object itself.
+    * @return the RecognizeTextInStreamOptionalParameter object itself.
     */
-    public RecognizeTextInStreamOptionalParameter withDetectHandwriting(boolean detectHandwriting) {
+    public RecognizeTextInStreamOptionalParameter withDetectHandwriting(Boolean detectHandwriting) {
         this.detectHandwriting = detectHandwriting;
         return this;
     }
 
-    }
+}

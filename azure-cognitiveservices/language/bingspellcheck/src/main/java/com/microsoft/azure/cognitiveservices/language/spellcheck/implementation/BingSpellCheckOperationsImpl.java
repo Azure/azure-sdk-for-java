@@ -20,9 +20,9 @@ import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
 import java.io.IOException;
 import okhttp3.ResponseBody;
-import retrofit2.http.Field;
-import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.Header;
+import retrofit2.http.Multipart;
+import retrofit2.http.Part;
 import retrofit2.http.POST;
 import retrofit2.http.Query;
 import retrofit2.Response;
@@ -55,9 +55,9 @@ public class BingSpellCheckOperationsImpl implements BingSpellCheckOperations {
      * used by Retrofit to perform actually REST calls.
      */
     interface BingSpellCheckOperationsService {
-        @FormUrlEncoded
+        @Multipart
         @POST("spellcheck")
-        Observable<Response<ResponseBody>> spellChecker(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Pragma") String pragma, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Query("ActionType") ActionType actionType, @Query("AppName") String appName, @Query("cc") String countryCode, @Query("ClientMachineName") String clientMachineName, @Query("DocId") String docId, @Query("mkt") String market, @Query("SessionId") String sessionId, @Query("SetLang") String setLang, @Query("UserId") String userId, @Field("Mode") String mode, @Field("PreContextText") String preContextText, @Field("PostContextText") String postContextText, @Field("Text") String text);
+        Observable<Response<ResponseBody>> spellChecker(@Header("X-BingApis-SDK") String xBingApisSDK, @Header("Accept-Language") String acceptLanguage, @Header("Pragma") String pragma, @Header("User-Agent") String userAgent, @Header("X-MSEdge-ClientID") String clientId, @Header("X-MSEdge-ClientIP") String clientIp, @Header("X-Search-Location") String location, @Query("ActionType") ActionType actionType, @Query("AppName") String appName, @Query("cc") String countryCode, @Query("ClientMachineName") String clientMachineName, @Query("DocId") String docId, @Query("mkt") String market, @Query("SessionId") String sessionId, @Query("SetLang") String setLang, @Query("UserId") String userId, @Part("Mode") String mode, @Part("PreContextText") String preContextText, @Part("PostContextText") String postContextText, @Part("Text") String text);
 
     }
 

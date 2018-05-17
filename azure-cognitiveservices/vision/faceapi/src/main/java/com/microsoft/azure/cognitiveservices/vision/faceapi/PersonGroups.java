@@ -8,9 +8,9 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi;
 
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupOptionalParameter;
-import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.CreatePersonGroupsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.UpdatePersonGroupsOptionalParameter;
+import com.microsoft.azure.cognitiveservices.vision.faceapi.models.ListPersonGroupsOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.APIErrorException;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.PersonGroup;
 import com.microsoft.azure.cognitiveservices.vision.faceapi.models.TrainingStatus;
@@ -26,26 +26,27 @@ public interface PersonGroups {
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createPersonGroupOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void createPersonGroup(String personGroupId, CreatePersonGroupOptionalParameter createPersonGroupOptionalParameter);
+    void create(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
 
     /**
      * Create a new person group with specified personGroupId, name and user-provided userData.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param createPersonGroupOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param createOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    Observable<Void> createPersonGroupAsync(String personGroupId, CreatePersonGroupOptionalParameter createPersonGroupOptionalParameter);
+    Observable<Void> createAsync(String personGroupId, CreatePersonGroupsOptionalParameter createOptionalParameter);
 
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face images of all people in the person group will also
+      *  be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -55,7 +56,8 @@ public interface PersonGroups {
     void delete(String personGroupId);
 
     /**
-     * Delete an existing person group. Persisted face images of all people in the person group will also be deleted.
+     * Delete an existing person group. Persisted face images of all people in the person group will also
+      *  be deleted.
      *
      * @param personGroupId Id referencing a particular person group.
      * @throws IllegalArgumentException thrown if parameters fail the validation
@@ -88,26 +90,26 @@ public interface PersonGroups {
 
     /**
      * Update an existing person group's display name and userData. The properties which does not appear in request
-     *  body will not be updated.
+     *   body will not be updated.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updatePersonGroupOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      */
-    void updatePersonGroup(String personGroupId, UpdatePersonGroupOptionalParameter updatePersonGroupOptionalParameter);
+    void update(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
 
     /**
      * Update an existing person group's display name and userData. The properties which does not appear in request
-     *  body will not be updated.
+     *   body will not be updated.
      *
      * @param personGroupId Id referencing a particular person group.
-     * @param updatePersonGroupOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param updateOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return a representation of the deferred computation of this call if successful.
      */
-    Observable<Void> updatePersonGroupAsync(String personGroupId, UpdatePersonGroupOptionalParameter updatePersonGroupOptionalParameter);
+    Observable<Void> updateAsync(String personGroupId, UpdatePersonGroupsOptionalParameter updateOptionalParameter);
 
 
     /**
@@ -134,22 +136,22 @@ public interface PersonGroups {
     /**
      * List person groups and their information.
      *
-     * @param listPersonGroupOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws APIErrorException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the List&lt;PersonGroup&gt; object if successful.
      */
-    List<PersonGroup> listPersonGroup(ListPersonGroupOptionalParameter listPersonGroupOptionalParameter);
+    List<PersonGroup> list(ListPersonGroupsOptionalParameter listOptionalParameter);
 
     /**
      * List person groups and their information.
      *
-     * @param listPersonGroupOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param listOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the List&lt;PersonGroup&gt; object
      */
-    Observable<List<PersonGroup>> listPersonGroupAsync(ListPersonGroupOptionalParameter listPersonGroupOptionalParameter);
+    Observable<List<PersonGroup>> listAsync(ListPersonGroupsOptionalParameter listOptionalParameter);
 
 
     /**

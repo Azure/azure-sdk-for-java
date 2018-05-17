@@ -8,10 +8,10 @@
 
 package com.microsoft.azure.cognitiveservices.language.textanalytics.implementation;
 
-import com.microsoft.azure.cognitiveservices.language.textanalytics.models.KeyPhrasesOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.textanalytics.models.DetectLanguageOptionalParameter;
-import com.microsoft.azure.cognitiveservices.language.textanalytics.models.SentimentOptionalParameter;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.models.EntitiesOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.textanalytics.models.SentimentOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.textanalytics.models.DetectLanguageOptionalParameter;
+import com.microsoft.azure.cognitiveservices.language.textanalytics.models.KeyPhrasesOptionalParameter;
 import retrofit2.Retrofit;
 import com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalytics;
 import com.google.common.base.Joiner;
@@ -66,98 +66,98 @@ public class TextAnalyticsImpl implements TextAnalytics {
      * used by Retrofit to perform actually REST calls.
      */
     interface TextAnalyticsService {
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalytics keyPhrases" })
-        @POST("v2.0/keyPhrases")
-        Observable<Response<ResponseBody>> keyPhrases(@Header("accept-language") String acceptLanguage, @Body MultiLanguageBatchInput input, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
-
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalytics detectLanguage" })
-        @POST("v2.0/languages")
-        Observable<Response<ResponseBody>> detectLanguage(@Header("accept-language") String acceptLanguage, @Body BatchInput input, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalytics entities" })
+        @POST("v2.0/entities")
+        Observable<Response<ResponseBody>> entities(@Header("accept-language") String acceptLanguage, @Body MultiLanguageBatchInput input, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalytics sentiment" })
         @POST("v2.0/sentiment")
         Observable<Response<ResponseBody>> sentiment(@Header("accept-language") String acceptLanguage, @Body MultiLanguageBatchInput input, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
-        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalytics entities" })
-        @POST("v2.0/entities")
-        Observable<Response<ResponseBody>> entities(@Header("accept-language") String acceptLanguage, @Body MultiLanguageBatchInput input, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalytics detectLanguage" })
+        @POST("v2.0/languages")
+        Observable<Response<ResponseBody>> detectLanguage(@Header("accept-language") String acceptLanguage, @Body BatchInput input, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.language.textanalytics.TextAnalytics keyPhrases" })
+        @POST("v2.0/keyPhrases")
+        Observable<Response<ResponseBody>> keyPhrases(@Header("accept-language") String acceptLanguage, @Body MultiLanguageBatchInput input, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
     }
 
 
     /**
-     * The API returns a list of strings denoting the key talking points in the input text.
-     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     * The API returns a list of recognized entities in a given document.
+     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
-     * @param keyPhrasesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entitiesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the KeyPhraseBatchResult object if successful.
+     * @return the EntitiesBatchResult object if successful.
      */
-    public KeyPhraseBatchResult keyPhrases(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter) {
-        return keyPhrasesWithServiceResponseAsync(keyPhrasesOptionalParameter).toBlocking().single().body();
+    public EntitiesBatchResult entities(EntitiesOptionalParameter entitiesOptionalParameter) {
+        return entitiesWithServiceResponseAsync(entitiesOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * The API returns a list of strings denoting the key talking points in the input text.
-     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     * The API returns a list of recognized entities in a given document.
+     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
-     * @param keyPhrasesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entitiesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<KeyPhraseBatchResult> keyPhrasesAsync(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter, final ServiceCallback<KeyPhraseBatchResult> serviceCallback) {
-        return ServiceFuture.fromResponse(keyPhrasesWithServiceResponseAsync(keyPhrasesOptionalParameter), serviceCallback);
+    public ServiceFuture<EntitiesBatchResult> entitiesAsync(EntitiesOptionalParameter entitiesOptionalParameter, final ServiceCallback<EntitiesBatchResult> serviceCallback) {
+        return ServiceFuture.fromResponse(entitiesWithServiceResponseAsync(entitiesOptionalParameter), serviceCallback);
     }
 
     /**
-     * The API returns a list of strings denoting the key talking points in the input text.
-     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     * The API returns a list of recognized entities in a given document.
+     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
-     * @param keyPhrasesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entitiesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the KeyPhraseBatchResult object
+     * @return the observable to the EntitiesBatchResult object
      */
-    public Observable<KeyPhraseBatchResult> keyPhrasesAsync(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter) {
-        return keyPhrasesWithServiceResponseAsync(keyPhrasesOptionalParameter).map(new Func1<ServiceResponse<KeyPhraseBatchResult>, KeyPhraseBatchResult>() {
+    public Observable<EntitiesBatchResult> entitiesAsync(EntitiesOptionalParameter entitiesOptionalParameter) {
+        return entitiesWithServiceResponseAsync(entitiesOptionalParameter).map(new Func1<ServiceResponse<EntitiesBatchResult>, EntitiesBatchResult>() {
             @Override
-            public KeyPhraseBatchResult call(ServiceResponse<KeyPhraseBatchResult> response) {
+            public EntitiesBatchResult call(ServiceResponse<EntitiesBatchResult> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * The API returns a list of strings denoting the key talking points in the input text.
-     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     * The API returns a list of recognized entities in a given document.
+     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
-     * @param keyPhrasesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param entitiesOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the KeyPhraseBatchResult object
+     * @return the observable to the EntitiesBatchResult object
      */
-    public Observable<ServiceResponse<KeyPhraseBatchResult>> keyPhrasesWithServiceResponseAsync(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter) {
+    public Observable<ServiceResponse<EntitiesBatchResult>> entitiesWithServiceResponseAsync(EntitiesOptionalParameter entitiesOptionalParameter) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
-        final List<MultiLanguageInput> documents = keyPhrasesOptionalParameter != null ? keyPhrasesOptionalParameter.documents() : null;
-        MultiLanguageBatchInput input = new MultiLanguageBatchInput();
-        input.withDocuments(null);
+        final List<MultiLanguageInput> documents = entitiesOptionalParameter != null ? entitiesOptionalParameter.documents() : null;
+    MultiLanguageBatchInput input = new MultiLanguageBatchInput();
+    input.withDocuments(null);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
-        return keyPhrasesWithServiceResponseAsync(documents);
+        return entitiesWithServiceResponseAsync(documents);
     }
 
     /**
-     * The API returns a list of strings denoting the key talking points in the input text.
-     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     * The API returns a list of recognized entities in a given document.
+     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
      *
      * @param documents the List&lt;MultiLanguageInput&gt; value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the KeyPhraseBatchResult object
+     * @return the observable to the EntitiesBatchResult object
      */
-    public Observable<ServiceResponse<KeyPhraseBatchResult>> keyPhrasesWithServiceResponseAsync(List<MultiLanguageInput> documents) {
+    public Observable<ServiceResponse<EntitiesBatchResult>> entitiesWithServiceResponseAsync(List<MultiLanguageInput> documents) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
@@ -165,12 +165,12 @@ public class TextAnalyticsImpl implements TextAnalytics {
         MultiLanguageBatchInput input = new MultiLanguageBatchInput();
         input.withDocuments(documents);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.keyPhrases(this.client.acceptLanguage(), input, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyPhraseBatchResult>>>() {
+        return service.entities(this.client.acceptLanguage(), input, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntitiesBatchResult>>>() {
                 @Override
-                public Observable<ServiceResponse<KeyPhraseBatchResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<EntitiesBatchResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<KeyPhraseBatchResult> clientResponse = keyPhrasesDelegate(response);
+                        ServiceResponse<EntitiesBatchResult> clientResponse = entitiesDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -179,111 +179,9 @@ public class TextAnalyticsImpl implements TextAnalytics {
             });
     }
 
-    private ServiceResponse<KeyPhraseBatchResult> keyPhrasesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<KeyPhraseBatchResult, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<KeyPhraseBatchResult>() { }.getType())
-                .registerError(ErrorResponseException.class)
-                .build(response);
-    }
-
-
-    /**
-     * The API returns the detected language and a numeric score between 0 and 1.
-     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
-     *
-     * @param detectLanguageOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @throws ErrorResponseException thrown if the request is rejected by server
-     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the LanguageBatchResult object if successful.
-     */
-    public LanguageBatchResult detectLanguage(DetectLanguageOptionalParameter detectLanguageOptionalParameter) {
-        return detectLanguageWithServiceResponseAsync(detectLanguageOptionalParameter).toBlocking().single().body();
-    }
-
-    /**
-     * The API returns the detected language and a numeric score between 0 and 1.
-     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
-     *
-     * @param detectLanguageOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the {@link ServiceFuture} object
-     */
-    public ServiceFuture<LanguageBatchResult> detectLanguageAsync(DetectLanguageOptionalParameter detectLanguageOptionalParameter, final ServiceCallback<LanguageBatchResult> serviceCallback) {
-        return ServiceFuture.fromResponse(detectLanguageWithServiceResponseAsync(detectLanguageOptionalParameter), serviceCallback);
-    }
-
-    /**
-     * The API returns the detected language and a numeric score between 0 and 1.
-     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
-     *
-     * @param detectLanguageOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LanguageBatchResult object
-     */
-    public Observable<LanguageBatchResult> detectLanguageAsync(DetectLanguageOptionalParameter detectLanguageOptionalParameter) {
-        return detectLanguageWithServiceResponseAsync(detectLanguageOptionalParameter).map(new Func1<ServiceResponse<LanguageBatchResult>, LanguageBatchResult>() {
-            @Override
-            public LanguageBatchResult call(ServiceResponse<LanguageBatchResult> response) {
-                return response.body();
-            }
-        });
-    }
-
-    /**
-     * The API returns the detected language and a numeric score between 0 and 1.
-     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
-     *
-     * @param detectLanguageOptionalParameter the object representing the optional parameters to be set before calling this API
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LanguageBatchResult object
-     */
-    public Observable<ServiceResponse<LanguageBatchResult>> detectLanguageWithServiceResponseAsync(DetectLanguageOptionalParameter detectLanguageOptionalParameter) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
-        final List<Input> documents = detectLanguageOptionalParameter != null ? detectLanguageOptionalParameter.documents() : null;
-        BatchInput input = new BatchInput();
-        input.withDocuments(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-
-        return detectLanguageWithServiceResponseAsync(documents);
-    }
-
-    /**
-     * The API returns the detected language and a numeric score between 0 and 1.
-     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
-     *
-     * @param documents the List&lt;Input&gt; value
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the LanguageBatchResult object
-     */
-    public Observable<ServiceResponse<LanguageBatchResult>> detectLanguageWithServiceResponseAsync(List<Input> documents) {
-        if (this.client.azureRegion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
-        }
-        Validator.validate(documents);
-        BatchInput input = new BatchInput();
-        input.withDocuments(documents);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.detectLanguage(this.client.acceptLanguage(), input, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LanguageBatchResult>>>() {
-                @Override
-                public Observable<ServiceResponse<LanguageBatchResult>> call(Response<ResponseBody> response) {
-                    try {
-                        ServiceResponse<LanguageBatchResult> clientResponse = detectLanguageDelegate(response);
-                        return Observable.just(clientResponse);
-                    } catch (Throwable t) {
-                        return Observable.error(t);
-                    }
-                }
-            });
-    }
-
-    private ServiceResponse<LanguageBatchResult> detectLanguageDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<LanguageBatchResult, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<LanguageBatchResult>() { }.getType())
+    private ServiceResponse<EntitiesBatchResult> entitiesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<EntitiesBatchResult, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<EntitiesBatchResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }
@@ -346,8 +244,8 @@ public class TextAnalyticsImpl implements TextAnalytics {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         final List<MultiLanguageInput> documents = sentimentOptionalParameter != null ? sentimentOptionalParameter.documents() : null;
-        MultiLanguageBatchInput input = new MultiLanguageBatchInput();
-        input.withDocuments(null);
+    MultiLanguageBatchInput input = new MultiLanguageBatchInput();
+    input.withDocuments(null);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return sentimentWithServiceResponseAsync(documents);
@@ -392,91 +290,91 @@ public class TextAnalyticsImpl implements TextAnalytics {
 
 
     /**
-     * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns the detected language and a numeric score between 0 and 1.
+     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
      *
-     * @param entitiesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param detectLanguageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws ErrorResponseException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
-     * @return the EntitiesBatchResult object if successful.
+     * @return the LanguageBatchResult object if successful.
      */
-    public EntitiesBatchResult entities(EntitiesOptionalParameter entitiesOptionalParameter) {
-        return entitiesWithServiceResponseAsync(entitiesOptionalParameter).toBlocking().single().body();
+    public LanguageBatchResult detectLanguage(DetectLanguageOptionalParameter detectLanguageOptionalParameter) {
+        return detectLanguageWithServiceResponseAsync(detectLanguageOptionalParameter).toBlocking().single().body();
     }
 
     /**
-     * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns the detected language and a numeric score between 0 and 1.
+     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
      *
-     * @param entitiesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param detectLanguageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<EntitiesBatchResult> entitiesAsync(EntitiesOptionalParameter entitiesOptionalParameter, final ServiceCallback<EntitiesBatchResult> serviceCallback) {
-        return ServiceFuture.fromResponse(entitiesWithServiceResponseAsync(entitiesOptionalParameter), serviceCallback);
+    public ServiceFuture<LanguageBatchResult> detectLanguageAsync(DetectLanguageOptionalParameter detectLanguageOptionalParameter, final ServiceCallback<LanguageBatchResult> serviceCallback) {
+        return ServiceFuture.fromResponse(detectLanguageWithServiceResponseAsync(detectLanguageOptionalParameter), serviceCallback);
     }
 
     /**
-     * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns the detected language and a numeric score between 0 and 1.
+     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
      *
-     * @param entitiesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param detectLanguageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntitiesBatchResult object
+     * @return the observable to the LanguageBatchResult object
      */
-    public Observable<EntitiesBatchResult> entitiesAsync(EntitiesOptionalParameter entitiesOptionalParameter) {
-        return entitiesWithServiceResponseAsync(entitiesOptionalParameter).map(new Func1<ServiceResponse<EntitiesBatchResult>, EntitiesBatchResult>() {
+    public Observable<LanguageBatchResult> detectLanguageAsync(DetectLanguageOptionalParameter detectLanguageOptionalParameter) {
+        return detectLanguageWithServiceResponseAsync(detectLanguageOptionalParameter).map(new Func1<ServiceResponse<LanguageBatchResult>, LanguageBatchResult>() {
             @Override
-            public EntitiesBatchResult call(ServiceResponse<EntitiesBatchResult> response) {
+            public LanguageBatchResult call(ServiceResponse<LanguageBatchResult> response) {
                 return response.body();
             }
         });
     }
 
     /**
-     * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns the detected language and a numeric score between 0 and 1.
+     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
      *
-     * @param entitiesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param detectLanguageOptionalParameter the object representing the optional parameters to be set before calling this API
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntitiesBatchResult object
+     * @return the observable to the LanguageBatchResult object
      */
-    public Observable<ServiceResponse<EntitiesBatchResult>> entitiesWithServiceResponseAsync(EntitiesOptionalParameter entitiesOptionalParameter) {
+    public Observable<ServiceResponse<LanguageBatchResult>> detectLanguageWithServiceResponseAsync(DetectLanguageOptionalParameter detectLanguageOptionalParameter) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
-        final List<MultiLanguageInput> documents = entitiesOptionalParameter != null ? entitiesOptionalParameter.documents() : null;
-        MultiLanguageBatchInput input = new MultiLanguageBatchInput();
-        input.withDocuments(null);
+        final List<Input> documents = detectLanguageOptionalParameter != null ? detectLanguageOptionalParameter.documents() : null;
+    BatchInput input = new BatchInput();
+    input.withDocuments(null);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
-        return entitiesWithServiceResponseAsync(documents);
+        return detectLanguageWithServiceResponseAsync(documents);
     }
 
     /**
-     * The API returns a list of recognized entities in a given document.
-     * To get even more information on each recognized entity we recommend using the Bing Entity Search API by querying for the recognized entities names. See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/text-analytics-supported-languages"&gt;Supported languages in Text Analytics API&lt;/a&gt; for the list of enabled languages.
+     * The API returns the detected language and a numeric score between 0 and 1.
+     * Scores close to 1 indicate 100% certainty that the identified language is true. A total of 120 languages are supported.
      *
-     * @param documents the List&lt;MultiLanguageInput&gt; value
+     * @param documents the List&lt;Input&gt; value
      * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable to the EntitiesBatchResult object
+     * @return the observable to the LanguageBatchResult object
      */
-    public Observable<ServiceResponse<EntitiesBatchResult>> entitiesWithServiceResponseAsync(List<MultiLanguageInput> documents) {
+    public Observable<ServiceResponse<LanguageBatchResult>> detectLanguageWithServiceResponseAsync(List<Input> documents) {
         if (this.client.azureRegion() == null) {
             throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
         }
         Validator.validate(documents);
-        MultiLanguageBatchInput input = new MultiLanguageBatchInput();
+        BatchInput input = new BatchInput();
         input.withDocuments(documents);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.entities(this.client.acceptLanguage(), input, parameterizedHost, this.client.userAgent())
-            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<EntitiesBatchResult>>>() {
+        return service.detectLanguage(this.client.acceptLanguage(), input, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<LanguageBatchResult>>>() {
                 @Override
-                public Observable<ServiceResponse<EntitiesBatchResult>> call(Response<ResponseBody> response) {
+                public Observable<ServiceResponse<LanguageBatchResult>> call(Response<ResponseBody> response) {
                     try {
-                        ServiceResponse<EntitiesBatchResult> clientResponse = entitiesDelegate(response);
+                        ServiceResponse<LanguageBatchResult> clientResponse = detectLanguageDelegate(response);
                         return Observable.just(clientResponse);
                     } catch (Throwable t) {
                         return Observable.error(t);
@@ -485,9 +383,111 @@ public class TextAnalyticsImpl implements TextAnalytics {
             });
     }
 
-    private ServiceResponse<EntitiesBatchResult> entitiesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
-        return this.client.restClient().responseBuilderFactory().<EntitiesBatchResult, ErrorResponseException>newInstance(this.client.serializerAdapter())
-                .register(200, new TypeToken<EntitiesBatchResult>() { }.getType())
+    private ServiceResponse<LanguageBatchResult> detectLanguageDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<LanguageBatchResult, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<LanguageBatchResult>() { }.getType())
+                .registerError(ErrorResponseException.class)
+                .build(response);
+    }
+
+
+    /**
+     * The API returns a list of strings denoting the key talking points in the input text.
+     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     *
+     * @param keyPhrasesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws ErrorResponseException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the KeyPhraseBatchResult object if successful.
+     */
+    public KeyPhraseBatchResult keyPhrases(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter) {
+        return keyPhrasesWithServiceResponseAsync(keyPhrasesOptionalParameter).toBlocking().single().body();
+    }
+
+    /**
+     * The API returns a list of strings denoting the key talking points in the input text.
+     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     *
+     * @param keyPhrasesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<KeyPhraseBatchResult> keyPhrasesAsync(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter, final ServiceCallback<KeyPhraseBatchResult> serviceCallback) {
+        return ServiceFuture.fromResponse(keyPhrasesWithServiceResponseAsync(keyPhrasesOptionalParameter), serviceCallback);
+    }
+
+    /**
+     * The API returns a list of strings denoting the key talking points in the input text.
+     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     *
+     * @param keyPhrasesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyPhraseBatchResult object
+     */
+    public Observable<KeyPhraseBatchResult> keyPhrasesAsync(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter) {
+        return keyPhrasesWithServiceResponseAsync(keyPhrasesOptionalParameter).map(new Func1<ServiceResponse<KeyPhraseBatchResult>, KeyPhraseBatchResult>() {
+            @Override
+            public KeyPhraseBatchResult call(ServiceResponse<KeyPhraseBatchResult> response) {
+                return response.body();
+            }
+        });
+    }
+
+    /**
+     * The API returns a list of strings denoting the key talking points in the input text.
+     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     *
+     * @param keyPhrasesOptionalParameter the object representing the optional parameters to be set before calling this API
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyPhraseBatchResult object
+     */
+    public Observable<ServiceResponse<KeyPhraseBatchResult>> keyPhrasesWithServiceResponseAsync(KeyPhrasesOptionalParameter keyPhrasesOptionalParameter) {
+        if (this.client.azureRegion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        }
+        final List<MultiLanguageInput> documents = keyPhrasesOptionalParameter != null ? keyPhrasesOptionalParameter.documents() : null;
+    MultiLanguageBatchInput input = new MultiLanguageBatchInput();
+    input.withDocuments(null);
+        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+
+        return keyPhrasesWithServiceResponseAsync(documents);
+    }
+
+    /**
+     * The API returns a list of strings denoting the key talking points in the input text.
+     * See the &lt;a href="https://docs.microsoft.com/en-us/azure/cognitive-services/text-analytics/overview#supported-languages"&gt;Text Analytics Documentation&lt;/a&gt; for details about the languages that are supported by key phrase extraction.
+     *
+     * @param documents the List&lt;MultiLanguageInput&gt; value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the KeyPhraseBatchResult object
+     */
+    public Observable<ServiceResponse<KeyPhraseBatchResult>> keyPhrasesWithServiceResponseAsync(List<MultiLanguageInput> documents) {
+        if (this.client.azureRegion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.azureRegion() is required and cannot be null.");
+        }
+        Validator.validate(documents);
+        MultiLanguageBatchInput input = new MultiLanguageBatchInput();
+        input.withDocuments(documents);
+        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
+        return service.keyPhrases(this.client.acceptLanguage(), input, parameterizedHost, this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<KeyPhraseBatchResult>>>() {
+                @Override
+                public Observable<ServiceResponse<KeyPhraseBatchResult>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<KeyPhraseBatchResult> clientResponse = keyPhrasesDelegate(response);
+                        return Observable.just(clientResponse);
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<KeyPhraseBatchResult> keyPhrasesDelegate(Response<ResponseBody> response) throws ErrorResponseException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<KeyPhraseBatchResult, ErrorResponseException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<KeyPhraseBatchResult>() { }.getType())
                 .registerError(ErrorResponseException.class)
                 .build(response);
     }

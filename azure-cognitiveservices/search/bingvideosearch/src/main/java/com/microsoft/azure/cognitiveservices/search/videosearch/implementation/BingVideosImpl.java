@@ -284,7 +284,7 @@ public class BingVideosImpl implements BingVideos {
         final String setLang = detailsOptionalParameter != null ? detailsOptionalParameter.setLang() : null;
         final Boolean textDecorations = detailsOptionalParameter != null ? detailsOptionalParameter.textDecorations() : null;
         final TextFormat textFormat = detailsOptionalParameter != null ? detailsOptionalParameter.textFormat() : null;
-        String modulesConverted = this.client.serializerAdapter().serializeList(modules, CollectionFormat.CSV);
+    String modulesConverted = this.client.serializerAdapter().serializeList(modules, CollectionFormat.CSV);
 
         return detailsWithServiceResponseAsync(query, acceptLanguage, userAgent, clientId, clientIp, location, countryCode, id, modules, market, resolution, safeSearch, setLang, textDecorations, textFormat);
     }

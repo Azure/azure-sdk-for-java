@@ -142,7 +142,7 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient implements TextAnal
      * @param credentials the management credentials for Azure
      */
     public TextAnalyticsAPIImpl(ServiceClientCredentials credentials) {
-        this("https://{AzureRegion}.api.cognitive.microsoft.com/text/analytics", credentials);
+        this("https://{AzureRegion}.api.cognitive.microsoft.com/text/analytics/", credentials);
     }
 
     /**
@@ -151,7 +151,7 @@ public class TextAnalyticsAPIImpl extends AzureServiceClient implements TextAnal
      * @param baseUrl the base URL of the host
      * @param credentials the management credentials for Azure
      */
-    private TextAnalyticsAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
+    public TextAnalyticsAPIImpl(String baseUrl, ServiceClientCredentials credentials) {
         super(baseUrl, credentials);
         initialize();
     }

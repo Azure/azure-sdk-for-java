@@ -12,7 +12,7 @@ import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddI
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageUrlInputOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.AddImageFileInputOptionalParameter;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.APIErrorException;
-import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModel;
+import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.BodyModelModel;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.Image;
 import com.microsoft.azure.cognitiveservices.vision.contentmoderator.models.ImageIds;
 import rx.Observable;
@@ -44,6 +44,7 @@ public interface ListManagementImages {
      */
     Observable<Image> addImageAsync(String listId, AddImageOptionalParameter addImageOptionalParameter);
 
+
     /**
      * Deletes all images from the list with list Id equal to list Id passed.
      *
@@ -64,6 +65,8 @@ public interface ListManagementImages {
      */
     Observable<String> deleteAllImagesAsync(String listId);
 
+
+
     /**
      * Gets all image Ids from the list with list Id equal to list Id passed.
      *
@@ -83,6 +86,8 @@ public interface ListManagementImages {
      * @return the observable to the ImageIds object
      */
     Observable<ImageIds> getAllImageIdsAsync(String listId);
+
+
 
     /**
      * Deletes an image from the list with list Id and image Id passed.
@@ -106,6 +111,7 @@ public interface ListManagementImages {
      */
     Observable<String> deleteImageAsync(String listId, String imageId);
 
+
     /**
      * Add an image to the list with list Id equal to list Id passed.
      *
@@ -118,7 +124,7 @@ public interface ListManagementImages {
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the Image object if successful.
      */
-    Image addImageUrlInput(String listId, String contentType, BodyModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
+    Image addImageUrlInput(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.
@@ -130,7 +136,7 @@ public interface ListManagementImages {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the Image object
      */
-    Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
+    Observable<Image> addImageUrlInputAsync(String listId, String contentType, BodyModelModel imageUrl, AddImageUrlInputOptionalParameter addImageUrlInputOptionalParameter);
 
     /**
      * Add an image to the list with list Id equal to list Id passed.

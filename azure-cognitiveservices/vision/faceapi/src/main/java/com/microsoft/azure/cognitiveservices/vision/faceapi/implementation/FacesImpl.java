@@ -78,19 +78,19 @@ public class FacesImpl implements Faces {
     interface FacesService {
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces findSimilar" })
         @POST("findsimilars")
-        Observable<Response<ResponseBody>> findSimilar(@Header("accept-language") String acceptLanguage, @Body FindSimilarRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> findSimilar(@Header("accept-language") String acceptLanguage, @Body FindSimilarRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces group" })
         @POST("group")
-        Observable<Response<ResponseBody>> group(@Header("accept-language") String acceptLanguage, @Body GroupRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> group(@Header("accept-language") String acceptLanguage, @Body GroupRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces identify" })
         @POST("identify")
-        Observable<Response<ResponseBody>> identify(@Header("accept-language") String acceptLanguage, @Body IdentifyRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> identify(@Header("accept-language") String acceptLanguage, @Body IdentifyRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces verifyFaceToFace" })
         @POST("verify")
-        Observable<Response<ResponseBody>> verifyFaceToFace(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToFaceRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> verifyFaceToFace(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToFaceRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces detectWithUrl" })
         @POST("detect")
@@ -98,7 +98,7 @@ public class FacesImpl implements Faces {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces verifyFaceToPerson" })
         @POST("verify")
-        Observable<Response<ResponseBody>> verifyFaceToPerson(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToPersonRequest body, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> verifyFaceToPerson(@Header("accept-language") String acceptLanguage, @Body VerifyFaceToPersonRequest bodyParameter, @Header("x-ms-parameterized-host") String parameterizedHost, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/octet-stream", "x-ms-logging-context: com.microsoft.azure.cognitiveservices.vision.faceapi.Faces detectWithStream" })
         @POST("detect")
@@ -170,13 +170,6 @@ public class FacesImpl implements Faces {
         final List<UUID> faceIds = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.faceIds() : null;
         final Integer maxNumOfCandidatesReturned = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.maxNumOfCandidatesReturned() : null;
         final FindSimilarMatchMode mode = findSimilarOptionalParameter != null ? findSimilarOptionalParameter.mode() : null;
-        FindSimilarRequest body = new FindSimilarRequest();
-        body.withFaceId(faceId);
-        body.withFaceListId(null);
-        body.withFaceIds(null);
-        body.withMaxNumOfCandidatesReturned(null);
-        body.withMode(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return findSimilarWithServiceResponseAsync(faceId, faceListId, faceIds, maxNumOfCandidatesReturned, mode);
     }
@@ -200,14 +193,14 @@ public class FacesImpl implements Faces {
             throw new IllegalArgumentException("Parameter faceId is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        FindSimilarRequest body = new FindSimilarRequest();
-        body.withFaceId(faceId);
-        body.withFaceListId(faceListId);
-        body.withFaceIds(faceIds);
-        body.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
-        body.withMode(mode);
+        FindSimilarRequest bodyParameter = new FindSimilarRequest();
+        bodyParameter.withFaceId(faceId);
+        bodyParameter.withFaceListId(faceListId);
+        bodyParameter.withFaceIds(faceIds);
+        bodyParameter.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
+        bodyParameter.withMode(mode);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.findSimilar(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.findSimilar(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<SimilarFace>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<SimilarFace>>> call(Response<ResponseBody> response) {
@@ -284,10 +277,10 @@ public class FacesImpl implements Faces {
             throw new IllegalArgumentException("Parameter faceIds is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        GroupRequest body = new GroupRequest();
-        body.withFaceIds(faceIds);
+        GroupRequest bodyParameter = new GroupRequest();
+        bodyParameter.withFaceIds(faceIds);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.group(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.group(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<GroupResult>>>() {
                 @Override
                 public Observable<ServiceResponse<GroupResult>> call(Response<ResponseBody> response) {
@@ -378,12 +371,6 @@ public class FacesImpl implements Faces {
         Validator.validate(faceIds);
         final Integer maxNumOfCandidatesReturned = identifyOptionalParameter != null ? identifyOptionalParameter.maxNumOfCandidatesReturned() : null;
         final Double confidenceThreshold = identifyOptionalParameter != null ? identifyOptionalParameter.confidenceThreshold() : null;
-        IdentifyRequest body = new IdentifyRequest();
-        body.withPersonGroupId(personGroupId);
-        body.withFaceIds(faceIds);
-        body.withMaxNumOfCandidatesReturned(null);
-        body.withConfidenceThreshold(null);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
 
         return identifyWithServiceResponseAsync(personGroupId, faceIds, maxNumOfCandidatesReturned, confidenceThreshold);
     }
@@ -409,13 +396,13 @@ public class FacesImpl implements Faces {
             throw new IllegalArgumentException("Parameter faceIds is required and cannot be null.");
         }
         Validator.validate(faceIds);
-        IdentifyRequest body = new IdentifyRequest();
-        body.withPersonGroupId(personGroupId);
-        body.withFaceIds(faceIds);
-        body.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
-        body.withConfidenceThreshold(confidenceThreshold);
+        IdentifyRequest bodyParameter = new IdentifyRequest();
+        bodyParameter.withPersonGroupId(personGroupId);
+        bodyParameter.withFaceIds(faceIds);
+        bodyParameter.withMaxNumOfCandidatesReturned(maxNumOfCandidatesReturned);
+        bodyParameter.withConfidenceThreshold(confidenceThreshold);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.identify(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.identify(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<List<IdentifyResult>>>>() {
                 @Override
                 public Observable<ServiceResponse<List<IdentifyResult>>> call(Response<ResponseBody> response) {
@@ -498,11 +485,11 @@ public class FacesImpl implements Faces {
         if (faceId2 == null) {
             throw new IllegalArgumentException("Parameter faceId2 is required and cannot be null.");
         }
-        VerifyFaceToFaceRequest body = new VerifyFaceToFaceRequest();
-        body.withFaceId1(faceId1);
-        body.withFaceId2(faceId2);
+        VerifyFaceToFaceRequest bodyParameter = new VerifyFaceToFaceRequest();
+        bodyParameter.withFaceId1(faceId1);
+        bodyParameter.withFaceId2(faceId2);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.verifyFaceToFace(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.verifyFaceToFace(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VerifyResult>>>() {
                 @Override
                 public Observable<ServiceResponse<VerifyResult>> call(Response<ResponseBody> response) {
@@ -586,10 +573,6 @@ public class FacesImpl implements Faces {
         final Boolean returnFaceId = detectWithUrlOptionalParameter != null ? detectWithUrlOptionalParameter.returnFaceId() : null;
         final Boolean returnFaceLandmarks = detectWithUrlOptionalParameter != null ? detectWithUrlOptionalParameter.returnFaceLandmarks() : null;
         final List<FaceAttributeType> returnFaceAttributes = detectWithUrlOptionalParameter != null ? detectWithUrlOptionalParameter.returnFaceAttributes() : null;
-        ImageUrl imageUrl = new ImageUrl();
-        imageUrl.withUrl(url);
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
 
         return detectWithUrlWithServiceResponseAsync(url, returnFaceId, returnFaceLandmarks, returnFaceAttributes);
     }
@@ -706,12 +689,12 @@ public class FacesImpl implements Faces {
         if (personId == null) {
             throw new IllegalArgumentException("Parameter personId is required and cannot be null.");
         }
-        VerifyFaceToPersonRequest body = new VerifyFaceToPersonRequest();
-        body.withFaceId(faceId);
-        body.withPersonGroupId(personGroupId);
-        body.withPersonId(personId);
+        VerifyFaceToPersonRequest bodyParameter = new VerifyFaceToPersonRequest();
+        bodyParameter.withFaceId(faceId);
+        bodyParameter.withPersonGroupId(personGroupId);
+        bodyParameter.withPersonId(personId);
         String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        return service.verifyFaceToPerson(this.client.acceptLanguage(), body, parameterizedHost, this.client.userAgent())
+        return service.verifyFaceToPerson(this.client.acceptLanguage(), bodyParameter, parameterizedHost, this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<VerifyResult>>>() {
                 @Override
                 public Observable<ServiceResponse<VerifyResult>> call(Response<ResponseBody> response) {
@@ -795,9 +778,6 @@ public class FacesImpl implements Faces {
         final Boolean returnFaceId = detectWithStreamOptionalParameter != null ? detectWithStreamOptionalParameter.returnFaceId() : null;
         final Boolean returnFaceLandmarks = detectWithStreamOptionalParameter != null ? detectWithStreamOptionalParameter.returnFaceLandmarks() : null;
         final List<FaceAttributeType> returnFaceAttributes = detectWithStreamOptionalParameter != null ? detectWithStreamOptionalParameter.returnFaceAttributes() : null;
-        String parameterizedHost = Joiner.on(", ").join("{AzureRegion}", this.client.azureRegion());
-        String returnFaceAttributesConverted = this.client.serializerAdapter().serializeList(returnFaceAttributes, CollectionFormat.CSV);
-        RequestBody imageConverted = RequestBody.create(MediaType.parse("application/octet-stream"), image);
 
         return detectWithStreamWithServiceResponseAsync(image, returnFaceId, returnFaceLandmarks, returnFaceAttributes);
     }

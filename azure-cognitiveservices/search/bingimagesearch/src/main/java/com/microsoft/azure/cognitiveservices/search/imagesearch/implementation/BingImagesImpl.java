@@ -310,7 +310,7 @@ public class BingImagesImpl implements BingImages {
         final String market = detailsOptionalParameter != null ? detailsOptionalParameter.market() : null;
         final SafeSearch safeSearch = detailsOptionalParameter != null ? detailsOptionalParameter.safeSearch() : null;
         final String setLang = detailsOptionalParameter != null ? detailsOptionalParameter.setLang() : null;
-        String modulesConverted = this.client.serializerAdapter().serializeList(modules, CollectionFormat.CSV);
+    String modulesConverted = this.client.serializerAdapter().serializeList(modules, CollectionFormat.CSV);
 
         return detailsWithServiceResponseAsync(query, acceptLanguage, contentType, userAgent, clientId, clientIp, location, cropBottom, cropLeft, cropRight, cropTop, cropType, countryCode, id, imageUrl, insightsToken, modules, market, safeSearch, setLang);
     }

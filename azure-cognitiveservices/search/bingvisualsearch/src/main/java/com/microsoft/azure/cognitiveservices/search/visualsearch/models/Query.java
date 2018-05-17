@@ -22,17 +22,14 @@ public class Query {
     private String text;
 
     /**
-     * The display version of the query term. This version of the query term
-     * may contain special characters that highlight the search term found in
-     * the query string. The string contains the highlighting characters only
-     * if the query enabled hit highlighting.
+     * The display version of the query term.
      */
     @JsonProperty(value = "displayText", access = JsonProperty.Access.WRITE_ONLY)
     private String displayText;
 
     /**
      * The URL that takes the user to the Bing search results page for the
-     * query.Only related search results include this field.
+     * query.
      */
     @JsonProperty(value = "webSearchUrl", access = JsonProperty.Access.WRITE_ONLY)
     private String webSearchUrl;
