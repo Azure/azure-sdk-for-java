@@ -25,9 +25,9 @@ package com.microsoft.azure.cosmosdb;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.List;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.text.WordUtils;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 
@@ -107,7 +107,7 @@ public class IncludedPath extends JsonSerializable {
 
     private Collection<Index> getIndexCollection() {
         if (this.propertyBag != null && this.propertyBag.has(Constants.Properties.INDEXES)) {
-            List<JsonNode> jsonArray = this.propertyBag.findValues(Constants.Properties.INDEXES);
+            ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(Constants.Properties.INDEXES);
             Collection<Index> result = new ArrayList<Index>();
 
             for (int i = 0; i < jsonArray.size(); i++) {
