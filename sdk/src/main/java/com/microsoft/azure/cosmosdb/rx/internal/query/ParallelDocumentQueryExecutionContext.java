@@ -39,10 +39,16 @@ import com.microsoft.azure.cosmosdb.internal.RequestChargeTracker;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.query.PartitionedQueryExecutionInfo;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
+import com.microsoft.azure.cosmosdb.rx.internal.IDocumentClientRetryPolicy;
+import com.microsoft.azure.cosmosdb.rx.internal.IRetryPolicyFactory;
+import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Utils;
 
 import rx.Observable;
 import rx.Observable.Transformer;
+import rx.functions.Func0;
+import rx.functions.Func1;
+import rx.functions.Func3;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -100,7 +106,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource> extends P
                 this.querySpec);
     }
 
-    static class EmptyPagesFilterTransformer<T extends Resource> implements Transformer<FeedResponse<T>, FeedResponse<T>> {
+    private static class EmptyPagesFilterTransformer<T extends Resource> implements Transformer<FeedResponse<T>, FeedResponse<T>> {
         private final RequestChargeTracker tracker;
 
         public EmptyPagesFilterTransformer(RequestChargeTracker tracker, int maxPageSize) {
@@ -122,7 +128,7 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource> extends P
         @Override
         public Observable<FeedResponse<T>> call(Observable<FeedResponse<T>> source) {
             return source.filter(p -> { 
-                if (p.getResults().size() <= 0) {
+                if (p.getResults().isEmpty()) {
                     // filter empty pages and accumulate charge
                     tracker.addCharge(p.getRequestCharge());
                     return false;
@@ -147,13 +153,37 @@ public class ParallelDocumentQueryExecutionContext<T extends Resource> extends P
 
     @Override
     public Observable<FeedResponse<T>> drainAsync(int maxPageSize) {
-        // TODO: respect the requested page size in constructing the pages
-        List<Observable<FeedResponse<T>>> obs = this.documentProducers.stream().map(dp -> dp.produceAsync()).collect(Collectors.toList());
+        List<Observable<FeedResponse<T>>> obs = this.documentProducers.stream()
+                .map(dp -> dp.produceAsync().map(dpp -> dpp.pageResult)).collect(Collectors.toList());
         return Observable.concat(obs).compose(new EmptyPagesFilterTransformer<>(new RequestChargeTracker(), maxPageSize));
     }
 
     @Override
     public Observable<FeedResponse<T>> executeAsync() {
         return this.drainAsync(feedOptions.getMaxItemCount());
+    }
+    
+    protected DocumentProducer<T> createDocumentProducer(
+            String collectionRid,
+            PartitionKeyRange targetRange,
+            int initialPageSize,
+            SqlQuerySpec querySpecForInit,
+            Map<String, String> commonRequestHeaders,
+            Func3<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc,
+            Func0<IDocumentClientRetryPolicy> createRetryPolicyFunc) {
+        return new DocumentProducer<T>(
+                client,
+                collectionRid,
+                createRequestFunc,
+                executeFunc,
+                targetRange,
+                collectionRid,
+                () -> client.getRetryPolicyFactory().getRequestPolicy(),
+                resourceType, 
+                correlatedActivityId, 
+                initialPageSize,
+                null, 
+                top);
     }
 }

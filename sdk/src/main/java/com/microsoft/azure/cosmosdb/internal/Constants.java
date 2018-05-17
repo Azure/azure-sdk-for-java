@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -57,7 +57,7 @@ public final class Constants {
         public static final String MAX_STALENESS_PREFIX = "maxStalenessPrefix";
         public static final String MAX_STALENESS_INTERVAL_IN_SECONDS = "maxIntervalInSeconds";
         public static final String PARENTS = "parents";
-        
+
         public static final String DATABASES_LINK = "_dbs";
         public static final String COLLECTIONS_LINK = "_colls";
         public static final String USERS_LINK = "_users";
@@ -74,7 +74,7 @@ public final class Constants {
         public static final String PERMISSION_MODE = "permissionMode";
         public static final String RESOURCE_KEY = "key";
         public static final String TOKEN = "_token";
-        
+
         // Scripting
         public static final String BODY = "body";
         public static final String TRIGGER_TYPE = "triggerType";
@@ -92,7 +92,7 @@ public final class Constants {
         public static final String MESSAGE = "message";
         public static final String ERROR_DETAILS = "errorDetails";
         public static final String ADDITIONAL_ERROR_INFO = "additionalErrorInfo";
-        
+
         // PartitionInfo.
         public static final String RESOURCE_TYPE = "resourceType";
         public static final String SERVICE_INDEX = "serviceIndex";
@@ -103,7 +103,7 @@ public final class Constants {
         public static final String USER_CONSISTENCY_POLICY = "userConsistencyPolicy";
         public static final String SYSTEM_REPLICATION_POLICY = "systemReplicationPolicy";
         public static final String READ_POLICY = "readPolicy";
-        
+
         //ReplicationPolicy
         public static final String REPLICATION_POLICY = "replicationPolicy";
         public static final String ASYNC_REPLICATION = "asyncReplication";
@@ -111,7 +111,7 @@ public final class Constants {
         public static final String MIN_REPLICA_SET_SIZE = "minReplicaSetSize";
 
         //Indexing Policy.
-        public static final String INDEXING_POLICY = "indexingPolicy";            
+        public static final String INDEXING_POLICY = "indexingPolicy";
         public static final String AUTOMATIC = "automatic";
         public static final String STRING_PRECISION = "StringPrecision";
         public static final String NUMERIC_PRECISION = "NumericPrecision";
@@ -127,6 +127,10 @@ public final class Constants {
         public static final String INCLUDED_PATHS = "includedPaths";
         public static final String EXCLUDED_PATHS = "excludedPaths";
         public static final String INDEXES = "indexes";
+
+        // Unique index.
+        public static final String UNIQUE_KEY_POLICY = "uniqueKeyPolicy";
+        public static final String UNIQUE_KEYS = "uniqueKeys";
 
         // Conflict.
         public static final String CONFLICT = "conflict";
@@ -149,7 +153,7 @@ public final class Constants {
         public static final String PARTITION_KEY_RANGE_ID = "partitionKeyRangeId";
         public static final String MIN_INCLUSIVE_EFFECTIVE_PARTITION_KEY = "minInclusiveEffectivePartitionKey";
         public static final String MAX_EXCLUSIVE_EFFECTIVE_PARTITION_KEY = "maxExclusiveEffectivePartitionKey";
-        
+
         // AddressResource
         public static final String IS_PRIMARY = "isPrimary";
         public static final String PROTOCOL = "protocol";
@@ -159,13 +163,13 @@ public final class Constants {
         // Time-to-Live
         public static final String TTL = "ttl";
         public static final String DEFAULT_TTL = "defaultTtl";
-        
+
         // Global DB account properties
         public static final String Name = "name";
         public static final String WRITABLE_LOCATIONS = "writableLocations";
         public static final String READABLE_LOCATIONS = "readableLocations";
         public static final String DATABASE_ACCOUNT_ENDPOINT = "databaseAccountEndpoint";
-        
+
         public static final int DEFAULT_MAX_PAGE_SIZE = 100;
     }
 

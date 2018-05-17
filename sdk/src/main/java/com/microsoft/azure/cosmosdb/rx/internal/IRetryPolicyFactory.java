@@ -27,6 +27,5 @@ package com.microsoft.azure.cosmosdb.rx.internal;
  * This is meant to be internally used only by our sdk.
  */
 public interface IRetryPolicyFactory {
-
     IDocumentClientRetryPolicy getRequestPolicy();
 }

@@ -26,9 +26,7 @@ import java.util.Collection;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
-import com.github.davidmoten.rx.Transformers;
 import com.microsoft.azure.cosmosdb.BridgeInternal;
 import com.microsoft.azure.cosmosdb.FeedOptions;
 import com.microsoft.azure.cosmosdb.FeedResponse;
@@ -40,13 +38,18 @@ import com.microsoft.azure.cosmosdb.internal.RequestChargeTracker;
 import com.microsoft.azure.cosmosdb.internal.ResourceType;
 import com.microsoft.azure.cosmosdb.internal.query.PartitionedQueryExecutionInfo;
 import com.microsoft.azure.cosmosdb.internal.query.SortOrder;
-import com.microsoft.azure.cosmosdb.internal.query.orderbyquery.OrderByRowResult;
 import com.microsoft.azure.cosmosdb.internal.query.orderbyquery.OrderbyRowComparer;
 import com.microsoft.azure.cosmosdb.internal.routing.Range;
+import com.microsoft.azure.cosmosdb.rx.internal.IDocumentClientRetryPolicy;
+import com.microsoft.azure.cosmosdb.rx.internal.IRetryPolicyFactory;
+import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import com.microsoft.azure.cosmosdb.rx.internal.Utils;
 
 import rx.Observable;
 import rx.Observable.Transformer;
+import rx.functions.Func0;
+import rx.functions.Func1;
+import rx.functions.Func3;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -114,7 +117,7 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
                 partitionedQueryExecutionInfo.getQueryInfo().getOrderBy(),
                 partitionedQueryExecutionInfo.getQueryInfo().getOrderByExpressions(),
                 initialPageSize);
-
+        
         return Observable.just(context);
     }
 
@@ -134,44 +137,36 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
                         querySpec.getParameters()));
 
         tracker = new RequestChargeTracker();
-
-        orderByObservable = toOrderByQueryResultObservable(resourceType, documentProducers.get(0), tracker)
-                .compose(
-                        Transformers.orderedMergeWith(
-                                documentProducers.subList(1, documentProducers.size())
-                                .stream()
-                                .map(producer -> toOrderByQueryResultObservable(resourceType, producer, tracker))
-                                .collect(Collectors.toList()), consumeComparer, false, 1))
+        orderByObservable = OrderByUtils.orderedMerge(resourceType, consumeComparer, tracker, documentProducers)
                 .map(orderByQueryResult -> orderByQueryResult.getPayload());
     }
-
-    private static <T extends Resource> Observable<OrderByRowResult<T>> toOrderByQueryResultObservable(Class<T> klass, DocumentProducer<T> producer, RequestChargeTracker tracker) {
-        return producer.produceAsync().compose(
-                new PageToItemTransformer<T>(klass, tracker, producer));
+    
+    protected OrderByDocumentProducer<T> createDocumentProducer(
+            String collectionRid,
+            PartitionKeyRange targetRange,
+            int initialPageSize,
+            SqlQuerySpec querySpecForInit,
+            Map<String, String> commonRequestHeaders,
+            Func3<PartitionKeyRange, String, Integer, RxDocumentServiceRequest> createRequestFunc,
+            Func1<RxDocumentServiceRequest, Observable<FeedResponse<T>>> executeFunc,
+            Func0<IDocumentClientRetryPolicy> createRetryPolicyFunc) {
+        return new OrderByDocumentProducer<T>(
+                consumeComparer,
+                client,
+                collectionRid,
+                createRequestFunc,
+                executeFunc,
+                targetRange,
+                collectionRid,
+                () -> client.getRetryPolicyFactory().getRequestPolicy(),
+                resourceType, 
+                correlatedActivityId, 
+                initialPageSize,
+                null, 
+                top);
     }
-
-    static class PageToItemTransformer<T extends Resource> implements Transformer<FeedResponse<T>, OrderByRowResult<T>> {
-        private final RequestChargeTracker tracker;
-        private final DocumentProducer<T> producer;
-        private final Class<T> klass;
-
-        public PageToItemTransformer(Class<T> klass, RequestChargeTracker tracker, DocumentProducer<T> producer) {
-            this.klass = klass;
-            this.tracker = tracker;
-            this.producer = producer;
-        }
-
-        @Override
-        public Observable<OrderByRowResult<T>> call(Observable<FeedResponse<T>> source) {
-            return source
-                    .flatMap(page -> {
-                        tracker.addCharge(page.getRequestCharge());
-                        return Observable.from(page.getResults()); }, 1)
-                    .map(r -> new OrderByRowResult<T>(klass, r.toJson(), producer.getTargetPartitionKeyRange()));
-        }
-    }
-
-    static class ItemToPageTransformer<T extends Resource> implements Transformer<T, FeedResponse<T>> {
+    
+    private static class ItemToPageTransformer<T extends Resource> implements Transformer<T, FeedResponse<T>> {
         private final static int DEFAULT_PAGE_SIZE = 100;
         private final RequestChargeTracker tracker;
         private final int maxPageSize;
@@ -204,7 +199,6 @@ public class OrderByDocumentQueryExecutionContext<T extends Resource> extends Pa
                                 return Observable.just(BridgeInternal.createFeedResponse(
                                         Utils.immutableListOf(),
                                         headerResponse(tracker.getAndResetCharge())));
-
                             }));
         }
     }

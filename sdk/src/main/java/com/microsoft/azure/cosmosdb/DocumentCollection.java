@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -38,7 +38,8 @@ import com.microsoft.azure.cosmosdb.internal.Constants;
  */
 @SuppressWarnings("serial")
 public final class DocumentCollection extends Resource {
-    private IndexingPolicy indexingPolicy = null;
+    private IndexingPolicy indexingPolicy;
+    private UniqueKeyPolicy uniqueKeyPolicy;
 
     /**
      * Initialize a document collection object.
@@ -164,6 +165,33 @@ public final class DocumentCollection extends Resource {
     }
 
     /**
+     * Sets the Uni that guarantees uniqueness of documents in collection in the Azure Cosmos DB service.
+     * @return UniqueKeyPolicy
+     */
+    public UniqueKeyPolicy getUniqueKeyPolicy() {
+
+        // Thread safe lazy initialization for case when collection is cached (and is basically readonly).
+        if (this.uniqueKeyPolicy == null) {
+            this.uniqueKeyPolicy = super.getObject(Constants.Properties.UNIQUE_KEY_POLICY, UniqueKeyPolicy.class);
+
+            if (this.uniqueKeyPolicy == null) {
+                this.uniqueKeyPolicy = new UniqueKeyPolicy();
+            }
+        }
+
+        return this.uniqueKeyPolicy;
+    }
+
+    public void setUniqueKeyPolicy(UniqueKeyPolicy uniqueKeyPolicy) {
+        if (uniqueKeyPolicy == null) {
+            throw new IllegalArgumentException("uniqueKeyPolicy cannot be null.");
+        }
+
+        this.uniqueKeyPolicy = uniqueKeyPolicy;
+        super.set(Constants.Properties.UNIQUE_KEY_POLICY, uniqueKeyPolicy);
+    }
+
+    /**
      * Gets the self-link for documents in a collection.
      *
      * @return the document link.
@@ -220,8 +248,13 @@ public final class DocumentCollection extends Resource {
         if (this.indexingPolicy == null) {
             this.getIndexingPolicy();
         }
+        if (this.uniqueKeyPolicy == null) {
+            this.getUniqueKeyPolicy();
+        }
         this.indexingPolicy.populatePropertyBag();
+        this.uniqueKeyPolicy.populatePropertyBag();
         super.set(Constants.Properties.INDEXING_POLICY, this.indexingPolicy);
+        super.set(Constants.Properties.UNIQUE_KEY_POLICY, this.uniqueKeyPolicy);
     }
 
     @Override

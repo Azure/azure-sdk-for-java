@@ -1,17 +1,17 @@
 /*
  * The MIT License (MIT)
  * Copyright (c) 2018 Microsoft Corporation
- * 
+ *
  * Permission is hereby granted, free of charge, to any person obtaining a copy
  * of this software and associated documentation files (the "Software"), to deal
  * in the Software without restriction, including without limitation the rights
  * to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
  * copies of the Software, and to permit persons to whom the Software is
  * furnished to do so, subject to the following conditions:
- * 
+ *
  * The above copyright notice and this permission notice shall be included in all
  * copies or substantial portions of the Software.
- * 
+ *
  * THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
  * IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
  * FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
@@ -211,17 +211,17 @@ public class HttpConstants {
         // ChangeFeed
         public static final String A_IM = "A-IM";
     }
-    
+
     public static class A_IMHeaderValues {
         public static final String INCREMENTAL_FEED = "Incremental Feed";
     }
 
     public static class Versions {
         public static final String CURRENT_VERSION = "2017-11-15";
-        
+
         // TODO: FIXME we can use maven plugin for generating a version file
         // @see https://stackoverflow.com/questions/2469922/generate-a-version-java-file-in-maven
-        public static final String SDK_VERSION = "1.0.2-SNAPSHOT";
+        public static final String SDK_VERSION = "1.0.2";
         public static final String SDK_NAME = "cosmosdb-java-sdk";
     }
 
@@ -232,6 +232,7 @@ public class HttpConstants {
         public static final int BADREQUEST = 400;
         public static final int FORBIDDEN = 403;
         public static final int NOTFOUND = 404;
+        public static final int CONFLICT = 409;
         public static final int GONE = 410;
         public static final int TOO_MANY_REQUESTS = 429;
         public static final int RETRY_WITH = 449;

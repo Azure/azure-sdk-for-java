@@ -108,35 +108,35 @@ class RxGatewayStoreModel implements RxStoreModel {
         this.httpClient = httpClient;
     }
 
-    public Observable<RxDocumentServiceResponse> doCreate(RxDocumentServiceRequest request) {
+    private Observable<RxDocumentServiceResponse> doCreate(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
     }
 
-    public Observable<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request) {
+    private Observable<RxDocumentServiceResponse> upsert(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
     }
 
-    public Observable<RxDocumentServiceResponse> read(RxDocumentServiceRequest request) {
+    private Observable<RxDocumentServiceResponse> read(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.GET);
     }
 
-    public Observable<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request) {
+    private Observable<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.PUT);
     }
 
-    public Observable<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request) {
+    private Observable<RxDocumentServiceResponse> delete(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.DELETE);
     }
 
-    public Observable<RxDocumentServiceResponse> execute(RxDocumentServiceRequest request) {
+    private Observable<RxDocumentServiceResponse> execute(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.POST);
     }
 
-    public Observable<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
+    private Observable<RxDocumentServiceResponse> readFeed(RxDocumentServiceRequest request) {
         return this.performRequest(request, HttpMethod.GET);
     }
 
-    public Observable<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
+    private Observable<RxDocumentServiceResponse> query(RxDocumentServiceRequest request) {
         request.getHeaders().put(HttpConstants.HttpHeaders.IS_QUERY, "true");
 
         switch (this.queryCompatibilityMode) {
@@ -152,7 +152,7 @@ class RxGatewayStoreModel implements RxStoreModel {
             break;
            }
         return this.performRequest(request, HttpMethod.POST);
-}
+    }
 
     /**
      * Given the request it creates an observable which upon subscription issues HTTP call and emits one RxDocumentServiceResponse.

@@ -23,6 +23,7 @@
 package com.microsoft.azure.cosmosdb.rx.internal;
 
 import com.microsoft.azure.cosmosdb.DocumentClientException;
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
 
 /**
  * While this class is public, but it is not part of our published public APIs.
@@ -37,5 +38,10 @@ public class Exceptions {
     public static boolean isSubStatusCode(DocumentClientException e, int subStatus) {
         Integer actualSubStatusCode = e.getSubStatusCode();
         return actualSubStatusCode != null && actualSubStatusCode == subStatus;
+    }
+
+    public static boolean isPartitionSplit(DocumentClientException e) {
+        return isStatusCode(e, HttpConstants.StatusCodes.GONE)
+                && isSubStatusCode(e, HttpConstants.SubStatusCodes.PARTITION_KEY_RANGE_GONE);
     }
 }

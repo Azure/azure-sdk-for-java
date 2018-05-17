@@ -22,89 +22,53 @@
  */
 package com.microsoft.azure.cosmosdb.rx.internal;
 
-import static org.assertj.core.api.Assertions.assertThat;
-import static org.mockito.Mockito.doAnswer;
-
-import java.net.URI;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-import java.util.concurrent.TimeUnit;
-
-import org.mockito.ArgumentCaptor;
+import com.microsoft.azure.cosmosdb.Database;
+import com.microsoft.azure.cosmosdb.Document;
+import com.microsoft.azure.cosmosdb.DocumentCollection;
+import com.microsoft.azure.cosmosdb.internal.HttpConstants;
+import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
+import com.microsoft.azure.cosmosdb.rx.ClientUnderTestBuilder;
+import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
+import io.netty.buffer.ByteBuf;
+import io.netty.handler.codec.http.HttpMethod;
+import io.reactivex.netty.protocol.http.client.HttpClientRequest;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
 import org.testng.annotations.AfterClass;
-import org.testng.annotations.AfterTest;
 import org.testng.annotations.BeforeClass;
-import org.testng.annotations.BeforeTest;
+import org.testng.annotations.BeforeMethod;
+import org.testng.annotations.Factory;
 import org.testng.annotations.Test;
 
-import com.microsoft.azure.cosmosdb.ConnectionPolicy;
-import com.microsoft.azure.cosmosdb.ConsistencyLevel;
-import com.microsoft.azure.cosmosdb.Database;
-import com.microsoft.azure.cosmosdb.Document;
-import com.microsoft.azure.cosmosdb.DocumentClientException;
-import com.microsoft.azure.cosmosdb.DocumentCollection;
-import com.microsoft.azure.cosmosdb.PartitionKey;
-import com.microsoft.azure.cosmosdb.PartitionKeyDefinition;
-import com.microsoft.azure.cosmosdb.RequestOptions;
-import com.microsoft.azure.cosmosdb.Resource;
-import com.microsoft.azure.cosmosdb.internal.EndpointManager;
-import com.microsoft.azure.cosmosdb.internal.HttpConstants;
-import com.microsoft.azure.cosmosdb.internal.QueryCompatibilityMode;
-import com.microsoft.azure.cosmosdb.internal.UserAgentContainer;
-import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
-import com.microsoft.azure.cosmosdb.rx.TestConfigurations;
-import com.microsoft.azure.cosmosdb.rx.TestSuiteBase;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
+import java.util.stream.Collectors;
 
-import io.netty.buffer.ByteBuf;
-import io.reactivex.netty.protocol.http.client.CompositeHttpClient;
-import rx.Observable;
-import rx.observers.TestSubscriber;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.Mockito.doAnswer;
 
 public class SessionTest extends TestSuiteBase {
     protected static final int TIMEOUT = 20000;
 
     public final static String DATABASE_ID = getDatabaseId(SessionTest.class);
+    private final AsyncDocumentClient.Builder clientBuilder;
 
     private AsyncDocumentClient houseKeepingClient;
     private Database createdDatabase;
     private DocumentCollection createdCollection;
 
-    private RxDocumentClientImpl client1;
-    private RxDocumentClientImpl client2;
+    private RxDocumentClientUnderTest client;
 
     private String getCollectionLink() {
         return createdCollection.getSelfLink();
     }
 
-    public class DocumentClientUnderTest extends RxDocumentClientImpl {
-
-        private RxGatewayStoreModel rxGatewayStoreModelSpy;
-
-        public DocumentClientUnderTest(URI serviceEndpoint, String masterKey) {
-            super(serviceEndpoint, masterKey, new ConnectionPolicy(), ConsistencyLevel.Session, -1);
-        }
-
-        RxGatewayStoreModel createRxGatewayProxy(ConnectionPolicy connectionPolicy, ConsistencyLevel consistencyLevel,
-                QueryCompatibilityMode queryCompatibilityMode, String masterKey, Map<String, String> resourceTokens,
-                UserAgentContainer userAgentContainer, EndpointManager globalEndpointManager,
-                CompositeHttpClient<ByteBuf, ByteBuf> rxClient) {
-
-            this.rxGatewayStoreModelSpy = Mockito
-                    .spy(new RxGatewayStoreModel(connectionPolicy, consistencyLevel, queryCompatibilityMode, masterKey,
-                            resourceTokens, userAgentContainer, globalEndpointManager, rxClient));
-
-            return this.rxGatewayStoreModelSpy;
-        }
-
-        public RxGatewayStoreModel getRxGatewayStoreModelSpy() {
-            return this.rxGatewayStoreModelSpy;
-        }
+    @Factory(dataProvider = "clientBuilders")
+    public SessionTest(AsyncDocumentClient.Builder clientBuilder) {
+        this.clientBuilder = clientBuilder;
     }
 
     @BeforeClass(groups = { "internal" }, timeOut = SETUP_TIMEOUT)
@@ -117,29 +81,26 @@ public class SessionTest extends TestSuiteBase {
         DocumentCollection cl = new DocumentCollection();
         cl.setId(UUID.randomUUID().toString());
         createdCollection = createCollection(houseKeepingClient, createdDatabase.getId(), cl);
+
+        client = new ClientUnderTestBuilder(clientBuilder).build();
     }
 
     @AfterClass(groups = { "internal" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
     public void afterClass() {
         safeDeleteDatabase(houseKeepingClient, createdDatabase.getId());
         safeClose(houseKeepingClient);
+
+        client.close();
     }
 
-    @BeforeTest(groups = { "internal" }, timeOut = SETUP_TIMEOUT)
+    @BeforeMethod(groups = { "internal" }, timeOut = SETUP_TIMEOUT)
     public void beforeTest() {
-        client1 = (RxDocumentClientImpl) createGatewayRxDocumentClient().build();
-        client2 = (RxDocumentClientImpl) createGatewayRxDocumentClient().build();
-    }
-
-    @AfterTest(groups = { "internal" }, timeOut = SHUTDOWN_TIMEOUT)
-    public void afterTest() {
-        client1.close();
-        client2.close();
+        client.httpRequests.clear();
     }
 
     @Test(groups = { "internal" }, timeOut = TIMEOUT)
-    public void testSessionConsistency_ReadYourWrites() throws DocumentClientException {
-        RxDocumentClientImpl clientUnderTest = Mockito.spy(client1);
+    public void testSessionConsistency_ReadYourWrites() {
+        RxDocumentClientImpl clientUnderTest = Mockito.spy(client);
 
         List<String> capturedRequestSessionTokenList = Collections.synchronizedList(new ArrayList<String>());
         List<String> capturedResponseSessionTokenList = Collections.synchronizedList(new ArrayList<String>());
@@ -147,7 +108,7 @@ public class SessionTest extends TestSuiteBase {
         clientUnderTest.readCollection(getCollectionLink(), null).toBlocking().single();
         clientUnderTest.createDocument(getCollectionLink(), new Document(), null, false).toBlocking().single();
 
-        setupSpySession(capturedRequestSessionTokenList, capturedResponseSessionTokenList, clientUnderTest, client1);
+        setupSpySession(capturedRequestSessionTokenList, capturedResponseSessionTokenList, clientUnderTest, client);
 
         for (int i = 0; i < 10; i++) {
 
@@ -171,11 +132,11 @@ public class SessionTest extends TestSuiteBase {
 
     private void setupSpySession(final List<String> capturedRequestSessionTokenList,
             final List<String> capturedResponseSessionTokenList, RxDocumentClientImpl spyClient,
-            final RxDocumentClientImpl origClient) throws DocumentClientException {
+            final RxDocumentClientImpl origClient) {
 
         Mockito.reset(spyClient);
         doAnswer(new Answer<Void>() {
-            public Void answer(InvocationOnMock invocation) throws Throwable {
+            public Void answer(InvocationOnMock invocation) {
                 Object[] args = invocation.getArguments();
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) args[0];
                 RxDocumentServiceResponse resp = (RxDocumentServiceResponse) args[1];
@@ -193,38 +154,36 @@ public class SessionTest extends TestSuiteBase {
     }
 
     @Test(groups = { "internal" }, timeOut = TIMEOUT)
-    public void testSessionTokenInDocumentRead() throws Exception {
-        DocumentClientUnderTest client = new DocumentClientUnderTest(new URI(TestConfigurations.HOST),
-                TestConfigurations.MASTER_KEY);
-
-        ArgumentCaptor<RxDocumentServiceRequest> request = ArgumentCaptor.forClass(RxDocumentServiceRequest.class);
-
+    public void testSessionTokenInDocumentRead() {
         Document document = new Document();
         document.setId("1");
         document.set("pk", "pk");
         document = client.createDocument(getCollectionLink(), document, null, false).toBlocking().single()
                 .getResource();
 
-        client.readDocument(document.getSelfLink(), null).toBlocking().single()
+        final String documentLink = document.getSelfLink();
+        client.readDocument(documentLink, null).toBlocking().single()
                 .getResource();
 
-        Mockito.verify(client.getRxGatewayStoreModelSpy(), Mockito.times(3)).processMessage(request.capture());
-        List<RxDocumentServiceRequest> allValues = request.getAllValues();
-        assertThat(allValues.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNullOrEmpty();
-        assertThat(allValues.get(1).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNullOrEmpty();
-    }
-    
-    @Test(groups = { "internal" }, timeOut = TIMEOUT)
-    public void testSessionTokenRemovedForMasterResource() throws Exception {
-        DocumentClientUnderTest client = new DocumentClientUnderTest(new URI(TestConfigurations.HOST),
-                TestConfigurations.MASTER_KEY);
+        List<HttpClientRequest<ByteBuf>> documentReadHttpRequests = client.httpRequests.stream()
+                .filter(r -> r.getMethod() == HttpMethod.GET)
+                .filter(r -> r.getUri().contains(documentLink))
+                .collect(Collectors.toList());
 
+        assertThat(documentReadHttpRequests).hasSize(1);
+        assertThat(documentReadHttpRequests.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNotEmpty();
+    }
+
+    @Test(groups = { "internal" }, timeOut = TIMEOUT)
+    public void testSessionTokenRemovedForMasterResource() {
         client.readCollection(getCollectionLink(), null).toBlocking().single();
 
-        ArgumentCaptor<RxDocumentServiceRequest> request = ArgumentCaptor.forClass(RxDocumentServiceRequest.class);
+        List<HttpClientRequest<ByteBuf>> collectionReadHttpRequests = client.httpRequests.stream()
+                .filter(r -> r.getMethod() == HttpMethod.GET)
+                .filter(r -> r.getUri().contains(getCollectionLink()))
+                .collect(Collectors.toList());
 
-        Mockito.verify(client.getRxGatewayStoreModelSpy(), Mockito.times(1)).processMessage(request.capture());
-        List<RxDocumentServiceRequest> allValues = request.getAllValues();
-        assertThat(allValues.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
+        assertThat(collectionReadHttpRequests).hasSize(1);
+        assertThat(collectionReadHttpRequests.get(0).getHeaders().get(HttpConstants.HttpHeaders.SESSION_TOKEN)).isNull();
     }
 }

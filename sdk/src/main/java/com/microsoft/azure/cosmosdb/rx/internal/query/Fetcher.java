@@ -23,17 +23,19 @@
 
 package com.microsoft.azure.cosmosdb.rx.internal.query;
 
-import com.microsoft.azure.cosmosdb.FeedOptionsBase;
-import com.microsoft.azure.cosmosdb.FeedResponse;
-import com.microsoft.azure.cosmosdb.Resource;
-import com.microsoft.azure.cosmosdb.BridgeInternal;
-import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
 import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import com.microsoft.azure.cosmosdb.BridgeInternal;
+import com.microsoft.azure.cosmosdb.FeedOptionsBase;
+import com.microsoft.azure.cosmosdb.FeedResponse;
+import com.microsoft.azure.cosmosdb.Resource;
+import com.microsoft.azure.cosmosdb.rx.internal.RxDocumentServiceRequest;
+
+import rx.Observable;
 import rx.functions.Func1;
 import rx.functions.Func2;
-import rx.Observable;
 
 class Fetcher<T extends Resource> {
     private final static Logger logger = LoggerFactory.getLogger(Fetcher.class);

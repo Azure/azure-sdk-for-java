@@ -121,7 +121,7 @@ public class Error extends Resource {
     /**
      * Sets the partitioned query execution info.
      * 
-     * @param partitionedQueryExecutionInfo
+     * @param additionalErrorInfo
      *            the partitioned query execution info.
      */
     private void setAdditionalErrorInfo(String additionalErrorInfo) {

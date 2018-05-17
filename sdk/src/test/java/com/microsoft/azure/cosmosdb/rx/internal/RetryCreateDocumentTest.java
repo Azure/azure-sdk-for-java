@@ -33,6 +33,7 @@ import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
+import com.microsoft.azure.cosmosdb.internal.OperationType;
 import org.mockito.Mockito;
 import org.mockito.invocation.InvocationOnMock;
 import org.mockito.stubbing.Answer;
@@ -94,6 +95,10 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             @Override
             public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
+                if (req.getOperationType() != OperationType.Create) {
+                    return gateway.processMessage(req);
+                }
+
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
                     Map<String, String> header = ImmutableMap.of(
@@ -102,10 +107,10 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
                     return Observable.error(new DocumentClientException(HttpConstants.StatusCodes.BADREQUEST, new Error() , header));
                 } else {
-                    return gateway.doCreate(req);
+                    return gateway.processMessage(req);
                 }
             }
-        }).when(this.spyGateway).doCreate(anyObject());
+        }).when(this.spyGateway).processMessage(anyObject());
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()
@@ -128,6 +133,10 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             @Override
             public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
+                if (req.getOperationType() != OperationType.Create) {
+                    return gateway.processMessage(req);
+                }
+
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
                     Map<String, String> header = ImmutableMap.of(
@@ -136,10 +145,10 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
                     return Observable.error(new DocumentClientException(1, new Error() , header));
                 } else {
-                    return gateway.doCreate(req);
+                    return gateway.processMessage(req);
                 }
             }
-        }).when(this.spyGateway).doCreate(anyObject());
+        }).when(this.spyGateway).processMessage(anyObject());
 
         // validate
 
@@ -162,6 +171,9 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
             @Override
             public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
+                if (req.getOperationType() != OperationType.Create) {
+                    return gateway.processMessage(req);
+                }
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
                     Map<String, String> header = ImmutableMap.of(
@@ -170,10 +182,10 @@ public class RetryCreateDocumentTest extends TestSuiteBase {
 
                     return Observable.error(new DocumentClientException(1, new Error() , header));
                 } else {
-                    return gateway.doCreate(req);
+                    return gateway.processMessage(req);
                 }
             }
-        }).when(this.spyGateway).doCreate(anyObject());
+        }).when(this.spyGateway).processMessage(anyObject());
 
         // validate
 

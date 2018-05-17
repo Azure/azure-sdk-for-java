@@ -85,7 +85,6 @@ public class DocumentClientException extends Exception {
         this.statusCode = statusCode;
     }
 
-
     /**
      * Creates a new instance of the DocumentClientException class.
      *

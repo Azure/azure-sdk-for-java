@@ -119,7 +119,7 @@ public class RetryThrottleTest extends TestSuiteBase {
                 }
                 return gateway.processMessage(req).doOnNext(rsp -> successCount.incrementAndGet());
             }
-        }).when(this.spyGateway).doCreate(anyObject());
+        }).when(this.spyGateway).processMessage(anyObject());
         
         List<ResourceResponse<Document>> rsps = Observable.merge(list, 100).toList().toSingle().toBlocking().value();
         System.out.println("total: " + totalCount.get());
@@ -146,14 +146,17 @@ public class RetryThrottleTest extends TestSuiteBase {
             @Override
             public Observable<RxDocumentServiceResponse> answer(InvocationOnMock invocation) throws Throwable {
                 RxDocumentServiceRequest req = (RxDocumentServiceRequest) invocation.getArguments()[0];
+                if (req.getOperationType() != OperationType.Create) {
+                    return gateway.processMessage(req);
+                }
                 int currentAttempt = count.getAndIncrement();
                 if (currentAttempt == 0) {
                     return Observable.error(new DocumentClientException(HttpConstants.StatusCodes.TOO_MANY_REQUESTS));
                 } else {
-                    return gateway.doCreate(req);
+                    return gateway.processMessage(req);
                 }
             }
-        }).when(this.spyGateway).doCreate(anyObject());
+        }).when(this.spyGateway).processMessage(anyObject());
 
         // validate
         ResourceResponseValidator<Document> validator = new ResourceResponseValidator.Builder<Document>()

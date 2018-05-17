@@ -140,8 +140,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final ConsistencyLevel consistencyLevel;
     private final BaseAuthorizationTokenProvider authorizationTokenProvider;
     private final RxClientCollectionCache collectionCache;
+    private final RxStoreModel gatewayProxy;
     private final RxPartitionKeyRangeCache partitionKeyRangeCache;
-    private final RxGatewayStoreModel gatewayProxy;
     private Map<String, String> resourceTokens;
     /**
      * Compatibility mode: Allows to specify compatibility mode used by client when
@@ -151,7 +151,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private final QueryCompatibilityMode queryCompatibilityMode = QueryCompatibilityMode.Default;
     private final CompositeHttpClient<ByteBuf, ByteBuf> rxClient;
     private final EndpointManager globalEndpointManager;
-    private RetryPolicy retryPolicy;
+    private final RetryPolicy retryPolicy;
     private static final ObjectMapper mapper = new ObjectMapper();
 
     private Configs config = new Configs();
@@ -210,16 +210,15 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
                 this.masterKey, this.resourceTokens, userAgentContainer, this.globalEndpointManager, this.rxClient);
 
         this.collectionCache = new RxClientCollectionCache(this.gatewayProxy, this, this.retryPolicy);
-        
+
         this.partitionKeyRangeCache = new RxPartitionKeyRangeCache(
-                RxDocumentClientImpl.this, 
+                RxDocumentClientImpl.this,
                 collectionCache);
 
         if (this.connectionPolicy.getConnectionMode() == ConnectionMode.DirectHttps) {
             throw new UnsupportedOperationException("Direct Https is not supported");
         }   
     }
-
 
     RxGatewayStoreModel createRxGatewayProxy(ConnectionPolicy connectionPolicy,
                                              ConsistencyLevel consistencyLevel,
@@ -539,7 +538,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         populateHeaders(request, HttpConstants.HttpMethods.DELETE);
         applySessionToken(request);
 
-        return gatewayProxy.delete(request).doOnNext(response -> {
+        return gatewayProxy.processMessage(request).doOnNext(response -> {
             if (request.getResourceType() != ResourceType.DocumentCollection) {
                 captureSessionToken(request, response);
             } else {
@@ -960,7 +959,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
     private Observable<RxDocumentServiceResponse> replace(RxDocumentServiceRequest request) {
         populateHeaders(request, HttpConstants.HttpMethods.PUT);
         applySessionToken(request);
-        return gatewayProxy.replace(request)
+        return gatewayProxy.processMessage(request)
                 .doOnNext(response -> {
                     captureSessionToken(request, response);
                 });
@@ -1200,10 +1199,6 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         return queryDocuments(collectionLink, new SqlQuerySpec(query), options);
     }
 
-    /**
-     * @param rxDocumentClientImpl
-     * @return
-     */
     private IDocumentQueryClient DocumentQueryClientImpl(RxDocumentClientImpl rxDocumentClientImpl) {
 
         return new IDocumentQueryClient () {
@@ -1237,7 +1232,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
 
             @Override
             public Single<RxDocumentServiceResponse> executeQueryAsync(RxDocumentServiceRequest request) {
-                return RxDocumentClientImpl.this.query(request).map(r -> (RxDocumentServiceResponse)r).toSingle();
+                return RxDocumentClientImpl.this.query(request).toSingle();
             }
 
             @Override
@@ -2714,7 +2709,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             this.populateHeaders(request, HttpConstants.HttpMethods.GET);
 
             request.setEndpointOverride(endpoint);
-            return this.gatewayProxy.read(request).doOnError(e -> {
+            return this.gatewayProxy.processMessage(request).doOnError(e -> {
                 String message = String.format("Failed to retrieve database account information. %s",
                             e.getCause() != null
                                     ? e.getCause().toString()

@@ -82,12 +82,6 @@ implements IDocumentQueryExecutionContext<T> {
         this.correlatedActivityId = correlatedActivityId;
     }
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.microsoft.azure.cosmosdb.rx.internal.query.
-     * IDocumentQueryExecutionContext#execute()
-     */
     @Override
     abstract public Observable<FeedResponse<T>> executeAsync();
 
@@ -97,26 +91,29 @@ implements IDocumentQueryExecutionContext<T> {
     }
 
     public RxDocumentServiceRequest createDocumentServiceRequest(Map<String, String> requestHeaders,
-            SqlQuerySpec querySpec, PartitionKeyInternal partitionKey) {
+                                                                 SqlQuerySpec querySpec,
+                                                                 PartitionKeyInternal partitionKey) {
 
         RxDocumentServiceRequest request = querySpec != null
                 ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
-                        : this.createReadFeedDocumentServiceRequest(requestHeaders);
+                : this.createReadFeedDocumentServiceRequest(requestHeaders);
 
-                this.populatePartitionKeyInfo(request, partitionKey);
+        this.populatePartitionKeyInfo(request, partitionKey);
 
-                return request;
+        return request;
     }
 
-    public RxDocumentServiceRequest createDocumentServiceRequest(Map<String, String> requestHeaders,
-            SqlQuerySpec querySpec, PartitionKeyRange targetRange, String collectionRid) {
+    protected RxDocumentServiceRequest createDocumentServiceRequest(Map<String, String> requestHeaders,
+                                                                    SqlQuerySpec querySpec,
+                                                                    PartitionKeyRange targetRange,
+                                                                    String collectionRid) {
         RxDocumentServiceRequest request = querySpec != null
                 ? this.createQueryDocumentServiceRequest(requestHeaders, querySpec)
-                        : this.createReadFeedDocumentServiceRequest(requestHeaders);
+                : this.createReadFeedDocumentServiceRequest(requestHeaders);
 
-                this.populatePartitionKeyRangeInfo(request, targetRange, collectionRid);
+        this.populatePartitionKeyRangeInfo(request, targetRange, collectionRid);
 
-                return request;
+        return request;
     }
 
     public Single<FeedResponse<T>> executeRequestAsync(RxDocumentServiceRequest request) {

@@ -44,6 +44,7 @@ import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient;
 import com.microsoft.azure.cosmosdb.rx.AsyncDocumentClient.Builder;
 
 import rx.Observable;
+import rx.observers.TestSubscriber;
 
 
 public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
@@ -168,6 +169,50 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         validateQuerySuccess(queryObservable, validator);
     }
 
+    @Test(groups = { "simple" }, timeOut = TIMEOUT * 1000)
+    public void continuationToken() throws Exception {
+        String query = "SELECT * FROM r ORDER BY r.prop ASC";
+        FeedOptions options = new FeedOptions();
+        options.setEnableCrossPartitionQuery(true);
+        options.setMaxItemCount(3);
+        Observable<FeedResponse<Document>> queryObservable = client
+                .queryDocuments(getCollectionLink(), query, options);
+
+        
+        TestSubscriber<FeedResponse<Document>> subscriber = new TestSubscriber<>();
+        queryObservable.first().subscribe(subscriber);
+        
+        subscriber.awaitTerminalEvent();
+        subscriber.assertCompleted();
+        subscriber.assertNoErrors();
+        assertThat(subscriber.getValueCount()).isEqualTo(1);
+        FeedResponse<Document> page = subscriber.getOnNextEvents().get(0);
+        assertThat(page.getResults()).hasSize(3);
+        
+        assertThat(page.getResponseContinuation()).isNotEmpty();
+        
+        
+        options.setRequestContinuation(page.getResponseContinuation());
+        queryObservable = client
+                .queryDocuments(getCollectionLink(), query, options);
+        
+
+        List<Document> expectedDocs = createdDocuments.stream().filter(d -> (d.getInt("prop") > 2)).collect(Collectors.toList());
+        int expectedPageSize = (expectedDocs.size() + options.getMaxItemCount() - 1) / options.getMaxItemCount();
+
+        assertThat(expectedDocs).hasSize(createdDocuments.size() -3);
+        
+        FeedResponseListValidator<Document> validator = new FeedResponseListValidator.Builder<Document>()
+                .containsExactly(expectedDocs.stream()
+                        .sorted((e1, e2) -> Integer.compare(e1.getInt("prop"), e2.getInt("prop")))
+                        .map(d -> d.getResourceId()).collect(Collectors.toList()))
+                .numberOfPages(expectedPageSize)
+                .allPagesSatisfy(new FeedResponseValidator.Builder<Document>()
+                        .requestChargeGreaterThanOrEqualTo(1.0).build())
+                .build();
+        validateQuerySuccess(queryObservable, validator);
+    }
+    
     @Test(groups = { "simple" }, timeOut = TIMEOUT)
     public void invalidQuerySytax() throws Exception {
         String query = "I am an invalid query";
@@ -204,7 +249,6 @@ public class SinglePartitionDocumentQueryTest extends TestSuiteBase {
         for(int i = 0; i < 8; i++) {
             createdDocuments.add(createDocument(client, 99));
         }
-        
     }
 
     @AfterClass(groups = { "simple" }, timeOut = SHUTDOWN_TIMEOUT, alwaysRun = true)
