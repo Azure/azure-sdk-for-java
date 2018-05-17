@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The CreateJobOptionalParameter model.
@@ -17,13 +16,11 @@ public class CreateJobOptionalParameter {
     /**
      * Callback endpoint for posting the create job result.
      */
-    @JsonProperty(value = "callBackEndpoint")
     private String callBackEndpoint;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

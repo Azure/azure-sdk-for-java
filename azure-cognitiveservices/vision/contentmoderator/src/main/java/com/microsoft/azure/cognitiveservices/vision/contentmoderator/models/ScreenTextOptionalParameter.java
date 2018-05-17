@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ScreenTextOptionalParameter model.
@@ -17,37 +16,31 @@ public class ScreenTextOptionalParameter {
     /**
      * Language of the text.
      */
-    @JsonProperty(value = "language")
     private String language;
 
     /**
      * Autocorrect text.
      */
-    @JsonProperty(value = "autocorrect")
     private Boolean autocorrect;
 
     /**
      * Detect personal identifiable information.
      */
-    @JsonProperty(value = "pII")
     private Boolean pII;
 
     /**
      * The list Id.
      */
-    @JsonProperty(value = "listId")
     private String listId;
 
     /**
      * Classify input.
      */
-    @JsonProperty(value = "classify")
     private Boolean classify;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

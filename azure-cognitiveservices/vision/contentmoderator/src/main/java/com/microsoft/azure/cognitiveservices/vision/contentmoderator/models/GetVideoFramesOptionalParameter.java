@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The GetVideoFramesOptionalParameter model.
@@ -18,25 +17,21 @@ public class GetVideoFramesOptionalParameter {
      * Time stamp of the frame from where you want to start fetching the
      * frames.
      */
-    @JsonProperty(value = "startSeed")
     private Integer startSeed;
 
     /**
      * Number of frames to fetch.
      */
-    @JsonProperty(value = "noOfRecords")
     private Integer noOfRecords;
 
     /**
      * Get frames filtered by tags.
      */
-    @JsonProperty(value = "filter")
     private String filter;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

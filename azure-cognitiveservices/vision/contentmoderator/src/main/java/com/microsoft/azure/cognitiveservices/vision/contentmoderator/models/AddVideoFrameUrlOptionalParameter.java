@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The AddVideoFrameUrlOptionalParameter model.
@@ -17,13 +16,11 @@ public class AddVideoFrameUrlOptionalParameter {
     /**
      * Timescale of the video.
      */
-    @JsonProperty(value = "timescale")
     private Integer timescale;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

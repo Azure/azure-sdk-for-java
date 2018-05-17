@@ -9,7 +9,6 @@
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The DetectWithUrlOptionalParameter model.
@@ -19,14 +18,12 @@ public class DetectWithUrlOptionalParameter {
      * A value indicating whether the operation should return faceIds of
      * detected faces.
      */
-    @JsonProperty(value = "returnFaceId")
     private Boolean returnFaceId;
 
     /**
      * A value indicating whether the operation should return landmarks of the
      * detected faces.
      */
-    @JsonProperty(value = "returnFaceLandmarks")
     private Boolean returnFaceLandmarks;
 
     /**
@@ -36,13 +33,11 @@ public class DetectWithUrlOptionalParameter {
      * glasses and emotion. Note that each face attribute analysis has
      * additional computational and time cost.
      */
-    @JsonProperty(value = "returnFaceAttributes")
     private List<FaceAttributeType> returnFaceAttributes;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

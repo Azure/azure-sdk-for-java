@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The IdentifyOptionalParameter model.
@@ -18,7 +17,6 @@ public class IdentifyOptionalParameter {
      * The range of maxNumOfCandidatesReturned is between 1 and 5 (default is
      * 1).
      */
-    @JsonProperty(value = "maxNumOfCandidatesReturned")
     private Integer maxNumOfCandidatesReturned;
 
     /**
@@ -26,13 +24,11 @@ public class IdentifyOptionalParameter {
      * belong to one person. The range of confidenceThreshold is [0, 1]
      * (default specified by algorithm).
      */
-    @JsonProperty(value = "confidenceThreshold")
     private Double confidenceThreshold;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

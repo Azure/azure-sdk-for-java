@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The OCRUrlInputOptionalParameter model.
@@ -18,7 +17,6 @@ public class OCRUrlInputOptionalParameter {
      * Whether to retain the submitted image for future use; defaults to false
      * if omitted.
      */
-    @JsonProperty(value = "cacheImage")
     private Boolean cacheImage;
 
     /**
@@ -29,13 +27,11 @@ public class OCRUrlInputOptionalParameter {
      *
      * Note: This impacts the response time.
      */
-    @JsonProperty(value = "enhanced")
     private Boolean enhanced;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

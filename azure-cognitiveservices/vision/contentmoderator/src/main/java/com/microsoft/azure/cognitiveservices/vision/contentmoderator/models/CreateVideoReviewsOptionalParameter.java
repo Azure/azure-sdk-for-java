@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The CreateVideoReviewsOptionalParameter model.
@@ -17,13 +16,11 @@ public class CreateVideoReviewsOptionalParameter {
     /**
      * SubTeam of your team, you want to assign the created review to.
      */
-    @JsonProperty(value = "subTeam")
     private String subTeam;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

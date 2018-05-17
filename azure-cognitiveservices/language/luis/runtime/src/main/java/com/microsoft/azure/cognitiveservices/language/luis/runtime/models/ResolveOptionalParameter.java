@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.language.luis.runtime.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ResolveOptionalParameter model.
@@ -17,43 +16,36 @@ public class ResolveOptionalParameter {
     /**
      * The timezone offset for the location of the request.
      */
-    @JsonProperty(value = "timezoneOffset")
     private Double timezoneOffset;
 
     /**
      * If true, return all intents instead of just the top scoring intent.
      */
-    @JsonProperty(value = "verbose")
     private Boolean verbose;
 
     /**
      * Use the staging endpoint slot.
      */
-    @JsonProperty(value = "staging")
     private Boolean staging;
 
     /**
      * Enable spell checking.
      */
-    @JsonProperty(value = "spellCheck")
     private Boolean spellCheck;
 
     /**
      * The subscription key to use when enabling bing spell check.
      */
-    @JsonProperty(value = "bingSpellCheckSubscriptionKey")
     private String bingSpellCheckSubscriptionKey;
 
     /**
      * Log query (default is true).
      */
-    @JsonProperty(value = "log")
     private Boolean log;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

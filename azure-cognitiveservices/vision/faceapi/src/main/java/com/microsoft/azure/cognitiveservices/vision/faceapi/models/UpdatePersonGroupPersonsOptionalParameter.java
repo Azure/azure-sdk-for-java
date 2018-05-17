@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The UpdatePersonGroupPersonsOptionalParameter model.
@@ -17,19 +16,16 @@ public class UpdatePersonGroupPersonsOptionalParameter {
     /**
      * User defined name, maximum length is 128.
      */
-    @JsonProperty(value = "name")
     private String name;
 
     /**
      * User specified data. Length should not exceed 16KB.
      */
-    @JsonProperty(value = "userData")
     private String userData;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

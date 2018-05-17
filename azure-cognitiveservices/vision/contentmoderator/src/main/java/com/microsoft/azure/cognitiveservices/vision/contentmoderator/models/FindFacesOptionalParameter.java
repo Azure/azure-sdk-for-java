@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The FindFacesOptionalParameter model.
@@ -18,13 +17,11 @@ public class FindFacesOptionalParameter {
      * Whether to retain the submitted image for future use; defaults to false
      * if omitted.
      */
-    @JsonProperty(value = "cacheImage")
     private Boolean cacheImage;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

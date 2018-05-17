@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The AddImageOptionalParameter model.
@@ -17,19 +16,16 @@ public class AddImageOptionalParameter {
     /**
      * Tag for the image.
      */
-    @JsonProperty(value = "tag")
     private Integer tag;
 
     /**
      * The image label.
      */
-    @JsonProperty(value = "label")
     private String label;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

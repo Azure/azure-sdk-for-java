@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.contentmoderator.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The GetAllTermsOptionalParameter model.
@@ -17,19 +16,16 @@ public class GetAllTermsOptionalParameter {
     /**
      * The pagination start index.
      */
-    @JsonProperty(value = "offset")
     private Integer offset;
 
     /**
      * The max limit.
      */
-    @JsonProperty(value = "limit")
     private Integer limit;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

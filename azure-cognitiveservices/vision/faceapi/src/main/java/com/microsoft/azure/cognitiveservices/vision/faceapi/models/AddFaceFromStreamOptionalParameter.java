@@ -9,7 +9,6 @@
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
 import java.util.List;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The AddFaceFromStreamOptionalParameter model.
@@ -19,7 +18,6 @@ public class AddFaceFromStreamOptionalParameter {
      * User-specified data about the face for any purpose. The maximum length
      * is 1KB.
      */
-    @JsonProperty(value = "userData")
     private String userData;
 
     /**
@@ -29,13 +27,11 @@ public class AddFaceFromStreamOptionalParameter {
      * targetFace is required to specify which face to add. No targetFace means
      * there is only one face detected in the entire image.
      */
-    @JsonProperty(value = "targetFace")
     private List<Integer> targetFace;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

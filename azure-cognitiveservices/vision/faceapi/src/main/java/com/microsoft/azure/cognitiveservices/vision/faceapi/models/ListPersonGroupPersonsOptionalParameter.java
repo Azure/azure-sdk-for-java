@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The ListPersonGroupPersonsOptionalParameter model.
@@ -17,20 +16,17 @@ public class ListPersonGroupPersonsOptionalParameter {
     /**
      * Starting person id to return (used to list a range of persons).
      */
-    @JsonProperty(value = "start")
     private String start;
 
     /**
      * Number of persons to return starting with the person id indicated by the
      * 'start' parameter.
      */
-    @JsonProperty(value = "top")
     private Integer top;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**

@@ -10,7 +10,6 @@ package com.microsoft.azure.cognitiveservices.vision.faceapi.models;
 
 import java.util.List;
 import java.util.UUID;
-import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
  * The FindSimilarOptionalParameter model.
@@ -22,33 +21,28 @@ public class FindSimilarOptionalParameter {
      * which are persisted and will never expire. Parameter faceListId and
      * faceIds should not be provided at the same time.
      */
-    @JsonProperty(value = "faceListId")
     private String faceListId;
 
     /**
      * An array of candidate faceIds. All of them are created by Face - Detect
      * and the faceIds will expire 24 hours after the detection call.
      */
-    @JsonProperty(value = "faceIds")
     private List<UUID> faceIds;
 
     /**
      * The number of top similar faces returned. The valid range is [1, 1000].
      */
-    @JsonProperty(value = "maxNumOfCandidatesReturned")
     private Integer maxNumOfCandidatesReturned;
 
     /**
      * Similar face searching mode. It can be "matchPerson" or "matchFace".
      * Possible values include: 'matchPerson', 'matchFace'.
      */
-    @JsonProperty(value = "mode")
     private FindSimilarMatchMode mode;
 
     /**
      * Gets or sets the preferred language for the response.
      */
-    @JsonProperty(value = "this\\.client\\.acceptLanguage()")
     private String acceptLanguage;
 
     /**
