@@ -23,9 +23,9 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONArray;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -55,7 +55,7 @@ public class Permission extends Resource {
      *
      * @param jsonObject the json object that represents the permission.
      */
-    public Permission(JSONObject jsonObject) {
+    public Permission(ObjectNode jsonObject) {
         super(jsonObject);
     }
 
@@ -115,8 +115,8 @@ public class Permission extends Resource {
         PartitionKey key = null;
         Object value = super.get(Constants.Properties.RESOURCE_PARTITION_KEY);
         if (value != null) {
-            JSONArray arrayValue = (JSONArray) value;
-            key = new PartitionKey(arrayValue.get(0));
+            ArrayNode arrayValue = (ArrayNode) value;
+            key = new PartitionKey(getValue(arrayValue.get(0)));
         }
 
         return key;

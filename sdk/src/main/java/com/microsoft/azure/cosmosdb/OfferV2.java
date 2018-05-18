@@ -23,9 +23,10 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
+import com.microsoft.azure.cosmosdb.internal.Utils;
 
 /**
  * Represents an offer version 2 in the Azure Cosmos DB database service.
@@ -41,7 +42,7 @@ public class OfferV2 extends Offer {
     public OfferV2(int offerThroughput) {
         this.setOfferVersion(Constants.Properties.OFFER_VERSION_V2);
         this.setOfferType("");
-        JSONObject content = new JSONObject();
+        ObjectNode content = Utils.getSimpleObjectMapper().createObjectNode();
         content.put(Constants.Properties.OFFER_THROUGHPUT, offerThroughput);
         this.setContent(content);
     }
@@ -58,9 +59,9 @@ public class OfferV2 extends Offer {
         this.setOfferVersion(Constants.Properties.OFFER_VERSION_V2);
         this.setOfferType("");
 
-        JSONObject content = this.getContent();
+        ObjectNode content = this.getContent();
         if (content == null) {
-            content = new JSONObject();
+            content = Utils.getSimpleObjectMapper().createObjectNode();
             this.setContent(content);
         }
     }
@@ -71,7 +72,7 @@ public class OfferV2 extends Offer {
      * @return the offer throughput.
      */
     public int getOfferThroughput() {
-        return this.getContent().getInt(Constants.Properties.OFFER_THROUGHPUT);
+        return this.getContent().get(Constants.Properties.OFFER_THROUGHPUT).asInt();
     }
 
     /**

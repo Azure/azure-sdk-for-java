@@ -23,7 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -57,7 +57,7 @@ public class DatabaseAccountLocation extends JsonSerializable {
      *
      * @param jsonObject the JSON object that represents the DatabaseAccountLocation object.
      */
-    public DatabaseAccountLocation(JSONObject jsonObject) {
+    public DatabaseAccountLocation(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

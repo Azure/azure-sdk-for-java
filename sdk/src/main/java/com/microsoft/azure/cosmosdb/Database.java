@@ -23,8 +23,8 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -60,7 +60,7 @@ public final class Database extends Resource {
      *
      * @param jsonObject the json object.
      */
-    public Database(JSONObject jsonObject) {
+    public Database(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

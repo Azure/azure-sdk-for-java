@@ -23,8 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
-
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -57,7 +56,7 @@ public class Attachment extends Resource {
      *
      * @param jsonObject the json object representation of the Attachment.
      */
-    public Attachment(JSONObject jsonObject) {
+    public Attachment(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

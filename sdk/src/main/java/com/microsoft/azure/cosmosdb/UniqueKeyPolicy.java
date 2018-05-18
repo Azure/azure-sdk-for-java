@@ -25,8 +25,8 @@ package com.microsoft.azure.cosmosdb;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
-import org.json.JSONObject;
 
 /**
  * Represents the unique key policy configuration for specifying uniqueness constraints on documents in the
@@ -54,7 +54,7 @@ public class UniqueKeyPolicy extends JsonSerializable {
      *
      * @param jsonObject the json object that represents the Unique Ke policy.
      */
-    public UniqueKeyPolicy(JSONObject jsonObject) {
+    public UniqueKeyPolicy(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

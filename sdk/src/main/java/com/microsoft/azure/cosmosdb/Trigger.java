@@ -23,9 +23,8 @@
 
 package com.microsoft.azure.cosmosdb;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONObject;
-
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
 /**
@@ -58,7 +57,7 @@ public class Trigger extends Resource {
      *
      * @param jsonObject the json object that represents the trigger.
      */
-    public Trigger(JSONObject jsonObject) {
+    public Trigger(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

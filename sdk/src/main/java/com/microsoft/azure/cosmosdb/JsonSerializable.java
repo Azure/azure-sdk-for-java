@@ -27,19 +27,18 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
-import java.lang.reflect.Array;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Modifier;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.Iterator;
-import java.util.List;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -51,17 +50,18 @@ import com.fasterxml.jackson.databind.ObjectMapper;
  */
 @SuppressWarnings("serial")
 public class JsonSerializable implements Serializable {
-    private final static int INDENT_FACTOR = 4;
     private final static Logger logger = LoggerFactory.getLogger(JsonSerializable.class);
     private final static ObjectMapper OBJECT_MAPPER = new ObjectMapper();
     static {
         OBJECT_MAPPER.configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
+        OBJECT_MAPPER.configure(JsonParser.Feature.ALLOW_SINGLE_QUOTES, true);
+        OBJECT_MAPPER.configure(JsonParser.Feature.ALLOW_TRAILING_COMMA, true);
     }
     private ObjectMapper om;
-    transient JSONObject propertyBag = null;
+    transient ObjectNode propertyBag = null;
     
     protected JsonSerializable() {
-        this.propertyBag = new JSONObject();
+        this.propertyBag = OBJECT_MAPPER.createObjectNode();
     }
 
     /**
@@ -71,7 +71,7 @@ public class JsonSerializable implements Serializable {
      * @param objectMapper the custom object mapper
      */
     protected JsonSerializable(String jsonString, ObjectMapper objectMapper) {
-        this.propertyBag = new JSONObject(jsonString);
+        this.propertyBag = (ObjectNode) fromJson(jsonString);
         this.om = objectMapper;
     }
     
@@ -81,7 +81,7 @@ public class JsonSerializable implements Serializable {
      * @param jsonString the json string that represents the JsonSerializable.
      */
     protected JsonSerializable(String jsonString) {
-        this.propertyBag = new JSONObject(jsonString);
+        this.propertyBag = (ObjectNode) fromJson(jsonString);
     }
 
     /**
@@ -89,8 +89,8 @@ public class JsonSerializable implements Serializable {
      * 
      * @param jsonObject the json object that represents the JsonSerializable.
      */
-    protected JsonSerializable(JSONObject jsonObject) {
-        this.propertyBag = new JSONObject(jsonObject);
+    protected JsonSerializable(ObjectNode jsonObject) {
+        this.propertyBag = jsonObject.deepCopy();
     }
     
     protected ObjectMapper getMapper() {
@@ -98,53 +98,6 @@ public class JsonSerializable implements Serializable {
         return OBJECT_MAPPER;
     }
         
-    private static HashMap<String, Object> toMap(JSONObject object) throws JSONException {
-        HashMap<String, Object> map = new HashMap<String, Object>();
-
-        @SuppressWarnings("unchecked") // Using legacy API
-        Iterator<String> keysItr = object.keys();
-        while (keysItr.hasNext()) {
-            String key = keysItr.next();
-            Object value = object.get(key);
-
-            if (value instanceof JSONArray) {
-                value = toList((JSONArray) value);
-            } else if (value instanceof JSONObject) {
-                value = toMap((JSONObject) value);
-            }
-            map.put(key, value);
-        }
-        return map;
-    }
-
-    private static List<Object> toList(JSONArray array) throws JSONException {
-        List<Object> list = new ArrayList<Object>();
-        for (int i = 0; i < array.length(); i++) {
-            Object value = array.get(i);
-            if (value instanceof JSONArray) {
-                value = toList((JSONArray) value);
-            } else if (value instanceof JSONObject) {
-                value = toMap((JSONObject) value);
-            }
-            list.add(value);
-        }
-        return list;
-    }
-
-    private static Object[] convertToObjectArray(Object array) {
-        Class<?> ofArray = array.getClass().getComponentType();
-        if (ofArray.isPrimitive()) {
-            List<Object> ar = new ArrayList<Object>();
-            int length = Array.getLength(array);
-            for (int i = 0; i < length; i++) {
-                ar.add(Array.get(array, i));
-            }
-            return ar.toArray();
-        } else {
-            return (Object[]) array;
-        }
-    }
-
     private static void checkForValidPOJO(Class<?> c) {
         if (c.isAnonymousClass() || c.isLocalClass()) {
             throw new IllegalArgumentException(
@@ -169,7 +122,7 @@ public class JsonSerializable implements Serializable {
      * @return the HashMap.
      */
     public HashMap<String, Object> getHashMap() {
-        return JsonSerializable.toMap(this.propertyBag);
+        return getMapper().convertValue(this.propertyBag, HashMap.class);
     }
 
     /**
@@ -202,26 +155,15 @@ public class JsonSerializable implements Serializable {
     public <T> void set(String propertyName, T value) {
         if (value == null) {
             // Sets null.
-            this.propertyBag.put(propertyName, JSONObject.NULL);
+            this.propertyBag.putNull(propertyName);
         } else if (value instanceof Collection) {
             // Collection.
-            JSONArray jsonArray = new JSONArray();
+            ArrayNode jsonArray = propertyBag.arrayNode();
             this.internalSetCollection(propertyName, (Collection) value, jsonArray);
-            this.propertyBag.put(propertyName, jsonArray);
-        } else if (value.getClass().isArray()) {
-            // Array.
-            JSONArray jsonArray = new JSONArray();
-            this.internalSetCollection(propertyName, Arrays.asList(JsonSerializable.convertToObjectArray(value)),
-                    jsonArray);
-            this.propertyBag.put(propertyName, jsonArray);
-        } else if (value instanceof JSONArray) {
-            this.propertyBag.put(propertyName, value);
-        } else if (value instanceof Number || value instanceof Boolean || value instanceof String
-                || value instanceof JSONObject) {
-            // JSONObject, number (includes int, float, double etc), boolean,
-            // and string.
-            this.propertyBag.put(propertyName, value);
-        } else if (value instanceof JsonSerializable) {
+            this.propertyBag.set(propertyName, jsonArray);
+        } else if (value instanceof JsonNode) {
+            this.propertyBag.set(propertyName, (JsonNode) value);
+        }  else if (value instanceof JsonSerializable) {
             // JsonSerializable
             JsonSerializable castedValue = (JsonSerializable) value;
             if (castedValue != null) {
@@ -230,45 +172,35 @@ public class JsonSerializable implements Serializable {
             this.propertyBag.put(propertyName, castedValue != null ? castedValue.propertyBag : null);
         } else {
             // POJO
-            try {
-                this.propertyBag.put(propertyName, new JSONObject(this.getMapper().writeValueAsString(value)));
-            } catch (IOException e) {
-                throw new IllegalArgumentException("Can't serialize the object into the json string", e);
-            }
+            this.propertyBag.set(propertyName, getMapper().valueToTree(value));
         }
     }
 
     @SuppressWarnings({"unchecked", "rawtypes"})
-    private <T> void internalSetCollection(String propertyName, Collection<T> collection, JSONArray targetArray) {
-            for (T childValue : collection) {
-                if (childValue == null) {
-                    // Sets null.
-                    targetArray.put(JSONObject.NULL);
-                } else if (childValue instanceof Collection) {
-                    // When T is also a Collection, use recursion.
-                    JSONArray childArray = new JSONArray();
-                    this.internalSetCollection(propertyName, (Collection) childValue, childArray);
-                    targetArray.put(childArray);
-            } else if (childValue instanceof Number || childValue instanceof Boolean || childValue instanceof String
-                    || childValue instanceof JSONObject) {
+    private <T> void internalSetCollection(String propertyName, Collection<T> collection, ArrayNode targetArray) {
+        for (T childValue : collection) {
+            if (childValue == null) {
+                // Sets null.
+                targetArray.addNull();
+            } else if (childValue instanceof Collection) {
+                // When T is also a Collection, use recursion.
+                ArrayNode childArray = targetArray.addArray();
+                this.internalSetCollection(propertyName, (Collection) childValue, childArray);
+            } else if (childValue instanceof JsonNode) {
                 // JSONObject, Number (includes Int, Float, Double etc),
                 // Boolean, and String.
-                    targetArray.put(childValue);
-                } else if (childValue instanceof JsonSerializable) {
-                    // JsonSerializable
-                    JsonSerializable castedValue = (JsonSerializable) childValue;
-                    castedValue.populatePropertyBag();
-                    targetArray.put(castedValue.propertyBag != null ? castedValue.propertyBag : new JSONObject());
-                } else {
-                    // POJO
-                    try {
-                        targetArray.put(new JSONObject(this.getMapper().writeValueAsString(childValue)));
-                    } catch (IOException e) {
-                        throw new IllegalArgumentException("Can't serialize the object into the json string", e);
-                    }
-                }
+                targetArray.add((JsonNode) childValue);
+            } else if (childValue instanceof JsonSerializable) {
+                // JsonSerializable
+                JsonSerializable castedValue = (JsonSerializable) childValue;
+                castedValue.populatePropertyBag();
+                targetArray.add(castedValue.propertyBag != null ? castedValue.propertyBag : this.getMapper().createObjectNode());
+            } else {
+                // POJO
+                targetArray.add(this.getMapper().valueToTree(childValue));
             }
-       }
+        }
+    }
 
     /**
      * Gets a property value as Object.
@@ -277,8 +209,8 @@ public class JsonSerializable implements Serializable {
      * @return the value of the property.
      */
     public Object get(String propertyName) {
-        if (this.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            return this.propertyBag.get(propertyName);
+        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            return getValue(this.propertyBag.get(propertyName));
         } else {
             return null;
         }
@@ -291,8 +223,8 @@ public class JsonSerializable implements Serializable {
      * @return the string value.
      */
     public String getString(String propertyName) {
-        if (this.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            return this.propertyBag.getString(propertyName);
+        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            return this.propertyBag.get(propertyName).asText();
         } else {
             return null;
         }
@@ -305,8 +237,8 @@ public class JsonSerializable implements Serializable {
      * @return the boolean value.
      */
     public Boolean getBoolean(String propertyName) {
-        if (this.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            return Boolean.valueOf(this.propertyBag.getBoolean(propertyName));
+        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            return this.propertyBag.get(propertyName).asBoolean();
         } else {
             return null;
         }
@@ -319,8 +251,8 @@ public class JsonSerializable implements Serializable {
      * @return the boolean value
      */
     public Integer getInt(String propertyName) {
-        if (this.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            return Integer.valueOf(this.propertyBag.getInt(propertyName));
+        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            return Integer.valueOf(this.propertyBag.get(propertyName).asInt());
         } else {
             return null;
         }
@@ -333,8 +265,8 @@ public class JsonSerializable implements Serializable {
      * @return the long value
      */
     public Long getLong(String propertyName) {
-        if (this.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            return Long.valueOf(this.propertyBag.getLong(propertyName));
+        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            return Long.valueOf(this.propertyBag.get(propertyName).asLong());
         } else {
             return null;
         }
@@ -347,8 +279,8 @@ public class JsonSerializable implements Serializable {
      * @return the double value.
      */
     public Double getDouble(String propertyName) {
-        if (this.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            return new Double(this.propertyBag.getDouble(propertyName));
+        if (this.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            return new Double(this.propertyBag.get(propertyName).asDouble());
         } else {
             return null;
         }
@@ -364,22 +296,22 @@ public class JsonSerializable implements Serializable {
      * @return the object value.
      */
     public <T> T getObject(String propertyName, Class<T> c) {
-        if (this.propertyBag.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            Object jsonObj = this.propertyBag.get(propertyName);
+        if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            JsonNode jsonObj = propertyBag.get(propertyName);
             if (Number.class.isAssignableFrom(c) || String.class.isAssignableFrom(c)
                     || Boolean.class.isAssignableFrom(c) || Object.class == c) {
                 // Number, String, Boolean
-                return c.cast(jsonObj);
+                return c.cast(getValue(jsonObj));
             } else if (Enum.class.isAssignableFrom(c)) {
                 try {
-                    return c.cast(c.getMethod("valueOf", String.class).invoke(null, String.class.cast(jsonObj)));
+                    return c.cast(c.getMethod("valueOf", String.class).invoke(null, String.class.cast(getValue(jsonObj))));
                 } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                        | NoSuchMethodException | SecurityException | JSONException e) {
+                        | NoSuchMethodException | SecurityException e) {
                     throw new IllegalStateException("Failed to create enum.", e);
                 }
             } else if (JsonSerializable.class.isAssignableFrom(c)) {
                 try {
-                    return c.getConstructor(String.class).newInstance(jsonObj.toString());
+                    return c.getConstructor(String.class).newInstance(toJson(jsonObj));
                 } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                         | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                     throw new IllegalStateException("Failed to instantiate class object.", e);
@@ -388,7 +320,7 @@ public class JsonSerializable implements Serializable {
                 // POJO
                 JsonSerializable.checkForValidPOJO(c);
                 try {
-                    return this.getMapper().readValue(jsonObj.toString(), c);
+                    return this.getMapper().treeToValue(jsonObj, c);
                 } catch (IOException e) {
                     throw new IllegalStateException("Failed to get POJO.", e);
                 }
@@ -408,9 +340,10 @@ public class JsonSerializable implements Serializable {
      * @return the object collection.
      */
     public <T> Collection<T> getCollection(String propertyName, Class<T> c) {
-        if (this.propertyBag.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            JSONArray jsonArray = this.propertyBag.getJSONArray(propertyName);
-            Collection<T> result = new ArrayList<T>();
+        if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            ArrayNode jsonArray = (ArrayNode) this.propertyBag.get(propertyName);
+            ArrayList<T> result = new ArrayList<T>();
+
             boolean isBaseClass = false;
             boolean isEnumClass = false;
             boolean isJsonSerializable = false;
@@ -427,41 +360,37 @@ public class JsonSerializable implements Serializable {
                 JsonSerializable.checkForValidPOJO(c);
             }
 
-            for (int i = 0; i < jsonArray.length(); i++) {
+            for (JsonNode n : jsonArray) {
                 if (isBaseClass) {
-                    // Number, String, Boolean 
-                    result.add(c.cast(jsonArray.get(i)));
+                    // Number, String, Boolean
+                    result.add(c.cast(getValue(n)));
                 } else if (isEnumClass) {
                     try {
                         result.add(c.cast(c.getMethod("valueOf", String.class).invoke(null,
-                                String.class.cast(jsonArray.get(i)))));
+                                String.class.cast(getValue(n)))));
                     } catch (IllegalAccessException | IllegalArgumentException | InvocationTargetException
-                            | NoSuchMethodException | SecurityException | JSONException e) {
+                            | NoSuchMethodException | SecurityException e) {
                         throw new IllegalStateException("Failed to create enum.", e);
                     }
                 } else if (isJsonSerializable) {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
                     // JsonSerializable
                     try {
-                        result.add(c.getConstructor(String.class).newInstance(jsonObject.toString()));
+                        result.add(c.getConstructor(String.class).newInstance(toJson(n)));
                     } catch (InstantiationException | IllegalAccessException | IllegalArgumentException
                             | InvocationTargetException | NoSuchMethodException | SecurityException e) {
                         throw new IllegalStateException("Failed to instantiate class object.", e);
                     }
                 } else {
-                    JSONObject jsonObject = jsonArray.getJSONObject(i);
                     // POJO
                     try {
-                        result.add(this.getMapper().readValue(jsonObject.toString(), c));
+                        result.add(this.getMapper().treeToValue(n, c));
                     } catch (IOException e) {
                         throw new IllegalStateException("Failed to get POJO.", e);
                     }
                 }
             }
-
             return result;
         }
-
         return null;
     }
 
@@ -471,9 +400,9 @@ public class JsonSerializable implements Serializable {
      * @param propertyName the property to get.
      * @return the JSONObject.
      */
-    public JSONObject getObject(String propertyName) {
-        if (this.propertyBag.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            JSONObject jsonObj = this.propertyBag.getJSONObject(propertyName);
+    public ObjectNode getObject(String propertyName) {
+        if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            ObjectNode jsonObj = (ObjectNode) this.propertyBag.get(propertyName);
             return jsonObj;
         }
         return null;
@@ -485,15 +414,13 @@ public class JsonSerializable implements Serializable {
      * @param propertyName the property to get.
      * @return the JSONObject collection.
      */
-    public Collection<JSONObject> getCollection(String propertyName) {
-        Collection<JSONObject> result = null;
-        if (this.propertyBag.has(propertyName) && !this.propertyBag.isNull(propertyName)) {
-            result = new ArrayList<JSONObject>();
-            JSONArray jsonArray = this.propertyBag.getJSONArray(propertyName);
+    public Collection<ObjectNode> getCollection(String propertyName) {
+        Collection<ObjectNode> result = null;
+        if (this.propertyBag.has(propertyName) && this.propertyBag.hasNonNull(propertyName)) {
+            result = new ArrayList<ObjectNode>();
 
-            for (int i = 0; i < jsonArray.length(); i++) {
-                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                result.add(jsonObject);
+            for (JsonNode n : this.propertyBag.findValues(propertyName)) {
+                result.add((ObjectNode) n);
             }
         }
 
@@ -507,8 +434,8 @@ public class JsonSerializable implements Serializable {
      * @return the value of the property.
      */
     public Object getObjectByPath(Collection<String> propertyNames) {
-        JSONObject propBag = this.propertyBag;
-        Object value = null;
+        ObjectNode propBag = this.propertyBag;
+        JsonNode value = null;
         String propertyName = null;
         Integer matchedProperties = 0;
         Iterator<String> iterator = propertyNames.iterator();
@@ -518,23 +445,68 @@ public class JsonSerializable implements Serializable {
                 if (propBag.has(propertyName)) {
                     matchedProperties++;
                     value = propBag.get(propertyName);
-                    if (value.getClass() != JSONObject.class) {
+                    if (!value.isObject()) {
                         break;
                     }
-                    propBag = (JSONObject) value;
+                    propBag = (ObjectNode) value;
                 } else {
                     break;
                 }
             } while (iterator.hasNext());
             
             if (value != null && matchedProperties == propertyNames.size()) {
-                return value;
+                return getValue(value);
             }
         }
         
         return null;
     }
-    
+
+    public static Object getValue(JsonNode value) {
+        if (value.isValueNode()) {
+            switch (value.getNodeType()) {
+                case BOOLEAN:
+                    return value.asBoolean();
+                case NUMBER:
+                    if (value.isInt()) {
+                        return value.asInt();
+                    } else if (value.isLong()) {
+                        return value.asLong();
+                    } else if (value.isDouble()) {
+                        return value.asDouble();
+                    }
+                case STRING :
+                    return value.asText();
+            }
+        }
+        return value;
+    }
+
+    private JsonNode fromJson(String json){
+        try {
+            return getMapper().readTree(json);
+        } catch (IOException e) {
+            //Should not happen while reading from String
+            throw new IllegalArgumentException(e);
+        }
+    }
+
+    private String toJson(Object object){
+        try {
+            return getMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
+    private String toPrettyJson(Object object){
+        try {
+            return getMapper().writerWithDefaultPrettyPrinter().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalStateException(e);
+        }
+    }
+
     /**
      * Converts to an Object (only POJOs and JSONObject are supported).
      * 
@@ -548,9 +520,9 @@ public class JsonSerializable implements Serializable {
                 || Number.class.isAssignableFrom(c) || Boolean.class.isAssignableFrom(c)) {
             throw new IllegalArgumentException("c can only be a POJO class or JSONObject");
         }
-        if (JSONObject.class.isAssignableFrom(c)) {
+        if (ObjectNode.class.isAssignableFrom(c)) {
             // JSONObject
-            if (JSONObject.class != c) {
+            if (ObjectNode.class != c) {
                 throw new IllegalArgumentException("We support JSONObject but not its sub-classes.");
             }
             return c.cast(this.propertyBag);
@@ -583,9 +555,9 @@ public class JsonSerializable implements Serializable {
     public String toJson(SerializationFormattingPolicy formattingPolicy) {
         this.populatePropertyBag();
         if (SerializationFormattingPolicy.Indented.equals(formattingPolicy) ) {
-            return this.propertyBag.toString(INDENT_FACTOR);
+            return toPrettyJson(propertyBag);
         } else {
-            return this.propertyBag.toString();
+            return toJson(propertyBag);
         }
     }
 
@@ -598,16 +570,16 @@ public class JsonSerializable implements Serializable {
      * @return string representation of property bag.
      */
     public String toString() {
-        return this.propertyBag.toString();
+        return toJson(propertyBag);
     }
 
     private void writeObject(ObjectOutputStream outputStream) throws IOException {
         outputStream.defaultWriteObject();
-        outputStream.writeObject(propertyBag.toString());
+        outputStream.writeObject(toJson(propertyBag));
     }
 
-    private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException, JSONException {
+    private void readObject(ObjectInputStream inputStream) throws ClassNotFoundException, IOException {
         inputStream.defaultReadObject();
-        propertyBag = new JSONObject((String) inputStream.readObject());
+        propertyBag = (ObjectNode) fromJson((String) inputStream.readObject());
     }
 }

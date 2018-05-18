@@ -44,8 +44,10 @@ import java.util.concurrent.TimeUnit;
 import javax.net.ssl.SSLEngine;
 import javax.net.ssl.SSLException;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonNode;
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -642,8 +644,8 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Object object = objectArray[i];
             if (object instanceof JsonSerializable) {
                 stringArray[i] = ((JsonSerializable) object).toJson();
-            } else if (object instanceof JSONObject) {
-                stringArray[i] = object.toString();
+            } else if (object instanceof ObjectNode) {
+                stringArray[i] = toJson(object);
             } else {
 
                 // POJO, number, String or Boolean
@@ -656,6 +658,14 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
         }
 
         return String.format("[%s]", StringUtils.join(stringArray, ","));
+    }
+
+    private static String toJson(Object object){
+        try {
+            return Utils.getSimpleObjectMapper().writeValueAsString(object);
+        } catch (JsonProcessingException e) {
+            throw new IllegalArgumentException(e);
+        }
     }
 
     private static void validateResource(Resource resource) {
@@ -813,7 +823,7 @@ public class RxDocumentClientImpl implements AsyncDocumentClient, IAuthorization
             Collection<String> parts = PathParser.getPathParts(path);
             if (parts.size() >= 1) {
                 Object value = document.getObjectByPath(parts);
-                if (value == null || value.getClass() == JSONObject.class) {
+                if (value == null || value.getClass() == ObjectNode.class) {
                     value = Undefined.Value();
                 }
 

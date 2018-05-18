@@ -25,7 +25,7 @@ package com.microsoft.azure.cosmosdb;
 
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -61,7 +61,7 @@ public final class ConsistencyPolicy extends JsonSerializable {
      *
      * @param jsonObject the json object that represents the consistency policy.
      */
-    public ConsistencyPolicy(JSONObject jsonObject) {
+    public ConsistencyPolicy(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

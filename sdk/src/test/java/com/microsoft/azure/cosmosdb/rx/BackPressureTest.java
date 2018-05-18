@@ -174,7 +174,7 @@ public class BackPressureTest extends TestSuiteBase {
                         , null).first().map(FeedResponse::getResults).toBlocking().single().get(0);
         offer.getContent().put("offerThroughput", 10000);
         offer = client.replaceOffer(offer).toBlocking().single().getResource();
-        assertThat(offer.getContent().get("offerThroughput")).isEqualTo(10000);
+        assertThat(offer.getContent().get("offerThroughput").asInt()).isEqualTo(10000);
 
         ArrayList<Document> docDefList = new ArrayList<>();
         for(int i = 0; i < 1000; i++) {

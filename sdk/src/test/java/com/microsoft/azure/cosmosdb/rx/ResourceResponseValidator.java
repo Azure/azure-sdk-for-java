@@ -221,7 +221,7 @@ public interface ResourceResponseValidator<T extends Resource> {
 
                 @Override
                 public void validate(ResourceResponse<Offer> resourceResponse) {
-                    assertThat(resourceResponse.getResource().getContent().getInt("offerThroughput"))
+                    assertThat(resourceResponse.getResource().getContent().get("offerThroughput").asInt())
                             .isEqualTo(throughput);
                 }
             });

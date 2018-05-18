@@ -23,7 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -56,7 +56,7 @@ public final class Conflict extends Resource {
      *
      * @param jsonObject the json object that represents the conflict.
      */
-    public Conflict(JSONObject jsonObject) {
+    public Conflict(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

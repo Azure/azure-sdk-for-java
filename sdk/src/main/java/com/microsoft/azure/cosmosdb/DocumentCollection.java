@@ -24,7 +24,7 @@
 package com.microsoft.azure.cosmosdb;
 
 import org.apache.commons.lang3.StringUtils;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -62,7 +62,7 @@ public final class DocumentCollection extends Resource {
      *
      * @param jsonObject the json object that represents the document collection.
      */
-    public DocumentCollection(JSONObject jsonObject) {
+    public DocumentCollection(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

@@ -29,8 +29,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.List;
 
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.core.JsonGenerator;
 import com.fasterxml.jackson.core.JsonParser;
 import com.fasterxml.jackson.core.ObjectCodec;
@@ -40,6 +38,7 @@ import com.fasterxml.jackson.databind.SerializerProvider;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.databind.deser.std.StdDeserializer;
+import com.fasterxml.jackson.databind.node.NullNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.fasterxml.jackson.databind.ser.std.StdSerializer;
 import com.microsoft.azure.cosmosdb.Undefined;
@@ -90,7 +89,7 @@ public class PartitionKeyInternal implements Comparable<PartitionKeyInternal> {
 
         List<IPartitionKeyComponent> components = new ArrayList<>();
         for (Object value : values) {
-            if (value == JSONObject.NULL || value == null) {
+            if (value == NullNode.instance || value == null) {
                 components.add(NullPartitionKeyComponent.VALUE);
             } else if (value instanceof Undefined) {
                 components.add(UndefinedPartitionKeyComponent.VALUE);

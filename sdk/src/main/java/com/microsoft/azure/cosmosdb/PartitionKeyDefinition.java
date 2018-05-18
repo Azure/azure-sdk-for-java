@@ -27,7 +27,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -61,7 +61,7 @@ public final class PartitionKeyDefinition extends JsonSerializable {
      *
      * @param jsonObject the JSON object that represents the partition key definition.
      */
-    public PartitionKeyDefinition(JSONObject jsonObject) {
+    public PartitionKeyDefinition(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

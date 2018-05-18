@@ -25,10 +25,9 @@ package com.microsoft.azure.cosmosdb.internal.routing;
 
 import java.util.Comparator;
 
-import org.json.JSONObject;
-
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.JsonSerializable;
 
 @JsonIgnoreProperties({"empty", "singleValue", "hashMap"})
@@ -50,7 +49,7 @@ public final class Range<T extends Comparable<T>> extends JsonSerializable {
         super(jsonString);
     }
 
-    public Range(JSONObject jsonObject) {
+    public Range(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

@@ -23,7 +23,7 @@
 
 package com.microsoft.azure.cosmosdb;
 
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -54,7 +54,7 @@ public class User extends Resource {
      *
      * @param jsonObject the json object that represents the database user.
      */
-    public User(JSONObject jsonObject) {
+    public User(ObjectNode jsonObject) {
         super(jsonObject);
     }
 

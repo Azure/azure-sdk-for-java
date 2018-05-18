@@ -24,7 +24,7 @@
 package com.microsoft.azure.cosmosdb;
 
 import org.apache.commons.lang3.text.WordUtils;
-import org.json.JSONObject;
+import com.fasterxml.jackson.databind.node.ObjectNode;
 
 import com.microsoft.azure.cosmosdb.internal.Constants;
 
@@ -61,7 +61,7 @@ public abstract class Index extends JsonSerializable {
      * @param jsonObject the json object that represents the index.
      * @param indexKind the kind of the index
      */
-    protected Index(JSONObject jsonObject, IndexKind indexKind) {
+    protected Index(ObjectNode jsonObject, IndexKind indexKind) {
         super(jsonObject);
         this.setKind(indexKind);
     }
