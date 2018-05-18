@@ -33,11 +33,15 @@ class IntegrationAccountSchemasImpl extends WrapperImpl<SchemasInner> implements
 
     @Override
     public IntegrationAccountSchemaImpl define(String name) {
-        return new IntegrationAccountSchemaImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private IntegrationAccountSchemaImpl wrapModel(IntegrationAccountSchemaInner inner) {
         return  new IntegrationAccountSchemaImpl(inner, manager());
+    }
+
+    private IntegrationAccountSchemaImpl wrapModel(String name) {
+        return new IntegrationAccountSchemaImpl(name, this.manager());
     }
 
     @Override

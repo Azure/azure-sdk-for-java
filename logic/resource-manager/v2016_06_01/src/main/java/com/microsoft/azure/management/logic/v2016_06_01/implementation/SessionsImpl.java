@@ -31,11 +31,15 @@ class SessionsImpl extends WrapperImpl<SessionsInner> implements Sessions {
 
     @Override
     public IntegrationAccountSessionImpl define(String name) {
-        return new IntegrationAccountSessionImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private IntegrationAccountSessionImpl wrapModel(IntegrationAccountSessionInner inner) {
         return  new IntegrationAccountSessionImpl(inner, manager());
+    }
+
+    private IntegrationAccountSessionImpl wrapModel(String name) {
+        return new IntegrationAccountSessionImpl(name, this.manager());
     }
 
     private Observable<Page<IntegrationAccountSessionInner>> listByIntegrationAccountNextInnerPageAsync(String nextLink) {

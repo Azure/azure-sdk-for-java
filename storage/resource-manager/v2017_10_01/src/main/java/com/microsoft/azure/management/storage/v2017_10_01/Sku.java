@@ -9,15 +9,10 @@
 package com.microsoft.azure.management.storage.v2017_10_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.storage.v2017_10_01.implementation.SkuInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2017_10_01.implementation.StorageManager;
-import com.microsoft.azure.management.storage.v2017_10_01.implementation.SkuInner;
 import java.util.List;
-import com.microsoft.azure.management.storage.v2017_10_01.SKUCapability;
-import com.microsoft.azure.management.storage.v2017_10_01.Kind;
-import com.microsoft.azure.management.storage.v2017_10_01.SkuName;
-import com.microsoft.azure.management.storage.v2017_10_01.Restriction;
-import com.microsoft.azure.management.storage.v2017_10_01.SkuTier;
 
 /**
  * Type representing Sku.

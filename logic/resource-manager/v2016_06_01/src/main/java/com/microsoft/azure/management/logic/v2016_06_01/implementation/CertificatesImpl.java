@@ -31,11 +31,15 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
 
     @Override
     public IntegrationAccountCertificateImpl define(String name) {
-        return new IntegrationAccountCertificateImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private IntegrationAccountCertificateImpl wrapModel(IntegrationAccountCertificateInner inner) {
         return  new IntegrationAccountCertificateImpl(inner, manager());
+    }
+
+    private IntegrationAccountCertificateImpl wrapModel(String name) {
+        return new IntegrationAccountCertificateImpl(name, this.manager());
     }
 
     private Observable<Page<IntegrationAccountCertificateInner>> listByIntegrationAccountNextInnerPageAsync(String nextLink) {

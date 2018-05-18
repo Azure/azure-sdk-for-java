@@ -16,6 +16,9 @@ import com.microsoft.rest.ExpandableStringEnum;
  * Defines values for RoutingSource.
  */
 public final class RoutingSource extends ExpandableStringEnum<RoutingSource> {
+    /** Static value Invalid for RoutingSource. */
+    public static final RoutingSource INVALID = fromString("Invalid");
+
     /** Static value DeviceMessages for RoutingSource. */
     public static final RoutingSource DEVICE_MESSAGES = fromString("DeviceMessages");
 

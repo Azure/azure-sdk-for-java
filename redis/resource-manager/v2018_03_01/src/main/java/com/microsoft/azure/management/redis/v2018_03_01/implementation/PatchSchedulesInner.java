@@ -11,8 +11,12 @@ package com.microsoft.azure.management.redis.v2018_03_01.implementation;
 import com.microsoft.azure.arm.collection.InnerSupportsDelete;
 import retrofit2.Retrofit;
 import com.google.common.reflect.TypeToken;
+import com.microsoft.azure.AzureServiceFuture;
 import com.microsoft.azure.CloudException;
+import com.microsoft.azure.ListOperationCallback;
 import com.microsoft.azure.management.redis.v2018_03_01.ScheduleEntry;
+import com.microsoft.azure.Page;
+import com.microsoft.azure.PagedList;
 import com.microsoft.rest.ServiceCallback;
 import com.microsoft.rest.ServiceFuture;
 import com.microsoft.rest.ServiceResponse;
@@ -28,6 +32,7 @@ import retrofit2.http.HTTP;
 import retrofit2.http.Path;
 import retrofit2.http.PUT;
 import retrofit2.http.Query;
+import retrofit2.http.Url;
 import retrofit2.Response;
 import rx.functions.Func1;
 import rx.Observable;
@@ -58,6 +63,10 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
      * used by Retrofit to perform actually REST calls.
      */
     interface PatchSchedulesService {
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.v2018_03_01.PatchSchedules listByRedisResource" })
+        @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{cacheName}/patchSchedules")
+        Observable<Response<ResponseBody>> listByRedisResource(@Path("subscriptionId") String subscriptionId, @Path("resourceGroupName") String resourceGroupName, @Path("cacheName") String cacheName, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.v2018_03_01.PatchSchedules createOrUpdate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/patchSchedules/{default}")
         Observable<Response<ResponseBody>> createOrUpdate(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("default") String defaultParameter, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Body RedisPatchScheduleInner parameters, @Header("User-Agent") String userAgent);
@@ -70,6 +79,133 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
         @GET("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.Cache/Redis/{name}/patchSchedules/{default}")
         Observable<Response<ResponseBody>> get(@Path("resourceGroupName") String resourceGroupName, @Path("name") String name, @Path("default") String defaultParameter, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
+        @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.redis.v2018_03_01.PatchSchedules listByRedisResourceNext" })
+        @GET
+        Observable<Response<ResponseBody>> listByRedisResourceNext(@Url String nextUrl, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;RedisPatchScheduleInner&gt; object if successful.
+     */
+    public PagedList<RedisPatchScheduleInner> listByRedisResource(final String resourceGroupName, final String cacheName) {
+        ServiceResponse<Page<RedisPatchScheduleInner>> response = listByRedisResourceSinglePageAsync(resourceGroupName, cacheName).toBlocking().single();
+        return new PagedList<RedisPatchScheduleInner>(response.body()) {
+            @Override
+            public Page<RedisPatchScheduleInner> nextPage(String nextPageLink) {
+                return listByRedisResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RedisPatchScheduleInner>> listByRedisResourceAsync(final String resourceGroupName, final String cacheName, final ListOperationCallback<RedisPatchScheduleInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByRedisResourceSinglePageAsync(resourceGroupName, cacheName),
+            new Func1<String, Observable<ServiceResponse<Page<RedisPatchScheduleInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> call(String nextPageLink) {
+                    return listByRedisResourceNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RedisPatchScheduleInner&gt; object
+     */
+    public Observable<Page<RedisPatchScheduleInner>> listByRedisResourceAsync(final String resourceGroupName, final String cacheName) {
+        return listByRedisResourceWithServiceResponseAsync(resourceGroupName, cacheName)
+            .map(new Func1<ServiceResponse<Page<RedisPatchScheduleInner>>, Page<RedisPatchScheduleInner>>() {
+                @Override
+                public Page<RedisPatchScheduleInner> call(ServiceResponse<Page<RedisPatchScheduleInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RedisPatchScheduleInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> listByRedisResourceWithServiceResponseAsync(final String resourceGroupName, final String cacheName) {
+        return listByRedisResourceSinglePageAsync(resourceGroupName, cacheName)
+            .concatMap(new Func1<ServiceResponse<Page<RedisPatchScheduleInner>>, Observable<ServiceResponse<Page<RedisPatchScheduleInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> call(ServiceResponse<Page<RedisPatchScheduleInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByRedisResourceNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+    ServiceResponse<PageImpl<RedisPatchScheduleInner>> * @param resourceGroupName The name of the resource group.
+    ServiceResponse<PageImpl<RedisPatchScheduleInner>> * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RedisPatchScheduleInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> listByRedisResourceSinglePageAsync(final String resourceGroupName, final String cacheName) {
+        if (this.client.subscriptionId() == null) {
+            throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
+        }
+        if (resourceGroupName == null) {
+            throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
+        }
+        if (cacheName == null) {
+            throw new IllegalArgumentException("Parameter cacheName is required and cannot be null.");
+        }
+        if (this.client.apiVersion() == null) {
+            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
+        }
+        return service.listByRedisResource(this.client.subscriptionId(), resourceGroupName, cacheName, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RedisPatchScheduleInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RedisPatchScheduleInner>> result = listByRedisResourceDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RedisPatchScheduleInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<RedisPatchScheduleInner>> listByRedisResourceDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RedisPatchScheduleInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<RedisPatchScheduleInner>>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
     }
 
     /**
@@ -340,6 +476,117 @@ public class PatchSchedulesInner implements InnerSupportsDelete<Void> {
     private ServiceResponse<RedisPatchScheduleInner> getDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
         return this.client.restClient().responseBuilderFactory().<RedisPatchScheduleInner, CloudException>newInstance(this.client.serializerAdapter())
                 .register(200, new TypeToken<RedisPatchScheduleInner>() { }.getType())
+                .registerError(CloudException.class)
+                .build(response);
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @throws CloudException thrown if the request is rejected by server
+     * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
+     * @return the PagedList&lt;RedisPatchScheduleInner&gt; object if successful.
+     */
+    public PagedList<RedisPatchScheduleInner> listByRedisResourceNext(final String nextPageLink) {
+        ServiceResponse<Page<RedisPatchScheduleInner>> response = listByRedisResourceNextSinglePageAsync(nextPageLink).toBlocking().single();
+        return new PagedList<RedisPatchScheduleInner>(response.body()) {
+            @Override
+            public Page<RedisPatchScheduleInner> nextPage(String nextPageLink) {
+                return listByRedisResourceNextSinglePageAsync(nextPageLink).toBlocking().single().body();
+            }
+        };
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @param serviceFuture the ServiceFuture object tracking the Retrofit calls
+     * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the {@link ServiceFuture} object
+     */
+    public ServiceFuture<List<RedisPatchScheduleInner>> listByRedisResourceNextAsync(final String nextPageLink, final ServiceFuture<List<RedisPatchScheduleInner>> serviceFuture, final ListOperationCallback<RedisPatchScheduleInner> serviceCallback) {
+        return AzureServiceFuture.fromPageResponse(
+            listByRedisResourceNextSinglePageAsync(nextPageLink),
+            new Func1<String, Observable<ServiceResponse<Page<RedisPatchScheduleInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> call(String nextPageLink) {
+                    return listByRedisResourceNextSinglePageAsync(nextPageLink);
+                }
+            },
+            serviceCallback);
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RedisPatchScheduleInner&gt; object
+     */
+    public Observable<Page<RedisPatchScheduleInner>> listByRedisResourceNextAsync(final String nextPageLink) {
+        return listByRedisResourceNextWithServiceResponseAsync(nextPageLink)
+            .map(new Func1<ServiceResponse<Page<RedisPatchScheduleInner>>, Page<RedisPatchScheduleInner>>() {
+                @Override
+                public Page<RedisPatchScheduleInner> call(ServiceResponse<Page<RedisPatchScheduleInner>> response) {
+                    return response.body();
+                }
+            });
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+     * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable to the PagedList&lt;RedisPatchScheduleInner&gt; object
+     */
+    public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> listByRedisResourceNextWithServiceResponseAsync(final String nextPageLink) {
+        return listByRedisResourceNextSinglePageAsync(nextPageLink)
+            .concatMap(new Func1<ServiceResponse<Page<RedisPatchScheduleInner>>, Observable<ServiceResponse<Page<RedisPatchScheduleInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> call(ServiceResponse<Page<RedisPatchScheduleInner>> page) {
+                    String nextPageLink = page.body().nextPageLink();
+                    if (nextPageLink == null) {
+                        return Observable.just(page);
+                    }
+                    return Observable.just(page).concatWith(listByRedisResourceNextWithServiceResponseAsync(nextPageLink));
+                }
+            });
+    }
+
+    /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+    ServiceResponse<PageImpl<RedisPatchScheduleInner>> * @param nextPageLink The NextLink from the previous successful call to List operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the PagedList&lt;RedisPatchScheduleInner&gt; object wrapped in {@link ServiceResponse} if successful.
+     */
+    public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> listByRedisResourceNextSinglePageAsync(final String nextPageLink) {
+        if (nextPageLink == null) {
+            throw new IllegalArgumentException("Parameter nextPageLink is required and cannot be null.");
+        }
+        String nextUrl = String.format("%s", nextPageLink);
+        return service.listByRedisResourceNext(nextUrl, this.client.acceptLanguage(), this.client.userAgent())
+            .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Page<RedisPatchScheduleInner>>>>() {
+                @Override
+                public Observable<ServiceResponse<Page<RedisPatchScheduleInner>>> call(Response<ResponseBody> response) {
+                    try {
+                        ServiceResponse<PageImpl<RedisPatchScheduleInner>> result = listByRedisResourceNextDelegate(response);
+                        return Observable.just(new ServiceResponse<Page<RedisPatchScheduleInner>>(result.body(), result.response()));
+                    } catch (Throwable t) {
+                        return Observable.error(t);
+                    }
+                }
+            });
+    }
+
+    private ServiceResponse<PageImpl<RedisPatchScheduleInner>> listByRedisResourceNextDelegate(Response<ResponseBody> response) throws CloudException, IOException, IllegalArgumentException {
+        return this.client.restClient().responseBuilderFactory().<PageImpl<RedisPatchScheduleInner>, CloudException>newInstance(this.client.serializerAdapter())
+                .register(200, new TypeToken<PageImpl<RedisPatchScheduleInner>>() { }.getType())
                 .registerError(CloudException.class)
                 .build(response);
     }

@@ -13,7 +13,6 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2017_10_01.implementation.StorageManager;
 import com.microsoft.azure.management.storage.v2017_10_01.implementation.StorageAccountListKeysResultInner;
 import java.util.List;
-import com.microsoft.azure.management.storage.v2017_10_01.StorageAccountKey;
 
 /**
  * Type representing StorageAccountListKeysResult.

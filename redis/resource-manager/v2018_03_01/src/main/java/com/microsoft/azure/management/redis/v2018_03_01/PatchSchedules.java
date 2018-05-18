@@ -20,6 +20,16 @@ import com.microsoft.azure.arm.model.HasInner;
 public interface PatchSchedules extends SupportsCreating<RedisPatchSchedule.DefinitionStages.Blank>, HasInner<PatchSchedulesInner> {
 
     /**
+     * Gets all patch schedules in the specified redis cache (there is only one).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RedisPatchSchedule> listByRedisAsync(final String resourceGroupName, final String cacheName);
+
+    /**
      * Gets the patching schedule of a redis cache (requires Premium SKU).
     *
      * @param resourceGroupName The name of the resource group.

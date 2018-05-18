@@ -33,11 +33,15 @@ class AgreementsImpl extends WrapperImpl<AgreementsInner> implements Agreements 
 
     @Override
     public IntegrationAccountAgreementImpl define(String name) {
-        return new IntegrationAccountAgreementImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private IntegrationAccountAgreementImpl wrapModel(IntegrationAccountAgreementInner inner) {
         return  new IntegrationAccountAgreementImpl(inner, manager());
+    }
+
+    private IntegrationAccountAgreementImpl wrapModel(String name) {
+        return new IntegrationAccountAgreementImpl(name, this.manager());
     }
 
     @Override

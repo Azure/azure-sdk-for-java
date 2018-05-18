@@ -12,7 +12,6 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.eventgrid.v2018_01_01.implementation.EventGridManager;
 import com.microsoft.azure.management.eventgrid.v2018_01_01.implementation.OperationInner;
-import com.microsoft.azure.management.eventgrid.v2018_01_01.OperationInfo;
 
 /**
  * Type representing Operation.

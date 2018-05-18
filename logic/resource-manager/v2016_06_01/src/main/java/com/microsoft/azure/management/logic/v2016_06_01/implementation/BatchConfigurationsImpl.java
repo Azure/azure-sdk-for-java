@@ -31,11 +31,15 @@ class BatchConfigurationsImpl extends WrapperImpl<IntegrationAccountBatchConfigu
 
     @Override
     public BatchConfigurationImpl define(String name) {
-        return new BatchConfigurationImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private BatchConfigurationImpl wrapModel(BatchConfigurationInner inner) {
         return  new BatchConfigurationImpl(inner, manager());
+    }
+
+    private BatchConfigurationImpl wrapModel(String name) {
+        return new BatchConfigurationImpl(name, this.manager());
     }
 
     @Override

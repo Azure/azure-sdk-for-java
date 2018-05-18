@@ -100,7 +100,7 @@ public interface Redis extends SupportsCreating<RedisResource.DefinitionStages.B
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation.
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource type is 'Microsoft.Cache/redis'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */

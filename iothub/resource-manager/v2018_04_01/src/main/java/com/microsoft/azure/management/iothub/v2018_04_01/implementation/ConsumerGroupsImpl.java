@@ -31,11 +31,15 @@ class ConsumerGroupsImpl extends WrapperImpl<IotHubResourcesInner> implements Co
 
     @Override
     public EventHubConsumerGroupInfoImpl define(String name) {
-        return new EventHubConsumerGroupInfoImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private EventHubConsumerGroupInfoImpl wrapModel(EventHubConsumerGroupInfoInner inner) {
         return  new EventHubConsumerGroupInfoImpl(inner, manager());
+    }
+
+    private EventHubConsumerGroupInfoImpl wrapModel(String name) {
+        return new EventHubConsumerGroupInfoImpl(name, this.manager());
     }
 
     private Observable<Page<EventHubConsumerGroupInfoInner>> listByEventHubEndpointNextInnerPageAsync(String nextLink) {

@@ -32,11 +32,15 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
 
     @Override
     public CertificateDescriptionImpl define(String name) {
-        return new CertificateDescriptionImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private CertificateDescriptionImpl wrapModel(CertificateDescriptionInner inner) {
         return  new CertificateDescriptionImpl(inner, manager());
+    }
+
+    private CertificateDescriptionImpl wrapModel(String name) {
+        return new CertificateDescriptionImpl(name, this.manager());
     }
 
     @Override

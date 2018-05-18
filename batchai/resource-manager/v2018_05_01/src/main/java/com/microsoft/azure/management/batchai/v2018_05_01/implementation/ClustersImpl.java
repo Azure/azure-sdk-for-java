@@ -32,11 +32,15 @@ class ClustersImpl extends WrapperImpl<ClustersInner> implements Clusters {
 
     @Override
     public ClusterImpl define(String name) {
-        return new ClusterImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private ClusterImpl wrapModel(ClusterInner inner) {
         return  new ClusterImpl(inner, manager());
+    }
+
+    private ClusterImpl wrapModel(String name) {
+        return new ClusterImpl(name, this.manager());
     }
 
     private Observable<Page<RemoteLoginInformationInner>> listRemoteLoginInformationNextInnerPageAsync(String nextLink) {

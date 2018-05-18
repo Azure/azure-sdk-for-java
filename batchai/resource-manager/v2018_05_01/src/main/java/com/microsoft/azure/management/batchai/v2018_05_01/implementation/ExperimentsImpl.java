@@ -38,11 +38,15 @@ class ExperimentsImpl extends WrapperImpl<ExperimentsInner> implements Experimen
 
     @Override
     public ExperimentImpl define(String name) {
-        return new ExperimentImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private ExperimentImpl wrapModel(ExperimentInner inner) {
         return  new ExperimentImpl(inner, manager());
+    }
+
+    private ExperimentImpl wrapModel(String name) {
+        return new ExperimentImpl(name, this.manager());
     }
 
     private Observable<Page<ExperimentInner>> listByWorkspaceNextInnerPageAsync(String nextLink) {

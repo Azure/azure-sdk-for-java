@@ -26,13 +26,13 @@ public class IotHubDescriptionInner extends Resource {
     private String etag;
 
     /**
-     * The properties property.
+     * IotHub properties.
      */
     @JsonProperty(value = "properties")
     private IotHubProperties properties;
 
     /**
-     * The sku property.
+     * IotHub SKU info.
      */
     @JsonProperty(value = "sku", required = true)
     private IotHubSkuInfo sku;

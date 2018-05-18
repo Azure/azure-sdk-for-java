@@ -9,13 +9,13 @@
 package com.microsoft.azure.management.signalr.v2018_03_01_preview.implementation;
 
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRCreateOrUpdateProperties;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRResource;
 import rx.Observable;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRUpdateParameters;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRCreateParameters;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.ProvisioningState;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.ResourceSku;
+import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRCreateOrUpdateProperties;
 import rx.functions.Func1;
 
 class SignalRResourceImpl extends GroupableResourceCoreImpl<SignalRResource, SignalRResourceInner, SignalRResourceImpl, SignalRManager> implements SignalRResource, SignalRResource.Definition, SignalRResource.Update {

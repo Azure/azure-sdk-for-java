@@ -8,20 +8,12 @@
 
 package com.microsoft.azure.management.storage.v2017_10_01;
 
-import rx.Observable;
+import com.microsoft.azure.arm.collection.SupportsListing;
 import com.microsoft.azure.management.storage.v2017_10_01.implementation.SkusInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing Skus.
  */
-public interface Skus extends HasInner<SkusInner> {
-    /**
-     * Lists the available SKUs supported by Microsoft.Storage for given subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Sku> listAsync();
-
+public interface Skus extends SupportsListing<Sku>, HasInner<SkusInner> {
 }

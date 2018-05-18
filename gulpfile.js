@@ -97,43 +97,12 @@ var handleInput = function(projects, cb) {
     }
 }
 
-var normalizeApiVersion = function(ver) {
-    return "v" + ver.replace(/-/g, '_');
-}
-
 var codegen = function(project, cb) {
-    var packageNamespace = mappings[project].package;
-    if (mappings[project].apiVersion !== undefined) {
-        packageNamespace = packageNamespace + "." + normalizeApiVersion(mappings[project].apiVersion);
-    }
-
-    if (mappings[project].dir == undefined && mappings[project].apiVersion == undefined) {
-        console.error(`${project}.dir attribute is required if ${project}.apiVersion attribute is not specified`);
-        process.exit(1);
-    }
-
-    var rootDir;
-    if (mappings[project].dir !== undefined) {
-        rootDir = mappings[project].dir;
-        if (mappings[project].apiVersion !== undefined) {
-            rootDir = rootDir + "-" + normalizeApiVersion(mappings[project].apiVersion);
-            rootDir = path.join(project, rootDir);
-        }
-    } else {
-        rootDir = normalizeApiVersion(mappings[project].apiVersion);
-        rootDir = path.join(project, rootDir);
-    }
-
     if (!args['preserve']) {
-        const sourcesToDelete = path.join(rootDir, '/src/main/java/', packageNamespace.replace(/\./g, '/'));
-        deleteFolderRecursive(sourcesToDelete);
+        deleteFolderRecursive(project);
     }
 
     console.log('Generating "' + project + '" from spec file ' + specRoot + '/' + mappings[project].source);
-    var generator = '--fluent';
-    if (mappings[project].fluent !== null && mappings[project].fluent === false) {
-        generator = '';
-    }
 
     const generatorPath = args['autorest-java']
         ? `--use=${path.resolve(args['autorest-java'])} `
@@ -161,9 +130,7 @@ var codegen = function(project, cb) {
     cmd = autoRestExe + ' ' + specRoot + "/" + mappings[project].source +
                         ' --java ' +
                         ' --azure-arm ' +
-                        generator +
-                        ` --java.namespace=${packageNamespace} ` +
-                        ` --java.output-folder=${path.resolve(rootDir)} ` +
+                        ' --azure-libraries-for-java-folder=' + process.cwd() + ' ' +
                         ` --license-header=MICROSOFT_MIT_NO_CODEGEN ` +
                         generatorPath +
                         regenManager +

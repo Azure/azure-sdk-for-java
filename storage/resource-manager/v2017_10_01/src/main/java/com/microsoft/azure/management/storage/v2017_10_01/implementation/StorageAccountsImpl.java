@@ -193,7 +193,7 @@ class StorageAccountsImpl extends GroupableResourcesCoreImpl<StorageAccount, Sto
 
     @Override
     protected StorageAccountImpl wrapModel(StorageAccountInner inner) {
-        return  new StorageAccountImpl(inner.name(), inner, this.manager());
+        return  new StorageAccountImpl(inner.name(), inner, manager());
     }
 
     @Override

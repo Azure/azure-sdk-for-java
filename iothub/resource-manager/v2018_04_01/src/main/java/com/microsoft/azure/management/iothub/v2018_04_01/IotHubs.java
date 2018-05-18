@@ -44,6 +44,11 @@ public interface IotHubs extends SupportsCreating<IotHubDescription.DefinitionSt
     QuotaMetrics quotaMetrics();
 
     /**
+     * @return Entry point to manage IotHub Route.
+     */
+    Routes routes();
+
+    /**
      * @return Entry point to manage IotHub IotHubKey.
      */
     IotHubKeys iotHubKeys();
@@ -57,6 +62,17 @@ public interface IotHubs extends SupportsCreating<IotHubDescription.DefinitionSt
      * @return Entry point to manage IotHub EventHubEndpoint.
      */
     EventHubEndpoints eventHubEndpoints();
+    /**
+     * Get the health for routing endpoints.
+     * Get the health for routing endpoints.
+     *
+     * @param resourceGroupName the String value
+     * @param iotHubName the String value
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<EndpointHealthData> getEndpointHealthAsync(final String resourceGroupName, final String iotHubName);
+
     /**
      * Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.
      * Get the security metadata for an IoT hub. For more information, see: https://docs.microsoft.com/azure/iot-hub/iot-hub-devguide-security.

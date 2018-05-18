@@ -155,7 +155,7 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation.
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource type is 'Microsoft.Cache/redis'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
@@ -167,7 +167,7 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation.
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource type is 'Microsoft.Cache/redis'
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
@@ -179,7 +179,7 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation.
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource type is 'Microsoft.Cache/redis'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */
@@ -195,7 +195,7 @@ public class RedisInner implements InnerSupportsGet<RedisResourceInner>, InnerSu
     /**
      * Checks that the redis cache name is valid and is not already in use.
      *
-     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation.
+     * @param parameters Parameters supplied to the CheckNameAvailability Redis operation. The only supported resource type is 'Microsoft.Cache/redis'
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceResponse} object if successful.
      */

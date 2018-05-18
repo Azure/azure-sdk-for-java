@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.redis.v2018_03_01.implementation;
 
-import com.microsoft.azure.Resource;
 import java.util.Map;
 import com.microsoft.azure.management.redis.v2018_03_01.TlsVersion;
 import com.microsoft.azure.management.redis.v2018_03_01.Sku;
@@ -17,6 +16,7 @@ import java.util.List;
 import com.microsoft.azure.management.redis.v2018_03_01.RedisLinkedServer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.Resource;
 
 /**
  * A single Redis item in List or Get Operation.

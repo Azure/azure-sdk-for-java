@@ -33,11 +33,15 @@ class MapsImpl extends WrapperImpl<MapsInner> implements Maps {
 
     @Override
     public IntegrationAccountMapImpl define(String name) {
-        return new IntegrationAccountMapImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private IntegrationAccountMapImpl wrapModel(IntegrationAccountMapInner inner) {
         return  new IntegrationAccountMapImpl(inner, manager());
+    }
+
+    private IntegrationAccountMapImpl wrapModel(String name) {
+        return new IntegrationAccountMapImpl(name, this.manager());
     }
 
     @Override

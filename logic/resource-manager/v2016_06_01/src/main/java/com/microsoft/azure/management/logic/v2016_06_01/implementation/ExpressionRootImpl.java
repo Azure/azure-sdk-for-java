@@ -8,11 +8,11 @@
 
 package com.microsoft.azure.management.logic.v2016_06_01.implementation;
 
-import com.microsoft.azure.management.logic.v2016_06_01.AzureResourceErrorInfo;
-import com.microsoft.azure.management.logic.v2016_06_01.Expression;
 import com.microsoft.azure.management.logic.v2016_06_01.ExpressionRoot;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
+import com.microsoft.azure.management.logic.v2016_06_01.AzureResourceErrorInfo;
 import java.util.List;
+import com.microsoft.azure.management.logic.v2016_06_01.Expression;
 
 class ExpressionRootImpl extends WrapperImpl<ExpressionRootInner> implements ExpressionRoot {
     private final LogicManager manager;

@@ -159,6 +159,19 @@ public class IotHubClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ResourceProviderCommonsInner object to access its operations.
+     */
+    private ResourceProviderCommonsInner resourceProviderCommons;
+
+    /**
+     * Gets the ResourceProviderCommonsInner object to access its operations.
+     * @return the ResourceProviderCommonsInner object.
+     */
+    public ResourceProviderCommonsInner resourceProviderCommons() {
+        return this.resourceProviderCommons;
+    }
+
+    /**
      * The CertificatesInner object to access its operations.
      */
     private CertificatesInner certificates;
@@ -208,6 +221,7 @@ public class IotHubClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.operations = new OperationsInner(restClient().retrofit(), this);
         this.iotHubResources = new IotHubResourcesInner(restClient().retrofit(), this);
+        this.resourceProviderCommons = new ResourceProviderCommonsInner(restClient().retrofit(), this);
         this.certificates = new CertificatesInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);
     }

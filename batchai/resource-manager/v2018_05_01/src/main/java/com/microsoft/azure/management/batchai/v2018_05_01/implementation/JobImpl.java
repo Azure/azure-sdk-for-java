@@ -8,10 +8,8 @@
 
 package com.microsoft.azure.management.batchai.v2018_05_01.implementation;
 
-import com.microsoft.azure.management.batchai.v2018_05_01.Caffe2Settings;
 import com.microsoft.azure.management.batchai.v2018_05_01.Job;
 import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
-import com.microsoft.azure.management.batchai.v2018_05_01.JobBasePropertiesConstraints;
 import rx.Observable;
 import com.microsoft.azure.management.batchai.v2018_05_01.JobCreateParameters;
 import java.util.List;
@@ -38,6 +36,8 @@ import com.microsoft.azure.management.batchai.v2018_05_01.PyTorchSettings;
 import com.microsoft.azure.management.batchai.v2018_05_01.EnvironmentVariableWithSecretValue;
 import com.microsoft.azure.management.batchai.v2018_05_01.TensorFlowSettings;
 import com.microsoft.azure.management.batchai.v2018_05_01.ToolType;
+import com.microsoft.azure.management.batchai.v2018_05_01.Caffe2Settings;
+import com.microsoft.azure.management.batchai.v2018_05_01.JobBasePropertiesConstraints;
 import rx.functions.Func1;
 
 class JobImpl extends CreatableUpdatableImpl<Job, JobInner, JobImpl> implements Job, Job.Definition, Job.Update {

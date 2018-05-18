@@ -1,48 +1,84 @@
 {
-  "eventgrid": {
-    "apiVersion": "2018-01-01",
-    "package": "com.microsoft.azure.management.eventgrid",
+  "batchai/resource-manager": {
+    "source": "specification/batchai/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "cognitiveservices/resource-manager": {
+    "source": "specification/cognitiveservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "compute/resource-manager": {
+    "source": "specification/compute/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "containerservice/resource-manager": {
+    "source": "specification/containerservices/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "eventgrid/resource-manager": {
     "source": "specification/eventgrid/resource-manager/readme.md",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-01"
+    "args": "--multiapi --fluent"
   },
-  "mediaservices": {
-    "apiVersion": "2018-03-30-preview",
-    "package": "com.microsoft.azure.management.mediaservices",
+  "eventgrid/data-plane": {
+    "source": "specification/eventgrid/data-plane/readme.md",
+    "args": "--multiapi"
+  },
+  "iothub/resource-manager": {
+    "source": "specification/iothub/resource-manager/readme.md",
+    "args": "--multiapi --fluent --remove-inner=ErrorDetails",
+    "fconfig": {
+      "\"moduleName\"": "\"IoTHub\""
+    }
+  },
+  "logic/resource-manager": {
+    "source": "specification/logic/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "mediaservices/resource-manager": {
     "source": "specification/mediaservices/resource-manager/readme.md",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-preview"
+    "args": "--multiapi --fluent"
   },
-  "redis": {
-    "apiVersion": "2018-03-01",
-    "package": "com.microsoft.azure.management.redis",
+  "mysql/resource-manager": {
+    "source": "specification/mysql/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"MySQL\""
+    }
+  },
+  "postgresql/resource-manager": {
+    "source": "specification/postgresql/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"PostgreSQL\""
+    }
+  },
+  "redis/resource-manager": {
     "source": "specification/redis/resource-manager/readme.md",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-03",
+    "args": "--multiapi --fluent",
     "fconfig": {
       "\"moduleName\"": "\"Redis\"",
       "\"knownPlurals\"": ["\"redis\""],
       "\"knownSingulars\"": ["\"redis\""]
     }
   },
-  "storage": {
-    "apiVersion": "2017-10-01",
-    "package": "com.microsoft.azure.management.storage",
-    "source": "specification/storage/resource-manager/readme.md",
-    "args": "--payload-flattening-threshold=2 --tag=package-2017-10"
-  },
-  "batchai": {
-    "apiVersion": "2018-05-01",
-    "package": "com.microsoft.azure.management.batchai",
-    "source": "specification/batchai/resource-manager/readme.md",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-05"
-  },
-  "signalr": {
-    "apiVersion": "2018-03-01-preview",
-    "package": "com.microsoft.azure.management.signalr",
+  "signalr/resource-manager": {
     "source": "specification/signalr/resource-manager/readme.md",
-    "args": "--payload-flattening-threshold=1 --tag=package-2018-03-01-preview",
+    "args": "--multiapi --fluent",
     "fconfig": {
       "\"moduleName\"": "\"SignalR\"",
       "\"knownPlurals\"": ["\"signalr\""],
       "\"knownSingulars\"": ["\"signalr\""]
+    }
+  },
+  "storage/resource-manager": {
+    "source": "specification/storage/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
+  "streamanalytics/resource-manager": {
+    "source": "specification/streamanalytics/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"StreamAnalytics\""
     }
   }
 }

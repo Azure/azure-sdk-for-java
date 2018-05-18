@@ -11,12 +11,13 @@ package com.microsoft.azure.management.redis.v2018_03_01.implementation;
 import com.microsoft.azure.management.redis.v2018_03_01.ReplicationRole;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * Response to put/get linked server (with properties) for Redis cache.
  */
 @JsonFlatten
-public class RedisLinkedServerWithPropertiesInner extends ProxyResourceInner {
+public class RedisLinkedServerWithPropertiesInner extends ProxyResource {
     /**
      * Fully qualified resourceId of the linked redis cache.
      */

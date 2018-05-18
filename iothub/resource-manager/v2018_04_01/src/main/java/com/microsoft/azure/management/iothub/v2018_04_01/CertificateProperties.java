@@ -53,6 +53,12 @@ public class CertificateProperties {
     private DateTimeRfc1123 updated;
 
     /**
+     * The certificate content.
+     */
+    @JsonProperty(value = "certificate")
+    private String certificate;
+
+    /**
      * Get the subject value.
      *
      * @return the subject value
@@ -113,6 +119,26 @@ public class CertificateProperties {
             return null;
         }
         return this.updated.dateTime();
+    }
+
+    /**
+     * Get the certificate value.
+     *
+     * @return the certificate value
+     */
+    public String certificate() {
+        return this.certificate;
+    }
+
+    /**
+     * Set the certificate value.
+     *
+     * @param certificate the certificate value to set
+     * @return the CertificateProperties object itself.
+     */
+    public CertificateProperties withCertificate(String certificate) {
+        this.certificate = certificate;
+        return this;
     }
 
 }

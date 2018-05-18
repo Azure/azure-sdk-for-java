@@ -99,7 +99,7 @@ public interface StorageAccount extends HasInner<StorageAccountInner>, Resource,
     /**
      * @return the sku value.
      */
-    SkuInner sku();
+    Sku sku();
 
     /**
      * @return the statusOfPrimary value.

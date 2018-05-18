@@ -12,12 +12,13 @@ import java.util.List;
 import com.microsoft.azure.management.redis.v2018_03_01.ScheduleEntry;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * Response to put/get patch schedules for Redis cache.
  */
 @JsonFlatten
-public class RedisPatchScheduleInner extends ProxyResourceInner {
+public class RedisPatchScheduleInner extends ProxyResource {
     /**
      * List of patch schedules for a Redis cache.
      */

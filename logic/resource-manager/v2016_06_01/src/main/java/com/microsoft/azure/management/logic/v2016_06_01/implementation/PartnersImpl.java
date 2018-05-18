@@ -33,11 +33,15 @@ class PartnersImpl extends WrapperImpl<PartnersInner> implements Partners {
 
     @Override
     public IntegrationAccountPartnerImpl define(String name) {
-        return new IntegrationAccountPartnerImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private IntegrationAccountPartnerImpl wrapModel(IntegrationAccountPartnerInner inner) {
         return  new IntegrationAccountPartnerImpl(inner, manager());
+    }
+
+    private IntegrationAccountPartnerImpl wrapModel(String name) {
+        return new IntegrationAccountPartnerImpl(name, this.manager());
     }
 
     @Override

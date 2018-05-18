@@ -9,11 +9,9 @@
 package com.microsoft.azure.management.storage.v2017_10_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.storage.v2017_10_01.implementation.UsageInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.storage.v2017_10_01.implementation.StorageManager;
-import com.microsoft.azure.management.storage.v2017_10_01.implementation.UsageInner;
-import com.microsoft.azure.management.storage.v2017_10_01.UsageName;
-import com.microsoft.azure.management.storage.v2017_10_01.UsageUnit;
 
 /**
  * Type representing Usage.

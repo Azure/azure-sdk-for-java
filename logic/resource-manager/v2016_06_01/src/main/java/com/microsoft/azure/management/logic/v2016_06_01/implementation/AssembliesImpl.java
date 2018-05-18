@@ -32,11 +32,15 @@ class AssembliesImpl extends WrapperImpl<IntegrationAccountAssembliesInner> impl
 
     @Override
     public AssemblyDefinitionImpl define(String name) {
-        return new AssemblyDefinitionImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private AssemblyDefinitionImpl wrapModel(AssemblyDefinitionInner inner) {
         return  new AssemblyDefinitionImpl(inner, manager());
+    }
+
+    private AssemblyDefinitionImpl wrapModel(String name) {
+        return new AssemblyDefinitionImpl(name, this.manager());
     }
 
     @Override

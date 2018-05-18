@@ -29,7 +29,7 @@ public class IotHubSkuDescriptionInner {
     private IotHubSkuInfo sku;
 
     /**
-     * The capacity property.
+     * IotHub capacity.
      */
     @JsonProperty(value = "capacity", required = true)
     private IotHubCapacity capacity;

@@ -11,19 +11,20 @@ package com.microsoft.azure.management.redis.v2018_03_01;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
- * Parameters body to pass for  name availability check.
+ * Parameters body to pass for resource name availability check.
  */
 public class CheckNameAvailabilityParameters {
     /**
      * Resource name.
      */
-    @JsonProperty(value = "name")
+    @JsonProperty(value = "name", required = true)
     private String name;
 
     /**
-     * Resource type.
+     * Resource type. The only legal value of this property for checking redis
+     * cache name availability is 'Microsoft.Cache/redis'.
      */
-    @JsonProperty(value = "type")
+    @JsonProperty(value = "type", required = true)
     private String type;
 
     /**

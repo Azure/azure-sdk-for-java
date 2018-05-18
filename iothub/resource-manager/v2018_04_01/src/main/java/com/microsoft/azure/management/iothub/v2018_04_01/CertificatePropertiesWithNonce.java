@@ -61,6 +61,12 @@ public class CertificatePropertiesWithNonce {
     private String verificationCode;
 
     /**
+     * The certificate content.
+     */
+    @JsonProperty(value = "certificate", access = JsonProperty.Access.WRITE_ONLY)
+    private String certificate;
+
+    /**
      * Get the subject value.
      *
      * @return the subject value
@@ -130,6 +136,15 @@ public class CertificatePropertiesWithNonce {
      */
     public String verificationCode() {
         return this.verificationCode;
+    }
+
+    /**
+     * Get the certificate value.
+     *
+     * @return the certificate value
+     */
+    public String certificate() {
+        return this.certificate;
     }
 
 }

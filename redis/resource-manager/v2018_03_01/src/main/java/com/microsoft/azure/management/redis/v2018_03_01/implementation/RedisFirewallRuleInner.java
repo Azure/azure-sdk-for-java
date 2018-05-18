@@ -10,13 +10,14 @@ package com.microsoft.azure.management.redis.v2018_03_01.implementation;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * A firewall rule on a redis cache has a name, and describes a contiguous
  * range of IP addresses permitted to connect.
  */
 @JsonFlatten
-public class RedisFirewallRuleInner extends ProxyResourceInner {
+public class RedisFirewallRuleInner extends ProxyResource {
     /**
      * lowest IP address included in the range.
      */

@@ -11,10 +11,10 @@ package com.microsoft.azure.management.eventgrid.v2018_01_01;
 import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.eventgrid.v2018_01_01.implementation.EventSubscriptionInner;
 import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Refreshable;
+import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Creatable;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.eventgrid.v2018_01_01.implementation.EventGridManager;
 import java.util.List;
@@ -22,7 +22,7 @@ import java.util.List;
 /**
  * Type representing EventSubscription.
  */
-public interface EventSubscription extends HasInner<EventSubscriptionInner>, Indexable, Refreshable<EventSubscription>, Updatable<EventSubscription.Update>, HasManager<EventGridManager> {
+public interface EventSubscription extends HasInner<EventSubscriptionInner>, Indexable, Updatable<EventSubscription.Update>, Refreshable<EventSubscription>, HasManager<EventGridManager> {
     /**
      * @return the destination value.
      */

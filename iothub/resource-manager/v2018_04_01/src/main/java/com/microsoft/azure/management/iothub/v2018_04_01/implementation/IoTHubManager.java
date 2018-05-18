@@ -23,8 +23,10 @@ import com.microsoft.azure.management.iothub.v2018_04_01.QuotaMetrics;
 import com.microsoft.azure.management.iothub.v2018_04_01.Certificates;
 import com.microsoft.azure.management.iothub.v2018_04_01.Operations;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubStats;
+import com.microsoft.azure.management.iothub.v2018_04_01.Routes;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubKeys;
 import com.microsoft.azure.management.iothub.v2018_04_01.EventHubEndpoints;
+import com.microsoft.azure.management.iothub.v2018_04_01.ResourceProviderCommons;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubs;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -40,8 +42,10 @@ public final class IoTHubManager extends ManagerCore<IoTHubManager, IotHubClient
     private Certificates certificates;
     private Operations operations;
     private IotHubStats iotHubStats;
+    private Routes routes;
     private IotHubKeys iotHubKeys;
     private EventHubEndpoints eventHubEndpoints;
+    private ResourceProviderCommons resourceProviderCommons;
     private IotHubs iotHubs;
     /**
     * Get a Configurable instance that can be used to create IoTHubManager with optional configuration.
@@ -161,6 +165,16 @@ public final class IoTHubManager extends ManagerCore<IoTHubManager, IotHubClient
     }
 
     /**
+     * @return Entry point to manage Routes.
+     */
+    public Routes routes() {
+        if (this.routes == null) {
+            this.routes = new RoutesImpl(this);
+        }
+        return this.routes;
+    }
+
+    /**
      * @return Entry point to manage IotHubKeys.
      */
     public IotHubKeys iotHubKeys() {
@@ -178,6 +192,16 @@ public final class IoTHubManager extends ManagerCore<IoTHubManager, IotHubClient
             this.eventHubEndpoints = new EventHubEndpointsImpl(this);
         }
         return this.eventHubEndpoints;
+    }
+
+    /**
+     * @return Entry point to manage ResourceProviderCommons.
+     */
+    public ResourceProviderCommons resourceProviderCommons() {
+        if (this.resourceProviderCommons == null) {
+            this.resourceProviderCommons = new ResourceProviderCommonsImpl(this);
+        }
+        return this.resourceProviderCommons;
     }
 
     /**

@@ -10,7 +10,6 @@ package com.microsoft.azure.management.mysql.v2017_12_01.implementation;
 
 import com.microsoft.azure.arm.resources.models.implementation.GroupableResourceCoreImpl;
 import com.microsoft.azure.management.mysql.v2017_12_01.Server;
-import com.microsoft.azure.management.mysql.v2017_12_01.ServerPropertiesForCreate;
 import rx.Observable;
 import com.microsoft.azure.management.mysql.v2017_12_01.ServerUpdateParameters;
 import com.microsoft.azure.management.mysql.v2017_12_01.ServerForCreate;
@@ -20,6 +19,7 @@ import com.microsoft.azure.management.mysql.v2017_12_01.SslEnforcementEnum;
 import com.microsoft.azure.management.mysql.v2017_12_01.StorageProfile;
 import com.microsoft.azure.management.mysql.v2017_12_01.ServerState;
 import com.microsoft.azure.management.mysql.v2017_12_01.ServerVersion;
+import com.microsoft.azure.management.mysql.v2017_12_01.ServerPropertiesForCreate;
 import rx.functions.Func1;
 
 class ServerImpl extends GroupableResourceCoreImpl<Server, ServerInner, ServerImpl, MySQLManager> implements Server, Server.Definition, Server.Update {

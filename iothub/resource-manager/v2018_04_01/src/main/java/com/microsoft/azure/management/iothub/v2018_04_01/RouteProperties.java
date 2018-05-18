@@ -26,7 +26,7 @@ public class RouteProperties {
 
     /**
      * The source that the routing rule is to be applied to, such as
-     * DeviceMessages. Possible values include: 'DeviceMessages',
+     * DeviceMessages. Possible values include: 'Invalid', 'DeviceMessages',
      * 'TwinChangeEvents', 'DeviceLifecycleEvents', 'DeviceJobLifecycleEvents'.
      */
     @JsonProperty(value = "source", required = true)

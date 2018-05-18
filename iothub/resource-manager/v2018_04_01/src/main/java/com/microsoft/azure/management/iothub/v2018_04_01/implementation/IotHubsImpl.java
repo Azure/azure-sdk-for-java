@@ -22,6 +22,7 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
+import com.microsoft.azure.management.iothub.v2018_04_01.EndpointHealthData;
 import com.microsoft.azure.management.iothub.v2018_04_01.SharedAccessSignatureAuthorizationRule;
 import com.microsoft.azure.management.iothub.v2018_04_01.JobResponse;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubNameAvailabilityInfo;
@@ -31,6 +32,7 @@ import com.microsoft.azure.management.iothub.v2018_04_01.IotHubStats;
 import com.microsoft.azure.management.iothub.v2018_04_01.Skus;
 import com.microsoft.azure.management.iothub.v2018_04_01.Jobs;
 import com.microsoft.azure.management.iothub.v2018_04_01.QuotaMetrics;
+import com.microsoft.azure.management.iothub.v2018_04_01.Routes;
 import com.microsoft.azure.management.iothub.v2018_04_01.IotHubKeys;
 import com.microsoft.azure.management.iothub.v2018_04_01.Certificates;
 import com.microsoft.azure.management.iothub.v2018_04_01.EventHubEndpoints;
@@ -61,6 +63,12 @@ class IotHubsImpl extends GroupableResourcesCoreImpl<IotHubDescription, IotHubDe
     @Override
     public QuotaMetrics quotaMetrics() {
         QuotaMetrics accessor = this.manager().quotaMetrics();
+        return accessor;
+    }
+
+    @Override
+    public Routes routes() {
+        Routes accessor = this.manager().routes();
         return accessor;
     }
 
@@ -215,6 +223,43 @@ class IotHubsImpl extends GroupableResourcesCoreImpl<IotHubDescription, IotHubDe
     @Override
     public IotHubDescriptionImpl define(String name) {
         return wrapModel(name);
+    }
+
+    private Observable<Page<EndpointHealthDataInner>> getEndpointHealthNextInnerPageAsync(String nextLink) {
+        if (nextLink == null) {
+            Observable.empty();
+        }
+        IotHubResourcesInner client = this.inner();
+        return client.getEndpointHealthNextAsync(nextLink)
+        .flatMap(new Func1<Page<EndpointHealthDataInner>, Observable<Page<EndpointHealthDataInner>>>() {
+            @Override
+            public Observable<Page<EndpointHealthDataInner>> call(Page<EndpointHealthDataInner> page) {
+                return Observable.just(page).concatWith(getEndpointHealthNextInnerPageAsync(page.nextPageLink()));
+            }
+        });
+    }
+    @Override
+    public Observable<EndpointHealthData> getEndpointHealthAsync(final String resourceGroupName, final String iotHubName) {
+        IotHubResourcesInner client = this.inner();
+        return client.getEndpointHealthAsync(resourceGroupName, iotHubName)
+        .flatMap(new Func1<Page<EndpointHealthDataInner>, Observable<Page<EndpointHealthDataInner>>>() {
+            @Override
+            public Observable<Page<EndpointHealthDataInner>> call(Page<EndpointHealthDataInner> page) {
+                return getEndpointHealthNextInnerPageAsync(page.nextPageLink());
+            }
+        })
+        .flatMapIterable(new Func1<Page<EndpointHealthDataInner>, Iterable<EndpointHealthDataInner>>() {
+            @Override
+            public Iterable<EndpointHealthDataInner> call(Page<EndpointHealthDataInner> page) {
+                return page.items();
+            }
+       })
+        .map(new Func1<EndpointHealthDataInner, EndpointHealthData>() {
+            @Override
+            public EndpointHealthData call(EndpointHealthDataInner inner) {
+                return new EndpointHealthDataImpl(inner, manager());
+            }
+       });
     }
 
     private Observable<Page<SharedAccessSignatureAuthorizationRuleInner>> listKeysNextInnerPageAsync(String nextLink) {

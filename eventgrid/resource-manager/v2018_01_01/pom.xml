@@ -15,7 +15,7 @@
         <relativePath>../../../pom.xml</relativePath>
     </parent>
     <artifactId>azure-mgmt-eventgrid</artifactId>
-    <version>0.0.2-beta-SNAPSHOT</version>
+    <version>1.0.0-beta-SNAPSHOT</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for EventGrid Management</name>
     <description>This package contains Microsoft EventGrid Management SDK.</description>

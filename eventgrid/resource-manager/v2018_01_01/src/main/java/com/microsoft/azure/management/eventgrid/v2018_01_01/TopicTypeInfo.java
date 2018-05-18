@@ -12,8 +12,6 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.eventgrid.v2018_01_01.implementation.EventGridManager;
 import com.microsoft.azure.management.eventgrid.v2018_01_01.implementation.TopicTypeInfoInner;
-import com.microsoft.azure.management.eventgrid.v2018_01_01.TopicTypeProvisioningState;
-import com.microsoft.azure.management.eventgrid.v2018_01_01.ResourceRegionType;
 import java.util.List;
 
 /**

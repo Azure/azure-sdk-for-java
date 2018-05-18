@@ -31,11 +31,15 @@ class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
 
     @Override
     public DatabaseImpl define(String name) {
-        return new DatabaseImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private DatabaseImpl wrapModel(DatabaseInner inner) {
         return  new DatabaseImpl(inner, manager());
+    }
+
+    private DatabaseImpl wrapModel(String name) {
+        return new DatabaseImpl(name, this.manager());
     }
 
     @Override

@@ -34,11 +34,15 @@ class JobsImpl extends WrapperImpl<JobsInner> implements Jobs {
 
     @Override
     public JobImpl define(String name) {
-        return new JobImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private JobImpl wrapModel(JobInner inner) {
         return  new JobImpl(inner, manager());
+    }
+
+    private JobImpl wrapModel(String name) {
+        return new JobImpl(name, this.manager());
     }
 
     private Observable<Page<FileInner>> listOutputFilesNextInnerPageAsync(String nextLink) {

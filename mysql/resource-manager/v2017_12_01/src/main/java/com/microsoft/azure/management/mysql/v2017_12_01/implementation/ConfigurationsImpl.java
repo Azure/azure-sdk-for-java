@@ -30,11 +30,15 @@ class ConfigurationsImpl extends WrapperImpl<ConfigurationsInner> implements Con
 
     @Override
     public ConfigurationImpl define(String name) {
-        return new ConfigurationImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private ConfigurationImpl wrapModel(ConfigurationInner inner) {
         return  new ConfigurationImpl(inner, manager());
+    }
+
+    private ConfigurationImpl wrapModel(String name) {
+        return new ConfigurationImpl(name, this.manager());
     }
 
     @Override

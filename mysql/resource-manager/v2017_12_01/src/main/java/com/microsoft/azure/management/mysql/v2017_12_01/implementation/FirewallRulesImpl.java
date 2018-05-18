@@ -31,11 +31,15 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
 
     @Override
     public FirewallRuleImpl define(String name) {
-        return new FirewallRuleImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private FirewallRuleImpl wrapModel(FirewallRuleInner inner) {
         return  new FirewallRuleImpl(inner, manager());
+    }
+
+    private FirewallRuleImpl wrapModel(String name) {
+        return new FirewallRuleImpl(name, this.manager());
     }
 
     @Override

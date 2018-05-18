@@ -31,11 +31,15 @@ class FileServersImpl extends WrapperImpl<FileServersInner> implements FileServe
 
     @Override
     public FileServerImpl define(String name) {
-        return new FileServerImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private FileServerImpl wrapModel(FileServerInner inner) {
         return  new FileServerImpl(inner, manager());
+    }
+
+    private FileServerImpl wrapModel(String name) {
+        return new FileServerImpl(name, this.manager());
     }
 
     private Observable<Page<FileServerInner>> listNextInnerPageAsync(String nextLink) {

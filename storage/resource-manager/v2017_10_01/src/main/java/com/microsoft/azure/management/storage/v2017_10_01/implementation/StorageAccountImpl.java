@@ -22,6 +22,7 @@ import com.microsoft.azure.management.storage.v2017_10_01.Kind;
 import com.microsoft.azure.management.storage.v2017_10_01.NetworkRuleSet;
 import com.microsoft.azure.management.storage.v2017_10_01.Endpoints;
 import com.microsoft.azure.management.storage.v2017_10_01.ProvisioningState;
+import com.microsoft.azure.management.storage.v2017_10_01.Sku;
 import com.microsoft.azure.management.storage.v2017_10_01.AccountStatus;
 import rx.functions.Func1;
 
@@ -37,8 +38,8 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     @Override
     public Observable<StorageAccount> createResourceAsync() {
         StorageAccountsInner client = this.manager().inner().storageAccounts();
-    this.createParameter.withLocation(inner().location());
-    this.createParameter.withTags(inner().getTags());
+        this.createParameter.withLocation(inner().location());
+        this.createParameter.withTags(inner().getTags());
         return client.createAsync(this.resourceGroupName(), this.name(), this.createParameter)
             .map(new Func1<StorageAccountInner, StorageAccountInner>() {
                @Override
@@ -151,8 +152,13 @@ class StorageAccountImpl extends GroupableResourceCoreImpl<StorageAccount, Stora
     }
 
     @Override
-    public SkuInner sku() {
-        return this.inner().sku();
+    public Sku sku() {
+        SkuInner inner = this.inner().sku();
+        if (inner != null) {
+            return  new SkuImpl(inner, manager());
+        } else {
+            return null;
+        }
     }
 
     @Override

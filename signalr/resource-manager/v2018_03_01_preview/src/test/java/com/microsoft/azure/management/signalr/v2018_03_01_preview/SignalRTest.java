@@ -21,7 +21,6 @@ public class  SignalRTest extends TestBase {
     protected static ResourceManager resourceManager;
     protected static SignalRManager signalRManager;
     private static String rgName;
-
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
         resourceManager = ResourceManager
@@ -30,12 +29,10 @@ public class  SignalRTest extends TestBase {
         signalRManager = SignalRManager
                 .authenticate(restClient, defaultSubscription);
     }
-
     @Override
     protected void cleanUpResources() {
         resourceManager.resourceGroups().deleteByName(rgName);
     }
-
     @Test
     public void firstTest() {
         rgName = SdkContext.randomResourceName("rg", 20);

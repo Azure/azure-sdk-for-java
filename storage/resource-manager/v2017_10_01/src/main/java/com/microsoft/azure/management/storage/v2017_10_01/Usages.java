@@ -8,20 +8,12 @@
 
 package com.microsoft.azure.management.storage.v2017_10_01;
 
-import rx.Observable;
+import com.microsoft.azure.arm.collection.SupportsListing;
 import com.microsoft.azure.management.storage.v2017_10_01.implementation.UsagesInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing Usages.
  */
-public interface Usages extends HasInner<UsagesInner> {
-    /**
-     * Gets the current usage count and the limit for the resources under the subscription.
-     *
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Usage> listAsync();
-
+public interface Usages extends SupportsListing<Usage>, HasInner<UsagesInner> {
 }
