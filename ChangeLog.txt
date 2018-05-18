@@ -3,7 +3,8 @@ XXXX.XX.XX Version XX.X.X-Preview
 * Created the StorageException type to give easy access to the ErrorCode, StatusCode, and Message as available for unsuccessful responses.
 * Added the StorageErrorCode type for checking against error codes returned by the service.
 * Changed the AppendBlobAccessConditions field types to be Long instead of Int.
-
+* Upgraded Netty dependency to allow uploading memory mapped files with https.
+* Changed RequestRetryOptions maxTries and tryTimeout fields to be Integer instead of int. 0 is no longer allowed.
 
 2018.04.27 Version 10.0.0-preview
 * Initial Release. Please see the README and wiki for information on the new design.

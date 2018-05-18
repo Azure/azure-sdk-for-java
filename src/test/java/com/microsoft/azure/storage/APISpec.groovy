@@ -170,7 +170,7 @@ class APISpec extends Specification {
 
         ServiceURL serviceURL = new ServiceURL(
                 new URL("http://" + System.getenv().get("ACCOUNT_NAME") + ".blob.core.windows.net"), pipeline)
-        // There should not be more than 50000 containers from these tests
+        // There should not be more than 5000 containers from these tests
         for (Container c : serviceURL.listContainersSegment(null,
                 new ListContainersOptions(null, containerPrefix, null)).blockingGet()
                 .body().containers()) {
@@ -197,7 +197,6 @@ class APISpec extends Specification {
     }
 
     def cleanupSpec() {
-
         cleanupContainers()
     }
 
