@@ -59,12 +59,6 @@ public class CognitiveServicesAccountInner extends Resource {
     private Sku sku;
 
     /**
-     * Resource type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
-    /**
      * Get the etag value.
      *
      * @return the etag value
@@ -171,15 +165,6 @@ public class CognitiveServicesAccountInner extends Resource {
     public CognitiveServicesAccountInner withSku(Sku sku) {
         this.sku = sku;
         return this;
-    }
-
-    /**
-     * Get the type value.
-     *
-     * @return the type value
-     */
-    public String type() {
-        return this.type;
     }
 
 }

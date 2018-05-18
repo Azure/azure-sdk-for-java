@@ -18,6 +18,7 @@ import com.microsoft.azure.management.compute.v2017_12_01.UpgradePolicy;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetVMProfile;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetIdentity;
 import java.util.List;
+import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetUpdateVMProfile;
 import rx.functions.Func1;
 
 class VirtualMachineScaleSetImpl extends GroupableResourceCoreImpl<VirtualMachineScaleSet, VirtualMachineScaleSetInner, VirtualMachineScaleSetImpl, ComputeManager> implements VirtualMachineScaleSet, VirtualMachineScaleSet.Definition, VirtualMachineScaleSet.Update {

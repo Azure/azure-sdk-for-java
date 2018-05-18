@@ -30,11 +30,15 @@ class VirtualMachineExtensionsImpl extends WrapperImpl<VirtualMachineExtensionsI
 
     @Override
     public VirtualMachineExtensionImpl define(String name) {
-        return new VirtualMachineExtensionImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private VirtualMachineExtensionImpl wrapModel(VirtualMachineExtensionInner inner) {
         return  new VirtualMachineExtensionImpl(inner, manager());
+    }
+
+    private VirtualMachineExtensionImpl wrapModel(String name) {
+        return new VirtualMachineExtensionImpl(name, this.manager());
     }
 
     @Override

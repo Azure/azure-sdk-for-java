@@ -31,11 +31,15 @@ class VirtualMachineScaleSetExtensionsImpl extends WrapperImpl<VirtualMachineSca
 
     @Override
     public VirtualMachineScaleSetExtensionImpl define(String name) {
-        return new VirtualMachineScaleSetExtensionImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private VirtualMachineScaleSetExtensionImpl wrapModel(VirtualMachineScaleSetExtensionInner inner) {
         return  new VirtualMachineScaleSetExtensionImpl(inner, manager());
+    }
+
+    private VirtualMachineScaleSetExtensionImpl wrapModel(String name) {
+        return new VirtualMachineScaleSetExtensionImpl(name, this.manager());
     }
 
     private Observable<Page<VirtualMachineScaleSetExtensionInner>> listByVirtualMachineScaleSetNextInnerPageAsync(String nextLink) {

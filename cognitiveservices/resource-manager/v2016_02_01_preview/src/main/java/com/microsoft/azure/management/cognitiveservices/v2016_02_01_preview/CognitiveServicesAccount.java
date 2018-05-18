@@ -9,17 +9,21 @@
 package com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.implementation.CognitiveServicesAccountInner;
-import com.microsoft.azure.arm.model.Indexable;
+import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.HasResourceGroup;
+import com.microsoft.azure.arm.model.Refreshable;
+import com.microsoft.azure.arm.model.Updatable;
+import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.implementation.CognitiveServicesManager;
-import java.util.Map;
+import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.implementation.CognitiveServicesAccountInner;
 
 /**
  * Type representing CognitiveServicesAccount.
  */
-public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAccountInner>, Indexable, HasManager<CognitiveServicesManager> {
+public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAccountInner>, Resource, GroupableResourceCore<CognitiveServicesManager, CognitiveServicesAccountInner>, HasResourceGroup, Refreshable<CognitiveServicesAccount>, Updatable<CognitiveServicesAccount.Update>, HasManager<CognitiveServicesManager> {
     /**
      * @return the endpoint value.
      */
@@ -46,14 +50,9 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
     Sku sku();
 
     /**
-     * @return the type value.
-     */
-    String type();
-
-    /**
      * The entirety of the CognitiveServicesAccount definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithResourceGroupName, DefinitionStages.WithKind, DefinitionStages.WithLocation, DefinitionStages.WithProperties, DefinitionStages.WithSku, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithKind, DefinitionStages.WithProperties, DefinitionStages.WithSku, DefinitionStages.WithCreate {
     }
 
     /**
@@ -63,17 +62,13 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
         /**
          * The first stage of a CognitiveServicesAccount definition.
          */
-        interface Blank extends WithResourceGroupName {
+        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
         }
 
         /**
-         * The stage of the cognitiveservicesaccount definition allowing to specify ResourceGroupName.
+         * The stage of the CognitiveServicesAccount definition allowing to specify the resource group.
          */
-        interface WithResourceGroupName {
-           /**
-            * Specifies resourceGroupName.
-            */
-            WithKind withResourceGroupName(String resourceGroupName);
+        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithKind> {
         }
 
         /**
@@ -83,17 +78,7 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
            /**
             * Specifies kind.
             */
-            WithLocation withKind(Kind kind);
-        }
-
-        /**
-         * The stage of the cognitiveservicesaccount definition allowing to specify Location.
-         */
-        interface WithLocation {
-           /**
-            * Specifies location.
-            */
-            WithProperties withLocation(String location);
+            WithProperties withKind(Kind kind);
         }
 
         /**
@@ -117,21 +102,22 @@ public interface CognitiveServicesAccount extends HasInner<CognitiveServicesAcco
         }
 
         /**
-         * The stage of the cognitiveservicesaccount definition allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<CognitiveServicesAccount>, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<CognitiveServicesAccount>, Resource.DefinitionWithTags<WithCreate> {
         }
+    }
+    /**
+     * The template for a CognitiveServicesAccount update operation, containing all the settings that can be modified.
+     */
+    interface Update extends Appliable<CognitiveServicesAccount>, Resource.UpdateWithTags<Update> {
+    }
+
+    /**
+     * Grouping of CognitiveServicesAccount update stages.
+     */
+    interface UpdateStages {
     }
 }

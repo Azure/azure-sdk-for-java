@@ -17,6 +17,7 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.compute.v2018_04_01.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.v2018_04_01.CreationData;
 import com.microsoft.azure.management.compute.v2018_04_01.EncryptionSettings;
+import com.microsoft.azure.management.compute.v2018_04_01.DiskSku;
 import rx.functions.Func1;
 
 class SnapshotImpl extends GroupableResourceCoreImpl<Snapshot, SnapshotInner, SnapshotImpl, ComputeManager> implements Snapshot, Snapshot.Definition, Snapshot.Update {

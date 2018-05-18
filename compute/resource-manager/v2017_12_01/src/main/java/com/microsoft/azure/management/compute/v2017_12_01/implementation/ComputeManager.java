@@ -26,7 +26,7 @@ import com.microsoft.azure.management.compute.v2017_12_01.Usages;
 import com.microsoft.azure.management.compute.v2017_12_01.LocationVmSizes;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetSkus;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetExtensions;
-import com.microsoft.azure.management.compute.v2017_12_01.Virtualmachines;
+import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachines;
 import com.microsoft.azure.management.compute.v2017_12_01.RunCommands;
 import com.microsoft.azure.management.compute.v2017_12_01.Operations;
 import com.microsoft.azure.management.compute.v2017_12_01.Types;
@@ -66,7 +66,7 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
     private LocationVmSizes locationVmSizes;
     private VirtualMachineScaleSetSkus virtualMachineScaleSetSkus;
     private VirtualMachineScaleSetExtensions virtualMachineScaleSetExtensions;
-    private Virtualmachines virtualmachines;
+    private VirtualMachines virtualmachines;
     private RunCommands runCommands;
     private Operations operations;
     private Types types;
@@ -239,9 +239,9 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
     /**
      * @return Entry point to manage Virtualmachines.
      */
-    public Virtualmachines virtualmachines() {
+    public VirtualMachines virtualmachines() {
         if (this.virtualmachines == null) {
-            this.virtualmachines = new VirtualmachinesImpl(this);
+            this.virtualmachines = new VirtualMachinesImpl(this);
         }
         return this.virtualmachines;
     }
