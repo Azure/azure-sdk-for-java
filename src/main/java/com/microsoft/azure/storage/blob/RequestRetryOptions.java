@@ -25,8 +25,8 @@ public final class RequestRetryOptions {
      * An object representing default retry values: Exponential backoff, maxTries=4, tryTimeout=30, retryDelayInMs=4,
      * maxRetryDelayInMs=120000, secondaryHost=null.
      */
-    public static final RequestRetryOptions DEFAULT = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, 0,
-            0,null, null, null);
+    public static final RequestRetryOptions DEFAULT = new RequestRetryOptions(RetryPolicyType.EXPONENTIAL, null,
+            null,null, null, null);
 
     /**
      * A {@link RetryPolicyType} telling the pipeline what kind of retry policy to use.
@@ -47,35 +47,36 @@ public final class RequestRetryOptions {
      * Configures how the {@link com.microsoft.rest.v2.http.HttpPipeline} should retry requests.
      *
      * @param retryPolicyType
-     *      A {@link RetryPolicyType} specifying the type of retry pattern to use.
+     *      A {@link RetryPolicyType} specifying the type of retry pattern to use. A value of {@code null} accepts the
+     *      default of exponential.
      * @param maxTries
-     *      Specifies the maximum number of attempts an operation will be tried before producing an error
-     *      (0=default). A value of {@code null} means that you accept our default policy. A value of 1 means 1 try and
-     *      no retries.
+     *      Specifies the maximum number of attempts an operation will be tried before producing an error. A value of
+     *      {@code null} means that you accept our default policy of 4 tries. A value of 1 means 1 try and no retries.
      * @param tryTimeout
-     *      Indicates the maximum time allowed for any single try of an HTTP request.
-     *      A value of {@code null} means that you accept our default timeout. NOTE: When transferring large amounts
-     *      of data, the default TryTimeout will probably not be sufficient. You should override this value
-     *      based on the bandwidth available to the host machine and proximity to the Storage service. A good
-     *      starting point may be something like (60 seconds per MB of anticipated-payload-size).
+     *      Indicates the maximum time allowed for any single try of an HTTP request. A value of {@code null} means that
+     *      you accept our default timeout of 30s. NOTE: When transferring large amounts of data, the default TryTimeout
+     *      will probably not be sufficient. You should override this value based on the bandwidth available to the host
+     *      machine and proximity to the Storage service. A good starting point may be something like (60 seconds per MB
+     *      of anticipated-payload-size).
      * @param retryDelayInMs
-     *      Specifies the amount of delay to use before retrying an operation (0=default).
-     *      The delay increases (exponentially or linearly) with each retry up to a maximum specified by
-     *      MaxRetryDelay. If you specify 0, then you must also specify 0 for MaxRetryDelay.
+     *      Specifies the amount of delay to use before retrying an operation. A value of {@code null} means you accept
+     *      the default value of 4 seconds. The delay increases (exponentially or linearly) with each retry up to a
+     *      maximum specified by MaxRetryDelay. If you specify 0, then you must also specify 0 for MaxRetryDelay.
      * @param maxRetryDelayInMs
-     *      Specifies the maximum delay allowed before retrying an operation (0=default).
-     *      If you specify 0, then you must also specify 0 for RetryDelay.
+     *      Specifies the maximum delay allowed before retrying an operation. A value of {@code null} means you accept
+     *      the default value of 120s. If you specify {@code null}, then you must also specify {@code null}for
+     *      RetryDelay.
      * @param secondaryHost
      *      If a secondaryHost is specified, retries will be tried against this host. If secondaryHost is {@code null}
      *      (the default) then operations are not retried against another host. NOTE: Before setting this field, make
      *      sure you understand the issues around reading stale and potentially-inconsistent data at
      *      <a href=https://docs.microsoft.com/en-us/azure/storage/common/storage-designing-ha-apps-with-ragrs>this webpage</a>
-     *      this webpage.
+     *      this web page.
      */
-    public RequestRetryOptions(RetryPolicyType retryPolicyType, int maxTries, int tryTimeout,
+    public RequestRetryOptions(RetryPolicyType retryPolicyType, Integer maxTries, Integer tryTimeout,
                                Long retryDelayInMs, Long maxRetryDelayInMs, String secondaryHost) {
-        this.retryPolicyType = retryPolicyType;
-        if (maxTries != 0) {
+        this.retryPolicyType = retryPolicyType == null ? RetryPolicyType.EXPONENTIAL : retryPolicyType;
+        if (maxTries != null) {
             Utility.assertInBounds("maxRetries", maxTries, 1, Integer.MAX_VALUE);
             this.maxTries = maxTries;
         }
@@ -83,7 +84,7 @@ public final class RequestRetryOptions {
             this.maxTries = 4;
         }
 
-        if (tryTimeout != 0) {
+        if (tryTimeout != null) {
             Utility.assertInBounds("tryTimeoutInMs", tryTimeout, 1, Long.MAX_VALUE);
             this.tryTimeout = tryTimeout;
         }
