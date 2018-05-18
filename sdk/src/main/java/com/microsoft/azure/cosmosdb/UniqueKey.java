@@ -25,8 +25,8 @@ package com.microsoft.azure.cosmosdb;
 import java.util.ArrayList;
 import java.util.Collection;
 
+import com.fasterxml.jackson.databind.node.ObjectNode;
 import com.microsoft.azure.cosmosdb.internal.Constants;
-import org.json.JSONObject;
 
 /**
  * Represents a unique key on that enforces uniqueness constraint on documents in the collection in the Azure Cosmos DB service.
@@ -48,7 +48,7 @@ public class UniqueKey extends JsonSerializable {
         super(jsonString);
     }
 
-    public UniqueKey(JSONObject jsonObject) {
+    public UniqueKey(ObjectNode jsonObject) {
         super(jsonObject);
     }
 
