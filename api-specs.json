@@ -45,6 +45,10 @@
       "\"moduleName\"": "\"MySQL\""
     }
   },
+  "network/resource-manager": {
+    "source": "specification/network/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "postgresql/resource-manager": {
     "source": "specification/postgresql/resource-manager/readme.md",
     "args": "--multiapi --fluent",
