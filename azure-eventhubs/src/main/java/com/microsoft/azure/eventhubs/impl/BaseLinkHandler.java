@@ -13,7 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 public class BaseLinkHandler extends BaseHandler {
-    protected static final Logger TRACE_LOGGER = LoggerFactory.getLogger(BaseHandler.class);
+    protected static final Logger TRACE_LOGGER = LoggerFactory.getLogger(BaseLinkHandler.class);
 
     private final AmqpLink underlyingEntity;
 

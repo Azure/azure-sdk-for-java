@@ -10,16 +10,18 @@ import com.microsoft.azure.eventhubs.PartitionReceiveHandler;
 import com.microsoft.azure.eventhubs.TimeoutException;
 import com.microsoft.azure.eventhubs.impl.IteratorUtil;
 import com.microsoft.azure.eventhubs.impl.ReceivePump;
+import com.microsoft.azure.eventhubs.lib.TestContext;
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
 import java.util.LinkedList;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ExecutionException;
 
 public class ReceivePumpTest {
     private final String exceptionMessage = "receive Exception";
-    private boolean assertion = false;
+    private volatile boolean assertion = false;
 
     @Before
     public void initializeValidation() {
@@ -27,14 +29,15 @@ public class ReceivePumpTest {
     }
 
     @Test()
-    public void testPumpOnReceiveEventFlow() {
+    public void testPumpOnReceiveEventFlow() throws Exception {
+        final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
                 new ReceivePump.IPartitionReceiver() {
                     @Override
-                    public Iterable<EventData> receive(int maxBatchSize) throws EventHubException {
-                        LinkedList<EventData> events = new LinkedList<EventData>();
+                    public CompletableFuture<Iterable<EventData>> receive(int maxBatchSize) {
+                        final LinkedList<EventData> events = new LinkedList<EventData>();
                         events.add(EventData.create("some".getBytes()));
-                        return events;
+                        return CompletableFuture.completedFuture(events);
                     }
 
                     @Override
@@ -59,21 +62,32 @@ public class ReceivePumpTest {
                     @Override
                     public void onError(Throwable error) {
                         Assert.assertTrue(error instanceof PumpClosedException);
+                        pumpRun.complete(null);
                     }
                 },
-                true);
+                true,
+                TestContext.EXECUTOR_SERVICE);
 
-        receivePump.run();
+        try {
+            receivePump.receiveAndProcess();
+            pumpRun.get();
+        } finally {
+            receivePump.stop().get();
+        }
+
         Assert.assertTrue(assertion);
     }
 
     @Test()
-    public void testPumpReceiveTransientErrorsPropagated() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void testPumpReceiveTransientErrorsPropagated() throws Exception {
+        final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
                 new ReceivePump.IPartitionReceiver() {
                     @Override
-                    public Iterable<EventData> receive(int maxBatchSize) throws EventHubException {
-                        throw new EventHubException(true, exceptionMessage);
+                    public CompletableFuture<Iterable<EventData>> receive(int maxBatchSize) {
+                        final CompletableFuture<Iterable<EventData>> result = new CompletableFuture<>();
+                        result.completeExceptionally(new RuntimeException(exceptionMessage));
+                        return result;
                     }
 
                     @Override
@@ -94,21 +108,32 @@ public class ReceivePumpTest {
                     @Override
                     public void onError(Throwable error) {
                         assertion = error.getMessage().equals(exceptionMessage);
+                        pumpRun.complete(null);
                     }
                 },
-                true);
+                false,
+                TestContext.EXECUTOR_SERVICE);
 
-        receivePump.run();
+        try {
+            receivePump.receiveAndProcess();
+            pumpRun.get();
+        } finally {
+            receivePump.stop().get();
+        }
+
         Assert.assertTrue(assertion);
     }
 
     @Test()
-    public void testPumpReceiveExceptionsPropagated() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
+    public void testPumpReceiveExceptionsPropagated() throws Exception {
+        final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
                 new ReceivePump.IPartitionReceiver() {
                     @Override
-                    public Iterable<EventData> receive(int maxBatchSize) throws EventHubException {
-                        throw new EventHubException(false, exceptionMessage);
+                    public CompletableFuture<Iterable<EventData>> receive(int maxBatchSize) {
+                        final CompletableFuture<Iterable<EventData>> result = new CompletableFuture<>();
+                        result.completeExceptionally(new RuntimeException(exceptionMessage));
+                        return result;
                     }
 
                     @Override
@@ -129,22 +154,31 @@ public class ReceivePumpTest {
                     @Override
                     public void onError(Throwable error) {
                         assertion = error.getMessage().equals(exceptionMessage);
+                        pumpRun.complete(null);
                     }
                 },
-                true);
+                true,
+                TestContext.EXECUTOR_SERVICE);
 
-        receivePump.run();
+        try {
+            receivePump.receiveAndProcess();
+            pumpRun.get();
+        } finally {
+            receivePump.stop().get();
+        }
+
         Assert.assertTrue(assertion);
     }
 
     @Test()
     public void testPumpOnReceiveExceptionsPropagated() throws EventHubException, InterruptedException, ExecutionException, TimeoutException {
         final String runtimeExceptionMsg = "random exception";
+        final CompletableFuture<Void> pumpRun = new CompletableFuture<>();
         final ReceivePump receivePump = new ReceivePump(
                 new ReceivePump.IPartitionReceiver() {
                     @Override
-                    public Iterable<EventData> receive(int maxBatchSize) throws EventHubException {
-                        return null;
+                    public CompletableFuture<Iterable<EventData>> receive(int maxBatchSize) {
+                        return CompletableFuture.completedFuture(null);
                     }
 
                     @Override
@@ -166,11 +200,19 @@ public class ReceivePumpTest {
                     @Override
                     public void onError(Throwable error) {
                         assertion = error.getMessage().equals(runtimeExceptionMsg);
+                        pumpRun.complete(null);
                     }
                 },
-                true);
+                true,
+                TestContext.EXECUTOR_SERVICE);
 
-        receivePump.run();
+        try {
+            receivePump.receiveAndProcess();
+            pumpRun.get();
+        } finally {
+            receivePump.stop().get();
+        }
+
         Assert.assertTrue(assertion);
     }
 

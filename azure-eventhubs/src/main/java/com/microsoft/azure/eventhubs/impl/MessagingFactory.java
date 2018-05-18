@@ -129,12 +129,14 @@ public final class MessagingFactory extends ClientEntity implements AmqpConnecti
                 messagingFactory.getOperationTimeout());
 
         // if scheduling messagingfactory openTimer fails - notify user and stop
-        messagingFactory.openTimer.whenCompleteAsync(
+        messagingFactory.openTimer.handleAsync(
                 (unUsed, exception) -> {
                     if (exception != null && !(exception instanceof CancellationException)) {
                         messagingFactory.open.completeExceptionally(exception);
                         messagingFactory.getReactor().stop();
                     }
+
+                    return null;
                 }, messagingFactory.executor);
 
         return messagingFactory.open;

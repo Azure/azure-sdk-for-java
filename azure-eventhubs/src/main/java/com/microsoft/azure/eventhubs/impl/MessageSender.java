@@ -203,12 +203,14 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
 
         // if the timeoutTask completed with scheduling error - notify sender
         if (timeoutTimerTask.isCompletedExceptionally()) {
-            timeoutTimerTask.whenCompleteAsync(
+            timeoutTimerTask.handleAsync(
                     (unUsed, exception) -> {
                         if (exception != null && !(exception instanceof CancellationException))
                             onSendFuture.completeExceptionally(
                                     new OperationCancelledException("Send failed while dispatching to Reactor, see cause for more details.",
                                             exception));
+
+                        return null;
                     }, this.executor);
 
             return onSendFuture;
@@ -642,13 +644,15 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 }
                 , timeout.remaining());
 
-        this.openTimer.whenCompleteAsync(
+        this.openTimer.handleAsync(
                 (unUsed, exception) -> {
                     if (exception != null
                             && exception instanceof Exception
                             && !(exception instanceof CancellationException)) {
                         ExceptionUtil.completeExceptionally(linkFirstOpen, (Exception) exception, this);
                     }
+
+                    return null;
                 }, this.executor);
     }
 
@@ -830,11 +834,13 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                 }
                 , timeout.remaining());
 
-        this.closeTimer.whenCompleteAsync(
+        this.closeTimer.handleAsync(
                 (unUsed, exception) -> {
                     if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
                         ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageSender.this);
                     }
+
+                    return null;
                 }, this.executor);
     }
 

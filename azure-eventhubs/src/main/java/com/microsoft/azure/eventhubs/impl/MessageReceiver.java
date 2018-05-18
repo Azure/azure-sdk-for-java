@@ -249,15 +249,19 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
     public CompletableFuture<Collection<Message>> receive(final int maxMessageCount) {
         this.throwIfClosed();
 
+        final CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<>();
         if (maxMessageCount <= 0 || maxMessageCount > this.prefetchCount) {
-            throw new IllegalArgumentException(String.format(Locale.US, "parameter 'maxMessageCount' should be a positive number and should be less than prefetchCount(%s)", this.prefetchCount));
+            onReceive.completeExceptionally(new IllegalArgumentException(String.format(
+                    Locale.US,
+                    "parameter 'maxMessageCount' should be a positive number and should be less than prefetchCount(%s)",
+                    this.prefetchCount)));
+            return onReceive;
         }
 
         if (this.pendingReceives.isEmpty()) {
             timer.schedule(this.onOperationTimedout, this.receiveTimeout);
         }
 
-        final CompletableFuture<Collection<Message>> onReceive = new CompletableFuture<>();
         pendingReceives.offer(new ReceiveWorkItem(onReceive, receiveTimeout, maxMessageCount));
 
         try {
@@ -558,13 +562,15 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 }
                 , timeout.remaining());
 
-        this.openTimer.whenCompleteAsync(
+        this.openTimer.handleAsync(
                 (unUsed, exception) -> {
                     if (exception != null
                             && exception instanceof Exception
                             && !(exception instanceof CancellationException)) {
                         ExceptionUtil.completeExceptionally(linkOpen.getWork(), (Exception) exception, MessageReceiver.this);
                     }
+
+                    return null;
                 }, this.executor);
     }
 
@@ -593,11 +599,13 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                 }
                 , timeout.remaining());
 
-        this.closeTimer.whenCompleteAsync(
+        this.closeTimer.handleAsync(
                 (unUsed, exception) -> {
                     if (exception != null && exception instanceof Exception && !(exception instanceof CancellationException)) {
                         ExceptionUtil.completeExceptionally(linkClose, (Exception) exception, MessageReceiver.this);
                     }
+
+                    return null;
                 }, this.executor);
     }
 
