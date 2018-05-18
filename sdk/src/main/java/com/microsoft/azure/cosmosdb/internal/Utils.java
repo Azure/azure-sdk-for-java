@@ -373,10 +373,6 @@ public final class Utils {
         return Utils.simpleObjectMapper;
     }
 
-    public static ObjectNode newObjectNode() {
-        return Utils.simpleObjectMapper.createObjectNode();
-    }
-
     /**
      * Returns Current Time in RFC 1123 format, e.g, 
      * Fri, 01 Dec 2017 19:22:30 GMT.

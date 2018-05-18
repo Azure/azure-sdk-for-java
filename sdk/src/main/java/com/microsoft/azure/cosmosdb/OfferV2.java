@@ -42,7 +42,7 @@ public class OfferV2 extends Offer {
     public OfferV2(int offerThroughput) {
         this.setOfferVersion(Constants.Properties.OFFER_VERSION_V2);
         this.setOfferType("");
-        ObjectNode content = Utils.newObjectNode();
+        ObjectNode content = Utils.getSimpleObjectMapper().createObjectNode();
         content.put(Constants.Properties.OFFER_THROUGHPUT, offerThroughput);
         this.setContent(content);
     }
@@ -61,7 +61,7 @@ public class OfferV2 extends Offer {
 
         ObjectNode content = this.getContent();
         if (content == null) {
-            content = Utils.newObjectNode();
+            content = Utils.getSimpleObjectMapper().createObjectNode();
             this.setContent(content);
         }
     }
