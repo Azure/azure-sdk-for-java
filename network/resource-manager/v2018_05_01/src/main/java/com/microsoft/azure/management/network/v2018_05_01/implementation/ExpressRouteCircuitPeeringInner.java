@@ -11,7 +11,6 @@ package com.microsoft.azure.management.network.v2018_05_01.implementation;
 import com.microsoft.azure.management.network.v2018_05_01.ExpressRoutePeeringType;
 import com.microsoft.azure.management.network.v2018_05_01.ExpressRoutePeeringState;
 import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitPeeringConfig;
-import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitStats;
 import com.microsoft.azure.management.network.v2018_05_01.Ipv6ExpressRouteCircuitPeeringConfig;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -94,7 +93,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * Gets peering stats.
      */
     @JsonProperty(value = "properties.stats")
-    private ExpressRouteCircuitStats stats;
+    private ExpressRouteCircuitStatsInner stats;
 
     /**
      * Gets the provisioning state of the public IP resource. Possible values
@@ -372,7 +371,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      *
      * @return the stats value
      */
-    public ExpressRouteCircuitStats stats() {
+    public ExpressRouteCircuitStatsInner stats() {
         return this.stats;
     }
 
@@ -382,7 +381,7 @@ public class ExpressRouteCircuitPeeringInner extends SubResource {
      * @param stats the stats value to set
      * @return the ExpressRouteCircuitPeeringInner object itself.
      */
-    public ExpressRouteCircuitPeeringInner withStats(ExpressRouteCircuitStats stats) {
+    public ExpressRouteCircuitPeeringInner withStats(ExpressRouteCircuitStatsInner stats) {
         this.stats = stats;
         return this;
     }
