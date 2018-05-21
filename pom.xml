@@ -30,7 +30,7 @@
   </scm>
 
   <properties>
-    <netty.version>4.1.23.Final</netty.version>
+    <netty.version>4.1.25.Final</netty.version>
     <jackson.version>2.8.11</jackson.version>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
