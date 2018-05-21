@@ -11,43 +11,43 @@ package com.microsoft.azure.management.network.v2018_05_01;
 import com.microsoft.azure.arm.collection.SupportsCreating;
 import rx.Completable;
 import rx.Observable;
-import com.microsoft.azure.management.network.v2018_05_01.implementation.ExpressRouteCrossConnectionPeeringsInner;
+import com.microsoft.azure.management.network.v2018_05_01.implementation.ExpressRouteCircuitPeeringsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing ExpressRouteCrossConnectionPeerings.
+ * Type representing ExpressRouteCircuitPeerings.
  */
-public interface ExpressRouteCrossConnectionPeerings extends SupportsCreating<ExpressRouteCrossConnectionPeering.DefinitionStages.Blank>, HasInner<ExpressRouteCrossConnectionPeeringsInner> {
+public interface ExpressRouteCircuitPeerings extends SupportsCreating<ExpressRouteCircuitPeering.DefinitionStages.Blank>, HasInner<ExpressRouteCircuitPeeringsInner> {
     /**
-     * Gets the specified peering for the ExpressRouteCrossConnection.
+     * Gets the specified authorization from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ExpressRouteCrossConnectionPeering> getAsync(String resourceGroupName, String crossConnectionName, String peeringName);
+    Observable<ExpressRouteCircuitPeering> getAsync(String resourceGroupName, String circuitName, String peeringName);
 
     /**
-     * Gets all peerings in a specified ExpressRouteCrossConnection.
+     * Gets all peerings in a specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param circuitName The name of the express route circuit.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<ExpressRouteCrossConnectionPeering> listAsync(final String resourceGroupName, final String crossConnectionName);
+    Observable<ExpressRouteCircuitPeering> listAsync(final String resourceGroupName, final String circuitName);
 
     /**
-     * Deletes the specified peering from the ExpressRouteCrossConnection.
+     * Deletes the specified peering from the specified express route circuit.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param circuitName The name of the express route circuit.
      * @param peeringName The name of the peering.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteAsync(String resourceGroupName, String crossConnectionName, String peeringName);
+    Completable deleteAsync(String resourceGroupName, String circuitName, String peeringName);
 
 }

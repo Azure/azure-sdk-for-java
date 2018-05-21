@@ -20,14 +20,40 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing ExpressRouteCrossConnections.
  */
 public interface ExpressRouteCrossConnections extends SupportsCreating<ExpressRouteCrossConnection.DefinitionStages.Blank>, SupportsGettingByResourceGroup<ExpressRouteCrossConnection>, SupportsListingByResourceGroup<ExpressRouteCrossConnection>, SupportsListing<ExpressRouteCrossConnection>, HasInner<ExpressRouteCrossConnectionsInner> {
+    /**
+     * Gets the currently advertised ARP table associated with the express route cross connection in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ExpressRouteCircuitsArpTableListResult> listArpTableAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
-     * @return Entry point to manage ExpressRouteCrossConnection Peering.
+     * Gets the route table summary associated with the express route cross connection in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
      */
-    ExpressRouteCrossConnectionPeerings peerings();
+    Observable<ExpressRouteCrossConnectionsRoutesTableSummaryListResult> listRoutesTableSummaryAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
 
     /**
-     * @return Entry point to manage ExpressRouteCrossConnection Peering.
+     * Gets the currently advertised routes table associated with the express route cross connection in a resource group.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param crossConnectionName The name of the ExpressRouteCrossConnection.
+     * @param peeringName The name of the peering.
+     * @param devicePath The path of the device.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
      */
-    ExpressRouteCrossConnectionPeeringsOperations peeringsOperation();
+    Observable<ExpressRouteCircuitsRoutesTableListResult> listRoutesTableAsync(String resourceGroupName, String crossConnectionName, String peeringName, String devicePath);
+
 }

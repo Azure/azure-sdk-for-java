@@ -133,6 +133,71 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The ExpressRouteCircuitAuthorizationsInner object to access its operations.
+     */
+    private ExpressRouteCircuitAuthorizationsInner expressRouteCircuitAuthorizations;
+
+    /**
+     * Gets the ExpressRouteCircuitAuthorizationsInner object to access its operations.
+     * @return the ExpressRouteCircuitAuthorizationsInner object.
+     */
+    public ExpressRouteCircuitAuthorizationsInner expressRouteCircuitAuthorizations() {
+        return this.expressRouteCircuitAuthorizations;
+    }
+
+    /**
+     * The ExpressRouteCircuitPeeringsInner object to access its operations.
+     */
+    private ExpressRouteCircuitPeeringsInner expressRouteCircuitPeerings;
+
+    /**
+     * Gets the ExpressRouteCircuitPeeringsInner object to access its operations.
+     * @return the ExpressRouteCircuitPeeringsInner object.
+     */
+    public ExpressRouteCircuitPeeringsInner expressRouteCircuitPeerings() {
+        return this.expressRouteCircuitPeerings;
+    }
+
+    /**
+     * The ExpressRouteCircuitConnectionsInner object to access its operations.
+     */
+    private ExpressRouteCircuitConnectionsInner expressRouteCircuitConnections;
+
+    /**
+     * Gets the ExpressRouteCircuitConnectionsInner object to access its operations.
+     * @return the ExpressRouteCircuitConnectionsInner object.
+     */
+    public ExpressRouteCircuitConnectionsInner expressRouteCircuitConnections() {
+        return this.expressRouteCircuitConnections;
+    }
+
+    /**
+     * The ExpressRouteCircuitsInner object to access its operations.
+     */
+    private ExpressRouteCircuitsInner expressRouteCircuits;
+
+    /**
+     * Gets the ExpressRouteCircuitsInner object to access its operations.
+     * @return the ExpressRouteCircuitsInner object.
+     */
+    public ExpressRouteCircuitsInner expressRouteCircuits() {
+        return this.expressRouteCircuits;
+    }
+
+    /**
+     * The ExpressRouteServiceProvidersInner object to access its operations.
+     */
+    private ExpressRouteServiceProvidersInner expressRouteServiceProviders;
+
+    /**
+     * Gets the ExpressRouteServiceProvidersInner object to access its operations.
+     * @return the ExpressRouteServiceProvidersInner object.
+     */
+    public ExpressRouteServiceProvidersInner expressRouteServiceProviders() {
+        return this.expressRouteServiceProviders;
+    }
+
+    /**
      * The ExpressRouteCrossConnectionsInner object to access its operations.
      */
     private ExpressRouteCrossConnectionsInner expressRouteCrossConnections;
@@ -193,6 +258,11 @@ public class NetworkManagementClientImpl extends AzureServiceClient {
         this.acceptLanguage = "en-US";
         this.longRunningOperationRetryTimeout = 30;
         this.generateClientRequestId = true;
+        this.expressRouteCircuitAuthorizations = new ExpressRouteCircuitAuthorizationsInner(restClient().retrofit(), this);
+        this.expressRouteCircuitPeerings = new ExpressRouteCircuitPeeringsInner(restClient().retrofit(), this);
+        this.expressRouteCircuitConnections = new ExpressRouteCircuitConnectionsInner(restClient().retrofit(), this);
+        this.expressRouteCircuits = new ExpressRouteCircuitsInner(restClient().retrofit(), this);
+        this.expressRouteServiceProviders = new ExpressRouteServiceProvidersInner(restClient().retrofit(), this);
         this.expressRouteCrossConnections = new ExpressRouteCrossConnectionsInner(restClient().retrofit(), this);
         this.expressRouteCrossConnectionPeerings = new ExpressRouteCrossConnectionPeeringsInner(restClient().retrofit(), this);
         this.azureClient = new AzureClient(this);

@@ -9,22 +9,23 @@
 package com.microsoft.azure.management.network.v2018_05_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.management.network.v2018_05_01.implementation.ExpressRouteCrossConnectionInner;
-import com.microsoft.azure.arm.model.Indexable;
-import com.microsoft.azure.arm.model.Creatable;
+import com.microsoft.azure.arm.resources.models.Resource;
+import com.microsoft.azure.arm.resources.models.HasResourceGroup;
+import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
-import com.microsoft.azure.arm.model.Refreshable;
+import com.microsoft.azure.arm.model.Creatable;
+import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2018_05_01.implementation.NetworkManager;
-import java.util.Map;
 import java.util.List;
 import com.microsoft.azure.management.network.v2018_05_01.implementation.ExpressRouteCrossConnectionPeeringInner;
+import com.microsoft.azure.management.network.v2018_05_01.implementation.ExpressRouteCrossConnectionInner;
 
 /**
  * Type representing ExpressRouteCrossConnection.
  */
-public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossConnectionInner>, Indexable, Updatable<ExpressRouteCrossConnection.Update>, Refreshable<ExpressRouteCrossConnection>, HasManager<NetworkManager> {
+public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossConnectionInner>, Resource, GroupableResourceCore<NetworkManager, ExpressRouteCrossConnectionInner>, HasResourceGroup, Refreshable<ExpressRouteCrossConnection>, Updatable<ExpressRouteCrossConnection.Update>, HasManager<NetworkManager> {
     /**
      * @return the bandwidthInMbps value.
      */
@@ -39,21 +40,6 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
      * @return the expressRouteCircuit value.
      */
     ExpressRouteCircuitReference expressRouteCircuit();
-
-    /**
-     * @return the id value.
-     */
-    String id();
-
-    /**
-     * @return the location value.
-     */
-    String location();
-
-    /**
-     * @return the name value.
-     */
-    String name();
 
     /**
      * @return the peeringLocation value.
@@ -96,19 +82,9 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
     Integer sTag();
 
     /**
-     * @return the tags value.
-     */
-    Map<String, String> tags();
-
-    /**
-     * @return the type value.
-     */
-    String type();
-
-    /**
      * The entirety of the ExpressRouteCrossConnection definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithResourceGroupName, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithGroup, DefinitionStages.WithCreate {
     }
 
     /**
@@ -118,21 +94,17 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
         /**
          * The first stage of a ExpressRouteCrossConnection definition.
          */
-        interface Blank extends WithResourceGroupName {
+        interface Blank extends GroupableResourceCore.DefinitionWithRegion<WithGroup> {
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify ResourceGroupName.
+         * The stage of the ExpressRouteCrossConnection definition allowing to specify the resource group.
          */
-        interface WithResourceGroupName {
-           /**
-            * Specifies resourceGroupName.
-            */
-            WithCreate withResourceGroupName(String resourceGroupName);
+        interface WithGroup extends GroupableResourceCore.DefinitionStages.WithGroup<WithCreate> {
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify BandwidthInMbps.
+         * The stage of the expressroutecrossconnection update allowing to specify BandwidthInMbps.
          */
         interface WithBandwidthInMbps {
             /**
@@ -142,7 +114,7 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify ExpressRouteCircuit.
+         * The stage of the expressroutecrossconnection update allowing to specify ExpressRouteCircuit.
          */
         interface WithExpressRouteCircuit {
             /**
@@ -152,27 +124,7 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify Id.
-         */
-        interface WithId {
-            /**
-             * Specifies id.
-             */
-            WithCreate withId(String id);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnection definition allowing to specify Location.
-         */
-        interface WithLocation {
-            /**
-             * Specifies location.
-             */
-            WithCreate withLocation(String location);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnection definition allowing to specify PeeringLocation.
+         * The stage of the expressroutecrossconnection update allowing to specify PeeringLocation.
          */
         interface WithPeeringLocation {
             /**
@@ -182,7 +134,7 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify Peerings.
+         * The stage of the expressroutecrossconnection update allowing to specify Peerings.
          */
         interface WithPeerings {
             /**
@@ -192,7 +144,7 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify ServiceProviderNotes.
+         * The stage of the expressroutecrossconnection update allowing to specify ServiceProviderNotes.
          */
         interface WithServiceProviderNotes {
             /**
@@ -202,7 +154,7 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify ServiceProviderProvisioningState.
+         * The stage of the expressroutecrossconnection update allowing to specify ServiceProviderProvisioningState.
          */
         interface WithServiceProviderProvisioningState {
             /**
@@ -212,27 +164,17 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
         }
 
         /**
-         * The stage of the expressroutecrossconnection definition allowing to specify Tags.
-         */
-        interface WithTags {
-            /**
-             * Specifies tags.
-             */
-            WithCreate withTags(Map<String, String> tags);
-        }
-
-        /**
          * The stage of the definition which contains all the minimum required inputs for
          * the resource to be created (via {@link WithCreate#create()}), but also allows
          * for any other optional settings to be specified.
          */
-        interface WithCreate extends Creatable<ExpressRouteCrossConnection>, DefinitionStages.WithBandwidthInMbps, DefinitionStages.WithExpressRouteCircuit, DefinitionStages.WithId, DefinitionStages.WithLocation, DefinitionStages.WithPeeringLocation, DefinitionStages.WithPeerings, DefinitionStages.WithServiceProviderNotes, DefinitionStages.WithServiceProviderProvisioningState, DefinitionStages.WithTags {
+        interface WithCreate extends Creatable<ExpressRouteCrossConnection>, Resource.DefinitionWithTags<WithCreate>, DefinitionStages.WithBandwidthInMbps, DefinitionStages.WithExpressRouteCircuit, DefinitionStages.WithPeeringLocation, DefinitionStages.WithPeerings, DefinitionStages.WithServiceProviderNotes, DefinitionStages.WithServiceProviderProvisioningState {
         }
     }
     /**
      * The template for a ExpressRouteCrossConnection update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ExpressRouteCrossConnection> {
+    interface Update extends Appliable<ExpressRouteCrossConnection>, Resource.UpdateWithTags<Update> {
     }
 
     /**

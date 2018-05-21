@@ -8,114 +8,33 @@
 
 package com.microsoft.azure.management.network.v2018_05_01;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.arm.resources.models.HasManager;
+import com.microsoft.azure.management.network.v2018_05_01.implementation.NetworkManager;
+import com.microsoft.azure.management.network.v2018_05_01.implementation.ExpressRouteCircuitStatsInner;
 
 /**
- * Contains stats associated with the peering.
+ * Type representing ExpressRouteCircuitStats.
  */
-public class ExpressRouteCircuitStats {
+public interface ExpressRouteCircuitStats extends HasInner<ExpressRouteCircuitStatsInner>, HasManager<NetworkManager> {
     /**
-     * Gets BytesIn of the peering.
+     * @return the primarybytesIn value.
      */
-    @JsonProperty(value = "primarybytesIn")
-    private Long primarybytesIn;
+    Long primarybytesIn();
 
     /**
-     * Gets BytesOut of the peering.
+     * @return the primarybytesOut value.
      */
-    @JsonProperty(value = "primarybytesOut")
-    private Long primarybytesOut;
+    Long primarybytesOut();
 
     /**
-     * Gets BytesIn of the peering.
+     * @return the secondarybytesIn value.
      */
-    @JsonProperty(value = "secondarybytesIn")
-    private Long secondarybytesIn;
+    Long secondarybytesIn();
 
     /**
-     * Gets BytesOut of the peering.
+     * @return the secondarybytesOut value.
      */
-    @JsonProperty(value = "secondarybytesOut")
-    private Long secondarybytesOut;
-
-    /**
-     * Get the primarybytesIn value.
-     *
-     * @return the primarybytesIn value
-     */
-    public Long primarybytesIn() {
-        return this.primarybytesIn;
-    }
-
-    /**
-     * Set the primarybytesIn value.
-     *
-     * @param primarybytesIn the primarybytesIn value to set
-     * @return the ExpressRouteCircuitStats object itself.
-     */
-    public ExpressRouteCircuitStats withPrimarybytesIn(Long primarybytesIn) {
-        this.primarybytesIn = primarybytesIn;
-        return this;
-    }
-
-    /**
-     * Get the primarybytesOut value.
-     *
-     * @return the primarybytesOut value
-     */
-    public Long primarybytesOut() {
-        return this.primarybytesOut;
-    }
-
-    /**
-     * Set the primarybytesOut value.
-     *
-     * @param primarybytesOut the primarybytesOut value to set
-     * @return the ExpressRouteCircuitStats object itself.
-     */
-    public ExpressRouteCircuitStats withPrimarybytesOut(Long primarybytesOut) {
-        this.primarybytesOut = primarybytesOut;
-        return this;
-    }
-
-    /**
-     * Get the secondarybytesIn value.
-     *
-     * @return the secondarybytesIn value
-     */
-    public Long secondarybytesIn() {
-        return this.secondarybytesIn;
-    }
-
-    /**
-     * Set the secondarybytesIn value.
-     *
-     * @param secondarybytesIn the secondarybytesIn value to set
-     * @return the ExpressRouteCircuitStats object itself.
-     */
-    public ExpressRouteCircuitStats withSecondarybytesIn(Long secondarybytesIn) {
-        this.secondarybytesIn = secondarybytesIn;
-        return this;
-    }
-
-    /**
-     * Get the secondarybytesOut value.
-     *
-     * @return the secondarybytesOut value
-     */
-    public Long secondarybytesOut() {
-        return this.secondarybytesOut;
-    }
-
-    /**
-     * Set the secondarybytesOut value.
-     *
-     * @param secondarybytesOut the secondarybytesOut value to set
-     * @return the ExpressRouteCircuitStats object itself.
-     */
-    public ExpressRouteCircuitStats withSecondarybytesOut(Long secondarybytesOut) {
-        this.secondarybytesOut = secondarybytesOut;
-        return this;
-    }
+    Long secondarybytesOut();
 
 }

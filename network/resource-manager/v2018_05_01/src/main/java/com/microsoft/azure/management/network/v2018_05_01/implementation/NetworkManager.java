@@ -16,11 +16,13 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCrossConnectionPeeringsOperations;
-import com.microsoft.azure.management.network.v2018_05_01.ArpTables;
-import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCrossConnectionPeerings;
-import com.microsoft.azure.management.network.v2018_05_01.RouteTables;
+import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitAuthorizations;
+import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitPeerings;
+import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitConnections;
+import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuits;
+import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteServiceProviders;
 import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCrossConnections;
+import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCrossConnectionPeerings;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -28,11 +30,13 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Network resource management.
  */
 public final class NetworkManager extends ManagerCore<NetworkManager, NetworkManagementClientImpl> {
-    private ExpressRouteCrossConnectionPeeringsOperations expressRouteCrossConnectionPeeringsOperations;
-    private ArpTables arpTables;
-    private ExpressRouteCrossConnectionPeerings expressRouteCrossConnectionPeerings;
-    private RouteTables routeTables;
+    private ExpressRouteCircuitAuthorizations expressRouteCircuitAuthorizations;
+    private ExpressRouteCircuitPeerings expressRouteCircuitPeerings;
+    private ExpressRouteCircuitConnections expressRouteCircuitConnections;
+    private ExpressRouteCircuits expressRouteCircuits;
+    private ExpressRouteServiceProviders expressRouteServiceProviders;
     private ExpressRouteCrossConnections expressRouteCrossConnections;
+    private ExpressRouteCrossConnectionPeerings expressRouteCrossConnectionPeerings;
     /**
     * Get a Configurable instance that can be used to create NetworkManager with optional configuration.
     *
@@ -81,43 +85,53 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
     }
 
     /**
-     * @return Entry point to manage ExpressRouteCrossConnectionPeeringsOperations.
+     * @return Entry point to manage ExpressRouteCircuitAuthorizations.
      */
-    public ExpressRouteCrossConnectionPeeringsOperations expressRouteCrossConnectionPeeringsOperations() {
-        if (this.expressRouteCrossConnectionPeeringsOperations == null) {
-            this.expressRouteCrossConnectionPeeringsOperations = new ExpressRouteCrossConnectionPeeringsOperationsImpl(this);
+    public ExpressRouteCircuitAuthorizations expressRouteCircuitAuthorizations() {
+        if (this.expressRouteCircuitAuthorizations == null) {
+            this.expressRouteCircuitAuthorizations = new ExpressRouteCircuitAuthorizationsImpl(this);
         }
-        return this.expressRouteCrossConnectionPeeringsOperations;
+        return this.expressRouteCircuitAuthorizations;
     }
 
     /**
-     * @return Entry point to manage ArpTables.
+     * @return Entry point to manage ExpressRouteCircuitPeerings.
      */
-    public ArpTables arpTables() {
-        if (this.arpTables == null) {
-            this.arpTables = new ArpTablesImpl(this);
+    public ExpressRouteCircuitPeerings expressRouteCircuitPeerings() {
+        if (this.expressRouteCircuitPeerings == null) {
+            this.expressRouteCircuitPeerings = new ExpressRouteCircuitPeeringsImpl(this);
         }
-        return this.arpTables;
+        return this.expressRouteCircuitPeerings;
     }
 
     /**
-     * @return Entry point to manage ExpressRouteCrossConnectionPeerings.
+     * @return Entry point to manage ExpressRouteCircuitConnections.
      */
-    public ExpressRouteCrossConnectionPeerings expressRouteCrossConnectionPeerings() {
-        if (this.expressRouteCrossConnectionPeerings == null) {
-            this.expressRouteCrossConnectionPeerings = new ExpressRouteCrossConnectionPeeringsImpl(this);
+    public ExpressRouteCircuitConnections expressRouteCircuitConnections() {
+        if (this.expressRouteCircuitConnections == null) {
+            this.expressRouteCircuitConnections = new ExpressRouteCircuitConnectionsImpl(this);
         }
-        return this.expressRouteCrossConnectionPeerings;
+        return this.expressRouteCircuitConnections;
     }
 
     /**
-     * @return Entry point to manage RouteTables.
+     * @return Entry point to manage ExpressRouteCircuits.
      */
-    public RouteTables routeTables() {
-        if (this.routeTables == null) {
-            this.routeTables = new RouteTablesImpl(this);
+    public ExpressRouteCircuits expressRouteCircuits() {
+        if (this.expressRouteCircuits == null) {
+            this.expressRouteCircuits = new ExpressRouteCircuitsImpl(this);
         }
-        return this.routeTables;
+        return this.expressRouteCircuits;
+    }
+
+    /**
+     * @return Entry point to manage ExpressRouteServiceProviders.
+     */
+    public ExpressRouteServiceProviders expressRouteServiceProviders() {
+        if (this.expressRouteServiceProviders == null) {
+            this.expressRouteServiceProviders = new ExpressRouteServiceProvidersImpl(this);
+        }
+        return this.expressRouteServiceProviders;
     }
 
     /**
@@ -128,6 +142,16 @@ public final class NetworkManager extends ManagerCore<NetworkManager, NetworkMan
             this.expressRouteCrossConnections = new ExpressRouteCrossConnectionsImpl(this);
         }
         return this.expressRouteCrossConnections;
+    }
+
+    /**
+     * @return Entry point to manage ExpressRouteCrossConnectionPeerings.
+     */
+    public ExpressRouteCrossConnectionPeerings expressRouteCrossConnectionPeerings() {
+        if (this.expressRouteCrossConnectionPeerings == null) {
+            this.expressRouteCrossConnectionPeerings = new ExpressRouteCrossConnectionPeeringsImpl(this);
+        }
+        return this.expressRouteCrossConnectionPeerings;
     }
 
     /**
