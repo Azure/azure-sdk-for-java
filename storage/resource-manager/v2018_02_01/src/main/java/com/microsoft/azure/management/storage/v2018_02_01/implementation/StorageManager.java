@@ -16,15 +16,11 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.storage.v2018_02_01.Usages;
-import com.microsoft.azure.management.storage.v2018_02_01.Containers;
-import com.microsoft.azure.management.storage.v2018_02_01.ImmutabilityPolicies;
 import com.microsoft.azure.management.storage.v2018_02_01.Operations;
-import com.microsoft.azure.management.storage.v2018_02_01.Locations;
-import com.microsoft.azure.management.storage.v2018_02_01.BlobServices;
-import com.microsoft.azure.management.storage.v2018_02_01.StorageAccountsOperations;
-import com.microsoft.azure.management.storage.v2018_02_01.StorageAccounts;
 import com.microsoft.azure.management.storage.v2018_02_01.Skus;
+import com.microsoft.azure.management.storage.v2018_02_01.StorageAccounts;
+import com.microsoft.azure.management.storage.v2018_02_01.Usages;
+import com.microsoft.azure.management.storage.v2018_02_01.BlobContainers;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -32,15 +28,11 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Storage resource management.
  */
 public final class StorageManager extends ManagerCore<StorageManager, StorageManagementClientImpl> {
-    private Usages usages;
-    private Containers containers;
-    private ImmutabilityPolicies immutabilityPolicies;
     private Operations operations;
-    private Locations locations;
-    private BlobServices blobServices;
-    private StorageAccountsOperations storageAccountsOperations;
-    private StorageAccounts storageAccounts;
     private Skus skus;
+    private StorageAccounts storageAccounts;
+    private Usages usages;
+    private BlobContainers blobContainers;
     /**
     * Get a Configurable instance that can be used to create StorageManager with optional configuration.
     *
@@ -89,36 +81,6 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     }
 
     /**
-     * @return Entry point to manage Usages.
-     */
-    public Usages usages() {
-        if (this.usages == null) {
-            this.usages = new UsagesImpl(this);
-        }
-        return this.usages;
-    }
-
-    /**
-     * @return Entry point to manage Containers.
-     */
-    public Containers containers() {
-        if (this.containers == null) {
-            this.containers = new ContainersImpl(this);
-        }
-        return this.containers;
-    }
-
-    /**
-     * @return Entry point to manage ImmutabilityPolicies.
-     */
-    public ImmutabilityPolicies immutabilityPolicies() {
-        if (this.immutabilityPolicies == null) {
-            this.immutabilityPolicies = new ImmutabilityPoliciesImpl(this);
-        }
-        return this.immutabilityPolicies;
-    }
-
-    /**
      * @return Entry point to manage Operations.
      */
     public Operations operations() {
@@ -129,33 +91,13 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     }
 
     /**
-     * @return Entry point to manage Locations.
+     * @return Entry point to manage Skus.
      */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(this);
+    public Skus skus() {
+        if (this.skus == null) {
+            this.skus = new SkusImpl(this);
         }
-        return this.locations;
-    }
-
-    /**
-     * @return Entry point to manage BlobServices.
-     */
-    public BlobServices blobServices() {
-        if (this.blobServices == null) {
-            this.blobServices = new BlobServicesImpl(this);
-        }
-        return this.blobServices;
-    }
-
-    /**
-     * @return Entry point to manage StorageAccountsOperations.
-     */
-    public StorageAccountsOperations storageAccountsOperations() {
-        if (this.storageAccountsOperations == null) {
-            this.storageAccountsOperations = new StorageAccountsOperationsImpl(this);
-        }
-        return this.storageAccountsOperations;
+        return this.skus;
     }
 
     /**
@@ -169,13 +111,23 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     }
 
     /**
-     * @return Entry point to manage Skus.
+     * @return Entry point to manage Usages.
      */
-    public Skus skus() {
-        if (this.skus == null) {
-            this.skus = new SkusImpl(this);
+    public Usages usages() {
+        if (this.usages == null) {
+            this.usages = new UsagesImpl(this);
         }
-        return this.skus;
+        return this.usages;
+    }
+
+    /**
+     * @return Entry point to manage BlobContainers.
+     */
+    public BlobContainers blobContainers() {
+        if (this.blobContainers == null) {
+            this.blobContainers = new BlobContainersImpl(this);
+        }
+        return this.blobContainers;
     }
 
     /**

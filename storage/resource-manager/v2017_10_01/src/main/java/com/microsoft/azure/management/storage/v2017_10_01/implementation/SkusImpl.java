@@ -65,9 +65,4 @@ class SkusImpl extends WrapperImpl<SkusInner> implements Skus {
         });
     }
 
-    protected Observable<SkuInner> getInnerAsync(String resourceGroupName, String name) {
-        SkusInner client = this.inner();
-        return null; // NOP Retrive by RG not supported
-    }
-
 }

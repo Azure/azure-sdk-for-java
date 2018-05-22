@@ -18,38 +18,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing FileServers.
  */
 public interface FileServers extends SupportsCreating<FileServer.DefinitionStages.Blank>, HasInner<FileServersInner> {
-
-    /**
-     * Gets a list of File Servers associated with the specified workspace.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<FileServer> listByWorkspaceAsync(final String resourceGroupName, final String workspaceName);
-
-    /**
-     * Gets information about a File Server.
-    *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param fileServerName The name of the file server within the specified resource group. File server names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<FileServer> getByWorkspaceAsync(String resourceGroupName, String workspaceName, String fileServerName);
-
-    /**
-     * Deletes a File Server.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param fileServerName The name of the file server within the specified resource group. File server names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteByWorkspaceAsync(String resourceGroupName, String workspaceName, String fileServerName);
     /**
      * Gets a list of File Servers associated with the given subscription.
      *
@@ -66,5 +34,37 @@ public interface FileServers extends SupportsCreating<FileServer.DefinitionStage
      * @return the observable for the request
      */
     Observable<FileServer> listByResourceGroupAsync(final String resourceGroupName);
+
+    /**
+     * Gets information about a File Server.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param fileServerName The name of the file server within the specified resource group. File server names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<FileServer> getAsync(String resourceGroupName, String workspaceName, String fileServerName);
+
+    /**
+     * Gets a list of File Servers associated with the specified workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<FileServer> listByWorkspaceAsync(final String resourceGroupName, final String workspaceName);
+
+    /**
+     * Deletes a File Server.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param fileServerName The name of the file server within the specified resource group. File server names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String workspaceName, String fileServerName);
 
 }

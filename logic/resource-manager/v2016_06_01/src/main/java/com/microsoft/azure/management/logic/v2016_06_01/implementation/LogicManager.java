@@ -16,26 +16,24 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.logic.v2016_06_01.Versions;
+import com.microsoft.azure.management.logic.v2016_06_01.Workflows;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowVersions;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggers;
-import com.microsoft.azure.management.logic.v2016_06_01.Histories;
-import com.microsoft.azure.management.logic.v2016_06_01.Runs;
-import com.microsoft.azure.management.logic.v2016_06_01.Actions;
-import com.microsoft.azure.management.logic.v2016_06_01.Repetitions;
-import com.microsoft.azure.management.logic.v2016_06_01.ScopeRepetitions;
-import com.microsoft.azure.management.logic.v2016_06_01.Operations;
-import com.microsoft.azure.management.logic.v2016_06_01.Assemblies;
-import com.microsoft.azure.management.logic.v2016_06_01.BatchConfigurations;
-import com.microsoft.azure.management.logic.v2016_06_01.IntegrationAccountSchemas;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggerHistories;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRuns;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActions;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionRepetitions;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunActionScopedRepetitions;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunOperations;
+import com.microsoft.azure.management.logic.v2016_06_01.IntegrationAccounts;
+import com.microsoft.azure.management.logic.v2016_06_01.IntegrationAccountAssemblies;
+import com.microsoft.azure.management.logic.v2016_06_01.IntegrationAccountBatchConfigurations;
+import com.microsoft.azure.management.logic.v2016_06_01.Schemas;
 import com.microsoft.azure.management.logic.v2016_06_01.Maps;
 import com.microsoft.azure.management.logic.v2016_06_01.Partners;
 import com.microsoft.azure.management.logic.v2016_06_01.Agreements;
 import com.microsoft.azure.management.logic.v2016_06_01.Certificates;
 import com.microsoft.azure.management.logic.v2016_06_01.Sessions;
-import com.microsoft.azure.management.logic.v2016_06_01.VersionWorkflowTriggers;
-import com.microsoft.azure.management.logic.v2016_06_01.WorkflowSchemas;
-import com.microsoft.azure.management.logic.v2016_06_01.Workflows;
-import com.microsoft.azure.management.logic.v2016_06_01.IntegrationAccounts;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -43,26 +41,24 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Logic resource management.
  */
 public final class LogicManager extends ManagerCore<LogicManager, LogicManagementClientImpl> {
-    private Versions versions;
+    private Workflows workflows;
+    private WorkflowVersions workflowVersions;
     private WorkflowTriggers workflowTriggers;
-    private Histories histories;
-    private Runs runs;
-    private Actions actions;
-    private Repetitions repetitions;
-    private ScopeRepetitions scopeRepetitions;
-    private Operations operations;
-    private Assemblies assemblies;
-    private BatchConfigurations batchConfigurations;
-    private IntegrationAccountSchemas integrationAccountSchemas;
+    private WorkflowTriggerHistories workflowTriggerHistories;
+    private WorkflowRuns workflowRuns;
+    private WorkflowRunActions workflowRunActions;
+    private WorkflowRunActionRepetitions workflowRunActionRepetitions;
+    private WorkflowRunActionScopedRepetitions workflowRunActionScopedRepetitions;
+    private WorkflowRunOperations workflowRunOperations;
+    private IntegrationAccounts integrationAccounts;
+    private IntegrationAccountAssemblies integrationAccountAssemblies;
+    private IntegrationAccountBatchConfigurations integrationAccountBatchConfigurations;
+    private Schemas schemas;
     private Maps maps;
     private Partners partners;
     private Agreements agreements;
     private Certificates certificates;
     private Sessions sessions;
-    private VersionWorkflowTriggers versionWorkflowTriggers;
-    private WorkflowSchemas workflowSchemas;
-    private Workflows workflows;
-    private IntegrationAccounts integrationAccounts;
     /**
     * Get a Configurable instance that can be used to create LogicManager with optional configuration.
     *
@@ -111,13 +107,23 @@ public final class LogicManager extends ManagerCore<LogicManager, LogicManagemen
     }
 
     /**
-     * @return Entry point to manage Versions.
+     * @return Entry point to manage Workflows.
      */
-    public Versions versions() {
-        if (this.versions == null) {
-            this.versions = new VersionsImpl(this);
+    public Workflows workflows() {
+        if (this.workflows == null) {
+            this.workflows = new WorkflowsImpl(this);
         }
-        return this.versions;
+        return this.workflows;
+    }
+
+    /**
+     * @return Entry point to manage WorkflowVersions.
+     */
+    public WorkflowVersions workflowVersions() {
+        if (this.workflowVersions == null) {
+            this.workflowVersions = new WorkflowVersionsImpl(this);
+        }
+        return this.workflowVersions;
     }
 
     /**
@@ -131,93 +137,103 @@ public final class LogicManager extends ManagerCore<LogicManager, LogicManagemen
     }
 
     /**
-     * @return Entry point to manage Histories.
+     * @return Entry point to manage WorkflowTriggerHistories.
      */
-    public Histories histories() {
-        if (this.histories == null) {
-            this.histories = new HistoriesImpl(this);
+    public WorkflowTriggerHistories workflowTriggerHistories() {
+        if (this.workflowTriggerHistories == null) {
+            this.workflowTriggerHistories = new WorkflowTriggerHistoriesImpl(this);
         }
-        return this.histories;
+        return this.workflowTriggerHistories;
     }
 
     /**
-     * @return Entry point to manage Runs.
+     * @return Entry point to manage WorkflowRuns.
      */
-    public Runs runs() {
-        if (this.runs == null) {
-            this.runs = new RunsImpl(this);
+    public WorkflowRuns workflowRuns() {
+        if (this.workflowRuns == null) {
+            this.workflowRuns = new WorkflowRunsImpl(this);
         }
-        return this.runs;
+        return this.workflowRuns;
     }
 
     /**
-     * @return Entry point to manage Actions.
+     * @return Entry point to manage WorkflowRunActions.
      */
-    public Actions actions() {
-        if (this.actions == null) {
-            this.actions = new ActionsImpl(this);
+    public WorkflowRunActions workflowRunActions() {
+        if (this.workflowRunActions == null) {
+            this.workflowRunActions = new WorkflowRunActionsImpl(this);
         }
-        return this.actions;
+        return this.workflowRunActions;
     }
 
     /**
-     * @return Entry point to manage Repetitions.
+     * @return Entry point to manage WorkflowRunActionRepetitions.
      */
-    public Repetitions repetitions() {
-        if (this.repetitions == null) {
-            this.repetitions = new RepetitionsImpl(this);
+    public WorkflowRunActionRepetitions workflowRunActionRepetitions() {
+        if (this.workflowRunActionRepetitions == null) {
+            this.workflowRunActionRepetitions = new WorkflowRunActionRepetitionsImpl(this);
         }
-        return this.repetitions;
+        return this.workflowRunActionRepetitions;
     }
 
     /**
-     * @return Entry point to manage ScopeRepetitions.
+     * @return Entry point to manage WorkflowRunActionScopedRepetitions.
      */
-    public ScopeRepetitions scopeRepetitions() {
-        if (this.scopeRepetitions == null) {
-            this.scopeRepetitions = new ScopeRepetitionsImpl(this);
+    public WorkflowRunActionScopedRepetitions workflowRunActionScopedRepetitions() {
+        if (this.workflowRunActionScopedRepetitions == null) {
+            this.workflowRunActionScopedRepetitions = new WorkflowRunActionScopedRepetitionsImpl(this);
         }
-        return this.scopeRepetitions;
+        return this.workflowRunActionScopedRepetitions;
     }
 
     /**
-     * @return Entry point to manage Operations.
+     * @return Entry point to manage WorkflowRunOperations.
      */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(this);
+    public WorkflowRunOperations workflowRunOperations() {
+        if (this.workflowRunOperations == null) {
+            this.workflowRunOperations = new WorkflowRunOperationsImpl(this);
         }
-        return this.operations;
+        return this.workflowRunOperations;
     }
 
     /**
-     * @return Entry point to manage Assemblies.
+     * @return Entry point to manage IntegrationAccounts.
      */
-    public Assemblies assemblies() {
-        if (this.assemblies == null) {
-            this.assemblies = new AssembliesImpl(this);
+    public IntegrationAccounts integrationAccounts() {
+        if (this.integrationAccounts == null) {
+            this.integrationAccounts = new IntegrationAccountsImpl(this);
         }
-        return this.assemblies;
+        return this.integrationAccounts;
     }
 
     /**
-     * @return Entry point to manage BatchConfigurations.
+     * @return Entry point to manage IntegrationAccountAssemblies.
      */
-    public BatchConfigurations batchConfigurations() {
-        if (this.batchConfigurations == null) {
-            this.batchConfigurations = new BatchConfigurationsImpl(this);
+    public IntegrationAccountAssemblies integrationAccountAssemblies() {
+        if (this.integrationAccountAssemblies == null) {
+            this.integrationAccountAssemblies = new IntegrationAccountAssembliesImpl(this);
         }
-        return this.batchConfigurations;
+        return this.integrationAccountAssemblies;
     }
 
     /**
-     * @return Entry point to manage IntegrationAccountSchemas.
+     * @return Entry point to manage IntegrationAccountBatchConfigurations.
      */
-    public IntegrationAccountSchemas integrationAccountSchemas() {
-        if (this.integrationAccountSchemas == null) {
-            this.integrationAccountSchemas = new IntegrationAccountSchemasImpl(this);
+    public IntegrationAccountBatchConfigurations integrationAccountBatchConfigurations() {
+        if (this.integrationAccountBatchConfigurations == null) {
+            this.integrationAccountBatchConfigurations = new IntegrationAccountBatchConfigurationsImpl(this);
         }
-        return this.integrationAccountSchemas;
+        return this.integrationAccountBatchConfigurations;
+    }
+
+    /**
+     * @return Entry point to manage Schemas.
+     */
+    public Schemas schemas() {
+        if (this.schemas == null) {
+            this.schemas = new SchemasImpl(this);
+        }
+        return this.schemas;
     }
 
     /**
@@ -268,46 +284,6 @@ public final class LogicManager extends ManagerCore<LogicManager, LogicManagemen
             this.sessions = new SessionsImpl(this);
         }
         return this.sessions;
-    }
-
-    /**
-     * @return Entry point to manage VersionWorkflowTriggers.
-     */
-    public VersionWorkflowTriggers versionWorkflowTriggers() {
-        if (this.versionWorkflowTriggers == null) {
-            this.versionWorkflowTriggers = new VersionWorkflowTriggersImpl(this);
-        }
-        return this.versionWorkflowTriggers;
-    }
-
-    /**
-     * @return Entry point to manage WorkflowSchemas.
-     */
-    public WorkflowSchemas workflowSchemas() {
-        if (this.workflowSchemas == null) {
-            this.workflowSchemas = new WorkflowSchemasImpl(this);
-        }
-        return this.workflowSchemas;
-    }
-
-    /**
-     * @return Entry point to manage Workflows.
-     */
-    public Workflows workflows() {
-        if (this.workflows == null) {
-            this.workflows = new WorkflowsImpl(this);
-        }
-        return this.workflows;
-    }
-
-    /**
-     * @return Entry point to manage IntegrationAccounts.
-     */
-    public IntegrationAccounts integrationAccounts() {
-        if (this.integrationAccounts == null) {
-            this.integrationAccounts = new IntegrationAccountsImpl(this);
-        }
-        return this.integrationAccounts;
     }
 
     /**

@@ -11,7 +11,6 @@ package com.microsoft.azure.management.logic.v2016_06_01.implementation;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowState;
 import com.microsoft.azure.management.logic.v2016_06_01.Sku;
-import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 import java.util.Map;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowParameter;
 import com.fasterxml.jackson.annotation.JsonProperty;
@@ -66,7 +65,7 @@ public class WorkflowVersionInner extends Resource {
      * The integration account.
      */
     @JsonProperty(value = "properties.integrationAccount")
-    private ResourceReference integrationAccount;
+    private ResourceReferenceInner integrationAccount;
 
     /**
      * The definition.
@@ -161,7 +160,7 @@ public class WorkflowVersionInner extends Resource {
      *
      * @return the integrationAccount value
      */
-    public ResourceReference integrationAccount() {
+    public ResourceReferenceInner integrationAccount() {
         return this.integrationAccount;
     }
 
@@ -171,7 +170,7 @@ public class WorkflowVersionInner extends Resource {
      * @param integrationAccount the integrationAccount value to set
      * @return the WorkflowVersionInner object itself.
      */
-    public WorkflowVersionInner withIntegrationAccount(ResourceReference integrationAccount) {
+    public WorkflowVersionInner withIntegrationAccount(ResourceReferenceInner integrationAccount) {
         this.integrationAccount = integrationAccount;
         return this;
     }

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.logic.v2016_06_01;
 
+import com.microsoft.azure.management.logic.v2016_06_01.implementation.ResourceReferenceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -25,7 +26,7 @@ public class Sku {
      * The reference to plan.
      */
     @JsonProperty(value = "plan")
-    private ResourceReference plan;
+    private ResourceReferenceInner plan;
 
     /**
      * Get the name value.
@@ -52,7 +53,7 @@ public class Sku {
      *
      * @return the plan value
      */
-    public ResourceReference plan() {
+    public ResourceReferenceInner plan() {
         return this.plan;
     }
 
@@ -62,7 +63,7 @@ public class Sku {
      * @param plan the plan value to set
      * @return the Sku object itself.
      */
-    public Sku withPlan(ResourceReference plan) {
+    public Sku withPlan(ResourceReferenceInner plan) {
         this.plan = plan;
         return this;
     }

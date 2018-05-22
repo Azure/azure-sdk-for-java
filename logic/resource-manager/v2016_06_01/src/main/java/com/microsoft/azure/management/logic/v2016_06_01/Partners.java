@@ -18,38 +18,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Partners.
  */
 public interface Partners extends SupportsCreating<IntegrationAccountPartner.DefinitionStages.Blank>, HasInner<PartnersInner> {
-
-    /**
-     * Gets a list of integration account partners.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<IntegrationAccountPartner> listByIntegrationAccountAsync(final String resourceGroupName, final String integrationAccountName);
-
-    /**
-     * Gets an integration account partner.
-    *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param partnerName The integration account partner name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<IntegrationAccountPartner> getByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String partnerName);
-
-    /**
-     * Deletes an integration account partner.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param partnerName The integration account partner name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String partnerName);
     /**
      * Get the content callback url.
      *
@@ -61,5 +29,37 @@ public interface Partners extends SupportsCreating<IntegrationAccountPartner.Def
      * @return the observable for the request
      */
     Observable<WorkflowTriggerCallbackUrl> listContentCallbackUrlAsync(String resourceGroupName, String integrationAccountName, String partnerName, GetCallbackUrlParameters listContentCallbackUrl);
+
+    /**
+     * Gets an integration account partner.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param partnerName The integration account partner name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationAccountPartner> getAsync(String resourceGroupName, String integrationAccountName, String partnerName);
+
+    /**
+     * Gets a list of integration account partners.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationAccountPartner> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName);
+
+    /**
+     * Deletes an integration account partner.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param partnerName The integration account partner name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String integrationAccountName, String partnerName);
 
 }

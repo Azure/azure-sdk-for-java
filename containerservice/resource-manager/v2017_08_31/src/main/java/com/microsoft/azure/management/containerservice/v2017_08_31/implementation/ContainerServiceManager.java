@@ -16,8 +16,6 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.containerservice.v2017_08_31.AccessProfiles;
-import com.microsoft.azure.management.containerservice.v2017_08_31.UpgradeProfiles;
 import com.microsoft.azure.management.containerservice.v2017_08_31.ManagedClusters;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -26,8 +24,6 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure ContainerService resource management.
  */
 public final class ContainerServiceManager extends ManagerCore<ContainerServiceManager, ContainerServiceManagementClientImpl> {
-    private AccessProfiles accessProfiles;
-    private UpgradeProfiles upgradeProfiles;
     private ManagedClusters managedClusters;
     /**
     * Get a Configurable instance that can be used to create ContainerServiceManager with optional configuration.
@@ -74,26 +70,6 @@ public final class ContainerServiceManager extends ManagerCore<ContainerServiceM
         * @return the interface exposing ContainerService management API entry points that work across subscriptions
         */
         ContainerServiceManager authenticate(AzureTokenCredentials credentials, String subscriptionId);
-    }
-
-    /**
-     * @return Entry point to manage AccessProfiles.
-     */
-    public AccessProfiles accessProfiles() {
-        if (this.accessProfiles == null) {
-            this.accessProfiles = new AccessProfilesImpl(this);
-        }
-        return this.accessProfiles;
-    }
-
-    /**
-     * @return Entry point to manage UpgradeProfiles.
-     */
-    public UpgradeProfiles upgradeProfiles() {
-        if (this.upgradeProfiles == null) {
-            this.upgradeProfiles = new UpgradeProfilesImpl(this);
-        }
-        return this.upgradeProfiles;
     }
 
     /**

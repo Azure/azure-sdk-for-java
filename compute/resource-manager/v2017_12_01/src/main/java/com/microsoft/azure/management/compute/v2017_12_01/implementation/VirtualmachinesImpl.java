@@ -28,31 +28,13 @@ import com.microsoft.azure.management.compute.v2017_12_01.OperationStatusRespons
 import com.microsoft.azure.management.compute.v2017_12_01.RunCommandResult;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineCaptureParameters;
 import com.microsoft.azure.management.compute.v2017_12_01.RunCommandInput;
-import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineExtensions;
-import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineExtensionsOperations;
-import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineVmSizes;
+import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineExtensionsListResult;
+import java.util.List;
+import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineVirtualMachineSize;
 
 class VirtualMachinesImpl extends GroupableResourcesCoreImpl<VirtualMachine, VirtualMachineImpl, VirtualMachineInner, VirtualMachinesInner, ComputeManager>  implements VirtualMachines {
     protected VirtualMachinesImpl(ComputeManager manager) {
         super(manager.inner().virtualMachines(), manager);
-    }
-
-    @Override
-    public VirtualMachineExtensions extensions() {
-        VirtualMachineExtensions accessor = this.manager().virtualMachineExtensions();
-        return accessor;
-    }
-
-    @Override
-    public VirtualMachineExtensionsOperations extensionsOperation() {
-        VirtualMachineExtensionsOperations accessor = this.manager().virtualMachineExtensionsOperations();
-        return accessor;
-    }
-
-    @Override
-    public VirtualMachineVmSizes vmSizes() {
-        VirtualMachineVmSizes accessor = this.manager().virtualMachineVmSizes();
-        return accessor;
     }
 
     @Override
@@ -330,6 +312,40 @@ class VirtualMachinesImpl extends GroupableResourcesCoreImpl<VirtualMachine, Vir
     @Override
     protected VirtualMachineImpl wrapModel(String name) {
         return new VirtualMachineImpl(name, new VirtualMachineInner(), this.manager());
+    }
+
+    private VirtualMachineVirtualMachineSizeImpl wrapModel(VirtualMachineSizeInner inner) {
+        return  new VirtualMachineVirtualMachineSizeImpl(inner, manager());
+    }
+
+    @Override
+    public Observable<VirtualMachineExtensionsListResult> getExtensionsAsync(String resourceGroupName, String vmName) {
+        VirtualMachinesInner client = this.inner();
+        return client.getExtensionsAsync(resourceGroupName, vmName)
+        .map(new Func1<VirtualMachineExtensionsListResultInner, VirtualMachineExtensionsListResult>() {
+            @Override
+            public VirtualMachineExtensionsListResult call(VirtualMachineExtensionsListResultInner inner) {
+                return new VirtualMachineExtensionsListResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<VirtualMachineVirtualMachineSize> listAvailableSizesAsync(String resourceGroupName, String vmName) {
+        VirtualMachinesInner client = this.inner();
+        return client.listAvailableSizesAsync(resourceGroupName, vmName)
+        .flatMap(new Func1<List<VirtualMachineSizeInner>, Observable<VirtualMachineSizeInner>>() {
+            @Override
+            public Observable<VirtualMachineSizeInner> call(List<VirtualMachineSizeInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<VirtualMachineSizeInner, VirtualMachineVirtualMachineSize>() {
+            @Override
+            public VirtualMachineVirtualMachineSize call(VirtualMachineSizeInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
 }

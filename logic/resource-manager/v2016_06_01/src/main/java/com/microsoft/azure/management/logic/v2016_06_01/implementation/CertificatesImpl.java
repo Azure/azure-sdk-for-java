@@ -42,7 +42,7 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
         return new IntegrationAccountCertificateImpl(name, this.manager());
     }
 
-    private Observable<Page<IntegrationAccountCertificateInner>> listByIntegrationAccountNextInnerPageAsync(String nextLink) {
+    private Observable<Page<IntegrationAccountCertificateInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -51,18 +51,18 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
         .flatMap(new Func1<Page<IntegrationAccountCertificateInner>, Observable<Page<IntegrationAccountCertificateInner>>>() {
             @Override
             public Observable<Page<IntegrationAccountCertificateInner>> call(Page<IntegrationAccountCertificateInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<IntegrationAccountCertificate> listByIntegrationAccountAsync(final String resourceGroupName, final String integrationAccountName) {
+    public Observable<IntegrationAccountCertificate> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         CertificatesInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
         .flatMap(new Func1<Page<IntegrationAccountCertificateInner>, Observable<Page<IntegrationAccountCertificateInner>>>() {
             @Override
             public Observable<Page<IntegrationAccountCertificateInner>> call(Page<IntegrationAccountCertificateInner> page) {
-                return listByIntegrationAccountNextInnerPageAsync(page.nextPageLink());
+                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<IntegrationAccountCertificateInner>, Iterable<IntegrationAccountCertificateInner>>() {
@@ -80,7 +80,7 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
     }
 
     @Override
-    public Observable<IntegrationAccountCertificate> getByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String certificateName) {
+    public Observable<IntegrationAccountCertificate> getAsync(String resourceGroupName, String integrationAccountName, String certificateName) {
         CertificatesInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, certificateName)
         .map(new Func1<IntegrationAccountCertificateInner, IntegrationAccountCertificate>() {
@@ -92,7 +92,7 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
     }
 
     @Override
-    public Completable deleteByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String certificateName) {
+    public Completable deleteAsync(String resourceGroupName, String integrationAccountName, String certificateName) {
         CertificatesInner client = this.inner();
         return client.deleteAsync(resourceGroupName, integrationAccountName, certificateName).toCompletable();
     }

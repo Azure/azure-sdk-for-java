@@ -80,7 +80,7 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
     }
 
     @Override
-    public Observable<CertificateDescription> getByIotHubAsync(String resourceGroupName, String resourceName, String certificateName) {
+    public Observable<CertificateDescription> getAsync(String resourceGroupName, String resourceName, String certificateName) {
         CertificatesInner client = this.inner();
         return client.getAsync(resourceGroupName, resourceName, certificateName)
         .map(new Func1<CertificateDescriptionInner, CertificateDescription>() {
@@ -92,7 +92,7 @@ class CertificatesImpl extends WrapperImpl<CertificatesInner> implements Certifi
     }
 
     @Override
-    public Completable deleteByIotHubAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
+    public Completable deleteAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch) {
         CertificatesInner client = this.inner();
         return client.deleteAsync(resourceGroupName, resourceName, certificateName, ifMatch).toCompletable();
     }

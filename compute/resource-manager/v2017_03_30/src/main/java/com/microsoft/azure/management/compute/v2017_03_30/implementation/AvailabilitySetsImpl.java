@@ -22,17 +22,12 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySetVmSizes;
+import java.util.List;
+import com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySetVirtualMachineSize;
 
 class AvailabilitySetsImpl extends GroupableResourcesCoreImpl<AvailabilitySet, AvailabilitySetImpl, AvailabilitySetInner, AvailabilitySetsInner, ComputeManager>  implements AvailabilitySets {
     protected AvailabilitySetsImpl(ComputeManager manager) {
         super(manager.inner().availabilitySets(), manager);
-    }
-
-    @Override
-    public AvailabilitySetVmSizes vmSizes() {
-        AvailabilitySetVmSizes accessor = this.manager().availabilitySetVmSizes();
-        return accessor;
     }
 
     @Override
@@ -116,6 +111,28 @@ class AvailabilitySetsImpl extends GroupableResourcesCoreImpl<AvailabilitySet, A
     @Override
     protected AvailabilitySetImpl wrapModel(String name) {
         return new AvailabilitySetImpl(name, new AvailabilitySetInner(), this.manager());
+    }
+
+    private AvailabilitySetVirtualMachineSizeImpl wrapModel(VirtualMachineSizeInner inner) {
+        return  new AvailabilitySetVirtualMachineSizeImpl(inner, manager());
+    }
+
+    @Override
+    public Observable<AvailabilitySetVirtualMachineSize> listAvailableSizesAsync(String resourceGroupName, String availabilitySetName) {
+        AvailabilitySetsInner client = this.inner();
+        return client.listAvailableSizesAsync(resourceGroupName, availabilitySetName)
+        .flatMap(new Func1<List<VirtualMachineSizeInner>, Observable<VirtualMachineSizeInner>>() {
+            @Override
+            public Observable<VirtualMachineSizeInner> call(List<VirtualMachineSizeInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<VirtualMachineSizeInner, AvailabilitySetVirtualMachineSize>() {
+            @Override
+            public AvailabilitySetVirtualMachineSize call(VirtualMachineSizeInner inner) {
+                return wrapModel(inner);
+            }
+        });
     }
 
 }

@@ -18,6 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing LinkedServers.
  */
 public interface LinkedServers extends SupportsCreating<RedisLinkedServerWithProperties.DefinitionStages.Blank>, HasInner<LinkedServersInner> {
+    /**
+     * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @param linkedServerName The name of the linked server.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RedisLinkedServerWithProperties> getAsync(String resourceGroupName, String name, String linkedServerName);
 
     /**
      * Gets the list of linked servers associated with this redis cache (requires Premium SKU).
@@ -27,18 +37,7 @@ public interface LinkedServers extends SupportsCreating<RedisLinkedServerWithPro
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RedisLinkedServerWithProperties> listByRedisAsync(final String resourceGroupName, final String name);
-
-    /**
-     * Gets the detailed information about a linked server of a redis cache (requires Premium SKU).
-    *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @param linkedServerName The name of the linked server.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<RedisLinkedServerWithProperties> getByRedisAsync(String resourceGroupName, String name, String linkedServerName);
+    Observable<RedisLinkedServerWithProperties> listAsync(final String resourceGroupName, final String name);
 
     /**
      * Deletes the linked server from a redis cache (requires Premium SKU).
@@ -49,5 +48,6 @@ public interface LinkedServers extends SupportsCreating<RedisLinkedServerWithPro
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByRedisAsync(String resourceGroupName, String name, String linkedServerName);
+    Completable deleteAsync(String resourceGroupName, String name, String linkedServerName);
+
 }

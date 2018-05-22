@@ -12,7 +12,6 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowStatus;
 import com.microsoft.azure.management.logic.v2016_06_01.Correlation;
 import com.microsoft.azure.management.logic.v2016_06_01.ContentLink;
-import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -88,7 +87,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      * Gets the reference to workflow run.
      */
     @JsonProperty(value = "properties.run", access = JsonProperty.Access.WRITE_ONLY)
-    private ResourceReference run;
+    private ResourceReferenceInner run;
 
     /**
      * Gets the workflow trigger history name.
@@ -208,7 +207,7 @@ public class WorkflowTriggerHistoryInner extends SubResource {
      *
      * @return the run value
      */
-    public ResourceReference run() {
+    public ResourceReferenceInner run() {
         return this.run;
     }
 

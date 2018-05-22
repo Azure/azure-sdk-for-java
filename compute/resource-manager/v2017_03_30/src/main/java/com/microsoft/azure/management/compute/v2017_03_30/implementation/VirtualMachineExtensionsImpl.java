@@ -42,7 +42,7 @@ class VirtualMachineExtensionsImpl extends WrapperImpl<VirtualMachineExtensionsI
     }
 
     @Override
-    public Observable<VirtualMachineExtension> getByVirtualMachineAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+    public Observable<VirtualMachineExtension> getAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         VirtualMachineExtensionsInner client = this.inner();
         return client.getAsync(resourceGroupName, vmName, vmExtensionName)
         .map(new Func1<VirtualMachineExtensionInner, VirtualMachineExtension>() {
@@ -54,7 +54,7 @@ class VirtualMachineExtensionsImpl extends WrapperImpl<VirtualMachineExtensionsI
     }
 
     @Override
-    public Completable deleteByVirtualMachineAsync(String resourceGroupName, String vmName, String vmExtensionName) {
+    public Completable deleteAsync(String resourceGroupName, String vmName, String vmExtensionName) {
         VirtualMachineExtensionsInner client = this.inner();
         return client.deleteAsync(resourceGroupName, vmName, vmExtensionName).toCompletable();
     }

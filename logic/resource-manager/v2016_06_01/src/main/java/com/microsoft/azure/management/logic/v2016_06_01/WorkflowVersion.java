@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.logic.v2016_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.logic.v2016_06_01.implementation.ResourceReferenceInner;
 import com.microsoft.azure.management.logic.v2016_06_01.implementation.WorkflowVersionInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
@@ -49,7 +50,7 @@ public interface WorkflowVersion extends HasInner<WorkflowVersionInner>, Indexab
     /**
      * @return the integrationAccount value.
      */
-    ResourceReference integrationAccount();
+    ResourceReferenceInner integrationAccount();
 
     /**
      * @return the location value.

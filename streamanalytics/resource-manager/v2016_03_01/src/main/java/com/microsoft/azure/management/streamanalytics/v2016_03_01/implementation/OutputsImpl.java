@@ -55,7 +55,7 @@ class OutputsImpl extends WrapperImpl<OutputsInner> implements Outputs {
         });
     }
 
-    private Observable<Page<OutputInner>> listByStreamingjobNextInnerPageAsync(String nextLink) {
+    private Observable<Page<OutputInner>> listByStreamingJobNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -64,18 +64,18 @@ class OutputsImpl extends WrapperImpl<OutputsInner> implements Outputs {
         .flatMap(new Func1<Page<OutputInner>, Observable<Page<OutputInner>>>() {
             @Override
             public Observable<Page<OutputInner>> call(Page<OutputInner> page) {
-                return Observable.just(page).concatWith(listByStreamingjobNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listByStreamingJobNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<Output> listByStreamingjobAsync(final String resourceGroupName, final String jobName) {
+    public Observable<Output> listByStreamingJobAsync(final String resourceGroupName, final String jobName) {
         OutputsInner client = this.inner();
         return client.listByStreamingJobAsync(resourceGroupName, jobName)
         .flatMap(new Func1<Page<OutputInner>, Observable<Page<OutputInner>>>() {
             @Override
             public Observable<Page<OutputInner>> call(Page<OutputInner> page) {
-                return listByStreamingjobNextInnerPageAsync(page.nextPageLink());
+                return listByStreamingJobNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<OutputInner>, Iterable<OutputInner>>() {
@@ -93,7 +93,7 @@ class OutputsImpl extends WrapperImpl<OutputsInner> implements Outputs {
     }
 
     @Override
-    public Observable<Output> getByStreamingjobAsync(String resourceGroupName, String jobName, String outputName) {
+    public Observable<Output> getAsync(String resourceGroupName, String jobName, String outputName) {
         OutputsInner client = this.inner();
         return client.getAsync(resourceGroupName, jobName, outputName)
         .map(new Func1<OutputInner, Output>() {
@@ -105,7 +105,7 @@ class OutputsImpl extends WrapperImpl<OutputsInner> implements Outputs {
     }
 
     @Override
-    public Completable deleteByStreamingjobAsync(String resourceGroupName, String jobName, String outputName) {
+    public Completable deleteAsync(String resourceGroupName, String jobName, String outputName) {
         OutputsInner client = this.inner();
         return client.deleteAsync(resourceGroupName, jobName, outputName).toCompletable();
     }

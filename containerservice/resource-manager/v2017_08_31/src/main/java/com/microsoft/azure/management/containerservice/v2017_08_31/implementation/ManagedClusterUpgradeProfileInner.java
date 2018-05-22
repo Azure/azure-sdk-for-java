@@ -12,30 +12,13 @@ import com.microsoft.azure.management.containerservice.v2017_08_31.ManagedCluste
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * The list of available upgrades for compute pools.
  */
 @JsonFlatten
-public class ManagedClusterUpgradeProfileInner {
-    /**
-     * Id of upgrade profile.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /**
-     * Name of upgrade profile.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /**
-     * Type of upgrade profile.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
-
+public class ManagedClusterUpgradeProfileInner extends ProxyResource {
     /**
      * The list of available upgrade versions for the control plane.
      */
@@ -47,33 +30,6 @@ public class ManagedClusterUpgradeProfileInner {
      */
     @JsonProperty(value = "properties.agentPoolProfiles", required = true)
     private List<ManagedClusterPoolUpgradeProfile> agentPoolProfiles;
-
-    /**
-     * Get the id value.
-     *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name value.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type value.
-     *
-     * @return the type value
-     */
-    public String type() {
-        return this.type;
-    }
 
     /**
      * Get the controlPlaneProfile value.

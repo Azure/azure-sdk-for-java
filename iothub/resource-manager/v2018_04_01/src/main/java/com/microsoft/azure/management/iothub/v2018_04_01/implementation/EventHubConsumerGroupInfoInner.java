@@ -10,34 +10,17 @@ package com.microsoft.azure.management.iothub.v2018_04_01.implementation;
 
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * The properties of the EventHubConsumerGroupInfo object.
  */
-public class EventHubConsumerGroupInfoInner {
+public class EventHubConsumerGroupInfoInner extends ProxyResource {
     /**
      * The tags.
      */
     @JsonProperty(value = "properties")
     private Map<String, String> properties;
-
-    /**
-     * The Event Hub-compatible consumer group identifier.
-     */
-    @JsonProperty(value = "id", access = JsonProperty.Access.WRITE_ONLY)
-    private String id;
-
-    /**
-     * The Event Hub-compatible consumer group name.
-     */
-    @JsonProperty(value = "name", access = JsonProperty.Access.WRITE_ONLY)
-    private String name;
-
-    /**
-     * the resource type.
-     */
-    @JsonProperty(value = "type", access = JsonProperty.Access.WRITE_ONLY)
-    private String type;
 
     /**
      * The etag.
@@ -63,33 +46,6 @@ public class EventHubConsumerGroupInfoInner {
     public EventHubConsumerGroupInfoInner withProperties(Map<String, String> properties) {
         this.properties = properties;
         return this;
-    }
-
-    /**
-     * Get the id value.
-     *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Get the name value.
-     *
-     * @return the name value
-     */
-    public String name() {
-        return this.name;
-    }
-
-    /**
-     * Get the type value.
-     *
-     * @return the type value
-     */
-    public String type() {
-        return this.type;
     }
 
     /**

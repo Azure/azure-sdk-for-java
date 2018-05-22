@@ -10,7 +10,6 @@ package com.microsoft.azure.management.iothub.v2018_04_01.implementation;
 
 import com.microsoft.azure.management.iothub.v2018_04_01.UserSubscriptionQuota;
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.iothub.v2018_04_01.Name;
 
 class UserSubscriptionQuotaImpl extends WrapperImpl<UserSubscriptionQuotaInner> implements UserSubscriptionQuota {
     private final IoTHubManager manager;
@@ -40,7 +39,7 @@ class UserSubscriptionQuotaImpl extends WrapperImpl<UserSubscriptionQuotaInner> 
     }
 
     @Override
-    public Name name() {
+    public String name() {
         return this.inner().name();
     }
 

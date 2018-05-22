@@ -9,25 +9,24 @@
 package com.microsoft.azure.management.logic.v2016_06_01;
 
 import rx.Observable;
+import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTrigger;
 import rx.Completable;
 import com.microsoft.azure.management.logic.v2016_06_01.implementation.WorkflowTriggerInner;
-import com.microsoft.azure.management.logic.v2016_06_01.implementation.WorkflowTriggersInner;
-import com.microsoft.azure.arm.model.HasInner;
 
 /**
  * Type representing WorkflowTriggers.
  */
-public interface WorkflowTriggers extends HasInner<WorkflowTriggersInner> {
-
+public interface WorkflowTriggers {
     /**
-     * @return Entry point to manage Trigger Schema.
+     * Gets a workflow trigger.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param triggerName The workflow trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
      */
-    WorkflowSchemas schemas();
-
-    /**
-     * @return Entry point to manage Trigger History.
-     */
-    Histories histories();
+    Observable<WorkflowTrigger> getAsync(String resourceGroupName, String workflowName, String triggerName);
 
     /**
      * Gets a list of workflow triggers.
@@ -37,18 +36,8 @@ public interface WorkflowTriggers extends HasInner<WorkflowTriggersInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<WorkflowTrigger> listByWorkflowAsync(final String resourceGroupName, final String workflowName);
+    Observable<WorkflowTrigger> listAsync(final String resourceGroupName, final String workflowName);
 
-    /**
-     * Gets a workflow trigger.
-    *
-     * @param resourceGroupName The resource group name.
-     * @param workflowName The workflow name.
-     * @param triggerName The workflow trigger name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<WorkflowTrigger> getByWorkflowAsync(String resourceGroupName, String workflowName, String triggerName);
     /**
      * Resets a workflow trigger.
      *
@@ -93,5 +82,16 @@ public interface WorkflowTriggers extends HasInner<WorkflowTriggersInner> {
      * @return the observable for the request
      */
     Observable<WorkflowTriggerCallbackUrl> listCallbackUrlAsync(String resourceGroupName, String workflowName, String triggerName);
+
+    /**
+     * Get the trigger schema as JSON.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param workflowName The workflow name.
+     * @param triggerName The workflow trigger name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<JsonSchema> getSchemaJsonAsync(String resourceGroupName, String workflowName, String triggerName);
 
 }

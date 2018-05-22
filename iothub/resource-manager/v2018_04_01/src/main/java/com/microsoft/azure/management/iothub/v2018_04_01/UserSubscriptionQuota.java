@@ -35,7 +35,7 @@ public interface UserSubscriptionQuota extends HasInner<UserSubscriptionQuotaInn
     /**
      * @return the name value.
      */
-    Name name();
+    String name();
 
     /**
      * @return the type value.

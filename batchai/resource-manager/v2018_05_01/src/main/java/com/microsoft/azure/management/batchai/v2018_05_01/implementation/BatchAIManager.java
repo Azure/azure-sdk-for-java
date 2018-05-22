@@ -16,14 +16,13 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.batchai.v2018_05_01.Operations;
 import com.microsoft.azure.management.batchai.v2018_05_01.Usages;
 import com.microsoft.azure.management.batchai.v2018_05_01.Clusters;
 import com.microsoft.azure.management.batchai.v2018_05_01.FileServers;
+import com.microsoft.azure.management.batchai.v2018_05_01.Workspaces;
 import com.microsoft.azure.management.batchai.v2018_05_01.Experiments;
 import com.microsoft.azure.management.batchai.v2018_05_01.Jobs;
-import com.microsoft.azure.management.batchai.v2018_05_01.Operations;
-import com.microsoft.azure.management.batchai.v2018_05_01.Locations;
-import com.microsoft.azure.management.batchai.v2018_05_01.Workspaces;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -31,14 +30,13 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure BatchAI resource management.
  */
 public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIManagementClientImpl> {
+    private Operations operations;
     private Usages usages;
     private Clusters clusters;
     private FileServers fileServers;
+    private Workspaces workspaces;
     private Experiments experiments;
     private Jobs jobs;
-    private Operations operations;
-    private Locations locations;
-    private Workspaces workspaces;
     /**
     * Get a Configurable instance that can be used to create BatchAIManager with optional configuration.
     *
@@ -87,6 +85,16 @@ public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIMan
     }
 
     /**
+     * @return Entry point to manage Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(this);
+        }
+        return this.operations;
+    }
+
+    /**
      * @return Entry point to manage Usages.
      */
     public Usages usages() {
@@ -117,6 +125,16 @@ public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIMan
     }
 
     /**
+     * @return Entry point to manage Workspaces.
+     */
+    public Workspaces workspaces() {
+        if (this.workspaces == null) {
+            this.workspaces = new WorkspacesImpl(this);
+        }
+        return this.workspaces;
+    }
+
+    /**
      * @return Entry point to manage Experiments.
      */
     public Experiments experiments() {
@@ -134,36 +152,6 @@ public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIMan
             this.jobs = new JobsImpl(this);
         }
         return this.jobs;
-    }
-
-    /**
-     * @return Entry point to manage Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(this);
-        }
-        return this.operations;
-    }
-
-    /**
-     * @return Entry point to manage Locations.
-     */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(this);
-        }
-        return this.locations;
-    }
-
-    /**
-     * @return Entry point to manage Workspaces.
-     */
-    public Workspaces workspaces() {
-        if (this.workspaces == null) {
-            this.workspaces = new WorkspacesImpl(this);
-        }
-        return this.workspaces;
     }
 
     /**

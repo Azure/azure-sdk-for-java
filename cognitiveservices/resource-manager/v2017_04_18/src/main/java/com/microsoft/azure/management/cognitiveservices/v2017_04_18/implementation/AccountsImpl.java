@@ -24,24 +24,12 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountKeys;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.KeyName;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Skus;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Usages;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CognitiveServicesAccountEnumerateSkusResult;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.UsagesResult;
 
 class AccountsImpl extends GroupableResourcesCoreImpl<CognitiveServicesAccount, CognitiveServicesAccountImpl, CognitiveServicesAccountInner, AccountsInner, CognitiveServicesManager>  implements Accounts {
     protected AccountsImpl(CognitiveServicesManager manager) {
         super(manager.inner().accounts(), manager);
-    }
-
-    @Override
-    public Skus skus() {
-        Skus accessor = this.manager().skus();
-        return accessor;
-    }
-
-    @Override
-    public Usages usages() {
-        Usages accessor = this.manager().usages();
-        return accessor;
     }
 
     @Override
@@ -211,6 +199,30 @@ class AccountsImpl extends GroupableResourcesCoreImpl<CognitiveServicesAccount, 
     @Override
     protected CognitiveServicesAccountImpl wrapModel(String name) {
         return new CognitiveServicesAccountImpl(name, new CognitiveServicesAccountInner(), this.manager());
+    }
+
+    @Override
+    public Observable<CognitiveServicesAccountEnumerateSkusResult> listSkusAsync(String resourceGroupName, String accountName) {
+        AccountsInner client = this.inner();
+        return client.listSkusAsync(resourceGroupName, accountName)
+        .map(new Func1<CognitiveServicesAccountEnumerateSkusResultInner, CognitiveServicesAccountEnumerateSkusResult>() {
+            @Override
+            public CognitiveServicesAccountEnumerateSkusResult call(CognitiveServicesAccountEnumerateSkusResultInner inner) {
+                return new CognitiveServicesAccountEnumerateSkusResultImpl(inner, manager());
+            }
+        });
+    }
+
+    @Override
+    public Observable<UsagesResult> getUsagesAsync(String resourceGroupName, String accountName) {
+        AccountsInner client = this.inner();
+        return client.getUsagesAsync(resourceGroupName, accountName)
+        .map(new Func1<UsagesResultInner, UsagesResult>() {
+            @Override
+            public UsagesResult call(UsagesResultInner inner) {
+                return new UsagesResultImpl(inner, manager());
+            }
+        });
     }
 
 }

@@ -16,7 +16,6 @@ import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.batchai.v2018_05_01.Experiment;
-import com.microsoft.azure.management.batchai.v2018_05_01.Jobs;
 
 class ExperimentsImpl extends WrapperImpl<ExperimentsInner> implements Experiments {
     private final BatchAIManager manager;
@@ -24,12 +23,6 @@ class ExperimentsImpl extends WrapperImpl<ExperimentsInner> implements Experimen
     ExperimentsImpl(BatchAIManager manager) {
         super(manager.inner().experiments());
         this.manager = manager;
-    }
-
-    @Override
-    public Jobs jobs() {
-        Jobs accessor = this.manager().jobs();
-        return accessor;
     }
 
     public BatchAIManager manager() {
@@ -87,7 +80,7 @@ class ExperimentsImpl extends WrapperImpl<ExperimentsInner> implements Experimen
     }
 
     @Override
-    public Observable<Experiment> getByWorkspaceAsync(String resourceGroupName, String workspaceName, String experimentName) {
+    public Observable<Experiment> getAsync(String resourceGroupName, String workspaceName, String experimentName) {
         ExperimentsInner client = this.inner();
         return client.getAsync(resourceGroupName, workspaceName, experimentName)
         .map(new Func1<ExperimentInner, Experiment>() {
@@ -99,7 +92,7 @@ class ExperimentsImpl extends WrapperImpl<ExperimentsInner> implements Experimen
     }
 
     @Override
-    public Completable deleteByWorkspaceAsync(String resourceGroupName, String workspaceName, String experimentName) {
+    public Completable deleteAsync(String resourceGroupName, String workspaceName, String experimentName) {
         ExperimentsInner client = this.inner();
         return client.deleteAsync(resourceGroupName, workspaceName, experimentName).toCompletable();
     }

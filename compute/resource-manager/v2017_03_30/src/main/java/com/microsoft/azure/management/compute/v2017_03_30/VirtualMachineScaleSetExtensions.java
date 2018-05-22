@@ -18,6 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing VirtualMachineScaleSetExtensions.
  */
 public interface VirtualMachineScaleSetExtensions extends SupportsCreating<VirtualMachineScaleSetExtension.DefinitionStages.Blank>, HasInner<VirtualMachineScaleSetExtensionsInner> {
+    /**
+     * The operation to get the extension.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set containing the extension.
+     * @param vmssExtensionName The name of the VM scale set extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<VirtualMachineScaleSetExtension> getAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName);
 
     /**
      * Gets a list of all extensions in a VM scale set.
@@ -27,18 +37,7 @@ public interface VirtualMachineScaleSetExtensions extends SupportsCreating<Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<VirtualMachineScaleSetExtension> listByVirtualMachineScaleSetAsync(final String resourceGroupName, final String vmScaleSetName);
-
-    /**
-     * The operation to get the extension.
-    *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set containing the extension.
-     * @param vmssExtensionName The name of the VM scale set extension.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<VirtualMachineScaleSetExtension> getByVirtualMachineScaleSetAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName);
+    Observable<VirtualMachineScaleSetExtension> listAsync(final String resourceGroupName, final String vmScaleSetName);
 
     /**
      * The operation to delete the extension.
@@ -49,5 +48,6 @@ public interface VirtualMachineScaleSetExtensions extends SupportsCreating<Virtu
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByVirtualMachineScaleSetAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName);
+    Completable deleteAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName);
+
 }

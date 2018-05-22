@@ -22,16 +22,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Accounts.
  */
 public interface Accounts extends SupportsCreating<CognitiveServicesAccount.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<CognitiveServicesAccount>, SupportsListingByResourceGroup<CognitiveServicesAccount>, SupportsListing<CognitiveServicesAccount>, HasInner<AccountsInner> {
-
-    /**
-     * @return Entry point to manage Account Skus.
-     */
-    Skus skus();
-
-    /**
-     * @return Entry point to manage Account Usage.
-     */
-    Usages usages();
     /**
      * Lists the account keys for the specified Cognitive Services account.
      *
@@ -52,5 +42,25 @@ public interface Accounts extends SupportsCreating<CognitiveServicesAccount.Defi
      * @return the observable for the request
      */
     Observable<CognitiveServicesAccountKeys> regenerateKeyAsync(String resourceGroupName, String accountName, KeyName keyName);
+
+    /**
+     * List available SKUs for the requested Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<CognitiveServicesAccountEnumerateSkusResult> listSkusAsync(String resourceGroupName, String accountName);
+
+    /**
+     * Get usages for the requested Cognitive Services account.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param accountName The name of Cognitive Services account.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<UsagesResult> getUsagesAsync(String resourceGroupName, String accountName);
 
 }

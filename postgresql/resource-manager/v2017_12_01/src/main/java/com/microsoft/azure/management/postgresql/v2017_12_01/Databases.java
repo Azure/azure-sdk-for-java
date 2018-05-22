@@ -18,6 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Databases.
  */
 public interface Databases extends SupportsCreating<Database.DefinitionStages.Blank>, HasInner<DatabasesInner> {
+    /**
+     * Gets information about a database.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param databaseName The name of the database.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Database> getAsync(String resourceGroupName, String serverName, String databaseName);
 
     /**
      * List all the databases in a given server.
@@ -30,17 +40,6 @@ public interface Databases extends SupportsCreating<Database.DefinitionStages.Bl
     Observable<Database> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * Gets information about a database.
-    *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param databaseName The name of the database.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Database> getByServerAsync(String resourceGroupName, String serverName, String databaseName);
-
-    /**
      * Deletes a database.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
@@ -49,5 +48,6 @@ public interface Databases extends SupportsCreating<Database.DefinitionStages.Bl
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByServerAsync(String resourceGroupName, String serverName, String databaseName);
+    Completable deleteAsync(String resourceGroupName, String serverName, String databaseName);
+
 }

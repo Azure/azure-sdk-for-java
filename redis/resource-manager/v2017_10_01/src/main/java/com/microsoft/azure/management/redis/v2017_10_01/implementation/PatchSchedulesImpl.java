@@ -31,14 +31,18 @@ class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements Pat
 
     @Override
     public RedisPatchScheduleImpl define(String name) {
-        return new RedisPatchScheduleImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private RedisPatchScheduleImpl wrapModel(RedisPatchScheduleInner inner) {
         return  new RedisPatchScheduleImpl(inner, manager());
     }
 
-    private Observable<Page<RedisPatchScheduleInner>> listByRedisNextInnerPageAsync(String nextLink) {
+    private RedisPatchScheduleImpl wrapModel(String name) {
+        return new RedisPatchScheduleImpl(name, this.manager());
+    }
+
+    private Observable<Page<RedisPatchScheduleInner>> listByRedisResourceNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -47,18 +51,18 @@ class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements Pat
         .flatMap(new Func1<Page<RedisPatchScheduleInner>, Observable<Page<RedisPatchScheduleInner>>>() {
             @Override
             public Observable<Page<RedisPatchScheduleInner>> call(Page<RedisPatchScheduleInner> page) {
-                return Observable.just(page).concatWith(listByRedisNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listByRedisResourceNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<RedisPatchSchedule> listByRedisAsync(final String resourceGroupName, final String cacheName) {
+    public Observable<RedisPatchSchedule> listByRedisResourceAsync(final String resourceGroupName, final String cacheName) {
         PatchSchedulesInner client = this.inner();
         return client.listByRedisResourceAsync(resourceGroupName, cacheName)
         .flatMap(new Func1<Page<RedisPatchScheduleInner>, Observable<Page<RedisPatchScheduleInner>>>() {
             @Override
             public Observable<Page<RedisPatchScheduleInner>> call(Page<RedisPatchScheduleInner> page) {
-                return listByRedisNextInnerPageAsync(page.nextPageLink());
+                return listByRedisResourceNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<RedisPatchScheduleInner>, Iterable<RedisPatchScheduleInner>>() {
@@ -76,7 +80,7 @@ class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements Pat
     }
 
     @Override
-    public Observable<RedisPatchSchedule> getByRedisAsync(String resourceGroupName, String name) {
+    public Observable<RedisPatchSchedule> getAsync(String resourceGroupName, String name) {
         PatchSchedulesInner client = this.inner();
         return client.getAsync(resourceGroupName, name)
         .map(new Func1<RedisPatchScheduleInner, RedisPatchSchedule>() {
@@ -88,7 +92,7 @@ class PatchSchedulesImpl extends WrapperImpl<PatchSchedulesInner> implements Pat
     }
 
     @Override
-    public Completable deleteByRedisAsync(String resourceGroupName, String name) {
+    public Completable deleteAsync(String resourceGroupName, String name) {
         PatchSchedulesInner client = this.inner();
         return client.deleteAsync(resourceGroupName, name).toCompletable();
     }

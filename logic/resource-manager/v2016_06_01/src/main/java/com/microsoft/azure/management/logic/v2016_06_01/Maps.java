@@ -18,38 +18,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Maps.
  */
 public interface Maps extends SupportsCreating<IntegrationAccountMap.DefinitionStages.Blank>, HasInner<MapsInner> {
-
-    /**
-     * Gets a list of integration account maps.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<IntegrationAccountMap> listByIntegrationAccountAsync(final String resourceGroupName, final String integrationAccountName);
-
-    /**
-     * Gets an integration account map.
-    *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param mapName The integration account map name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<IntegrationAccountMap> getByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String mapName);
-
-    /**
-     * Deletes an integration account map.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param mapName The integration account map name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String mapName);
     /**
      * Get the content callback url.
      *
@@ -61,5 +29,37 @@ public interface Maps extends SupportsCreating<IntegrationAccountMap.DefinitionS
      * @return the observable for the request
      */
     Observable<WorkflowTriggerCallbackUrl> listContentCallbackUrlAsync(String resourceGroupName, String integrationAccountName, String mapName, GetCallbackUrlParameters listContentCallbackUrl);
+
+    /**
+     * Gets an integration account map.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param mapName The integration account map name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationAccountMap> getAsync(String resourceGroupName, String integrationAccountName, String mapName);
+
+    /**
+     * Gets a list of integration account maps.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationAccountMap> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName);
+
+    /**
+     * Deletes an integration account map.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param mapName The integration account map name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String integrationAccountName, String mapName);
 
 }

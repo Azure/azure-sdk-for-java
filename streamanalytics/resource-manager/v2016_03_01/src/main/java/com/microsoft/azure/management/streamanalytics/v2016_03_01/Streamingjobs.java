@@ -20,29 +20,9 @@ import com.microsoft.azure.management.streamanalytics.v2016_03_01.implementation
 import com.microsoft.azure.arm.model.HasInner;
 
 /**
- * Type representing Streamingjobs.
+ * Type representing StreamingJobs.
  */
-public interface Streamingjobs extends SupportsCreating<StreamingJob.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<StreamingJob>, SupportsListingByResourceGroup<StreamingJob>, SupportsListing<StreamingJob>, HasInner<StreamingJobsInner> {
-
-    /**
-     * @return Entry point to manage Streamingjob Input.
-     */
-    Inputs inputs();
-
-    /**
-     * @return Entry point to manage Streamingjob Output.
-     */
-    Outputs outputs();
-
-    /**
-     * @return Entry point to manage Streamingjob Transformation.
-     */
-    Transformations transformations();
-
-    /**
-     * @return Entry point to manage Streamingjob Function.
-     */
-    Functions functions();
+public interface StreamingJobs extends SupportsCreating<StreamingJob.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<StreamingJob>, SupportsListingByResourceGroup<StreamingJob>, SupportsListing<StreamingJob>, HasInner<StreamingJobsInner> {
     /**
      * Starts a streaming job. Once a job is started it will start processing input events and produce output.
      *

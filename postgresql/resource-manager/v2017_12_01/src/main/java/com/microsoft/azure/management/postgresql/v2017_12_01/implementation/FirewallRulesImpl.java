@@ -31,11 +31,15 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
 
     @Override
     public FirewallRuleImpl define(String name) {
-        return new FirewallRuleImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private FirewallRuleImpl wrapModel(FirewallRuleInner inner) {
         return  new FirewallRuleImpl(inner, manager());
+    }
+
+    private FirewallRuleImpl wrapModel(String name) {
+        return new FirewallRuleImpl(name, this.manager());
     }
 
     @Override
@@ -57,7 +61,7 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
     }
 
     @Override
-    public Observable<FirewallRule> getByServerAsync(String resourceGroupName, String serverName, String firewallRuleName) {
+    public Observable<FirewallRule> getAsync(String resourceGroupName, String serverName, String firewallRuleName) {
         FirewallRulesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, firewallRuleName)
         .map(new Func1<FirewallRuleInner, FirewallRule>() {
@@ -69,7 +73,7 @@ class FirewallRulesImpl extends WrapperImpl<FirewallRulesInner> implements Firew
     }
 
     @Override
-    public Completable deleteByServerAsync(String resourceGroupName, String serverName, String firewallRuleName) {
+    public Completable deleteAsync(String resourceGroupName, String serverName, String firewallRuleName) {
         FirewallRulesInner client = this.inner();
         return client.deleteAsync(resourceGroupName, serverName, firewallRuleName).toCompletable();
     }

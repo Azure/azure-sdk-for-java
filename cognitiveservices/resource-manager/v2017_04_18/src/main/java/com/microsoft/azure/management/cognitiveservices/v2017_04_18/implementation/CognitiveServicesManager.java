@@ -16,12 +16,10 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Skus;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Usages;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Accounts;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.ResourceSkus;
 import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Operations;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Locations;
-import com.microsoft.azure.management.cognitiveservices.v2017_04_18.Accounts;
+import com.microsoft.azure.management.cognitiveservices.v2017_04_18.CheckSkuAvailabilitys;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -29,12 +27,10 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure CognitiveServices resource management.
  */
 public final class CognitiveServicesManager extends ManagerCore<CognitiveServicesManager, CognitiveServicesManagementClientImpl> {
-    private Skus skus;
-    private Usages usages;
+    private Accounts accounts;
     private ResourceSkus resourceSkus;
     private Operations operations;
-    private Locations locations;
-    private Accounts accounts;
+    private CheckSkuAvailabilitys checkSkuAvailabilitys;
     /**
     * Get a Configurable instance that can be used to create CognitiveServicesManager with optional configuration.
     *
@@ -83,23 +79,13 @@ public final class CognitiveServicesManager extends ManagerCore<CognitiveService
     }
 
     /**
-     * @return Entry point to manage Skus.
+     * @return Entry point to manage Accounts.
      */
-    public Skus skus() {
-        if (this.skus == null) {
-            this.skus = new SkusImpl(this);
+    public Accounts accounts() {
+        if (this.accounts == null) {
+            this.accounts = new AccountsImpl(this);
         }
-        return this.skus;
-    }
-
-    /**
-     * @return Entry point to manage Usages.
-     */
-    public Usages usages() {
-        if (this.usages == null) {
-            this.usages = new UsagesImpl(this);
-        }
-        return this.usages;
+        return this.accounts;
     }
 
     /**
@@ -123,23 +109,13 @@ public final class CognitiveServicesManager extends ManagerCore<CognitiveService
     }
 
     /**
-     * @return Entry point to manage Locations.
+     * @return Entry point to manage CheckSkuAvailabilitys.
      */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(this);
+    public CheckSkuAvailabilitys checkSkuAvailabilitys() {
+        if (this.checkSkuAvailabilitys == null) {
+            this.checkSkuAvailabilitys = new CheckSkuAvailabilitysImpl(this);
         }
-        return this.locations;
-    }
-
-    /**
-     * @return Entry point to manage Accounts.
-     */
-    public Accounts accounts() {
-        if (this.accounts == null) {
-            this.accounts = new AccountsImpl(this);
-        }
-        return this.accounts;
+        return this.checkSkuAvailabilitys;
     }
 
     /**

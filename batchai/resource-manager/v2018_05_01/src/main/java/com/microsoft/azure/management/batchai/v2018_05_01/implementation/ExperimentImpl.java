@@ -19,8 +19,6 @@ class ExperimentImpl extends CreatableUpdatableImpl<Experiment, ExperimentInner,
     private String resourceGroupName;
     private String workspaceName;
     private String experimentName;
-    private Object cparameters;
-    private Object uparameters;
 
     ExperimentImpl(String name, BatchAIManager manager) {
         super(name, new ExperimentInner());
@@ -50,14 +48,14 @@ class ExperimentImpl extends CreatableUpdatableImpl<Experiment, ExperimentInner,
     @Override
     public Observable<Experiment> createResourceAsync() {
         ExperimentsInner client = this.manager().inner().experiments();
-        return client.createAsync(this.resourceGroupName, this.workspaceName, this.experimentName, this.cparameters)
+        return client.createAsync(this.resourceGroupName, this.workspaceName, this.experimentName)
             .map(innerToFluentMap(this));
     }
 
     @Override
     public Observable<Experiment> updateResourceAsync() {
         ExperimentsInner client = this.manager().inner().experiments();
-        return client.createAsync(this.resourceGroupName, this.workspaceName, this.experimentName, this.uparameters)
+        return client.createAsync(this.resourceGroupName, this.workspaceName, this.experimentName)
             .map(innerToFluentMap(this));
     }
 
@@ -107,16 +105,6 @@ class ExperimentImpl extends CreatableUpdatableImpl<Experiment, ExperimentInner,
     public ExperimentImpl withExistingWorkspace(String resourceGroupName, String workspaceName) {
         this.resourceGroupName = resourceGroupName;
         this.workspaceName = workspaceName;
-        return this;
-    }
-
-    @Override
-    public ExperimentImpl withParameters(Object parameters) {
-        if (isInCreateMode()) {
-            this.cparameters = parameters;
-        } else {
-            this.uparameters = parameters;
-        }
         return this;
     }
 

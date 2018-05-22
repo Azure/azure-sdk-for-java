@@ -22,24 +22,12 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.containerservice.v2017_08_31.UpgradeProfiles;
-import com.microsoft.azure.management.containerservice.v2017_08_31.AccessProfiles;
+import com.microsoft.azure.management.containerservice.v2017_08_31.ManagedClusterAccessProfile;
+import com.microsoft.azure.management.containerservice.v2017_08_31.ManagedClusterUpgradeProfile;
 
 class ManagedClustersImpl extends GroupableResourcesCoreImpl<ManagedCluster, ManagedClusterImpl, ManagedClusterInner, ManagedClustersInner, ContainerServiceManager>  implements ManagedClusters {
     protected ManagedClustersImpl(ContainerServiceManager manager) {
         super(manager.inner().managedClusters(), manager);
-    }
-
-    @Override
-    public UpgradeProfiles upgradeProfiles() {
-        UpgradeProfiles accessor = this.manager().upgradeProfiles();
-        return accessor;
-    }
-
-    @Override
-    public AccessProfiles accessProfiles() {
-        AccessProfiles accessor = this.manager().accessProfiles();
-        return accessor;
     }
 
     @Override
@@ -185,6 +173,34 @@ class ManagedClustersImpl extends GroupableResourcesCoreImpl<ManagedCluster, Man
     @Override
     protected ManagedClusterImpl wrapModel(String name) {
         return new ManagedClusterImpl(name, new ManagedClusterInner(), this.manager());
+    }
+
+    private ManagedClusterAccessProfileImpl wrapModel(ManagedClusterAccessProfileInner inner) {
+        return  new ManagedClusterAccessProfileImpl(inner, manager());
+    }
+
+    @Override
+    public Observable<ManagedClusterAccessProfile> getAccessProfilesAsync(String resourceGroupName, String resourceName, String roleName) {
+        ManagedClustersInner client = this.inner();
+        return client.getAccessProfilesAsync(resourceGroupName, resourceName, roleName)
+        .map(new Func1<ManagedClusterAccessProfileInner, ManagedClusterAccessProfile>() {
+            @Override
+            public ManagedClusterAccessProfile call(ManagedClusterAccessProfileInner inner) {
+                return wrapModel(inner);
+            }
+       });
+    }
+
+    @Override
+    public Observable<ManagedClusterUpgradeProfile> getUpgradeProfileAsync(String resourceGroupName, String resourceName) {
+        ManagedClustersInner client = this.inner();
+        return client.getUpgradeProfileAsync(resourceGroupName, resourceName)
+        .map(new Func1<ManagedClusterUpgradeProfileInner, ManagedClusterUpgradeProfile>() {
+            @Override
+            public ManagedClusterUpgradeProfile call(ManagedClusterUpgradeProfileInner inner) {
+                return new ManagedClusterUpgradeProfileImpl(inner, manager());
+            }
+        });
     }
 
 }

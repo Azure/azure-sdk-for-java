@@ -16,12 +16,11 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.redis.v2018_03_01.Operations;
+import com.microsoft.azure.management.redis.v2018_03_01.Redis;
 import com.microsoft.azure.management.redis.v2018_03_01.FirewallRules;
 import com.microsoft.azure.management.redis.v2018_03_01.PatchSchedules;
 import com.microsoft.azure.management.redis.v2018_03_01.LinkedServers;
-import com.microsoft.azure.management.redis.v2018_03_01.Operations;
-import com.microsoft.azure.management.redis.v2018_03_01.ListUpgradeNotifications;
-import com.microsoft.azure.management.redis.v2018_03_01.Redis;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -29,12 +28,11 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Cache resource management.
  */
 public final class RedisManager extends ManagerCore<RedisManager, RedisManagementClientImpl> {
+    private Operations operations;
+    private Redis redis;
     private FirewallRules firewallRules;
     private PatchSchedules patchSchedules;
     private LinkedServers linkedServers;
-    private Operations operations;
-    private ListUpgradeNotifications listUpgradeNotifications;
-    private Redis redis;
     /**
     * Get a Configurable instance that can be used to create RedisManager with optional configuration.
     *
@@ -83,6 +81,26 @@ public final class RedisManager extends ManagerCore<RedisManager, RedisManagemen
     }
 
     /**
+     * @return Entry point to manage Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(this);
+        }
+        return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage Redis.
+     */
+    public Redis redis() {
+        if (this.redis == null) {
+            this.redis = new RedisImpl(this);
+        }
+        return this.redis;
+    }
+
+    /**
      * @return Entry point to manage FirewallRules.
      */
     public FirewallRules firewallRules() {
@@ -110,36 +128,6 @@ public final class RedisManager extends ManagerCore<RedisManager, RedisManagemen
             this.linkedServers = new LinkedServersImpl(this);
         }
         return this.linkedServers;
-    }
-
-    /**
-     * @return Entry point to manage Operations.
-     */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(this);
-        }
-        return this.operations;
-    }
-
-    /**
-     * @return Entry point to manage ListUpgradeNotifications.
-     */
-    public ListUpgradeNotifications listUpgradeNotifications() {
-        if (this.listUpgradeNotifications == null) {
-            this.listUpgradeNotifications = new ListUpgradeNotificationsImpl(this);
-        }
-        return this.listUpgradeNotifications;
-    }
-
-    /**
-     * @return Entry point to manage Redis.
-     */
-    public Redis redis() {
-        if (this.redis == null) {
-            this.redis = new RedisImpl(this);
-        }
-        return this.redis;
     }
 
     /**

@@ -16,8 +16,7 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.containerservice.v2017_09_30.Orchestrators;
-import com.microsoft.azure.management.containerservice.v2017_09_30.Locations;
+import com.microsoft.azure.management.containerservice.v2017_09_30.ContainerServices;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -25,8 +24,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure ContainerService resource management.
  */
 public final class ContainerServiceManager extends ManagerCore<ContainerServiceManager, ContainerServiceManagementClientImpl> {
-    private Orchestrators orchestrators;
-    private Locations locations;
+    private ContainerServices containerServices;
     /**
     * Get a Configurable instance that can be used to create ContainerServiceManager with optional configuration.
     *
@@ -75,23 +73,13 @@ public final class ContainerServiceManager extends ManagerCore<ContainerServiceM
     }
 
     /**
-     * @return Entry point to manage Orchestrators.
+     * @return Entry point to manage ContainerServices.
      */
-    public Orchestrators orchestrators() {
-        if (this.orchestrators == null) {
-            this.orchestrators = new OrchestratorsImpl(this);
+    public ContainerServices containerServices() {
+        if (this.containerServices == null) {
+            this.containerServices = new ContainerServicesImpl(this);
         }
-        return this.orchestrators;
-    }
-
-    /**
-     * @return Entry point to manage Locations.
-     */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(this);
-        }
-        return this.locations;
+        return this.containerServices;
     }
 
     /**

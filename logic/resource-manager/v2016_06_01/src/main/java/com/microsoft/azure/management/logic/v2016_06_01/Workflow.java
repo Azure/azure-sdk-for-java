@@ -20,6 +20,7 @@ import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.logic.v2016_06_01.implementation.LogicManager;
 import org.joda.time.DateTime;
 import java.util.Map;
+import com.microsoft.azure.management.logic.v2016_06_01.implementation.ResourceReferenceInner;
 import com.microsoft.azure.management.logic.v2016_06_01.implementation.WorkflowInner;
 
 /**
@@ -49,7 +50,7 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
     /**
      * @return the integrationAccount value.
      */
-    ResourceReference integrationAccount();
+    ResourceReferenceInner integrationAccount();
 
     /**
      * @return the parameters value.
@@ -115,7 +116,7 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
             /**
              * Specifies integrationAccount.
              */
-            WithCreate withIntegrationAccount(ResourceReference integrationAccount);
+            WithCreate withIntegrationAccount(ResourceReferenceInner integrationAccount);
         }
 
         /**
@@ -183,7 +184,7 @@ public interface Workflow extends HasInner<WorkflowInner>, Resource, GroupableRe
             /**
              * Specifies integrationAccount.
              */
-            Update withIntegrationAccount(ResourceReference integrationAccount);
+            Update withIntegrationAccount(ResourceReferenceInner integrationAccount);
         }
 
         /**

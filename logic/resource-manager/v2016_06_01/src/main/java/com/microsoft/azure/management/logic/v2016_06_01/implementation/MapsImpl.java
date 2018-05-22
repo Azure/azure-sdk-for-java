@@ -56,7 +56,7 @@ class MapsImpl extends WrapperImpl<MapsInner> implements Maps {
         });
     }
 
-    private Observable<Page<IntegrationAccountMapInner>> listByIntegrationAccountNextInnerPageAsync(String nextLink) {
+    private Observable<Page<IntegrationAccountMapInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -65,18 +65,18 @@ class MapsImpl extends WrapperImpl<MapsInner> implements Maps {
         .flatMap(new Func1<Page<IntegrationAccountMapInner>, Observable<Page<IntegrationAccountMapInner>>>() {
             @Override
             public Observable<Page<IntegrationAccountMapInner>> call(Page<IntegrationAccountMapInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<IntegrationAccountMap> listByIntegrationAccountAsync(final String resourceGroupName, final String integrationAccountName) {
+    public Observable<IntegrationAccountMap> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         MapsInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
         .flatMap(new Func1<Page<IntegrationAccountMapInner>, Observable<Page<IntegrationAccountMapInner>>>() {
             @Override
             public Observable<Page<IntegrationAccountMapInner>> call(Page<IntegrationAccountMapInner> page) {
-                return listByIntegrationAccountNextInnerPageAsync(page.nextPageLink());
+                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<IntegrationAccountMapInner>, Iterable<IntegrationAccountMapInner>>() {
@@ -94,7 +94,7 @@ class MapsImpl extends WrapperImpl<MapsInner> implements Maps {
     }
 
     @Override
-    public Observable<IntegrationAccountMap> getByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String mapName) {
+    public Observable<IntegrationAccountMap> getAsync(String resourceGroupName, String integrationAccountName, String mapName) {
         MapsInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, mapName)
         .map(new Func1<IntegrationAccountMapInner, IntegrationAccountMap>() {
@@ -106,7 +106,7 @@ class MapsImpl extends WrapperImpl<MapsInner> implements Maps {
     }
 
     @Override
-    public Completable deleteByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String mapName) {
+    public Completable deleteAsync(String resourceGroupName, String integrationAccountName, String mapName) {
         MapsInner client = this.inner();
         return client.deleteAsync(resourceGroupName, integrationAccountName, mapName).toCompletable();
     }

@@ -24,21 +24,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Workflows.
  */
 public interface Workflows extends SupportsCreating<Workflow.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Workflow>, SupportsListingByResourceGroup<Workflow>, SupportsListing<Workflow>, HasInner<WorkflowsInner> {
-
-    /**
-     * @return Entry point to manage Workflow Version.
-     */
-    Versions versions();
-
-    /**
-     * @return Entry point to manage Workflow Trigger.
-     */
-    WorkflowTriggers triggers();
-
-    /**
-     * @return Entry point to manage Workflow Run.
-     */
-    Runs runs();
     /**
      * Disables a workflow.
      *

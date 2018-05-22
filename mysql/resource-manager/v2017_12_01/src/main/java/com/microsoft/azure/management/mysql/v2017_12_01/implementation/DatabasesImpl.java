@@ -61,7 +61,7 @@ class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
     }
 
     @Override
-    public Observable<Database> getByServerAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Observable<Database> getAsync(String resourceGroupName, String serverName, String databaseName) {
         DatabasesInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, databaseName)
         .map(new Func1<DatabaseInner, Database>() {
@@ -73,7 +73,7 @@ class DatabasesImpl extends WrapperImpl<DatabasesInner> implements Databases {
     }
 
     @Override
-    public Completable deleteByServerAsync(String resourceGroupName, String serverName, String databaseName) {
+    public Completable deleteAsync(String resourceGroupName, String serverName, String databaseName) {
         DatabasesInner client = this.inner();
         return client.deleteAsync(resourceGroupName, serverName, databaseName).toCompletable();
     }

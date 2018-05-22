@@ -18,38 +18,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Inputs.
  */
 public interface Inputs extends SupportsCreating<Input.DefinitionStages.Blank>, HasInner<InputsInner> {
-
-    /**
-     * Lists all of the inputs under the specified streaming job.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param jobName The name of the streaming job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Input> listByStreamingjobAsync(final String resourceGroupName, final String jobName);
-
-    /**
-     * Gets details about the specified input.
-    *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param jobName The name of the streaming job.
-     * @param inputName The name of the input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Input> getByStreamingjobAsync(String resourceGroupName, String jobName, String inputName);
-
-    /**
-     * Deletes an input from the streaming job.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param jobName The name of the streaming job.
-     * @param inputName The name of the input.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteByStreamingjobAsync(String resourceGroupName, String jobName, String inputName);
     /**
      * Tests whether an input’s datasource is reachable and usable by the Azure Stream Analytics service.
      *
@@ -60,5 +28,37 @@ public interface Inputs extends SupportsCreating<Input.DefinitionStages.Blank>, 
      * @return the observable for the request
      */
     Observable<ResourceTestStatus> testAsync(String resourceGroupName, String jobName, String inputName);
+
+    /**
+     * Gets details about the specified input.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param jobName The name of the streaming job.
+     * @param inputName The name of the input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Input> getAsync(String resourceGroupName, String jobName, String inputName);
+
+    /**
+     * Lists all of the inputs under the specified streaming job.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param jobName The name of the streaming job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Input> listByStreamingJobAsync(final String resourceGroupName, final String jobName);
+
+    /**
+     * Deletes an input from the streaming job.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param jobName The name of the streaming job.
+     * @param inputName The name of the input.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String jobName, String inputName);
 
 }

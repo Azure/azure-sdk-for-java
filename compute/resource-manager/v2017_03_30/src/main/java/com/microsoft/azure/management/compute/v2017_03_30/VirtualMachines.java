@@ -8,122 +8,151 @@
 
 package com.microsoft.azure.management.compute.v2017_03_30;
 
-import rx.Completable;
+import com.microsoft.azure.arm.collection.SupportsCreating;
+import com.microsoft.azure.arm.resources.collection.SupportsDeletingByResourceGroup;
+import com.microsoft.azure.arm.resources.collection.SupportsBatchDeletion;
+import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGroup;
 import rx.Observable;
-import com.microsoft.azure.management.compute.v2017_03_30.implementation.VirtualMachineScaleSetVMsInner;
+import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
+import com.microsoft.azure.arm.collection.SupportsListing;
+import com.microsoft.azure.management.compute.v2017_03_30.implementation.VirtualMachinesInner;
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineVirtualMachineSize;
 
 /**
- * Type representing Virtualmachines.
+ * Type representing VirtualMachines.
  */
-public interface Virtualmachines extends HasInner<VirtualMachineScaleSetVMsInner> {
-
+public interface VirtualMachines extends SupportsCreating<VirtualMachine.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<VirtualMachine>, SupportsListingByResourceGroup<VirtualMachine>, SupportsListing<VirtualMachine>, HasInner<VirtualMachinesInner> {
     /**
-     * Gets a list of all virtual machines in a VM scale sets.
+     * Captures the VM by copying virtual hard disks of the VM and outputs a template that can be used to create similar VMs.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param virtualMachineScaleSetName The name of the VM scale set.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Capture Virtual Machine operation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<VirtualMachineScaleSetVM> listByVirtualMachineScaleSetAsync(final String resourceGroupName, final String virtualMachineScaleSetName);
+    Observable<VirtualMachineCaptureResult> captureAsync(String resourceGroupName, String vmName, VirtualMachineCaptureParameters parameters);
 
     /**
-     * Gets a virtual machine from a VM scale set.
-    *
+     * Retrieves information about the run-time state of a virtual machine.
+     *
      * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<VirtualMachineScaleSetVM> getByVirtualMachineScaleSetAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Observable<VirtualMachineInstanceView> instanceViewAsync(String resourceGroupName, String vmName);
 
     /**
-     * Deletes a virtual machine from a VM scale set.
+     * Converts virtual machine disks from blob-based to managed disks. Virtual machine must be stop-deallocated before invoking this operation.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByVirtualMachineScaleSetAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
-    /**
-     * Reimages (upgrade the operating system) a specific virtual machine in a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<OperationStatusResponse> reimageAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Observable<OperationStatusResponse> convertToManagedDisksAsync(String resourceGroupName, String vmName);
 
     /**
-     * Allows you to re-image all the disks ( including data disks ) in the a VM scale set instance. This operation is only supported for managed disks.
+     * Shuts down the virtual machine and releases the compute resources. You are not billed for the compute resources that this virtual machine uses.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<OperationStatusResponse> reimageAllAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Observable<OperationStatusResponse> deallocateAsync(String resourceGroupName, String vmName);
 
     /**
-     * Deallocates a specific virtual machine in a VM scale set. Shuts down the virtual machine and releases the compute resources it uses. You are not billed for the compute resources of this virtual machine once it is deallocated.
+     * Sets the state of the virtual machine to generalized.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<OperationStatusResponse> deallocateAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Observable<OperationStatusResponse> generalizeAsync(String resourceGroupName, String vmName);
 
     /**
-     * Gets the status of a virtual machine from a VM scale set.
+     * The operation to power off (stop) a virtual machine. The virtual machine can be restarted with the same provisioned resources. You are still charged for this virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<VirtualMachineScaleSetVMInstanceView> getInstanceViewAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Observable<OperationStatusResponse> powerOffAsync(String resourceGroupName, String vmName);
 
     /**
-     * Power off (stop) a virtual machine in a VM scale set. Note that resources are still attached and you are getting charged for the resources. Instead, use deallocate to release resources and avoid charges.
+     * The operation to restart a virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<OperationStatusResponse> powerOffAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Observable<OperationStatusResponse> restartAsync(String resourceGroupName, String vmName);
 
     /**
-     * Restarts a virtual machine in a VM scale set.
+     * The operation to start a virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<OperationStatusResponse> restartAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Observable<OperationStatusResponse> startAsync(String resourceGroupName, String vmName);
 
     /**
-     * Starts a virtual machine in a VM scale set.
+     * The operation to redeploy a virtual machine.
      *
      * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set.
-     * @param instanceId The instance ID of the virtual machine.
+     * @param vmName The name of the virtual machine.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<OperationStatusResponse> startAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
+    Observable<OperationStatusResponse> redeployAsync(String resourceGroupName, String vmName);
+
+    /**
+     * The operation to perform maintenance on a virtual machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<OperationStatusResponse> performMaintenanceAsync(String resourceGroupName, String vmName);
+
+    /**
+     * Run command on the VM.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @param parameters Parameters supplied to the Run command operation.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RunCommandResult> runCommandAsync(String resourceGroupName, String vmName, RunCommandInput parameters);
+
+    /**
+     * The operation to get all extensions of a Virtual Machine.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine containing the extension.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<VirtualMachineExtensionsListResult> getExtensionsAsync(String resourceGroupName, String vmName);
+
+    /**
+     * Lists all available virtual machine sizes to which the specified virtual machine can be resized.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmName The name of the virtual machine.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<VirtualMachineVirtualMachineSize> listAvailableSizesAsync(String resourceGroupName, String vmName);
 
 }

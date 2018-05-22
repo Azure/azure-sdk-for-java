@@ -17,6 +17,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Configurations.
  */
 public interface Configurations extends SupportsCreating<Configuration.DefinitionStages.Blank>, HasInner<ConfigurationsInner> {
+    /**
+     * Gets information about a configuration of server.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param configurationName The name of the server configuration.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Configuration> getAsync(String resourceGroupName, String serverName, String configurationName);
 
     /**
      * List all the configurations in a given server.
@@ -28,14 +38,4 @@ public interface Configurations extends SupportsCreating<Configuration.Definitio
      */
     Observable<Configuration> listByServerAsync(String resourceGroupName, String serverName);
 
-    /**
-     * Gets information about a configuration of server.
-    *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param configurationName The name of the server configuration.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Configuration> getByServerAsync(String resourceGroupName, String serverName, String configurationName);
 }

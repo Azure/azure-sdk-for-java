@@ -16,9 +16,8 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.batchai.v2018_03_01.Usages;
 import com.microsoft.azure.management.batchai.v2018_03_01.Operations;
-import com.microsoft.azure.management.batchai.v2018_03_01.Locations;
+import com.microsoft.azure.management.batchai.v2018_03_01.Usages;
 import com.microsoft.azure.management.batchai.v2018_03_01.Clusters;
 import com.microsoft.azure.management.batchai.v2018_03_01.Jobs;
 import com.microsoft.azure.management.batchai.v2018_03_01.FileServers;
@@ -29,9 +28,8 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure BatchAI resource management.
  */
 public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIManagementClientImpl> {
-    private Usages usages;
     private Operations operations;
-    private Locations locations;
+    private Usages usages;
     private Clusters clusters;
     private Jobs jobs;
     private FileServers fileServers;
@@ -83,16 +81,6 @@ public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIMan
     }
 
     /**
-     * @return Entry point to manage Usages.
-     */
-    public Usages usages() {
-        if (this.usages == null) {
-            this.usages = new UsagesImpl(this);
-        }
-        return this.usages;
-    }
-
-    /**
      * @return Entry point to manage Operations.
      */
     public Operations operations() {
@@ -103,13 +91,13 @@ public final class BatchAIManager extends ManagerCore<BatchAIManager, BatchAIMan
     }
 
     /**
-     * @return Entry point to manage Locations.
+     * @return Entry point to manage Usages.
      */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(this);
+    public Usages usages() {
+        if (this.usages == null) {
+            this.usages = new UsagesImpl(this);
         }
-        return this.locations;
+        return this.usages;
     }
 
     /**
