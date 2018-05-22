@@ -820,10 +820,11 @@ public final class MessageSender extends ClientEntity implements AmqpSender, Err
                                 link = MessageSender.this.sendLink;
                             }
 
-                            final Exception operationTimedout = new TimeoutException(String.format(Locale.US, "%s operation on Receive Link(%s) timed out at %s", "Close", link.getName(), ZonedDateTime.now()));
+                            final Exception operationTimedout = new TimeoutException(String.format(Locale.US,
+                                    "%s operation on Sender Link(%s) timed out at %s", "Close", link.getName(), ZonedDateTime.now()));
                             if (TRACE_LOGGER.isInfoEnabled()) {
                                 TRACE_LOGGER.info(
-                                        String.format(Locale.US, "message recever(linkName: %s, path: %s) %s call timedout", link.getName(), MessageSender.this.sendPath, "Close"),
+                                        String.format(Locale.US, "message sender(linkName: %s, path: %s) %s call timedout", link.getName(), MessageSender.this.sendPath, "Close"),
                                         operationTimedout);
                             }
 

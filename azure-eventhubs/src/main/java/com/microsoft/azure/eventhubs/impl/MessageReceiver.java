@@ -344,18 +344,7 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             if (this.closeTimer != null)
                 this.closeTimer.cancel(false);
 
-            WorkItem<Collection<Message>> workItem = null;
-            final boolean isTransientException = exception == null ||
-                    (exception instanceof EventHubException && ((EventHubException) exception).getIsTransient());
-            while ((workItem = this.pendingReceives.poll()) != null) {
-                final CompletableFuture<Collection<Message>> future = workItem.getWork();
-                if (isTransientException) {
-                    future.complete(null);
-                } else {
-                    ExceptionUtil.completeExceptionally(future, exception, this);
-                }
-            }
-
+            this.drainPendingReceives(exception);
             this.linkClose.complete(null);
         } else {
             synchronized (this.errorConditionLock) {
@@ -363,7 +352,8 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
             }
 
             final Exception completionException = exception == null
-                    ? new EventHubException(true, "Client encountered transient error for unknown reasons, please retry the operation.") : exception;
+                    ? new EventHubException(true, "Client encountered transient error for unknown reasons, please retry the operation.")
+                    : exception;
 
             this.onOpenComplete(completionException);
 
@@ -373,7 +363,6 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     : null;
 
             boolean recreateScheduled = true;
-
             if (nextRetryInterval != null) {
                 try {
                     this.underlyingFactory.scheduleOnReactorThread((int) nextRetryInterval.toMillis(), new DispatchHandler() {
@@ -388,14 +377,31 @@ public final class MessageReceiver extends ClientEntity implements AmqpReceiver,
                     });
                 } catch (IOException | RejectedExecutionException ignore) {
                     recreateScheduled = false;
+                    if (TRACE_LOGGER.isWarnEnabled()) {
+                        TRACE_LOGGER.warn(
+                                String.format(Locale.US, "receiverPath[%s], linkName[%s], scheduling createLink encountered error: %s",
+                                        MessageReceiver.this.receivePath,
+                                        this.receiveLink.getName(), ignore.getLocalizedMessage()));
+                    }
                 }
             }
 
-            if (nextRetryInterval == null || !recreateScheduled) {
-                WorkItem<Collection<Message>> pendingReceive = null;
-                while ((pendingReceive = this.pendingReceives.poll()) != null) {
-                    ExceptionUtil.completeExceptionally(pendingReceive.getWork(), completionException, this);
-                }
+            if (nextRetryInterval == null || !recreateScheduled){
+                this.drainPendingReceives(completionException);
+            }
+        }
+    }
+
+    private void drainPendingReceives(final Exception exception) {
+        WorkItem<Collection<Message>> workItem;
+        final boolean shouldReturnNull = (exception == null || exception instanceof TimeoutException);
+
+        while ((workItem = this.pendingReceives.poll()) != null) {
+            final CompletableFuture<Collection<Message>> future = workItem.getWork();
+            if (shouldReturnNull) {
+                future.complete(null);
+            } else {
+                ExceptionUtil.completeExceptionally(future, exception, this);
             }
         }
     }
