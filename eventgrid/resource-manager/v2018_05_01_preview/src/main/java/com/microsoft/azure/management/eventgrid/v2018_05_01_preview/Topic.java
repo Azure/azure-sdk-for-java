@@ -97,12 +97,32 @@ public interface Topic extends HasInner<TopicInner>, Resource, GroupableResource
     /**
      * The template for a Topic update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Topic>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<Topic>, Resource.UpdateWithTags<Update>, UpdateStages.WithInputSchema, UpdateStages.WithInputSchemaMapping {
     }
 
     /**
      * Grouping of Topic update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the topic {0} allowing to specify InputSchema.
+         */
+        interface WithInputSchema {
+            /**
+             * Specifies inputSchema.
+             */
+            Update withInputSchema(InputSchema inputSchema);
+        }
+
+        /**
+         * The stage of the topic {0} allowing to specify InputSchemaMapping.
+         */
+        interface WithInputSchemaMapping {
+            /**
+             * Specifies inputSchemaMapping.
+             */
+            Update withInputSchemaMapping(InputSchemaMapping inputSchemaMapping);
+        }
+
     }
 }

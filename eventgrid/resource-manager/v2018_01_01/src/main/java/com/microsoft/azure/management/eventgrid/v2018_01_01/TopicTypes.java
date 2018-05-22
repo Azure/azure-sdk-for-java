@@ -16,11 +16,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing TopicTypes.
  */
 public interface TopicTypes extends HasInner<TopicTypesInner> {
-
     /**
-     * @return Entry point to manage TopicType EventType.
+     * List event types.
+     * List event types for a topic type.
+     *
+     * @param topicTypeName Name of the topic type
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
      */
-    TopicTypeEventTypes eventTypes();
+    Observable<EventType> listEventTypesAsync(String topicTypeName);
+
     /**
      * Get a topic type.
      * Get information about a topic type.
