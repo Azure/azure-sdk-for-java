@@ -32,7 +32,7 @@ class ExpressRouteCrossConnectionImpl extends GroupableResourceCoreImpl<ExpressR
     @Override
     public Observable<ExpressRouteCrossConnection> updateResourceAsync() {
         ExpressRouteCrossConnectionsInner client = this.manager().inner().expressRouteCrossConnections();
-        return client.updateTagsAsync(this.resourceGroupName(), this.name())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 

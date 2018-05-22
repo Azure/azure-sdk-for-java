@@ -12,8 +12,6 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.network.v2018_05_01.implementation.ExpressRouteCrossConnectionPeeringInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
-import com.microsoft.azure.arm.model.Updatable;
-import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2018_05_01.implementation.NetworkManager;
@@ -21,7 +19,7 @@ import com.microsoft.azure.management.network.v2018_05_01.implementation.Network
 /**
  * Type representing ExpressRouteCrossConnectionPeering.
  */
-public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRouteCrossConnectionPeeringInner>, Indexable, Refreshable<ExpressRouteCrossConnectionPeering>, Updatable<ExpressRouteCrossConnectionPeering.Update>, HasManager<NetworkManager> {
+public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRouteCrossConnectionPeeringInner>, Indexable, Refreshable<ExpressRouteCrossConnectionPeering>, HasManager<NetworkManager> {
     /**
      * @return the azureASN value.
      */
@@ -275,146 +273,5 @@ public interface ExpressRouteCrossConnectionPeering extends HasInner<ExpressRout
          */
         interface WithCreate extends Creatable<ExpressRouteCrossConnectionPeering>, DefinitionStages.WithGatewayManagerEtag, DefinitionStages.WithId, DefinitionStages.WithIpv6PeeringConfig, DefinitionStages.WithLastModifiedBy, DefinitionStages.WithMicrosoftPeeringConfig, DefinitionStages.WithName, DefinitionStages.WithPeerASN, DefinitionStages.WithPeeringType, DefinitionStages.WithPrimaryPeerAddressPrefix, DefinitionStages.WithSecondaryPeerAddressPrefix, DefinitionStages.WithSharedKey, DefinitionStages.WithState, DefinitionStages.WithVlanId {
         }
-    }
-    /**
-     * The template for a ExpressRouteCrossConnectionPeering update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<ExpressRouteCrossConnectionPeering>, UpdateStages.WithGatewayManagerEtag, UpdateStages.WithId, UpdateStages.WithIpv6PeeringConfig, UpdateStages.WithLastModifiedBy, UpdateStages.WithMicrosoftPeeringConfig, UpdateStages.WithName, UpdateStages.WithPeerASN, UpdateStages.WithPeeringType, UpdateStages.WithPrimaryPeerAddressPrefix, UpdateStages.WithSecondaryPeerAddressPrefix, UpdateStages.WithSharedKey, UpdateStages.WithState, UpdateStages.WithVlanId {
-    }
-
-    /**
-     * Grouping of ExpressRouteCrossConnectionPeering update stages.
-     */
-    interface UpdateStages {
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify GatewayManagerEtag.
-         */
-        interface WithGatewayManagerEtag {
-            /**
-             * Specifies gatewayManagerEtag.
-             */
-            Update withGatewayManagerEtag(String gatewayManagerEtag);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify Id.
-         */
-        interface WithId {
-            /**
-             * Specifies id.
-             */
-            Update withId(String id);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify Ipv6PeeringConfig.
-         */
-        interface WithIpv6PeeringConfig {
-            /**
-             * Specifies ipv6PeeringConfig.
-             */
-            Update withIpv6PeeringConfig(Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify LastModifiedBy.
-         */
-        interface WithLastModifiedBy {
-            /**
-             * Specifies lastModifiedBy.
-             */
-            Update withLastModifiedBy(String lastModifiedBy);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify MicrosoftPeeringConfig.
-         */
-        interface WithMicrosoftPeeringConfig {
-            /**
-             * Specifies microsoftPeeringConfig.
-             */
-            Update withMicrosoftPeeringConfig(ExpressRouteCircuitPeeringConfig microsoftPeeringConfig);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify Name.
-         */
-        interface WithName {
-            /**
-             * Specifies name.
-             */
-            Update withName(String name);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify PeerASN.
-         */
-        interface WithPeerASN {
-            /**
-             * Specifies peerASN.
-             */
-            Update withPeerASN(Long peerASN);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify PeeringType.
-         */
-        interface WithPeeringType {
-            /**
-             * Specifies peeringType.
-             */
-            Update withPeeringType(ExpressRoutePeeringType peeringType);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify PrimaryPeerAddressPrefix.
-         */
-        interface WithPrimaryPeerAddressPrefix {
-            /**
-             * Specifies primaryPeerAddressPrefix.
-             */
-            Update withPrimaryPeerAddressPrefix(String primaryPeerAddressPrefix);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify SecondaryPeerAddressPrefix.
-         */
-        interface WithSecondaryPeerAddressPrefix {
-            /**
-             * Specifies secondaryPeerAddressPrefix.
-             */
-            Update withSecondaryPeerAddressPrefix(String secondaryPeerAddressPrefix);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify SharedKey.
-         */
-        interface WithSharedKey {
-            /**
-             * Specifies sharedKey.
-             */
-            Update withSharedKey(String sharedKey);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify State.
-         */
-        interface WithState {
-            /**
-             * Specifies state.
-             */
-            Update withState(ExpressRoutePeeringState state);
-        }
-
-        /**
-         * The stage of the expressroutecrossconnectionpeering update allowing to specify VlanId.
-         */
-        interface WithVlanId {
-            /**
-             * Specifies vlanId.
-             */
-            Update withVlanId(Integer vlanId);
-        }
-
     }
 }

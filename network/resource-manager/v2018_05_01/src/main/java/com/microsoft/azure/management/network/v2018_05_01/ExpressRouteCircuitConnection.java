@@ -12,8 +12,6 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.network.v2018_05_01.implementation.ExpressRouteCircuitConnectionInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
-import com.microsoft.azure.arm.model.Updatable;
-import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2018_05_01.implementation.NetworkManager;
@@ -22,7 +20,7 @@ import com.microsoft.azure.SubResource;
 /**
  * Type representing ExpressRouteCircuitConnection.
  */
-public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCircuitConnectionInner>, Indexable, Refreshable<ExpressRouteCircuitConnection>, Updatable<ExpressRouteCircuitConnection.Update>, HasManager<NetworkManager> {
+public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCircuitConnectionInner>, Indexable, Refreshable<ExpressRouteCircuitConnection>, HasManager<NetworkManager> {
     /**
      * @return the addressPrefix value.
      */
@@ -161,76 +159,5 @@ public interface ExpressRouteCircuitConnection extends HasInner<ExpressRouteCirc
          */
         interface WithCreate extends Creatable<ExpressRouteCircuitConnection>, DefinitionStages.WithAddressPrefix, DefinitionStages.WithAuthorizationKey, DefinitionStages.WithExpressRouteCircuitPeering, DefinitionStages.WithId, DefinitionStages.WithName, DefinitionStages.WithPeerExpressRouteCircuitPeering {
         }
-    }
-    /**
-     * The template for a ExpressRouteCircuitConnection update operation, containing all the settings that can be modified.
-     */
-    interface Update extends Appliable<ExpressRouteCircuitConnection>, UpdateStages.WithAddressPrefix, UpdateStages.WithAuthorizationKey, UpdateStages.WithExpressRouteCircuitPeering, UpdateStages.WithId, UpdateStages.WithName, UpdateStages.WithPeerExpressRouteCircuitPeering {
-    }
-
-    /**
-     * Grouping of ExpressRouteCircuitConnection update stages.
-     */
-    interface UpdateStages {
-        /**
-         * The stage of the expressroutecircuitconnection update allowing to specify AddressPrefix.
-         */
-        interface WithAddressPrefix {
-            /**
-             * Specifies addressPrefix.
-             */
-            Update withAddressPrefix(String addressPrefix);
-        }
-
-        /**
-         * The stage of the expressroutecircuitconnection update allowing to specify AuthorizationKey.
-         */
-        interface WithAuthorizationKey {
-            /**
-             * Specifies authorizationKey.
-             */
-            Update withAuthorizationKey(String authorizationKey);
-        }
-
-        /**
-         * The stage of the expressroutecircuitconnection update allowing to specify ExpressRouteCircuitPeering.
-         */
-        interface WithExpressRouteCircuitPeering {
-            /**
-             * Specifies expressRouteCircuitPeering.
-             */
-            Update withExpressRouteCircuitPeering(SubResource expressRouteCircuitPeering);
-        }
-
-        /**
-         * The stage of the expressroutecircuitconnection update allowing to specify Id.
-         */
-        interface WithId {
-            /**
-             * Specifies id.
-             */
-            Update withId(String id);
-        }
-
-        /**
-         * The stage of the expressroutecircuitconnection update allowing to specify Name.
-         */
-        interface WithName {
-            /**
-             * Specifies name.
-             */
-            Update withName(String name);
-        }
-
-        /**
-         * The stage of the expressroutecircuitconnection update allowing to specify PeerExpressRouteCircuitPeering.
-         */
-        interface WithPeerExpressRouteCircuitPeering {
-            /**
-             * Specifies peerExpressRouteCircuitPeering.
-             */
-            Update withPeerExpressRouteCircuitPeering(SubResource peerExpressRouteCircuitPeering);
-        }
-
     }
 }

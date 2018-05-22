@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitConnection;
 import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitStats;
 
-class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringImpl> implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition, ExpressRouteCircuitPeering.Update {
+class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringImpl> implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition {
     private final NetworkManager manager;
     private String resourceGroupName;
     private String circuitName;
@@ -61,8 +61,7 @@ class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRoute
     @Override
     public Observable<ExpressRouteCircuitPeering> updateResourceAsync() {
         ExpressRouteCircuitPeeringsInner client = this.manager().inner().expressRouteCircuitPeerings();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.circuitName, this.peeringName, this.inner())
-            .map(innerToFluentMap(this));
+        return null; // NOP updateResourceAsync implementation as update is not supported
     }
 
     @Override

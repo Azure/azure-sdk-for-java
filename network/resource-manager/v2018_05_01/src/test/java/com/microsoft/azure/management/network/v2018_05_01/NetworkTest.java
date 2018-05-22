@@ -7,21 +7,15 @@
  */
 
 package com.microsoft.azure.management.network.v2018_05_01;
-import com.microsoft.azure.PagedList;
 import com.microsoft.azure.arm.core.TestBase;
 import com.microsoft.azure.management.network.v2018_05_01.implementation.NetworkManager;
 import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.arm.utils.SdkContext;
-import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.Assert;
 import com.microsoft.azure.arm.resources.Region;
 import com.microsoft.azure.management.resources.ResourceGroup;
-import rx.Observable;
-
-import java.util.ArrayList;
-import java.util.List;
 
 public class  NetworkTest extends TestBase {
     protected static ResourceManager resourceManager;
@@ -39,189 +33,13 @@ public class  NetworkTest extends TestBase {
     protected void cleanUpResources() {
         resourceManager.resourceGroups().deleteByName(rgName);
     }
-
     @Test
-    @Ignore
-    public void canCreateAndDeleteExpressRouteCircuits() {
+    public void firstTest() {
         rgName = SdkContext.randomResourceName("rg", 20);
         ResourceGroup group = resourceManager.resourceGroups()
                 .define(rgName)
                 .withRegion(Region.US_WEST.toString())
                 .create();
-
-        String ercName = SdkContext.randomResourceName("erc", 20);
-        //
-        ExpressRouteCircuitSku sku = new ExpressRouteCircuitSku()
-                .withFamily(ExpressRouteCircuitSkuFamily.METERED_DATA)
-                .withName("Standard_MeteredData")
-                .withTier(ExpressRouteCircuitSkuTier.STANDARD);
-        //
-        ExpressRouteCircuitServiceProviderProperties properties = new ExpressRouteCircuitServiceProviderProperties()
-                .withServiceProviderName("ARM Test Provider")
-                .withPeeringLocation("EUAP Test")
-                .withBandwidthInMbps(200);
-        //
-        // Create ExpressRouteCircuit
-        //
-        ExpressRouteCircuit expressRouteCircuit = networkManager.expressRouteCircuits()
-                .define(ercName)
-                .withRegion(Region.fromName("East US 2 EUAP"))
-                .withExistingResourceGroup(rgName)
-                .withSku(sku)
-                .withServiceProviderProperties(properties)
-                .create();
-        //
-        // Delete ExpressRouteCircuit
-        //
-        networkManager.expressRouteCircuits()
-                .deleteByResourceGroup(expressRouteCircuit.resourceGroupName(), expressRouteCircuit.name());
-    }
-
-    @Test
-    @Ignore
-    public void canCreateListGetCrossConnectionCircuits() {
-        rgName = SdkContext.randomResourceName("rg", 20);
-        //
-        ResourceGroup group = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(Region.US_WEST.toString())
-                .create();
-        //
-        ExpressRouteCircuit expressRouteCircuit = createExpressRoute(rgName);
-        //
-        String erccName = SdkContext.randomResourceName("erc", 20);
-        //
-        // Create ExpressRouteCrossConnection
-        //
-        ExpressRouteCrossConnection crossConnection = networkManager.expressRouteCrossConnections()
-                .define(erccName)
-                .withRegion(Region.fromName("East US 2 EUAP"))
-                .withExistingResourceGroup(rgName)
-                .withPeeringLocation("EUAP Test")
-                .withExpressRouteCircuit(new ExpressRouteCircuitReference().withId(expressRouteCircuit.id()))
-                .withBandwidthInMbps(200)
-                .create();
-        //
-        // List ExpressRouteCrossConnection in the subscription
-        //
-        PagedList<ExpressRouteCrossConnection> expressRouteConnections = networkManager.expressRouteCrossConnections()
-                .list();
-        for (ExpressRouteCrossConnection con : expressRouteConnections) {
-            System.out.println(con.id());
-        }
-        //
-        // Get a specific ExpressRouteCrossConnection
-        //
-        crossConnection = networkManager.expressRouteCrossConnections()
-                .getByResourceGroup(crossConnection.resourceGroupName(), crossConnection.name());
-    }
-
-    @Test
-    @Ignore
-    public void canCreateListGetDeleteMicrosoftPeering() {
-        rgName = SdkContext.randomResourceName("rg", 20);
-        //
-        ResourceGroup group = resourceManager.resourceGroups()
-                .define(rgName)
-                .withRegion(Region.US_WEST.toString())
-                .create();
-        //
-        ExpressRouteCircuit expressRouteCircuit = createExpressRoute(rgName);
-        //
-        String erccName = SdkContext.randomResourceName("erc", 20);
-        //
-        // Create ExpressRouteCrossConnection
-        //
-        ExpressRouteCrossConnection crossConnection = networkManager.expressRouteCrossConnections()
-                .define(erccName)
-                .withRegion(Region.fromName("East US 2 EUAP"))
-                .withExistingResourceGroup(rgName)
-                .withPeeringLocation("EUAP Test")
-                .withExpressRouteCircuit(new ExpressRouteCircuitReference().withId(expressRouteCircuit.id()))
-                .withBandwidthInMbps(200)
-                .create();
-        //
-        // Create Microsoft ExpressRouteCrossConnectionPeering
-        //
-        //
-        ExpressRouteCircuitPeeringConfig microsoftPeeingConfig = new ExpressRouteCircuitPeeringConfig();
-        microsoftPeeingConfig
-                .withAdvertisedPublicPrefixes(new ArrayList<String>())
-                .advertisedPublicPrefixes().add("123.1.0.0/24");
-        microsoftPeeingConfig.withCustomerASN(23);
-        microsoftPeeingConfig.withRoutingRegistryName("ARIN");
-        //
-        Ipv6ExpressRouteCircuitPeeringConfig ipv6PeeringConfig = new Ipv6ExpressRouteCircuitPeeringConfig();
-        ipv6PeeringConfig.withPrimaryPeerAddressPrefix("3FFE:FFFF:0:CD30::/126");
-        ipv6PeeringConfig.withSecondaryPeerAddressPrefix("3FFE:FFFF:0:CD30::4/126");
-        ExpressRouteCircuitPeeringConfig ipv6MicrosoftPeeingConfig = new ExpressRouteCircuitPeeringConfig();
-        microsoftPeeingConfig
-                .withAdvertisedPublicPrefixes(new ArrayList<String>())
-                .advertisedPublicPrefixes().add("3FFE:FFFF:0:CD31::/120");
-        microsoftPeeingConfig.withCustomerASN(23);
-        microsoftPeeingConfig.withRoutingRegistryName("ARIN");
-        ipv6PeeringConfig.withMicrosoftPeeringConfig(ipv6MicrosoftPeeingConfig);
-        //
-        //
-        ExpressRouteCrossConnectionPeering crossConnectionPeering = networkManager
-                .expressRouteCrossConnectionPeerings()
-                    .define("MicrosoftPeering")
-                    .withExistingExpressRouteCrossConnection(crossConnection.resourceGroupName(), crossConnection.name())
-                    .withMicrosoftPeeringConfig(microsoftPeeingConfig)
-                    .withIpv6PeeringConfig(ipv6PeeringConfig)
-                    .create();
-        //
-        // Get Microsoft ExpressRouteCrossConnectionPeering
-        //
-        crossConnectionPeering = networkManager.expressRouteCrossConnectionPeerings()
-                .getAsync(rgName, crossConnection.name(), "MicrosoftPeering")
-                .toBlocking()
-                .last();
-        //
-        // Delete Microsoft ExpressRouteCrossConnectionPeering
-        //
-        networkManager.expressRouteCrossConnectionPeerings()
-                .deleteAsync(rgName, crossConnection.name(), "MicrosoftPeering")
-                .await();
-        //
-        // Retrieve route tables
-        //
-        Observable<ExpressRouteCircuitsRoutesTableListResult> routeTableListResult = networkManager.expressRouteCrossConnections()
-                .listRoutesTableAsync(crossConnection.resourceGroupName(),
-                        crossConnection.name(),
-                        crossConnectionPeering.name(),
-                        "primary");
-
-        ExpressRouteCircuitsRoutesTableListResult result = routeTableListResult.toBlocking().last();
-        for (ExpressRouteCircuitRoutesTable routeTable : result.value()) {
-            System.out.println(routeTable.weight());
-        }
-    }
-
-
-    private ExpressRouteCircuit createExpressRoute(String groupName) {
-        String ercName = SdkContext.randomResourceName("erc", 20);
-        //
-        ExpressRouteCircuitSku sku = new ExpressRouteCircuitSku()
-                .withFamily(ExpressRouteCircuitSkuFamily.METERED_DATA)
-                .withName("Standard_MeteredData")
-                .withTier(ExpressRouteCircuitSkuTier.STANDARD);
-        //
-        ExpressRouteCircuitServiceProviderProperties properties = new ExpressRouteCircuitServiceProviderProperties()
-                .withServiceProviderName("ARM Test Provider")
-                .withPeeringLocation("EUAP Test")
-                .withBandwidthInMbps(200);
-        //
-        // Create ExpressRouteCircuit
-        //
-        ExpressRouteCircuit expressRouteCircuit = networkManager.expressRouteCircuits()
-                .define(ercName)
-                .withRegion(Region.fromName("East US 2 EUAP"))
-                .withExistingResourceGroup(groupName)
-                .withSku(sku)
-                .withServiceProviderProperties(properties)
-                .create();
-
-        return expressRouteCircuit;
+        Assert.assertNotNull(group);
     }
 }
