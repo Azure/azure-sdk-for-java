@@ -16,18 +16,10 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.iothub.v2018_04_01.Skus;
-import com.microsoft.azure.management.iothub.v2018_04_01.ConsumerGroups;
-import com.microsoft.azure.management.iothub.v2018_04_01.Jobs;
-import com.microsoft.azure.management.iothub.v2018_04_01.QuotaMetrics;
-import com.microsoft.azure.management.iothub.v2018_04_01.Certificates;
 import com.microsoft.azure.management.iothub.v2018_04_01.Operations;
-import com.microsoft.azure.management.iothub.v2018_04_01.IotHubStats;
-import com.microsoft.azure.management.iothub.v2018_04_01.Routes;
-import com.microsoft.azure.management.iothub.v2018_04_01.IotHubKeys;
-import com.microsoft.azure.management.iothub.v2018_04_01.EventHubEndpoints;
+import com.microsoft.azure.management.iothub.v2018_04_01.IotHubResources;
 import com.microsoft.azure.management.iothub.v2018_04_01.ResourceProviderCommons;
-import com.microsoft.azure.management.iothub.v2018_04_01.IotHubs;
+import com.microsoft.azure.management.iothub.v2018_04_01.Certificates;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -35,18 +27,10 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Devices resource management.
  */
 public final class IoTHubManager extends ManagerCore<IoTHubManager, IotHubClientImpl> {
-    private Skus skus;
-    private ConsumerGroups consumerGroups;
-    private Jobs jobs;
-    private QuotaMetrics quotaMetrics;
-    private Certificates certificates;
     private Operations operations;
-    private IotHubStats iotHubStats;
-    private Routes routes;
-    private IotHubKeys iotHubKeys;
-    private EventHubEndpoints eventHubEndpoints;
+    private IotHubResources iotHubResources;
     private ResourceProviderCommons resourceProviderCommons;
-    private IotHubs iotHubs;
+    private Certificates certificates;
     /**
     * Get a Configurable instance that can be used to create IoTHubManager with optional configuration.
     *
@@ -95,56 +79,6 @@ public final class IoTHubManager extends ManagerCore<IoTHubManager, IotHubClient
     }
 
     /**
-     * @return Entry point to manage Skus.
-     */
-    public Skus skus() {
-        if (this.skus == null) {
-            this.skus = new SkusImpl(this);
-        }
-        return this.skus;
-    }
-
-    /**
-     * @return Entry point to manage ConsumerGroups.
-     */
-    public ConsumerGroups consumerGroups() {
-        if (this.consumerGroups == null) {
-            this.consumerGroups = new ConsumerGroupsImpl(this);
-        }
-        return this.consumerGroups;
-    }
-
-    /**
-     * @return Entry point to manage Jobs.
-     */
-    public Jobs jobs() {
-        if (this.jobs == null) {
-            this.jobs = new JobsImpl(this);
-        }
-        return this.jobs;
-    }
-
-    /**
-     * @return Entry point to manage QuotaMetrics.
-     */
-    public QuotaMetrics quotaMetrics() {
-        if (this.quotaMetrics == null) {
-            this.quotaMetrics = new QuotaMetricsImpl(this);
-        }
-        return this.quotaMetrics;
-    }
-
-    /**
-     * @return Entry point to manage Certificates.
-     */
-    public Certificates certificates() {
-        if (this.certificates == null) {
-            this.certificates = new CertificatesImpl(this);
-        }
-        return this.certificates;
-    }
-
-    /**
      * @return Entry point to manage Operations.
      */
     public Operations operations() {
@@ -155,43 +89,13 @@ public final class IoTHubManager extends ManagerCore<IoTHubManager, IotHubClient
     }
 
     /**
-     * @return Entry point to manage IotHubStats.
+     * @return Entry point to manage IotHubResources.
      */
-    public IotHubStats iotHubStats() {
-        if (this.iotHubStats == null) {
-            this.iotHubStats = new IotHubStatsImpl(this);
+    public IotHubResources iotHubResources() {
+        if (this.iotHubResources == null) {
+            this.iotHubResources = new IotHubResourcesImpl(this);
         }
-        return this.iotHubStats;
-    }
-
-    /**
-     * @return Entry point to manage Routes.
-     */
-    public Routes routes() {
-        if (this.routes == null) {
-            this.routes = new RoutesImpl(this);
-        }
-        return this.routes;
-    }
-
-    /**
-     * @return Entry point to manage IotHubKeys.
-     */
-    public IotHubKeys iotHubKeys() {
-        if (this.iotHubKeys == null) {
-            this.iotHubKeys = new IotHubKeysImpl(this);
-        }
-        return this.iotHubKeys;
-    }
-
-    /**
-     * @return Entry point to manage EventHubEndpoints.
-     */
-    public EventHubEndpoints eventHubEndpoints() {
-        if (this.eventHubEndpoints == null) {
-            this.eventHubEndpoints = new EventHubEndpointsImpl(this);
-        }
-        return this.eventHubEndpoints;
+        return this.iotHubResources;
     }
 
     /**
@@ -205,13 +109,13 @@ public final class IoTHubManager extends ManagerCore<IoTHubManager, IotHubClient
     }
 
     /**
-     * @return Entry point to manage IotHubs.
+     * @return Entry point to manage Certificates.
      */
-    public IotHubs iotHubs() {
-        if (this.iotHubs == null) {
-            this.iotHubs = new IotHubsImpl(this);
+    public Certificates certificates() {
+        if (this.certificates == null) {
+            this.certificates = new CertificatesImpl(this);
         }
-        return this.iotHubs;
+        return this.certificates;
     }
 
     /**

@@ -28,66 +28,10 @@ import com.microsoft.azure.management.logic.v2016_06_01.KeyVaultKey;
 import com.microsoft.azure.management.logic.v2016_06_01.GetCallbackUrlParameters;
 import com.microsoft.azure.management.logic.v2016_06_01.ListKeyVaultKeysDefinition;
 import com.microsoft.azure.management.logic.v2016_06_01.TrackingEventsDefinition;
-import com.microsoft.azure.management.logic.v2016_06_01.Assemblies;
-import com.microsoft.azure.management.logic.v2016_06_01.BatchConfigurations;
-import com.microsoft.azure.management.logic.v2016_06_01.IntegrationAccountSchemas;
-import com.microsoft.azure.management.logic.v2016_06_01.Maps;
-import com.microsoft.azure.management.logic.v2016_06_01.Partners;
-import com.microsoft.azure.management.logic.v2016_06_01.Agreements;
-import com.microsoft.azure.management.logic.v2016_06_01.Certificates;
-import com.microsoft.azure.management.logic.v2016_06_01.Sessions;
 
 class IntegrationAccountsImpl extends GroupableResourcesCoreImpl<IntegrationAccount, IntegrationAccountImpl, IntegrationAccountInner, IntegrationAccountsInner, LogicManager>  implements IntegrationAccounts {
     protected IntegrationAccountsImpl(LogicManager manager) {
         super(manager.inner().integrationAccounts(), manager);
-    }
-
-    @Override
-    public Assemblies assemblies() {
-        Assemblies accessor = this.manager().assemblies();
-        return accessor;
-    }
-
-    @Override
-    public BatchConfigurations batchConfigurations() {
-        BatchConfigurations accessor = this.manager().batchConfigurations();
-        return accessor;
-    }
-
-    @Override
-    public IntegrationAccountSchemas schemas() {
-        IntegrationAccountSchemas accessor = this.manager().integrationAccountSchemas();
-        return accessor;
-    }
-
-    @Override
-    public Maps maps() {
-        Maps accessor = this.manager().maps();
-        return accessor;
-    }
-
-    @Override
-    public Partners partners() {
-        Partners accessor = this.manager().partners();
-        return accessor;
-    }
-
-    @Override
-    public Agreements agreements() {
-        Agreements accessor = this.manager().agreements();
-        return accessor;
-    }
-
-    @Override
-    public Certificates certificates() {
-        Certificates accessor = this.manager().certificates();
-        return accessor;
-    }
-
-    @Override
-    public Sessions sessions() {
-        Sessions accessor = this.manager().sessions();
-        return accessor;
     }
 
     @Override

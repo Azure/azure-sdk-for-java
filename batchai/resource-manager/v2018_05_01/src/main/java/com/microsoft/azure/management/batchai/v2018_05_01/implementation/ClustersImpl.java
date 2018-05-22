@@ -192,7 +192,7 @@ class ClustersImpl extends WrapperImpl<ClustersInner> implements Clusters {
     }
 
     @Override
-    public Observable<Cluster> getByWorkspaceAsync(String resourceGroupName, String workspaceName, String clusterName) {
+    public Observable<Cluster> getAsync(String resourceGroupName, String workspaceName, String clusterName) {
         ClustersInner client = this.inner();
         return client.getAsync(resourceGroupName, workspaceName, clusterName)
         .map(new Func1<ClusterInner, Cluster>() {
@@ -204,7 +204,7 @@ class ClustersImpl extends WrapperImpl<ClustersInner> implements Clusters {
     }
 
     @Override
-    public Completable deleteByWorkspaceAsync(String resourceGroupName, String workspaceName, String clusterName) {
+    public Completable deleteAsync(String resourceGroupName, String workspaceName, String clusterName) {
         ClustersInner client = this.inner();
         return client.deleteAsync(resourceGroupName, workspaceName, clusterName).toCompletable();
     }

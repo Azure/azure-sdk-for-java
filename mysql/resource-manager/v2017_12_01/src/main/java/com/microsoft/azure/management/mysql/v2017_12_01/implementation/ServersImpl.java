@@ -22,38 +22,10 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.mysql.v2017_12_01.FirewallRules;
-import com.microsoft.azure.management.mysql.v2017_12_01.Databases;
-import com.microsoft.azure.management.mysql.v2017_12_01.Configurations;
-import com.microsoft.azure.management.mysql.v2017_12_01.LogFiles;
 
 class ServersImpl extends GroupableResourcesCoreImpl<Server, ServerImpl, ServerInner, ServersInner, MySQLManager>  implements Servers {
     protected ServersImpl(MySQLManager manager) {
         super(manager.inner().servers(), manager);
-    }
-
-    @Override
-    public FirewallRules firewallRules() {
-        FirewallRules accessor = this.manager().firewallRules();
-        return accessor;
-    }
-
-    @Override
-    public Databases databases() {
-        Databases accessor = this.manager().databases();
-        return accessor;
-    }
-
-    @Override
-    public Configurations configurations() {
-        Configurations accessor = this.manager().configurations();
-        return accessor;
-    }
-
-    @Override
-    public LogFiles logFiles() {
-        LogFiles accessor = this.manager().logFiles();
-        return accessor;
     }
 
     @Override

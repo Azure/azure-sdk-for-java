@@ -24,31 +24,10 @@ import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggerCallbackUrl;
 import com.microsoft.azure.management.logic.v2016_06_01.GetCallbackUrlParameters;
-import com.microsoft.azure.management.logic.v2016_06_01.Versions;
-import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggers;
-import com.microsoft.azure.management.logic.v2016_06_01.Runs;
 
 class WorkflowsImpl extends GroupableResourcesCoreImpl<Workflow, WorkflowImpl, WorkflowInner, WorkflowsInner, LogicManager>  implements Workflows {
     protected WorkflowsImpl(LogicManager manager) {
         super(manager.inner().workflows(), manager);
-    }
-
-    @Override
-    public Versions versions() {
-        Versions accessor = this.manager().versions();
-        return accessor;
-    }
-
-    @Override
-    public WorkflowTriggers triggers() {
-        WorkflowTriggers accessor = this.manager().workflowTriggers();
-        return accessor;
-    }
-
-    @Override
-    public Runs runs() {
-        Runs accessor = this.manager().runs();
-        return accessor;
     }
 
     @Override

@@ -29,38 +29,11 @@ import com.microsoft.azure.management.redis.v2018_03_01.RedisRebootParameters;
 import com.microsoft.azure.management.redis.v2018_03_01.ImportRDBParameters;
 import com.microsoft.azure.management.redis.v2018_03_01.ExportRDBParameters;
 import com.microsoft.azure.management.redis.v2018_03_01.CheckNameAvailabilityParameters;
-import com.microsoft.azure.management.redis.v2018_03_01.ListUpgradeNotifications;
-import com.microsoft.azure.management.redis.v2018_03_01.FirewallRules;
-import com.microsoft.azure.management.redis.v2018_03_01.PatchSchedules;
-import com.microsoft.azure.management.redis.v2018_03_01.LinkedServers;
+import com.microsoft.azure.management.redis.v2018_03_01.NotificationListResponse;
 
 class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceImpl, RedisResourceInner, RedisInner, RedisManager>  implements Redis {
     protected RedisImpl(RedisManager manager) {
         super(manager.inner().redis(), manager);
-    }
-
-    @Override
-    public ListUpgradeNotifications listUpgradeNotifications() {
-        ListUpgradeNotifications accessor = this.manager().listUpgradeNotifications();
-        return accessor;
-    }
-
-    @Override
-    public FirewallRules firewallRules() {
-        FirewallRules accessor = this.manager().firewallRules();
-        return accessor;
-    }
-
-    @Override
-    public PatchSchedules patchSchedules() {
-        PatchSchedules accessor = this.manager().patchSchedules();
-        return accessor;
-    }
-
-    @Override
-    public LinkedServers linkedServers() {
-        LinkedServers accessor = this.manager().linkedServers();
-        return accessor;
     }
 
     @Override
@@ -260,6 +233,18 @@ class RedisImpl extends GroupableResourcesCoreImpl<RedisResource, RedisResourceI
     @Override
     protected RedisResourceImpl wrapModel(String name) {
         return new RedisResourceImpl(name, new RedisResourceInner(), this.manager());
+    }
+
+    @Override
+    public Observable<NotificationListResponse> listUpgradeNotificationsAsync(String resourceGroupName, String name, double history) {
+        RedisInner client = this.inner();
+        return client.listUpgradeNotificationsAsync(resourceGroupName, name, history)
+        .map(new Func1<NotificationListResponseInner, NotificationListResponse>() {
+            @Override
+            public NotificationListResponse call(NotificationListResponseInner inner) {
+                return new NotificationListResponseImpl(inner, manager());
+            }
+        });
     }
 
 }

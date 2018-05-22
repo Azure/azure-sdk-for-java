@@ -16,14 +16,13 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.streamanalytics.v2016_03_01.Operations;
+import com.microsoft.azure.management.streamanalytics.v2016_03_01.StreamingJobs;
 import com.microsoft.azure.management.streamanalytics.v2016_03_01.Inputs;
 import com.microsoft.azure.management.streamanalytics.v2016_03_01.Outputs;
 import com.microsoft.azure.management.streamanalytics.v2016_03_01.Transformations;
 import com.microsoft.azure.management.streamanalytics.v2016_03_01.Functions;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.Operations;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.Quotas;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.Locations;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.Streamingjobs;
+import com.microsoft.azure.management.streamanalytics.v2016_03_01.Subscriptions;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -31,14 +30,13 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure StreamAnalytics resource management.
  */
 public final class StreamAnalyticsManager extends ManagerCore<StreamAnalyticsManager, StreamAnalyticsManagementClientImpl> {
+    private Operations operations;
+    private StreamingJobs streamingJobs;
     private Inputs inputs;
     private Outputs outputs;
     private Transformations transformations;
     private Functions functions;
-    private Operations operations;
-    private Quotas quotas;
-    private Locations locations;
-    private Streamingjobs streamingjobs;
+    private Subscriptions subscriptions;
     /**
     * Get a Configurable instance that can be used to create StreamAnalyticsManager with optional configuration.
     *
@@ -87,6 +85,26 @@ public final class StreamAnalyticsManager extends ManagerCore<StreamAnalyticsMan
     }
 
     /**
+     * @return Entry point to manage Operations.
+     */
+    public Operations operations() {
+        if (this.operations == null) {
+            this.operations = new OperationsImpl(this);
+        }
+        return this.operations;
+    }
+
+    /**
+     * @return Entry point to manage StreamingJobs.
+     */
+    public StreamingJobs streamingJobs() {
+        if (this.streamingJobs == null) {
+            this.streamingJobs = new StreamingJobsImpl(this);
+        }
+        return this.streamingJobs;
+    }
+
+    /**
      * @return Entry point to manage Inputs.
      */
     public Inputs inputs() {
@@ -127,43 +145,13 @@ public final class StreamAnalyticsManager extends ManagerCore<StreamAnalyticsMan
     }
 
     /**
-     * @return Entry point to manage Operations.
+     * @return Entry point to manage Subscriptions.
      */
-    public Operations operations() {
-        if (this.operations == null) {
-            this.operations = new OperationsImpl(this);
+    public Subscriptions subscriptions() {
+        if (this.subscriptions == null) {
+            this.subscriptions = new SubscriptionsImpl(this);
         }
-        return this.operations;
-    }
-
-    /**
-     * @return Entry point to manage Quotas.
-     */
-    public Quotas quotas() {
-        if (this.quotas == null) {
-            this.quotas = new QuotasImpl(this);
-        }
-        return this.quotas;
-    }
-
-    /**
-     * @return Entry point to manage Locations.
-     */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(this);
-        }
-        return this.locations;
-    }
-
-    /**
-     * @return Entry point to manage Streamingjobs.
-     */
-    public Streamingjobs streamingjobs() {
-        if (this.streamingjobs == null) {
-            this.streamingjobs = new StreamingjobsImpl(this);
-        }
-        return this.streamingjobs;
+        return this.subscriptions;
     }
 
     /**

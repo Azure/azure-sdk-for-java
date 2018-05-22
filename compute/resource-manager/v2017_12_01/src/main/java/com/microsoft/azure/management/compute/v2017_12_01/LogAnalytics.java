@@ -8,16 +8,30 @@
 
 package com.microsoft.azure.management.compute.v2017_12_01;
 
-import com.microsoft.azure.management.compute.v2017_12_01.implementation.LogAnalyticsInner;
-import com.microsoft.azure.arm.model.HasInner;
+import rx.Observable;
 
 /**
  * Type representing LogAnalytics.
  */
-public interface LogAnalytics extends HasInner<LogAnalyticsInner> {
+public interface LogAnalytics {
+    /**
+     * Export logs that show Api requests made by this subscription in the given time window to show throttling activities.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Parameters supplied to the LogAnalytics getRequestRateByInterval Api.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<LogAnalyticsOperationResult> exportRequestRateByIntervalAsync(String location, RequestRateByIntervalInput parameters);
 
     /**
-     * @return Entry point to manage LogAnalytic ApiAccess.
+     * Export logs that show total throttled Api requests for this subscription in the given time window.
+     *
+     * @param location The location upon which virtual-machine-sizes is queried.
+     * @param parameters Parameters supplied to the LogAnalytics getThrottledRequests Api.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
      */
-    ApiAccess apiAccess();
+    Observable<LogAnalyticsOperationResult> exportThrottledRequestsAsync(String location, ThrottledRequestsInput parameters);
+
 }

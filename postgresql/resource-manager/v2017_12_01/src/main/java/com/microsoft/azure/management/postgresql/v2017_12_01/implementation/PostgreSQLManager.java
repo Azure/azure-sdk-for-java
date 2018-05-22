@@ -16,16 +16,15 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
+import com.microsoft.azure.management.postgresql.v2017_12_01.Servers;
 import com.microsoft.azure.management.postgresql.v2017_12_01.FirewallRules;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Databases;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Configurations;
 import com.microsoft.azure.management.postgresql.v2017_12_01.LogFiles;
-import com.microsoft.azure.management.postgresql.v2017_12_01.PerformanceTiers;
-import com.microsoft.azure.management.postgresql.v2017_12_01.SecurityAlertPolicies;
-import com.microsoft.azure.management.postgresql.v2017_12_01.Locations;
+import com.microsoft.azure.management.postgresql.v2017_12_01.LocationBasedPerformanceTiers;
 import com.microsoft.azure.management.postgresql.v2017_12_01.CheckNameAvailabilitys;
+import com.microsoft.azure.management.postgresql.v2017_12_01.ServerSecurityAlertPolicies;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Operations;
-import com.microsoft.azure.management.postgresql.v2017_12_01.Servers;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -33,16 +32,15 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure DBforPostgreSQL resource management.
  */
 public final class PostgreSQLManager extends ManagerCore<PostgreSQLManager, PostgreSQLManagementClientImpl> {
+    private Servers servers;
     private FirewallRules firewallRules;
     private Databases databases;
     private Configurations configurations;
     private LogFiles logFiles;
-    private PerformanceTiers performanceTiers;
-    private SecurityAlertPolicies securityAlertPolicies;
-    private Locations locations;
+    private LocationBasedPerformanceTiers locationBasedPerformanceTiers;
     private CheckNameAvailabilitys checkNameAvailabilitys;
+    private ServerSecurityAlertPolicies serverSecurityAlertPolicies;
     private Operations operations;
-    private Servers servers;
     /**
     * Get a Configurable instance that can be used to create PostgreSQLManager with optional configuration.
     *
@@ -91,6 +89,16 @@ public final class PostgreSQLManager extends ManagerCore<PostgreSQLManager, Post
     }
 
     /**
+     * @return Entry point to manage Servers.
+     */
+    public Servers servers() {
+        if (this.servers == null) {
+            this.servers = new ServersImpl(this);
+        }
+        return this.servers;
+    }
+
+    /**
      * @return Entry point to manage FirewallRules.
      */
     public FirewallRules firewallRules() {
@@ -131,33 +139,13 @@ public final class PostgreSQLManager extends ManagerCore<PostgreSQLManager, Post
     }
 
     /**
-     * @return Entry point to manage PerformanceTiers.
+     * @return Entry point to manage LocationBasedPerformanceTiers.
      */
-    public PerformanceTiers performanceTiers() {
-        if (this.performanceTiers == null) {
-            this.performanceTiers = new PerformanceTiersImpl(this);
+    public LocationBasedPerformanceTiers locationBasedPerformanceTiers() {
+        if (this.locationBasedPerformanceTiers == null) {
+            this.locationBasedPerformanceTiers = new LocationBasedPerformanceTiersImpl(this);
         }
-        return this.performanceTiers;
-    }
-
-    /**
-     * @return Entry point to manage SecurityAlertPolicies.
-     */
-    public SecurityAlertPolicies securityAlertPolicies() {
-        if (this.securityAlertPolicies == null) {
-            this.securityAlertPolicies = new SecurityAlertPoliciesImpl(this);
-        }
-        return this.securityAlertPolicies;
-    }
-
-    /**
-     * @return Entry point to manage Locations.
-     */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(this);
-        }
-        return this.locations;
+        return this.locationBasedPerformanceTiers;
     }
 
     /**
@@ -171,6 +159,16 @@ public final class PostgreSQLManager extends ManagerCore<PostgreSQLManager, Post
     }
 
     /**
+     * @return Entry point to manage ServerSecurityAlertPolicies.
+     */
+    public ServerSecurityAlertPolicies serverSecurityAlertPolicies() {
+        if (this.serverSecurityAlertPolicies == null) {
+            this.serverSecurityAlertPolicies = new ServerSecurityAlertPoliciesImpl(this);
+        }
+        return this.serverSecurityAlertPolicies;
+    }
+
+    /**
      * @return Entry point to manage Operations.
      */
     public Operations operations() {
@@ -178,16 +176,6 @@ public final class PostgreSQLManager extends ManagerCore<PostgreSQLManager, Post
             this.operations = new OperationsImpl(this);
         }
         return this.operations;
-    }
-
-    /**
-     * @return Entry point to manage Servers.
-     */
-    public Servers servers() {
-        if (this.servers == null) {
-            this.servers = new ServersImpl(this);
-        }
-        return this.servers;
     }
 
     /**

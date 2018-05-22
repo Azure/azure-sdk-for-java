@@ -17,15 +17,15 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Transformations.
  */
 public interface Transformations extends SupportsCreating<Transformation.DefinitionStages.Blank>, HasInner<TransformationsInner> {
-
     /**
      * Gets details about the specified transformation.
-    *
+     *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
      * @param jobName The name of the streaming job.
      * @param transformationName The name of the transformation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Transformation> getByStreamingjobAsync(String resourceGroupName, String jobName, String transformationName);
+    Observable<Transformation> getAsync(String resourceGroupName, String jobName, String transformationName);
+
 }

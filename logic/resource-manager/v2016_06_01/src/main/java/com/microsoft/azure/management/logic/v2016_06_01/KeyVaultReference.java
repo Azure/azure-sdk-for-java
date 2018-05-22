@@ -8,9 +8,10 @@
 
 package com.microsoft.azure.management.logic.v2016_06_01;
 
+import com.microsoft.azure.management.logic.v2016_06_01.implementation.ResourceReferenceInner;
 
 /**
  * The key vault reference.
  */
-public class KeyVaultReference extends ResourceReference {
+public class KeyVaultReference extends ResourceReferenceInner {
 }

@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.logic.v2016_06_01;
 
+import com.microsoft.azure.management.logic.v2016_06_01.implementation.KeyVaultKeyReferenceKeyVaultInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -18,7 +19,7 @@ public class KeyVaultKeyReference {
      * The key vault reference.
      */
     @JsonProperty(value = "keyVault", required = true)
-    private KeyVaultKeyReferenceKeyVault keyVault;
+    private KeyVaultKeyReferenceKeyVaultInner keyVault;
 
     /**
      * The private key name in key vault.
@@ -37,7 +38,7 @@ public class KeyVaultKeyReference {
      *
      * @return the keyVault value
      */
-    public KeyVaultKeyReferenceKeyVault keyVault() {
+    public KeyVaultKeyReferenceKeyVaultInner keyVault() {
         return this.keyVault;
     }
 
@@ -47,7 +48,7 @@ public class KeyVaultKeyReference {
      * @param keyVault the keyVault value to set
      * @return the KeyVaultKeyReference object itself.
      */
-    public KeyVaultKeyReference withKeyVault(KeyVaultKeyReferenceKeyVault keyVault) {
+    public KeyVaultKeyReference withKeyVault(KeyVaultKeyReferenceKeyVaultInner keyVault) {
         this.keyVault = keyVault;
         return this;
     }

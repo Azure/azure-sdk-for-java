@@ -27,38 +27,11 @@ import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSet
 import com.microsoft.azure.management.compute.v2017_12_01.UpgradeOperationHistoricalStatusInfo;
 import com.microsoft.azure.management.compute.v2017_12_01.RecoveryWalkResponse;
 import java.util.List;
-import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetSkus;
-import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetExtensions;
-import com.microsoft.azure.management.compute.v2017_12_01.RollingUpgrades;
-import com.microsoft.azure.management.compute.v2017_12_01.Virtualmachines;
+import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetSku;
 
 class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMachineScaleSet, VirtualMachineScaleSetImpl, VirtualMachineScaleSetInner, VirtualMachineScaleSetsInner, ComputeManager>  implements VirtualMachineScaleSets {
     protected VirtualMachineScaleSetsImpl(ComputeManager manager) {
         super(manager.inner().virtualMachineScaleSets(), manager);
-    }
-
-    @Override
-    public VirtualMachineScaleSetSkus skus() {
-        VirtualMachineScaleSetSkus accessor = this.manager().virtualMachineScaleSetSkus();
-        return accessor;
-    }
-
-    @Override
-    public VirtualMachineScaleSetExtensions extensions() {
-        VirtualMachineScaleSetExtensions accessor = this.manager().virtualMachineScaleSetExtensions();
-        return accessor;
-    }
-
-    @Override
-    public RollingUpgrades rollingUpgrades() {
-        RollingUpgrades accessor = this.manager().rollingUpgrades();
-        return accessor;
-    }
-
-    @Override
-    public Virtualmachines virtualmachines() {
-        Virtualmachines accessor = this.manager().virtualmachines();
-        return accessor;
     }
 
     @Override
@@ -385,6 +358,47 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
     @Override
     protected VirtualMachineScaleSetImpl wrapModel(String name) {
         return new VirtualMachineScaleSetImpl(name, new VirtualMachineScaleSetInner(), this.manager());
+    }
+
+    private VirtualMachineScaleSetSkuImpl wrapModel(VirtualMachineScaleSetSkuInner inner) {
+        return  new VirtualMachineScaleSetSkuImpl(inner, manager());
+    }
+
+    private Observable<Page<VirtualMachineScaleSetSkuInner>> listSkusNextInnerPageAsync(String nextLink) {
+        if (nextLink == null) {
+            Observable.empty();
+        }
+        VirtualMachineScaleSetsInner client = this.inner();
+        return client.listSkusNextAsync(nextLink)
+        .flatMap(new Func1<Page<VirtualMachineScaleSetSkuInner>, Observable<Page<VirtualMachineScaleSetSkuInner>>>() {
+            @Override
+            public Observable<Page<VirtualMachineScaleSetSkuInner>> call(Page<VirtualMachineScaleSetSkuInner> page) {
+                return Observable.just(page).concatWith(listSkusNextInnerPageAsync(page.nextPageLink()));
+            }
+        });
+    }
+    @Override
+    public Observable<VirtualMachineScaleSetSku> listSkusAsync(final String resourceGroupName, final String vmScaleSetName) {
+        VirtualMachineScaleSetsInner client = this.inner();
+        return client.listSkusAsync(resourceGroupName, vmScaleSetName)
+        .flatMap(new Func1<Page<VirtualMachineScaleSetSkuInner>, Observable<Page<VirtualMachineScaleSetSkuInner>>>() {
+            @Override
+            public Observable<Page<VirtualMachineScaleSetSkuInner>> call(Page<VirtualMachineScaleSetSkuInner> page) {
+                return listSkusNextInnerPageAsync(page.nextPageLink());
+            }
+        })
+        .flatMapIterable(new Func1<Page<VirtualMachineScaleSetSkuInner>, Iterable<VirtualMachineScaleSetSkuInner>>() {
+            @Override
+            public Iterable<VirtualMachineScaleSetSkuInner> call(Page<VirtualMachineScaleSetSkuInner> page) {
+                return page.items();
+            }
+       })
+        .map(new Func1<VirtualMachineScaleSetSkuInner, VirtualMachineScaleSetSku>() {
+            @Override
+            public VirtualMachineScaleSetSku call(VirtualMachineScaleSetSkuInner inner) {
+                return wrapModel(inner);
+            }
+       });
     }
 
 }

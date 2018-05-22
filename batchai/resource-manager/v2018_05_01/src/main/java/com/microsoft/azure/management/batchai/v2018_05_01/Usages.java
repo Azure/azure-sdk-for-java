@@ -16,7 +16,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Usages.
  */
 public interface Usages extends HasInner<UsagesInner> {
-
     /**
      * Gets the current usage information as well as limits for Batch AI resources for given subscription.
      *
@@ -24,5 +23,6 @@ public interface Usages extends HasInner<UsagesInner> {
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<Usage> listByLocationAsync(final String location);
+    Observable<Usage> listAsync(final String location);
+
 }

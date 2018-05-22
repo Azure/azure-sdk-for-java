@@ -9,6 +9,7 @@
 package com.microsoft.azure.management.logic.v2016_06_01;
 
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.logic.v2016_06_01.implementation.ResourceReferenceInner;
 import com.microsoft.azure.management.logic.v2016_06_01.implementation.WorkflowTriggerInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
@@ -78,6 +79,6 @@ public interface WorkflowTrigger extends HasInner<WorkflowTriggerInner>, Indexab
     /**
      * @return the workflow value.
      */
-    ResourceReference workflow();
+    ResourceReferenceInner workflow();
 
 }

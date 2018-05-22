@@ -23,46 +23,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing IntegrationAccounts.
  */
 public interface IntegrationAccounts extends SupportsCreating<IntegrationAccount.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<IntegrationAccount>, SupportsListingByResourceGroup<IntegrationAccount>, SupportsListing<IntegrationAccount>, HasInner<IntegrationAccountsInner> {
-
-    /**
-     * @return Entry point to manage IntegrationAccount Assembly.
-     */
-    Assemblies assemblies();
-
-    /**
-     * @return Entry point to manage IntegrationAccount BatchConfiguration.
-     */
-    BatchConfigurations batchConfigurations();
-
-    /**
-     * @return Entry point to manage IntegrationAccount Schema.
-     */
-    IntegrationAccountSchemas schemas();
-
-    /**
-     * @return Entry point to manage IntegrationAccount Map.
-     */
-    Maps maps();
-
-    /**
-     * @return Entry point to manage IntegrationAccount Partner.
-     */
-    Partners partners();
-
-    /**
-     * @return Entry point to manage IntegrationAccount Agreement.
-     */
-    Agreements agreements();
-
-    /**
-     * @return Entry point to manage IntegrationAccount Certificate.
-     */
-    Certificates certificates();
-
-    /**
-     * @return Entry point to manage IntegrationAccount Session.
-     */
-    Sessions sessions();
     /**
      * Gets the integration account callback URL.
      *

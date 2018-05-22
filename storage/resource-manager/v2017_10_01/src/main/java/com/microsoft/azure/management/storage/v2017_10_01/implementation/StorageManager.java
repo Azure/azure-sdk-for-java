@@ -17,8 +17,8 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.storage.v2017_10_01.Operations;
-import com.microsoft.azure.management.storage.v2017_10_01.StorageAccounts;
 import com.microsoft.azure.management.storage.v2017_10_01.Skus;
+import com.microsoft.azure.management.storage.v2017_10_01.StorageAccounts;
 import com.microsoft.azure.management.storage.v2017_10_01.Usages;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
@@ -28,8 +28,8 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class StorageManager extends ManagerCore<StorageManager, StorageManagementClientImpl> {
     private Operations operations;
-    private StorageAccounts storageAccounts;
     private Skus skus;
+    private StorageAccounts storageAccounts;
     private Usages usages;
     /**
     * Get a Configurable instance that can be used to create StorageManager with optional configuration.
@@ -89,16 +89,6 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
     }
 
     /**
-     * @return Entry point to manage StorageAccounts.
-     */
-    public StorageAccounts storageAccounts() {
-        if (this.storageAccounts == null) {
-            this.storageAccounts = new StorageAccountsImpl(this);
-        }
-        return this.storageAccounts;
-    }
-
-    /**
      * @return Entry point to manage Skus.
      */
     public Skus skus() {
@@ -106,6 +96,16 @@ public final class StorageManager extends ManagerCore<StorageManager, StorageMan
             this.skus = new SkusImpl(this);
         }
         return this.skus;
+    }
+
+    /**
+     * @return Entry point to manage StorageAccounts.
+     */
+    public StorageAccounts storageAccounts() {
+        if (this.storageAccounts == null) {
+            this.storageAccounts = new StorageAccountsImpl(this);
+        }
+        return this.storageAccounts;
     }
 
     /**

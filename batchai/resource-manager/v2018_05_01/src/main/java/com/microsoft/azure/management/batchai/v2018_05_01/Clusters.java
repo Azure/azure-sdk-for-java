@@ -18,38 +18,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Clusters.
  */
 public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blank>, HasInner<ClustersInner> {
-
-    /**
-     * Gets information about Clusters associated with the given Workspace.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Cluster> listByWorkspaceAsync(final String resourceGroupName, final String workspaceName);
-
-    /**
-     * Gets information about a Cluster.
-    *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param clusterName The name of the cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Cluster> getByWorkspaceAsync(String resourceGroupName, String workspaceName, String clusterName);
-
-    /**
-     * Deletes a Cluster.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param clusterName The name of the cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteByWorkspaceAsync(String resourceGroupName, String workspaceName, String clusterName);
     /**
      * Get the IP address, port of all the compute nodes in the Cluster.
      *
@@ -77,5 +45,37 @@ public interface Clusters extends SupportsCreating<Cluster.DefinitionStages.Blan
      * @return the observable for the request
      */
     Observable<Cluster> listByResourceGroupAsync(final String resourceGroupName);
+
+    /**
+     * Gets information about a Cluster.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param clusterName The name of the cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Cluster> getAsync(String resourceGroupName, String workspaceName, String clusterName);
+
+    /**
+     * Gets information about Clusters associated with the given Workspace.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Cluster> listByWorkspaceAsync(final String resourceGroupName, final String workspaceName);
+
+    /**
+     * Deletes a Cluster.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param clusterName The name of the cluster within the specified resource group. Cluster names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String workspaceName, String clusterName);
 
 }

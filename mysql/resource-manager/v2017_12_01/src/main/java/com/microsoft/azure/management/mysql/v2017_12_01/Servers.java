@@ -22,24 +22,4 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Servers.
  */
 public interface Servers extends SupportsCreating<Server.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Server>, SupportsListingByResourceGroup<Server>, SupportsListing<Server>, HasInner<ServersInner> {
-
-    /**
-     * @return Entry point to manage Server FirewallRule.
-     */
-    FirewallRules firewallRules();
-
-    /**
-     * @return Entry point to manage Server Databasis.
-     */
-    Databases databases();
-
-    /**
-     * @return Entry point to manage Server Configuration.
-     */
-    Configurations configurations();
-
-    /**
-     * @return Entry point to manage Server LogFile.
-     */
-    LogFiles logFiles();
 }

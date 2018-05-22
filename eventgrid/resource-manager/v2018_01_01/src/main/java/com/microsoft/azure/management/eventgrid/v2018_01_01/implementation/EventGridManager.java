@@ -16,13 +16,10 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.eventgrid.v2018_01_01.TopicTypeEventTypes;
-import com.microsoft.azure.management.eventgrid.v2018_01_01.Operations;
-import com.microsoft.azure.management.eventgrid.v2018_01_01.ProviderEventTypes;
-import com.microsoft.azure.management.eventgrid.v2018_01_01.Providers;
-import com.microsoft.azure.management.eventgrid.v2018_01_01.TopicTypes;
-import com.microsoft.azure.management.eventgrid.v2018_01_01.Topics;
 import com.microsoft.azure.management.eventgrid.v2018_01_01.EventSubscriptions;
+import com.microsoft.azure.management.eventgrid.v2018_01_01.Operations;
+import com.microsoft.azure.management.eventgrid.v2018_01_01.Topics;
+import com.microsoft.azure.management.eventgrid.v2018_01_01.TopicTypes;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -30,13 +27,10 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure EventGrid resource management.
  */
 public final class EventGridManager extends ManagerCore<EventGridManager, EventGridManagementClientImpl> {
-    private TopicTypeEventTypes topicTypeEventTypes;
-    private Operations operations;
-    private ProviderEventTypes providerEventTypes;
-    private Providers providers;
-    private TopicTypes topicTypes;
-    private Topics topics;
     private EventSubscriptions eventSubscriptions;
+    private Operations operations;
+    private Topics topics;
+    private TopicTypes topicTypes;
     /**
     * Get a Configurable instance that can be used to create EventGridManager with optional configuration.
     *
@@ -85,13 +79,13 @@ public final class EventGridManager extends ManagerCore<EventGridManager, EventG
     }
 
     /**
-     * @return Entry point to manage TopicTypeEventTypes.
+     * @return Entry point to manage EventSubscriptions.
      */
-    public TopicTypeEventTypes topicTypeEventTypes() {
-        if (this.topicTypeEventTypes == null) {
-            this.topicTypeEventTypes = new TopicTypeEventTypesImpl(this);
+    public EventSubscriptions eventSubscriptions() {
+        if (this.eventSubscriptions == null) {
+            this.eventSubscriptions = new EventSubscriptionsImpl(this);
         }
-        return this.topicTypeEventTypes;
+        return this.eventSubscriptions;
     }
 
     /**
@@ -105,36 +99,6 @@ public final class EventGridManager extends ManagerCore<EventGridManager, EventG
     }
 
     /**
-     * @return Entry point to manage ProviderEventTypes.
-     */
-    public ProviderEventTypes providerEventTypes() {
-        if (this.providerEventTypes == null) {
-            this.providerEventTypes = new ProviderEventTypesImpl(this);
-        }
-        return this.providerEventTypes;
-    }
-
-    /**
-     * @return Entry point to manage Providers.
-     */
-    public Providers providers() {
-        if (this.providers == null) {
-            this.providers = new ProvidersImpl(this);
-        }
-        return this.providers;
-    }
-
-    /**
-     * @return Entry point to manage TopicTypes.
-     */
-    public TopicTypes topicTypes() {
-        if (this.topicTypes == null) {
-            this.topicTypes = new TopicTypesImpl(this);
-        }
-        return this.topicTypes;
-    }
-
-    /**
      * @return Entry point to manage Topics.
      */
     public Topics topics() {
@@ -145,13 +109,13 @@ public final class EventGridManager extends ManagerCore<EventGridManager, EventG
     }
 
     /**
-     * @return Entry point to manage EventSubscriptions.
+     * @return Entry point to manage TopicTypes.
      */
-    public EventSubscriptions eventSubscriptions() {
-        if (this.eventSubscriptions == null) {
-            this.eventSubscriptions = new EventSubscriptionsImpl(this);
+    public TopicTypes topicTypes() {
+        if (this.topicTypes == null) {
+            this.topicTypes = new TopicTypesImpl(this);
         }
-        return this.eventSubscriptions;
+        return this.topicTypes;
     }
 
     /**

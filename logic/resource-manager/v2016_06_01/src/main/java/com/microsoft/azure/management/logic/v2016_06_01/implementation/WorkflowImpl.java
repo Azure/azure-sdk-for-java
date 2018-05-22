@@ -15,7 +15,6 @@ import com.microsoft.azure.management.logic.v2016_06_01.WorkflowProvisioningStat
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowState;
 import com.microsoft.azure.management.logic.v2016_06_01.Sku;
-import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 import java.util.Map;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowParameter;
 
@@ -71,7 +70,7 @@ class WorkflowImpl extends GroupableResourceCoreImpl<Workflow, WorkflowInner, Wo
     }
 
     @Override
-    public ResourceReference integrationAccount() {
+    public ResourceReferenceInner integrationAccount() {
         return this.inner().integrationAccount();
     }
 
@@ -107,7 +106,7 @@ class WorkflowImpl extends GroupableResourceCoreImpl<Workflow, WorkflowInner, Wo
     }
 
     @Override
-    public WorkflowImpl withIntegrationAccount(ResourceReference integrationAccount) {
+    public WorkflowImpl withIntegrationAccount(ResourceReferenceInner integrationAccount) {
         this.inner().withIntegrationAccount(integrationAccount);
         return this;
     }

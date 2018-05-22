@@ -18,41 +18,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Jobs.
  */
 public interface Jobs extends SupportsCreating<Job.DefinitionStages.Blank>, HasInner<JobsInner> {
-
-    /**
-     * Gets a list of Jobs within the specified Experiment.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Job> listByExperimentAsync(final String resourceGroupName, final String workspaceName, final String experimentName);
-
-    /**
-     * Gets information about a Job.
-    *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param jobName The name of the job within the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Job> getByExperimentAsync(String resourceGroupName, String workspaceName, String experimentName, String jobName);
-
-    /**
-     * Deletes a Job.
-     *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param jobName The name of the job within the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteByExperimentAsync(String resourceGroupName, String workspaceName, String experimentName, String jobName);
     /**
      * List all directories and files inside the given directory of the Job's output directory (if the output directory is on Azure File Share or Azure Storage Container).
      *
@@ -89,5 +54,40 @@ public interface Jobs extends SupportsCreating<Job.DefinitionStages.Blank>, HasI
      * @return the observable for the request
      */
     Completable terminateAsync(String resourceGroupName, String workspaceName, String experimentName, String jobName);
+
+    /**
+     * Gets information about a Job.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param jobName The name of the job within the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Job> getAsync(String resourceGroupName, String workspaceName, String experimentName, String jobName);
+
+    /**
+     * Gets a list of Jobs within the specified Experiment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Job> listByExperimentAsync(final String resourceGroupName, final String workspaceName, final String experimentName);
+
+    /**
+     * Deletes a Job.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param jobName The name of the job within the specified resource group. Job names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String workspaceName, String experimentName, String jobName);
 
 }

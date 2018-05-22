@@ -60,7 +60,7 @@ class ConfigurationsImpl extends WrapperImpl<ConfigurationsInner> implements Con
     }
 
     @Override
-    public Observable<Configuration> getByServerAsync(String resourceGroupName, String serverName, String configurationName) {
+    public Observable<Configuration> getAsync(String resourceGroupName, String serverName, String configurationName) {
         ConfigurationsInner client = this.inner();
         return client.getAsync(resourceGroupName, serverName, configurationName)
         .map(new Func1<ConfigurationInner, Configuration>() {

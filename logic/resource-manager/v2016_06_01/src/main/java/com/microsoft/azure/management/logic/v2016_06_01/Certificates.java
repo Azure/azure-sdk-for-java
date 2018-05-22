@@ -18,6 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Certificates.
  */
 public interface Certificates extends SupportsCreating<IntegrationAccountCertificate.DefinitionStages.Blank>, HasInner<CertificatesInner> {
+    /**
+     * Gets an integration account certificate.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param certificateName The integration account certificate name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationAccountCertificate> getAsync(String resourceGroupName, String integrationAccountName, String certificateName);
 
     /**
      * Gets a list of integration account certificates.
@@ -27,18 +37,7 @@ public interface Certificates extends SupportsCreating<IntegrationAccountCertifi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<IntegrationAccountCertificate> listByIntegrationAccountAsync(final String resourceGroupName, final String integrationAccountName);
-
-    /**
-     * Gets an integration account certificate.
-    *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param certificateName The integration account certificate name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<IntegrationAccountCertificate> getByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String certificateName);
+    Observable<IntegrationAccountCertificate> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName);
 
     /**
      * Deletes an integration account certificate.
@@ -49,5 +48,6 @@ public interface Certificates extends SupportsCreating<IntegrationAccountCertifi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String certificateName);
+    Completable deleteAsync(String resourceGroupName, String integrationAccountName, String certificateName);
+
 }

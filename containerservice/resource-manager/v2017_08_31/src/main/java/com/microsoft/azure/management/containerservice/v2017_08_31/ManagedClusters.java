@@ -22,14 +22,27 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing ManagedClusters.
  */
 public interface ManagedClusters extends SupportsCreating<ManagedCluster.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<ManagedCluster>, SupportsListingByResourceGroup<ManagedCluster>, SupportsListing<ManagedCluster>, HasInner<ManagedClustersInner> {
+    /**
+     * Gets access profile of a managed cluster.
+     * Gets the accessProfile for the specified role name of the managed cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @param roleName The name of the role for managed cluster accessProfile resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<ManagedClusterAccessProfile> getAccessProfilesAsync(String resourceGroupName, String resourceName, String roleName);
 
     /**
-     * @return Entry point to manage ManagedCluster UpgradeProfile.
+     * Gets upgrade profile for a managed cluster.
+     * Gets the details of the upgrade profile for a managed cluster with a specified resource group and name.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param resourceName The name of the managed cluster resource.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
      */
-    UpgradeProfiles upgradeProfiles();
+    Observable<ManagedClusterUpgradeProfile> getUpgradeProfileAsync(String resourceGroupName, String resourceName);
 
-    /**
-     * @return Entry point to manage ManagedCluster AccessProfile.
-     */
-    AccessProfiles accessProfiles();
 }

@@ -11,7 +11,6 @@ package com.microsoft.azure.management.logic.v2016_06_01.implementation;
 import org.joda.time.DateTime;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowStatus;
 import com.microsoft.azure.management.logic.v2016_06_01.Correlation;
-import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunTrigger;
 import java.util.Map;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowOutputParameter;
@@ -78,7 +77,7 @@ public class WorkflowRunInner extends SubResource {
      * Gets the reference to workflow version.
      */
     @JsonProperty(value = "properties.workflow", access = JsonProperty.Access.WRITE_ONLY)
-    private ResourceReference workflow;
+    private ResourceReferenceInner workflow;
 
     /**
      * Gets the fired trigger.
@@ -198,7 +197,7 @@ public class WorkflowRunInner extends SubResource {
      *
      * @return the workflow value
      */
-    public ResourceReference workflow() {
+    public ResourceReferenceInner workflow() {
         return this.workflow;
     }
 

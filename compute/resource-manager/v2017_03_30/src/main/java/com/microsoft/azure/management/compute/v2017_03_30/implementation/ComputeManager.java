@@ -16,38 +16,22 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySetVmSizes;
-import com.microsoft.azure.management.compute.v2017_03_30.TypeArtifacttypePublisherLocationVersions;
-import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineExtensions;
-import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineVmSizes;
-import com.microsoft.azure.management.compute.v2017_03_30.OfferArtifacttypePublisherLocationVersions;
-import com.microsoft.azure.management.compute.v2017_03_30.LocationPublishersOperations;
-import com.microsoft.azure.management.compute.v2017_03_30.Usages;
-import com.microsoft.azure.management.compute.v2017_03_30.LocationVmSizes;
-import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineScaleSetSkus;
-import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineScaleSetExtensions;
-import com.microsoft.azure.management.compute.v2017_03_30.Virtualmachines;
-import com.microsoft.azure.management.compute.v2017_03_30.RunCommands;
-import com.microsoft.azure.management.compute.v2017_03_30.Types;
-import com.microsoft.azure.management.compute.v2017_03_30.PublisherLocationArtifacttypes;
-import com.microsoft.azure.management.compute.v2017_03_30.LocationPublishers;
-import com.microsoft.azure.management.compute.v2017_03_30.Locations;
-import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineExtensionsOperations;
-import com.microsoft.azure.management.compute.v2017_03_30.Offers;
-import com.microsoft.azure.management.compute.v2017_03_30.PublisherLocationArtifacttypesOperations;
-import com.microsoft.azure.management.compute.v2017_03_30.LocationsOperations;
-import com.microsoft.azure.management.compute.v2017_03_30.LocationsOperations1;
-import com.microsoft.azure.management.compute.v2017_03_30.LocationsOperations2;
-import com.microsoft.azure.management.compute.v2017_03_30.ResourceSkus;
-import com.microsoft.azure.management.compute.v2017_03_30.RollingUpgrades;
-import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineScaleSetsOperations;
-import com.microsoft.azure.management.compute.v2017_03_30.LocationsOperations3;
 import com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySets;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineExtensionImages;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineExtensions;
 import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachines;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineImages;
+import com.microsoft.azure.management.compute.v2017_03_30.Usages;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineSizes;
 import com.microsoft.azure.management.compute.v2017_03_30.Images;
+import com.microsoft.azure.management.compute.v2017_03_30.ResourceSkus;
 import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineScaleSets;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineScaleSetExtensions;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineScaleSetRollingUpgrades;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineScaleSetVMs;
 import com.microsoft.azure.management.compute.v2017_03_30.Disks;
 import com.microsoft.azure.management.compute.v2017_03_30.Snapshots;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineRunCommands;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -55,38 +39,22 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure Compute resource management.
  */
 public final class ComputeManager extends ManagerCore<ComputeManager, ComputeManagementClientImpl> {
-    private AvailabilitySetVmSizes availabilitySetVmSizes;
-    private TypeArtifacttypePublisherLocationVersions typeArtifacttypePublisherLocationVersions;
-    private VirtualMachineExtensions virtualMachineExtensions;
-    private VirtualMachineVmSizes virtualMachineVmSizes;
-    private OfferArtifacttypePublisherLocationVersions offerArtifacttypePublisherLocationVersions;
-    private LocationPublishersOperations locationPublishersOperations;
-    private Usages usages;
-    private LocationVmSizes locationVmSizes;
-    private VirtualMachineScaleSetSkus virtualMachineScaleSetSkus;
-    private VirtualMachineScaleSetExtensions virtualMachineScaleSetExtensions;
-    private Virtualmachines virtualmachines;
-    private RunCommands runCommands;
-    private Types types;
-    private PublisherLocationArtifacttypes publisherLocationArtifacttypes;
-    private LocationPublishers locationPublishers;
-    private Locations locations;
-    private VirtualMachineExtensionsOperations virtualMachineExtensionsOperations;
-    private Offers offers;
-    private PublisherLocationArtifacttypesOperations publisherLocationArtifacttypesOperations;
-    private LocationsOperations locationsOperations;
-    private LocationsOperations1 locationsOperations1;
-    private LocationsOperations2 locationsOperations2;
-    private ResourceSkus resourceSkus;
-    private RollingUpgrades rollingUpgrades;
-    private VirtualMachineScaleSetsOperations virtualMachineScaleSetsOperations;
-    private LocationsOperations3 locationsOperations3;
     private AvailabilitySets availabilitySets;
+    private VirtualMachineExtensionImages virtualMachineExtensionImages;
+    private VirtualMachineExtensions virtualMachineExtensions;
     private VirtualMachines virtualMachines;
+    private VirtualMachineImages virtualMachineImages;
+    private Usages usages;
+    private VirtualMachineSizes virtualMachineSizes;
     private Images images;
+    private ResourceSkus resourceSkus;
     private VirtualMachineScaleSets virtualMachineScaleSets;
+    private VirtualMachineScaleSetExtensions virtualMachineScaleSetExtensions;
+    private VirtualMachineScaleSetRollingUpgrades virtualMachineScaleSetRollingUpgrades;
+    private VirtualMachineScaleSetVMs virtualMachineScaleSetVMs;
     private Disks disks;
     private Snapshots snapshots;
+    private VirtualMachineRunCommands virtualMachineRunCommands;
     /**
     * Get a Configurable instance that can be used to create ComputeManager with optional configuration.
     *
@@ -135,23 +103,23 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
     }
 
     /**
-     * @return Entry point to manage AvailabilitySetVmSizes.
+     * @return Entry point to manage AvailabilitySets.
      */
-    public AvailabilitySetVmSizes availabilitySetVmSizes() {
-        if (this.availabilitySetVmSizes == null) {
-            this.availabilitySetVmSizes = new AvailabilitySetVmSizesImpl(this);
+    public AvailabilitySets availabilitySets() {
+        if (this.availabilitySets == null) {
+            this.availabilitySets = new AvailabilitySetsImpl(this);
         }
-        return this.availabilitySetVmSizes;
+        return this.availabilitySets;
     }
 
     /**
-     * @return Entry point to manage TypeArtifacttypePublisherLocationVersions.
+     * @return Entry point to manage VirtualMachineExtensionImages.
      */
-    public TypeArtifacttypePublisherLocationVersions typeArtifacttypePublisherLocationVersions() {
-        if (this.typeArtifacttypePublisherLocationVersions == null) {
-            this.typeArtifacttypePublisherLocationVersions = new TypeArtifacttypePublisherLocationVersionsImpl(this);
+    public VirtualMachineExtensionImages virtualMachineExtensionImages() {
+        if (this.virtualMachineExtensionImages == null) {
+            this.virtualMachineExtensionImages = new VirtualMachineExtensionImagesImpl(this);
         }
-        return this.typeArtifacttypePublisherLocationVersions;
+        return this.virtualMachineExtensionImages;
     }
 
     /**
@@ -165,33 +133,23 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
     }
 
     /**
-     * @return Entry point to manage VirtualMachineVmSizes.
+     * @return Entry point to manage VirtualMachines.
      */
-    public VirtualMachineVmSizes virtualMachineVmSizes() {
-        if (this.virtualMachineVmSizes == null) {
-            this.virtualMachineVmSizes = new VirtualMachineVmSizesImpl(this);
+    public VirtualMachines virtualMachines() {
+        if (this.virtualMachines == null) {
+            this.virtualMachines = new VirtualMachinesImpl(this);
         }
-        return this.virtualMachineVmSizes;
+        return this.virtualMachines;
     }
 
     /**
-     * @return Entry point to manage OfferArtifacttypePublisherLocationVersions.
+     * @return Entry point to manage VirtualMachineImages.
      */
-    public OfferArtifacttypePublisherLocationVersions offerArtifacttypePublisherLocationVersions() {
-        if (this.offerArtifacttypePublisherLocationVersions == null) {
-            this.offerArtifacttypePublisherLocationVersions = new OfferArtifacttypePublisherLocationVersionsImpl(this);
+    public VirtualMachineImages virtualMachineImages() {
+        if (this.virtualMachineImages == null) {
+            this.virtualMachineImages = new VirtualMachineImagesImpl(this);
         }
-        return this.offerArtifacttypePublisherLocationVersions;
-    }
-
-    /**
-     * @return Entry point to manage LocationPublishersOperations.
-     */
-    public LocationPublishersOperations locationPublishersOperations() {
-        if (this.locationPublishersOperations == null) {
-            this.locationPublishersOperations = new LocationPublishersOperationsImpl(this);
-        }
-        return this.locationPublishersOperations;
+        return this.virtualMachineImages;
     }
 
     /**
@@ -205,213 +163,13 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
     }
 
     /**
-     * @return Entry point to manage LocationVmSizes.
+     * @return Entry point to manage VirtualMachineSizes.
      */
-    public LocationVmSizes locationVmSizes() {
-        if (this.locationVmSizes == null) {
-            this.locationVmSizes = new LocationVmSizesImpl(this);
+    public VirtualMachineSizes virtualMachineSizes() {
+        if (this.virtualMachineSizes == null) {
+            this.virtualMachineSizes = new VirtualMachineSizesImpl(this);
         }
-        return this.locationVmSizes;
-    }
-
-    /**
-     * @return Entry point to manage VirtualMachineScaleSetSkus.
-     */
-    public VirtualMachineScaleSetSkus virtualMachineScaleSetSkus() {
-        if (this.virtualMachineScaleSetSkus == null) {
-            this.virtualMachineScaleSetSkus = new VirtualMachineScaleSetSkusImpl(this);
-        }
-        return this.virtualMachineScaleSetSkus;
-    }
-
-    /**
-     * @return Entry point to manage VirtualMachineScaleSetExtensions.
-     */
-    public VirtualMachineScaleSetExtensions virtualMachineScaleSetExtensions() {
-        if (this.virtualMachineScaleSetExtensions == null) {
-            this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsImpl(this);
-        }
-        return this.virtualMachineScaleSetExtensions;
-    }
-
-    /**
-     * @return Entry point to manage Virtualmachines.
-     */
-    public Virtualmachines virtualmachines() {
-        if (this.virtualmachines == null) {
-            this.virtualmachines = new VirtualmachinesImpl(this);
-        }
-        return this.virtualmachines;
-    }
-
-    /**
-     * @return Entry point to manage RunCommands.
-     */
-    public RunCommands runCommands() {
-        if (this.runCommands == null) {
-            this.runCommands = new RunCommandsImpl(this);
-        }
-        return this.runCommands;
-    }
-
-    /**
-     * @return Entry point to manage Types.
-     */
-    public Types types() {
-        if (this.types == null) {
-            this.types = new TypesImpl(this);
-        }
-        return this.types;
-    }
-
-    /**
-     * @return Entry point to manage PublisherLocationArtifacttypes.
-     */
-    public PublisherLocationArtifacttypes publisherLocationArtifacttypes() {
-        if (this.publisherLocationArtifacttypes == null) {
-            this.publisherLocationArtifacttypes = new PublisherLocationArtifacttypesImpl(this);
-        }
-        return this.publisherLocationArtifacttypes;
-    }
-
-    /**
-     * @return Entry point to manage LocationPublishers.
-     */
-    public LocationPublishers locationPublishers() {
-        if (this.locationPublishers == null) {
-            this.locationPublishers = new LocationPublishersImpl(this);
-        }
-        return this.locationPublishers;
-    }
-
-    /**
-     * @return Entry point to manage Locations.
-     */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(this);
-        }
-        return this.locations;
-    }
-
-    /**
-     * @return Entry point to manage VirtualMachineExtensionsOperations.
-     */
-    public VirtualMachineExtensionsOperations virtualMachineExtensionsOperations() {
-        if (this.virtualMachineExtensionsOperations == null) {
-            this.virtualMachineExtensionsOperations = new VirtualMachineExtensionsOperationsImpl(this);
-        }
-        return this.virtualMachineExtensionsOperations;
-    }
-
-    /**
-     * @return Entry point to manage Offers.
-     */
-    public Offers offers() {
-        if (this.offers == null) {
-            this.offers = new OffersImpl(this);
-        }
-        return this.offers;
-    }
-
-    /**
-     * @return Entry point to manage PublisherLocationArtifacttypesOperations.
-     */
-    public PublisherLocationArtifacttypesOperations publisherLocationArtifacttypesOperations() {
-        if (this.publisherLocationArtifacttypesOperations == null) {
-            this.publisherLocationArtifacttypesOperations = new PublisherLocationArtifacttypesOperationsImpl(this);
-        }
-        return this.publisherLocationArtifacttypesOperations;
-    }
-
-    /**
-     * @return Entry point to manage LocationsOperations.
-     */
-    public LocationsOperations locationsOperations() {
-        if (this.locationsOperations == null) {
-            this.locationsOperations = new LocationsOperationsImpl(this);
-        }
-        return this.locationsOperations;
-    }
-
-    /**
-     * @return Entry point to manage LocationsOperations1.
-     */
-    public LocationsOperations1 locationsOperations1() {
-        if (this.locationsOperations1 == null) {
-            this.locationsOperations1 = new LocationsOperations1Impl(this);
-        }
-        return this.locationsOperations1;
-    }
-
-    /**
-     * @return Entry point to manage LocationsOperations2.
-     */
-    public LocationsOperations2 locationsOperations2() {
-        if (this.locationsOperations2 == null) {
-            this.locationsOperations2 = new LocationsOperations2Impl(this);
-        }
-        return this.locationsOperations2;
-    }
-
-    /**
-     * @return Entry point to manage ResourceSkus.
-     */
-    public ResourceSkus resourceSkus() {
-        if (this.resourceSkus == null) {
-            this.resourceSkus = new ResourceSkusImpl(this);
-        }
-        return this.resourceSkus;
-    }
-
-    /**
-     * @return Entry point to manage RollingUpgrades.
-     */
-    public RollingUpgrades rollingUpgrades() {
-        if (this.rollingUpgrades == null) {
-            this.rollingUpgrades = new RollingUpgradesImpl(this);
-        }
-        return this.rollingUpgrades;
-    }
-
-    /**
-     * @return Entry point to manage VirtualMachineScaleSetsOperations.
-     */
-    public VirtualMachineScaleSetsOperations virtualMachineScaleSetsOperations() {
-        if (this.virtualMachineScaleSetsOperations == null) {
-            this.virtualMachineScaleSetsOperations = new VirtualMachineScaleSetsOperationsImpl(this);
-        }
-        return this.virtualMachineScaleSetsOperations;
-    }
-
-    /**
-     * @return Entry point to manage LocationsOperations3.
-     */
-    public LocationsOperations3 locationsOperations3() {
-        if (this.locationsOperations3 == null) {
-            this.locationsOperations3 = new LocationsOperations3Impl(this);
-        }
-        return this.locationsOperations3;
-    }
-
-    /**
-     * @return Entry point to manage AvailabilitySets.
-     */
-    public AvailabilitySets availabilitySets() {
-        if (this.availabilitySets == null) {
-            this.availabilitySets = new AvailabilitySetsImpl(this);
-        }
-        return this.availabilitySets;
-    }
-
-    /**
-     * @return Entry point to manage VirtualMachines.
-     */
-    public VirtualMachines virtualMachines() {
-        if (this.virtualMachines == null) {
-            this.virtualMachines = new VirtualMachinesImpl(this);
-        }
-        return this.virtualMachines;
+        return this.virtualMachineSizes;
     }
 
     /**
@@ -425,6 +183,16 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
     }
 
     /**
+     * @return Entry point to manage ResourceSkus.
+     */
+    public ResourceSkus resourceSkus() {
+        if (this.resourceSkus == null) {
+            this.resourceSkus = new ResourceSkusImpl(this);
+        }
+        return this.resourceSkus;
+    }
+
+    /**
      * @return Entry point to manage VirtualMachineScaleSets.
      */
     public VirtualMachineScaleSets virtualMachineScaleSets() {
@@ -432,6 +200,36 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
             this.virtualMachineScaleSets = new VirtualMachineScaleSetsImpl(this);
         }
         return this.virtualMachineScaleSets;
+    }
+
+    /**
+     * @return Entry point to manage VirtualMachineScaleSetExtensions.
+     */
+    public VirtualMachineScaleSetExtensions virtualMachineScaleSetExtensions() {
+        if (this.virtualMachineScaleSetExtensions == null) {
+            this.virtualMachineScaleSetExtensions = new VirtualMachineScaleSetExtensionsImpl(this);
+        }
+        return this.virtualMachineScaleSetExtensions;
+    }
+
+    /**
+     * @return Entry point to manage VirtualMachineScaleSetRollingUpgrades.
+     */
+    public VirtualMachineScaleSetRollingUpgrades virtualMachineScaleSetRollingUpgrades() {
+        if (this.virtualMachineScaleSetRollingUpgrades == null) {
+            this.virtualMachineScaleSetRollingUpgrades = new VirtualMachineScaleSetRollingUpgradesImpl(this);
+        }
+        return this.virtualMachineScaleSetRollingUpgrades;
+    }
+
+    /**
+     * @return Entry point to manage VirtualMachineScaleSetVMs.
+     */
+    public VirtualMachineScaleSetVMs virtualMachineScaleSetVMs() {
+        if (this.virtualMachineScaleSetVMs == null) {
+            this.virtualMachineScaleSetVMs = new VirtualMachineScaleSetVMsImpl(this);
+        }
+        return this.virtualMachineScaleSetVMs;
     }
 
     /**
@@ -452,6 +250,16 @@ public final class ComputeManager extends ManagerCore<ComputeManager, ComputeMan
             this.snapshots = new SnapshotsImpl(this);
         }
         return this.snapshots;
+    }
+
+    /**
+     * @return Entry point to manage VirtualMachineRunCommands.
+     */
+    public VirtualMachineRunCommands virtualMachineRunCommands() {
+        if (this.virtualMachineRunCommands == null) {
+            this.virtualMachineRunCommands = new VirtualMachineRunCommandsImpl(this);
+        }
+        return this.virtualMachineRunCommands;
     }
 
     /**

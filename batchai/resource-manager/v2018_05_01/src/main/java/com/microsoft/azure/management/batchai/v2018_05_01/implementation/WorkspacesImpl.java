@@ -22,31 +22,10 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.batchai.v2018_05_01.Clusters;
-import com.microsoft.azure.management.batchai.v2018_05_01.FileServers;
-import com.microsoft.azure.management.batchai.v2018_05_01.Experiments;
 
 class WorkspacesImpl extends GroupableResourcesCoreImpl<Workspace, WorkspaceImpl, WorkspaceInner, WorkspacesInner, BatchAIManager>  implements Workspaces {
     protected WorkspacesImpl(BatchAIManager manager) {
         super(manager.inner().workspaces(), manager);
-    }
-
-    @Override
-    public Clusters clusters() {
-        Clusters accessor = this.manager().clusters();
-        return accessor;
-    }
-
-    @Override
-    public FileServers fileServers() {
-        FileServers accessor = this.manager().fileServers();
-        return accessor;
-    }
-
-    @Override
-    public Experiments experiments() {
-        Experiments accessor = this.manager().experiments();
-        return accessor;
     }
 
     @Override

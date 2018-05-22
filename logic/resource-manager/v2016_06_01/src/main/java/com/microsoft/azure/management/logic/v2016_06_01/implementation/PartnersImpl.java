@@ -56,7 +56,7 @@ class PartnersImpl extends WrapperImpl<PartnersInner> implements Partners {
         });
     }
 
-    private Observable<Page<IntegrationAccountPartnerInner>> listByIntegrationAccountNextInnerPageAsync(String nextLink) {
+    private Observable<Page<IntegrationAccountPartnerInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -65,18 +65,18 @@ class PartnersImpl extends WrapperImpl<PartnersInner> implements Partners {
         .flatMap(new Func1<Page<IntegrationAccountPartnerInner>, Observable<Page<IntegrationAccountPartnerInner>>>() {
             @Override
             public Observable<Page<IntegrationAccountPartnerInner>> call(Page<IntegrationAccountPartnerInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<IntegrationAccountPartner> listByIntegrationAccountAsync(final String resourceGroupName, final String integrationAccountName) {
+    public Observable<IntegrationAccountPartner> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         PartnersInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
         .flatMap(new Func1<Page<IntegrationAccountPartnerInner>, Observable<Page<IntegrationAccountPartnerInner>>>() {
             @Override
             public Observable<Page<IntegrationAccountPartnerInner>> call(Page<IntegrationAccountPartnerInner> page) {
-                return listByIntegrationAccountNextInnerPageAsync(page.nextPageLink());
+                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<IntegrationAccountPartnerInner>, Iterable<IntegrationAccountPartnerInner>>() {
@@ -94,7 +94,7 @@ class PartnersImpl extends WrapperImpl<PartnersInner> implements Partners {
     }
 
     @Override
-    public Observable<IntegrationAccountPartner> getByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String partnerName) {
+    public Observable<IntegrationAccountPartner> getAsync(String resourceGroupName, String integrationAccountName, String partnerName) {
         PartnersInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, partnerName)
         .map(new Func1<IntegrationAccountPartnerInner, IntegrationAccountPartner>() {
@@ -106,7 +106,7 @@ class PartnersImpl extends WrapperImpl<PartnersInner> implements Partners {
     }
 
     @Override
-    public Completable deleteByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String partnerName) {
+    public Completable deleteAsync(String resourceGroupName, String integrationAccountName, String partnerName) {
         PartnersInner client = this.inner();
         return client.deleteAsync(resourceGroupName, integrationAccountName, partnerName).toCompletable();
     }

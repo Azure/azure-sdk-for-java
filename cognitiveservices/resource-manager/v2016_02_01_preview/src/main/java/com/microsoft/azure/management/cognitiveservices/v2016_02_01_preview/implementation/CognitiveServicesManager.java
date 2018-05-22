@@ -16,8 +16,7 @@ import com.microsoft.azure.management.apigeneration.Beta.SinceVersion;
 import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
-import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.Skus;
-import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.Accounts;
+import com.microsoft.azure.management.cognitiveservices.v2016_02_01_preview.CognitiveServicesAccounts;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -25,8 +24,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  * Entry point to Azure CognitiveServices resource management.
  */
 public final class CognitiveServicesManager extends ManagerCore<CognitiveServicesManager, CognitiveServicesManagementClientImpl> {
-    private Skus skus;
-    private Accounts accounts;
+    private CognitiveServicesAccounts cognitiveServicesAccounts;
     /**
     * Get a Configurable instance that can be used to create CognitiveServicesManager with optional configuration.
     *
@@ -75,23 +73,13 @@ public final class CognitiveServicesManager extends ManagerCore<CognitiveService
     }
 
     /**
-     * @return Entry point to manage Skus.
+     * @return Entry point to manage CognitiveServicesAccounts.
      */
-    public Skus skus() {
-        if (this.skus == null) {
-            this.skus = new SkusImpl(this);
+    public CognitiveServicesAccounts cognitiveServicesAccounts() {
+        if (this.cognitiveServicesAccounts == null) {
+            this.cognitiveServicesAccounts = new CognitiveServicesAccountsImpl(this);
         }
-        return this.skus;
-    }
-
-    /**
-     * @return Entry point to manage Accounts.
-     */
-    public Accounts accounts() {
-        if (this.accounts == null) {
-            this.accounts = new AccountsImpl(this);
-        }
-        return this.accounts;
+        return this.cognitiveServicesAccounts;
     }
 
     /**

@@ -163,7 +163,7 @@ class JobsImpl extends WrapperImpl<JobsInner> implements Jobs {
     }
 
     @Override
-    public Observable<Job> getByExperimentAsync(String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    public Observable<Job> getAsync(String resourceGroupName, String workspaceName, String experimentName, String jobName) {
         JobsInner client = this.inner();
         return client.getAsync(resourceGroupName, workspaceName, experimentName, jobName)
         .map(new Func1<JobInner, Job>() {
@@ -175,7 +175,7 @@ class JobsImpl extends WrapperImpl<JobsInner> implements Jobs {
     }
 
     @Override
-    public Completable deleteByExperimentAsync(String resourceGroupName, String workspaceName, String experimentName, String jobName) {
+    public Completable deleteAsync(String resourceGroupName, String workspaceName, String experimentName, String jobName) {
         JobsInner client = this.inner();
         return client.deleteAsync(resourceGroupName, workspaceName, experimentName, jobName).toCompletable();
     }

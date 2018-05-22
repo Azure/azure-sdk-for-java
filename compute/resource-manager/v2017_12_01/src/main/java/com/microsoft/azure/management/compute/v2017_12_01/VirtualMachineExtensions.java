@@ -18,17 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing VirtualMachineExtensions.
  */
 public interface VirtualMachineExtensions extends SupportsCreating<VirtualMachineExtension.DefinitionStages.Blank>, HasInner<VirtualMachineExtensionsInner> {
-
     /**
      * The operation to get the extension.
-    *
+     *
      * @param resourceGroupName The name of the resource group.
      * @param vmName The name of the virtual machine containing the extension.
      * @param vmExtensionName The name of the virtual machine extension.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<VirtualMachineExtension> getByVirtualMachineAsync(String resourceGroupName, String vmName, String vmExtensionName);
+    Observable<VirtualMachineExtension> getAsync(String resourceGroupName, String vmName, String vmExtensionName);
 
     /**
      * The operation to delete the extension.
@@ -39,5 +38,6 @@ public interface VirtualMachineExtensions extends SupportsCreating<VirtualMachin
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByVirtualMachineAsync(String resourceGroupName, String vmName, String vmExtensionName);
+    Completable deleteAsync(String resourceGroupName, String vmName, String vmExtensionName);
+
 }

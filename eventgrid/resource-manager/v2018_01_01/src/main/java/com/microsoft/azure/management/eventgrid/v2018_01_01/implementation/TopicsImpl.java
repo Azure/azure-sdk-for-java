@@ -23,6 +23,8 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.eventgrid.v2018_01_01.TopicSharedAccessKeys;
+import java.util.List;
+import com.microsoft.azure.management.eventgrid.v2018_01_01.EventType;
 
 class TopicsImpl extends GroupableResourcesCoreImpl<Topic, TopicImpl, TopicInner, TopicsInner, EventGridManager>  implements Topics {
     protected TopicsImpl(EventGridManager manager) {
@@ -158,6 +160,24 @@ class TopicsImpl extends GroupableResourcesCoreImpl<Topic, TopicImpl, TopicInner
     @Override
     protected TopicImpl wrapModel(String name) {
         return new TopicImpl(name, new TopicInner(), this.manager());
+    }
+
+    @Override
+    public Observable<EventType> listEventTypesAsync(String resourceGroupName, String providerNamespace, String resourceTypeName, String resourceName) {
+        TopicsInner client = this.inner();
+        return client.listEventTypesAsync(resourceGroupName, providerNamespace, resourceTypeName, resourceName)
+        .flatMap(new Func1<List<EventTypeInner>, Observable<EventTypeInner>>() {
+            @Override
+            public Observable<EventTypeInner> call(List<EventTypeInner> innerList) {
+                return Observable.from(innerList);
+            }
+        })
+        .map(new Func1<EventTypeInner, EventType>() {
+            @Override
+            public EventType call(EventTypeInner inner) {
+                return new EventTypeImpl(inner, manager());
+            }
+        });
     }
 
 }

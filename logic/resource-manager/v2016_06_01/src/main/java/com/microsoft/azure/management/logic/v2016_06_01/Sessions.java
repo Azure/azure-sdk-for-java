@@ -18,6 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Sessions.
  */
 public interface Sessions extends SupportsCreating<IntegrationAccountSession.DefinitionStages.Blank>, HasInner<SessionsInner> {
+    /**
+     * Gets an integration account session.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param sessionName The integration account session name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationAccountSession> getAsync(String resourceGroupName, String integrationAccountName, String sessionName);
 
     /**
      * Gets a list of integration account sessions.
@@ -27,18 +37,7 @@ public interface Sessions extends SupportsCreating<IntegrationAccountSession.Def
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<IntegrationAccountSession> listByIntegrationAccountAsync(final String resourceGroupName, final String integrationAccountName);
-
-    /**
-     * Gets an integration account session.
-    *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param sessionName The integration account session name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<IntegrationAccountSession> getByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String sessionName);
+    Observable<IntegrationAccountSession> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName);
 
     /**
      * Deletes an integration account session.
@@ -49,5 +48,6 @@ public interface Sessions extends SupportsCreating<IntegrationAccountSession.Def
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String sessionName);
+    Completable deleteAsync(String resourceGroupName, String integrationAccountName, String sessionName);
+
 }

@@ -22,19 +22,4 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Workspaces.
  */
 public interface Workspaces extends SupportsCreating<Workspace.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<Workspace>, SupportsListingByResourceGroup<Workspace>, SupportsListing<Workspace>, HasInner<WorkspacesInner> {
-
-    /**
-     * @return Entry point to manage Workspace Cluster.
-     */
-    Clusters clusters();
-
-    /**
-     * @return Entry point to manage Workspace FileServer.
-     */
-    FileServers fileServers();
-
-    /**
-     * @return Entry point to manage Workspace Experiment.
-     */
-    Experiments experiments();
 }

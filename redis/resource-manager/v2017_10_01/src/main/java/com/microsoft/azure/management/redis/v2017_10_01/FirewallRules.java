@@ -18,6 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing FirewallRules.
  */
 public interface FirewallRules extends SupportsCreating<RedisFirewallRule.DefinitionStages.Blank>, HasInner<FirewallRulesInner> {
+    /**
+     * Gets a single firewall rule in a specified redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param cacheName The name of the Redis cache.
+     * @param ruleName The name of the firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RedisFirewallRule> getAsync(String resourceGroupName, String cacheName, String ruleName);
 
     /**
      * Gets all firewall rules in the specified redis cache.
@@ -27,18 +37,7 @@ public interface FirewallRules extends SupportsCreating<RedisFirewallRule.Defini
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RedisFirewallRule> listByRedisAsync(final String resourceGroupName, final String cacheName);
-
-    /**
-     * Gets a single firewall rule in a specified redis cache.
-    *
-     * @param resourceGroupName The name of the resource group.
-     * @param cacheName The name of the Redis cache.
-     * @param ruleName The name of the firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<RedisFirewallRule> getByRedisAsync(String resourceGroupName, String cacheName, String ruleName);
+    Observable<RedisFirewallRule> listByRedisResourceAsync(final String resourceGroupName, final String cacheName);
 
     /**
      * Deletes a single firewall rule in a specified redis cache.
@@ -49,5 +48,6 @@ public interface FirewallRules extends SupportsCreating<RedisFirewallRule.Defini
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByRedisAsync(String resourceGroupName, String cacheName, String ruleName);
+    Completable deleteAsync(String resourceGroupName, String cacheName, String ruleName);
+
 }

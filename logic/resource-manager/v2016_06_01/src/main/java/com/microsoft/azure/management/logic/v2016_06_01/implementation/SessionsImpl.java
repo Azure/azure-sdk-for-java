@@ -42,7 +42,7 @@ class SessionsImpl extends WrapperImpl<SessionsInner> implements Sessions {
         return new IntegrationAccountSessionImpl(name, this.manager());
     }
 
-    private Observable<Page<IntegrationAccountSessionInner>> listByIntegrationAccountNextInnerPageAsync(String nextLink) {
+    private Observable<Page<IntegrationAccountSessionInner>> listByIntegrationAccountsNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -51,18 +51,18 @@ class SessionsImpl extends WrapperImpl<SessionsInner> implements Sessions {
         .flatMap(new Func1<Page<IntegrationAccountSessionInner>, Observable<Page<IntegrationAccountSessionInner>>>() {
             @Override
             public Observable<Page<IntegrationAccountSessionInner>> call(Page<IntegrationAccountSessionInner> page) {
-                return Observable.just(page).concatWith(listByIntegrationAccountNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<IntegrationAccountSession> listByIntegrationAccountAsync(final String resourceGroupName, final String integrationAccountName) {
+    public Observable<IntegrationAccountSession> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName) {
         SessionsInner client = this.inner();
         return client.listByIntegrationAccountsAsync(resourceGroupName, integrationAccountName)
         .flatMap(new Func1<Page<IntegrationAccountSessionInner>, Observable<Page<IntegrationAccountSessionInner>>>() {
             @Override
             public Observable<Page<IntegrationAccountSessionInner>> call(Page<IntegrationAccountSessionInner> page) {
-                return listByIntegrationAccountNextInnerPageAsync(page.nextPageLink());
+                return listByIntegrationAccountsNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<IntegrationAccountSessionInner>, Iterable<IntegrationAccountSessionInner>>() {
@@ -80,7 +80,7 @@ class SessionsImpl extends WrapperImpl<SessionsInner> implements Sessions {
     }
 
     @Override
-    public Observable<IntegrationAccountSession> getByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String sessionName) {
+    public Observable<IntegrationAccountSession> getAsync(String resourceGroupName, String integrationAccountName, String sessionName) {
         SessionsInner client = this.inner();
         return client.getAsync(resourceGroupName, integrationAccountName, sessionName)
         .map(new Func1<IntegrationAccountSessionInner, IntegrationAccountSession>() {
@@ -92,7 +92,7 @@ class SessionsImpl extends WrapperImpl<SessionsInner> implements Sessions {
     }
 
     @Override
-    public Completable deleteByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String sessionName) {
+    public Completable deleteAsync(String resourceGroupName, String integrationAccountName, String sessionName) {
         SessionsInner client = this.inner();
         return client.deleteAsync(resourceGroupName, integrationAccountName, sessionName).toCompletable();
     }

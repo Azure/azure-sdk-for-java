@@ -56,7 +56,7 @@ public interface Experiment extends HasInner<ExperimentInner>, Indexable, Refres
     /**
      * The entirety of the Experiment definition.
      */
-    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithParameters, DefinitionStages.WithCreate {
+    interface Definition extends DefinitionStages.Blank, DefinitionStages.WithWorkspace, DefinitionStages.WithCreate {
     }
 
     /**
@@ -76,17 +76,7 @@ public interface Experiment extends HasInner<ExperimentInner>, Indexable, Refres
            /**
             * Specifies resourceGroupName, workspaceName.
             */
-            WithParameters withExistingWorkspace(String resourceGroupName, String workspaceName);
-        }
-
-        /**
-         * The stage of the experiment definition allowing to specify Parameters.
-         */
-        interface WithParameters {
-           /**
-            * Specifies parameters.
-            */
-            WithCreate withParameters(Object parameters);
+            WithCreate withExistingWorkspace(String resourceGroupName, String workspaceName);
         }
 
         /**
@@ -100,22 +90,12 @@ public interface Experiment extends HasInner<ExperimentInner>, Indexable, Refres
     /**
      * The template for a Experiment update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<Experiment>, UpdateStages.WithParameters {
+    interface Update extends Appliable<Experiment> {
     }
 
     /**
      * Grouping of Experiment update stages.
      */
     interface UpdateStages {
-        /**
-         * The stage of the experiment update allowing to specify Parameters.
-         */
-        interface WithParameters {
-            /**
-             * Specifies parameters.
-             */
-            Update withParameters(Object parameters);
-        }
-
     }
 }

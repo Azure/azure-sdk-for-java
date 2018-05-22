@@ -12,7 +12,6 @@ import com.microsoft.azure.management.logic.v2016_06_01.WorkflowVersion;
 import com.microsoft.azure.arm.model.implementation.IndexableRefreshableWrapperImpl;
 import rx.Observable;
 import org.joda.time.DateTime;
-import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 import java.util.Map;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowParameter;
 import com.microsoft.azure.management.logic.v2016_06_01.Sku;
@@ -71,7 +70,7 @@ class WorkflowVersionImpl extends IndexableRefreshableWrapperImpl<WorkflowVersio
     }
 
     @Override
-    public ResourceReference integrationAccount() {
+    public ResourceReferenceInner integrationAccount() {
         return this.inner().integrationAccount();
     }
 

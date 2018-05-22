@@ -154,7 +154,7 @@ class FileServersImpl extends WrapperImpl<FileServersInner> implements FileServe
     }
 
     @Override
-    public Observable<FileServer> getByWorkspaceAsync(String resourceGroupName, String workspaceName, String fileServerName) {
+    public Observable<FileServer> getAsync(String resourceGroupName, String workspaceName, String fileServerName) {
         FileServersInner client = this.inner();
         return client.getAsync(resourceGroupName, workspaceName, fileServerName)
         .map(new Func1<FileServerInner, FileServer>() {
@@ -166,7 +166,7 @@ class FileServersImpl extends WrapperImpl<FileServersInner> implements FileServe
     }
 
     @Override
-    public Completable deleteByWorkspaceAsync(String resourceGroupName, String workspaceName, String fileServerName) {
+    public Completable deleteAsync(String resourceGroupName, String workspaceName, String fileServerName) {
         FileServersInner client = this.inner();
         return client.deleteAsync(resourceGroupName, workspaceName, fileServerName).toCompletable();
     }

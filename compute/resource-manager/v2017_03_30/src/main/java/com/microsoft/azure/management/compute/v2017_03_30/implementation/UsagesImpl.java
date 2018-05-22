@@ -32,7 +32,7 @@ class UsagesImpl extends WrapperImpl<UsagesInner> implements Usages {
         return  new UsageImpl(inner, manager());
     }
 
-    private Observable<Page<UsageInner>> listByLocationNextInnerPageAsync(String nextLink) {
+    private Observable<Page<UsageInner>> listNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -41,18 +41,18 @@ class UsagesImpl extends WrapperImpl<UsagesInner> implements Usages {
         .flatMap(new Func1<Page<UsageInner>, Observable<Page<UsageInner>>>() {
             @Override
             public Observable<Page<UsageInner>> call(Page<UsageInner> page) {
-                return Observable.just(page).concatWith(listByLocationNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<Usage> listByLocationAsync(final String location) {
+    public Observable<Usage> listAsync(final String location) {
         UsagesInner client = this.inner();
         return client.listAsync(location)
         .flatMap(new Func1<Page<UsageInner>, Observable<Page<UsageInner>>>() {
             @Override
             public Observable<Page<UsageInner>> call(Page<UsageInner> page) {
-                return listByLocationNextInnerPageAsync(page.nextPageLink());
+                return listNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<UsageInner>, Iterable<UsageInner>>() {

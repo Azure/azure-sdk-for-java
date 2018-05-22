@@ -41,7 +41,7 @@ class TransformationsImpl extends WrapperImpl<TransformationsInner> implements T
     }
 
     @Override
-    public Observable<Transformation> getByStreamingjobAsync(String resourceGroupName, String jobName, String transformationName) {
+    public Observable<Transformation> getAsync(String resourceGroupName, String jobName, String transformationName) {
         TransformationsInner client = this.inner();
         return client.getAsync(resourceGroupName, jobName, transformationName)
         .map(new Func1<TransformationInner, Transformation>() {

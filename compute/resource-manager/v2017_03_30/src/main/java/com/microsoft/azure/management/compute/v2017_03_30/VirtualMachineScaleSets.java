@@ -18,31 +18,12 @@ import com.microsoft.azure.arm.collection.SupportsListing;
 import java.util.List;
 import com.microsoft.azure.management.compute.v2017_03_30.implementation.VirtualMachineScaleSetsInner;
 import com.microsoft.azure.arm.model.HasInner;
+import com.microsoft.azure.management.compute.v2017_03_30.VirtualMachineScaleSetSku;
 
 /**
  * Type representing VirtualMachineScaleSets.
  */
 public interface VirtualMachineScaleSets extends SupportsCreating<VirtualMachineScaleSet.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<VirtualMachineScaleSet>, SupportsListingByResourceGroup<VirtualMachineScaleSet>, SupportsListing<VirtualMachineScaleSet>, HasInner<VirtualMachineScaleSetsInner> {
-
-    /**
-     * @return Entry point to manage VirtualMachineScaleSet Skus.
-     */
-    VirtualMachineScaleSetSkus skus();
-
-    /**
-     * @return Entry point to manage VirtualMachineScaleSet Extension.
-     */
-    VirtualMachineScaleSetExtensions extensions();
-
-    /**
-     * @return Entry point to manage VirtualMachineScaleSet RollingUpgrade.
-     */
-    RollingUpgrades rollingUpgrades();
-
-    /**
-     * @return Entry point to manage VirtualMachineScaleSet Virtualmachine.
-     */
-    Virtualmachines virtualmachines();
     /**
      * Deallocates specific virtual machines in a VM scale set. Shuts down the virtual machines and releases the compute resources. You are not billed for the compute resources that this virtual machine scale set deallocates.
      *
@@ -134,5 +115,15 @@ public interface VirtualMachineScaleSets extends SupportsCreating<VirtualMachine
      * @return the observable for the request
      */
     Observable<OperationStatusResponse> reimageAllAsync(String resourceGroupName, String vmScaleSetName);
+
+    /**
+     * Gets a list of SKUs available for your VM scale set, including the minimum and maximum VM instances allowed for each SKU.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param vmScaleSetName The name of the VM scale set.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<VirtualMachineScaleSetSku> listSkusAsync(final String resourceGroupName, final String vmScaleSetName);
 
 }

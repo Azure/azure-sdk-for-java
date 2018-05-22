@@ -18,31 +18,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Certificates.
  */
 public interface Certificates extends SupportsCreating<CertificateDescription.DefinitionStages.Blank>, HasInner<CertificatesInner> {
-
-    /**
-     * Get the certificate.
-     * Returns the certificate.
-    *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param certificateName The name of the certificate
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<CertificateDescription> getByIotHubAsync(String resourceGroupName, String resourceName, String certificateName);
-
-    /**
-     * Delete an X509 certificate.
-     * Deletes an existing X509 certificate or does nothing if it does not exist.
-     *
-     * @param resourceGroupName The name of the resource group that contains the IoT hub.
-     * @param resourceName The name of the IoT hub.
-     * @param certificateName The name of the certificate
-     * @param ifMatch ETag of the Certificate.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteByIotHubAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch);
     /**
      * Get the certificate list.
      * Returns the list of certificates.
@@ -79,5 +54,30 @@ public interface Certificates extends SupportsCreating<CertificateDescription.De
      * @return the observable for the request
      */
     Observable<CertificateDescription> verifyAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch);
+
+    /**
+     * Get the certificate.
+     * Returns the certificate.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param certificateName The name of the certificate
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<CertificateDescription> getAsync(String resourceGroupName, String resourceName, String certificateName);
+
+    /**
+     * Delete an X509 certificate.
+     * Deletes an existing X509 certificate or does nothing if it does not exist.
+     *
+     * @param resourceGroupName The name of the resource group that contains the IoT hub.
+     * @param resourceName The name of the IoT hub.
+     * @param certificateName The name of the certificate
+     * @param ifMatch ETag of the Certificate.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String resourceName, String certificateName, String ifMatch);
 
 }

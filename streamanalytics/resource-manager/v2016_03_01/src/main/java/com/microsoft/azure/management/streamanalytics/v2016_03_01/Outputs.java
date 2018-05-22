@@ -18,38 +18,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Outputs.
  */
 public interface Outputs extends SupportsCreating<Output.DefinitionStages.Blank>, HasInner<OutputsInner> {
-
-    /**
-     * Lists all of the outputs under the specified streaming job.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param jobName The name of the streaming job.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Output> listByStreamingjobAsync(final String resourceGroupName, final String jobName);
-
-    /**
-     * Gets details about the specified output.
-    *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param jobName The name of the streaming job.
-     * @param outputName The name of the output.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Output> getByStreamingjobAsync(String resourceGroupName, String jobName, String outputName);
-
-    /**
-     * Deletes an output from the streaming job.
-     *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param jobName The name of the streaming job.
-     * @param outputName The name of the output.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteByStreamingjobAsync(String resourceGroupName, String jobName, String outputName);
     /**
      * Tests whether an output’s datasource is reachable and usable by the Azure Stream Analytics service.
      *
@@ -60,5 +28,37 @@ public interface Outputs extends SupportsCreating<Output.DefinitionStages.Blank>
      * @return the observable for the request
      */
     Observable<ResourceTestStatus> testAsync(String resourceGroupName, String jobName, String outputName);
+
+    /**
+     * Gets details about the specified output.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param jobName The name of the streaming job.
+     * @param outputName The name of the output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Output> getAsync(String resourceGroupName, String jobName, String outputName);
+
+    /**
+     * Lists all of the outputs under the specified streaming job.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param jobName The name of the streaming job.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<Output> listByStreamingJobAsync(final String resourceGroupName, final String jobName);
+
+    /**
+     * Deletes an output from the streaming job.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param jobName The name of the streaming job.
+     * @param outputName The name of the output.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String jobName, String outputName);
 
 }

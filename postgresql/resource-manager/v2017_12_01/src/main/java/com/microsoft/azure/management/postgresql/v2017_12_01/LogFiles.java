@@ -16,7 +16,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing LogFiles.
  */
 public interface LogFiles extends HasInner<LogFilesInner> {
-
     /**
      * List all the log files in a given server.
      *
@@ -26,4 +25,5 @@ public interface LogFiles extends HasInner<LogFilesInner> {
      * @return the observable for the request
      */
     Observable<LogFile> listByServerAsync(String resourceGroupName, String serverName);
+
 }

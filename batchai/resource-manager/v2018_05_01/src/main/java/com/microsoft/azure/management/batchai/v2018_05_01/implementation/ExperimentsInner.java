@@ -23,7 +23,6 @@ import com.microsoft.rest.Validator;
 import java.io.IOException;
 import java.util.List;
 import okhttp3.ResponseBody;
-import retrofit2.http.Body;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
 import retrofit2.http.Headers;
@@ -68,11 +67,11 @@ public class ExperimentsInner {
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batchai.v2018_05_01.Experiments create" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces/{workspaceName}/experiments/{experimentName}")
-        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("experimentName") String experimentName, @Path("subscriptionId") String subscriptionId, @Body Object parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> create(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("experimentName") String experimentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batchai.v2018_05_01.Experiments beginCreate" })
         @PUT("subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces/{workspaceName}/experiments/{experimentName}")
-        Observable<Response<ResponseBody>> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("experimentName") String experimentName, @Path("subscriptionId") String subscriptionId, @Body Object parameters, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
+        Observable<Response<ResponseBody>> beginCreate(@Path("resourceGroupName") String resourceGroupName, @Path("workspaceName") String workspaceName, @Path("experimentName") String experimentName, @Path("subscriptionId") String subscriptionId, @Query("api-version") String apiVersion, @Header("accept-language") String acceptLanguage, @Header("User-Agent") String userAgent);
 
         @Headers({ "Content-Type: application/json; charset=utf-8", "x-ms-logging-context: com.microsoft.azure.management.batchai.v2018_05_01.Experiments delete" })
         @HTTP(path = "subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.BatchAI/workspaces/{workspaceName}/experiments/{experimentName}", method = "DELETE", hasBody = true)
@@ -349,14 +348,13 @@ public class ExperimentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
      * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param parameters The parameters to provide for the experiment creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExperimentInner object if successful.
      */
-    public ExperimentInner create(String resourceGroupName, String workspaceName, String experimentName, Object parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName, parameters).toBlocking().last().body();
+    public ExperimentInner create(String resourceGroupName, String workspaceName, String experimentName) {
+        return createWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName).toBlocking().last().body();
     }
 
     /**
@@ -365,13 +363,12 @@ public class ExperimentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
      * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param parameters The parameters to provide for the experiment creation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ExperimentInner> createAsync(String resourceGroupName, String workspaceName, String experimentName, Object parameters, final ServiceCallback<ExperimentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName, parameters), serviceCallback);
+    public ServiceFuture<ExperimentInner> createAsync(String resourceGroupName, String workspaceName, String experimentName, final ServiceCallback<ExperimentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(createWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName), serviceCallback);
     }
 
     /**
@@ -380,12 +377,11 @@ public class ExperimentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
      * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param parameters The parameters to provide for the experiment creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ExperimentInner> createAsync(String resourceGroupName, String workspaceName, String experimentName, Object parameters) {
-        return createWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName, parameters).map(new Func1<ServiceResponse<ExperimentInner>, ExperimentInner>() {
+    public Observable<ExperimentInner> createAsync(String resourceGroupName, String workspaceName, String experimentName) {
+        return createWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName).map(new Func1<ServiceResponse<ExperimentInner>, ExperimentInner>() {
             @Override
             public ExperimentInner call(ServiceResponse<ExperimentInner> response) {
                 return response.body();
@@ -399,11 +395,10 @@ public class ExperimentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
      * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param parameters The parameters to provide for the experiment creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    public Observable<ServiceResponse<ExperimentInner>> createWithServiceResponseAsync(String resourceGroupName, String workspaceName, String experimentName, Object parameters) {
+    public Observable<ServiceResponse<ExperimentInner>> createWithServiceResponseAsync(String resourceGroupName, String workspaceName, String experimentName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -416,13 +411,10 @@ public class ExperimentsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        Observable<Response<ResponseBody>> observable = service.create(resourceGroupName, workspaceName, experimentName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        Observable<Response<ResponseBody>> observable = service.create(resourceGroupName, workspaceName, experimentName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ExperimentInner>() { }.getType());
     }
 
@@ -432,14 +424,13 @@ public class ExperimentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
      * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param parameters The parameters to provide for the experiment creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @throws CloudException thrown if the request is rejected by server
      * @throws RuntimeException all other wrapped checked exceptions if the request fails to be sent
      * @return the ExperimentInner object if successful.
      */
-    public ExperimentInner beginCreate(String resourceGroupName, String workspaceName, String experimentName, Object parameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName, parameters).toBlocking().single().body();
+    public ExperimentInner beginCreate(String resourceGroupName, String workspaceName, String experimentName) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName).toBlocking().single().body();
     }
 
     /**
@@ -448,13 +439,12 @@ public class ExperimentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
      * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param parameters The parameters to provide for the experiment creation.
      * @param serviceCallback the async ServiceCallback to handle successful and failed responses.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the {@link ServiceFuture} object
      */
-    public ServiceFuture<ExperimentInner> beginCreateAsync(String resourceGroupName, String workspaceName, String experimentName, Object parameters, final ServiceCallback<ExperimentInner> serviceCallback) {
-        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName, parameters), serviceCallback);
+    public ServiceFuture<ExperimentInner> beginCreateAsync(String resourceGroupName, String workspaceName, String experimentName, final ServiceCallback<ExperimentInner> serviceCallback) {
+        return ServiceFuture.fromResponse(beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName), serviceCallback);
     }
 
     /**
@@ -463,12 +453,11 @@ public class ExperimentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
      * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param parameters The parameters to provide for the experiment creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExperimentInner object
      */
-    public Observable<ExperimentInner> beginCreateAsync(String resourceGroupName, String workspaceName, String experimentName, Object parameters) {
-        return beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName, parameters).map(new Func1<ServiceResponse<ExperimentInner>, ExperimentInner>() {
+    public Observable<ExperimentInner> beginCreateAsync(String resourceGroupName, String workspaceName, String experimentName) {
+        return beginCreateWithServiceResponseAsync(resourceGroupName, workspaceName, experimentName).map(new Func1<ServiceResponse<ExperimentInner>, ExperimentInner>() {
             @Override
             public ExperimentInner call(ServiceResponse<ExperimentInner> response) {
                 return response.body();
@@ -482,11 +471,10 @@ public class ExperimentsInner {
      * @param resourceGroupName Name of the resource group to which the resource belongs.
      * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
      * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param parameters The parameters to provide for the experiment creation.
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable to the ExperimentInner object
      */
-    public Observable<ServiceResponse<ExperimentInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String workspaceName, String experimentName, Object parameters) {
+    public Observable<ServiceResponse<ExperimentInner>> beginCreateWithServiceResponseAsync(String resourceGroupName, String workspaceName, String experimentName) {
         if (resourceGroupName == null) {
             throw new IllegalArgumentException("Parameter resourceGroupName is required and cannot be null.");
         }
@@ -499,13 +487,10 @@ public class ExperimentsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (parameters == null) {
-            throw new IllegalArgumentException("Parameter parameters is required and cannot be null.");
-        }
         if (this.client.apiVersion() == null) {
             throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
         }
-        return service.beginCreate(resourceGroupName, workspaceName, experimentName, this.client.subscriptionId(), parameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        return service.beginCreate(resourceGroupName, workspaceName, experimentName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExperimentInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExperimentInner>> call(Response<ResponseBody> response) {

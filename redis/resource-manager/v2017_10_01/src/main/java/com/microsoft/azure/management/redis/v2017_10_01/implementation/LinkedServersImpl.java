@@ -31,14 +31,18 @@ class LinkedServersImpl extends WrapperImpl<LinkedServersInner> implements Linke
 
     @Override
     public RedisLinkedServerWithPropertiesImpl define(String name) {
-        return new RedisLinkedServerWithPropertiesImpl(name, this.manager());
+        return wrapModel(name);
     }
 
     private RedisLinkedServerWithPropertiesImpl wrapModel(RedisLinkedServerWithPropertiesInner inner) {
         return  new RedisLinkedServerWithPropertiesImpl(inner, manager());
     }
 
-    private Observable<Page<RedisLinkedServerWithPropertiesInner>> listByRedisNextInnerPageAsync(String nextLink) {
+    private RedisLinkedServerWithPropertiesImpl wrapModel(String name) {
+        return new RedisLinkedServerWithPropertiesImpl(name, this.manager());
+    }
+
+    private Observable<Page<RedisLinkedServerWithPropertiesInner>> listNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -47,18 +51,18 @@ class LinkedServersImpl extends WrapperImpl<LinkedServersInner> implements Linke
         .flatMap(new Func1<Page<RedisLinkedServerWithPropertiesInner>, Observable<Page<RedisLinkedServerWithPropertiesInner>>>() {
             @Override
             public Observable<Page<RedisLinkedServerWithPropertiesInner>> call(Page<RedisLinkedServerWithPropertiesInner> page) {
-                return Observable.just(page).concatWith(listByRedisNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<RedisLinkedServerWithProperties> listByRedisAsync(final String resourceGroupName, final String name) {
+    public Observable<RedisLinkedServerWithProperties> listAsync(final String resourceGroupName, final String name) {
         LinkedServersInner client = this.inner();
         return client.listAsync(resourceGroupName, name)
         .flatMap(new Func1<Page<RedisLinkedServerWithPropertiesInner>, Observable<Page<RedisLinkedServerWithPropertiesInner>>>() {
             @Override
             public Observable<Page<RedisLinkedServerWithPropertiesInner>> call(Page<RedisLinkedServerWithPropertiesInner> page) {
-                return listByRedisNextInnerPageAsync(page.nextPageLink());
+                return listNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<RedisLinkedServerWithPropertiesInner>, Iterable<RedisLinkedServerWithPropertiesInner>>() {
@@ -76,7 +80,7 @@ class LinkedServersImpl extends WrapperImpl<LinkedServersInner> implements Linke
     }
 
     @Override
-    public Observable<RedisLinkedServerWithProperties> getByRedisAsync(String resourceGroupName, String name, String linkedServerName) {
+    public Observable<RedisLinkedServerWithProperties> getAsync(String resourceGroupName, String name, String linkedServerName) {
         LinkedServersInner client = this.inner();
         return client.getAsync(resourceGroupName, name, linkedServerName)
         .map(new Func1<RedisLinkedServerWithPropertiesInner, RedisLinkedServerWithProperties>() {
@@ -88,7 +92,7 @@ class LinkedServersImpl extends WrapperImpl<LinkedServersInner> implements Linke
     }
 
     @Override
-    public Completable deleteByRedisAsync(String resourceGroupName, String name, String linkedServerName) {
+    public Completable deleteAsync(String resourceGroupName, String name, String linkedServerName) {
         LinkedServersInner client = this.inner();
         return client.deleteAsync(resourceGroupName, name, linkedServerName).toCompletable();
     }

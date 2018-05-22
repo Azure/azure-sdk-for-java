@@ -18,6 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing FirewallRules.
  */
 public interface FirewallRules extends SupportsCreating<FirewallRule.DefinitionStages.Blank>, HasInner<FirewallRulesInner> {
+    /**
+     * Gets information about a server firewall rule.
+     *
+     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
+     * @param serverName The name of the server.
+     * @param firewallRuleName The name of the server firewall rule.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<FirewallRule> getAsync(String resourceGroupName, String serverName, String firewallRuleName);
 
     /**
      * List all the firewall rules in a given server.
@@ -30,17 +40,6 @@ public interface FirewallRules extends SupportsCreating<FirewallRule.DefinitionS
     Observable<FirewallRule> listByServerAsync(String resourceGroupName, String serverName);
 
     /**
-     * Gets information about a server firewall rule.
-    *
-     * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
-     * @param serverName The name of the server.
-     * @param firewallRuleName The name of the server firewall rule.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<FirewallRule> getByServerAsync(String resourceGroupName, String serverName, String firewallRuleName);
-
-    /**
      * Deletes a server firewall rule.
      *
      * @param resourceGroupName The name of the resource group that contains the resource. You can obtain this value from the Azure Resource Manager API or the portal.
@@ -49,5 +48,6 @@ public interface FirewallRules extends SupportsCreating<FirewallRule.DefinitionS
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByServerAsync(String resourceGroupName, String serverName, String firewallRuleName);
+    Completable deleteAsync(String resourceGroupName, String serverName, String firewallRuleName);
+
 }

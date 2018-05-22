@@ -8,25 +8,13 @@
 
 package com.microsoft.azure.management.iothub.v2018_04_01.implementation;
 
-import com.microsoft.azure.management.iothub.v2018_04_01.Name;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import com.microsoft.azure.ProxyResource;
 
 /**
  * User subscription quota response.
  */
-public class UserSubscriptionQuotaInner {
-    /**
-     * IotHub type id.
-     */
-    @JsonProperty(value = "id")
-    private String id;
-
-    /**
-     * Response type.
-     */
-    @JsonProperty(value = "type")
-    private String type;
-
+public class UserSubscriptionQuotaInner extends ProxyResource {
     /**
      * Unit of IotHub type.
      */
@@ -44,52 +32,6 @@ public class UserSubscriptionQuotaInner {
      */
     @JsonProperty(value = "limit")
     private Integer limit;
-
-    /**
-     * IotHub type.
-     */
-    @JsonProperty(value = "name")
-    private Name name;
-
-    /**
-     * Get the id value.
-     *
-     * @return the id value
-     */
-    public String id() {
-        return this.id;
-    }
-
-    /**
-     * Set the id value.
-     *
-     * @param id the id value to set
-     * @return the UserSubscriptionQuotaInner object itself.
-     */
-    public UserSubscriptionQuotaInner withId(String id) {
-        this.id = id;
-        return this;
-    }
-
-    /**
-     * Get the type value.
-     *
-     * @return the type value
-     */
-    public String type() {
-        return this.type;
-    }
-
-    /**
-     * Set the type value.
-     *
-     * @param type the type value to set
-     * @return the UserSubscriptionQuotaInner object itself.
-     */
-    public UserSubscriptionQuotaInner withType(String type) {
-        this.type = type;
-        return this;
-    }
 
     /**
      * Get the unit value.
@@ -148,26 +90,6 @@ public class UserSubscriptionQuotaInner {
      */
     public UserSubscriptionQuotaInner withLimit(Integer limit) {
         this.limit = limit;
-        return this;
-    }
-
-    /**
-     * Get the name value.
-     *
-     * @return the name value
-     */
-    public Name name() {
-        return this.name;
-    }
-
-    /**
-     * Set the name value.
-     *
-     * @param name the name value to set
-     * @return the UserSubscriptionQuotaInner object itself.
-     */
-    public UserSubscriptionQuotaInner withName(Name name) {
-        this.name = name;
         return this;
     }
 

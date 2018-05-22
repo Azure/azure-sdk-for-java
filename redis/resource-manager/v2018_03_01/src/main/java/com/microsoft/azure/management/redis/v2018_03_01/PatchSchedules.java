@@ -18,6 +18,15 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing PatchSchedules.
  */
 public interface PatchSchedules extends SupportsCreating<RedisPatchSchedule.DefinitionStages.Blank>, HasInner<PatchSchedulesInner> {
+    /**
+     * Gets the patching schedule of a redis cache (requires Premium SKU).
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the redis cache.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<RedisPatchSchedule> getAsync(String resourceGroupName, String name);
 
     /**
      * Gets all patch schedules in the specified redis cache (there is only one).
@@ -27,17 +36,7 @@ public interface PatchSchedules extends SupportsCreating<RedisPatchSchedule.Defi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<RedisPatchSchedule> listByRedisAsync(final String resourceGroupName, final String cacheName);
-
-    /**
-     * Gets the patching schedule of a redis cache (requires Premium SKU).
-    *
-     * @param resourceGroupName The name of the resource group.
-     * @param name The name of the redis cache.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<RedisPatchSchedule> getByRedisAsync(String resourceGroupName, String name);
+    Observable<RedisPatchSchedule> listByRedisResourceAsync(final String resourceGroupName, final String cacheName);
 
     /**
      * Deletes the patching schedule of a redis cache (requires Premium SKU).
@@ -47,5 +46,6 @@ public interface PatchSchedules extends SupportsCreating<RedisPatchSchedule.Defi
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByRedisAsync(String resourceGroupName, String name);
+    Completable deleteAsync(String resourceGroupName, String name);
+
 }

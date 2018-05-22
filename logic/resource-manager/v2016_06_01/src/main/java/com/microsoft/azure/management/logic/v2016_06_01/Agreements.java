@@ -18,38 +18,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Agreements.
  */
 public interface Agreements extends SupportsCreating<IntegrationAccountAgreement.DefinitionStages.Blank>, HasInner<AgreementsInner> {
-
-    /**
-     * Gets a list of integration account agreements.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<IntegrationAccountAgreement> listByIntegrationAccountAsync(final String resourceGroupName, final String integrationAccountName);
-
-    /**
-     * Gets an integration account agreement.
-    *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param agreementName The integration account agreement name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<IntegrationAccountAgreement> getByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String agreementName);
-
-    /**
-     * Deletes an integration account agreement.
-     *
-     * @param resourceGroupName The resource group name.
-     * @param integrationAccountName The integration account name.
-     * @param agreementName The integration account agreement name.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Completable deleteByIntegrationAccountAsync(String resourceGroupName, String integrationAccountName, String agreementName);
     /**
      * Get the content callback url.
      *
@@ -61,5 +29,37 @@ public interface Agreements extends SupportsCreating<IntegrationAccountAgreement
      * @return the observable for the request
      */
     Observable<WorkflowTriggerCallbackUrl> listContentCallbackUrlAsync(String resourceGroupName, String integrationAccountName, String agreementName, GetCallbackUrlParameters listContentCallbackUrl);
+
+    /**
+     * Gets an integration account agreement.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param agreementName The integration account agreement name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationAccountAgreement> getAsync(String resourceGroupName, String integrationAccountName, String agreementName);
+
+    /**
+     * Gets a list of integration account agreements.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<IntegrationAccountAgreement> listByIntegrationAccountsAsync(final String resourceGroupName, final String integrationAccountName);
+
+    /**
+     * Deletes an integration account agreement.
+     *
+     * @param resourceGroupName The resource group name.
+     * @param integrationAccountName The integration account name.
+     * @param agreementName The integration account agreement name.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Completable deleteAsync(String resourceGroupName, String integrationAccountName, String agreementName);
 
 }

@@ -17,7 +17,6 @@ import java.util.Map;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowOutputParameter;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowRunTrigger;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowStatus;
-import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 
 class RunWorkflowWorkflowRunImpl extends IndexableRefreshableWrapperImpl<RunWorkflowWorkflowRun, WorkflowRunInner> implements RunWorkflowWorkflowRun {
     private final LogicManager manager;
@@ -119,7 +118,7 @@ class RunWorkflowWorkflowRunImpl extends IndexableRefreshableWrapperImpl<RunWork
     }
 
     @Override
-    public ResourceReference workflow() {
+    public ResourceReferenceInner workflow() {
         return this.inner().workflow();
     }
 

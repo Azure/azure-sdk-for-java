@@ -65,9 +65,4 @@ class UsagesImpl extends WrapperImpl<UsagesInner> implements Usages {
         });
     }
 
-    protected Observable<UsageInner> getInnerAsync(String resourceGroupName, String name) {
-        UsagesInner client = this.inner();
-        return null; // NOP Retrive by RG not supported
-    }
-
 }

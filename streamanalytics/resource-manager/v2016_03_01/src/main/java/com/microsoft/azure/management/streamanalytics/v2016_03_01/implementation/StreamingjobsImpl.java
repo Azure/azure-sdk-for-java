@@ -10,7 +10,7 @@
 package com.microsoft.azure.management.streamanalytics.v2016_03_01.implementation;
 
 import com.microsoft.azure.arm.resources.collection.implementation.GroupableResourcesCoreImpl;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.Streamingjobs;
+import com.microsoft.azure.management.streamanalytics.v2016_03_01.StreamingJobs;
 import com.microsoft.azure.management.streamanalytics.v2016_03_01.StreamingJob;
 import rx.Observable;
 import rx.Completable;
@@ -22,38 +22,10 @@ import com.microsoft.azure.arm.utils.RXMapper;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.Inputs;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.Outputs;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.Transformations;
-import com.microsoft.azure.management.streamanalytics.v2016_03_01.Functions;
 
-class StreamingjobsImpl extends GroupableResourcesCoreImpl<StreamingJob, StreamingJobImpl, StreamingJobInner, StreamingJobsInner, StreamAnalyticsManager>  implements Streamingjobs {
-    protected StreamingjobsImpl(StreamAnalyticsManager manager) {
+class StreamingJobsImpl extends GroupableResourcesCoreImpl<StreamingJob, StreamingJobImpl, StreamingJobInner, StreamingJobsInner, StreamAnalyticsManager>  implements StreamingJobs {
+    protected StreamingJobsImpl(StreamAnalyticsManager manager) {
         super(manager.inner().streamingJobs(), manager);
-    }
-
-    @Override
-    public Inputs inputs() {
-        Inputs accessor = this.manager().inputs();
-        return accessor;
-    }
-
-    @Override
-    public Outputs outputs() {
-        Outputs accessor = this.manager().outputs();
-        return accessor;
-    }
-
-    @Override
-    public Transformations transformations() {
-        Transformations accessor = this.manager().transformations();
-        return accessor;
-    }
-
-    @Override
-    public Functions functions() {
-        Functions accessor = this.manager().functions();
-        return accessor;
     }
 
     @Override

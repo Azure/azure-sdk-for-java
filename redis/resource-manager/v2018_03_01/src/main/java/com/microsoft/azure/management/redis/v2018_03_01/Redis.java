@@ -23,26 +23,6 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Redis.
  */
 public interface Redis extends SupportsCreating<RedisResource.DefinitionStages.Blank>, SupportsDeletingByResourceGroup, SupportsBatchDeletion, SupportsGettingByResourceGroup<RedisResource>, SupportsListingByResourceGroup<RedisResource>, SupportsListing<RedisResource>, HasInner<RedisInner> {
-
-    /**
-     * @return Entry point to manage Redis ListUpgradeNotification.
-     */
-    ListUpgradeNotifications listUpgradeNotifications();
-
-    /**
-     * @return Entry point to manage Redis FirewallRule.
-     */
-    FirewallRules firewallRules();
-
-    /**
-     * @return Entry point to manage Redis PatchSchedule.
-     */
-    PatchSchedules patchSchedules();
-
-    /**
-     * @return Entry point to manage Redis LinkedServer.
-     */
-    LinkedServers linkedServers();
     /**
      * Retrieve a Redis cache's access keys. This operation requires write permission to the cache resource.
      *
@@ -105,5 +85,16 @@ public interface Redis extends SupportsCreating<RedisResource.DefinitionStages.B
      * @return the observable for the request
      */
     Completable checkNameAvailabilityAsync(CheckNameAvailabilityParameters parameters);
+
+    /**
+     * Gets any upgrade notifications for a Redis cache.
+     *
+     * @param resourceGroupName The name of the resource group.
+     * @param name The name of the Redis cache.
+     * @param history how many minutes in past to look for upgrade notifications
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<NotificationListResponse> listUpgradeNotificationsAsync(String resourceGroupName, String name, double history);
 
 }

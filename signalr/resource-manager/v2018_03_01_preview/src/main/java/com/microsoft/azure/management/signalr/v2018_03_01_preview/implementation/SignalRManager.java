@@ -17,8 +17,7 @@ import com.microsoft.azure.arm.resources.AzureConfigurable;
 import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.signalr.v2018_03_01_preview.Operations;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.Locations;
-import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalR;
+import com.microsoft.azure.management.signalr.v2018_03_01_preview.SignalRs;
 import com.microsoft.azure.arm.resources.implementation.AzureConfigurableCoreImpl;
 import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 
@@ -27,8 +26,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
  */
 public final class SignalRManager extends ManagerCore<SignalRManager, SignalRManagementClientImpl> {
     private Operations operations;
-    private Locations locations;
-    private SignalR signalR;
+    private SignalRs signalRs;
     /**
     * Get a Configurable instance that can be used to create SignalRManager with optional configuration.
     *
@@ -87,23 +85,13 @@ public final class SignalRManager extends ManagerCore<SignalRManager, SignalRMan
     }
 
     /**
-     * @return Entry point to manage Locations.
+     * @return Entry point to manage SignalRs.
      */
-    public Locations locations() {
-        if (this.locations == null) {
-            this.locations = new LocationsImpl(this);
+    public SignalRs signalRs() {
+        if (this.signalRs == null) {
+            this.signalRs = new SignalRsImpl(this);
         }
-        return this.locations;
-    }
-
-    /**
-     * @return Entry point to manage SignalR.
-     */
-    public SignalR signalR() {
-        if (this.signalR == null) {
-            this.signalR = new SignalRImpl(this);
-        }
-        return this.signalR;
+        return this.signalRs;
     }
 
     /**

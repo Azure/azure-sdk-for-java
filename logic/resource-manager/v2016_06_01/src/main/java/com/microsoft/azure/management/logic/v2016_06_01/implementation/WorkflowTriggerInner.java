@@ -13,7 +13,6 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowState;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowStatus;
 import com.microsoft.azure.management.logic.v2016_06_01.WorkflowTriggerRecurrence;
-import com.microsoft.azure.management.logic.v2016_06_01.ResourceReference;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 import com.microsoft.azure.SubResource;
@@ -82,7 +81,7 @@ public class WorkflowTriggerInner extends SubResource {
      * Gets the reference to workflow.
      */
     @JsonProperty(value = "properties.workflow", access = JsonProperty.Access.WRITE_ONLY)
-    private ResourceReference workflow;
+    private ResourceReferenceInner workflow;
 
     /**
      * Gets the workflow trigger name.
@@ -173,7 +172,7 @@ public class WorkflowTriggerInner extends SubResource {
      *
      * @return the workflow value
      */
-    public ResourceReference workflow() {
+    public ResourceReferenceInner workflow() {
         return this.workflow;
     }
 

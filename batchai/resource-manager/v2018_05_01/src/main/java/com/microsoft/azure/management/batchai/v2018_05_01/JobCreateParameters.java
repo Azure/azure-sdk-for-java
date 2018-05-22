@@ -19,7 +19,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
 public class JobCreateParameters {
     /**
      * Scheduling priority associated with the job.
-     * Scheduling priority  associated with the job. Possible values include:
+     * Scheduling priority associated with the job. Possible values include:
      * 'low', 'normal', 'high'.
      */
     @JsonProperty(value = "properties.schedulingPriority")

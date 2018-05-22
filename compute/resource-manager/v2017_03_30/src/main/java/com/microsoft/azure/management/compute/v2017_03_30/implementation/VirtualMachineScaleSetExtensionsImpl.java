@@ -42,7 +42,7 @@ class VirtualMachineScaleSetExtensionsImpl extends WrapperImpl<VirtualMachineSca
         return new VirtualMachineScaleSetExtensionImpl(name, this.manager());
     }
 
-    private Observable<Page<VirtualMachineScaleSetExtensionInner>> listByVirtualMachineScaleSetNextInnerPageAsync(String nextLink) {
+    private Observable<Page<VirtualMachineScaleSetExtensionInner>> listNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
@@ -51,18 +51,18 @@ class VirtualMachineScaleSetExtensionsImpl extends WrapperImpl<VirtualMachineSca
         .flatMap(new Func1<Page<VirtualMachineScaleSetExtensionInner>, Observable<Page<VirtualMachineScaleSetExtensionInner>>>() {
             @Override
             public Observable<Page<VirtualMachineScaleSetExtensionInner>> call(Page<VirtualMachineScaleSetExtensionInner> page) {
-                return Observable.just(page).concatWith(listByVirtualMachineScaleSetNextInnerPageAsync(page.nextPageLink()));
+                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
             }
         });
     }
     @Override
-    public Observable<VirtualMachineScaleSetExtension> listByVirtualMachineScaleSetAsync(final String resourceGroupName, final String vmScaleSetName) {
+    public Observable<VirtualMachineScaleSetExtension> listAsync(final String resourceGroupName, final String vmScaleSetName) {
         VirtualMachineScaleSetExtensionsInner client = this.inner();
         return client.listAsync(resourceGroupName, vmScaleSetName)
         .flatMap(new Func1<Page<VirtualMachineScaleSetExtensionInner>, Observable<Page<VirtualMachineScaleSetExtensionInner>>>() {
             @Override
             public Observable<Page<VirtualMachineScaleSetExtensionInner>> call(Page<VirtualMachineScaleSetExtensionInner> page) {
-                return listByVirtualMachineScaleSetNextInnerPageAsync(page.nextPageLink());
+                return listNextInnerPageAsync(page.nextPageLink());
             }
         })
         .flatMapIterable(new Func1<Page<VirtualMachineScaleSetExtensionInner>, Iterable<VirtualMachineScaleSetExtensionInner>>() {
@@ -80,7 +80,7 @@ class VirtualMachineScaleSetExtensionsImpl extends WrapperImpl<VirtualMachineSca
     }
 
     @Override
-    public Observable<VirtualMachineScaleSetExtension> getByVirtualMachineScaleSetAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
+    public Observable<VirtualMachineScaleSetExtension> getAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         VirtualMachineScaleSetExtensionsInner client = this.inner();
         return client.getAsync(resourceGroupName, vmScaleSetName, vmssExtensionName)
         .map(new Func1<VirtualMachineScaleSetExtensionInner, VirtualMachineScaleSetExtension>() {
@@ -92,7 +92,7 @@ class VirtualMachineScaleSetExtensionsImpl extends WrapperImpl<VirtualMachineSca
     }
 
     @Override
-    public Completable deleteByVirtualMachineScaleSetAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
+    public Completable deleteAsync(String resourceGroupName, String vmScaleSetName, String vmssExtensionName) {
         VirtualMachineScaleSetExtensionsInner client = this.inner();
         return client.deleteAsync(resourceGroupName, vmScaleSetName, vmssExtensionName).toCompletable();
     }

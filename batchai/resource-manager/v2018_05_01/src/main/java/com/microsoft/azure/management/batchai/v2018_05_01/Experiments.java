@@ -18,11 +18,16 @@ import com.microsoft.azure.arm.model.HasInner;
  * Type representing Experiments.
  */
 public interface Experiments extends SupportsCreating<Experiment.DefinitionStages.Blank>, HasInner<ExperimentsInner> {
-
     /**
-     * @return Entry point to manage Experiment Job.
+     * Gets information about an Experiment.
+     *
+     * @param resourceGroupName Name of the resource group to which the resource belongs.
+     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
      */
-    Jobs jobs();
+    Observable<Experiment> getAsync(String resourceGroupName, String workspaceName, String experimentName);
 
     /**
      * Gets a list of Experiments within the specified Workspace.
@@ -35,17 +40,6 @@ public interface Experiments extends SupportsCreating<Experiment.DefinitionStage
     Observable<Experiment> listByWorkspaceAsync(final String resourceGroupName, final String workspaceName);
 
     /**
-     * Gets information about an Experiment.
-    *
-     * @param resourceGroupName Name of the resource group to which the resource belongs.
-     * @param workspaceName The name of the workspace. Workspace names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @param experimentName The name of the experiment. Experiment names can only contain a combination of alphanumeric characters along with dash (-) and underscore (_). The name must be from 1 through 64 characters long.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<Experiment> getByWorkspaceAsync(String resourceGroupName, String workspaceName, String experimentName);
-
-    /**
      * Deletes an Experiment.
      *
      * @param resourceGroupName Name of the resource group to which the resource belongs.
@@ -54,5 +48,6 @@ public interface Experiments extends SupportsCreating<Experiment.DefinitionStage
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Completable deleteByWorkspaceAsync(String resourceGroupName, String workspaceName, String experimentName);
+    Completable deleteAsync(String resourceGroupName, String workspaceName, String experimentName);
+
 }
