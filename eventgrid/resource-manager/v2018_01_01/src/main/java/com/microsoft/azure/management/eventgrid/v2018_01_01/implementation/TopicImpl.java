@@ -28,7 +28,7 @@ class TopicImpl extends GroupableResourceCoreImpl<Topic, TopicInner, TopicImpl, 
     @Override
     public Observable<Topic> updateResourceAsync() {
         TopicsInner client = this.manager().inner().topics();
-        return client.updateAsync(this.resourceGroupName(), this.name())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 

@@ -45,4 +45,17 @@ public interface Topics extends SupportsCreating<Topic.DefinitionStages.Blank>, 
      */
     Observable<TopicSharedAccessKeys> regenerateKeyAsync(String resourceGroupName, String topicName, String keyName);
 
+    /**
+     * List topic event types.
+     * List event types for a topic.
+     *
+     * @param resourceGroupName The name of the resource group within the user's subscription.
+     * @param providerNamespace Namespace of the provider of the topic
+     * @param resourceTypeName Name of the topic type
+     * @param resourceName Name of the topic
+     * @throws IllegalArgumentException thrown if parameters fail the validation
+     * @return the observable for the request
+     */
+    Observable<EventType> listEventTypesAsync(String resourceGroupName, String providerNamespace, String resourceTypeName, String resourceName);
+
 }

@@ -257,9 +257,4 @@ class EventSubscriptionsImpl extends WrapperImpl<EventSubscriptionsInner> implem
         });
     }
 
-    protected Observable<EventSubscriptionInner> getInnerAsync(String resourceGroupName, String name) {
-        EventSubscriptionsInner client = this.inner();
-        return null; // NOP Retrive by RG not supported
-    }
-
 }
