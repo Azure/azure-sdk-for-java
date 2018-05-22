@@ -34,7 +34,7 @@ class ExpressRouteCircuitImpl extends GroupableResourceCoreImpl<ExpressRouteCirc
     @Override
     public Observable<ExpressRouteCircuit> updateResourceAsync() {
         ExpressRouteCircuitsInner client = this.manager().inner().expressRouteCircuits();
-        return client.updateTagsAsync(this.resourceGroupName(), this.name())
+        return client.createOrUpdateAsync(this.resourceGroupName(), this.name(), this.inner())
             .map(innerToFluentMap(this));
     }
 

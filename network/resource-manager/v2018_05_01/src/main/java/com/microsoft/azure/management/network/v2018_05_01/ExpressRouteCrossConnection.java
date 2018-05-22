@@ -174,12 +174,72 @@ public interface ExpressRouteCrossConnection extends HasInner<ExpressRouteCrossC
     /**
      * The template for a ExpressRouteCrossConnection update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ExpressRouteCrossConnection>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<ExpressRouteCrossConnection>, Resource.UpdateWithTags<Update>, UpdateStages.WithBandwidthInMbps, UpdateStages.WithExpressRouteCircuit, UpdateStages.WithPeeringLocation, UpdateStages.WithPeerings, UpdateStages.WithServiceProviderNotes, UpdateStages.WithServiceProviderProvisioningState {
     }
 
     /**
      * Grouping of ExpressRouteCrossConnection update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the expressroutecrossconnection {0} allowing to specify BandwidthInMbps.
+         */
+        interface WithBandwidthInMbps {
+            /**
+             * Specifies bandwidthInMbps.
+             */
+            Update withBandwidthInMbps(Integer bandwidthInMbps);
+        }
+
+        /**
+         * The stage of the expressroutecrossconnection {0} allowing to specify ExpressRouteCircuit.
+         */
+        interface WithExpressRouteCircuit {
+            /**
+             * Specifies expressRouteCircuit.
+             */
+            Update withExpressRouteCircuit(ExpressRouteCircuitReference expressRouteCircuit);
+        }
+
+        /**
+         * The stage of the expressroutecrossconnection {0} allowing to specify PeeringLocation.
+         */
+        interface WithPeeringLocation {
+            /**
+             * Specifies peeringLocation.
+             */
+            Update withPeeringLocation(String peeringLocation);
+        }
+
+        /**
+         * The stage of the expressroutecrossconnection {0} allowing to specify Peerings.
+         */
+        interface WithPeerings {
+            /**
+             * Specifies peerings.
+             */
+            Update withPeerings(List<ExpressRouteCrossConnectionPeeringInner> peerings);
+        }
+
+        /**
+         * The stage of the expressroutecrossconnection {0} allowing to specify ServiceProviderNotes.
+         */
+        interface WithServiceProviderNotes {
+            /**
+             * Specifies serviceProviderNotes.
+             */
+            Update withServiceProviderNotes(String serviceProviderNotes);
+        }
+
+        /**
+         * The stage of the expressroutecrossconnection {0} allowing to specify ServiceProviderProvisioningState.
+         */
+        interface WithServiceProviderProvisioningState {
+            /**
+             * Specifies serviceProviderProvisioningState.
+             */
+            Update withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState);
+        }
+
     }
 }

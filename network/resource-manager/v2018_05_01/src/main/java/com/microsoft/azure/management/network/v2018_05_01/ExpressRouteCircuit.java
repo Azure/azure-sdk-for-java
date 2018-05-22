@@ -230,12 +230,122 @@ public interface ExpressRouteCircuit extends HasInner<ExpressRouteCircuitInner>,
     /**
      * The template for a ExpressRouteCircuit update operation, containing all the settings that can be modified.
      */
-    interface Update extends Appliable<ExpressRouteCircuit>, Resource.UpdateWithTags<Update> {
+    interface Update extends Appliable<ExpressRouteCircuit>, Resource.UpdateWithTags<Update>, UpdateStages.WithAllowClassicOperations, UpdateStages.WithAuthorizations, UpdateStages.WithCircuitProvisioningState, UpdateStages.WithGatewayManagerEtag, UpdateStages.WithPeerings, UpdateStages.WithProvisioningState, UpdateStages.WithServiceKey, UpdateStages.WithServiceProviderNotes, UpdateStages.WithServiceProviderProperties, UpdateStages.WithServiceProviderProvisioningState, UpdateStages.WithSku {
     }
 
     /**
      * Grouping of ExpressRouteCircuit update stages.
      */
     interface UpdateStages {
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify AllowClassicOperations.
+         */
+        interface WithAllowClassicOperations {
+            /**
+             * Specifies allowClassicOperations.
+             */
+            Update withAllowClassicOperations(Boolean allowClassicOperations);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify Authorizations.
+         */
+        interface WithAuthorizations {
+            /**
+             * Specifies authorizations.
+             */
+            Update withAuthorizations(List<ExpressRouteCircuitAuthorizationInner> authorizations);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify CircuitProvisioningState.
+         */
+        interface WithCircuitProvisioningState {
+            /**
+             * Specifies circuitProvisioningState.
+             */
+            Update withCircuitProvisioningState(String circuitProvisioningState);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify GatewayManagerEtag.
+         */
+        interface WithGatewayManagerEtag {
+            /**
+             * Specifies gatewayManagerEtag.
+             */
+            Update withGatewayManagerEtag(String gatewayManagerEtag);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify Peerings.
+         */
+        interface WithPeerings {
+            /**
+             * Specifies peerings.
+             */
+            Update withPeerings(List<ExpressRouteCircuitPeeringInner> peerings);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             */
+            Update withProvisioningState(String provisioningState);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify ServiceKey.
+         */
+        interface WithServiceKey {
+            /**
+             * Specifies serviceKey.
+             */
+            Update withServiceKey(String serviceKey);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify ServiceProviderNotes.
+         */
+        interface WithServiceProviderNotes {
+            /**
+             * Specifies serviceProviderNotes.
+             */
+            Update withServiceProviderNotes(String serviceProviderNotes);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify ServiceProviderProperties.
+         */
+        interface WithServiceProviderProperties {
+            /**
+             * Specifies serviceProviderProperties.
+             */
+            Update withServiceProviderProperties(ExpressRouteCircuitServiceProviderProperties serviceProviderProperties);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify ServiceProviderProvisioningState.
+         */
+        interface WithServiceProviderProvisioningState {
+            /**
+             * Specifies serviceProviderProvisioningState.
+             */
+            Update withServiceProviderProvisioningState(ServiceProviderProvisioningState serviceProviderProvisioningState);
+        }
+
+        /**
+         * The stage of the expressroutecircuit {0} allowing to specify Sku.
+         */
+        interface WithSku {
+            /**
+             * Specifies sku.
+             */
+            Update withSku(ExpressRouteCircuitSku sku);
+        }
+
     }
 }

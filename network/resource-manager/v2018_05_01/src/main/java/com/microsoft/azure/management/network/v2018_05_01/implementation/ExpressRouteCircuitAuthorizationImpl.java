@@ -13,7 +13,7 @@ import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
 import com.microsoft.azure.management.network.v2018_05_01.AuthorizationUseStatus;
 
-class ExpressRouteCircuitAuthorizationImpl extends CreatableUpdatableImpl<ExpressRouteCircuitAuthorization, ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorizationImpl> implements ExpressRouteCircuitAuthorization, ExpressRouteCircuitAuthorization.Definition, ExpressRouteCircuitAuthorization.Update {
+class ExpressRouteCircuitAuthorizationImpl extends CreatableUpdatableImpl<ExpressRouteCircuitAuthorization, ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorizationImpl> implements ExpressRouteCircuitAuthorization, ExpressRouteCircuitAuthorization.Definition {
     private final NetworkManager manager;
     private String resourceGroupName;
     private String circuitName;
@@ -54,8 +54,7 @@ class ExpressRouteCircuitAuthorizationImpl extends CreatableUpdatableImpl<Expres
     @Override
     public Observable<ExpressRouteCircuitAuthorization> updateResourceAsync() {
         ExpressRouteCircuitAuthorizationsInner client = this.manager().inner().expressRouteCircuitAuthorizations();
-        return client.createOrUpdateAsync(this.resourceGroupName, this.circuitName, this.authorizationName, this.inner())
-            .map(innerToFluentMap(this));
+        return null; // NOP updateResourceAsync implementation as update is not supported
     }
 
     @Override
