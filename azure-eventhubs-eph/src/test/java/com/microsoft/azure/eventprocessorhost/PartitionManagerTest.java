@@ -100,7 +100,7 @@ public class PartitionManagerTest {
     }
 
 
-    @Test
+    //@Test
     public void partitionBalancingHugeTest() throws Exception {
         TestUtilities.log("partitionBalancingHugeTest");
 
@@ -133,7 +133,7 @@ public class PartitionManagerTest {
         TestUtilities.log("DONE");
     }
     
-    @Test
+    //@Test
     public void partitionRebalancingTest() throws Exception {
         TestUtilities.log("partitionRebalancingTest");
 
@@ -441,7 +441,7 @@ public class PartitionManagerTest {
 
         @Override
         Pump createPumpTestHook() {
-            return new DummyPump(this.hostContext);
+            return new DummyPump(this.hostContext, this);
         }
 
         @Override

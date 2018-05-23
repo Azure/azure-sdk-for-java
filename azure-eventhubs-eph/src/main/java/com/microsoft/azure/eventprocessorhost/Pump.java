@@ -12,18 +12,25 @@ import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 
 
-class Pump {
+class Pump extends Closable {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(Pump.class);
     protected final HostContext hostContext;
     protected ConcurrentHashMap<String, PartitionPump> pumpStates; // protected for testability
 
-    public Pump(HostContext hostContext) {
+    public Pump(HostContext hostContext, Closable parent) {
+    	super(parent);
+    	
         this.hostContext = hostContext;
 
         this.pumpStates = new ConcurrentHashMap<String, PartitionPump>();
     }
 
     public void addPump(Lease lease) {
+    	if (getIsClosingOrClosed()) {
+    		TRACE_LOGGER.info(this.hostContext.withHostAndPartition(lease, "Shutting down, not creating new pump"));
+    		return;
+    	}
+    	
         PartitionPump capturedPump = this.pumpStates.get(lease.getPartitionId()); // CONCURRENTHASHTABLE
         if (capturedPump == null) {
             // No existing pump, create a new one.
@@ -45,7 +52,7 @@ class Pump {
 
     // Separated out so that tests can override and substitute their own pump class.
     protected PartitionPump createNewPump(Lease lease) {
-        return new PartitionPump(this.hostContext, lease);
+        return new PartitionPump(this.hostContext, lease, this);
     }
 
     public CompletableFuture<Void> removePump(String partitionId, final CloseReason reason) {
@@ -63,13 +70,16 @@ class Pump {
         return retval;
     }
 
-    public CompletableFuture<?>[] removeAllPumps(CloseReason reason) {
+    public CompletableFuture<Void> removeAllPumps(CloseReason reason) {
+    	setClosing();
+    	
         CompletableFuture<?>[] futures = new CompletableFuture<?>[this.pumpStates.size()];
         int i = 0;
         for (String partitionId : this.pumpStates.keySet()) {
             futures[i++] = removePump(partitionId, reason);
         }
-        return futures;
+        
+        return CompletableFuture.allOf(futures).whenCompleteAsync((empty, e) -> { setClosed(); }, this.hostContext.getExecutor());
     }
 
     protected void removingPumpTestHook(String partitionId, Throwable e) {

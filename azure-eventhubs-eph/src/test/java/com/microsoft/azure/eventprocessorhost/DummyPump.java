@@ -12,8 +12,8 @@ import java.util.concurrent.CompletableFuture;
 
 
 class DummyPump extends Pump {
-    public DummyPump(HostContext hostContext) {
-        super(hostContext);
+    public DummyPump(HostContext hostContext, Closable parent) {
+        super(hostContext, parent);
     }
 
     Iterable<String> getPumpsList() {
@@ -22,20 +22,20 @@ class DummyPump extends Pump {
 
     @Override
     protected PartitionPump createNewPump(Lease lease) {
-        return new DummyPartitionPump(this.hostContext, lease);
+        return new DummyPartitionPump(this.hostContext, lease, this);
     }
 
     @Override
     protected void removingPumpTestHook(String partitionId, Throwable e) {
-        TestUtilities.log("Steal detected, host " + this.hostContext.getHostName() + " removing " + partitionId);
+    	TestUtilities.log("Steal detected, host " + this.hostContext.getHostName() + " removing " + partitionId);
     }
 
 
     private class DummyPartitionPump extends PartitionPump implements Callable<Void> {
         CompletableFuture<Void> blah = null;
 
-        DummyPartitionPump(HostContext hostContext, Lease lease) {
-            super(hostContext, lease);
+        DummyPartitionPump(HostContext hostContext, Lease lease, Closable parent) {
+            super(hostContext, lease, parent);
         }
 
         @Override

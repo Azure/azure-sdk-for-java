@@ -17,7 +17,7 @@ import java.util.concurrent.CompletionException;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.TimeUnit;
 
-class PartitionPump implements PartitionReceiveHandler {
+class PartitionPump extends Closable implements PartitionReceiveHandler {
     private static final Logger TRACE_LOGGER = LoggerFactory.getLogger(PartitionPump.class);
     protected final HostContext hostContext;
     final private CompletableFuture<Void> shutdownTriggerFuture;
@@ -32,7 +32,9 @@ class PartitionPump implements PartitionReceiveHandler {
     private PartitionContext partitionContext = null;
     private ScheduledFuture<?> leaseRenewerFuture = null;
 
-    PartitionPump(HostContext hostContext, Lease lease) {
+    PartitionPump(HostContext hostContext, Lease lease, Closable parent) {
+    	super(parent);
+    	
         this.hostContext = hostContext;
         this.lease = lease;
         this.processingSynchronizer = new Object();
@@ -41,7 +43,8 @@ class PartitionPump implements PartitionReceiveHandler {
         this.shutdownTriggerFuture = new CompletableFuture<Void>();
         this.shutdownFinishedFuture = this.shutdownTriggerFuture.handleAsync((r, e) -> cancelPendingOperations(), this.hostContext.getExecutor())
                 .thenComposeAsync((empty) -> cleanUpAll(this.shutdownReason), this.hostContext.getExecutor())
-                .thenComposeAsync((empty) -> releaseLeaseOnShutdown(), this.hostContext.getExecutor());
+                .thenComposeAsync((empty) -> releaseLeaseOnShutdown(), this.hostContext.getExecutor())
+                .whenCompleteAsync((empty, e) -> { setClosed(); }, this.hostContext.getExecutor());
     }
 
     void setLease(Lease newLease) {
@@ -162,10 +165,11 @@ class PartitionPump implements PartitionReceiveHandler {
     }
 
     protected void scheduleLeaseRenewer() {
-        int seconds = this.hostContext.getPartitionManagerOptions().getLeaseRenewIntervalInSeconds();
-        this.leaseRenewerFuture = this.hostContext.getExecutor().schedule(() -> leaseRenewer(), seconds, TimeUnit.SECONDS);
-        TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(this.lease,
-                "scheduling leaseRenewer in " + seconds));
+    	if (!getIsClosingOrClosed()) {
+	        int seconds = this.hostContext.getPartitionManagerOptions().getLeaseRenewIntervalInSeconds();
+	        this.leaseRenewerFuture = this.hostContext.getExecutor().schedule(() -> leaseRenewer(), seconds, TimeUnit.SECONDS);
+	        TRACE_LOGGER.debug(this.hostContext.withHostAndPartition(this.lease, "scheduling leaseRenewer in " + seconds));
+    	}
     }
 
     private CompletableFuture<Boolean> openClients() {
@@ -386,6 +390,8 @@ class PartitionPump implements PartitionReceiveHandler {
     }
 
     protected void internalShutdown(CloseReason reason, Throwable e) {
+    	setClosing();
+    	
         this.shutdownReason = reason;
         if (e == null) {
             this.shutdownTriggerFuture.complete(null);
@@ -408,6 +414,9 @@ class PartitionPump implements PartitionReceiveHandler {
         // there's no harm in being sure.
         if (this.leaseRenewerFuture.isCancelled()) {
             return;
+        }
+        if (getIsClosingOrClosed()) {
+        	return;
         }
 
         // Stage 0: renew the lease
@@ -438,7 +447,7 @@ class PartitionPump implements PartitionReceiveHandler {
                                 this.lease.getPartitionId());
                     }
 
-                    if ((scheduleNext != null) && scheduleNext && !this.leaseRenewerFuture.isCancelled()) {
+                    if ((scheduleNext != null) && scheduleNext.booleanValue() && !this.leaseRenewerFuture.isCancelled() && !getIsClosingOrClosed()) {
                         scheduleLeaseRenewer();
                     }
                 }, this.hostContext.getExecutor());
