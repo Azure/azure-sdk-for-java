@@ -60,7 +60,7 @@ public class BlobStorageAPITests {
         PipelineOptions po = new PipelineOptions();
         HttpClientConfiguration configuration = new HttpClientConfiguration(
                 new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)));
-        po.client = HttpClient.createDefault(configuration);
+        po.client = HttpClient.createDefault();//configuration);
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po);
 
         // Create a reference to the service.
