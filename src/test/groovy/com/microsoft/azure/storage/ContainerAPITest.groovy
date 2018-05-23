@@ -40,6 +40,7 @@ import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.azure.storage.blob.models.LeaseStatusType
 import com.microsoft.azure.storage.blob.models.PublicAccessType
 import com.microsoft.azure.storage.blob.models.SignedIdentifier
+import com.microsoft.azure.storage.blob.models.StorageErrorCode
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpPipeline
 import io.reactivex.Flowable
@@ -115,10 +116,9 @@ class ContainerAPITest extends APISpec {
 
         then:
         def e = thrown(StorageException)
-        e.body().code() == "ContainerAlreadyExists"
         e.response().statusCode() == 409
-        e.errorCode() == "ContainerAlreadyExists"
-        e.body().message().contains("The specified container already exists.")
+        e.errorCode() == StorageErrorCode.CONTAINER_ALREADY_EXISTS
+        e.message().contains("The specified container already exists.")
     }
 
     def "Container get properties null"() {
