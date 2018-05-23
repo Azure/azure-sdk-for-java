@@ -4,12 +4,9 @@ import com.microsoft.azure.storage.blob.AppendBlobAccessConditions
 import com.microsoft.azure.storage.blob.AppendBlobURL
 import com.microsoft.azure.storage.blob.BlobAccessConditions
 import com.microsoft.azure.storage.blob.BlobHTTPHeaders
-import com.microsoft.azure.storage.blob.ETag
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.PageBlobURL
-import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.models.AppendBlobsAppendBlockHeaders
 import com.microsoft.azure.storage.blob.models.AppendBlobsCreateResponse
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
@@ -36,17 +33,6 @@ public class AppendBlobAPITest extends APISpec {
         validateBasicHeaders(createResponse.headers())
         createResponse.headers().contentMD5() == null
         createResponse.headers().isServerEncrypted()
-    }
-
-    def "Append blob create error"() {
-        when:
-        bu.create(null, null, new BlobAccessConditions(
-                new HTTPAccessConditions(null, null,
-                        new ETag("garbage"), null),
-                null, null, null)).blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 
     @Unroll
@@ -135,7 +121,6 @@ public class AppendBlobAPITest extends APISpec {
         headers.blobAppendOffset() != null
         headers.blobCommittedBlockCount() != null
     }
-
     /*
     TODO: Negative cases where data size does not equal the passed value for length
     defaultData | defaultData.remaining() + 1 | defaultData                                        || -1
@@ -173,16 +158,5 @@ public class AppendBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID | null       | null
         null     | null       | null         | null        | null            | 0          | null
         null     | null       | null         | null        | null            | null       | 100
-    }
-
-    def "Append blob append block error"() {
-        setup:
-        bu = cu.createAppendBlobURL(generateBlobName())
-
-        when:
-        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), null).blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 }

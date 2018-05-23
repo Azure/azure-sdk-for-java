@@ -24,7 +24,6 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import static com.microsoft.azure.storage.blob.Utility.safeURLEncode;
-import static com.microsoft.azure.storage.blob.Utility.addErrorWrappingToSingle;
 
 /**
  * Represents a URL to a container. It may be obtained by direct construction or via the create method on a
@@ -160,9 +159,8 @@ public final class ContainerURL extends StorageURL {
     public Single<ContainersCreateResponse> create(
             Metadata metadata, PublicAccessType accessType) {
         metadata = metadata == null ? Metadata.NONE : metadata;
-            return addErrorWrappingToSingle(this.storageClient.generatedContainers().createWithRestResponseAsync(
-                    null, metadata, accessType, null));
-
+        return this.storageClient.generatedContainers().createWithRestResponseAsync(
+                null, metadata, accessType, null);
     }
 
     /**
@@ -186,11 +184,11 @@ public final class ContainerURL extends StorageURL {
             throw new IllegalArgumentException("ETag access conditions are not supported for this API.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().deleteWithRestResponseAsync(null,
+        return this.storageClient.generatedContainers().deleteWithRestResponseAsync(null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(),
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                null));
+                null);
     }
 
     /**
@@ -206,8 +204,8 @@ public final class ContainerURL extends StorageURL {
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().getPropertiesWithRestResponseAsync(null,
-                leaseAccessConditions.getLeaseId(), null));
+        return this.storageClient.generatedContainers().getPropertiesWithRestResponseAsync(null,
+                leaseAccessConditions.getLeaseId(), null);
     }
 
     /**
@@ -234,9 +232,10 @@ public final class ContainerURL extends StorageURL {
                     "If-Modified-Since is the only HTTP access condition supported for this API");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().setMetadataWithRestResponseAsync(null,
+
+        return this.storageClient.generatedContainers().setMetadataWithRestResponseAsync(null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(), metadata,
-                accessConditions.getHttpAccessConditions().getIfModifiedSince(),null));
+                accessConditions.getHttpAccessConditions().getIfModifiedSince(),null);
     }
 
     /**
@@ -253,8 +252,8 @@ public final class ContainerURL extends StorageURL {
             LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().getAccessPolicyWithRestResponseAsync(
-                null, leaseAccessConditions.getLeaseId(), null));
+        return this.storageClient.generatedContainers().getAccessPolicyWithRestResponseAsync(
+                null, leaseAccessConditions.getLeaseId(), null);
     }
 
     /**
@@ -300,11 +299,11 @@ public final class ContainerURL extends StorageURL {
         }
 
         // TODO: validate that empty list clears permissions and null list does not change list. Document behavior.
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().setAccessPolicyWithRestResponseAsync(identifiers, null,
+        return this.storageClient.generatedContainers().setAccessPolicyWithRestResponseAsync(identifiers, null,
                 accessConditions.getLeaseAccessConditions().getLeaseId(), accessType,
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
-                null));
+                null);
     }
 
     private boolean validateLeaseOperationAccessConditions(HTTPAccessConditions httpAccessConditions) {
@@ -337,11 +336,11 @@ public final class ContainerURL extends StorageURL {
                     "ETag access conditions are not supported for this API.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().acquireLeaseWithRestResponseAsync(
+        return this.storageClient.generatedContainers().acquireLeaseWithRestResponseAsync(
                 null,  duration, proposedID,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                null);
     }
 
     /**
@@ -365,11 +364,11 @@ public final class ContainerURL extends StorageURL {
                     "ETag access conditions are not supported for this API.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().renewLeaseWithRestResponseAsync(
+        return this.storageClient.generatedContainers().renewLeaseWithRestResponseAsync(
                 leaseID, null,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                null);
     }
 
     /**
@@ -393,11 +392,11 @@ public final class ContainerURL extends StorageURL {
                     "ETag access conditions are not supported for this API.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().releaseLeaseWithRestResponseAsync(
+        return this.storageClient.generatedContainers().releaseLeaseWithRestResponseAsync(
                 leaseID, null,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                null);
     }
 
     /**
@@ -424,11 +423,11 @@ public final class ContainerURL extends StorageURL {
                     "ETag access conditions are not supported for this API.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().breakLeaseWithRestResponseAsync(
+        return this.storageClient.generatedContainers().breakLeaseWithRestResponseAsync(
                 null, breakPeriodInSeconds,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                null);
     }
 
     /**
@@ -454,11 +453,11 @@ public final class ContainerURL extends StorageURL {
                     "ETag access conditions are not supported for this API.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().changeLeaseWithRestResponseAsync(
+        return this.storageClient.generatedContainers().changeLeaseWithRestResponseAsync(
                 leaseID, proposedID, null,
                 httpAccessConditions.getIfModifiedSince(),
                 httpAccessConditions.getIfUnmodifiedSince(),
-                null));
+                null);
     }
 
     /**
@@ -481,9 +480,9 @@ public final class ContainerURL extends StorageURL {
             String marker, ListBlobsOptions options) {
         options = options == null ? ListBlobsOptions.DEFAULT : options;
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().listBlobFlatSegmentWithRestResponseAsync(
+        return this.storageClient.generatedContainers().listBlobFlatSegmentWithRestResponseAsync(
                 options.getPrefix(), marker, options.getMaxResults(),
-                options.getDetails().toList(), null, null));
+                options.getDetails().toList(), null, null);
     }
 
     /**
@@ -513,8 +512,8 @@ public final class ContainerURL extends StorageURL {
             throw new IllegalArgumentException("Including snapshots in a hierarchical listing is not supported.");
         }
 
-        return addErrorWrappingToSingle(this.storageClient.generatedContainers().listBlobHierarchySegmentWithRestResponseAsync(
+        return this.storageClient.generatedContainers().listBlobHierarchySegmentWithRestResponseAsync(
                 delimiter, options.getPrefix(), marker, options.getMaxResults(),
-                options.getDetails().toList(), null, null));
+                options.getDetails().toList(), null, null);
     }
 }

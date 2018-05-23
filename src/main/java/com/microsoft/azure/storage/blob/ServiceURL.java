@@ -21,8 +21,6 @@ import io.reactivex.Single;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import static com.microsoft.azure.storage.blob.Utility.*;
-
 /**
  * Represents a URL to a blob service. This class does not hold any state about a particular storage account but is
  * instead a convenient way of sending off appropriate requests to the resource on the service.
@@ -90,9 +88,8 @@ public final class ServiceURL extends StorageURL {
     public Single<ServiceListContainersSegmentResponse> listContainersSegment(
             String marker, ListContainersOptions options) {
         options = options == null ? ListContainersOptions.DEFAULT : options;
-        return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(options.getPrefix(),
-                marker, options.getMaxResults(), options.getDetails().toIncludeType(), null, null));
+        return this.storageClient.generatedServices().listContainersSegmentWithRestResponseAsync(options.getPrefix(),
+                marker, options.getMaxResults(), options.getDetails().toIncludeType(), null, null);
     }
 
     /**
@@ -103,8 +100,7 @@ public final class ServiceURL extends StorageURL {
      *      Emits the successful response.
      */
     public Single<ServiceGetPropertiesResponse> getProperties() {
-        return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().getPropertiesWithRestResponseAsync(null, null));
+        return this.storageClient.generatedServices().getPropertiesWithRestResponseAsync(null, null);
     }
 
     /**
@@ -119,9 +115,8 @@ public final class ServiceURL extends StorageURL {
      *      Emits the successful response.
      */
     public Single<ServiceSetPropertiesResponse> setProperties(StorageServiceProperties properties) {
-        return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(properties, null,
-                null));
+        return this.storageClient.generatedServices().setPropertiesWithRestResponseAsync(properties, null,
+                null);
     }
 
     /**
@@ -134,7 +129,6 @@ public final class ServiceURL extends StorageURL {
      *      Emits the successful response.
      */
     public Single<ServiceGetStatisticsResponse> getStatistics() {
-        return addErrorWrappingToSingle(
-                this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(null, null));
+        return this.storageClient.generatedServices().getStatisticsWithRestResponseAsync(null, null);
     }
 }

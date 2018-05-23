@@ -1,7 +1,6 @@
 package com.microsoft.azure.storage;
 
 import com.microsoft.azure.storage.blob.*;
-import com.microsoft.rest.v2.RestException;
 import com.microsoft.azure.storage.blob.models.*;
 import com.microsoft.rest.v2.http.*;
 import com.microsoft.rest.v2.util.FlowableUtil;
@@ -83,7 +82,6 @@ public class BlobStorageAPITests {
             // Errors are thrown as exceptions in the synchronous (blockingGet) case.
 
             // Create the container. NOTE: Metadata is not currently supported on any resource.
-
             cu.create(null, PublicAccessType.BLOB).blockingGet();
 
             // Create the blob with a single put. See below for the stageBlock(List) scenario.

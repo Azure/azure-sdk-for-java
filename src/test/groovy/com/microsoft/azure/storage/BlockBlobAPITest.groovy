@@ -6,7 +6,6 @@ import com.microsoft.azure.storage.blob.BlockBlobURL
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.models.BlobsGetPropertiesResponse
 import com.microsoft.azure.storage.blob.models.BlockBlobsCommitBlockListHeaders
 import com.microsoft.azure.storage.blob.models.BlockBlobsCommitBlockListResponse
@@ -56,18 +55,6 @@ class BlockBlobAPITest extends APISpec {
         BlockBlobsStageBlockResponse response = bu.stageBlock(new String(Base64.encoder.encode("0000".bytes)),
                 Flowable.just(defaultData), defaultData.remaining(),
                 new LeaseAccessConditions(leaseID)).blockingGet()
-    }
-
-    def "Block blob stage block error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.stageBlock("id", Flowable.just(defaultData), defaultData.remaining(), null)
-                .blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 
     def "Block blob commit block list"() {
@@ -178,19 +165,6 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "block blob commit block list error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.commitBlockList(new ArrayList<String>(), null, null, new BlobAccessConditions(
-                null, new LeaseAccessConditions("garbage"), null,
-                null)).blockingGet()
-
-        then:
-        thrown(StorageException)
-    }
-
     def "Block blob get block list"() {
         setup:
         String blockID = new String(Base64.encoder.encode("0000".bytes))
@@ -244,17 +218,6 @@ class BlockBlobAPITest extends APISpec {
 
         expect:
         bu.getBlockList(BlockListType.ALL, new LeaseAccessConditions(leaseID)).blockingGet().statusCode() == 200
-    }
-
-    def "Block blob get block list error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.getBlockList(BlockListType.ALL, null).blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 
     def "Block blob upload"() {
@@ -348,18 +311,5 @@ class BlockBlobAPITest extends APISpec {
         null     | null       | receivedEtag | null        | null
         null     | null       | null         | garbageEtag | null
         null     | null       | null         | null        | receivedLeaseID
-    }
-
-    def "Block blob upload error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.upload(Flowable.just(defaultData), defaultData.remaining(), null, null,
-                new BlobAccessConditions(null, new LeaseAccessConditions("id"),
-                        null, null)).blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 }
