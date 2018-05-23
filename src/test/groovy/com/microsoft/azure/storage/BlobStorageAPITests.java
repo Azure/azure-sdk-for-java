@@ -71,15 +71,7 @@ public class BlobStorageAPITests {
         // the container name to the ServiceURL. A ContainerURL may also be created by calling its
         // constructor with a full path to the container and a pipeline.
         String containerName = "javatestcontainer" + System.currentTimeMillis();
-        //ContainerURL cu = su.createContainerURL(containerName);
-
-        ContainerURL cu = su.createContainerURL("Badname");
-        try{
-            cu.create(null, null).blockingGet();
-        }
-        catch (RestException e) {
-            System.out.println(e);
-        }
+        ContainerURL cu = su.createContainerURL(containerName);
 
         // Create a reference to a blob. Same pattern as containers.
         BlockBlobURL bu = cu.createBlockBlobURL("javatestblob");
