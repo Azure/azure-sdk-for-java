@@ -14,13 +14,15 @@
  */
 package com.microsoft.azure.storage.blob;
 
+import com.microsoft.azure.storage.blob.models.StorageErrorException;
+import io.reactivex.Single;
+
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.time.LocalDateTime;
 import java.time.OffsetDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
@@ -248,4 +250,12 @@ final class Utility {
         }
     }
 
+    static <T> Single<T> addErrorWrappingToSingle(Single<T> s) {
+        return s.onErrorResumeNext(e -> {
+            if (e instanceof StorageErrorException) {
+                return Single.error(new StorageException((StorageErrorException) e));
+            }
+            return Single.error(e);
+        });
+    }
 }
