@@ -9,7 +9,6 @@ import com.microsoft.azure.storage.blob.ContainerURL
 import com.microsoft.azure.storage.blob.HTTPAccessConditions
 import com.microsoft.azure.storage.blob.LeaseAccessConditions
 import com.microsoft.azure.storage.blob.Metadata
-import com.microsoft.azure.storage.blob.StorageException
 import com.microsoft.azure.storage.blob.models.AccessTier
 import com.microsoft.azure.storage.blob.models.BlobType
 import com.microsoft.azure.storage.blob.models.BlobsAbortCopyFromURLHeaders
@@ -139,17 +138,6 @@ class BlobAPITest extends APISpec {
                 .headers().contentMD5() != null
     }
 
-    def "Blob download error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.download(null, null, false).blockingGet()
-
-        then:
-        thrown(StorageException)
-    }
-
     def "Blob get properties all null"() {
         when:
         BlobsGetPropertiesHeaders headers = bu.getProperties(null).blockingGet().headers()
@@ -206,17 +194,6 @@ class BlobAPITest extends APISpec {
         null     | null       | receivedEtag | null        | null
         null     | null       | null         | garbageEtag | null
         null     | null       | null         | null        | receivedLeaseID
-    }
-
-    def "Blob get properties error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.getProperties(null).blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 
     def "Blob set HTTP headers null"() {
@@ -276,17 +253,6 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Blob set Http headers error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.setHTTPHeaders(null, null).blockingGet()
-
-        then:
-        thrown(StorageException)
-    }
-
     def "Blob set metadata all null"() {
         setup:
         BlobsSetMetadataResponse response = bu.setMetadata(null, null).blockingGet()
@@ -342,17 +308,6 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Blob set metadata error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.setMetadata(null, null).blockingGet()
-
-        then:
-        thrown(StorageException)
-    }
-
     @Unroll
     def "Blob acquire lease"() {
         setup:
@@ -396,17 +351,6 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | garbageEtag
     }
 
-    def "Blob acquire lease error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.acquireLease(null, 20, null).blockingGet()
-
-        then:
-        thrown(StorageException)
-    }
-
     def "Blob renew lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -440,17 +384,6 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | garbageEtag
     }
 
-    def "Blob renew lease error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.renewLease("id", null).blockingGet()
-
-        then:
-        thrown(StorageException)
-    }
-
     def "Blob release lease"() {
         setup:
         String leaseID = setupBlobLeaseCondition(bu, receivedLeaseID)
@@ -479,17 +412,6 @@ class BlobAPITest extends APISpec {
         null     | newDate    | null         | null
         null     | null       | receivedEtag | null
         null     | null       | null         | garbageEtag
-    }
-
-    def "blob release lease error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.releaseLease("id", null).blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 
     @Unroll
@@ -532,17 +454,6 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | garbageEtag
     }
 
-    def "Blob break lease error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.breakLease(null, null).blockingGet()
-
-        then:
-        thrown(StorageException)
-    }
-
     def "Blob change lease"() {
         setup:
         String leaseID =
@@ -574,17 +485,6 @@ class BlobAPITest extends APISpec {
         null     | newDate    | null         | null
         null     | null       | receivedEtag | null
         null     | null       | null         | garbageEtag
-    }
-
-    def "Blob change lease error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.changeLease("id", "id", null).blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 
     def "Blob snapshot"() {
@@ -642,17 +542,6 @@ class BlobAPITest extends APISpec {
         null     | null       | receivedEtag | null        | null
         null     | null       | null         | garbageEtag | null
         null     | null       | null         | null        | receivedLeaseID
-    }
-
-    def "Blob snapshot error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.createSnapshot(null, null).blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 
     def "Blob copy"() {
@@ -745,18 +634,6 @@ class BlobAPITest extends APISpec {
         null     | null       | null         | null        | receivedLeaseID
     }
 
-    def "Blob copy error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.startCopyFromURL(new URL("http://www.error.com"),
-                null, null, null).blockingGet()
-
-        then:
-        thrown(StorageException)
-    }
-
     def "Blob abort copy"() {
         setup:
         // Data has to be large enough and copied between accounts to give us enough time to abort
@@ -817,17 +694,6 @@ class BlobAPITest extends APISpec {
         cu2.delete(null).blockingGet()
     }
 
-    def "Blob abort copy error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.abortCopyFromURL("id", null).blockingGet()
-
-        then:
-        thrown(StorageException)
-    }
-
     def "Blob delete"() {
         when:
         BlobsDeleteResponse response = bu.delete(null, null).blockingGet()
@@ -881,16 +747,5 @@ class BlobAPITest extends APISpec {
         null     | null       | receivedEtag | null        | null
         null     | null       | null         | garbageEtag | null
         null     | null       | null         | null        | receivedLeaseID
-    }
-
-    def "Blob delete error"() {
-        setup:
-        bu = cu.createBlockBlobURL(generateBlobName())
-
-        when:
-        bu.delete(null, null).blockingGet()
-
-        then:
-        thrown(StorageException)
     }
 }
