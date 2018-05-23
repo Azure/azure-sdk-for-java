@@ -4,5 +4,6 @@ XXXX.XX.XX Version XX.X.X-Preview
 * Added the StorageErrorCode type for checking against error codes returned by the service.
 * Changed the AppendBlobAccessConditions field types to be Long instead of Int.
 
+
 2018.04.27 Version 10.0.0-preview
 * Initial Release. Please see the README and wiki for information on the new design.
