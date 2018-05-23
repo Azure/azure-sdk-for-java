@@ -19,7 +19,12 @@ public final class StorageException extends RestException{
 
     StorageException(StorageErrorException e) {
         super(e.getMessage(), e.response(), e.body());
-        this.message = e.body().message();
+        if (e.body() != null) {
+            this.message = e.body().message();
+        }
+        else {
+            this.message = null;
+        }
     }
 
     /**
