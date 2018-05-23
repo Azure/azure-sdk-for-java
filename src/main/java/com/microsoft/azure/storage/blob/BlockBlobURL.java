@@ -25,6 +25,8 @@ import java.net.UnknownHostException;
 import java.nio.ByteBuffer;
 import java.util.List;
 
+import static com.microsoft.azure.storage.blob.Utility.*;
+
 /**
  * Represents a URL to a block blob. It may be obtained by direct construction or via the create method on a
  * {@link ContainerURL} object. This class does not hold any state about a particular blob but is instead a convenient
@@ -125,7 +127,7 @@ public final class BlockBlobURL extends BlobURL {
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
 
         //TODO: runtime flowable wrapper that throws an error if the size doesn't match the data
-        return this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().uploadWithRestResponseAsync(
                 data, length, null,
                 headers.getContentType(),
                 headers.getContentEncoding(),
@@ -139,7 +141,7 @@ public final class BlockBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
                 accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(),
-                null);
+                null));
     }
 
     /**
@@ -163,8 +165,9 @@ public final class BlockBlobURL extends BlobURL {
     public Single<BlockBlobsStageBlockResponse> stageBlock(
             String base64BlockID, Flowable<ByteBuffer> data, long length, LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
-        return this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(base64BlockID, length, data,
-                null, leaseAccessConditions.getLeaseId(), null);
+
+        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().stageBlockWithRestResponseAsync(
+                base64BlockID, length, data,null, leaseAccessConditions.getLeaseId(), null));
     }
 
     /**
@@ -182,8 +185,9 @@ public final class BlockBlobURL extends BlobURL {
     public Single<BlockBlobsGetBlockListResponse> getBlockList(
             BlockListType listType, LeaseAccessConditions leaseAccessConditions) {
         leaseAccessConditions = leaseAccessConditions == null ? LeaseAccessConditions.NONE : leaseAccessConditions;
-        return this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(listType,
-                null, null, leaseAccessConditions.getLeaseId(), null);
+
+        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().getBlockListWithRestResponseAsync(
+                listType, null, null, leaseAccessConditions.getLeaseId(), null));
     }
 
     /**
@@ -215,7 +219,7 @@ public final class BlockBlobURL extends BlobURL {
         headers = headers == null ? BlobHTTPHeaders.NONE : headers;
         metadata = metadata == null ? Metadata.NONE : metadata;
         accessConditions = accessConditions == null ? BlobAccessConditions.NONE : accessConditions;
-        return this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
+        return addErrorWrappingToSingle(this.storageClient.generatedBlockBlobs().commitBlockListWithRestResponseAsync(
                 new BlockLookupList().withLatest(base64BlockIDs), null,
                 headers.getCacheControl(),
                 headers.getContentType(),
@@ -228,7 +232,7 @@ public final class BlockBlobURL extends BlobURL {
                 accessConditions.getHttpAccessConditions().getIfModifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfUnmodifiedSince(),
                 accessConditions.getHttpAccessConditions().getIfMatch().toString(),
-                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null);
+                accessConditions.getHttpAccessConditions().getIfNoneMatch().toString(), null));
     }
 
     //TODO: stageBlockFromURL
