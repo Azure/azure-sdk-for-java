@@ -6,6 +6,7 @@
 <!--[![Coverage Status](https://img.shields.io/codecov/c/github/Azure/azure-cosmosdb-java.svg)](https://codecov.io/gh/Azure/azure-cosmosdb-java)
 ![](https://img.shields.io/github/issues/azure/azure-cosmosdb-java.svg)
  -->
+[![Known Vulnerabilities](https://snyk.io/test/github/Azure/azure-cosmosdb-java:sdk/pom.xml/badge.svg?targetFile=sdk%2Fpom.xml)](https://snyk.io/test/github/Azure/azure-cosmosdb-java:sdk/pom.xml?targetFile=sdk%2Fpom.xml)
 
 <!-- TOC depthFrom:2 depthTo:2 withLinks:1 updateOnSave:1 orderedList:0 -->
 
