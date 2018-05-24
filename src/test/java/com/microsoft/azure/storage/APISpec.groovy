@@ -20,6 +20,7 @@ import com.microsoft.azure.storage.blob.models.LeaseStateType
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
 import com.microsoft.rest.v2.http.HttpPipeline
+import io.reactivex.Flowable
 import org.spockframework.lang.ISpecificationContext
 import spock.lang.Shared
 import spock.lang.Specification
@@ -40,6 +41,12 @@ class APISpec extends Specification {
 
     @Shared
     ByteBuffer defaultData = ByteBuffer.wrap(defaultText.bytes)
+
+    @Shared
+    Flowable<ByteBuffer> defaultFlowable = Flowable.just(defaultData)
+
+    @Shared
+    int defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
     static final boolean enableDebugging = false
@@ -148,19 +155,22 @@ class APISpec extends Specification {
                 System.getenv().get(accountType + "ACCOUNT_KEY"))
     }
 
-    static ServiceURL getGenericServiceURL(SharedKeyCredentials creds) {
-
-        PipelineOptions po = new PipelineOptions()
+    static HttpClient getHttpClient() {
         if (enableDebugging) {
             HttpClientConfiguration configuration = new HttpClientConfiguration(
                     new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-            po.client = HttpClient.createDefault(configuration)
+            return HttpClient.createDefault(configuration)
         }
+        else return HttpClient.createDefault()
+    }
+
+    static ServiceURL getGenericServiceURL(SharedKeyCredentials creds) {
+        PipelineOptions po = new PipelineOptions()
+        po.client = getHttpClient()
 
         HttpPipeline pipeline = StorageURL.createPipeline(creds, po)
 
         return new ServiceURL(new URL("http://" + creds.getAccountName() + ".blob.core.windows.net"), pipeline)
-
     }
 
     static void cleanupContainers() throws MalformedURLException {
@@ -220,9 +230,9 @@ class APISpec extends Specification {
     }
 
     def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
+        BlobsAcquireLeaseHeaders headers =
+                bu.acquireLease(null, -1, null).blockingGet().headers()
         if (leaseID == receivedLeaseID) {
-            BlobsAcquireLeaseHeaders headers =
-                    bu.acquireLease(null, -1, null).blockingGet().headers()
             return headers.leaseId()
         } else {
             return leaseID
@@ -268,7 +278,5 @@ class APISpec extends Specification {
                 headers.class.getMethod("requestId").invoke(headers) != null &&
                 headers.class.getMethod("version").invoke(headers) != null &&
                 headers.class.getMethod("dateProperty").invoke(headers) != null
-
-
     }
 }

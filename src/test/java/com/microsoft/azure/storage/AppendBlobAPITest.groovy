@@ -124,7 +124,7 @@ public class AppendBlobAPITest extends APISpec {
     def "Append blob append block defaults"() {
         setup:
         AppendBlobsAppendBlockHeaders headers =
-                bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(),
+                bu.appendBlock(defaultFlowable, defaultDataSize,
                         null).blockingGet().headers()
 
         expect:
@@ -138,7 +138,7 @@ public class AppendBlobAPITest extends APISpec {
 
     /*
     TODO: Negative cases where data size does not equal the passed value for length
-    defaultData | defaultData.remaining() + 1 | defaultData                                        || -1
+    defaultData | defaultDataSize + 1 | defaultData                                        || -1
     defaultData | 2                           | ByteBuffer.wrap(defaultText.substring(0, 3).bytes) || -1/*
     try{
         statusCode = bu.appendBlock(Flowable.just(inputData), dataSize, null)
@@ -160,7 +160,7 @@ public class AppendBlobAPITest extends APISpec {
                 new AppendBlobAccessConditions(appendPosE, maxSizeLTE), null)
 
         expect:
-        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), bac)
+        bu.appendBlock(defaultFlowable, defaultDataSize, bac)
                 .blockingGet().statusCode() == 201
 
         where:
@@ -180,7 +180,7 @@ public class AppendBlobAPITest extends APISpec {
         bu = cu.createAppendBlobURL(generateBlobName())
 
         when:
-        bu.appendBlock(Flowable.just(defaultData), defaultData.remaining(), null).blockingGet()
+        bu.appendBlock(defaultFlowable, defaultDataSize, null).blockingGet()
 
         then:
         thrown(StorageException)

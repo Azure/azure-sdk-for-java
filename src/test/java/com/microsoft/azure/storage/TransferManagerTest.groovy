@@ -26,9 +26,7 @@ class TransferManagerTest extends APISpec {
         RequestRetryOptions retryOptions = new RequestRetryOptions(null, null, 300,
                 null, null, null)
         po.requestRetryOptions = retryOptions
-        HttpClientConfiguration configuration = new HttpClientConfiguration(
-                new Proxy(Proxy.Type.HTTP, new InetSocketAddress("localhost", 8888)))
-        po.client = HttpClient.createDefault(configuration)
+        po.client = getHttpClient()
 
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, po)
 

@@ -49,7 +49,7 @@ class BlobAPITest extends APISpec {
 
     def setup() {
         bu = cu.createBlockBlobURL(generateBlobName())
-        bu.upload(Flowable.just(defaultData), defaultText.length(), null, null,
+        bu.upload(defaultFlowable, defaultDataSize, null, null,
                 null).blockingGet()
     }
 
@@ -724,7 +724,7 @@ class BlobAPITest extends APISpec {
     def "Blob copy dest AC"() {
         setup:
         BlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
-        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null,
+        bu2.upload(defaultFlowable, defaultDataSize, null, null,
                 null).blockingGet()
         match = setupBlobMatchCondition(bu2, match)
         leaseID = setupBlobLeaseCondition(bu2, leaseID)
@@ -800,7 +800,7 @@ class BlobAPITest extends APISpec {
         ContainerURL cu2 = alternateServiceURL.createContainerURL(generateBlobName())
         cu2.create(null, null).blockingGet()
         BlockBlobURL bu2 = cu2.createBlockBlobURL(generateBlobName())
-        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
+        bu2.upload(defaultFlowable, defaultDataSize, null, null, null)
                 .blockingGet()
         String leaseID = setupBlobLeaseCondition(bu2, receivedLeaseID)
 
@@ -846,7 +846,7 @@ class BlobAPITest extends APISpec {
         bu.createSnapshot(null, null).blockingGet()
         // Create an extra blob so the list isn't empty (null) when we delete base blob, too
         BlockBlobURL bu2 = cu.createBlockBlobURL(generateBlobName())
-        bu2.upload(Flowable.just(defaultData), defaultText.length(), null, null, null)
+        bu2.upload(defaultFlowable, defaultDataSize, null, null, null)
                 .blockingGet()
 
         when:

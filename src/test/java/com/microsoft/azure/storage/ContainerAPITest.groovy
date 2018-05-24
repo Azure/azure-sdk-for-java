@@ -415,7 +415,7 @@ class ContainerAPITest extends APISpec {
 
         String uncommittedName = "u" + generateBlobName()
         BlockBlobURL uncommittedBlob = cu.createBlockBlobURL(uncommittedName)
-        uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining()
+        uncommittedBlob.stageBlock("0000", defaultFlowable, defaultDataSize
                 , null).blockingGet()
 
         when:
@@ -548,7 +548,7 @@ class ContainerAPITest extends APISpec {
 
         String uncommittedName = "u" + generateBlobName()
         BlockBlobURL uncommittedBlob = cu.createBlockBlobURL(uncommittedName)
-        uncommittedBlob.stageBlock("0000", Flowable.just(defaultData), defaultData.remaining()
+        uncommittedBlob.stageBlock("0000", defaultFlowable, defaultDataSize
                 , null).blockingGet()
 
         when:
@@ -877,7 +877,7 @@ class ContainerAPITest extends APISpec {
         bu5.getProperties(null).blockingGet().statusCode() == 200
         bu3.create(512, null, null, null, null).blockingGet()
                 .statusCode() == 201
-        bu4.upload(Flowable.just(defaultData), defaultData.remaining(),
+        bu4.upload(defaultFlowable, defaultDataSize,
                 null, null, null).blockingGet().statusCode() == 201
 
         when:
@@ -910,7 +910,7 @@ class ContainerAPITest extends APISpec {
     def "Container root implicit"() {
         setup:
         PipelineOptions po = new PipelineOptions()
-        po.client = HttpClient.createDefault()
+        po.client = getHttpClient()
         HttpPipeline pipeline = StorageURL.createPipeline(primaryCreds, po)
         AppendBlobURL bu = new AppendBlobURL(new URL("http://xclientdev3.blob.core.windows.net/rootblob"), pipeline)
 
