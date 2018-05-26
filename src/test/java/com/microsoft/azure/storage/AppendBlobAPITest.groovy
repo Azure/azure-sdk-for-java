@@ -60,13 +60,9 @@ public class AppendBlobAPITest extends APISpec {
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
-        response.headers().cacheControl() == cacheControl
-        response.headers().contentDisposition() == contentDisposition
-        response.headers().contentEncoding() == contentEncoding
-        response.headers().contentMD5() == contentMD5
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType == null ? "application/octet-stream" : contentType)
         // HTTP default content type is application/octet-stream
-        contentType == null ? response.headers().contentType() == "application/octet-stream" :
-                response.headers().contentType() == contentType
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType

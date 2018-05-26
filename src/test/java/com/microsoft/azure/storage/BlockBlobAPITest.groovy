@@ -162,13 +162,9 @@ class BlockBlobAPITest extends APISpec {
 
         then:
         response.statusCode() == 200
-        response.headers().cacheControl() == cacheControl
-        response.headers().contentDisposition() == contentDisposition
-        response.headers().contentEncoding() == contentEncoding
-        response.headers().contentMD5() == contentMD5
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType == null ? "application/octet-stream" : contentType)
         // HTTP default content type is application/octet-stream
-        contentType == null ? response.headers().contentType() == "application/octet-stream" :
-                response.headers().contentType() == contentType
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
@@ -414,14 +410,11 @@ class BlockBlobAPITest extends APISpec {
         BlobsGetPropertiesResponse response = bu.getProperties(null).blockingGet()
 
         then:
-        response.headers().cacheControl() == cacheControl
-        response.headers().contentDisposition() == contentDisposition
-        response.headers().contentEncoding() == contentEncoding
+        validateBlobHeaders(response.headers(), cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                MessageDigest.getInstance("MD5").digest(defaultData.array()),
+                contentType == null ? "application/octet-stream" : contentType)
         // For uploading a block blob, the service will auto calculate an MD5 hash if not present
-        response.headers().contentMD5() == MessageDigest.getInstance("MD5").digest(defaultData.array())
         // HTTP default content type is application/octet-stream
-        contentType == null ? response.headers().contentType() == "application/octet-stream" :
-                response.headers().contentType() == contentType
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                   | contentType
@@ -478,8 +471,7 @@ class BlockBlobAPITest extends APISpec {
 
         expect:
         bu.upload(defaultFlowable, defaultDataSize,
-                null, null, bac).blockingGet()
-
+                null, null, bac).blockingGet().statusCode() == 201
 
         where:
         modified | unmodified | match        | noneMatch   | leaseID

@@ -17,6 +17,7 @@ import com.microsoft.azure.storage.blob.models.ContainersAcquireLeaseHeaders
 import com.microsoft.azure.storage.blob.models.ContainersGetPropertiesHeaders
 import com.microsoft.azure.storage.blob.models.CopyStatusType
 import com.microsoft.azure.storage.blob.models.LeaseStateType
+import com.microsoft.rest.v2.RestResponse
 import com.microsoft.rest.v2.http.HttpClient
 import com.microsoft.rest.v2.http.HttpClientConfiguration
 import com.microsoft.rest.v2.http.HttpPipeline
@@ -34,6 +35,7 @@ class APISpec extends Specification {
 
     Integer entityNo = 0 // Used to generate stable container names for recording tests requiring multiple containers.
 
+    @Shared
     ContainerURL cu
 
     @Shared
@@ -49,9 +51,9 @@ class APISpec extends Specification {
     int defaultDataSize = defaultData.remaining()
 
     // If debugging is enabled, recordings cannot run as there can only be one proxy at a time.
-    static final boolean enableDebugging = false
+    static final boolean enableDebugging = true
 
-    static final String containerPrefix = "javatestcontainer"
+    static final String containerPrefix = "jtc" // java test container
 
     static final String blobPrefix = "javablob"
 
@@ -229,9 +231,24 @@ class APISpec extends Specification {
         }
     }
 
+    /**
+     * This helper method will acquire a lease on a blob to prepare for testing leaseAccessConditions. We want to test
+     * against a valid lease in both the success and failure cases to guarantee that the results actually indicate
+     * proper setting of the header. If we pass null, though, we don't want to acquire a lease, as that will interfere
+     * with other AC tests.
+     *
+     * @param bu
+     *      The blob on which to acquire a lease.
+     * @param leaseID
+     *      The signalID. Values should only ever be {@code receivedLeaseID}, {@code garbageLeaseID}, or {@code null}.
+     * @return
+     *      The actual leaseID of the blob if recievedLeaseID is passed, otherwise whatever was passed will be returned.
+     */
     def setupBlobLeaseCondition(BlobURL bu, String leaseID) {
-        BlobsAcquireLeaseHeaders headers =
-                bu.acquireLease(null, -1, null).blockingGet().headers()
+        BlobsAcquireLeaseHeaders headers = null
+        if (leaseID == receivedLeaseID || leaseID == garbageLeaseID) {
+            headers = bu.acquireLease(null, -1, null).blockingGet().headers()
+        }
         if (leaseID == receivedLeaseID) {
             return headers.leaseId()
         } else {
@@ -278,5 +295,16 @@ class APISpec extends Specification {
                 headers.class.getMethod("requestId").invoke(headers) != null &&
                 headers.class.getMethod("version").invoke(headers) != null &&
                 headers.class.getMethod("dateProperty").invoke(headers) != null
+    }
+
+    def validateBlobHeaders(Object headers, String cacheControl, String contentDisposition, String contentEncoding,
+                            String contentLangauge, byte[] contentMD5, String contentType) {
+        return headers.class.getMethod("cacheControl").invoke(headers) == cacheControl &&
+                headers.class.getMethod("contentDisposition").invoke(headers) == contentDisposition &&
+                headers.class.getMethod("contentEncoding").invoke(headers) == contentEncoding &&
+                headers.class.getMethod("contentLanguage").invoke(headers) == contentLangauge &&
+                headers.class.getMethod("contentMD5").invoke(headers) == contentMD5 &&
+                headers.class.getMethod("contentType").invoke(headers)  == contentType
+
     }
 }

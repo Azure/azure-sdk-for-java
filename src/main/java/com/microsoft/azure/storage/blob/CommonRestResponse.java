@@ -50,6 +50,17 @@ public final class CommonRestResponse {
 
     /**
      * @return
+     *      The status code for the response
+     */
+    public int statusCode() {
+        if (uploadBlobResponse != null) {
+            return uploadBlobResponse.statusCode();
+        }
+        return commitBlockListResponse.statusCode();
+    }
+
+    /**
+     * @return
      *      An HTTP Etag for the blob at the time of the request.
      */
     public String eTag() {
@@ -63,7 +74,7 @@ public final class CommonRestResponse {
      * @return
      *      The time when the blob was last modified.
      */
-    public OffsetDateTime lastModifiedTime() {
+    public OffsetDateTime lastModified() {
         if (uploadBlobResponse != null) {
             return uploadBlobResponse.headers().lastModified();
         }
@@ -85,7 +96,7 @@ public final class CommonRestResponse {
      * @return
      *      The date of the response.
      */
-    public OffsetDateTime date() {
+    public OffsetDateTime dateProperty() {
         if (uploadBlobResponse != null) {
             return uploadBlobResponse.headers().dateProperty();
         }

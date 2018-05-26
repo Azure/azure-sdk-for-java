@@ -240,12 +240,8 @@ class BlobAPITest extends APISpec {
                 bu.getProperties(null).blockingGet().headers()
 
         expect:
-        receivedHeaders.cacheControl() == cacheControl
-        receivedHeaders.contentDisposition() == contentDisposition
-        receivedHeaders.contentEncoding() == contentEncoding
-        receivedHeaders.contentLanguage() == contentLanguage
-        receivedHeaders.contentMD5() == contentMD5
-        receivedHeaders.contentType() == contentType
+        validateBlobHeaders(receivedHeaders, cacheControl, contentDisposition, contentEncoding, contentLanguage,
+                contentMD5, contentType)
 
         where:
         cacheControl | contentDisposition | contentEncoding | contentLanguage | contentMD5                                                                               | contentType

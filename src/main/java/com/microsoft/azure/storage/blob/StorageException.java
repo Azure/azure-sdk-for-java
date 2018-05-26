@@ -33,7 +33,7 @@ public final class StorageException extends RestException{
     private final String message;
 
     StorageException(StorageErrorException e) {
-        super(e.getMessage(), e.response(), e.body());
+        super(e.getMessage(), e.response(), e);
         if (e.body() != null) {
             this.message = e.body().message();
         }

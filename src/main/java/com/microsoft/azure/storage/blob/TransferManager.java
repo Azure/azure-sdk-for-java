@@ -56,7 +56,8 @@ public class TransferManager {
         private int parallelism;
 
         /**
-         * Creates a new object that configures the parallel upload behavior.
+         * Creates a new object that configures the parallel upload behavior. Null may be passed to accept the default
+         * behavior.
          *
          * @param progressReceiver
          *      An object that implements the {@link IProgressReceiver} interface which will be invoked periodically as
@@ -99,7 +100,8 @@ public class TransferManager {
      * @param blockLength
      *      If the data must be broken up into blocks, this value determines what size those blocks will be. This will
      *      affect the total number of service requests made. This value will be ignored if the data can be uploaded in
-     *      a single put-blob operation.
+     *      a single put-blob operation. Must be between 1 and {@link BlockBlobURL#MAX_PUT_BLOCK_BYTES}. Note as well
+     *      that fileLength/blockLength must be less than or equal to {@link BlockBlobURL#MAX_BLOCKS}.
      * @param options
      *      {@link UploadToBlockBlobOptions}
      * @return
@@ -165,12 +167,12 @@ public class TransferManager {
             final UploadToBlockBlobOptions options) {
         Utility.assertNotNull("data", data);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
-        Utility.assertNotNull("options", options);
         Utility.assertInBounds("blockLength", blockLength, 1, BlockBlobURL.MAX_PUT_BLOCK_BYTES);
+        UploadToBlockBlobOptions optionsReal = options == null ? UploadToBlockBlobOptions.DEFAULT : options;
 
         // If the size of the buffer can fit in a single upload, do it this way.
         if (data.remaining() < BlockBlobURL.MAX_PUT_BLOB_BYTES) {
-            return doSingleShotUpload(Flowable.just(data), data.remaining(), blockBlobURL, options);
+            return doSingleShotUpload(Flowable.just(data), data.remaining(), blockBlobURL, optionsReal);
         }
 
         int numBlocks = data.remaining()/blockLength;
@@ -184,14 +186,17 @@ public class TransferManager {
                 })
                 .collectInto(new ArrayList<>(numBlocks),
                         (BiConsumer<ArrayList<ByteBuffer>, ByteBuffer>) ArrayList::add)
-                .flatMap(blocks -> uploadByteBuffersToBlockBlob(blocks, blockBlobURL, options));
+                .flatMap(blocks -> uploadByteBuffersToBlockBlob(blocks, blockBlobURL, optionsReal));
     }
 
     /**
      * Uploads an iterable of {@code ByteBuffers} to a block blob. The data will first data will first be examined to
-     * check the size and validate the number of blocks. If the total amount of data in all the buffers is small enough,
-     * this method will perform a single upload operation. Otherwise, each {@code ByteBuffer} in the iterable is
-     * assumed to be its own discreet block of data for the block blob and will be uploaded as such.
+     * check the size and validate the number of blocks. If the total amount of data in all the buffers is small enough
+     * (i.e. less than or equal to {@link BlockBlobURL#MAX_PUT_BLOB_BYTES}, this method will perform a single upload
+     * operation. Otherwise, each {@code ByteBuffer} in the iterable is assumed to be its own discreet block of data for
+     * the block blob and will be uploaded as such. Note that in this case, each ByteBuffer must be less than or equal
+     * to {@link BlockBlobURL#MAX_PUT_BLOCK_BYTES}. Note as well that there can only be up to
+     * {@link BlockBlobURL#MAX_BLOCKS} ByteBuffers in the list.
      *
      * @param data
      *      The data to upload.
@@ -207,7 +212,7 @@ public class TransferManager {
             final UploadToBlockBlobOptions options) {
         Utility.assertNotNull("data", data);
         Utility.assertNotNull("blockBlobURL", blockBlobURL);
-        Utility.assertNotNull("options", options);
+        UploadToBlockBlobOptions optionsReal = options == null ? UploadToBlockBlobOptions.DEFAULT : options;
 
         // Determine the size of the blob and the number of blocks
         long size = 0;
@@ -219,7 +224,7 @@ public class TransferManager {
 
         // If the size can fit in 1 upload call, do it this way.
         if (size <= BlockBlobURL.MAX_PUT_BLOB_BYTES) {
-            return doSingleShotUpload(Flowable.fromIterable(data), size, blockBlobURL, options);
+            return doSingleShotUpload(Flowable.fromIterable(data), size, blockBlobURL, optionsReal);
         }
 
         if (numBlocks > BlockBlobURL.MAX_BLOCKS) {
@@ -236,7 +241,7 @@ public class TransferManager {
                  composing the list of Ids later.
                  */
                 .concatMapEager(blockData -> {
-                    if (blockData.remaining() > Constants.MAX_BLOCK_SIZE) {
+                    if (blockData.remaining() > BlockBlobURL.MAX_PUT_BLOCK_BYTES) {
                         throw new IllegalArgumentException(SR.INVALID_BLOCK_SIZE);
                     }
 
@@ -251,7 +256,7 @@ public class TransferManager {
                      into an Observable which emits one item to comply with the signature of concatMapEager.
                      */
                     return blockBlobURL.stageBlock(blockId, Flowable.just(blockData),
-                            blockData.remaining(), options.accessConditions.getLeaseAccessConditions())
+                            blockData.remaining(), optionsReal.accessConditions.getLeaseAccessConditions())
                             .map(x -> blockId).toObservable();
 
                 /*
@@ -263,7 +268,7 @@ public class TransferManager {
                  here because we have converted from a Single.
                  */
 
-                }, options.parallelism, 1)
+                }, optionsReal.parallelism, 1)
                 /*
                 collectInto will gather each of the emitted blockIds into a list. Because we used concatMap, the Ids
                 will be emitted according to their block number, which means the list generated here will be properly
@@ -276,7 +281,8 @@ public class TransferManager {
                 "map" it into a call to commitBlockList.
                  */
                 .flatMap( ids ->
-                        blockBlobURL.commitBlockList(ids, options.httpHeaders, options.metadata, options.accessConditions))
+                        blockBlobURL.commitBlockList(ids, optionsReal.httpHeaders, optionsReal.metadata,
+                                optionsReal.accessConditions))
                 /*
                 Finally, we must turn the specific response type into a CommonRestResponse by mapping.
                  */
