@@ -12,13 +12,12 @@ import org.joda.time.DateTime;
 import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
-import com.microsoft.azure.management.storage.v2018_02_01.implementation.AzureEntityResourceInner;
 
 /**
  * The blob container properties be listed out.
  */
 @JsonFlatten
-public class ListContainerItem extends AzureEntityResourceInner {
+public class ListContainerItem extends AzureEntityResource {
     /**
      * Specifies whether data in the container may be accessed publicly and the
      * level of access. Possible values include: 'Container', 'Blob', 'None'.

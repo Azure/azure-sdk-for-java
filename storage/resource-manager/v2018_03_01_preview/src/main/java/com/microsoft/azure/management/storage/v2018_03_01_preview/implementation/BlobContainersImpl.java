@@ -7,18 +7,18 @@
  * abc
  */
 
-package com.microsoft.azure.management.storage.v2018_02_01.implementation;
+package com.microsoft.azure.management.storage.v2018_03_01_preview.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
-import com.microsoft.azure.management.storage.v2018_02_01.BlobContainers;
+import com.microsoft.azure.management.storage.v2018_03_01_preview.BlobContainers;
 import rx.Completable;
 import rx.functions.Func1;
 import rx.Observable;
-import com.microsoft.azure.management.storage.v2018_02_01.ListContainerItems;
-import com.microsoft.azure.management.storage.v2018_02_01.BlobContainer;
-import com.microsoft.azure.management.storage.v2018_02_01.LegalHold;
+import com.microsoft.azure.management.storage.v2018_03_01_preview.ListContainerItems;
+import com.microsoft.azure.management.storage.v2018_03_01_preview.BlobContainer;
+import com.microsoft.azure.management.storage.v2018_03_01_preview.LegalHold;
 import java.util.List;
-import com.microsoft.azure.management.storage.v2018_02_01.ImmutabilityPolicy;
+import com.microsoft.azure.management.storage.v2018_03_01_preview.ImmutabilityPolicy;
 
 class BlobContainersImpl extends WrapperImpl<BlobContainersInner> implements BlobContainers {
     private final StorageManager manager;
