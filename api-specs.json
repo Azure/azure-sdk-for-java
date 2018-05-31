@@ -1,4 +1,11 @@
 {
+  "appservice/resource-manager": {
+    "source": "specification/web/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"AppService\""
+    }
+  },
   "batchai/resource-manager": {
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -29,6 +36,10 @@
     "fconfig": {
       "\"moduleName\"": "\"IoTHub\""
     }
+  },
+  "keyvault/resource-manager": {
+    "source": "specification/keyvault/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "logic/resource-manager": {
     "source": "specification/logic/resource-manager/readme.md",
@@ -64,6 +75,10 @@
       "\"knownPlurals\"": ["\"redis\""],
       "\"knownSingulars\"": ["\"redis\""]
     }
+  },
+  "resources/resource-manager": {
+    "source": "specification/resources/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
   },
   "signalr/resource-manager": {
     "source": "specification/signalr/resource-manager/readme.md",
