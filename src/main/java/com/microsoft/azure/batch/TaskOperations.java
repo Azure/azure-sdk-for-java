@@ -85,11 +85,10 @@ public class TaskOperations implements IInheritedBehaviors {
      *
      * @param jobId The ID of the job to which to add the task.
      * @param taskList A list of {@link TaskAddParameter tasks} to add.
-     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
-     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     * @throws RuntimeException Exception thrown when an error response is received from the Batch service or any network exception.
      * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
      */
-    public void createTasks(String jobId, List<TaskAddParameter> taskList) throws BatchErrorException, IOException, InterruptedException {
+    public void createTasks(String jobId, List<TaskAddParameter> taskList) throws RuntimeException, InterruptedException {
         createTasks(jobId, taskList, null);
     }
 
@@ -163,7 +162,7 @@ public class TaskOperations implements IInheritedBehaviors {
                             }
                         }
                     }
-                } catch (BatchErrorException e) {
+                } catch (RuntimeException e) {
                     // Any exception will stop further call
                     exception = e;
                     pendingList.addAll(taskList);
@@ -183,11 +182,10 @@ public class TaskOperations implements IInheritedBehaviors {
      * @param jobId The ID of the job to which to add the task.
      * @param taskList A list of {@link TaskAddParameter tasks} to add.
      * @param additionalBehaviors A collection of {@link BatchClientBehavior} instances that are applied to the Batch service request.
-     * @throws BatchErrorException Exception thrown when an error response is received from the Batch service.
-     * @throws IOException Exception thrown when there is an error in serialization/deserialization of data sent to/received from the Batch service.
+     * @throws RuntimeException Exception thrown when an error response is received from the Batch service or any network exception.
      * @throws InterruptedException Exception thrown if any thread has interrupted the current thread.
      */
-    public void createTasks(String jobId, List<TaskAddParameter> taskList, Iterable<BatchClientBehavior> additionalBehaviors) throws BatchErrorException, IOException, InterruptedException {
+    public void createTasks(String jobId, List<TaskAddParameter> taskList, Iterable<BatchClientBehavior> additionalBehaviors) throws RuntimeException, InterruptedException {
 
         BehaviorManager bhMgr = new BehaviorManager(this.customBehaviors(), additionalBehaviors);
 
@@ -265,9 +263,9 @@ public class TaskOperations implements IInheritedBehaviors {
             if (innerException instanceof BatchErrorException) {
                 throw (BatchErrorException) innerException;
             } else {
-                // WorkingThread will only catch and store a BatchErrorException or an IOException in its run() method.
+                // WorkingThread will only catch and store a BatchErrorException or a RuntimeException in its run() method.
                 // WorkingThread.getException() should therefore only return one of these two types, making the cast safe.
-                throw (IOException) innerException;
+                throw (RuntimeException) innerException;
             }
         }
 

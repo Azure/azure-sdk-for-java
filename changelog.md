@@ -1,5 +1,9 @@
 # Azure Batch SDK for Java release notes
 
+## Changes in 3.3.0
+### Features
+ - `createTasks` rethrow `RuntimeException` catched by internal threads. 
+
 ## Changes in 3.2.0
 ### Features
  - Update comments for some classes and properties.

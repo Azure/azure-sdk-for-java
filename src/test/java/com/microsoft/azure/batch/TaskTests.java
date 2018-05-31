@@ -6,6 +6,7 @@
 
 package com.microsoft.azure.batch;
 
+import com.microsoft.azure.batch.auth.BatchSharedKeyCredentials;
 import com.microsoft.azure.batch.interceptor.BatchClientParallelOptions;
 import com.microsoft.azure.batch.protocol.models.*;
 import com.microsoft.azure.storage.blob.CloudBlobContainer;
@@ -298,6 +299,39 @@ public class TaskTests  extends BatchTestBase {
             } catch (Exception e) {
                 // Ignore here
             }
+        }
+    }
+
+
+    @Test
+    public void testAddMultiTasksWithError() throws Exception {
+
+        BatchSharedKeyCredentials noExistCredentials1 = new BatchSharedKeyCredentials(
+                "https://noexistaccount.westus.batch.azure.com",
+                "noexistaccount",
+                System.getenv("AZURE_BATCH_ACCESS_KEY"));
+        BatchClient testBatchClient = BatchClient.open(noExistCredentials1);
+
+        String jobId = getStringWithUserNamePrefix("-Job1-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+
+        int TASK_COUNT=1000;
+
+        try {
+            // CREATE
+            List<TaskAddParameter> tasksToAdd = new ArrayList<>();
+            for (int i=0; i<TASK_COUNT; i++)
+            {
+                TaskAddParameter addParameter = new TaskAddParameter();
+                addParameter.withId(String.format("mytask%d", i)).withCommandLine(String.format("cmd /c echo hello %d",i));
+                tasksToAdd.add(addParameter);
+            }
+            BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+            Collection<BatchClientBehavior> behaviors = new HashSet<>();
+            behaviors.add(option);
+            testBatchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
+            Assert.assertTrue("Should not here", true);
+        } catch (RuntimeException ex) {
+            System.out.printf("Expect exception %s", ex.toString());
         }
     }
 
