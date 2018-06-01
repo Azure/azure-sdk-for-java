@@ -6,6 +6,6 @@
 
 /**
  * This package contains the implementation classes for MySQLManagementClient.
- * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure MySQL resources including servers, databases, firewall rules, log files and configurations with new business model.
+ * The Microsoft Azure management API provides create, read, update, and delete functionality for Azure MySQL resources including servers, databases, firewall rules, VNET rules, log files and configurations with new business model.
  */
 package com.microsoft.azure.management.mysql.v2017_12_01.implementation;

@@ -159,6 +159,19 @@ public class PostgreSQLManagementClientImpl extends AzureServiceClient {
     }
 
     /**
+     * The VirtualNetworkRulesInner object to access its operations.
+     */
+    private VirtualNetworkRulesInner virtualNetworkRules;
+
+    /**
+     * Gets the VirtualNetworkRulesInner object to access its operations.
+     * @return the VirtualNetworkRulesInner object.
+     */
+    public VirtualNetworkRulesInner virtualNetworkRules() {
+        return this.virtualNetworkRules;
+    }
+
+    /**
      * The DatabasesInner object to access its operations.
      */
     private DatabasesInner databases;
@@ -286,6 +299,7 @@ public class PostgreSQLManagementClientImpl extends AzureServiceClient {
         this.generateClientRequestId = true;
         this.servers = new ServersInner(restClient().retrofit(), this);
         this.firewallRules = new FirewallRulesInner(restClient().retrofit(), this);
+        this.virtualNetworkRules = new VirtualNetworkRulesInner(restClient().retrofit(), this);
         this.databases = new DatabasesInner(restClient().retrofit(), this);
         this.configurations = new ConfigurationsInner(restClient().retrofit(), this);
         this.logFiles = new LogFilesInner(restClient().retrofit(), this);
