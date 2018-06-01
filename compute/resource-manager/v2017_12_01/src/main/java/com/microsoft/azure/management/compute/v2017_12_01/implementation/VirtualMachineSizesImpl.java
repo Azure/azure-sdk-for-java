@@ -28,7 +28,7 @@ class VirtualMachineSizesImpl extends WrapperImpl<VirtualMachineSizesInner> impl
         return this.manager;
     }
 
-    private LocationVirtualMachineSizeImpl wrapModel(VirtualMachineSizeInner inner) {
+    private LocationVirtualMachineSizeImpl wrapLocationVirtualMachineSizeModel(VirtualMachineSizeInner inner) {
         return  new LocationVirtualMachineSizeImpl(inner, manager());
     }
 
@@ -45,7 +45,7 @@ class VirtualMachineSizesImpl extends WrapperImpl<VirtualMachineSizesInner> impl
         .map(new Func1<VirtualMachineSizeInner, LocationVirtualMachineSize>() {
             @Override
             public LocationVirtualMachineSize call(VirtualMachineSizeInner inner) {
-                return wrapModel(inner);
+                return wrapLocationVirtualMachineSizeModel(inner);
             }
         });
     }

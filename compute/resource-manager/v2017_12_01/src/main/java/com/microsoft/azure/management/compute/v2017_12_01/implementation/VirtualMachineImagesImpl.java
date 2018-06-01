@@ -29,12 +29,22 @@ class VirtualMachineImagesImpl extends WrapperImpl<VirtualMachineImagesInner> im
         return this.manager;
     }
 
-    private VirtualMachineImageResourceImpl wrapModel(VirtualMachineImageResourceInner inner) {
+    private VirtualMachineImageResourceImpl wrapVirtualMachineImageResourceModel(VirtualMachineImageResourceInner inner) {
         return  new VirtualMachineImageResourceImpl(inner, manager());
     }
 
-    private VirtualMachineImageImpl wrapModel(VirtualMachineImageInner inner) {
+    private VirtualMachineImageImpl wrapVirtualMachineImageModel(VirtualMachineImageInner inner) {
         return  new VirtualMachineImageImpl(inner, manager());
+    }
+
+    private Observable<VirtualMachineImageInner> getVirtualMachineImageInnerUsingVirtualMachineImagesInnerAsync(String id) {
+        String location = IdParsingUtils.getValueFromIdByName(id, "locations");
+        String publisherName = IdParsingUtils.getValueFromIdByName(id, "publishers");
+        String offer = IdParsingUtils.getValueFromIdByName(id, "offers");
+        String skus = IdParsingUtils.getValueFromIdByName(id, "skus");
+        String version = IdParsingUtils.getValueFromIdByName(id, "versions");
+        VirtualMachineImagesInner client = this.inner();
+        return client.getAsync(location, publisherName, offer, skus, version);
     }
 
     @Override
@@ -50,7 +60,7 @@ class VirtualMachineImagesImpl extends WrapperImpl<VirtualMachineImagesInner> im
         .map(new Func1<VirtualMachineImageResourceInner, VirtualMachineImageResource>() {
             @Override
             public VirtualMachineImageResource call(VirtualMachineImageResourceInner inner) {
-                return wrapModel(inner);
+                return wrapVirtualMachineImageResourceModel(inner);
             }
         });
     }
@@ -62,7 +72,7 @@ class VirtualMachineImagesImpl extends WrapperImpl<VirtualMachineImagesInner> im
         .map(new Func1<VirtualMachineImageInner, VirtualMachineImage>() {
             @Override
             public VirtualMachineImage call(VirtualMachineImageInner inner) {
-                return wrapModel(inner);
+                return wrapVirtualMachineImageModel(inner);
             }
        });
     }
@@ -71,16 +81,22 @@ class VirtualMachineImagesImpl extends WrapperImpl<VirtualMachineImagesInner> im
     public Observable<VirtualMachineImage> listAsync(String location, String publisherName, String offer, String skus) {
         VirtualMachineImagesInner client = this.inner();
         return client.listAsync(location, publisherName, offer, skus)
-        .flatMap(new Func1<List<VirtualMachineImageInner>, Observable<VirtualMachineImageInner>>() {
+        .flatMap(new Func1<List<VirtualMachineImageResourceInner>, Observable<VirtualMachineImageResourceInner>>() {
             @Override
-            public Observable<VirtualMachineImageInner> call(List<VirtualMachineImageInner> innerList) {
+            public Observable<VirtualMachineImageResourceInner> call(List<VirtualMachineImageResourceInner> innerList) {
                 return Observable.from(innerList);
+            }
+        })
+        .flatMap(new Func1<VirtualMachineImageResourceInner, Observable<VirtualMachineImageInner>>() {
+            @Override
+            public Observable<VirtualMachineImageInner> call(VirtualMachineImageResourceInner inner) {
+                return getVirtualMachineImageInnerUsingVirtualMachineImagesInnerAsync(inner.id());
             }
         })
         .map(new Func1<VirtualMachineImageInner, VirtualMachineImage>() {
             @Override
             public VirtualMachineImage call(VirtualMachineImageInner inner) {
-                return wrapModel(inner);
+                return wrapVirtualMachineImageModel(inner);
             }
         });
     }
@@ -116,7 +132,7 @@ class VirtualMachineImagesImpl extends WrapperImpl<VirtualMachineImagesInner> im
         .map(new Func1<VirtualMachineImageResourceInner, VirtualMachineImageResource>() {
             @Override
             public VirtualMachineImageResource call(VirtualMachineImageResourceInner inner) {
-                return wrapModel(inner);
+                return wrapVirtualMachineImageResourceModel(inner);
             }
         });
     }

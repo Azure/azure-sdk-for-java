@@ -115,13 +115,13 @@ class VirtualMachinesImpl extends GroupableResourcesCoreImpl<VirtualMachine, Vir
             public Iterable<VirtualMachineInner> call(Page<VirtualMachineInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<VirtualMachineInner, VirtualMachine>() {
             @Override
             public VirtualMachine call(VirtualMachineInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -158,13 +158,13 @@ class VirtualMachinesImpl extends GroupableResourcesCoreImpl<VirtualMachine, Vir
             public Iterable<VirtualMachineInner> call(Page<VirtualMachineInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<VirtualMachineInner, VirtualMachine>() {
             @Override
             public VirtualMachine call(VirtualMachineInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -314,7 +314,7 @@ class VirtualMachinesImpl extends GroupableResourcesCoreImpl<VirtualMachine, Vir
         return new VirtualMachineImpl(name, new VirtualMachineInner(), this.manager());
     }
 
-    private VirtualMachineVirtualMachineSizeImpl wrapModel(VirtualMachineSizeInner inner) {
+    private VirtualMachineVirtualMachineSizeImpl wrapVirtualMachineVirtualMachineSizeModel(VirtualMachineSizeInner inner) {
         return  new VirtualMachineVirtualMachineSizeImpl(inner, manager());
     }
 
@@ -343,7 +343,7 @@ class VirtualMachinesImpl extends GroupableResourcesCoreImpl<VirtualMachine, Vir
         .map(new Func1<VirtualMachineSizeInner, VirtualMachineVirtualMachineSize>() {
             @Override
             public VirtualMachineVirtualMachineSize call(VirtualMachineSizeInner inner) {
-                return wrapModel(inner);
+                return wrapVirtualMachineVirtualMachineSizeModel(inner);
             }
         });
     }

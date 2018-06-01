@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.compute.v2017_03_30;
 
 import java.util.List;
-import com.microsoft.azure.management.compute.v2017_03_30.implementation.VirtualMachineScaleSetNetworkConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -29,7 +28,7 @@ public class VirtualMachineScaleSetNetworkProfile {
      * The list of network configurations.
      */
     @JsonProperty(value = "networkInterfaceConfigurations")
-    private List<VirtualMachineScaleSetNetworkConfigurationInner> networkInterfaceConfigurations;
+    private List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations;
 
     /**
      * Get the healthProbe value.
@@ -56,7 +55,7 @@ public class VirtualMachineScaleSetNetworkProfile {
      *
      * @return the networkInterfaceConfigurations value
      */
-    public List<VirtualMachineScaleSetNetworkConfigurationInner> networkInterfaceConfigurations() {
+    public List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations() {
         return this.networkInterfaceConfigurations;
     }
 
@@ -66,7 +65,7 @@ public class VirtualMachineScaleSetNetworkProfile {
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set
      * @return the VirtualMachineScaleSetNetworkProfile object itself.
      */
-    public VirtualMachineScaleSetNetworkProfile withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetNetworkConfigurationInner> networkInterfaceConfigurations) {
+    public VirtualMachineScaleSetNetworkProfile withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }

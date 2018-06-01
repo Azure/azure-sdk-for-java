@@ -10,7 +10,6 @@ package com.microsoft.azure.management.compute.v2017_12_01;
 
 import rx.Completable;
 import rx.Observable;
-import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineScaleSetVMInner;
 import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineScaleSetVMsInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -50,18 +49,6 @@ public interface VirtualMachineScaleSetVMs extends HasInner<VirtualMachineScaleS
      * @return the observable for the request
      */
     Observable<OperationStatusResponse> deallocateAsync(String resourceGroupName, String vmScaleSetName, String instanceId);
-
-    /**
-     * Updates a virtual machine of a VM scale set.
-     *
-     * @param resourceGroupName The name of the resource group.
-     * @param vmScaleSetName The name of the VM scale set where the extension should be create or updated.
-     * @param instanceId The instance ID of the virtual machine.
-     * @param parameters Parameters supplied to the Update Virtual Machine Scale Sets VM operation.
-     * @throws IllegalArgumentException thrown if parameters fail the validation
-     * @return the observable for the request
-     */
-    Observable<VirtualMachineScaleSetVM> updateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters);
 
     /**
      * Gets the status of a virtual machine from a VM scale set.

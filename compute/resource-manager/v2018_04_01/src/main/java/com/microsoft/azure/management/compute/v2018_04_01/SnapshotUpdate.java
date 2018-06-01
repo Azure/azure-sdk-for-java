@@ -8,6 +8,7 @@
 
 package com.microsoft.azure.management.compute.v2018_04_01;
 
+import java.util.Map;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.microsoft.rest.serializer.JsonFlatten;
 
@@ -15,7 +16,7 @@ import com.microsoft.rest.serializer.JsonFlatten;
  * Snapshot update resource.
  */
 @JsonFlatten
-public class SnapshotUpdate extends ResourceUpdate {
+public class SnapshotUpdate {
     /**
      * the Operating System type. Possible values include: 'Windows', 'Linux'.
      */
@@ -37,6 +38,18 @@ public class SnapshotUpdate extends ResourceUpdate {
      */
     @JsonProperty(value = "properties.encryptionSettings")
     private EncryptionSettings encryptionSettings;
+
+    /**
+     * Resource tags.
+     */
+    @JsonProperty(value = "tags")
+    private Map<String, String> tags;
+
+    /**
+     * The sku property.
+     */
+    @JsonProperty(value = "sku")
+    private SnapshotSku sku;
 
     /**
      * Get the osType value.
@@ -95,6 +108,46 @@ public class SnapshotUpdate extends ResourceUpdate {
      */
     public SnapshotUpdate withEncryptionSettings(EncryptionSettings encryptionSettings) {
         this.encryptionSettings = encryptionSettings;
+        return this;
+    }
+
+    /**
+     * Get the tags value.
+     *
+     * @return the tags value
+     */
+    public Map<String, String> tags() {
+        return this.tags;
+    }
+
+    /**
+     * Set the tags value.
+     *
+     * @param tags the tags value to set
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withTags(Map<String, String> tags) {
+        this.tags = tags;
+        return this;
+    }
+
+    /**
+     * Get the sku value.
+     *
+     * @return the sku value
+     */
+    public SnapshotSku sku() {
+        return this.sku;
+    }
+
+    /**
+     * Set the sku value.
+     *
+     * @param sku the sku value to set
+     * @return the SnapshotUpdate object itself.
+     */
+    public SnapshotUpdate withSku(SnapshotSku sku) {
+        this.sku = sku;
         return this;
     }
 

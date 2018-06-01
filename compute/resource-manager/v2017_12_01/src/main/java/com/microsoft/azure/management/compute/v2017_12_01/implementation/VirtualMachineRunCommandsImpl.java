@@ -28,8 +28,15 @@ class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommand
         return this.manager;
     }
 
-    private RunCommandDocumentImpl wrapModel(RunCommandDocumentInner inner) {
+    private RunCommandDocumentImpl wrapRunCommandDocumentModel(RunCommandDocumentInner inner) {
         return  new RunCommandDocumentImpl(inner, manager());
+    }
+
+    private Observable<RunCommandDocumentInner> getRunCommandDocumentInnerUsingVirtualMachineRunCommandsInnerAsync(String id) {
+        String location = IdParsingUtils.getValueFromIdByName(id, "locations");
+        String commandId = IdParsingUtils.getValueFromIdByName(id, "runCommands");
+        VirtualMachineRunCommandsInner client = this.inner();
+        return client.getAsync(location, commandId);
     }
 
     @Override
@@ -39,20 +46,20 @@ class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommand
         .map(new Func1<RunCommandDocumentInner, RunCommandDocument>() {
             @Override
             public RunCommandDocument call(RunCommandDocumentInner inner) {
-                return wrapModel(inner);
+                return wrapRunCommandDocumentModel(inner);
             }
        });
     }
 
-    private Observable<Page<RunCommandDocumentInner>> listNextInnerPageAsync(String nextLink) {
+    private Observable<Page<RunCommandDocumentBaseInner>> listNextInnerPageAsync(String nextLink) {
         if (nextLink == null) {
             Observable.empty();
         }
         VirtualMachineRunCommandsInner client = this.inner();
         return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RunCommandDocumentInner>, Observable<Page<RunCommandDocumentInner>>>() {
+        .flatMap(new Func1<Page<RunCommandDocumentBaseInner>, Observable<Page<RunCommandDocumentBaseInner>>>() {
             @Override
-            public Observable<Page<RunCommandDocumentInner>> call(Page<RunCommandDocumentInner> page) {
+            public Observable<Page<RunCommandDocumentBaseInner>> call(Page<RunCommandDocumentBaseInner> page) {
                 return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
             }
         });
@@ -61,24 +68,30 @@ class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommand
     public Observable<RunCommandDocument> listAsync(final String location) {
         VirtualMachineRunCommandsInner client = this.inner();
         return client.listAsync(location)
-        .flatMap(new Func1<Page<RunCommandDocumentInner>, Observable<Page<RunCommandDocumentInner>>>() {
+        .flatMap(new Func1<Page<RunCommandDocumentBaseInner>, Observable<Page<RunCommandDocumentBaseInner>>>() {
             @Override
-            public Observable<Page<RunCommandDocumentInner>> call(Page<RunCommandDocumentInner> page) {
+            public Observable<Page<RunCommandDocumentBaseInner>> call(Page<RunCommandDocumentBaseInner> page) {
                 return listNextInnerPageAsync(page.nextPageLink());
             }
         })
-        .flatMapIterable(new Func1<Page<RunCommandDocumentInner>, Iterable<RunCommandDocumentInner>>() {
+        .flatMapIterable(new Func1<Page<RunCommandDocumentBaseInner>, Iterable<RunCommandDocumentBaseInner>>() {
             @Override
-            public Iterable<RunCommandDocumentInner> call(Page<RunCommandDocumentInner> page) {
+            public Iterable<RunCommandDocumentBaseInner> call(Page<RunCommandDocumentBaseInner> page) {
                 return page.items();
             }
-       })
+        })
+        .flatMap(new Func1<RunCommandDocumentBaseInner, Observable<RunCommandDocumentInner>>() {
+            @Override
+            public Observable<RunCommandDocumentInner> call(RunCommandDocumentBaseInner inner) {
+                return getRunCommandDocumentInnerUsingVirtualMachineRunCommandsInnerAsync(inner.id());
+            }
+        })
         .map(new Func1<RunCommandDocumentInner, RunCommandDocument>() {
             @Override
             public RunCommandDocument call(RunCommandDocumentInner inner) {
-                return wrapModel(inner);
+                return wrapRunCommandDocumentModel(inner);
             }
-       });
+        });
     }
 
 }

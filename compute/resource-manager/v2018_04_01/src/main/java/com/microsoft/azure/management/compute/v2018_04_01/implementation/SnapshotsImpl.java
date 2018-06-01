@@ -23,7 +23,6 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.compute.v2018_04_01.AccessUri;
-import com.microsoft.azure.management.compute.v2018_04_01.OperationStatusResponse;
 import com.microsoft.azure.management.compute.v2018_04_01.GrantAccessData;
 
 class SnapshotsImpl extends GroupableResourcesCoreImpl<Snapshot, SnapshotImpl, SnapshotInner, SnapshotsInner, ComputeManager>  implements Snapshots {
@@ -109,13 +108,13 @@ class SnapshotsImpl extends GroupableResourcesCoreImpl<Snapshot, SnapshotImpl, S
             public Iterable<SnapshotInner> call(Page<SnapshotInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<SnapshotInner, Snapshot>() {
             @Override
             public Snapshot call(SnapshotInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -152,13 +151,13 @@ class SnapshotsImpl extends GroupableResourcesCoreImpl<Snapshot, SnapshotImpl, S
             public Iterable<SnapshotInner> call(Page<SnapshotInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<SnapshotInner, Snapshot>() {
             @Override
             public Snapshot call(SnapshotInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -179,15 +178,9 @@ class SnapshotsImpl extends GroupableResourcesCoreImpl<Snapshot, SnapshotImpl, S
     }
 
     @Override
-    public Observable<OperationStatusResponse> revokeAccessAsync(String resourceGroupName, String snapshotName) {
+    public Completable revokeAccessAsync(String resourceGroupName, String snapshotName) {
         SnapshotsInner client = this.inner();
-        return client.revokeAccessAsync(resourceGroupName, snapshotName)
-        .map(new Func1<OperationStatusResponseInner, OperationStatusResponse>() {
-            @Override
-            public OperationStatusResponse call(OperationStatusResponseInner inner) {
-                return new OperationStatusResponseImpl(inner, manager());
-            }
-        });
+        return client.revokeAccessAsync(resourceGroupName, snapshotName).toCompletable();
     }
 
     @Override

@@ -109,13 +109,13 @@ class SnapshotsImpl extends GroupableResourcesCoreImpl<Snapshot, SnapshotImpl, S
             public Iterable<SnapshotInner> call(Page<SnapshotInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<SnapshotInner, Snapshot>() {
             @Override
             public Snapshot call(SnapshotInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -152,13 +152,13 @@ class SnapshotsImpl extends GroupableResourcesCoreImpl<Snapshot, SnapshotImpl, S
             public Iterable<SnapshotInner> call(Page<SnapshotInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<SnapshotInner, Snapshot>() {
             @Override
             public Snapshot call(SnapshotInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

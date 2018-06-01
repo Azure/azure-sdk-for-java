@@ -113,7 +113,7 @@ class AvailabilitySetsImpl extends GroupableResourcesCoreImpl<AvailabilitySet, A
         return new AvailabilitySetImpl(name, new AvailabilitySetInner(), this.manager());
     }
 
-    private AvailabilitySetVirtualMachineSizeImpl wrapModel(VirtualMachineSizeInner inner) {
+    private AvailabilitySetVirtualMachineSizeImpl wrapAvailabilitySetVirtualMachineSizeModel(VirtualMachineSizeInner inner) {
         return  new AvailabilitySetVirtualMachineSizeImpl(inner, manager());
     }
 
@@ -130,7 +130,7 @@ class AvailabilitySetsImpl extends GroupableResourcesCoreImpl<AvailabilitySet, A
         .map(new Func1<VirtualMachineSizeInner, AvailabilitySetVirtualMachineSize>() {
             @Override
             public AvailabilitySetVirtualMachineSize call(VirtualMachineSizeInner inner) {
-                return wrapModel(inner);
+                return wrapAvailabilitySetVirtualMachineSizeModel(inner);
             }
         });
     }

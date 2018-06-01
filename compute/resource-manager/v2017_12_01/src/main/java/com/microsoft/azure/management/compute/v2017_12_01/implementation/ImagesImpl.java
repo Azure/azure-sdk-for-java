@@ -106,13 +106,13 @@ class ImagesImpl extends GroupableResourcesCoreImpl<Image, ImageImpl, ImageInner
             public Iterable<ImageInner> call(Page<ImageInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ImageInner, Image>() {
             @Override
             public Image call(ImageInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -149,13 +149,13 @@ class ImagesImpl extends GroupableResourcesCoreImpl<Image, ImageImpl, ImageInner
             public Iterable<ImageInner> call(Page<ImageInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ImageInner, Image>() {
             @Override
             public Image call(ImageInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

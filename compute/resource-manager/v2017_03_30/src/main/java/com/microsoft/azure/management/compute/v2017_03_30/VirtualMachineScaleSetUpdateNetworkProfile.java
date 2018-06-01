@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.compute.v2017_03_30;
 
 import java.util.List;
-import com.microsoft.azure.management.compute.v2017_03_30.implementation.VirtualMachineScaleSetUpdateNetworkConfigurationInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -20,14 +19,14 @@ public class VirtualMachineScaleSetUpdateNetworkProfile {
      * The list of network configurations.
      */
     @JsonProperty(value = "networkInterfaceConfigurations")
-    private List<VirtualMachineScaleSetUpdateNetworkConfigurationInner> networkInterfaceConfigurations;
+    private List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations;
 
     /**
      * Get the networkInterfaceConfigurations value.
      *
      * @return the networkInterfaceConfigurations value
      */
-    public List<VirtualMachineScaleSetUpdateNetworkConfigurationInner> networkInterfaceConfigurations() {
+    public List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations() {
         return this.networkInterfaceConfigurations;
     }
 
@@ -37,7 +36,7 @@ public class VirtualMachineScaleSetUpdateNetworkProfile {
      * @param networkInterfaceConfigurations the networkInterfaceConfigurations value to set
      * @return the VirtualMachineScaleSetUpdateNetworkProfile object itself.
      */
-    public VirtualMachineScaleSetUpdateNetworkProfile withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetUpdateNetworkConfigurationInner> networkInterfaceConfigurations) {
+    public VirtualMachineScaleSetUpdateNetworkProfile withNetworkInterfaceConfigurations(List<VirtualMachineScaleSetUpdateNetworkConfiguration> networkInterfaceConfigurations) {
         this.networkInterfaceConfigurations = networkInterfaceConfigurations;
         return this;
     }

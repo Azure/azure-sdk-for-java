@@ -60,13 +60,13 @@ class UsagesImpl extends WrapperImpl<UsagesInner> implements Usages {
             public Iterable<UsageInner> call(Page<UsageInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<UsageInner, Usage>() {
             @Override
             public Usage call(UsageInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
 }

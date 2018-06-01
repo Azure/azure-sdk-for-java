@@ -16,8 +16,8 @@ import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.compute.v2017_12_01.OperationStatusResponse;
-import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetVM;
 import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetVMInstanceView;
+import com.microsoft.azure.management.compute.v2017_12_01.VirtualMachineScaleSetVM;
 
 class VirtualMachineScaleSetVMsImpl extends WrapperImpl<VirtualMachineScaleSetVMsInner> implements VirtualMachineScaleSetVMs {
     private final ComputeManager manager;
@@ -67,18 +67,6 @@ class VirtualMachineScaleSetVMsImpl extends WrapperImpl<VirtualMachineScaleSetVM
             @Override
             public OperationStatusResponse call(OperationStatusResponseInner inner) {
                 return new OperationStatusResponseImpl(inner, manager());
-            }
-        });
-    }
-
-    @Override
-    public Observable<VirtualMachineScaleSetVM> updateAsync(String resourceGroupName, String vmScaleSetName, String instanceId, VirtualMachineScaleSetVMInner parameters) {
-        VirtualMachineScaleSetVMsInner client = this.inner();
-        return client.updateAsync(resourceGroupName, vmScaleSetName, instanceId, parameters)
-        .map(new Func1<VirtualMachineScaleSetVMInner, VirtualMachineScaleSetVM>() {
-            @Override
-            public VirtualMachineScaleSetVM call(VirtualMachineScaleSetVMInner inner) {
-                return new VirtualMachineScaleSetVMImpl(inner, manager());
             }
         });
     }
@@ -183,13 +171,13 @@ class VirtualMachineScaleSetVMsImpl extends WrapperImpl<VirtualMachineScaleSetVM
             public Iterable<VirtualMachineScaleSetVMInner> call(Page<VirtualMachineScaleSetVMInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<VirtualMachineScaleSetVMInner, VirtualMachineScaleSetVM>() {
             @Override
             public VirtualMachineScaleSetVM call(VirtualMachineScaleSetVMInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

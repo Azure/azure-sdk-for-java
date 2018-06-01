@@ -192,7 +192,7 @@ public interface Snapshot extends HasInner<SnapshotInner>, Resource, GroupableRe
             /**
              * Specifies sku.
              */
-            Update withSku(DiskSku sku);
+            Update withSku(SnapshotSku sku);
         }
 
     }

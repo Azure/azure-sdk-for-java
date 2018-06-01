@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.compute.v2017_03_30;
 
-import com.microsoft.azure.management.compute.v2017_03_30.implementation.ManagedDiskParametersInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -91,7 +90,7 @@ public class OSDisk {
      * The managed disk parameters.
      */
     @JsonProperty(value = "managedDisk")
-    private ManagedDiskParametersInner managedDisk;
+    private ManagedDiskParameters managedDisk;
 
     /**
      * Get the osType value.
@@ -258,7 +257,7 @@ public class OSDisk {
      *
      * @return the managedDisk value
      */
-    public ManagedDiskParametersInner managedDisk() {
+    public ManagedDiskParameters managedDisk() {
         return this.managedDisk;
     }
 
@@ -268,7 +267,7 @@ public class OSDisk {
      * @param managedDisk the managedDisk value to set
      * @return the OSDisk object itself.
      */
-    public OSDisk withManagedDisk(ManagedDiskParametersInner managedDisk) {
+    public OSDisk withManagedDisk(ManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
         return this;
     }

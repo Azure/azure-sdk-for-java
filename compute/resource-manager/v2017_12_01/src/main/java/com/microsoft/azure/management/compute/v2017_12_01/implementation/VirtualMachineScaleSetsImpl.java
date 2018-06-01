@@ -112,13 +112,13 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
             public Iterable<VirtualMachineScaleSetInner> call(Page<VirtualMachineScaleSetInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<VirtualMachineScaleSetInner, VirtualMachineScaleSet>() {
             @Override
             public VirtualMachineScaleSet call(VirtualMachineScaleSetInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -155,13 +155,13 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
             public Iterable<VirtualMachineScaleSetInner> call(Page<VirtualMachineScaleSetInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<VirtualMachineScaleSetInner, VirtualMachineScaleSet>() {
             @Override
             public VirtualMachineScaleSet call(VirtualMachineScaleSetInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -360,7 +360,7 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
         return new VirtualMachineScaleSetImpl(name, new VirtualMachineScaleSetInner(), this.manager());
     }
 
-    private VirtualMachineScaleSetSkuImpl wrapModel(VirtualMachineScaleSetSkuInner inner) {
+    private VirtualMachineScaleSetSkuImpl wrapVirtualMachineScaleSetSkuModel(VirtualMachineScaleSetSkuInner inner) {
         return  new VirtualMachineScaleSetSkuImpl(inner, manager());
     }
 
@@ -392,13 +392,13 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
             public Iterable<VirtualMachineScaleSetSkuInner> call(Page<VirtualMachineScaleSetSkuInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<VirtualMachineScaleSetSkuInner, VirtualMachineScaleSetSku>() {
             @Override
             public VirtualMachineScaleSetSku call(VirtualMachineScaleSetSkuInner inner) {
-                return wrapModel(inner);
+                return wrapVirtualMachineScaleSetSkuModel(inner);
             }
-       });
+        });
     }
 
 }

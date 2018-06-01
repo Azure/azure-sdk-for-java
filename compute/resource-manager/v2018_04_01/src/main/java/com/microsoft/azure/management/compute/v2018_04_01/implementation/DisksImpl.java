@@ -23,7 +23,6 @@ import rx.functions.Func1;
 import com.microsoft.azure.PagedList;
 import com.microsoft.azure.Page;
 import com.microsoft.azure.management.compute.v2018_04_01.AccessUri;
-import com.microsoft.azure.management.compute.v2018_04_01.OperationStatusResponse;
 import com.microsoft.azure.management.compute.v2018_04_01.GrantAccessData;
 
 class DisksImpl extends GroupableResourcesCoreImpl<Disk, DiskImpl, DiskInner, DisksInner, ComputeManager>  implements Disks {
@@ -109,13 +108,13 @@ class DisksImpl extends GroupableResourcesCoreImpl<Disk, DiskImpl, DiskInner, Di
             public Iterable<DiskInner> call(Page<DiskInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<DiskInner, Disk>() {
             @Override
             public Disk call(DiskInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -152,13 +151,13 @@ class DisksImpl extends GroupableResourcesCoreImpl<Disk, DiskImpl, DiskInner, Di
             public Iterable<DiskInner> call(Page<DiskInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<DiskInner, Disk>() {
             @Override
             public Disk call(DiskInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -179,15 +178,9 @@ class DisksImpl extends GroupableResourcesCoreImpl<Disk, DiskImpl, DiskInner, Di
     }
 
     @Override
-    public Observable<OperationStatusResponse> revokeAccessAsync(String resourceGroupName, String diskName) {
+    public Completable revokeAccessAsync(String resourceGroupName, String diskName) {
         DisksInner client = this.inner();
-        return client.revokeAccessAsync(resourceGroupName, diskName)
-        .map(new Func1<OperationStatusResponseInner, OperationStatusResponse>() {
-            @Override
-            public OperationStatusResponse call(OperationStatusResponseInner inner) {
-                return new OperationStatusResponseImpl(inner, manager());
-            }
-        });
+        return client.revokeAccessAsync(resourceGroupName, diskName).toCompletable();
     }
 
     @Override

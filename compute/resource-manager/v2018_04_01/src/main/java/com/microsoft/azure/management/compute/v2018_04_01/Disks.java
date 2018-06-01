@@ -15,6 +15,7 @@ import com.microsoft.azure.arm.resources.collection.SupportsGettingByResourceGro
 import rx.Observable;
 import com.microsoft.azure.arm.resources.collection.SupportsListingByResourceGroup;
 import com.microsoft.azure.arm.collection.SupportsListing;
+import rx.Completable;
 import com.microsoft.azure.management.compute.v2018_04_01.implementation.DisksInner;
 import com.microsoft.azure.arm.model.HasInner;
 
@@ -41,6 +42,6 @@ public interface Disks extends SupportsCreating<Disk.DefinitionStages.Blank>, Su
      * @throws IllegalArgumentException thrown if parameters fail the validation
      * @return the observable for the request
      */
-    Observable<OperationStatusResponse> revokeAccessAsync(String resourceGroupName, String diskName);
+    Completable revokeAccessAsync(String resourceGroupName, String diskName);
 
 }

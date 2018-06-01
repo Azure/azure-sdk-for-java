@@ -70,13 +70,13 @@ class VirtualMachineScaleSetExtensionsImpl extends WrapperImpl<VirtualMachineSca
             public Iterable<VirtualMachineScaleSetExtensionInner> call(Page<VirtualMachineScaleSetExtensionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<VirtualMachineScaleSetExtensionInner, VirtualMachineScaleSetExtension>() {
             @Override
             public VirtualMachineScaleSetExtension call(VirtualMachineScaleSetExtensionInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

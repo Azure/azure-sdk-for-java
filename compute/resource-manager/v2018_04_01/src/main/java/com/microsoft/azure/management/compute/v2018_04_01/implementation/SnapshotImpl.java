@@ -17,7 +17,6 @@ import org.joda.time.DateTime;
 import com.microsoft.azure.management.compute.v2018_04_01.OperatingSystemTypes;
 import com.microsoft.azure.management.compute.v2018_04_01.CreationData;
 import com.microsoft.azure.management.compute.v2018_04_01.EncryptionSettings;
-import com.microsoft.azure.management.compute.v2018_04_01.DiskSku;
 import rx.functions.Func1;
 
 class SnapshotImpl extends GroupableResourceCoreImpl<Snapshot, SnapshotInner, SnapshotImpl, ComputeManager> implements Snapshot, Snapshot.Definition, Snapshot.Update {
@@ -117,18 +116,6 @@ class SnapshotImpl extends GroupableResourceCoreImpl<Snapshot, SnapshotInner, Sn
     }
 
     @Override
-    public SnapshotImpl withSku(SnapshotSku sku) {
-        this.inner().withSku(sku);
-        return this;
-    }
-
-    @Override
-    public SnapshotImpl withSku(DiskSku sku) {
-        this.updateParameter.withSku(sku);
-        return this;
-    }
-
-    @Override
     public SnapshotImpl withDiskSizeGB(Integer diskSizeGB) {
         if (isInCreateMode()) {
             this.inner().withDiskSizeGB(diskSizeGB);
@@ -154,6 +141,16 @@ class SnapshotImpl extends GroupableResourceCoreImpl<Snapshot, SnapshotInner, Sn
             this.inner().withOsType(osType);
         } else {
             this.updateParameter.withOsType(osType);
+        }
+        return this;
+    }
+
+    @Override
+    public SnapshotImpl withSku(SnapshotSku sku) {
+        if (isInCreateMode()) {
+            this.inner().withSku(sku);
+        } else {
+            this.updateParameter.withSku(sku);
         }
         return this;
     }
