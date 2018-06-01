@@ -34,6 +34,13 @@
     "source": "specification/eventgrid/data-plane/readme.md",
     "args": "--multiapi"
   },
+  "iotcentral/resource-manager": {
+    "source": "specification/iotcentral/resource-manager/readme.md",
+    "args": "--multiapi --fluent",
+    "fconfig": {
+      "\"moduleName\"": "\"IoTCentral\""
+    }
+  },
   "iothub/resource-manager": {
     "source": "specification/iothub/resource-manager/readme.md",
     "args": "--multiapi --fluent --remove-inner=ErrorDetails",
