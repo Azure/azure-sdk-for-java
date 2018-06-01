@@ -22,22 +22,17 @@ import org.junit.Assert;
 import org.junit.Test;
 
 public class AzureTests extends TestBase {
-    protected static ResourceManager resourceManager;
     protected static Azure azure;
     private static String rgName;
 
     @Override
     protected void initializeClients(RestClient restClient, String defaultSubscription, String domain) {
-        resourceManager = ResourceManager
-                .authenticate(restClient)
-                .withSubscription(defaultSubscription);
-
         azure = Azure.authenticate(restClient, defaultSubscription);
     }
 
     @Override
     protected void cleanUpResources() {
-        resourceManager.resourceGroups().deleteByName(rgName);
+        azure.resourceGroups().deleteAsync(rgName).await();
     }
 
     @Test
