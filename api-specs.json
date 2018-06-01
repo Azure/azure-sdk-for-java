@@ -22,6 +22,10 @@
     "source": "specification/containerservices/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "dns/resource-manager": {
+    "source": "specification/dns/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "eventgrid/resource-manager": {
     "source": "specification/eventgrid/resource-manager/readme.md",
     "args": "--multiapi --fluent"

@@ -28,7 +28,7 @@ class LocationBasedPerformanceTiersImpl extends WrapperImpl<LocationBasedPerform
         return this.manager;
     }
 
-    private PerformanceTierPropertiesImpl wrapModel(PerformanceTierPropertiesInner inner) {
+    private PerformanceTierPropertiesImpl wrapPerformanceTierPropertiesModel(PerformanceTierPropertiesInner inner) {
         return  new PerformanceTierPropertiesImpl(inner, manager());
     }
 
@@ -45,7 +45,7 @@ class LocationBasedPerformanceTiersImpl extends WrapperImpl<LocationBasedPerform
         .map(new Func1<PerformanceTierPropertiesInner, PerformanceTierProperties>() {
             @Override
             public PerformanceTierProperties call(PerformanceTierPropertiesInner inner) {
-                return wrapModel(inner);
+                return wrapPerformanceTierPropertiesModel(inner);
             }
         });
     }

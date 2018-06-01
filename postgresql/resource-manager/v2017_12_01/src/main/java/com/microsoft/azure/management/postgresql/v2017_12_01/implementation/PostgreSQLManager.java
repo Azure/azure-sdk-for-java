@@ -18,6 +18,7 @@ import com.microsoft.azure.serializer.AzureJacksonAdapter;
 import com.microsoft.rest.RestClient;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Servers;
 import com.microsoft.azure.management.postgresql.v2017_12_01.FirewallRules;
+import com.microsoft.azure.management.postgresql.v2017_12_01.VirtualNetworkRules;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Databases;
 import com.microsoft.azure.management.postgresql.v2017_12_01.Configurations;
 import com.microsoft.azure.management.postgresql.v2017_12_01.LogFiles;
@@ -34,6 +35,7 @@ import com.microsoft.azure.arm.resources.implementation.ManagerCore;
 public final class PostgreSQLManager extends ManagerCore<PostgreSQLManager, PostgreSQLManagementClientImpl> {
     private Servers servers;
     private FirewallRules firewallRules;
+    private VirtualNetworkRules virtualNetworkRules;
     private Databases databases;
     private Configurations configurations;
     private LogFiles logFiles;
@@ -106,6 +108,16 @@ public final class PostgreSQLManager extends ManagerCore<PostgreSQLManager, Post
             this.firewallRules = new FirewallRulesImpl(this);
         }
         return this.firewallRules;
+    }
+
+    /**
+     * @return Entry point to manage VirtualNetworkRules.
+     */
+    public VirtualNetworkRules virtualNetworkRules() {
+        if (this.virtualNetworkRules == null) {
+            this.virtualNetworkRules = new VirtualNetworkRulesImpl(this);
+        }
+        return this.virtualNetworkRules;
     }
 
     /**
