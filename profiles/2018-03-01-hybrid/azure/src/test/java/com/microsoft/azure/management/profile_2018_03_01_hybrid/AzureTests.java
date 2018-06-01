@@ -61,5 +61,7 @@ public class AzureTests extends TestBase {
 
         Assert.assertNotNull(storageAccount);
         Assert.assertNotNull(storageAccount.id());
+
+        azure.
     }
 }

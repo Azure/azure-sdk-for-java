@@ -322,9 +322,9 @@ class WebAppsImpl extends WrapperImpl<WebAppsInner> implements WebApps {
     private Observable<DeploymentInner> getDeploymentInnerUsingWebAppsInnerAsync(String id) {
         String resourceGroupName = IdParsingUtils.getValueFromIdByName(id, "resourceGroups");
         String name = IdParsingUtils.getValueFromIdByName(id, "sites");
-        String id = IdParsingUtils.getValueFromIdByName(id, "deployments");
+        String deploymentName = IdParsingUtils.getValueFromIdByName(id, "deployments");
         WebAppsInner client = this.inner();
-        return client.getDeploymentAsync(resourceGroupName, name, id);
+        return client.getDeploymentAsync(resourceGroupName, name, deploymentName);
     }
 
     private Observable<IdentifierInner> getIdentifierInnerUsingWebAppsInnerAsync(String id) {
