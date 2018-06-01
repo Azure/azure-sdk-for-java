@@ -30,7 +30,7 @@ import okio.Buffer;
 
 /**
  * Implements message security protocol.
- * Encrypts requests & decrypts responses.
+ * Encrypts requests &amp; decrypts responses.
  */
 public class HttpMessageSecurity {
     private static final String AUTHENTICATE = "Authorization";
