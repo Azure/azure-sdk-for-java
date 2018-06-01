@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.compute.v2017_12_01;
 
-import com.microsoft.azure.management.compute.v2017_12_01.implementation.ImageReferenceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -44,7 +43,7 @@ public class UpgradeOperationHistoricalStatusInfoProperties {
      * Image Reference details.
      */
     @JsonProperty(value = "targetImageReference", access = JsonProperty.Access.WRITE_ONLY)
-    private ImageReferenceInner targetImageReference;
+    private ImageReference targetImageReference;
 
     /**
      * Information about OS rollback if performed.
@@ -93,7 +92,7 @@ public class UpgradeOperationHistoricalStatusInfoProperties {
      *
      * @return the targetImageReference value
      */
-    public ImageReferenceInner targetImageReference() {
+    public ImageReference targetImageReference() {
         return this.targetImageReference;
     }
 

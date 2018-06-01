@@ -18,9 +18,10 @@ import com.microsoft.azure.management.network.v2018_05_01.Ipv6ExpressRouteCircui
 import java.util.List;
 import java.util.ArrayList;
 import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitConnection;
+import com.microsoft.azure.management.network.v2018_05_01.RouteFilter;
 import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitStats;
 
-class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringImpl> implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition {
+class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRouteCircuitPeering, ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeeringImpl> implements ExpressRouteCircuitPeering, ExpressRouteCircuitPeering.Definition, ExpressRouteCircuitPeering.Update {
     private final NetworkManager manager;
     private String resourceGroupName;
     private String circuitName;
@@ -61,7 +62,8 @@ class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRoute
     @Override
     public Observable<ExpressRouteCircuitPeering> updateResourceAsync() {
         ExpressRouteCircuitPeeringsInner client = this.manager().inner().expressRouteCircuitPeerings();
-        return null; // NOP updateResourceAsync implementation as update is not supported
+        return client.createOrUpdateAsync(this.resourceGroupName, this.circuitName, this.peeringName, this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
@@ -153,8 +155,13 @@ class ExpressRouteCircuitPeeringImpl extends CreatableUpdatableImpl<ExpressRoute
     }
 
     @Override
-    public RouteFilterInner routeFilter() {
-        return this.inner().routeFilter();
+    public RouteFilter routeFilter() {
+        RouteFilterInner inner = this.inner().routeFilter();
+        if (inner != null) {
+            return  new RouteFilterImpl(inner.name(), inner, manager());
+        } else {
+            return null;
+        }
     }
 
     @Override

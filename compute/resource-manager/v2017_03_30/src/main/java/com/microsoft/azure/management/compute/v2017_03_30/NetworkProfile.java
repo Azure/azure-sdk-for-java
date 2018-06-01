@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.compute.v2017_03_30;
 
 import java.util.List;
-import com.microsoft.azure.management.compute.v2017_03_30.implementation.NetworkInterfaceReferenceInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -21,14 +20,14 @@ public class NetworkProfile {
      * with the virtual machine.
      */
     @JsonProperty(value = "networkInterfaces")
-    private List<NetworkInterfaceReferenceInner> networkInterfaces;
+    private List<NetworkInterfaceReference> networkInterfaces;
 
     /**
      * Get the networkInterfaces value.
      *
      * @return the networkInterfaces value
      */
-    public List<NetworkInterfaceReferenceInner> networkInterfaces() {
+    public List<NetworkInterfaceReference> networkInterfaces() {
         return this.networkInterfaces;
     }
 
@@ -38,7 +37,7 @@ public class NetworkProfile {
      * @param networkInterfaces the networkInterfaces value to set
      * @return the NetworkProfile object itself.
      */
-    public NetworkProfile withNetworkInterfaces(List<NetworkInterfaceReferenceInner> networkInterfaces) {
+    public NetworkProfile withNetworkInterfaces(List<NetworkInterfaceReference> networkInterfaces) {
         this.networkInterfaces = networkInterfaces;
         return this;
     }

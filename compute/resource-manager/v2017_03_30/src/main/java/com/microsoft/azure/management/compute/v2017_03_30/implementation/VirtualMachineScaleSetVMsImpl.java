@@ -147,13 +147,13 @@ class VirtualMachineScaleSetVMsImpl extends WrapperImpl<VirtualMachineScaleSetVM
             public Iterable<VirtualMachineScaleSetVMInner> call(Page<VirtualMachineScaleSetVMInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<VirtualMachineScaleSetVMInner, VirtualMachineScaleSetVM>() {
             @Override
             public VirtualMachineScaleSetVM call(VirtualMachineScaleSetVMInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

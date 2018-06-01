@@ -11,6 +11,7 @@ package com.microsoft.azure.management.authorization.v2016_12_01.implementation;
 
 import com.microsoft.azure.arm.model.implementation.WrapperImpl;
 import com.microsoft.azure.management.authorization.v2016_12_01.PolicyAssignments;
+import rx.Completable;
 import rx.Observable;
 import rx.functions.Func1;
 import com.microsoft.azure.PagedList;

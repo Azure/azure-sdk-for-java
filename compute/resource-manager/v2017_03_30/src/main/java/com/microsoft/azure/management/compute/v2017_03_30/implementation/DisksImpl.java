@@ -109,13 +109,13 @@ class DisksImpl extends GroupableResourcesCoreImpl<Disk, DiskImpl, DiskInner, Di
             public Iterable<DiskInner> call(Page<DiskInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<DiskInner, Disk>() {
             @Override
             public Disk call(DiskInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -152,13 +152,13 @@ class DisksImpl extends GroupableResourcesCoreImpl<Disk, DiskImpl, DiskInner, Di
             public Iterable<DiskInner> call(Page<DiskInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<DiskInner, Disk>() {
             @Override
             public Disk call(DiskInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

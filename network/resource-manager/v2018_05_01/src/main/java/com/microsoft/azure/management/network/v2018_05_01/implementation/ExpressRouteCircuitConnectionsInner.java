@@ -152,10 +152,8 @@ public class ExpressRouteCircuitConnectionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-05-01";
+        Observable<Response<ResponseBody>> observable = service.delete(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPostOrDeleteResultAsync(observable, new TypeToken<Void>() { }.getType());
     }
 
@@ -234,10 +232,8 @@ public class ExpressRouteCircuitConnectionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.beginDelete(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-05-01";
+        return service.beginDelete(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<Void>>>() {
                 @Override
                 public Observable<ServiceResponse<Void>> call(Response<ResponseBody> response) {
@@ -336,10 +332,8 @@ public class ExpressRouteCircuitConnectionsInner {
         if (this.client.subscriptionId() == null) {
             throw new IllegalArgumentException("Parameter this.client.subscriptionId() is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
-        return service.get(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-05-01";
+        return service.get(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitConnectionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitConnectionInner>> call(Response<ResponseBody> response) {
@@ -443,11 +437,9 @@ public class ExpressRouteCircuitConnectionsInner {
         if (expressRouteCircuitConnectionParameters == null) {
             throw new IllegalArgumentException("Parameter expressRouteCircuitConnectionParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(expressRouteCircuitConnectionParameters);
-        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), expressRouteCircuitConnectionParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent());
+        final String apiVersion = "2018-05-01";
+        Observable<Response<ResponseBody>> observable = service.createOrUpdate(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), expressRouteCircuitConnectionParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent());
         return client.getAzureClient().getPutOrPatchResultAsync(observable, new TypeToken<ExpressRouteCircuitConnectionInner>() { }.getType());
     }
 
@@ -534,11 +526,9 @@ public class ExpressRouteCircuitConnectionsInner {
         if (expressRouteCircuitConnectionParameters == null) {
             throw new IllegalArgumentException("Parameter expressRouteCircuitConnectionParameters is required and cannot be null.");
         }
-        if (this.client.apiVersion() == null) {
-            throw new IllegalArgumentException("Parameter this.client.apiVersion() is required and cannot be null.");
-        }
         Validator.validate(expressRouteCircuitConnectionParameters);
-        return service.beginCreateOrUpdate(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), expressRouteCircuitConnectionParameters, this.client.apiVersion(), this.client.acceptLanguage(), this.client.userAgent())
+        final String apiVersion = "2018-05-01";
+        return service.beginCreateOrUpdate(resourceGroupName, circuitName, peeringName, connectionName, this.client.subscriptionId(), expressRouteCircuitConnectionParameters, apiVersion, this.client.acceptLanguage(), this.client.userAgent())
             .flatMap(new Func1<Response<ResponseBody>, Observable<ServiceResponse<ExpressRouteCircuitConnectionInner>>>() {
                 @Override
                 public Observable<ServiceResponse<ExpressRouteCircuitConnectionInner>> call(Response<ResponseBody> response) {

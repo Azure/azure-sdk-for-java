@@ -12,16 +12,18 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.compute.v2017_12_01.implementation.VirtualMachineScaleSetVMInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
+import com.microsoft.azure.arm.model.Updatable;
+import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.compute.v2017_12_01.implementation.ComputeManager;
+import java.util.Map;
 import com.microsoft.azure.SubResource;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Type representing VirtualMachineScaleSetVM.
  */
-public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSetVMInner>, Indexable, Refreshable<VirtualMachineScaleSetVM>, HasManager<ComputeManager> {
+public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSetVMInner>, Indexable, Refreshable<VirtualMachineScaleSetVM>, Updatable<VirtualMachineScaleSetVM.Update>, HasManager<ComputeManager> {
     /**
      * @return the availabilitySet value.
      */
@@ -122,4 +124,105 @@ public interface VirtualMachineScaleSetVM extends HasInner<VirtualMachineScaleSe
      */
     String vmId();
 
+    /**
+     * The template for a VirtualMachineScaleSetVM update operation, containing all the settings that can be modified.
+     */
+    interface Update extends Appliable<VirtualMachineScaleSetVM>, UpdateStages.WithAvailabilitySet, UpdateStages.WithDiagnosticsProfile, UpdateStages.WithHardwareProfile, UpdateStages.WithLicenseType, UpdateStages.WithNetworkProfile, UpdateStages.WithOsProfile, UpdateStages.WithPlan, UpdateStages.WithStorageProfile, UpdateStages.WithTags {
+    }
+
+    /**
+     * Grouping of VirtualMachineScaleSetVM update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the virtualmachinescalesetvm update allowing to specify AvailabilitySet.
+         */
+        interface WithAvailabilitySet {
+            /**
+             * Specifies availabilitySet.
+             */
+            Update withAvailabilitySet(SubResource availabilitySet);
+        }
+
+        /**
+         * The stage of the virtualmachinescalesetvm update allowing to specify DiagnosticsProfile.
+         */
+        interface WithDiagnosticsProfile {
+            /**
+             * Specifies diagnosticsProfile.
+             */
+            Update withDiagnosticsProfile(DiagnosticsProfile diagnosticsProfile);
+        }
+
+        /**
+         * The stage of the virtualmachinescalesetvm update allowing to specify HardwareProfile.
+         */
+        interface WithHardwareProfile {
+            /**
+             * Specifies hardwareProfile.
+             */
+            Update withHardwareProfile(HardwareProfile hardwareProfile);
+        }
+
+        /**
+         * The stage of the virtualmachinescalesetvm update allowing to specify LicenseType.
+         */
+        interface WithLicenseType {
+            /**
+             * Specifies licenseType.
+             */
+            Update withLicenseType(String licenseType);
+        }
+
+        /**
+         * The stage of the virtualmachinescalesetvm update allowing to specify NetworkProfile.
+         */
+        interface WithNetworkProfile {
+            /**
+             * Specifies networkProfile.
+             */
+            Update withNetworkProfile(NetworkProfile networkProfile);
+        }
+
+        /**
+         * The stage of the virtualmachinescalesetvm update allowing to specify OsProfile.
+         */
+        interface WithOsProfile {
+            /**
+             * Specifies osProfile.
+             */
+            Update withOsProfile(OSProfile osProfile);
+        }
+
+        /**
+         * The stage of the virtualmachinescalesetvm update allowing to specify Plan.
+         */
+        interface WithPlan {
+            /**
+             * Specifies plan.
+             */
+            Update withPlan(Plan plan);
+        }
+
+        /**
+         * The stage of the virtualmachinescalesetvm update allowing to specify StorageProfile.
+         */
+        interface WithStorageProfile {
+            /**
+             * Specifies storageProfile.
+             */
+            Update withStorageProfile(StorageProfile storageProfile);
+        }
+
+        /**
+         * The stage of the virtualmachinescalesetvm update allowing to specify Tags.
+         */
+        interface WithTags {
+            /**
+             * Specifies tags.
+             */
+            Update withTags(Map<String, String> tags);
+        }
+
+    }
 }

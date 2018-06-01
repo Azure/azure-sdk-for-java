@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.compute.v2017_12_01;
 
-import com.microsoft.azure.management.compute.v2017_12_01.implementation.ImageReferenceInner;
 import java.util.List;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -20,7 +19,7 @@ public class VirtualMachineScaleSetUpdateStorageProfile {
      * The image reference.
      */
     @JsonProperty(value = "imageReference")
-    private ImageReferenceInner imageReference;
+    private ImageReference imageReference;
 
     /**
      * The OS disk.
@@ -39,7 +38,7 @@ public class VirtualMachineScaleSetUpdateStorageProfile {
      *
      * @return the imageReference value
      */
-    public ImageReferenceInner imageReference() {
+    public ImageReference imageReference() {
         return this.imageReference;
     }
 
@@ -49,7 +48,7 @@ public class VirtualMachineScaleSetUpdateStorageProfile {
      * @param imageReference the imageReference value to set
      * @return the VirtualMachineScaleSetUpdateStorageProfile object itself.
      */
-    public VirtualMachineScaleSetUpdateStorageProfile withImageReference(ImageReferenceInner imageReference) {
+    public VirtualMachineScaleSetUpdateStorageProfile withImageReference(ImageReference imageReference) {
         this.imageReference = imageReference;
         return this;
     }

@@ -70,13 +70,13 @@ class ExpressRouteCircuitPeeringsImpl extends WrapperImpl<ExpressRouteCircuitPee
             public Iterable<ExpressRouteCircuitPeeringInner> call(Page<ExpressRouteCircuitPeeringInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ExpressRouteCircuitPeeringInner, ExpressRouteCircuitPeering>() {
             @Override
             public ExpressRouteCircuitPeering call(ExpressRouteCircuitPeeringInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

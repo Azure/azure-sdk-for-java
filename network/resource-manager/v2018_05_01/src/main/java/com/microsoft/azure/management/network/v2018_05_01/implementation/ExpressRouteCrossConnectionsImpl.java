@@ -72,13 +72,13 @@ class ExpressRouteCrossConnectionsImpl extends GroupableResourcesCoreImpl<Expres
             public Iterable<ExpressRouteCrossConnectionInner> call(Page<ExpressRouteCrossConnectionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ExpressRouteCrossConnectionInner, ExpressRouteCrossConnection>() {
             @Override
             public ExpressRouteCrossConnection call(ExpressRouteCrossConnectionInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -115,13 +115,13 @@ class ExpressRouteCrossConnectionsImpl extends GroupableResourcesCoreImpl<Expres
             public Iterable<ExpressRouteCrossConnectionInner> call(Page<ExpressRouteCrossConnectionInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ExpressRouteCrossConnectionInner, ExpressRouteCrossConnection>() {
             @Override
             public ExpressRouteCrossConnection call(ExpressRouteCrossConnectionInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

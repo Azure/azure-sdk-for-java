@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.compute.v2017_12_01;
 
-import com.microsoft.azure.management.compute.v2017_12_01.implementation.ManagedDiskParametersInner;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 /**
@@ -86,7 +85,7 @@ public class DataDisk {
      * The managed disk parameters.
      */
     @JsonProperty(value = "managedDisk")
-    private ManagedDiskParametersInner managedDisk;
+    private ManagedDiskParameters managedDisk;
 
     /**
      * Get the lun value.
@@ -253,7 +252,7 @@ public class DataDisk {
      *
      * @return the managedDisk value
      */
-    public ManagedDiskParametersInner managedDisk() {
+    public ManagedDiskParameters managedDisk() {
         return this.managedDisk;
     }
 
@@ -263,7 +262,7 @@ public class DataDisk {
      * @param managedDisk the managedDisk value to set
      * @return the DataDisk object itself.
      */
-    public DataDisk withManagedDisk(ManagedDiskParametersInner managedDisk) {
+    public DataDisk withManagedDisk(ManagedDiskParameters managedDisk) {
         this.managedDisk = managedDisk;
         return this;
     }

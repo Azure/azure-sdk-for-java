@@ -28,8 +28,17 @@ class VirtualMachineExtensionImagesImpl extends WrapperImpl<VirtualMachineExtens
         return this.manager;
     }
 
-    private VirtualMachineExtensionImageImpl wrapModel(VirtualMachineExtensionImageInner inner) {
+    private VirtualMachineExtensionImageImpl wrapVirtualMachineExtensionImageModel(VirtualMachineExtensionImageInner inner) {
         return  new VirtualMachineExtensionImageImpl(inner, manager());
+    }
+
+    private Observable<VirtualMachineExtensionImageInner> getVirtualMachineExtensionImageInnerUsingVirtualMachineExtensionImagesInnerAsync(String id) {
+        String location = IdParsingUtils.getValueFromIdByName(id, "locations");
+        String publisherName = IdParsingUtils.getValueFromIdByName(id, "publishers");
+        String type = IdParsingUtils.getValueFromIdByName(id, "types");
+        String version = IdParsingUtils.getValueFromIdByName(id, "versions");
+        VirtualMachineExtensionImagesInner client = this.inner();
+        return client.getAsync(location, publisherName, type, version);
     }
 
     @Override
@@ -39,7 +48,7 @@ class VirtualMachineExtensionImagesImpl extends WrapperImpl<VirtualMachineExtens
         .map(new Func1<VirtualMachineExtensionImageInner, VirtualMachineExtensionImage>() {
             @Override
             public VirtualMachineExtensionImage call(VirtualMachineExtensionImageInner inner) {
-                return wrapModel(inner);
+                return wrapVirtualMachineExtensionImageModel(inner);
             }
        });
     }
@@ -57,7 +66,7 @@ class VirtualMachineExtensionImagesImpl extends WrapperImpl<VirtualMachineExtens
         .map(new Func1<VirtualMachineExtensionImageInner, VirtualMachineExtensionImage>() {
             @Override
             public VirtualMachineExtensionImage call(VirtualMachineExtensionImageInner inner) {
-                return wrapModel(inner);
+                return wrapVirtualMachineExtensionImageModel(inner);
             }
         });
     }
