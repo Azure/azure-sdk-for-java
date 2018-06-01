@@ -70,13 +70,13 @@ class ExpressRouteCrossConnectionPeeringsImpl extends WrapperImpl<ExpressRouteCr
             public Iterable<ExpressRouteCrossConnectionPeeringInner> call(Page<ExpressRouteCrossConnectionPeeringInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeering>() {
             @Override
             public ExpressRouteCrossConnectionPeering call(ExpressRouteCrossConnectionPeeringInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

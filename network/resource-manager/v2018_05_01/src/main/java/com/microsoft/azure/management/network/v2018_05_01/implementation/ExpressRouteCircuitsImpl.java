@@ -110,13 +110,13 @@ class ExpressRouteCircuitsImpl extends GroupableResourcesCoreImpl<ExpressRouteCi
             public Iterable<ExpressRouteCircuitInner> call(Page<ExpressRouteCircuitInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ExpressRouteCircuitInner, ExpressRouteCircuit>() {
             @Override
             public ExpressRouteCircuit call(ExpressRouteCircuitInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override
@@ -153,13 +153,13 @@ class ExpressRouteCircuitsImpl extends GroupableResourcesCoreImpl<ExpressRouteCi
             public Iterable<ExpressRouteCircuitInner> call(Page<ExpressRouteCircuitInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ExpressRouteCircuitInner, ExpressRouteCircuit>() {
             @Override
             public ExpressRouteCircuit call(ExpressRouteCircuitInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

@@ -68,13 +68,13 @@ class ExpressRouteServiceProvidersImpl extends GroupableResourcesCoreImpl<Expres
             public Iterable<ExpressRouteServiceProviderInner> call(Page<ExpressRouteServiceProviderInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ExpressRouteServiceProviderInner, ExpressRouteServiceProvider>() {
             @Override
             public ExpressRouteServiceProvider call(ExpressRouteServiceProviderInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

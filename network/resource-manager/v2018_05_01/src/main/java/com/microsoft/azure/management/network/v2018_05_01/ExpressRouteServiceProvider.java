@@ -9,7 +9,6 @@
 package com.microsoft.azure.management.network.v2018_05_01;
 
 import com.microsoft.azure.arm.model.HasInner;
-import com.microsoft.azure.arm.resources.models.GroupableResourceCore;
 import com.microsoft.azure.arm.resources.models.Resource;
 import com.microsoft.azure.arm.resources.models.HasResourceGroup;
 import com.microsoft.azure.arm.resources.models.HasManager;

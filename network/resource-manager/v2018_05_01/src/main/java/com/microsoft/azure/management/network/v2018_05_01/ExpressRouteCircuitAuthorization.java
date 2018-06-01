@@ -12,6 +12,8 @@ import com.microsoft.azure.arm.model.HasInner;
 import com.microsoft.azure.management.network.v2018_05_01.implementation.ExpressRouteCircuitAuthorizationInner;
 import com.microsoft.azure.arm.model.Indexable;
 import com.microsoft.azure.arm.model.Refreshable;
+import com.microsoft.azure.arm.model.Updatable;
+import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Creatable;
 import com.microsoft.azure.arm.resources.models.HasManager;
 import com.microsoft.azure.management.network.v2018_05_01.implementation.NetworkManager;
@@ -19,7 +21,7 @@ import com.microsoft.azure.management.network.v2018_05_01.implementation.Network
 /**
  * Type representing ExpressRouteCircuitAuthorization.
  */
-public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteCircuitAuthorizationInner>, Indexable, Refreshable<ExpressRouteCircuitAuthorization>, HasManager<NetworkManager> {
+public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteCircuitAuthorizationInner>, Indexable, Refreshable<ExpressRouteCircuitAuthorization>, Updatable<ExpressRouteCircuitAuthorization.Update>, HasManager<NetworkManager> {
     /**
      * @return the authorizationKey value.
      */
@@ -133,5 +135,66 @@ public interface ExpressRouteCircuitAuthorization extends HasInner<ExpressRouteC
          */
         interface WithCreate extends Creatable<ExpressRouteCircuitAuthorization>, DefinitionStages.WithAuthorizationKey, DefinitionStages.WithAuthorizationUseStatus, DefinitionStages.WithId, DefinitionStages.WithName, DefinitionStages.WithProvisioningState {
         }
+    }
+    /**
+     * The template for a ExpressRouteCircuitAuthorization update operation, containing all the settings that can be modified.
+     */
+    interface Update extends Appliable<ExpressRouteCircuitAuthorization>, UpdateStages.WithAuthorizationKey, UpdateStages.WithAuthorizationUseStatus, UpdateStages.WithId, UpdateStages.WithName, UpdateStages.WithProvisioningState {
+    }
+
+    /**
+     * Grouping of ExpressRouteCircuitAuthorization update stages.
+     */
+    interface UpdateStages {
+        /**
+         * The stage of the expressroutecircuitauthorization update allowing to specify AuthorizationKey.
+         */
+        interface WithAuthorizationKey {
+            /**
+             * Specifies authorizationKey.
+             */
+            Update withAuthorizationKey(String authorizationKey);
+        }
+
+        /**
+         * The stage of the expressroutecircuitauthorization update allowing to specify AuthorizationUseStatus.
+         */
+        interface WithAuthorizationUseStatus {
+            /**
+             * Specifies authorizationUseStatus.
+             */
+            Update withAuthorizationUseStatus(AuthorizationUseStatus authorizationUseStatus);
+        }
+
+        /**
+         * The stage of the expressroutecircuitauthorization update allowing to specify Id.
+         */
+        interface WithId {
+            /**
+             * Specifies id.
+             */
+            Update withId(String id);
+        }
+
+        /**
+         * The stage of the expressroutecircuitauthorization update allowing to specify Name.
+         */
+        interface WithName {
+            /**
+             * Specifies name.
+             */
+            Update withName(String name);
+        }
+
+        /**
+         * The stage of the expressroutecircuitauthorization update allowing to specify ProvisioningState.
+         */
+        interface WithProvisioningState {
+            /**
+             * Specifies provisioningState.
+             */
+            Update withProvisioningState(String provisioningState);
+        }
+
     }
 }

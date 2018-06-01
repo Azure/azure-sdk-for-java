@@ -16,7 +16,7 @@ import com.microsoft.azure.management.network.v2018_05_01.ExpressRoutePeeringSta
 import com.microsoft.azure.management.network.v2018_05_01.ExpressRouteCircuitPeeringConfig;
 import com.microsoft.azure.management.network.v2018_05_01.Ipv6ExpressRouteCircuitPeeringConfig;
 
-class ExpressRouteCrossConnectionPeeringImpl extends CreatableUpdatableImpl<ExpressRouteCrossConnectionPeering, ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringImpl> implements ExpressRouteCrossConnectionPeering, ExpressRouteCrossConnectionPeering.Definition {
+class ExpressRouteCrossConnectionPeeringImpl extends CreatableUpdatableImpl<ExpressRouteCrossConnectionPeering, ExpressRouteCrossConnectionPeeringInner, ExpressRouteCrossConnectionPeeringImpl> implements ExpressRouteCrossConnectionPeering, ExpressRouteCrossConnectionPeering.Definition, ExpressRouteCrossConnectionPeering.Update {
     private final NetworkManager manager;
     private String resourceGroupName;
     private String crossConnectionName;
@@ -57,7 +57,8 @@ class ExpressRouteCrossConnectionPeeringImpl extends CreatableUpdatableImpl<Expr
     @Override
     public Observable<ExpressRouteCrossConnectionPeering> updateResourceAsync() {
         ExpressRouteCrossConnectionPeeringsInner client = this.manager().inner().expressRouteCrossConnectionPeerings();
-        return null; // NOP updateResourceAsync implementation as update is not supported
+        return client.createOrUpdateAsync(this.resourceGroupName, this.crossConnectionName, this.peeringName, this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override

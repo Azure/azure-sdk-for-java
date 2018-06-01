@@ -70,13 +70,13 @@ class ExpressRouteCircuitAuthorizationsImpl extends WrapperImpl<ExpressRouteCirc
             public Iterable<ExpressRouteCircuitAuthorizationInner> call(Page<ExpressRouteCircuitAuthorizationInner> page) {
                 return page.items();
             }
-       })
+        })
         .map(new Func1<ExpressRouteCircuitAuthorizationInner, ExpressRouteCircuitAuthorization>() {
             @Override
             public ExpressRouteCircuitAuthorization call(ExpressRouteCircuitAuthorizationInner inner) {
                 return wrapModel(inner);
             }
-       });
+        });
     }
 
     @Override

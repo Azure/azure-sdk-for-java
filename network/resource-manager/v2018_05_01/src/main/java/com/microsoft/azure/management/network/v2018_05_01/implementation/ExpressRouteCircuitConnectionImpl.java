@@ -14,7 +14,7 @@ import rx.Observable;
 import com.microsoft.azure.SubResource;
 import com.microsoft.azure.management.network.v2018_05_01.CircuitConnectionStatus;
 
-class ExpressRouteCircuitConnectionImpl extends CreatableUpdatableImpl<ExpressRouteCircuitConnection, ExpressRouteCircuitConnectionInner, ExpressRouteCircuitConnectionImpl> implements ExpressRouteCircuitConnection, ExpressRouteCircuitConnection.Definition {
+class ExpressRouteCircuitConnectionImpl extends CreatableUpdatableImpl<ExpressRouteCircuitConnection, ExpressRouteCircuitConnectionInner, ExpressRouteCircuitConnectionImpl> implements ExpressRouteCircuitConnection, ExpressRouteCircuitConnection.Definition, ExpressRouteCircuitConnection.Update {
     private final NetworkManager manager;
     private String resourceGroupName;
     private String circuitName;
@@ -57,7 +57,8 @@ class ExpressRouteCircuitConnectionImpl extends CreatableUpdatableImpl<ExpressRo
     @Override
     public Observable<ExpressRouteCircuitConnection> updateResourceAsync() {
         ExpressRouteCircuitConnectionsInner client = this.manager().inner().expressRouteCircuitConnections();
-        return null; // NOP updateResourceAsync implementation as update is not supported
+        return client.createOrUpdateAsync(this.resourceGroupName, this.circuitName, this.peeringName, this.connectionName, this.inner())
+            .map(innerToFluentMap(this));
     }
 
     @Override
