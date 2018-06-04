@@ -7,18 +7,18 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.microsoft.azure.mysql.v2017_12_01</groupId>
+    <groupId>com.microsoft.azure.iotcentral.v2017_07_01_privatepreview</groupId>
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
         <version>0.0.1-beta</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-mysql</artifactId>
-    <version>1.0.0-beta-2</version>
+    <artifactId>azure-mgmt-iotcentral</artifactId>
+    <version>1.0.0-beta</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for DBforMySQL Management</name>
-    <description>This package contains Microsoft DBforMySQL Management SDK.</description>
+    <name>Microsoft Azure SDK for IoTCentral Management</name>
+    <description>This package contains Microsoft IoTCentral Management SDK.</description>
     <url>https://github.com/Azure/azure-libraries-for-java</url>
     <licenses>
         <license>
