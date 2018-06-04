@@ -94,7 +94,8 @@ the MIT License. See License.txt in the project root for license information. --
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
 			<artifactId>azure-mgmt-keyvault</artifactId>
-			<version>1.10.1-SNAPSHOT</version>
+			<version>1.11.1</version>
+			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.microsoft.azure</groupId>
@@ -112,6 +113,7 @@ the MIT License. See License.txt in the project root for license information. --
 			<groupId>org.bouncycastle</groupId>
 			<artifactId>bcprov-jdk15on</artifactId>
 			<version>1.54</version>
+			<scope>test</scope>
 		</dependency>
 		<!-- https://mvnrepository.com/artifact/commons-io/commons-io -->
 		<dependency>

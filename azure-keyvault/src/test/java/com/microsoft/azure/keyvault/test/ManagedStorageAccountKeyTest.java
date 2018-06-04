@@ -72,6 +72,7 @@ import com.microsoft.rest.credentials.ServiceClientCredentials;
 import com.microsoft.rest.interceptors.LoggingInterceptor;
 
 import okhttp3.Interceptor;
+import resources.MockUserTokenCredentials;
 
 public class ManagedStorageAccountKeyTest {
 
@@ -100,6 +101,8 @@ public class ManagedStorageAccountKeyTest {
 
     protected final static String ZERO_SUBSCRIPTION = "00000000-0000-0000-0000-000000000000";
     protected final static String ZERO_TENANT = "00000000-0000-0000-0000-000000000000";
+    protected final static String ZERO_OID = "00000000-0000-0000-0000-000000000000";
+    protected final static String ZERO_RESOURCE_GROUP = "rg-0";
     private static final String PLAYBACK_URI_BASE = "http://localhost:";
     protected static String playbackUri = null;
 
@@ -116,26 +119,27 @@ public class ManagedStorageAccountKeyTest {
     public void beforeTests() throws Exception {
         printThreadInfo(String.format("%s: %s", "beforeTest", testName.getMethodName()));
 
-        MSAK_USER = System.getenv("msak.user");
-        MSAK_PASSWORD = System.getenv("msak.password");
-        MSAK_USER_OID = System.getenv("msak.useroid");
-        
-        TENANT_ID = System.getenv("arm.tenantid");
-        RESOURCE_GROUP = System.getenv("msak.resourceGroup");
-        SUBSCRIPTION_ID = System.getenv("arm.subscriptionId");
-
         interceptorManager = InterceptorManager.create(testName.getMethodName(), testMode);
         
         ServiceClientCredentials keyVaultCredentials = createTestCredentials();
 
         // Due to the nature of the services, we have to use User Authentication for testing
         // You must use a user with 2FA disabled for this to work.
-        UserTokenCredentials credentials = new UserTokenCredentials(CLIENT_ID, TENANT_ID, MSAK_USER, MSAK_PASSWORD,
-                AzureEnvironment.AZURE);
 
-        RestClient restClient;
-        String defaultSubscription;
+        
         if (isRecordMode()) {
+            // This needs to be set for playback.
+            RESOURCE_GROUP = System.getenv("msak.resourceGroup");
+
+            // These need to be set for recording.
+            MSAK_USER = System.getenv("msak.user");
+            MSAK_PASSWORD = System.getenv("msak.password");
+            MSAK_USER_OID = System.getenv("msak.useroid");
+            TENANT_ID = System.getenv("arm.tenantid");
+            SUBSCRIPTION_ID = System.getenv("arm.subscriptionId");
+            
+            UserTokenCredentials credentials = new UserTokenCredentials(CLIENT_ID, TENANT_ID, MSAK_USER, MSAK_PASSWORD,
+                    AzureEnvironment.AZURE);
             Interceptor interceptor = interceptorManager.initInterceptor();
             Interceptor loggingInterceptor = new LoggingInterceptor(LogLevel.BODY_AND_HEADERS);
 
@@ -149,26 +153,32 @@ public class ManagedStorageAccountKeyTest {
             keyVaultClient = new KeyVaultClient(keyVaultRestClient);
             credentials.withDefaultSubscriptionId(SUBSCRIPTION_ID);
             
-            restClient = new RestClient.Builder().withBaseUrl("https://management.azure.com")
+            RestClient restClient = new RestClient.Builder().withBaseUrl("https://management.azure.com")
                     .withSerializerAdapter(new AzureJacksonAdapter())
                     .withResponseBuilderFactory(new AzureResponseBuilder.Factory()).withCredentials(credentials)
                     .withLogLevel(LogLevel.NONE).withReadTimeout(3, TimeUnit.MINUTES)
                     .withNetworkInterceptor(loggingInterceptor).withNetworkInterceptor(interceptor)
                     .withInterceptor(new ResourceManagerThrottlingInterceptor()).build();
 
-            defaultSubscription = credentials.defaultSubscriptionId();
+            String defaultSubscription = credentials.defaultSubscriptionId();
             interceptorManager.addTextReplacementRule(defaultSubscription, ZERO_SUBSCRIPTION);
             interceptorManager.addTextReplacementRule(credentials.domain(), ZERO_TENANT);
             interceptorManager.addTextReplacementRule("https://management.azure.com/", playbackUri + "/");
             interceptorManager.addTextReplacementRule("https://graph.windows.net/", playbackUri + "/");
             interceptorManager.addTextReplacementRule("vault.azure.net/", "vault.azure.net");
+            interceptorManager.addTextReplacementRule(MSAK_USER_OID, ZERO_OID);
+            interceptorManager.addTextReplacementRule(RESOURCE_GROUP, ZERO_RESOURCE_GROUP);
+            initializeClients(restClient, defaultSubscription, credentials.domain());
         } else {
-            defaultSubscription = ZERO_SUBSCRIPTION;
+            RESOURCE_GROUP = ZERO_RESOURCE_GROUP;
+            MSAK_USER_OID = ZERO_OID;
+            UserTokenCredentials credentials = new MockUserTokenCredentials();
             keyVaultClient = new KeyVaultClient(buildPlaybackRestClient(keyVaultCredentials, playbackUri ));
-            restClient = buildPlaybackRestClient(credentials, playbackUri );
+            RestClient restClient = buildPlaybackRestClient(credentials, playbackUri );
+            
+            initializeClients(restClient, ZERO_SUBSCRIPTION, ZERO_TENANT);
         }
 
-        initializeClients(restClient, defaultSubscription, credentials.domain());
         KEY_VAULT_ROLE = getKeyVaultRole();
 
     }
@@ -180,7 +190,7 @@ public class ManagedStorageAccountKeyTest {
         String storageAccountName = null;
         String vaultName = null;
         String fileName = System.getProperty("user.dir")
-                + "\\src\\test\\java\\com\\microsoft\\azure\\keyvault\\test\\crudNames.json";
+                + "/src/test/java/com/microsoft/azure/keyvault/test/crudNames.json";
 
         if (isRecordMode()) {
 
@@ -254,7 +264,7 @@ public class ManagedStorageAccountKeyTest {
         String storageAccountName = null;
         String vaultName = null;
         String fileName = System.getProperty("user.dir")
-                + "\\src\\test\\java\\com\\microsoft\\azure\\keyvault\\test\\sasNames.json";
+                + "/src/test/java/com/microsoft/azure/keyvault/test/sasNames.json";
 
         // Write names to file to save it
         if (isRecordMode()) {
