@@ -75,6 +75,10 @@
     "source": "specification/network/resource-manager/readme.md",
     "args": "--multiapi --fluent"
   },
+  "policyinsights/resource-manager": {
+    "source": "specification/policyinsights/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "postgresql/resource-manager": {
     "source": "specification/postgresql/resource-manager/readme.md",
     "args": "--multiapi --fluent",
