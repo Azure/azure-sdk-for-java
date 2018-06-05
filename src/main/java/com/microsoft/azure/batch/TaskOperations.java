@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.util.*;
 import java.util.concurrent.ConcurrentLinkedQueue;
 import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.atomic.AtomicInteger;
 
 /**
  * Performs task-related operations on an Azure Batch account.
@@ -93,8 +94,8 @@ public class TaskOperations implements IInheritedBehaviors {
     }
 
     private static class WorkingThread implements Runnable {
-
-        final int MAX_TASKS_PER_REQUEST = 100;
+        final static int MAX_TASKS_PER_REQUEST = 100;
+        private static final AtomicInteger currentMaxTasks = new AtomicInteger(MAX_TASKS_PER_REQUEST);
 
         private BatchClient client;
         private BehaviorManager bhMgr;
@@ -104,7 +105,8 @@ public class TaskOperations implements IInheritedBehaviors {
         private volatile Exception exception;
         private final Object lock;
 
-        WorkingThread(BatchClient client, BehaviorManager bhMgr, String jobId, Queue<TaskAddParameter> pendingList, List<TaskAddResult> failures, Object lock) {
+        WorkingThread(BatchClient client, BehaviorManager bhMgr, String jobId, Queue<TaskAddParameter> pendingList,
+                List<TaskAddResult> failures, Object lock) {
             this.client = client;
             this.bhMgr = bhMgr;
             this.jobId = jobId;
@@ -118,6 +120,68 @@ public class TaskOperations implements IInheritedBehaviors {
             return this.exception;
         }
 
+        /**
+         * Submits one chunk of tasks to a job.
+         * 
+         * @param taskList A list of {@link TaskAddParameter tasks} to add.
+         */
+        private void submit_chunk(List<TaskAddParameter> taskList) {
+            // The option should be different to every server calls (for example,
+            // client-request-id)
+            TaskAddCollectionOptions options = new TaskAddCollectionOptions();
+            this.bhMgr.applyRequestBehaviors(options);
+            try {
+                TaskAddCollectionResult response = this.client.protocolLayer().tasks().addCollection(this.jobId,
+                        taskList, options);
+
+                if (response != null && response.value() != null) {
+                    for (TaskAddResult result : response.value()) {
+                        if (result.error() != null) {
+                            if (result.status() == TaskAddStatus.SERVER_ERROR) {
+                                // Server error will be retried
+                                for (TaskAddParameter addParameter : taskList) {
+                                    if (addParameter.id().equals(result.taskId())) {
+                                        pendingList.add(addParameter);
+                                        break;
+                                    }
+                                }
+                            } else if (result.status() == TaskAddStatus.CLIENT_ERROR
+                                    && !result.error().code().equals(BatchErrorCodeStrings.TaskExists)) {
+                                // Client error will be recorded
+                                failures.add(result);
+                            }
+                        }
+                    }
+                }
+            } catch (BatchErrorException e) {
+                // If we get RequestBodyTooLarge could be that we chunked the tasks too large.
+                // Try decreasing the size unless caused by 1 task.
+                if (e.body().code().equals(BatchErrorCodeStrings.RequestBodyTooLarge) && taskList.size() > 1) {
+                    // Use binary reduction to decrease size of submitted chunks
+                    int midpoint = taskList.size() / 2;
+                    // If the midpoint is less than the currentMaxTasks used to create new chunks,
+                    // attempt to atomically reduce currentMaxTasks.
+                    // In the case where compareAndSet fails, that means that currentMaxTasks which
+                    // was the goal
+                    int max = currentMaxTasks.get();
+                    if (midpoint < max) {
+                        currentMaxTasks.compareAndSet(max, midpoint);
+                    }
+                    // Resubmit chunk as a smaller list and requeue remaining tasks.
+                    pendingList.addAll(taskList.subList(midpoint, taskList.size()));
+                    submit_chunk(taskList.subList(0, midpoint));
+                } else {
+                    // Any exception will stop further call
+                    exception = e;
+                    pendingList.addAll(taskList);
+                }
+            } catch (RuntimeException e) {
+                // Any exception will stop further call
+                exception = e;
+                pendingList.addAll(taskList);
+            }
+        }
+
         @Override
         public void run() {
 
@@ -125,48 +189,19 @@ public class TaskOperations implements IInheritedBehaviors {
 
             // Take the task from the queue up to MAX_TASKS_PER_REQUEST
             int count = 0;
-            while (count < MAX_TASKS_PER_REQUEST) {
+            int maxAmount = currentMaxTasks.get();
+            while (count < maxAmount) {
                 TaskAddParameter param = pendingList.poll();
                 if (param != null) {
                     taskList.add(param);
                     count++;
-                }
-                else {
+                } else {
                     break;
                 }
             }
 
             if (taskList.size() > 0) {
-                // The option should be different to every server calls (for example, client-request-id)
-                TaskAddCollectionOptions options = new TaskAddCollectionOptions();
-                this.bhMgr.applyRequestBehaviors(options);
-
-                try {
-                    TaskAddCollectionResult response = this.client.protocolLayer().tasks().addCollection(this.jobId, taskList, options);
-
-                    if (response != null && response.value() != null) {
-                        for (TaskAddResult result : response.value()) {
-                            if (result.error() != null) {
-                                if (result.status() == TaskAddStatus.SERVER_ERROR) {
-                                    // Server error will be retried
-                                    for (TaskAddParameter addParameter : taskList) {
-                                        if (addParameter.id().equals(result.taskId())) {
-                                            pendingList.add(addParameter);
-                                            break;
-                                        }
-                                    }
-                                } else if (result.status() == TaskAddStatus.CLIENT_ERROR && !result.error().code().equals(BatchErrorCodeStrings.TaskExists)) {
-                                    // Client error will be recorded
-                                    failures.add(result);
-                                }
-                            }
-                        }
-                    }
-                } catch (RuntimeException e) {
-                    // Any exception will stop further call
-                    exception = e;
-                    pendingList.addAll(taskList);
-                }
+                submit_chunk(taskList);
             }
 
             synchronized (lock) {
@@ -195,7 +230,7 @@ public class TaskOperations implements IInheritedBehaviors {
         // Get user defined thread number
         for (BatchClientBehavior op : bhMgr.getMasterListOfBehaviors()) {
             if (op instanceof BatchClientParallelOptions) {
-                threadNumber = ((BatchClientParallelOptions)op).maxDegreeOfParallelism();
+                threadNumber = ((BatchClientParallelOptions) op).maxDegreeOfParallelism();
             }
         }
 
@@ -210,12 +245,12 @@ public class TaskOperations implements IInheritedBehaviors {
 
             if (threads.size() < threadNumber) {
                 // Kick as many as possible add tasks requests by max allowed threads
-                WorkingThread worker = new WorkingThread(this._parentBatchClient, bhMgr, jobId, pendingList, failures, lock);
+                WorkingThread worker = new WorkingThread(this._parentBatchClient, bhMgr, jobId, pendingList, failures,
+                        lock);
                 Thread thread = new Thread(worker);
                 thread.start();
                 threads.put(thread, worker);
-            }
-            else {
+            } else {
                 // Wait for any thread to finish
                 synchronized (lock) {
                     lock.wait();
@@ -225,7 +260,8 @@ public class TaskOperations implements IInheritedBehaviors {
                 for (Thread t : threads.keySet()) {
                     if (t.getState() == Thread.State.TERMINATED) {
                         finishedThreads.add(t);
-                        // If any exception is encountered, then stop immediately without waiting for remaining active threads.
+                        // If any exception is encountered, then stop immediately without waiting for
+                        // remaining active threads.
                         innerException = threads.get(t).getException();
                         if (innerException != null) {
                             break;
@@ -233,7 +269,8 @@ public class TaskOperations implements IInheritedBehaviors {
                     }
                 }
 
-                // Free the thread pool so we can start more threads to send the remaining add tasks requests.
+                // Free the thread pool so we can start more threads to send the remaining add
+                // tasks requests.
                 threads.keySet().removeAll(finishedThreads);
 
                 // Any errors happened, we stop.

@@ -3,6 +3,7 @@
 ## Changes in 3.3.0
 ### Features
  - `createTasks` rethrow `RuntimeException` catched by internal threads. 
+ - `createTasks` handle `RequestSizeTooLarge` chunking errors for well behaved tasks.
 
 ## Changes in 3.2.0
 ### Features

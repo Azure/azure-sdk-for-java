@@ -424,4 +424,102 @@ public class TaskTests  extends BatchTestBase {
             }
         }
     }
+    
+    @Test
+    public void failIfPoisonTaskTooLarge() throws Exception {
+        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String taskId = "mytask";
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.withPoolId(liveIaaSPool.id());
+        batchClient.jobOperations().createJob(jobId, poolInfo);
+
+        List<TaskAddParameter> tasksToAdd = new ArrayList<TaskAddParameter>();
+        TaskAddParameter taskToAdd = new TaskAddParameter();
+        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        ResourceFile resourceFile;
+        // If this test fails try increasing the size of the Task in case maximum size increase
+        for(int i = 0; i < 10000; i++) {
+            resourceFile = new ResourceFile().withBlobSource("https://mystorageaccount.blob.core.windows.net/files/resourceFile"+i).withFilePath("resourceFile"+i);
+            resourceFiles.add(resourceFile);
+        }
+        taskToAdd.withId(taskId).withResourceFiles(resourceFiles).withCommandLine("sleep 1");
+        tasksToAdd.add(taskToAdd);
+
+        try
+        {
+            batchClient.taskOperations().createTasks(jobId, tasksToAdd);
+            try {
+                batchClient.jobOperations().deleteJob(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assert.fail("Expected RequestBodyTooLarge error");
+        }
+        catch (BatchErrorException err) {
+            try {
+                batchClient.jobOperations().deleteJob(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assert.assertEquals(err.body().code(), BatchErrorCodeStrings.RequestBodyTooLarge);
+        }
+        catch (Exception err) {
+            try {
+                batchClient.jobOperations().deleteJob(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assert.fail("Expected RequestBodyTooLarge error");
+        }
+    }
+
+    @Test
+    public void succeedWithRetry() throws Exception {
+        String jobId = getStringWithUserNamePrefix("-Job-" + (new Date()).toString().replace(' ', '-').replace(':', '-').replace('.', '-'));
+        String taskId = "mytask";
+
+        PoolInformation poolInfo = new PoolInformation();
+        poolInfo.withPoolId(liveIaaSPool.id());
+        batchClient.jobOperations().createJob(jobId, poolInfo);
+
+        List<TaskAddParameter> tasksToAdd = new ArrayList<TaskAddParameter>();
+        TaskAddParameter taskToAdd;
+        List<ResourceFile> resourceFiles = new ArrayList<ResourceFile>();
+        ResourceFile resourceFile;
+        
+        BatchClientParallelOptions option = new BatchClientParallelOptions(10);
+        Collection<BatchClientBehavior> behaviors = new HashSet<>();
+        behaviors.add(option);
+
+        // Num Resource Files * Max Chunk Size should be greater than or equal to the limit which triggers the PoisonTask test to ensure we encounter the error in the initial chunk.
+        for(int i = 0; i < 100; i++) {
+            resourceFile = new ResourceFile().withBlobSource("https://mystorageaccount.blob.core.windows.net/files/resourceFile"+i).withFilePath("resourceFile"+i);
+            resourceFiles.add(resourceFile);
+        }
+        // Num tasks to add
+        for(int i = 0; i < 1500; i++) {
+            taskToAdd = new TaskAddParameter();
+            taskToAdd.withId(taskId+i).withResourceFiles(resourceFiles).withCommandLine("sleep 1");
+            tasksToAdd.add(taskToAdd);
+        }
+
+        try
+        {
+            batchClient.taskOperations().createTasks(jobId, tasksToAdd, behaviors);
+            try {
+                batchClient.jobOperations().deleteJob(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+        }
+        catch (Exception err) {
+            try {
+                batchClient.jobOperations().deleteJob(jobId);
+            } catch (Exception e) {
+                // Ignore here
+            }
+            Assert.fail("Expected Success");
+        }
+    }
 }
