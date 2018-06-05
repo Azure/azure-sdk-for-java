@@ -19,9 +19,9 @@ import com.microsoft.azure.management.locks.v2016_09_01.ManagementLockOwner;
 class ManagementLockObjectImpl extends CreatableUpdatableImpl<ManagementLockObject, ManagementLockObjectInner, ManagementLockObjectImpl> implements ManagementLockObject, ManagementLockObject.Definition, ManagementLockObject.Update {
     private String resourceGroupName;
     private String lockName;
-    private final AuthorizationManager manager;
+    private final LocksManager manager;
 
-    ManagementLockObjectImpl(String name, AuthorizationManager manager) {
+    ManagementLockObjectImpl(String name, LocksManager manager) {
         super(name, new ManagementLockObjectInner());
         this.manager = manager;
         // Set resource name
@@ -29,7 +29,7 @@ class ManagementLockObjectImpl extends CreatableUpdatableImpl<ManagementLockObje
         //
     }
 
-    ManagementLockObjectImpl(ManagementLockObjectInner inner, AuthorizationManager manager) {
+    ManagementLockObjectImpl(ManagementLockObjectInner inner, LocksManager manager) {
         super(inner.name(), inner);
         this.manager = manager;
         // Set resource name
@@ -41,7 +41,7 @@ class ManagementLockObjectImpl extends CreatableUpdatableImpl<ManagementLockObje
     }
 
     @Override
-    public AuthorizationManager manager() {
+    public LocksManager manager() {
         return this.manager;
     }
 

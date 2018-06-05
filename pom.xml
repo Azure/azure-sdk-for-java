@@ -80,17 +80,30 @@
         <version>1.5.2</version>
       </dependency>
       <dependency>
+        <groupId>com.google.guava</groupId>
+        <artifactId>guava</artifactId>
+        <version>20.0</version>
+      </dependency>
+      <!-- Test dependencies -->
+      <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-authentication</artifactId>
         <version>1.5.2</version>
         <scope>test</scope>
       </dependency>
       <dependency>
-        <groupId>com.google.guava</groupId>
-        <artifactId>guava</artifactId>
-        <version>20.0</version>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-arm-client-runtime</artifactId>
+        <version>1.5.2</version>
+        <type>test-jar</type>
+        <scope>test</scope>
       </dependency>
-      <!-- Test dependencies -->
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-mgmt-resources</artifactId>
+        <version>1.11.1</version>
+        <scope>test</scope>
+      </dependency>
       <dependency>
         <groupId>junit</groupId>
         <artifactId>junit</artifactId>

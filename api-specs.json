@@ -6,6 +6,10 @@
       "\"moduleName\"": "\"AppService\""
     }
   },
+  "authorization/resource-manager": {
+    "source": "specification/authorization/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "batchai/resource-manager": {
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--multiapi --fluent"
@@ -73,10 +77,7 @@
   },
   "policyinsights/resource-manager": {
     "source": "specification/policyinsights/resource-manager/readme.md",
-    "args": "--multiapi --fluent",
-    "fconfig": {
-      "\"moduleName\"": "\"PolicyInsights\""
-    }
+    "args": "--multiapi --fluent"
   },
   "postgresql/resource-manager": {
     "source": "specification/postgresql/resource-manager/readme.md",

@@ -20,8 +20,8 @@ import com.microsoft.azure.management.appservice.v2016_03_01.ResourceHealthMetad
 import com.microsoft.azure.management.appservice.v2016_08_01.WebApps;
 import com.microsoft.azure.management.appservice.v2016_09_01.AppServiceEnvironments;
 import com.microsoft.azure.management.appservice.v2016_09_01.AppServicePlans;
-import com.microsoft.azure.management.authorization.v2016_12_01.PolicyAssignments;
-import com.microsoft.azure.management.authorization.v2016_12_01.PolicyDefinitions;
+import com.microsoft.azure.management.policy.v2016_12_01.PolicyAssignments;
+import com.microsoft.azure.management.policy.v2016_12_01.PolicyDefinitions;
 import com.microsoft.azure.management.compute.v2017_03_30.AvailabilitySets;
 import com.microsoft.azure.management.compute.v2017_03_30.Disks;
 import com.microsoft.azure.management.compute.v2017_03_30.Images;
@@ -92,7 +92,7 @@ import com.microsoft.rest.RestClient;
 public final class Azure {
     private com.microsoft.azure.management.compute.v2017_03_30.implementation.ComputeManager computeManager20170330;
     private com.microsoft.azure.management.resources.v2018_02_01.implementation.ResourcesManager resourceManager20180201;
-    private com.microsoft.azure.management.authorization.v2016_12_01.implementation.AuthorizationManager authorizationManager20161201;
+    private com.microsoft.azure.management.policy.v2016_12_01.implementation.PolicyManager authorizationManager20161201;
     private com.microsoft.azure.management.network.v2017_10_01.implementation.NetworkManager networkManager20171001;
     private com.microsoft.azure.management.dns.v2016_04_01.implementation.NetworkManager dnsManager20160401;
     private com.microsoft.azure.management.storage.v2016_01_01.implementation.StorageManager storageManager20160101;
@@ -684,7 +684,7 @@ public final class Azure {
     private Azure(RestClient restClient, String subscriptionId) {
         this.computeManager20170330 = com.microsoft.azure.management.compute.v2017_03_30.implementation.ComputeManager.authenticate(restClient, subscriptionId);
         this.resourceManager20180201 = com.microsoft.azure.management.resources.v2018_02_01.implementation.ResourcesManager.authenticate(restClient, subscriptionId);
-        this.authorizationManager20161201 = com.microsoft.azure.management.authorization.v2016_12_01.implementation.AuthorizationManager.authenticate(restClient, subscriptionId);
+        this.authorizationManager20161201 = com.microsoft.azure.management.policy.v2016_12_01.implementation.PolicyManager.authenticate(restClient, subscriptionId);
         this.networkManager20171001 = com.microsoft.azure.management.network.v2017_10_01.implementation.NetworkManager.authenticate(restClient, subscriptionId);
         this.dnsManager20160401 = com.microsoft.azure.management.dns.v2016_04_01.implementation.NetworkManager.authenticate(restClient, subscriptionId);
         this.storageManager20160101 = com.microsoft.azure.management.storage.v2016_01_01.implementation.StorageManager.authenticate(restClient, subscriptionId);
