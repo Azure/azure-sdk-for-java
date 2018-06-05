@@ -83,7 +83,6 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-arm-client-runtime</artifactId>
-            <version>1.5.0</version>
             <type>test-jar</type>
             <scope>test</scope>
         </dependency>
