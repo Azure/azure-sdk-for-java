@@ -81,6 +81,13 @@
 
   <dependencyManagement>
     <dependencies>
+	<!-- https://mvnrepository.com/artifact/com.microsoft.azure/azure-mgmt-keyvault -->
+	<dependency>
+    		<groupId>com.microsoft.azure</groupId>
+    		<artifactId>azure-mgmt-keyvault</artifactId>
+    		<version>1.11.1</version>
+	</dependency>
+
       <dependency>
         <groupId>com.fasterxml.jackson.core</groupId>
         <artifactId>jackson-core</artifactId>
