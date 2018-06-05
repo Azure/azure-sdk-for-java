@@ -8,7 +8,7 @@
   <groupId>com.microsoft.azure</groupId>
   <artifactId>azure-batch</artifactId>
   <packaging>jar</packaging>
-  <version>3.3.0-SNAPSHOT</version>
+  <version>3.3.0</version>
 
   <name>Microsoft Azure Batch SDK Root</name>
   <description>This package contains the root module of Microsoft Azure Batch SDK.</description>
@@ -25,7 +25,7 @@
   <scm>
     <url>scm:git:https://github.com/Azure/azure-batch-sdk-for-java</url>
     <connection>scm:git:git@github.com:Azure/azure-batch-sdk-for-java.git</connection>
-    <tag>HEAD</tag>
+    <tag>v3.3.0</tag>
   </scm>
 
   <properties>
