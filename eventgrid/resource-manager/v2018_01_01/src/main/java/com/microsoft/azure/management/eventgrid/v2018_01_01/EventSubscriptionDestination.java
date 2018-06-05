@@ -8,7 +8,6 @@
 
 package com.microsoft.azure.management.eventgrid.v2018_01_01;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import com.fasterxml.jackson.annotation.JsonTypeName;
 import com.fasterxml.jackson.annotation.JsonSubTypes;
@@ -23,26 +22,4 @@ import com.fasterxml.jackson.annotation.JsonSubTypes;
     @JsonSubTypes.Type(name = "EventHub", value = EventHubEventSubscriptionDestination.class)
 })
 public class EventSubscriptionDestination {
-    @JsonProperty(value = "endpointType")
-    private EndpointType endpointType;
-
-    /**
-     * Get the endpointType value.
-     *
-     * @return the endpointType value
-     */
-    public EndpointType endpointType() {
-        return this.endpointType;
-    }
-
-    /**
-     * Set the endpointType value.
-     *
-     * @param endpointType the endpointType value to set
-     * @return the EventSubscriptionDestination object itself.
-     */
-    public EventSubscriptionDestination withEndpointType(EndpointType endpointType) {
-        this.endpointType = endpointType;
-        return this;
-    }
 }
