@@ -7,18 +7,18 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.microsoft.azure.eventgrid.v2018_01_01</groupId>
+    <groupId>com.microsoft.azure.policyinsights.v2018_04_04</groupId>
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
         <version>0.0.2-beta</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-eventgrid</artifactId>
-    <version>1.0.0-beta-2</version>
+    <artifactId>azure-mgmt-policyinsights</artifactId>
+    <version>1.0.0-beta</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for EventGrid Management</name>
-    <description>This package contains Microsoft EventGrid Management SDK.</description>
+    <name>Microsoft Azure SDK for PolicyInsights Management</name>
+    <description>This package contains Microsoft PolicyInsights Management SDK.</description>
     <url>https://github.com/Azure/azure-libraries-for-java</url>
     <licenses>
         <license>
@@ -64,6 +64,7 @@
         <dependency>
             <groupId>com.microsoft.azure</groupId>
             <artifactId>azure-mgmt-resources</artifactId>
+            <version>1.11.1</version>
             <scope>test</scope>
         </dependency>
         <dependency>
