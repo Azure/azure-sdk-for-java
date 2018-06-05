@@ -70,13 +70,12 @@ class SubscriptionsImpl extends WrapperImpl<SubscriptionsInner> implements Subsc
             public Iterable<SubscriptionInner> call(Page<SubscriptionInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<SubscriptionInner, Subscription>() {
+        })    .map(new Func1<SubscriptionInner, Subscription>() {
             @Override
             public Subscription call(SubscriptionInner inner) {
                 return new SubscriptionImpl(inner, manager());
             }
-       });
+        });
     }
 
     private LocationImpl wrapLocationModel(LocationInner inner) {

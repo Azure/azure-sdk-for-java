@@ -6,6 +6,10 @@
       "\"moduleName\"": "\"AppService\""
     }
   },
+  "authorization/resource-manager": {
+    "source": "specification/authorization/resource-manager/readme.md",
+    "args": "--multiapi --fluent"
+  },
   "batchai/resource-manager": {
     "source": "specification/batchai/resource-manager/readme.md",
     "args": "--multiapi --fluent"

@@ -11,7 +11,6 @@ package com.microsoft.azure.management.profile_2018_03_01_hybrid;
 import com.microsoft.azure.arm.core.TestBase;
 import com.microsoft.azure.arm.resources.Region;
 import com.microsoft.azure.arm.utils.SdkContext;
-import com.microsoft.azure.management.resources.implementation.ResourceManager;
 import com.microsoft.azure.management.resources.v2018_02_01.ResourceGroup;
 import com.microsoft.azure.management.storage.v2016_01_01.Kind;
 import com.microsoft.azure.management.storage.v2016_01_01.Sku;

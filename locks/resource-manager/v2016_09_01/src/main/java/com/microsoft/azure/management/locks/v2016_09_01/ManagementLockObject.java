@@ -16,13 +16,13 @@ import com.microsoft.azure.arm.model.Updatable;
 import com.microsoft.azure.arm.model.Appliable;
 import com.microsoft.azure.arm.model.Refreshable;
 import com.microsoft.azure.arm.resources.models.HasManager;
-import com.microsoft.azure.management.locks.v2016_09_01.implementation.AuthorizationManager;
+import com.microsoft.azure.management.locks.v2016_09_01.implementation.LocksManager;
 import java.util.List;
 
 /**
  * Type representing ManagementLockObject.
  */
-public interface ManagementLockObject extends HasInner<ManagementLockObjectInner>, Indexable, Updatable<ManagementLockObject.Update>, Refreshable<ManagementLockObject>, HasManager<AuthorizationManager> {
+public interface ManagementLockObject extends HasInner<ManagementLockObjectInner>, Indexable, Updatable<ManagementLockObject.Update>, Refreshable<ManagementLockObject>, HasManager<LocksManager> {
     /**
      * @return the id value.
      */

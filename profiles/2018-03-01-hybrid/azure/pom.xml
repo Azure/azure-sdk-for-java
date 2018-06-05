@@ -50,7 +50,7 @@
             <artifactId>azure-arm-client-runtime</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.microsoft.azure.authorization.v2016_12_01</groupId>
+            <groupId>com.microsoft.azure.authorization.v2015_07_01</groupId>
             <artifactId>azure-mgmt-authorization</artifactId>
             <version>1.0.0-beta</version>
         </dependency>
@@ -75,8 +75,23 @@
             <version>1.0.0-beta</version>
         </dependency>
         <dependency>
+            <groupId>com.microsoft.azure.policy.v2016_12_01</groupId>
+            <artifactId>azure-mgmt-policy</artifactId>
+            <version>1.0.0-beta</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.azure.locks.v2016_09_01</groupId>
+            <artifactId>azure-mgmt-locks</artifactId>
+            <version>1.0.0-beta</version>
+        </dependency>
+        <dependency>
             <groupId>com.microsoft.azure.storage.v2016_01_01</groupId>
             <artifactId>azure-mgmt-storage</artifactId>
+            <version>1.0.0-beta</version>
+        </dependency>
+        <dependency>
+            <groupId>com.microsoft.azure.keyvault.v2016_10_01</groupId>
+            <artifactId>azure-mgmt-keyvault</artifactId>
             <version>1.0.0-beta</version>
         </dependency>
         <dependency>

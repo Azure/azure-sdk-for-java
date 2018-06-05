@@ -7,15 +7,15 @@
 -->
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
-    <groupId>com.microsoft.azure.azure-mgmt-authorization-2016-09-01</groupId>
+    <groupId>com.microsoft.azure.locks.v2016_09_01</groupId>
     <parent>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-parent</artifactId>
         <version>0.0.2-beta</version>
         <relativePath>../../../pom.xml</relativePath>
     </parent>
-    <artifactId>azure-mgmt-authorization</artifactId>
-    <version>1.0.0-beta-SNAPSHOT</version>
+    <artifactId>azure-mgmt-locks</artifactId>
+    <version>1.0.0-beta</version>
     <packaging>jar</packaging>
     <name>Microsoft Azure SDK for Authorization Management</name>
     <description>This package contains Microsoft Authorization Management SDK.</description>

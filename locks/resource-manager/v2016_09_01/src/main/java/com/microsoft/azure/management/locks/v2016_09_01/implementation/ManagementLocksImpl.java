@@ -28,9 +28,9 @@ import com.microsoft.azure.arm.utils.PagedListConverter;
 
 class ManagementLocksImpl extends WrapperImpl<ManagementLocksInner> implements ManagementLocks {
     private PagedListConverter<ManagementLockObjectInner, ManagementLockObject> converter;
-    private final AuthorizationManager manager;
+    private final LocksManager manager;
 
-    ManagementLocksImpl(AuthorizationManager manager) {
+    ManagementLocksImpl(LocksManager manager) {
         super(manager.inner().managementLocks());
         this.manager = manager;
         this.converter = new PagedListConverter<ManagementLockObjectInner, ManagementLockObject>() {
@@ -41,7 +41,7 @@ class ManagementLocksImpl extends WrapperImpl<ManagementLocksInner> implements M
         };
     }
 
-    public AuthorizationManager manager() {
+    public LocksManager manager() {
         return this.manager;
     }
 
@@ -176,13 +176,12 @@ class ManagementLocksImpl extends WrapperImpl<ManagementLocksInner> implements M
             public Iterable<ManagementLockObjectInner> call(Page<ManagementLockObjectInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<ManagementLockObjectInner, ManagementLockObject>() {
+        })    .map(new Func1<ManagementLockObjectInner, ManagementLockObject>() {
             @Override
             public ManagementLockObject call(ManagementLockObjectInner inner) {
                 return new ManagementLockObjectImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
