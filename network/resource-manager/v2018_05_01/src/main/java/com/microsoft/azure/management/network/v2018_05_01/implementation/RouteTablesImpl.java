@@ -78,29 +78,10 @@ class RouteTablesImpl extends GroupableResourcesCoreImpl<RouteTable, RouteTableI
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<RouteTableInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RouteTablesInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<RouteTableInner>, Observable<Page<RouteTableInner>>>() {
-            @Override
-            public Observable<Page<RouteTableInner>> call(Page<RouteTableInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RouteTable> listByResourceGroupAsync(String resourceGroupName) {
         RouteTablesInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<RouteTableInner>, Observable<Page<RouteTableInner>>>() {
-            @Override
-            public Observable<Page<RouteTableInner>> call(Page<RouteTableInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RouteTableInner>, Iterable<RouteTableInner>>() {
             @Override
             public Iterable<RouteTableInner> call(Page<RouteTableInner> page) {
@@ -121,29 +102,10 @@ class RouteTablesImpl extends GroupableResourcesCoreImpl<RouteTable, RouteTableI
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<RouteTableInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RouteTablesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RouteTableInner>, Observable<Page<RouteTableInner>>>() {
-            @Override
-            public Observable<Page<RouteTableInner>> call(Page<RouteTableInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RouteTable> listAsync() {
         RouteTablesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<RouteTableInner>, Observable<Page<RouteTableInner>>>() {
-            @Override
-            public Observable<Page<RouteTableInner>> call(Page<RouteTableInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RouteTableInner>, Iterable<RouteTableInner>>() {
             @Override
             public Iterable<RouteTableInner> call(Page<RouteTableInner> page) {

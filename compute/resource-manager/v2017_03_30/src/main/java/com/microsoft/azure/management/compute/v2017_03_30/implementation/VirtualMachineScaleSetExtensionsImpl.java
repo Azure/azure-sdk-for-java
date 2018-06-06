@@ -42,29 +42,10 @@ class VirtualMachineScaleSetExtensionsImpl extends WrapperImpl<VirtualMachineSca
         return new VirtualMachineScaleSetExtensionImpl(name, this.manager());
     }
 
-    private Observable<Page<VirtualMachineScaleSetExtensionInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualMachineScaleSetExtensionsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualMachineScaleSetExtensionInner>, Observable<Page<VirtualMachineScaleSetExtensionInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetExtensionInner>> call(Page<VirtualMachineScaleSetExtensionInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualMachineScaleSetExtension> listAsync(final String resourceGroupName, final String vmScaleSetName) {
         VirtualMachineScaleSetExtensionsInner client = this.inner();
         return client.listAsync(resourceGroupName, vmScaleSetName)
-        .flatMap(new Func1<Page<VirtualMachineScaleSetExtensionInner>, Observable<Page<VirtualMachineScaleSetExtensionInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetExtensionInner>> call(Page<VirtualMachineScaleSetExtensionInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualMachineScaleSetExtensionInner>, Iterable<VirtualMachineScaleSetExtensionInner>>() {
             @Override
             public Iterable<VirtualMachineScaleSetExtensionInner> call(Page<VirtualMachineScaleSetExtensionInner> page) {

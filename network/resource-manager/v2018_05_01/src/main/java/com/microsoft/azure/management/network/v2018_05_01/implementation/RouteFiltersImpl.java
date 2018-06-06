@@ -78,29 +78,10 @@ class RouteFiltersImpl extends GroupableResourcesCoreImpl<RouteFilter, RouteFilt
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<RouteFilterInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RouteFiltersInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<RouteFilterInner>, Observable<Page<RouteFilterInner>>>() {
-            @Override
-            public Observable<Page<RouteFilterInner>> call(Page<RouteFilterInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RouteFilter> listByResourceGroupAsync(String resourceGroupName) {
         RouteFiltersInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<RouteFilterInner>, Observable<Page<RouteFilterInner>>>() {
-            @Override
-            public Observable<Page<RouteFilterInner>> call(Page<RouteFilterInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RouteFilterInner>, Iterable<RouteFilterInner>>() {
             @Override
             public Iterable<RouteFilterInner> call(Page<RouteFilterInner> page) {
@@ -121,29 +102,10 @@ class RouteFiltersImpl extends GroupableResourcesCoreImpl<RouteFilter, RouteFilt
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<RouteFilterInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RouteFiltersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RouteFilterInner>, Observable<Page<RouteFilterInner>>>() {
-            @Override
-            public Observable<Page<RouteFilterInner>> call(Page<RouteFilterInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RouteFilter> listAsync() {
         RouteFiltersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<RouteFilterInner>, Observable<Page<RouteFilterInner>>>() {
-            @Override
-            public Observable<Page<RouteFilterInner>> call(Page<RouteFilterInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RouteFilterInner>, Iterable<RouteFilterInner>>() {
             @Override
             public Iterable<RouteFilterInner> call(Page<RouteFilterInner> page) {

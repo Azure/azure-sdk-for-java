@@ -80,29 +80,10 @@ class VirtualNetworkGatewayConnectionsImpl extends GroupableResourcesCoreImpl<Vi
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<VirtualNetworkGatewayConnectionInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualNetworkGatewayConnectionsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualNetworkGatewayConnectionInner>, Observable<Page<VirtualNetworkGatewayConnectionInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkGatewayConnectionInner>> call(Page<VirtualNetworkGatewayConnectionInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualNetworkGatewayConnection> listByResourceGroupAsync(String resourceGroupName) {
         VirtualNetworkGatewayConnectionsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<VirtualNetworkGatewayConnectionInner>, Observable<Page<VirtualNetworkGatewayConnectionInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkGatewayConnectionInner>> call(Page<VirtualNetworkGatewayConnectionInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualNetworkGatewayConnectionInner>, Iterable<VirtualNetworkGatewayConnectionInner>>() {
             @Override
             public Iterable<VirtualNetworkGatewayConnectionInner> call(Page<VirtualNetworkGatewayConnectionInner> page) {

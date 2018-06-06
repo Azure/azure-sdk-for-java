@@ -40,29 +40,10 @@ class ProviderOperationsMetadatasImpl extends WrapperImpl<ProviderOperationsMeta
         });
     }
 
-    private Observable<Page<ProviderOperationsMetadataInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ProviderOperationsMetadatasInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ProviderOperationsMetadataInner>, Observable<Page<ProviderOperationsMetadataInner>>>() {
-            @Override
-            public Observable<Page<ProviderOperationsMetadataInner>> call(Page<ProviderOperationsMetadataInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ProviderOperationsMetadata> listAsync(final String apiVersion) {
         ProviderOperationsMetadatasInner client = this.inner();
         return client.listAsync(apiVersion)
-        .flatMap(new Func1<Page<ProviderOperationsMetadataInner>, Observable<Page<ProviderOperationsMetadataInner>>>() {
-            @Override
-            public Observable<Page<ProviderOperationsMetadataInner>> call(Page<ProviderOperationsMetadataInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ProviderOperationsMetadataInner>, Iterable<ProviderOperationsMetadataInner>>() {
             @Override
             public Iterable<ProviderOperationsMetadataInner> call(Page<ProviderOperationsMetadataInner> page) {

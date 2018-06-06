@@ -36,41 +36,21 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
         return  new DiagnosticCategoryImpl(inner, manager());
     }
 
-    private Observable<Page<DiagnosticCategoryInner>> listSiteDiagnosticCategoriesSlotNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DiagnosticsInner client = this.inner();
-        return client.listSiteDiagnosticCategoriesSlotNextAsync(nextLink)
-        .flatMap(new Func1<Page<DiagnosticCategoryInner>, Observable<Page<DiagnosticCategoryInner>>>() {
-            @Override
-            public Observable<Page<DiagnosticCategoryInner>> call(Page<DiagnosticCategoryInner> page) {
-                return Observable.just(page).concatWith(listSiteDiagnosticCategoriesSlotNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DiagnosticCategory> listSiteDiagnosticCategoriesSlotAsync(final String resourceGroupName, final String siteName, final String slot) {
         DiagnosticsInner client = this.inner();
         return client.listSiteDiagnosticCategoriesSlotAsync(resourceGroupName, siteName, slot)
-        .flatMap(new Func1<Page<DiagnosticCategoryInner>, Observable<Page<DiagnosticCategoryInner>>>() {
-            @Override
-            public Observable<Page<DiagnosticCategoryInner>> call(Page<DiagnosticCategoryInner> page) {
-                return listSiteDiagnosticCategoriesSlotNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DiagnosticCategoryInner>, Iterable<DiagnosticCategoryInner>>() {
             @Override
             public Iterable<DiagnosticCategoryInner> call(Page<DiagnosticCategoryInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<DiagnosticCategoryInner, DiagnosticCategory>() {
+        })    .map(new Func1<DiagnosticCategoryInner, DiagnosticCategory>() {
             @Override
             public DiagnosticCategory call(DiagnosticCategoryInner inner) {
                 return new DiagnosticCategoryImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -85,29 +65,10 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
         });
     }
 
-    private Observable<Page<DiagnosticCategoryInner>> listSiteDiagnosticCategoriesNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DiagnosticsInner client = this.inner();
-        return client.listSiteDiagnosticCategoriesNextAsync(nextLink)
-        .flatMap(new Func1<Page<DiagnosticCategoryInner>, Observable<Page<DiagnosticCategoryInner>>>() {
-            @Override
-            public Observable<Page<DiagnosticCategoryInner>> call(Page<DiagnosticCategoryInner> page) {
-                return Observable.just(page).concatWith(listSiteDiagnosticCategoriesNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DiagnosticCategory> listSiteDiagnosticCategoriesAsync(final String resourceGroupName, final String siteName) {
         DiagnosticsInner client = this.inner();
         return client.listSiteDiagnosticCategoriesAsync(resourceGroupName, siteName)
-        .flatMap(new Func1<Page<DiagnosticCategoryInner>, Observable<Page<DiagnosticCategoryInner>>>() {
-            @Override
-            public Observable<Page<DiagnosticCategoryInner>> call(Page<DiagnosticCategoryInner> page) {
-                return listSiteDiagnosticCategoriesNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DiagnosticCategoryInner>, Iterable<DiagnosticCategoryInner>>() {
             @Override
             public Iterable<DiagnosticCategoryInner> call(Page<DiagnosticCategoryInner> page) {
@@ -163,29 +124,10 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
        });
     }
 
-    private Observable<Page<AnalysisDefinitionInner>> listSiteAnalysesNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DiagnosticsInner client = this.inner();
-        return client.listSiteAnalysesNextAsync(nextLink)
-        .flatMap(new Func1<Page<AnalysisDefinitionInner>, Observable<Page<AnalysisDefinitionInner>>>() {
-            @Override
-            public Observable<Page<AnalysisDefinitionInner>> call(Page<AnalysisDefinitionInner> page) {
-                return Observable.just(page).concatWith(listSiteAnalysesNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DiagnosticAnalysis> listSiteAnalysesAsync(final String resourceGroupName, final String siteName, final String diagnosticCategory) {
         DiagnosticsInner client = this.inner();
         return client.listSiteAnalysesAsync(resourceGroupName, siteName, diagnosticCategory)
-        .flatMap(new Func1<Page<AnalysisDefinitionInner>, Observable<Page<AnalysisDefinitionInner>>>() {
-            @Override
-            public Observable<Page<AnalysisDefinitionInner>> call(Page<AnalysisDefinitionInner> page) {
-                return listSiteAnalysesNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<AnalysisDefinitionInner>, Iterable<AnalysisDefinitionInner>>() {
             @Override
             public Iterable<AnalysisDefinitionInner> call(Page<AnalysisDefinitionInner> page) {
@@ -218,41 +160,21 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
         });
     }
 
-    private Observable<Page<AnalysisDefinitionInner>> listSiteAnalysesSlotNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DiagnosticsInner client = this.inner();
-        return client.listSiteAnalysesSlotNextAsync(nextLink)
-        .flatMap(new Func1<Page<AnalysisDefinitionInner>, Observable<Page<AnalysisDefinitionInner>>>() {
-            @Override
-            public Observable<Page<AnalysisDefinitionInner>> call(Page<AnalysisDefinitionInner> page) {
-                return Observable.just(page).concatWith(listSiteAnalysesSlotNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<AnalysisDefinition> listSiteAnalysesSlotAsync(final String resourceGroupName, final String siteName, final String diagnosticCategory, final String slot) {
         DiagnosticsInner client = this.inner();
         return client.listSiteAnalysesSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot)
-        .flatMap(new Func1<Page<AnalysisDefinitionInner>, Observable<Page<AnalysisDefinitionInner>>>() {
-            @Override
-            public Observable<Page<AnalysisDefinitionInner>> call(Page<AnalysisDefinitionInner> page) {
-                return listSiteAnalysesSlotNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<AnalysisDefinitionInner>, Iterable<AnalysisDefinitionInner>>() {
             @Override
             public Iterable<AnalysisDefinitionInner> call(Page<AnalysisDefinitionInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<AnalysisDefinitionInner, AnalysisDefinition>() {
+        })    .map(new Func1<AnalysisDefinitionInner, AnalysisDefinition>() {
             @Override
             public AnalysisDefinition call(AnalysisDefinitionInner inner) {
                 return new AnalysisDefinitionImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -279,29 +201,10 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
         });
     }
 
-    private Observable<Page<DetectorDefinitionInner>> listSiteDetectorsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DiagnosticsInner client = this.inner();
-        return client.listSiteDetectorsNextAsync(nextLink)
-        .flatMap(new Func1<Page<DetectorDefinitionInner>, Observable<Page<DetectorDefinitionInner>>>() {
-            @Override
-            public Observable<Page<DetectorDefinitionInner>> call(Page<DetectorDefinitionInner> page) {
-                return Observable.just(page).concatWith(listSiteDetectorsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DetectorDefinition> listSiteDetectorsAsync(final String resourceGroupName, final String siteName, final String diagnosticCategory) {
         DiagnosticsInner client = this.inner();
         return client.listSiteDetectorsAsync(resourceGroupName, siteName, diagnosticCategory)
-        .flatMap(new Func1<Page<DetectorDefinitionInner>, Observable<Page<DetectorDefinitionInner>>>() {
-            @Override
-            public Observable<Page<DetectorDefinitionInner>> call(Page<DetectorDefinitionInner> page) {
-                return listSiteDetectorsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DetectorDefinitionInner>, Iterable<DetectorDefinitionInner>>() {
             @Override
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
@@ -316,41 +219,21 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
         });
     }
 
-    private Observable<Page<DetectorDefinitionInner>> getSiteDetectorNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DiagnosticsInner client = this.inner();
-        return client.getSiteDetectorNextAsync(nextLink)
-        .flatMap(new Func1<Page<DetectorDefinitionInner>, Observable<Page<DetectorDefinitionInner>>>() {
-            @Override
-            public Observable<Page<DetectorDefinitionInner>> call(Page<DetectorDefinitionInner> page) {
-                return Observable.just(page).concatWith(getSiteDetectorNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DetectorDefinition> getSiteDetectorAsync(final String resourceGroupName, final String siteName, final String diagnosticCategory, final String detectorName) {
         DiagnosticsInner client = this.inner();
         return client.getSiteDetectorAsync(resourceGroupName, siteName, diagnosticCategory, detectorName)
-        .flatMap(new Func1<Page<DetectorDefinitionInner>, Observable<Page<DetectorDefinitionInner>>>() {
-            @Override
-            public Observable<Page<DetectorDefinitionInner>> call(Page<DetectorDefinitionInner> page) {
-                return getSiteDetectorNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DetectorDefinitionInner>, Iterable<DetectorDefinitionInner>>() {
             @Override
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -365,78 +248,38 @@ class DiagnosticsImpl extends WrapperImpl<DiagnosticsInner> implements Diagnosti
         });
     }
 
-    private Observable<Page<DetectorDefinitionInner>> listSiteDetectorsSlotNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DiagnosticsInner client = this.inner();
-        return client.listSiteDetectorsSlotNextAsync(nextLink)
-        .flatMap(new Func1<Page<DetectorDefinitionInner>, Observable<Page<DetectorDefinitionInner>>>() {
-            @Override
-            public Observable<Page<DetectorDefinitionInner>> call(Page<DetectorDefinitionInner> page) {
-                return Observable.just(page).concatWith(listSiteDetectorsSlotNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DetectorDefinition> listSiteDetectorsSlotAsync(final String resourceGroupName, final String siteName, final String diagnosticCategory, final String slot) {
         DiagnosticsInner client = this.inner();
         return client.listSiteDetectorsSlotAsync(resourceGroupName, siteName, diagnosticCategory, slot)
-        .flatMap(new Func1<Page<DetectorDefinitionInner>, Observable<Page<DetectorDefinitionInner>>>() {
-            @Override
-            public Observable<Page<DetectorDefinitionInner>> call(Page<DetectorDefinitionInner> page) {
-                return listSiteDetectorsSlotNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DetectorDefinitionInner>, Iterable<DetectorDefinitionInner>>() {
             @Override
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());
             }
-       });
-    }
-
-    private Observable<Page<DetectorDefinitionInner>> getSiteDetectorSlotNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DiagnosticsInner client = this.inner();
-        return client.getSiteDetectorSlotNextAsync(nextLink)
-        .flatMap(new Func1<Page<DetectorDefinitionInner>, Observable<Page<DetectorDefinitionInner>>>() {
-            @Override
-            public Observable<Page<DetectorDefinitionInner>> call(Page<DetectorDefinitionInner> page) {
-                return Observable.just(page).concatWith(getSiteDetectorSlotNextInnerPageAsync(page.nextPageLink()));
-            }
         });
     }
+
     @Override
     public Observable<DetectorDefinition> getSiteDetectorSlotAsync(final String resourceGroupName, final String siteName, final String diagnosticCategory, final String detectorName, final String slot) {
         DiagnosticsInner client = this.inner();
         return client.getSiteDetectorSlotAsync(resourceGroupName, siteName, diagnosticCategory, detectorName, slot)
-        .flatMap(new Func1<Page<DetectorDefinitionInner>, Observable<Page<DetectorDefinitionInner>>>() {
-            @Override
-            public Observable<Page<DetectorDefinitionInner>> call(Page<DetectorDefinitionInner> page) {
-                return getSiteDetectorSlotNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DetectorDefinitionInner>, Iterable<DetectorDefinitionInner>>() {
             @Override
             public Iterable<DetectorDefinitionInner> call(Page<DetectorDefinitionInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
+        })    .map(new Func1<DetectorDefinitionInner, DetectorDefinition>() {
             @Override
             public DetectorDefinition call(DetectorDefinitionInner inner) {
                 return new DetectorDefinitionImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override

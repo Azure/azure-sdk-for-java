@@ -32,29 +32,10 @@ class LoadBalancerBackendAddressPoolsImpl extends WrapperImpl<LoadBalancerBacken
         return  new BackendAddressPoolImpl(inner, manager());
     }
 
-    private Observable<Page<BackendAddressPoolInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LoadBalancerBackendAddressPoolsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<BackendAddressPoolInner>, Observable<Page<BackendAddressPoolInner>>>() {
-            @Override
-            public Observable<Page<BackendAddressPoolInner>> call(Page<BackendAddressPoolInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<BackendAddressPool> listAsync(final String resourceGroupName, final String loadBalancerName) {
         LoadBalancerBackendAddressPoolsInner client = this.inner();
         return client.listAsync(resourceGroupName, loadBalancerName)
-        .flatMap(new Func1<Page<BackendAddressPoolInner>, Observable<Page<BackendAddressPoolInner>>>() {
-            @Override
-            public Observable<Page<BackendAddressPoolInner>> call(Page<BackendAddressPoolInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<BackendAddressPoolInner>, Iterable<BackendAddressPoolInner>>() {
             @Override
             public Iterable<BackendAddressPoolInner> call(Page<BackendAddressPoolInner> page) {

@@ -86,29 +86,10 @@ class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateO
         });
     }
 
-    private Observable<Page<AppServiceCertificateOrderInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServiceCertificateOrdersInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<AppServiceCertificateOrderInner>, Observable<Page<AppServiceCertificateOrderInner>>>() {
-            @Override
-            public Observable<Page<AppServiceCertificateOrderInner>> call(Page<AppServiceCertificateOrderInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<AppServiceCertificateOrder> listByResourceGroupAsync(String resourceGroupName) {
         AppServiceCertificateOrdersInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<AppServiceCertificateOrderInner>, Observable<Page<AppServiceCertificateOrderInner>>>() {
-            @Override
-            public Observable<Page<AppServiceCertificateOrderInner>> call(Page<AppServiceCertificateOrderInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<AppServiceCertificateOrderInner>, Iterable<AppServiceCertificateOrderInner>>() {
             @Override
             public Iterable<AppServiceCertificateOrderInner> call(Page<AppServiceCertificateOrderInner> page) {
@@ -123,29 +104,10 @@ class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateO
         });
     }
 
-    private Observable<Page<AppServiceCertificateOrderInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServiceCertificateOrdersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<AppServiceCertificateOrderInner>, Observable<Page<AppServiceCertificateOrderInner>>>() {
-            @Override
-            public Observable<Page<AppServiceCertificateOrderInner>> call(Page<AppServiceCertificateOrderInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<AppServiceCertificateOrder> listAsync() {
         AppServiceCertificateOrdersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<AppServiceCertificateOrderInner>, Observable<Page<AppServiceCertificateOrderInner>>>() {
-            @Override
-            public Observable<Page<AppServiceCertificateOrderInner>> call(Page<AppServiceCertificateOrderInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<AppServiceCertificateOrderInner>, Iterable<AppServiceCertificateOrderInner>>() {
             @Override
             public Iterable<AppServiceCertificateOrderInner> call(Page<AppServiceCertificateOrderInner> page) {
@@ -216,8 +178,7 @@ class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateO
             public Observable<CertificateOrderActionInner> call(List<CertificateOrderActionInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<CertificateOrderActionInner, CertificateOrderAction>() {
+        })    .map(new Func1<CertificateOrderActionInner, CertificateOrderAction>() {
             @Override
             public CertificateOrderAction call(CertificateOrderActionInner inner) {
                 return new CertificateOrderActionImpl(inner, manager());
@@ -234,8 +195,7 @@ class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateO
             public Observable<CertificateEmailInner> call(List<CertificateEmailInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<CertificateEmailInner, CertificateEmail>() {
+        })    .map(new Func1<CertificateEmailInner, CertificateEmail>() {
             @Override
             public CertificateEmail call(CertificateEmailInner inner) {
                 return new CertificateEmailImpl(inner, manager());
@@ -261,29 +221,10 @@ class AppServiceCertificateOrdersImpl extends WrapperImpl<AppServiceCertificateO
        });
     }
 
-    private Observable<Page<AppServiceCertificateResourceInner>> listCertificatesNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServiceCertificateOrdersInner client = this.inner();
-        return client.listCertificatesNextAsync(nextLink)
-        .flatMap(new Func1<Page<AppServiceCertificateResourceInner>, Observable<Page<AppServiceCertificateResourceInner>>>() {
-            @Override
-            public Observable<Page<AppServiceCertificateResourceInner>> call(Page<AppServiceCertificateResourceInner> page) {
-                return Observable.just(page).concatWith(listCertificatesNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<AppServiceCertificateResource> listCertificatesAsync(final String resourceGroupName, final String certificateOrderName) {
         AppServiceCertificateOrdersInner client = this.inner();
         return client.listCertificatesAsync(resourceGroupName, certificateOrderName)
-        .flatMap(new Func1<Page<AppServiceCertificateResourceInner>, Observable<Page<AppServiceCertificateResourceInner>>>() {
-            @Override
-            public Observable<Page<AppServiceCertificateResourceInner>> call(Page<AppServiceCertificateResourceInner> page) {
-                return listCertificatesNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<AppServiceCertificateResourceInner>, Iterable<AppServiceCertificateResourceInner>>() {
             @Override
             public Iterable<AppServiceCertificateResourceInner> call(Page<AppServiceCertificateResourceInner> page) {

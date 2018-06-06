@@ -73,14 +73,14 @@ public class OSDisk {
 
     /**
      * Specifies how the virtual machine should be created.&lt;br&gt;&lt;br&gt;
-     * Possible values are:&lt;br&gt;&lt;br&gt; **Attach**  This value is used
-     * when you are using a specialized disk to create the virtual
-     * machine.&lt;br&gt;&lt;br&gt; **FromImage**  This value is used when you
-     * are using an image to create the virtual machine. If you are using a
-     * platform image, you also use the imageReference element described above.
-     * If you are using a marketplace image, you  also use the plan element
-     * previously described. Possible values include: 'FromImage', 'Empty',
-     * 'Attach'.
+     * Possible values are:&lt;br&gt;&lt;br&gt; **Attach** \u2013 This value is
+     * used when you are using a specialized disk to create the virtual
+     * machine.&lt;br&gt;&lt;br&gt; **FromImage** \u2013 This value is used
+     * when you are using an image to create the virtual machine. If you are
+     * using a platform image, you also use the imageReference element
+     * described above. If you are using a marketplace image, you  also use the
+     * plan element previously described. Possible values include: 'FromImage',
+     * 'Empty', 'Attach'.
      */
     @JsonProperty(value = "createOption", required = true)
     private DiskCreateOptionTypes createOption;

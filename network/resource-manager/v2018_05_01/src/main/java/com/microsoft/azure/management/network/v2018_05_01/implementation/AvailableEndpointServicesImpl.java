@@ -32,29 +32,10 @@ class AvailableEndpointServicesImpl extends WrapperImpl<AvailableEndpointService
         return  new EndpointServiceResultImpl(inner, manager());
     }
 
-    private Observable<Page<EndpointServiceResultInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AvailableEndpointServicesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<EndpointServiceResultInner>, Observable<Page<EndpointServiceResultInner>>>() {
-            @Override
-            public Observable<Page<EndpointServiceResultInner>> call(Page<EndpointServiceResultInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<EndpointServiceResult> listAsync(final String location) {
         AvailableEndpointServicesInner client = this.inner();
         return client.listAsync(location)
-        .flatMap(new Func1<Page<EndpointServiceResultInner>, Observable<Page<EndpointServiceResultInner>>>() {
-            @Override
-            public Observable<Page<EndpointServiceResultInner>> call(Page<EndpointServiceResultInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<EndpointServiceResultInner>, Iterable<EndpointServiceResultInner>>() {
             @Override
             public Iterable<EndpointServiceResultInner> call(Page<EndpointServiceResultInner> page) {

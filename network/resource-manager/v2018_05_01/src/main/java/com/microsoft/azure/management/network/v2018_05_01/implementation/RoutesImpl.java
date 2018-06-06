@@ -42,29 +42,10 @@ class RoutesImpl extends WrapperImpl<RoutesInner> implements Routes {
         return new RouteImpl(name, this.manager());
     }
 
-    private Observable<Page<RouteInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RoutesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RouteInner>, Observable<Page<RouteInner>>>() {
-            @Override
-            public Observable<Page<RouteInner>> call(Page<RouteInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Route> listAsync(final String resourceGroupName, final String routeTableName) {
         RoutesInner client = this.inner();
         return client.listAsync(resourceGroupName, routeTableName)
-        .flatMap(new Func1<Page<RouteInner>, Observable<Page<RouteInner>>>() {
-            @Override
-            public Observable<Page<RouteInner>> call(Page<RouteInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RouteInner>, Iterable<RouteInner>>() {
             @Override
             public Iterable<RouteInner> call(Page<RouteInner> page) {

@@ -42,29 +42,10 @@ class VirtualNetworkPeeringsImpl extends WrapperImpl<VirtualNetworkPeeringsInner
         return new VirtualNetworkPeeringImpl(name, this.manager());
     }
 
-    private Observable<Page<VirtualNetworkPeeringInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualNetworkPeeringsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualNetworkPeeringInner>, Observable<Page<VirtualNetworkPeeringInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkPeeringInner>> call(Page<VirtualNetworkPeeringInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualNetworkPeering> listAsync(final String resourceGroupName, final String virtualNetworkName) {
         VirtualNetworkPeeringsInner client = this.inner();
         return client.listAsync(resourceGroupName, virtualNetworkName)
-        .flatMap(new Func1<Page<VirtualNetworkPeeringInner>, Observable<Page<VirtualNetworkPeeringInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkPeeringInner>> call(Page<VirtualNetworkPeeringInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualNetworkPeeringInner>, Iterable<VirtualNetworkPeeringInner>>() {
             @Override
             public Iterable<VirtualNetworkPeeringInner> call(Page<VirtualNetworkPeeringInner> page) {

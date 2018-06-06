@@ -79,29 +79,10 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<VaultInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VaultsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<VaultInner>, Observable<Page<VaultInner>>>() {
-            @Override
-            public Observable<Page<VaultInner>> call(Page<VaultInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Vault> listByResourceGroupAsync(String resourceGroupName) {
         VaultsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<VaultInner>, Observable<Page<VaultInner>>>() {
-            @Override
-            public Observable<Page<VaultInner>> call(Page<VaultInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VaultInner>, Iterable<VaultInner>>() {
             @Override
             public Iterable<VaultInner> call(Page<VaultInner> page) {
@@ -131,29 +112,10 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
         return new VaultImpl(name, new VaultInner(), this.manager());
     }
 
-    private Observable<Page<Resource>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VaultsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<Resource>, Observable<Page<Resource>>>() {
-            @Override
-            public Observable<Page<Resource>> call(Page<Resource> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Resource> listAsync() {
         VaultsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<Resource>, Observable<Page<Resource>>>() {
-            @Override
-            public Observable<Page<Resource>> call(Page<Resource> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<Resource>, Iterable<Resource>>() {
             @Override
             public Iterable<Resource> call(Page<Resource> page) {

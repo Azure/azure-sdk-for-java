@@ -87,29 +87,10 @@ class VirtualMachinesImpl extends GroupableResourcesCoreImpl<VirtualMachine, Vir
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<VirtualMachineInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualMachinesInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualMachineInner>, Observable<Page<VirtualMachineInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineInner>> call(Page<VirtualMachineInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualMachine> listByResourceGroupAsync(String resourceGroupName) {
         VirtualMachinesInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<VirtualMachineInner>, Observable<Page<VirtualMachineInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineInner>> call(Page<VirtualMachineInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualMachineInner>, Iterable<VirtualMachineInner>>() {
             @Override
             public Iterable<VirtualMachineInner> call(Page<VirtualMachineInner> page) {
@@ -130,29 +111,10 @@ class VirtualMachinesImpl extends GroupableResourcesCoreImpl<VirtualMachine, Vir
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<VirtualMachineInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualMachinesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualMachineInner>, Observable<Page<VirtualMachineInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineInner>> call(Page<VirtualMachineInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualMachine> listAsync() {
         VirtualMachinesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<VirtualMachineInner>, Observable<Page<VirtualMachineInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineInner>> call(Page<VirtualMachineInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualMachineInner>, Iterable<VirtualMachineInner>>() {
             @Override
             public Iterable<VirtualMachineInner> call(Page<VirtualMachineInner> page) {

@@ -84,29 +84,10 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<VirtualMachineScaleSetInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualMachineScaleSetsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualMachineScaleSetInner>, Observable<Page<VirtualMachineScaleSetInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetInner>> call(Page<VirtualMachineScaleSetInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualMachineScaleSet> listByResourceGroupAsync(String resourceGroupName) {
         VirtualMachineScaleSetsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<VirtualMachineScaleSetInner>, Observable<Page<VirtualMachineScaleSetInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetInner>> call(Page<VirtualMachineScaleSetInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualMachineScaleSetInner>, Iterable<VirtualMachineScaleSetInner>>() {
             @Override
             public Iterable<VirtualMachineScaleSetInner> call(Page<VirtualMachineScaleSetInner> page) {
@@ -127,29 +108,10 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<VirtualMachineScaleSetInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualMachineScaleSetsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualMachineScaleSetInner>, Observable<Page<VirtualMachineScaleSetInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetInner>> call(Page<VirtualMachineScaleSetInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualMachineScaleSet> listAsync() {
         VirtualMachineScaleSetsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<VirtualMachineScaleSetInner>, Observable<Page<VirtualMachineScaleSetInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetInner>> call(Page<VirtualMachineScaleSetInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualMachineScaleSetInner>, Iterable<VirtualMachineScaleSetInner>>() {
             @Override
             public Iterable<VirtualMachineScaleSetInner> call(Page<VirtualMachineScaleSetInner> page) {
@@ -205,41 +167,21 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
         });
     }
 
-    private Observable<Page<UpgradeOperationHistoricalStatusInfoInner>> getOSUpgradeHistoryNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualMachineScaleSetsInner client = this.inner();
-        return client.getOSUpgradeHistoryNextAsync(nextLink)
-        .flatMap(new Func1<Page<UpgradeOperationHistoricalStatusInfoInner>, Observable<Page<UpgradeOperationHistoricalStatusInfoInner>>>() {
-            @Override
-            public Observable<Page<UpgradeOperationHistoricalStatusInfoInner>> call(Page<UpgradeOperationHistoricalStatusInfoInner> page) {
-                return Observable.just(page).concatWith(getOSUpgradeHistoryNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<UpgradeOperationHistoricalStatusInfo> getOSUpgradeHistoryAsync(final String resourceGroupName, final String vmScaleSetName) {
         VirtualMachineScaleSetsInner client = this.inner();
         return client.getOSUpgradeHistoryAsync(resourceGroupName, vmScaleSetName)
-        .flatMap(new Func1<Page<UpgradeOperationHistoricalStatusInfoInner>, Observable<Page<UpgradeOperationHistoricalStatusInfoInner>>>() {
-            @Override
-            public Observable<Page<UpgradeOperationHistoricalStatusInfoInner>> call(Page<UpgradeOperationHistoricalStatusInfoInner> page) {
-                return getOSUpgradeHistoryNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<UpgradeOperationHistoricalStatusInfoInner>, Iterable<UpgradeOperationHistoricalStatusInfoInner>>() {
             @Override
             public Iterable<UpgradeOperationHistoricalStatusInfoInner> call(Page<UpgradeOperationHistoricalStatusInfoInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<UpgradeOperationHistoricalStatusInfoInner, UpgradeOperationHistoricalStatusInfo>() {
+        })    .map(new Func1<UpgradeOperationHistoricalStatusInfoInner, UpgradeOperationHistoricalStatusInfo>() {
             @Override
             public UpgradeOperationHistoricalStatusInfo call(UpgradeOperationHistoricalStatusInfoInner inner) {
                 return new UpgradeOperationHistoricalStatusInfoImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -364,29 +306,10 @@ class VirtualMachineScaleSetsImpl extends GroupableResourcesCoreImpl<VirtualMach
         return  new VirtualMachineScaleSetSkuImpl(inner, manager());
     }
 
-    private Observable<Page<VirtualMachineScaleSetSkuInner>> listSkusNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualMachineScaleSetsInner client = this.inner();
-        return client.listSkusNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualMachineScaleSetSkuInner>, Observable<Page<VirtualMachineScaleSetSkuInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetSkuInner>> call(Page<VirtualMachineScaleSetSkuInner> page) {
-                return Observable.just(page).concatWith(listSkusNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualMachineScaleSetSku> listSkusAsync(final String resourceGroupName, final String vmScaleSetName) {
         VirtualMachineScaleSetsInner client = this.inner();
         return client.listSkusAsync(resourceGroupName, vmScaleSetName)
-        .flatMap(new Func1<Page<VirtualMachineScaleSetSkuInner>, Observable<Page<VirtualMachineScaleSetSkuInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetSkuInner>> call(Page<VirtualMachineScaleSetSkuInner> page) {
-                return listSkusNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualMachineScaleSetSkuInner>, Iterable<VirtualMachineScaleSetSkuInner>>() {
             @Override
             public Iterable<VirtualMachineScaleSetSkuInner> call(Page<VirtualMachineScaleSetSkuInner> page) {

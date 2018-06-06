@@ -42,29 +42,10 @@ class ExpressRouteCrossConnectionPeeringsImpl extends WrapperImpl<ExpressRouteCr
         return new ExpressRouteCrossConnectionPeeringImpl(name, this.manager());
     }
 
-    private Observable<Page<ExpressRouteCrossConnectionPeeringInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ExpressRouteCrossConnectionPeeringsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ExpressRouteCrossConnectionPeeringInner>, Observable<Page<ExpressRouteCrossConnectionPeeringInner>>>() {
-            @Override
-            public Observable<Page<ExpressRouteCrossConnectionPeeringInner>> call(Page<ExpressRouteCrossConnectionPeeringInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ExpressRouteCrossConnectionPeering> listAsync(final String resourceGroupName, final String crossConnectionName) {
         ExpressRouteCrossConnectionPeeringsInner client = this.inner();
         return client.listAsync(resourceGroupName, crossConnectionName)
-        .flatMap(new Func1<Page<ExpressRouteCrossConnectionPeeringInner>, Observable<Page<ExpressRouteCrossConnectionPeeringInner>>>() {
-            @Override
-            public Observable<Page<ExpressRouteCrossConnectionPeeringInner>> call(Page<ExpressRouteCrossConnectionPeeringInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ExpressRouteCrossConnectionPeeringInner>, Iterable<ExpressRouteCrossConnectionPeeringInner>>() {
             @Override
             public Iterable<ExpressRouteCrossConnectionPeeringInner> call(Page<ExpressRouteCrossConnectionPeeringInner> page) {

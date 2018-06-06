@@ -81,29 +81,10 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<VaultInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VaultsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<VaultInner>, Observable<Page<VaultInner>>>() {
-            @Override
-            public Observable<Page<VaultInner>> call(Page<VaultInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Vault> listByResourceGroupAsync(String resourceGroupName) {
         VaultsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<VaultInner>, Observable<Page<VaultInner>>>() {
-            @Override
-            public Observable<Page<VaultInner>> call(Page<VaultInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VaultInner>, Iterable<VaultInner>>() {
             @Override
             public Iterable<VaultInner> call(Page<VaultInner> page) {
@@ -124,29 +105,10 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
         return this.wrapList(client.listBySubscription());
     }
 
-    private Observable<Page<VaultInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VaultsInner client = this.inner();
-        return client.listBySubscriptionNextAsync(nextLink)
-        .flatMap(new Func1<Page<VaultInner>, Observable<Page<VaultInner>>>() {
-            @Override
-            public Observable<Page<VaultInner>> call(Page<VaultInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Vault> listAsync() {
         VaultsInner client = this.inner();
         return client.listBySubscriptionAsync()
-        .flatMap(new Func1<Page<VaultInner>, Observable<Page<VaultInner>>>() {
-            @Override
-            public Observable<Page<VaultInner>> call(Page<VaultInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VaultInner>, Iterable<VaultInner>>() {
             @Override
             public Iterable<VaultInner> call(Page<VaultInner> page) {
@@ -217,29 +179,10 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
         return client.purgeDeletedAsync(vaultName, location).toCompletable();
     }
 
-    private Observable<Page<DeletedVaultInner>> listDeletedNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VaultsInner client = this.inner();
-        return client.listDeletedNextAsync(nextLink)
-        .flatMap(new Func1<Page<DeletedVaultInner>, Observable<Page<DeletedVaultInner>>>() {
-            @Override
-            public Observable<Page<DeletedVaultInner>> call(Page<DeletedVaultInner> page) {
-                return Observable.just(page).concatWith(listDeletedNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DeletedVault> listDeletedAsync() {
         VaultsInner client = this.inner();
         return client.listDeletedAsync()
-        .flatMap(new Func1<Page<DeletedVaultInner>, Observable<Page<DeletedVaultInner>>>() {
-            @Override
-            public Observable<Page<DeletedVaultInner>> call(Page<DeletedVaultInner> page) {
-                return listDeletedNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DeletedVaultInner>, Iterable<DeletedVaultInner>>() {
             @Override
             public Iterable<DeletedVaultInner> call(Page<DeletedVaultInner> page) {
@@ -253,29 +196,10 @@ class VaultsImpl extends GroupableResourcesCoreImpl<Vault, VaultImpl, VaultInner
         });
     }
 
-    private Observable<Page<Resource>> listResourceNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VaultsInner client = this.inner();
-        return client.listResourceNextAsync(nextLink)
-        .flatMap(new Func1<Page<Resource>, Observable<Page<Resource>>>() {
-            @Override
-            public Observable<Page<Resource>> call(Page<Resource> page) {
-                return Observable.just(page).concatWith(listResourceNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Resource> listResourceAsync() {
         VaultsInner client = this.inner();
         return client.listResourceAsync()
-        .flatMap(new Func1<Page<Resource>, Observable<Page<Resource>>>() {
-            @Override
-            public Observable<Page<Resource>> call(Page<Resource> page) {
-                return listResourceNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<Resource>, Iterable<Resource>>() {
             @Override
             public Iterable<Resource> call(Page<Resource> page) {

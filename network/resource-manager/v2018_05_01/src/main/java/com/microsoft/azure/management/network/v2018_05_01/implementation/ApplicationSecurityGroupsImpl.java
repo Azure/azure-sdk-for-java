@@ -78,29 +78,10 @@ class ApplicationSecurityGroupsImpl extends GroupableResourcesCoreImpl<Applicati
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<ApplicationSecurityGroupInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ApplicationSecurityGroupsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<ApplicationSecurityGroupInner>, Observable<Page<ApplicationSecurityGroupInner>>>() {
-            @Override
-            public Observable<Page<ApplicationSecurityGroupInner>> call(Page<ApplicationSecurityGroupInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ApplicationSecurityGroup> listByResourceGroupAsync(String resourceGroupName) {
         ApplicationSecurityGroupsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<ApplicationSecurityGroupInner>, Observable<Page<ApplicationSecurityGroupInner>>>() {
-            @Override
-            public Observable<Page<ApplicationSecurityGroupInner>> call(Page<ApplicationSecurityGroupInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ApplicationSecurityGroupInner>, Iterable<ApplicationSecurityGroupInner>>() {
             @Override
             public Iterable<ApplicationSecurityGroupInner> call(Page<ApplicationSecurityGroupInner> page) {
@@ -121,29 +102,10 @@ class ApplicationSecurityGroupsImpl extends GroupableResourcesCoreImpl<Applicati
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<ApplicationSecurityGroupInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ApplicationSecurityGroupsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ApplicationSecurityGroupInner>, Observable<Page<ApplicationSecurityGroupInner>>>() {
-            @Override
-            public Observable<Page<ApplicationSecurityGroupInner>> call(Page<ApplicationSecurityGroupInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ApplicationSecurityGroup> listAsync() {
         ApplicationSecurityGroupsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ApplicationSecurityGroupInner>, Observable<Page<ApplicationSecurityGroupInner>>>() {
-            @Override
-            public Observable<Page<ApplicationSecurityGroupInner>> call(Page<ApplicationSecurityGroupInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ApplicationSecurityGroupInner>, Iterable<ApplicationSecurityGroupInner>>() {
             @Override
             public Iterable<ApplicationSecurityGroupInner> call(Page<ApplicationSecurityGroupInner> page) {

@@ -143,29 +143,10 @@ class VirtualMachineScaleSetVMsImpl extends WrapperImpl<VirtualMachineScaleSetVM
         });
     }
 
-    private Observable<Page<VirtualMachineScaleSetVMInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualMachineScaleSetVMsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualMachineScaleSetVMInner>, Observable<Page<VirtualMachineScaleSetVMInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetVMInner>> call(Page<VirtualMachineScaleSetVMInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualMachineScaleSetVM> listAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
         VirtualMachineScaleSetVMsInner client = this.inner();
         return client.listAsync(resourceGroupName, virtualMachineScaleSetName)
-        .flatMap(new Func1<Page<VirtualMachineScaleSetVMInner>, Observable<Page<VirtualMachineScaleSetVMInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineScaleSetVMInner>> call(Page<VirtualMachineScaleSetVMInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualMachineScaleSetVMInner>, Iterable<VirtualMachineScaleSetVMInner>>() {
             @Override
             public Iterable<VirtualMachineScaleSetVMInner> call(Page<VirtualMachineScaleSetVMInner> page) {

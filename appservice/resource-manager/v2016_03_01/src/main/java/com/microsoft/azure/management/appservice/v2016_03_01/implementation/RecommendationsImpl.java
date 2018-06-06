@@ -55,41 +55,21 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
         return client.disableRecommendationForSubscriptionAsync(name).toCompletable();
     }
 
-    private Observable<Page<RecommendationInner>> listRecommendedRulesForWebAppNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RecommendationsInner client = this.inner();
-        return client.listRecommendedRulesForWebAppNextAsync(nextLink)
-        .flatMap(new Func1<Page<RecommendationInner>, Observable<Page<RecommendationInner>>>() {
-            @Override
-            public Observable<Page<RecommendationInner>> call(Page<RecommendationInner> page) {
-                return Observable.just(page).concatWith(listRecommendedRulesForWebAppNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Recommendation> listRecommendedRulesForWebAppAsync(final String resourceGroupName, final String siteName) {
         RecommendationsInner client = this.inner();
         return client.listRecommendedRulesForWebAppAsync(resourceGroupName, siteName)
-        .flatMap(new Func1<Page<RecommendationInner>, Observable<Page<RecommendationInner>>>() {
-            @Override
-            public Observable<Page<RecommendationInner>> call(Page<RecommendationInner> page) {
-                return listRecommendedRulesForWebAppNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RecommendationInner>, Iterable<RecommendationInner>>() {
             @Override
             public Iterable<RecommendationInner> call(Page<RecommendationInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<RecommendationInner, Recommendation>() {
+        })    .map(new Func1<RecommendationInner, Recommendation>() {
             @Override
             public Recommendation call(RecommendationInner inner) {
                 return new RecommendationImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -128,29 +108,10 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
         return converter.convert(client.list());
     }
 
-    private Observable<Page<RecommendationInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RecommendationsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RecommendationInner>, Observable<Page<RecommendationInner>>>() {
-            @Override
-            public Observable<Page<RecommendationInner>> call(Page<RecommendationInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Recommendation> listAsync() {
         RecommendationsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<RecommendationInner>, Observable<Page<RecommendationInner>>>() {
-            @Override
-            public Observable<Page<RecommendationInner>> call(Page<RecommendationInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RecommendationInner>, Iterable<RecommendationInner>>() {
             @Override
             public Iterable<RecommendationInner> call(Page<RecommendationInner> page) {
@@ -165,41 +126,21 @@ class RecommendationsImpl extends WrapperImpl<RecommendationsInner> implements R
         });
     }
 
-    private Observable<Page<RecommendationInner>> listHistoryForWebAppNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RecommendationsInner client = this.inner();
-        return client.listHistoryForWebAppNextAsync(nextLink)
-        .flatMap(new Func1<Page<RecommendationInner>, Observable<Page<RecommendationInner>>>() {
-            @Override
-            public Observable<Page<RecommendationInner>> call(Page<RecommendationInner> page) {
-                return Observable.just(page).concatWith(listHistoryForWebAppNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Recommendation> listHistoryForWebAppAsync(final String resourceGroupName, final String siteName) {
         RecommendationsInner client = this.inner();
         return client.listHistoryForWebAppAsync(resourceGroupName, siteName)
-        .flatMap(new Func1<Page<RecommendationInner>, Observable<Page<RecommendationInner>>>() {
-            @Override
-            public Observable<Page<RecommendationInner>> call(Page<RecommendationInner> page) {
-                return listHistoryForWebAppNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RecommendationInner>, Iterable<RecommendationInner>>() {
             @Override
             public Iterable<RecommendationInner> call(Page<RecommendationInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<RecommendationInner, Recommendation>() {
+        })    .map(new Func1<RecommendationInner, Recommendation>() {
             @Override
             public Recommendation call(RecommendationInner inner) {
                 return new RecommendationImpl(inner, manager());
             }
-       });
+        });
     }
 
 }

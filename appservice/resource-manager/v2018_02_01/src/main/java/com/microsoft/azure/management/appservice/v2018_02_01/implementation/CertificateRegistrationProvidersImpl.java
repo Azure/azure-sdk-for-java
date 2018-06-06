@@ -28,41 +28,21 @@ class CertificateRegistrationProvidersImpl extends WrapperImpl<CertificateRegist
         return this.manager;
     }
 
-    private Observable<Page<CsmOperationDescriptionInner>> listOperationsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        CertificateRegistrationProvidersInner client = this.inner();
-        return client.listOperationsNextAsync(nextLink)
-        .flatMap(new Func1<Page<CsmOperationDescriptionInner>, Observable<Page<CsmOperationDescriptionInner>>>() {
-            @Override
-            public Observable<Page<CsmOperationDescriptionInner>> call(Page<CsmOperationDescriptionInner> page) {
-                return Observable.just(page).concatWith(listOperationsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<CsmOperationDescription> listOperationsAsync() {
         CertificateRegistrationProvidersInner client = this.inner();
         return client.listOperationsAsync()
-        .flatMap(new Func1<Page<CsmOperationDescriptionInner>, Observable<Page<CsmOperationDescriptionInner>>>() {
-            @Override
-            public Observable<Page<CsmOperationDescriptionInner>> call(Page<CsmOperationDescriptionInner> page) {
-                return listOperationsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<CsmOperationDescriptionInner>, Iterable<CsmOperationDescriptionInner>>() {
             @Override
             public Iterable<CsmOperationDescriptionInner> call(Page<CsmOperationDescriptionInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
+        })    .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
             @Override
             public CsmOperationDescription call(CsmOperationDescriptionInner inner) {
                 return new CsmOperationDescriptionImpl(inner, manager());
             }
-       });
+        });
     }
 
 }

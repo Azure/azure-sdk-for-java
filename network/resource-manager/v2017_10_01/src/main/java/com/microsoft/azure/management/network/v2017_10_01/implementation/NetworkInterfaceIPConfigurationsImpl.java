@@ -32,29 +32,10 @@ class NetworkInterfaceIPConfigurationsImpl extends WrapperImpl<NetworkInterfaceI
         return  new NetworkInterfaceNetworkInterfaceIPConfigurationImpl(inner, manager());
     }
 
-    private Observable<Page<NetworkInterfaceIPConfigurationInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        NetworkInterfaceIPConfigurationsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<NetworkInterfaceIPConfigurationInner>, Observable<Page<NetworkInterfaceIPConfigurationInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceIPConfigurationInner>> call(Page<NetworkInterfaceIPConfigurationInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<NetworkInterfaceNetworkInterfaceIPConfiguration> listAsync(final String resourceGroupName, final String networkInterfaceName) {
         NetworkInterfaceIPConfigurationsInner client = this.inner();
         return client.listAsync(resourceGroupName, networkInterfaceName)
-        .flatMap(new Func1<Page<NetworkInterfaceIPConfigurationInner>, Observable<Page<NetworkInterfaceIPConfigurationInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceIPConfigurationInner>> call(Page<NetworkInterfaceIPConfigurationInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<NetworkInterfaceIPConfigurationInner>, Iterable<NetworkInterfaceIPConfigurationInner>>() {
             @Override
             public Iterable<NetworkInterfaceIPConfigurationInner> call(Page<NetworkInterfaceIPConfigurationInner> page) {

@@ -51,11 +51,11 @@ public class AuthorizationManagementClientImpl extends AzureServiceClient {
         return this;
     }
 
-    /** The API version to use for this operation. */
+    /** The API version to use for the operation. */
     private String apiVersion;
 
     /**
-     * Gets The API version to use for this operation.
+     * Gets The API version to use for the operation.
      *
      * @return the apiVersion value.
      */

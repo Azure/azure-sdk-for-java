@@ -42,29 +42,10 @@ class ExpressRouteCircuitAuthorizationsImpl extends WrapperImpl<ExpressRouteCirc
         return new ExpressRouteCircuitAuthorizationImpl(name, this.manager());
     }
 
-    private Observable<Page<ExpressRouteCircuitAuthorizationInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ExpressRouteCircuitAuthorizationsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ExpressRouteCircuitAuthorizationInner>, Observable<Page<ExpressRouteCircuitAuthorizationInner>>>() {
-            @Override
-            public Observable<Page<ExpressRouteCircuitAuthorizationInner>> call(Page<ExpressRouteCircuitAuthorizationInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ExpressRouteCircuitAuthorization> listAsync(final String resourceGroupName, final String circuitName) {
         ExpressRouteCircuitAuthorizationsInner client = this.inner();
         return client.listAsync(resourceGroupName, circuitName)
-        .flatMap(new Func1<Page<ExpressRouteCircuitAuthorizationInner>, Observable<Page<ExpressRouteCircuitAuthorizationInner>>>() {
-            @Override
-            public Observable<Page<ExpressRouteCircuitAuthorizationInner>> call(Page<ExpressRouteCircuitAuthorizationInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ExpressRouteCircuitAuthorizationInner>, Iterable<ExpressRouteCircuitAuthorizationInner>>() {
             @Override
             public Iterable<ExpressRouteCircuitAuthorizationInner> call(Page<ExpressRouteCircuitAuthorizationInner> page) {

@@ -28,29 +28,10 @@ class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations 
         return this.manager;
     }
 
-    private Observable<Page<OperationInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        OperationsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<OperationInner>, Observable<Page<OperationInner>>>() {
-            @Override
-            public Observable<Page<OperationInner>> call(Page<OperationInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Operation> listAsync() {
         OperationsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<OperationInner>, Observable<Page<OperationInner>>>() {
-            @Override
-            public Observable<Page<OperationInner>> call(Page<OperationInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<OperationInner>, Iterable<OperationInner>>() {
             @Override
             public Iterable<OperationInner> call(Page<OperationInner> page) {

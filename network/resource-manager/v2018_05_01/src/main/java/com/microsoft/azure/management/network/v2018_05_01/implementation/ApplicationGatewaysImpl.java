@@ -82,29 +82,10 @@ class ApplicationGatewaysImpl extends GroupableResourcesCoreImpl<ApplicationGate
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<ApplicationGatewayInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ApplicationGatewaysInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<ApplicationGatewayInner>, Observable<Page<ApplicationGatewayInner>>>() {
-            @Override
-            public Observable<Page<ApplicationGatewayInner>> call(Page<ApplicationGatewayInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ApplicationGateway> listByResourceGroupAsync(String resourceGroupName) {
         ApplicationGatewaysInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<ApplicationGatewayInner>, Observable<Page<ApplicationGatewayInner>>>() {
-            @Override
-            public Observable<Page<ApplicationGatewayInner>> call(Page<ApplicationGatewayInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ApplicationGatewayInner>, Iterable<ApplicationGatewayInner>>() {
             @Override
             public Iterable<ApplicationGatewayInner> call(Page<ApplicationGatewayInner> page) {
@@ -125,29 +106,10 @@ class ApplicationGatewaysImpl extends GroupableResourcesCoreImpl<ApplicationGate
         return this.wrapList(client.listAll());
     }
 
-    private Observable<Page<ApplicationGatewayInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ApplicationGatewaysInner client = this.inner();
-        return client.listAllNextAsync(nextLink)
-        .flatMap(new Func1<Page<ApplicationGatewayInner>, Observable<Page<ApplicationGatewayInner>>>() {
-            @Override
-            public Observable<Page<ApplicationGatewayInner>> call(Page<ApplicationGatewayInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ApplicationGateway> listAsync() {
         ApplicationGatewaysInner client = this.inner();
         return client.listAllAsync()
-        .flatMap(new Func1<Page<ApplicationGatewayInner>, Observable<Page<ApplicationGatewayInner>>>() {
-            @Override
-            public Observable<Page<ApplicationGatewayInner>> call(Page<ApplicationGatewayInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ApplicationGatewayInner>, Iterable<ApplicationGatewayInner>>() {
             @Override
             public Iterable<ApplicationGatewayInner> call(Page<ApplicationGatewayInner> page) {
@@ -225,41 +187,21 @@ class ApplicationGatewaysImpl extends GroupableResourcesCoreImpl<ApplicationGate
         });
     }
 
-    private Observable<Page<ApplicationGatewaySslPredefinedPolicyInner>> listAvailableSslPredefinedPoliciesNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ApplicationGatewaysInner client = this.inner();
-        return client.listAvailableSslPredefinedPoliciesNextAsync(nextLink)
-        .flatMap(new Func1<Page<ApplicationGatewaySslPredefinedPolicyInner>, Observable<Page<ApplicationGatewaySslPredefinedPolicyInner>>>() {
-            @Override
-            public Observable<Page<ApplicationGatewaySslPredefinedPolicyInner>> call(Page<ApplicationGatewaySslPredefinedPolicyInner> page) {
-                return Observable.just(page).concatWith(listAvailableSslPredefinedPoliciesNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ApplicationGatewaySslPredefinedPolicy> listAvailableSslPredefinedPoliciesAsync() {
         ApplicationGatewaysInner client = this.inner();
         return client.listAvailableSslPredefinedPoliciesAsync()
-        .flatMap(new Func1<Page<ApplicationGatewaySslPredefinedPolicyInner>, Observable<Page<ApplicationGatewaySslPredefinedPolicyInner>>>() {
-            @Override
-            public Observable<Page<ApplicationGatewaySslPredefinedPolicyInner>> call(Page<ApplicationGatewaySslPredefinedPolicyInner> page) {
-                return listAvailableSslPredefinedPoliciesNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ApplicationGatewaySslPredefinedPolicyInner>, Iterable<ApplicationGatewaySslPredefinedPolicyInner>>() {
             @Override
             public Iterable<ApplicationGatewaySslPredefinedPolicyInner> call(Page<ApplicationGatewaySslPredefinedPolicyInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<ApplicationGatewaySslPredefinedPolicyInner, ApplicationGatewaySslPredefinedPolicy>() {
+        })    .map(new Func1<ApplicationGatewaySslPredefinedPolicyInner, ApplicationGatewaySslPredefinedPolicy>() {
             @Override
             public ApplicationGatewaySslPredefinedPolicy call(ApplicationGatewaySslPredefinedPolicyInner inner) {
                 return new ApplicationGatewaySslPredefinedPolicyImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
