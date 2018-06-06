@@ -42,29 +42,10 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
         return new RoleAssignmentImpl(name, this.manager());
     }
 
-    private Observable<Page<RoleAssignmentInner>> listForResourceNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RoleAssignmentsInner client = this.inner();
-        return client.listForResourceNextAsync(nextLink)
-        .flatMap(new Func1<Page<RoleAssignmentInner>, Observable<Page<RoleAssignmentInner>>>() {
-            @Override
-            public Observable<Page<RoleAssignmentInner>> call(Page<RoleAssignmentInner> page) {
-                return Observable.just(page).concatWith(listForResourceNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RoleAssignment> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
         RoleAssignmentsInner client = this.inner();
         return client.listForResourceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
-        .flatMap(new Func1<Page<RoleAssignmentInner>, Observable<Page<RoleAssignmentInner>>>() {
-            @Override
-            public Observable<Page<RoleAssignmentInner>> call(Page<RoleAssignmentInner> page) {
-                return listForResourceNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RoleAssignmentInner>, Iterable<RoleAssignmentInner>>() {
             @Override
             public Iterable<RoleAssignmentInner> call(Page<RoleAssignmentInner> page) {
@@ -126,29 +107,10 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
         });
     }
 
-    private Observable<Page<RoleAssignmentInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RoleAssignmentsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<RoleAssignmentInner>, Observable<Page<RoleAssignmentInner>>>() {
-            @Override
-            public Observable<Page<RoleAssignmentInner>> call(Page<RoleAssignmentInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RoleAssignment> listByResourceGroupAsync(final String resourceGroupName) {
         RoleAssignmentsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<RoleAssignmentInner>, Observable<Page<RoleAssignmentInner>>>() {
-            @Override
-            public Observable<Page<RoleAssignmentInner>> call(Page<RoleAssignmentInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RoleAssignmentInner>, Iterable<RoleAssignmentInner>>() {
             @Override
             public Iterable<RoleAssignmentInner> call(Page<RoleAssignmentInner> page) {
@@ -162,29 +124,10 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
         });
     }
 
-    private Observable<Page<RoleAssignmentInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RoleAssignmentsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RoleAssignmentInner>, Observable<Page<RoleAssignmentInner>>>() {
-            @Override
-            public Observable<Page<RoleAssignmentInner>> call(Page<RoleAssignmentInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RoleAssignment> listAsync() {
         RoleAssignmentsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<RoleAssignmentInner>, Observable<Page<RoleAssignmentInner>>>() {
-            @Override
-            public Observable<Page<RoleAssignmentInner>> call(Page<RoleAssignmentInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RoleAssignmentInner>, Iterable<RoleAssignmentInner>>() {
             @Override
             public Iterable<RoleAssignmentInner> call(Page<RoleAssignmentInner> page) {
@@ -198,29 +141,10 @@ class RoleAssignmentsImpl extends WrapperImpl<RoleAssignmentsInner> implements R
         });
     }
 
-    private Observable<Page<RoleAssignmentInner>> listForScopeNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RoleAssignmentsInner client = this.inner();
-        return client.listForScopeNextAsync(nextLink)
-        .flatMap(new Func1<Page<RoleAssignmentInner>, Observable<Page<RoleAssignmentInner>>>() {
-            @Override
-            public Observable<Page<RoleAssignmentInner>> call(Page<RoleAssignmentInner> page) {
-                return Observable.just(page).concatWith(listForScopeNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RoleAssignment> listForScopeAsync(final String scope) {
         RoleAssignmentsInner client = this.inner();
         return client.listForScopeAsync(scope)
-        .flatMap(new Func1<Page<RoleAssignmentInner>, Observable<Page<RoleAssignmentInner>>>() {
-            @Override
-            public Observable<Page<RoleAssignmentInner>> call(Page<RoleAssignmentInner> page) {
-                return listForScopeNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RoleAssignmentInner>, Iterable<RoleAssignmentInner>>() {
             @Override
             public Iterable<RoleAssignmentInner> call(Page<RoleAssignmentInner> page) {

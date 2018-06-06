@@ -42,29 +42,10 @@ class SubnetsImpl extends WrapperImpl<SubnetsInner> implements Subnets {
         return new SubnetImpl(name, this.manager());
     }
 
-    private Observable<Page<SubnetInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        SubnetsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<SubnetInner>, Observable<Page<SubnetInner>>>() {
-            @Override
-            public Observable<Page<SubnetInner>> call(Page<SubnetInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Subnet> listAsync(final String resourceGroupName, final String virtualNetworkName) {
         SubnetsInner client = this.inner();
         return client.listAsync(resourceGroupName, virtualNetworkName)
-        .flatMap(new Func1<Page<SubnetInner>, Observable<Page<SubnetInner>>>() {
-            @Override
-            public Observable<Page<SubnetInner>> call(Page<SubnetInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<SubnetInner>, Iterable<SubnetInner>>() {
             @Override
             public Iterable<SubnetInner> call(Page<SubnetInner> page) {

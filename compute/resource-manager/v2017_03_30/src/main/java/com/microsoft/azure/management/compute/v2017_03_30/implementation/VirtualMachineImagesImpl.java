@@ -110,8 +110,7 @@ class VirtualMachineImagesImpl extends WrapperImpl<VirtualMachineImagesInner> im
             public Observable<VirtualMachineImageResourceInner> call(List<VirtualMachineImageResourceInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<VirtualMachineImageResourceInner, VirtualMachineImageResource>() {
+        })    .map(new Func1<VirtualMachineImageResourceInner, VirtualMachineImageResource>() {
             @Override
             public VirtualMachineImageResource call(VirtualMachineImageResourceInner inner) {
                 return new VirtualMachineImageResourceImpl(inner, manager());

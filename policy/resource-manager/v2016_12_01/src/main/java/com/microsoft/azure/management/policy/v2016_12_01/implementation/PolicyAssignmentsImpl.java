@@ -69,29 +69,10 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
         });
     }
 
-    private Observable<Page<PolicyAssignmentInner>> listForResourceNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PolicyAssignmentsInner client = this.inner();
-        return client.listForResourceNextAsync(nextLink)
-        .flatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
-            @Override
-            public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
-                return Observable.just(page).concatWith(listForResourceNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<PolicyAssignment> listForResourceAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
         PolicyAssignmentsInner client = this.inner();
         return client.listForResourceAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
-        .flatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
-            @Override
-            public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
-                return listForResourceNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PolicyAssignmentInner>, Iterable<PolicyAssignmentInner>>() {
             @Override
             public Iterable<PolicyAssignmentInner> call(Page<PolicyAssignmentInner> page) {
@@ -141,29 +122,10 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
         return converter.convert(client.list());
     }
 
-    private Observable<Page<PolicyAssignmentInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PolicyAssignmentsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
-            @Override
-            public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<PolicyAssignment> listAsync() {
         PolicyAssignmentsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
-            @Override
-            public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PolicyAssignmentInner>, Iterable<PolicyAssignmentInner>>() {
             @Override
             public Iterable<PolicyAssignmentInner> call(Page<PolicyAssignmentInner> page) {
@@ -184,29 +146,10 @@ class PolicyAssignmentsImpl extends WrapperImpl<PolicyAssignmentsInner> implemen
         return converter.convert(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<PolicyAssignmentInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PolicyAssignmentsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
-            @Override
-            public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<PolicyAssignment> listByResourceGroupAsync(String resourceGroupName) {
         PolicyAssignmentsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<PolicyAssignmentInner>, Observable<Page<PolicyAssignmentInner>>>() {
-            @Override
-            public Observable<Page<PolicyAssignmentInner>> call(Page<PolicyAssignmentInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PolicyAssignmentInner>, Iterable<PolicyAssignmentInner>>() {
             @Override
             public Iterable<PolicyAssignmentInner> call(Page<PolicyAssignmentInner> page) {

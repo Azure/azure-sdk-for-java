@@ -37,8 +37,7 @@ class OperationsImpl extends WrapperImpl<OperationsInner> implements Operations 
             public Observable<ComputeOperationValueInner> call(List<ComputeOperationValueInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<ComputeOperationValueInner, ComputeOperationValue>() {
+        })    .map(new Func1<ComputeOperationValueInner, ComputeOperationValue>() {
             @Override
             public ComputeOperationValue call(ComputeOperationValueInner inner) {
                 return new ComputeOperationValueImpl(inner, manager());

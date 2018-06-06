@@ -80,29 +80,10 @@ class VirtualNetworksImpl extends GroupableResourcesCoreImpl<VirtualNetwork, Vir
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<VirtualNetworkInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualNetworksInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualNetworkInner>, Observable<Page<VirtualNetworkInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkInner>> call(Page<VirtualNetworkInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualNetwork> listByResourceGroupAsync(String resourceGroupName) {
         VirtualNetworksInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<VirtualNetworkInner>, Observable<Page<VirtualNetworkInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkInner>> call(Page<VirtualNetworkInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualNetworkInner>, Iterable<VirtualNetworkInner>>() {
             @Override
             public Iterable<VirtualNetworkInner> call(Page<VirtualNetworkInner> page) {
@@ -123,29 +104,10 @@ class VirtualNetworksImpl extends GroupableResourcesCoreImpl<VirtualNetwork, Vir
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<VirtualNetworkInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualNetworksInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualNetworkInner>, Observable<Page<VirtualNetworkInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkInner>> call(Page<VirtualNetworkInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualNetwork> listAsync() {
         VirtualNetworksInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<VirtualNetworkInner>, Observable<Page<VirtualNetworkInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkInner>> call(Page<VirtualNetworkInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualNetworkInner>, Iterable<VirtualNetworkInner>>() {
             @Override
             public Iterable<VirtualNetworkInner> call(Page<VirtualNetworkInner> page) {
@@ -191,29 +153,10 @@ class VirtualNetworksImpl extends GroupableResourcesCoreImpl<VirtualNetwork, Vir
         return  new VirtualNetworkUsageImpl(inner, manager());
     }
 
-    private Observable<Page<VirtualNetworkUsageInner>> listUsageNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualNetworksInner client = this.inner();
-        return client.listUsageNextAsync(nextLink)
-        .flatMap(new Func1<Page<VirtualNetworkUsageInner>, Observable<Page<VirtualNetworkUsageInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkUsageInner>> call(Page<VirtualNetworkUsageInner> page) {
-                return Observable.just(page).concatWith(listUsageNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualNetworkUsage> listUsageAsync(final String resourceGroupName, final String virtualNetworkName) {
         VirtualNetworksInner client = this.inner();
         return client.listUsageAsync(resourceGroupName, virtualNetworkName)
-        .flatMap(new Func1<Page<VirtualNetworkUsageInner>, Observable<Page<VirtualNetworkUsageInner>>>() {
-            @Override
-            public Observable<Page<VirtualNetworkUsageInner>> call(Page<VirtualNetworkUsageInner> page) {
-                return listUsageNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualNetworkUsageInner>, Iterable<VirtualNetworkUsageInner>>() {
             @Override
             public Iterable<VirtualNetworkUsageInner> call(Page<VirtualNetworkUsageInner> page) {

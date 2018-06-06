@@ -80,29 +80,10 @@ class DisksImpl extends GroupableResourcesCoreImpl<Disk, DiskImpl, DiskInner, Di
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<DiskInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DisksInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<DiskInner>, Observable<Page<DiskInner>>>() {
-            @Override
-            public Observable<Page<DiskInner>> call(Page<DiskInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Disk> listByResourceGroupAsync(String resourceGroupName) {
         DisksInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<DiskInner>, Observable<Page<DiskInner>>>() {
-            @Override
-            public Observable<Page<DiskInner>> call(Page<DiskInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DiskInner>, Iterable<DiskInner>>() {
             @Override
             public Iterable<DiskInner> call(Page<DiskInner> page) {
@@ -123,29 +104,10 @@ class DisksImpl extends GroupableResourcesCoreImpl<Disk, DiskImpl, DiskInner, Di
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<DiskInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DisksInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<DiskInner>, Observable<Page<DiskInner>>>() {
-            @Override
-            public Observable<Page<DiskInner>> call(Page<DiskInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Disk> listAsync() {
         DisksInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<DiskInner>, Observable<Page<DiskInner>>>() {
-            @Override
-            public Observable<Page<DiskInner>> call(Page<DiskInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DiskInner>, Iterable<DiskInner>>() {
             @Override
             public Iterable<DiskInner> call(Page<DiskInner> page) {

@@ -78,29 +78,10 @@ class CertificatesImpl extends GroupableResourcesCoreImpl<Certificate, Certifica
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<CertificateInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        CertificatesInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<CertificateInner>, Observable<Page<CertificateInner>>>() {
-            @Override
-            public Observable<Page<CertificateInner>> call(Page<CertificateInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Certificate> listByResourceGroupAsync(String resourceGroupName) {
         CertificatesInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<CertificateInner>, Observable<Page<CertificateInner>>>() {
-            @Override
-            public Observable<Page<CertificateInner>> call(Page<CertificateInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<CertificateInner>, Iterable<CertificateInner>>() {
             @Override
             public Iterable<CertificateInner> call(Page<CertificateInner> page) {
@@ -121,29 +102,10 @@ class CertificatesImpl extends GroupableResourcesCoreImpl<Certificate, Certifica
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<CertificateInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        CertificatesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<CertificateInner>, Observable<Page<CertificateInner>>>() {
-            @Override
-            public Observable<Page<CertificateInner>> call(Page<CertificateInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Certificate> listAsync() {
         CertificatesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<CertificateInner>, Observable<Page<CertificateInner>>>() {
-            @Override
-            public Observable<Page<CertificateInner>> call(Page<CertificateInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<CertificateInner>, Iterable<CertificateInner>>() {
             @Override
             public Iterable<CertificateInner> call(Page<CertificateInner> page) {

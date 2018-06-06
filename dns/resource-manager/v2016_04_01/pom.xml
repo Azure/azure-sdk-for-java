@@ -17,8 +17,8 @@
     <artifactId>azure-mgmt-dns</artifactId>
     <version>1.0.0-beta</version>
     <packaging>jar</packaging>
-    <name>Microsoft Azure SDK for Network Management</name>
-    <description>This package contains Microsoft Network Management SDK.</description>
+    <name>Microsoft Azure SDK for DNS Management</name>
+    <description>This package contains Microsoft DNS Management SDK.</description>
     <url>https://github.com/Azure/azure-libraries-for-java</url>
     <licenses>
         <license>

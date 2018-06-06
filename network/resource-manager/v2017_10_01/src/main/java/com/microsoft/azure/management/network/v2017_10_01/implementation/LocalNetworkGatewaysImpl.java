@@ -78,29 +78,10 @@ class LocalNetworkGatewaysImpl extends GroupableResourcesCoreImpl<LocalNetworkGa
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<LocalNetworkGatewayInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LocalNetworkGatewaysInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<LocalNetworkGatewayInner>, Observable<Page<LocalNetworkGatewayInner>>>() {
-            @Override
-            public Observable<Page<LocalNetworkGatewayInner>> call(Page<LocalNetworkGatewayInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<LocalNetworkGateway> listByResourceGroupAsync(String resourceGroupName) {
         LocalNetworkGatewaysInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<LocalNetworkGatewayInner>, Observable<Page<LocalNetworkGatewayInner>>>() {
-            @Override
-            public Observable<Page<LocalNetworkGatewayInner>> call(Page<LocalNetworkGatewayInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<LocalNetworkGatewayInner>, Iterable<LocalNetworkGatewayInner>>() {
             @Override
             public Iterable<LocalNetworkGatewayInner> call(Page<LocalNetworkGatewayInner> page) {

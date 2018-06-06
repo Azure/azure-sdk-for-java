@@ -51,29 +51,10 @@ class VirtualMachineRunCommandsImpl extends WrapperImpl<VirtualMachineRunCommand
        });
     }
 
-    private Observable<Page<RunCommandDocumentBaseInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        VirtualMachineRunCommandsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RunCommandDocumentBaseInner>, Observable<Page<RunCommandDocumentBaseInner>>>() {
-            @Override
-            public Observable<Page<RunCommandDocumentBaseInner>> call(Page<RunCommandDocumentBaseInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RunCommandDocument> listAsync(final String location) {
         VirtualMachineRunCommandsInner client = this.inner();
         return client.listAsync(location)
-        .flatMap(new Func1<Page<RunCommandDocumentBaseInner>, Observable<Page<RunCommandDocumentBaseInner>>>() {
-            @Override
-            public Observable<Page<RunCommandDocumentBaseInner>> call(Page<RunCommandDocumentBaseInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RunCommandDocumentBaseInner>, Iterable<RunCommandDocumentBaseInner>>() {
             @Override
             public Iterable<RunCommandDocumentBaseInner> call(Page<RunCommandDocumentBaseInner> page) {

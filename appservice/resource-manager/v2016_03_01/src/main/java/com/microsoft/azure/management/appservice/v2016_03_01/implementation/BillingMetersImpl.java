@@ -47,29 +47,10 @@ class BillingMetersImpl extends WrapperImpl<BillingMetersInner> implements Billi
         return converter.convert(client.list());
     }
 
-    private Observable<Page<BillingMeterInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        BillingMetersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<BillingMeterInner>, Observable<Page<BillingMeterInner>>>() {
-            @Override
-            public Observable<Page<BillingMeterInner>> call(Page<BillingMeterInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<BillingMeter> listAsync() {
         BillingMetersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<BillingMeterInner>, Observable<Page<BillingMeterInner>>>() {
-            @Override
-            public Observable<Page<BillingMeterInner>> call(Page<BillingMeterInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<BillingMeterInner>, Iterable<BillingMeterInner>>() {
             @Override
             public Iterable<BillingMeterInner> call(Page<BillingMeterInner> page) {

@@ -28,29 +28,10 @@ class ClassicAdministratorsImpl extends WrapperImpl<ClassicAdministratorsInner> 
         return this.manager;
     }
 
-    private Observable<Page<ClassicAdministratorInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ClassicAdministratorsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ClassicAdministratorInner>, Observable<Page<ClassicAdministratorInner>>>() {
-            @Override
-            public Observable<Page<ClassicAdministratorInner>> call(Page<ClassicAdministratorInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ClassicAdministrator> listAsync(final String apiVersion) {
         ClassicAdministratorsInner client = this.inner();
         return client.listAsync(apiVersion)
-        .flatMap(new Func1<Page<ClassicAdministratorInner>, Observable<Page<ClassicAdministratorInner>>>() {
-            @Override
-            public Observable<Page<ClassicAdministratorInner>> call(Page<ClassicAdministratorInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ClassicAdministratorInner>, Iterable<ClassicAdministratorInner>>() {
             @Override
             public Iterable<ClassicAdministratorInner> call(Page<ClassicAdministratorInner> page) {

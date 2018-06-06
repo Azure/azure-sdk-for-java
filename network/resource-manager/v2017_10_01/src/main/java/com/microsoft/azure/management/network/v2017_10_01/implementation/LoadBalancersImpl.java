@@ -78,29 +78,10 @@ class LoadBalancersImpl extends GroupableResourcesCoreImpl<LoadBalancer, LoadBal
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<LoadBalancerInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LoadBalancersInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<LoadBalancerInner>, Observable<Page<LoadBalancerInner>>>() {
-            @Override
-            public Observable<Page<LoadBalancerInner>> call(Page<LoadBalancerInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<LoadBalancer> listByResourceGroupAsync(String resourceGroupName) {
         LoadBalancersInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<LoadBalancerInner>, Observable<Page<LoadBalancerInner>>>() {
-            @Override
-            public Observable<Page<LoadBalancerInner>> call(Page<LoadBalancerInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<LoadBalancerInner>, Iterable<LoadBalancerInner>>() {
             @Override
             public Iterable<LoadBalancerInner> call(Page<LoadBalancerInner> page) {
@@ -121,29 +102,10 @@ class LoadBalancersImpl extends GroupableResourcesCoreImpl<LoadBalancer, LoadBal
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<LoadBalancerInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LoadBalancersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<LoadBalancerInner>, Observable<Page<LoadBalancerInner>>>() {
-            @Override
-            public Observable<Page<LoadBalancerInner>> call(Page<LoadBalancerInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<LoadBalancer> listAsync() {
         LoadBalancersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<LoadBalancerInner>, Observable<Page<LoadBalancerInner>>>() {
-            @Override
-            public Observable<Page<LoadBalancerInner>> call(Page<LoadBalancerInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<LoadBalancerInner>, Iterable<LoadBalancerInner>>() {
             @Override
             public Iterable<LoadBalancerInner> call(Page<LoadBalancerInner> page) {

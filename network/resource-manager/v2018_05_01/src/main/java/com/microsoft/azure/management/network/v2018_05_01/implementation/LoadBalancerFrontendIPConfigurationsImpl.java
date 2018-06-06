@@ -32,29 +32,10 @@ class LoadBalancerFrontendIPConfigurationsImpl extends WrapperImpl<LoadBalancerF
         return  new FrontendIPConfigurationImpl(inner, manager());
     }
 
-    private Observable<Page<FrontendIPConfigurationInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LoadBalancerFrontendIPConfigurationsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<FrontendIPConfigurationInner>, Observable<Page<FrontendIPConfigurationInner>>>() {
-            @Override
-            public Observable<Page<FrontendIPConfigurationInner>> call(Page<FrontendIPConfigurationInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<FrontendIPConfiguration> listAsync(final String resourceGroupName, final String loadBalancerName) {
         LoadBalancerFrontendIPConfigurationsInner client = this.inner();
         return client.listAsync(resourceGroupName, loadBalancerName)
-        .flatMap(new Func1<Page<FrontendIPConfigurationInner>, Observable<Page<FrontendIPConfigurationInner>>>() {
-            @Override
-            public Observable<Page<FrontendIPConfigurationInner>> call(Page<FrontendIPConfigurationInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<FrontendIPConfigurationInner>, Iterable<FrontendIPConfigurationInner>>() {
             @Override
             public Iterable<FrontendIPConfigurationInner> call(Page<FrontendIPConfigurationInner> page) {

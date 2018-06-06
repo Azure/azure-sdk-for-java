@@ -29,115 +29,55 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
         return this.manager;
     }
 
-    private Observable<Page<ApplicationStackInner>> getAvailableStacksNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ProvidersInner client = this.inner();
-        return client.getAvailableStacksNextAsync(nextLink)
-        .flatMap(new Func1<Page<ApplicationStackInner>, Observable<Page<ApplicationStackInner>>>() {
-            @Override
-            public Observable<Page<ApplicationStackInner>> call(Page<ApplicationStackInner> page) {
-                return Observable.just(page).concatWith(getAvailableStacksNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ApplicationStack> getAvailableStacksAsync() {
         ProvidersInner client = this.inner();
         return client.getAvailableStacksAsync()
-        .flatMap(new Func1<Page<ApplicationStackInner>, Observable<Page<ApplicationStackInner>>>() {
-            @Override
-            public Observable<Page<ApplicationStackInner>> call(Page<ApplicationStackInner> page) {
-                return getAvailableStacksNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ApplicationStackInner>, Iterable<ApplicationStackInner>>() {
             @Override
             public Iterable<ApplicationStackInner> call(Page<ApplicationStackInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<ApplicationStackInner, ApplicationStack>() {
+        })    .map(new Func1<ApplicationStackInner, ApplicationStack>() {
             @Override
             public ApplicationStack call(ApplicationStackInner inner) {
                 return new ApplicationStackImpl(inner, manager());
             }
-       });
-    }
-
-    private Observable<Page<ApplicationStackInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ProvidersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ApplicationStackInner>, Observable<Page<ApplicationStackInner>>>() {
-            @Override
-            public Observable<Page<ApplicationStackInner>> call(Page<ApplicationStackInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
         });
     }
+
     @Override
     public Observable<ApplicationStack> listAsync() {
         ProvidersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ApplicationStackInner>, Observable<Page<ApplicationStackInner>>>() {
-            @Override
-            public Observable<Page<ApplicationStackInner>> call(Page<ApplicationStackInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ApplicationStackInner>, Iterable<ApplicationStackInner>>() {
             @Override
             public Iterable<ApplicationStackInner> call(Page<ApplicationStackInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<ApplicationStackInner, ApplicationStack>() {
+        })    .map(new Func1<ApplicationStackInner, ApplicationStack>() {
             @Override
             public ApplicationStack call(ApplicationStackInner inner) {
                 return new ApplicationStackImpl(inner, manager());
             }
-       });
-    }
-
-    private Observable<Page<CsmOperationDescriptionInner>> listOperationsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ProvidersInner client = this.inner();
-        return client.listOperationsNextAsync(nextLink)
-        .flatMap(new Func1<Page<CsmOperationDescriptionInner>, Observable<Page<CsmOperationDescriptionInner>>>() {
-            @Override
-            public Observable<Page<CsmOperationDescriptionInner>> call(Page<CsmOperationDescriptionInner> page) {
-                return Observable.just(page).concatWith(listOperationsNextInnerPageAsync(page.nextPageLink()));
-            }
         });
     }
+
     @Override
     public Observable<CsmOperationDescription> listOperationsAsync() {
         ProvidersInner client = this.inner();
         return client.listOperationsAsync()
-        .flatMap(new Func1<Page<CsmOperationDescriptionInner>, Observable<Page<CsmOperationDescriptionInner>>>() {
-            @Override
-            public Observable<Page<CsmOperationDescriptionInner>> call(Page<CsmOperationDescriptionInner> page) {
-                return listOperationsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<CsmOperationDescriptionInner>, Iterable<CsmOperationDescriptionInner>>() {
             @Override
             public Iterable<CsmOperationDescriptionInner> call(Page<CsmOperationDescriptionInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
+        })    .map(new Func1<CsmOperationDescriptionInner, CsmOperationDescription>() {
             @Override
             public CsmOperationDescription call(CsmOperationDescriptionInner inner) {
                 return new CsmOperationDescriptionImpl(inner, manager());
             }
-       });
+        });
     }
 
 }

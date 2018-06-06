@@ -42,29 +42,10 @@ class ExpressRouteCircuitPeeringsImpl extends WrapperImpl<ExpressRouteCircuitPee
         return new ExpressRouteCircuitPeeringImpl(name, this.manager());
     }
 
-    private Observable<Page<ExpressRouteCircuitPeeringInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ExpressRouteCircuitPeeringsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ExpressRouteCircuitPeeringInner>, Observable<Page<ExpressRouteCircuitPeeringInner>>>() {
-            @Override
-            public Observable<Page<ExpressRouteCircuitPeeringInner>> call(Page<ExpressRouteCircuitPeeringInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ExpressRouteCircuitPeering> listAsync(final String resourceGroupName, final String circuitName) {
         ExpressRouteCircuitPeeringsInner client = this.inner();
         return client.listAsync(resourceGroupName, circuitName)
-        .flatMap(new Func1<Page<ExpressRouteCircuitPeeringInner>, Observable<Page<ExpressRouteCircuitPeeringInner>>>() {
-            @Override
-            public Observable<Page<ExpressRouteCircuitPeeringInner>> call(Page<ExpressRouteCircuitPeeringInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ExpressRouteCircuitPeeringInner>, Iterable<ExpressRouteCircuitPeeringInner>>() {
             @Override
             public Iterable<ExpressRouteCircuitPeeringInner> call(Page<ExpressRouteCircuitPeeringInner> page) {

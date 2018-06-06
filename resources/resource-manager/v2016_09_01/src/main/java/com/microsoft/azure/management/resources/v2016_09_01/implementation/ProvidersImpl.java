@@ -56,29 +56,10 @@ class ProvidersImpl extends WrapperImpl<ProvidersInner> implements Providers {
         });
     }
 
-    private Observable<Page<ProviderInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ProvidersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ProviderInner>, Observable<Page<ProviderInner>>>() {
-            @Override
-            public Observable<Page<ProviderInner>> call(Page<ProviderInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Provider> listAsync() {
         ProvidersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ProviderInner>, Observable<Page<ProviderInner>>>() {
-            @Override
-            public Observable<Page<ProviderInner>> call(Page<ProviderInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ProviderInner>, Iterable<ProviderInner>>() {
             @Override
             public Iterable<ProviderInner> call(Page<ProviderInner> page) {

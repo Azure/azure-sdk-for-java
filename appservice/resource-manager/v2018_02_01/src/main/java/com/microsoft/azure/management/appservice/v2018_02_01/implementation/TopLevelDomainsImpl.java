@@ -55,41 +55,21 @@ class TopLevelDomainsImpl extends WrapperImpl<TopLevelDomainsInner> implements T
         });
     }
 
-    private Observable<Page<TldLegalAgreementInner>> listAgreementsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        TopLevelDomainsInner client = this.inner();
-        return client.listAgreementsNextAsync(nextLink)
-        .flatMap(new Func1<Page<TldLegalAgreementInner>, Observable<Page<TldLegalAgreementInner>>>() {
-            @Override
-            public Observable<Page<TldLegalAgreementInner>> call(Page<TldLegalAgreementInner> page) {
-                return Observable.just(page).concatWith(listAgreementsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<TldLegalAgreement> listAgreementsAsync(final String name, final TopLevelDomainAgreementOption agreementOption) {
         TopLevelDomainsInner client = this.inner();
         return client.listAgreementsAsync(name, agreementOption)
-        .flatMap(new Func1<Page<TldLegalAgreementInner>, Observable<Page<TldLegalAgreementInner>>>() {
-            @Override
-            public Observable<Page<TldLegalAgreementInner>> call(Page<TldLegalAgreementInner> page) {
-                return listAgreementsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<TldLegalAgreementInner>, Iterable<TldLegalAgreementInner>>() {
             @Override
             public Iterable<TldLegalAgreementInner> call(Page<TldLegalAgreementInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<TldLegalAgreementInner, TldLegalAgreement>() {
+        })    .map(new Func1<TldLegalAgreementInner, TldLegalAgreement>() {
             @Override
             public TldLegalAgreement call(TldLegalAgreementInner inner) {
                 return new TldLegalAgreementImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -98,29 +78,10 @@ class TopLevelDomainsImpl extends WrapperImpl<TopLevelDomainsInner> implements T
         return converter.convert(client.list());
     }
 
-    private Observable<Page<TopLevelDomainInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        TopLevelDomainsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<TopLevelDomainInner>, Observable<Page<TopLevelDomainInner>>>() {
-            @Override
-            public Observable<Page<TopLevelDomainInner>> call(Page<TopLevelDomainInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<TopLevelDomain> listAsync() {
         TopLevelDomainsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<TopLevelDomainInner>, Observable<Page<TopLevelDomainInner>>>() {
-            @Override
-            public Observable<Page<TopLevelDomainInner>> call(Page<TopLevelDomainInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<TopLevelDomainInner>, Iterable<TopLevelDomainInner>>() {
             @Override
             public Iterable<TopLevelDomainInner> call(Page<TopLevelDomainInner> page) {

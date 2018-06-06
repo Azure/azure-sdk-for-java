@@ -75,29 +75,10 @@ class NetworkInterfacesImpl extends WrapperImpl<NetworkInterfacesInner> implemen
         });
     }
 
-    private Observable<Page<NetworkInterfaceInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        NetworkInterfacesInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<NetworkInterface> listByResourceGroupAsync(String resourceGroupName) {
         NetworkInterfacesInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<NetworkInterfaceInner>, Iterable<NetworkInterfaceInner>>() {
             @Override
             public Iterable<NetworkInterfaceInner> call(Page<NetworkInterfaceInner> page) {
@@ -112,29 +93,10 @@ class NetworkInterfacesImpl extends WrapperImpl<NetworkInterfacesInner> implemen
         });
     }
 
-    private Observable<Page<NetworkInterfaceInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        NetworkInterfacesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<NetworkInterface> listAsync() {
         NetworkInterfacesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<NetworkInterfaceInner>, Iterable<NetworkInterfaceInner>>() {
             @Override
             public Iterable<NetworkInterfaceInner> call(Page<NetworkInterfaceInner> page) {
@@ -178,78 +140,38 @@ class NetworkInterfacesImpl extends WrapperImpl<NetworkInterfacesInner> implemen
         });
     }
 
-    private Observable<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetVMNetworkInterfacesNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        NetworkInterfacesInner client = this.inner();
-        return client.listVirtualMachineScaleSetVMNetworkInterfacesNextAsync(nextLink)
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return Observable.just(page).concatWith(listVirtualMachineScaleSetVMNetworkInterfacesNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<LoadBalancerNetworkInterface> listVirtualMachineScaleSetVMNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex) {
         NetworkInterfacesInner client = this.inner();
         return client.listVirtualMachineScaleSetVMNetworkInterfacesAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex)
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return listVirtualMachineScaleSetVMNetworkInterfacesNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<NetworkInterfaceInner>, Iterable<NetworkInterfaceInner>>() {
             @Override
             public Iterable<NetworkInterfaceInner> call(Page<NetworkInterfaceInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<NetworkInterfaceInner, LoadBalancerNetworkInterface>() {
+        })    .map(new Func1<NetworkInterfaceInner, LoadBalancerNetworkInterface>() {
             @Override
             public LoadBalancerNetworkInterface call(NetworkInterfaceInner inner) {
                 return new LoadBalancerNetworkInterfaceImpl(inner, manager());
             }
-       });
-    }
-
-    private Observable<Page<NetworkInterfaceInner>> listVirtualMachineScaleSetNetworkInterfacesNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        NetworkInterfacesInner client = this.inner();
-        return client.listVirtualMachineScaleSetNetworkInterfacesNextAsync(nextLink)
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return Observable.just(page).concatWith(listVirtualMachineScaleSetNetworkInterfacesNextInnerPageAsync(page.nextPageLink()));
-            }
         });
     }
+
     @Override
     public Observable<LoadBalancerNetworkInterface> listVirtualMachineScaleSetNetworkInterfacesAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
         NetworkInterfacesInner client = this.inner();
         return client.listVirtualMachineScaleSetNetworkInterfacesAsync(resourceGroupName, virtualMachineScaleSetName)
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return listVirtualMachineScaleSetNetworkInterfacesNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<NetworkInterfaceInner>, Iterable<NetworkInterfaceInner>>() {
             @Override
             public Iterable<NetworkInterfaceInner> call(Page<NetworkInterfaceInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<NetworkInterfaceInner, LoadBalancerNetworkInterface>() {
+        })    .map(new Func1<NetworkInterfaceInner, LoadBalancerNetworkInterface>() {
             @Override
             public LoadBalancerNetworkInterface call(NetworkInterfaceInner inner) {
                 return new LoadBalancerNetworkInterfaceImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -276,29 +198,10 @@ class NetworkInterfacesImpl extends WrapperImpl<NetworkInterfacesInner> implemen
        });
     }
 
-    private Observable<Page<NetworkInterfaceIPConfigurationInner>> listVirtualMachineScaleSetIpConfigurationsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        NetworkInterfacesInner client = this.inner();
-        return client.listVirtualMachineScaleSetIpConfigurationsNextAsync(nextLink)
-        .flatMap(new Func1<Page<NetworkInterfaceIPConfigurationInner>, Observable<Page<NetworkInterfaceIPConfigurationInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceIPConfigurationInner>> call(Page<NetworkInterfaceIPConfigurationInner> page) {
-                return Observable.just(page).concatWith(listVirtualMachineScaleSetIpConfigurationsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<VirtualMachineScaleSetNetworkInterfaceIPConfiguration> listVirtualMachineScaleSetIpConfigurationsAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final String networkInterfaceName) {
         NetworkInterfacesInner client = this.inner();
         return client.listVirtualMachineScaleSetIpConfigurationsAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName)
-        .flatMap(new Func1<Page<NetworkInterfaceIPConfigurationInner>, Observable<Page<NetworkInterfaceIPConfigurationInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceIPConfigurationInner>> call(Page<NetworkInterfaceIPConfigurationInner> page) {
-                return listVirtualMachineScaleSetIpConfigurationsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<NetworkInterfaceIPConfigurationInner>, Iterable<NetworkInterfaceIPConfigurationInner>>() {
             @Override
             public Iterable<NetworkInterfaceIPConfigurationInner> call(Page<NetworkInterfaceIPConfigurationInner> page) {

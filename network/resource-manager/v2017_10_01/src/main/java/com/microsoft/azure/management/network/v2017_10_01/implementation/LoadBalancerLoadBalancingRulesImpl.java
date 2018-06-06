@@ -32,29 +32,10 @@ class LoadBalancerLoadBalancingRulesImpl extends WrapperImpl<LoadBalancerLoadBal
         return  new LoadBalancingRuleImpl(inner, manager());
     }
 
-    private Observable<Page<LoadBalancingRuleInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LoadBalancerLoadBalancingRulesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<LoadBalancingRuleInner>, Observable<Page<LoadBalancingRuleInner>>>() {
-            @Override
-            public Observable<Page<LoadBalancingRuleInner>> call(Page<LoadBalancingRuleInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<LoadBalancingRule> listAsync(final String resourceGroupName, final String loadBalancerName) {
         LoadBalancerLoadBalancingRulesInner client = this.inner();
         return client.listAsync(resourceGroupName, loadBalancerName)
-        .flatMap(new Func1<Page<LoadBalancingRuleInner>, Observable<Page<LoadBalancingRuleInner>>>() {
-            @Override
-            public Observable<Page<LoadBalancingRuleInner>> call(Page<LoadBalancingRuleInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<LoadBalancingRuleInner>, Iterable<LoadBalancingRuleInner>>() {
             @Override
             public Iterable<LoadBalancingRuleInner> call(Page<LoadBalancingRuleInner> page) {

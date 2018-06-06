@@ -42,29 +42,10 @@ class SecurityRulesImpl extends WrapperImpl<SecurityRulesInner> implements Secur
         return new NetworkSecurityGroupSecurityRuleImpl(name, this.manager());
     }
 
-    private Observable<Page<SecurityRuleInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        SecurityRulesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<SecurityRuleInner>, Observable<Page<SecurityRuleInner>>>() {
-            @Override
-            public Observable<Page<SecurityRuleInner>> call(Page<SecurityRuleInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<NetworkSecurityGroupSecurityRule> listAsync(final String resourceGroupName, final String networkSecurityGroupName) {
         SecurityRulesInner client = this.inner();
         return client.listAsync(resourceGroupName, networkSecurityGroupName)
-        .flatMap(new Func1<Page<SecurityRuleInner>, Observable<Page<SecurityRuleInner>>>() {
-            @Override
-            public Observable<Page<SecurityRuleInner>> call(Page<SecurityRuleInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<SecurityRuleInner>, Iterable<SecurityRuleInner>>() {
             @Override
             public Iterable<SecurityRuleInner> call(Page<SecurityRuleInner> page) {

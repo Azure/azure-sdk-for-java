@@ -32,29 +32,10 @@ class LoadBalancerNetworkInterfacesImpl extends WrapperImpl<LoadBalancerNetworkI
         return  new LoadBalancerNetworkInterfaceImpl(inner, manager());
     }
 
-    private Observable<Page<NetworkInterfaceInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LoadBalancerNetworkInterfacesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<LoadBalancerNetworkInterface> listAsync(final String resourceGroupName, final String loadBalancerName) {
         LoadBalancerNetworkInterfacesInner client = this.inner();
         return client.listAsync(resourceGroupName, loadBalancerName)
-        .flatMap(new Func1<Page<NetworkInterfaceInner>, Observable<Page<NetworkInterfaceInner>>>() {
-            @Override
-            public Observable<Page<NetworkInterfaceInner>> call(Page<NetworkInterfaceInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<NetworkInterfaceInner>, Iterable<NetworkInterfaceInner>>() {
             @Override
             public Iterable<NetworkInterfaceInner> call(Page<NetworkInterfaceInner> page) {

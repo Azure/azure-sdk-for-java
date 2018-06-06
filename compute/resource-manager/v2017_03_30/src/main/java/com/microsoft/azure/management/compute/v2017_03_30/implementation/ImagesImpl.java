@@ -78,29 +78,10 @@ class ImagesImpl extends GroupableResourcesCoreImpl<Image, ImageImpl, ImageInner
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<ImageInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ImagesInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<ImageInner>, Observable<Page<ImageInner>>>() {
-            @Override
-            public Observable<Page<ImageInner>> call(Page<ImageInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Image> listByResourceGroupAsync(String resourceGroupName) {
         ImagesInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<ImageInner>, Observable<Page<ImageInner>>>() {
-            @Override
-            public Observable<Page<ImageInner>> call(Page<ImageInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ImageInner>, Iterable<ImageInner>>() {
             @Override
             public Iterable<ImageInner> call(Page<ImageInner> page) {
@@ -121,29 +102,10 @@ class ImagesImpl extends GroupableResourcesCoreImpl<Image, ImageImpl, ImageInner
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<ImageInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ImagesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ImageInner>, Observable<Page<ImageInner>>>() {
-            @Override
-            public Observable<Page<ImageInner>> call(Page<ImageInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Image> listAsync() {
         ImagesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ImageInner>, Observable<Page<ImageInner>>>() {
-            @Override
-            public Observable<Page<ImageInner>> call(Page<ImageInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ImageInner>, Iterable<ImageInner>>() {
             @Override
             public Iterable<ImageInner> call(Page<ImageInner> page) {

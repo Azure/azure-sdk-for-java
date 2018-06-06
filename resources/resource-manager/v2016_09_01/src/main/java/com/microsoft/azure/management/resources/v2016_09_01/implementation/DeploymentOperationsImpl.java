@@ -52,29 +52,10 @@ class DeploymentOperationsImpl extends WrapperImpl<DeploymentOperationsInner> im
        });
     }
 
-    private Observable<Page<DeploymentOperationInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DeploymentOperationsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<DeploymentOperationInner>, Observable<Page<DeploymentOperationInner>>>() {
-            @Override
-            public Observable<Page<DeploymentOperationInner>> call(Page<DeploymentOperationInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DeploymentOperation> listByResourceGroupAsync(final String resourceGroupName, final String deploymentName) {
         DeploymentOperationsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName, deploymentName)
-        .flatMap(new Func1<Page<DeploymentOperationInner>, Observable<Page<DeploymentOperationInner>>>() {
-            @Override
-            public Observable<Page<DeploymentOperationInner>> call(Page<DeploymentOperationInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DeploymentOperationInner>, Iterable<DeploymentOperationInner>>() {
             @Override
             public Iterable<DeploymentOperationInner> call(Page<DeploymentOperationInner> page) {

@@ -140,29 +140,10 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
         });
     }
 
-    private Observable<Page<AppServicePlanInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServicePlansInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<AppServicePlanInner>, Observable<Page<AppServicePlanInner>>>() {
-            @Override
-            public Observable<Page<AppServicePlanInner>> call(Page<AppServicePlanInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<AppServicePlan> listByResourceGroupAsync(String resourceGroupName) {
         AppServicePlansInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<AppServicePlanInner>, Observable<Page<AppServicePlanInner>>>() {
-            @Override
-            public Observable<Page<AppServicePlanInner>> call(Page<AppServicePlanInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<AppServicePlanInner>, Iterable<AppServicePlanInner>>() {
             @Override
             public Iterable<AppServicePlanInner> call(Page<AppServicePlanInner> page) {
@@ -177,29 +158,10 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
         });
     }
 
-    private Observable<Page<AppServicePlanInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServicePlansInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<AppServicePlanInner>, Observable<Page<AppServicePlanInner>>>() {
-            @Override
-            public Observable<Page<AppServicePlanInner>> call(Page<AppServicePlanInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<AppServicePlan> listAsync() {
         AppServicePlansInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<AppServicePlanInner>, Observable<Page<AppServicePlanInner>>>() {
-            @Override
-            public Observable<Page<AppServicePlanInner>> call(Page<AppServicePlanInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<AppServicePlanInner>, Iterable<AppServicePlanInner>>() {
             @Override
             public Iterable<AppServicePlanInner> call(Page<AppServicePlanInner> page) {
@@ -297,29 +259,10 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
         });
     }
 
-    private Observable<Page<HybridConnectionInner>> listHybridConnectionsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServicePlansInner client = this.inner();
-        return client.listHybridConnectionsNextAsync(nextLink)
-        .flatMap(new Func1<Page<HybridConnectionInner>, Observable<Page<HybridConnectionInner>>>() {
-            @Override
-            public Observable<Page<HybridConnectionInner>> call(Page<HybridConnectionInner> page) {
-                return Observable.just(page).concatWith(listHybridConnectionsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<HybridConnection> listHybridConnectionsAsync(final String resourceGroupName, final String name) {
         AppServicePlansInner client = this.inner();
         return client.listHybridConnectionsAsync(resourceGroupName, name)
-        .flatMap(new Func1<Page<HybridConnectionInner>, Observable<Page<HybridConnectionInner>>>() {
-            @Override
-            public Observable<Page<HybridConnectionInner>> call(Page<HybridConnectionInner> page) {
-                return listHybridConnectionsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<HybridConnectionInner>, Iterable<HybridConnectionInner>>() {
             @Override
             public Iterable<HybridConnectionInner> call(Page<HybridConnectionInner> page) {
@@ -334,29 +277,10 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
         });
     }
 
-    private Observable<Page<ResourceMetricDefinitionInner>> listMetricDefintionsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServicePlansInner client = this.inner();
-        return client.listMetricDefintionsNextAsync(nextLink)
-        .flatMap(new Func1<Page<ResourceMetricDefinitionInner>, Observable<Page<ResourceMetricDefinitionInner>>>() {
-            @Override
-            public Observable<Page<ResourceMetricDefinitionInner>> call(Page<ResourceMetricDefinitionInner> page) {
-                return Observable.just(page).concatWith(listMetricDefintionsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ResourceMetricDefinition> listMetricDefintionsAsync(final String resourceGroupName, final String name) {
         AppServicePlansInner client = this.inner();
         return client.listMetricDefintionsAsync(resourceGroupName, name)
-        .flatMap(new Func1<Page<ResourceMetricDefinitionInner>, Observable<Page<ResourceMetricDefinitionInner>>>() {
-            @Override
-            public Observable<Page<ResourceMetricDefinitionInner>> call(Page<ResourceMetricDefinitionInner> page) {
-                return listMetricDefintionsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ResourceMetricDefinitionInner>, Iterable<ResourceMetricDefinitionInner>>() {
             @Override
             public Iterable<ResourceMetricDefinitionInner> call(Page<ResourceMetricDefinitionInner> page) {
@@ -371,29 +295,10 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
         });
     }
 
-    private Observable<Page<ResourceMetricInner>> listMetricsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServicePlansInner client = this.inner();
-        return client.listMetricsNextAsync(nextLink)
-        .flatMap(new Func1<Page<ResourceMetricInner>, Observable<Page<ResourceMetricInner>>>() {
-            @Override
-            public Observable<Page<ResourceMetricInner>> call(Page<ResourceMetricInner> page) {
-                return Observable.just(page).concatWith(listMetricsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ServerfarmResourceMetric> listMetricsAsync(final String resourceGroupName, final String name) {
         AppServicePlansInner client = this.inner();
         return client.listMetricsAsync(resourceGroupName, name)
-        .flatMap(new Func1<Page<ResourceMetricInner>, Observable<Page<ResourceMetricInner>>>() {
-            @Override
-            public Observable<Page<ResourceMetricInner>> call(Page<ResourceMetricInner> page) {
-                return listMetricsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ResourceMetricInner>, Iterable<ResourceMetricInner>>() {
             @Override
             public Iterable<ResourceMetricInner> call(Page<ResourceMetricInner> page) {
@@ -408,29 +313,10 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
         });
     }
 
-    private Observable<Page<SiteInner>> listWebAppsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServicePlansInner client = this.inner();
-        return client.listWebAppsNextAsync(nextLink)
-        .flatMap(new Func1<Page<SiteInner>, Observable<Page<SiteInner>>>() {
-            @Override
-            public Observable<Page<SiteInner>> call(Page<SiteInner> page) {
-                return Observable.just(page).concatWith(listWebAppsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ServerfarmSite> listWebAppsAsync(final String resourceGroupName, final String name) {
         AppServicePlansInner client = this.inner();
         return client.listWebAppsAsync(resourceGroupName, name)
-        .flatMap(new Func1<Page<SiteInner>, Observable<Page<SiteInner>>>() {
-            @Override
-            public Observable<Page<SiteInner>> call(Page<SiteInner> page) {
-                return listWebAppsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<SiteInner>, Iterable<SiteInner>>() {
             @Override
             public Iterable<SiteInner> call(Page<SiteInner> page) {
@@ -445,29 +331,10 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
         });
     }
 
-    private Observable<Page<CsmUsageQuotaInner>> listUsagesNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        AppServicePlansInner client = this.inner();
-        return client.listUsagesNextAsync(nextLink)
-        .flatMap(new Func1<Page<CsmUsageQuotaInner>, Observable<Page<CsmUsageQuotaInner>>>() {
-            @Override
-            public Observable<Page<CsmUsageQuotaInner>> call(Page<CsmUsageQuotaInner> page) {
-                return Observable.just(page).concatWith(listUsagesNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<CsmUsageQuota> listUsagesAsync(final String resourceGroupName, final String name) {
         AppServicePlansInner client = this.inner();
         return client.listUsagesAsync(resourceGroupName, name)
-        .flatMap(new Func1<Page<CsmUsageQuotaInner>, Observable<Page<CsmUsageQuotaInner>>>() {
-            @Override
-            public Observable<Page<CsmUsageQuotaInner>> call(Page<CsmUsageQuotaInner> page) {
-                return listUsagesNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<CsmUsageQuotaInner>, Iterable<CsmUsageQuotaInner>>() {
             @Override
             public Iterable<CsmUsageQuotaInner> call(Page<CsmUsageQuotaInner> page) {
@@ -557,8 +424,7 @@ class AppServicePlansImpl extends WrapperImpl<AppServicePlansInner> implements A
             public Observable<VnetRouteInner> call(List<VnetRouteInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<VnetRouteInner, VnetRoute>() {
+        })    .map(new Func1<VnetRouteInner, VnetRoute>() {
             @Override
             public VnetRoute call(VnetRouteInner inner) {
                 return new VnetRouteImpl(inner, manager());

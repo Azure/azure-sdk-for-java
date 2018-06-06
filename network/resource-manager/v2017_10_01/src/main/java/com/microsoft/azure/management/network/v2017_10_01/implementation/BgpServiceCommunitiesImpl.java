@@ -40,29 +40,10 @@ class BgpServiceCommunitiesImpl extends GroupableResourcesCoreImpl<BgpServiceCom
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<BgpServiceCommunityInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        BgpServiceCommunitiesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<BgpServiceCommunityInner>, Observable<Page<BgpServiceCommunityInner>>>() {
-            @Override
-            public Observable<Page<BgpServiceCommunityInner>> call(Page<BgpServiceCommunityInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<BgpServiceCommunity> listAsync() {
         BgpServiceCommunitiesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<BgpServiceCommunityInner>, Observable<Page<BgpServiceCommunityInner>>>() {
-            @Override
-            public Observable<Page<BgpServiceCommunityInner>> call(Page<BgpServiceCommunityInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<BgpServiceCommunityInner>, Iterable<BgpServiceCommunityInner>>() {
             @Override
             public Iterable<BgpServiceCommunityInner> call(Page<BgpServiceCommunityInner> page) {

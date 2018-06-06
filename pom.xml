@@ -41,6 +41,14 @@
       <name>Microsoft</name>
     </developer>
   </developers>
+  
+  <distributionManagement>
+    <repository>
+      <id>local-nexus</id>
+      <name>Local Nexus</name>
+      <url>http://localhost:8081/repository/maven-releases/</url>
+    </repository>
+  </distributionManagement>
 
   <dependencyManagement>
     <dependencies>

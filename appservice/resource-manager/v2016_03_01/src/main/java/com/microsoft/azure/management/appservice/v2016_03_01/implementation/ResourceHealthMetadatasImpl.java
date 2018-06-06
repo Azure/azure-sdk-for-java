@@ -28,41 +28,21 @@ class ResourceHealthMetadatasImpl extends WrapperImpl<ResourceHealthMetadatasInn
         return this.manager;
     }
 
-    private Observable<Page<ResourceHealthMetadataInner>> listBySiteNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ResourceHealthMetadatasInner client = this.inner();
-        return client.listBySiteNextAsync(nextLink)
-        .flatMap(new Func1<Page<ResourceHealthMetadataInner>, Observable<Page<ResourceHealthMetadataInner>>>() {
-            @Override
-            public Observable<Page<ResourceHealthMetadataInner>> call(Page<ResourceHealthMetadataInner> page) {
-                return Observable.just(page).concatWith(listBySiteNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ResourceHealthMetadata> listBySiteAsync(final String resourceGroupName, final String name) {
         ResourceHealthMetadatasInner client = this.inner();
         return client.listBySiteAsync(resourceGroupName, name)
-        .flatMap(new Func1<Page<ResourceHealthMetadataInner>, Observable<Page<ResourceHealthMetadataInner>>>() {
-            @Override
-            public Observable<Page<ResourceHealthMetadataInner>> call(Page<ResourceHealthMetadataInner> page) {
-                return listBySiteNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ResourceHealthMetadataInner>, Iterable<ResourceHealthMetadataInner>>() {
             @Override
             public Iterable<ResourceHealthMetadataInner> call(Page<ResourceHealthMetadataInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
+        })    .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
             @Override
             public ResourceHealthMetadata call(ResourceHealthMetadataInner inner) {
                 return new ResourceHealthMetadataImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -77,115 +57,55 @@ class ResourceHealthMetadatasImpl extends WrapperImpl<ResourceHealthMetadatasInn
         });
     }
 
-    private Observable<Page<ResourceHealthMetadataInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ResourceHealthMetadatasInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ResourceHealthMetadataInner>, Observable<Page<ResourceHealthMetadataInner>>>() {
-            @Override
-            public Observable<Page<ResourceHealthMetadataInner>> call(Page<ResourceHealthMetadataInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ResourceHealthMetadata> listAsync() {
         ResourceHealthMetadatasInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ResourceHealthMetadataInner>, Observable<Page<ResourceHealthMetadataInner>>>() {
-            @Override
-            public Observable<Page<ResourceHealthMetadataInner>> call(Page<ResourceHealthMetadataInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ResourceHealthMetadataInner>, Iterable<ResourceHealthMetadataInner>>() {
             @Override
             public Iterable<ResourceHealthMetadataInner> call(Page<ResourceHealthMetadataInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
+        })    .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
             @Override
             public ResourceHealthMetadata call(ResourceHealthMetadataInner inner) {
                 return new ResourceHealthMetadataImpl(inner, manager());
             }
-       });
-    }
-
-    private Observable<Page<ResourceHealthMetadataInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ResourceHealthMetadatasInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<ResourceHealthMetadataInner>, Observable<Page<ResourceHealthMetadataInner>>>() {
-            @Override
-            public Observable<Page<ResourceHealthMetadataInner>> call(Page<ResourceHealthMetadataInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
         });
     }
+
     @Override
     public Observable<ResourceHealthMetadata> listByResourceGroupAsync(final String resourceGroupName) {
         ResourceHealthMetadatasInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<ResourceHealthMetadataInner>, Observable<Page<ResourceHealthMetadataInner>>>() {
-            @Override
-            public Observable<Page<ResourceHealthMetadataInner>> call(Page<ResourceHealthMetadataInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ResourceHealthMetadataInner>, Iterable<ResourceHealthMetadataInner>>() {
             @Override
             public Iterable<ResourceHealthMetadataInner> call(Page<ResourceHealthMetadataInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
+        })    .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
             @Override
             public ResourceHealthMetadata call(ResourceHealthMetadataInner inner) {
                 return new ResourceHealthMetadataImpl(inner, manager());
             }
-       });
-    }
-
-    private Observable<Page<ResourceHealthMetadataInner>> listBySiteSlotNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ResourceHealthMetadatasInner client = this.inner();
-        return client.listBySiteSlotNextAsync(nextLink)
-        .flatMap(new Func1<Page<ResourceHealthMetadataInner>, Observable<Page<ResourceHealthMetadataInner>>>() {
-            @Override
-            public Observable<Page<ResourceHealthMetadataInner>> call(Page<ResourceHealthMetadataInner> page) {
-                return Observable.just(page).concatWith(listBySiteSlotNextInnerPageAsync(page.nextPageLink()));
-            }
         });
     }
+
     @Override
     public Observable<ResourceHealthMetadata> listBySiteSlotAsync(final String resourceGroupName, final String name, final String slot) {
         ResourceHealthMetadatasInner client = this.inner();
         return client.listBySiteSlotAsync(resourceGroupName, name, slot)
-        .flatMap(new Func1<Page<ResourceHealthMetadataInner>, Observable<Page<ResourceHealthMetadataInner>>>() {
-            @Override
-            public Observable<Page<ResourceHealthMetadataInner>> call(Page<ResourceHealthMetadataInner> page) {
-                return listBySiteSlotNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ResourceHealthMetadataInner>, Iterable<ResourceHealthMetadataInner>>() {
             @Override
             public Iterable<ResourceHealthMetadataInner> call(Page<ResourceHealthMetadataInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
+        })    .map(new Func1<ResourceHealthMetadataInner, ResourceHealthMetadata>() {
             @Override
             public ResourceHealthMetadata call(ResourceHealthMetadataInner inner) {
                 return new ResourceHealthMetadataImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override

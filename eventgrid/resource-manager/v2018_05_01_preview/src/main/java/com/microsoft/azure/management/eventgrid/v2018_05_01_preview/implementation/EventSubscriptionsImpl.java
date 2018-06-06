@@ -92,8 +92,7 @@ class EventSubscriptionsImpl extends WrapperImpl<EventSubscriptionsInner> implem
             public Observable<EventSubscriptionInner> call(List<EventSubscriptionInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<EventSubscriptionInner, EventSubscription>() {
+        })    .map(new Func1<EventSubscriptionInner, EventSubscription>() {
             @Override
             public EventSubscription call(EventSubscriptionInner inner) {
                 return new EventSubscriptionImpl(inner, manager());
@@ -110,8 +109,7 @@ class EventSubscriptionsImpl extends WrapperImpl<EventSubscriptionsInner> implem
             public Observable<EventSubscriptionInner> call(List<EventSubscriptionInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<EventSubscriptionInner, EventSubscription>() {
+        })    .map(new Func1<EventSubscriptionInner, EventSubscription>() {
             @Override
             public EventSubscription call(EventSubscriptionInner inner) {
                 return new EventSubscriptionImpl(inner, manager());
@@ -128,8 +126,7 @@ class EventSubscriptionsImpl extends WrapperImpl<EventSubscriptionsInner> implem
             public Observable<EventSubscriptionInner> call(List<EventSubscriptionInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<EventSubscriptionInner, EventSubscription>() {
+        })    .map(new Func1<EventSubscriptionInner, EventSubscription>() {
             @Override
             public EventSubscription call(EventSubscriptionInner inner) {
                 return new EventSubscriptionImpl(inner, manager());
@@ -146,8 +143,7 @@ class EventSubscriptionsImpl extends WrapperImpl<EventSubscriptionsInner> implem
             public Observable<EventSubscriptionInner> call(List<EventSubscriptionInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<EventSubscriptionInner, EventSubscription>() {
+        })    .map(new Func1<EventSubscriptionInner, EventSubscription>() {
             @Override
             public EventSubscription call(EventSubscriptionInner inner) {
                 return new EventSubscriptionImpl(inner, manager());
@@ -164,8 +160,7 @@ class EventSubscriptionsImpl extends WrapperImpl<EventSubscriptionsInner> implem
             public Observable<EventSubscriptionInner> call(List<EventSubscriptionInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<EventSubscriptionInner, EventSubscription>() {
+        })    .map(new Func1<EventSubscriptionInner, EventSubscription>() {
             @Override
             public EventSubscription call(EventSubscriptionInner inner) {
                 return new EventSubscriptionImpl(inner, manager());
@@ -182,8 +177,7 @@ class EventSubscriptionsImpl extends WrapperImpl<EventSubscriptionsInner> implem
             public Observable<EventSubscriptionInner> call(List<EventSubscriptionInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<EventSubscriptionInner, EventSubscription>() {
+        })    .map(new Func1<EventSubscriptionInner, EventSubscription>() {
             @Override
             public EventSubscription call(EventSubscriptionInner inner) {
                 return new EventSubscriptionImpl(inner, manager());
@@ -200,8 +194,7 @@ class EventSubscriptionsImpl extends WrapperImpl<EventSubscriptionsInner> implem
             public Observable<EventSubscriptionInner> call(List<EventSubscriptionInner> innerList) {
                 return Observable.from(innerList);
             }
-        })
-        .map(new Func1<EventSubscriptionInner, EventSubscription>() {
+        })    .map(new Func1<EventSubscriptionInner, EventSubscription>() {
             @Override
             public EventSubscription call(EventSubscriptionInner inner) {
                 return new EventSubscriptionImpl(inner, manager());

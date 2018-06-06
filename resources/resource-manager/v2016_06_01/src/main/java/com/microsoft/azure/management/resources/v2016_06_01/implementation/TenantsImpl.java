@@ -28,29 +28,10 @@ class TenantsImpl extends WrapperImpl<TenantsInner> implements Tenants {
         return this.manager;
     }
 
-    private Observable<Page<TenantIdDescriptionInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        TenantsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<TenantIdDescriptionInner>, Observable<Page<TenantIdDescriptionInner>>>() {
-            @Override
-            public Observable<Page<TenantIdDescriptionInner>> call(Page<TenantIdDescriptionInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<TenantIdDescription> listAsync() {
         TenantsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<TenantIdDescriptionInner>, Observable<Page<TenantIdDescriptionInner>>>() {
-            @Override
-            public Observable<Page<TenantIdDescriptionInner>> call(Page<TenantIdDescriptionInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<TenantIdDescriptionInner>, Iterable<TenantIdDescriptionInner>>() {
             @Override
             public Iterable<TenantIdDescriptionInner> call(Page<TenantIdDescriptionInner> page) {

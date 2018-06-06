@@ -27,7 +27,7 @@ public class  Test extends TestBase {
                 .authenticate(restClient)
                 .withSubscription(defaultSubscription);
         manager = Manager
-                .authenticate(restClient, defaultSubscription);
+                .authenticate(restClient);
     }
     @Override
     protected void cleanUpResources() {

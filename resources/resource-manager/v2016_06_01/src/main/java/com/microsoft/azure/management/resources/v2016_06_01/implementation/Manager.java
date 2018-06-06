@@ -39,26 +39,24 @@ public final class Manager extends ManagerCore<Manager, SubscriptionClientImpl> 
     * Creates an instance of Manager that exposes  resource management API entry points.
     *
     * @param credentials the credentials to use
-    * @param subscriptionId the subscription UUID
     * @return the Manager
     */
-    public static Manager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
+    public static Manager authenticate(AzureTokenCredentials credentials) {
         return new Manager(new RestClient.Builder()
             .withBaseUrl(credentials.environment(), AzureEnvironment.Endpoint.RESOURCE_MANAGER)
             .withCredentials(credentials)
             .withSerializerAdapter(new AzureJacksonAdapter())
             .withResponseBuilderFactory(new AzureResponseBuilder.Factory())
-            .build(), subscriptionId);
+            .build());
     }
     /**
     * Creates an instance of Manager that exposes  resource management API entry points.
     *
     * @param restClient the RestClient to be used for API calls.
-    * @param subscriptionId the subscription UUID
     * @return the Manager
     */
-    public static Manager authenticate(RestClient restClient, String subscriptionId) {
-        return new Manager(restClient, subscriptionId);
+    public static Manager authenticate(RestClient restClient) {
+        return new Manager(restClient);
     }
     /**
     * The interface allowing configurations to be set.
@@ -68,10 +66,9 @@ public final class Manager extends ManagerCore<Manager, SubscriptionClientImpl> 
         * Creates an instance of Manager that exposes  management API entry points.
         *
         * @param credentials the credentials to use
-        * @param subscriptionId the subscription UUID
         * @return the interface exposing  management API entry points that work across subscriptions
         */
-        Manager authenticate(AzureTokenCredentials credentials, String subscriptionId);
+        Manager authenticate(AzureTokenCredentials credentials);
     }
 
     /**
@@ -98,14 +95,14 @@ public final class Manager extends ManagerCore<Manager, SubscriptionClientImpl> 
     * The implementation for Configurable interface.
     */
     private static final class ConfigurableImpl extends AzureConfigurableCoreImpl<Configurable> implements Configurable {
-        public Manager authenticate(AzureTokenCredentials credentials, String subscriptionId) {
-           return Manager.authenticate(buildRestClient(credentials), subscriptionId);
+        public Manager authenticate(AzureTokenCredentials credentials) {
+           return Manager.authenticate(buildRestClient(credentials));
         }
      }
-    private Manager(RestClient restClient, String subscriptionId) {
+    private Manager(RestClient restClient) {
         super(
             restClient,
-            subscriptionId,
-            new SubscriptionClientImpl(restClient).withSubscriptionId(subscriptionId));
+            null,
+            new SubscriptionClientImpl(restClient));
     }
 }

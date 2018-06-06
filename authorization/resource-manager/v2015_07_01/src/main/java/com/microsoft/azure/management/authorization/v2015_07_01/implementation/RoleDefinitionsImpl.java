@@ -72,29 +72,10 @@ class RoleDefinitionsImpl extends WrapperImpl<RoleDefinitionsInner> implements R
         });
     }
 
-    private Observable<Page<RoleDefinitionInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RoleDefinitionsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<RoleDefinitionInner>, Observable<Page<RoleDefinitionInner>>>() {
-            @Override
-            public Observable<Page<RoleDefinitionInner>> call(Page<RoleDefinitionInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RoleDefinition> listAsync(final String scope) {
         RoleDefinitionsInner client = this.inner();
         return client.listAsync(scope)
-        .flatMap(new Func1<Page<RoleDefinitionInner>, Observable<Page<RoleDefinitionInner>>>() {
-            @Override
-            public Observable<Page<RoleDefinitionInner>> call(Page<RoleDefinitionInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RoleDefinitionInner>, Iterable<RoleDefinitionInner>>() {
             @Override
             public Iterable<RoleDefinitionInner> call(Page<RoleDefinitionInner> page) {

@@ -28,41 +28,21 @@ class DeletedWebAppsImpl extends WrapperImpl<DeletedWebAppsInner> implements Del
         return this.manager;
     }
 
-    private Observable<Page<DeletedSiteInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DeletedWebAppsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<DeletedSiteInner>, Observable<Page<DeletedSiteInner>>>() {
-            @Override
-            public Observable<Page<DeletedSiteInner>> call(Page<DeletedSiteInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DeletedSite> listAsync() {
         DeletedWebAppsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<DeletedSiteInner>, Observable<Page<DeletedSiteInner>>>() {
-            @Override
-            public Observable<Page<DeletedSiteInner>> call(Page<DeletedSiteInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DeletedSiteInner>, Iterable<DeletedSiteInner>>() {
             @Override
             public Iterable<DeletedSiteInner> call(Page<DeletedSiteInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<DeletedSiteInner, DeletedSite>() {
+        })    .map(new Func1<DeletedSiteInner, DeletedSite>() {
             @Override
             public DeletedSite call(DeletedSiteInner inner) {
                 return new DeletedSiteImpl(inner, manager());
             }
-       });
+        });
     }
 
 }

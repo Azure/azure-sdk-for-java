@@ -32,29 +32,10 @@ class LoadBalancerProbesImpl extends WrapperImpl<LoadBalancerProbesInner> implem
         return  new ProbeImpl(inner, manager());
     }
 
-    private Observable<Page<ProbeInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        LoadBalancerProbesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ProbeInner>, Observable<Page<ProbeInner>>>() {
-            @Override
-            public Observable<Page<ProbeInner>> call(Page<ProbeInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Probe> listAsync(final String resourceGroupName, final String loadBalancerName) {
         LoadBalancerProbesInner client = this.inner();
         return client.listAsync(resourceGroupName, loadBalancerName)
-        .flatMap(new Func1<Page<ProbeInner>, Observable<Page<ProbeInner>>>() {
-            @Override
-            public Observable<Page<ProbeInner>> call(Page<ProbeInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ProbeInner>, Iterable<ProbeInner>>() {
             @Override
             public Iterable<ProbeInner> call(Page<ProbeInner> page) {

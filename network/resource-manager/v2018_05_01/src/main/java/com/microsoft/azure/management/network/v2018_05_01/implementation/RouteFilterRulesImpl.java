@@ -42,29 +42,10 @@ class RouteFilterRulesImpl extends WrapperImpl<RouteFilterRulesInner> implements
         return new RouteFilterRuleImpl(name, this.manager());
     }
 
-    private Observable<Page<RouteFilterRuleInner>> listByRouteFilterNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RouteFilterRulesInner client = this.inner();
-        return client.listByRouteFilterNextAsync(nextLink)
-        .flatMap(new Func1<Page<RouteFilterRuleInner>, Observable<Page<RouteFilterRuleInner>>>() {
-            @Override
-            public Observable<Page<RouteFilterRuleInner>> call(Page<RouteFilterRuleInner> page) {
-                return Observable.just(page).concatWith(listByRouteFilterNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RouteFilterRule> listByRouteFilterAsync(final String resourceGroupName, final String routeFilterName) {
         RouteFilterRulesInner client = this.inner();
         return client.listByRouteFilterAsync(resourceGroupName, routeFilterName)
-        .flatMap(new Func1<Page<RouteFilterRuleInner>, Observable<Page<RouteFilterRuleInner>>>() {
-            @Override
-            public Observable<Page<RouteFilterRuleInner>> call(Page<RouteFilterRuleInner> page) {
-                return listByRouteFilterNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RouteFilterRuleInner>, Iterable<RouteFilterRuleInner>>() {
             @Override
             public Iterable<RouteFilterRuleInner> call(Page<RouteFilterRuleInner> page) {

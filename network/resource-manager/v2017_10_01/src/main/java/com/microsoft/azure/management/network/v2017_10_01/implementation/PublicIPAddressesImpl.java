@@ -78,29 +78,10 @@ class PublicIPAddressesImpl extends GroupableResourcesCoreImpl<PublicIPAddress, 
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<PublicIPAddressInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PublicIPAddressesInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<PublicIPAddressInner>, Observable<Page<PublicIPAddressInner>>>() {
-            @Override
-            public Observable<Page<PublicIPAddressInner>> call(Page<PublicIPAddressInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<PublicIPAddress> listByResourceGroupAsync(String resourceGroupName) {
         PublicIPAddressesInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<PublicIPAddressInner>, Observable<Page<PublicIPAddressInner>>>() {
-            @Override
-            public Observable<Page<PublicIPAddressInner>> call(Page<PublicIPAddressInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PublicIPAddressInner>, Iterable<PublicIPAddressInner>>() {
             @Override
             public Iterable<PublicIPAddressInner> call(Page<PublicIPAddressInner> page) {
@@ -121,29 +102,10 @@ class PublicIPAddressesImpl extends GroupableResourcesCoreImpl<PublicIPAddress, 
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<PublicIPAddressInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PublicIPAddressesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<PublicIPAddressInner>, Observable<Page<PublicIPAddressInner>>>() {
-            @Override
-            public Observable<Page<PublicIPAddressInner>> call(Page<PublicIPAddressInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<PublicIPAddress> listAsync() {
         PublicIPAddressesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<PublicIPAddressInner>, Observable<Page<PublicIPAddressInner>>>() {
-            @Override
-            public Observable<Page<PublicIPAddressInner>> call(Page<PublicIPAddressInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PublicIPAddressInner>, Iterable<PublicIPAddressInner>>() {
             @Override
             public Iterable<PublicIPAddressInner> call(Page<PublicIPAddressInner> page) {
@@ -163,78 +125,38 @@ class PublicIPAddressesImpl extends GroupableResourcesCoreImpl<PublicIPAddress, 
         return wrapModel(name);
     }
 
-    private Observable<Page<PublicIPAddressInner>> listVirtualMachineScaleSetPublicIPAddressesNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PublicIPAddressesInner client = this.inner();
-        return client.listVirtualMachineScaleSetPublicIPAddressesNextAsync(nextLink)
-        .flatMap(new Func1<Page<PublicIPAddressInner>, Observable<Page<PublicIPAddressInner>>>() {
-            @Override
-            public Observable<Page<PublicIPAddressInner>> call(Page<PublicIPAddressInner> page) {
-                return Observable.just(page).concatWith(listVirtualMachineScaleSetPublicIPAddressesNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<PublicIPAddress> listVirtualMachineScaleSetPublicIPAddressesAsync(final String resourceGroupName, final String virtualMachineScaleSetName) {
         PublicIPAddressesInner client = this.inner();
         return client.listVirtualMachineScaleSetPublicIPAddressesAsync(resourceGroupName, virtualMachineScaleSetName)
-        .flatMap(new Func1<Page<PublicIPAddressInner>, Observable<Page<PublicIPAddressInner>>>() {
-            @Override
-            public Observable<Page<PublicIPAddressInner>> call(Page<PublicIPAddressInner> page) {
-                return listVirtualMachineScaleSetPublicIPAddressesNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PublicIPAddressInner>, Iterable<PublicIPAddressInner>>() {
             @Override
             public Iterable<PublicIPAddressInner> call(Page<PublicIPAddressInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<PublicIPAddressInner, PublicIPAddress>() {
+        })    .map(new Func1<PublicIPAddressInner, PublicIPAddress>() {
             @Override
             public PublicIPAddress call(PublicIPAddressInner inner) {
                 return new PublicIPAddressImpl(inner.name(), inner, manager());
             }
-       });
-    }
-
-    private Observable<Page<PublicIPAddressInner>> listVirtualMachineScaleSetVMPublicIPAddressesNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PublicIPAddressesInner client = this.inner();
-        return client.listVirtualMachineScaleSetVMPublicIPAddressesNextAsync(nextLink)
-        .flatMap(new Func1<Page<PublicIPAddressInner>, Observable<Page<PublicIPAddressInner>>>() {
-            @Override
-            public Observable<Page<PublicIPAddressInner>> call(Page<PublicIPAddressInner> page) {
-                return Observable.just(page).concatWith(listVirtualMachineScaleSetVMPublicIPAddressesNextInnerPageAsync(page.nextPageLink()));
-            }
         });
     }
+
     @Override
     public Observable<PublicIPAddress> listVirtualMachineScaleSetVMPublicIPAddressesAsync(final String resourceGroupName, final String virtualMachineScaleSetName, final String virtualmachineIndex, final String networkInterfaceName, final String ipConfigurationName) {
         PublicIPAddressesInner client = this.inner();
         return client.listVirtualMachineScaleSetVMPublicIPAddressesAsync(resourceGroupName, virtualMachineScaleSetName, virtualmachineIndex, networkInterfaceName, ipConfigurationName)
-        .flatMap(new Func1<Page<PublicIPAddressInner>, Observable<Page<PublicIPAddressInner>>>() {
-            @Override
-            public Observable<Page<PublicIPAddressInner>> call(Page<PublicIPAddressInner> page) {
-                return listVirtualMachineScaleSetVMPublicIPAddressesNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PublicIPAddressInner>, Iterable<PublicIPAddressInner>>() {
             @Override
             public Iterable<PublicIPAddressInner> call(Page<PublicIPAddressInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<PublicIPAddressInner, PublicIPAddress>() {
+        })    .map(new Func1<PublicIPAddressInner, PublicIPAddress>() {
             @Override
             public PublicIPAddress call(PublicIPAddressInner inner) {
                 return new PublicIPAddressImpl(inner.name(), inner, manager());
             }
-       });
+        });
     }
 
     @Override

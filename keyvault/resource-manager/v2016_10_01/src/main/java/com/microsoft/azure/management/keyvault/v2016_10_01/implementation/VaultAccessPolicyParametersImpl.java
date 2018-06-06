@@ -8,11 +8,12 @@
 
 package com.microsoft.azure.management.keyvault.v2016_10_01.implementation;
 
-import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import com.microsoft.azure.management.keyvault.v2016_10_01.AccessPolicyUpdateKind;
 import com.microsoft.azure.management.keyvault.v2016_10_01.VaultAccessPolicyParameters;
-import com.microsoft.azure.management.keyvault.v2016_10_01.VaultAccessPolicyProperties;
+import com.microsoft.azure.arm.model.implementation.CreatableUpdatableImpl;
 import rx.Observable;
+import com.microsoft.azure.management.keyvault.v2016_10_01.VaultAccessPolicyProperties;
+import java.util.List;
 import rx.functions.Func1;
 
 class VaultAccessPolicyParametersImpl extends CreatableUpdatableImpl<VaultAccessPolicyParameters, VaultAccessPolicyParametersInner, VaultAccessPolicyParametersImpl> implements VaultAccessPolicyParameters, VaultAccessPolicyParameters.Update {
@@ -21,6 +22,13 @@ class VaultAccessPolicyParametersImpl extends CreatableUpdatableImpl<VaultAccess
     private String vaultName;
     private AccessPolicyUpdateKind operationKind;
     private VaultAccessPolicyProperties uproperties;
+
+    VaultAccessPolicyParametersImpl(String name, KeyVaultManager manager) {
+        super(name, new VaultAccessPolicyParametersInner());
+        this.manager = manager;
+        //
+        this.uproperties = new VaultAccessPolicyProperties();
+    }
 
     VaultAccessPolicyParametersImpl(VaultAccessPolicyParametersInner inner, KeyVaultManager manager) {
         super(inner.name(), inner);

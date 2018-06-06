@@ -34,29 +34,10 @@ class RecordSetsImpl extends WrapperImpl<RecordSetsInner> implements RecordSets 
         return  new RecordSetImpl(inner, manager());
     }
 
-    private Observable<Page<RecordSetInner>> listByDnsZoneNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RecordSetsInner client = this.inner();
-        return client.listByDnsZoneNextAsync(nextLink)
-        .flatMap(new Func1<Page<RecordSetInner>, Observable<Page<RecordSetInner>>>() {
-            @Override
-            public Observable<Page<RecordSetInner>> call(Page<RecordSetInner> page) {
-                return Observable.just(page).concatWith(listByDnsZoneNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RecordSet> listByDnsZoneAsync(final String resourceGroupName, final String zoneName) {
         RecordSetsInner client = this.inner();
         return client.listByDnsZoneAsync(resourceGroupName, zoneName)
-        .flatMap(new Func1<Page<RecordSetInner>, Observable<Page<RecordSetInner>>>() {
-            @Override
-            public Observable<Page<RecordSetInner>> call(Page<RecordSetInner> page) {
-                return listByDnsZoneNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RecordSetInner>, Iterable<RecordSetInner>>() {
             @Override
             public Iterable<RecordSetInner> call(Page<RecordSetInner> page) {
@@ -113,41 +94,21 @@ class RecordSetsImpl extends WrapperImpl<RecordSetsInner> implements RecordSets 
         });
     }
 
-    private Observable<Page<RecordSetInner>> listByTypeNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        RecordSetsInner client = this.inner();
-        return client.listByTypeNextAsync(nextLink)
-        .flatMap(new Func1<Page<RecordSetInner>, Observable<Page<RecordSetInner>>>() {
-            @Override
-            public Observable<Page<RecordSetInner>> call(Page<RecordSetInner> page) {
-                return Observable.just(page).concatWith(listByTypeNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<RecordSet> listByTypeAsync(final String resourceGroupName, final String zoneName, final RecordType recordType) {
         RecordSetsInner client = this.inner();
         return client.listByTypeAsync(resourceGroupName, zoneName, recordType)
-        .flatMap(new Func1<Page<RecordSetInner>, Observable<Page<RecordSetInner>>>() {
-            @Override
-            public Observable<Page<RecordSetInner>> call(Page<RecordSetInner> page) {
-                return listByTypeNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<RecordSetInner>, Iterable<RecordSetInner>>() {
             @Override
             public Iterable<RecordSetInner> call(Page<RecordSetInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<RecordSetInner, RecordSet>() {
+        })    .map(new Func1<RecordSetInner, RecordSet>() {
             @Override
             public RecordSet call(RecordSetInner inner) {
                 return new RecordSetImpl(inner, manager());
             }
-       });
+        });
     }
 
 }

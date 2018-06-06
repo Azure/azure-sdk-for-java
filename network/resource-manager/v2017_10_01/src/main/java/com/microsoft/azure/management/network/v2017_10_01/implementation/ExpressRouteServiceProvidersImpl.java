@@ -40,29 +40,10 @@ class ExpressRouteServiceProvidersImpl extends GroupableResourcesCoreImpl<Expres
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<ExpressRouteServiceProviderInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ExpressRouteServiceProvidersInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ExpressRouteServiceProviderInner>, Observable<Page<ExpressRouteServiceProviderInner>>>() {
-            @Override
-            public Observable<Page<ExpressRouteServiceProviderInner>> call(Page<ExpressRouteServiceProviderInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ExpressRouteServiceProvider> listAsync() {
         ExpressRouteServiceProvidersInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ExpressRouteServiceProviderInner>, Observable<Page<ExpressRouteServiceProviderInner>>>() {
-            @Override
-            public Observable<Page<ExpressRouteServiceProviderInner>> call(Page<ExpressRouteServiceProviderInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ExpressRouteServiceProviderInner>, Iterable<ExpressRouteServiceProviderInner>>() {
             @Override
             public Iterable<ExpressRouteServiceProviderInner> call(Page<ExpressRouteServiceProviderInner> page) {

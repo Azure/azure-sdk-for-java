@@ -83,29 +83,10 @@ class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainI
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<DomainInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DomainsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<DomainInner>, Observable<Page<DomainInner>>>() {
-            @Override
-            public Observable<Page<DomainInner>> call(Page<DomainInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Domain> listByResourceGroupAsync(String resourceGroupName) {
         DomainsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<DomainInner>, Observable<Page<DomainInner>>>() {
-            @Override
-            public Observable<Page<DomainInner>> call(Page<DomainInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DomainInner>, Iterable<DomainInner>>() {
             @Override
             public Iterable<DomainInner> call(Page<DomainInner> page) {
@@ -126,29 +107,10 @@ class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainI
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<DomainInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DomainsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<DomainInner>, Observable<Page<DomainInner>>>() {
-            @Override
-            public Observable<Page<DomainInner>> call(Page<DomainInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Domain> listAsync() {
         DomainsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<DomainInner>, Observable<Page<DomainInner>>>() {
-            @Override
-            public Observable<Page<DomainInner>> call(Page<DomainInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DomainInner>, Iterable<DomainInner>>() {
             @Override
             public Iterable<DomainInner> call(Page<DomainInner> page) {
@@ -198,41 +160,21 @@ class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainI
         });
     }
 
-    private Observable<Page<NameIdentifierInner>> listRecommendationsNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DomainsInner client = this.inner();
-        return client.listRecommendationsNextAsync(nextLink)
-        .flatMap(new Func1<Page<NameIdentifierInner>, Observable<Page<NameIdentifierInner>>>() {
-            @Override
-            public Observable<Page<NameIdentifierInner>> call(Page<NameIdentifierInner> page) {
-                return Observable.just(page).concatWith(listRecommendationsNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<NameIdentifier> listRecommendationsAsync(final DomainRecommendationSearchParameters parameters) {
         DomainsInner client = this.inner();
         return client.listRecommendationsAsync(parameters)
-        .flatMap(new Func1<Page<NameIdentifierInner>, Observable<Page<NameIdentifierInner>>>() {
-            @Override
-            public Observable<Page<NameIdentifierInner>> call(Page<NameIdentifierInner> page) {
-                return listRecommendationsNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<NameIdentifierInner>, Iterable<NameIdentifierInner>>() {
             @Override
             public Iterable<NameIdentifierInner> call(Page<NameIdentifierInner> page) {
                 return page.items();
             }
-       })
-        .map(new Func1<NameIdentifierInner, NameIdentifier>() {
+        })    .map(new Func1<NameIdentifierInner, NameIdentifier>() {
             @Override
             public NameIdentifier call(NameIdentifierInner inner) {
                 return new NameIdentifierImpl(inner, manager());
             }
-       });
+        });
     }
 
     @Override
@@ -278,29 +220,10 @@ class DomainsImpl extends GroupableResourcesCoreImpl<Domain, DomainImpl, DomainI
        });
     }
 
-    private Observable<Page<DomainOwnershipIdentifierInner>> listOwnershipIdentifiersNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DomainsInner client = this.inner();
-        return client.listOwnershipIdentifiersNextAsync(nextLink)
-        .flatMap(new Func1<Page<DomainOwnershipIdentifierInner>, Observable<Page<DomainOwnershipIdentifierInner>>>() {
-            @Override
-            public Observable<Page<DomainOwnershipIdentifierInner>> call(Page<DomainOwnershipIdentifierInner> page) {
-                return Observable.just(page).concatWith(listOwnershipIdentifiersNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DomainOwnershipIdentifier> listOwnershipIdentifiersAsync(final String resourceGroupName, final String domainName) {
         DomainsInner client = this.inner();
         return client.listOwnershipIdentifiersAsync(resourceGroupName, domainName)
-        .flatMap(new Func1<Page<DomainOwnershipIdentifierInner>, Observable<Page<DomainOwnershipIdentifierInner>>>() {
-            @Override
-            public Observable<Page<DomainOwnershipIdentifierInner>> call(Page<DomainOwnershipIdentifierInner> page) {
-                return listOwnershipIdentifiersNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DomainOwnershipIdentifierInner>, Iterable<DomainOwnershipIdentifierInner>>() {
             @Override
             public Iterable<DomainOwnershipIdentifierInner> call(Page<DomainOwnershipIdentifierInner> page) {

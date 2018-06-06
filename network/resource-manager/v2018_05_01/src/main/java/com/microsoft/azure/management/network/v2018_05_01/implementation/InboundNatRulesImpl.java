@@ -42,29 +42,10 @@ class InboundNatRulesImpl extends WrapperImpl<InboundNatRulesInner> implements I
         return new InboundNatRuleImpl(name, this.manager());
     }
 
-    private Observable<Page<InboundNatRuleInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        InboundNatRulesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<InboundNatRuleInner>, Observable<Page<InboundNatRuleInner>>>() {
-            @Override
-            public Observable<Page<InboundNatRuleInner>> call(Page<InboundNatRuleInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<InboundNatRule> listAsync(final String resourceGroupName, final String loadBalancerName) {
         InboundNatRulesInner client = this.inner();
         return client.listAsync(resourceGroupName, loadBalancerName)
-        .flatMap(new Func1<Page<InboundNatRuleInner>, Observable<Page<InboundNatRuleInner>>>() {
-            @Override
-            public Observable<Page<InboundNatRuleInner>> call(Page<InboundNatRuleInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<InboundNatRuleInner>, Iterable<InboundNatRuleInner>>() {
             @Override
             public Iterable<InboundNatRuleInner> call(Page<InboundNatRuleInner> page) {

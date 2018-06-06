@@ -83,29 +83,10 @@ class ResourcesImpl extends WrapperImpl<ResourcesInner> implements Resources {
         });
     }
 
-    private Observable<Page<GenericResourceInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ResourcesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<GenericResourceInner>, Observable<Page<GenericResourceInner>>>() {
-            @Override
-            public Observable<Page<GenericResourceInner>> call(Page<GenericResourceInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<SubscriptionGenericResource> listAsync() {
         ResourcesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<GenericResourceInner>, Observable<Page<GenericResourceInner>>>() {
-            @Override
-            public Observable<Page<GenericResourceInner>> call(Page<GenericResourceInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<GenericResourceInner>, Iterable<GenericResourceInner>>() {
             @Override
             public Iterable<GenericResourceInner> call(Page<GenericResourceInner> page) {

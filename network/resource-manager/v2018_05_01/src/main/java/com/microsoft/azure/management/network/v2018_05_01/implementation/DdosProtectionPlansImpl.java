@@ -78,29 +78,10 @@ class DdosProtectionPlansImpl extends GroupableResourcesCoreImpl<DdosProtectionP
         return this.wrapList(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<DdosProtectionPlanInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DdosProtectionPlansInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<DdosProtectionPlanInner>, Observable<Page<DdosProtectionPlanInner>>>() {
-            @Override
-            public Observable<Page<DdosProtectionPlanInner>> call(Page<DdosProtectionPlanInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DdosProtectionPlan> listByResourceGroupAsync(String resourceGroupName) {
         DdosProtectionPlansInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<DdosProtectionPlanInner>, Observable<Page<DdosProtectionPlanInner>>>() {
-            @Override
-            public Observable<Page<DdosProtectionPlanInner>> call(Page<DdosProtectionPlanInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DdosProtectionPlanInner>, Iterable<DdosProtectionPlanInner>>() {
             @Override
             public Iterable<DdosProtectionPlanInner> call(Page<DdosProtectionPlanInner> page) {
@@ -121,29 +102,10 @@ class DdosProtectionPlansImpl extends GroupableResourcesCoreImpl<DdosProtectionP
         return this.wrapList(client.list());
     }
 
-    private Observable<Page<DdosProtectionPlanInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        DdosProtectionPlansInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<DdosProtectionPlanInner>, Observable<Page<DdosProtectionPlanInner>>>() {
-            @Override
-            public Observable<Page<DdosProtectionPlanInner>> call(Page<DdosProtectionPlanInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<DdosProtectionPlan> listAsync() {
         DdosProtectionPlansInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<DdosProtectionPlanInner>, Observable<Page<DdosProtectionPlanInner>>>() {
-            @Override
-            public Observable<Page<DdosProtectionPlanInner>> call(Page<DdosProtectionPlanInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<DdosProtectionPlanInner>, Iterable<DdosProtectionPlanInner>>() {
             @Override
             public Iterable<DdosProtectionPlanInner> call(Page<DdosProtectionPlanInner> page) {
