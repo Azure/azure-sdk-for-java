@@ -45,7 +45,20 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure</artifactId>
-        <version>1.11.1</version>
+        <version>${fluentsdk.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-client-authentication</artifactId>
+        <version>${runtime.version}</version>
+        <scope>test</scope>
+      </dependency>
+      <dependency>
+        <groupId>com.microsoft.azure</groupId>
+        <artifactId>azure-arm-client-runtime</artifactId>
+        <version>${runtime.version}</version>
+        <type>test-jar</type>
         <scope>test</scope>
       </dependency>
     </dependencies>
