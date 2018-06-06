@@ -42,29 +42,10 @@ class SubscriptionsImpl extends WrapperImpl<SubscriptionsInner> implements Subsc
         });
     }
 
-    private Observable<Page<SubscriptionInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        SubscriptionsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<SubscriptionInner>, Observable<Page<SubscriptionInner>>>() {
-            @Override
-            public Observable<Page<SubscriptionInner>> call(Page<SubscriptionInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<Subscription> listAsync() {
         SubscriptionsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<SubscriptionInner>, Observable<Page<SubscriptionInner>>>() {
-            @Override
-            public Observable<Page<SubscriptionInner>> call(Page<SubscriptionInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<SubscriptionInner>, Iterable<SubscriptionInner>>() {
             @Override
             public Iterable<SubscriptionInner> call(Page<SubscriptionInner> page) {

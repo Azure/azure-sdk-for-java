@@ -148,29 +148,10 @@ class ManagementLocksImpl extends WrapperImpl<ManagementLocksInner> implements M
         });
     }
 
-    private Observable<Page<ManagementLockObjectInner>> listAtResourceLevelNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ManagementLocksInner client = this.inner();
-        return client.listAtResourceLevelNextAsync(nextLink)
-        .flatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
-            @Override
-            public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
-                return Observable.just(page).concatWith(listAtResourceLevelNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ManagementLockObject> listAtResourceLevelAsync(final String resourceGroupName, final String resourceProviderNamespace, final String parentResourcePath, final String resourceType, final String resourceName) {
         ManagementLocksInner client = this.inner();
         return client.listAtResourceLevelAsync(resourceGroupName, resourceProviderNamespace, parentResourcePath, resourceType, resourceName)
-        .flatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
-            @Override
-            public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
-                return listAtResourceLevelNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ManagementLockObjectInner>, Iterable<ManagementLockObjectInner>>() {
             @Override
             public Iterable<ManagementLockObjectInner> call(Page<ManagementLockObjectInner> page) {
@@ -190,29 +171,10 @@ class ManagementLocksImpl extends WrapperImpl<ManagementLocksInner> implements M
         return converter.convert(client.list());
     }
 
-    private Observable<Page<ManagementLockObjectInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ManagementLocksInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
-            @Override
-            public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ManagementLockObject> listAsync() {
         ManagementLocksInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
-            @Override
-            public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ManagementLockObjectInner>, Iterable<ManagementLockObjectInner>>() {
             @Override
             public Iterable<ManagementLockObjectInner> call(Page<ManagementLockObjectInner> page) {
@@ -233,29 +195,10 @@ class ManagementLocksImpl extends WrapperImpl<ManagementLocksInner> implements M
         return converter.convert(client.listByResourceGroup(resourceGroupName));
     }
 
-    private Observable<Page<ManagementLockObjectInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ManagementLocksInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
-            @Override
-            public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ManagementLockObject> listByResourceGroupAsync(String resourceGroupName) {
         ManagementLocksInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<ManagementLockObjectInner>, Observable<Page<ManagementLockObjectInner>>>() {
-            @Override
-            public Observable<Page<ManagementLockObjectInner>> call(Page<ManagementLockObjectInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ManagementLockObjectInner>, Iterable<ManagementLockObjectInner>>() {
             @Override
             public Iterable<ManagementLockObjectInner> call(Page<ManagementLockObjectInner> page) {

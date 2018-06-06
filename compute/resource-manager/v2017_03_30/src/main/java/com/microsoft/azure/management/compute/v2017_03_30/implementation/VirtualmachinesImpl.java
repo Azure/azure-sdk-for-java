@@ -147,12 +147,6 @@ class VirtualMachinesImpl extends GroupableResourcesCoreImpl<VirtualMachine, Vir
     public Observable<VirtualMachine> listAsync() {
         VirtualMachinesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<VirtualMachineInner>, Observable<Page<VirtualMachineInner>>>() {
-            @Override
-            public Observable<Page<VirtualMachineInner>> call(Page<VirtualMachineInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<VirtualMachineInner>, Iterable<VirtualMachineInner>>() {
             @Override
             public Iterable<VirtualMachineInner> call(Page<VirtualMachineInner> page) {

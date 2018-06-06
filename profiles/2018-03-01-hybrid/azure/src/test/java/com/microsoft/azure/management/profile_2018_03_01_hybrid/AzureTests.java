@@ -36,6 +36,9 @@ public class AzureTests extends TestBase {
 
     @Test
     public void firstTest() {
+        ResourceGroup rg = azure.resourceGroups().listAsync()
+                .toBlocking().last();
+
         rgName = SdkContext.randomResourceName("rg", 20);
         String saName = SdkContext.randomResourceName("sa", 20);
         ResourceGroup group = azure.resourceGroups()

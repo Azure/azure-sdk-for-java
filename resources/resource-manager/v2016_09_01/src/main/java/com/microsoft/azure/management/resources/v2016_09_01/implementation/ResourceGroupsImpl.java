@@ -63,29 +63,10 @@ class ResourceGroupsImpl extends WrapperImpl<ResourceGroupsInner> implements Res
         });
     }
 
-    private Observable<Page<ResourceGroupInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ResourceGroupsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<ResourceGroupInner>, Observable<Page<ResourceGroupInner>>>() {
-            @Override
-            public Observable<Page<ResourceGroupInner>> call(Page<ResourceGroupInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ResourceGroup> listAsync() {
         ResourceGroupsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<ResourceGroupInner>, Observable<Page<ResourceGroupInner>>>() {
-            @Override
-            public Observable<Page<ResourceGroupInner>> call(Page<ResourceGroupInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<ResourceGroupInner>, Iterable<ResourceGroupInner>>() {
             @Override
             public Iterable<ResourceGroupInner> call(Page<ResourceGroupInner> page) {
@@ -122,29 +103,10 @@ class ResourceGroupsImpl extends WrapperImpl<ResourceGroupsInner> implements Res
         return  new ResourcegroupSubscriptionGenericResourceImpl(inner, manager());
     }
 
-    private Observable<Page<GenericResourceInner>> listByResourceGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        ResourceGroupsInner client = this.inner();
-        return client.listByResourceGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<GenericResourceInner>, Observable<Page<GenericResourceInner>>>() {
-            @Override
-            public Observable<Page<GenericResourceInner>> call(Page<GenericResourceInner> page) {
-                return Observable.just(page).concatWith(listByResourceGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<ResourcegroupSubscriptionGenericResource> listByResourceGroupAsync(final String resourceGroupName) {
         ResourceGroupsInner client = this.inner();
         return client.listByResourceGroupAsync(resourceGroupName)
-        .flatMap(new Func1<Page<GenericResourceInner>, Observable<Page<GenericResourceInner>>>() {
-            @Override
-            public Observable<Page<GenericResourceInner>> call(Page<GenericResourceInner> page) {
-                return listByResourceGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<GenericResourceInner>, Iterable<GenericResourceInner>>() {
             @Override
             public Iterable<GenericResourceInner> call(Page<GenericResourceInner> page) {

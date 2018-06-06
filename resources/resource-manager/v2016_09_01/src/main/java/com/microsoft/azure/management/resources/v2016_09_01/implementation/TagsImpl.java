@@ -34,29 +34,10 @@ class TagsImpl extends WrapperImpl<TagsInner> implements Tags {
         return  new TagDetailsImpl(inner, manager());
     }
 
-    private Observable<Page<TagDetailsInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        TagsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<TagDetailsInner>, Observable<Page<TagDetailsInner>>>() {
-            @Override
-            public Observable<Page<TagDetailsInner>> call(Page<TagDetailsInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<TagDetails> listAsync() {
         TagsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<TagDetailsInner>, Observable<Page<TagDetailsInner>>>() {
-            @Override
-            public Observable<Page<TagDetailsInner>> call(Page<TagDetailsInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<TagDetailsInner>, Iterable<TagDetailsInner>>() {
             @Override
             public Iterable<TagDetailsInner> call(Page<TagDetailsInner> page) {

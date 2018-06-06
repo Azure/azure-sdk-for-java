@@ -44,29 +44,10 @@ class FeaturesImpl extends WrapperImpl<FeaturesInner> implements Features {
         });
     }
 
-    private Observable<Page<FeatureResultInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        FeaturesInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<FeatureResultInner>, Observable<Page<FeatureResultInner>>>() {
-            @Override
-            public Observable<Page<FeatureResultInner>> call(Page<FeatureResultInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<FeatureResult> listAsync() {
         FeaturesInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<FeatureResultInner>, Observable<Page<FeatureResultInner>>>() {
-            @Override
-            public Observable<Page<FeatureResultInner>> call(Page<FeatureResultInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<FeatureResultInner>, Iterable<FeatureResultInner>>() {
             @Override
             public Iterable<FeatureResultInner> call(Page<FeatureResultInner> page) {
@@ -80,29 +61,10 @@ class FeaturesImpl extends WrapperImpl<FeaturesInner> implements Features {
         });
     }
 
-    private Observable<Page<FeatureResultInner>> list1NextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        FeaturesInner client = this.inner();
-        return client.list1NextAsync(nextLink)
-        .flatMap(new Func1<Page<FeatureResultInner>, Observable<Page<FeatureResultInner>>>() {
-            @Override
-            public Observable<Page<FeatureResultInner>> call(Page<FeatureResultInner> page) {
-                return Observable.just(page).concatWith(list1NextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<FeatureResult> list1Async(final String resourceProviderNamespace) {
         FeaturesInner client = this.inner();
         return client.list1Async(resourceProviderNamespace)
-        .flatMap(new Func1<Page<FeatureResultInner>, Observable<Page<FeatureResultInner>>>() {
-            @Override
-            public Observable<Page<FeatureResultInner>> call(Page<FeatureResultInner> page) {
-                return list1NextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<FeatureResultInner>, Iterable<FeatureResultInner>>() {
             @Override
             public Iterable<FeatureResultInner> call(Page<FeatureResultInner> page) {

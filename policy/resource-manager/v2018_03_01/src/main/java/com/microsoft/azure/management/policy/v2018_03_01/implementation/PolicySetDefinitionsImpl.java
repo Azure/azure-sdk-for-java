@@ -111,29 +111,10 @@ class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> im
         });
     }
 
-    private Observable<Page<PolicySetDefinitionInner>> listByManagementGroupNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PolicySetDefinitionsInner client = this.inner();
-        return client.listByManagementGroupNextAsync(nextLink)
-        .flatMap(new Func1<Page<PolicySetDefinitionInner>, Observable<Page<PolicySetDefinitionInner>>>() {
-            @Override
-            public Observable<Page<PolicySetDefinitionInner>> call(Page<PolicySetDefinitionInner> page) {
-                return Observable.just(page).concatWith(listByManagementGroupNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<PolicySetDefinition> listByManagementGroupAsync(final String managementGroupId) {
         PolicySetDefinitionsInner client = this.inner();
         return client.listByManagementGroupAsync(managementGroupId)
-        .flatMap(new Func1<Page<PolicySetDefinitionInner>, Observable<Page<PolicySetDefinitionInner>>>() {
-            @Override
-            public Observable<Page<PolicySetDefinitionInner>> call(Page<PolicySetDefinitionInner> page) {
-                return listByManagementGroupNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PolicySetDefinitionInner>, Iterable<PolicySetDefinitionInner>>() {
             @Override
             public Iterable<PolicySetDefinitionInner> call(Page<PolicySetDefinitionInner> page) {
@@ -147,29 +128,10 @@ class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> im
         });
     }
 
-    private Observable<Page<PolicySetDefinitionInner>> listBuiltInNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PolicySetDefinitionsInner client = this.inner();
-        return client.listBuiltInNextAsync(nextLink)
-        .flatMap(new Func1<Page<PolicySetDefinitionInner>, Observable<Page<PolicySetDefinitionInner>>>() {
-            @Override
-            public Observable<Page<PolicySetDefinitionInner>> call(Page<PolicySetDefinitionInner> page) {
-                return Observable.just(page).concatWith(listBuiltInNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<PolicySetDefinition> listBuiltInAsync() {
         PolicySetDefinitionsInner client = this.inner();
         return client.listBuiltInAsync()
-        .flatMap(new Func1<Page<PolicySetDefinitionInner>, Observable<Page<PolicySetDefinitionInner>>>() {
-            @Override
-            public Observable<Page<PolicySetDefinitionInner>> call(Page<PolicySetDefinitionInner> page) {
-                return listBuiltInNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PolicySetDefinitionInner>, Iterable<PolicySetDefinitionInner>>() {
             @Override
             public Iterable<PolicySetDefinitionInner> call(Page<PolicySetDefinitionInner> page) {
@@ -189,29 +151,10 @@ class PolicySetDefinitionsImpl extends WrapperImpl<PolicySetDefinitionsInner> im
         return converter.convert(client.list());
     }
 
-    private Observable<Page<PolicySetDefinitionInner>> listNextInnerPageAsync(String nextLink) {
-        if (nextLink == null) {
-            Observable.empty();
-        }
-        PolicySetDefinitionsInner client = this.inner();
-        return client.listNextAsync(nextLink)
-        .flatMap(new Func1<Page<PolicySetDefinitionInner>, Observable<Page<PolicySetDefinitionInner>>>() {
-            @Override
-            public Observable<Page<PolicySetDefinitionInner>> call(Page<PolicySetDefinitionInner> page) {
-                return Observable.just(page).concatWith(listNextInnerPageAsync(page.nextPageLink()));
-            }
-        });
-    }
     @Override
     public Observable<PolicySetDefinition> listAsync() {
         PolicySetDefinitionsInner client = this.inner();
         return client.listAsync()
-        .flatMap(new Func1<Page<PolicySetDefinitionInner>, Observable<Page<PolicySetDefinitionInner>>>() {
-            @Override
-            public Observable<Page<PolicySetDefinitionInner>> call(Page<PolicySetDefinitionInner> page) {
-                return listNextInnerPageAsync(page.nextPageLink());
-            }
-        })
         .flatMapIterable(new Func1<Page<PolicySetDefinitionInner>, Iterable<PolicySetDefinitionInner>>() {
             @Override
             public Iterable<PolicySetDefinitionInner> call(Page<PolicySetDefinitionInner> page) {
