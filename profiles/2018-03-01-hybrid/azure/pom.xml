@@ -121,7 +121,7 @@
         </dependency>
         <dependency>
             <groupId>com.microsoft.azure</groupId>
-            <artifactId>azure-mgmt-resources</artifactId>
+            <artifactId>azure</artifactId>
             <scope>test</scope>
         </dependency>
         <dependency>

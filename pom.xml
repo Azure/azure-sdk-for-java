@@ -33,6 +33,8 @@
     <legal><![CDATA[[INFO] Any downloads listed may be third party software.  Microsoft grants you no rights for third party software.]]></legal>
     <testMode>playback</testMode>
     <playbackServerPort>11080</playbackServerPort>
+    <runtime.version>1.5.2</runtime.version>
+    <fluentsdk.version>1.11.1</fluentsdk.version>
   </properties>
 
   <developers>
@@ -41,7 +43,7 @@
       <name>Microsoft</name>
     </developer>
   </developers>
-  
+
   <distributionManagement>
     <repository>
       <id>local-nexus</id>
@@ -80,12 +82,12 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-client-runtime</artifactId>
-        <version>1.5.2</version>
+        <version>${runtime.version}</version>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-runtime</artifactId>
-        <version>1.5.2</version>
+        <version>${runtime.version}</version>
       </dependency>
       <dependency>
         <groupId>com.google.guava</groupId>
@@ -96,20 +98,20 @@
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-client-authentication</artifactId>
-        <version>1.5.2</version>
+        <version>${runtime.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-arm-client-runtime</artifactId>
-        <version>1.5.2</version>
+        <version>${runtime.version}</version>
         <type>test-jar</type>
         <scope>test</scope>
       </dependency>
       <dependency>
         <groupId>com.microsoft.azure</groupId>
         <artifactId>azure-mgmt-resources</artifactId>
-        <version>1.11.1</version>
+        <version>${fluentsdk.version}</version>
         <scope>test</scope>
       </dependency>
       <dependency>
